@@ -2,6 +2,7 @@
 \newcounter{chapter}
 \usepackage{ana1v2}
 \usepackage{slashed}
+\usepackage{wasysym}
 
 
 \author{Pascal Maillard}
@@ -45,11 +46,44 @@ Seien $Z_1,Z_2 \in \Z$.
 
 \begin{beweise}
 \item Übung (es genügt zu betrachten: $Z_2 = Z_1 \cup \{t_0\},\ t_0 \notin Z_1$)
+\item $Z := Z_1 \subseteq Z_2$. Dann: $s_f(Z_1) \overset{(1)}{\le} s_f(Z) \le S_f(Z) \overset{(1)}{\le} S_f(Z_2).$
 \end{beweise}
 
-\def\uint{\declareslashed{}{\text{-}}{0}{-.5}{\int}\ensuremath{\slashed{\int}}}
-\def\oint{\declareslashed{}{\text{-}}{0}{.5}{\int}\ensuremath{\slashed{\int}}}
+% symbole für oberes und unteres Integral, die Maße sind mehr oder weniger
+% durch Trial-and-Error bestimmt worden. Wichtig ist hierbei, dass sie sowohl
+% bei den großen wie auch bei den kleinen Integralen einigermaßen passen
+\def\uint{\declareslashed{}{\text{-}}{0}{-.7}{\int} \ensuremath{\slashed{\int}}}
+\def\oint{\declareslashed{}{\text{-}}{.15}{.7}{\int} \ensuremath{\slashed{\int}}}
 
-Noch in Arbeit
+\newcommand{\intab}[1]{\ensuremath{\int_a^b{#1\ dx}}}
+\newcommand{\uintab}[1]{\ensuremath{\uint_a^b{#1\ dx}}}
+\newcommand{\ointab}[1]{\ensuremath{\oint_a^b{#1\ dx}}}
+
+\begin{definition*}
+$$\uintab{f} := \uintab{f(x)} := \sup\{s_f(Z): Z \in \Z\}\text{ heißt \begriff{unteres Integral} von }f$$
+$$\ointab{f} := \ointab{f(x)} := \inf\{S_f(Z): Z \in \Z\}\text{ heißt \begriff{oberes Integral} von }f$$
+\end{definition*}
+
+Sei $Z \in \Z$. Dann: $m(b-a) \le s_f(Z) \le \uintab{f} \overset{\text{31.1(2)}}{\le} S_f(Z) \le M(b-a) \folgt m(b-a) \le \uintab{f} \le \ointab{f} \le M(b-a)$
+
+\begin{definition*}
+$f$ heißt (Riemann-)\begriff{integrierbar} über $[a,b] :\equizu \uintab{f} = \ointab{f}$. In diesem Fall heißt
+$$\intab{f} := \intab{f(x)} := \ointab{f}\ (=\uintab{f})$$
+das (Riemann-)\begriff{Integral} von $f$ über $[a,b]$.
+
+$R[a,b] := \{g: [a,b] \to \MdR: g$ ist auf $[a,b]$ beschränkt und integrierbar über $[a,b]\}$
+\end{definition*}
+
+\begin{beispiele}
+\item Sei $c \in \MdR$ und $f(x) = c\ \forall x \in [a,b]$. Sei $Z = \{x_0,\ldots,x_n\} \in \Z;\ m_j = M_j = c\ (j = 1,\ldots,n) \folgt s_f(Z) = S-F(Z) = \sum_{j=1}^{n}{|I_j} = c(b-a) \folgt f \in R[a,b]$ und $\intab{c} = c(b-a)$.
+\item $$f(x) := \begin{cases}
+1,& x \in [a,b] \cap \MdQ\\
+0,& x \in [a,b] \backslash \MdQ \end{cases}$$
+
+Sei $Z = \{x_0,\ldots,x_n\} \in \Z,\ m_j = 0,\ M_j = 1\ (j=1,\ldots,n)\\
+\folgt s_f(Z) = 0,\ S_f(Z) = \sum_{j=1}^{n}{|I_j|} = b-a.$
+
+$\folgt \uintab{f} = 0 \ne b-a = \ointab{f} \folgt f \notin R[a,b].$
+\end{beispiele}
 
 \end{document}
