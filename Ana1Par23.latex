@@ -127,6 +127,7 @@ $f \in R[a,b] \equizu \forall \ep>0\ \exists Z \in \Z: S_f(Z)-s_f(Z) < \ep$.
 
 \begin{definition*}
 Sei $J\subseteq\MdR$ ein Intervall und $G,g: J\to\MdR$ seien Funktionen. $G$ hei"st eine \begriff{Stammfunktion} (SF) von $g$ auf $J$ :$\equizu$ G ist differenzierbar auf $J$ und $G'=g$ auf $J$.\\
+\end{definition*}
 \textbf{Beachte:}
 \begin{liste}
 \item Sind $G_1$ und $G_2$ Stammfunktionen von $g$ auf $J \folgtnach{21.7}\ \exists c \in\MdR: G_1=G_2+c$ auf $J$.
@@ -138,14 +139,12 @@ x^{\frac{3}{2}} \sin\frac{1}{x},&x\in(0,1]\\
 Bekannt: (§22): $F$ ist auf $[0,1]$ differenzierbar und $f:=F'$ ist auf [0,1] \emph{nicht} beschr"ankt. Also: $f \in R[0,1]$, besitzt aber auf $[0,1]$ die Stammfunktion $F$.
 \end{beispiel}
 \item Sei $I=[a,b]$. Es gibt Funktionen in $R[a,b]$, die auf $[a,b]$ keine Stammfunktionen besitzen.
-\end{liste}
-\end{definition*}
-
 \begin{beispiel}
 Sei $[a,b]=[-1,1]$, $f(x):=\begin{cases}
 1&x\in[-0,1]\\
 0&x\in[-1,0)\end{cases}$. $f$ ist monoton auf $[-1,1]\folgtnach{23.4}f\in R[-1,1]$. Annahme: $f$ besitzt auf $[-1, 1]$ die Stammfunktion $F$. Auf $[0,1]:F'(x)=f(x)=1=(x)'\folgtnach{21.7}\ \exists c_1 \in \MdR: F(x)=x+c_1\ \forall x \in [0,1]$. Auf $[-1, 0)$: $F'(x)=f(x)=0 \folgtnach{21.7}\ \exists c_2 \in \MdR: F(x)=c_2\ \forall x\in [-1,0)$. $\displaystyle\lim_{x\to 0+}F(x)=c_1,\ \displaystyle\lim_{x\to 0-}F(x)=c_2$. $F$ stetig in $x=0\folgt c_1=c_2$.$\displaystyle\lim_{x \to 0+}\frac{F(x)-F(0)}{x-0}=\displaystyle\lim_{x\to 0+}\frac{x+c_1-c_1}{x}=1$, $\displaystyle\lim_{x\to 0-}\frac{F(x)-F(0)}{x-0}=\frac{c_2-c_1}{x}=0$, Widerspruch zur Differenzierbarkeit von $F$ in $x_0=0$.
 \end{beispiel}
+\end{liste}
 
 \begin{satz}[1. Hauptsatz der Differential- und Integralrechnung]
 Es sei $f\in R[a,b]$ und $f$ besitze auf $[a,b]$ die Stammfunktion $F$. Dann: 
@@ -232,8 +231,25 @@ In diesem Fall ist:
 $$\intab{f} = \int_a^c{f\ dx} + \int_c^b{f\ dx}$$
 \end{satz}
 
+\def\hin{\item["`$\Rightarrow$"':]}
+\def\zurueck{\item["`$\Leftarrow$"':]}
+
 \begin{beweis}
-TODO
+\begin{description}
+\hin Sei $\ep > 0.$ Aus 23.3 folgt: $\exists Z_1 \in \Z: S_f(Z_1) - s_f(Z_1) < \ep.$
+
+$Z := Z_1 \cup \{c\} \in \Z.$ Sei $Z = \{x_0,\ldots,x_k,x_{k+1},\ldots,x_n\}$ mit $x_k = c.\ Z_0 := \{x_0,\ldots,x_k\}$ ist eine Zerlegung von $[a,c].\ M_j,\ m_j,\ I_j$ seien wie immer. Dann gilt:
+
+$S_f(Z_0) - s_f(Z_0) = \sum_{j=1}^k{(M_j-m_j) |I_j|} \le \sum_{j=1}^n{(M_j-m_j) |I_j|} = S_f(Z)-s_f(Z) \le S_f(Z_1) - s_f(Z_1) < \ep \folgtnach{23.3} f \in R[a,c].$ Analog: $f \in R[c,b].$
+
+\zurueck $S:=\int_a^c{f\ dx} + \int_c^b{f\ dx}.$ Sei $\ep > 0$ Dann gibt es Zerlegungen $Z_1$ von $[a,c]$ und $Z_2$ von $[c,b]: s_f(Z_1) = \uint_a^c{f\ dx} - \ep = \int_a^c{f\ dx},\ s_f(Z_2) > \int_b^c{f\ dx} - \ep.$
+
+$Z:=Z_1 \cup Z_2 \folgt Z \in \Z$ und $\uintab{f} \ge s_f(Z) = s_f(Z_1) + s_f(Z_2) > S-2 \ep.$
+
+Also: $S-2\ep < \uintab{f}\ \forall \ep > 0 \folgtwegen{\ep \to 0+} S \le \uintab{f}.$
+
+Analog: $\ointab{f} \le S \folgt f \in R[a,b],\ \intab{f} = S.$
+\end{description}
 \end{beweis}
 
 \begin{satz}[Integral und Unstetigkeitsstellen]
@@ -244,9 +260,19 @@ $f,g: [a,b] \to \MdR$ seien Funktionen.
 \end{liste}
 \end{satz}
 
-\begin{beweis}
-TODO
-\end{beweis}
+\begin{beweise}
+\item $\exists \gamma \ge 0: |f(x)| \le \gamma\ \forall x \in [a,b].$ Es genügt zu betrachten: $A:=\{t_0\}$ (wegen 23.9). O.B.d.A.: $t_0 = a$ oder $t_0 = b.$ Etwa: $t_0 = a$.
+
+Sei $\ep > 0.$ Wähle $\alpha \in (a,b)$ mit $2\gamma(\alpha-a) < \ep/2.$
+
+$f \in C[\alpha,b] \folgt f \in R[\alpha,b] \folgtnach{23.3}$ Es gibt eine Zerlegung $Z_1$ von $[\alpha,b]$ mit: $S_f(Z_1) - s_f(Z_1) < \ep/2.\ Z:=Z_1 \cup \{a\} \folgt Z \in \Z$ und $S_f(Z) - s_f(Z) = \underbrace{\sup f([a,\alpha]) - \inf f([a,\alpha]))(\alpha-1)}_{\le 2 \gamma} + \underbrace{S_f(Z_1)-s_f(Z_1)}_{< \ep/2} < 2 \gamma(\alpha-a) + \ep/2 < \ep/2 + \ep/2 = \ep.$
+
+\item Klar: g ist beschränkt. $h := g-f.$ Dann: $h(x) = 0\ \forall x \in [a,b]\backslash A \folgt h \in C([a,b] \backslash A) \folgtnach{(1)} h \in R[a,b] \folgt g = h+f \in R[a,b].$
+
+Noch zu zeigen: $\intab{h} = 0.\ \varphi := |h|.$ Aus 23.8 folgt: $\varphi \in R[a,b]$ und $|\intab{h}| \le \intab{\varphi}.$
+
+Sei $Z := \{x_0,\ldots,x_n\} \in \Z,\ m_j := \inf \varphi(I_j),\ \varphi(x) = 0\ \forall x \in [a,b] \backslash A,\ \varphi(x) > 0\ \forall x \in A \folgt m_j = 0\ (j = 1,\ldots,n) \folgt s_f(Z) = 0 \folgt \uintab{\varphi} = \intab{\varphi} = 0 \folgt \intab{h} = 0.$
+\end{beweise}
 
 \begin{satz}[Mittelwertsatz der Integralrechnung]
 Es seien $f,g \in R[a,b],\ g \ge 0$ (oder $g \le 0$) auf $[a,b],\ m:=\inf f([a,b]),\ M:=\sup f([a,b])$
@@ -256,25 +282,49 @@ Es seien $f,g \in R[a,b],\ g \ge 0$ (oder $g \le 0$) auf $[a,b],\ m:=\inf f([a,b
 \end{liste}
 \end{satz}
 
-\begin{beweis}
-TODO
-\end{beweis}
+\begin{beweise}
+\item $\alpha := \intab{g},\ \beta := \intab{fg}.\ m \le f \le M$ auf $[a,b] \folgt mg \le fg \le Mg$ auf $[a,b] \folgt m\alpha \le \beta \le M\alpha.$
+
+Es ist $\alpha \ge 0.$ O.B.d.A.: $\alpha > 0.$ Dann gilt: $m \le \frac{\beta}{\alpha} \le M,\ \mu := \frac{\beta}{\alpha}.$
+
+\item Setze in (1) $g \equiv 1 \folgt \intab{f} = \mu(b-a)\ (\mu \in [m,M]).$ Aus 18.1 folgt: $\exists \xi \in [a,b]: \mu = f(\xi).$
+\end{beweise}
 
 \paragraph{Der Riemannsche Zugang zum Integral}
+
+\textit{Bemerkung: Wir haben bisher tatsächlich die \emph{Darbouxschen} Integrale betrachtet. Hier wird nun die ursprüngliche Definition von Riemann vorgestellt.}
 
 $f:[a,b] \to \MdR$ sei beschränkt. Sei $Z:=\{x_0,\ldots,x_n\} \in \Z.\ m_j,M_j,I_j$ seien wie immer.
 
 Wählt man in jedem $I_j$ einen Punkt $\xi_j$, so heißt $\xi := (\xi_1,\xi_2,\ldots,\xi_n)$ ein zu $Z$ passender \begriff{Zwischenvektor} und $\sigma_f(Z,\xi) := \sum_{j=1}^{n}{f(\xi_j) |I_j|}$ eine \begriff{Riemannsche Zwischensumme}.
 
+$m_j = \le f(\xi_j) \le M_j\ (j=1,\ldots,n) \folgt s_f(Z) \le \sigma_f(Z,\xi) \le S_f(Z)$
+
 \begin{satz}[Äquivalenz der Riemannschen und Darbouxschen Integrale]
 $f: [a,b] \to \MdR$ sei beschränkt. Dann gilt: $f \in R[a,b]$ genau dann, wenn es ein $S \in \MdR$ gibt mit:
-$$\forall \ep > 0\ \exists Z \in \Z: |\sigma_f(Z,\xi)-S| < \ep\text{ für jedes zu Z passende } \xi.$$
+$$\forall \ep > 0\ \exists Z \in \Z: |\sigma_f(Z,\xi)-S| < \ep\text{ für jedes zu Z passende } \xi.\ (*)$$
 In diesem Fall gilt:
 $$S = \intab{f}.$$
 \end{satz}
 
 \begin{beweis}
-TODO
+\begin{description}
+\hin $S := \intab{f}.$ Sei $\ep > 0.$ Wie im Beweis von 23.3: $\exists Z \in \Z: s_f(Z) > S-\ep,\ S_f(Z) < S+\ep.$
+
+Sei $\xi$ passend zu $Z \folgt S-\ep < s_f(Z) \le \sigma_f(Z,\xi) \le S_f(Z) < S+\ep \folgt |\sigma_f(Z,\xi)-S| < \ep.$
+
+\zurueck Sei $\ep > 0.$ Nach Voraussetzung gibt es ein $Z \in \Z$ so, dass (*) gilt. Sei $Z := \{x_0,\ldots,x_n\},\ m_j,\ M_j,\ I_j$ wie immer. Sei $j \in \{1,\ldots,n\}: \exists \xi_j,\eta_j \in I_j: f(\xi_j) > M_j - \ep,\ f(\eta_j) < m_j + \ep,\ \xi := (\xi_1,\ldots,\xi_n),\ \eta = (\eta_1,\ldots,\eta_n)$ sind passend zu $Z$.
+
+$A := \sigma_f(Z,\xi),\ B := \sigma_f(Z,\eta).\ A = \sum_{j=1}^n{f(\xi_j) |I_j|} > \sum_{j=1}^n{(M_j-\ep) |I_j|} = S_f(Z) - \ep(b-a) \folgt S_f(Z) < A + \ep(b-a).\quad$(i)
+
+Analog: $-s_f(Z) < \ep(b-a) - B.\quad$(ii)
+
+Dann gilt: $S_f(Z) - s_f(Z) < A-B+2\ep(b-a) = A-S+S-B+2\ep(b-a) \le |A-S|+|B-S|+2\ep(b-a) \overset{\text{(*)}}{<} 2\ep+2\ep(b-a) = \ep(2 + 2(b-a)) \folgtnach{23.3} f \in R[a,b].$
+
+$\intab{f} = \ointab{f} \le S_f(Z) \overset{\text{(i)}}{<} A + \ep(b-a) = A - S + S + \ep(b-a) \le |A-S| + S + \ep(b-a) \overset{\text{(*)}}{<} \ep + S + \ep(b-a).$
+
+Also: $\intab{f} < S + \ep(1 + (b-a))\ \forall \ep > 0 \folgtwegen{\ep \to 0+} \intab{f} \le S.$ Analog folgt mit (ii): $S \le \intab{f}.$
+\end{description}
 \end{beweis}
 
 \end{document}
