@@ -5,7 +5,7 @@
 \usepackage{wasysym}
 
 
-\author{Pascal Maillard}
+\author{Pascal Maillard und Wenzel Jakob}
 \title{Das Riemann-Integral}
 \setcounter{chapter}{23}
 
@@ -78,12 +78,73 @@ $R[a,b] := \{g: [a,b] \to \MdR: g$ ist auf $[a,b]$ beschränkt und integrierbar ü
 \item Sei $c \in \MdR$ und $f(x) = c\ \forall x \in [a,b]$. Sei $Z = \{x_0,\ldots,x_n\} \in \Z;\ m_j = M_j = c\ (j = 1,\ldots,n) \folgt s_f(Z) = S-F(Z) = \sum_{j=1}^{n}{|I_j} = c(b-a) \folgt f \in R[a,b]$ und $\intab{c} = c(b-a)$.
 \item $$f(x) := \begin{cases}
 1,& x \in [a,b] \cap \MdQ\\
-0,& x \in [a,b] \backslash \MdQ \end{cases}$$
+0,& x \in [a,b]\ \backslash\ \MdQ \end{cases}$$
 
 Sei $Z = \{x_0,\ldots,x_n\} \in \Z,\ m_j = 0,\ M_j = 1\ (j=1,\ldots,n)\\
 \folgt s_f(Z) = 0,\ S_f(Z) = \sum_{j=1}^{n}{|I_j|} = b-a.$
 
 $\folgt \uintab{f} = 0 \ne b-a = \ointab{f} \folgt f \notin R[a,b].$
+
+\item $[a,b]=[0,1]$, $f(x)=x$. Sei $n \in\MdN$ und $Z=\{x_0, \cdots, x_n\}$, wobei $x_j:=j*\frac{1}{n}\ (j=0,..,n).$  $m_j, M_j, I_j$ wie immer. Dann: $|I_j|=\frac{1}{n}$.
+$$m_j=f(x_j-1)=(j-1)\frac{1}{n}.\ s_f(Z)=\sum_{j=1}^{n}(j-1)\frac{1}{n}=\frac{1}{n^2}(0+1+\cdots+(n-1))=\frac{1}{n^2}\frac{(n-1)n}{2}=\frac{n-1}{2n}$$
+$$M_j=f(x_j)=\frac{j}{n}.\ S_f(Z)=\sum^{n}_{j=1}j\frac{1}{n^2}=\frac{1}{n^2}(1+\cdots+n)=\frac{1}{n^2}\frac{n(n+1)}{2}=\frac{n+1}{2n}$$
+$$\frac{n-1}{2n}=s_f(Z)\le\uint^1_0x\ dx\le\oint^1_0x\ dx\le S_f(Z)=\frac{n+1}{2n} \folgt f\in R[0,1] \text{ und } \int_0^1x\ dx=\frac{1}{2}$$
 \end{beispiele}
+
+\begin{satz}
+Es seien $f,g \in R[a, b]$
+\begin{liste}
+\item Ist $f\le g$ auf $[a, b] \folgt \int_a^bf\ dx \le \int_a^bg\ dx$
+\item Sind $\alpha, \beta \in \MdR \folgt \alpha f + \beta g \in R[a, b]$ und $\int_a^b(\alpha f + \beta g)dx = \alpha\int_a^bf\ dx + \beta\int_a^bg\ dx$
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item "Ubung.
+\item "Ubung: $\alpha f \in R[a, b]$ und $\int_a^b(\alpha f)\ dx=\alpha\int_a^bf\ dx$.\\Zu zeigen: $f+g \in R[a, b]$ und $\int_a^b(f+g)\ dx = \int_a^bf\ dx + \int_a^bg\ dx$.
+Sei $z=\{x_0, \cdots, x_n\} \in \Z, m_j, M_j, I_j$ wie immer. $\widetilde{m_j}:=\inf g(I_j),\ \widetilde{\widetilde{m_j}}:=\inf (f+g)(I_j)$. $x\in I_j:\ (f+g)(x)=f(x)+g(x) \ge m_j + \widetilde{m_j} \folgt \widetilde{\widetilde{m_j}}\ge m_j + \widetilde{m_j} \folgt \widetilde{\widetilde{m_j}}|I_j| \ge m_j|I_j| + \widetilde{m_j}|I_j| \folgtnach{Summation} S_{f+g}(Z) \ge S_f(Z) + S_g(Z) \folgt S_f(Z) + S_g(Z) \le \uint_a^b(f+g)dx \ \forall z \in \Z\ (*)$. Sei $\ep>0: \exists\ Z_1, Z_2 \in \Z: S_f(Z_1) > \uint_a^bf\ dx - \ep=\int_a^bf\ dx - \ep,\ s_g(Z_2)>\int_a^bg\ dx - \ep,\ Z:=Z_1 \cup Z_2 \in \Z$. $\underbrace{\int_a^bf\ dx + \int_a^bg\ dx}_{=:A} - 2\ep < S_f(Z_1) + S_g(Z_2) \overset{23.1}{\le} S_f(Z) + S_g(Z) \overset{(*)}{\le} \int_a^b (f+g)dx$. Also: $A-2\ep \le \int_a^b(f+g)dx\ \forall \ep>0 \folgtwegen{\ep \to 0+} A\le\uint_a^b(f+g)dx$. Analog: $\oint_a^b(f+g)dx\le A \folgt A=\uint_a^b(f+g)dx = \oint_a^b(f+g)dx$
+\end{beweise}
+
+\begin{satz}[Riemannsches Integrabilit"atskriterium]
+$f \in R[a,b] \equizu \forall \ep>0\ \exists Z \in \Z: S_f(Z)-s_f(Z) < \ep$.
+\end{satz}
+\begin{beweis}
+\glqq$\Leftarrow$\grqq: Sei $\ep>0.$ Voraussetzung $\folgt \exists z \in \Z: S_f(Z)<s_f(Z)+\ep \folgt \oint_a^bf\ dx \le S_f(Z) < s_f(z) + \ep\le\uint_a^bf\ dx + \ep$. Also: $\oint_a^bf\ dx < \uint_a^bf\ dx\ \forall \ep>0\folgtwegen{\ep\to 0+}\oint_a^bf\ dx \le \uint_a^bf\ dx (\le \oint_a^bf\ dx)\folgt f\in R[a, b]$.\\
+\glqq$\folgt$\grqq: $S:=\int_a^bf\ dx$. Sei $\ep>0.\ \exists Z_1, Z_2 \in \Z: s_f(Z_1) > \uint_a^bf\ dx - \frac{\ep}{2}=S-\frac{\ep}{2}.\ S_f(Z_2)<S+\frac{\ep}{2}.\ Z:=Z_1 \cup Z_2 \in \Z$. $S_f(Z)-s_f(Z) \overset{23.1}{\le}S_f(Z_2)-s_f(Z_1)<S+\frac{\ep}{2}-(S-\frac{\ep}{2})=\ep$.
+\end{beweis}
+
+\begin{satz}
+\begin{liste}
+\item Ist f auf $[a,b]$ monoton $\folgt f \in R[a,b]$.
+\item $C[a,b] \subseteq R[a,b]$.
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item f sei wachsend auf $[a,b]$. Sei $n\in\MdN$ und $Z=\{x_0,\cdots,x_n\}$ sei die \begriff{"aquidistante Zerlegung} von $[a,b]$ mit $n+1$ Teilpunkten. $x_j = a+j\frac{b-a}{n}\ (j=0,\cdots,n)$, dann: $|I_j|=\frac{b-a}{n}$. $m_j, M_j$ wie immer: $S_f(Z)-s_f(z)=\sum^n_{j=1}(\underbrace{M_j}_{=f(x_j)}-\underbrace{m_j}_{f(x_j-1)})|I_j|=\sum_{j=1}^n(f(x_j)_-f(x_j-1))\frac{b-a}{n}=\frac{b-a}{n}(f(x_1)-f(x_0)+f(x_2)-f(x_1)+\cdots+f(x_n)-f(x_n-1))=\frac{b-a}{n}(f(x_n)-f(x_0))=\frac{b-a}{n}(f(b)-f(a))=:\alpha_n$. Sei $\ep>0$, dann: $\exists n\in\MdN: \alpha_n <\ep\folgtnach{23.3}$Behauptung.
+\item Sei $f \in C[a, b]$ und $\ep>0$. $\exists \delta>0: (*)\ |f(t)-f(s)|<\frac{\ep}{b-a}\ \forall t,s\in[a,b]$ mit $|t-s|<\delta$. Sei $Z=\{x_0,\cdots,x_n\}\in\Z\ m_j,\ M_j,\ |I_J|$ seien wie immer; $z$ sei so gew"ahlt, da"s $|I_j|<\delta\ (j=1,\cdots,n)$. Betrachte $I_j:$ 18.3$\folgt\ \exists s_j, t_j \in I_j: m_j=f(s_j),\ M_j=f(t_j)$. $|t_j-s_j|<\delta \folgtwegen{(*)}\underbrace{f(t_j)-f(s_j)}_{=M_j-m_j}<\frac{\ep}{b-a}\folgt S_f(Z)-s_f(Z)=\sum^n_{j=1}(\underbrace{M_j-m_j}_{\le\frac{\ep}{b-a}})|I_j|<\frac{\ep}{b-a}\sum^n_{j=1}|I_j|=\ep\folgtnach{23.3}f\in R[a,b]$
+\end{beweise}
+
+\begin{definition*}
+Sei $J\subseteq\MdR$ ein Intervall und $G,g: J\to\MdR$ seien Funktionen. $G$ hei"st eine \begriff{Stammfunktion} (SF) von $g$ auf $J$ :$\equizu$ G ist differenzierbar auf $J$ und $G'=g$ auf $J$.\\
+\textbf{Beachte:}
+\begin{liste}
+\item Sind $G_1$ und $G_2$ Stammfunktionen von $g$ auf $J \folgtnach{21.7}\ \exists c \in\MdR: G_1=G_2+c$ auf $J$.
+\item Sei $I=[a,b]$. Es gibt Funktionen, die auf $[a,b]$ Stammfunktionen besitzen, aber "uber $[a,b]$ nicht integrierbar sind.
+\begin{beispiel}
+$$F(x) := \begin{cases}
+x^{\frac{3}{2}} \sin\frac{1}{x},&x\in(0,1]\\
+0,& x=0\end{cases}$$
+Bekannt: (§22): $F$ ist auf $[0,1]$ differenzierbar und $f:=F'$ ist auf [0,1] \emph{nicht} beschr"ankt. Also: $f \in R[0,1]$, besitzt aber auf $[0,1]$ die Stammfunktion $F$.
+\end{beispiel}
+\item Sei $I=[a,b]$. Es gibt Funktionen in $R[a,b]$, die auf $[a,b]$ keine Stammfunktionen besitzen.
+\end{liste}
+\end{definition*}
+
+\begin{beispiel}
+Sei $[a,b]=[-1,1]$, $f(x):=\begin{cases}
+1&x\in[-0,1]\\
+0&x\in[-1,0)\end{cases}$. $f$ ist monoton auf $[-1,1]\folgtnach{23.4}f\in R[-1,1]$. Annahme: $f$ besitzt auf $[-1, 1]$ die Stammfunktion $F$. Auf $[0,1]:F'(x)=f(x)=1=(x)'\folgtnach{21.7}\ \exists c_1 \in \MdR: F(x)=x+c_1\ \forall x \in [0,1]$. Auf $[-1, 0)$: $F'(x)=f(x)=0 \folgtnach{21.7}\ \exists c_2 \in \MdR: F(x)=c_2\ \forall x\in [-1,0)$. $\displaystyle\lim_{x\to 0+}F(x)=c_1,\ \displaystyle\lim_{x\to 0-}F(x)=c_2$. $F$ stetig in $x=0\folgt c_1=c_2$.$\displaystyle\lim_{x \to 0+}\frac{F(x)-F(0)}{x-0}=\displaystyle\lim_{x\to 0+}\frac{x+c_1-c_1}{x}=1$, $\displaystyle\lim_{x\to 0-}\frac{F(x)-F(0)}{x-0}=\frac{c_2-c_1}{x}=0$, Widerspruch zur Differenzierbarkeit von $F$ in $x_0=0$.
+\end{beispiel}
 
 \end{document}
