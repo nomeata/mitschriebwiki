@@ -3,7 +3,7 @@
 \usepackage{ana1v2}
 
 
-\author{Joachim Breitner}
+\author{Joachim Breitner, Pascal Maillard}
 \title{Höhere Ableitungen}
 \setcounter{chapter}{22}
 
@@ -97,6 +97,60 @@ $f(x):= e^x, x_0 = 0, x=1$ \\
 22.2 $\folgt \exists \xi \in (0,1)$ mit $\frac{m}{n}=e=f(1)=\sum_{k=0}^n\frac{f^{(k)}(0)}{k!} + \frac{f^{(n+1)}(\xi)}{(n+1)!}$\\
 $\frac{m}{n} = 1 + 1+ \frac{1}{2!} + \ldots + \frac{1}{n!} + \frac{e^\xi}{(n+1)!}\  | \cdot n!$. \\
 $\underbrace{m(n-1)!}_{\in\MdN} = \underbrace{n! + n! + \frac{n!}{2!} + \cdots + \frac{n!}{n!}}_{\in \MdN} + \underbrace{\frac{e^\xi}{n+1}}_{>0} \folgt \frac{e^\xi}{n+1} \in \MdN \folgt 1 \le \frac{e^\xi}{n+1} < \frac{e}{n+1} < \frac{3}{n+1} \stackrel{n\ge2}{\le} 1$. Wid!
+\item Behauptung: $\log 2 = \sum_{k=1}^{\infty}{\frac{(-1)^{k+1}}{k}}$\\
+Beweis: $I = (-1,\infty),\ f(x) = \log(1+x),\ x_0=0,\ x=1.$ Durch vollständige Induktion lässt sich zeigen:
+$$f^{(k)}(x) = \frac{(-1)^{k+1}(k-1)!}{(1+x)^k}\ (k\in\MdN)$$
+Also gilt:
+$$\frac{f^{(k)}(0)}{k!} = \begin{cases}
+0,&k=0\\
+\frac{(-1)^{k+1}}{k},&k\in\MdN
+\end{cases}$$
+
+Wegen dem Satz von Taylor folgt:
+$$\forall n\in\MdN\ \exists \xi_n\in(0,1): \log 2 = f(1) = T_n(1;0) + \frac{f^{(n+1)}(\xi_n)}{(n+1)!}$$
+$$= \sum_{k=0}^{n}{\frac{f^{(k)}(0)}{k!}} + \frac{f^{(n+1)}(\xi_n)}{(n+1)!} = \sum_{k=1}^{\infty}{\frac{(-1)^{k+1}}{k}} + \underbrace{\frac{f^{(n+1)}(\xi_n)}{(n+1)!}}_{=:c_n}$$
+
+zu zeigen: $c_n \to 0\ (n \to \infty).$
+
+$$|c_n| = |\frac{(-1)^{n+2}n!}{(n+1)!(1+\xi_n)^{n+1}}| = \frac{1}{n+1} \cdot \underbrace{\frac{1}{(1+\xi_n)^{n+1}}}_{\le 1} \folgt c_n \to 0\ (n \to \infty).$$
 \end{beispiele}
+
+\begin{satz}[Bestimmung von Extrema durch höhere Ableitungen]
+Sei $n \in \MdN,\ n \ge 2,\ f \in C^n(I),\ x_0 \in I$ und $x_0$ sei ein innerer Punkt von $I$. Weiter gelte: $f'(x_0) = f''(x_0) = \ldots = f^{(n-1)}(x_0) = 0$ und $f^{(n)}(x_0) \ne 0.$
+\begin{liste}
+\item Ist $n$ gerade und $f^{(n)}(x_0) > 0 \folgt f$ hat in $x_0$ ein relatives Minimum.\\
+Ist $n$ gerade und $f^{(n)}(x_0) < 0 \folgt f$ hat in $x_0$ ein relatives Maximum.
+\item Ist $n$ ungerade $\folgt f$ hat in $x_0$ kein relatives Extremum.
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+$f \in C^n(I) \folgt f^{(n)} \in C(I),\ f^{(n)}(x_0) \ne 0$. Damit folgt nach §18:
+$$\exists \delta > 0: U_\delta(x_0) \subseteq I\text{ und }f^{(n)}(x_0) f^{(n)}(\xi) > 0\ \forall \xi \in U_\delta(x_0).\quad(*)$$
+
+Sei $x\in U_\delta(x_0)\backslash \{x_0\}$. Nach dem Satz von Taylor existiert ein $\xi$ zwischen $x$ und $x_0$ mit:
+$$f(x) = \underbrace{T_{n-1}(x;x_0)}_{\gleichnach{Vor.} f(x_0)} + \frac{f^{(n)}(\xi)}{n!}(x-x_0)^n = f(x_0) + \frac{f^{(n)}(\xi)}{n!}(x-x_0)^n.$$
+
+Zu (1): Sei $n$ gerade, $x \ne x_0 \folgt (x-x_0)^n > 0$. Aus $f^{(n)}(x_0) > 0$ folgt wegen (*):
+$$f^{(n)}(\xi) > 0 \folgt \frac{f^{(n)}(\xi)}{n!}(x-x_0)^n > 0 \folgt f(x) > f(x_0)$$
+$\folgt f$ hat in $x_0$ ein relatives Minimum. Analog: Aus $f^{(n)}(x_0) < 0$ folgt: $f$ hat in $x_0$ ein relatives Maximum.
+
+Zu (2): Sei $n$ ungerade. Sei $f^{(n)}(x_0) > 0$. Aus $x > x_0$ folgt:
+$$(x-x_0)^n > 0,\ f^{(n)}(\xi) > 0 \folgt f(x) > f(x_0).$$
+Analog: Aus $x > x_0$ folgt: $f(x) < f(x_0) \folgt f$ hat in $x_0$ kein Extremum.
+
+Analog: Ist $f^{(n)}(x_0) < 0 \folgt f(x) < f(x_0)$ für $x > x_0$ und $f(x) > f(x_0)$ für $x < x_0$.
+\end{beweis}
+
+\begin{beispiel}
+\emph{Bemerkung:} Dieses Beispiel zeigt, wann man den Satz \emph{nicht} anwenden sollte.
+
+$$f(x) = \begin{cases}
+e^{-1/x^2},& x \ne 0\\
+0,& x=0
+\end{cases}$$
+
+Bekannt: $f \in C^\infty(\MdR),\ f^{(n)}(0) = 0\ \forall n \in \MdN_0.\ f(x) \ge 0\ \forall x \in \MdR,\ f(0) = 0 \folgt f$ hat in $x_0 = 0$ ein absolutes Minimum.
+\end{beispiel}
 
 \end{document}
