@@ -3,11 +3,142 @@
 \setcounter{chapter}{1}
 \usepackage{info}
 
-\title{Noch unbekannt}
+\title{Prädikatenlogik}
 \author{Joachim Breitner}
-% Wer nennenswerte Änderungen macht, schreibt euch bei \author dazu
+% Wer nennenswerte Änderungen macht, schreibt sich bei \author dazu
 
 \begin{document}
 \maketitle
+
+\section{Syntax prädikatenlogischer Formlen}
+
+\subsection{Grundsymbole}
+
+Die Syntax definiert eine Menge von Grundsymbolen. Diese lassen sich weiter aufteilen:
+
+\subsubsection{logische Symble}
+\begin{tabular}{lll}
+$\vee$ & Disjunktion & (\glqq oder\grqq) \\
+$\wedge$ & Konkunktion & (\glqq und\grqq) \\
+$\neg$ & Negation & (\glqq nicht\grqq)  \\
+$\exists$ & Existenz & (\glqq es existiert\grqq) \\
+$\forall$ & Allquantor & (\glqq für all\grqq) \\
+$\dann$ & Implikation & (\glqq dann\grqq) \\
+$\wenn$ & (umgekehrte) Implikation & (\glqq wenn\grqq) \\
+$\equi$ & Äquivalenz & (\glqq genau dann wenn \grqq) \\
+$( )$ & Hilfssymbol
+\end{tabular}
+
+\subsubsection{frei wählbare, nicht-logische Symbole}
+\begin{itemize}
+\item Symbole, die für ein Individuum (Objekt) stehen
+  \begin{itemize}
+  \item Konstanten, z.B. $a, b, c,$ John, 0,1,2, \ldots
+  \item Variablen, z.B. $x, y, z,$ Name, Organisation, \ldots
+ \end{itemize}
+\item Funktionssymbole, z.B. $f, g, h,$ mother\_of, $\sin$, +, -, \ldots
+\item Prädikatensymbole, z.B. $p, q, r,$ father, $=, <, \le$, \ldots
+\end{itemize}
+
+Die freie Wählbarkeit wird durch Konventionen eingeschränkt, zum Beispiel in \produkt{Prolog}: Variablen beginnen mit Großbuchstaben, Konstanten sowie Funktions- und Prädikatensymbole mit Kleinbuchstaben.
+
+\subsection{Terme}
+\begin{itemize}
+\item Konstanten
+\item Variablen
+\item strukturierte Terme der Form $\varphi(\tau_1,\tau_2,\ldots,\tau_n)$, wobei $\varphi$ ein $n$-stelliges Funktionssymbol und $\tau_1,\tau_2,\ldots,\tau_n$ Terme sind.
+\end{itemize}
+
+Konvention nach Schöning: $f$ ist ein Funktionssymbol mit Stelligkeit $k$ und $\tau_i$ ($i=1\ldots n$) sind Terme, dann ist auch $f^k(\tau_1,\tau_2,\ldots,\tau_n)$ Terme. \fixme{Wo kommt $n$ her, muss das nicht $t$ sein?}
+
+\subsection{Atome}
+Auch atomare Formeln oder Primformeln genannt. Atome stehen für die Beziehnung zwischen Individuen. Sie haben die Form $\pi(\tau_1,\tau_2,\ldots,\tau_n)$ wobei $\pi$ ein $n$-stelliges Prädikatensymbol ist und $\tau_1$ Terme sind.
+
+\subsection{Formeln}
+Formeln erlauben eine logische Verknüpfung von Atomen und Formeln. Im folgenden sind $\Phi$ und $\Psi$ Formeln und $x$ eine Variable.
+
+\begin{itemize}
+\item Atome
+\item $(\Phi \vee \Psi)$
+\item $(\Phi \wedge \Psi)$
+\item $(\neg \Phi)$
+\item $(\exists x \Phi)$ (\glqq Es gibt ein $x$, so dass $\Phi$ gilt\grqq)
+\item $(\forall x \Phi)$ (\glqq Für alle $x$ gilt $\Phi$\grqq)
+\end{itemize}
+
+Die folgenden Formeln sind nur Abkürzungen:
+\begin{itemize}
+\item $(\Phi \dann \Psi)$ Abkürzung für $(\neg \Phi \vee \Psi)$.
+ (\glqq $\Phi$ impliziert $\Psi$\grqq), (\glqq wenn $\Phi$, dann $\Psi$\grqq).
+\item $(\Phi \wenn \Psi)$ Abkürzung für $(\Phi \vee \neg \Psi)$. (\glqq $\Phi$ wenn $\Psi$\grqq), (\glqq $\Phi$ falls $\Psi$\grqq) 
+\item $(\Phi \equi \Psi)$ Abkürzung für $((\Phi \wenn \Psi)\wedge(\Phi\dann\Psi))$. (\glqq $\Phi$ genau, dann wenn $\Psi$\grqq)
+\end{itemize}
+
+Ferner gelten folgende Konventionen:
+\begin{itemize}
+\item $\exists$ und $\forall$ binden stärker als $\neg$
+\item $\neg$ bindet stärker als $\wedge$
+\item $\wedge$ bindet stärker als $\vee$
+\item $\vee$ bindet stärker als $\wenn$, $\dann$, $\equi$
+\item \glqq unnötige\grqq Klammern werden weggelassen
+\end{itemize}
+
+$\Rightarrow$ Dies ist die Syntax der Prädikatenlogik \emph{erster Stufe} (First Level Order). Erste Stufe bedeutet, dass Varaiblen nur für Individuuen stehen können, nicht aber für Funktionen oder Prädikate.
+
+\paragraph{Beispiele} für Formeln
+\begin{enumerate}
+\item  loves(romeo,juliet)
+\item $\forall x$ ancestor(adam,$x$)
+\item $\forall x$ (person($x$) $\dann$ ancestor(adam($x$))
+\item $\forall x$ (is\_mother($x$) $\dann$ $\exists y$ (is\_child($y$) $\wedge$ mother($x$,$y$)))
+\item $\forall$ sub $\forall$ sup (subset(sub,super) $\wenn$ $\forall x$(member($x$,sub) $\dann$ member($x$,super)))
+\end{enumerate}
+
+\paragraph{Definition} einiger weiterer Begriffe.
+\begin{itemize}
+\item Die Menge der Variablen eines Terms $\tau$, vars($\tau$) kann induktiv wie folgt definiert werden:
+ \begin{itemize}
+ \item Für eine Konstante $c$ gilt: vars($c$):=$\{\}$
+ \item Für eine Variable $x$ gilt: vars($x$):=$\{x\}$
+ \item Für einen Term $\varphi(\tau_1, \tau_2, \ldots, \tau_n)$ gilt: \\vars($\varphi(\tau_1, \tau_2, \ldots, \tau_n)$) := vars($\tau_1$) $\cup$ vars($\tau_2$) $\cup \ldots \cup$ vars($\tau_n$)
+ \end{itemize}
+\item Eine Variable, die nicht durch einen Quantor gebunden ist, heißt \begriff{frei} (free). Die Menge der freien Variablen einer Formeln $Phi$, free($Phi$), ist induktiv wie folgt definiert:
+ \begin{itemize}
+ \item Für ein Atom $\pi(\tau_1,\tau_2,\ldots,\tau_n)$ gilt: \\
+free($\pi(\tau_1,\tau_2,\ldots,\tau_n)$) := vars($\tau_1$) $\cup$ vars($\tau_2$) $\cup \ldots \cup$ vars($\tau_n$)
+ \item free($\neg\Phi$) := free($\Phi$)
+ \item free($\Phi\vee\Psi$) := free($\Phi\wedge\Psi$) := free($\Phi$) $\cup$ free($\Psi$)
+ \item free($\exists x\Phi$) := free($\forall x\Phi$) := free($\Phi$)$\backslash \{x\}$
+ \end{itemize}
+\end{itemize}
+
+\section{Semantik prädikatenlogischer Formlen}
+
+\subsection{Definition}
+Eine Struktur $A(U_A,I_A)$, wobei $U_A$ eine beliebige nicht-leere Menge ist und das \begriff{Universum} (Grundmenge, Grundbereich) genannt wird, und $I_A$ eine Abbildung ist, die
+\begin{itemize}
+\item jedem $k$-stelligem Prädikatsymbol ein $k$-stelliges Prädikat über $U_A$ zuordnet,
+\item jedem $k$-stelligem Funktionssymbol eine $k$-stellige Funktion über $U_A$ zuordnet sowie
+\item jeder Variablen ein Element der Grundmenge $U_A$ zuordnet.
+\end{itemize}
+Wir schreiben abkürzend $P^A$ statt $I_A(P)$, $F_A$ statt $I_A(F)$ und $x^A$ statt $I_A(x)$.
+
+\paragraph{Das Herbrand-Universum} ist die Menge aller aus den (Objekt- und Funktions-)Symbolen einer Formelmenge $\Delta$ konstruierbarer Objekte.
+
+Sei $F$ eine Formel und $A=(U_A,I_A)$ eine Struktur. $A$ heißt zu $F$ passend, falls $I_A$ für alle in $F$ vorkommenden Symbole und freien Variablen definiert ist.
+
+\paragraph{Beispiel:} $$F = \forall x P(x,f(x)) \wedge Q(g(a,z))$$ ist eine Formel. Eine zu $F$ passende Struktur ist dann Beispielsweise:
+
+\begin{eqnarray*}
+U_A &=& \{1,2,3,\ldots\} \\
+I_A(P) &=& \{ (m,n) | m,n \in U_A \text{ und } m<n\} \\
+I_A(Q) &=& \{ n\in U_A | n \text{ ist Primzal }\} \\
+I_A(f) &=& f^A(n) = n+1 \\
+I_A(g) &=& g^A(m,n) = m+n \\
+I_A(a) &=& 2 \\
+I_A(z) &=& 3
+\end{eqnarray*}
+
+Beachte: $x$ kommt frei vor. \fixme{Gebunden? $y$?}
 
 \end{document}
