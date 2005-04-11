@@ -49,13 +49,13 @@ Die freie Wählbarkeit wird durch Konventionen eingeschränkt, zum Beispiel in \pr
 \item strukturierte Terme der Form $\varphi(\tau_1,\tau_2,\ldots,\tau_n)$, wobei $\varphi$ ein $n$-stelliges Funktionssymbol und $\tau_1,\tau_2,\ldots,\tau_n$ Terme sind.
 \end{itemize}
 
-Konvention nach Schöning: $f$ ist ein Funktionssymbol mit Stelligkeit $k$ und $\tau_i$ ($i=1\ldots n$) sind Terme, dann ist auch $f^k(\tau_1,\tau_2,\ldots,\tau_n)$ Terme. \fixme{Wo kommt $n$ her, muss das nicht $t$ sein?}
+Konvention nach Schöning: $f$ ist ein Funktionssymbol mit Stelligkeit $k$ und $\tau_i$ ($i=1\ldots k$) sind Terme, dann ist auch $f^k(\tau_1,\tau_2,\ldots,\tau_k)$ ein Term.
 
 \subsection{Atome}
-Auch atomare Formeln oder Primformeln genannt. Atome stehen für die Beziehnung zwischen Individuen. Sie haben die Form $\pi(\tau_1,\tau_2,\ldots,\tau_n)$ wobei $\pi$ ein $n$-stelliges Prädikatensymbol ist und $\tau_1$ Terme sind.
+Auch atomare Formeln oder Primformeln genannt. Atome stehen für die Beziehnung zwischen Individuen. Sie haben die Form $\pi(\tau_1,\tau_2,\ldots,\tau_n)$ wobei $\pi$ ein $n$-stelliges Prädikatensymbol ist und $\tau_i$ Terme sind.
 
 \subsection{Formeln}
-Formeln erlauben eine logische Verknüpfung von Atomen und Formeln. Im folgenden sind $\Phi$ und $\Psi$ Formeln und $x$ eine Variable.
+Formeln erlauben eine logische Verknüpfung von Atomen und Termen. Im folgenden sind $\Phi$ und $\Psi$ Formeln und $x$ eine Variable.
 
 \begin{itemize}
 \item Atome
@@ -89,9 +89,9 @@ $\Rightarrow$ Dies ist die Syntax der Prädikatenlogik \emph{erster Stufe} (First
 \begin{enumerate}
 \item  loves(romeo,juliet)
 \item $\forall x$ ancestor(adam,$x$)
-\item $\forall x$ (person($x$) $\dann$ ancestor(adam($x$))
+\item $\forall x$ (person($x$) $\dann$ ancestor(adam,$x$))
 \item $\forall x$ (is\_mother($x$) $\dann$ $\exists y$ (is\_child($y$) $\wedge$ mother($x$,$y$)))
-\item $\forall$ sub $\forall$ sup (subset(sub,super) $\wenn$ $\forall x$(member($x$,sub) $\dann$ member($x$,super)))
+\item $\forall$ sub $\vee$ super (subset(sub,super) $\wenn$ $\forall x$(member($x$,sub) $\dann$ member($x$,super)))
 \end{enumerate}
 
 \paragraph{Definition} einiger weiterer Begriffe.
@@ -102,7 +102,7 @@ $\Rightarrow$ Dies ist die Syntax der Prädikatenlogik \emph{erster Stufe} (First
  \item Für eine Variable $x$ gilt: vars($x$):=$\{x\}$
  \item Für einen Term $\varphi(\tau_1, \tau_2, \ldots, \tau_n)$ gilt: \\vars($\varphi(\tau_1, \tau_2, \ldots, \tau_n)$) := vars($\tau_1$) $\cup$ vars($\tau_2$) $\cup \ldots \cup$ vars($\tau_n$)
  \end{itemize}
-\item Eine Variable, die nicht durch einen Quantor gebunden ist, heißt \begriff{frei} (free). Die Menge der freien Variablen einer Formeln $Phi$, free($Phi$), ist induktiv wie folgt definiert:
+\item Eine Variable, die nicht durch einen Quantor gebunden ist, heißt \begriff{frei} (free). Die Menge der freien Variablen einer Formeln $\Phi$, free($\Phi$), ist induktiv wie folgt definiert:
  \begin{itemize}
  \item Für ein Atom $\pi(\tau_1,\tau_2,\ldots,\tau_n)$ gilt: \\
 free($\pi(\tau_1,\tau_2,\ldots,\tau_n)$) := vars($\tau_1$) $\cup$ vars($\tau_2$) $\cup \ldots \cup$ vars($\tau_n$)
@@ -111,19 +111,19 @@ free($\pi(\tau_1,\tau_2,\ldots,\tau_n)$) := vars($\tau_1$) $\cup$ vars($\tau_2$)
  \item free($\exists x\Phi$) := free($\forall x\Phi$) := free($\Phi$)$\backslash \{x\}$
  \end{itemize}
 \item In $\forall x \Phi$ bzw. $\exists x\Phi$ heißt die Variable $x$ durch den jeweiligen Quantor gebunden (bound).
-\item Eine formel mit freien Variablen heißt offen (open).
-\item Eine formel ohne freie Variablen heißt geschloßen (closed).
+\item Eine Formel mit freien Variablen heißt offen (open).
+\item Eine Formel ohne freie Variablen heißt geschlossen (closed).
 \end{itemize}
 
 
-\section{Semantik prädikatenlogischer Formlen}
+\section{Semantik prädikatenlogischer Formeln}
 
 \subsection{Definition}
-Eine Struktur $A(U_A,I_A)$, wobei $U_A$ eine beliebige nicht-leere Menge ist und das \begriff{Universum} (Grundmenge, Grundbereich) genannt wird, und $I_A$ eine Abbildung ist, die
+Eine Struktur ist ein Paar $A(U_A,I_A)$, wobei $U_A$ eine beliebige nicht-leere Menge ist, das \begriff{Universum} (auch Grundmenge oder Grundbereich) genannt wird. Ferner ist $I_A$ eine Abbildung, die
 \begin{itemize}
-\item jedem $k$-stelligem Prädikatsymbol ein $k$-stelliges Prädikat über $U_A$ zuordnet,
-\item jedem $k$-stelligem Funktionssymbol eine $k$-stellige Funktion über $U_A$ zuordnet sowie
-\item jeder Variablen ein Element der Grundmenge $U_A$ zuordnet.
+\item jedem $k$-stelligem Prädikatensymbol $P$ ein $k$-stelliges Prädikat über $U_A$ zuordnet,
+\item jedem $k$-stelligem Funktionssymbol $F$ eine $k$-stellige Funktion über $U_A$ zuordnet sowie
+\item jeder Variablen $x$ ein Element der Grundmenge $U_A$ zuordnet.
 \end{itemize}
 Wir schreiben abkürzend $P^A$ statt $I_A(P)$, $F_A$ statt $I_A(F)$ und $x^A$ statt $I_A(x)$.
 
