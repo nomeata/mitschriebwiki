@@ -4,7 +4,7 @@
 \usepackage{info}
 
 \title{Prädikatenlogik}
-\author{Joachim Breitner}
+\author{Joachim Breitner, Felix Brandt}
 % Wer nennenswerte Änderungen macht, schreibt sich bei \author dazu
 
 \begin{document}
@@ -144,5 +144,142 @@ I_A(z) &=& 3
 \end{eqnarray*}
 
 Beachte: $x$ kommt gebunden vor.
+
+\subsection{Interpretation}
+
+\marginpar{13.04.2005}Der Diskursbereich $D$ für jedes verwendete Prädikatensymbol ist eine Beziehung zwischen zwei oder mehreren Objekten. 
+Die Abbildung der Formel auf $D$ wird als beabsichtigte Interpretation (\begriff{intended interpretation}) bezeichnet.
+
+\paragraph{Beispiel:} Einfacher Diskursbereich
+$$D := \{\mathbf{J},\mathbf{R}\}$$
+
+Eine Interpretation $I$ einer prädikatenlogischen Sprache ist ein Paar $<D,J>$ wobei $I$ eine Abbildung der
+nicht-logischen Symbole auf (nicht-leeres) $D$ ist, wobei $I$
+
+\begin{itemize}
+\item jeder Konstanten der Sprache ein Element von $D$ zuordnet
+\item jedem n-stelligen Funktionssymbol eine Abbildung $D^n \mapsto D$ zuordnet
+\item jedem n-stelligen Prädikatensymbol eine Abbildung $D^n \mapsto \{F,T\}$ zuordnet
+\end{itemize}
+
+Für Grundterme der Form $\varphi (\tau_1, \ldots, \tau_n)$ wird die Interpretation wie folgt berechnet:
+$$I (\varphi (\tau_1, \ldots, \tau_n) := I(\varphi)(I(\tau_1) \ldots I(\tau_n))$$
+Jeder Term $\tau_i$ wird demzufolge durch Anwendung der Abbildung $I$ auf ein Element $I(\tau_i) \in D$ abgebildet.
+Auch $\varphi$ wird durch $I$ abgebildet auf $I(\varphi)$.
+
+Für Grundatome $\pi(\tau_1, \ldots, \tau_n) \Rightarrow I$ wird $I$ wie folgt berechnet:
+$$I(\pi(\tau_1, \ldots, \tau_n)) := I(\pi)(I(\tau_1, \ldots, \tau_n))$$
+
+\paragraph{Beispiel:} Interpretation von Elementen der Prädikatenlogik
+
+\begin{tabular}{ll}
+Konstanten: & $I(Juliet) = I$                            \\
+            & $I(Romeo) = R$                             \\
+Funktionen: & $I(girlfriend\_of) = \{R \mapsto J\}$       \\
+Prädikate:  & $I(woman) = \{ I \mapsto T, R \mapsto F\}$ \\
+            & $I(loves) = \{<J, J> \mapsto F, <J,R> \mapsto T, <R,J> \mapsto T, <R,R> \mapsto T \}$
+\end{tabular}\bigskip
+
+Grundterme:
+$$I(girlfriend\_of(romeo)) = \{R \mapsto J\} (R)=J$$
+
+Grundatome:
+$$I(woman(juliet)) = \{J \mapsto T, R \mapsto F\} (J) = T$$
+$$I(woman(romeo)) = \{J \mapsto T, R \mapsto F\} (R) = F$$
+
+\subsection{Definition - Forts.}
+
+Sei $F$ eine Formel und $A$ eine zu $F$ passende Struktur. Für jeden Term $t$, den man aus den Bestandteilen von $F$ bilden kann, definieren wir nun den Wert von $t$ in der Struktur $A$, den wir mit $A(t)$ bezeichnen.
+
+\begin{enumerate}
+\item Falls $t$ eine Variable ist, so ist $A(t)=t^A$
+\item Falls $t$ die Form $t=f(t_1, \ldots, t_k)$ hat, wobei $t_1, \ldots, t_k$ Terme sind und $f$ ein k-stelliges Funktionssymbol ist, so ist $A(t)=f^A(A(t_1), \ldots, A(t_k))$
+\end{enumerate}
+
+Auf analoge Weise definieren wir den (Wahrheits-) Wert der Formel $F$ wobei wir ebenfalls die Bezeichnung $A(F)$ verwenden.
+
+\begin{enumerate}
+\item Falls $F$ die Form $F=R(t_1, \ldots, t_k)$ mit Termen $t_1, \ldots, t_k$, so ist\\ $A(F)=
+	\left\{ \begin{array}{l}
+	1 \text{ falls } ((A(t_1), \ldots, A(t_k)) \in P^A) \\
+	0 \text{ sonst }
+	\end{array} \right.$
+\item Falls "`$F = \neg G$"' hat, so ist $A(F)=
+	\left\{ \begin{array}{l}
+	\text{1 falls $A(G)=0$} \\
+	\text{0 sonst}
+	\end{array} \right.$
+\item Falls "`$F=(G \wedge H)$"' so ist $A(F)=
+	\left\{ \begin{array}{l}
+	\text{1 falls $A(G)=1$ und $A(H)=1$} \\
+	\text{0 sonst}
+	\end{array} \right.$
+\item Falls "`$F=(G \vee H)$"' so ist $A(F)=
+	\left\{ \begin{array}{l}
+	\text{1 falls $A(G)=1$ oder $A(H)=1$} \\
+	\text{0 sonst}
+	\end{array} \right.$
+\item Falls "`$F=\forall xG$"' so ist $A(F)=
+	\left\{ \begin{array}{l}
+	\text{1 falls für alle $d \in U_A$ gilt $A_{[x/d]}(G)=1$} \\
+	\text{0 sonst}
+	\end{array} \right.$
+\item Falls "`$F=\exists xG$"' so ist $A(F)=
+	\left\{ \begin{array}{l}
+	\text{1 falls es ein $d \in U_A$ gibt, mit $A_{[x/d]}(G)=1$}\\
+	\text{0 sonst}
+	\end{array} \right.$
+\end{enumerate}
+
+Hierbei bedeute $A_{[x/d]}$ diejenige Struktur A', die überall mit A identisch ist, bis auf die Definition von $x^A$. Hier ist $x^{A'}=d$ wobei $d \in U_A = U_{A'}$
+
+\paragraph{Bemerkungen}
+\begin{enumerate}
+\item $F$ ist gültig $\Leftrightarrow$ $\neg F$ unerfüllbar ist.\\ \textbf{Beweis:} es gilt $F$ ist gültig 
+	\\$\Leftrightarrow$ jede zu $F$ passende Belegung ist ein Modell für $F$ 
+	\\$\Leftrightarrow$ jede zu $F$ und damit auch zu $\neg F$ passende Belegung ist kein Modell für $\neg F$ 
+	\\$\Leftrightarrow$ $\neg F$ besitzt kein Modell 
+	\\$\Leftrightarrow$ $\neg F$ ist unerfüllbar.
+\item Nicht jede mathematische Aussage kann im Rahmen der Prädikatenlogik formuliert werden. Erst wenn auch Quantoren über Prädikaten und Funktionssymbolen erlaubt werden ist dies möglich. Dies ist dann die Prädikatenlogik der zweiten Stufe. Die obige ist die Prädikatenlogik der ersten Stufe.
+\end{enumerate}
+
+\paragraph{Beispiel} Interpretation eines Atoms mit einer Variablen 
+
+Variablenbelegung(\begriff{valuation})
+	$$\text{Notation }[x] \mapsto c \text{ } (c \in D)$$
+
+Atom mit Variable
+	$$\text{Für die Variablenbelegung $\mu=[x \mapsto \mathbf{J}] \text{ ist } I_\mu(woman(x))=T$ }$$
+	$$\text{Für die Variablenbelegung $\nu=[x \mapsto \mathbf{R}] \text{ ist } I_\mu(woman(x))=F$ }$$
+
+Seien $\Phi$ und $\Psi$ Formeln, deren Interpretationen $I_\mu(\Phi)$ und $I_\mu(\Psi)$ unter der Variablenbelegung $\mu$ bekannt sind $\Rightarrow$ Es existiert eine Interpretation dir für "`komplexe"' Formeln wie folgt bestimmt werden kann
+
+\begin{eqnarray*}
+I_\mu(\Phi \vee \Psi) := T & \Leftrightarrow & I_\mu(\Phi)=T \vee I_\mu(\Psi)=T \\
+I_\mu(\Phi \wedge \Psi) := T & \Leftrightarrow & I_\mu(\Phi)=T \wedge I_\mu(\Psi)=T \\
+I_\mu(\neg \Phi) := T & \Leftrightarrow & I_\mu(\Phi)=F \\
+I_\mu(\Phi \rightarrow \Psi) := T & \Leftrightarrow & I_\mu(\Phi)=F \wedge I_\mu(\Psi)=T \\
+I_\mu(\Phi \leftarrow \Psi) := T & \Leftrightarrow & I_\mu(\Phi)=T \wedge I_\mu(\Psi)=F \\
+I_\mu(\Phi \leftrightarrow \Psi) := T & \Leftrightarrow & (I_\mu(\Phi)=T \wedge I_\mu(\Psi)=T) \vee (I_\mu(\Phi)=F \wedge I_\mu(\Psi)=F) \\
+I_\mu(\exists x \Phi) := T & \Leftrightarrow & \text{ ein $c \in D$ existiert, so dass $I_{\mu[x \dann c]}(\Phi) = T$} \\
+I_\mu(\forall x \Phi) := T & \Leftrightarrow & \text{ für alle $c \in D$ gilt $I_{\mu[x \dann c]}(\Phi) = T$}
+\end{eqnarray*}
+
+\paragraph{Bemerkung:} Eine Formel kann auf verschiedene Arten interpretiert werden.
+
+\paragraph{Beispiel:} verschiedene Interpretationen einer Formel
+
+$$\text{Sei }\Phi = \forall x(g(x,f,t) \dann l(t,x))$$
+
+Die Interpretation $I$ sei wie folgt defininiert:
+
+\begin{itemize}
+\item $I(f)$ := "`(Katzen-)Futter"'
+\item $I(t)$ := "`Katze namens Tom"'
+\item $I(g)$ := "`Die Abbildung, die einem Tripel $<X,Y,Z>$ $T$ zuordnet, falls Objekt $X$ dem Objekt $Z$ das Objekt $Y$ gibt und $F$ sonst"'
+\item $I(l)$ := "`Die Abbildung, die einem Paar $<X,Y>$ T zuordnet, falls das Objekt $X$ das Objekt $Y$ liebt und $F$ sonst"'
+\end{itemize}
+
+Die Aussage "`Falls $X$ der Katze namens Tom Katzenfutter gibt, dann liebt Tom dieses $X$"' kann sehr wohl für jede Variablenbelegung von X aus einem bestimmten Diskursbereich als wahr betrachtet werden. Damit wäre die Formel $\Phi$ bezüglich der Interpretation $I$ erfüllt, das heißt $I(\Phi) = T$.
 
 \end{document}
