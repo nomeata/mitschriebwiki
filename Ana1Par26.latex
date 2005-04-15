@@ -3,7 +3,7 @@
 \usepackage{ana}
 
 
-\author{Pascal Maillard}
+\author{Pascal Maillard und Wenzel Jakob}
 \title{Das Riemann-Stieltjes-Integral}
 \setcounter{chapter}{26}
 
@@ -14,9 +14,12 @@
 \def\dt{\text{d}t}
 \def\Z{\ensuremath{\mathfrak{Z}}}
 \def\intab{\int_a^b}
+\def\BV{\text{BV}}
 
 \begin{document}
 \maketitle
+\theoremstyle{nonumberbreak}
+\newtheorem{bezeichnungen}{Bezeichnungen}
 
 Stets in diesem Paragraphen: $f,g:[a,b] \to \MdR$ beschränkt. RS := Riemann-Stieltjes.
 
@@ -102,4 +105,44 @@ $\folgt \sigma_f(Z_n,\xi^{(n)},g) \to \intab fg'\dx.$
 \begin{beispiel}
 $\int_0^1 e^x \text{d}(e^{-x}) = \int_0^1 e^x(-e^{-x})\dx = \int_0^1 (-1)\dx = -1.$
 \end{beispiel}
+
+\begin{satz}[Absch"atzen des RS-Integrals mit Hilfe der Totalvarianz]
+Sei $g \in \BV[a,b]$ und $f \in R_{g}$. Dann: $${\left|\int_a^b fdg\right|}\le\gamma V_g[a,b]\text{, wobei }\gamma:=\sup\{|f(x)|: x \in [a,b]\}$$ $ $
+\end{satz}
+
+\begin{beweis}
+Sei $(Z, \xi) \in \Z^*, Z = \{x_0,\ldots,x_n\},\ \xi = (\xi_1,\ldots,\xi_n)$.\\
+$|\sigma_f(Z,\xi, g)|=|\displaystyle\sum_{j=1}^nf(\xi_j)(g(x_j)-g(x_{j-1}))|\le\displaystyle\sum_{j=1}^n|f(\xi_j)||g(x_j)-g(x_{j-1})|\le\gamma V_g(Z)\le\gamma V_g[a, b]$ 
+\end{beweis}
+
+\begin{bezeichnungen}
+Sei $Z=\{x_0, \ldots, x_n\} \in \Z.\ m_j, M_j, I_j$ seien wie immer, $d_j:=g(x_j)-g(x_{j-1})\ (j=1,\ldots,n).\ s(Z)=\sum_{j=1}^nm_jd_j,\ S(Z)=\sum_{j=1}^nM_jd_j$.
+\end{bezeichnungen}
+
+\begin{hilfssatz}
+$g$ sei wachsend $(\folgt d_j \ge 0)$
+\begin{liste}
+\item $s(Z_1)\le S(Z_2)\ \forall Z_1, Z_2 \in \Z$.
+\item $\sup \{s(z) : z \in \Z\}\le S(Z)\ \forall z \in \Z$.
+\end{liste}
+\end{hilfssatz}
+
+\begin{beweise}
+\item Wie in 23.1
+\item folgt aus (1)
+\end{beweise}
+
+\begin{satz}[Weiteres Kritierium zur RS-Integrierbarkeit]
+Ist $f\in C[a,b]$ und $g \in \BV[a,b]\folgt f \in R_g[a,b]$.
+\end{satz}
+
+\begin{beweis}
+Wegen 25.2 und 26.1(2) O.B.d.A: $g$ wachsend. $c:=g(b)-g(a)\ (\ge 0).$ O.B.d.A: $c>0$.\\
+1. Sei $(Z, \xi), Z=\{x_0, \ldots, x_n\}, \xi=(\xi_0, \ldots, \xi_n). m_j, M_j, I_j, d_j$ seien wie oben. $S:=\sup\{s(z): s \in \Z\}$, also $S\le S(Z).\ \alpha:=S(Z)-s(Z)$\\
+Es gilt: $m_j\le f(\xi_j) \le M_j \folgtwegen{d_j \ge 0} m_jd_j \le f(\xi_j)d_j\le M_jd_j\folgt (*)\ s(z)\le \sigma_f(Z,\xi,g)\le S(Z)$.\\
+Dann: $-\alpha=s(z)-S(Z)\le S-S(Z)\overset{(*)}{\le}S-\sigma_f(Z,\xi,g)\le S(Z)-\sigma_f(Z,\xi,g)\overset{(*)}{\le}S(Z)-s(z)=\alpha\folgt |s-\sigma_f(Z,\xi,g)|\le \alpha = \sum_{j=1}^n(M_j-m_j)d_j$.\\
+Sei $\ep>0$. $f$ ist auf $[a,b]$ \textbf{gleichm"a"sig} stetig $\folgt \exists\delta>0: |f(t)-f(s)|<\frac{\ep}{c}\ \forall t,s \in [a,b]$ mit $|t-s|<\delta$. Sei $|Z|<\delta\folgt M_j-m_j<\frac{\ep}{c}\folgt|s-\delta_f(Z,\xi, g)|<\frac{\ep}{c}\underbrace{\sum_{j=1}^nd_j}_{=c}=\ep$. \\
+2. Sei $((Z_n, \xi^{(n)}))$ eine Nullfolge in $\Z^*$. Sei $\ep>0$. Dann existiert ein $\delta>0$ wie in (1), $|Z_n|\to 0 \folgt \exists n_0 \in \MdN: |Z_n|<\delta\ \forall n\ge n_0 \folgt |s-\sigma_f(Z_n, \xi^{(n)}, g)|<\ep \ \forall n\ge n_0. $ Also: $\sigma_f(Z_n, \xi^{(n)}, g) \to S\ (n\to\infty)$.
+\end{beweis}
+
 \end{document}
