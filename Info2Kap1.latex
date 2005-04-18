@@ -4,9 +4,11 @@
 \usepackage{info}
 
 \title{Prädikatenlogik}
-\author{Joachim Breitner, Felix Brandt}
+\author{Joachim Breitner, Felix Brandt, Lars Volker}
 % Wer nennenswerte Änderungen macht, schreibt sich bei \author dazu
 
+%\setlength{\parskip}{0.5cm}
+%\setlength{\parindent}{0cm}
 \begin{document}
 \maketitle
 
@@ -16,7 +18,7 @@
 
 \marginpar{11.04.2005}Die Syntax definiert eine Menge von Grundsymbolen. Diese lassen sich weiter aufteilen:
 
-\subsubsection{logische Symble}
+\subsubsection{logische Symbole}
 \begin{tabular}{lll}
 $\vee$ & Disjunktion & (\glqq oder\grqq) \\
 $\wedge$ & Konjunktion & (\glqq und\grqq) \\
@@ -303,5 +305,152 @@ Die Aussage "`Falls $X$ der Katze namens Tom Katzenfutter gibt, dann liebt Tom d
 	\end{tabular}
 	\caption{Wahrheitswerte der Aussagen}
 \end{figure}
+
+%begin 18. April 2005 (Lars)
+
+\subsection{Normalformen}
+
+\marginpar{18.04.2005}
+\subsubsection{Definition} (Äquivalenzbegriff)
+Zwei Pädikatenlogische Formeln $F$ und $G$ sind äquivalent, falls für alle sowohl zu $F$ als auch zu $G$ passenden Strukturen $A$ gilt: $$A(F) = A(G)$$
+
+\paragraph{Beispiel} [de Morgansches Gesetz]
+
+$$\neg (F \wedge G) \equiv \neg F \vee G$$
+
+\subsubsection{Satz}
+
+Seien $F$ und $G$ beliebige Formeln. Dann gilt:
+\begin{enumerate}
+\item
+\begin{eqnarray*}
+	\neg \forall xF & \equiv & \exists x\neg F \\
+	\neg \exists xF & \equiv & \forall x\neg F
+\end{eqnarray*}
+\item Falls $x$ in $G$ nicht frei vorkommt, gilt:
+\begin{eqnarray*}
+	(\forall xF\wedge G) & \equiv & \forall x(F\wedge G) \hfill ~(*) \\
+	(\forall xF\vee G) & \equiv & \forall x(F\vee G) \\
+	(\exists xF\wedge G) & \equiv & \exists x(F \wedge G) \\
+	(\exists xF\vee G) & \equiv & \exists x(F \vee G)
+\end{eqnarray*}
+\item
+\begin{eqnarray*}
+	(\forall xF \wedge \forall xG) & \equiv & \forall x(F \wedge G) \\
+	(\forall xF \vee \forall xG) & \equiv & \forall x(F \vee G)
+\end{eqnarray*}
+\item
+\begin{eqnarray*}
+	(\forall x\forall yF & \equiv & \forall y\forall xF \\
+	\exists x\exists yF & \equiv & \exists y\exists xF
+\end{eqnarray*}
+\end{enumerate}
+
+\paragraph{Beweis} (*) (exemplarisch)
+
+Sei $A=(U_A,I_A)$ eine zu den beiden Seiten der zu beweisenden Äquivalenz passende Struktur. Es gilt:
+\begin{eqnarray*}
+	& &A(\forall xF \wedge G) = 1 \\
+	\Gdw & & A(\forall xF) = 1 \\
+	\Gdw & & \text{ für alle } d\in U_A \text{ gilt: } \\
+	& & A_{[x/d]}(F) = 1 \text{ und } A(G) = 1 \\
+	\Gdw & & \text{ für alle } d\in U_A \text{ gilt: } \\
+	& & A_{[x/d]}(F) = 1 \text{ und } A_{[x/d]}(G) = 1\\
+	& & \text{\ (\textbf{Bem.:} da $x$ in $G$ nicht frei vorkommt, ist nämlich $A(G)=A_{[x/d]}(G)$)} \\
+	\Gdw & & \text{ für alle } d\in U_A \text{ gilt: } \\
+	& & A_{[x/d]}(F\wedge G) = 1 \\
+	\Gdw & & A(\forall x(F\wedge G)) = 1
+\end{eqnarray*}
+
+\subsubsection{Definition}
+
+Sei $F$ eine Formel, $x$ eine Variable und t ein Term. Dann bezeichnet $F_{[x/t]}$ diejenige Formel, die man aus $F$ erhält, indem man jedes freie Vorkommen der Variable x in F durch den Term t ersetzt. $[x/t]$ beschreibt eine \emph{Substitution}. Substitutionen (oder Folgen von Substitutionen) behandeln wir auch als selbstständige Objekte, z.B. $sub=[x/t_1][y/t_2]$ (wobei $t_1$ auch $y$ enthalten darf).
+
+\subsubsection{Lemma (gebundene Umbenennung)}
+
+Sei $F = QxG$ eine Formel mit $Q\in \{\exists, \forall\}$. Es sei $y$ eine Variable, die in $G$ nicht vorkommt. Dann gilt:
+$$F\equiv QyG_{[x/y]}$$
+
+\subsubsection{Lemma}
+
+Zu jeder Formel $F$ gibt es eine äquivalente Formael G in \emph{bereinigter} Form.\\ Hierbei heißt die Formel bereinigt, sofern es keine Variable gibt, die in der Formel sowohl gebunden als auch frei vorkommt, und sofern hinter allen vorkommenden Quantoren verschiedene Variablen stehen.
+
+\paragraph{Beispiel}
+
+$$F:=\forall x\exists y(B(x,y)\wedge Q(x,a))$$
+$$G:=\exists u(\forall vB(u,v)\vee Q(v,v))$$
+$F$: $x$, $y$ sind gebunden, $a$ ist frei $\rightarrow$ $F$ ist bereinigt. \\
+$G$: alle Vorkommen der Variablen $u$ sind gebunden, allerdings tritt $v$ sowohl gebunden als auch frei auf $\rightarrow$ $G$ ist nicht in bereinigter Form.
+
+\subsubsection{Definition (Pränexform)}
+
+Eine Formel heißt pränex oder in Pränexform, falls sie die Form $$Q_1y_1Q_2y_2\ldots Q_ny_nF$$ hat, wobei $Q_i\in\{\exists, \forall\}$, $n\geq0$, $y_i$ Variablen sind.\\ Es kommt ferner kein Quantor in $F$ vor.
+
+\subsubsection{Satz}
+
+Für jede Formel $F$ gibt es eine äquivalente (und bereinigte) Formel $G$ in Pränex"-form.
+
+\paragraph{Definition: NNF, KNF, DNF}
+
+\begin{itemize}
+\item Eine Formel ist in \emph{Negationsnormalform}, wenn sie außer $\neg$, $\wedge$, $\vee$ keine Junktoren enthält und wenn in ihr $\neg$ nur vor atomaren Teilformen auftritt (NNF).
+\item Eine Formel ist in \emph{konjunktiver (bzw. disjunktiver) Normalform}, wenn sie eine Konjunktion (bzw. Disjunktion) von Disjunktionen (bzw. von Konjunktionen) von Literalen ist.
+\end{itemize}
+
+\paragraph{Beweis} (Induktion über den Formelaufbau)
+
+Induktionsanfang: $F$ ist atomare Formel. Dann liegt $F$ bereits in der ge"-wünsch"-ten Form vor. Wähle also $G=F$.
+
+Induktionsschritt: Wir betrachten wieder die verschiedenen Fälle.
+\begin{enumerate}
+\item $F$ hat die Form $\neg F_1$ und $G_1=Q_1y_1Q_2y_2\ldots Q_ny_nG'$ sei die nach Induktionsvoraussetzung existierende zu $F_1$ äquivalente Formel. Dann gilt: $$F\equiv \bar{Q_1}y_1\bar{Q_2}y_2\ldots\bar{Q_n}y_n\neg G'$$ wobei $\bar{Q_i}=\exists$, falls $Q_i=\forall$ und $\bar{Q_i}=\forall$ falls $Q_i=\exists$. Diese Formel hat die gewünschte Form.
+\item $F$ hat die Form $(F_1 \circ F_2)$ mit $\circ\in\{\wedge,\vee\}$. Dann gibt es zu $F_1$ und $F_2$ äquivalente Formeln $G_1$ und $G_2$ in bereinigter Pränexform. Durch gebundenes Umbenennen können wir die gebundenen Variablen von $G_1$ und $G_2$ disjunkt machen. Dann hat: \begin{itemize}
+	\item $G_1$ die Form $Q_1y_1Q_2y_2\ldots Q_ky_kG_1'$
+	\item $G_2$ die Form $Q_1'z_1Q_2'z_2\ldots Q_l'z_lG_2'$
+\end{itemize} mit $Q_i,Q_i'\in\{\exists,\forall\}$. Daraus folgt, dass $F$ zu $$Q_1y_1Q_2y_2\ldots Q_ky_kQ_1'z_1\ldots Q_l'z_l(G_1'\circ G_2')$$ äquivalent ist.
+\item $F$ hat die Form $QxF_1$, $Q\in\{\exists,\forall\}$. Die nach Induktionsvorraussetzung existierende berenigte Pränexform habe die Bauart $Q_1y_1Q_2y_2\ldots Q_ky_kF_1'$. Durch gebundenes Umbenennen kann die Variable $x$ verschieden gemacht werden von $y_1,\ldots ,y_k$. Dann ist $F$ zu $QxQ_1y_1Q_2y_2\ldots Q_ky_kF_1'$ äquivalent.
+\end{enumerate}
+
+\subsubsection{Definition (Skolemform)}
+
+Für jede Formel $F$ in BPF (bereinigte Pränexform) definieren wir ihre \emph{Skolem"-form(-el)} als das Resultat der Anwendung folgendes Algorithmus' auf $F$: \\
+\texttt{\noindent
+\underline{while} $F$ enthält einen Existenzquantor \underline{do} \\
+\underline{begin}\\
+F habe die Form $F=\forall y_1\forall y_2\ldots\forall y_n\exists zG$ für eine Formel $G$ in BPF und $n\geq 0$ (der Allquantorblock kann auch leer sein);\\
+Sei $f$ ein neues, bisher in $F$ nicht vorkommendes n-stelliges Fkt.-Symbol:\\
+$F:=\forall y_1\forall y_2\ldots\forall y_nG_{z/f(y_1,y_2,\ldots ,y_n)]}$; (d.h. der Existenzquantor in $F$ wird gestrichen und jedes Vorkommen der Variable $z$ in $G$ durch $f(y_1,y_2,\ldots ,y_n)$ ersetzt.\\
+\underline{end}
+}
+
+\subsubsection{Satz}
+
+Für jede Formel $F$ in BPF gilt: $F$ ist erfüllbar $\Gdw$ die Skolem-Form ist erfüllbar.
+\paragraph{Beweis} in "`Schöning's"'.
+
+\subsubsection{2. Definition (Herbrand Universum)}
+
+Das H. U. $D(F)$ einer geschlossenen Formel $F$ in Skolemform ist die Menge aller variablenfreien Terme, die aus den Bestandteilen von $F$ gebildet werden können. Falls keine Konstante vorkommt, wählen wir eine beliebige Konstante, z.B. $a$ und bilden dann die variablenfreien Terme.\\
+$D(F)$ wird wie folgt induktiv definiert:
+\begin{enumerate}
+\item Alle in $F$ vorkommenden Konstanten sind in $D(F)$.\\
+Falls $F$ keine Konstanten enthält, so ist $a$ in $D(F)$.
+\item Für jedes in $F$ vorkommenes n-stelliges Fkt.-Symbol $f$ und Terme $t_1,t_2,\ldots ,t_n$ in $D(F)$ ist der Term $f(t_1,t_2,\ldots ,t_n)$ in $D(F)$.
+\end{enumerate}
+
+\paragraph{Beispiel}
+
+$$F=\forall x\forall y\forall zR(x,f(y),g(z,x))$$
+$$G=\forall x\forall yQ(c,f(x),h(y,b))$$
+Für F liegt der Spezialfall vor.
+\begin{enumerate}
+\item (kein Vorkommen einer Konstanten)
+\begin{eqnarray*}
+D(F) & = & \{a,f(a),g(a,a),f(g(a,a)),f(f(a)),\\
+& & g(a,f(a)),g(f(a),a),g(f(a)),\ldots\}\\
+D(G) & = & \{c,b,f(c),f(b),h(c,c),h(c,b),h(b,c),\\
+& & h(b,b),f(f(c)),f(f(b)),f(h(c,c)),f(h(c,b)),\ldots\}
+\end{eqnarray*}
+\end{enumerate}
 
 \end{document}
