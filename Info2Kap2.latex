@@ -1,13 +1,20 @@
-\documentclass[a4paper,11pt]{scrartcl}[2004/01/07]
+% status: [x] inhalt, [ ] kontrolle, [ ] stilanpassung
+\documentclass[a4paper]{scrartcl} % daniel@joachim: schöner als article :)
 \newcounter{chapter}
 \setcounter{chapter}{2}
 \usepackage{info}
-
+\usepackage{graphicx} % notwendig für Beispielgrafik im dritten Teil
 
 \title{Algorithmus}
 \author{Mathias Ziebarth, Sebastian Frehmel, Daniel Dreke}
 % Wer nennenswerte Änderungen macht, schreibt sich bei \author dazu
 
+\newcommand{\la}{\leftarrow}
+\newcommand{\llc}{\left\lceil}
+\newcommand{\rrc}{\right\rceil}
+\newcommand{\llf}{\left\lfloor}
+\newcommand{\rrf}{\right\rfloor}
+\newcommand{\oo}{\infty}
 
 %\setlength{\parskip}{0.5cm}
 %\setlength{\parindent}{0cm}
@@ -26,6 +33,10 @@
 Ronald Rivest, Clifford Stein)
 \item The art of programming - Knuth
 \end {itemize}
+
+%
+% Teil 1 - Mathias
+%
 
 \subsection{Definition}
 (mehrere Definitionen, Anzahl Bücher $\gg 100$)
@@ -122,6 +133,10 @@ $$ \Omega(g(n))=\{f(n)| \textnormal{ es gibt } c,n_0>0 \textnormal{ mit } 0 \leq
 $$ \Theta(g(n))=\{f(n)| \textnormal{ es gibt } c_1,c_2,n_0>0 \textnormal{ mit } 0\leq c_1 g(n) \leq f(n) \leq c_2 g(n) \textnormal{ für alle } n \geq n_0\} $$ 
 \end{itemize}
 
+%
+% Teil 2 - Sebastian
+%
+
 \begin{flushleft}
 
 \subsection{Analyse von Insertion Sort}
@@ -192,6 +207,100 @@ Im Folgenden werden wir meistens nur die Laufzeit im schlechtesten Fall analysie
 \end{itemize}
 
 \end{flushleft}
-\end{document}
+
+%
+% Teil 3 - Daniel
+%
+
+\subsection{Beispiel: Merge-Sort}
+
+\begin{itemize}
+	\item \textbf{Teile} die zu sortierende Sequenz der Länge $n$ in zwei Teilsequenzen der Länge $\frac{n}{2}$
+	\item \textbf{Beherrsche} durch rekursives Anwenden von Merge-Sort auf die zwei Teilsequenzen
+	\item \textbf{Verbinde} die zwei Teilsequenzen durch Mischen (merge)	
+\end{itemize}
+
+
+\subsection{Pseudocode Merge-Sort}
+
+\ttfamily
+\begin{tabular}{rl}
+0	&	MERGE-SORT(A,p,r) \\
+1	&	if p < r \\
+2	&	then q $\la \llf(p+r)/2\rrf$ \\
+3	&		MERGE-SORT(A,p,q) \\
+4	&		MERGE-SORT(A,q + 1,r) \\
+5	&		MERGE(A,p,q,r)
+\end{tabular}
+\normalfont
+
+
+\subsection{Rundungsfunktion / Gaußklammer}
+
+$\llc p / q \rrc$ "`ceiling function"' \\
+$\llf p / q \rrf$ "`floor function"' \\ 
+\\
+$p = 7, q = 3$ \\
+$p/q = 7/3 = 2,3...$ \\
+\\
+$\llc p / q \rrc = \llc 7 / 3 \rrc = 3$ \\
+$\llf p / q \rrf = \llf 7 / 3 \rrf = 2$
+
+
+\subsection{Pseudocode Merge}
+
+\ttfamily
+\begin{tabular}{rl}
+0 	&	MERGE(A,p,q,r) \\
+1 	&	$n_1 \la$ q - p + 1 \\
+2 	&	$n_2 \la$ r - q \\
+3 	&	erzeuge die Felder L[1..$n_1$ + 1] und R[1..$n_2$ + 1] \\
+4 	&	for i $\la$ 1 to $n_1$ do L[i] $\la$ A[p + i - 1] \\
+5 	&	for j $\la$ 1 to $n_2$ do R[j] $\la$ A[q + j] \\
+6 	&	L[$n_1$ + 1] $\la$ R[$n_2$ + 1] $\la \oo$ // Wächter \\
+7 	& 	i $\la$ i $\la$ 1 \\
+8 	&	for k $\la$ p to r \\
+9 	&		do if L[i] $\leq$ R[j] \\
+10 	&			then A[k] $\la$ L[i] \\
+11 	&				i $\la$ i + 1 \\
+12 	&			else A[k] $\la$ R[j] \\
+12 	&				j $\la$ j + 1
+\end{tabular}
+\normalfont
+
+
+\subsection{Beispiel}
+
+\begin{center}
+	\includegraphics[width=0.80\textwidth]{E:/Uni Karlsruhe/LaTeX/Info VL 25.04.2005/beispiel.pdf}
+\end{center}
+
+
+\subsection{Laufzeitanalyse}
+
+\begin{itemize}
+	\item Im allgemeinen Teile- und Beherrsche-Fall gilt: Sei $T(N)$ die Laufzeit für ein Problem der Größe $n$. Ist $n$ hinreichend klein $n \leq c$, dann benötigt die direkte Lösung eine konstante Zeit $\Theta(1)$. Führt die Aufteilung des Problems zu $a$ Teilproblemen der Größe $1/b$ und braucht die Aufteilung $D(n)$ Zeit und das Verbinden zum ursprünglichen Problem die Zeit $C(n)$ so gilt:
+	$$T(n)=
+	\begin{cases}
+		\Theta(1) & \text{falls } n \leq c \\
+		a(T(n/b)) + D(n) + C(n) & \text{sonst }
+	\end{cases}$$
+	\item Im Fall von Merge-Sort ist $a=b=2$ und $c=1$, also	
+	$$T(n)=
+	\begin{cases}
+	\Theta(1) & \text{falls } n=1 \\
+	2(T(n/2)) + dn & \text{sonst }
+	\end{cases}$$
+\end{itemize}
+
+
+\subsection{Laufzeitanalyse 2}
+
+\begin{itemize}
+	\item Man kann die Problemgröße nur $\log_2(n)$ oft aufteilen.
+	\item Beim $i$-ten Aufteilen hat man $2^i$ Teillisten der Größe $n/2^i$ zu lösen und benötigt dafür $dn$ Zeit
+	\item Somit braucht man insgesamt $dn\log_2n+dn$ Zeit.
+\end{itemize}
+
 
 \end{document}
