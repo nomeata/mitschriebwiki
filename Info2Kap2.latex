@@ -5,7 +5,7 @@
 \usepackage{info}
 
 \title{Algorithmus}
-\author{Mathias Ziebarth, Sebastian Frehmel, Daniel Dreke}
+\author{Mathias Ziebarth, Sebastian Frehmel, Daniel Dreke, Felix Brandt}
 % Wer nennenswerte Änderungen macht, schreibt sich bei \author dazu
 
 %\setlength{\parskip}{0.5cm}
@@ -387,5 +387,97 @@ Komischesschaubildwomaneigentlichnichtserkenntundworausmanwasfolgernkann.
 \item Z-Transformierte.
 \end{itemize}
 
+
+% Vorlesung vom Mo. 02.05.2005 (Felix Brandt)
+\section{Die $o$-Notation}\lectureof{02.05.2005}
+$$o(g(n)) = \left\{ 
+\begin{array}{l}
+	f(n) : \text{ für jede positive Konstante }c>0  \\
+	\text{existiert eine Konstante $n_0>0$, sodass }\\
+	0\leq f(n) < cg(n) \text{ für alle } n \geq n_0
+\end{array} \right\}$$
+
+Die Definition der $O$-Notation und der $o$-Notation sind einander ähnlich. Der Unterschied besteht darin, dass in $f(n)=O(g(n))$ die
+Schranke $0 \leq f(n) \leq cg(n)$ für eine Konstante $c>0$ gilt, während dies in $f(n) = o(g(n))$ für alle Konstanten gilt.
+
+Die Funktion $f(n)$ (in der $o$-Notation) is unbedeutend gegenüber $g(n)$, wenn $n \rightarrow \infty \folgt$
+
+$$\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)}=0$$
+
+\section{Die $\omega$-Notation}
+$$\omega(g(n)) = \left\{ 
+\begin{array}{l}
+	f(n) : \text{ für jede positive Konstante }c>0  \\
+	\text{existiert eine Konstante $n_0>0$, sodass }\\
+	0\leq cg(n) < f(n) \text{ für alle } n \geq n_0
+\end{array} \right\}$$
+$$\folgt \lim_{n \rightarrow \infty} \frac{f(n)}{g(n)}=\infty$$
+$$\left[ n^2/2 = \omega(n); n^2/2 \neq \omega(n^2) \right]$$
+
+\section{Lösen von Rekurrenzen mit der Generierenden-Funktion}
+(\begriff{generating function})
+\begin{description}
+	\item{Gegeben} sei eine Folge $<g_n>$
+	\item{Gesucht} ist eine geschlossene Form für $g_n$. Die folgenden 4 Schritte berechnen diese (\begriff{closed form})
+\end{description}
+\begin{enumerate}
+\item Finde eine einzige Gleichung, die $g_n$ anhand anderer Elemente der Folge ausdrückt. Die Gleichung sollte unter der Annahme
+      $g_{-1}=g_{-2}= \ldots = 0$ für alle ganzen Zahlen (\MdZ) gelten.
+\item Multipliziere beide Seiten mit $z^n$ und summiere über alle $n$. Auf der linken Siete steht nun
+      $$\sum_{n}g_nz^n = G(z) \text{ die generierende Funktion}$$
+      Die rechte Seite der Gleichung sollte nun so manupuliert werden, dass sie andere Ausdrücke in $G(z)$ enthält.
+\item Löse die resultierende Gleichung und erhalte damit eine geschlossene Form für $G(z)$.
+\item Expandiere diese Form von $G(z)$ in eine Potenzreihe und betrachte die Koeffizienten von $z^n$. Das ist eine geschlossene
+      Form für $g_n$.
+\end{enumerate}
+
+\paragraph{Beispiel} Die Fibonacci-Zahlen
+$$g_0=0;\ g_1=1;\ g_n=g_{n-1}+g_{n-2} (n \geq 2)$$
+
+\begin{description}
+\item{Schritt 1} Die Gleichung $g_n=g_{n-1}+g_{n-2}$ ist nur für $n \geq 2$ zulässig, den unter der Annahme $g_{-1}=0,\ g_{-2}=0$ ist
+      $g_0=0,\ g_1=0,\ \ldots$.
+      
+      $g_n \stackrel{?}{=} \left\{
+      \begin{array}{l}
+      	0 \text{, falls $n=1$} \\
+      	1 \text{, falls $n=2$} \\
+      	g_{n-1}+g_{n-2} \text{ sonst}
+      \end{array}
+      \right.
+      \folgt \text{ Nein}$
+      
+      $\left[ n=1 \right] =
+      \begin{cases}
+      	1 \text{, falls $n=1$} \\
+      	0 \text{ sonst}
+      \end{cases}$
+      
+      $\folgt g_n=g_{n-1}+g_{n-2} + \left[ n=1 \right]$
+\item{Schritt 2}
+	    \begin{eqnarray*}
+			G(z) & = & \sum_ng_nz^n = \sum_ng_{n-1}z^n + \sum_ng_{n-2}z^n + \sum [n=1]z^n \\
+			     & = & \sum_ng_nz^{n+1} + \sum_ng_nz^{n+2} + z \\
+			     & = & z\sum_ng_nz^n + z^2\sum_ng_nz^n + z \\
+			     & = & zG(z) + z^2G(z) + z \\
+			 \end{eqnarray*}
+\item{Schritt 3} ist hier einfach
+      $$G(z) = \frac{1}{1-z-z^2}$$
+\item{Schritt 4} Gesucht ist eine Darstellung von      
+      $\frac{z}{1-z-z^2}=\frac{z}{(1-\Phi z)(1-\widehat{\Phi}z)}$ ($\Phi$: "`\begriff{golden ratio}"')
+			mit $\Phi = \frac{1+\sqrt{5}}{2};\ \widehat{\Phi} = \frac{1-\sqrt{5}}{2}$			
+			als formale Potenzreihe. Eine Partialbruchzerlegung ergibt			
+			$\frac{1/\sqrt{5}}{1-\Phi z} - \frac{1/\sqrt{5}}{1-\widehat{\Phi}z}$
+			
+			Es existiert folgende Regel
+			$\frac{a}{1-pz)^{m+1}} = \sum_{n \geq 0} \left(\begin{array}{c}m+n\\m\end{array}\right)ap^nz^n$
+			
+			Somit ist 
+			$$\frac{1/\sqrt{5}}{1-\Phi z} - \frac{1/\sqrt{5}}{1-\widehat{\Phi}z} = 
+			\sum_{n \geq 0}\frac{1}{\sqrt{5}}\Phi^nz^n + \sum_{n \geq 0}\frac{1}{\sqrt{5}}\widehat{\Phi}^nz^n$$
+			und für den n-ten Koeffizienten gilt
+			$F_n = \frac{\Phi^n - \widehat{\Phi}^n}{\sqrt{5}}$
+			
+\end{description}
 
 \end{document}
