@@ -480,4 +480,57 @@ $$g_0=0;\ g_1=1;\ g_n=g_{n-1}+g_{n-2} (n \geq 2)$$
 			
 \end{description}
 
+\section{Notationen}
+  Die \begriff{floor} und die \begriff{ceiling} Funktion:
+  
+  \begin{eqnarray*}
+  	\llc z \rrc & \text{ kleinste obere Ganzzahl}\\
+  	            & \text{ the least integer greater than or equal to z}\\
+  	\llf z \rrf &\text{ größte untere Ganzzahl}\\
+  	            & \text{ the greatest integer less than or equal to z}
+  \end{eqnarray*}
+  
+\section{Die Mastermethode}
+  "`Rezept"': Methode zur Lösung von Rekurrenzgleichungen der Form
+  $$T(n)= aT(n/b)+f(n)$$
+  wobei $a \geq 1$, $b>1$ und $f(n)$ eine asymptotisch positive Funktion.
+  
+\paragraph{Beispiel} Merge-Sort
+	$$a=2, b=2, f(n)=\Theta(n)$$
+
+\section{Mastertheorem}
+	Seien $a \geq 1$ und $b>1$ Konstanten. Sei $f(n)$ eine Funktion und sei $T(n)$ über die nichtnegativen
+	ganzen Zahlen durch die Rekursionsgleichung $T(n)= aT(n/b)+f(n)$ definiert, wobei wir $n/b$ so interpretieren,
+	dass damit entweder $\llf n/b \rrf$ oder $\llc n/b \rrc$ gemeint ist. Dann kann $T(n)$ folgendermaßen asymptotisch
+	beschränkt werden.
+\begin{enumerate}
+\item Wenn $f(n)=O(n^{log_ba-\epsilon})$ für eine Konstante $\epsilon > 0$ erfüllt ist, dann gilt $T(n)=\Theta(n^{log_ba})$
+\item Wenn $f(n)=\Theta(n^{log_ba})$ erfüllt ist, dann gilt $T(n) = \Theta(n^{log_ba}\cdot lgn)$
+\item Wenn $f(n)=\Omega(n^{log_ba+\epsilon})$ für $\epsilon > 0$ erfüllt ist und wenn $a\cdot f(n/b) \leq cf(n)$ für eine Konstante
+			$c < 1$ und hinreichend große $n$ gilt, dann ist $T(n)=\Theta(f(n))$.
+\end{enumerate}
+
+$\Longrightarrow$ Im ersten Fall muss $f(n)$ nicht nur kleiner als $n^{log_ba}$ sein, sondern sogar polynomial kleiner. Das heißt $f(n)$
+      muss für $t>0$ und den Faktor $n^2$ asymptotisch kleiner sein, als $n^{log_ba}$.
+      
+$\Longrightarrow$ Im dritten Fall muss $f(n)$ nicht nur größer sein als $n^{log_ba}$, sondern polynomial größer und zusätzlich die
+      "`Regularitätsbedingung"' $af(n/b) \leq cf(n)$ erfüllen.
+      
+\paragraph{Beispiel 1} $T(n) = gT(n/3)+n$\\
+	$a=9, b=3, f(n)=n$ und somit $n^{log_ba}=n^{log_39}=\Theta(n^2)$. Da $f(n)=O(n^{log_39-\epsilon}$ mit $\epsilon = 1$ gilt, können wir
+	Fall 1. anwenden und schlussfolgern, dass $T(n)=\Theta(n^2)$ gilt.
+	
+\paragraph{Beispiel 2} $T(n) = gT(2n/3)+1$\\
+	$a=1, b=3/2, f(n)=1$
+	$n^{log_ba}=n^{log_{3/2}1}=n^0=1$ da $f(n) = \Theta(n^{log_ba}) = \Theta(1) \folgt$ Lösung: $T(n)=\Theta(lgn)$
+
+\paragraph{Beispiel 3} $T(n)=3T(n/4)+nlgn$\\
+	$a=3, b=4, f(n)=nlgn$
+	$n^{log_ba}=n^{log_43}=O(n^{0,793})$ Da $f(n)=\Omega(n^{log_43+\epsilon}$ mit $\epsilon \approx 0,2$ gilt, kommt Fall 3 zur Anwendung
+	$\Rightarrow$ $T(n) = \Theta(nlgn)$
+
+\bigskip Die Mastermethode ist auf $T(n)=2T(n/2) \rightarrow nlgn$ nicht anwendbar auch wenn sie die korrekte Form hat: $a=2, b=2, f(n)=nlgn$.
+Das Problem besteht darin, dass $f(n)$ nicht polynomial größer ist.
+Das Verhältnis $f(n/b \cdot log_ba) = (nlgn)(n=lg(n))$ ist asymptotisch kleiner als $n^\epsilon$ für jede Konstante $\epsilon > 0$.
+	
 \end{document}
