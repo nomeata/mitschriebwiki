@@ -492,5 +492,282 @@ $\folgt$ die einfachsten Formeln in $E(F)$ sind die folgenden:
 \end{eqnarray*}
 
 \section{Prolog und Prädikatenlogik}
-	Dieser Teil wird, sobald die Folien online verfügbar sind, nachgeliefert ;-)
+
+\subsection{Logikprogrammierung}
+Prolog wurde um 1970 von Alain Colmerauer und seinen Mitarbeitern mit dem Ziel entwickelt, die Programmierung von Computern mit den Mitteln "`der Logik"' zu ermöglichen.
+
+\subsection{Pure Prolog}
+Das sogenannte Pure Prolog oder Database-Prolog entspricht einer Teilmenge der Sprachdefinition eines praktischen Prolog-Entwicklungssystems und enthält keine extra- oder metalogischen Komponenten wie:
+\begin{itemize}
+\item Cut, Type-Checking
+\item Arithmetische Operationen
+\item Datenbasismanipulation zur Laufzeit
+\end{itemize}
+
+\subsection{Prolog und Logik}
+Pure Prolog-Programme entsprechen den Ausdrücken der Hornklausellogik, die eine Teilmenge der Prädikatenlogik 1. Stufe ist.
+Das Beweisverfahren Resolution ermöglicht Inferenzen aufgrund von Prologprogrammen oder Hornklauseln.
+
+\paragraph{Bemerkung}Zur Transformation von prädikatenlogischen Sachverhalten nach Prolog wird der Weg über die Hornklauseln genutzt.
+
+$$\text{Prädikatenlogik 1. Stufe} \stackrel{KNF}{\Longrightarrow} \text{Hornklauseln} \Longrightarrow \text{Prolog}$$
+
+\subsection{Prädikatenlogik 1. Stufe}
+\paragraph{Inventar der Syntax:}
+\begin{itemize}
+\item Individuenkonstanten $a$, $b$, $c$, $\ldots$
+\item Individuenvariablen $x$, $y$, $z$, $\ldots$
+\item Prädikate $P(t_1, \ldots, t_n),\ t_i \in$ TERM
+\item Quantoren $\forall$, $\exists$
+\item Junktoren $\neg, \vee, \wedge, \dann, \gdw$
+\end{itemize}
+
+\subsection{Formeln der Prädikatenlogik}
+\begin{itemize}
+\item Wenn $P$ ein n-stelliges Prädikat ist und $t_1, \ldots, t_n$ Terme sind, dann ist $P(t_1, \ldots, t_n)$ ein Literal.
+\item Literale sind Formeln.
+\item Wenn $\Phi$ und $\Psi$ Formeln sind, dann sind auch $\neg\Phi$, $\Phi\vee\Psi$, $\Phi\wedge\Psi$, $\Phi\dann\Psi$, $\Phi\gdw\Psi$ Formeln.
+\item Wenn $\Phi$ eine Formel ist und $x$ eine Variable, dann sind auch $\forall x\Phi$, $\exists x\Phi$ Formeln.
+\end{itemize}
+
+\subsection{Klauseln}
+\begin{itemize}
+\item Wenn $P$ ein n-stelliges Prädikat ist und $t_1, \ldots, t_n$ Terme sind, dann ist $P(t_1, \ldots, t_n)$ ein Literal.
+\item Literale sind Klauseln.
+\item Wenn $\Phi$ ein Literal ist, dann sind auch $\neg\Phi$, eine Klausel.
+\item Wenn $\Phi$ und $\Psi$ Klauseln sind, dann ist auch $\Phi \vee \Psi$ eine Klausel.
+\end{itemize}
+
+\subsection{Hornklauseln}
+Hornklauseln sind Klauseln, die genau ein nicht-negiertes Literal und beliebig viele negierte Literale enthalten.
+\paragraph{Beispiele}
+\begin{itemize}
+\item $\text{Vater}(x,y) \vee \neg\text{Elternteil}(x,y) \vee \neg\text{Männlich}(x)$
+\item $\text{Sterblich}(sokrates)$
+\end{itemize}
+
+\subsection{Konjunktive Normalform}
+Eine Formel ist in konjunktiver Normalform, wenn sie eine Konjunktion von Klauseln repräsentiert.
+$$K_1 \wedge \ldots \wedge K_n,\ K_i \in \text{KLAUSEL}$$
+Formeln der Prädikatenlogik können durch Anwendung logischer Äquivalenzregeln in die konjunktive Normalform gebracht werden.
+
+\subsection{Logische Äquivalenzregeln}
+\subsubsection{Kommutativität}
+\begin{eqnarray*}
+ P \wedge Q & \Gdw & Q \wedge P \\
+ P \vee Q & \Gdw & Q \vee P 
+\end{eqnarray*}
+
+\subsubsection{Assoziativität}
+\begin{eqnarray*}
+	(P \wedge Q) \wedge R & \Gdw & P \wedge (Q \wedge R) \\
+	(P \vee Q) \vee R & \Gdw & P \vee (Q \vee R)
+\end{eqnarray*}
+
+\subsubsection{De Morgan}
+\begin{eqnarray*}
+	\neg(P \vee Q)   & \Gdw & \neg P \wedge \neg Q \\
+	\neg(P \wedge Q) & \Gdw & \neg P \vee \neq Q 
+\end{eqnarray*}
+
+\subsubsection{Konditional- \& Bikonditionalgesetz}
+\begin{eqnarray*}
+	P \dann Q & \Gdw & \neg P \vee Q\\
+	P \gdw Q  & \Gdw & (P \dann Q) \wedge (Q \dann P)
+\end{eqnarray*}
+
+\subsubsection{Idempotenz}
+\begin{eqnarray*}
+	P \vee P   & \Gdw & P \\
+	P \wedge P & \Gdw & P
+\end{eqnarray*}
+
+\subsubsection{Identität}
+\begin{eqnarray*}
+	P \vee 0   & \Gdw & P \\
+	P \vee 1   & \Gdw & 1 \\
+	P \wedge 0 & \Gdw & 0 \\
+	P \wedge 1 & \Gdw & P
+\end{eqnarray*}
+
+\subsubsection{Komplementarität}
+\begin{eqnarray*}
+	P \vee \neg P   & \Gdw & 1\ \text{(Tautologie, allgemeingültig)} \\
+	P \wedge \neg P & \Gdw & 0\ \text{(Kontradiktion, Inkonsistenz)} \\
+	\neg\neg P      & \Gdw & P\ \text{(Doppelte Negation)} 
+\end{eqnarray*}
+
+\subsection{Quantorengesetze}
+\subsubsection{Quantoren-Negation}
+\begin{eqnarray*}
+	\neg \forall x \Phi      & \Gdw & \exists x \neg \Phi \\
+	\forall x \Phi           & \Gdw & \neg \exists x \neg \Phi \\
+	\neg \forall x \neg \Phi & \Gdw & \exists x \Phi \\
+	\forall x \neg \Phi      & \Gdw & \neg \exists x \Phi
+\end{eqnarray*}
+
+\subsubsection{Quantoren-Distribution}
+\begin{eqnarray*}
+	\forall x (\Phi \wedge \Psi)       & \Gdw   & \forall x \Phi \wedge \forall x \Psi \\
+	\exists x (\Phi \vee \Psi)         & \Gdw   & \exists x \Phi \vee \exists x \Psi \\
+	\forall x \Phi \vee \forall x \Psi & \folgt & \forall x (\Phi \vee \Psi) \\
+	\exists x (\Phi \wedge \Psi)       & \folgt & \exists x \Phi \wedge \exists x \Psi
+\end{eqnarray*}
+
+\subsubsection{Quantoren-Dependenz}
+\begin{eqnarray*}
+	\forall x \forall y \Phi & \Gdw   & \forall y \forall x \Phi \\
+	\exists x \exists y \Phi & \Gdw   & \exists y \exists x \Phi \\
+	\exists x \forall y \Phi & \folgt & \forall y \exists x \Phi 
+\end{eqnarray*}
+
+\subsubsection{Quantoren-Bewegung}
+\begin{eqnarray*}
+	\Phi \dann \forall x \Psi & \Gdw & \forall x (\Phi \dann \Psi) \\
+	\Phi \dann \exists x \Psi & \Gdw & \exists x (\Phi \dann \Psi) \\
+	(\forall x \Phi) \dann \Psi & \Gdw & \exists x (\Phi \dann \Psi) \\
+	(\exists x \Phi) \dann \Psi & \Gdw & \forall x (\Phi \dann \Psi) 
+\end{eqnarray*}
+
+\subsection{Pränex-Normalform}
+Eine prädikatenlogische Formel befindet sich in PNF, wenn alle Quantoren am Anfang der Formel stehen.
+$$\begin{array}{c}
+	(\exists x F(x)) \dann (\forall y G(y)) \\
+	\Downarrow\\
+	\forall y \forall x (F(x) \dann G(y))
+\end{array}$$
+
+\subsection{Skolemisierung}
+Existenzquantoren können eleminiert werden, indem existenzquantifizierte Variablen durch Skolemkonstanten substituiert werden.
+Liegt ein Existenzquantor im Skopus von Allquantoren, werden die Skolemkonstanten mit den jeweiligen allquantifizierten Variablen durch Parametrisierung in Abhängigkeit gebracht.
+
+\paragraph{Beispiele}
+\begin{itemize}
+\item $\exists y \forall x ((\text{man}(x) \wedge (\text{woman}(y)) \dann \text{loves}(x,y))
+		\\\Longrightarrow\ \forall x ((\text{man}(x) \wedge \text{woman}(G)) \dann \text{loves}(x, G))$\\
+\item $\forall x (\text{man}(x) \dann \exists y (\text{woman}(y) \wedge \text{loves}(x,y)))\\
+		\Longrightarrow\ \forall x (\text{man}(x) \dann (\text{woman} (G(x)) \wedge \text{loves}(x,G(x))))$
+\end{itemize}
+
+\section{Aussagenlogische Resolution}
+Sie dient zum Nachweis der Unerfüllbarkeit einer Formel. Viele Aufgaben können auf einen Test auf Unerfüllbarkeit reduziert werden:
+\begin{itemize}
+\item $F$ ist Tautologie gdw. $\neg F$ ist unerfüllbar
+\item Folgt $G$ aus $F_1,F_2,\dots, F_n$ ? \\
+      d.h.: Ist $F_1 \wedge F_2 \wedge \dots \wedge F_n \dann G$ eine Tautologie? \\
+      d.h.: Ist $F_1 \wedge F_2 \wedge \dots \wedge F_n \wedge G$ unerfüllbar? 
+\end{itemize}
+
+Die aussagenlogische Resolution ist eine Umformungsregel und geht von der \begriff{Klauselschreibweise} der KNF Formel aus. 
+Die Formel $F$ liegt in KNF vor, wenn gilt:
+	$$F=(L_{1,1}\vee\dots\vee L_{1,n})\wedge\dots\wedge(L_{m,1} \vee\dots\vee L_{m,n})$$
+wobei $L_{i,j}$ Literale sind, also 
+	$$L_{i,j}\in \{A_1,A_2,\dots\}\cup\{\neg A_1,\neg A_2,\dots\}$$
+Die Klauselschreibweise von $F$ ist dann: 
+	$$F=\{\{L_{1,1},\dots ,L_{1,n})\},\dots,\{(L_{m,1},\dots , L_{m,n}\}\}$$
+
+
+\subsection{Definition (Resolvent)}
+\begin{itemize}
+\item Es seien $K_1$ und $K_2$ Klauseln mit $A\in K_1$ und $\neg A \in K_2$, wobei $A$ eine atomare Formel ist. Dann heißt 
+		$$ R=(K_1 \ \{A\}) \cup (K_2\{\neg A\}) $$
+	der \begriff{Resolvent} von $K_1$ und $K_2$ (bezüglich $A$).
+\item Diagramm: \fixme{PS-Grafik auskommentiert}
+	%\pstree[thislevelsep=1cm,treemode=U]{\TR{$R$}}{\TR{$K_1$}\TR{$K_2$}} 
+\item Falls $K_1 =\{A\}$ und $K_2=\{\neg A\}$, dann ist $R= \emptyset$
+\item Eine Klauselmenge, die $\emptyset$ enthält ist unerfüllbar. 
+\item Beispiel: \fixme{PS-Grafik auskommentiert}
+	%\pstree[thislevelsep=1cm,treemode=U]{\TR{$\{A_3, A_2,\neg A_3\}$}}
+	%{\TR{$\{A_3,\neg A_1, A2\}$}\TR{$\{A_1,A_2,\neg A_3 \}$}}
+\end{itemize}
+
+
+\subsection{Definition (Res($F$))}
+Für eine Klauselmenge $F$ sei
+	$$ \mbox{Res}(F) = F\cup\{R\ |\ R \mbox{ ist Resolvent zweier Klauseln in $F$}\}.$$
+Weiter sei
+\begin{itemize}
+\item $\mbox{Res}^0Res(F) = F$
+\item $\mbox{Res}^{n+1}(F) = \mbox{Res}(\mbox{Res}^n(F))$
+\item $\mbox{Res}^{\ast}(F) = \bigcup_{n\geq 0} \mbox{Res}^n$
+\end{itemize} 
+
+\paragraph{Resolutionssatz der Aussagenlogik:} Eine Klauselmenge $F$ ist genau dann
+unerfüllbar, wenn $\emptyset \in \mbox{Res}^\ast (F)$
+
+
+\paragraph{Beispiel}
+	\fixme{PS-Grafik auskommentiert}
+% \psset{tpos=0.6}
+% \pstree[treemode=U]{\TR{$\emptyset$}}{
+%    \pstree[treemode=U]{\TR{$\{A_2\}$}}{
+%       \TR{$\{\{A_1,A2\},$}
+%       \TR{$\{\neg A_1,A_2\},$}}
+%    \pstree[treemode=U]{\TR{$\{\neg A_2\}$}}{
+%       \TR{$\{A_1,\neg A_2\},$}
+%       \TR{$\{\neg A_1,\neg A_2\}\}$}}}
+	Die Formel ist unerfüllbar!
+                        
+\subsection{Resolution in der Prädikatenlogik}
+Es gibt zwei Varianten
+\begin{enumerate}
+\item Zurückführen auf die aussagenlogische Resolution (Grundresolution)
+\item Direkte Resolution (Unifikation)
+\end{enumerate} 
+
+\paragraph{Grundresolution} 
+\begin{itemize}
+\item Stelle die Matrix der Formel $F$ in KNF dar. Dann sind die Formeln in $E(F)$ ebenfalls in KNF. 
+\item Da die Formeln in $E(F)$ variablenfrei sind kann die Resolution der Aussagenlogik verwendet werden.
+\end{itemize}
+
+\paragraph{Bemerkung} Dieser Algorithmus kann nicht terminieren, falls die Formel erfüllbar ist!
+
+\paragraph{Beispiel}
+	$$F = \forall x (P(x) \wedge \neg P(f(x))) $$
+Matrix von $F$:
+	$$F^\ast = P(X)\wedge P(f(x))\text{ schon in KNF!}$$
+als Klauselmenge: 
+\begin{eqnarray*}
+	F^\ast & = & \{\{P(x)\},\{\neg P(f(x))\}\} \\
+	D(F)   & = & \{a,f(a),f(f(a)),\dots\}      \\
+	E(F)   & = & \{P(a)\wedge P(f(a)),P(f(a))\wedge P(f(f(a))),\dots\} 
+\end{eqnarray*}
+als Klauselmenge
+	$$E(F) = \{\{P(a)\},\{\neg P(F(a))\},\{P(f(a))\},\{\neg P(f(f(a))),\dots\}\}$$
+wegen \fixme{PS-Grafik auskommentiert}
+% \psset{tpos=0.6}
+%    \pstree[treemode=U,thislevelsep=1cm]{\TR{$\emptyset$}}{
+%       \TR{$\{\neg P(f(a))\}$}   
+%       \TR{$\{\ P(f(a)))\}$}}
+ist F unerfüllbar.
+
+\paragraph{Verbesserung}
+Bei diesem Verfahren werden i.A. zu viele Klauseln generiert, die für die Herleitung von $\emptyset$ nicht gebraucht werden, da die gleiche Substitution auf die ganze Klauselmenge $F^\ast$ angewendet wird.
+
+Im vorherigen Beispiel genügt es aber für die Klausel $\{P(f(x))\}$ die Substitution $[x/f(a)]$ und für die Klausel $\{\neg P(f(x))\}$ die Substitution $[x/a]$ durchzuführen um $\emptyset$ herleiten zu können. 
+
+\subsection{Allgemeinster Unifikator}
+\begin{itemize}
+\item Es sei $L=\{L_1,L_2,\dots,L_k\}$ eine Menge von prädikatenlogischen Literalen und sub eine Substitution. Wir schreiben 
+  $L\mbox{sub}$ für die Menge $\{L_1\mbox{sub},\dots, L_k\mbox{sub}\}$.
+\item sub ist ein \emph{Unifikator} für $L$, falls $|L\mbox{sub}| = 1$, dann heißt $L$ \emph{unifizierbar} 
+\item Ein Unifikator sub von $L$ heißt \emph{allgemeinster Unifikator} von $L$, wenn es für jeden Unifikator sub' von $L$ eine 
+  Substitution $s$ gibt mit sub' $= \mbox{sub}s$
+\end{itemize}
+
+
+\subsection{Prädikatenlogische Resolution}
+Es seien $K_1$,$K_2$ prädikatenlogische Klauseln mit 
+\begin{enumerate}
+\item Es gibt Substitutionen $s_1$ und $s_2$, so dass $K_1s_1$ und $K_2s_2$ keine gemeinsamen Variablen enthalten.
+\item Es gibt Literale $L_1,\dots,L_m \in K_1s_1 \ (m\geq 1)$ und $L_1^\prime,\dots,L_n^\prime \in K_2s_2 \ (n\geq 1)$, so dass
+  $L = \{\neg L_1,\dots,\neg L_m,L_1^\prime,\dots,L_n^\prime\}$ unifizierbar ist. Es sei sub ein allgemeinster Unifikator von $L$. 
+\end{enumerate}
+
+Dann heißt die Klausel
+$$ R:= ((K_1s_1\backslash \{L_1,\dots,l_m\})\cup
+        (K_2s_2\backslash \{L_1^\prime,\dots,L_n^\prime\} ))sub $$
+ein \begriff{prädikatenlogischer Resolvent} von $K_1$ und $K_2$. 
+
 \end{document}
