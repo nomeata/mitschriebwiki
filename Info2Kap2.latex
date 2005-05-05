@@ -561,20 +561,77 @@ Berechnungsregeln.
 
 Hauptmotivation zur Einführung von probalistischen Algorithmen stammt aus der Komplexitätsanalyse. Man unterscheidet zwischen dem 
 \emph{Verhalten im schlechtesten Fall} und dem \emph{Verhalten im mittleren Fall} eines Algorithmus. Diese Fälle sind festgelegt, sobald das Problem und die Daten bestimmt sind.\\
-Die hervorgehobenen Wörter in den Definitionen eines deterministischen Algorithmus sind die Schlüssel zur Definition vondrei Arten von probalistischen Algorithmen.
+Die hervorgehobenen Wörter in den Definitionen eines deterministischen Algorithmus sind die Schlüssel zur Definition von drei Arten von probalistischen Algorithmen:
+
+%
+% Teil 2 - Daniel
+%
 
 \begin{enumerate}
-\item{Macao Algorithmus (1. Art)} (auch Sherwood Algorithmus)
+\item{Macao-Algorithmus (1. Art)} (auch Sherwood Algorithmus)
 
-% hier gehts weiter ... -> Daniel
+\begin{itemize}
+	\item mindestens bei einem Schritt der Prozedur werden einige Zahlen zufällig ausgewählt (nicht definit)
+	\item sonst: deterministisch
+\end{itemize}
+$\Ra$ immer eine korrekte Antwort\\ \\
+Wird benutzt, wenn irgendein bekannter Algorithmus (zur Lösung eines bestimmten Problems) im mittleren Fall viel schneller als im schlechtesten Fall läuft.
 
+\item{Monte-Carlo-Algorithmus (2. Art)}
+
+\begin{itemize}
+	\item gleich wie Algorithmus 1. Art (nicht definit)
+	\item mit einer Wahrscheinlichkeit von $1-\epsilon$, wobei $\epsilon$ sehr klein ist (nicht eindeutig)
+\end{itemize}
+$\Ra$ immer eine Antwort, wobei die Antwort nicht unbedingt richtig ist\\
+($\epsilon \ra 0$ falls $t \ra \infty$)
+
+\item{Las-Vegas-Algorithmus (3. Art)}
+\begin{itemize}
+	\item Gleich wie Macao-Algorithmus (nicht definit).
+	\item Eine Folge von zufälligen Wahlen kann unendlich sein (mit einer Wahrscheinlichkeit $\epsilon \ra 0$) (nicht endlich).
+\end{itemize}
 \end{enumerate}
+
+\subsection{Macao-Algorithmen ("`Nähestes-Paar"'-Algorithmus)}
+
+Problem: $x_1,...,x_n$ seien n Punkte in einem k-dimensionalen Raum $R^k$.
+Wir möchten das näheste Paar $x_i, x_j$ finden, sodass gilt:
+$$d(x_i, x_j) = \text{min} \{d(x_p, x_q)\} \ (1 \leq p < q \leq n),$$
+wobei $d$ die gewöhnliche Abstandsfunktion aus $R^k$ ist.
+
+\subsection{Brute-Force-Methode ("`Brutaler Zwang"'-Methode)}
+Evaluiert alle $\frac{n(n-1)}{2}$ relevanten gegenseitigen Abstände.\\
+$\Ra$ minimaler Abstand\\
+$\Ra O(n^2)$\\
+
+\subsection{Deterministische Algorithmen (Yuval)}
+$\Ra O(n \log n)$\\
+
+Idee: man wählt eine Hülle $S=\{x_1, ..., x_n\}$ und sucht das näheste Paar innerhalb dieser Hülle.\\
+
+Schlüsselidee: eine Teilmenge von Punkten wird zufällig ausgewählt
+$\Ra$ Parl. (???) Alg. (Macaos) mit $O(n)$ und mit sehr günstiger Konstante.
+
+\begin{enumerate}
+	\item Wähle zufällig $S_1 = \{x_{i_1}, ..., x_{i_n}\}$\\
+$m = n^{2/3}$\\
+$m =$ Kardinalität $S_1$ (= Anzahl von Elementen in $S_1$)
+
+	\item Berechne $\delta(S_1) = \text{min} \{(x_p, x_q)\}$\\
+für $x_p, x_q \in S_1 \Ra O(n)$\\
+Wir iterieren einmal den gleichen Algorithmus für $S_1$, indem man $S_2 \subset S_1$ mit $c(S_2)=m^{2/3}=n^{4/9}$ zufällig auswählt.\\
+... $O(n)$
+
+	\item Konstruieren eines quadratischen Verbandes $\Gamma$ mit der Netzgröße (mesh size) $\delta=\delta(S_1)$.\\
 
 %
 % Teil 3 - Sebastian
 %
 
-leite ab aus $\Gamma$ durch Verdopplung der Netzgröße auf $2\delta$ \\
+Leite ab aus $\Gamma$ durch Verdopplung der Netzgröße auf $2\delta$ \\
+\end{enumerate}
+
 \textbf{Lemma:} Gilt $\delta(S) \leq \delta$ ($\delta$ ist Netzgröße von $\Gamma$), so existiert ein Verbandpunkt y auf $\Gamma$, sodass das nächste Paar im Quadrupel von Quadraten aus $\Gamma$ direkt und rechts von y liegt. \\
 $\Rightarrow$ es ist garantiert, dass das nächste Paar $x_i, x_j$ aus S innerhalb eines gleichen Quadrats aus $\Gamma_i$ liegt $(1\leq i \leq 4)$
 
