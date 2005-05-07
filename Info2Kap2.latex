@@ -141,77 +141,65 @@ $$ \Theta(g(n))=\{f(n)| \textnormal{ es gibt } c_1,c_2,n_0>0 \textnormal{ mit } 
 % Teil 2 - Sebastian
 %
 
-\begin{flushleft}
-
 \subsection{Analyse von Insertion Sort}
-\begin{center}
-\begin{tabular}{llll}
-\\0 & INSERTION-SORT(A) 																& Kosten 	& Zeit \\
-1 & \textbf{for} $j$ $\gets$ 2 \textbf{to} länge$[A]$	& $c_1$ 	& n \\
-2 & \idt\textbf{do} schlüssel $\gets$ $A[j]$ 							& $c_2$ 	& n-1 \\
-3 & \idt//setze $A[j]$ ein ... 														& 0				& n-1 \\
-4 & \idt$i$ $\gets$ $j-1$ 																& $c_4$ 	& n-1 \\
-5 & \idt\textbf{while} $i>0$ und $A[i$] $>$ schlüssel 		& $c_5$ 	& $\sum^{n}_{j=2}t_j$ \\
-6 & \idt\idt\textbf{do} $A[i+1]$ $\gets$ $A[i]$ 							& $c_6$ 	& $\sum^{n}_{j=2}(t_j-1)$ \\
-7 & \idt\idt$i$ $\gets$ $i-1$ 																& $c_7$ 	& $\sum^{n}_{j=2}(t_j-1)$ \\
-8 & \idt$A[i+1]$ $\gets$ schlüssel 												& $c_8$ 	& n-1 \\
-\linebreak[2]
-\end{tabular}
-\end{center}
-
+\ttfamily\begin{tabular}{llll}
+	0 & INSERTION-SORT(A)                                   & Kosten  & Zeit \\
+	1 & \keyword{for} j <- 2 \keyword{to} länge[A]          & c$_1$   & n \\
+	2 & \idt\keyword{do} schlüssel <- A[j]                  & c$_2$   & n-1 \\
+	3 & \idt//setze A[j] ein ...                            & 0	      & n-1 \\
+	4 & \idt i  <- j - 1                                    & c$_4$   & n-1 \\
+	5 & \idt\keyword{while} i > 0 und A[i] > schlüssel      & c$_5$   & $\sum^{n}_{j=2}t_j$ \\
+	6 & \idt\idt\keyword{do} A[i + 1] <- A[i]               & c$_6$   & $\sum^{n}_{j=2}(t_j-1)$ \\
+	7 & \idt\idt i <- i - 1                                 & c$_7$   & $\sum^{n}_{j=2}(t_j-1)$ \\
+	8 & \idt A[i + 1] <- schlüssel                          & c$_8$   & n-1 \\
+\end{tabular}\normalfont
 
 \section{Aufwandsanalyse}
-Durch Summieren der Produkte aus Kosten und Zeit: \linebreak[2]
-\begin{center}
-$T(n) = c_1n+c_2(n-1)+c_4(n-1)+c_5\sum^{n}_{j=2}t_j+c_6\sum^{n}_{j=2}(t_j-1)+c_7\sum^{n}_{j=2}t_j+c_8(n-1)$ \linebreak[2]
-\end{center}
-Günstigster Fall: Das Feld ist schon sortiert \linebreak[2]
-\begin{center}
-$T(n) = c_1n+c_2(n-1)+c_4(n-1)+c_5(n-1)+c_8(n-1) = (c_1+c_2+c_3+c_4+c_5+c_8)n-(c_2+c_4+c_5+c_6)$ \linebreak[2]
-\end{center}
-$\Rightarrow$ lineare Laufzeit \linebreak[2]
-
+Durch Summieren der Produkte aus Kosten und Zeit: 
+$$ T(n) = c_1n + c_2(n-1) + c_4(n-1) +c_5 \sum_{j=2}^n t_j + c_6 \sum_{j=2}^n (t_j-1) + c_7\sum_{j=2}^n (t_j-1) + c_8(n-1) $$
+Günstigster Fall: Das Feld ist schon sortiert
+\begin{eqnarray*}
+ T(n) & = & c_1n +c_2(n-1) + c_4(n-1) + c_5(n-1) +c_8(n-1) \\
+      & = & (c_1 +c_2 + c_4 + c_5 +c_8)n - ( c_2 + c_4 + c_5 + c_6) \\
+      & \folgt & \text{lineare Laufzeit}
+\end{eqnarray*}
 
 %\subsection{Aufwandsanalyse "`worst case"'}
-
-Schlechtester Fall: Das Feld ist in umgekehrter Reihenfolge sortiert \linebreak[2]
-\begin{center}
-$T(n) = c_1n+c_2(n-1)+c_4(n-1)+c_5\left(\frac{n(n+1)}{2}-1\right) + c_6\left(\frac{n(n+1)}{2}-1\right) + c_7\left(\frac{n(n+1)}{2}-1\right) + c_6(n-1)$
-$=\left(\frac{c_5}{2}+\frac{c_6}{2}+\frac{c_7}{2}\right)n^2+\left(c_1+c_2+c_3+\frac{c_5}{2}-\frac{c_6}{2}-\frac{c_7}{2}+c_8\right)n-\left(c_2+c_4+c_5+c_8)\right)$\linebreak[2]
-\end{center}
-$\Rightarrow$ quadratische Laufzeit \linebreak[2]
-
+Schlechtester Fall: Das Feld ist in umgekehrter Reihenfolge sortiert
+\begin{eqnarray*}
+ T(n) & = & c_1n + c_2(n-1) + c_4(n-1) + c_5\left (\frac{n(n+1)}{2}-1 \right) \\
+      &   & + c_6  \left (\frac{n(n+1)}{2}-1 \right) + c_7 \left (\frac{n(n+1)}{2}-1 \right) +c_8(n-1) \\
+      & = & \left(\frac{c_5}{2} + \frac{c_6}{2} + \frac{c_7}{2}\right ) n^2 + \left( c_1+c_2+c_4+
+            \frac{c_5}{2}- \frac{c_6}{2} -\frac{c_7}{2} +c_8 \right) -(c_2+c_4+c_5+c_8) \\
+      & \folgt & \text{quadratische Laufzeit}
+\end{eqnarray*}
 
 % \subsection{Analyse II}
-Im Folgenden werden wir meistens nur die Laufzeit im schlechtesten Fall analysieren, denn\linebreak[1]
+Im Folgenden werden wir meistens nur die Laufzeit im schlechtesten Fall analysieren, denn
 \begin{itemize}
-\item der schlechteste Fall bietet eine obere Schranke für die maximale Laufzeit,
-\item für einige Algorithmen tritt der schlechteste Fall häufig auf: z.B. Suche in einer Datenbank,
-\item der "`mittlere Fall"' ist oft annähernd genauso schlecht wie der schlechteste Fall.\linebreak[2] 
+	\item der schlechteste Fall bietet eine obere Schranke für die maximale Laufzeit,
+	\item für einige Algorithmen tritt der schlechteste Fall häufig auf: z.B. Suche in einer Datenbank,
+	\item der "`mittlere Fall"' ist oft annähernd genauso schlecht wie der schlechteste Fall.
 \end{itemize}
-
 
 \subsection{Methode: Teile und Beherrsche}
 \begin{itemize}
-\item Teile das Problem in eine Anzahl von Teilproblemen auf
-\item Beherrsche die Teilprobleme durch rekursives Lösen bis sie so klein sind, dass sie direkt gelöst werden können.
-\item Verbinde die Lösungen der Teilprobleme zur Lösung des Ausgangsproblems.\linebreak[2]
+	\item Teile das Problem in eine Anzahl von Teilproblemen auf
+	\item Beherrsche die Teilprobleme durch rekursives Lösen bis sie so klein sind, dass sie direkt gelöst werden können.
+	\item Verbinde die Lösungen der Teilprobleme zur Lösung des Ausgangsproblems.
 \end{itemize}
-
 
 \subsection{Laufzeiten}
 \begin{itemize}
-\item $\lg n$
-\item $\sqrt{n}$
-\item $n$
-\item $n\cdot\lg n$
-\item $n^2$
-\item $n^3$
-\item $2^n$
-\item $n!$
+	\item $\lg n$
+	\item $\sqrt{n}$
+	\item $n$
+	\item $n\cdot\lg n$
+	\item $n^2$
+	\item $n^3$
+	\item $2^n$
+	\item $n!$
 \end{itemize}
-
-\end{flushleft}
 
 %
 % Teil 3 - Daniel
@@ -225,38 +213,33 @@ Im Folgenden werden wir meistens nur die Laufzeit im schlechtesten Fall analysie
 	\item \textbf{Verbinde} die zwei Teilsequenzen durch Mischen (merge)	
 \end{itemize}
 
-\ttfamily
-\begin{tabular}{rl}
-0	&	MERGE-SORT(A,p,r) \\
-1	&	if p < r \\
-2	&	then q $\la \llf(p+r)/2\rrf$ \\
-3	&		\idt{}MERGE-SORT(A,p,q) \\
-4	&		\idt{}MERGE-SORT(A,q + 1,r) \\
-5	&		\idt{}MERGE(A,p,q,r)
-\end{tabular}
-\normalfont
-
+\ttfamily\begin{tabular}{rl}
+	0	&	MERGE-SORT(A, p, r) \\
+	1	&	\keyword{if} p < r \\
+	2	&	\keyword{then} q <- $\llf\right.$(p + r) / 2$\left.\rrf$ \\
+	3	&	\idt MERGE-SORT(A, p, q) \\
+	4	&	\idt MERGE-SORT(A, q + 1, r) \\
+	5	&	\idt MERGE(A, p, q, r)
+\end{tabular}\normalfont
 
 \subsubsection*{Pseudocode}
 
-\ttfamily
-\begin{tabular}{rl}
-0 	&MERGE(A,p,q,r) \\
-1 	&$n_1 \la$ q - p + 1 \\
-2 	&$n_2 \la$ r - q \\
-3 	&erzeuge die Felder L[1..$n_1$ + 1] und R[1..$n_2$ + 1] \\
-4 	&for i $\la$ 1 to $n_1$ do L[i] $\la$ A[p + i - 1] \\
-5 	&for j $\la$ 1 to $n_2$ do R[j] $\la$ A[q + j] \\
-6 	&L[$n_1$ + 1] $\la$ R[$n_2$ + 1] $\la \oo$ // Wächter \\
-7 	&i $\la$ i $\la$ 1 \\
-8 	&for k $\la$ p to r \\
-9 	&\idt do if L[i] $\leq$ R[j] \\
-10 	&\idt\idt then A[k] $\la$ L[i] \\
-11 	&\idt\idt\idt i $\la$ i + 1 \\
-12 	&\idt\idt else A[k] $\la$ R[j] \\
-12 	&\idt\idt\idt j $\la$ j + 1
-\end{tabular}
-\normalfont
+\ttfamily\begin{tabular}{rl}
+	 0 & MERGE(A, p, q, r) \\
+	 1 & n$_1$ <- q - p + 1 \\
+	 2 & n$_2$ <- r - q \\
+	 3 & erzeuge die Felder L[1..(n$_1$ + 1)] und R[1..(n$_2$ + 1)] \\
+	 4 & \keyword{for} i <- 1 \keyword{to} n$_1$ \keyword{do} L[i] <- A[p + i - 1] \\
+	 5 & \keyword{for} j <- 1 \keyword{to} n$_2$ \keyword{do} R[j] <- A[q + j] \\
+	 6 & L[n$_1$ + 1] <- R[n$_2$ + 1] <- $\oo$ // Wächter \\
+	 7 & i <- i <- 1 \\
+	 8 & \keyword{for} k <- p \keyword{to} r \\
+	 9 & \idt \keyword{do} if L[i] <= R[j] \\
+	10 & \idt\idt \keyword{then} A[k] <- L[i] \\
+	11 & \idt\idt\idt i <- i + 1 \\
+	12 & \idt\idt \keyword{else} A[k] <- R[j] \\
+	12 & \idt\idt\idt j <- j + 1
+\end{tabular}\normalfont
 
 
 % \section{Beispiel}
