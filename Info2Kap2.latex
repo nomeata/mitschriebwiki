@@ -276,6 +276,7 @@ Im Folgenden werden wir meistens nur die Laufzeit im schlechtesten Fall analysie
 \end{itemize}
 
 \section{Wachstum von Funktionen}
+\lectureof{27.04.2005}
 
 Zeitaufwand eines Algorithmus:
 $$T(n),\quad n\in\MdN_0$$
@@ -372,7 +373,9 @@ Komischesschaubildwomaneigentlichnichtserkenntundworausmanwasfolgernkann.
 
 
 % Vorlesung vom Mo. 02.05.2005 (Felix Brandt)
-\section{Die $o$-Notation}\lectureof{02.05.2005}
+\section{Die $o$-Notation}
+\lectureof{02.05.2005}
+
 $$o(g(n)) = \left\{ 
 \begin{array}{l}
 	f(n) : \text{ für jede positive Konstante }c>0  \\
@@ -511,6 +514,7 @@ Das Verhältnis $f(n)/(n^{\log_b a}) = (n \lg n)/n = \lg n$ ist asymptotisch klei
 %
 
 \section{Probalistische Algorithmen (zufallsgesteuerte Algorithmen)}
+\lectureof{04.05.2005}
 
 \paragraph{Numerische Algorithmen} $\approx 1950 \rightarrow $ Integration.\\
 $$ \int_0^1 \cdots \int_0^1 f(\alpha_1, \dots, \alpha_n) \ d \alpha_1, \dots, d \alpha_n $$
@@ -624,84 +628,95 @@ Algorithmus stellt fest, ob eine Zahl $n$ prim ist (pseudo-prim). In diesem Algo
 Grundidee: Ergebnisse aus Zahlentheorie (\begriff{Millers Bedingung}) für eine ganze Zahl $b$.\\
 
 % Vorlesung vom Mo. 09. Mai 2005 (Lars Volker)
+\def\ggT{\text{ ggT}}
 
 \lectureof{09.05.2005}
 \subsubsection{Einschub Modular-Arithmetik (Gauß (1801))}
 \paragraph{Definition}
-Seien $a,b,N\in \MdZ$: Dann schreibt man:
+Seien $a,b,N\in \MdZ$. Dann schreibt man:
 $$a\equiv b\ (mod\ N) \Gdw N\ |\ (a-b)$$
-\glqq $|$ \grqq bedeutet \glqq teilt\grqq.
+$$\text{"`$|$"' bedeutet "`teilt"'}$$
 
 \paragraph{Beispiele}
 \begin{itemize}
-\item $7\ mod\ 5 = 2$
-\item \glqq $mod\ 5$ \grqq bedeutet Rechnen mit $0,1,2,3,4$
-\item $a=b\ mod\ N \wedge c=d\ mod\ N \folgt a+c = (b+d)\ mod\ N$
-\item $a\ mod\ N + b\ mod\ N = (a+b)\ mod\ N$
+	\item $7 \mod 5 = 2$
+	\item "`mod $5$"' bedeutet Rechnen mit $0,1,2,3,4$
+	\item $a=b \mod N \wedge c=d \mod N \folgt a+c = (b+d) \mod N$
+	\item $a \mod N + b \mod N = (a+b) \mod N$
 \end{itemize}
 
 \subsubsection{Witnessfunktion}
 Für eine ganze Zahl $b$ erfülle $W_n(b)$ folgende Bedingungen:
 \begin{enumerate}
-\item $1\le b< n$
-\item 
-\begin{enumerate}
-	\item $b^{n-1} \neq 1\ mod\ n$ oder
-	\item $\exists i:2^i|(n-1)$ und $1<ggT(b^{\frac{n-1}{2^i}}-1,n)<n$ $[\frac{n-1}{2^i}\equiv m]$
-\end{enumerate}
-\end{enumerate}
+	\item $1 \le b < n$
+	\item 
+		\begin{enumerate}
+			\item $b^{n-1} \neq 1 \mod n$ oder
+			\item $\exists i:2^i|(n-1)$ und $1<\ggT(b^{\frac{n-1}{2^i}}-1,n)<n$ $\left[\frac{n-1}{2^i}\equiv m\right]$
+		\end{enumerate}
+	\end{enumerate}
 Eine ganze Zahl, die diese Bedingung erfüllt, wird \begriff{Zeuge (witness)} für die Teilbarkeit von $m$ genannt.\\
-(2 a) $\folgt$ Die \begriff{Fermat'sche Relation} ist verletzt. (Fermat: $b^{n-1}\equiv1\ mod\ n$)
-(2-b) $\folgt$ $n$ hat einen echten Teiler 
+$\stackrel{\text{2a}}{\folgt}$ Die \begriff{Fermat'sche Relation} ist verletzt. (Fermat: $b^{n-1}\equiv1\ mod\ n$)
+$\stackrel{\text{2b}}{\folgt}$ $n$ hat einen echten Teiler 
 $\folgt$ ist $n$ teilbar, so gilt $W_n(b)$ (\fixme{Stimmt das so?})
 $\folgt$ $n$ ist keine Primzahl.\\
 Ist $n$ teilbar, so gibt es viele Zeugen.
 
 \paragraph{Theorem (Anzahl der Zeugen)}
-Wenn $n\ge4$ teilbar ist, dann gilt
+Wenn $n \ge 4$ teilbar ist, dann gilt
 $${3(n-1)}/4 \le c(\{b|1\le b<n, W_n(b) \text{ gilt }\})$$
 $\folgt$ nicht mehr als $1/4$ der Zahlen $1 \le b <n$ sind keine Zeugen.\\
 
 \subsubsection{Algorithmus: Rabins Algorithmus}
-\emph{Eingabe:}\\$n$ ungerade, ganze Zahl mit $n>1$\\
-\emph{Ausgabe:}\\$b=\pm 1$, falls entschieden ist, dass $n$ prim ist\\
-$b=0$, falls $n$ teilbar ist\\
-\paragraph{Algorithmus}
-\begin{tabular}{rl}
-	 0 & Wähle zufällig a aus $1\le a<n$ \\
-	 1 & Faktorisiere $(n-1)$ zu $2^lm$ s.d. $n-1=2^lm$, $m$ ungerade (fixme{$2^l+m$ würde doch mehr Sinn machen, oder?}) \\
-	 2 & (Teste) $b=a^m\ mod\ n$, $i=1$ \\
-	 3 & \keyword{while} $b\ne -1$ und $b\ne 1$ und $i<l$ \\
-	 4 & \idt \keyword{do} $b=b^2\ mod\ n$, $i=i+1$ \\
-	 5 & (Entscheide) \keyword{if} $b=1$ oder $b=-1$ \\
-	 6 & \idt \keyword{then} $n$ prime \\
-	 7 & \idt \keyword{else} $n$ composite ($b=0$) \\
-\end{tabular}
-\paragraph{Bemerkung:} Der Algorithmus braucht $m(2+l)log_2(n)$ Schritte $folgt$ sehr effizient.
+\begin{tabular}{ll}
+	\emph{Eingabe:} & $n$ ungerade, ganze Zahl mit $n>1$ \\
+	\emph{Ausgabe:} & $b=\pm 1$, falls entschieden ist, dass $n$ prim ist\\
+	                & $b=0$, falls $n$ teilbar ist\\
+\end{tabular}\bigskip
+
+\ttfamily\begin{tabular}{rl}
+	 0 & Wähle zufällig a aus 1 <= a < n \\
+	 1 & Faktorisiere (n-1) zu 2$^\text{l}$m so dass n-1 = 2$^\text{l}$m, m ungerade \\
+	 2 & (Teste) b=a$^\text{m}$ mod n, i=1 \\
+	 3 & \keyword{while} b $\ne$ -1 und b $\ne$ 1 und i<l \\
+	 4 & \idt \keyword{do} b=b$^\text{2}$ mod n, i=i+1 \\
+	 5 & (Entscheide) \keyword{if} b=1 oder b=-1 \\
+	 6 & \idt \keyword{then} n prime \\
+	 7 & \idt \keyword{else} n composite (b=0) \\
+\end{tabular}\normalfont
+
+\paragraph{Bemerkung:} Der Algorithmus braucht $m(2+l)\log_2(n)$ Schritte $\folgt$ sehr effizient.
 
 \subsection{Las-Vegas-Algorithmen}
-\paragraph{Beispiel 1:} $M$ sei eine $n$-elementige Menge, $s_0,\dots ,S_{k-1} \subseteq S$ mit $|S_i|=r>0$ seien paarweise verschiedene Teilmengen von $S$, $k\le2^{r-2}$\\
+
+\paragraph{Beispiel 1:} $M$ sei eine $n$-elementige Menge, $S_0, \dots, S_{k-1} \subseteq S$ mit $|S_i|=r>0$ seien paarweise verschiedene Teilmengen von $S$, $k \le 2^{r-2}$\\
 Wir wollen die Elemente von $M$ so mit den Farben \emph{rot} und \emph{schwarz} färben, dass $S_i$ wenigstens \emph{ein} rotes und \emph{ein} schwarzes Element enthält.
+
 \paragraph{Beispiel 2:} Rabin (1980)\\
 Problem: irreduzible Polynome in endlichen Körpern zu finden.\\
 \begriff{irreduzibel}: $\exists$ kein Teiler, d.h. $$n \text{ ist irreduzibel} \Gdw \forall b: \text{ nicht } b|n$$
-d.h. $Q(x)$ ist irreduzibel $\Gdw$ $\exists$ kein Polynom $q(x)$ s.d. $q(x)|Q(x)$
+d.h. $Q(x)$ ist irreduzibel $\Gdw$ $\exists$ kein Polynom $q(x)$ so dass $q(x)|Q(x)$
+
 \subsubsection{Algorithmus: Irreduzibles Polynom}
-\emph{Eingabe:}\\$n$ Primzahl $p$ und ganze Zahl $n$\\
-\emph{Ausgabe:}\\irreduzibles Polynom
-\paragraph{Algorithmus}
-\begin{tabular}{rl}
+\begin{tabular}{ll}
+	\emph{Eingabe:} & $n$ Primzahl $p$ und ganze Zahl $n$\\
+	\emph{Ausgabe:} & irreduzibles Polynom
+\end{tabular}\bigskip
+
+\ttfamily\begin{tabular}{rl}
 	0 & \keyword{repeat}\\
-	1 & \idt Generiere ein zufälliges Polynom $g\in GF(p)[n]$ (\fixme{Stimmt das so?})\\
-	2 & \idt Teste die Irreduzibilität\\
+	1 & \idt Generiere ein zufälliges Polynom g $\in$ GF(p)[n] (\fixme{Stimmt das so?})\\
+	2 & \idt Teste die Irreduzibilität \\
 	3 & \keyword{until} Erfolg
-\end{tabular}
+\end{tabular}\normalfont
+
 \paragraph{Bemerkung:} Die Irreduzibilität wird durch 2 Theoreme geprüft:
-\paragraph{Theorem (Prüfung auf Irreduzibilität)} Seien $l_1,\dots ,l_n$ alle Primteiler von $n$, bezeichne $n/l_i=m_i$.\\
-Ein Polynom $g(x)\in GF(\phi)[x]$ vom Grad $n$ ist irreduzibel in $GF(\phi)$ $:\Gdw$
+
+\paragraph{Theorem (Prüfung auf Irreduzibilität)} Seien $l_1,\dots ,l_n$ alle Primteiler von $n$ und bezeichne $n/l_i=m_i$.
+Ein Polynom $g(x)\in GF(\phi)[x]$ vom Grad $n$ ist irreduzibel in $GF(\phi) :\Gdw$
 \begin{enumerate}
-\item $g(x)|(x^{p^n}-x)$
-\item $ggT(g(x),x^{p^mi}-n)=i$ für $1\le i\le k$
+	\item $g(x)|(x^{p^n}-x)$
+	\item $\ggT(g(x),x^{p^mi}-n)=i$ für $1 \le i \le k$
 \end{enumerate}
 
 \section{Gierige Algorithmen}
@@ -710,25 +725,27 @@ auch: \begriff{greedy algorithms} bzw. \begriff{Raffke-Algorithmen}
 \item normalerweise sehr einfach
 \item zum Lösen von Optimierungsproblemen
 \end{itemize}
-\paragraph{Typische Situation:} Wir haben \begin{itemize}
-\item eine Menge von Kandidaten (Jobs, Knoten eines Graphen)
-\item eine Menge von Kandidaten , die schon benutzt worden sind
-\item eine Funktion, die feststellt, ob eine bestimmte Mende von Kandidaten eine Lösung zu diesem Problem ist
-\item eine Funktion, die feststellt, ob eine Menge von Kandidaten eine zulässige Menge ist, um die bisherige Menge so zu vervollständigen, dass mindestens eine Lösung gefunden wird
-\item eine \begriff{Wahlfunktion} (selection function), die in beliebiger Zeit den geeignetsten Kandidaten aus den unbenutzten Kandidaten bestimmt.
-\item eine \begriff{Zielfunktion} (\fixme{target function?}), die den Wert einer Lösung ergibt (die Funktion, die zu optimieren ist)
+\paragraph{Typische Situation:} Wir haben
+\begin{itemize}
+	\item eine Menge von Kandidaten (Jobs, Knoten eines Graphen)
+	\item eine Menge von Kandidaten, die schon benutzt worden sind
+	\item eine Funktion, die feststellt, ob eine bestimmte Mende von Kandidaten eine Lösung zu diesem Problem ist
+	\item eine Funktion, die feststellt, ob eine Menge von Kandidaten eine zulässige Menge ist, um die bisherige Menge so zu vervollständigen,
+	      dass mindestens eine Lösung gefunden wird
+	\item eine Wahlfunktion (\begriff{selection function}), die in beliebiger Zeit den geeignetsten Kandidaten aus den unbenutzten Kandidaten bestimmt.
+	\item eine Zielfunktion (\begriff{target function}), die den Wert einer Lösung ergibt (die Funktion, die zu optimieren ist)
 \end{itemize}
 
 \subsection{Beispiel:} Wechselgeldausgabe an einen Kunden
-\begin{itemize}
-\item Kandidaten: Menge von Geldstücken ($1,5,10\dots$), wobei jede Sorte aus mindestens einem Geldstück besteht
-\item Lösung: Gesamtbetrag
-\item Zulässige Menge: die Menge, deren Gesamtbetrag die Lösung nicht überschreitet
-\item Wahlfunktion: Wähle das am höchsten bewertete Geldstück, das noch in der Menge der Kandidaten übrig ist
-\item Zielfunktion: Die Anzahl der in der Lösung benutzren Geldstücke
-\end{itemize}
+\begin{description}
+	\item{\textbf{Kandidaten:}} Menge von Geldstücken ($1, 5, 10, \dots$), wobei jede Sorte aus mindestens einem Geldstück besteht
+	\item{\textbf{Lösung:}} Gesamtbetrag
+	\item{\textbf{Zulässige Menge:}} die Menge, deren Gesamtbetrag die Lösung nicht überschreitet
+	\item{\textbf{Wahlfunktion:}} Wähle das am höchsten bewertete Geldstück, das noch in der Menge der Kandidaten übrig ist
+	\item{\textbf{Zielfunktion:}} Die Anzahl der in der Lösung benutzten Geldstücke
+\end{description}
 
-\paragraph{Bemerkung: } Gierige Algorithmen arbeiten schrittweise:
+\paragraph{Bemerkung:} Gierige Algorithmen arbeiten schrittweise:
 \begin{enumerate}
 \item Zu Beginn ist die Liste der Kandidaten leer.
 \item Bei jedem Schritt versucht man, mit Hilfe der Wahlfunktion den besten Kandidaten hinzuzufügen.
@@ -739,27 +756,26 @@ auch: \begriff{greedy algorithms} bzw. \begriff{Raffke-Algorithmen}
 
 \subsection{Gierige Algorithmen abstrakt:}
 $C=\{\text{Menge aller Kandidaten}\}$\\
-$S\la \emptyset \{\text{Lösungsmenge}\}$\\
-\begin{tabular}{rl}
-	0 & \keyword{while} nicht $L"osung(S)$ und $C\ne \emptyset$\\
-	1 & \idt \keyword{do} $x \la$ ein Element aus $C$, das $Wahl(x)$ maximiert\\
-	2 & \idt $C\la C \backslash \{ x\} $\\
-	3 & \idt \keyword{if} $Zul"assig(S\cup \{x\})$\\
-	4 & \idt \idt \keyword{then} $S \la S \cup \{x\}$\\
-	5 & \keyword{if} $L"osung(S)$\\
-	6 & \idt \keyword{then} return S\\
-	7 & \idt \keyword{else} return \glqq keine Lösung \grqq
-\end{tabular}
+$S \la \emptyset\ \{\text{Lösungsmenge}\}$\\
 
-\subsection{Beispiel:} Minimale, zusammenhängende Bäume
-\paragraph{Einführung:}\ \\
+\ttfamily\begin{tabular}{rl}
+	0 & \keyword{while} nicht Lösung (S) und C $\ne$ $\emptyset$\\
+	1 & \idt \keyword{do} x <- ein Element aus C, das Wahl(x) maximiert\\
+	2 & \idt C <- C $\backslash$ \{x\} \\
+	3 & \idt \keyword{if} Zulässig(S $\cup$ \{x\}) \\
+	4 & \idt \idt \keyword{then} S <- S $\cup$ \{x\} \\
+	5 & \keyword{if} Lösung(S) \\
+	6 & \idt \keyword{then} return S \\
+	7 & \idt \keyword{else} return "`keine Lösung"`
+\end{tabular}\normalfont
+
+\subsection{Beispiel} Minimale, zusammenhängende Bäume
+\paragraph{Einführung}
 Sei $G=<N,A>$ ein zusammenhängender, ungerichteter Graph
 \begin{itemize}
-\item $N$: Menge von Knoten
-\item $A$: Menge von Kanten (Wobei jeder Kante eine nichtnegative Länge zugeordnet wird)
+	\item $N$: Menge von Knoten
+	\item $A$: Menge von Kanten (Wobei jeder Kante eine nichtnegative Länge zugeordnet wird)
 \end{itemize}
 
 %Ende Vorlesung 09. Mai 2005, (Lars Volker)
-
-
 \end{document}
