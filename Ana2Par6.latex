@@ -7,7 +7,7 @@
 \setlength{\parskip}{2ex}
 
 \title{Differenzierbarkeitseigenschaften reellwertiger Funktionen}
-\author{Jonathan Picht, Wenzel Jakob}
+\author{Jonathan Picht, Pascal Maillard, Wenzel Jakob}
 % Wer nennenswerte Änderungen macht, schreibt euch bei \author dazu
 
 \theoremstyle{nonumberbreak}
@@ -81,7 +81,84 @@ $g(x):=(\Phi(x)-ax)^2 (x \in \MdR^n)$, $ g(0)=(\Phi(0)-a\cdot0)^2=0$.
 6.2(1) $\folgt g(x)=g(0)=0 \forall x\in\MdR^n \folgt \Phi(x)=a\cdot x\forall x\in \MdR^n.$
 \end{beweis}
 
-% --------8<----*snip*-----8<----[insert here]----8<----*snip*---8<-------
+\paragraph{Die Richtungsableitung}
+\indexlabel{Richtung}
+\indexlabel{Richtungsvektor}
+\indexlabel{Richtungsableitung}
+Sei $\emptyset \ne D \subseteq \MdR^n,\ D$ offen, $f:D \to \MdR$ und $x_0 \in D$. Ist $a \in \MdR^n$ und $||a||=1$, so heißt $a$ eine \textbf{Richtung} (oder ein \textbf{Richtungsvektor}).
+
+Sei $a \in \MdR^n$ eine Richtung. $D$ offen $\folgt \exists \delta>0: U_\delta(x_0) \subseteq D$. Gerade durch $x_0$ mit Richtung $a:\{x_0+ta:t\in\MdR\}.\  ||x_0+ta-x_0|| = ||ta|| = |t|$. Also: $x_0+ta \in D$ für $t \in (-\delta,\delta),\ g(t) := f(x_0+ta)\ (t \in (-\delta,\delta))$.
+
+$f$ heißt \textbf{in $x_0$ in Richtung $a$ db}, gdw. der Grenzwert $$\lim_{t\to 0} \frac{f(x_0+ta)-f(x_0)}{t}$$ existiert und $\in \MdR$ ist. In diesem Fall heißt $$\frac{\partial f}{\partial a}(x_0) := \lim_{t\to 0} \frac{f(x_0+ta)-f(x_0)}{t}$$ die \textbf{Richtungsableitung von $f$ in $x_0$ in Richtung $a$}.
+
+\begin{beispiele}
+\item $f$ ist in $x_0$ partiell db nach $x_j \equizu f$ ist in $x_0$ db in Richtung $e_j$. In diesem Fall gilt: $\frac{\partial f}{\partial x_j}(x_0) = \frac{\partial f}{\partial e_j}(x_0)$.
+
+\item $$f(x,y) := \begin{cases}
+\frac{xy}{x^2+y^2} & \text{, falls } (x,y) \ne (0,0)\\
+0 & \text{, falls } (x,y) = (0,0)\end{cases}$$
+
+$x_0 = (0,0).$ Sei $a=(a_1,a_2) \in \MdR^2$ eine Richtung, also $a_1^2+a_2^2=1;\ \frac{f(ta)-f(0,0)}{t} = \frac{1}{t} \frac{t^2a_1a_2}{t^2a_1^2+t^2a_2^2} = \frac{a_1a_2}{t}$. D.h.: $\frac{\partial f}{\partial a}(0,0)$ ex. $\equizu a_1a_2 = 0 \equizu a \in \{(1,0),(-1,0),(0,1),(0,-1)\}$. In diesem Fall: $\frac{\partial f}{\partial a}(0,0) = 0.$
+
+\item $$f(x,y) := \begin{cases}
+\frac{xy^2}{x^2+y^4} & \text{, falls } (x,y) \ne (0,0)\\
+0 & \text{, falls } (x,y) = (0,0)\end{cases}$$
+
+$x_0 = (0,0)$. Sei $a = (a_1,a_2) \in \MdR$ eine Richtung. $\frac{f(ta)-f(0,0)}{t} = \frac{1}{t} \frac{t^3a_1a_2^2}{t^2a_1^2+t^4a_2^4} = \frac{a_1a_2^2}{a_1^2+t^2a_2^4} \overset{t \to 0}{\to} \begin{cases}
+0 & \text{, falls } a_1=0\\
+\frac{a_2^2}{a_1} & \text{, falls } a_1 \ne 0 \end{cases}$
+
+D.h. $\frac{\partial f}{\partial a}(0,0)$ existiert für \emph{jede} Richtung $a \in \MdR^2$. Z.B.: $a = \frac{1}{\sqrt{2}}(1,1): \frac{\partial f}{\partial a}(0,0) = \frac{1}{\sqrt{2}}.$
+
+$f(x,\sqrt{x}) = \frac{x^2}{2x^2} = \frac{1}{2}\ \forall x>0 \folgt f$ ist in $(0,0)$ \emph{nicht} stetig.
+\end{beispiele}
+
+\begin{satz}
+Sei $x_0 \in D,\ a \in \MdR^n$ eine Richtung, $f:D \to \MdR$.
+\begin{liste}
+\item $\frac{\partial f}{\partial a}(x_0)$ existiert $\equizu \frac{\partial f}{\partial (-a)}(x_0)$ existiert. In diesem Fall ist: $$\frac{\partial f}{\partial (-a)}(x_0) = -\frac{\partial f}{\partial a}(x_0)$$
+\item $f$ sei in $x_0$ db. Dann:
+\begin{enumerate}
+\item[(i)] $\frac{\partial f}{\partial a}(x_0)$ existiert und $$\frac{\partial f}{\partial a}(x_0) = a\cdot \grad f(x_0).$$
+\item[(ii)] Sei $\grad f(x_0) \ne 0$ und $a_0 := ||\grad f(x_0)||^{-1}\cdot \grad f(x_0)$. Dann: $$\frac{\partial f}{\partial (-a_0)}(x_0) \le \frac{\partial f}{\partial a}(x_0) \le \frac{\partial f}{\partial a_0}(x_0) = ||\grad f(x_0)||.$$ Weiter gilt: $\frac{\partial f}{\partial a}(x_0) < \frac{\partial f}{\partial a_0}(x_0)$, falls $a \ne a_0$; $\frac{\partial f}{\partial (-a_0)}(x_0) < \frac{\partial f}{\partial a}(x_0)$, falls $a \ne -a_0$.
+\end{enumerate}
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+\begin{liste}
+\item $\frac{(f(x_0+t(-a))-f(x_0))}{t} = -\frac{(f(x_0+(-t)a)-f(x_0))}{-t} \folgt$ Beh.
+\item \begin{enumerate}
+\item[(i)] $g(t) := f(x_0+ta)$ ($|t|$ hinreichend klein). Aus Satz 5.4 folgt: $g$ ist db in $t=0$ und $g'(0) = f'(x_0) \cdot a \folgt \frac{\partial f}{\partial a}(x_0)$ existiert und ist $= g'(0) = \grad f(x_0)\cdot a$
+\item[(ii)] $\left| \frac{\partial f}{\partial a}(x_0) \right| \gleichnach{(i)} |a\cdot \grad f(x_0)| \overset{\text{CSU}}{\le} ||a||\cdot ||\grad f(x_0)|| = ||\grad f(x_0)|| = \frac{1}{||\grad f(x_0)||} \grad f(x_0) \cdot \grad f(x_0) = a_0\cdot \grad f(x_0) \gleichnach{(i)} \frac{\partial f}{\partial a_0}(x_0)$
+
+$\folgt \frac{\partial f}{\partial (-a_0)}(x_0) \gleichnach{(1)} -\frac{\partial f}{\partial a_0}(x_0) \le \frac{\partial f}{\partial a}(x_0) \le \frac{\partial f}{\partial a_0}(x_0) = ||\grad f(x_0)||$
+
+Sei $\frac{\partial f}{\partial a}(x_0) = \frac{\partial f}{\partial a_0}(x_0) \folgtnach{(i),(ii)} a\cdot\grad f(x_0) = ||\grad f(x_0)|| \folgt a\cdot a_0 = 1 \folgt ||a-a_0||^2 = (a-a_0)(a-a_0) = a\cdot a - 2a\cdot a_0 + a_0\cdot a_0 = 1-2+1 = 0 \folgt a=a_0.$
+\end{enumerate}
+\end{liste}
+\end{beweis}
+
+\paragraph{Der Satz von Taylor}
+Im Folgenden sei $f:D \to \MdR$ zunächst "`genügend oft partiell db"', $x_0 \in D$ und $h=(h_1,\ldots,h_n) \in \MdR^n$. Wir führen folgenden Formalismus ein.
+
+$$\nabla := \left( \frac{\partial}{\partial x_1},\ldots,\frac{\partial}{\partial x_n}\right)\ \text{("`Nabla"')};\ \nabla f:= \left( \frac{\partial f}{\partial x_1},\ldots,\frac{\partial f}{\partial x_n}\right) = \grad f;\ \nabla f(x_0) := \grad f(x_0)$$
+
+$$(h\cdot\nabla) := h_1 \frac{\partial}{\partial x_1} + \ldots + h_n \frac{\partial}{\partial x_n};\ (h\cdot\nabla) f:= h_1 \frac{\partial f}{\partial x_1} + \ldots + h_n \frac{\partial f}{\partial x_n} = h \grad f;\ (h\cdot\nabla) f(x_0) := h\cdot\grad f(x_0)$$
+
+$(h\cdot\nabla)^{(0)} f(x_0) := f(x_0)$. Für $k\in\MdN: (h\cdot\nabla)^{(k)} := \left( h_1 \frac{\partial}{\partial x_1} + \ldots + h_1 \frac{\partial}{\partial x_n} \right)^k$
+
+$(h\cdot\nabla)^{(2)} f(x_0) = \sum_{j=1}^n \sum_{k=1}^n h_jh_k\frac{\partial^2 f}{\partial x_j \partial x_k} (x_0)$
+
+$(h\cdot\nabla)^{(3)} f(x_0) = \sum_{j=1}^n \sum_{k=1}^n \sum_{l=1}^n h_jh_kh_l\frac{\partial^3 f}{\partial x_j \partial x_k \partial x_l} (x_0)$
+
+\begin{beispiel}
+$(n=2): h = (h_1,h_2).$
+
+$(h\cdot\nabla)^{(0)} f(x_0) = f(x_0),\ (h\cdot\nabla)^{(1)} f(x_0) = h\cdot \grad f(x_0) = h_1 f_x(x_0) + h_2 f_y(x_0)$.
+
+$(h\cdot\nabla)^{(2)} f(x_0) = \left( h_1 \frac{\partial f}{\partial x} + h_2 \frac{\partial f}{\partial y}\right)^2 (x_0) = h_1^2 \frac{\partial^2 f}{\partial^2 x} (x_0) + h_1h_2 \frac{\partial^2 f}{\partial x \partial y} (x_0) + h_2h_1 \frac{\partial^2 f}{\partial y \partial x} (x_0) + h_2^2 \frac{\partial^2 f}{\partial^2 y} (x_0).$
+\end{beispiel}
 
 \begin{satz}[Der Satz von Taylor]
 Sei $k\in\MdN, f\in C^{k+1}(D,\MdR),x_0 \in D, h\in\MdR^n$ und $S[x_0,x_0+h]\subseteq D$. Dann:
