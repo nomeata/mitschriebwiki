@@ -1,0 +1,1022 @@
+\documentclass[a4paper]{scrartcl}
+\newcounter{chapter}
+\setcounter{chapter}{2}
+\usepackage{info}
+\usepackage{clrscode}
+\usepackage[all]{xy}
+
+\title{Algorithmus}
+\author{Mathias Ziebarth, Sebastian Frehmel, Daniel Dreke, Felix Brandt, Lars Volker}
+% Wer nennenswerte Änderungen macht, schreibt sich bei \author dazu
+
+%\setlength{\parskip}{0.5cm}
+%\setlength{\parindent}{0cm}
+\begin{document}
+
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\ra}{\rightarrow}
+
+\maketitle
+
+\lectureof{25.04.2005}
+
+\subsection*{Literatur}
+\begin{itemize}
+\item \textsc{Thomas H. Cormen, Charles. E. Leiserson,
+Ronald Rivest, Clifford Stein:} \emph{Algorithmen -- Eine Einführung.}
+\item \textsc{Donald E. Knuth:} \emph{The Art of Computer Programming.} % Prof. Calmet hatte "Computer" vergessen.
+\end {itemize}
+
+\subsection* {Konventionen Pseudocode}
+\begin{itemize}
+\item Blockstruktur wird nur durch Einrücken gekennzeichnet (keine Klammern).
+\item Schleifenkonstrukte \textbf{while} und \textbf{repeat} wie üblich.
+\item Bei \textbf{for} bleibt der Wert nach Verlassen der Schleife erhalten.
+\item Alles nach "`//"' ist Kommentar. (Buch: $\rhd [, \%] \dots$)
+\item Mehrfachzuweisungen $x \leftarrow y \leftarrow z$ bedeutet $y \leftarrow z; x \leftarrow y$.
+\item Variablen sind lokal (local).
+\item Zugriff auf die Feldelemente: $A[i]$ das $i$-te Element.
+\item Datenattribute z. B. $\text{länge}(A)$.
+\item Parameter einer Prozedur: \textbf{call by value}.
+\item "`und"' und "`oder"' sind träge (lazy) Operatoren.
+\end{itemize}
+
+
+\subsubsection*{Rundungsfunktion / Gaußklammer}
+
+$\llc p / q \rrc$ "`ceiling function"' \\
+$\llf p / q \rrf$ "`floor function"' \\ 
+\\
+$p = 7, q = 3$ \\
+$p/q = 7/3 = 2,3...$ \\
+\\
+$\llc p / q \rrc = \llc 7 / 3 \rrc = 3$ \\
+$\llf p / q \rrf = \llf 7 / 3 \rrf = 2$
+
+% Teil 1 - Mathias
+
+\section{Definition}
+(mehrere Definitionen, Anzahl Bücher $\gg 100$)
+\begin{itemize}
+\item Algorithmus $\equiv$ Berechnungsprozedur
+(allgemeine $\rightarrow$ sehr spezialisierte)
+\item Prozedur ist deterministisch oder nicht
+\item deterministisch $\equiv \{$endlich, definiert, eindeutig$\}$ 
+\end{itemize}
+Algorithmus $\equiv$ Analyse, Komplexität, effiziente Berechnungsmethoden
+
+\section{Analyse von Algorithmen}
+
+\subsection{Das Sortierproblem}
+\begin{itemize}
+\item Eingabe: Eine Folge von $n$ Zahlen $(a_1, a_2, \dots, a_n)$.
+\item Ausgabe: Eine Permutation $(b_1, b_2, \dots, b_n)$ der Eingabefolge mit
+$b_1 \leqslant b_2 \leqslant \dots \leqslant b_n$.
+\end{itemize}
+
+\subsection{Implementierung: Insertion-Sort}
+\begin{codebox}
+\Procname{$\proc{Insertion-Sort}(A)$}
+\li    \For $j \gets 2$ \To $\id{laenge} [A]$
+\li        \Do 
+               $\id{schluessel} \gets A[j]$
+\li            \Comment Füge $A[j]$ in die sortierte Sequenz $A[1..j-1]$ ein.
+\li            $i \gets j-1$
+\li            \While $i>0$ und $A[i] > \id{schluessel}$
+\li                \Do
+                   $A[i+1]$ $\gets$ $A[i]$
+\li						     $i$ $\gets$ $i-1$
+					         \End
+\li			       $A[i+1] \gets \id{schluessel}$
+			     \End
+\end{codebox}
+
+\paragraph{Beispiel:}\hspace{0.1mm}
+
+\begin{enumerate}\renewcommand\labelenumi{(\alph{enumi})}
+\item
+\begin{tabular}{|r|r|r|r|r|r|}
+\hline
+5 & \textbf{2} & 4 & 6 & 1 & 3 \\
+\hline
+\end{tabular} 
+\item
+\begin{tabular}{|r|r|r|r|r|r|}
+\hline
+2 & 5 & \textbf{4} & 6 & 1 & 3 \\
+\hline
+\end{tabular} 
+\item
+\begin{tabular}{|r|r|r|r|r|r|}
+\hline
+2 & 4 & 5 & \textbf{6} & 1 & 3 \\
+\hline
+\end{tabular} 
+\item
+\begin{tabular}{|r|r|r|r|r|r|}
+\hline
+2 & 4 & 5 & 6 & \textbf{1} & 3 \\
+\hline
+\end{tabular} 
+\item
+\begin{tabular}{|r|r|r|r|r|r|}
+\hline
+1 & 2 & 4 & 5 & 6 & \textbf{3} \\
+\hline
+\end{tabular} 
+\item
+\begin{tabular}{|r|r|r|r|r|r|}
+\hline
+1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+\end{tabular}
+\end{enumerate}
+
+
+\subsection {Aufwandsklassen}
+\begin{itemize}
+\item Obere asymptotische Schranke
+$$ O(g(n))=\{f(n)| \textnormal{ es gibt } c,n_0>0 \textnormal{ mit } 0 \leq f(n) \leq cg(n) \textnormal{ für alle } n>n_0 \} $$
+\item Untere asymptotische Schranke
+$$ \Omega(g(n))=\{f(n)| \textnormal{ es gibt } c,n_0>0 \textnormal{ mit } 0 \leq cg(n)\leq f(n) \textnormal{ für alle } n \geq n_0 \} $$
+\item Asymptotisch scharfe Schranke
+$$ \Theta(g(n))=\{f(n)| \textnormal{ es gibt } c_1,c_2,n_0>0 \textnormal{ mit } 0\leq c_1 g(n) \leq f(n) \leq c_2 g(n) \textnormal{ für alle } n \geq n_0\} $$ 
+\end{itemize}
+
+% Teil 2 - Sebastian
+
+\subsection{Analyse von Insertion Sort}
+\ttfamily\begin{tabular}{llll}
+	0 & INSERTION-SORT(A)                                   & Kosten  & Zeit \\
+	1 & \keyword{for} j <- 2 \keyword{to} länge[A]          & c$_1$   & n \\
+	2 & \idt\keyword{do} schlüssel <- A[j]                  & c$_2$   & n-1 \\
+	3 & \idt//setze A[j] ein ...                            & 0       & n-1 \\
+	4 & \idt i  <- j - 1                                    & c$_4$   & n-1 \\
+	5 & \idt\keyword{while} i > 0 und A[i] > schlüssel      & c$_5$   & $\sum^{n}_{j=2}t_j$ \\
+	6 & \idt\idt\keyword{do} A[i + 1] <- A[i]               & c$_6$   & $\sum^{n}_{j=2}(t_j-1)$ \\
+	7 & \idt\idt i <- i - 1                                 & c$_7$   & $\sum^{n}_{j=2}(t_j-1)$ \\
+	8 & \idt A[i + 1] <- schlüssel                          & c$_8$   & n-1 \\
+\end{tabular}\normalfont
+
+\section{Aufwandsanalyse}
+Durch Summieren der Produkte aus Kosten und Zeit: 
+$$ T(n) = c_1n + c_2(n-1) + c_4(n-1) +c_5 \sum_{j=2}^n t_j + c_6 \sum_{j=2}^n (t_j-1) + c_7\sum_{j=2}^n (t_j-1) + c_8(n-1) $$
+Günstigster Fall: Das Feld ist schon sortiert
+\begin{eqnarray*}
+ T(n) & = & c_1n +c_2(n-1) + c_4(n-1) + c_5(n-1) +c_8(n-1) \\
+      & = & (c_1 +c_2 + c_4 + c_5 +c_8)n - ( c_2 + c_4 + c_5 + c_6) \\
+      & \folgt & \text{lineare Laufzeit}
+\end{eqnarray*}
+
+%\subsection{Aufwandsanalyse "`worst case"'}
+Schlechtester Fall: Das Feld ist in umgekehrter Reihenfolge sortiert
+\begin{eqnarray*}
+ T(n) & = & c_1n + c_2(n-1) + c_4(n-1) + c_5\left (\frac{n(n+1)}{2}-1 \right) \\
+      &   & + c_6  \left (\frac{n(n+1)}{2}-1 \right) + c_7 \left (\frac{n(n+1)}{2}-1 \right) +c_8(n-1) \\
+      & = & \left(\frac{c_5}{2} + \frac{c_6}{2} + \frac{c_7}{2}\right ) n^2 + \left( c_1+c_2+c_4+
+            \frac{c_5}{2}- \frac{c_6}{2} -\frac{c_7}{2} +c_8 \right) -(c_2+c_4+c_5+c_8) \\
+      & \folgt & \text{quadratische Laufzeit}
+\end{eqnarray*}
+
+% \subsection{Analyse II}
+Im Folgenden werden wir meistens nur die Laufzeit im schlechtesten Fall analysieren, denn
+\begin{itemize}
+	\item der schlechteste Fall bietet eine obere Schranke für die maximale Laufzeit,
+	\item für einige Algorithmen tritt der schlechteste Fall häufig auf: z. B. Suche in einer Datenbank,
+	\item der "`mittlere Fall"' ist oft annähernd genauso schlecht wie der schlechteste Fall.
+\end{itemize}
+
+\subsection{Methode: Teile und Beherrsche}
+\begin{itemize}
+	\item Teile das Problem in eine Anzahl von Teilproblemen auf
+	\item Beherrsche die Teilprobleme durch rekursives Lösen bis sie so klein sind, dass sie direkt gelöst werden können.
+	\item Verbinde die Lösungen der Teilprobleme zur Lösung des Ausgangsproblems.
+\end{itemize}
+
+\subsection{Laufzeiten}
+\begin{itemize}
+	\item $\lg n$
+	\item $\sqrt{n}$
+	\item $n$
+	\item $n\cdot\lg n$
+	\item $n^2$
+	\item $n^3$
+	\item $2^n$
+	\item $n!$
+\end{itemize}
+
+% Teil 3 - Daniel
+
+\subsection{Implementierung: Merge-Sort}
+
+\begin{itemize}
+	\item \textbf{Teile} die zu sortierende Sequenz der Länge $n$ in zwei Teilsequenzen der Länge $\frac{n}{2}$
+	\item \textbf{Beherrsche} durch rekursives Anwenden von Merge-Sort auf die zwei Teilsequenzen
+	\item \textbf{Verbinde} die zwei Teilsequenzen durch Mischen (merge)	
+\end{itemize}
+
+\ttfamily\begin{tabular}{rl}
+	0	&	MERGE-SORT(A, p, r) \\
+	1	&	\keyword{if} p < r \\
+	2	&	\keyword{then} q <- $\llf\right.$(p + r) / 2$\left.\rrf$ \\
+	3	&	\idt MERGE-SORT(A, p, q) \\
+	4	&	\idt MERGE-SORT(A, q + 1, r) \\
+	5	&	\idt MERGE(A, p, q, r)
+\end{tabular}\normalfont
+
+\subsubsection*{Pseudocode}
+
+\ttfamily\begin{tabular}{rl}
+	 0 & MERGE(A, p, q, r) \\
+	 1 & n$_1$ <- q - p + 1 \\
+	 2 & n$_2$ <- r - q \\
+	 3 & erzeuge die Felder L[1..(n$_1$ + 1)] und R[1..(n$_2$ + 1)] \\
+	 4 & \keyword{for} i <- 1 \keyword{to} n$_1$ \keyword{do} L[i] <- A[p + i - 1] \\
+	 5 & \keyword{for} j <- 1 \keyword{to} n$_2$ \keyword{do} R[j] <- A[q + j] \\
+	 6 & L[n$_1$ + 1] <- R[n$_2$ + 1] <- $\oo$ // Wächter \\
+	 7 & i <- i <- 1 \\
+	 8 & \keyword{for} k <- p \keyword{to} r \\
+	 9 & \idt \keyword{do} if L[i] <= R[j] \\
+	10 & \idt\idt \keyword{then} A[k] <- L[i] \\
+	11 & \idt\idt\idt i <- i + 1 \\
+	12 & \idt\idt \keyword{else} A[k] <- R[j] \\
+	12 & \idt\idt\idt j <- j + 1
+\end{tabular}\normalfont
+
+% \section{Beispiel}
+
+% \begin{center}
+% 	\includegraphics[width=0.80\textwidth]{E:/Uni Karlsruhe/LaTeX/Info VL 25.04.2005/beispiel.pdf}
+% \end{center}
+
+\subsection{Laufzeitanalyse}
+
+\begin{itemize}
+	\item Im allgemeinen Teile- und Beherrsche-Fall gilt: Sei $T(N)$ die Laufzeit für ein Problem der Größe $n$. Ist $n$ hinreichend klein $n \leq c$, dann benötigt die direkte Lösung eine konstante Zeit $\Theta(1)$. Führt die Aufteilung des Problems zu $a$ Teilproblemen der Größe $1/b$ und braucht die Aufteilung $D(n)$ Zeit und das Verbinden zum ursprünglichen Problem die Zeit $C(n)$ so gilt:
+	$$T(n)=
+	\begin{cases}
+		\Theta(1) & \text{falls } n \leq c \\
+		a(T(n/b)) + D(n) + C(n) & \text{sonst }
+	\end{cases}$$
+	\item Im Fall von Merge-Sort ist $a=b=2$ und $c=1$, also	
+	$$T(n)=
+	\begin{cases}
+	\Theta(1) & \text{falls } n=1 \\
+	2(T(n/2)) + dn & \text{sonst }
+	\end{cases}$$
+\end{itemize}
+
+% \section{Laufzeitanalyse 2}
+
+\begin{itemize}
+	\item Man kann die Problemgröße nur $\log_2(n)$ oft aufteilen.
+	\item Beim $i$-ten Aufteilen hat man $2^i$ Teillisten der Größe $n/2^i$ zu lösen und benötigt dafür $dn$ Zeit
+	\item Somit braucht man insgesamt $dn\log_2n+dn$ Zeit.
+\end{itemize}
+
+\section{Wachstum von Funktionen}
+\lectureof{27.04.2005}
+
+Zeitaufwand eines Algorithmus:
+$$T(n),\quad n\in\MdN_0$$
+
+
+\subsection{Asymptotische Notation - $\Theta$-Notation}
+
+Asymptotisch scharfe Schranke: 
+$$ \Theta(g(n))=\{f(n)| \textnormal{ es gibt } c_1,c_2,n_0>0 \textnormal{ mit } 0\leq c_1 g(n) \leq f(n) \leq c_2 g(n) \textnormal{ für alle } n \geq n_0\} $$ 
+
+\paragraph{Bemerkung:} $f\in\Theta(g)$ folgt $f$ ist asymptotisch nicht negativ, d.h. es gibt ein $n_0$ mit $f(n)\ge0$ für alle $n\ge n_0$
+
+\paragraph{Beispiele:}
+\begin{itemize}
+\item Konstanten: $\Theta(c), c\ge 0$: $\Theta(c) = \Theta(1)$ $(c_1=c_2=c,n_0=0)$
+\item Monome:  $f(x) = ax^n$. zu zeigen: $f\in\Theta(x^n)$. Wegen der Bemerkung gilt: $a>0$. Somit $c_1 = a, c_2=a, n_0=0$. Aber: $ax^n \notin \Theta(x^{n+1})$, denn für alle $c>0$ gilt: für alle $x>\frac{a}{c_2}$ ist $ax^n < c_2x^{n+1}$
+\item Polynome: $f(x) = \sum_{i=0}^na_ix^i$, $a_n\ne0$. zu zeigen: $f(x) \in \Theta(x^n)$. Auch hier: $a_n>0$ wegen Bemerkung und Monomen. Wähle $c_1=\min_{c=0}^n|a_i|$, $c_2=\sum_{i=0}^n|a_i|$, $n_0>c_2$. $c_1x^n\le \sum_{i=0}^{n}a_ix^i\le c_2x^n$
+\end{itemize}
+
+\subsection{Obere Asymptotische Schranke - O-Notation}
+
+$$ O(g(n))=\{f(n)| \textnormal{ es gibt } c,n_0>0 \textnormal{ mit } 0 \leq f(n) \leq cg(n) \textnormal{ für alle } n>n_0 \} $$
+
+Klar: $ax^k\in O(x^m) $ für $k\le m$.
+
+$a>0$, Die Bemerkung gilt auch hier! $(c=a,n_0=0)$. Ebenso: $\sum_{i=0}^ka_ix^i\in O(x^m)$ für $k\le m$.
+
+\subsection{Untere Asymptotische Schranke: $\Omega$-Notation}
+
+$$ \Omega(g(n))=\{f(n)| \textnormal{ es gibt } c,n_0>0 \textnormal{ mit } 0 \leq cg(n)\leq f(n) \textnormal{ für alle } n \geq n_0 \} $$
+
+Klar: $a^k\in\Omega(x^m)$ für $m\le k$. Wähle $c=a$, $n_0=0$.
+
+ebenso: $\sum_{i=0}^ka_ix^i\in\Omega(x^m)$ für $m\le k$.
+
+\subsection{Verhältnis der Mengen}
+
+für beliebige $f(n)$ und $g(n)$ gilt:
+
+$$ f(n)\in\Theta(g) \text{ genau dann, wenn } f(n)\in O(g) \text{ und } f(n)\in\Omega(g) $$
+
+Anmerkung: $\Theta$ ist eine Äquivalenzklasse, $\Omega$, O sind keine Äquivalenzklassen, da die Symmetriebedingung nicht erfüllt ist. \footnote{War wohl zunächst in der Übung falsch, wurde aber gleich korrigiert.}
+
+\section{Rekurrenzen - Rekursionsgleichungen}
+
+\paragraph{Problem:} Gegeben ist eine Rekurrenz $F_n$. \\ Gesucht: $f(X)$ in geschlossener Form mit $F_n\in \Theta(f)$.
+
+\subsection{1. Methode: \glqq Raten und Induktion\grqq}
+
+\paragraph{Beispiel:}
+
+$F_0  = 1$, $F_1 = 1$, $F_{n+1}  = F_n + F_{n-1}$
+
+\begin{tabular}{llll}
+$n$ & $F_n$ \\
+\hline
+1 & 1 & +0  & +1 \\
+2 & 1 & +1 & +0\\
+3 & 2 & +1 & +1\\
+4 & 3 &+2 & +1 \\
+5 & 5 & +3 & +2\\
+6 & 8 &+5 &+3 \\
+7 & 13  
+\end{tabular}
+
+Vermutung: $f(x) = ae^{bx}+c$
+
+\paragraph{Weiteres Beispiel:}\hspace{0.1mm}
+
+\begin{tabular}{llll}
+$n$ & $F_n$ \\
+\hline
+0 & -4 & +1  & $\cdot2$ \\
+1 & -3 & +2 & $\cdot2$\\
+2 & -1 & +4 & $\cdot2$\\
+3 & 3 &+8 & $\cdot2$ \\
+4 & 11 & +16 & $\cdot2$\\
+5 & 27 & 
+\end{tabular}
+
+Ansatz: $F(n) = a2^n+c$
+
+\subsection{Rekursionsbaummethode}
+
+$$T(n) = 3 T \left(\frac{n}{4}\right) + cn^2 $$
+
+Komischesschaubildwomaneigentlichnichtserkenntundworausmanwasfolgernkann.
+
+\subsection{Weitere Methoden}
+\begin{itemize}
+\item Jordan-Normalform: $$\begin{pmatrix}F_{n+1} \\ F_{n}\end{pmatrix} = A\begin{pmatrix}F_n\\F_{n-1}\end{pmatrix}$$
+\item Z-Transformierte.
+\end{itemize}
+
+% Vorlesung vom Mo. 02.05.2005 (Felix Brandt)
+
+\section{Die $o$-Notation}
+\lectureof{02.05.2005}
+
+$$o(g(n)) = \left\{ 
+\begin{array}{l}
+	f(n) : \text{ für jede positive Konstante }c>0  \\
+	\text{existiert eine Konstante $n_0>0$, sodass }\\
+	0\leq f(n) < c \cdot g(n) \text{ für alle } n \geq n_0
+\end{array} \right\}$$
+
+Die Definition der $O$-Notation und der $o$-Notation sind einander ähnlich. Der Unterschied besteht darin, dass in $f(n)=O(g(n))$ die
+Schranke $0 \leq f(n) \leq cg(n)$ für eine Konstante $c>0$ gilt, während sie in $f(n) = o(g(n))$ für alle Konstanten gilt.
+
+Die Funktion $f(n)$ (in der $o$-Notation) is unbedeutend gegenüber $g(n)$, wenn
+$$n \rightarrow \oo \folgt\ \lim_{n \rightarrow \oo} \frac{f(n)}{g(n)}=0$$
+
+\section{Die $\omega$-Notation}
+$$\omega(g(n)) = \left\{ 
+\begin{array}{l}
+	f(n) : \text{ für jede positive Konstante }c>0  \\
+	\text{existiert eine Konstante $n_0>0$, sodass }\\
+	0\leq c \cdot g(n) < f(n) \text{ für alle } n \geq n_0
+\end{array} \right\}$$
+$\folgt \lim_{n \rightarrow \oo} \frac{f(n)}{g(n)}=\oo$\\
+$\left[ n^2/2 = \omega(n); n^2/2 \neq \omega(n^2) \right]$
+
+\section{Lösen von Rekurrenzen mit der Generierenden-Funktion}
+(\begriff{generating function})
+\begin{description}
+	\item{Gegeben} sei eine Folge $<g_n>$
+	\item{Gesucht} ist eine geschlossene Form für $g_n$. Die folgenden 4 Schritte berechnen diese (\begriff{closed form})
+\end{description}
+\begin{enumerate}
+\item Finde eine einzige Gleichung, die $g_n$ anhand anderer Elemente der Folge ausdrückt. Die Gleichung sollte unter der Annahme
+      $g_{-1}=g_{-2}= \ldots = 0$ für alle ganzen Zahlen (\MdZ) gelten.
+\item Multipliziere beide Seiten mit $z^n$ und summiere über alle $n$. Auf der linken Seite steht nun
+      $$\sum_{n}g_nz^n = G(z) \text{ die generierende Funktion}$$
+      Die rechte Seite der Gleichung sollte nun so manipuliert werden, dass sie andere Ausdrücke in $G(z)$ enthält.
+\item Löse die resultierende Gleichung und erhalte damit eine geschlossene Form für $G(z)$.
+\item Expandiere diese Form von $G(z)$ in eine Potenzreihe und betrachte die Koeffizienten von $z^n$. Das ist eine geschlossene
+      Form für $g_n$.
+\end{enumerate}
+
+\paragraph{Beispiel} Die Fibonacci-Zahlen
+$$g_0=0;\ g_1=1;\ g_n=g_{n-1}+g_{n-2}\ (n \geq 2)$$
+
+\begin{labeling}[:]{Schritt 9}
+\item[Schritt 1] Die Gleichung $g_n=g_{n-1}+g_{n-2}$ ist nur für $n \geq 2$ zulässig, denn unter der Annahme $g_{-1}=0,\ g_{-2}=0$ ist
+      $g_0=0,\ g_1=0,\ \ldots$
+      \[
+      	g_n \stackrel{?}{=} \begin{cases}
+      	0,& \text{falls $n=1$} \\
+      	1,& \text{falls $n=2$} \\
+      	g_{n-1}+g_{n-2},& \text{sonst}
+      \end{cases}\]
+      $\folgt \text{ Nein}$
+      \[ \left[ n=1 \right] =
+      \begin{cases}
+      	1,& \text{falls $n=1$} \\
+      	0,& \text{sonst}
+      \end{cases}\]
+      $\folgt g_n=g_{n-1}+g_{n-2} + \left[ n=1 \right]$
+\item[Schritt 2]
+	\begin{eqnarray*}
+			G(z) & = & \sum_ng_nz^n = \sum_ng_{n-1}z^n + \sum_ng_{n-2}z^n + \sum [n=1]z^n \\
+			     & = & \sum_ng_nz^{n+1} + \sum_ng_nz^{n+2} + z \\
+			     & = & z\sum_ng_nz^n + z^2\sum_ng_nz^n + z \\
+			     & = & zG(z) + z^2G(z) + z \\
+	\end{eqnarray*}
+\item[Schritt 3] ist hier einfach
+      $$G(z) = \frac{1}{1-z-z^2}$$
+\item[Schritt 4] Gesucht ist eine Darstellung von      
+      $$\frac{z}{1-z-z^2}=\frac{z}{(1-\Phi z)(1-\dach{\Phi}z)}\ (\Phi: \text{ "`\begriff{Goldener Schnitt (engl.: golden ratio}"'})$$
+			$$\text{mit }\Phi = \frac{1+\sqrt{5}}{2};\ \dach{\Phi} = \frac{1-\sqrt{5}}{2}$$
+			als formale Potenzreihe. Eine Partialbruchzerlegung ergibt			
+			$$\frac{1/\sqrt{5}}{1-\Phi z} - \frac{1/\sqrt{5}}{1-\dach{\Phi}z}$$
+			Es existiert folgende Regel
+			$$\frac{a}{1-pz)^{m+1}} = \sum_{n \geq 0} \left(\begin{array}{c}m+n\\m\end{array}\right)ap^nz^n$$
+			Somit ist 
+			$$\frac{1/\sqrt{5}}{1-\Phi z} - \frac{1/\sqrt{5}}{1-\dach{\Phi}z} = 
+			\sum_{n \geq 0}\frac{1}{\sqrt{5}}\Phi^nz^n + \sum_{n \geq 0}\frac{1}{\sqrt{5}}\dach{\Phi}^nz^n$$
+			und für den $n$-ten Koeffizienten gilt
+			$F_n = \frac{\Phi^n - \dach{\Phi}^n}{\sqrt{5}}$
+\end{labeling}
+
+\section{Notationen}
+  Die \begriff{floor} und die \begriff{ceiling} Funktion:
+  $$\begin{array}{cl}
+  	\llc z \rrc &\text{ kleinste obere Ganzzahl}\\
+  	            &\text{ the least integer greater than or equal to z}\\
+  	\llf z \rrf &\text{ größte untere Ganzzahl}\\
+  	            &\text{ the greatest integer less than or equal to z}
+  \end{array}$$
+  
+\section{Die Mastermethode}
+  "`Rezept"': Methode zur Lösung von Rekurrenzgleichungen der Form
+  $$T(n)= aT(n/b)+f(n)$$
+  wobei $a \geq 1$, $b>1$ und $f(n)$ eine asymptotisch positive Funktion.
+  
+\paragraph{Beispiel} Merge-Sort
+	$$a=2,\ b=2,\ f(n)=\Theta(n)$$
+
+\section{Mastertheorem}
+	Seien $a \geq 1$ und $b>1$ Konstanten. Sei $f(n)$ eine Funktion und sei $T(n)$ über die nichtnegativen
+	ganzen Zahlen durch die Rekursionsgleichung $T(n)= aT(n/b)+f(n)$ definiert, wobei wir $n/b$ so interpretieren,
+	dass damit entweder $\llf n/b \rrf$ oder $\llc n/b \rrc$ gemeint ist. Dann kann $T(n)$ folgendermaßen asymptotisch
+	beschränkt werden.
+\begin{enumerate}
+\item Wenn $f(n)=O(n^{\log_ba-\epsilon})$ für eine Konstante $\epsilon > 0$ erfüllt ist, dann gilt $T(n)=\Theta(n^{\log_ba})$
+\item Wenn $f(n)=\Theta(n^{\log_ba})$ erfüllt ist, dann gilt $T(n) = \Theta(n^{\log_ba}\cdot \lg n)$
+\item Wenn $f(n)=\Omega(n^{\log_ba+\epsilon})$ für $\epsilon > 0$ erfüllt ist und wenn $a\cdot f(n/b) \leq c \cdot f(n)$ für eine Konstante
+			$c < 1$ und hinreichend große $n$ gilt, dann ist $T(n)=\Theta(f(n))$.
+\end{enumerate}
+
+$\Longrightarrow$ Im ersten Fall muss $f(n)$ nicht nur kleiner als $n^{\log_ba}$ sein, sondern sogar polynomial kleiner. Das heißt $f(n)$
+      muss für $t>0$ und den Faktor $n^2$ asymptotisch kleiner sein, als $n^{\log_ba}$.
+      
+$\Longrightarrow$ Im dritten Fall muss $f(n)$ nicht nur größer sein als $n^{\log_ba}$, sondern polynomial größer und zusätzlich die
+      "`Regularitätsbedingung"' $a \cdot f(n/b) \leq c \cdot f(n)$ erfüllen.
+      
+\paragraph{Beispiel 1} $T(n) = 9T(n/3)+n$\\
+	$a=9,\ b=3,\ f(n)=n$ und somit $n^{\log_ba}=n^{\log_39}=\Theta(n^2)$. Da $f(n)=O(n^{\log_39-\epsilon})$ mit $\epsilon = 1$ gilt, können wir
+	Fall 1 anwenden und schlussfolgern, dass $T(n)=\Theta(n^2)$ gilt.
+	
+\paragraph{Beispiel 2} $T(n) = T(2n/3)+1$\\
+	$a=1,\ b=3/2,\ f(n)=1$ also $n^{\log_ba}=n^{\log_{3/2}1}=n^0=1$ da $f(n) = \Theta(n^{\log_ba}) = \Theta(1) \folgt$ Lösung: $T(n)=\Theta(\lg n)$
+
+\paragraph{Beispiel 3} $T(n) = 3T(n/4)+n \lg n$\\
+	$a=3,\ b=4,\ f(n)=n \lg n$ also $n^{\log_ba}=n^{\log_43}=O(n^{0,793})$ Da $f(n)=\Omega(n^{\log_43+\epsilon})$ mit $\epsilon \approx 0,2$ 
+	gilt, kommt Fall 3 zur Anwendung $\Rightarrow$ $T(n) = \Theta(n \lg n)$
+
+\bigskip Die Mastermethode ist auf $T(n)=2T(n/2) + n \lg n$ nicht anwendbar auch wenn sie die korrekte Form hat: $a=2,\ b=2,\ f(n)=n \lg n$.
+Das Problem besteht darin, dass $f(n)$ nicht polynomial größer ist als $n^{\log_b a}$.
+Das Verhältnis $f(n)/(n^{\log_b a}) = (n \lg n)/n = \lg n$ ist asymptotisch kleiner als $n^\epsilon$ für jede Konstante $\epsilon > 0$.
+
+% Anfang VL Mi. 04.05.2005 (Mathias Ziebarth, Daniel Dreke, Sebastian Frehmel)
+
+% Teil 1 - Mathias
+
+\section{Probalistische Algorithmen (zufallsgesteuerte Algorithmen)}
+\lectureof{04.05.2005}
+
+\paragraph{Numerische Algorithmen} $\approx 1950 \rightarrow $ Integration.\\
+$$ \int_0^1 \cdots \int_0^1 f(\alpha_1, \dots, \alpha_n) \ d \alpha_1, \dots, d \alpha_n $$
+
+\begin{itemize}
+\item Monte-Carlo Methode $n=2$
+>> komische Graphiken <<
+\end{itemize}
+
+Das Konzept wurde 1976 von Rabin effektiver formuliert.
+
+\subsection{Einführung}
+Wir beginnen mit der Definition eines deterministischen Algorithmus nach Knuth.
+
+\begin{enumerate}
+\item Eine Berechnungsmethode ist ein Quadrupel $( Q,I,O,F )$ mit $ I \subset Q, O \subset Q, f: Q \rightarrow Q$
+und $f(p) = p' , \forall p \in J$. $Q$ ist der Zustand der Berechnung, $I$: Eingabe, $O$: Ausgabe und $f$:
+Berechnungsregeln.
+\begin{itemize}
+\item Jedes $x \in J$ ergibt eine Folge $x_0, x_1, \dots$ die durch $x_{k+1} = f(x_k), k \geq 0, x_0 = x$ definiert ist.
+\item Die Folge terminiert nach $k$ Schritten ($K$: kleiner als die k's, sodass gilt: $x_k \in O$
+\end{itemize}
+\item Ein Algorithmus ist eine Berechnungsmethode, die in endlich vielen Schritten für alle $x \in I$ terminiert.
+\item Ein deterministischer Algorithmus ist eine formale Beschreibung für eine \emph{endliche}, \emph{definite} Prozedur, deren Ausgaben zu beliebigen Eingaben \emph{eindeutig} sind.
+\end{enumerate}
+
+Hauptmotivation zur Einführung von probalistischen Algorithmen stammt aus der Komplexitätsanalyse. Man unterscheidet zwischen dem 
+\emph{Verhalten im schlechtesten Fall} und dem \emph{Verhalten im mittleren Fall} eines Algorithmus. Diese Fälle sind festgelegt, sobald das Problem und die Daten bestimmt sind.\\
+Die hervorgehobenen Wörter in den Definitionen eines deterministischen Algorithmus sind die Schlüssel zur Definition von drei Arten von probalistischen Algorithmen:
+
+% Teil 2 - Daniel
+
+\begin{enumerate}
+\item{Macao-Algorithmus (1. Art)} (auch Sherwood Algorithmus)
+
+\begin{itemize}
+	\item mindestens bei einem Schritt der Prozedur werden einige Zahlen zufällig ausgewählt (nicht definit)
+	\item sonst: deterministisch
+\end{itemize}
+$\folgt$ immer eine korrekte Antwort\\ \\
+Wird benutzt, wenn irgendein bekannter Algorithmus (zur Lösung eines bestimmten Problems) im mittleren Fall viel schneller als im schlechtesten Fall läuft.
+
+\item{Monte-Carlo-Algorithmus (2. Art)}
+
+\begin{itemize}
+	\item gleich wie Algorithmus 1. Art (nicht definit)
+	\item mit einer Wahrscheinlichkeit von $1-\epsilon$, wobei $\epsilon$ sehr klein ist (nicht eindeutig)
+\end{itemize}
+$\folgt$ immer eine Antwort, wobei die Antwort nicht unbedingt richtig ist\\
+($\epsilon \dann 0$ falls $t \dann \infty$)
+
+\item{Las-Vegas-Algorithmus (3. Art)}
+\begin{itemize}
+	\item Gleich wie Macao-Algorithmus (nicht definit).
+	\item Eine Folge von zufälligen Wahlen kann unendlich sein (mit einer Wahrscheinlichkeit $\epsilon \dann 0$) (nicht endlich).
+\end{itemize}
+\end{enumerate}
+
+\subsection{Macao-Algorithmen ("`Nähestes-Paar"'-Algorithmus)}
+
+Problem: $x_1,...,x_n$ seien $n$ Punkte in einem $k$-dimensionalen Raum $R^k$.
+Wir möchten das näheste Paar $x_i, x_j$ finden, sodass gilt:
+$$d(x_i, x_j) = \text{min} \{d(x_p, x_q)\} \qquad (1 \leq p < q \leq n),$$
+wobei $d$ die gewöhnliche Abstandsfunktion aus $R^k$ ist.
+
+\subsection{Brute-Force-Methode ("`Brutaler Zwang"'-Methode)}
+Evaluiert alle $\frac{n(n-1)}{2}$ relevanten gegenseitigen Abstände.\\
+$\folgt$ minimaler Abstand\\
+$\folgt O(n^2)$\\
+
+\subsection{Deterministische Algorithmen (Yuval)}
+$\folgt O(n \log n)$\\
+
+Idee: man wählt eine Hülle $S=\{x_1, \ldots, x_n\}$ und sucht das näheste Paar innerhalb dieser Hülle.\\
+
+Schlüsselidee: eine Teilmenge von Punkten wird zufällig ausgewählt
+$\folgt$ Parl. (???) Alg. (Macaos) mit $O(n)$ und mit sehr günstiger Konstante.
+
+\begin{enumerate}
+	\item Wähle zufällig $S_1 = \{x_{i_1}, \ldots, x_{i_n}\}$\\
+				$m = n^{2/3}$\\ $m =$ Kardinalität $S_1$ (= Anzahl von Elementen in $S_1$)
+	\item Berechne $\delta(S_1) = \text{min} \{(x_p, x_q)\}$\\
+				für $x_p, x_q \in S_1 \folgt O(n)$\\
+				Wir iterieren einmal den gleichen Algorithmus für $S_1$, indem man $S_2 \subset S_1$ mit 
+				$c(S_2)=m^{2/3}=n^{4/9}$ zufällig auswählt.\\ $\ldots O(n)$
+	\item Konstruieren eines quadratischen Verbandes $\Gamma$ mit der Netzgröße (\begriff{mesh size}) $\delta=\delta(S_1)$.
+	
+% Teil 3 - Sebastian
+
+	\item Finde für jedes $\Gamma_i$ die Dekomposition $S = S^{(i)}_1 \cup \ldots \cup S^{(i)}_k, 1 \leq i \leq 4$
+				(anders als Hashing-Techniken)
+	\item $\forall x_p, x_q \in S^{(i)}_j$ berechne $d(x_p, x_q) \folgt$ Das nächste Paar ist unter 
+				diesen Paaren zu finden.
+
+				Leite ab aus $\Gamma$ durch Verdopplung der Netzgröße auf $2\delta$
+\end{enumerate}
+
+\paragraph{Lemma zu 3.:} Gilt $\delta(S) \leq \delta$ ($\delta$ ist Netzgröße von $\Gamma$), so existiert ein Verbandpunkt $y$ auf $\Gamma$, so dass das nächste Paar im Quadrupel von Quadraten aus $\Gamma$ direkt und rechts von $y$ liegt. \\
+$\folgt$ es ist garantiert, dass das nächste Paar $x_i, x_j$ aus $S$ innerhalb eines gleichen Quadrats aus $\Gamma_i$ liegt 
+$(1\leq i \leq 4)$
+
+\subsection{Monte-Carlo-Algorithmus}
+$\dann$ Miller-Rabin Primzahl Algorithmus \\
+Ganze Zahlen: 2 Probleme
+\begin{itemize}
+	\item Primzahltest
+	\item Faktorisierung
+\end{itemize}
+
+Algorithmus stellt fest, ob eine Zahl $n$ prim ist (pseudo-prim). In diesem Algorithmus werden $m$ Zahlen $1\leq b_1,\ \ldots,\ b_m<n$ zufällig ausgewählt. Falls für eine gegebene Zahl $n$ und irgendein $\epsilon>0$ $\log_2\frac{1}{\epsilon}\leq m$ gilt, dann wird der Algorithmus die korrekte Antwort mit Wahrscheinlichkeit größer als (1-$\epsilon$) liefern.\\
+Grundidee: Ergebnisse aus Zahlentheorie (\begriff{Millers Bedingung}) für eine ganze Zahl $b$.\\
+
+% Ende VL Mi. 04.05.2005 (Mathias Ziebarth, Daniel Dreke, Sebastian Frehmel)
+
+% Vorlesung vom Mo. 09. Mai 2005 (Lars Volker)
+
+\def\ggT{\text{ ggT}}
+
+\lectureof{09.05.2005}
+\subsubsection{Einschub Modular-Arithmetik (Gauß (1801))}
+\paragraph{Definition}
+Seien $a,b,N\in \MdZ$. Dann schreibt man:
+$$a\equiv b\ (mod\ N) \Gdw N\ |\ (a-b)$$
+$$\text{"`$|$"' bedeutet "`teilt"'}$$
+
+\paragraph{Beispiele}
+\begin{itemize}
+	\item $7 \mod 5 = 2$
+	\item "`mod $5$"' bedeutet Rechnen mit $0,1,2,3,4$
+	\item $a=b \mod N \wedge c=d \mod N \folgt a+c = (b+d) \mod N$
+	\item $a \mod N + b \mod N = (a+b) \mod N$
+\end{itemize}
+
+\subsubsection{Witnessfunktion}
+Für eine ganze Zahl $b$ erfülle $W_n(b)$ folgende Bedingungen:
+\begin{enumerate}
+	\item $1 \le b < n$
+	\item 
+		\begin{enumerate}
+			\item $b^{n-1} \neq 1 \mod n$ oder
+			\item $\exists i:2^i|(n-1)$ und $1<\ggT(b^{\frac{n-1}{2^i}}-1,n)<n$ $\left[\frac{n-1}{2^i}\equiv m\right]$
+		\end{enumerate}
+	\end{enumerate}
+Eine ganze Zahl, die diese Bedingung erfüllt, wird \begriff{Zeuge (witness)} für die Teilbarkeit von $m$ genannt.\\
+$\stackrel{\text{2a}}{\folgt}$ Die \begriff{Fermat'sche Relation} ist verletzt. (Fermat: $b^{n-1}\equiv1\ mod\ n$)
+$\stackrel{\text{2b}}{\folgt}$ $n$ hat einen echten Teiler 
+$\folgt$ ist $n$ teilbar, so gilt $W_n(b)$ (\fixme{Stimmt das so?})
+$\folgt$ $n$ ist keine Primzahl.\\
+Ist $n$ teilbar, so gibt es viele Zeugen.
+
+\paragraph{Theorem (Anzahl der Zeugen)}
+Wenn $n \ge 4$ teilbar ist, dann gilt
+$${3(n-1)}/4 \le c(\{b|1\le b<n, W_n(b) \text{ gilt }\})$$
+$\folgt$ nicht mehr als $1/4$ der Zahlen $1 \le b <n$ sind keine Zeugen.\\
+
+\subsubsection{Algorithmus: Rabins Algorithmus}
+\begin{tabular}{ll}
+	\emph{Eingabe:} & $n$ ungerade, ganze Zahl mit $n>1$ \\
+	\emph{Ausgabe:} & $b=\pm 1$, falls entschieden ist, dass $n$ prim ist\\
+	                & $b=0$, falls $n$ teilbar ist\\
+\end{tabular}\bigskip
+
+\paragraph{Algorithmus}\ \\
+\ttfamily\begin{tabular}{rl}
+	 0 & Wähle zufällig a aus 1 <= a < n \\
+	 1 & Faktorisiere (n-1) zu 2$^\text{l}$m so dass n-1 = 2$^\text{l}$m, m ungerade \\
+	 2 & (Teste) b=a$^\text{m}$ mod n, i=1 \\
+	 3 & \keyword{while} b $\ne$ -1 und b $\ne$ 1 und i<l \\
+	 4 & \idt \keyword{do} b=b$^\text{2}$ mod n, i=i+1 \\
+	 5 & (Entscheide) \keyword{if} b=1 oder b=-1 \\
+	 6 & \idt \keyword{then} n prime \\
+	 7 & \idt \keyword{else} n composite (b=0) \\
+\end{tabular}\normalfont
+
+\paragraph{Bemerkung:} Der Algorithmus braucht $m(2+l)\log_2(n)$ Schritte $\folgt$ sehr effizient.
+
+\subsection{Las-Vegas-Algorithmen}
+
+\paragraph{Beispiel 1:} $M$ sei eine $n$-elementige Menge, $S_0, \dots, S_{k-1} \subseteq S$ mit $|S_i|=r>0$ seien paarweise verschiedene Teilmengen von $S$, $k \le 2^{r-2}$\\
+Wir wollen die Elemente von $M$ so mit den Farben \emph{rot} und \emph{schwarz} färben, dass $S_i$ wenigstens \emph{ein} rotes und \emph{ein} schwarzes Element enthält.
+
+\paragraph{Beispiel 2:} Rabin (1980)\\
+Problem: irreduzible Polynome in endlichen Körpern zu finden.\\
+\begriff{irreduzibel}: $\exists$ kein Teiler, d.h. $$n \text{ ist irreduzibel} \Gdw \forall b: \text{ nicht } b|n$$
+d.h. $Q(x)$ ist irreduzibel $\Gdw$ $\exists$ kein Polynom $q(x)$ so dass $q(x)|Q(x)$
+
+\subsubsection{Algorithmus: Irreduzibles Polynom}
+\begin{tabular}{ll}
+	\emph{Eingabe:} & $n$ Primzahl $p$ und ganze Zahl $n$\\
+	\emph{Ausgabe:} & irreduzibles Polynom
+\end{tabular}\bigskip
+
+\paragraph{Algorithmus}\ \\
+\ttfamily\begin{tabular}{rl}
+	0 & \keyword{repeat}\\
+	1 & \idt Generiere ein zufälliges Polynom g $\in$ GF(p)[n] (\fixme{Stimmt das so?})\\
+	2 & \idt Teste die Irreduzibilität \\
+	3 & \keyword{until} Erfolg
+\end{tabular}\normalfont
+
+\paragraph{Bemerkung:} Die Irreduzibilität wird durch 2 Theoreme geprüft:
+
+\paragraph{Theorem (Prüfung auf Irreduzibilität)} Seien $l_1,\dots ,l_n$ alle Primteiler von $n$ und bezeichne $n/l_i=m_i$.
+Ein Polynom $g(x)\in GF(\phi)[x]$ vom Grad $n$ ist irreduzibel in $GF(\phi) :\Gdw$
+\begin{enumerate}
+	\item $g(x)|(x^{p^n}-x)$
+	\item $\ggT(g(x),x^{p^mi}-n)=i$ für $1 \le i \le k$
+\end{enumerate}
+
+\section{Gierige Algorithmen}
+auch: \begriff{greedy algorithms} bzw. \begriff{Raffke-Algorithmen}
+\begin{itemize}
+\item normalerweise sehr einfach
+\item zum Lösen von Optimierungsproblemen
+\end{itemize}
+\paragraph{Typische Situation:} Wir haben
+\begin{itemize}
+	\item eine Menge von Kandidaten (Jobs, Knoten eines Graphen)
+	\item eine Menge von Kandidaten, die schon benutzt worden sind
+	\item eine Funktion, die feststellt, ob eine bestimmte Mende von Kandidaten eine Lösung zu diesem Problem ist
+	\item eine Funktion, die feststellt, ob eine Menge von Kandidaten eine zulässige Menge ist, um die bisherige Menge so zu vervollständigen,
+	      dass mindestens eine Lösung gefunden wird
+	\item eine Wahlfunktion (\begriff{selection function}), die in beliebiger Zeit den geeignetsten Kandidaten aus den unbenutzten Kandidaten bestimmt.
+	\item eine Zielfunktion (\begriff{target function}), die den Wert einer Lösung ergibt (die Funktion, die zu optimieren ist)
+\end{itemize}
+
+\subsection{Beispiel:} Wechselgeldausgabe an einen Kunden
+\begin{description}
+	\item{\textbf{Kandidaten:}} Menge von Geldstücken ($1, 5, 10, \dots$), wobei jede Sorte aus mindestens einem Geldstück besteht
+	\item{\textbf{Lösung:}} Gesamtbetrag
+	\item{\textbf{Zulässige Menge:}} die Menge, deren Gesamtbetrag die Lösung nicht überschreitet
+	\item{\textbf{Wahlfunktion:}} Wähle das am höchsten bewertete Geldstück, das noch in der Menge der Kandidaten übrig ist
+	\item{\textbf{Zielfunktion:}} Die Anzahl der in der Lösung benutzten Geldstücke
+\end{description}
+
+\paragraph{Bemerkung:} Gierige Algorithmen arbeiten schrittweise:
+\begin{enumerate}
+\item Zu Beginn ist die Liste der Kandidaten leer.
+\item Bei jedem Schritt versucht man, mit Hilfe der Wahlfunktion den besten Kandidaten hinzuzufügen.
+\item Falls die erwartete Menge nicht mehr zulässig ist, entfernen wir den gerade hinzugefügten Kandidaten. Er wird später nicht mehr berücksichtigt.
+\item Falls die gewählte Menge noch zulässig ist, gehört der gerade Kandidat dieser Menge für immer an
+\item Nachdem wir die Menge erweitert haben, überprüfen wir, ob die Menge eine Lösung des gegebenen Problems ist.
+\end{enumerate}
+
+\subsection{Gierige Algorithmen abstrakt:}
+$C=\{\text{Menge aller Kandidaten}\}$\\
+$S \la \emptyset\ \{\text{Lösungsmenge}\}$\\
+
+\ttfamily\begin{tabular}{rl}
+	0 & \keyword{while} nicht Lösung (S) und C $\ne$ $\emptyset$\\
+	1 & \idt \keyword{do} x <- ein Element aus C, das Wahl(x) maximiert\\
+	2 & \idt C <- C $\backslash$ \{x\} \\
+	3 & \idt \keyword{if} Zulässig(S $\cup$ \{x\}) \\
+	4 & \idt \idt \keyword{then} S <- S $\cup$ \{x\} \\
+	5 & \keyword{if} Lösung(S) \\
+	6 & \idt \keyword{then} return S \\
+	7 & \idt \keyword{else} return "`keine Lösung"`
+\end{tabular}\normalfont
+
+\subsection{Beispiel} Minimale, zusammenhängende Bäume
+\paragraph{Einführung}
+Sei $G=<N,A>$ ein zusammenhängender, ungerichteter Graph
+\begin{itemize}
+	\item $N$: Menge von Knoten
+	\item $A$: Menge von Kanten (Wobei jeder Kante eine nichtnegative Länge zugeordnet wird)
+\end{itemize}
+
+%Ende Vorlesung 09. Mai 2005, (Lars Volker)
+
+% Anfang VL Mi. 11.05.2005 (Mathias Ziebarth, Sebastian Frehmel, Daniel Dreke)
+
+% Teil 1 - Mathias
+
+\lectureof{11.05.2005}
+
+\paragraph{Problem}
+Finde eine Teilmenge $T$ von $A$, so dass alle Knoten zusammenhängend bleiben,
+wenn man nur die Kanten aus $T$ benutzt. Daher soll die Kantenlänge aus $T$ so
+klein wie möglich gehalten werden. \\
+
+\fixme{Bild vom Baum}
+
+\paragraph{Terminologie}
+\begin{enumerate}
+\item Eine Menge von Kanten ist eine \keyword{Lösung}, wenn sie einen zusammenhängenden
+Baum bildet.
+\item Sie ist \keyword{zulässig}, wenn sie keinen Zyklus enthätlt.
+\item Eine zulässige Menge von Kanten heißt \keyword{günstig} $\folgt$ optimale Lösung.
+\item Eine Kante \keyword{berührt} eine gegebene Menge von Kanten, wenn genau ein Ende der
+Kante ein Element aus dieser Menge ist.
+\end{enumerate}
+
+\subsection{Kruskalscher Algorithmus}
+\paragraph{Beispiel}
+Die aufsteigende Reihenfolge der Kantenlänge ist: \\
+$\{1,2\},\{2,3\},\{4,5\},\{6,7\},\{1,4\},\{2,5\}$,
+$\{4,7\},\{3,5\},\{2,4\},\{3,6\},\{5,7\},\{5,6\}$ \\ \\
+
+\begin{tabular}{ccc}
+	Schritte	&	Berücksichtigte Kanten	&	Zusammengebundene Komponenten	\\
+	\hline
+	Initialisierung			&	$-$												&	$\{1\} \{2\} \{3\} \dots \{7\}$ \\
+	1										&	$\{1,2\}$									&	$\{1,2\} \{3\} \{4\} \dots \{7\}$ \\
+	2										& $\{2,3\}$									&	$\{1,2,3\} \{4\} \{5\} \dots \{7\}$ \\
+	3										&	$\{4,5\}$									&	$\{1,2,3\} \{4,5\} \{6\} \{7\}$ \\
+	4										&	$\{6,7\}$									&	$\{1,2,3\} \{4,5\} \{6,7\}$ \\
+	5										& $\{1,4\}$									&	$\{1,2,3,4,5\} \{6,7\}$ \\
+	6										&	$\{2,5\}$									&	nicht angenommen \\
+	7										&	$\{4,7\}$									&	$\{1,2,3,4,5,6,7\}$ \\
+\end{tabular} \\
+	
+T enthält die Kanten $\{1,2\},\{2,3\},\{4,5\},\{6,7\},\{1,4\}$ und $\{4,7\}$ \\
+
+\begin{tabular}[t]{ccc}
+    \begin{xy}
+        \entrymodifiers={++[o][F-]}
+        \xymatrix {
+            1 \ar@{-}[r] \ar@{-}[d] & 2 \ar@{-}[r] \ar@{-}[d] \ar@{-}[dl] & 3 \ar@{-}[d] \ar@{-}[dl] \\
+            4 \ar@{-}[r] \ar@{-}[dr] & 5 \ar@{-}[r] \ar@{-}[d] & 6 \ar@{-}[dl] \\
+            *{} & 7 &  *{} \\ % *{} hides the nodes not there
+            *{} & *{\txt{Initialisierung}} & *{} 
+        }
+    \end{xy} &
+    \begin{xy}
+        \entrymodifiers={++[o][F-]}
+        \xymatrix {
+            1 \ar@{=}[r] \ar@{=}[d] & 2 \ar@{=}[r] \ar@{=}[d] \ar@{-}[dl] & 3 \ar@{-}[d] \ar@{-}[dl] \\
+            4 \ar@{=}[r] \ar@{=}[dr] & 5 \ar@{-}[r] \ar@{-}[d] & 6 \ar@{=}[dl] \\
+            *{} & 7 &  *{} \\ % *{} hides the nodes not there
+            *{} & *{\txt{Schritt 7}} & *{} 
+        }
+    \end{xy} \\
+\end{tabular}
+
+\paragraph{Algorithmus Kruskal}
+\begin{itemize}
+\item $find(x)$, der feststellt in welcher Komponente der Knoten $x$ zu finden ist.
+\item $merge(A,B)$: Mischen von zwei disjunkten Mengen
+\end{itemize}
+
+\begin{codebox}
+\Procname{$\proc{Algorithmus Kruskal}(G=<N,A>)$}
+\zi \textbf{Input}: $N,A$ (mit Längenangabe)
+\zi \textbf{Output}: Menge von Kanten
+\zi
+\zi \textbf{Initialisierung}
+\li Sortiere $A$ nach aufsteigender Länge
+\li $n=\#N$ \Comment $\#$ Anzahl Knoten
+\li $T \gets \emptyset$ \Comment Lösungsmenge
+\li Initialisiere $n$ disjunkte Mengen, wobei jede Menge ein Element aus $N$ enthält.
+
+% Teil 2 - Sebastian
+
+\li \Repeat
+\li	  $\left\{u,v\right\} \gets$ noch nicht berücksichtigte, kürzeste Kanten
+\li	  \func{ucomp} $\gets$ \func{find(u)} \Comment In der Menge der bereits verbundenen Kanten
+\li   \func{vcomp} $\gets$ \func{find(v)}
+\li	  \If 
+          \func{ucomp} $\neq$ \func{vcomp}
+\li   \Then
+			    \func{merge}(\func{ucomp}, \func{vcomp})
+      \End
+\li   $T \gets T \cup \left\{ \left\{u,v\right\} \right\}$
+\li \Until $T = n-1$
+\li \Return $T$
+\end{codebox}
+
+Analyse: n Knoten, a Kanten
+
+\begin{itemize}
+\item $O(a \log{a})$: Kanten zu sortieren $\left[n-1 \leq a \leq \frac{n(n-1)}{2} \ra \approx O(n \log{n})\right]$
+\item $O(n)$: $n$ disjunkte Mengen zu initialisieren 
+\item "`find"' and "`merge"'. Höchstens $2a$ Operationen (find), $n-1$ Operationen (merge) $\ra$ "`worst case"' $O((2a+n-1) \log^{\ast}n)$\\
+\end{itemize}
+
+Def: $\log^{(0)}n = n$\\
+$\log^{(k)}n = \log{(\log^{k-1}n)}$ $k \geq 1$ $\Ra \log^{\ast}n = min\left\{i|\log^{(i)}(n)\leq 1\right\}$\\
+
+Man erhält:\\
+
+\begin{tabular}{ll}
+n								& $\log^{\ast}n$\\
+1								& 0\\
+2								& 1\\
+3,4							& 2\\
+5 $\ra$ 16			& 3\\
+17 $\ra$ 65536	& 4\\
+\end{tabular}\\
+
+$\Ra \log^{\ast}$ wächst sehr langsam. Höchstens $O(a)$ für die restlichen Operationen.\\ \\
+
+\subsection{Primscher Algorithmus}
+\begin{codebox}
+\Procname{$\proc{Algorithmus Prim}(G = <N,A>)$}
+\zi \textbf{Initialisierung}
+\li $T \gets \emptyset$
+\li $B \gets \{$ein willkürliches Element aus N$\}$
+\zi \textbf{Greedy-Schleife}
+\li \While $B \neq N$
+\li     \Do
+            Finde $\{u,v\}$ von minimaler Länge, so dass $n\in N/B$ und $v \in B$
+\li         $T \gets T \cup \left\{\left\{u,v\right\} \right\}$
+\li         $B \gets B \gets B \cup \left\{u\right\}$
+        \End
+\li \Return $T$
+\end{codebox}
+
+
+\begin{tabular}{lll}
+Schritt 				& $\{u,v\}$ & $B$ \\
+Initialisierung & - 				& $\{1\}$ \\
+1 							& $\{2,1\}$ & $\{1,2\}$ \\
+2 							& $\{3,2\}$ & $\{1,2,3\}$ \\
+3 							& $\{4,1\}$ & $\{1,2,3,4,\}$ \\
+4 							& $\{5,4\}$  $\{1,$\ldots$,5\}$ \\
+5 							& $\{7,4\}$ & $\{1,2,3,4,5,7\}$ \\
+6 							& $\{6,7\}$ & $\{1,$\ldots$,7\}$ \\
+\end{tabular} \\ \\
+
+Analyse und Vergleich:\\
+Hauptschleife (Prim) $(n-1)$mal ausgeführt.\\
+Bei jeder Iteration benötigen die for-Schleifen eine Zeit von $O(n) \Ra O(n2)$ für Prim.\\
+Kruskal $O(a \log{n})$
+
+% Teil 3 - Daniel
+
+
+\begin{itemize}
+	\item Für dicht besetzte Graphen:
+	$$a \approx \frac{n(n-1)}{2} \Ra O(n^2 \log n)$$
+	$\Ra$ Prim ist "`besser"'.
+	\item Für dünn besetzte Graphen:
+	$$a \approx n \Ra O(n \log n) $$
+	$\Ra$ Prim ist "`weniger effizient"'.
+\end{itemize}
+Kürzeste Pfade (im "`Skript"') \\
+(Dijkstra-Algorithmus)
+
+\subsection{Zeitplanerstellung (Scheduling)}
+\textbf{Komplexitätsklassen:} P, NP
+$$P =^? NP$$
+\begin{quotation}
+Das P/NP-Problem ist ein offenes Problem der theoretischen Informatik, speziell der Komplexitätstheorie. \\
+\\
+Es ist die Frage, ob die Klasse NP, der von nichtdeterministischen Turingmaschinen in Polynomialzeit entscheidbaren Probleme, mit der Klasse P, der von deterministischen Turingmaschinen in Polynomialzeit entscheidbaren Probleme, übereinstimmt. \\
+\\
+Es ist also lediglich zu zeigen, dass das Finden einer Lösung für ein Problem wesentlich schwieriger ist, als nur zu verifizieren, ob eine gegebene Lösung korrekt ist. Dies ist allerdings bisher noch nicht gelungen. [...] \\
+\\
+Das P/NP-Problem gilt derzeit als die wichtigste Fragestellung der Informatik überhaupt und wurde vom Clay Mathematics Institute in seine Liste der Millennium-Probleme aufgenommen. (Wikipedia)
+\end{quotation}
+
+\textbf{Problem:} Ein Server (Prozessor, Kassiererin einer Bank, ...) habe $n$ Kunden in einem gegebenem System zu bedienen. \\
+Bedienzeit für jeden Kunden ist bekannt: Bedienzeit $t_i$ für Kunde i ($1 \leq i \leq n$)
+$$T = \sum_{i=1}^n (\text{Gesamtzeit für Kunde } i)$$
+Wir möchten T minimieren. \\
+\\
+Beispiel: $n=3,\ t_1=5,\ t_2=10,\ t_3=3$ $\Ra$ 3! = 6 Reihenfolgen möglich \\
+\\
+Reihenfolge 123 bedeutet Kunde 1 wird bedient und Kunde 2 und 3 warten. \\
+\\
+\begin{tabular}{crl}
+Reihenfolge & T \\
+123 & 5+(5+10)+(5+10+3)	= 38 \\
+132 & 5+(5+3)+(5+3+10) = 31 \\
+213 & 10+(10+5)+(10+5+3) = 43 \\
+231 & 10+(10+3)+(10+3+5) = 43 \\
+312 & 3+(3+5)+(3+5+10) = 29 & $\la$ Optimum\\
+321 & 3+(3+10)+(3+10+5) = 34 \\
+\end{tabular}
+
+\subsection{Greedy-Algorithmus}
+Füge ans Ende des Zeitplans $t_{i_1}+\ldots+t_{i_m}$ den Kunden ein, der am meisten Zeit benötigt. \\
+Dieser triviale Algorithmus liefert die korrekte Anwort für \{3,1,2\}. \\
+\\
+\textbf{Theorem:} Dieser Algorithmus ist immer optimal.
+\subsection{Zeitplanerstellung mit Schlußterminen (deadline)}
+Beispiel: $n=4$ \\
+
+\begin{tabular}{ccc}
+i	& $g_i$	& $d_i$ \\
+1	& 50	& 2 \\
+2	& 10	& 1 \\
+3	& 15	& 2 \\
+4	& 30	& 1 \\
+\end{tabular} \\
+\\
+$\ra$ Reihenfolge (3,2) wird nicht berücksichtigt, da dann Auftrag 2 zum Zeitpunkt $t=2$ nach Schlußtermin $t=1$ verarbeitet wird. \\
+\\
+\begin{tabular}{ccl}
+Reihenfolge & Gewinn \\
+1		& 50 \\
+2		& 10 \\
+3		& 15 \\
+4		& 30 \\
+(1,3)	& 65 \\
+(2,1)	& 60 \\
+(2,3)	& 25 \\
+(3,1)	& 65 \\
+(4,1)	& 80 & $\la$\\
+(4,3)	& 45 \\
+\end{tabular} \\
+\\
+$\Ra$ es ist nicht notwendig alle $n!$ Auftragsfolgen zu untersuchen. Es genügt eine Auftragsfolge in der Reihenfolge aufsteigender Schlußtermine zu untersuchen ($\ra$ (4,1), aber nicht (1,4)).
+
+% Ende VL Mi. 11.05.2005 (Mathias Ziebarth, Sebastian Frehmel, Daniel Dreke)
+
+\end{document}
