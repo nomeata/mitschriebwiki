@@ -6,7 +6,7 @@
 \usepackage[all]{xy}
 
 \title{Algorithmus}
-\author{Mathias Ziebarth, Sebastian Frehmel, Daniel Dreke, Felix Brandt, Lars Volker}
+\author{Mathias Ziebarth, Sebastian Frehmel, Daniel Dreke, Felix Brandt, Lars Volker, Manuel Holtgrewe}
 % Wer nennenswerte Änderungen macht, schreibt sich bei \author dazu
 
 %\setlength{\parskip}{0.5cm}
@@ -684,17 +684,21 @@ $\folgt$ nicht mehr als $1/4$ der Zahlen $1 \le b <n$ sind keine Zeugen.\\
 	                & $b=0$, falls $n$ teilbar ist\\
 \end{tabular}\bigskip
 
-\paragraph{Algorithmus}\ \\
-\ttfamily\begin{tabular}{rl}
-	 0 & Wähle zufällig a aus 1 <= a < n \\
-	 1 & Faktorisiere (n-1) zu 2$^\text{l}$m so dass n-1 = 2$^\text{l}$m, m ungerade \\
-	 2 & (Teste) b=a$^\text{m}$ mod n, i=1 \\
-	 3 & \keyword{while} b $\ne$ -1 und b $\ne$ 1 und i<l \\
-	 4 & \idt \keyword{do} b=b$^\text{2}$ mod n, i=i+1 \\
-	 5 & (Entscheide) \keyword{if} b=1 oder b=-1 \\
-	 6 & \idt \keyword{then} n prime \\
-	 7 & \idt \keyword{else} n composite (b=0) \\
-\end{tabular}\normalfont
+\begin{codebox}
+\Procname{$\proc{Rabin}(n)$}
+\li Wähle zufällig $a$ aus $1 \leq a < n$
+\li Faktorisiere $n-1$ zu $2^l$ so, dass $n-1$ = $2^l$, $m$ ungerade
+\li \While $b \neq -1$ und $b \neq 1$ und $i < l$
+\li     \Do 
+            $b \gets b^2 \mod n$
+\li         $i \gets i + 1$
+        \End
+\li \If $b = 1$ oder $b = -1$
+\li     \Then
+                n ist Primzahl (prime)
+\li     \Else
+                n ist \em{keine} Primzahl (composite), ($b = 0$)
+\end{codebox}
 
 \paragraph{Bemerkung:} Der Algorithmus braucht $m(2+l)\log_2(n)$ Schritte $\folgt$ sehr effizient.
 
