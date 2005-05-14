@@ -207,42 +207,51 @@ Im Folgenden werden wir meistens nur die Laufzeit im schlechtesten Fall analysie
 
 % Teil 3 - Daniel
 
-\subsection{Implementierung: Merge-Sort}
+\subsection{Implementierung: \proc{Merge-Sort}}
 
 \begin{itemize}
 	\item \textbf{Teile} die zu sortierende Sequenz der Länge $n$ in zwei Teilsequenzen der Länge $\frac{n}{2}$
-	\item \textbf{Beherrsche} durch rekursives Anwenden von Merge-Sort auf die zwei Teilsequenzen
+	\item \textbf{Beherrsche} durch rekursives Anwenden von \proc{Merge-Sort} auf die zwei Teilsequenzen
 	\item \textbf{Verbinde} die zwei Teilsequenzen durch Mischen (merge)	
 \end{itemize}
 
-\ttfamily\begin{tabular}{rl}
-	0	&	MERGE-SORT(A, p, r) \\
-	1	&	\keyword{if} p < r \\
-	2	&	\keyword{then} q <- $\llf\right.$(p + r) / 2$\left.\rrf$ \\
-	3	&	\idt MERGE-SORT(A, p, q) \\
-	4	&	\idt MERGE-SORT(A, q + 1, r) \\
-	5	&	\idt MERGE(A, p, q, r)
-\end{tabular}\normalfont
-
 \subsubsection*{Pseudocode}
 
-\ttfamily\begin{tabular}{rl}
-	 0 & MERGE(A, p, q, r) \\
-	 1 & n$_1$ <- q - p + 1 \\
-	 2 & n$_2$ <- r - q \\
-	 3 & erzeuge die Felder L[1..(n$_1$ + 1)] und R[1..(n$_2$ + 1)] \\
-	 4 & \keyword{for} i <- 1 \keyword{to} n$_1$ \keyword{do} L[i] <- A[p + i - 1] \\
-	 5 & \keyword{for} j <- 1 \keyword{to} n$_2$ \keyword{do} R[j] <- A[q + j] \\
-	 6 & L[n$_1$ + 1] <- R[n$_2$ + 1] <- $\oo$ // Wächter \\
-	 7 & i <- i <- 1 \\
-	 8 & \keyword{for} k <- p \keyword{to} r \\
-	 9 & \idt \keyword{do} if L[i] <= R[j] \\
-	10 & \idt\idt \keyword{then} A[k] <- L[i] \\
-	11 & \idt\idt\idt i <- i + 1 \\
-	12 & \idt\idt \keyword{else} A[k] <- R[j] \\
-	12 & \idt\idt\idt j <- j + 1
-\end{tabular}\normalfont
+\begin{codebox} 
+\Procname{$\proc{Merge-Sort}(A, p, r)$} 
+\li \If $p < r$ 
+\li \Then 
+        $q \gets \lfloor(p + r) / 2\rfloor$ 
+\li     $\proc{Merge-Sort}(A, p, q)$ 
+\li     $\proc{Merge-Sort}(A, q+1, r)$ 
+\li     $\proc{Merge}(A, p, q, r)$ 
+    \End 
+\end{codebox} 
 
+\begin{codebox}
+\Procname{$\proc{Merge}(A, p, q, r)$}
+\li $n_1 \gets q - p + 1$
+\li $n_2 \gets r - q$
+\li Erzeuge die Felder $L[1..(4_1 + 1)]$ und $R[1..(n_2 + 1)]$
+\li \For $i \gets 1$ \To $n_1$ 
+\li     \Do
+            $L[i] \gets A[p + i - 1]$
+        \End
+\li \For $j \gets 1$ \To $n_2$ 
+\li     \Do
+            $R[j] \gets A[q + j]$
+        \End
+\li $L[n_1 + 1] \gets R[n_2 + 1] \gets \infty$ \Comment Wächter
+\li $i \gets j \gets 1$
+\li \For $k \gets p$ \To $r$
+\li     \Do \If $L[i] \gets R[i]$
+\li         \Then
+                $A[k] \gets L[i]$
+\li             $i \gets i + 1$
+\li         \Else
+                $A[k] \gets R[j]$
+\li             $j \gets j + 1$
+\end{codebox}
 % \section{Beispiel}
 
 % \begin{center}
