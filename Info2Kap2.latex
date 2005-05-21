@@ -2,6 +2,7 @@
 \newcounter{chapter}
 \setcounter{chapter}{2}
 \usepackage{info}
+\usepackage{makeidx}
 \usepackage{clrscode}
 \usepackage[all]{xy}
 
@@ -876,7 +877,7 @@ T enthält die Kanten $\{1,2\},\{2,3\},\{4,5\},\{6,7\},\{1,4\}$ und $\{4,7\}$ \\
 \zi
 \zi \textbf{Initialisierung}
 \li Sortiere $A$ nach aufsteigender Länge
-\li $n=\#N$ \Comment $\#$ Anzahl Knoten
+\li $n=\sharp N$ \Comment $\sharp$ Anzahl Knoten
 \li $T \gets \emptyset$ \Comment Lösungsmenge
 \li Initialisiere $n$ disjunkte Mengen, wobei jede Menge ein Element aus $N$ enthält.
 
@@ -1034,5 +1035,232 @@ Reihenfolge & Gewinn \\
 $\Ra$ es ist nicht notwendig alle $n!$ Auftragsfolgen zu untersuchen. Es genügt eine Auftragsfolge in der Reihenfolge aufsteigender Schlußtermine zu untersuchen ($\ra$ (4,1), aber nicht (1,4)).
 
 % Ende VL Mi. 11.05.2005 (Mathias Ziebarth, Sebastian Frehmel, Daniel Dreke)
+
+\section{Teile und Herrsche}\lectureof{18.05.2005}
+
+Die Effizenz der Teile und Herrsche-Methode liegt darin, dass Teilinstanzen schneller gelöst werden
+können als das Gesamtproblem.
+
+\begin{codebox}
+\Procname{$\proc{Algorithmus Teile \& Herrsche } DQ(x)$}
+\li	\If ($x$ ist klein genug oder einfach)
+\li		\Then \Return ADHOC($x$)
+		\End
+\li Teile $x$ in kleinste Teilinstanzen, $x_1, x_2, \ldots, x_k$
+\li \For $i \la 1$ \To $k$
+\li		\Do
+					$y_i \la DQ(z_i)$
+		\End
+\li Kombiniere die $y_i$s um eine Lösung $y$ für $x$ zu erhalten.
+\zi	ADHOC: Grundalgorithmus zur Lösung der Teilinstanzen
+\zi	Spezialfall: Wenn $k=1$ $\Ra$ Vereinfachung statt Teile und Herrsche
+\end{codebox}
+
+\paragraph{Bedingungen}
+\begin{itemize}
+	\item Es ist möglich eine Instanz in Teilinstanzen zu teilen
+	\item Es ist möglich die Teilergebnisse effizient zu kombinieren
+	\item Die Größe der Teilinstanzen soll möglichst gleich sein
+	\item Problem: Grundalgorithmus anstatt weiter rekursiv zu arbeiten
+	\item Es muss gut überlegt werden, wie man den Grenzwert wählt
+\end{itemize}
+
+\paragraph{Beispiele}
+\begin{itemize}
+	\item Binäres Suchen
+	\item Mergesort
+	\item Quicksort
+\end{itemize}
+
+\subsection{Quicksort (C.A.R. Hoare, 1960)}
+Die Funktionsweise und Analyse von Quicksort steht in allen nahezu Algorithmenbüchern.
+
+\begin{codebox}
+\Procname{$\proc{Quicksort(A,p,r)}$}
+\li	\If $p<r$
+\li		\Then 
+				$q$ $\la$ $\proc{Partition} (A,p,r)$
+\li			$\proc{Quicksort}(A,p,q-1)$
+\li			$\proc{Quicksort}(A,q+1,r)$
+		\End
+\end{codebox}
+
+\begin{codebox}
+\Procname{$\proc{Partition}(A,p,r) \Ra A[p,\ldots,r]$ neu geordnet.}
+\li $x \la A[r]$
+\li $i \la p-1$
+\li \For $j \la p$ \To $r-1$
+\li		\Do
+				\If $A[j] \leq x$
+\li				\Then 
+						$i \la i+1$
+\li					exchange $A[i] \gdw A[j]$
+				\End
+		\End
+\li	exchange $A[i+1] \gdw A[r]$
+\li	\Return i+1
+\end{codebox}
+
+\begin{codebox}
+\Procname{$\proc{Zeilen 3-6}$}
+\li \If $p \leq k \leq i$
+\li		\Then $A[k] \leq x$
+		\End
+\li \If $i+1 \leq k \leq j-1$
+\li		\Then $A[k] > x$
+		\End
+\li \If $k=r$
+\li		\Then $A[k]=x$
+		\End
+\end{codebox}
+
+%ASORTINGEXAMPLE Quicksort 9.1 - Sedgewick
+
+\subsection{Selektion und Median}
+Sei $T[1, \ldots, n]$ eine Reihung der ganzen Zahlen. $m$ ist der Median von $T \Gdw$
+
+\begin{enumerate}
+	\item $m \in T$
+	\item $\sharp\{i \in [1, \ldots, n] \mid T[i] < m \} < n/2$ und \\
+				$\sharp\{i \in [1, \ldots, n] \mid T[i] \leq m\} \leq n/2$
+\end{enumerate}
+So sind auch die Möglichkeiten berücksichtigt, bei denen  $m$ ungerade ist oder nicht alle Elemente von $T$ verschieden sind.
+
+\subsubsection{Naiver Algorithmus}
+Die Reihung ist in aufsteigender Ordnung zu sortieren und man erhält das $\llc\frac{n}{2}\rrc$-te Element.
+Mit \proc{Mergesort} benötigt man dafür eine Zeit von $O(n \log n)$.
+
+\subsubsection{Selektion-Problem}
+$T$ ist Reihung der Größe $n$, sowie $k \in \MdZ, 1 \leq k \leq n$. Das $k$-te kleinste Element von $T$ ist $m$, so dass
+$$\begin{array}{l}
+	\sharp\{i \in [1, \ldots, n] \mid T[i] < m \} < k \text{ während} \\
+	\sharp\{i \in [1, \ldots, n] \mid T[i] \leq m\} \geq k
+\end{array}$$
+
+Es ist also das $k$-te Element aus T, wenn die Reihung in aufsteigender Ordnung sortiert ist.
+Analog zum Quicksort ist es möglich folgenden Algorithmus zu entwerfen, um dieses Element zu finden:
+
+\begin{codebox}
+\Procname{$\proc{selektion}(T[1, \ldots, n],k)$}
+\li \If $n$ ist klein
+\li		\Then $\proc{sort}(T)$
+\li 				return T[k]
+		\End
+\li $p \la$ irgendein Element aus $T[1, \ldots, n]$
+\zi \{$p$ ist unser "`Pivot"'-Element\}
+\li	$u \la \sharp\{i \in [1, \ldots, n] \mid T[i] < p \}$
+\li	$v \la \sharp\{i \in [1, \ldots, n] \mid T[i] \leq p \}$
+\li \If $k \leq u$
+\li 	\Then array $U[1, \ldots, n]$
+\li 	$U \la$ die Elemente aus $T$ kleiner als $p$
+\zi 	\{das kleinste Element aus $T$ ist auch das kleinste Element aus $U$\}
+\li		return $\proc{selection}(U,k)$
+		\End
+\li \If $k \leq v$
+\li 	\Then \Return $p$ \{Die Lösung\}
+\li 	\Else array $V[1, \ldots, n-v]$
+\li 				$V \la$ die Elemente aus $T$ größer als $p$
+\zi 				\{das k-te kleinste Element aus $T$, ist auch das ($k-v$)-te kleinste Element aus $V$\}
+\li 				return $\proc{selection}(V, k-v)$
+		\End
+\end{codebox}
+
+Welches Element aus $T$ sollen wir als Pivotelement $p$ benutzen? Die beste Wahl ist sicherlich der 
+Median von $T$, so dass die Größen von $U$ und $V$ möglichst gleich sind.
+
+\subsection{Langzahlarithmetik}
+Multiplikationen zweier ganzen Zahlen von $n$ Dezimalziffern wobei $n$ sehr groß sein kann.
+
+\begin{tabular}[t]{cll}
+	\begin{xy}
+			\entrymodifiers={}
+			\xymatrix @R=1pc {
+			&  \ar@{<->}[rrrr]^{n} & & & & \\
+			&\ar@{-}[rr]& &\ar@{-}[rr]& & \\
+			u & & w & & x & \\
+			&\ar@{-}[uu]\ar@{-}[rr]& &\ar@{-}[uu]\ar@{-}[rr]& &\ar@{-}[uu]\\
+			&\ar@{-}[rr]& &\ar@{-}[rr]& & \\
+			v & & g & & z & \\
+			&\ar@{-}[uu]\ar@{-}[rr]& &\ar@{-}[uu]\ar@{-}[rr]& &\ar@{-}[uu]\\
+			& & &\ar@{<->}[ll]^{\frac{n}{2}}& &\ar@{<->}[ll]^{\frac{n}{2}}
+			}
+	\end{xy} \\
+\end{tabular}
+$$\begin{array}{cclcccccc}
+	u & = & 10^sw+x & & 0 & \leq & x & \leq & 10^s \\
+	v & = & 10^sy+z & & 0 & \leq & z & \leq & 10^s \\
+\end{array}$$
+Wir suchen das Produkt
+	$$uv = 10^swy + 10^s(wz+xy)+xz$$
+
+Das führt zum Algorithmus
+
+\begin{codebox}
+\Procname{$\proc{mult}(u,v)$}
+\li $n$ $\la$ die kleinste ganze Zahl so dass $u$ und $v$ von Größe $n$ sind
+\li \If $n$ klein
+\li		\Then \Return $\proc{classic-product}(u,v)$
+		\End
+\li $s \la n \func{div} 2$
+\li $w \la u \func{div} 10^s;\ x \la u \mod 10^s$
+\li $y \la v \func{div} 10^s;\ z \la v \mod 10^s$
+\li \Return
+\li		$\proc{mult}(w,y) \cdot 10^{2s} + (\proc{mult}(w,z) - \proc{mult}(x,y)) \cdot 10^s + \proc{mult}(x,z)$
+\end{codebox}
+
+Eine triviale Verbessung wird dadurch erreicht, dass man den letzten Schritt durch folgendes ersetzt:
+\begin{codebox}
+\li	$r \la \proc{mult}(w+x,y+z)$
+\li $p \la \proc{mult}(w,y)$
+\li $q \la \proc{mult}(x,z)$
+\li \Return $10^{2s}+10^s(r-p-q)+q$
+\end{codebox}
+
+\paragraph{Bemerkungen}
+\begin{itemize}
+	\item Die Komplexitätsanalyse zeigt, dass der Algorithmus eine Zeit von $O(n^{\log_23})=O(n^{1,59})$ benötigt
+	\item mittels "`Schneller Fourier-Transformation"' und Teile \& Herrsche kann die Komplexität auf 
+				$O(n \cdot \log n \cdot \log \log n)$ reduziert werden.
+	\item Eine spezielle Version dieses Algorithmus ist als "`Karatsuba-Algorithmus"' bekannt.
+				Sei $n$ gerade mit $n=2m$ und u,v ganze Zahlen der Länge $n$ (in Bits):
+				\begin{eqnarray*}
+					u   & = & a2^m+b \\
+					v   & = & c2^m+d \\
+					w   & = & uv = y2^{2m}+(x-y-z)2^n+z \\
+					\text{wobei } & & \\
+					x & = & (a+b)(c+d) \\
+					y & = & ac \\
+					z & = & bd \\
+				\end{eqnarray*}
+\end{itemize}
+
+\subsection{Matrixmultiplikation}
+$A$, $B$: 2 $n \times n$-Matrizen; $C = A \cdot B$
+$$A=\left(\begin{array}{ll}
+	a_{11} & a_{12} \\
+	a_{21} & a_{22} \\
+\end{array}\right);\ B=
+\left(\begin{array}{ll}
+	b_{11} & b_{12} \\
+	b_{21} & b_{22} \\
+\end{array}\right)$$
+
+\begin{eqnarray*}
+	m_1 & = & (a_{21} + a_{22} - a_{11})(b_{22}-b_{12}+b_{11}) \\
+	m_2 & = & a_{11}b_{11} \\
+	m_3 & = & a_{12}b_{21} \\
+	m_4 & = & (a_{11}-a_{21})(b_{22}-b_{12}) \\
+	m_5 & = & (a_{21}-a_{22})(b_{12}-b_{11}) \\
+	m_6 & = & (a_{12}-a_{21}+a_{11}-a_{22})b_{22} \\
+	m_7 & = & a_{22}(b_{11}+b_{22}-b_{12}-b_{21}) \\
+\end{eqnarray*}
+
+$$\Ra AB = 
+\left(\begin{array}{ll}
+ m_1 + m_3 & m_1 + m_2 + m_5 + m_6 \\
+ m_1 + m_2 + m_4 + m_7 & m_1 + m_2 + m_4 + m_5 \\
+\end{array}\right)$$
+
+Normalerweise hat der Algorithmus eine Komplexität von $\Theta(n^2)$. Hier jedoch nur $\Theta(n)$.
 
 \end{document}
