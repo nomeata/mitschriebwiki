@@ -852,7 +852,7 @@ T enthält die Kanten $\{1,2\},\{2,3\},\{4,5\},\{6,7\},\{1,4\}$ und $\{4,7\}$ \\
             *{} & 7 &  *{} \\ % *{} hides the nodes not there
             *{} & *{\txt{Initialisierung}} & *{} 
         }
-    \end{xy} &
+    \end{xy} &        
     \begin{xy}
         \entrymodifiers={++[o][F-]}
         \xymatrix {
@@ -1470,5 +1470,129 @@ $\Ra$Suchaufwand $\Theta(1)$
 	h muss gut gew"ahlt werden, sonst verkettete Liste, also $\Theta(n)$!
 \end{document}
 
+\lectureof{25.05.2005} %% Lars
+	\subsubsection*{2. Lösung (Sondierung):}
+	\paragraph{Idee: } Im Fall einer Kollision suche deterministisch den nächsten freien Platz.
+	\paragraph{Konkret: } Sondierungsfunktion $S: \{0,..,m\}\ra \MdN$ \
+	Ist der Platz $h(k_i)$ schon gelegt, dann teste für $j=1,2,3\ldots$ $$h'(k_i,j)=(h(k_i)+S(J))\ mod\ m$$
+	Sobald eine Stelle frei ist, speichere den Datensatz $D_i$ dort. Es ist dann $h'(k_i,j)\ne h(k_i)$, d.h. der Datensatz steht auch später nachvollziehbar an der falschen Stelle.\
+	Ist $j=m$ und $S$ ist injektiv, dann ist die Tabelle voll.\
+	Folgende Situationen könne auftreten:
+	\begin{enumerate}
+		\item Beim Versuch $D_i$ an der Position $h(k_i)$ zu speichern, ist die Position mit einem Datensatz $D_j$ belegt und $h(k_i)=h(k_j)$: \begriff{Kollision erster Ordnung}
+		\item Ist $h(k_i)\ne h(k_j)$: \begriff{Kollision zweiter Ordnung}
+	\end{enumerate}
+	\paragraph{Wie suche ich? } Tritt eine Kollision auf, d.h. $h(k_i)$ ist belegt, suche weiter bei $h'(k_i,j)$ für $j=1,2,3\ldots$ bis entweder
+	\begin{itemize}
+		\item $D_i$ gefunden
+		\item Die aktuelle Position leer ist $\folgt$ $D_i$ ist nicht in der Tabelle
+		\item $j=m$ $\folgt$ Tabelle ist voll
+	\end{itemize}
+	\paragraph{Beispiele: }
+	\begin{itemize}
+		\item	Lineares Sondieren: $h'(k_i,j) = (h(k_i)+j)\ mod\ m$
+		\item Quadratisches Sondieren: $h'(k_i,j) = (h(k_i)+c_1j^2 +c_2j)\ mod\ m$
+		\item Doppeltes Hashen: $h'(k_i,j) = (h(k_i)+jh_1(k_i))\ mod\ m$, $h_1$ eine weitere Hashfunktion
+	\end{itemize}
+	\paragraph{Problem: } Wie lösche ich ein Element?\
+	Wenn einfach \glqq leer\grqq{} in die tabelle eingetragen wird, dann werden Elemente unter Umständen nicht mehr gefunden. Die Suche kann fehlschlagen.
+	\paragraph{Lösung: } Trage \glqq gelöscht\grqq{} ein.
+	\paragraph{Beispiel: } $0,\ldots ,D_i,D_j,\ldots ,m$, $h(k_i)=h(k_j)$ (Lineares Sondieren)\
+	Nach Löschen von $D_i$ kann $D_j$ nicht mehr gefunden werden, falls nicht \glqq gelöscht\grqq{}  eingetragen wurde.
+	
+\section{Graphenalgorithmen und Datenstrukturen für Graphen}
+\paragraph{Frage: } Wie speichere ich einen Graphen im Rechner?
+\begin{xy}
+        \entrymodifiers={++[o][F-]}
+        \xymatrix {
+            1 \ar@{-}[r] \ar@{-}[d] & 2 \ar@{-}[l] \ar@{-}[ld] \ar@{-}[d] \ar@{-}[r] & 3  \ar@{-}[ld]\\
+            5 \ar@{-}[r] & 4 & *{} \\
+            *{} & *{} &  *{} \\ % *{} hides the nodes not there
+            *{} & *{\txt{Beispielgraph}} & *{} 
+        }
+    \end{xy}
+\subsection{1. Möglichkeit: Adjazenzliste}
+\begin{tabular}{ccl}
+1 & $\ra$ & [2,5] \\
+2 & $\ra$ & [1,5,4,3] \\
+3 & $\ra$ & [2,4] \\
+4 & $\ra$ & [5,2,3] \\
+5 & $\ra$ & [1,2,4]
+\end{tabular}
 
+\subsection{2. Möglichkeit: Adjazenzmatrix}
+\begin{tabular}{c|ccccc}
+  & 1 & 2 & 3 & 4 & 5 \\ \hline
+1 & 0 & 1 & 0 & 0 & 1 \\
+2 & 1 & 0 & 1 & 1 & 1 \\
+3 & 0 & 1 & 0 & 1 & 0 \\
+4 & 0 & 1 & 1 & 0 & 1 \\
+5 & 1 & 1 & 0 & 1 & 0
+\end{tabular} 
 
+\subsection{Speicherbedarf: }
+\begin{itemize}
+	\item Worst-Case
+	\begin{itemize}
+		\item Adjazenzliste: $\Theta(n^2)$ Knoten
+		\item Adjazenzmatrix: $\Theta(n^2)$ Bits
+	\end{itemize}
+	\item Best-Case
+	\begin{itemize}
+		\item Adjazenzliste: $\Theta(n)$
+		\item Adjazenzmatrix: $\Theta(n^2)$
+	\end{itemize}
+\end{itemize}
+
+\subsection{Zugriff auf eine Kante: }
+\begin{itemize}
+	\item Worst-Case
+	\begin{itemize}
+		\item Adjazenzliste: $\Theta(n)$
+		\item Adjazenzmatrix: $\Theta(1)$
+	\end{itemize}
+	\item Best-Case
+	\begin{itemize}
+		\item Adjazenzliste: $\Theta(1)$
+		\item Adjazenzmatrix: $\Theta(1)$
+	\end{itemize}
+\end{itemize}
+
+\subsection{Einfache Graphenalgorithmen: }
+\paragraph{Suche im Graphen: } z.B. gibt es einen Ausweg aus dem Labyrinth?\\
+Einfacher: Gibts es einen Weg von Knoten $A$ nach Knoten $B$?
+\subsection{Einfache Strategien: }
+\subsubsection{Tiefensuche: }
+\paragraph{Idee: } Im Knoten $k$ mit Kanten $E_1,\ldots,E_j$:\\
+Nimm Kante $E_1$ und suche dort weiter.\\
+Stoße ich auf eine Sackgasse, gehe eins zurücl und nimm dort $E_2$ usw.
+\paragraph{Konkret: } Benutze einen Keller $K$ (Knoten)\\
+Am Anfang enthält der Keller den Startknoten.\\
+Wiederhole:\\
+Ist $K_j$=top$(K)$ das Ziel $\folgt$ fertig\\
+Sonst: pop$(K)$, push$(K_{j1},\ldots,K_{jl},K)$, wobei $K_{j1},\ldots,K_{jl}$ die Folgeknoten von $K_j$ sind.
+
+\subsubsection{Breitensuche: }
+\paragraph{Idee: } Gehe erst einmal einen Schritt bei allen Nachfolgeknoten. Ist das Ziel dann noch nicht gefunden, gehe zwei Schritte usw.
+\paragraph{Konkret: } Benutze eine Schlange $Schl$\\
+Am Anfang enthält $Schl$ nur den Startknoten.\\
+Wiederhole:\\
+$K_i=Kopf(Schl)$\\
+ist $K_i$ das Ziel $\folgt$ Hurra! (Mann, was ein Brüller!)\\
+sonst $Einf"ugen(K_{i1},\ldots,K_{ij},tail(S))$, wobei $K_{i1},\ldots,K_{ij}$ die Folgeknoten von $K_i$ sind.
+
+\subsubsection{Beispiele: }
+\begin{xy}
+        \entrymodifiers={++[o][F-]}
+        \xymatrix {
+            *{} & 1 \ar@{-}[r] & 3 \ar@{-}[rd] & *{} & *{}\\
+            S \ar@{-}[ru] \ar@{-}[rd] & *{} & *{} & 6 \ar@{-}[r] & Z\\
+            *{} & 2 \ar@{-}[r] & 4 \ar@{-}[ru] & *{} & *{}\\
+            *{} & *{\txt{Beispielgraph}} & *{} & *{} & *{}
+        }
+    \end{xy}
+\paragraph{Tiefensuche: }
+Zu Beginn: [S] $\la$ Keller $\folgt$ $push(1,2,K)$ $\folgt$ $K=[2,1,S]$ $\folgt$ $push(4,S,pop(K))$ $\folgt$ $K=[1,4,S]$ $\folgt$ Der nächste Schritt beginnt wieder bei $S$. Ausweg: Zufällige Reihenfolge beim $push$
+\paragraph{Breitensuche: }
+Zu Beginn: [S] $\la$ Schlange $\folgt$ $einf"ugen(1,2,Schl)$ $\folgt$ $Schl=[2,1]$ $\folgt$ $einf"ugen(3,S,tail(Schl))$ $\folgt$ $S=[S,3,2]$ $\folgt$ $einf"ugen(S,4,tail(Schl))$ $\folgt$ $S=[4,S,S,3]$ $\ldots$
+\end{document}
