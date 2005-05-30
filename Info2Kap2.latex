@@ -1594,5 +1594,226 @@ sonst $Einf"ugen(K_{i1},\ldots,K_{ij},tail(S))$, wobei $K_{i1},\ldots,K_{ij}$ di
 \paragraph{Tiefensuche: }
 Zu Beginn: [S] $\la$ Keller $\folgt$ $push(1,2,K)$ $\folgt$ $K=[2,1,S]$ $\folgt$ $push(4,S,pop(K))$ $\folgt$ $K=[1,4,S]$ $\folgt$ Der nächste Schritt beginnt wieder bei $S$. Ausweg: Zufällige Reihenfolge beim $push$
 \paragraph{Breitensuche: }
-Zu Beginn: [S] $\la$ Schlange $\folgt$ $einf"ugen(1,2,Schl)$ $\folgt$ $Schl=[2,1]$ $\folgt$ $einf"ugen(3,S,tail(Schl))$ $\folgt$ $S=[S,3,2]$ $\folgt$ $einf"ugen(S,4,tail(Schl))$ $\folgt$ $S=[4,S,S,3]$ $\ldots$
+Zu Beginn: [S] $\la$ Schlange \\
+	$\folgt$ $einf"ugen(1,2,Schl)$ $\folgt$ $Schl=[2,1]$ \\
+	$\folgt$ $einf"ugen(3,S,tail(Schl))$ $\folgt$ $S=[S,3,2]$ \\
+	$\folgt$ $einf"ugen(S,4,tail(Schl))$ $\folgt$ $S=[4,S,S,3]$ $\ldots$
+
+% Vorlesung vom 30.05.2005 Felix Brandt
+\section{Binäre Suchbäume}
+\lectureof{30.05.2005}
+(nach Cormen) Suchbäume sind Datenstrukturen. Sie sind nützlich für Operationen auf dynamischen Mengen
+(Größe und Elemente sind nicht fest!) wie z.B. \proc{Search}, \proc{Minimum}, \proc{Maximum},
+\proc{Predecessor}, \proc{Successor}, \proc{Insert} oder \proc{Delete}.
+
+\subsection{Definition/Einführung}
+Ein binärer Suchbaum(B.S.) ist als binärer Baum (siehe Abbildung \ref{tree3}) organisiert. Außer dem 
+Attribut \id{Schl"ussel} sind für jeden Knoten noch die Attribute \id{links} (linker Sohn), \id{rechts}
+(rechter Sohn) und \id{p}(Vater) gegeben. Wenn ein Sohn oder der Vater fehlt, erhält dieses Attribut 
+den Wert \id{NIL}\footnote{Not In List}. Der Wurzelknoten ist der einzige Knoten dessen Vater \id{NIL} ist.
+
+Die Schlüssel werden immer so gespeichert dass die folgende Binäre-Suchbaum-Eigenschaft (B.S.E.) immer
+erhalten bleibt:
+\begin{itemize}
+\item Sei $x$ Knoten in einem binären Suchbaum. Wenn $y$ ein Knoten im linken Teilbaum von $x$ ist, 
+			dann gilt $$ schl"ussel[y] \leq schl"ussel[x] $$
+\item Wenn $y$ ein Knoten im rechten Teilbaum von $x$ ist, dann gilt
+			$$ schl"ussel[x] < schl"ussel[y] $$
+\end{itemize}
+
+\subsection{Traversierung}
+Die B.S.E. erlaubt mittels einem einfachen rekursiven Algorithmus alle Schlüssel eines B.S. in sortierter 
+Reihenfolge auszugeben.
+\begin{description}
+\item{$\folgt$} In-Order-Traversierung (es wird zuerst der linke Teilbaum, dann die Wurzel und danach der 
+								rechte Teilbaum ausgegeben $(a,t,b)$)
+\end{description}
+Es gibt auch noch zwei andere Arten der Traversierung (auf diese wird hier aber nicht näher eingegangen):
+\begin{itemize}
+\item Pre-Order-Traversierung (die Wurzel wird vor den beiden Teilbäumen ausgegeben $(t,a,b)$)
+\item Post-Order-Traversierung (die Wurzel wird nach den beiden Teilbäumen ausgegeben $(a,b,t)$)
+\end{itemize}
+
+\begin{figure}[htb]
+	\centering
+	$\begin{xy}
+		\entrymodifiers={++[o][F-]}
+		\xymatrix {
+	  	*{} & t \ar@{-}[rd]\ar@{-}[ld] & *{} \\
+	  	a & *{} & b\\
+		}
+	\end{xy}$
+	\label{tree1}
+\end{figure}
+
+\begin{codebox}
+\Procname{$\proc{InOrderTreeWalk}(x)$}
+\li \If $x \neq NIL$
+\li		\Then $\proc{InOrderTreeWalk}(links[x])$
+		\End
+\li	print schl"ussel[x]
+\li $\proc{InOrderTreeWalk}(rechts[x])$
+\end{codebox}
+
+\paragraph{Beispiel}
+Die InOrder-Traversierung des Baumes in Abbildung \ref{tree3} ergibt: $2,3,5,5,7,8$
+\begin{figure}[htb]
+	\centering
+	$\begin{xy}
+		\entrymodifiers={++[o][F-]}
+		\xymatrix {
+	  	*{} & *{}  & 5 \ar@{-}[rd]\ar@{-}[ld] & *{} & *{} \\
+	  	*{} & 3 \ar@{-}[rd]\ar@{-}[ld]& *{} & 7 \ar@{-}[rd] & *{} \\
+	  	2 & *{} & 5 & *{} & 8 \\
+		}
+	\end{xy}$
+	\caption{Beispiel Traversierung}
+	\label{tree3}
+\end{figure}
+
+\paragraph{Theorem}
+
+Wenn $x$ die Wurzel eines Teilbaums mit $n$ Knoten ist, dann benötigt 
+\proc{InOrderTreeWalk} die Zeit $O(n)$.
+
+\subsection{Suchen}
+Abfragen in einem B.S. machen sich ebenfalls die B.S.E. zu nutze um schneller zum Ziel zu gelangen.
+\begin{codebox}
+\Procname{$\proc{TreeSearch}(x,k)$}
+\li \If $x = NIL$ oder $k=schl"ussel[x]$
+\li 	\Then \Return $x$
+		\End
+\li	\If $k < schl"ussel[x]$
+\li 	\Then \Return $\proc{TreeSearch}(links[x], k)$
+\li		\Else \Return $\proc{TreeSearch}(rechts[x], k)$
+		\End
+\end{codebox}
+
+\paragraph{Beispiel}
+Die Abfragen nach 13 und 8 liefern für den Baum $x$ aus Abbildung \ref{tree4} folgende Ergebnisse:
+\begin{itemize}
+\item $\proc{TreeSearch}(x,13)$: $15 \stackrel{\text{L}}{\dann} 6 \stackrel{\text{R}}{\dann} 7 
+			\stackrel{\text{R}}{\dann} 13 \folgt 13$
+\item $\proc{TreeSearch}(x,8)$:  $15 \stackrel{\text{L}}{\dann} 6 \stackrel{\text{R}}{\dann} 7 
+			\stackrel{\text{R}}{\dann} 13	\stackrel{\text{L}}{\dann} NIL \folgt NIL$
+\end{itemize}
+\begin{figure}[htb]
+	\centering
+	$\begin{xy}
+		\entrymodifiers={++[o][F-]}
+		\xymatrix {
+	  	*{} & *{} & *{} & *{} &  15 \ar@{-}[rrd]\ar@{-}[lld]& *{} & *{} & *{} \\
+	  	*{} & *{} &   6 \ar@{-}[rd]\ar@{-}[ld]& *{} & *{} & *{} &  18 \ar@{-}[rd]\ar@{-}[ld]& *{} \\
+	  	*{} &   3 \ar@{-}[rd]\ar@{-}[ld]& *{} &   7\ar@{-}[rd] & *{} &  17 & *{} &  20 \\
+	  	  2 & *{} &   4 & *{} &  13 \ar@{-}[ld] & *{} & *{} & *{} \\
+	  	*{} & *{} & *{} &   9 & *{} & *{} & *{} & *{} \\
+		}
+	\end{xy}$
+	\caption{Beispiel-Baum $x$}
+	\label{tree4}
+\end{figure}
+Das Finden des Elementes dauert dabei $O(h)$, wobei $h$ für die Höhe des Baumes steht.
+
+Die gleiche Prozedur kann auch iterativ geschrieben werden (d.h. in Form einer \While-Schleife)
+\begin{codebox}
+\Procname{$\proc{IterativeTreeSearch}(x,k)$}
+\li \While $x \neq NIL$ und $k \neq schl"ussel[x]$
+\li		\Do \If $k < schl"ussel[x]$
+\li					\Then $x \gets links[x]$
+\li					\Else $x \gets rechts[x]$
+					\End
+			\End
+\li	\Return x
+\end{codebox}
+
+\subsection{Minimum und Maximum}
+\begin{codebox}
+\Procname{$\proc{TreeMinimum}(x)$}
+\li \While $links[x] \neq NIL$
+\li 	\Do $x \gets links[x]$
+		\End
+\li	\Return x
+\end{codebox}
+
+\begin{codebox}
+\Procname{$\proc{TreeMaximum}(x)$}
+\li \While $rechts[x] \neq NIL$
+\li 	\Do $x \gets rechts[x]$
+		\End
+\li	\Return x
+\end{codebox}
+
+\subsection{Vorgänger und Nachfolger}
+\begin{codebox}
+\Procname{$\proc{TreeSuccessor}(x)$}
+\li	\If $rechts[x] \neq NIL$
+\li		\Then \Return $\proc{TreeMinimum}(rechts[x])$
+		\End
+\li $y \gets p[x]$
+\li \While $y \neq NIL$ und $x=rechts[y]$
+\li		\Do $x \gets y$
+\li				$y \gets p[y]$
+		\End
+\li \Return $y$
+\end{codebox}
+
+\begin{codebox}
+\Procname{$\proc{TreePredecessor}(x)$}
+\li	\If $links[x] \neq NIL$
+\li		\Then \Return $\proc{TreeMaximum}(links[x])$
+		\End
+\li $y \gets p[x]$
+\li \While $y \neq NIL$ und $x=links[y]$
+\li		\Do $x \gets y$
+\li				$y \gets p[y]$
+		\End
+\li \Return $y$
+\end{codebox}
+
+\subsection{Theorem}
+Die Operationen \proc{Search}, \proc{Minimum}, \proc{Maximum}, \proc{Predecessor} und 
+\proc{Successor} für dynamische Mengen, können auf einem B.S. der Höhe $h$
+in der Zeit $O(h)$ ausgeführt werden.
+
+\subsection{Einfügen und Löschen}
+WICHTIG: Beim Einfügen und Löschen soll die B.S.E. beibehalten werden.
+\begin{description}
+\item{$\folgt$} "`Einfügen"': relativ unkompliziert
+\item{$\folgt$} "`Löschen"': etwas kniffelig
+\end{description}
+
+\paragraph{Einfügen}
+
+Mit der Prozedur \proc{TreeInsert} soll ein Wert $v$ in den B.S.\ $T$ eingefügt werden. Als Parameter bekommt sie
+den Knoten $z$, für den $schl"ussel[z] = v$, $links[z]=NIL$ und $rechts[z]=NIL$ gilt.
+
+\begin{codebox}
+\Procname{$\proc{TreeInstert}(T, z)$}
+\li $y \gets NIL$
+\li	$x \gets Wurzel[T]$
+\li	\While $x \neq NIL$
+\li		\Do $y \gets x$
+\li			\If $schl"ussel[z] < schl"ussel[x]$
+\li				\Then $x \gets links[x]$
+\li				\Else $x \gets rechts[x]$
+				\End
+			\End
+\li	$p[z] \gets y$
+\li	\If $y = NIL$
+\li		\Then $Wurzel[T] \gets z$
+\zi			\{T war also leer\}
+			\End
+\li	\If $schl"ussel[z] < schl"ussel[y]$
+\li		\Then $links[y] \gets z$
+\li		\Else $rechts[y] \gets z$
+\end{codebox}
+
+Der Algorithmus beginnt an der Wurzel des Baum und arbeitet sich an einem Pfad nach unten. Der Zeiger $x$ verfolgt den Pfad und $y$ wird als Vater von $x$ gehalten. 
+
+Nach der Initialisierung bewirkt die \While-Schleife (Zeilen 3-7) dass diese beiden Zeiger im Baum abwärts laufen und dabei nach links oder rechts gehen (durch Vergleich der Schlüssel).
+
+Dies geschiet so lange bis $x$ gleich $NIL$ gesetzt wird. Dieses $NIL$ belegt den Platz an dem wir das Eingabeelement $z$ einfügen wollen. Die Zeilen 8-13 setzen die Zeiger so, dass das Element $x$ gerade an der Stelle eingeführt wird $\folgt$ Zeitaufwand $O(h)$.
+
+
 \end{document}
+
