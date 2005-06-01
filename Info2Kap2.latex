@@ -1814,6 +1814,83 @@ Nach der Initialisierung bewirkt die \While-Schleife (Zeilen 3-7) dass diese bei
 
 Dies geschiet so lange bis $x$ gleich $NIL$ gesetzt wird. Dieses $NIL$ belegt den Platz an dem wir das Eingabeelement $z$ einfügen wollen. Die Zeilen 8-13 setzen die Zeiger so, dass das Element $x$ gerade an der Stelle eingeführt wird $\folgt$ Zeitaufwand $O(h)$.
 
+% ----------------------------------------
+% Vorlesung vom 01.06.05, Mathias Ziebarth
+% ----------------------------------------
+
+\lectureof{01.06.05}
+
+\paragraph{Löschen}
+
+Argument: Zeiger auf $z$ \\
+Die Prozedur unterscheidet die drei (in 12.4) gezeigten Fälle.
+\begin{itemize}
+\item Falls $z$ keine Kinder hat, modifizieren wir seinen Vater $p[z]$ so, dass sein Kind durch $NIL$ ersetzt wird.
+\item Falls z nur ein Kind hat, schneiden wir $z$ aus, indem wir eine Verbindung zwischen seinem Kind und seinem Vater einfügen.
+\item Falls $z$ zwei Kinder hat, nehmen wir $z$'s Nachfolger $y$ heraus, der kein linkes Kind hat und ersetzen den Schlüssel und
+die Satellitendaten von $z$ durch Schlüssel und Satellit von $y$.
+\end{itemize}
+
+\subsection{Theorem}
+
+Die Operationen \proc{Insert} und \proc{Delete} können so implementiert werden, dass sie auf einem binären Suchbaum der Höhe $h$
+in der Zeit $O(h)$ laufen.
+
+\section{Rot.Schwarz-Bäume}
+
+Binäre Suchbäume \folgt \proc{Search}, \proc{Successor}, \proc{Predecessor}, \proc{Minimum}, \proc{Maximum}, \proc{Insert} und 
+\proc{Delete} \folgt $O(n)$ \\
+Verbesserung ist möglich \folgt $O(lgn)$
+
+\subsection{Eigenschaften von R.S.Bäumen}
+
+Ein R.S-Baum ist ein binärer Suchbaum, der ein zusätzliches Bit Speicherplatz zur Verfügung stellt. Diese Bit dient seiner
+Farbe: rot oder schwarz.
+
+\fixme{Bild: R.S-Baum}
+
+\paragraph{Attribute:}
+
+farbe, schlüssel, links, rechts und p \\
+Wenn ein Kind oder der Vater eines Knotens nicht existiert, dann erhält das entsprechende Zeigerattribut den Wert $NIL$.
+
+\paragraph{Eigenschaften}
+
+Ein binärer Suchbaum ist ein R.S-Baum, falls er die folgenden Eigenschaften, die als R.S-Eigenschaften bezeichnet werden,
+erfüllt.
+\begin{enumerate}
+\item Jeder Knoten ist entweder rot oder schwarz.
+\item Die Wurzel ist schwarz.
+\item Jedes Blatt $(NIL)$ ist schwarz.
+\item Wenn ein Knoten rot ist, dann sind seine beiden Kinder schwarz.
+\item Für jeden Knoten enthalten alle Pfade, die an diesem Knoten starten und in einem Blatt des Teilbaums dieses Knotens enden,
+die gleiche Anzahl schwarzer Knoten.
+\end{enumerate}
+
+\subsection{Lemma}
+
+Ein R.S-Baum mit $n$ inneren Knoten hat höchstens die Höhe $2lg(n+1)$
+
+\paragraph{Beweis:}
+
+Der Teilbaum zu einem beliebigen Knoten x hat mindestens $2^{bh(x)}-1$ innere Knoten.
+\begin{description}
+\item{IA} Höhe von $x=0$: \\
+$2^0-1=0$
+\item{IV} es ist wahr für n: \\
+$2^{bh(x)}-1$ innere Knoten
+\item{IS} nächster Schritt: \\
+$(2^{bh(x)-1}-1)+(2^{bh(x)-1}-1)+1=2^{bh(x)}-1$
+\end{description}
+
+\folgt Operationen \proc{Search}, \proc{Successor}, \proc{Predecessor}, \\
+\proc{Minimum}, \proc{Maximum} für dynamische Mengen auf R.S-Bäumen können in der Zeit $O(lgn)$ implementiert werden, 
+da sie auf einem Suchbaum der Höhe $h$ in der Zeit $O(h)$ laufen.
+
+\subsection{Rotationen}
+
+Um die Zeigerstruktur zu verändern, benutzen wir eine Rotation.
+
+\fixme{Beispiel}
 
 \end{document}
-
