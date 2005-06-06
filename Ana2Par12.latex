@@ -4,7 +4,7 @@
 \usepackage{ana}
 
 \title{Wege im $\MdR^n$}
-\author{Joachim Breitner}
+\author{Joachim Breitner und Wenzel Jakob}
 % Wer nennenswerte Änderungen macht, schreibt euch bei \author dazu
 
 \begin{document}
@@ -87,7 +87,7 @@ Sei $\gamma:[a,b]\to\MdR^n$ ein rektifizierbarer Weg. Dann:
 \end{beweis}
 
 \begin{satz}
-Sei $f=(f_1,\ldots,f_n):[a,b]->\MdR^n$ und $f_1,\ldots,f_n\in R[a,b]$.
+Sei $f=(f_1,\ldots,f_n):[a,b]\to\MdR^n$ und $f_1,\ldots,f_n\in R[a,b]$.
 $$\int_a^bf(t)dt := \left(\int_a^bf_1(t)dt, \int_a^bf_2(t)dt,\ldots, \int_a^bf_n(t)dt\right) \quad (\in\MdR^n)$$
 Dann: \begin{liste}
 \item $$x\cdot \int_a^bf(t)dt = \int_a^b(x\cdot f(t))dt \ \forall x\in\MdR^n$$
@@ -102,5 +102,85 @@ Dann: \begin{liste}
 \end{liste}
 \end{beweis}
 
+
+\begin{satz}[Eigenschaften stetig differenzierbarer Wege]
+$\gamma:[a,b]\to\MdR^n$ sei ein stetig differenzierbarer Weg. Dann:
+\begin{liste}
+\item $\gamma$ ist rektifizierbar
+\item Ist $s$ die zu $\gamma$ geh"orende Wegl"angenfunktion, so ist $s\in C^1[a,b]$ und $s'(t)=\|\gamma'(t)\|\ \forall t\in[a,b]$
+\item $L(\gamma)=\int_a^b\|\gamma'(t)\|dt$
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item $\gamma=(\eta_1,\ldots,\eta_n)$, $\eta_j\in C^1[a,b]\folgtnach{A1,25.1}\eta_j\in \text{BV}[a,b]\folgtnach{12.1}\gamma$ ist rektifizierbar.
+\item Sei $t_0\in[a,b)$. Wir zeigen: 
+$$\frac{s(t)-s(t_0)}{t-t_0}\to\|\gamma'(t_0)\|\ (t\to t_0+0)\text{. (analog zeigt man :}\frac{s(t)-s(t_0)}{t-t_0}\to\|\gamma'(t_0)\|\ (t\to t_0-0)\text{).}$$
+Sei $t\in (t_0, b];\ \gamma_1:=\gamma_{|_{[a,t_0]}}, \gamma_2:=\gamma_{|_{[t_0,t]}}, \gamma_3:=\gamma_{|_{[a,t]}}$. Dann: $\gamma_3=\gamma_1 \oplus \gamma_2$ und $\underbrace{L(\gamma_3)}_{=s(t)}=\underbrace{L(\gamma_1)}_{=s(t_0)}+L(\gamma_2)\folgt s(t)-s(t_0)=L(\gamma_2)\ (I).$\\
+$\tilde{Z}:=\{t_0, t\}$ ist eine Zerlegung von $[t_0,t]\folgt \|\gamma(t)-\gamma(t_0)\|=L(\gamma_2,\tilde{Z})\le L(\gamma_2)$\\
+\textbf{Definition}: $F:[a,b]\to\MdR$ durch $F(t)=\ds\int_a^t\|\gamma'(\tau)\|\text{d}\tau$. 2.Hauptsatz der Differential- und Integralrechnung $\folgt F$ ist differenzierbar und $F'(t)=\|\gamma'(t)\|\ \forall t\in[a,b]$. Sei $Z=\{\tau_0,\ldots,\tau_m\}$ eine beliebige Zerlegung von $[t_0, t]$.
+$$\ds\int_{\tau_{j-1}}^{\tau_j}\gamma'(\tau)\text{d}\tau=\left(\cdots, \ds\int_{\tau_{j-1}}^{\tau_j}\eta_k'(\tau)\text{d}\tau,\cdots\right)\gleichnach{A1}\left(\cdots, \eta_k(\tau_j)-\eta_k(\tau_{j-1}),\cdots\right)=\gamma(\tau_j)-\gamma(\tau_{j-1})$$
+$\folgt \|\gamma(\tau_j)-\gamma(\tau_{j-1})\|\overset{12.4}{\le}\ds\int_{\tau_{j-1}}^{\tau_j}\|\gamma'(\tau)\|\text{d}\tau$. Summation $\folgt L(\gamma_2,Z)\le\ds\int_{t_0}^t\|\gamma'(\tau)\|\text{d}\tau=F(t)-F(t_0)\folgt L(\gamma_2)\le F(t)-F(t_0)\ (III)$.\\
+$(I), (II), (III)\folgt\|\gamma(t)-\gamma(t_0)\|\overset{(II)}{\le}L(\gamma_2)\overset{(I)}{=}s(t)-s(t_0)\overset{(III)}{\le}F(t)-F(t_0)$
+$$\folgt\underbrace{\frac{\|\gamma(t)-\gamma(t_0)\|}{t-t_0}}_{\overset{t\to t_0}{\to}\|\gamma'(t_0)\|}\le\frac{s(t)-s(t_0)}{t-t_0}\le\underbrace{\frac{F(t)-F(t_0)}{t-t_0}}_{\overset{t\to t_0}{\to}F'(t_0)=\|\gamma'(t_0)\|}$$
+$(3)\ L(\gamma)=s(b)=s(b)-s(a)\overset{AI}{=}\ds\int_a^b s'(t)\text{d}t\gleichnach{(2)}\ds\int_a^b\|\gamma'(t)\|\text{d}t$
+\end{beweise}
+
+\begin{beispiele}
+\item $x_0, y_0\in\MdR^n, \gamma(t):=x_0+t(y_0-x_0)\ (t\in [0,1])$. $\gamma'(t)=y_0-x_0\folgt L(\gamma)=\ds\int_0^1\|y_0-x_0\|\text{d}t=\|y_0-x_0\|$.
+\item Sei $f:[a,b]\to\MdR$ stetig und $\gamma(t):=(t, f(t)), t\in[a,b]$. $\gamma$ ist ein Weg im $\MdR^2$. $\gamma$ ist rektifizierbar $\equizu f \in \text{BV}[a,b]$. $\Gamma_\gamma=$Graph von $f$. Jetzt sei $f\in C^1[a,b] \folgtnach{12.5} L(\gamma)=\ds\int_a^b\|\gamma'(t)\|\text{d}t=\ds\int_a^b (1+f'(t)^2)^{\frac{1}{2}}\text{d}t$.
+\item $\gamma(t):=(\cos t, \sin t)\ (t\in [0,2\pi])$. $\gamma'(t)=(-\sin t, \cos t)$. $\|\gamma'(t)\|=1\ \forall t\in [0,2\pi]\folgtnach{12.5}s'(t)=1\ \forall t\in[0,2\pi]\folgt s(t)=t\ \forall t\in[0,2\pi]$ (\begriff{Bogenma"s}). \begriff{Winkelma"s}: $\varphi:=\frac{180}{\pi}t$. $L(\gamma)=2\pi$.
+\end{beispiele}
+
+\begin{definition*}
+$\gamma:[a,b]\to\MdR^n$ sei ein Weg.
+\begin{liste}
+\item $\gamma$ hei"st \begriff{st"uckweise stetig differenzierbar} $:\equizu\exists z=\{t_0,\ldots,t_m\}\in\Z$ mit: $\gamma_{|_{[t_k-1,t_k]}}$ sind stetig differenzierbar $(k=1,\ldots,m)\equizu\exists$ stetig differenzierbare Wege $\gamma_1,\ldots,\gamma_l: \gamma=\gamma_1\oplus\cdots\oplus\gamma_l$.
+\item $\gamma$ hei"st \begriff{glatt} $:\equizu \gamma$ ist stetig differenzierbar und $\|\gamma'(t)\|>0\ \forall t\in[a,b]$.
+\item $\gamma$ hei"st \begriff{st"uckweise glatt} $:\equizu\exists$ glatte Wege $\gamma=\gamma_1\oplus\cdots\oplus\gamma_l$
+\end{liste}
+\end{definition*}
+
+Aus 12.2 und 12.5 folgt:
+
+\begin{satz}
+Ist $\gamma=\gamma_1\oplus\cdots\oplus\gamma_l$ st"uckweise stetig differenzierbar, mit stetig differenzierbaren Wegen $\gamma_1,\ldots,\gamma_l\folgt \gamma$ ist rektifizierbar und $L(\gamma)=L(\gamma_1)+\cdots+L(\gamma_l)$.
+\end{satz}
+
+\begin{definition*}
+Sei $\gamma:[a,b]\to\MdR^n$ ein Weg. $\gamma$ hei"st eine \begriff{Parameterdarstellung} von $\Gamma_\gamma$.
+\end{definition*}
+
+\begin{beispiele}
+\item $x_0, y_0\in\MdR^n, \gamma_1(t):=x_0+t(y_0-x_0)\ t\in[0,1],\ \gamma_2(t):=\gamma_1^-(t)\ t\in[0,1],\ \gamma_3(t):=x_0+7t(y_0-x_0)\ t\in[0,\frac{1}{7}].\ \gamma_1,\gamma_2,\gamma_3$ sind Parameterdarstellungen von $S[x_0, y_0]$.
+\item $\gamma_1(t)=(\cos t, \sin t),\ (t\in [0,2\pi]), \gamma_2(t):=(\cos t, \sin t), (t\in[0,4\pi])$. $\gamma_1, \gamma_2$ sind Parameterdarstellungen von $K=\{(x,y)\in\MdR^2: x^2+y^2=1\}.$
+\end{beispiele}
+
+\begin{definition*}
+$\gamma_1:[a,b]\to\MdR^n$ und $\gamma_2:[\alpha,\beta]\to\MdR^n$ seien Wege.
+
+$\gamma_1$ und $\gamma_2$ hei"sen \begriff{"aquivalent}, in Zeichen $\gamma_1\sim\gamma_2:\equizu\exists h:[a,b]\to[\alpha, \beta]$ stetig und streng wachsend, $h(a)=\alpha, h(b)=\beta$ und $\gamma_1(t)=\gamma_2(h(t))\ \forall t\in[a,b]$ (also $\gamma_1=\gamma_2\circ h)$. $h$ hei"st eine \begriff{Parametertransformation} (PTF). Analysis 1 $\folgt h([a,b])=[\alpha,\beta]\folgt \Gamma_{\gamma_1}=\Gamma_{\gamma_2}$.
+Es gilt: $\gamma_2=\gamma_1\circ h^{-1}\folgt \gamma_2\sim\gamma_1$. \glqq$\sim$\grqq\ ist eine "Aquivalenzrelation.
+\end{definition*}
+
+\begin{beispiele}
+\item $\gamma_1, \gamma_2, \gamma_3$ seien wie in obigem Beispiel (1). $\gamma_1\sim\gamma_3, \gamma_1\nsim\gamma_2$.
+\item $\gamma_1, \gamma_2$ seien wie in obigem Beispiel (2). $\gamma_1\nsim\gamma_2$, denn $L(\gamma_1)=2\pi\ne 4\pi=L(\gamma_2)$
+\end{beispiele}
+
+\begin{satz}
+$\gamma_1:[a,b]\to\MdR^n$ und $\gamma_2:[\alpha,\beta]\to\MdR^n$ seien "aquivalente Wege und $h:[a,b]\to[\alpha,\beta]$ eine Parametertransformation.
+\begin{liste}
+\item $\gamma_1$ ist rektifizierbar $\equizu \gamma_2$ ist rektifizierbar. In diesem Falle: $L(\gamma_1)=L(\gamma_2)$
+\item Sind $\gamma_1$ und $\gamma_2$ glatt $\folgt h\in C^1[a,b]$ und $h'>0$.
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item[(2)] In den gro"sen "Ubungen.
+\item[(1)] Es gen"ugt zu zeigen: Aus $\gamma_2$ rektifizierbar folgt: $\gamma_1$ ist rektifizierbar und $L(\gamma_1)\le L(\gamma_2)$. Sei $Z=\{t_0,\ldots,t_m\}\in\Z\folgt\tilde{Z}:=\{h(t_0),\ldots, h(t_m)\}$ ist eine Zerlegung von $[\alpha,\beta]$.
+$$L(\gamma_1, Z)=\ds\sum_{j=1}^m\|\gamma_1(t_j)-\gamma_1(t_{j-1})\|=\ds\sum_{j=1}^m\|\gamma_2(h(t_j))-\gamma_2(h(t_{j-1}))\|=L(\gamma_2, \tilde{Z})\le L(\gamma_2)$$
+$\folgt \gamma_1$ ist rektifizierbar und $L(\gamma_1)\le L(\gamma_2)$.
+\end{beweise}
 
 \end{document}
