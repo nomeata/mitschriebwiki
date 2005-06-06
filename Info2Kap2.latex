@@ -862,7 +862,7 @@ T enthält die Kanten $\{1,2\},\{2,3\},\{4,5\},\{6,7\},\{1,4\}$ und $\{4,7\}$ \\
             *{} & *{\txt{Schritt 7}} & *{} 
         }
     \end{xy} \\
-\end{tabular}
+	\end{tabular}
 
 \paragraph{Algorithmus Kruskal}
 \begin{itemize}
@@ -1867,7 +1867,7 @@ erfüllt.
 die gleiche Anzahl schwarzer Knoten.
 \end{enumerate}
 
-\subsection{Lemma}
+\subsection*{Lemma}
 
 Ein R.S-Baum mit $n$ inneren Knoten hat höchstens die Höhe $2lg(n+1)$
 
@@ -1893,4 +1893,136 @@ Um die Zeigerstruktur zu verändern, benutzen wir eine Rotation.
 
 \fixme{Beispiel}
 
-\end{document}
+\lectureof{06.06.2005}
+\subsection{Einfuegen}
+``Introduction to Algorithms, Chapter 13.3, Second Edition"
+\begin{itemize}
+\item Rot-Schwarz-Baum mit n Knoten $\Ra$ $O(lg n)$ 
+\item eine leicht modifizierte Version der Tree-Insertion
+\item Anschliessend f"arben wir den Knoten rot. Um sicherzustellen, dass die Rot-Schwarz-Eigenschaften erhalten bleiben rufen wir $RB_Insert_Fixup(T,z)$ um die Knoten neu zu f"arben. $\Ra$ um die Knoten neu zu f"arben Rotation auszufuehren.
+\end{itemize}
+\begin{codebox}
+\Procname{$\proc{RB-Insert}(T,z)$}
+\li $y \la nil[T]$
+\li $x \la wurzel[T]$
+\li \While $x \ne nil[T]$
+\li 	\Do $y \la x$
+\li 		\If $schl"ussel[z] < schl"ussel[x]$
+\li 			\Then $x \la links[x]$
+\li 			\Else $x \la rechts[x]$
+				\End
+			\End
+		\End
+	\End
+\li $p[z] \la y$
+\li \If $y = nul[T]$
+\li 	\Then $wurzel[T] \la z$
+\li 	\ElseIf $schl"ussel[z] < schl"ussel[y]$
+\li 		\Then $links[y] \la z$
+\li 		\Else $rechts[y] \la z$
+			\End
+		\End
+	\End
+\li $links[z] \la nil[T]$
+\li $rechts[z] \la nil[T]$
+\li $farbe[z] \la ROT$
+\li $\proc{RB-Insert-Fixup}(T,z)$
+\end{codebox}
+Es gibt vier Unterschiede zwischen $\proc{Tree-Insert}$ und $\proc{RB-Insert}$
+\begin{enumerate}
+\item alle Instanzen von NIL in $\proc{Tree-Insert}$ werden durch $nil[T]$ ersetzt
+\item wir setzen $links[z]$ und $rechts[z]$ (Zeilen 14,15 $\proc{RB-Insert}$) auf $nil[T]$ um die korrekte Baumstruktur aufrecht zu erhalten.
+\item wir f"arben z rot (in Zeile 16 von $\proc{RB-Insert}$) 
+\item wegen einer m"ogliche Verletzung der Rot-Schwarz-Eigenschaft durch Schritt 3 rufen wir $\proc{Rb-Insert-Fixup}(T,z)$ auf, um die RS-Eigenschaften wieder herzustellen.
+\end{enumerate}
+\begin{codebox}
+\Procname{$\proc{RB-Insert-Fixup}(T,z)$}
+\li \While $farbe[p[z]] = ROT$
+\li 	\Do \If $p[z]=links[p[p[z]]]$
+\li 		\Then $y \la rechts[p[p[z]]$
+\li 			\If $farbe[y] = ROT$
+\li 				\Then $farbe[p[z]] \la SCHWARZ$ \Comment FALL1
+\li 				$farbe[y] \la SCHWARZ$ \Comment FALL1
+\li 				$farbe[p[p[z]]] \la ROT$ \Comment FALL1
+\li 				$z \la p[p[z]]$ \Comment FALL1
+					\End
+					
+\li 			\ElseIf $z = recht[p[z]]$
+\li 				\Then $z \la p[z]$ \Comment FALL2
+\li 					$\proc{Left-Rotate}(T,z)$ \Comment FALL2
+						\End
+\li 				$farbe[p[z]] \la SCHWARZ$ \Comment FALL3
+\li 				$farbe[p[p[z]]]\la ROT$ \Comment FALL3
+\li 				$\proc{Right-Rotate}(T,p[p[z]])$ \Comment FALL3
+					\End
+				\End
+			\End
+\li \Else (wie then-Zweig mit ``rechts"  und ``links" vertauscht)
+		\End
+	\End
+\li $farbe[wurzel[T]]\la SCHWARZ$
+\end{codebox}
+
+\fixme{fig 13.4 aus cormen\\ }
+\begin{itemize}
+\item[(a)] da z und sein Vater p[z] beide rot sind erfolgt eine Verletzung der Eigenschaft 4. Da der Onkel y von Z rot ist, kann Fall 1 des Codes angewendet werden. Die Knoten werden neu gef"arbt und der Zeiger z wird im Baum nach oben bewegt, wodurch der in (b) gezeigte Baum entsteht.
+\item[(b)] wieder sind z sein Vater p[z] beide rot, aber z's Onkel y ist schwarz. Da z das rechte Kind von p[z] ist kann Fall 2 angewendet werden.
+Eine LinksRotation wird durchgefuehrt und der dadurch entstandene Baum wird in (c) gezeigt.
+\item[(c)] Nun ist z das linke Kind seines Vaters und Fall 3 kann angewendet werden. 
+\item[(d)] Eine Rechtsrotation fuehrt zu dem Baum gezeigt in (d), welches ein korrekter Baum ist.
+\end{itemize}
+Welche rot-schwarz Eigenschaften koennen durch den Aufruf von $\proc{RB-Insert-Fixup}$ verletzt sein?
+
+Eigentschaft 1 und 3 gelten mit Sicherheit weiterhin, denn beide Kinder des neu eingefaerbten roten Knotens sind der Waechter nil[T].
+Eigenschaft 5 ist erfuellt, weil der Knoten z den (schwarzen) Waechter ersetzt und Knoten z rot ist mit Waechter-Kindern. \\
+Also koennen nur die Eigenschaften 2 (Wurzel ist schwarz $\ra$ falls z die Wurzel ist) ) und 4 (keine roten Kinder fuer rot Vater $\ra$ falls der Vater von z rot ist) verletzt sein.
+Eigenschaft 2 ist Verletzt, wenn z die Wurzel ist, Eigenschaft 4 wenn z's Vater rot ist.\\
+
+Die while-Schleife (Zeilen 1 - 15) enth"alt die folgende dreiteilige Schleifeninvariante:\\
+Zu Beginn jeder Iteration der Schleife gilt:
+\begin{itemize}
+\item[a.] Knoten z ist rot.
+\item[b.] falls p[z] die wurzel ist, dann ist p[z] schwarz.
+\item[c.] falls es eine Verletzung der rot-schwarz Eigenschaften gibt, so gibt es hoechstens eine solche Verletzung. Entweder von Eig. 2 oder von Eig. 4. Wenn Eig. 2 verletzt wird, dann weil z die Wurzel ist und weil z rot ist. Eine Verletztung der Eigenschaft 4 tritt auf, wenn z und p[z] beide rot sind. 
+\end{itemize}
+
+
+\subsubsection*{Initialisierung: }
+rot-schwarz-Baum ohne Verletzungen und roter Knoten z hinzugefuegt. 
+Wir zeigen, dass zu dem Zeitpunkt zu dem $\proc{RB-Insert-Fixup}$ angerufen wird, jeder Teil der Schleifeninvariante gilt:
+\begin{itemize}
+\item[a)] Wenn $\proc{RB-Insert-Fixup}$ aufgerufen wird ist z der rote Knoten der hinzugefuegt wurde.
+\item[b)] wenn p[z] die Wurzel ist war p[z] anfangs schwarz und seine Farbe hat sich vor dem Aufruf von $\proc{RB-Insert-Fixup}$ nicht geaendert.
+\item[c)] Wir haben schon gesehen, dass die Eigenschaften 1,3 und 5 gelten.\\
+	Wenn es eine Verletzung der Eig. 2 gibt, dann muss die rote Wurzel der neu hinzugef"ugte Knoten z sein, welches der einzige innere Knoten des Baumes ist. Da der Vater und beide Kinder von z der (schwarze) Waechter sind gibt es nicht auch noch eine Verletzung der Eigenschaft 4. \\ $\Ra$ die Verletzung der Eigenschaft 2 ist die einzige Verletzung der rot-schwarz Eigenschaften. \\
+Wenn es eine Verletzung der Eigenschaft 4 gibt, dann weil  die Kinder des Knoten der schwarze Waechter sind und der Baum vor dem hinzuf"ugen von z, keine andere Verletzungen hatte. Die Verletzung muss daher ruehren, dass z und p[z] rot sind. Weiterhin gibt es keine Verletzungen der rot-schwarz Eigenschaften.
+\end{itemize}
+\subsection*{Terminierung: }
+%%LOL das lass ich mal so im original... :) calmet rulez
+keine moegliche Verletzung der 4. (weil p[z] schwarz ist )\\
+Die einzige Verletzung ist fuer 2.\\
+aber zeilen 16 $\Ra$ alles ist gut.\\
+%%LOL
+\subsection*{Fortsetzung: }
+Existieren 6 Faelle die zu beachten sind. 
+3 davon sind zu den anderen symmetrisch. (links rechtsch)
+
+je nachdem, ob z's Vater p[z] ein linkes oder rechtes Kind von z's Grossvater p[p[z]] ist.
+Fall 1 unterscheidet sich von Faellen 2 und 3 durch die Farbe, die der Bruder von z's Vater ( Onkel) hat. Zeile 3 sorgt dafuer, dass y auf z's Onkel rechts[p[p[z]]] zeigt. in zeile 4 wird die Farbe getestet. Falls y rot ist wird Fall 1 ausgefuehrt.
+Anderenfalls sind die Faelle 2 und 3 auszufueheren. In allen drei Faellen ist der Grossvater p[p[z]] von z schwarz da p[z] rot ist. und eigenschaft 4 nur zwischen z und p[z] verletzt ist. 
+
+
+\fixme{Beispiel page 285 fig 13.5}
+Fall 1: z's Onkel ist rot.
+Fall 2: z ist ein rechtes Kind
+Fall 3: z's Onkel ist schwarz und z ist ein linkes Kind.
+
+\fixme{3. bild (Fa"lle 2 und 3 der RB-Insert) page 286 fig 13.6}
+
+
+
+\end{document} 
+
+
+
+
