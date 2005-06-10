@@ -2020,6 +2020,123 @@ Fall 3: z's Onkel ist schwarz und z ist ein linkes Kind.
 
 \fixme{3. bild (Fa"lle 2 und 3 der RB-Insert) page 286 fig 13.6}
 
+% Vorlesung vom Mo. 08. Juni 2005 (Lars Volker)
+
+\lectureof{08.06.2005}
+
+\section{Dynamisches Programmieren}
+\subsection{Optimierungsproblem:} Zu einem Problem gibt es viele Lösungen, gesucht ist eine optimale (maximal, minimal) Lösung.
+\paragraph{Beispiel:} Labyrinth\\
+Es gibt viele mögliche Wege zum Ausgang, gesucht ist der kürzeste.
+\paragraph{Lösung:} Vollständige Suche (Tiefensuche, Breitensuche).\\
+Oft kann man Optimierungsprobleme mit der Methode der dynamischen Programmierung effizienter lösen. Entwicklung eines dynamischen Programms in vier Schritten (nach Cormen):
+\begin{enumerate}
+\item Charakterisiere die Struktur einer optimalen Lösung.
+\item Definiere den Wert einer optimalen Lösung rekursiv.
+\item Berechne den Wert \glqq bottom-up\grqq .
+\item Verwendung von Zwischenergebnissen.
+\end{enumerate}
+\subsection{Beispiel:}\ \\
+Gegeben: Matrizen $A_1,\ldots,A_n$ passend\\
+Gesucht: $A_{1\ldots n} := A_1 \ast \ldots \ast A_n$
+Optimierung: Möglichst wenig skalare Multiplikationen
+Beispiel: $A_1$ mit Format $10\times 100$, $A_2$ mit Format $100\times 5$ und $A_3$ mit Format $5\times 50$.
+$(A_1 \ast A_2)\ast A_3$ benötigt 7500 Multiplikationen
+$A_1 \ast (A_2 \ast A_3)$ benötigt 75000 Multiplikationen
+\subsubsection{Aufstellen eines Baumes:}
+Idee: Nummeriere die Operatoren, bilde Mengen, z.B. bedeutet $\{i_1, i_2\}$, dass die Operationen $i_1$ und $i_2$ ausgeführt werden.
+Beispiel: $A_1\ldots A_4$
+\begin{center}
+$\begin{xy}
+		%\entrymodifiers={++[o][F-]}
+		\xymatrix @R=10pt @C=50pt {
+	  	*{} & *{} & \{1,2\} \ar@{-}[rdddd]& *{}\\ 
+	  	*{} & \{1\} \ar@{-}[ru]\ar@{-}[rd]& *{} & *{} \\ 
+	  	*{} & *{} & \{1,3\} \ar@{-}[rdd]& *{} \\
+	  	*{} & *{} & \{1,2\} \ar@{-}[rd]& *{} \\
+	  	\{\} \ar@{-}[ruuu]\ar@{-}[r]\ar@{-}[rddd]& \{2\} \ar@{-}[ru]\ar@{-}[rd]& *{} & \{1,2,3\} \\
+	  	*{} & *{} & \{2,3\} \ar@{-}[ru]& *{} \\
+	  	*{} & *{} & \{1,3\} \ar@{-}[ruu]& *{} \\
+	  	*{} & \{3\} \ar@{-}[ru]\ar@{-}[rd]& *{} & *{} \\	  	
+	  	*{} & *{} & \{2,3\} \ar@{-}[ruuuu]& *{} \\	  	
+		}
+\end{xy}$
+\end{center}
+
+Dieser Baum wird in einen sog. \emph{Trellis (Tree-like-structure)} überführt:
+
+%\begin{figure}
+%\centering
+$\begin{xy}
+		%\entrymodifiers={++[o][F-]}
+		\xymatrix @R=10pt @C=50pt {
+	  	*{} & \{1\} \ar@{-}[r]\ar@{-}[rdd]& \{1,2\}\ar@{-}[rd] & *{} \\ 
+	  	\{\} \ar@{-}[ru]\ar@{-}[r]\ar@{-}[rd]& \{2\} \ar@{-}[ru]\ar@{-}[r]& \{2,3\}\ar@{-}[r] & \{1,2,3\} \\
+	  	*{} & \{3\} \ar@{-}[r]\ar@{-}[ru]& \{1,3\}\ar@{-}[ru] & *{} \\	  	
+		}
+\end{xy}$
+%\end{figure}
+
+Es gibt hier zwei Möglichkeiten, um z.B. zum Knoten $\{1,2\}$ zu kommen:
+\begin{enumerate}
+\item Mit Kosten von $\{1\}$
+\item Mit Kosten von $\{2\}$
+\end{enumerate}
+Wähle die bessere!
+\paragraph{Situation} \fixme{Hier war ein Bild, aber ich kanns nicht entziffern!}\\
+Für die optimale Lösung ist nur der Pfad mit den geringsten Kosten interessant. Die anderen Pfade werden verworfen. Eine optimale Lösung muss einen optimalen Anfang haben.
+\subsubsection{Algorithmus:}
+Es ist nicht nötig, den Trellis aufzustellen. Es genügt jeweils eine Ebene, falls zu jedem Knoten alle Vorgänger und alle Nachfolger berechnet werden können.
+\paragraph{Konkret:}
+\begin{itemize}
+\item Vorgänger von $\{i_1,\ldots ,i_k\}$\\
+Alle Teilmengen mit $1$ Element weniger
+\item Nachfolger von $\{i_1,\ldots ,i_k\}$\\
+Alle Teilmengen $N$ von $\{1,\ldots ,n\}$ mit $i_1,\ldots ,i_k\in N$ und $|N|=k+1$
+\end{itemize}
+
+\subsection{Beispiel 2:} 
+Fehlerkorrigierende Codes:
+\paragraph{Begriffe:}
+\begin{itemize}
+\item \em{Informationswort}\\
+$(i_0,\ldots,i_k)\in \mathbb{F}_2^k$
+\item \em{Darstellung als Polynom}\\
+$i(x)=\sum_{j=0}^k i_k x^j$
+\item \em{Generatorpolynom}\\
+$g(x)=\sum_{j=0}^{n-k} g_j x^j$
+\item \em{Codewort als Polynom}\\
+$c(x)=i(x) g(x) := \sum_{j=0}^n c_j x^j$\\
+$c=(c_1,\ldots,c_n) \in \mathbb{F}_2^n$
+\end{itemize}
+
+\subsubsection{Kanalmodell: }
+Codewort $c\in \mathbb{F}_2^n$ $\rightarrow$ moduliertes Codewort $m\in \MdR^n$ $\rightarrow$ Empfangswort $y\in \MdR^n$ mit $y = e + m$, Fehler $e \in \MdR^n$\\
+\paragraph{Fragen:} Wie komme ich zurück zu $0,1$? Welches Codewort passt am besten zu $y$?\\
+$c\rightarrow m$, $0 \mapsto 1 \in \MdR$, $1 \mapsto -1 \in \MdR$\\
+Wie suche ich ein passendes Codewort?
+\subsubsection{Beispiel:} 
+$i=(0,1)$, $i(x)=x$, $g(x)=x+1$, $c(x)=g(x) i(x) = x^2 + x$ $\folgt$ $c=(0,1,1)$, $m=(1,-1,-1)$\\
+$00 \mapsto (0,0,0)$\\
+$01 \mapsto (0,1,1)$\\
+$10 \mapsto (1,1,0)$\\
+$11 \mapsto (1,0,1)$\\
+Trellis:
+\begin{center}
+$\begin{xy}
+		\entrymodifiers={++[o][F-]}
+		\xymatrix @R=30pt @C=50pt {
+	  	*{} & {}\ar@{-}[r]^0\ar@{-}[rd]_1& {}\ar@{-}[rd]^1 & *{} \\ 
+	  	{}\ar@{-}[ru]^1\ar@{-}[r]_0 & {}\ar@{-}[ru]^1\ar@{-}[r]_0& {}\ar@{-}[r]_0 & {}	  	
+		}
+\end{xy}$
+\end{center}
+\subsubsection{Aufwandsanalyse:}
+Paritätscode: $k+1$-Bits\\
+Es gibt $2^{k+1}$ Codeworte, $n=k+1$. Der Aufwand für das Durchsuchen ist im Trellis $(n+2)2)$.
+\fixme{Hat jemand das mit dem Read Solomon Code verstanden??}
+
+%ende Lars
 
 
 \end{document} 
