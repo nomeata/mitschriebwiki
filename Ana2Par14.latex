@@ -4,9 +4,59 @@
 \usepackage{ana}
 
 \title{Stammfunktionen}
-\author{}
-% Wer nennenswerte Änderungen macht, schreibt sich bei \author dazu
+\author{Joachim Breitner}
+% Wer nennenswerte Änderungen macht, schreibt euch bei \author dazu
+\def\grad{\mathop{\rm grad}\nolimits}
 
 \begin{document}
 \maketitle
+
+In diesem Paragraphen sei stets: $\emptyset \ne G \subseteq \MdR^n$, $G$ ein \emph{Gebiet} und $f=(f_1,\ldots,f_n): G\to\MdR^n$ stetig.
+
+\begin{definition}
+Eine Funktion $\varphi:G\to\MdR$ heißt eine \textbf{Stammfunktion (SF) von $f$ auf $G$}\indexlabel{Stammfunktion} $:\equizu$ $\varphi$ ist auf $G$ partiell differenzierbar und $\grad\varphi = f$ auf $G$. Also: $f_{x_j} = f_j$ auf $G$ ($j=1,\ldots,n$).
+\end{definition}
+
+\begin{bemerkung}
+\ 
+\vspace{-1.5em}
+\begin{liste}
+\item Ist $\varphi$ eine Stammfunktion von $f$ auf $G$ $\folgt$ $\grad\varphi = f \folgt \varphi \in C^1(G,\MdR) \folgtnach{5.3} \varphi$ ist auf $G$ differenzierbar und $\varphi' = f$ auf $G$.
+\item Sind $\varphi_1$, $\varphi_2$ Stammfunktionen von $f$ auf $G$ $\folgtnach{(1)}$ $\varphi_1'=\varphi_2'$ auf $G$ $\folgtnach{6.2} \exists c\in\MdR: \varphi_1=\varphi_2+c$ auf $G$
+\item Ist $n=1$ $\folgt$ $G$ ist ein offenes Intervall. AI, 23.14 $\folgt$ \emph{jedes} stetige $f:G\to\MdR$ besitzt auf $G$ eine Stammfunktion! Im Falle $n\ge 2$ ist dies \emph{nicht} so.
+\end{liste}
+\end{bemerkung}
+
+\begin{beispiele}
+\item $G=\MdR^2$, $f(x,y) = (y,-x)$.
+
+Annahme: $f$ besitzt auf $\MdR^2$ die Stammfunktion $\varphi$. Dann: $\varphi_x = y$, $\varphi_y = -x$ auf $G$ $\folgt$ $\varphi\in C^2(\MdR^2,\MdR)$ und $\varphi_{xy} = 1 \ne -1 = \varphi_{yx}$. Widerspruch zu 4.1. Also: $f$ besitzt auf $\MdR^2$ \emph{keine} Stammfunktion.
+\item $G=\MdR^2$, $f(x,y) = (y,x-y)$.
+
+Ansatz für eine Stammfunktion $\varphi$ von $f$: $\varphi_x=y \folgt \varphi=xy+c(y)$, $c$ differenzierbar, $\folgt$ $\varphi_y\stackrel{!}{=}x+c'(y) = x-y \folgt c'(y) = -y$, etwa $c(y)=-\frac{1}{2}y^2$. Also: $\varphi(x,y) = xy - \frac{1}{2}y^2$. Probe: $\varphi_x=y$, $\varphi_y=x-y$, also: $\grad\varphi=f$. $\varphi$ ist also eine Stammfunktion von $f$ auf $\MdR^n$.
+%Weiß wer warum man da ne Probe braucht?
+\end{beispiele}
+\vspace{2em} % ntheorembugumgehung
+\begin{satz}[Hauptsatz der mehrdimensionalen Integralrechnung]
+$f$ besitzt auf $G$ die Stammfunktion $\varphi$; $\gamma:[a,b]\to\MdR^n$ ein ein stückweise stetig differenzierbarer Weg mit $\Gamma_\gamma\subseteq G$. Dann:
+$$ \int_\gamma f(x)\cdot dx = \varphi\left(\gamma(b)\right) - \varphi\left(\gamma(a)\right) $$
+Das heißt: $\int_\gamma f(x)\cdot dx$ hängt nur vom Anfangs- und Endpunkt von $\gamma$ ab.
+
+Ist $\gamma$ \emph{geschlossen}, das heißt $\gamma(a) = \gamma(b)$, dann gilt $\int_\gamma f(x)\cdot dx = 0$.
+\end{satz}
+
+\begin{beweis}
+O.B.d.A.: $\gamma$ ist stetig differenzierbar. $\Phi(t):= \varphi (\gamma(t))$, $t\in[a,b]$. $\Phi$ ist stetig differenzierbar und $\Phi'(t) = \varphi'(\gamma(t))\cdot \gamma'(t) = f(\gamma(t))\cdot\gamma(t)$ Dann: $\int_\gamma f(x)\cdot dx \gleichnach{13.1} \int_a^bf(\gamma(t))\cdot\gamma'(t)dt = \int_a^b\Phi'(t)dt \gleichnach{AI} \Phi(b)-\Phi(a) = \varphi(\gamma(b))-\varphi(\gamma(a))$.
+\end{beweis}
+
+\begin{wichtigerhilfssatz}
+Es seien $x_0,y_0\in G$. Dann existiert ein stückweise stetig differenzierbarer Weg $\gamma$ mit: $\Gamma_\gamma\subseteq G$ und Anfangspunkt von $\gamma = x_0$ und Endpunkt von $\gamma=y_0$.
+\end{wichtigerhilfssatz}
+
+\begin{beweis}
+$G$ Gebiet $\folgt \exists z_0,z_1,\ldots,z_m \in G: S[z_0,\ldots,z_m]\subseteq G, z_0=x_0, z_m = y_0$.
+
+$\gamma_j(t) := z_{j-1} + t(z_j - z_{j-1})$, $(t\in[0,1])$, ($j=1,\ldots,n$). Dann:$\Gamma_{\gamma_j} = S[z_{j-1},z_{j}] \folgt \Gamma_{\gamma_1}\cup\ldots\cup\Gamma_{\gamma_m} = S[z_0,\ldots,z_m] \subseteq G$. 13.4 $\folgt \exists \gamma \in \text{AH}(\gamma_1,\ldots,\gamma_m)$ stückweise stetig differenzierbar $\folgt \Gamma_{\gamma} = S[z_0,\ldots,z_m] \subseteq G$. 
+\end{beweis}
+
 \end{document}
