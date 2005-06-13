@@ -2013,7 +2013,7 @@ Es gibt vier Unterschiede zwischen $\proc{Tree-Insert}$ und $\proc{RB-Insert}$
 		\xymatrixrowsep{1pc}
 		\text{(c)}
 		\xymatrix {
-& & & & & & & &*++[o][F-]{11}\ar@{-}[rrrrrd]\ar@{-}[llllld]& & & \\
+& & & & & & & &*++[o][F-:red]{11}\ar@{-}[rrrrrd]\ar@{-}[llllld]& & & \\
 & & &*++[o][F=]{7} \ar@{-}[rrrd]\ar@{-}[lld]& & & & & & & & & &*++[o][F-]{14} \ar@{-}[rd]&\ar@{.>}[l]^{y} \\
  \ar@{.>}[r]^{z}&*++[o][F=]{2} \ar@{-}[ld]\ar@{-}[rrd]& & & & &*++[o][F-]{8}& & & & & & & & *++[o][F=]{15} \\
 *++[o][F-]{1}& & &*++[o][F-]{5}\ar@{-}[ld]& & & & & & & & & & & \\
@@ -2218,5 +2218,196 @@ Es gibt $2^{k+1}$ Codeworte, $n=k+1$. Der Aufwand für das Durchsuchen ist im Tre
 
 %ende Lars
 
+\lectureof{13.06.05}
+\section{Vorbestimmung und Vorberechnung}
+(nach: AlgotechSkript (http://iaks-www.ira.uka.de/iaks-calmet/vorlesungen/algotech9900/algotheo.html) Kapitel 5 )
+\subsection{Vorbestimmung}
+\subsubsection*{Einfuehrung}
+Sei $I$:Menge von Instanzen eines gegebenen Problems. Angenommmen $i \in I$ kann in zwei Komponenten $j \in J$ und $k \in K$ aufgeteilt werden, d.h.: $I \subseteq J \times K$.\\
+Ein ``Vorbestimmungsalgorithmus"\ (fuer dieses Problem) ist ein Algorithmus $\proc{A}$ der irgendein Element $j\in J$ als Eingabe akzeptiert und einen neuen Algorithmus $\proc{B}_j$ als Ausgabe liefert. \\
 
-\end{document} 
+$\proc{B}_j$ gen"ugt also folgender Bedingung:\\ 
+$k\in K$ und $<j,k>\in I$ $\Ra$ Anwendung von $B_j$ auf k liefert die L"osung zu $<j,k>$ (Originalproblem)\\
+
+\subsubsection*{Beispiel:}
+
+J: Menge von Grammatiken f"ur eine Familie von Programmiersprachen. (z.B.: Grammatiken in Backus-Naur-Form fuer Sprachen wie Algol, Pascal, Simula,\dots) \\
+K: Menge von Programmen \\
+
+Algemeines Problem: Ist ein gegebenes Programm bez"uglich einer Sprache syntaktisch korrekt? In diesem Fall ist I die Menge von Instanzen des Typs\\
+\begin{center}
+	 ``Ist $k \in K$ ein g"ultiges Programm in der Sprache, die durch die Grammatik $j \in J$ definiert ist?"\\
+\end{center}
+Ein M"oglicher Vorbestimmungsalgorithmus ist ein Compiler-Generator:\\
+Angewendet auf die Grammatik $j \in J$ generiert er einen Compiler $\proc{B}_j$. Danach um festzustellen, ob $k\in K$ ein Programm in der Sprache $J$ ist, wenden wir einfach den Compiler $\proc{B}_j$ auf $k$ an.\\
+Es seien 
+\begin{eqnarray*}
+  a(j)   & = & \text{Zeit, um }\proc{B}_j\text{ zu produzieren.}\\
+  b_j(k)   & = & \text{Zeit, um }\proc{B}_j\text{ auf k anzuwenden.}\\
+  t(j,k) & = & \text{Zeit, um }<j,k>\text{ direkt zu loesen.}
+\end{eqnarray*}
+Normalerweise gilt:
+	$$b_j(k)\le t(j,k) \le a(j)+b_j(k).$$
+Vorbestimmung ist Zeitverschwendung wenn $$b_j(k) > t(j,k).$$
+
+Vorbestimmung kann in zwei Situationen sinnvoll sein:
+\begin{itemize}
+\item[(a)] Man muss $i\in I$ sehr schnell l"osen. (schnelle Antwort in Echtzeitanwendungen, wo es manchmal unpraktisch alle $\#I$ L"osungen zu den relevanten Instanzen im voraus zu berechnen und zu speichern. $\#J$ Algorithmen vorzubestimmen koennte jedoch von Vorteil sein. Z.B.: 
+	\begin{itemize}
+		\item[(i)] Einen laufenden Kern-Reaktor zu stoppen.
+		\item[(ii)] Die von einem Studenten verbrauchte Zeit zur Vorbereitung einer Pr"ufung.	
+	\end{itemize}
+\item[(b)] Wir m"ussen eine Reihe von Instanzen $<j,k_1>,<j,k_2>,\dots,<j,k_n>$ mit gleichem $j$ l"osen.\\
+	Ohne Vorbestimmung: $t_1=\sum_{i=1}^{n}t(j,k_i)$. \\
+	Mit Vorbestimmung: $t_2=a(j)+\sum_{i=1}^{n}b_j(k_i)$ \\
+	Wenn $n$ gross genug ist, dann ist $t_2$ oft viel kleiner als $t_1$.
+\end{itemize}
+\subsubsection*{Beispiel:}
+ $J$: Menge von Schl"usselw"ortermengen\\
+ $J=\{\{if,then,else,endif\},\{for,to,by\},\dots,\}$\\
+ $K$: Menge von Schl"usselw"ortern\\
+ $K=\{begin,function,\dots\}$
+Wir m"ussen eine grosse Anzahl von Instanzen des folgenden Typs l"osen:
+\begin{center}
+	``Geh"ort das Schl"usselwort $k\in K$ der Menge $j\in J$ an?"
+\end{center}
+
+Wenn wir jede Instanz direkt l"osen, kommen wir auf $t(j,k)\in \Theta(n_j)$, wobei $n_j$ die Anzahl der Elemente in der Menge $j$ ist.
+
+Idee: zuna"chst $j$ Sortieren ($\Theta(n_jlog(n_j)$) (Vorbestimmung) dann koennen bin"aren Suchalgorithmus benutzen. $\Ra$
+\begin{eqnarray*}
+	 a(j)  &\in& \Theta(n_j log(n_j))  \text(Sortieren)\\
+	 b_j(k)&\in& \Theta(log(n_j))      \text(Suchen) \\
+\end{eqnarray*}
+Muss oft in der gleichen Menge(Instanz) gesucht werden, so ist das vorherige Sortieren gar nicht so dumm.
+
+\subsubsection*{Vorg"anger in einem Wurzelbaum}	
+
+$J$: Menge aller B"aume\\
+$K$: Menge von Knotenpaaren (Kanten) $<v,w>$\\
+
+F"ur ein gegebenes Paar $k=<v,w>$ und einm gegebenen Baum $j$ m"ochten wir feststellen, ob Knoten $v$ der Vorg"anger von $w$ im Baum $j$ ist. (Per def.: Jeder Knoten ist sein eigener Vorg"anger)\\
+Direkte L"osung dieser Instanz (schlimmster Fall): $\Omega(n)$. ($j$ besteht aus n Knoten)\\ 
+
+Es ist immer m"oglich, Vorbestimmung f"ur $j$ in Zeit $\Theta(n)$ durchzuf"uhren, so dass wir eine bestimmte Instanz des Problems bez"uglich $j$ in $\Theta(1)$ l"osen k"onnen.\\
+
+\fixme{Beispielbaum mit 13 Knoten mit preorder(links) und postorder(rechts) nummerierung...}\\
+
+Vorbestimmung: \\
+ Pre-Order-Traversierung und Post-Order-Traversierung. Dabei nummerieren wir die Knoten wie sie durchlaufen werden. F"ur Knoten $v$ sei $prenum[v]$ und $postnum[v]$ die ihm zugeordneten Nummern. 
+\begin{itemize}
+	\item Bei der Pre-Order-Traversierung nummerieren wir zun"achst einen Knoten und dann die Teilb"aume von links nach rechts. 
+	\item Bei der Post-Order-Traversierung nummerieren wir die Teilb"aume eines Knotens von links nach rechts und danach den Knoten.
+\end{itemize}
+ Es gilt: 
+ $$prenum[v]\le prenum[w] \Gdw v \text{ ist ein Vorg"anger von } w \textbf{ oder } v \text{ ist links von } w$$
+ $$postnum[v]\ge postnum[w] \Gdw v \text{ ist ein Vorg"anger von } w \textbf{ oder } v \text{ ist rechts von } w$$
+ Und somit:
+ $$prenum[v]\le prenum[w] \textbf{ und } postnum[v]\ge postnum[w] \Gdw v \text{ ist ein Vorg"anger von } w.$$
+ Wurde der Baum so in $\Theta(n)$ vorbereitet, so kann die Bedingung in $\Theta(1)$ gepru"ft  werden.
+ 
+\subsubsection*{Wiederholte Auswertung eines Polynoms}
+
+$J$: Menge der Polynome (in einer Variablen $x$)\\
+$K$: Wertemenge von $x$\\
+
+Problem: Auswertung\\
+
+Bedingungen: 
+\begin{itemize}
+\item[1)] ganzzahliger Koeffizient
+\item[2)] normierte Polynome (f"uhrender Koeffizient = 1; ``monic")
+\item[3)] Grad $n=2^k-1, k \in \MdN$
+\end{itemize}
+
+Wir messen die Effizienz der verschiedenen Methoden an der Anzahl von Multiplikationen (Anzahl der Additionen nur zweitrangig)\\
+
+\textbf{Beispiel:} $p(x)=x^7-5x^6+4x^5-13x^4+3x^3-10x^2+5x-17$
+
+Naive Methode: Berechne zunaechst die Reihe von Werten $x^2,x^3,\dots,x^7$, damit $5x,-10x^2,\dots$, und dann $p(x)$.
+
+$\Ra$ 12 Multiplikationen und 7 Additionen.
+
+leichte Verbesserung: $$p(x)=((((((x-5)x+4)x-13)x+3)x-10)x+5)x-17$$	
+
+$\Ra$ 6 Multiplikationen und 7 Additionen.\\
+
+Noch besser: 
+$$p(x)=(x^4+2)[(x^2+3)(x-5)+(x+2)]+[(x^2-4)x+(x+9))]$$
+$\Ra$ 5 Multiplikationen (2 zur Berechnung von $x^2$ und $x^4$) und 9 Additionen.\\
+
+Wie:\\
+$p(x)$ ist nach Vorrausetzung ein normiertes Polynom vom Grad $n=2^k-1$. Also koennen wir $p(x)$ so ausdr"ucken:
+	$$p(x)=(x^{\frac{n+1}{2}}+a)q(x)+r(x)$$
+wobei $a$:konst.; $q(x)$ und $r(x)$ normierte Polyome vom Grad $2^{k-1}-1$\\
+Nun wird $p(x)$ als Polynom der Form ($x^i+c$), wobei $i$ eine 2-er Potenz ist, ausgedr"uckt:
+$$p(x)=(x^4+a)(x^3+q_2*x^2+q_1*x+q_0)+(x^3+r_2*x^2+r_1*x+r_0)$$
+Koeffizientenvergleich:
+$$q_2=-5, q_1=4,q_0=-13,a=2,r_2=0,r_1=-3,r_0=9$$\\
+$$\Ra p(x)=(x^4+2)(x^3-5x^2+4x-13)+(x^3-3x+9)$$
+"Ahnlich: $x^3-5x^2+4*x-13=(x^2+3)(x-5)+(x-2)$. Daraus erh"alt man das im Beispiel gegebene Ergebnis.
+(Diese Methode wurde von Belaga (im ``Problemi Kibernitiki", vol 5, pp 7 -- 15, 1961) vorgeschlagen.
+
+\subsection{Vorberechnung f"ur Zeichenreihe-Suchprobleme}
+\subsubsection*{Problem:}	
+ $S=s_1 s_2 \dots s_n$ Zeichenreihe aus $n$ Zeichen. (haystack, text)
+ $P=p_1 p_2 \dots p_m$ Zeichenreihe aus $m$ Zeichen. (needle, pattern)
+ ``Ist P eine Teilzeichenreihe von S?"\ und ``Wo in S kommt P vor?"\\
+ OBdA: $n \ge m$\\
+ \subsubsection*{Naiver Algorithmus:}
+ Liefert r, falls das erste Vorkommen von P in S in der Position r beginnt. (r ist die kleinste ganze Zahl, so dass $s_{r+i-1}=p_i, i=1,2,\dots,m$ gilt) Und 0 falls P keine Teilzeichenreihe von S ist.
+ 
+ \begin{codebox}
+ \Procname{$\proc{..}$}
+ \li \For $i \la 0$ \To $n-m$ 
+ \li \Do
+ \li $ok \la \const{true}$
+ \li $j \la 1$
+ \li \While $ok \And j \le m$ 
+ \li 	\Do \If $p[j] \ne s[i+j]$ 
+ \li 		$ok \la \const{false}$
+ \li	\Else $j\la j+1$
+ 		\End
+ 	\End
+ \li \If $ok$ \Return $i+1$
+ \End
+ \li \Return $0$
+ \end{codebox}
+ %% ARGH ich hasse Cormen-Pseudocode!
+ Jede Position in S wird gepr"uft. Worst-Case: $\Omega(m(n-m))\Ra\Omega(nm)$, falls n viel gr"osser als m ist.\\
+ Es ist eine bessere Ausf"uhrung m"oglich, indem man verschiedene Methoden anwendet.
+ \subsubsection*{Signaturen}
+ Sei $S=S_1,S_2,\dots,S_n$ in  Teilzeichenreihen zerlegt und falls $P$ in $S$ vorkommt muss $P$ vollstaendig in einer der Teilzeichenreihen $S_l, 1 \le l \le n$ vorkommen. (z.b.: Zerlegung einer Textdatei in Zeilen)
+ Grundidee: eine Boolesche Funktion T(P,S) benutzen. (sehr schnell berechnet)
+ $T(P,S_i)=false \Ra P \not\in S_i.$
+ Sonst: $P \in S_i$ m"oglich. (dann naiver Algorithmus...)
+ 
+ Mit Signaturen findet man ein einfaches Verfahren zur Implementation eines solchen Algorithmus.\\
+ Angenommen:
+ \begin{itemize}
+ \item[1)] P ist {a,b,c,..,y,z,other} (``other" : nicht-alphabetische Zeichen).
+ \item[2)] 32 Bit Rechner.
+ \end{itemize}
+ Eine m"ogliche Definition einer Signatur:
+ \subsubsection*{Definiton ``Signatur":} 
+ \begin{itemize}
+ 	\item[(i)] Definiere val(``a")=0, val(``b")=1,\dots, val(``z")=25, val(``other")=26
+ 	\item[(ii)] Falls $c_1$ und $c_2$ Zeichen sind, definiere: 
+ 			$$B(c1,c2)=(27\text{val}(c1)+\text{val}(c2)) mod 32$$
+    \item[(iii)] Definiere die Signaturen sig($C$) einer Zeichenreihe  $C=c_1 c_2 \dots c_r$ als ein 32-Bit-Wort, wobeit die Bits mit den Nummern $B(c_1,c_2),B(c_2,c_3),\dots,B(c_{r-1},c_r)$ auf 1 und sonst auf 0 gesetzt sind.
+ \end{itemize}
+\subsubsection*{Beispiel:}
+ $C=``computers"$\\
+        $$B(``c",``o")=(27\times 2 + 14) mod 32 = 4$$
+        $$B(``o",``m")=(27\times 14+ 12) mod 32 = 6$$
+        \dots
+        $$B(``r",``s")=(27\times 17+ 18) mod 32 = 29$$
+        
+        Wenn die Bit des Wortes von links nach rechts mit 0 bis 31 nummeriert werden, ist die Signatur dieser Zeichenreihe
+        \begin{center} $sig(C) =$ 0000 1110 0100 0001 0001 0000 0000 0100 \end{center}
+ 		Nur 7 Bits sind auf 1 gesetzt, da $B(``e",``r")=B(``r",``s")=29$ ist.\\
+ 		Wir berechnen jedes $sig(S_i)$, sowie $sig(P)$. Wenn $P\in S_i$ dann sind alle Bit die in der Signatur von P 1 sind, auch in der Signatur $S_i$ auf 1 gesetzt.\\
+ 		$$T(P,S_i)=[sig(P)\textbf{ and }sig(S_i)=sig(P)]$$
+ 		(and:  bitweise Konjunktion von zwei ganzen W"ortern.)\\
+ 		Berechnung der Signaturen in $O(n)$. F"ur Muster P brauchen wir $O(m)$. T(P,S) geht fix.
+\end{document} 	
