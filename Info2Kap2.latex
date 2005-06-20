@@ -1670,7 +1670,7 @@ Die InOrder-Traversierung des Baumes in Abbildung \ref{tree3} ergibt: $2,3,5,5,7
 	  	2 & *{} & 5 & *{} & 8 \\
 		}
 	\end{xy}$
-	\caption{Beispiel Traversierung}
+	\caption{Beispiel InOrder-Traversierung}
 	\label{tree3}
 \end{figure}
 
@@ -2410,4 +2410,106 @@ $$\Ra p(x)=(x^4+2)(x^3-5x^2+4x-13)+(x^3-3x+9)$$
  		$$T(P,S_i)=[sig(P)\textbf{ and }sig(S_i)=sig(P)]$$
  		(and:  bitweise Konjunktion von zwei ganzen W"ortern.)\\
  		Berechnung der Signaturen in $O(n)$. F"ur Muster P brauchen wir $O(m)$. T(P,S) geht fix.
+
+%Vorlesung vom 20.06.2005 Felix Brandt
+\section{Vorberechnung für Zeichenreihen-Suchprobleme}
+\lectureof{20.06.2005}
+
+\subsection{Algorithmus von Knuth-Morris-Pratt}
+\paragraph{Gegeben:}
+\begin{itemize}
+	\item lange Zeichenkette $S$ (Text), Zeichen $1,\ldots,n$
+	\item kurze Zeichenkette $P$ (Suchwort), Zeichen $1,\ldots,m$
+\end{itemize}
+\paragraph{Gesucht:}
+\begin{itemize}
+	\item Finde die erste Position $i$, so dass
+		$$S[i+j] = P[j],\ j=1,\ldots,m$$
+		Also das erste Vorkommen von $P$ in $S$.
+\end{itemize}
+
+\paragraph{Naive Methode}
+
+\begin{codebox}
+\Procname{$\proc{KPM-Algorithm}(S,P)$}
+\li $n \gets length(S)$
+\li $m \gets length(P)$
+\li $i \gets 0$
+\li	$j \gets 1$
+\li	\While $j \leq m$ und $i \leq n-m$
+\li	\Do \If $P[j]=S[i+j]$
+\li			\Then $j \gets j+1$
+\li			\Else $j \gets 1$
+\li						$i \gets i + 1$
+				\End
+		\End
+\zi \{ $j$ Zeichen stimmten überein \}
+\li	\If $j > m$
+\li			\Then \Return $i + 1$
+		\End
+\zi \{ Suchwort nicht gefunden \}
+\li	\Return -1
+\end{codebox}
+
+Der Algorithmus vergleicht $P$ also zeichenweise mit $S$ und verschiebt $P$ um eins nach hinten, sobald ein Fehler auftritt.
+Kann auf diese Weise $P$ komplett in $S$ gefunden werden bricht der Algorithmus mit Erfolg ab (Startposition $i$ von $P$ in $S$,
+$i \geq 1$). Ansonsten läuft er $S$ komplett durch und endet mit einem Fehler ($-1$).
+
+$$\begin{array}{ccccccccccccc}
+	S & = & A & B & R & A & K & A & D & A & B & R & A \\
+  P & = & \textbf{A} & K & A \\
+	  &   &   & A & K & A \\
+	  &   &	  &   & A & K & A \\
+	  &	  &   &	  &   & \textbf{A} & \textbf{K} & \textbf{A} \\
+\end{array}$$
+
+\paragraph{Aufwand im Worst-Case}
+
+Das Wort $P$ steht nicht in $S$ und passt (fast) immer bis auf das letzte Zeichen $\folgt \Theta(n \cdot m)$.\\
+$\folgt$ Versuche den Aufwand durch Vorberechnung zu reduzieren\\
+$\folgt$ KMP-Algorithmus
+
+\paragraph{Idee:} Optimiere das "`Schieben"' und "`Vergleichen"' indem man sich zuerst $P$ genauer anschaut.
+Dazu wird eine Verschiebeliste ($next[j]$) auf Basis von $P$ aufgebaut, aus der abgelesen werden kann, ob im 
+Falle der Ungleichheit ab einem bestimmten Zeichen in $P$ (Zeile )anschließend eventuell um mehr als $1$ 
+verschoben werden kann (vgl. Zeile ).
+
+$$\begin{array}{ccccccccccccccc}
+    j  & = & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+	P[j] & = & a & b & c & a & b & c & a & c & a & b \\
+       &   &   & a & b & c & a & b & c & a & c & a & b \\
+       &   &   &   & a & b & c & a & b & c & a & c & a & b \\
+       &   &   &   &   & \textbf{a} & \textbf{b} & \textbf{c} & \textbf{a} & b & c & a & c & a & b \\
+  next[j]& = & 0 & 1 & 1 & 0 & 1 & 1 & 0 & 5 & 0 & 1 \\
+\end{array}$$
+
+\paragraph{Um wie viel wird nun verschoben?} Antwort $j - next[j]$
+
+\paragraph{Aufwand:}
+	Im schlimmsten Foll kommt das erste Zeichen von $P$ in $S$ nicht vor $\folgt$ es wird immer nur um $1$ verschoben
+	$\folgt$ $\Theta(n)$
+	Für das Erstellen der Verschiebungstabelle fällt ein Zusatzaufwand an. Dieser kann aber vernachlässigt werden, da
+	üblicherweise $m << n$ ist.
+	
+\subsection{Algorithmus von Boyer-Moore}
+
+\paragraph{Idee} Betrachte das Wort von hinten nach vorn, \\
+	DENN: wenn das aktuell betrachtete Zeichen (aus $S$) in $P$ nicht vorkommt kann ich gleich um $m$ schieben.
+	
+$$\begin{array}{cccccccccccccccccccccccc}
+	T & H & I & S &   & I & S &   & A & D & E & L & I & C & A & T & E &  & T & O & P & I & C \\
+  C & A & T \\
+    &   &   & C & A & T \\
+    &   &   &   &   &   & C & \textbf{A} & T \\
+    &   &   &   &   &   &   & C & A & T \\
+    &   &   &   &   &   &   &   &   &   & C & A & T \\
+    &   &   &   &   &   &   &   &   &   &   &   &   & \textbf{C} & \textbf{A} & \textbf{T} \\
+\end{array}$$
+
+\paragraph{Aufwandsabschätzung}
+	$$O(m+\frac{n}{m}) \text{ im best-case}$$
+	wenn das letzte Zeichen von $P$ nicht in $S$ vorkommt (falls $P \notin S$).
+	$$O(n) \text{ im worst-case}$$
+	wenn das letzte Zeichen von $P$ auf (fast) jedes Zeichen von $S$ passt (falls $P \notin S$).
+
 \end{document} 	
