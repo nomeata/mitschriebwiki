@@ -784,7 +784,7 @@ $S \la \emptyset\ \{\text{Lösungsmenge}\}$\\
 \li     \Then
             \id{return} $S$
 \li     \Else
-            \id{return} "`keine L"osung"`
+            \id{return} "`keine L"osung"'
 \end{codebox}
 
 \subsection{Beispiel} Minimale, zusammenhängende Bäume
@@ -854,7 +854,7 @@ T enthält die Kanten $\{1,2\},\{2,3\},\{4,5\},\{6,7\},\{1,4\}$ und $\{4,7\}$ \\
     \begin{xy}
         \entrymodifiers={++[o][F-]}
         \xymatrix {
-            1 \ar@{=}[r] \ar@{=}[d] & 2 \ar@{=}[r] \ar@{=}[d] \ar@{-}[dl] & 3 \ar@{-}[d] \ar@{-}[dl] \\
+            1 \ar@{=}[r] \ar@{=}[d] & 2 \ar@{=}[r] \ar@{-}[d] \ar@{-}[dl] & 3 \ar@{-}[d] \ar@{-}[dl] \\
             4 \ar@{=}[r] \ar@{=}[dr] & 5 \ar@{-}[r] \ar@{-}[d] & 6 \ar@{=}[dl] \\
             *{} & 7 &  *{} \\ % *{} hides the nodes not there
             *{} & *{\txt{Schritt 7}} & *{} 
@@ -928,7 +928,7 @@ $\Ra \log^{\ast}$ wächst sehr langsam. Höchstens $O(a)$ für die restlichen Opera
 \zi \textbf{Greedy-Schleife}
 \li \While $B \neq N$
 \li     \Do
-            Finde $\{u,v\}$ von minimaler Länge, so dass $u\in N/B$ und $v \in B$
+            Finde $\{u,v\}$ von minimaler Länge, so dass $u\in N\backslash B$ und $v \in B$
 \li         $T \gets T \cup \left\{\left\{u,v\right\} \right\}$
 \li         $B \gets B \cup \left\{u\right\}$
         \End
@@ -1203,7 +1203,7 @@ Das führt zum Algorithmus
 \li $w \la u \func{div} 10^s;\ x \la u \mod 10^s$
 \li $y \la v \func{div} 10^s;\ z \la v \mod 10^s$
 \li \Return
-\li		$\proc{mult}(w,y) \cdot 10^{2s} + (\proc{mult}(w,z) - \proc{mult}(x,y)) \cdot 10^s + \proc{mult}(x,z)$
+\li		$\proc{mult}(w,y) \cdot 10^{2s} + (\proc{mult}(w,z) + \proc{mult}(x,y)) \cdot 10^s + \proc{mult}(x,z)$
 \end{codebox}
 
 Eine triviale Verbessung wird dadurch erreicht, dass man den letzten Schritt durch folgendes ersetzt:
@@ -1211,7 +1211,7 @@ Eine triviale Verbessung wird dadurch erreicht, dass man den letzten Schritt dur
 \li	$r \la \proc{mult}(w+x,y+z)$
 \li $p \la \proc{mult}(w,y)$
 \li $q \la \proc{mult}(x,z)$
-\li \Return $10^{2s}+10^s(r-p-q)+q$
+\li \Return $p\cdot 10^{2s} +(r-p-q)\cdot10^s +q$
 \end{codebox}
 
 \paragraph{Bemerkungen}
@@ -2340,11 +2340,11 @@ $p(x)$ ist nach Vorrausetzung ein normiertes Polynom vom Grad $n=2^k-1$. Also ko
 	$$p(x)=(x^{\frac{n+1}{2}}+a)q(x)+r(x)$$
 wobei $a$:konst.; $q(x)$ und $r(x)$ normierte Polyome vom Grad $2^{k-1}-1$\\
 Nun wird $p(x)$ als Polynom der Form ($x^i+c$), wobei $i$ eine 2-er Potenz ist, ausgedr"uckt:
-$$p(x)=(x^4+a)(x^3+q_2*x^2+q_1*x+q_0)+(x^3+r_2*x^2+r_1*x+r_0)$$
+$$p(x)=(x^4+a)(x^3+q_2\cdot x^2+q_1\cdot x+q_0)+(x^3+r_2\cdot x^2+r_1\cdot x+r_0)$$
 Koeffizientenvergleich:
 $$q_2=-5, q_1=4,q_0=-13,a=2,r_2=0,r_1=-3,r_0=9$$\\
 $$\Ra p(x)=(x^4+2)(x^3-5x^2+4x-13)+(x^3-3x+9)$$
-"Ahnlich: $x^3-5x^2+4*x-13=(x^2+3)(x-5)+(x-2)$. Daraus erh"alt man das im Beispiel gegebene Ergebnis.
+"Ahnlich: $x^3-5x^2+4\cdot x-13=(x^2+3)(x-5)+(x-2)$. Daraus erh"alt man das im Beispiel gegebene Ergebnis.
 (Diese Methode wurde von Belaga (im ``Problemi Kibernitiki", vol 5, pp 7 -- 15, 1961) vorgeschlagen.
 
 \subsection{Vorberechnung f"ur Zeichenreihe-Suchprobleme}
@@ -2392,7 +2392,7 @@ $$\Ra p(x)=(x^4+2)(x^3-5x^2+4x-13)+(x^3-3x+9)$$
  \begin{itemize}
  	\item[(i)] Definiere val(``a")=0, val(``b")=1,\dots, val(``z")=25, val(``other")=26
  	\item[(ii)] Falls $c_1$ und $c_2$ Zeichen sind, definiere: 
- 			$$B(c1,c2)=(27\text{val}(c1)+\text{val}(c2)) mod 32$$
+ 			$$B(c1,c2)=(27\text{val}(c1)+\text{val}(c2)) \mod 32$$
     \item[(iii)] Definiere die Signaturen sig($C$) einer Zeichenreihe  $C=c_1 c_2 \dots c_r$ als ein 32-Bit-Wort, wobeit die Bits mit den Nummern $B(c_1,c_2),B(c_2,c_3),\dots,B(c_{r-1},c_r)$ auf 1 und sonst auf 0 gesetzt sind.
  \end{itemize}
 \subsubsection*{Beispiel:}
