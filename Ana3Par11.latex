@@ -97,4 +97,92 @@ Ein normierter RAum $X$ heißt \begriff{vollständig} oder ein \begriff{Banachraum
 \item $L(\MdR^n)$ ist mit $\|\cdot\|_1$ ein Banachraum (Analysis II, 18.1)
 \end{beispiele}
 
+\begin{definition}
+$X$ sei ein normierter Raum, $x_0 \in X$ und $\epsilon > 0$.
+\begin{itemize}
+	\item[(1)] $U_{\epsilon}(x_0) := \{ x \in X: \Vert x - x_0 \Vert < \epsilon \}$ heißt 		
+	$\epsilon$ - Umgebung von $U$
+	\item[(2)] $D \subseteq X$ heißt offen $: \Leftrightarrow \forall x \in D \ \exists \epsilon
+	=	\epsilon(x) > 0 : U_{\epsilon} (x) \subseteq D$
+\end{itemize}
+\end{definition}
+
+Wie in Analysis 2 zeigt man:
+
+\begin{satz}
+\begin{itemize}
+	\item[(1)] $D$ ist offen $: \Leftrightarrow X \setminus D$ ist abgeschlossen.
+	\item[(2)] Ist $A \subseteq X$ kompakt, so giel die Aussage des Satzes 2.3(3) aus Analysis 2 
+	wörtlich
+\end{itemize}
+\end{satz}
+
+\begin{definition}[Operator]
+ $X$ sei ein normierter Raum, $A \subseteq X$ und $T: A \to X$ eine Abbildung. $T$ heißt auch ein \begriff{Operator} auf $A$, man schreibt meist $T_x$ statt $T(x)$ $(x \in A)$.
+\begin{itemize}
+	\item[(1)] $x^*$ heißt ein \begriff{Fixpunkt} von $T$ $: \Leftrightarrow T_{x^*} = x^*$.
+	\item[(2)] $T$ heißt in $x_0 \in A$ stetig $: \Leftrightarrow $ für jede Folge $(x_n)$ in 
+	$A$. mit $x_n \to x_0: T_{x_n} \to T_{x_0}$. \\
+	(Übung: $\Leftrightarrow \forall \epsilon > 0 \ \exists \delta > 0: \Vert T_x - T_0 \Vert <
+	\epsilon \forall x \in U_{\delta}(x_0) \cap A$)
+	\item[(3)] $T$ heißt stetig auf $A$ $: \Leftrightarrow T$ ist stetig in jedem $x \in A$.
+	\item[(4)] $T$ heißt auf $A$ \begriff{kontrahierend} $: \Leftrightarrow \exists \ L \in
+	[0,1): \Vert T_x - T_y \Vert \le L \Vert x-y \Vert \forall x,y \in A$
+\end{itemize}
+\end{definition}
+
+\begin{beispiel}[Wichtiges Beispiel!!!]
+$x=C[a,b]$  ist mit $\Vert \cdot \Vert_{\infty}$ ein Banachraum. Definiere $T: X \to X$ durch $(T_y)(x) = y_0 + \int_{x_0}^xf(t,y(t))dt \ (x \in [a,b])$ wobei $x_0 \in [a,b]$, $y_0 \in \MdR$ und $f:[a,b] \times \MdR \to \MdR$ stetig. $(T_y \in C^1[a,b])$
+
+Behauptung: $T$ ist stetig auf $X$.
+\end{beispiel}
+\begin{beweis}
+Sei $z_0 \in X$. Sei $z \in X$ mit $\Vert z - z_0 \Vert \ge 1$. $\forall t \in [a,b]: |z(t)| \le \Vert z \Vert_{\infty} = \Vert z - z_0 + z_0 \Vert _{\infty} \le \Vert z - z_0 \Vert _{\infty} + \Vert z_0 \Vert_{\infty} \le 1 + \Vert z_0 \Vert _{\infty} =: \gamma$
+
+$R:= [a,b] \times [-\gamma, \gamma]$. D.h. $(t,z(t)) \in R \forall t \in [a,b] \forall z \in X$ mit $\Vert z - z_0 \Vert _{\infty} \le 1$.
+
+$f$ ist glm. stetig auf $R$ (da $R$ kompakt). Sei $\epsilon > 0$. $\exists \ \delta > 0: | f(\alpha) - f(\beta) | < \epsilon \forall \alpha, \beta \in R$ mit $\Vert \alpha - \beta \Vert < \delta$ und $\delta \le 1$.
+
+Sei $z \in X$ mit $\Vert z - z_0 \Vert_{\infty} < \delta \le 1$. Dann: $\Vert(t,z(t)) - (t,z_0(t)) \Vert = \Vert (0, z(t) - z_0(t)) \Vert = | z(t) - z_0(t) | \le \Vert z - z_0 \Vert_{\infty} < \delta \ \forall \ t \in [a,b]$
+
+$\folgt |f(t,z(t)) - f(t,z_0(t))| < \epsilon \ \forall \ t \in [a,b]$
+
+$\folgt |(T_z)(x) - (T_{z_0})(x)| = | \int_{x_0}^x (f(t,z(t))) - (f(t,z_0(t))) dt | \le \epsilon |x-x_0| \le (b-a) \forall \ x \in [a,b]$
+
+$\folgt \Vert T_z - T_{z_0} \Vert_{\infty} \le \epsilon(b-a) \folgt T$ ist stetig in $z_0$.
+\end{beweis}
+
+\begin{satz}[Fixpunktsatz von Banach]
+$X$ sei ein Banachraum. $A \subseteq X$ sei abgeschlossen, $T: A \to X$ sei kontrahierend, also $\exists \ L \in [0,1): \|T_x - T_y \| \le L \| x-y \| \forall x,y \in A$ und es sei $T(A) \subseteq A$. Dann hat $T$ genau einen Fixpunkt $x^* \in A$.
+
+Sei $x_0 \in A$ beliebig und $x_{n+1} := T_{x_1} (n \ge 0)$. Dann:
+\begin{itemize}
+	\item [(i)] $x_n \in A \forall n \in \MdN_0$
+	\item [(ii)] $x_n \to x^*$
+	\item [(iii)] $\| x_0 - x^*\| \le \frac{L^n}{1-L} \|x_0 - x_1 \| \forall n \in \MdN_0$.
+\end{itemize}
+$(x_n)$ heißt \begriff{Folge der sukzessiven Approximation}.
+\end{satz}
+
+\begin{beweis}
+Sei $x_0 \in A$. Definiere $x_{n+1} := T_{x_n} (n \ge 0) \folgt (i)$.
+
+$ \|x_{k+1} - x_k \| = \| T_{x_k} - T_{x_{k-1}} \| \le L \|x_k - x_{k-1} \| (\forall k \ge 1)$
+
+Induktiv: $ \| x_{k+1} - x_k \| \le L^k \| x_k - x_0 \| \forall k \ge 0$
+
+Seien $m,n \in \MdN, m > n$. $\|x_m - x_n \| = \| x_m - x_{m-1} + x_{m-1} - x_{m-2} + \dots + x_{n+1} - x_n \| \le \|x_m - x_{m-1}\| + \| x_{m-1} - x_{m-2} \| + \dots + \|x_{n+1} - x_n\| \le (L^{m^1} + L^{m-2} + \dots + L^n) \| x_1 - x_0 \| = L^n \underbrace{(1+L+ \dots + L^{m-1-n})}_{\le \sum_{i=0}^{\infty} L^j = \frac{1}{1-L}}\|x_1-x_0\| \le \frac{L^n}{1-L}\|x_1 - x_0\| (*)$
+
+$(*) \folgt (x_n)$ ist eine Cauchy-Folge in $X$. $X$ Banachraum $\folgt \exists x^* \in X: x_n \to x^*$. $(iii)$ folgt aus $(*)$ mit $m \to \infty$
+
+$A$ abgeschlossen $\folgt x^* \in A$
+
+$\|T_{x^*} - x^* \| = \| T_{x^^*} - x_{n+1} + x_{n+1} - x^* \| \le \| T_{x^*} - \underbrace{x_{n+1}}_{=T_{x_n}} \| + \| x_{n+1} - x^*\| \le \underbrace{L \|x^* - x_n \| + \|x_{n+1} - x^* \Vert}_{\to 0 (n \to \infty)} \folgt \| T_{x^*} - x^* \| = 0 \folgt T_{x^*} = x^*$
+
+Sei $z \in A$ und $T_z = z$. $\| x^* -z \| = \|T_{x^*} - T_z \| \le L\|x^* - z \|$; wäre  $\|x^* - z \| \ne 0 \folgt L \ge 1$, Wid., also $x^*=z$.
+\end{beweis}
+Ohne Beweis:
+\begin{satz}[Fixpunktsatz von Schauder]
+$X$ sein ein normierter Raum, $A \subseteq X$ sei konvex und kompakt und $T: A \to X$ sei stetig und $T(A) \subseteq A$. Dann hat $T$ einen Fixpunkt (in $A$).
+\end{satz}
 \end{document}
