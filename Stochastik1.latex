@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt,oneside]{book}
+\documentclass[a4paper,11pt]{book}
 
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -36,6 +36,7 @@
 \parindent0pt
 
 \def\unif{\mathop{\rm Unif}\nolimits}
+\def\var{\mathop{\rm Var}\nolimits}
 
 
 \def\AA{ \mathcal{A} }
@@ -1063,7 +1064,7 @@ Es gilt:
 \item [b)] es gilt $\varphi_{0,1}(x)=\varphi_{0,1}(-x)$
 \item [c)] sei $Y=aX+b$. Es gilt:
 \begin{eqnarray*}
-P(Y\leq y)=P(X\leq \frac{y-b}{a}) & =: & \int_{-\infty}^{\frac{y-b}{a}}\frac{1}{\sqrt{2\pi}\sigma}\,\exp(-\frac{1}{2}\frac{(x-\mu )^2}{\sigma^2})\,dx \\
+P(Y\leq y)=P(X\leq \frac{y-b}{a}) & = & \int_{-\infty}^{\frac{y-b}{a}}\frac{1}{\sqrt{2\pi}\sigma}\,\exp(-\frac{1}{2}\frac{(x-\mu )^2}{\sigma^2})\,dx \\
 & = & \int_{-\infty}^{y}\frac{1}{\sqrt{2\pi}\sigma}\,\exp(-\frac{1}{2}\frac{(x'-b-a\mu )^2}{a^2\sigma^2})\frac{1}{a}\,dx'\\
 & \Rightarrow & Y\sim \NN(a\mu +b,a^2\sigma^2)
 \end{eqnarray*}
@@ -1071,109 +1072,112 @@ P(Y\leq y)=P(X\leq \frac{y-b}{a}) & =: & \int_{-\infty}^{\frac{y-b}{a}}\frac{1}{
 \end{Bew}
 
 \chapter{Erwartungswert und Varianz von Zufallsvariablen}
-Im Folgenden sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum. Zun"achst sei $X:\Omega\rightarrow \R$ eine diskrete Zufallsvariable, die die Werte $x_1,x_2,\dots$ annimmt und die Z"ahldichte $\{p_k\}_{k\in\N}$ besitzt.\\
-Wir f"uhren das Zufallsexperiment n-mal durch (n gro"s)\\
-Welchen Wert erh"alt man im Mittel f"ur X?\\
-Der Wert $x_k$ tritt bei dem Experiment $n_k$-mal auf\\
-\[\sum_{k=1}^{\infty}n_k=n \quad\textnormal{Mittelwert}\,\,\frac{1}{n}\sum_{k=1}^{\infty}n_kx_k \textnormal{. F"ur gro"se n sollte}\, \frac{n_k}{n}=p_k\,\, \textnormal{sein}\]
+Im Folgenden sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum. Der Erwartungswert von $X$ ist ein Lebesgue-Integral (allerdings allgemeiner als in Analysis II). Zunächst wird der Erwartungswert für sogenannte Elementare Zufallsvariablen definiert.
 
 \begin{Def}
-F"ur eine diskrete Zufallsvariable $X$ wird der \textbf{Erwartungswert von X}\index{Erwartungswert von X} definiert als $EX:=\sum_{k=1}^{\infty}x_k p_X(k)$\\
-falls die Summe absolut konvergiert, d.h. $\sum_{k=1}^{\infty}|x_k| p_X(k)<\infty$
+Eine Zufallsvariable $X:\Omega\to\R$ heißt \textbf{elementar}\index{Elementare Zufallsvariable}, falls sie eine Darstellung
+\[ X(\omega) = \sum_{i=1}^m \alpha_i \cdot 1_{A_i}(\omega) \]
+besitzt, mit $A_i \in \AA$, $\alpha_i\in\R_+$,$m\in\N$. $M^E$ sei die Menge aller elementaren Zufallsvariablen auf dem Warscheinlichkeitsraum.
+
+Für $X\in M^E$ sei das Integral von $X$ bezüglich $P$ definiert durch $\int X d P := \int_{i=1}^n \alpha_i P(A_i)$
 \end{Def}
 
-\begin{Bsp}
-Sei $X\sim B(n,p)$ (binomialverteilt). Dann gilt:\\
-$p_X(k)=\binom{n}{k}p^k(1-p)^{n-k} \quad ,k=0,1,\ldots,n$ Also folgt:
-\[EX=\sum_{k=0}^{n}k\binom{n}{k}p^k(1-p)^{n-k}=np\sum_{k=1}^{n}\binom{n-1}{k-1}p^{k-1}(1-p)^{(n-1)-(k-1)}=\]
-\[=np\underbrace{\sum_{k=0}^{n-1}\binom{n-1}{k}p^k(1-p)^{(n-1)-k}}_{=1}=np\]
-
-Sei nun $X:\Omega\rightarrow \R$ eine absolut stetige Zufallsvariable mit Dichte $f_X$. Hier wird der Erwartungswert als Grenzwert definiert.\\
-Motivation: (+Zeichung)\\
-Es sei \begin{itemize}
-\item $\underline{X_n}:=\frac{\lfloor 2^n\cdot x\rfloor}{2^n}$
-\item $\overline{X_n}:=\frac{\lceil 2^n\cdot x\rceil}{2^n}$
-\end{itemize}
-offenbar gilt: $\underline{X_n}\uparrow X$ und $\overline{X_n}\downarrow X$ f"ur $n\to\infty$ und $\underline{X_n}$ und $\overline{X_n}$ sind diskret.\\
-Es gilt:
-\[ E\underline{X_n}=\sum_{k\in\Z}\frac{k}{2^n}\cdot P(\underline{X_n}=\frac{k}{2^n})=\sum_{k\in\Z}\frac{k}{2^n} \int_{\frac{k}{2^n}}^{\frac{k+1}{2^n}}f_X(x)\,dx = \sum_{k\in\Z} \int_{\frac{k}{2^n}}^{\frac{k+1}{2^n}} \frac{\lfloor 2^n\cdot x\rfloor}{2^n}f_X(x)\,dx=\]
-\[=\int_{-\infty}^{\infty}\frac{\lfloor 2^n\cdot x\rfloor}{2^n}f_X(x)\,dx\leq \int_{-\infty}^{\infty}x f_X(x)\,dx \leq \int_{-\infty}^{\infty}\frac{\lceil 2^n\cdot x\rceil}{2^n}f_X(x)\,dx = \ldots = E\overline{X_n}\]
-\end{Bsp}
-Au"serdem:
-\[|E\overline{X_n}-E\underline{X_n}|\leq \int_{-\infty}^{\infty}\frac{\overbrace{|\lceil 2^n x\rceil - \lfloor 2^n x\rfloor|}^{\leq 1}}{2^n}f_X(x)\,dx\leq \frac{1}{2^n}\int_{-\infty}^{\infty}f_X(x)\,dx=\frac{1}{2^n}\]
-\[\textnormal{Falls}\,\,\int_{-\infty}^{\infty}|x|f_X(x)\,dx<\infty \quad \textnormal{gilt also}\, \lim_{n\to\infty}E\overline{X_n}=\lim_{n\to\infty}E\underline{X_n}=\int_{-\infty}^{\infty}x f_X(x)\,dx\] 
-
-\begin{Def}
-F"ur eine stetige Zufallsvariable $X$ wird der \textbf{Erwartungswert von X}\index{Erwartungswert von X} definiert als:
-\[ EX:=\int_{-\infty}^{\infty}x f_X(x)\,dx \qquad \textnormal{falls}\quad \int_{-\infty}^{\infty}|x| f_X(x)\,dx<\infty\]
-\end{Def}
-
-\begin{Bem}$\\$
+\begin{Bem}
 \begin{itemize}
-\item [a)] Falls $\sum |x|p_X(k)=\infty$ bzw. $\int_{-\infty}^{\infty}|x| f_X(x)\,dx=\infty$, so sagt man, dass der Erwartungswert von $X$ nicht existiert.
-\item [b)] In Stochastik II wird der Erwartungswert als Lebesgue Integral definiert. Offenbar h"angt EX nur von der Verteilung bzw. Verteilungsfunktion von $X$ ab. Wir schreiben deshalb auch:
-\[ EX=\int_{-\infty}^{\infty}x\,dP_X(x) \quad\textnormal{oder}\quad EX=\int_{-\infty}^{\infty}x\,dF_X(x)\]
+\item[a)] $\int X d P$ ist unabhängig von der gewählten Darstellung von $X$ (vgl. Analysis II)
+\item[b)] Sei $X$ eine diskrete Zufallsvariable. Wir führen das Zufallsexperiment $n$-mal druch ($n$ groß). Welchen Wert erhält man im Mittel für $X$? Der Wert $x_k$ tritt bei dem Experiment $n_k$-mal auf ($\sum_{k=0}^\infty n_k = n$). Mittelwert: $\frac1n\sum_{k=0}^\infty n_k x_k$
 \end{itemize}
 \end{Bem}
 
-\begin{Bsp}
-Sei $X\sim N(\mu,\sigma^2)$ ($X$ normalverteilt). Also ist
-\[f_X(x)=\frac{1}{\sqrt{2\pi}\sigma}\, \exp(-\frac{(x-\mu)^2}{2\sigma^2})\]
-\[\textnormal{Es folgt:}\quad EX = \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^\infty x\,\exp(-\frac{(x-\mu)^2}{2\sigma^2})\,dx = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty (\sigma u+\mu)\exp(-\frac{1}{2}u^2)\,du =\]
-\[=\frac{1}{\sqrt{2\pi}}\underbrace{\int_{-\infty}^\infty \sigma u\, \exp(-\frac{1}{2}u^2)\,du}_{=0\, \textnormal{wg. Symmetrie des Integranten}} + \mu \underbrace{\frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty \exp(-\frac{1}{2}u^2)\,du}_{=1\textnormal{, da Dichte}} = \mu\]
-\end{Bsp}
+Jetzt wird der Integralbegriff erweitert. Sei $M^+ := \{X:\Omega->\R_+| X\text{ ist Zufallsvariable}\}$. Für $X\in M^+$ betrachte die Folge $ (X_n)_{n\in\N} $ mit 
+\[X_n:= \sum_{i=0}^{n-2^n} \frac i {2^n} 1_{A_i^n}\text{ mit }A_i^n = \begin{cases} \{\frac{i}{2^n} \le X \le \frac{i+1}{2^n}\} &\text{, falls } i=0,1,\ldots,n\cdot 2^n-1 \\ \{X\ge 1\} & \text{, falls } i = n\cdot 2^n \end{cases} \]
+Offenbar ist $X_n\in M^E$ und $x_n(\omega) \le x_{n+1}(\omega) \ \forall \omega \in\Omega$. Außerdem gilt $X_n(\omega)\uparrow X(\omega)$ punktweise $\forall \omega\in\Omega$.
+\[ \int X d P := \lim_{n\to\infty} \int X_n d P\,.\]
 
-\begin{Sa}
-Es sei $X$ eine Zufallsvariable und $g:\R\rightarrow \R$ messbar.
-Dann ist $g(X)$ eine Zufallsvariable und falls $Eg(X)$ existiert gilt:
+\begin{Bem}
 \begin{itemize}
-\item [a)] \[\textnormal{falls $X$ diskret ist}\qquad Eg(X)=\sum_{k=1}^\infty g(x_k)\cdot p_X(k)\]
-\item [b)] \[\textnormal{falls $X$ absolut stetig ist}\qquad Eg(X)= \int_{-\infty}^{\infty}g(X)f_X(x)dx\]
+\item[a)] Der Grenzwert existiert wegen der Monotonie
+\item[b)] Der Grenzwert ist unabhängig von der gewählten Folge $(X_n)_{x\in\N}$: Sei $(Y_n)_{n\in\N}$ eine weitere Folge elementarer Zufallsvariablen, die monoton wachsend gegen $X$ konvergiert, so gilt $\lim_{n\to\infty} \int X_ndP = \lim_{n\to\infty}Y_ndP$ (vergleiche Analysis II).
 \end{itemize}
-\end{Sa}
+\end{Bem}
 
-\begin{Bew}
-g(X) ist Zufallsvariable nach Satz 5.3
+Für eine beliebige Zufallsvariable $X:\Omega\to\R$ gilt: $X=X^+-X^-$ wobei $X^+ = \max\{X,0\}$ und $X^- = -\min\{X,0\}$, also $X^+,X^-\in M^+$.
+
+Wir definieren durch \[\int X d P = \int X^+dP - \int X^-dP =: \int_{\Omega} X(\omega) d P(\omega) =: EX \] den \textbf{Erwartungswert}\label{Erwartungswert} von $X$. $X$ heißt integrierbar, falls $\int X^+dP<\infty$ und $\int X^-dP<\infty$, d.h. wenn $\int |X|dP<\infty$
+
+\begin{Bem}
 \begin{itemize}
-\item [a)] Offenbar ist $Y:=g(X)$ wieder diskret mit Werten $g(x_1),g(x_2),\ldots$ Dabei k"onnen jetzt gleiche Werte auftreten. Seien $y_1,y_2,\ldots$ die verschiedenen Werte, die $Y$ annimmt. Es gilt:
-\[P(Y=y_k)=\sum_{j|g(x_j)=y_k} P(X=x_j)\]
-\[\textnormal{Also:}\quad EY=\sum_{k=1}^{\infty}y_kP(Y=y_k)=\sum_{k=1}^{\infty}\sum_{j|g(x_j)=y_k}g(x_j)\cdot P(X=x_j)=\sum_{j=1}^{\infty}g(x_j)\cdot p_X(j)\]
-\item [b)] durch Grenz"ubergang
+\item[a)] Für $A\in\AA$ sei $\int XdP := \int_{\Omega} X1_AdP$
+\item[b)] In Stochastik II wir das Thema weiter vertieft.
 \end{itemize}
-\end{Bew}
+\end{Bem}
+
 
 \begin{Sa}$\\$
 Es seien X,Y Zufallsvariablen mit existierendem Erwartungswert und $a,b\in\R$
 \begin{itemize}
 \item [a)] Dann existiert auch $E(aX+bY)$ und es gilt:\\
-$E(aX+bY)=aEX+bEY \qquad$ ``Linearit"at``
-\item [b)] Gilt $X\leq Y$, d.h. $X(\omega)\leq Y(\omega)\quad \forall\,\omega\in\Omega$, so folgt: $EX\leq EY$
+\[E(aX+bY)=aEX+bEY \qquad \text{"`Linearit"at"'}\]
+\item [b)] Gilt $X\leq Y$, d.h. $X(\omega)\leq Y(\omega)\quad \forall\,\omega\in\Omega$, so folgt: \[EX\leq EY \qquad \text{"`Monotonie"'}\]
 \end{itemize}
 \end{Sa}
 
-\begin{Bew}
-\begin{itemize}
-\item [a)] Seien $X$ und $Y$ diskret:\\
-\[\sum_{k=1}^\infty \sum_{j=1}^\infty \underbrace{|ax_k+by_j|}_{\leq (|a||x_k|+|b||y_j|)} \cdot P(X=x_k, Y=y_j) \leq \]
-\[ \leq \sum_{k=1}^\infty |a||x_k|\underbrace{\sum_{j=1}^\infty P(X=x_k, Y=y_j)}_{=P(X=x_k)}+\sum_{j=1}^\infty |b||y_j| \underbrace{\sum_{k=1}^\infty P(X=x_k,Y=y_j)}_{=P(Y=y_j)} < \infty \,\textnormal{(nach Vereinbarung)}\]
-F"ur eine Gleichung mache gleiche Rechnung ohne Betragsstriche.
-Der allgemeine Beweis geht mit Hilfe des Lebesgue-Integrals.
-\item [b)] ohne Beweis
-\end{itemize}
+\begin{Bew} vgl. Analysis II
 \end{Bew}
 
-\begin{Bem}
-Da $X\leq |X|$ und $-X\leq |X|$ folgt $|EX|\leq E|X|$\\
-Ein Ma"s f"ur die Streuung einer Zufallsvariable ist die Varianz.
-\end{Bem}
+\begin{Sa}
+Sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum und $X:\Omega\to\R$ eine Zufallsvariable mit Verteiltung $P_X$. $g:\R\to\R$ sei messbar (Zufallsvariable). Dann ist (im Falle der Existenz):
+\[ Eg(X) = \int_\Omega g(X)dP = \int_\R gdP_X \]
+\end{Sa}
+
+\begin{Bew}
+Sei nunächst $g\in M^E$, also $g(\omega) = \sum_{i=0}^m \alpha_i 1_{B_i}(\omega)$ für $m\in\N, \alpha \in \R_+, B_i \in \BB$ somit $g(X) = \sum_{i=1}^m \alpha_i \cdot 1_{A_i}$, $A_i=X^{-1}(B_i)$ und $\int_\Omega g(x)dP = \sum_{i=1}^m \alpha_i\cdot P(A_i) = \sum_{i=1}^m \alpha_i P_X(B_i)= \int_\R gdP_X$.
+
+Falls $g\ge 0$, wähle $\{g_n\} \subset M^E$ mit $g_n\uparrow g$. Die Gleichung gilt für jedes $g_n$, Grenzübergang liefert die Gleichheit für $g$. Falls $g$ beliebig, betrachte $g=g^+-g^-$ $\Rightarrow$ Behauptung.
+\end{Bew}
+
+Wir unterscheiden jetzt die beiden Fälle dass $X$ diskret bzw. absolutstetig ist. Hier ergeben sich relativ einfache Formeln.
+
+\begin{Sa}
+Sei $X$ eine diskrete Zufallsvariable mit Werten $x_0,x_1,x_2,\dots$ und Zähldichte $\{P_X^{(k)}\}_{k\in\N_0}$. $g:\R\to\R$ sei messbar. Dann existiert $Eg(X)$, falls $\sum_{k=0}^\infty |g(x_k)| P_X(k) < \infty$ und es ist $Eg(X) = \sum_{k=0}^\infty g(x_k)P_X(k)$
+\end{Sa}
+
+\begin{Bew}
+Sei zunächst $g\in M^E$, also $g=\sum_{i=1}^m \alpha_i 1_{B_i}$ für $m\in\N,\alpha_i\in\R_+, B_i \in \BB$. Es gilt (vgl. Beweis vorher): $Eg(X) = \sum_{i=0}^m \alpha_i P_X(B_i) = \sum_{i=1}^m \alpha_i \left( \sum_{x_k\in B_i} P_X(k) \right) = \sum_{i=1}^m \alpha_i \sum_{k=0}^\infty 1_{B_i}(x_k) P_X(k) = \sum_{k=0}^\infty \underbrace{\sum_{i=1}^m \alpha_i 1_{B_i}(x_k) P_X(k)}_{=g(x_k)} = \sum_{k=0}^\infty g(x_k)P_X(k) $. Allgemeines $g$ wie im Beweis von Satz 7.2
+\end{Bew}
+
+\begin{Bsp}
+Sei $X\sim B(n,p)$ (binomialverteilt). Dann gilt:
+\[ P_X(k)=\binom{n}{k}p^k(1-p)^{n-k} \quad k=0,1,\ldots,n \]
+Also folgt:
+\[EX=\sum_{k=0}^{n}k\binom{n}{k}p^k(1-p)^{n-k}=np\sum_{k=1}^{n}\binom{n-1}{k-1}p^{k-1}(1-p)^{(n-1)-(k-1)}=\]
+\[=np\underbrace{\sum_{k=0}^{n-1}\binom{n-1}{k}p^k(1-p)^{(n-1)-k}}_{=(p+(1-p))^{n-1}=1}=np\]
+\end{Bsp}
+
+\begin{Sa}
+Sei nun $X:\Omega\rightarrow \R$ eine absolut stetige Zufallsvariable mit Dichte $f_X$. $g:\R\to\R$ sei messbar. Dann existiert $Eg(X)$, falls $\int_{-\infty}^\infty |g(x)|f_X(x)dx < \infty$ und es gilt:
+\[ Eg(X) = \int_{-\infty}^\infty g(x) f_X (x)dx \]
+\end{Sa}
+
+\begin{Bew} ähnlich wie in Satz 7.3 \end{Bew}
+
+\begin{Bsp}
+Sei $X\sim N(\mu,\sigma^2)$ ($X$ normalverteilt). Also ist
+\[f_X(x)=\frac{1}{\sqrt{2\pi}\sigma}\, \exp(-\frac12\frac{(x-\mu)^2}{\sigma^2})\]
+Es folgt:
+\begin{align*}EX &= \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^\infty x\,\exp(-\frac{(x-\mu)^2}{2\sigma^2})\,dx
+= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty (\sigma u+\mu)\exp(-\frac{1}{2}u^2)\,du \\
+&=\frac{1}{\sqrt{2\pi}}\underbrace{\int_{-\infty}^\infty \sigma u\, \exp(-\frac{1}{2}u^2)\,du}_{=0\text{ wg. Symmetrie}} + \mu \underbrace{\frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty \exp(-\frac{1}{2}u^2)\,du}_{=1\text{, da Dichte}} = \mu
+\end{align*}
+\end{Bsp}
 
 \begin{Def}
 Sei $X$ eine Zufallsvariable
 \begin{itemize}
 \item [a)] Ist $k\in \N$ und existiert $E|X|^k$, dann hei"st $EX^k$, \textbf{k-tes Moment von X}\index{k-tes Moment von X} und $E(X-EX)^k$, \textbf{k-tes zentriertes Moment von X}\index{k-tes zentriertes Moment von X}
 \item [b)] Das zweite zentrierte Moment hei"st auch \textbf{Varianz}\index{Varianz} von $X$.\\
-Wir schreiben: $Var(X)=E(X-EX)^2$\\
-$\sigma(X):=\sqrt{Var(X)}$ hei"st \textbf{Standardabweichung}\index{Standardabweichung}
+Wir schreiben: $\var(X)=E(X-EX)^2$\\
+$\sigma(X):=\sqrt{\var(X)}$ hei"st \textbf{Standardabweichung}\index{Standardabweichung}
 \end{itemize}
 \end{Def}
 
@@ -1181,24 +1185,25 @@ $\sigma(X):=\sqrt{Var(X)}$ hei"st \textbf{Standardabweichung}\index{Standardabwe
 Die Varianz misst die mittlere quadratische Abweichung der Zufallsvariable $X$ von ihrem Mittelwert. $\sigma(X)$ hat die gleiche Dimension wie $X$.
 \end{Bem}
 
+
 \begin{Sa}
 Sei $X$ eine Zufallsvariable. Falls die entsprechenden Gr"o"sen existieren, gilt:
 \begin{itemize}
-\item [a)] $Var(X)=EX^2-(EX)^2$
-\item [b)] $Var(aX+b)=a^2 Var(X)\quad \textnormal{f"ur}\, a,b\in\R$
-\item [c)] $Var(X)\geq 0$ und $Var(X)=0 \Leftrightarrow P(X=c)=1$ f"ur ein $c\in\R$
+\item [a)] $\var(X)=EX^2-(EX)^2$
+\item [b)] $\var(aX+b)=a^2 \var(X)$ für $a,b\in\R$
+\item [c)] $\var(X)\geq 0$ und $\var(X)=0 \Leftrightarrow P(X=c)=1$ f"ur ein $c\in\R$
 \end{itemize}
 \end{Sa}
 
 \begin{Bew}
 \begin{itemize}
-\item [a)] $Var(X)=E(X^2-2XEX+(EX)^2)\stackrel{\textnormal{Satz} 7.2 a}{=} EX^2-2(EX)^2+(EX)^2 = EX^2-(EX)^2$
-\item [b)] Wir verwenden a): $Var(aX+b)=E(aX+b)^2-(aEX+b)^2=$\\$=E(a^2X^2+2abX+b^2)-a^2(EX)^2-2abEX-b^2 =$\\
+\item [a)] $\var(X)=E(X^2-2XEX+(EX)^2)\stackrel{\text{Satz 7.2a}}{=} EX^2-2(EX)^2+(EX)^2 = EX^2-(EX)^2$
+\item [b)] Wir verwenden a): $\var(aX+b)=E(aX+b)^2-(aEX+b)^2=$\\$=E(a^2X^2+2abX+b^2)-a^2(EX)^2-2abEX-b^2 =$\\
 $=a^2EX^2+2abEX+b^2-a^2(EX)^2-2abEX-b^2=$\\
-$=a^2(EX^2-(EX)^2)= a^2Var(X)$
-\item [c)] Da $0\leq (X-EX)^2 \stackrel{S.7.2 b)}{\Rightarrow } Var(X)\geq 0$\\
-Ist $X$ diskret, so gilt: $Var(X)=\sum_{k=1}^\infty (x_k-EX)^2 P(X=x_k)$\\
-$Var(X)=0 \Leftrightarrow X$ nimmt nur den Wert $x_1= EX$ $(x_k=EX \, \forall\, k\in\N)$ an.\\
+$=a^2(EX^2-(EX)^2)= a^2\var(X)$
+\item [c)] Da $0\leq (X-EX)^2 \stackrel{\text{7.2b}}{\Rightarrow } \var(X)\geq 0$\\
+Ist $X$ diskret, so gilt: $\var(X)=\sum_{k=1}^\infty (x_k-EX)^2 P(X=x_k)$\\
+$\var(X)=0 \Leftrightarrow X$ nimmt nur den Wert $x_1= EX$ $(x_k=EX \, \forall\, k\in\N)$ an.\\
 Analog im stetigen Fall.
 \end{itemize}
 \end{Bew}
@@ -1206,13 +1211,13 @@ Analog im stetigen Fall.
 \begin{Bsp}
 Sei $X\sim N(\mu,\sigma^2)$\\
 Bsp. 7.2 $\Rightarrow EX = \mu$\\
-\[\textnormal{Also:}\quad Var(X)=\frac{1}{\sqrt{2\pi}\sigma} \int_{-\infty}^{\infty}(x-\mu)^2 \exp(-\frac{(x-\mu)^2}{2\sigma^2})dx=\ldots=\sigma^2\]
+\[\textnormal{Also:}\quad \var(X)=\frac{1}{\sqrt{2\pi}\sigma} \int_{-\infty}^{\infty}(x-\mu)^2 \exp(-\frac{(x-\mu)^2}{2\sigma^2})dx=\ldots=\sigma^2\]
 ($\rightarrow$ "Ubung)
 \end{Bsp}
 Die folgende Ungleichung ist wegen ihrer Allgemeinheit n"utzlich:
 \begin{Sa}[Tschebyscheft Ungleichung]$\\$
 Sei $X$ eine Zufallsvariable mit $E|X|<\infty$ und $\varepsilon >0$. Dann gilt:
-\[P(|X-EX|\geq \varepsilon )\leq \frac{1}{\varepsilon^2} Var(X)\]
+\[P(|X-EX|\geq \varepsilon )\leq \frac{1}{\varepsilon^2} \var(X)\]
 \end{Sa}
 
 \textbf{Beweis}\\
@@ -1224,7 +1229,7 @@ Betrachte:
 \right.\]
 \[\textnormal{und}\quad h:\R \rightarrow \R \qquad h(x)=\frac{1}{\varepsilon^2}(x-EX)^2\]
 Offenbar gilt $g(x)\leq h(x)\,\forall\,x\in\R$ Also folgt $g(X)\leq h(X)$ und mit Satz 7.2 b
-\[P(|X-EX|\geq \varepsilon )=Eg(X)\leq Eh(X)=\frac{1}{\varepsilon^2}Var(X)\] 
+\[P(|X-EX|\geq \varepsilon )=Eg(X)\leq Eh(X)=\frac{1}{\varepsilon^2}\var(X)\] 
 
 \chapter{Zufallsvektoren}
 \section{Mehrstufige Zufallsexperimente}
@@ -1472,8 +1477,8 @@ $\Rightarrow $ Ungleichung gilt.
 Es seien X,Y Zufallsvariablen mit endlichem zweiten Moment.
 \begin{itemize}
 \item [a)] Dann hei"st $Cov(X,Y):=E[(X-EX)(Y-EY)]$ die \textbf{Kovarianz} von $X$ und $Y$ \index{Kovarianz}. Ist $Cov(X,Y)=0$, so nennt man $X$ und $Y$ \textbf{unkorreliert}.
-\item [b)] Ist $Var(X)\cdot Var(Y)>0$, so hei"st
-\[\varrho(X,Y):=\frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}}\]
+\item [b)] Ist $\var(X)\cdot \var(Y)>0$, so hei"st
+\[\varrho(X,Y):=\frac{Cov(X,Y)}{\sqrt{\var(X)\var(Y)}}\]
 der \textbf{Korrelationskoeffizient}\index{Korrelationskoeffizient} von $X$ und $Y$.
 \end{itemize}
 \end{Def}
@@ -1492,15 +1497,15 @@ Seien X,Y Zufallsvariablen mit endlichem zweiten Moment. Dann gilt:
 \item [a)] Es gilt: $Cov(X,Y)=E[XY-XEY-YEX+EXEY]=EXY-EXEY$
 \item [b)] folgt aus a) und Satz 9.3
 \item [c)] Mit Satz 9.4 folgt:
-\[Var(X)Var(Y)\varrho^2(X,Y)=(E[\underbrace{(X-EX)}_{=\tilde x} \underbrace{(Y-EY)}_{=\tilde y}])^2\leq E(X-EX)^2E(Y-EY)^2\]
-\[=Var(X)Var(Y)\]
+\[\var(X)\var(Y)\varrho^2(X,Y)=(E[\underbrace{(X-EX)}_{=\tilde x} \underbrace{(Y-EY)}_{=\tilde y}])^2\leq E(X-EX)^2E(Y-EY)^2\]
+\[=\var(X)\var(Y)\]
 \end{itemize}
 \newpage
 \begin{Bem}$\\$
 \begin{itemize}
 \item [a)] Der Korrelationskoeffizient ist ein Ma"s f"ur die lineare Abh"angigkeit der zwei Zufallsvariablen. Betrachte den Extremfall $Y=aX+b$ mit $a\neq 0, \, b\in\R$ gilt\\
-$Cov(X,Y)=E[(X-EX)(aX+b-aEX-b)]=a Var(X)$. und 
-\[\varrho(X,Y)=\frac{aVar(X)}{\sqrt{a^2Var^2(X)}}=\left\{\begin{array}{r@{\quad,\quad}l}
+$Cov(X,Y)=E[(X-EX)(aX+b-aEX-b)]=a \var(X)$. und 
+\[\varrho(X,Y)=\frac{a\var(X)}{\sqrt{a^2Var^2(X)}}=\left\{\begin{array}{r@{\quad,\quad}l}
 1 & \textnormal{falls}\quad a>0 \\
 -1 & \textnormal{falls}\quad a<0
 \end{array}
@@ -1515,21 +1520,21 @@ Es sei z.B. $\Omega=\{\omega_1,\omega_2,\omega_3\}$
 \end{matrix}\]
 Es gilt: $Cov(X,Y)=0$ unkorreliert, aber $P(X=0,Y=1)=\frac{1}{3}$\\
 $P(X=0)P(Y=1)=\frac{2}{3}\cdot\frac{1}{3}=\frac{2}{9}\neq \frac{1}{3}= P(X=0, Y=1)$ sind \underline{nicht} unabh"angig.
-\item [c)] Es gilt: $Cov(X,X)=Var(X),\,Cov(X,Y)=Cov(Y,X)$
+\item [c)] Es gilt: $Cov(X,X)=\var(X),\,Cov(X,Y)=Cov(Y,X)$
 \end{itemize}
 \end{Bem}
 
 \begin{Sa}$\\$
 Seien $X_1,\ldots ,X_n$ Zufallsvariablen mit existierendem zweiten Moment, so gilt:
-\[Var(X_1+\ldots +X_n)=\sum_{i=1}^n Var(X_1)+2\sum_{1\leq i,j\leq k} Cov(X_i,X_j)\]
+\[\var(X_1+\ldots +X_n)=\sum_{i=1}^n \var(X_1)+2\sum_{1\leq i,j\leq k} Cov(X_i,X_j)\]
 Sind die Zufallsvariablen unabh"angig (oder unkorreliert), so gilt:
-\[Var(X_1+\ldots +X_n)=\sum_{i=1}^n Var(X_i)\]
+\[\var(X_1+\ldots +X_n)=\sum_{i=1}^n \var(X_i)\]
 \end{Sa}
 
 \textbf{Beweis}\\
 Mit Satz 7.2 gilt:
-\[Var(X_1+\ldots +X_n)=E(\sum_{i=1}^n(X_i-EX_i))^2=E\sum_{1\leq i<j\leq n}(X_i-EX_i)(X_j-EX_j)\]
-\[=\sum_{i=1}^n Var(X_i)+2\sum_{1\leq i<j\leq k} Cov(X_i,X_j)\]
+\[\var(X_1+\ldots +X_n)=E(\sum_{i=1}^n(X_i-EX_i))^2=E\sum_{1\leq i<j\leq n}(X_i-EX_i)(X_j-EX_j)\]
+\[=\sum_{i=1}^n \var(X_i)+2\sum_{1\leq i<j\leq k} Cov(X_i,X_j)\]
 Der zweite Teil aus Satz 9.5 b)
 
 \begin{Def}$\\$
@@ -1567,7 +1572,7 @@ Insbesondere: $g_X(1)=1$
 Besitzt die $\N_0$-wertige Zufallsvariable $X$ die erzeugende Funktion $g_X$, so gilt:
 \begin{itemize}
 \item [a)] $EX=g'_X(1^-)$, falls EX existiert
-\item [b)] $Var(X)=g''_X(1^-)+g'_X(1^-)-(g'_X(1^-))^2$ falls Var(X) existiert.
+\item [b)] $\var(X)=g''_X(1^-)+g'_X(1^-)-(g'_X(1^-))^2$ falls $\var(X)$ existiert.
 \end{itemize}
 \end{Sa}
 
@@ -1588,7 +1593,7 @@ $g''_X(s)=n(n-1)(sp+1-p)^{n-2}p^2$\\
 \newline
 Also:\\
 $EX=g'_X(1^-)=np$\\
-$Var(X)=n(n-1)p^2+np-(np)^2=n^2p^2-np^2+np-n^2p^2=np(1-p)$
+$\var(X)=n(n-1)p^2+np-(np)^2=n^2p^2-np^2+np-n^2p^2=np(1-p)$
 \end{Bsp}
 
 \begin{Sa}[Eindeutigkeitssatz f"ur erzeugende Funktionen]$\\$
@@ -1643,7 +1648,7 @@ Schreibweise: $X_n\stackrel{d}{\rightarrow }X$, wenn gilt:
 Sei $X_1,X_2,\ldots$ eine Folge von unabh"angigen, identisch verteilten Zufallsvariablen\\
 mit $P(X_n=1)=P(X_n=-1)=\frac{1}{2}\quad (\Rightarrow EX_n=0)$\\
 Mit der Ungleichung von Tschebyscheff (Satz 7.4) folgt:
-\[P(|\frac{1}{k}\sum_{i=1}^n X_i-0|\geq \varepsilon )\leq \frac{Var(\frac{1}{k}\sum_{i=1}^n X_i)}{\varepsilon^2}=\frac{\frac{1}{n^2}\cdot n\cdot 1}{\varepsilon^2}=\frac{1}{n\varepsilon^2}\rightarrow 0 \quad \textnormal{f"ur}\,n\to\infty\]
+\[P(|\frac{1}{k}\sum_{i=1}^n X_i-0|\geq \varepsilon )\leq \frac{\var(\frac{1}{k}\sum_{i=1}^n X_i)}{\varepsilon^2}=\frac{\frac{1}{n^2}\cdot n\cdot 1}{\varepsilon^2}=\frac{1}{n\varepsilon^2}\rightarrow 0 \quad \textnormal{f"ur}\,n\to\infty\]
 Also:
 \[\frac{1}{n}\sum_{i=1}^n X_i\stackrel{P}{\rightarrow}0\] 
 \end{Bsp}
@@ -1834,17 +1839,17 @@ In diesem Fall ist $\varphi$ die charakteristische Funktion von $X$.
 \chapter{Grenzwerts"atze}
 \section{Schwache Gesetze der gro"sen Zahlen}
 \begin{Sa}[Tschebyschefts schwaches Gesetz der gro"sen Zahlen]\index{Tscheby. schw. Gesetz der gr. Zahlen}$\\$
-Es seien $X_1,X_2,\ldots$ unabh"angig und identisch verteilte Zufallsvariablen mit $EX_i=\mu$ und $Var(X_i) < \infty $. Dann gilt:
+Es seien $X_1,X_2,\ldots$ unabh"angig und identisch verteilte Zufallsvariablen mit $EX_i=\mu$ und $\var(X_i) < \infty $. Dann gilt:
 \[\frac{X_1+\ldots +X_n}{n}\stackrel{P}{\rightarrow }\mu\]
 \end{Sa}
 
 \textbf{Beweis}\\
 Mit der Ungleichung von Tschebyscheft (Satz 7.4) folgt:
-\[P(\Bigr|\frac{X_1+\ldots +X_n}{n}-\mu\Bigr|\geq \varepsilon )\leq \frac{Var(\frac{X_1+\ldots +X_n}{n})}{\varepsilon^2}\stackrel{Satz 9.6}{=}\frac{\frac{1}{n^2}Var(X_1+\ldots +X_n)}{\varepsilon^2}=\]
-\[=\frac{Var(X_1)}{n\cdot \varepsilon^2} \rightarrow 0 \quad \textnormal{f"ur}\quad n\to\infty\]
+\[P(\Bigr|\frac{X_1+\ldots +X_n}{n}-\mu\Bigr|\geq \varepsilon )\leq \frac{\var(\frac{X_1+\ldots +X_n}{n})}{\varepsilon^2}\stackrel{Satz 9.6}{=}\frac{\frac{1}{n^2}\var(X_1+\ldots +X_n)}{\varepsilon^2}=\]
+\[=\frac{\var(X_1)}{n\cdot \varepsilon^2} \rightarrow 0 \quad \textnormal{f"ur}\quad n\to\infty\]
 $\Rightarrow $ Behauptung\\
 \newline
-Die Bedingung $Var(X_i)<\infty$ soll weg. Zur Vorbereitung brauchen wir einige Ergebnisse aus der Analysis.
+Die Bedingung $\var(X_i)<\infty$ soll weg. Zur Vorbereitung brauchen wir einige Ergebnisse aus der Analysis.
 \begin{Lem}
 F"ur alle $m\in\N$ und $t\in\R$ gilt:
 \[\Bigr|e^{it}-\sum_{k=0}^{m-1}\frac{(it)^k}{k!}\Bigr|\leq \frac{|t|^m}{m!}\]
@@ -1953,16 +1958,16 @@ das hei"st fast alle Zahlen des Intervalls $[0,1)$ bis auf eine Menge $A\subset 
 \section{Der zentrale Grenzwertsatz}
 Betrachte die Situation aus Satz 13.1:\\
 Seien $X_1,X_2,\ldots$ unabh"angig und identisch verteilte Zufallsvariablen,\\
-$EX_i=\mu, Var(X_i)<\infty$\\
+$EX_i=\mu, \var(X_i)<\infty$\\
 Dann gilt:
-\[P\left(\Bigr|\frac{X_1+\ldots +X_n}{n}-\mu\Bigr| \geq \varepsilon\right)\leq \frac{Var(X_1)}{n\cdot\varepsilon^2}\]
+\[P\left(\Bigr|\frac{X_1+\ldots +X_n}{n}-\mu\Bigr| \geq \varepsilon\right)\leq \frac{\var(X_1)}{n\cdot\varepsilon^2}\]
 Ersetze $\varepsilon$ durch $\varepsilon \cdot n^{-\frac{1}{2}+\delta}$ mit $\delta >0$
-\[P\left(\Bigr|\frac{X_1+\ldots +X_n}{n}-\mu\Bigr|\geq \frac{\varepsilon}{n^{\frac{1}{2}-\delta}}\right)\leq \frac{Var(X_1)}{n\cdot\varepsilon^2 n^{-1+2\delta}}=\frac{Var(X_1)}{\varepsilon^2 n^{2\delta}}\]
+\[P\left(\Bigr|\frac{X_1+\ldots +X_n}{n}-\mu\Bigr|\geq \frac{\varepsilon}{n^{\frac{1}{2}-\delta}}\right)\leq \frac{\var(X_1)}{n\cdot\varepsilon^2 n^{-1+2\delta}}=\frac{\var(X_1)}{\varepsilon^2 n^{2\delta}}\]
 \[\textnormal{Also f"ur}\quad \delta>0: n^{\frac{1}{2}-\delta}\left(\frac{X_1+\ldots +X_n}{n}-\mu\right)\stackrel{P}{\rightarrow} 0\]
 Was ist mit $\delta=0$?
 
 \begin{Sa}[Zentraler Grenzwertsatz\index{Zentraler Grenzwertsatz}]$\\$
-Es seien $X_1,X_2,\ldots$ unabh"angig und identisch verteilte Zufallsvariablen mit $EX_i=\mu$ und $0<Var(X_i)=\sigma^2<\infty$. Dann gilt:
+Es seien $X_1,X_2,\ldots$ unabh"angig und identisch verteilte Zufallsvariablen mit $EX_i=\mu$ und $0<\var(X_i)=\sigma^2<\infty$. Dann gilt:
 \[\frac{X_1+\ldots +X_n -n\mu}{\sqrt{n}\sigma}\stackrel{d}{\rightarrow}X\sim N(0,1)\, ,\textnormal{also}\]
 \[P\left(\frac{X_1+\ldots +X_n -n\mu}{\sqrt{n}\sigma}\leq x \right) \rightarrow \Phi(x) \quad\textnormal{f"ur} \, n\to\infty \quad ,\forall\,x\in\R\]
 \end{Sa}
@@ -1976,7 +1981,7 @@ Betrachte zun"achst den Fall $\mu=0, \sigma=1$
 \newline
 Allgemeiner Fall:\\
 Setze $Y_n=\frac{X_n-\mu}{\sigma}$\\
-Also $Y_1,Y_2,\ldots$ unabh"angig und identisch verteilt mit $EY_n=0, Var(Y_n)=1$\\
+Also $Y_1,Y_2,\ldots$ unabh"angig und identisch verteilt mit $EY_n=0, \var(Y_n)=1$\\
 Wende jetzt Spezialfall an:
 \[\frac{X_1+\ldots +X_n - n\mu}{\sqrt{n}\sigma}=\frac{Y_1+\ldots +Y_n}{\sqrt{n}}\stackrel{d}{\rightarrow} X\sim N(0,1)\]
 
@@ -1989,7 +1994,7 @@ Unter den Voraussetzungen des ZGWS gilt f"ur feste $\alpha,\beta \in\R, \alpha <
 
 \begin{Bsp}$\\$
 Es seien $X_1,X_2,\ldots$ unabh"angig und identisch verteilte Zufallsvariablen mit\\
-$X_n\sim B(1,p)$. Also $EX_n=p, Var(X_n)=p(1-p), \,0<p<1$\\
+$X_n\sim B(1,p)$. Also $EX_n=p, \var(X_n)=p(1-p), \,0<p<1$\\
 Sei $S_n=X_1+\ldots +X_n$, dann gilt nach dem ZGWS:
 \[\lim_{n\to\infty}P\left(\frac{S_n-np}{\sqrt{np(1-p)}}\leq x \right)=\Phi(x)\]
 Umgeformt ergibt das:
@@ -2121,7 +2126,7 @@ L"osung: $\qquad\hat\theta_{\textnormal{MM}}(x) \in \R^m$.
 $P_\theta = N(\mu,\sigma^2), \,\theta=(\mu,\sigma^2),\, m=2$
 \begin{itemize}
 \item [(1)] $\mu_1 = EX = \mu = \frac{1}{n} \sum_{i=1}^n x_i$
-\item [(2)] $\mu_2 = EX^2 = Var(X) + (EX)^2 = \sigma^2 + \mu^2 = \frac{1}{n} \sum_{i=1}^n x_i^2$
+\item [(2)] $\mu_2 = EX^2 = \var(X) + (EX)^2 = \sigma^2 + \mu^2 = \frac{1}{n} \sum_{i=1}^n x_i^2$
 \end{itemize}
 Aus (1) folgt: $\hat\mu(x) = \frac{1}{n} \sum_{i=1}^n x_i = \overline{x}$\\
 Aus (2) folgt: $\hat\sigma^2(x)=\frac{1}{n} \sum_{i=1}^n x_i^2 - (\overline{x})^2 = \frac{1}{n} \sum_{i=1}^n (x_i - \overline{x})^2$
@@ -2182,7 +2187,7 @@ Bei gro"sem $n$ ist $\textnormal{MSE}(\hat\theta_{\textnormal{ML}}(X))$ kleiner 
 \end{Bsp}
 
 \begin{Bem}$\\$
-Falls $T$ erwartungstreu ist, gilt MSE(T)=Var(T)\\
+Falls $T$ erwartungstreu ist, gilt $MSE(T)=\var(T)$\\
 ``Gute`` Sch"atzer sollten erwartungstreu sein und / oder m"oglichst kleine Varianz haben.\\
 F"ur $\textnormal{Var}_\theta(T)$ kann man die folgende untere Absch"atzung angeben.
 \end{Bem}
