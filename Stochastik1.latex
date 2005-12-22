@@ -39,6 +39,7 @@
 
 \DeclareMathOperator{\unif}{Unif}
 \DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
 
 
 \def\AA{ \mathcal{A} }
@@ -1389,8 +1390,9 @@ das sogenannte Produktma"s.
 
 Durch die Festlegung auf den Rechteckmengen ist es auf ganz $\AA$
 eindeutig bestimmt (Satz \ref{satz:4.4}). Weiter sei $X_i(\omega)=X_i\bigl((\omega_1,\ldots ,\omega_n)\bigr)=\omega_i$ die $i$-te Projektion, $i=1,\ldots ,n$. Dann sind $X_1,\ldots ,X_n$ unabh"angig, da
-\begin{align*}P(X_1\in A_1,\ldots ,X_n\in A_n)&=P(A_1\times\cdots\times A_n)\\
-&=\prod_{i=1}^n P_i(A_i)=\prod_{i=1}^n P_i(X_i\in A_i)\\
+\begin{align*}P(X_1\in A_1,\ldots ,X_n\in A_n)&=P(A_1\times\cdots\times A_n) = \prod_{i=1}^n P_i(A_i) \\
+%=\prod_{i=1}^n P_i(X_i\in A_i)\\
+&=\prod_{i=1}^n P(\Omega_1\times\cdots\times\Omega_{i-1}\times A_i \times \Omega_{i+1}\times \cdots\times \Omega_n) \\
 &=\prod_{i=1}^n P(X_i\in A)\end{align*}
 \end{Bsp}
 
@@ -1434,10 +1436,11 @@ f_{X_1}(x_1) &= \int_{-\infty}^\infty f_{X_1,X_2}(x_1,x_2)\, dx_2 \\
 \bigl(\text{also } X_1\sim N(0,1)\bigr)\end{align*}
 \[\text{Analog:}\quad f_{X_2}(x_2)=\frac{1}{\sqrt{2\pi}}\,
 \exp\left(-\frac{1}{2}x_2^2\right) \quad (\text{also } X_2\sim N(0,1))\]
+das heißt die Randverteilungen sind für alle $\varrho$ Standardverteilungen. $X_1,X_2$ sind unabhängig $\Leftrightarrow$ $\varrho = 0$. Für $\varrho\ne0$: $f_{X_1,X_2}(x_1,x_2) = f_{X_1}(x_1)f_{X_2}(x_2)$
 \end{Bsp}
 
 \begin{Bem}
-Sind $X_1,\ldots ,X_n$ unabh"angige Zufallsvariablen und $n_1+\cdots +n_k=n \quad n_i\in\N$ $\varphi_i\in\R^{ni}\rightarrow \R$ messbar, $i=1,\ldots ,k$, dann sind auch die Zufallsvariablen\\
+Sind $X_1,\ldots ,X_n$ unabh"angige Zufallsvariablen und $n_1+\cdots +n_k=n \quad n_i\in\N$ $\varphi_i\in\R^{n_i}\rightarrow \R$ messbar, $i=1,\ldots ,k$, dann sind auch die Zufallsvariablen\\
 $\varphi_1(X_1,\ldots ,X_{n_1}),\varphi_2(X_{n_1+1},\ldots ,X_{n_1+n_2}),\ldots ,\varphi_k(X_{n_1+\cdots+n_{k-1}+1},\ldots ,X_n)$ unabh"angig. 
 \end{Bem}
 
@@ -1446,16 +1449,18 @@ Es gibt 2 Spieler. Spieler 1 denkt sich zwei Zahlen $a,b\in\R$ aus. Eine faire M
 Intuition: Wahrscheinlichkeit richtig zu raten $=\frac{1}{2}$\\
 Es geht besser: Spieler 2 generiert eine Zahl $c$ zuf"allig $C\sim N(0,1)$\\
 Entscheidung: $c$ und die aufgedeckte Zahl werden verglichen.\\
-Modell:\\
+\textbf{Mathematisches Modell:}\\
 $(\Omega_1,\AA_1,P_1)$ mit $\Omega_1=\{a,b\},\AA_1=\PM(\Omega), P_1(\{a\})=P_1(\{b\})=\frac{1}{2}$\\
-$(\Omega_2,\AA_2,P_2)$ mit $\Omega_2=\R,\AA_2=\BB, P_2=(B)=\int_B \varphi_{0,1}(x)\,dx$\\
+Sei $M:\Omega_1\rightarrow \{a,b\},\, M(a)=a,\,M(b)=b$ die Zufallsvariablen, die das Ergebnis des M"unzwurfes beschreibt.\\
+$(\Omega_2,\AA_2,P_2)$ mit $\Omega_2=\R,\AA_2=\BB, P_2(B)=\int_B \varphi_{0,1}(x)\,dx$\\
+$C: \Omega_2\to \mathbb{R}$, $C(\omega) = \omega$. \\
+Wichtig: $M$ und $C$ sind unabhängig.
 Sei o.B.d.A. $a<b$. Wir betrachten den Produktraum mit dem Produktma"s\\
 $P=P_1\otimes P_2$. Es sei $G$ das Ereignis, dass Spieler 2 richtig r"at.
-\[P(G)=P(G|\{a\})\frac{1}{2}+P(G|\{b\})\frac{1}{2}=\frac{1}{2}(P(c>a)+P(c\leq b))=\]
+\[P(G|M=a)=\frac{P(G,M=a)}{P(M=a)}=\frac{P(C>a,M=a)}{P(M=a)}\stackrel{C,M \text{ unabh.}}{=}\frac{P(C>a)P(M=a)}{P(M=a)}\]
+\[\text{Analog: } P(G|M=b) = P(C\le b) \]
+\[P(G)=P(G|M=a)\frac{1}{2}+P(G|M=b)\frac{1}{2}=\frac{1}{2}(P(c>a)+P(c\leq b))=\]
 \[=\frac{1}{2}(1-\Phi (a)+\Phi (b))=\frac{1}{2}(1+ \underbrace{\Phi (b)-\Phi (a)}_{>0})>\frac{1}{2}\] 
-M"unzwurf und Ziehung von $C$ sind unabh"angig!\\
-Sei $M:\Omega_1\rightarrow \{a,b\},\, M(a)=a,\,M(b)=b$ die Zufallsvariablen, die das Ergebnis des M"unzwurfes beschreibt.
-\[P(G|M=a)=\frac{P(G,M=a)}{P(M=a)}=\frac{P(C>a,M=a)}{P(M=a)}\stackrel{C,M unabh.}{=}\frac{P(C>a,M=a)}{P(M=a)}\]
 \end{Bsp}
 
 \begin{Sa}
@@ -1466,18 +1471,25 @@ Falls die Zufallsvariable $X_1$ und $X_2$ unabh"angig sind, gilt insbesondere di
 \end{Sa}
 
 \begin{Bem}$\\$
-\begin{itemize}
-\item [a)] Eine analoge Formel gilt im diskreten Fall.
-\item [b)] Sind $X$ und $Y$ unabh"angig, so schreibt man\\
-$P_{X+Y}=P_X\cdot P_Y$ und nennt $P_X\cdot P_Y$ \textbf{Faltung}\index{Faltung}
-\end{itemize}
+%\begin{itemize}
+%\item [a)] Eine analoge Formel gilt im diskreten Fall.
+%\item [b)]
+Sind $X$ und $Y$ unabh"angig, so schreibt man
+\[P_{X+Y}=P_X * P_Y\]
+und nennt $P_X * P_Y$ \textbf{Faltung}\index{Faltung}
+%\end{itemize}
 \end{Bem}
 
 \textbf{Beweis}\\
 Zwischen Verteilungsfunktion und Dichte gibt es eine eindeutige Zuordnung. Also gen"ugt es zu zeigen:
-\[P(X_1+X_2\leq z)=\int_{-\infty}^z\int_{-\infty}^\infty f_X(y,x-y)\,dydx = \int_{-\infty}^\infty \int_{-\infty}^z f_X(y,x-y)\,dxdy = \]
-\[=\int_{-\infty}^\infty \int_{-\infty}^{z-y} f_X(y,u)\,dudx = \int_{\{(u,y)\in\R^2|u+y\leq z\}} f_X(y,u)\,dudy\]
-\[= P_X(\{(u,y)\in\R^2|u+y\leq z\}) = P(X_1+X_2\leq z)\]
+\[P(X_1+X_2\leq z)=\int_{-\infty}^z\int_{-\infty}^\infty f_X(y,x-y)\,dydx \]
+\begin{align*}
+\int_{-\infty}^z\int_{-\infty}^\infty f_X(y,x-y)\,dydx
+&= \int_{-\infty}^\infty \int_{-\infty}^z f_X(y,x-y)\,dxdy \\
+&=\int_{-\infty}^\infty \int_{-\infty}^{z-y} f_X(y,u)\,dudx \\
+&= \int_{\{(u,y)\in\R^2|u+y\leq z\}} f_X(y,u)\,dudy\\
+&= P_X(\{(u,y)\in\R^2|u+y\leq z\}) = P(X_1+X_2\leq z)
+\end{align*}
 Die Faltungsformel ergibt sich mit Satz 9.1.b).
 
 \begin{Bsp}
@@ -1487,14 +1499,19 @@ d.h. die Normalverteilung ist \textbf{faltungsstabil}\index{Faltung!faltungsstab
 \end{Bsp}
 
 \begin{Sa}
-Seien $X_1,\ldots,X_n:\Omega\rightarrow \R$ unabh"angige Zufallsvariablen mit existierenden Erwartungswerten, so existiert auch der Erwartungswert von $X_1\cdot\cdots\cdot X_n$ und es gilt:
-\[E(\prod_{i=1}^n X_i)=\prod_{i=1}^n EX_i\]
+Seien $X,Y:\Omega\rightarrow \R$ unabh"angige Zufallsvariablen mit existierenden Erwartungswerten, so existiert auch der Erwartungswert von $X\cdot Y$ und es gilt:
+\[ EX\cdot Y = EX\cdot EY \]
 \end{Sa}
 
 \textbf{Beweis}\\
-Es sei $n=2$ (Rest folgt mit vollst"andiger Induktion, Bem. + Satz 9.1),\\
-$X_1=X,X_2=Y$. Wir betrachten f"ur den Beweis nur den Fall, dass (X,Y) diskret ist. (Z"ahldichte)
-\[\sum_{k=1}^\infty\sum_{j=1}^\infty |x_ky_j|\underbrace{P(X=x_k, Y=y_j)}_{\textnormal{unabh}.:P(X=x_k)P(Y=y_j)}=\underbrace{(\sum_{k=1}^\infty |x_k| P(X=x_k))}_{<\infty\, \textnormal{nach Vor.}}\underbrace{(\sum_{j=1}^\infty |y_j| P(Y=y_j))}_{<\infty\,\textnormal{nach Vor.}}< \infty\]
+%Es sei $n=2$ (Rest folgt mit vollst"andiger Induktion, Bem. + Satz 9.1),\\
+%$X_1=X,X_2=Y$.
+Wir betrachten f"ur den Beweis nur den Fall, dass (X,Y) diskret ist. (Z"ahldichte)
+\begin{align*}
+\sum_{k=1}^\infty\sum_{j=1}^\infty |x_ky_j| P(X=x_k, Y=y_j)
+&=\sum_{k=1}^\infty\sum_{j=1}^\infty |x_ky_j|P(X=x_k)P(Y=y_j) \\
+&=\underbrace{(\sum_{k=1}^\infty |x_k| P(X=x_k))}_{<\infty\textnormal{ nach Vor.}}\underbrace{(\sum_{j=1}^\infty |y_j| P(Y=y_j))}_{<\infty\textnormal{ nach Vor.}}< \infty
+\end{align*}
 Also existiert EXY. Gleiche Rechnung ohne Betragsstriche ergibt $EXY=EX\cdot EY$.\\
 Im Allgemeinen folgt die Existenz von EXY nicht aus der Existenz von EX und EY.
 
@@ -1510,25 +1527,25 @@ Es gilt: $0\leq E(X+aY)^2=EX^2+a^2EY^2+2aEXY \quad \forall\, a\in\R$
 \begin{itemize}
 \item [1.Fall:] $EY^2=0 \Rightarrow EXY=0$, da die rechte Seite eine Gerade in $a$ ist.\\
 $\Rightarrow $ Ungleichung gilt.
-\item [2.Fall:] $EY^2\neq 0$ Rechte Seite wird minimal bei $a^*=-\frac{EXY}{EY^2}$ \\
+\item [2.Fall:] $EY^2\neq 0$: Rechte Seite wird minimal bei $a^*=-\frac{EXY}{EY^2}$ \\
 Minimal-Stelle einsetzen ergibt: $\frac{1}{EY^2}(EX^2EY^2-(EXY)^2)\geq 0$\\
 $\Rightarrow $ Ungleichung gilt.
 \end{itemize}
 
 \begin{Def}
-Es seien X,Y Zufallsvariablen mit endlichem zweiten Moment.
+Es seien $X$,$Y$ Zufallsvariablen mit $EX^2<\infty$, $EY^2<\infty$.
 \begin{itemize}
-\item [a)] Dann hei"st $Cov(X,Y):=E[(X-EX)(Y-EY)]$ die \textbf{Kovarianz} von $X$ und $Y$ \index{Kovarianz}. Ist $Cov(X,Y)=0$, so nennt man $X$ und $Y$ \textbf{unkorreliert}.
+\item [a)] Dann hei"st $\cov (X,Y):=E[(X-EX)(Y-EY)]$ die \textbf{Kovarianz}\index{Kovarianz} von $X$ und $Y$. Ist $\cov (X,Y)=0$, so nennt man $X$ und $Y$ \textbf{unkorreliert}.
 \item [b)] Ist $\var(X)\cdot \var(Y)>0$, so hei"st
-\[\varrho(X,Y):=\frac{Cov(X,Y)}{\sqrt{\var(X)\var(Y)}}\]
-der \textbf{Korrelationskoeffizient}\index{Korrelationskoeffizient} von $X$ und $Y$.
+\[\varrho(X,Y):=\frac{\cov (X,Y)}{\sqrt{\var(X)\var(Y)}}\]
+der \textbf{Korrelationskoeffizient}\index{Korrelationskoeffizient} von $X$ und $Y\,.$
 \end{itemize}
 \end{Def}
 
 \begin{Sa}
 Seien X,Y Zufallsvariablen mit endlichem zweiten Moment. Dann gilt:
 \begin{itemize}
-\item [a)] $Cov(X,Y)=EXY-EXEY$
+\item [a)] $\cov (X,Y)=EXY-EXEY$
 \item [b)] Sind $X$ und $Y$ unabh"angig, so auch unkorreliert.
 \item [c)] Ist $\varrho (X,Y)$ erf"ullt, so gilt: $-1\leq \varrho (X,Y)\leq 1$
 \end{itemize}
@@ -1536,7 +1553,7 @@ Seien X,Y Zufallsvariablen mit endlichem zweiten Moment. Dann gilt:
 
 \textbf{Beweis}
 \begin{itemize}
-\item [a)] Es gilt: $Cov(X,Y)=E[XY-XEY-YEX+EXEY]=EXY-EXEY$
+\item [a)] Es gilt: $\cov (X,Y)=E[XY-XEY-YEX+EXEY]=EXY-EXEY$
 \item [b)] folgt aus a) und Satz 9.3
 \item [c)] Mit Satz 9.4 folgt:
 \[\var(X)\var(Y)\varrho^2(X,Y)=(E[\underbrace{(X-EX)}_{=\tilde x} \underbrace{(Y-EY)}_{=\tilde y}])^2\leq E(X-EX)^2E(Y-EY)^2\]
@@ -1546,7 +1563,7 @@ Seien X,Y Zufallsvariablen mit endlichem zweiten Moment. Dann gilt:
 \begin{Bem}$\\$
 \begin{itemize}
 \item [a)] Der Korrelationskoeffizient ist ein Ma"s f"ur die lineare Abh"angigkeit der zwei Zufallsvariablen. Betrachte den Extremfall $Y=aX+b$ mit $a\neq 0, \, b\in\R$ gilt\\
-$Cov(X,Y)=E[(X-EX)(aX+b-aEX-b)]=a \var(X)$. und 
+$\cov (X,Y)=E[(X-EX)(aX+b-aEX-b)]=a \var(X)$. und 
 \[\varrho(X,Y)=\frac{a\var(X)}{\sqrt{a^2\var^2(X)}}=\begin{cases}1 &
   \text{falls } a>0 \\-1 & \text{falls } a<0\end{cases}\]
 \item [b)] Es gibt Zufallsvariablen, die unkorreliert, aber nicht stochastisch unabh"angig sind.\\
@@ -1557,15 +1574,15 @@ Es sei z.B. $\Omega=\{\omega_1,\omega_2,\omega_3\}$
 \omega_2 & \frac{1}{3}   & 1		 &	0        & 0 \\
 \omega_3 & \frac{1}{3}   & 0         &  1        & 0
 \end{matrix}\]
-Es gilt: $Cov(X,Y)=0$ unkorreliert, aber $P(X=0,Y=1)=\frac{1}{3}$\\
+Es gilt: $\cov (X,Y)=0$ unkorreliert, aber $P(X=0,Y=1)=\frac{1}{3}$\\
 $P(X=0)P(Y=1)=\frac{2}{3}\cdot\frac{1}{3}=\frac{2}{9}\neq \frac{1}{3}= P(X=0, Y=1)$ sind \underline{nicht} unabh"angig.
-\item [c)] Es gilt: $Cov(X,X)=\var(X),\,Cov(X,Y)=Cov(Y,X)$
+\item [c)] Es gilt: $\cov (X,X)=\var(X),\,\cov (X,Y)=\cov (Y,X)$
 \end{itemize}
 \end{Bem}
 
 \begin{Sa}$\\$
 Seien $X_1,\ldots ,X_n$ Zufallsvariablen mit existierendem zweiten Moment, so gilt:
-\[\var(X_1+\cdots +X_n)=\sum_{i=1}^n \var(X_1)+2\sum_{1\leq i,j\leq k} Cov(X_i,X_j)\]
+\[\var(X_1+\cdots +X_n)=\sum_{i=1}^n \var(X_1)+2\sum_{1\leq i,j\leq k} \cov (X_i,X_j)\]
 Sind die Zufallsvariablen unabh"angig (oder unkorreliert), so gilt:
 \[\var(X_1+\cdots +X_n)=\sum_{i=1}^n \var(X_i)\]
 \end{Sa}
@@ -1573,7 +1590,7 @@ Sind die Zufallsvariablen unabh"angig (oder unkorreliert), so gilt:
 \textbf{Beweis}\\
 Mit Satz 7.2 gilt:
 \[\var(X_1+\cdots +X_n)=E(\sum_{i=1}^n(X_i-EX_i))^2=E\sum_{1\leq i<j\leq n}(X_i-EX_i)(X_j-EX_j)\]
-\[=\sum_{i=1}^n \var(X_i)+2\sum_{1\leq i<j\leq k} Cov(X_i,X_j)\]
+\[=\sum_{i=1}^n \var(X_i)+2\sum_{1\leq i<j\leq k} \cov (X_i,X_j)\]
 Der zweite Teil aus Satz 9.5 b)
 
 \begin{Def}$\\$
@@ -1581,7 +1598,7 @@ Sei $X=(X_1,\ldots ,X_n)$ ein Zufallsvektor mit $EX_i^2<\infty,\quad \forall\, i
 \begin{itemize}
 \item [a)] $EX=(EX_1,\ldots ,EX_n)$ hei"st \textbf{Erwartungswertvektor von X}\index{Erwartungswertvektor von X}. 
 \item [b)] Die $n\times n$-Matrix 
-$\quad CovX=(Cov(X_i,X_j))_{i,j=1,\ldots ,n}$\\
+$\quad \cov X=(\cov (X_i,X_j))_{i,j=1,\ldots ,n}$\\
 hei"st \textbf{Kovarianzmatrix von X}\index{Kovarianzmatrix von X}.
 \end{itemize}
 \end{Def}
