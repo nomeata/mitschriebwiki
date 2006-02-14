@@ -5,7 +5,7 @@
 
 
 \title{Randwertprobleme (Einblick)}
-\author{Florian Mickler}
+\author{Florian Mickler und Joachim Breitner}
 % Wer nennenswerte Änderungen macht, schreibt sich bei \author dazu
 
 
@@ -128,12 +128,12 @@ Sei $0<c<\pi$, $\phi(x):=\cos{c(x-\frac{1}{2})}(x\in[0,1])$.\\
 $\phi \in C([0,1],\MdR)$. $x\in[0,1]\folgt c(x-\frac{1}{2}) \in [-\frac{c}{2},\frac{c}{2}]\subsetneq[-\frac{\pi}{2},\frac{\pi}{2}]$\\
 $\folgt \phi(x)>\frac{c}{2}>0\forall x \in [0,1]$\\
 
-\begin{satz}[Satz von L*******]
+\begin{satz}[Satz von Lettenmeyer]
 $f:[0,1]\times \MdR \to \MdR$ sei stetig. Es sei $L \ge 0$ und es gelte:\\
 $|f(x,y)-f(x,\tilde y)|\le L|y-\tilde y| \forall(x,y),(x,\tilde y) \in [0,1] \times \MdR.$\\
 Ist $L < \pi^2$, so hat (R) auf $[0,1]$ genau eine L"osung.
 \end{satz}
-\begin{bemerkung}.\\
+\begin{bemerkung}$\ $
   \begin{liste}
    \item Die Beispiele am Anfang des Paragrafen zeigen, dass die Schranke $\pi^2$ optimal ist.
    \item Allgemein kann man das RWP 
@@ -164,7 +164,66 @@ $0=g(0)=-\frac{1}{c^2}\phi(0)+c_2 \folgt c_2 = \frac{1}{c^2}\cos{\frac{c}{2}}$
 $0=g(1)=-\frac{1}{c^2}\phi(1)+\frac{1}{c^2}\cos{\frac{c}{2}} \folgt c_1 = 0$
 $\folgt g(x)=-\frac{1}{c^2}\phi(x)+\frac{1}{c^2}\cos{\frac{c}{2}}$\\
 $\folgt |(Tu)(x)-(Tv)(x)|\le L||u-v|| \frac{1}{c^2}(\phi(x)-\cos{\frac{c}{2}}) = \frac{L}{c^2}||u-v||(\phi(x)-\cos{\frac{c}{2}})$
-$\folgt \underbrace{|(Tu)(x)-(Tv)(x)|}_{=\phi(x)}\le \frac{L}{c^2}||u-v||(1-\frac{\cos{\frac{c}{2}}}{\phi(x)}\le\frac{L}{c^2}||u-v||=q||u-v||$\\
+$\folgt \underbrace{|(Tu)(x)-(Tv)(x)|}_{=\phi(x)}\le \frac{L}{c^2}||u-v||(1-\frac{\cos{\frac{c}{2}}}{\phi(x)})\le\frac{L}{c^2}||u-v||=q||u-v||$\\
 $\folgt ||Tu-Tv||\le q||u-v||$.
 \end{beweis}
+
+\begin{satz}[Satz von Scorza-Dragoni]
+Sei $I=[a,b]\subseteq \MdR$, $D:= I\times \MdR$ und $f\in C(D,\MdR)$ sei auf $D$ beschränkt.
+
+Dann hat das Randwertproblem
+\[ \begin{cases} y'' = f(x,y) \\ y(a) = y(b) = 0 \end{cases} \]
+eine Lösung auf $I$.
+\end{satz}
+
+\begin{beispiel}
+\[I = [0,\pi], \quad
+f(x,y) = \begin{cases} 1,&y\le -1\\ -y,&|y|\le 1\\ -1,&y\ge 1\end{cases}\]
+Wir betrachten das Randwertproblem
+\[ \begin{cases} y'' = f(x,y) \\ y(0) = y(\pi) = 0 \end{cases} \]
+Sei $\alpha \in \MdR$, $|\alpha|\le 1$ und $y_\alpha(x) := \alpha \sin x$, $|y_\alpha| \le 1$, $y_\alpha''(x) = - \alpha \sin x = - y_\alpha(x) = f(x,y_\alpha(x))$, $y_\alpha(0) = y_\alpha(\pi) = 0$. Das heißt: Ein Randwertproblem wie in 27.4 muß \emph{nicht} eindeutig lösbar sein.
+\end{beispiel}
+
+\begin{beweis}
+Wir führen den Beweis nur unter der zusätzlichen Voraussetzung:
+\[\exists L \ge 0: |f(x,y) - f(x,\tilde y)| \le L|y-\tilde y| \ \forall(x,y),(x,\tilde y)\in D\]
+Sei $M\ge 0$ so, dass $|f|\le M$ auf $D$.
+
+Sei $s\in\MdR$. Wir betrachten das Anfangswertproblem:
+\[ \begin{cases} y'' = f(x,y) \\ y(a) =  0 , y'(a) = s \end{cases} \]
+18.3 $\folgt$ obiges Anfangswertproblem hat genau eine Lösung $y_s$ auf $I$. §18 und 25.2 $\folgt |y_{s_1}(x) - y_{s_2}(x)| \le c |s_1 - s_2 | \ \forall x\in I, s_1,s_2\in \MdR$.
+
+$h(s) := y_s(b)$ ($s\in\MdR$), damit $h:\MdR\to\MdR$ stetig. Ist $s_0\in\MdR$ und $h(s_0) = 0$, so ist $y:=y_{s_0}$ eine Lösung des Randwertproblems.
+
+\begin{align*}
+\forall x\in I: y_s'(x) - s &= y_s'(x) -y'_s(a) = \int_a^xy_s''(t)dt = \int_a^xf(t,y_s(t))dt\\
+\folgt y_s'(x) &= s+ \int_a^x f(t,y_s(t))dt\\
+\folgt y_s(b) &= y_s(b) - y_s(a) \\
+&\gleichnach{MWS} y_s'(\xi)(b-a) \\
+&= \left(s + \int_a^\xi f(t,y_s(t))dt\right)(b-a)\\
+&= s(b-a) + \int_a^\xi f(t,y_s(t))dt (b-a) \\
+\end{align*}
+\begin{align*}
+&\folgt |h(s) - s(b-a)| = |\int_a^\xi f(t,y_s(t))dt(b-a)|\le M(\xi - a) \le M(b-a) =: c\\
+&\folgt -c \le h(s)-s(b-a) \le c \ \forall s\in\MdR\\
+&\folgt s(b-a) -c \le h(s) \le c+s(b-a) \ \forall s\in\MdR\\
+&\folgt h(s) \to \infty \ (s\to\infty)\text{ und }h(s) \to -\infty \ (s\to-\infty)
+\end{align*}
+Der Zwischenwertsatz liefert nun: $\exists s_0 \in\MdR: h(s_0) = 0$
+\end{beweis}
+
+\begin{satz}
+Sei $A>0$, $0<B<\pi^2$, $f\in C([0,1]\times \MdR, \MdR)$ und es gelte
+\[|f(x,y)|\le A+ B|y| \ \forall x\in[0,1], y\in\MdR\]
+Dann hat das Randwertproblem
+\[ \begin{cases} y'' = f(x,y) \\ y(0) = y(1) = 0 \end{cases} \]
+eine Lösung auf $[0,1]$
+\end{satz}
+
+\begin{bemerkung}
+Die Schranke $\pi^2$ ist optimal:
+\[ \begin{cases} y'' = -\pi^2y + 1 \\ y(0) = y(1) = 0 \end{cases} \]
+ist unlösbar!
+\end{bemerkung}
+
 \end{document}
