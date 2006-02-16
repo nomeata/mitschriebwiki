@@ -2813,9 +2813,9 @@ Der \textbf{Likelihood-Quotient}\index{Likelihood-Quotient} ist definiert durch:
 
 Ein Test der Form:
 \[\varphi(x)=\begin{cases}
-1, & q(x) < c_0\\
+0, & q(x) > c_0 \\
 \gamma, & q(x) = c_0\\
-0, & q(x) \geq c_0 
+1, & q(x) < c_0
 \end{cases}\]
 hei"st \textbf{Likelihood-Quotienten Test}\index{Likelihood-Quotienten Test}.
 \end{Def}
@@ -2824,6 +2824,49 @@ hei"st \textbf{Likelihood-Quotienten Test}\index{Likelihood-Quotienten Test}.
 Der Neyman-Pearson-Test ist ein spezieller Likelihood-Quotienten-Test.
 \end{Bem}
 
+\begin{Bsp}
+$P_{\mu,\sigma^2}  = N(\mu,\sigma^2)$, $X=(X_1,\ldots,X_n)$ Zufallsstichprobe zu $N(\mu,\sigma^2)$. $\theta = (\mu,\sigma^2) \in \Theta = \R\times\R_+$.
+
+Testproblem: 
+\[H_0:\mu=\mu_0\text{ vs. } H_1:\mu \ne\mu_0\]
+\[\Theta_0 = \{(\mu,\sigma^2) | \mu = \mu_0, \sigma^2 \in \R_+\}\]
+\[\Theta_1 = \{(\mu,\sigma^2) | \mu \ne \mu_0, \sigma^2 \in \R_+\}\]
+
+Likelihood-Quotient:
+\[ \sup_{\theta\in\Theta_0} L_x(\theta) = \sup_{\sigma^2} \frac1{{(2\pi\sigma^2)}^{\frac n2}} \exp\left(-\frac1{2\sigma^2} \sum_{i=1}^n (x_i - \mu_0)^2\right) \]
+Der Maximum-Likelihood-Schätzer für $\sigma^2$ (bei bekanntem $\mu=\mu_0$) ist:
+\[ \hat\sigma^2_{\text{ML}} = \frac1n \sum_{i=1}^n(x_i-\mu_0)^2 \]
+\begin{align*}
+\Rightarrow \sup_{\theta\in\Theta_0} L_x(\theta) &= \frac{n^{\frac n2}}{(2\pi)^{\frac n2} \left(\sum_{i=1}^n(x_i-\mu_0)^2 \right)^{\frac n2}}e^{-\frac n2} \\
+\intertext{Analog:}
+\sup_{\theta\in\Theta_1} L_x(\theta) &= \frac{n^{\frac n2}}{(2\pi)^{\frac n2} \left(\sum_{i=1}^n(x_i-\overline x)^2 \right)^{\frac n2}}e^{-\frac n2} \\
+\Rightarrow q(x) &= \left(\frac{\sum_{i=1}^n (x_i - \overline x)^2}{\sum_{i=1}^n (x_i - \mu-0)^2}\right)^{\frac n2} \\
+&= (1+n\cdot T^*(x))^{-\frac n2}\text{ mit } T^*(x) = \frac{(\overline x - \mu_0)^2}{\sum_{i=1}^n(x_i- \overline x)^2} 
+\end{align*}
+$q(x)$ ist fallend in $T^*(x)$, das heißt der kritische Bereich ist:
+\begin{align*}
+\{x | q(x) < c_0\} &= \{ x| T^*(x) > c'\}
+= \{x| \frac{u(\overline x - \mu_0)^2}{\frac1{n-1}\sum_{i=1}^n(x_i-\overline x)^2} > c'\}\\
+&= \{x| \left| \sqrt{n}\cdot\frac{\overline x - \mu_0}{S(x)}\right| > \sqrt{n(n-1)c'}\}
+\end{align*}
+Der Likelihood-Quotiententest ist also äquivalent zu folgendem Test:
+\[ \varphi(x) = \begin{cases}
+0, & \text{falls } \left|\sqrt n\cdot \frac{\overline x - \mu-0}{S(x)}\right| \le \sqrt{n(n+1)c'} \\
+1, & \text{falls } \left|\sqrt n\cdot \frac{\overline x - \mu-0}{S(x)}\right| > \sqrt{n(n+1)c'} 
+\end{cases} \]
+Beachte:\[\sqrt n \cdot \frac{\overline X - \mu-0}{S(x)} \sim t_{n-1}\]
+
+Einstellen des Testniveaus:
+\begin{align*}
+\beta(\mu_0) = E_{\mu_0} \varphi(X) &= P_{\mu_0}\left( \underbrace{\left| \sqrt{n} \cdot \frac{\overline X-\mu_0}{S(X)}\right|}_{=:z} > \underbrace{\sqrt{n(n-1)c'}}_{=:\tilde c} \right) \stackrel{!}= \alpha \\
+&= P_{\mu_0}(z<-\tilde c) + P_{\mu_0}(z> \tilde c)\text{, } z \sim t_{n-1}
+\intertext{Wichtig: Die Dichte der $t_{n-1}$-Verteilung ist symetisch zu 0}
+&= 2(1-F_{t_{n-1}}(2)) \stackrel!= \alpha\\
+&\Rightarrow \tilde c = t_{n-1}(1-\frac\alpha2)
+\end{align*}
+
+
+\end{Bsp}
 
 
 %\chapter{Stichwortverzeichnis}
