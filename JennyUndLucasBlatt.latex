@@ -1,0 +1,161 @@
+\documentclass{scrartcl}
+\usepackage[latin9]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx, textcomp, booktabs, amsmath}
+\usepackage{mathptmx}
+\usepackage[scaled]{helvet}
+
+\usepackage{xcolor}
+\usepackage{pst-plot, pstricks}
+\usepackage{amssymb}
+
+\usepackage[ngerman]{babel}
+
+\begin{document}
+
+	
+\begin{table}[h]
+		\begin{tabular}{lll}
+			Typ 3 	& reguläre Grammatik & z.B. $a^*b^*$ \\
+							& DEA & \\
+							& NEA (mit und ohne $\epsilon$) & \\
+							& regulärer Ausdruck  &\\
+			Det. KF & LR-Grammatik & \\
+							& deterministischer Kellerautomat (DKellerA) & \\
+			Typ 2		& kontextfreie Grammatik & $a^nb^n$ \\
+							& Kellerautomat (NKellerA) & \\
+			Typ 1		& kontextsensitive Grammatik & $a^nb^nc^n$ \\
+							& linear beschränkter Automat (NLBTM) & \\
+			Typ 0		& Typ 0 - Grammatik (rek. aufz. Spr.) & $\overline{L}^d$ \\
+							& Turingmaschine (TM) &  \\
+		\end{tabular}
+	\caption{\textbf{Beschreibungsmittel}}
+	\label{tab:Beschreibungsmittel}
+\end{table}
+
+\begin{table}[h]
+		\begin{tabular}{ccc}
+				Nichtdet. Automat & Determ. Automat & äquivalent ? \\
+				NEA								& DEA							& ja \\
+				NKellerA					& DKellerA				& nein \\
+				NLBTM							& DLBTM						& ??? \\
+				NTM								& DTM							& Ja \\					
+		\end{tabular}
+	\caption{\textbf{Determinismus und Nichtdeterminismus}}
+	\label{tab:DeterminismusUndNichtdeterminismus}
+\end{table}
+
+\begin{table}[h]
+		\begin{tabular}{cccccc}
+				 				& Schnitt & Vereinigung & Komplement & Produkt & Stern \\
+				Typ 3 	& ja			& ja					& ja				 & ja				&	ja \\
+				Det. KF & nein 		& nein				& ja				 & nein			&	nein \\
+				Typ 2 	& nein		& ja					& nein			 & ja				&	ja \\
+				Typ 1 	& ja			& ja					& ja				 & ja				&	ja \\
+				Typ 0 	& ja			& ja					& nein			 & ja				&	ja \\
+				semient. Spr. & ja & ja 				& nein 			 & nein 		& nein \\
+				ent. Spr. & ja    & ja					& ja				 & nein			& nein \\
+		\end{tabular}
+	\caption{\textbf{Abschlusseigenschaften}}
+	\label{tab:Abschlusseigenschaften}
+\end{table}
+
+\begin{table}[h]
+		\begin{tabular} {ll}
+			Typ & Komp. \\
+			3 & O(n) \\
+			Det. KF & O(n)\\
+			2 & O($n^3$) \\
+			1 & $\left|\Sigma\right|^{O(n)}$ , NP-Hart \\
+			0 & semientscheidbar \\
+		\end{tabular}
+	\caption{\textbf{{Komplexität des Wortproblems}}}
+	\label{tab:KomplexitätDesWortproblems}
+\end{table}
+
+\begin{table}[h]
+		\begin{tabular}{ccccc}
+			Typ & Wort& Leerheit 	& Äquivalenz& Schnitt \\
+			3 	& Ja  & Ja				& Ja				& Ja \\
+			Det. KF & Ja & Ja & Ja & Nein \\
+			2 	& Ja	& Ja				& Nein			& Nein \\
+			1   & Ja	& Nein 			& Nein 			& Nein \\
+			0		& Nein& Nein			& Nein			& Nein \\
+		\end{tabular}
+	\caption{\textbf{Entscheidbarkeit}}
+	\label{tab:Entscheidbarkeit}
+\end{table}
+
+Die \textbf{Nerode-Relation R$_L$} zu einer Sprache ist def. durch: \\
+$R_L= \{(x,y): xz \in L \;gdw.\; yz \in L \forall z \in \Sigma^*\}$ \\
+Die \textbf{Nerode-Relation R$_M$} zu einem Automaten ist def. durch: \\
+$R_M= \{(x,y): \delta^*(s,x) = \delta^*(s,y)\}$ \\ \\
+
+Algorithmisch \textbf{entscheidbare Eigenschaften} von Automaten: \\
+1. $L(A)=\{\}$ \\
+2. Endlichkeit von L(A) \\
+3. $L(A)=\Sigma^*$ \\ \\
+
+\textbf{Endscheidbarkeit(rekursiv)}: Es ex. eine TM, die alle Wörter aus L akzeptiert und auf jede Eingabe hält. \\
+\textbf{Semi-Endscheidbarkeit(rekursiv aufzählbar)}: Es ex. eine TM, die alle Wörter aus L akzeptiert. Das Verhalten für Wörter $\omega \notin L$ ist undefiniert. \\ \\
+
+Kodierungsvorschrift \textbf{Gödelnummer} \\
+1. Kodiere $\delta$: \\
+			$code(\delta(q_i,a_j)=(q_r,a_s,d_t))=0^i10^j10^r10^s10^t$ \\
+			mit $d_t\in \{d_1=L, d_2=R, d_3=N\}$ \\
+2. Die TM wird dann kodiert durch: \\
+			$111code_111code_211...11code_z111$ \\
+			mit $code_i$ für $i=1,2,...,z$ in bel. Reihenfolge. \\ \\
+
+\textbf{Pumping Lemma} \\
+L regulär $\Rightarrow$ \\
+							$(\exists n \in \mathbf{N})(\forall z \in L, \left| z \right| \geq n) (\exists u,v,w)$\\
+							$[(z=uvw) \wedge (\left| v \right| \geq 1) \wedge (\left| uv \right| \leq n) \wedge (uv^iw \in L, 
+							\forall i \geq 0)]$ \\
+
+L kontextfrei $\Rightarrow$ \\
+							$(\exists n \in \mathbf{N})(\forall z \in L, \left| z \right| \geq n) (\exists u,v,w,x,y)$\\
+							$[(z=uvwxy) \wedge (\left| vx \right| \geq 1) \wedge (\left| vwx \right| \leq n) \wedge (uv^iwx^iy \in L, 
+							\forall i \geq 0)]$ \\
+							
+\textbf{Automatenminimierung}: \\
+1. nicht ereichbare Zustände entfernen. \\
+2. Tabelle aller Zustandspaare $\{z,z'\}\;mit\; z \neq z'$ \\
+($z_1 - z_k$ links, $z_0 - z_{k-1}$ unten) \\
+3. Markieren der Zustandspaare mit $z \in F$ und $z \notin F$ oder umgekehrt. \\
+4. Betrachte unmakrierte Paare $\{z,z'\}$. \\
+Wenn $\{\delta(z,a),\delta(z',a)\}$ für mind. ein $a \in \Sigma$ bereits makiert, markiere $\{z,z'\}$. \\
+5. (4) Wiedenholen bis keine Änderung mehr. \\
+6. Unmarkierte Paare können verschmolzen werden. \\ \\
+
+\textbf{Chomsky-Normalform} \\
+1. $r\in V^* \cup \Sigma$ \\
+2. $\left| r \right| \leq 2 $ \\
+3. $\epsilon$-Produktionen entfernen \\
+4. Kettenregeln ersetzen \\ \\
+
+\begin{table}[h]
+		\begin{tabular}{p{2cm}p{4cm}p{4cm}p{3cm}}
+		Problem 		&		Gegeben		&		Gesucht		& polyn. red. von \\ \hline
+		SAT					& aussagenlog. Formel & Wahrheitsbelegung & TM\\
+		3SAT				& boolesche Formel in KNF mit 3 Literalen pro Klausel & Erfüllbarkeit & SAT \\
+		Set Cover		& Mengensystem über endl. Grundmenge M, also $T_1,...,T_k \subseteq M$, Zahl $n \leq k$	& Auswahl n Mengen $T_{i_1},...,T_{i_n}$, in denen alle Elemente aus M vorkommen & 3SAT \\
+		Steiner-Tree&	Graph $G=(V,E)$ mit positiven Kantengewichten $c:E \rightarrow \mathbf{R}$, $V=R$(Pflichtknoten) $\cup F$(Steinerknoten)	&	Baum $T \subseteq E$ der mit minimalen Kosten alle Pflichtknoten verbindet& 3SAT \\
+		Clique			&	ungerichteter Graph $G=(V,E)$ und Zahl $k \in \mathbf{N}$ & Clique $V'\subseteq V$ , sodass $\forall i,j \in V', i \neq j$, gilt: $\{i,j\} \in E$, mit $\left| V' \right| \geq k$	& 3SAT \\
+		Vertex Cover&	ungerichteter Graph $G=(V,E)$ und Zahl $k \in \mathbf{N}$ &	überdeckende Knotenmenge $V'\subseteq V$ mit $\left| V' \right| \geq k$, sodass $\forall \{u,v\} \in E$: $u \in V'$ oder $v \in V'$	& Clique \\
+		Subset Sum (Rucksack)& Zahlen $a_1,...,a_k \in \mathbf{N}$ und $ b \in \mathbf{N}$ &	Teilmenge $I \subseteq \{1,...,k \}$ mit $\sum_{i \in I}{a_i}=b$ & 3SAT \\ 
+		Partition		&	Zahlen $a_1,...,a_k \in \mathbf{N}$ &	Teilmenge $J \subseteq \{1,...,k \}$ mit $\sum_{i \in J}{a_i}=\sum_{i \notin J}{a_i}$	& Subset Sum \\
+		Bin Packing &	Behältergröße b $\in \mathbf{N}$, Behälteranzahl k $\in \mathbf{N}$, Objekte $a_1,...a_k \leq b$ & Abb. $f: \{1,...,n\}\rightarrow \{1,...,k\}$,sodass $\forall j=1,..,k: \sum_{f(i)=j}{a_i \leq b}$	& Partition \\
+		Knapsack		&	endl. Menge $M$, Gewichsfkt. $w:M \rightarrow \mathbf{N_0}$, Kostenfkt. $c:M \rightarrow \mathbf{N_0}$, $W,C \in \mathbf{N_0}$ & $M' \subseteq M$ mit $\sum_{a \in M'}{w(a)} \leq W$ und $\sum_{a \in M'}{c(a)} \geq C$ & Subset Sum \\
+		ILP					&	\color{red}{??????????} &	\color{red}{??????????}	& Subset Sum \\
+		Directed Hamilton Circle &	gerichteter Graph $G=(V,E)$	&	Hamiltonkreis: einfacher Kreis der jeden Knoten genau einmal enthält	& 3SAT \\
+		Hamilton Circle& ungerichteter Graph $G=(V,E)$	&	Hamiltonkreis	& Directed Hamilton Circle \\
+		TSP					&	$n \times n$-Matrix $M_{ij}$ und Zahl $k$ & Rundreise mit max. Länge k & Hamilton Circle \\
+		Coloring		&	ungerichteter Graph $G=(V,E)$ und Zahl $k \in \mathbf{N}$ &	Färbung der Knoten in V mit k versch. Farben, mit je 2 unterschiedlich gefärbten Nachbarn	& 3SAT \\
+								
+		\end{tabular}
+	\caption{\textbf{NP-Vollst. Probleme}}
+	\label{tab:NPVollstProbleme}
+\end{table}
+
+\end{document}
