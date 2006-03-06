@@ -41,7 +41,7 @@
 \item Diagonalsprache
 	$L_d:=\{\omega_i: M_i$ akzeptiert $\omega_i$ nicht$\}$
 \item Halteproblem 
-	$H:=\{wv | T_w$ h"alt auf der Eingabe $v\}$
+	$H:=\{wv | T_w$ hält auf der Eingabe $v\}$
 \item Universelle Sprache
 	$L_u:=\{wv| v\in L(T_w)\}$
 \item Kontextfreie Sprachen:
@@ -53,31 +53,9 @@ $L(G)$ det. kontextfrei?
 \item \emph{siehe semientsch. Probleme}
 \end{itemize}
 
-\hh{Entscheidbarkeitsprobleme}
-\begin{tabular}{l|c|c|c|c}
-Typ & $\in$ & $\emptyset$ & $=$ &$\cap=\emptyset$ \\
-\hline
-Typ 3 & J & J & J & J \\
-Det. KF & J & J & J & N \\
-Typ 2& J & J & N & N \\
-Typ 1& J & N & N & N \\
-Typ 0& N & N & N & N  
-\end{tabular}
-
-
-\hh{Abschlusseigenschaften}
-\begin{tabular}{l|c|c|c|c|c}
-Typ & $\cap$ & $\cup$ & $\overline{\ }$ & $\cdot$ & $*$\\
-\hline
-Typ 3 & J & J & J & J & J \\
-Det. KF & N & N & J & N & N \\
-Typ 2& N & J & N & J & J \\
-Typ 1& J & J & J & J & J \\
-Typ 0& J & J & N & J & J 
-\end{tabular}
-
 
 \hh{Semientscheidbare Probleme}
+\hhh{Definition} Es ex. eine TM, die genau die Wörter aus $L$ akzeptiert, sonst aber nicht halten muss.
 
 \hhh{Beispiele}
 \begin{itemize}
@@ -91,6 +69,18 @@ Typ 0& J & J & N & J & J
 % \hhh{\FM{Chomsky-Hierarchie}}
 
 \hh{Entscheidbare Probleme}
+\hhh{Definition} Es ex. eine TM, die genau die Wörter aus $L$ akzeptiert und bei jeder Eingabe hält.
+\hhh{Beispiele}
+\begin{tabular}{l|c|c|c|c}
+Typ & $\in$ & $\emptyset$ & $=$ &$\cap=\emptyset$ \\
+\hline
+CH-3 & J & J & J & J \\
+Det. KF & J & J & J & N \\
+CH-2& J & J & N & N \\
+CH-1& J & N & N & N \\
+CH-0& N & N & N & N  
+\end{tabular}
+
 
 \h{$\mathcal{NP} \stackrel{?}= \mathcal{P}$}
 \FM{Noch einzutragen: Eingabe, Ausgabe, warum NP-hart, ggf. existenz/nicht-existenz von PAS/FPAS}
@@ -130,8 +120,10 @@ Typ 0& J & J & N & J & J
 \hhh{NP-hart via} 3SAT\\
 
 \hh{Steinerbäume}
-\hhh{Eingabe} $G = (V,E)$ mit pos. Kantengewichten $c: E \to \mathbb{R}_+$, $V = R \cup F$(Pflicht - und Steinerknoten)\\
+\hhh{Eingabe} $G = (V,E)$ mit pos. Kantengewichten $c: E \to \mathbb{R}_+$, $V = R \cup F$ (Pflicht- und Steinerknoten)\\
 \hhh{Ausgabe} Baum $T \subseteq  E$ mit minimalen Kosten und $\forall u,v \in R: T$ enthält $u-v Pfad$\\
+\FM{Dachte das ist so:}\\
+\hhh{Ausgabe} Baum $T \subseteq  E$ mit minimalen Kosten und $\forall u \in R: T$ enthält $u$\\
 \hhh{NP-hart via} 3SAT\\
 
 \hh{SET-COVER}
@@ -173,32 +165,103 @@ Typ 0& J & J & N & J & J
 Sei $G=(V, \Sigma, P, S)$, $\forall l\to r\in P:$\\
 \hh{Definition CH-0}
 beliebig\\
-\hh{Definition CH-1}
+\hhh{Wortproblemkomplexität} semientscheidbar
+\hh{Definition CH-1 (längenbeschr.)}
 $|l|\le |r|$. Sonderregel für $\varepsilon$-Produktion nur bei $S$\\
-\hh{Definition CH-2}
-Typ 1 und $l\in V$\\
-\hhh{Pumpinglemma, kontextfrei}
-$L$ kontextfrei $\Rightarrow\exists n\in\mathbb{N}:\forall z\in L: |z|> n\Rightarrow \exists u, v, w, x, y:z=uvwxy\wedge|vx|\ge 1\wedge|vwx|\le n \wedge \forall i\in \mathbb{N}_0:uv^iwx^iy\in L$\\
+\hhh{Beispiel} $a^*b^*$\\
+\hhh{Wortproblemkomplexität}\\ $|\Sigma|^{O(n)}$, NP-hart
+\hh{Definition CH-2 (kontextfrei)}
+CH-1 und $l\in V$\\
+\hhh{Beispiel} $a^nb^n$\\
+\hhh{Wortproblemkomplexität} $O(n^3)$
+\hhh{Pumpinglemma}
+$L$ kontextfrei $\Rightarrow\exists n\in\mathbb{N}:\forall z\in L, |z|> n: \exists u, v, w, x, y:$\\$z=uvwxy\wedge|vx|\ge 1\wedge|vwx|\le n \wedge \forall i\in \mathbb{N}_0:uv^iwx^iy\in L$\\
 \hhh{Chomsky-Normalform}
 falls gilt: $P\subseteq (V\times\Sigma)\cup( V\times VV)$\\
 \begin{enumerate}
 \setlength{\itemindent}{-5ex}
 \setlength{\itemsep}{-1ex}
-\item Terminale in eigene Regeln verbannen.
-\item Seiten die länger sind als zwei Nicht-Terminal aufsplitten
+\item Terminale in eigene Regeln.
+\item Regeln mit rechts $>2$ Nicht-Terminale aufsplitten
 \item $\varepsilon$-Produktionen entfernen
 \item Kettenproduktionen entfernen
 \end{enumerate}
 
-\hh{Definition CH-3}
-Typ 2 und $r\in\Sigma\cup\Sigma V$\\
-\hhh{Pumpinglemma, regulär}
-$L$ regulär $\Rightarrow\exists n\in\mathbb{N}:\forall w\in L:|w|> n\Rightarrow\exists w, v, x:w=uvx\wedge|v|\ge 1\wedge|uv|\le n\wedge\forall i\in\mathbb{N}_0:uv^ix\in L$\\
-\hhh{Nerode-Relation}
-$R_L:=\{(x, y)\Sigma^*\times\Sigma^*:\forall z\in\Sigma^*:xz\in L\Leftrightarrow yz\in L\}$\\Sprache $L$ regulär $\Leftrightarrow$ index$(R_L)\ne\infty$\\
-\hhh{\FM{Syntax reguläre Ausdrücke}}
-$(\emptyset\cup\varepsilon)^*abc^+$\\
+\hh{Definition Det. KF}
+\FM{Bitte noch eintragen}
+\hhh{Wortproblemkomplexität} $O(n)$
+
+\hh{Definition CH-3 (regulär)}
+CH-2 und $r\in\Sigma\cup\Sigma V$\\
+\hhh{Beispiel} $a^nb^nc^n$\\
+\hhh{Wortproblemkomplexität} $O(n)$
+\hhh{Pumpinglemma}
+$L$ regulär $\Rightarrow\exists n\in\mathbb{N}:\forall w\in L,|w|> n: \exists w, v, x:w=uvx\wedge|v|\ge 1\wedge|uv|\le n\wedge\forall i\in\mathbb{N}_0:uv^ix\in L$\\
+\hhh{Reguläre Ausdrücke}\\
+Beispiel: $(\emptyset\cup\varepsilon)^*abc^+$\\
 %noch mehr als Beispielausdruck?
+
+\hh{Nerode-Relation}
+\hhh{Für Sprache $L$}
+$R_L:=\{(x, y)\in \Sigma^*\times\Sigma^*:\forall z\in\Sigma^*:xz\in L\Leftrightarrow yz\in L\}$\\
+\hhh{Für Automat $M$}
+$R_M:=\{(x, y)\in \Sigma^*\times\Sigma^*:\delta^*(s,x) = \delta^*(s,y)\}$ \\
+\hhh{Satz}
+$L$ regulär $\Leftrightarrow$ index$(R_L)\ne\infty$\\
+
+\hh{Abschlusseigenschaften}
+\begin{tabular}{l|c|c|c|c|c}
+Typ & $\cap$ & $\cup$ & $\overline{\ }$ & $\cdot$ & $*$\\
+\hline
+CH-3 & J & J & J & J & J \\
+Det. KF & N & N & J & N & N \\
+CH-2& N & J & N & J & J \\
+CH-1& J & J & J & J & J \\
+CH-0& J & J & N & J & J 
+\end{tabular}
+
+\hh{Automaten}
+\begin{tabular}{r|l}
+Typ  & Automat \\
+\hline
+CH-3 & Endlicher Automat \\
+     & (NEA, DEA) \\
+Det. KF & det. Kellerautomat\\
+        & (DKellerA) \\
+CH-2 & Kellerautomat \\ 
+     & (NKellerA) \\
+CH-1 & linear beschr. Automat\\
+     & (NLBTM) \\ % War das nicht ne ISDN-Anschlusdose?
+CH-0 & Turingmaschine (TM) 
+\end{tabular}
+
+\hh{Automatenäquivalenz}
+$\varepsilon$NEA ist zu $\overline\varepsilon$NEA ist zu DEA und NTM ist zur DTM äquivalent. NKellerA ist zu DKellerA nicht äquivalent. \FM{Wissen wir was über NLBTM und DLBTM?}
+
+\hh{Automatenprobleme}
+Entscheidbar sind: $L(A) = \emptyset$, $L(A)\ne\infty$, $L(A)=\Sigma^*$
+\FM{Gilt das für alle Automaten oder nur DEA? Lucas?}
+
+\h{Automaten}
+
+\hh{Gödelnummer-Code}
+1. Kodiere $\delta$: \\
+$\delta(q_i,a_j)=(q_r,a_s,d_t) \to 0^i10^j10^r10^s10^t$ \\
+wobei $d_t\in \{d_1=L, d_2=R, d_3=N\}$ \\
+2. Die TM wird dann kodiert durch: \\
+			$111u_1 11u_211...11u_z111$ \\
+			mit $u_i$ die möglichen Übergänge in bel. Reihenfolge. \\
+
+\hh{Automatenminimierung}
+1. nicht ereichbare Zustände weg \\
+2. Tabelle aller Zustandspaare $\{z,z'\}$ mit $z \neq z'$ \\
+($z_1$ bis $z_k$ links, $z_0$ bis $z_{k-1}$ unten) \\
+3. Markieren der Zustandspaare mit $z \in F$ und $z \notin F$ oder umgekehrt. \\
+4. Betrachte unmakrierte Paare $\{z,z'\}$. \\
+Wenn $\{\delta(z,a),\delta(z',a)\}$ für mind. ein $a \in \Sigma$ bereits makiert, markiere $\{z,z'\}$. \\
+5. Wiederhole 4. bis keine Änderung mehr. \\
+6. Unmarkierte Paare können verschmolzen werden. \\ 
+
 
 %noch andere Maschinenmodelle?
 \h{Whileprogramm}
@@ -249,4 +312,32 @@ Nur relevant für Probleme mit Zahlen
 \end{itemize}
 
 \end{multicols}
+
+
+
+\begin{table}[h]
+		\begin{tabular}{p{2cm}p{4cm}p{4cm}p{3cm}}
+		Problem 		&		Gegeben		&		Gesucht		& polyn. red. von \\ \hline
+		SAT					& aussagenlog. Formel & Wahrheitsbelegung & TM\\
+		3SAT				& boolesche Formel in KNF mit 3 Literalen pro Klausel & Erfüllbarkeit & SAT \\
+		Set Cover		& Mengensystem über endl. Grundmenge M, also $T_1,...,T_k \subseteq M$, Zahl $n \leq k$	& Auswahl n Mengen $T_{i_1},...,T_{i_n}$, in denen alle Elemente aus M vorkommen & 3SAT \\
+		Steiner-Tree&	Graph $G=(V,E)$ mit positiven Kantengewichten $c:E \rightarrow \mathbf{R}$, $V=R$(Pflichtknoten) $\cup F$(Steinerknoten)	&	Baum $T \subseteq E$ der mit minimalen Kosten alle Pflichtknoten verbindet& 3SAT \\
+		Clique			&	ungerichteter Graph $G=(V,E)$ und Zahl $k \in \mathbf{N}$ & Clique $V'\subseteq V$ , sodass $\forall i,j \in V', i \neq j$, gilt: $\{i,j\} \in E$, mit $\left| V' \right| \geq k$	& 3SAT \\
+		Vertex Cover&	ungerichteter Graph $G=(V,E)$ und Zahl $k \in \mathbf{N}$ &	überdeckende Knotenmenge $V'\subseteq V$ mit $\left| V' \right| \geq k$, sodass $\forall \{u,v\} \in E$: $u \in V'$ oder $v \in V'$	& Clique \\
+		Subset Sum (Rucksack)& Zahlen $a_1,...,a_k \in \mathbf{N}$ und $ b \in \mathbf{N}$ &	Teilmenge $I \subseteq \{1,...,k \}$ mit $\sum_{i \in I}{a_i}=b$ & 3SAT \\ 
+		Partition		&	Zahlen $a_1,...,a_k \in \mathbf{N}$ &	Teilmenge $J \subseteq \{1,...,k \}$ mit $\sum_{i \in J}{a_i}=\sum_{i \notin J}{a_i}$	& Subset Sum \\
+		Bin Packing &	Behältergröße b $\in \mathbf{N}$, Behälteranzahl k $\in \mathbf{N}$, Objekte $a_1,...a_k \leq b$ & Abb. $f: \{1,...,n\}\rightarrow \{1,...,k\}$,sodass $\forall j=1,..,k: \sum_{f(i)=j}{a_i \leq b}$	& Partition \\
+		Knapsack		&	endl. Menge $M$, Gewichsfkt. $w:M \rightarrow \mathbf{N_0}$, Kostenfkt. $c:M \rightarrow \mathbf{N_0}$, $W,C \in \mathbf{N_0}$ & $M' \subseteq M$ mit $\sum_{a \in M'}{w(a)} \leq W$ und $\sum_{a \in M'}{c(a)} \geq C$ & Subset Sum \\
+		ILP					&	\color{red}{??????????} &	\color{red}{??????????}	& Subset Sum \\
+		Directed Hamilton Circle &	gerichteter Graph $G=(V,E)$	&	Hamiltonkreis: einfacher Kreis der jeden Knoten genau einmal enthält	& 3SAT \\
+		Hamilton Circle& ungerichteter Graph $G=(V,E)$	&	Hamiltonkreis	& Directed Hamilton Circle \\
+		TSP					&	$n \times n$-Matrix $M_{ij}$ und Zahl $k$ & Rundreise mit max. Länge k & Hamilton Circle \\
+		Coloring		&	ungerichteter Graph $G=(V,E)$ und Zahl $k \in \mathbf{N}$ &	Färbung der Knoten in V mit k versch. Farben, mit je 2 unterschiedlich gefärbten Nachbarn	& 3SAT \\
+								
+		\end{tabular}
+	\caption{\textbf{NP-Vollst. Probleme}}
+	\label{tab:NPVollstProbleme}
+\end{table}
+
+
 \end{document}
