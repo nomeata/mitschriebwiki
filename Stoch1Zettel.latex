@@ -6,6 +6,7 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{mathtools}
 
 \usepackage{color}
 
@@ -16,12 +17,16 @@
 
 \usepackage[top=1cm, left=1cm, right=1cm, bottom=1cm, a4paper]{geometry}
 
+% Mathezeug
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
+
+
 % Platzsparende Überschriften
 \newcommand{\h}[1]{\vspace{1ex}\begin{center}\small\textbf{#1}\end{center}}
 \newcommand{\hh}[1]{{\vspace{1pt}\hrule\vspace{1pt} \noindent\textbf{#1}}\\}
 \newcommand{\hhh}[1]{{\vspace{1pt}\noindent\emph{#1:}}}
 \setlength{\parindent}{2ex}
-\def\Var{\mathop{\rm Var}\nolimits}
 
 \newenvironment{tightlist}{
 \begin{list}{\textbullet}{
@@ -49,10 +54,14 @@
 % FIXME
 \newcommand{\FM}[1]{{\color{red}\emph{#1}}}
 
-\setlength{\topsep}{0ex}
-
 \pagestyle{empty}
+
 \begin{document}
+\setlength{\topsep}{0ex}
+%\setlength{\parskip}{10ex}
+\setlength{\abovedisplayskip}{0ex}
+\setlength{\belowdisplayskip}{0ex}
+
 \begin{center} 1 Din A4 Zettel mit beliebigem Inhalt\end{center}
 \begin{multicols}{4}
 \scriptsize\raggedright
@@ -66,21 +75,21 @@ $EX = \frac{1}{n} \sum_{i=1}^n x_i$
 \hh{Bionomialverteilung} $X \sim B(n,p)$
 $p_X(k)={n \choose k}p^k(1-p)^{n-k}$
 $F_X(x)=\displaystyle\sum_{k\le x}{n \choose k}p^k(1-p)^{n-k}$
-$EX = np, \Var(X) = np(1-p)$
+$EX = np, \var(X) = np(1-p)$
 
 \hh{Hypergeometrische Verteilung}
 $X \sim\text{Hypergeom}(n,r,m)$
 $p_X(k)=\displaystyle\frac{{r \choose k}{n-r \choose m-k}}{{n \choose m}}$ \\
-$EX = \frac{rm}{n}, \, \Var(X) = \frac{rm}{n}(1-\frac{m}{n})(\frac{n-r}{n-1})$
+$EX = \frac{rm}{n}, \, \var(X) = \frac{rm}{n}(1-\frac{m}{n})(\frac{n-r}{n-1})$
 
 \hh{Geometrische Verteilung}
 W'keit beim k-ten Versuch den 1. Treffer zu bekommen, p Trefferw'keit.
 $p_X(k)=(1-p)^{k-1}p$
-$EX=\frac{1}{p}, \, \Var(X)=\frac{1-p}{p^2}$
+$EX=\frac{1}{p}, \, \var(X)=\frac{1-p}{p^2}$
 
 \hh{Poisson-Verteilung}
 $p_X(k)=e^{-\lambda}\frac{\lambda^k}{k!}\ (k=0, \ldots)$
-$EX = \Var(X) = \lambda$
+$EX = \var(X) = \lambda$
 
 \h{Stetige Verteilungen}
 
@@ -88,13 +97,13 @@ $EX = \Var(X) = \lambda$
 $X \sim U(a,b)$
 $f_X(x)=\begin{cases}\frac{1}{b-a}, &a<x<b\\ 0,&\text{sonst}\end{cases}$
 $F_X(x)=\frac{x-a}{b-a}$ auf $(a,b)$
-$EX = \frac{a+b}{2}, \, \Var(X) = \frac{1}{12}(b-a)^2$
+$EX = \frac{a+b}{2}, \, \var(X) = \frac{1}{12}(b-a)^2$
 
 \hh{Exponentialverteilung}
 $X\sim$ Exp$(\lambda), \lambda>0$
 $f_X(x)=\begin{cases}\lambda e^{-\lambda x},&x\ge 0 \\ 0,&x<0\end{cases}$
 $F_X(x)=1-e^{-\lambda x}$
-$EX = \frac{1}{\lambda}, \, \Var(X) = \frac{1}{\lambda ^2}$
+$EX = \frac{1}{\lambda}, \, \var(X) = \frac{1}{\lambda ^2}$
 Ged"achtnislosigkeit:$P(X\ge t | X\ge s)=P(X\ge t-s)\ (0<s<t)$
 
 \hh{Normalverteilung}
@@ -102,7 +111,7 @@ $X\sim N(\mu,\sigma^2)$
 $f_X(x)=\displaystyle\frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$
 $\phi(x)=\displaystyle\int_{-\infty}^x\displaystyle\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{y^2}{2}\right)\text{d}y$
 $\phi(x)=1-\phi(-x)$
-$EX = \mu, \, \Var(X) = \sigma ^2$\\
+$EX = \mu, \, \var(X) = \sigma ^2$\\
 Standardnormalverteilung $\mu = 0, \, \sigma ^2 = 1$\\
 Sei $X\sim N(\mu,\sigma^2)$.
 $\Rightarrow Z:=\frac{x-\mu}{\sigma} \, \sim N(0,1)$
@@ -111,14 +120,17 @@ $\Rightarrow Z:=\frac{x-\mu}{\sigma} \, \sim N(0,1)$
 $X \sim G(\alpha, \lambda)$
 $f_X(x)=\begin{cases} \frac{\lambda^{\alpha}}{\Gamma(\alpha)}x^{\alpha-1}e^{-\lambda x} ,&x\ge 0 \\ 0,&x<0\end{cases}$,
 wobei $\Gamma(\alpha) := \int_{o}^{\infty}t^{\alpha-1}e^{-t}\text{d}t$
-$EX = \frac{\alpha}{\lambda}, \, \Var(X) = \frac{\alpha}{\lambda^2}$
+$EX = \frac{\alpha}{\lambda}, \, \var(X) = \frac{\alpha}{\lambda^2}$
 $X \sim G(\alpha, \lambda_1), Y \sim G(\alpha, \lambda_2) \Rightarrow X+Y \sim G(\alpha, \lambda_1+ \lambda_2)$ \\
 f"ur $\alpha = 1$ erh"alt man die Exponentialverteilung. 
 
 
 \h{Formeln}
 \hh{Siebformel}
-$P(\bigcup_{k=1}^{n}A_k)= \sum_{k=1}^{n}(-1)^{k-1}\cdot\sum_{1\leq i_1 < i_2 \cdots < i_k\leq n} P(A_{i1}\cap \cdots \cap A_{ik})$
+\vspace{-1em}
+\begin{multline*}
+P(\bigcup_{k=1}^{n}A_k)= \sum_{k=1}^{n}(-1)^{k-1}\\\cdot\sum_{\mathclap{1\leq i_1 < i_2 \cdots < i_k\leq n}} P(A_{i1}\cap \cdots \cap A_{ik})
+\end{multline*}
 
 \hh{Erwartungswert,Varianz,Stdabw}
 diskret:
@@ -126,17 +138,17 @@ $EX = \sum_{i=1}^m x_i P(A_i)$\\
 stetig:
 $EX= \int_{-\infty}^{\infty} xf(x)dx$\\
 $X=(X_1,\dots,X_n)$ ZV, $EX_i^2 < \infty: EX:=(EX_1,\dots,EX_n)$ Erwartungsvektor\\
-$Var(X) = E((X-EX)^2) = EX^2 - (EX)^2 $\\
-$\sigma(X) = \sqrt{Var(X)}$
+$\var(X) = E((X-EX)^2) = EX^2 - (EX)^2 $\\
+$\sigma(X) = \sqrt{\var(X)}$
 
 \hh{Urnenmodell}
-Mit Zur"ucklegen, mit Reihenfolge:
+Mit Zur"uckl., mit Reihenflg.:
 $n^k$\\
-Mit Zur"ucklegen, ohne Reihenfolge:
+Mit Zur"uckl., ohne Reihenflg.:
 $n+k-1 \choose k$\\
-Ohne Zur"ucklegen, mit Reihenfolge:
+Ohne Zur"uckl., mit Reihenflg.:
 $\frac{n!}{(n-k)!}$\\
-Ohne Zur"ucklegen, ohne Reihenfolge:
+Ohne Zur"uckl., ohne Reihenflg.:
 $n \choose k$
 
 \hh{Bedinge Wahrscheinlichkeit}
@@ -146,7 +158,7 @@ $P(A|B)=\frac{P(A\cap B)}{P(B)}$
 $P(B_k|A)=\frac{P(B_k)\cdot P(A|B_k)}{\sum_{j=1}^\infty P(B_j)\cdot P(A|B_j)}$
 
 \hh{Tschebyscheff Ungleichung}
-$P(|X-EX|\geq \varepsilon )\leq \frac{1}{\varepsilon^2} Var(X)$
+$P(|X-EX|\geq \varepsilon )\leq \frac{1}{\varepsilon^2} \var(X)$
 
 \hh{Faltungsformel}
 $(X,Y)$ abs stetige ZV, mit gem Dichte $f_{XY} \Rightarrow Z:=X+Y$ ist abs stetige ZV mit Dichte: $f_Z(x) = \int_{-\infty}^{\infty} f_{X,Y}(t,x-t)dt$\\
@@ -154,40 +166,40 @@ $X,Y$ unabh $\Rightarrow$ Faltungsformel: $f_Z(x) = \int_{-\infty}^{\infty} f_X(
 
 \hh{Unabh"angingkeit von ZV}
 $X,Y$ unabh. $\Rightarrow EXY = EXEY$\\
-$X_1,\dots,X_n$ unabh $\Rightarrow Var(X_1+\dots+X_n) = \sum_{i=1}^n Var(X_i)$
+$X_1,\dots,X_n$ unabh $\Rightarrow \var(X_1+\dots+X_n) = \sum_{i=1}^n \var(X_i)$
 
 \hh{Ungl von Cauchy-Schwarz}
-$X,Y$ ZV, $Var(X),Var(Y)$ existieren $\Rightarrow (EXY)^2 \leq EX^2EY^2$
+$X,Y$ ZV, $\var(X),\var(Y)$ existieren $\Rightarrow (EXY)^2 \leq EX^2EY^2$
 
 \hh{Kovarianz,Korrelationskoeffizient}
-$Cov(X,Y) = E(X-EX)(Y-EY) = EXY - EXEY$\\
-$Cov(X,Y) = 0 \Rightarrow X,Y$ unkorreliert\\
-$X,Y$ unabh $\Rightarrow Cov(X,Y) = 0$\\
-$Cov(X,X) = Var(X)$\\
-$X=(X_1,\dots,X_n) \Rightarrow Cov(X)=(Cov(X_i,X_j))_{i,j=1,\dots,n}$ Kovarianzmatrix\\
-Ist $Var(X)Var(Y)>0$ so gilt:\\
-$-1 \leq p(X,Y) = \frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}} \leq 1$
+$\cov(X,Y) = E(X-EX)(Y-EY) = EXY - EXEY$\\
+$\cov(X,Y) = 0 \Rightarrow X,Y$ unkorreliert\\
+$X,Y$ unabh $\Rightarrow \cov(X,Y) = 0$\\
+$\cov(X,X) = \var(X)$\\
+$X=(X_1,\dots,X_n) \Rightarrow \cov(X)=(\cov(X_i,X_j))_{i,j=1,\dots,n}$ Kovarianzmatrix\\
+Ist $\var(X)\var(Y)>0$ so gilt:\\
+$-1 \leq p(X,Y) = \frac{\cov(X,Y)}{\sqrt{\var(X)\var(Y)}} \leq 1$
 
 \hh{Erzeugende Fkt (diskret)}
 $g_X:[-1,1] \rightarrow R$\\
 $g_X(s) = \sum_{k=0}^{\infty} p_X(k)s^k = Es^X$\\
 $g_X(1) = 1, p_X(k) = \frac{g_X^{(k)}(0)}{k!}$\\
-$EX = g_X'(1-), Var(X) = g_X''(1-)+g_X'(1-) - (g_X'(1-))^2$\\
+$EX = g_X'(1-), \var(X) = g_X''(1-)+g_X'(1-) - (g_X'(1-))^2$\\
 $X,Y$ unabh,diskret $\Rightarrow g_{X+Y}(s)=g_X(s)g_Y(s)$
 
 \h{Konvergenzbegriff f"ur ZV}
 
 \hh{P-fast sicher}
-$X_n\stackrel{fs}{\rightarrow}X$ wenn:\\
-$P(\{\omega\in\Omega | \lim_{n\to\infty} X_n(\omega)=X(\omega)\})=1$
+$X_n\stackrel{fs}{\rightarrow}X$ wenn:
+\[P(\{\omega\in\Omega | \lim_{\mathclap{n\to\infty}} X_n(\omega)=X(\omega)\})=1\]
 
 \hh{in Wahrscheinlichkeit, stochastisch}
-$X_n\stackrel{P}{\rightarrow }X$ wenn, f.a. $\varepsilon > 0$\\
-$\lim_{n\to\infty}P(\{\omega\in\Omega \Bigr| |X_n(\omega)-X(\omega)|\geq \varepsilon \})=0$
+$X_n\stackrel{P}{\rightarrow }X$ wenn, f.a. $\varepsilon > 0$
+\[\lim_{\mathclap{n\to\infty}}P(\{\omega\in\Omega \Bigr| |X_n(\omega)-X(\omega)|\geq \varepsilon \})=0\]
 
 \hh{in Verteilung}
-$X_n\stackrel{d}{\rightarrow }X$ wenn:\\
-$\lim_{n\to\infty} F_{X_n}(x)=F_X(x)$
+$X_n\stackrel{d}{\rightarrow }X$ wenn:
+\[\lim_{\mathclap{n\to\infty}} F_{X_n}(x)=F_X(x)\]
 
 
 
