@@ -25,7 +25,7 @@
 
 % Platzsparende ‹berschriften
 \newcommand{\h}[1]{\vspace{1ex}\begin{center}\small\textbf{#1}\end{center}}
-\newcommand{\hh}[1]{{\vspace{1pt}\hrule\vspace{1pt} \noindent\textbf{#1}}\\}
+\newcommand{\hh}[1]{{\vspace{1pt}\hrule\vspace{1pt} \noindent\textbf{#1}}\\*}
 \newcommand{\hhh}[1]{{\vspace{1pt}\noindent\emph{#1:}}}
 \setlength{\parindent}{2ex}
 
@@ -67,16 +67,53 @@
 \begin{multicols}{4}
 \scriptsize\raggedright
 
+\h{Grundlagen}
+\hh{$\sigma$-Algebr‰en}
+$\mathfrak{A}$ ist $\sigma$-Algebra, gdw.:\\
+$\Omega \in \mathfrak{A}$, $A^c\in\mathfrak{A}$, $\cup_{i=1}^\infty A_i\in\mathfrak{A}$
+\hh{Mengengrenzwerte}
+unendlich viele:
+\begin{align*}
+\limsup A_n &= \bigcap_{k=1}^\infty \bigcup_{n=k}^\infty A_n\\
+\intertext{alle bis auf endlich viele:}
+\liminf A_n &= \bigcup_{k=1}^\infty \bigcap_{n=k}^\infty A_n
+\end{align*}
+\hh{Wahrscheinlichkeitsmaﬂ}
+$0 \le P(\omega) \le 1$\\
+$\sum_{\omega\in\Omega} P(\omega) = 1$\\
+$P(\sum A_i) = \sum P(A_i)$\\
+$P(A^c) = 1- P(A)$
+$A \subset B \Rightarrow P(A) \le P(B)$
+\hh{Siebformel}
+\vspace{-1em}
+\begin{multline*}
+P(\bigcup_{k=1}^{n}A_k)= \sum_{k=1}^{n}(-1)^{k-1}\\\cdot\sum_{\mathclap{1\leq i_1 < i_2 \cdots < i_k\leq n}} P(A_{i1}\cap \cdots \cap A_{ik})
+\end{multline*}
+Also: $P(A\cup B) = P(A) + P(B) - P(A\cap B)$
+\hh{Bedingte Wahrscheinlichkeiten}
+$P(A|B) = \frac{P(A\cap B)}{P(B)}$\\
+$B_i$ seien eine Partition:\\
+$P(A) = \sum_{i=1}^n P(B_i) P(A|B_i)$\\
+Satz v. Bayes:
+$P(B_k|A) = \frac{ P(A|B_k)\cdot P(B_k) }{\sum_{i=1}^\infty P(A|B_i) \cdot P(B_i)}$
+
+
 \h{Diskrete Verteilungen}
 \hh{Gleichverteilung}
 $p(X=x_i)=f_X(x_i)=\frac{1}{n}\ (i=1,\ldots,n)$
 $EX = \frac{1}{n} \sum_{i=1}^n x_i$
+$\var(X) = \frac1n \left(\sum_{i=1}^n x_i^2 - EX\right)$
 
 \hh{Binomialverteilung} $X \sim B(n,p)$
 $p_X(k)={n \choose k}p^k(1-p)^{n-k}$
 $F_X(x)=\displaystyle\sum_{k\le x}{n \choose k}p^k(1-p)^{n-k}$
-$EX = np, \var(X) = np(1-p)$ \\
-$g_X(s) = (1 - p + e^{s}p)^n $
+$EX = np$, $\var(X) = np(1-p)$ \\
+$g_X(s) = (1 - p + sp)^n$
+
+\hh{neg. Binomialverteilung} $X \sim NegB(n,p)$
+$p_X(k)={n-1 \choose k-1}p^k(1-p)^{n-k}$
+$F_X(x)=\displaystyle\sum_{k\le x}{n \choose k}p^k(1-p)^{n-k}$
+$EX = \frac n p$, $\var(X) = n\frac{(1-p)}{p^2}$ \\
 
 \hh{Hypergeometrische Verteilung}
 W'keit, bei $m$ Versuchen ohne Zur¸cklegen von $n$ s/w-Kugeln $k$ der $r$ weiﬂen zu ziehen.\\
@@ -91,6 +128,7 @@ $p_X(k)=(1-p)^{k-1}p$
 $EX=\frac{1}{p}, \, \var(X)=\frac{1-p}{p^2}$
 
 \hh{Poisson-Verteilung}
+Approximation der Binomialvert. mit $\lambda = np$\\
 $p_X(k)=e^{-\lambda}\frac{\lambda^k}{k!}\ (k=0, \ldots)$
 $EX = \var(X) = \lambda$
 
@@ -132,12 +170,6 @@ f"ur $\alpha = 1$ erh"alt man die Exponentialverteilung.
 
 
 \h{Formeln}
-\hh{Siebformel}
-\vspace{-1em}
-\begin{multline*}
-P(\bigcup_{k=1}^{n}A_k)= \sum_{k=1}^{n}(-1)^{k-1}\\\cdot\sum_{\mathclap{1\leq i_1 < i_2 \cdots < i_k\leq n}} P(A_{i1}\cap \cdots \cap A_{ik})
-\end{multline*}
-
 \hh{Erwartungswert}
 (Existenz falls mit $|\cdot|$ noch $<\infty$)\\
 \hhh{diskret}
@@ -149,10 +181,15 @@ Falls $X_i$ unkorreliert:
 $E(\prod_{i=1}^n X_i) = \prod_{i=1}^nE(X_i)$
 \hhh{Erwartungsvektor}
 $X=(X_1,\dots,X_n)$ ZV, $EX_i^2 < \infty: EX:=(EX_1,\dots,EX_n)$
+\hhh{Cauchy-Schwarze Ungleichung}
+$(EXY)^2 \le EX^2 EY^2$
 \hh{Varianz}
-$\var(X) := E((X-EX)^2) = EX^2 - (EX)^2 $\\
+$\var(X) := E((X-EX)^2) = EX^2 - (EX)^2 \ge 0 $\\
 Daher auch: $EX^2 = \var(X) + (EX)^2$
 $\var(aX+b) = a^2\var(X)$\\
+Falls $X_i$ nicht unkorreliert:
+$\var(\sum_{i=1}^n X_i) = \sum_{i=1}^n\var(X_i) +$\\
+$\qquad 2\cdot\sum_{1\le i < j \le n} \cov(X_i,X_j)$\\
 Falls $X_i$ unkorreliert:
 $\var(\sum_{i=1}^n X_i) = \sum_{i=1}^n\var(X_i)$
 \hhh{Standardabweichung}
@@ -182,6 +219,9 @@ $(X,Y)$ abs stetige ZV, mit gem Dichte $f_{XY} \Rightarrow Z:=X+Y$ ist abs steti
 $X,Y$ unabh $\Rightarrow$ Faltungsformel: $f_Z(x) = \int_{-\infty}^{\infty} f_X(t)f_Y(x-t)dt$
 
 \hh{Unabh"angingkeit von ZV}
+\hhh{Def.} $F_{X_1,\ldots,X_n}(x_1,\ldots,x_n) = \prod F_{X_i}(x_i)$\\
+gdw. bis auf eine Nullmenge: $f_{X_1,\ldots,X_n}(x_1,\ldots,x_n) = \prod f_{X_i}(x_i)$\\
+\hhh{S‰tze}\\
 $X,Y$ unabh. $\Rightarrow EXY = EXEY$\\
 $X_1,\dots,X_n$ unabh $\Rightarrow \var(X_1+\dots+X_n) = \sum_{i=1}^n \var(X_i)$
 
@@ -205,8 +245,8 @@ $\left|\rho(X,Y) := \frac{\cov(X,Y)}{\sqrt{\var(X)\var(Y)}}\right|\le 1$
 $g_X:[-1,1] \rightarrow R$\\
 $g_X(s) = \sum_{k=0}^{\infty} p_X(k)s^k = Es^X$\\
 $g_X(1) = 1, p_X(k) = \frac{g_X^{(k)}(0)}{k!}$\\
-$EX = g_X'(1-), \var(X) = g_X''(1-)+g_X'(1-) - (g_X'(1-))^2$\\
-$X,Y$ unabh,diskret $\Rightarrow g_{X+Y}(s)=g_X(s)g_Y(s)$
+$EX = g_X'(1^-)$, $\var(X) = g_X''(1^-)+g_X'(1^-) - (g_X'(1^-))^2$\\
+$X,Y$ unabh, diskret $\Rightarrow g_{X+Y}(s)=g_X(s)g_Y(s)$
 
 \h{Konvergenzbegriff f"ur ZV}
 \hh{P-fast sicher}
@@ -226,7 +266,30 @@ f.s. $\Rightarrow$ in Wahrs'keit\\
 in Wahrs'keit $\Rightarrow$ in Verteilung\\
 in Verteilung gegen eine Konstante $c \in \mathbb{R} \Rightarrow$ in Wahrs'keit
 
-\h{Char Funktionen}
+\h{Grenzwerts‰tze}
+\hh{Kolmogorov}
+(Starkes Gesetz der groﬂen Zahlen)\\
+$X_i$ unabh. und identisch vert, $E|X_1| <\infty$:
+$\frac1n \sum_{i=1}^n X_i \stackrel{f.s.}{\rightarrow} EX_1$
+
+\hh{Zentraler Grenzwertsatz}
+$X_i$ u.i.v., $E|X_1|<\infty$, $0<\var(X_1)<\infty$: f¸r $n\to\infty$ gilt:
+\[
+\frac{\sum_{i=1}^n X_i - n\cdot EX_1}{\sqrt{n\cdot\var(X_1)}} \stackrel{d}{\rightarrow} X \sim \mathcal{N}(0,1)
+\]
+also
+\[
+P\left(\frac{\sum_{i=1}^n X_i - n EX_1}{\sqrt{n\cdot\var(X_1)}} \le x\right) \rightarrow\Phi(x)
+\]
+
+\hh{Zweiseitiger Grenzwertsatz}
+Gleiche Voraussetzungen wie oben:
+\begin{multline*}
+P\left(a \le \frac{\sum_{i=1}^n X_i - n\cdot EX_1}{\sqrt{n\cdot\var(X_1)}}\le b \right) \\
+\rightarrow\Phi(b)-\Phi(a)
+\end{multline*}
+
+\h{Charkteristische Funktion}
 $X$ ZV, $\varphi_X : \mathbb{R} \rightarrow \mathbb{C}$
 \[
 \varphi_X(t) := Ee^{itX} = E\cos(tX)+iE\sin(tX)
@@ -259,9 +322,13 @@ $ET$ hat i.A. nix mit $EX$ zu tun!
 \hhh{Bias} $b_T(\theta) := E_\theta T(X) - \theta$
 \hhh{Mittlerer Quadratischer Fehler} $\mse(T) := E_\theta (T(x)-\theta)^2$\\
 unbiasd: $\mse(T) = \var_\theta(T)$
+\hh{Fisher-Info.} $I(\theta) := E_\theta\left( (\frac{\partial}{\partial\theta} \log L_X(\theta))^2 \right)$
 \hh{Ungleichung von Cram\'er-Rao}
-$ \var_\theta(T(X)) \ge \frac{ (1+\frac{\partial}{\partial\theta}b_T(\theta))^2 }{E_\theta\left( (\frac{\partial}{\partial\theta} \log L_X(\theta))^2 \right) } $
+$\var_\theta(T(X)) \ge \frac{ (1+\frac{\partial}{\partial\theta}b_T(\theta))^2 }{I(\theta)}$
 
+\h{Konfidenzintervalle}
+Gesucht sind ZV $L$ und $U$ mit $L(x)\le U(x)$ und
+$P_\theta(L(x)\le \theta \le U(x)) = 1-\alpha$
 
 \h{Testtheorie}
 ‹berpr¸fen, ob ein Parameter $\theta$ einer Verteilung in $\Theta_0$ oder $\Theta_1$ ($\Theta_0+\Theta_1=\Theta$) ist.\\
