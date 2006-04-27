@@ -136,4 +136,201 @@ Man will möglichst gute Abschätzung des Restglieds $R(x) = |\Pi(x) - \text{li}(x
 \[ R(x) \le \text{Const} \cdot x^{\frac 12} \log x \]
 \textbf{Fakt 2:} Von der Qualität der Restgliedabschätzung hängen in der Informatik viele Aussagen über die theoretische Effektivität von numerischen Algorithmen ab.
 
+\section{Elementare Teilbarkeitslehre in injektiven Ringen}
+In dieser Vorlesung gilt die Vereinbarung, dass ein Ring
+definitionsgemäß ein genau ein Einselement $1_R$ besitzt.
+
+\begin{definition}
+Ein Ring $R$ heißt \emph{integer}, wenn gilt:
+\begin{enumerate}
+\item $R$ ist kommutativ.
+\item $\forall a,b \in R:\ ab=0 \iff a=0 \wedge b=0$.
+\end{enumerate}
+\end{definition}
+\begin{beispiel}
+    Jeder Unterring eines Körpers ist integer.
+\end{beispiel}
+\begin{definition}
+    Die Menge
+    $$
+    R^{\times}:=\{a \in R|\ \exists x \in R:\ ax=1=xa\}
+    $$
+    heißt \emph{Einheitengruppe} $R^{\times}$ des (allgemeinen)
+    Ringes $R$.\\
+    Leicht zu sehen ist, dass $R^{\times}$ eine Gruppe ist, $x$ ist
+    das eindeutig bestimmte Inverse $a^{-1}$ von $a$.
+\end{definition}
+\begin{beispiel}
+    $\MdZ^{\times}=\{\pm 1\}$ (klar!)\\
+    $\MdZ^{n \times n}$ ist der Ring der ganzzahligen $n\times
+    n$-Matrizen, $GL(\MdZ)=(\MdZ^{n \times n})^{\times}$.
+    Beispielsweise für $n=2$:\\
+    $$
+    A=\left(
+        \begin{array}{cc}
+          2 & 5 \\
+          1 & 3 \\
+        \end{array}
+      \right),\ A^{-1}=\left(
+        \begin{array}{cc}
+          3 & -5 \\
+          -1 & 2 \\
+        \end{array}
+      \right),\ A\,A^{-1}=I \Rightarrow A \in GL_2(\MdZ).
+    $$\\
+    $R=K[X]$ ist der Ring der Polynome in $X$ über dem Körper $K$.
+    $R^{\times}=\{\alpha \in K^{\times}=K\backslash 0\}$ (Konstante,
+    von $0$ verschiedene Polynome)\\
+    $\MdZ, K[X]$ sind integere Ringe.
+\end{beispiel}
+Ab jetzt sei $R$ ein integerer Ring, $a,b,c,d,x,y,u,v,w \in R$.
+
+\textbf{Problem}: Gleichung $ax=b$ mit der Variablen $x$.
+Beispielsweise ist $3x=5$ in $R=\MdZ$ nicht lösbar, $3x=6$ hingegen
+schon.
+
+\begin{definition}
+    $a|b \iff \exists x\in R:\ ax=b$. Sprechweise: $a$ teilt $b$,
+    $b$ ist Vielfaches von $a$, $a$ ist Teiler von $b$.\\
+    $\neg a|b \iff a \not | b$ ($a$ teilt nicht $b$).
+\end{definition}
+\begin{beispiel}
+    $R=\MdZ$: $3 \not| 5,\ 3|0,\ \pm 3,\ \pm 6 \dotsc$\\
+    $R=K[X]$: $(X-1)|(X^2-1)$.\\
+    In jedem $R:\ \forall a \in R: 1|a \text{ (denn $a=a\cdot 1$ )}\
+    \wedge\
+    a|0$ (denn $0=0\cdot a$).
+\end{beispiel}
+\begin{satz}[Elementare Teilbarkeitseigenschaften]
+\begin{enumerate}
+    \item $|$ ist mit $\cdot$ verträglich:\\
+          $a|b\ \wedge\ c|d \Rightarrow ac|bd$.
+    \item $|$ ist mit Linearkombinationen verträglich:\\
+          $a|b\ \wedge\ a|c \Rightarrow\ \forall x,y\in R:\
+          a|xb+yc.$
+    \item $|$ ist eine transitive und reflexive Relation und für
+    $a\neq 0$ gilt:\\
+    $ a|b\ \wedge\ b|a \iff \exists e \in R^{\times}:\ a=eb$.
+\end{enumerate}
+\end{satz}
+\begin{beweis}
+    Treppenbeweis $\copyright$ Dr. Rehm.
+\end{beweis}
+\begin{bemerkung}
+$(2)$ hat einen häufigen Spezialfall: $a|b\ \wedge\ a|c \Rightarrow
+a|b\pm c$.\\
+\textbf{Anwendungsbeispiel}: $a|b^2\ \wedge\ a|b^2+1 \Rightarrow
+a|\underbrace{b^2+1-b^2}_{=1}$.\\
+\textbf{Folgerung}: $e\in R^{\times}:\ a|b \iff ea|b \iff a|eb$.\\
+\textbf{Grund}: $b=xa=x=(ce^{-1})ea$.\\
+Merke: Einheitsfaktoren ändern Teilbarkeit nicht!\\
+\textbf{Folge 2}: $R$ ist disjunkte Vereinigung aller Mengen
+$R^{\times}a=\{ea|e\in R^{\times}\}$.\\
+\textbf{Grund}: $u\in R^{\times}a\cap R^{\times}b\iff u|a\ \wedge\
+a|u\ \wedge\ u|b\ \wedge b|u$, also
+$R^{\times}a=R^{\times}u(=R^{\times}b$, $eu\in R^{\times}a
+\Rightarrow R^{\times}u\subset R^{\times}a$, genauso zeigt man
+$R^{\times}a \subset R^{\times}u$.
+\end{bemerkung}
+\begin{definition}[Normierung]Auswahl je eines festen $a_{nor}$ in
+$R^{\times}a$. Man wählt immer $e_{nor}=1,\ 0_{nor}=0$.\\
+Standard-Normierung: $R=\MdZ,\ R^{\times}a=\{\pm a\},\
+a_{nor}=\max\{R^{\times}a\}=|a|$.\\
+$R=K[X],\ 0\neq f=\alpha_0+\alpha_1 X + \dotsb + \alpha_n X^n$ mit
+$\alpha_n \neq 0$. Dann ist $f_{nor}=\frac{1}{\alpha_n}f$.
+\end{definition}
+Klar ist: Jedes $a\in R$ hat die trivialen Teiler $e\in R^{\times}$
+und $ea,  e \in R^{\times}$. Nichttriviale Teiler heißen auch echte
+Teiler.
+\begin{beispiel}
+ $R=\MdZ$, triviale Teiler von $6$ sind $\pm 1,\ \pm 6$. Echte
+ Teiler sind $\pm 2,\ \pm 3$.
+\end{beispiel}
+\begin{definition}
+    \begin{enumerate}
+        \item $a\in R$ heißt unzerlegbar oder irreduzibel, falls
+            $a\neq 0,\ a \notin R^{\times}$. $a$ hat also nur triviale
+            Teiler.
+        \item $R=\MdZ$. $P\in\MdZ$ heißt Primzahl $\iff$ p normiert
+            und irreduzibel.
+        \item $R=K[X]$. $f \in R$ heißt Primpolynom $\iff$ $f$
+            irreduzibel.
+    \end{enumerate}
+\end{definition}
+
+\subsection{Größter gemeinsamer Teiler und kleinstes Gemeinsames
+Vielfaches}
+
+\begin{definition}
+    $d$ heißt ein größter gemeinsamer Teiler von
+    $a_1,a_2,\dotsc,a_n$ $:\iff$
+    \begin{enumerate}
+        \item $d|a_1\ \wedge\ d|a_2\ \wedge\ \dotsb \ \wedge\ d|a_n$
+        (d ist gemeinsamer Teiler)
+        \item $u|a_1\ \wedge\ u|a_2\ \wedge\ \dotsb \ \wedge\ u|a_n \Rightarrow u|d$
+    \end{enumerate}
+\end{definition}
+\begin{bemerkung}
+    \begin{enumerate}
+        \item Bei $R=\MdZ$ ist ein bezüglich $\leq$ größter
+        gemeinsamer Teiler ein normierter ggT.
+        \item Eindeutigkeit des ggT: Ist $d$ ein ggT von
+        $a_1,a_2,\dotsc,a_n$, so ist auch $d_{nor}$ ein ggT und $d_{nor}$
+        ist durch $a_1,a_2,\dotsc,a_n$ eindeutig bestimmt:
+        $d=d_{nor}=\text{ggT}(a_1,a_2,\dotsc,a_n)$\\
+        \textbf{Grund}: $e$ spielt bei Teilbarkeit keine Rolle, und
+        $d_{nor}=ed$. Sind $d,d'$ ggTs von $a_1,a_2,\dotsc,a_n$
+        $\Rightarrow d|d'\ \wedge\ d'|d \iff d'=ed\text{, da
+        normiert}\Rightarrow d=d'$.
+    \end{enumerate}
+\end{bemerkung}
+Der kgV wird analog zum ggT unter Umkehrung aller
+Teilbarkeitsrelationen definiert:
+
+\begin{definition}
+    $k$ heißt ein kgV von $a_1,a_2,\dotsc,a_n$ $:\iff$
+        \begin{enumerate}
+        \item $a_1|k\ \wedge\ a_2|k\ \wedge\ \dotsb \ \wedge\ a_n|k$
+        (d ist gemeinsamer Teiler)
+        \item $a_1|u\ \wedge\ a_2|u\ \wedge\ \dotsb \ \wedge\ a_n|u \Rightarrow k|u$
+    \end{enumerate}
+\end{definition}
+Die Eindeutigkeitsaussage des ggT gilt für den kgV ebenfalls.
+
+\begin{satz}[Euklids Primzahlsatz]
+    $R=\MdZ$: $\#P=\infty$
+\end{satz}
+\begin{beweis}
+    Es seien $p_j,\ j=1,2,\dotsc,n$ paarweise verschiedene Primzahlen.
+    Betrachte $1+\prod p_i>0$.\\
+    \textbf{Aussage}: Ist $a\in \MdN,\ a > 1$, so ist $\min\{d\in \MdN:
+    d|a\}$ eine Primzahl und das Minimum existiert wegen $a|a$.
+    Benutzt, dass jede Teilmenge der natürlichen Zahlen eine
+    kleinste enthält $\Rightarrow$ Behauptung, da ein echter Teiler
+    kleiner wäre  $\Rightarrow \exists p \in R:\ p|q+\prod p_j$.\\
+    Wäre $p=p_j$ für ein $j\in\{1,2,\dotsc,n\}$, so $p|\prod p_j$.
+    $p|\underbrace{1+\prod p_j-1(\prod p_j)}_{=1} \iff p|1
+    \Rightarrow p\in \MdZ^{\times} \Rightarrow$ Widerspruch.
+\end{beweis}
+\section{Primzerlegung in euklidischen Ringen}
+In diesem Abschnitt sei $R$ integerer Ring, $a,b,c,d,\dotsc \in
+R$.\\
+\textbf{Sprechweise}: $a=qb+r$. Man sagt $r$ ist der Rest bei
+Division von $a$ durch $b$, $q$ ist der Quotient (Division mit
+Rest).\\
+\textbf{Mathematischer Wunsch}: Rest $r$ soll im geeigneten Sinn
+kleiner sein als der Divisor $b$. Man benötigt dafür eine
+Größenfunktion $gr:\ R\mapsto \MdN$.
+\begin{definition}
+    Ein Ring $R$, beziehungsweise ein Paar $(R,gr)$ heißt euklidisch
+    $:\iff$
+    \begin{enumerate}
+        \item $R$ ist integer\\
+        \item Man hat Division mit Rest, das heißt: $\forall a,b \in
+        R,\ b\neq 0,\ \exists q,r\in R: a=qb+r$, wobei $r=0$ oder
+        $gr(r)<gr(b)$.
+    \end{enumerate}
+\end{definition}
+\end{document}
+
 \end{document}
