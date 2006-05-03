@@ -39,6 +39,7 @@
 \renewcommand{\thechapter}{\arabic{chapter}}
 
 \chapter{Primzahlen}
+\section{Eine kleine Einführung}
 
 \begin{satz}[Euklid, ca. 300 v. Chr.]
 \[ \#\MdP = \infty \]
@@ -279,7 +280,7 @@ Vielfaches}
         \item Eindeutigkeit des ggT: Ist $d$ ein ggT von
         $a_1,a_2,\dotsc,a_n$, so ist auch $d_{nor}$ ein ggT und $d_{nor}$
         ist durch $a_1,a_2,\dotsc,a_n$ eindeutig bestimmt:
-        $d=d_{nor}=\text{ggT}(a_1,a_2,\dotsc,a_n)$\\
+        $d=d_{nor}=\ggt(a_1,a_2,\dotsc,a_n)$\\
         \textbf{Grund}: $e \in R^{\times}$ spielt bei Teilbarkeit keine Rolle, und
         $d_{nor}=ed$ für ein $e \in R^{\times}$. Sind $d,d'$ ggTs von $a_1,a_2,\dotsc,a_n$
         $\Rightarrow d|d'\ \wedge\ d'|d \iff d'=ed\text{, da
@@ -301,7 +302,7 @@ Die Eindeutigkeitsaussage des ggT gilt für den kgV ebenfalls.
 
 \begin{satz}[Euklids Primzahlsatz]
     Für $R=\MdZ$ gilt:
-    \[\#P=\infty\]
+    \[\#\MdP=\infty\]
 \end{satz}
 \begin{beweis}
     Es seien $p_j,\ j=1,2,\dotsc,n$ paarweise verschiedene Primzahlen.
@@ -329,11 +330,126 @@ Größenfunktion $gr:\ R\mapsto \MdN$.
     $:\iff$
     \begin{enumerate}
         \item $R$ ist integer\\
-        \item Man hat Division mit Rest, das heißt: $\forall a,b \in
+        \item Man hat Division mit Rest, das heißt:\\ $\forall a,b \in
         R,\ b\neq 0,\ \exists q,r\in R: a=qb+r$, wobei $r=0$ oder
         $gr(r)<gr(b)$.
     \end{enumerate}
 \end{definition}
-\end{document}
+
+Es ist $(\MdZ, |\cdot|)$ ein euklidischer Ring.
+
+\begin{beweis}
+O.b.d.A: $b>0$, da $|b| = gr(b) = gr(-b)$.
+
+$q=\lfloor \frac a b \rfloor$ ist geeignet: $0\le \frac a b - q < 1 |\cdot b \Rightarrow 0 \le a - qb  = r < b \Rightarrow gr(r) = |r| = r<b = |b| =gr(b)$
+\end{beweis}
+
+Viele Porgrammiersprachen, etwa MAPLE, bieten einen modulo-Operator:\\
+\texttt{r := (a mod b) }$= a - \lfloor \frac a {|b|} \rfloor$.
+
+Im $K[X]$ ist die Division mit Rest möglich bezüglich $gr(f) := \grad f = n$, ($f\ne 0$).
+
+Der Ring $R = \MdZ + \MdZ i \subset \MdC$, also $R = \{x+iy|x,y\in\MdZ\}$ heißt "`Ring der ganzen Gaußschen Zahlen"'. $R$ ist euklidisch mit $gr(x,iy) = |x+iy| = \sqrt{x^2+y^2}$. Die Idee für die Division mit Rest ist: Suche einen Gitterpunkt nahe $\frac a b$. (siehe Übung)
+
+\begin{lemma}
+$R$ integer, $a= qb+r$, $a,b,q,r\in R$. Dann gilt
+\[ \ggt(a,b) = \ggt(b,r)\,, \]
+und falls eine Seite existiert, so auch die andere.
+\end{lemma}
+
+\begin{beweis}
+$u,v,\in R$, so kann Existenz und $\ggt(u,v)$ abgelesen werden an 
+\[ T(u,v) = \{d\in\MdR\big| d|u \wedge d|v \}\,,\]
+der Menge der gemeinsamen Teiler. Es ist aber $T(a,b) = T(b,r)$:\\
+\glqq$\subseteq$\grqq: $d|a \wedge d|b \folgt d|r$ (Linearkombination)\\
+\glqq$\supseteq$\grqq: $d|r \wedge d|b \folgt d|a$ (Linearkombination)
+\end{beweis}
+
+Euklids glänzende Idee ist nun: Bei der Division mit Rest verkleinert der Übergang von $(a,b)$ zu $(b,r)$ das Problem. Sein Algorithmus ist wie folgt:
+
+\lstset{morecomment=[l]{\#}, texcl=True, commentstyle=\textrm}
+\begin{lstlisting}
+ggT := proc(a,b);      # Prozedur, die \texttt{ggT} $ = \ggt(a,b)$ aus $a$,$b$ berechnet
+if b = 0  
+  then normiere(a)     # es ist immer $\ggt(a,0) = a_\text{nor}$
+  else ggT(b, a mod b) # terminiert wegen $gr(a \mod b) < gr(b)$
+fi
+\end{lstlisting}
+
+Idee: $r$ ist Linearkombination von $a$ und $a,b$. Die Hoffnung dabei ist: Auch $d:= \ggt(a,b)$ lässt sich linear kombinieren.
+
+\begin{satz}[Satz der Linearkombination des ggT]
+Sei $R$ ein euklidischer Ring. Dann existiert $d=\ggt(a,b)$ für alle $a,b\in R$ und ist als $R$-Linearkombination von $a,b,$ darstellbar:
+\[ \exists x,y\in R: d= \ggt(a,b) = xa + yb \]
+\end{satz}
+
+\begin{beweis}
+\begin{itemize}
+\item[I] Falls $b=0$ ("`Induktionsanfang"') gilt $d= a_\text{nor}= e\cdot a + 0 \cdot b$ mit geeignetem $e\in R^\times$
+\item[II] Falls $b\ne 0$: Division mit Rest $a  = qb + r$ \\
+Falls $r=0$ ist $d=b_\text{nor}$, fertig!\\
+Falls $r\ne0$, so gilt $\ggt(a,b) = \ggt(b,r) = d$ und $gr(r)<gr(b)$
+
+Induktionshypothese: $\exists x_0,y_0\in R$: $d=x_0b + y_0 r = x_0 b + (a-qb)y_0  = y_0 d + (x_0-qy_0)b = x+y$\\
+Induktionsschritt geleistet.
+\end{itemize}
+\end{beweis}
+
+
+Die Idee ist, dass ein Ring heißt \emph{faktoriell} heißt, wenn man in ihm eine eindeutige Primzerlegung, wie aus $\MdZ$ bekannt, hat. Ein Ziel der Vorlesung ist die Feststellung, dass euklidische Ringe faktoriell sind (Euler-Faktoriell-Satz).
+
+\begin{definition}
+Ein Ring $R$ heißt faktoriell (älter: "`ZPE-Ring"') wenn gilt:
+\begin{itemize}
+\item[(i)] $R$ ist integer
+\item[(ii)] Es gibt eine Menge $P\subseteq R$, bezüglich der jedes $a\in R$ mit $a\ne 0$ eine "`eindeutige Primzerlegung"' hat, also:
+
+$\exists e(a)\in\MdR^\times \ \exists v_p(a) \in \MdN$, mit nur endlich vielen $v_p(a)\ne 0$ mit 
+\[a = e(a) \cdot \prod_{p\in P} p^{v_p(a)} \text{ "`Primzerlegung von $a$"'}\]
+Eindeutigkeit heißt: Durch $a$ sind $e(a)$ und alle $v_p(a)$ eindeutig bestimmt.
+\end{itemize}
+
+Der Fall $R=\MdZ$ ist aus der Schule bekannt, und wird nicht bewiesen. Ein Beispiel ist $-100 = -1 \cdot 2^2 \cdot 5^2$, also $e(-100)=-1$, $v_2(-100)=v_5(-100)=2$ und $\forall p\in P, p\ne 2, p\ne5: v_p(-100)=0$
+
+Im Fall $R=K$, wobei $K$ ein Körper ist, gilt $R^\times=\MdK\setminus\{0\}$ und $ P=\emptyset$.
+
+Ist $R$ faktoriell, so ist die Standardnormierung \[a_\text{nor} = \prod_{p\in P} p^{v_p(a)}\,.\]
+
+\begin{bemerkung}
+$P$ besteht aus unzerlegbaren Elementen. Hätte man nämlich $p=uv$ mit echten Teilern $u,v$, so gilt $u,v\notin R^\times$, also $\forall p_1,p_2 \in P$: $v_{p_1}>0,v_{p_2}>0$. Nun haben wir zwei Primzerlegungen, da $v_p(p) = 1$, $\forall q\in P, q\ne p, v_q(p=0)$ und damit $p=1 \cdot p^1 = 1\cdot p_1^1 \cdot p_2^1$
+\end{bemerkung}
+
+Ein Zweck der Primfaktorzelegung ist, dass die Multiplikation in $R$ auf die $R^\times$ und die Addition in $\MdN$ zurückgeführt werden kann. Denn mit $a=e(a) \cdot \prod_{p\in P} p^{v_p(a)}$, $b=e(b) \cdot \prod_{p\in P} p^{v_p(b)}$ gilt:
+\begin{align*}
+ab &= e(a) \cdot e(b) \cdot \prod_{p\in P} p^{v_p(a) + v_p(b)} \\
+   &= e(ab)\cdot \prod_{p\in P} p^{v_p(ab)}
+\end{align*}
+Aus der Eindeutigkeit folgt nun: $e(ab) = e(a) \cdot e(b)$ und $v_p(ab) = v_p(a)\cdot v_p(b)$. $v_p(a)$ heißt "`additiver $p$-Wert von $a$"'. $v_p$ heißt (additive) $p$-adische Bewertung von $R$.
+
+Ein weiterer Zweck liegt in der Rückführung der Teilbarkeit auf $\le$ in $\MdN$: Für $a,b\ne 0$ gilt \[b|a \iff \ \forall p\in P: V_p(b) \le v_p(a) \]
+Begründung: $b=na \folgt v_p(b) = \underbrace{v_p(n)}_{\ge 0} + v_p(a) \ge v_p(a)$
+
+Eine Folgerung davon ist, dass $\forall p\in P$ gilt: $v_p(\ggt(a,b)) = \min\{v_p(a), v_p(b)\}$ und allgemeiner: $v_p(\ggt(a_1,\ldots,a_n)) = \min\{v_p(a_1),\ldots,v_p(a_n)\}$. (Damit das auch bei $a = 0$ Sinn macht, kann man $v_p(0) = \infty$ definieren, was auch üblich ist.) Ebenso gilt: $\forall p\in P$: $v_p(\kgv(a,b)) = \max\{v_p(a), v_p(b)\}$.
+
+Allerdings ist zur Bestimmung von $\kgv(a,b)$ folgener Algorithmus besser als der Weg über die Primfaktorzelegung:
+\begin{enumerate}
+\item Berechne $\ggt(a,b)$ mit Euklids Algorithmus
+\item Verwende: Sind $a,b$ normiert, so gilt:
+\[ \ggt(a,b) \cdot \kgv(a,b) = ab \]
+\end{enumerate}
+Begründung: $\min\{v_p(a), v_p(b)\} + \max\{v_p(a), v_p(b)\} = v_p(a) + v_p(b)$ und $ab = \prod_{p\in P} p^{v_p(a) + v_p(b)}$
+
+Anwendungsbeispiel: Ist $m,n\in\MdN_+$, so gilt $\ggt(a^m,b^n)=1 \iff \ggt(a,b)=1$
+
+Zusammenfassung: Für alle $a,b\in R$, $a,b\ne 0$ gilt: 
+\begin{itemize}
+\item $v_p(ab) = v_p(a) + v_p(b)$
+\item $a\in R^\times \iff \forall p\in P: v_p(a) = 0$
+\item $v_p(a+b) \ge \min\{v_p(a),v_p(b)\}$
+\item $v_p(\ggt(a,b)) = \min\{v_p(a),v_p(b)\}$
+\end{itemize}
+
+\end{definition}
 
 \end{document}
+
