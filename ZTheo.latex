@@ -465,11 +465,14 @@ mit $e(x) \in R^\times, v_p(x) \in \MdZ$. Nur endlich viele $v_p(x)$ sind $\not=
 $v_7(\frac{7}{25}) = 1, v_5(\frac{7}{25}) = -2, v_p(\frac{7}{25}) = 0$ sonst
 \end{beispiel}
 
+\begin{lemma}
+\label{lemma1}
 Sei $R$ euklidisch, dann gibt es eine "`Größenfunktion"' $gr: R \to \mathbb{N}$ für die (zusätzlich) gilt:
 \begin{itemize}
 \item Ist $e \in R^\times, a \in R, a\not= 0: gr(ea) = gr(a)$
 \item Ist $b$ ein \underline{echter} Teiler von $a \not= 0$, so ist $gr(b) < gr(a)$
 \end{itemize}
+\end{lemma}
 
 \begin{beweis}
 \textbf{Idee:} Ist $gr$ die gegebene Größenfunktion, so erfüllt
@@ -481,7 +484,81 @@ Für $R = \MdZ$ und $R = K[X]$ sind beide ohnehin richtig.\\
 (z.B. $\MdZ, gr(a) = |a|, b$ echter Teiler. $a = bu, u \in \MdZ^\times = \{\pm\} \Rightarrow |a| > 1 \Rightarrow gr(a) = |a| = |b||u|, gr(b) = |b| = \frac{|a|}{|u|} < |a| = gr(a)$. Ähnlich in $K[x]$)
 
 \begin{lemma}
+\label{lemma2}
+$R$ sei euklidisch, $p \in R$ irreduzibel, $a,b \in R$. Dann gilt: $p | ab \Rightarrow p | a$ oder $p|b$
 \end{lemma}
+
+\begin{beweis}
+OBdA: $p$ normiert, die normierten Teiler von $p$ sind $1,p$.\\
+\underline{Annahme:} $p \nmid a \wedge p \nmid b$\\
+Falls $p \nmid a \Rightarrow ggT(p,a) = 1$ (anderenfalls $ggT(p,a) = p$, dann $p | a$, Widerspruch!. $p \nmid b \Rightarrow ggT(p,b) = 1$. Nach dem Linearkombinations-Satz 
+$$\exists x_0, y_0, x_1, y_1 \in R: 1 = x_0p + y_0a = x_1p + y_1b$$
+$$1 = 1 \cdot 1 = \underbrace{(...)}_{\in R}p + y_0y_1ab$$
+$p | ab \Rightarrow p | 1 \Rightarrow p \in R^\times$, also nicht irreduziebel, Widerspruch!
+\end{beweis}
+
+\begin{beweis}
+Des EuFa-Satzes: $R$ euklidisch $\Rightarrow R$ faktoriell.\\
+$p = \{p_{\text{nor}} | p \text{irreduzibel}\}$ (z.B. $P = \MdP$ für $R = \MdZ$.\\
+Existenz der Primzerlegung $R \ni a \not= 0$
+\begin{itemize}
+\item[I] Fall: $a \in R^\times$, P.Zerlegung $a = e(a), \forall p \in P$: $v_p(a) = 0$ 
+\item[II] Fall: $a$ irreduziebel $\Rightarrow p = a_{\text{nor}} \in P$, $a = ea_{\text{nor}} = ep, e \in R^\times, e(a) := e, v_p(a) = \begin{cases}1 & q = p\\0 & q \not= p\end{cases}$
+\end{itemize}
+Allgemeiner Fall wird durch Induktion nach $gr(a)$ bewiesen.\\
+Es ist nur noch $a \in R, a \not= 0, a \not\in R^\times, a$ nicht unzerlegbar zu betrachten $\Rightarrow a = u \cdot v$ mit $u,v$ echte Teiler. Induktions Hypothese mit Hilfe des Lemma \ref{lemma1} $\Rightarrow gr(u) < gr(a) \wedge gr(v) < gr(a)$, also haben $u,v$ Primzerlegung $\Rightarrow$ (Durch Ausmultiplizieren) $a$ hat Primzerlegung: $e(a) = e(u) \cdot e(v) \in R^\times$, $v_p(a) = v_p(u) + v_p(v)$
+
+\textbf{Eindeutigkeit:}
+$a = e(a) \cdot \prod p^{v_p(a)} = e'(a) \cdot \prod p^{v_p'(a)}$ seien zwei Primzerlegungen.\\
+Zu zeigen: $e(a) = e'(a)$, $\forall p \in P: v_p(a) = v_p'(a)$\\
+Induktion nach $n =: \sum_{p \in P}(v_p(a) + v_p'(a)) \in \MdN$\\
+Induktionsanfang: $n=0 \Rightarrow \forall p: v_p(a) = 0 = v_p'(a) \Rightarrow e(a) = e'(a)$\\
+Induktionsschritt: $n > 0 \Rightarrow \exists p: v_p(a) > 0 \vee v_p'(a) > 0$, OBdA: $v_p(a) > 0 \Rightarrow p|a = e'(a) \prod_{q\in P}q^{v_q'(a)}$\\
+Aus Lemma \ref{lemma2} leicht induktiv: $p|a_1 \cdot ... \cdot a_n \Rightarrow \exists j: p | a_j \Rightarrow \underbrace{p|e'(a)}_{\text{geht nicht}} \vee \exists q: p|q^{v_q'(a)} \Rightarrow p|q$\\
+$\Rightarrow p$ ist normierter Teiler von $q \Rightarrow p = q$ ($p = 1$ geht nicht) $\Rightarrow p | p^{v_p'(a)} \Rightarrow v_p'(a) > 0$\\
+$\tilde{a} = e(a) p^{v_p(a)-1} \prod_{q \not= p}p^{v_p(a)} = e'(a)p^{v_p'(a)-1} \prod_{q \not= p}q^{v_p'(a)}$\\
+Zwei Primzerlegungen von $\tilde{a}$ mit $n-2$ statt $n$. Induktionshypothese anwendbar auf $\tilde{a} \Rightarrow e(a) = e'(a), \forall q\not= p: v_p(a) = v_q'(a)$. $v_p(a) -1 = v_p'(a) -1 \Rightarrow$ Induktionsschritt geleistet.
+\end{beweis}
+
+Primzerlegung hat viele Anwendungen, z.B.: $ggT(a,b) = 1 \Rightarrow ggT(a^n, b^m) = 1$
+
+\begin{satz}
+(\emph{Irrationalitätskriterium}) Sei $\alpha \in \MdC$ und seien die Nullstellen von $f = X^m + \gamma_1 X^{m-1} + ... + \gamma_{m-1}X + \gamma_m \in \MdZ[X]$ also $\gamma_1,...,\gamma_m \in \MdZ$. Ist dann $\gamma \not\in \MdZ$, so $\alpha \not\in \MdQ$
+\end{satz}
+
+\begin{beweis}
+Annahme $\alpha \in \MdQ$, $\alpha = \frac{z}{n}, z \in \MdZ, n \in \MdN_+$, $ggT(z, n) = 1$\\
+$0 = f(\frac{z}{n}) = \frac{z^m}{n^m} + \gamma_1\frac{z^{m-1}}{n^{m-1}} + ... + \gamma_{m-1}\frac{z}{n} + \gamma_m$, multiplizieren mit $n^m \Rightarrow$\\
+$0 = z^m + n\underbrace{(...)}_{\in \MdZ} \Rightarrow n|z^m \Rightarrow n|ggT(z^m, n) = 1$, da $ggT(z, n) = 1$ (s.o.)\\
+$n|1 \Rightarrow \alpha = \frac{z}{n} = z\in \MdZ$. Widerspruch!
+\end{beweis}
+
+\textbf{Anwendung:} z.B. auf $f = X^k - a, a \in \MdZ (k > 1)$. Ist $a$ keine $k$-te Potenz in $\MdZ, \alpha$ eine Nullstelle von $f$ in $\MdC$ (sozusagen $\alpha = \sqrt[k]{a}$), so ist $\alpha$ irrational.
+
+[$\alpha \in \MdZ: a = \alpha^k$ ist $k$-te Potenz in $\MdZ$] Tritt zum Beispiel ein, wenn $\exists p \in \MdP: k \nmid v_p(a)$ (denn $a = z^k \Rightarrow v_p(a) = k \cdot v_p(z)$. Etwa $\sqrt[k]{q}, q \in \MdP$ ist immer irrational, z.B. $\sqrt{2}$.
+
+\textbf{Die erste Grundlagenkrise der Mathematik}\\
+Pythagoräer glaubten, alle Naturwissenschaften durch $\MdN$ "`mathematisierbar"'. Zum Beispiel wurde als selbstverständlich betrachtet:\\
+Man kann kleinen Einheitsmaßstab (verdeutlicht durch einen gezeichneten Streckenstab mit kleinen Einheiten) wählen, so dass die Strecke $a$ und die Strecke $b$ in der Form $a = n \cdot e, b = m \cdot e$ ist, mit $n, m \in \MdN \Leftrightarrow \frac{b}{a} \in \MdQ$.\\
+Modern ist die Aussage $\frac{b}{a} = \sqrt{2} \Rightarrow $ Seite und Diagonale erfüllen nicht dem Glauben.\\
+Der Glaube besagt: Nur natürliche und rationale Zahlen sind Zahlen. $\Rightarrow$ Die Länge einer Strecke ist keine Zahl.
+
+Ich (Priv. Doz. Dr. Nehm) glaube, dies hat die Griechen dazu gehindert "`reelle Zahlen"' zu erfinden, d.h. mit Längen von Strecken zu rechnen, wie in einem Körper zu rechen (wirkt über 1000 Jahre, relle Zahlen exakt erst seit ca. 1800 exakt erklärt!).\\
+Heute bekannt: Die Proportionenlehre von Endoxos von Knidos ist logisch Äquivalent mit der Konstruktion der rellen Zahlen.
+
+\chapter{Arithmetische Funktionen}
+\textbf{Erklärung:} Eine Zahlentheoretische Funktion ist eine Abbildung $\alpha: \MdN \to \MdC$ also nichts anderes als eine Folge $\alpha_n  = \alpha(n)$ komplexer Zahlen ($n = 1,2,3,...$).\\
+
+\begin{beispiel}
+$p_n$ ($n$-te Primzahl) $n \to p_n$ ist eine Zahlentheoretische Funktion.
+\end{beispiel}
+
+Kurzbezeichnung: $\sum_{d|n} = \sum{d \in \MdN_+, d|n}$\\
+Standardbezeichnungen (\emph{viele Bücher}):
+\begin{itemize}
+	\item[ ] $\phi(n) = \sharp\{x \in \MdN | 1 \le x \le n \wedge ggT(x,n) = 1\}$ ("`\emph{Euklidische Funktion}"')
+	\item[ ] $\tau(n) = \sum_{d|n}1 = \sharp\{x \in \MdN | x|n\}$
+\end{itemize}
 
 \end{definition}
 
