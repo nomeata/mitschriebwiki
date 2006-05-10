@@ -409,6 +409,7 @@ $\exists e(a)\in\MdR^\times \ \exists v_p(a) \in \MdN$, mit nur endlich vielen $
 \[a = e(a) \cdot \prod_{p\in P} p^{v_p(a)} \text{ "`Primzerlegung von $a$"'}\]
 Eindeutigkeit heißt: Durch $a$ sind $e(a)$ und alle $v_p(a)$ eindeutig bestimmt.
 \end{itemize}
+\end{definition}
 
 Der Fall $R=\MdZ$ ist aus der Schule bekannt, und wird nicht bewiesen. Ein Beispiel ist $-100 = -1 \cdot 2^2 \cdot 5^2$, also $e(-100)=-1$, $v_2(-100)=v_5(-100)=2$ und $\forall p\in P, p\ne 2, p\ne5: v_p(-100)=0$
 
@@ -552,7 +553,7 @@ Heute bekannt: Die Proportionenlehre von Eudoxos von Knidos ist logisch äquivale
 
 \chapter{Arithmetische Funktionen}
 \section{Einführung}
-\textbf{Erklärung:} Eine zahlentheoretische Funktion ist eine Abbildung $\alpha: \MdN \mapsto \MdC$, also nichts anderes als eine Folge $\alpha_n  = \alpha(n)$ komplexer Zahlen ($n \in \MdN$).\\
+\textbf{Erklärung:} Eine zahlentheoretische Funktion ist eine Abbildung $\alpha: \MdN \to \MdC$, also nichts anderes als eine Folge $\alpha_n  = \alpha(n)$ komplexer Zahlen ($n \in \MdN$).\\
 
 \begin{beispiel}
 $p_n$: $n \to p_n$ ($n$-te Primzahl)  ist eine zahlentheoretische Funktion.
@@ -561,10 +562,192 @@ $p_n$: $n \to p_n$ ($n$-te Primzahl)  ist eine zahlentheoretische Funktion.
 Kurzbezeichnung: $\sum_{d|n} = \sum_{\{d \in \MdN_+ \big| d|n\}}$\\
 Standardbezeichnungen (\emph{in vielen Büchern}):
 \begin{itemize}
-	\item[ ] $\phi(n) = \#\{x \in \MdN | 1 \le x \le n \wedge \ggt(x,n) = 1\}$ ("`\emph{Euklidische Funktion}"')
-	\item[ ] $\tau(n) = \sum_{d|n}1 = \#\{x \in \MdN ; x|n\}$
+	\item $\varphi(n) = \#\{x \in \MdN | 1 \le x \le n \wedge \ggt(x,n) = 1\}$ ("`\emph{Euklidische Funktion}"')
+	\item $\tau(n) = \sum_{d|n}1 = \#\{x \in \MdN ; x|n\}$
+	\item $\sigma(n) = \sum_{d|n}d $ \glqq{}Teilersumme\grqq
+	\item $\sigma_k(n) = \sum_{d|n}d^k$, $k\in\MdN$, also $\sigma_0 = \tau$, $\sigma_1=\sigma$
+	\item $\omega(n) = \#\{p\in\MdP\big|p|n\}$
+	\item $\mu(n) = 
+\begin{cases}
+0 & \exists p\in\MdP : p^n|n \\
+(-1)^{\omega(n)} & \text{sonst, d.h."`$n$ quadratfrei"'}
+\end{cases}$\quad "`Möbiusfunktion"'
 \end{itemize}
 
+Zeichen in dieser Vorlesung
+\begin{itemize}
+\item $c_a$: Konstante Funtion, also $\forall n\in\MdN: c_a(n) = a$
+\item $\delta$: $\delta(n) =
+\begin{cases}
+1 & n=1 \\
+0 & \text{sonst}
+\end{cases} = \delta_{1,n}$ "`Kronecker-Delta"'
+\item $\Pi_k(n) = n^k$ "`Potenzfunktion"'
+\end{itemize}
+
+Sprechweise für den Fall $\ggt(x,n) = 1 \iff$ $x$ und $x$ sind "`relativ prim"'.
+
+\begin{beispiel}
+\begin{enumerate}
+\item $\varphi(12) = \#\{1,5,7,11\} = 4$
+\item $p\in\MdP$, $n\in\MdNp,$ $\varphi(p^n) = ?$
+
+$\ggt(x,p^n) = 1 \iff p\not|x$\\
+$\{x\in\MdNp|\ggt(x,p^n) = 1 , x \le p^n\} = \{x\in\MdNp| p \not| x, x \in p^n\}$\\
+$= \{1,\ldots,p^n\} \setminus \{p,2p,\ldots,p^n\} = \{1,\ldots,p^n\}\setminus p \{1,2,\ldots,p^{n-1}\}$\\
+$\varphi(p^n) = p^n-p^{n-1} = p^{n-1}(p-1) = p^n(1-\frac 1 p )$
+
+\end{enumerate}
+\end{beispiel}
+
+% Vorlesung Di. 10.5., TeXer: nomeata
+
+\section{Dirichelt-Reihen}
+Benannt nach Dirichlet, 1805-59.
+
+\begin{definition}
+Sei $\alpha$ eine zahlentheoretische Funktion. Ist $s\in\MdR$ oder besser $s\in\MdC$, so definiert man:
+\[ L(s,\alpha) = \sum_{n\in\MdNp} \frac{\alpha(n)}{n^s} \]
 \end{definition}
 
+\begin{beispiel}
+$L(s,c_1) = \zeta(s)$ ("`Riemanns $\zeta$-Funktion"')
+\end{beispiel}
+
+Wir rechnen nun formal. $\alpha,\beta$ seien zahlentheoretische Funktionen:
+\begin{align*}
+L(s,\alpha)\cdot L(s,\beta) &= \sum_{n\in\MdNp} \frac{\alpha(n)}{n} \cdot \sum_{n\in\MdNp} \frac{\beta(n)}{n} \\
+&=  \sum_{n,u\in\MdNp} \sum_{n,u; nu=m} \frac{\alpha(n) \cdot \beta(u)}{(nu)^s)} \\
+&= \sum_{m\in\MdNp} \frac{(\alpha * \beta)(m)}{m^s}
+\end{align*}
+mit der Dirichlet-Faltung: \[ (\alpha * \beta)(n) = \sum_{u,v\in\MdNp; uv=n} \alpha(n) \beta(v) = \sum_{d|n} \alpha(d) \beta (\frac n d) \]
+Als Ergebnis erhalten wir jetzt (formal):
+\[ L(s,\alpha)\cdot L(s,\beta) = L(s,\alpha * \beta) \]
+
+\section{Arithmetische Funktionen allgemein}
+
+$R$ sei jetzt ein faktorieller Ring.
+\begin{definition}
+\[ R_\text{nor} = \{ q_{\text{nor}} | q \ne 0 \} \]
+\end{definition}
+(z.B.: $\MdZ_\text{nor} = \MdNp)$)
+
+\begin{bemerkung}
+$\{d|n \big | d\in R_\text{nor}\}$, $(n\ne 0)$, ist \emph{endlich}.
+
+$n= e(n) \cdot \prod_{p\in\MdP} p^{v_p(n)}$ hat endlich viele $v_p(n)\ne 0$, etwa $p=p_1,\ldots,p_l$
+
+$d|n, d=\prod_{p\in\MdP} p^{m_p}$ mit $m_p\le v_{p_1}(n), \ldots, m_{p_l} \le v_{p_l}(n)$, $m_p=0$ sonst.
+\end{bemerkung}
+
+\begin{definition}
+\begin{enumerate}
+\item Jede Abbildung $\alpha: R_\text{nor} \to K$ ($K$ ein Körper) heißt in dieser Vorlesung ($K$-wertige) arithmetische Funktion (auf $R$). Die Menge dieser Funktoin wird hier mit $\text{Arfun} = \text{Arfun}_{R,K}$ bezeichnet.
+\item Für $\alpha,\beta \in \text{Arfun}$ wird definiert:
+\begin{itemize}
+\item $\alpha + \beta$ durch $(\alpha + \beta)(n) = \alpha(n) + \beta(n)$
+\item $c\alpha$, $(c\in K)$, durch $(c\alpha)(n) = c \cdot \alpha(n)$
+\end{itemize}
+\item Dirichlet-Faltung $\alpha * \beta$ durch
+\[ (\alpha * \beta) (n)  = \sum_{d|n} \alpha(d) \cdot \beta(\frac nd) \]
+(Das Inverse wird mit $\alpha^{-1}$ bezeichnet, also $\alpha * \alpha^{-1} = 1$)
+\end{enumerate}
+\end{definition}
+
+\begin{satz}[Arfun-Ring-Satz]
+\begin{itemize}
+\item (Arfun,$+$,$*$) sind \emph{integrer} Ring und $K$-Vektorraum.
+\item $\alpha\in\text{Arfun}^\times \iff \alpha(1) \ne 0$. \end{itemize}
+\end{satz}
+
+\begin{beweis}
+Die Vektorraumeigenschaft wird wie in der Analysis gezeigt. Wir zeigen die Ringeigenschaft:
+
+Einselement ist $1_\text{Arfun} = \delta$:
+\[ (\delta*\alpha)(n) = \sum_{d|n} \delta(d)\alpha(\frac nd) = \delta(1) \cdot \alpha(\frac n1) = \alpha(n) \]
+Die Kommutativität von $*$ ist offensichtlich. Die Distributivregel gilt auch:
+\begin{align*}
+\alpha * (\beta + \gamma)(n)
+&= \sum_{d|n} \alpha(d) \cdot (\beta + \gamma) (\frac nd)\\
+&= \sum_{d|n} \alpha(d) \cdot (\beta(\frac nd) + \gamma(\frac nd))\\
+&= \sum_{d|n} \alpha(d) \cdot (\beta(\frac nd) + \alpha(d) \cdot \gamma(\frac nd))\\
+&= \sum_{d|n} (\alpha(d) \cdot \beta(\frac nd)) + \sum_{d|n} (\alpha(d) \cdot \gamma(\frac nd))\\
+&= (\alpha * \beta)(n) + (\alpha * \gamma)(n)\\
+&= ( (\alpha * \beta) + (\alpha * \gamma) )(n)
+\end{align*}
+
+\begin{bemerkung}
+\[ (\alpha * \beta) (n) = \sum_{u,v\in R_\text{nor}; u\cdot v = n} \alpha(n) \beta(v) \]
+\end{bemerkung}
+
+Nun zeigen wir noch die Assoziativregel:
+\begin{align*}
+((\alpha * \beta) * \gamma )(n) 
+&= \sum_{u,v; uv=n} (\alpha * \beta)(u) \gamma (v) \\
+&= \sum_{uv=n; xy=u} (\alpha(x)\beta(y))\gamma(v) \\
+&= \sum_{xyv=n;} \alpha(x)\beta(y)\gamma(v) \\
+&= \sum_{xu=n;yv=u;} \alpha(x)(\beta(y)\gamma(v)) \\
+&= \sum_{xu=n;} \alpha(x)((\beta * \gamma)(u)) \\
+&= (\alpha * (\beta * \gamma))(u)
+\end{align*}
+
+Den Beweis, dass Arfun ein integrer Ring ist, führen wir nur für $R=\MdZ$, lässt sich aber mit etwas Scharfsinn auf beliebige $R$ übertragen.
+
+$\alpha \ne 0$, $\beta \ne 0$ $\folgt$ $\exists u = \min\{x\in\MdNp| \alpha(x) \ne 0\}$, $v=\min\{y\in\MdNp|\beta(y)\ne 0\}$. $n:= uv$.
+
+$(\alpha * \beta)(n) = \sum_{xy=n} \alpha(x)\beta(y)$. $x<u\folgt \alpha(x)=0$, $x>u \folgt y = \frac xn < \frac nu = v \folgt \beta(y)=0$.
+
+Also: $(\alpha * \beta)(n) = \alpha(u) \beta(\frac nu) = \alpha(u) \beta(v) \ne 0$, da $K$ integer $\folgt \alpha * \beta \ne 0 $
+
+Die Existenz von Inversen: $\alpha \in \text{Arfun}^\times \iff \exists \beta \in \text{Arfun}: \beta * \alpha = \delta (=1_\text{Arfun})$
+
+$\beta$ existiere $\folgt 1 = \delta(1) = (\beta * \alpha)(1) = \sum_{d|1} \beta(1) \alpha(\frac 1 d) = \beta(1) \alpha(1) \folgt \alpha(1) \ne 0$
+
+Sei $\alpha(1) \ne 0$. Setze $\beta(1) = \frac 1 {\alpha(1)}$ (geht, da $K$ ein Körper ist und $\alpha(1) \ne 0$). $\beta$ ist so zu definieren, dass für $n\in R_\text{nor}$, $n\ne1$, gilt: $(*) \quad 0 = \delta(n) = (\beta * \alpha)(n) = \sum_{d|n} \beta(d) \alpha(\frac nd)$
+
+Induktion nach $\text{len}(n) = \sum_{p\in\MdP} v_p(n)$, $\text{len}(n) = 0$, dann $n=1$, also OK.
+
+\begin{bemerkung}
+$d|n, d\ne n$ $(d=d_\text{nor}) \folgt \text{len}(d) < \text{len}(n)$
+\end{bemerkung}
+Intuktiv darf man $\beta(d)$ schon als definiert annehmen. $(*) \iff \beta(n) = -\frac 1 {\alpha(1)} \sum_{d|n, d\ne m} \beta(d)\alpha(\frac d n)$. Die rechte Seite ist schon erklärt, die linke Seite dadurch gewonnen. $\beta$ also rekursiv,  also definiert, so dass $\beta * \alpha = \delta$. Im Prinzip wird $\beta$ als "`Programm"' realisiert.
+
+%\begin{lstlisting}
+%Arinv = proc (alpha, n)
+%if n = 1 then 1/(alpha(1))
+%         else - 1/(alpha(1)) sum
+%\end{lstlisting}
+
+\section{Multiplikative arithmetische Funktionen}
+
+\begin{definition}
+$\alpha \in \text{Arfun}_{R,K}$, $(\alpha\ne 0)$, heiße \textbf{multiplikativ} $\iff$
+\[ \forall m,n \in R_\text{norm}\text{ mit }\ggt(m,n)=1 :  \alpha(mn) = \alpha(m) \alpha(n) \]
+\end{definition}
+$\alpha$ multiplikativ $\folgt \alpha\left(\prod_{p\in\MdP} p^{v_p(n)}\right) = \prod_{p\in\MdP} \alpha(v^{v_p(n)})$
+
+Ein Beispiel für eine Anwendung folgt aus der Multiplikativität der Eulerfunktion $\varphi$, welche wir später zeigen werden:
+\[ \varphi(p^{v_p(n)}) = p^{v_p(n)}(1-\frac 1 p)\text { für } p\in\MdP \folgt \varphi(n) = n\cdot \prod_{\mathclap{p\in\MdP, p|n}} (1-\frac 1p)\text{ "`Eulers Formel"'} \]
+
+\begin{beispiel}
+$\Pi_k$ ist multiplikativ. ($\Pi_k(n) = n^k$)
+\end{beispiel}
+
+\begin{satz}[Multiplikativitätssatz für Arfun]
+\begin{enumerate}
+\item Ist $\alpha \in \text{Arfun}$ multiplikativ, so ist $\alpha(1)=1$
+\item Die multiplikativen Funktionen bilden eine Untergruppe von (Arfun$^\times$, $*$), also $\alpha, \beta$ multiplikativ, so auch $\alpha * \beta$ und $\alpha^{-1}$.
+\end{enumerate}
+\end{satz}
+
+Anwendungsbeispiele für diesen Satz: $\Pi_k$ ist multiplikativ, $c_1 = \Pi_0$ auch. Daraus folgt, dass $\Pi_k * c_1$ ist auch multiplikativ. Wegen
+$(\Pi_k * c_1)(n) = \sum_{d|n} \Pi_k(d) c_1(\frac n d) = \sum_{d|n} d^k = \sigma_k(n)$
+ist also auch $\sigma_k$, insbesondere $\sigma$ und $\tau$, multiplikativ.
+
+Zum Beispiel: $\sigma_k(p^t) = \sum_{d|p^t} d^k = \sum_{j=0}^t (p^j)^k = \frac{p^{k(t+1)}}{p^k-1}$. Das liefert die Formel $\sigma_k(n) = \prod_{p\in\MdP, p|n} \frac{p^{k(v_p(n)+1} - 1) - 1}{p^k-1}$ sowie 
+$\tau(p^t) = t+1 \folgt \tau(n) = \prod_{p|n}(v_p(n) + 1)$ und $\sigma(n) = \prod_{p|n} \frac {p^(v_p(n) +1) -1 }{p-1}$.
+
+Eine konkrete Berechung ist $\sigma(100) = \frac{2^3 - r}{2-1} \cdot \frac{5^3 -1}{5-1} = 7\cdot 31$.
+
+\end{beweis}
 \end{document}
