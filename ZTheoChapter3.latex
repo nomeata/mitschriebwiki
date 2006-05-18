@@ -1,0 +1,127 @@
+\documentclass[a4paper,DIV15,BCOR12mm]{article}
+\newcounter{chapter}
+\setcounter{chapter}{3}
+\usepackage{ztheo}
+
+\author{Joachim Breitner}
+\title{Kongruenzen und Restklassenringe}
+
+\begin{document}
+\maketitle
+
+In diesem Kapitel betrachen wir entweder $R=\MdZ$ oder $R=K[X]$, wobei $K$ ein Körper ist.
+
+\section{Grundbegriffe}
+
+In den betrachteten Ringen gibt es eine eindeutige Restwahl:
+
+In $R=\MdZ$ ist die Division mit Rest $a=qm+r$ mit $0\le r < |m|$. Andere Restwahl wäre etwa $a=qm+r'$ mit $-\frac {|m|}2 < r' \le \frac{|m|}2$. Es besteht ein Zusammenhang wie implies:
+$r' = \begin{cases} r, & 0\le r\le \frac{|m|}{2} \\ r-|m|,& \frac{|m|}2 < r \le |m|\end{cases}$
+
+In $R=K[X]$ haben wir $a=qm+r$ mit $\grad r < \grad m$.
+
+Diese Reste sind eindeutig: Haben wir $a=qm+r=\tilde q m + \tilde r$ mit $0\le r,\tilde r, |m|$. Dann ist $(q-\tilde q)m=\tilde r -r \implies |m|\big|\tilde r - r$. Annahme: $q-\tilde q \ne 0 \implies |\tilde r - r| \ge m$, Wid. Also ist $q=\tilde q$ und $r = \tilde r$. Der Beweis für $R=K[X]$ funktioniert ähnlich.
+
+\begin{definition}[Gauß für $R=\MdZ$]
+$m,a,b, \in R$
+\begin{enumerate}
+\item \[ a \equiv b \mod m \text{ (lies $a$ kongruent $b$ modulo $m$} \]
+\[ \equizu a \mod m = b\mod m \]
+Gauß schreibt "`Zwei Zahlen heißen kongruent mod $m$, wenn sie bei Division durch $m$ den selben Rest lassen."'
+\item $\overline a := \{ b \in R| b \equiv a \mod m \}$ heißt Restklasse modulo $m$.
+\item $\overline R := R/mR := \{\overline a | a \in R\}$ heißt Restklassenring modulo $m$.
+\end{enumerate}
+\end{definition}
+
+Warum ist letzeres ein "`Ring"'? Der Dozent führt einen schönen Beweis durch aufwickeln einer Schnur auf einer Tesa-Rolle durch.
+
+\begin{beispiel}
+$\MdZ/2\MdZ = \{ \overline 0, \overline 1\}$ mit $\overline 0 = \{0, \pm 2, \pm 4, \ldots \}$ (die geraden Zahlen) und $\overline 1 = \{\pm 1, \pm 2, \ldots \}$ (die ungeraden Zahlen). Aus der Schule sind folgende Regeln bekannt:
+\begin{enumerate}
+\item $\overline 0 + \overline 0 = \overline 0$, "`gerade + gerade = gerade"'
+\item $\overline 0 + \overline 1 = \overline 1$, "`gerade + ungerade = ungerade"'
+\item $\overline 1 + \overline 1 = \overline 0$, "`ungerade + ungerade = gerade"'
+\end{enumerate}
+\end{beispiel}
+
+\begin{bemerkung}
+\[ \text{(i) } a\equiv b \mod m \iff \text{ (ii) } \overline a =  \overline b \iff \text{ (iii) }m|a-b\]
+Merke: Konkruenz ist Gleichheit der Restklassen.
+
+$\overline{qm} = \overline 0$. Die Idee: In $\overline R$ wird alles durch $m$ teilbare als "`unwesentlich"' angesehen  und durch $0$ ersetzt.
+\end{bemerkung}
+
+\begin{beweis}
+$(i) \iff (ii)$: Kongruenz mod $m$ ist offenslichtich eine Äquivalenzrelation auf $R$. $\overline a$ ist die Äquivalenzklasse von $a$. Lineare Algebra: Zwei Elemente sind genau dann äquivalent, wenn die zuhörigen Äquivalenzklassen überstimmen.
+
+$(i) \implies (iii)$: $r = a \mod m = b\mod m \implies a = qm + r, b= q'm + r$ (Division mit Rest) $\implies a - b = (q-q')m \implies m | a-b$
+\end{beweis}
+
+Um mit Restklassen zu rechnen, brauchen wir folgende Defintionen:
+\begin{definition}
+Jedes $b\in \overline a$ heißt Vertreter der Klasse $\overline a \in \overline R$. Die Idee ist, die Operationen $+$ und $-$ vertreterweise zu definieren. Wir haben also:
+\[ (\overline R, +, \cdot)\text{ mit } \overline a + \overline b  := \overline {a+b},\ \overline a \cdot \overline b = \overline{a\cdot b} \]
+\end{definition} 
+
+Zu zeigen: Die Definition ist vertreterunabhängig, also : $\overline a = \overline {a'} \implies \overline {a+b} = \overline {a'+b} \text{ und } \overline {a\cdot b} = \overline {a'\cdot b}$.
+Das ist klar:
+\begin{align*}
+\overline a = \overline a' \iff &m|a-a' = a+b - (a'+b) \implies \overline {a+b} = \overline {a'+b} \\
+&m|a-a' \implies m|(a-a')b = ab - a'b \implies \overline {ab} = \overline {a'b} 
+\end{align*}
+
+\begin{bemerkung}
+$e\in R^\times, m \in R \implies R/mR = R/emR$ (da $m|x \iff em|x$). Ohne Beschränkung der Allgemeinheit kann man $m$ also normiert annehmen.
+
+$m=0$, dann $a\mod m = b\mod m\iff a=b$, also $\overline a = \{a\} \text{\glqq}=\text{\grqq} a$. Also: $R/oR = R$ und $R/eR = R/R = \{\overline 0\}$ ("`Nullring"')
+\end{bemerkung}
+
+Diese uninteressanten Fälle werden meist beiseite gelassen.
+
+\begin{satz}[Restklassenring-Satz]
+Sei $R$ ein euklidischer Ring, $m\in R$.
+\begin{enumerate}
+\item ($\overline R = R/mR, +, \cdot)$ ist ein Ring
+\item $\overline R^\times = \{\overline a \in \overline R| \ggt(a,m) = 1\}$
+
+Zusatz: Zu $\overline a \in \overline R^\times$. Kann ${\overline a}^{\,-1}$ effektiv mit Euklids Algorithmus berechnet werden.
+\end{enumerate}
+\end{satz}
+
+\begin{definition}
+$\overline a \in \overline R^\times$ heißt eine prime Restklasse modulo $m$, $\overline R^\times$ heißt prime Restklassengruppe modulo $m$. (Sprachlich besser wäre eigentlich: Gruppe der zu m relativ primen Restklassen)
+\end{definition}
+
+\begin{beweis}
+\begin{enumerate}
+\item Alle Ringaxiome vererben sich von den Vertretern auf die Klassen. $\overline a + \overline b = \overline {a+b} = \overline {b+a} = \overline b + \overline a \implies$ $(\overline R,+)$ ist kommutativ. $0 := 0_{\overline R} = \overline 0$, da $\overline a + \overline 0 = \overline (a+0) = \overline a$. $1_{\overline R} = \overline 1$ ebenso. 
+
+Assoziativität der Addition: $(\overline a+ \overline b) + \overline c = \overline {a+b} + \overline c = \overline {(a+b) +c } = \overline {a + (b+c)} = \overline a + \overline {b+c} = \overline a + (\overline b + \overline c)$, Assoziativität der Multiplikation und Distributivgesetzt analog.
+\item $\overline a \in \overline R^\times \equizunach{Def.} \exists x \in R: \overline x \overline a = 1_{\overline R} = \overline 1 \iff 1 \equiv ax \mod m \iff \exists q \in R: 1 =ax + qm \implies \ggt(n,m)=1$, (da normal).
+
+Der LinKom-Satz liefert: $d=\ggt(a,m) \implies \exists x,y\in R: d=ax+by$. Diesen Satz dürfen wir anwenden, da $R$ euklidisch ist. Wir wenden ihn mit $d=1, q=y$ an und erhalten $1=ax+qm$, wobei $x$ durch Euklids Algorithmus geliefert wird. $\implies \overline 1 = \overline a \overline x + \overline q \overline m = \overline a \overline x$. Resultat: $\overline a ^{\,-1} = \overline x$ mit dem so berechnetem $x$.
+\end{enumerate}
+\end{beweis}
+
+\begin{folgerung}
+Ist $m\in \MdNp$, dann gilt für Eulers Funktion $\varphi$:
+\[ \varphi(m) = \#\{R/mR\}^\times \]
+\end{folgerung}
+
+Der Grund ist dass $R/mR = \{\overline 0, \ldots, \overline {m-1}\}$ und $(R/mR)^\times = \{\overline r | 0 \le r < m, \ggt(r,m)=1\}$, derer es $\varphi(m)$ gibt.
+
+Im Allgemeinen ist $\overline R$ nicht integer. Beispielsweise in $\MdZ/4\MdZ=\overline R$ gilt: $\overline 2 \cdot \overline 2 = \overline 4 = 0_{\overline R} = 0$, aber $\overline 2 \ne 0$
+
+\begin{folgerung}
+Falls $m$ unzerlegbar (also $m$ Primzahl oder -polynom). Dann gilt: $R/mR$ ist ein Körper.
+\end{folgerung}
+
+Speziell:
+\begin{enumerate}
+\item  $\MdF_p := \MdZ/p\MdZ$, $p\in\MdP$ ist Körper mit $p$ Elementen.
+\item Ist $f\in K[X]$, f irreduzibel, so ist $K[X]/f\cdot K[X] = \overline R$ ein Körper.
+\end{enumerate}
+
+Grund: $m$ sei unerzelgbar. Dann $\overline a \in \overline R,$ $\overline a\ne 0 = \overline 0 \iff m\not|a \implies \ggt(m,a) = 1$ ($1,m$ sind die einzigen normierten Teiler von $m$!) $\implies a \in \overline R^\times$. Es gilt also $\overline R^\times = \overline R\setminus\{0\} \implies \overline R$ ist Körper.
+
+\end{document}
