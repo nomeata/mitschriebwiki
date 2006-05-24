@@ -12,7 +12,7 @@
 In diesem Kapitel betrachen wir entweder $R=\MdZ$ oder $R=K[X]$,
 wobei $K$ ein Körper ist.
 
-\section{Grundbegriffe}
+\section*{Grundbegriffe}
 
 In den betrachteten Ringen gibt es eine eindeutige Restwahl:
 
@@ -283,7 +283,7 @@ Für $f \in \MdZ[X], \overline a \in \MdZ/\MdZ m$ ist definiert ($f =
 \[f(\overline a) = \sum_{i=0}^nz_i\overline a^i \in \overline R \text{ } (= \sum_{i=0}^n\overline{z_ia^i} = \overline{f(a)}\]
 Ergebnis: $f(\overline a) = \overline{f(a)}$
 
-\section{Zyklische Gruppen und Primitivwurzeln}
+\section{Zyklische Gruppen}
 
 \textbf{Aufgabe:} Berechne $3^{10^{500}} \mod
 \underbrace{167}_{=:p}$ (Rechne in $\text{Versys}_{167}$ !)
@@ -367,5 +367,78 @@ Zur Berechnung von $x^n$: Naive rekursive Berechnung: $x^{j+1} = x^j\cdot x$. Hi
 \[ x^n = x^{ \sum_{i=0}^t c_i \cdot 2^i} = \prod_{i=0}^t \left(x^{2^i} \right)^{\mathrlap{c_i}} = \prod_{\mathclap{i=0,\ c_i\ne 0}}^t x^{(2^i)} \]
 Rekursiv: $x^{2^0} = x^1 = x$ und $x^{2^{i+1}} = (x^{2^{i}})^2$. $t$ ist etwa $\log_2 n$, man hat ungefähr $2\cdot\log_2 n$ Produkte zu berechnen.
 
+\begin{beispiel}
+$G=\MdF_G^\times$, $\#G = 9-1 = 8$. Mögliche $ord(\alpha)$ für ein $\alpha\in G$: 1,2,4, oder 8.
+\begin{align*}
+ord(\alpha) = 1 &\iff \alpha = 1 \\
+ord(\alpha) = 2 &\iff \alpha \ne 1, \alpha^2 = 1 \iff \alpha = -1_G = -1 \\
+ord(\alpha) = 4 &\iff \alpha^4  =1 , \alpha^2 \ne 1 \text{ (d.h. $\alpha \ne \pm 1$)} \\
+ord(\alpha) = 8 &\iff \alpha^4 \ne 1
+\end{align*}
+
+$\MdF_9 = \MdF_3[X] / m\cdot\MdF_3[X]$, $ord(m)=2$, $m$ irreduzibel. Beispielsweise ist $X^2+1$ in $R=\MdF_3[X]$ irreduzibel.
+
+$\MdF_9$ hat $\MdF_3$-Basis $1;\overline x$. $\MdF_9 = \{\underbrace{0,1,-1}_{\mathclap{\MdF_3=\text{Versys}_3}},\ldots \}=\{a+b\overline x\mid a,b\in\MdF_3\}$
+
+$m=X^2+1\equiv 0 \mod m \folgt X^2 \equiv -1 \mod m \folgt \overline X^2 = -1 = -1_{\MdF_9} = -1_{\MdF_3} \folgt \overline X^4 = (-1)^2 = 1 \folgt ord(\overline X)=4$.
+
+$(\overline X+1)^2 = \overline X^2 + 2\overline X +1 = -1 + 1 + 2X = -X \ne 1$, 
+$(\overline X+1)^4 = (-\overline X)^2 = \overline X^2 = -1 \folgt ord(\overline X+1)=8$
+\end{beispiel}
+
+Zurück zum Problem $3^{(10^{500})} \mod 167$, $167\in\MdP$. $G=\MdF_{167}$, $\#G=\varphi(167) = 166 = 2\cdot 83$, also gilt $ord(n) \in \{1,2,83,166\}$.
+
+Laut Ordnungsatz: $3^{10^{500}} \equiv 3^{10^{500} \mod ord(\overline 3)}$.
+
+Wir brauchen $ord(3)$: $\overline 3 ^2 = \overline 9 \ne 1_G \folgt ord(\overline 3)\ne 1,2$, $ord(\overline 3) = 83 \iff \overline 3 ^83 = 1_G = \overline 1$. $83 = (1010011)_2=64+16+2+1$. Tabelle: $3^0$ in $\MdF_{167}$ ist 3, $3^1$ in $\MdF_{167}$ ist $3^2=9$, $3^0$ in $\MdF_{167}$ ist $9^2=81$, $3^3$ in $\MdF_{167}$ ist $81^2 = 6651 = 30\cdot 167+48\equiv 48$, $3^4$ in $\MdF_{167}$ ist $48^2 \equiv 133$, $3^5$ in $\MdF_{167}$ ist $133^2 = 17629 \equiv 154$, $3^6$ in $\MdF_{167}$ ist $154^2 = \equiv 2$. Also: $\overline 3 ^{83}  =\overline 3 \cdot \overline 9 \cdot \overline{133} \cdot \overline 2\cdot \overline{7182} \cdot \overline{1}  =1_G$. Ergebnis: $ord(\overline 3)=83$.
+
+$3^{10^{500}} = 3^{10^{500} \mod 83}$. Noch zu berechnen: $100^{500} \mod 83$. Man kann $\overline{10}$ in $\MdF_{83}$ berechnen. Reicht auch $\overline{10}^{500} = 10^{500\mod \varphi(83)}$. $\varphi(83) = 82$, $500\equiv 8 \mod 82 \folgt 10^{500} \equiv 10^8 \equiv 23 \mod 835$
+
+Also: $\overline 3 ^{100 ^{500}} = \overline 3 ^{23} = \overline{124}= \overline{-33}$ und somit $3^{100^{500}} = 124 \mod 167$
+
+\begin{satz}[Mersenne-Teiler-Satz]
+Es seien $p,q\in\MdP$ mit $q \mid M_p = 2^p-1$. Dann gilt: $q\equiv 1 \mod p$
+\end{satz}
+
+\begin{beweis}
+$q\mid M_p \iff M_p = 2^p-1 \equiv 0 \mod q \iff \overline 2^p = 1$ in $\MdF_q^\times=G \folgt ord(\overline 2) = p$, da 1 nicht geht und $ord(\overline 2)\mid p$ nach dem Ordnungsatz. $ord(\overline 2) \mid \# G = \varphi(q) = q-1 \folgt q-1 \equiv 0 \mod p \folgt q \equiv 1 \mod p$
+\end{beweis}
+
+\section{Primitivwurzeln}
+
+Vorbereitungen über $R=K[X]$, $K$ ein Körper.
+
+\begin{bemerkung}
+Sei $\alpha \in K$, $f\in R$, $ord(f)>0$. Dann gilt: 
+\[ 0 = f(x) \iff X-\alpha \mid f \iff v_{X_\alpha}(f) > 0 \quad ( X-\alpha \in \MdP_{R} )\]
+$v_{X-\alpha}$ heißt Vielfachhiet der Nullstelle $\alpha$ von $f$.
+\end{bemerkung}
+
+\begin{beweis}
+Division mit Rest: $f= q\cdot (X-\alpha) + r$. $\grad r < \grad (X-\alpha) = 1 \folgt r\in K$ (konstantes Polynom), insbesondere $r(\alpha) = r$. $f(\alpha) = q(\alpha)(\alpha-\alpha) + r(\alpha) = r $. Also: $r(\alpha) = 0 \iff r = 0 \iff X-\alpha \mid f$
+\end{beweis}
+
+\begin{satz}[Nullstellenanzahls-Satz]
+$f\in K[X]$, $f\ne 0$, $n=\grad f$, so gilt: $f$ hat höchstens $n$ verschiedene Nullstellen in $K$.
+\end{satz}
+
+\begin{beweis}
+$\alpha_1,\ldots,\alpha_l$ seien $l$ Nullstellen. $v_{X-\alpha_j}(f) > 0  \folgt \prod_{j=1}^l (X-\alpha_j) \mid f$, Wegen $v_{X-\alpha_i}(\prod_{j=1}^l(X-\alpha_j)) = 1$ und $v_{m}(\prod_{j=1}^l(X-\alpha_j)) = 0$ für alle anderen $m\in \MdP$ sowie $v_{X-\alpha_j}(f) \ge 1$. Daraus folgt: $l\le \grad f$
+\end{beweis}
+
+Der Spezialfall $K=\MdF_p$ ergibt den
+
+\begin{satz}[Satz von Lagrange]
+Sei $p\in\MdP$, $f=\sum_{i=0}^n c_iX^n \in \MdZ[X]$. Es gibt ein $j\in\{0,\ldots,n\}$ mit $c_j\not\equiv 0 \mod p$. Dann fallen die "`Lösungen"' $x\in\MdZ$ der Kongruenz
+\[ f(x) \equiv 0\mathrlap{ \mod p} \]
+in höchstens $n$ verschiedene Restklassen modulo $p$.
+\end{satz}
+
+\begin{beweis}
+Der Satz ist eine Übersetzung des Nullstellenanzahls-Satzes auf Kongruenzen. Betrachte die $\overline {c_j} = \alpha _j \in \MdF_p \folgt \exists j \overline{c_j}\ne 0\folgt f=\sum_{i=0}^n \overline{c_j}X^j \ne 0$ in $\MdF_p[X]$, $ord(f)\le n$. $f(x) = 0 \mod p \iff \overline{f(x)} = f(\overline x) = 0_{\MdF_p}$. Es gibt höchstens $n$ Nullstellen $\overline x$, das heißt lösende Kongruenzklassen.
+\end{beweis}
+
+$p\in\MdP$ wird gebraucht, Aussage modulo $m$, $m\notin \MdP$, im Allgemeinen falsch. Beispiele: $m=6$, $f=X^2+X$ hat in $\MdZ/6\MdZ$ die Nullstellen $\overline 0$, $\overline 2$, $\overline 3$, $\overline 5$.
+$m=9$, $f=X^2$ hat in $\MdZ/9\MdZ$ die Nullstellen $\overline 0$, $\overline 3$, $\overline {-3}$.
 
 \end{document}
