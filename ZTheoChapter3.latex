@@ -541,4 +541,123 @@ $m$ & Zifferndarstellung & Ziffern &  \\
 \end{align*}
 \end{beispiel}
 
+$\gamma = (m_0, m_1, ...), m_j \in \MdZ$ (bzw. $K[X]$), $m_j > 1$ bzw. $\text{Grad } m_j > 0$\\
+$M_0 = 1, M_k = m_0 \cdot ... \cdot m_{k-1}$
+
+$\gamma$-adische Entwicklung von $n \in \MdN_+$ bzw. $n \in K[X], n \not= 0: n = z_rM_r + z_{r-1}M_{r-1} + ... + z_1M_1 + z_0 \cdot 1 (\star)$\\
+$\gamma$-adische Darstellung, wenn $0 \le z_j < m_j$ (bzw. $\text{Grad }z_j < \text{Grad }m_j$)
+
+\begin{beweis}[Ziffernsatz]
+Fall ($\star$) vorliegt: Wegen $M_k \big| M_{k+1} \big| M_{k+2} \big| ...: \\
+n \equiv z_{k-1}M_{k-1} + z_{k-2}M_{k-2} + ... + z_0 \mod M_k$
+
+Speziell: $n \equiv z_0 \mod M_1 = m_0 \Rightarrow n-z_0 = n'm_0, n' \in \MdZ$ bzw. $K[X]$
+
+\underline{Beweisidee:} Induktion nach $n$ bzw. $\text{Grad }n$ (hier nur $\MdZ, K[X]$ fast genau so)
+
+\underline{Behauptung:} Sei $n \in \MdZ_+$. Dann existiert für alle $\gamma$'s dieser Art die $\gamma$-dische Darstellung ($\star$).\\
+Induktion nach $n$:\\
+Falls $n < m_0$, dann $z_0 = n, n = z_0M_0$ ist ($\star$)\\
+Falls $n \ge m_0, z_0 = (n \mod m_0), n'$ aus $n - z_0 = n'm_0 (n' = \frac{n-z_0}{m_0})$. Klar $0 \le z_0 < m_0 \le n \Rightarrow 0 < n' < n$.\\
+Induktionshypothese anwendbar auf $n'$ mit $\gamma' = (m_1', m_2', ...), m_j' = m_{j+1} (j \ge 0)$.
+
+$\exists \gamma'$-adische Darstellung von $n'$:\\
+$n' = z_{r'}'M_{r'}' + z_{r'-1}M_{r'-1}' + ... + z_1'M_1' + z_0' (r' \in \MdN, z_{r'}' \not= 0)$\\
+$n \le z_j' < m_j' = m_{j+1} \Rightarrow n = n'm_0 + z_0 = z_{r'}'M_{r'+1} + ... + z_1'M_1 + z_0$\\
+Das ist die gesuchte $\gamma$'-adische Darstellung von $n$ mit $r := r' + 1, z_j' = z_j + 1 (j = 0, ..., r')$ also $0 \le z_{j+1} = z_j < m_j' = m_{j+1}$\\
+Dies ist ein Algorithmus, wenn die Abbildung $j \mapsto m_j$ berechenbar ist.
+
+\underline{Eindeutigkeit:} Ebenfalls Induktion. $z_0$ muss $n \mod m_0$ sein. Induktionshypothese $n'$ eindeutig dargestellt $\Rightarrow$ Darstellung von $n$ eindeutig (Details: selbst!)
+\end{beweis}
+
+\underline{Bemerkung:} Zur Berechnung von $(n_1 +/\cdot n_2)_\gamma$ aus $(n_1)_\gamma$ und $(n_2)_\gamma$ ähnliche Algorithmen wie für $()_{10}$.
+
+\subsection{Simultane Kongruenzen}
+
+\subsubsection{Prinzip des Parallelen Rechnens}
+
+$R_j (j = 1,..., l)$ seien algebraische Strukturen gleicher Art mit gleichbezeichneten Verknüpfungen $\ast$, zum Beispiel:
+\begin{itemize}
+	\item[] Gruppen $\ast \in \{\cdot\}$
+	\item[] Abelsche Gruppen $\ast \in \{+\}$
+	\item[] Ringe $\ast \in \{+, \cdot\}$
+	\item[] Vektorräume $\ast \in \{+, \text{Skalarmultiplikation}\}$
+\end{itemize}
+
+Dann ist auch $S = \prod_{i=1}^lR_j = R_1 \times ... \times R_l$ eine algebraische Struktur mit Verknüpfungen (komponentenweise):\\
+$S \ni (a_1,...,a_l), (b_1,...,b_l), a_j, b_j \in R_j$\\
+$(a_1, ...,a_l) \ast (b_1,...,b_l) := (a_1 \ast b_1, ..., a_l \ast b_l)$\\
+$\alpha(a_1, ..., a_l) := (\alpha a_1, ..., \alpha a_l)$ bei K-Vektorräumen.\\
+Sind $_j$ Ringe/Gruppen/Abelsche Gruppen/Vektorräume, so \underline{auch $S$}.
+
+\underline{Grund:} Alles vererbt sich von den Komponenten!\\
+Zum Beispiel Ringe: $0_S = (0_{R_1}, ..., 0_{R_l}), 1_S = (1_{R_1}, ..., 1_{R_l})$, kurz: $0 = (0,...,0), 1 = (1,...,1)$, $-(a_1,...,a_l) = (-a_1, ..., -a_l)$\\
+Zum Beispiel Assoziativität:\\
+$((a_1,...,a_l) \ast (b_1,...,b_l)) \ast (c_1,...,c_l) = ((a_1 \ast b_1) \ast c_1, ..., (a_l \ast b_l) \ast c_l) = (a_1, ..., a_l) \ast ((b_1, ..., b_l) \ast (c_1, ..., c_l))$
+
+\underline{\textbf{Warnung!}} Sind die $R_j$ Körper, so ist für $l > 1$, $S$ \underline{kein} Körper.\\
+Zum Beispiel: $\underbrace{(1,0)}_{\not= 0} \cdot \underbrace{(0,1)}_{\not= 0} = (1 \cdot 0, 0 \cdot 1) = (0, 0) = 0$
+
+\begin{lemma}
+Sind dir $R_j$ Ringe, so $S^\times = \prod_{j=1}^lR_j^\times$
+\end{lemma}
+
+\underline{Grund:} Muss sein $(a_1, ..., a_l)^{-1} = (a_1^{-1}, ..., a_l^{-1})$
+
+Falls ein Isomorphismus $\psi: R \to S = \prod_{j=1}^lR_j$ vorliegt, so wird das Rechnen in $R$ zurückgeführt auf das gleichzeitig ("`\emph{parallele}"') Rechnen in dem $R_j$ wie folgt:\\
+$\psi(a) = (a_1,...,a_l), \psi(b) = (b_1,...,b_l)$\\
+$a \ast b = \psi^{-1}(\psi(a \ast b)) = \psi^{-1}(\psi(a) \ast \psi(b)) = \psi^{-1}((a_1 \ast b_1, ..., a_l \ast b_l))$
+
+\underline{Praxis:} Berechne die $a_j \ast b_j$ gleichzeitig auf verschiedenen Prozessoren. Wende $\psi$, $\psi^{-1}$ wie oben an. Nützt nur, wenn $\psi$, $\psi^{-1}$ gut und schnell berechenbar sind.
+
+\subsubsection{Der Chinesische Restsatz}
+
+\underline{Frage:} Morgen ist Freitag, der 2. Juni. Nach wievielen ($x$ = ?) Tagen fällt frühestens der Dienstag auf einen 17. des Monats?
+
+\underline{Vorraussetzung:} Chinesische Kalender vor ca. 2000 Jahren: Alle Monate haben 20 Tage.
+
+\begin{tabular}{|r|c|c|c|c|c|c|c|c|c|c|}
+	\hline
+	Wochentag     & Fr & Sa & So & Mo & Di & Mi & Do & Fr & Sa & So \\
+	\hline
+	Wochentagsnr. & 0  & 1  & 2  & 3  & 4  & 5  & 6  & 0  & 1  & 2  \\
+	\hline
+	Monatstagnr.  & 2  & 3  & 4  &  5 & 6  & 7  & 8  & 9  & 10 & 11 \\
+	\hline
+\end{tabular}
+(Wochentagsnr. $\mod 7$, Monatstagnr. $\mod 30$)
+
+Aufzufinden, also die kleinste positive Lösung $x$ der Kongruenzen:
+\begin{itemize}
+	\item[] $x \equiv 4 \mod 7$
+	\item[] $x \equiv 17-2 \mod 30$
+\end{itemize}
+
+$R$ sei euklidischer Ring, $a_1,...,a_l, m_1,...,m_l \in R$\\
+$(\star) x \equiv a_j \mod m_j, (j = 1, ..., l)$ heißst \emph{System simultaner Kongruenzen} (mit gesuchter Lösung $x \in R$).
+
+\begin{bemerkung}
+	Im Allgemeinen gibt es \emph{keine} Lösung.\\
+	$x \equiv a \mod m \Rightarrow x \equiv a \mod m$, falls $d \big| m$\\
+	System: $x \equiv 1 \mod 4, x \equiv 0 mod 6 \Rightarrow x \equiv 1 \mod 2, x \equiv 0 \mod 2 \Rightarrow 1 \equiv 0 \mod 2 \Rightarrow$ Widerspruch!
+\end{bemerkung}
+
+\begin{satz}{Chinesischer Restsatz, rechnerische Form}
+	Sei $R$ ein euklidischer Ring, $m_1, ..., m_l \in R$, $a_1,...,a_l \in R$ derartig, dass $\forall i,j \in \MdZ$ mit $1 \le i < j \le l$ gilt:\\
+	$\ggt(m_i, m_j) = 1$ ("`paarweise realtiv prime $m_j$).\\
+	Dann hat das System simulataner Kongruenzen ($\star$) eine Lösung. Sämtliche Lösungen bilden \underline{eine} Restklasse $\mod m$ mit $m = m_1 \cdot ... \cdot m_l$
+\end{satz}
+
+\begin{beweis}
+	\underline{l = 1}: $x = a_1$ oder $x = (a_1 \mod m_1) \Leftrightarrow (x \equiv a_1) \mod m_1$ und $0 \le x \le m_1$\\
+	\underline{l = 2}: $x \equiv a_1 \mod m_1$. $x$ muss in der Form $x = a_1 + um_1, u \in R$ angesetzt werden.\\
+	\emph{Idee}: Bestimme $u$ so, dass $x \equiv a_2 \mod m_2$. Also in $\overline R = R / m_2R$ soll werden:\\
+	$\overline{a_1} + \overline u \overline{m_1} = \overline{a_1 + um_1} = \overline{a_2}$, daher tut es: $\overline u = (\overline{a_2} - \overline{a_1})\overline{m_1}^{-1}$\\
+	Geht, da $\overline{m_1}^{-1}$ existiert und da $\overline{m_1} \in (R/m_2R)^\times$. Nach dem Restklassensatz: $\overline{m_1} \in (R/m_2R)^\times \Leftrightarrow \ggt(m_1,m_2) = 1$\\
+	Algorithmisch $\overline u = \overline{m_1}^{-1}$, $u$ kann mit LinKom-Satz, also euklidischem Algorithmus, bestimmt werden. Erinnerung: $\ggt(m_1,m_2) = um_1 + vm_2, u,v$ berechnet der Algorithmus.\\
+	$1 = \overline u \overline{m_1}, \overline{m_2} = 0, \overline u = \overline{m_1}^{-1}$\\
+	Für dieses $u \in R$ ist $x = a_1 + um_1$ (eventuell $\mod m, m_2$) die gesuchte Lösung.
+	\underline{l>2}: Induktionshypothese löst $x' \equiv a_j \mod m_j (j = 1,..., l-1)$. Löse dann $x \equiv x' \mod m_1 \cdot ... \cdot m_{l-1}$ ($\Rightarrow x \equiv x' \equiv a_j \mod m_j, j=1,...,l-1) \Rightarrow x \equiv a_l \mod m_l \Rightarrow$ $x$ ist die gesuchte Lösung.
+\end{beweis}
+
 \end{document}
