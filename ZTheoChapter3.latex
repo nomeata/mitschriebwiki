@@ -804,8 +804,22 @@ $f(\alpha),f'(\alpha),\dotsc,f^{(d)}(\alpha)$.\\System
 Interpolation mit $m_{j,k}=(X-\alpha_k)^{d_j}$ ist lösbar mit dem
 Restsatz.
 
-\subsection{Rechnen im Computer mit großen ganzen Zahlen} später
-\dots
+\subsection{Rechnen im Computer mit großen ganzen Zahlen}
+
+Prinzip: Gleicheit in \MdZ entspricht Kongruenz und einer passender
+Abschätzung.
+\begin{bemerkung}
+    $m\in\MdN,\ m>1$, etwa $2 \nmid m$. Ist $u \equiv v \mod m$ und
+    $|u|,|v|\leq \frac{m}{2}$, so ist $u=v$, weil $u,v$ sind im
+    symmetrischen $\text{Versys}_m$.
+\end{bemerkung}
+Wende dies an auf die Berechnung von $f(x), f\in
+\MdZ[X_1,\dotsc,X_n],\ x=(x_1,x_2,\dotsc,x_n \in \MdZ^n$. Kenn man
+eine Schranke $|f(x)|<\frac{m}{2}$, so genügt es, $f(x) \mod m$
+auszurechnen. $f(x) \mod m$ kann für $m=m_1 \cdot \dotsb \cdot m_l$
+durch Berechnen von $y_j=f(x) \mod m_j\ (j=1,\dotsc,l)$ ersetzt
+werden, das ergibt simultane Kongruenz $y=y_j \mod m_j$, die mit dem
+chinesischen Restsatz gelöst werden kann.
 
 \section{Struktur der Primrestklassengruppe mod $m$}
 $R$ euklidisch, $m=\prod_{i=1}^l p_i^{t_i}$ Primzerlegung, $t_j \in
@@ -815,6 +829,106 @@ $\ggt(p_i^{t_i},p_j^{t_j})=1$ für $i \neq j$). Es genügt also
 $G:=R/p^t R$ mit $p\in P,\ t\in \MdN_+$ zu betrachten. Hier nur der
 Fall $R=\MdZ$ $(R=\MdF_p[X ]$ geht ähnlich).
 
-%restliche 80 % nach dem Essen.
+\emph{Erinnerung:} $t=1,\ \MdZ/p\MdZ=\MdF_p,\ \MdF_p^{\times}$ ist
+zyklich, es existiert eine Primitivwurzel $w \mod p$.
+
+\emph{Frage:} Wie ist der Fall für $t>1$?
+
+Für $p>2$ existiert eine Primitivwurzel!
+
+Gesucht ist also eine Primitivwurzel $u$, das heißt $\ord \overline
+u = \varphi\left(p^t\right)=(p-a)p^{t-1}$ in $G$. Es genügt $u_1,u_2
+\in \MdZ$ mit $p-1 \mid \ord \overline u_1$ und $p^{t-1} \mid \ord
+\overline u_2$ zu finden. Wegen $\ord \overline u_j \mid
+\#G=(p-1)p^{t-1}$, $s \mid p-1$. Daraus folgt, für
+$v_1:=u_1^{p^{t-1}},v_1:=u_2^{p-1}$ ist
+\[
+\ord \overline v_1=\ord \overline u_1^{p^{t-1}}=\frac{\ord \overline
+u_1}{\ggt\left(\ord \overline u_1,p^{t-1}
+\right)}=\frac{(p-1)p^r}{p^r}=p-1.
+\]
+Ebenso: $\ord\overline v_2=p^{t-1}$ (Nachrechnen). Aus Übungsaufgabe
+3 (a) Blatt 7 folgt mit $u:=v_1v_2 \mod p^t,\ \ord \overline
+u=(p-1)p^{t-1}$. Bevor wir fortfahren, benötigen wir noch ein Lemma,
+das wir zum Beweis eines Hilfssatzes benötigen.
+
+\begin{lemma}[$(1+p)$--Lemma]\label{lemma:1+p}
+    $p\in\MdP,\ p>2,\ r\in \MdN_+,\ u\in \MdZ.$ Dann gilt:
+    $(1+up)^{p^{r-1}} \equiv 1+up^r \mod p^{r+1}$.
+\end{lemma}
+\begin{beweis}
+    Beweis via Induktion nach $r$.
+    \begin{description}
+
+    \item{$r=1$:} $(1+up)^{p^{1-1}}=1+up\equiv1+up^1 \mod p^2\quad
+    \checkmark$.\\
+    \item{$r>1$:} Induktionshypothese (für $r-1$):
+    \[
+        (1+up)^{p^{r-2}}\equiv 1+ up^{r-1} \mod p^r.
+    \]
+    $\implies(1+up)^{p^{r-2}}=1+up^{r-1}+zp^r$ mit $z\in\MdZ$
+    $\implies
+    (1+up)^{p^{r-1}}=\left((1+up)^{p^{r-2}}\right)p=\left(1+\left(up^{r-1}+zp^r\right)\right)^p=1+\sum_{i=1}^p
+    \underbrace{{p \choose i}}_{\in  \MdZ}
+    \underbrace{\left(up^{r-1}+zp^r\right)}^i_{=\left(p^{r-1}(u+zp)\right)^i=:c_i}$.\\
+    \item{$r\geq 2,\ i>2$:} $v_p(c_i)=\underbrace{v_p\left({p \choose
+    i}\right)}_{\geq 0} +
+    v_p\left(p^{(r-1)i}\right)+\underbrace{v_p(u+zp)^i}_{\geq 0}
+    \geq (r-1)i \geq (r-1)r>r+1 \implies p^{r+1} \mid c_1 \implies
+    c_i \equiv 0 \mod p^{r+1}$.
+    \item{$i=2$:} $v_p(c_2)=\underbrace{v_p\left( \frac{p(p-1)}{2} \right)}_{\geq
+    1} + \underbrace{v_p\left( p^{2(r-1)} \right)}_{=2(r-1)} + \underbrace{v_p(u+zp)^2}_{\geq
+    0} \geq 2r-2+1=2r-1 \geq r+1 \implies c_2 \equiv 0 \mod p^{r+1}$.
+    \item{$i=1$:} $c_1=p\cdot p^{r-1}(u+zp)=up^r+zp^{r+1}\equiv up^r \mod
+    p^{r+1}$.
+    \end{description}
+    $\implies$ Behauptung.
+\end{beweis}
+\begin{hilfssatz}
+    Sei $p\in\MdP,\ p>2,\ t\in MdN_+$.
+    \begin{enumerate}
+        \item Ist $w$ eine Primitivwurzel $\mod p$, so gilt in $G=\left(\MdZ/p^t
+        \MdZ\right)^{\times}:\ p-1 \mid \ord \overline w,\ \overline
+        w=w+p^t \MdZ$. \emph{($u_1=w$ wählbar)}.
+        \item $\ord (\overline{1+p})=p^{t-1}$ \emph{($v_2=1+p$
+        wählbar)}.
+    \end{enumerate}
+\end{hilfssatz}
+\begin{beweis}
+\begin{enumerate}
+    \item Sei $l=\ord \overline w$, also $\overline w^l=1$, das
+    heißt $w^l\equiv 1 \mod p^t$. $t\geq 1 \implies w^l \equiv 1
+    \mod p^1 \implies $ in $\MdF_p$ ist $\overline w^l=1$, $\ord
+    \overline w=p-1 \implies p.a \mid l$ (Elementar-Ordnungssatz).
+    \item Folgt aus Lemma \ref{lemma:1+p}
+\end{enumerate}
+
+$(1+p)^{p^{t-1}}\equiv1+1\cdot p^t \mod p^{t-1} \implies
+(1+p)^{p^{t-1}}\equiv 1 \mod p^t \implies \overline{1+p}^{p^{t-1}}
+\implies \ord \overline{1+p} \mid p^{t-1}$. Für $t \geq 2$ ist noch
+zu zeigen: $(1+p)^{p^{t-2}} \neq 1$. $(1+p)^{p^{t-2}} \equiv 1+
+p^{t-1} \mod p^t$ (nach Lemma \ref{lemma:1+p}).
+$\overline{1+p}^{p^{t-2}}=\overline 1 +
+\underbrace{\overline{p^{t-1}}}_{\neq 0} \neq \overline 1 =1$.
+\end{beweis}
+
+Gezeigt (für $p>2$):
+\begin{satz}[Struktursatz für $(\MdZ/p^t \MdZ)^{\times}$, eigentlich ein Theorem]
+Sei $p\in\MdP,\ t\in \MdN_+$. Dann gilt:
+\begin{enumerate}
+    \item Falls $p>2$, so ist $(\MdZ/p^t \MdZ)^{\times}$ zyklisch
+    (das heißt, es gibt eine Primitivwurzel $u \mod p^t$, also $(\MdZ/p^t
+    \MdZ)^{\times}=\{ 1,\overline u,\dotsc, \overline
+    u^{p^{t-1}(p-1)-1}\}$
+    \item Falls $p=2$: $(\MdZ/2 \MdZ)^{\times},\ (\MdZ/4
+    \MdZ)^{\times}$ zyklisch. Für $t>2$ ist $(\MdZ/2^t
+    \MdZ)^{\times}$ \emph{nicht} zyklisch, doch es gilt: Jedes
+    $\overline a \in (\MdZ/2^t \MdZ)^{\times}$ lässt sich eindeutig
+    in der Form $\overline a=\overline{(-1)}^{\ep} \cdot \overline 5
+    ^s$ schreiben, mit $\ep \in \{0,1\}, s \mod 2^{t-2}$
+    (eindeutig). $(\MdZ/2^t \MdZ)^{\times}$ ist sozusagen bis auf
+    das Vorzeichen $(-1)^{\ep}$ zyklisch.
+\end{enumerate}
+\end{satz}
 
 \end{document}
