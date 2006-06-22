@@ -258,6 +258,93 @@ Sei $0 \ne f\in \MdZ[X_1,\ldots,X_n]$. Dann gibt e es eine konstante $c_f$ unabh
 \end{satz}
 Der Beweis ist ‰uﬂerst schwierig, bereits f¸r $n=2$.
 
+%%%
+%%%  Vorlesung 22.06. LaTeXer [Stephan]
+%%%
 
+\begin{beweis}
+Der Beweis des Satzes von Warming \ref{satz:Warming} gliedert sich
+in mehrere Ideen, wie bringen sie hier schˆn isoliert. In vielen
+B¸chern ist der Beweis ziemlich un¸bersichtlich.
+\begin{description}
+    \item{Idee 1:} Das Kronecker-$\delta$ ist als Polynom darstellbar.
+
+        \begin{lemma}\label{lemma:BeweisWarmingLemma1}
+            $\delta:K\to K$ sei definiert wie folgt:
+            \[\delta(\alpha)=\delta_0(\alpha)=\begin{cases}1,&\alpha=0\\0,&\text{sonst}\end{cases}\]
+            Dann
+            $\delta(\alpha)=1-\alpha^{q-1}=(1-X^{q-1})(\alpha)$,
+            weil $\alpha^{q-1}=1$, wenn $\alpha \in
+            K^{\times}=\MdF_q^{\times}$ und $\alpha^{q-1}=0$, wenn
+            $\alpha=0$.
+        \end{lemma}
+        \begin{satz}
+            Jede Funktion $\MdF_1 \to \MdF_1$ ist als Polynom
+            darstellbar.
+        \end{satz}
+        \begin{beweis} ‹bung. \end{beweis}
+    \item{Idee 2:} Aus $f$ kann man eine Funktion $F$ konstruieren, so
+    dass $F$ die Nullstellen von $f$ z‰hlen hilft.\\
+    $F=A-f^{q-1}$. Dann
+    \[F(x)=1-f(x)^{q-1}=\delta_{0,\,f(x)}=\begin{cases}1,&x\in
+    V_f(K)\\0,&\text{sonst}\end{cases}\]
+    Es folgt die Formel $\sum_{x\in K^n}=\# V_f(K) \cdot 1_K$.
+    \item{Idee 3:} Versuche die linke Seite der Formel zu
+    berechnen, n‰mlich $\sum_{x\in K^n}g(x)$, $
+    {g\in K[X_1,X_2,\dotsc,X_n]}$. Beginne mit $n=1,\ g=X^k$.
+    $\sum_{\alpha \in K}\alpha^k=?$.
+    \begin{lemma}\label{lemma:BeweisWarmingLemma2}
+        Ist $k\in \MdN$ und $k=0$ oder $q-a \nmid k$, so ist $\sum_{\alpha \in K}
+        \alpha^k=0$ (Dabei muss $0^0=1$ definiert werden).
+    \end{lemma}
+    \begin{beweis}
+        $k=0$: $\sum_{\alpha\in K}\alpha^0=\sum_{\alpha\in K} 1= q
+        \cdots 1_K=0$ und $1_K \mit q = p^n$.\\
+        $k>0$: Dann existiert ein primitives Element $\xi \in K$,
+        das heiﬂt, $K^{\times}=K \setminus \{0\}=\left\{1,\xi,\xi^2,\dotsc,x^{q-2}
+        \right\}$ und $\ord \xi=q-1$, daraus folgt $\xi^k \neq 1$
+        (laut Elementarordnungssatz).\\
+        \[
+            \sum_{\alpha \in K} \alpha^k=\sum_{\alpha \in K
+            \setminus \{0\}} \alpha^k=\sum_{j=0}^{q-2}
+            \xi^{j-k}=\sum_{j=0}^{q-2} \left(
+            \xi^k\right)^j=\frac{\xi^{k(q-1)}-1}{\xi^k-1}
+            \text{ (geometrische Reihe!})
+        \] (wegen $\xi^{q-1}=1)$.
+    \end{beweis}
+    \begin{lemma}\label{lemma:BeweisWarmingLemma3}
+        Sei $g \in K[X_1,X_2,\dotsc,X_n]$, $\grad g < n(q-1)$, dann
+        ist $\sum_{x\in K^n}g(x)=0$.
+    \end{lemma}
+    \begin{beweis}
+        Ohne Beschr‰nkung der Allgemeinheit ist $g=x^m$ mit
+        $|m|<n(q-1),\ m\in K^n$, denn wenn $g=\sum\beta_m X^m$, dann
+        $\forall m$ mit $\beta_m \neq 0:\ |m|<n(q-1)$, denn die
+        Summe von Nullen ergibt null. Weiterhin gilt
+        \[
+            \sum_{x\in K^n}
+            X^m(x)=\sum_{(\alpha_1,\alpha_2,\dotsc,\alpha_n)\in K^n}
+            \alpha_1^{m_1} \cdot \alpha_2^{m_2} \cdot \dotsb  \cdot \alpha_n^{m_n}
+        \](Durch Ausmultiplizieren erh‰lt man \[ \prod_{j=1}^n
+        \left(\sum_{\alpha_j \in K} \alpha_j^{m_j}\right)=\sum_{(\alpha_1,\alpha_2,\dotsc,\alpha_n)\in K^n}
+            \alpha_1^{m_1} \cdot \alpha_2^{m_2} \cdot \dotsb  \cdot
+            \alpha_n^{m_n}.\] (Kann man, wenn man Lust hat, mit Induktion
+            beweisen))\\
+            Voraussetzung: $m_1+m_2+\dotsb+m_n<n(q-1) \implies
+            \exists j\in \{1,2,\dotsc,n\}$ mit $m_j<q-1 \implies
+            m_j=0$ oder $q-1 \mid m_j$. Anwendung von Lemma
+            \ref{lemma:BeweisWarmingLemma2} mit $k=m_j$
+            \[
+                \implies \sum_{\alpha_j \in K} \alpha_j^{m_j}=0
+                \implies \prod \sum \alpha_j^{m_j}=0=\sum X^m(x).
+            \]
+    \end{beweis}
+    Wende das Lemma \ref{lemma:BeweisWarmingLemma3} an auf
+    $g=F=1-f^{q-1}$. $\grad g=(q-1) \underbrace{\grad f}_{<n}
+    \implies {\grad g < (q-1) n}$, also kann letztes Lemma angewandt
+    werden \[\implies \sum_{x\in K^n}F(x)=0=\#V_f(K) \cdots 1_k
+    \implies p=\ord 1_K \mid \#V_f(K).\]
+\end{description}
+\end{beweis}
 
 \end{document}
