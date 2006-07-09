@@ -437,4 +437,100 @@ Aus $\left(\frac{a}{m}\right) = 1$ folgt \underline{nicht}, dass $a$ quadratisch
     \item[(iv)] Ähnliche Induktion
      \end{itemize}
 \end{beweis}
+
+$m-1 = 2^tu, 2 \nmid u$\\
+\underline{Millerzeuge $a$}: $\ggt (a,m) = 1, a^u \not\equiv 1 \mod m$\\
+$\forall s = 0, ..., t-1: a^{u2^s} \not\equiv 1 \mod m$
+
+\underline{Rest:}\\
+$m \not\in \MdP \Rightarrow \exists$ Millerzeuge
+\begin{itemize}
+	\item[Fall I:] $\MdP_m \ge 2, \MdP_m = \{p_1,...,p_l\}$\\
+		$a \equiv -1 \mod p_1$\\
+		$a \equiv 1 \mod p_j (j > 1)$\\
+		(mit Chinesischem Restsatz lösen)\\
+		$a^u \equiv (-1)^u \equiv -1 \mod p_1$, also ist $a^u \equiv 1 \mod m$ falsch (sonst $-1 \equiv 1 \mod p_2 \Rightarrow p_1 = 2$ [Widerspruch!]), also $a^u \not\equiv 1 \mod m$\\
+		$a^{u2^s} \equiv 1^{u2^s} \equiv 1 \mod p_j (j > 1) \Rightarrow a^{u2^s} \equiv -1 \mod m$ ist falsch, also $a^{u2^s} \not\equiv 1 \mod m$\\
+		Gesehen: $a$ ist Millerzeuge
+	\item[Fall II:] $m = p^t, p \in \MdP, t > 1:$ ist $a$ Primitivwurzel $\mod m = p^t$, so ist $a$ Millerzeuge.\\
+		$ord(\overline a) = \phi(p^t) = (p-1)p^{t-1}$
+		\begin{itemize}
+			\item{ $\Rightarrow$} $\overline a^u \not= 1$, weil sonst $ord(\overline a) \mid u \Rightarrow p \mid u \mid m-1$ (Widerspruch zu $p \mid m$)
+			\item{ $\Rightarrow$} $\overline a^{u2^s} = -1 \Rightarrow \overline a^{us^{s+1}} = 1 \Rightarrow ord(\overline a) = (p-1)p^{t-1} \mid u2^{s+1} \Rightarrow p \mid u \mid m-1$ (Widerspruch!) $\Rightarrow a^{u2^s} \equiv -1 \mod m$
+		\end{itemize}
+\end{itemize}
+
+\underline{Stand der Technik:}
+\begin{itemize}
+	\item[1.)] Primzahlen $< 10^{130}$ mit guter Sicherheit "`leicht"' auffindbar, z.B. mit Miller Rabin
+	\item[2.)] Zahlen der Größe $> 10^{130}$, erstrecht $m = pq, p,q \ge 10^{130}$ können nicht faktorisiert werden.
+\end{itemize}
+
+Praktischer Test von Rumely, fast in Polynomial-Zeit, vorhanden (Zeit $\approx \log(m)^{c\log \log \log m}$). Falls die verallgemeinterte Riemann-Vermutung gilt, so ist dieser Test sogar in Polynomial-Zeit.
+
+Kayal, Saxena, Aal 2002: Voll bewiesener Primzahltest in Polynomial-Zeit. Fraglich ob dies ein praktischer Test ist.
+
+Faktorisierung großer Nichtprimzahlen schein ein viel härteres Problem zu sein.
+
+\underline{Idee von Fermat:}\\
+$\MdN_+ \ni m = x^2 - y^2, x,y \in \MdN, m = (x-y)(x+y), x \ge y$ ist Faktorisierung, wenn $x-y \not= 1.m, x-y = 1$ und $x + y \not= m.1, x+y = m \Rightarrow x = \frac{m+1}{2}, y = \frac{m-1}{2}$ also echte Teiler, wenn $x,y \not= \frac{m \pm 1}{2}$
+
+Viele moderne Tests arbeiten so: Suche $x,y \in \MdN$ mit $x^2 \equiv y^2 \mod m, x \not\equiv \pm y \mod m$
+
+Gute Chance, dass $\ggt (m, x-y)$ oder $\ggt (m, x+y)$ echter Teiler von $m$ ist.
+Sehr viel Test, um die Suche nach solchen $x,y$ zu beschleunigen: Siehe z.B. Förster, Algorithmic number theory
+
+\subsection{Anwendung der EZT in der Kryptographie}
+Rivests öffentliches Chiffrier System. $m$ große Zahl.\\
+Nachricht ist \underline{hier} $N \in \text{Versys}_m^\times = \{a \in \MdN \big| 0 < a < m, \ge (a,m) = 1\}$ (Falls $m = p_1^{n_1}\cdot ... \cdot p_l^{n_l}, p1 < ... < p_l \in \MdP, n_j \in \MdN_+$, so sind alle $N \in \MdN$ mit $1 \le N < p_1$ im $\text{Versys}_m$. $N$ kodiert Textabschnitt mit $k$ Zeichen, z.B. Leerstelle = $000$, Jedes Zeichen erhält Ziffern $< 1000$.
+\begin{beispiel}
+	$\text{ }$\\
+	$N =$ \begin{tabular}{ccccccccccr}
+		K & O & M & M & & N & I & C & H & T & \\
+		011 & 015 & 013 & 013 & 000 & 014 & 009 & 003 & 008 & 020 & $< 10^{3k}$
+	\end{tabular}
+\end{beispiel}
+
+\begin{definition}
+	\begin{itemize}
+		\item[(i)] Eine Chiffre ist (für uns) eine bijektive Abbildung $P: \text{Versys}_m^\times \to \text{Versys}_m^\times, N' = P(N)$ ist die "`chriffrierte"' Nachricht.
+		\item[(ii)] ein "`öffentliches Chiffresystem"' ist eine Liste ("`öffentliches Adressbuch"'):\\
+			$(T, P_T), T \in \tau =$ Menge von Teilnehmern. $P_T$ Chiffre, derart, dass $T \not= T' \Rightarrow P_T \not= P_{T'}$
+			\begin{itemize}
+				\item[(a)] Jeder Teilnehmer $T \in \tau$ erhaält das Adressbuch $(T, P_T)_{T \in \tau}$
+				\item[(b)] $T$ und nur $T$ erhält $P_T^{-1}$ (Umkehrabbildung von $P_T$)\\
+					Praktisch: $T$ muss $P_T^{-1}$ besonders gut sichern, gegen Diebstahl, Ausspähen, Hacker, usw.
+			\end{itemize}	\end{itemize}
+\end{definition}
+
+\underline{Technische Anforderungen:}\\
+\begin{itemize}
+	\item[1.)] $P_T(N), P_T^{-1}(N)$ müssen in vernüftiger Realzeit berechenbar sein
+	\item[2.)] Nicht einmal ein Supercomputer kann $P_T^{-1}$ aus $P_T$ ermitteln ($P_T$ \emph{Trapdoor}-Funktion)
+	\item[3.)] Nur $T$ hat $P_T^{-1}$. Der Systemadministrator hat am Anfang die $P_T$'s und die $P_T^{-1}$'s. Nach Absenden von $P_T^{-1}$ an $T$ vernichtet er $P_T^{-1}$
+\end{itemize}
+
+\underline{Anwendungen:}\\
+\begin{itemize}
+	\item[I)] Geheime Nachricht über öffentlich  zugängliche Kanäle (etwa Internet) übermitteln $T$ von $A$ zu $B$, $A,B \in \tau$ ohne das Unbefugte $N$ gewinnen können.\\
+		\underline{Methode:} $A$ berechnet $P(N) = N'$ und sendet $N'$ an $B$. \underline{Nur} $B$ kann aus $N'$ wieder $N = P_B^{-1}(N')$ ermitteln.\\
+		\underline{Beispiel:}\\
+			\begin{itemize}
+				\item $A$ Spion des Geheimdienstes, $B =$ = Geheimdienstzentrale, $C,D$ die gegnerischen Geheimdienste
+				\item $A$ ist Bank, $B$ ist Kunde, $N =$ Kontostand
+			\end{itemize}
+	\item[II)] Geheimnachricht mit elektronischer Unterschrift\\
+		\underline{Methode:} $A$ sendet an $B$: "`$N = P_BP_A^{-1}(N), \text { Gruß }A$"'. Nur $A$ kann $N'$ herstellen, nur $B$ kann daraus $N = P_AP_B^{-1}(N')$ gewinnen.\\
+		\underline{Beispiel:}\\
+			$A =$ Kunde, $B =$ Bank, $N =$ "`Überweisen Sie 200'000.- von meinem Konto an $C$"'
+	\item[III)] Sichere Speicherung von Nachrichten\\
+		\underline{Methode:} Speichere $N' = P_{A_t}^{-1}(N)...P_{A_1}^{-1}(N)$. Benötigt werden $A_1,..., A_t \in \tau (t = 1)$. Nur mit Willen von allen Mitwirkenden $A_1,..., A_t$ kann $N$ aus $N'$ wieder rekonstruiert werden.
+\end{itemize}
+
+EZT kann z.B. zum Erfüllen der technischen Vorraussetzungen verwendet werden.\\
+Rivests Vorschlag $\subseteq$ RSA-Code (Rinest, Shamn, Adleman 1978)\\
+Adressbuch: Liste$(T, m_T, s_T), m_T, s_T \in \MdN, m_T = p_1^{n_1}...p_l^{n_l}, p_i$ zu Anfang dem Administrator bekannt, öffentlich nur $m_T$'s, $s_T$'s ziemlich groß.\\
+Chiffre $P_T(N) := (N^{s_T} \mod m_i)$. Dann theoretisch $P_T^{-1}(N') = N'^{t_T}$, wobei $t_Ts_T \equiv 1 \mod \phi(N)$ (Euler Funktion). Hiermit erhält $T$ auch noch $t_T$. $t_T$ ist nur berechenbar, wenn $\phi(m) = m\prod_{p \mid m}(1-\frac{1}{p})$ bekannt, dass geht nur (nach heutigem Wissen), wenn Primzerlegung, also die $p_i$ bekannt sind.
+
+
 \end{document}
