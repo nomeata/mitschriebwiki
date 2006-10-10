@@ -4,29 +4,33 @@ Dieses Wiki bietet auch einen Zugang per SVN (http://www.subversion.org), einem 
 
 === Anonymer Zugriff ===
 
- svn co svn://lkwiki.nomeata.de/lkwiki database
-bekommt man die aktuelle Version des Wikis in ein lokales Verzeichnis namens "database" rein. Mit
+ svn co svn://mitschriebwiki.nomeata.de/mitschriebwiki database
+bekommt man die aktuelle Version des Wikis in ein lokales Verzeichnis namens "mitschriebwiki" rein. Mit
  svn update
-kann man sich die neusten Änderungen anschauen. Es gibt auch Befehle zum Anzeigen von Änderungen, wer woran schuld ist etc.
+kann man sich die neusten Änderungen holen. Es gibt auch Befehle zum Anzeigen von Änderungen, wer woran schuld ist etc.
 
 === PDFs bauen ===
 
-Um die !PDFs so wie auf dem Server, sollte man die Verzeichnisstruktur wie folgt haben: In einem (beliebigen) Verzeichnis existieren der Ordner "database" wie oben beschrieben, sowie ein ordner "latex". In diesem entpackt man die Datei http://lkwiki.nomeata.de/latex/lkwiki-buildspace.tar welche neben den nötigen LaTeX-Paketen (*.sty) einige Hilfsskripts sowie ein Makefile enthalten.
+Um die !PDFs so wie auf dem Server, braucht man den "Wiki-Compiler" latexki von http://latexki.nomeata.de/. Das ganze ist ein Haskell-Programm, mit ghc ist das schnell kompiliert (siehe latexki-Seite), bei Bedarf stell ich auch Binaries bereit -- einfach nachfragen.
+ latexki svn://mitschriebwiki.nomeata.de/ ein_verzeichnis
+holt sich die Daten vom Server und generiert eine Kopie der Webseite in "ein_verzeichnis" (den Namen darf man getrost anders wählen). "pdflatex" und Konsorten muss dazu im Pfad sein, sonst gibt es keine Abhängigkeiten
 
-Im latex-Verzeichnis kann man jetzt per "make" alle !PDFs aktualisieren. Dabei werden nur die geändert, deren Quellen sich verändert haben. Die Quellen werden dabei aus den Dateien in ../database aktualisiert. Wer nur eine spezielle Datei braucht, gibt "make !EineDatei.pdf" ein. *Wichtig: Änderungen immer an den Dateien in database/ vornehmen*
 
 === SVN-Schreib-Zugriff ===
 
 Wer regelmässig mit!TeXt, der kann von [nomeata] ein SVN-Zugang bekommen. Dann gibt man beim Checkout den Benutzername "johndoe" wie folgt an:
- svn co svn://johndoe@lkwiki.nomeata.de/lkwiki database
-Das Passwort wird entweder dann, oder beim Hochladen der Änderungen abgefragt und dann von svn gespeichert. Das hochladen funktioniert per
+ latexki svn://johndoe@mitschriebwiki.nomeata.de/ ein_verzeichnis
+Das Passwort wird entweder dann, oder beim Hochladen der Änderungen abgefragt und dann von svn gespeichert.
+Änderungen nimmt man nur in dem "data"-Verzeichnis in "ein_verzeichnis" vor, das ist das Subversion-Arbeitsverzeichnis. Das Hochladen von Änderungen funktioniert per
  svn ci -m 'Kommentar zur Änderung'
 Neue Dateien werden per 
  svn add DATEI
 dem svn (beim nächsten commit) bekannt gemacht, ebenso kann man mit "svn mv" eine Datei umbenennen und mit "svn cp" eine Datei kopieren.
+ latexki -l svn://johndoe@mitschriebwiki.nomeata.de/ ein_verzeichnis
+erzeugt die Ausgabe, ohne vorher das "data"-Verzeichnis auf den aktuellen Stand zu bringen, damit kann man seine lokalen Änderungen vor dem Hochladen testen. Das "-l" steht für "lokal".
 
 === WebSVN ===
 
-Für Webzugriff auf mehr Diffs, RSS-Feeds und Blames, siehe http://svn.nomeata.de/wsvn/lkwiki
+Für Webzugriff auf mehr Diffs, RSS-Feeds und Blames, siehe http://svn.nomeata.de/wsvn/mitschriebwiki
 
 *Diese Anleitung darf (natürlich) Verbessert werden*
