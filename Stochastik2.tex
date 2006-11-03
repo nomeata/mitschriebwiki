@@ -1,0 +1,429 @@
+\documentclass[a4paper,11pt]{book}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{ngerman}
+%\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{euscript}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage{mathtools}
+%\usepackage{pst-all}
+%\usepackage{pst-add}
+%\usepackage{multicol}
+
+\usepackage[latin1]{inputenc}
+
+%%Zahlenmengen
+%Neue Kommando-Makros
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\Z}{{\mathbb Z}}
+% Seitenraender
+\textheight22cm
+\textwidth14cm
+\topmargin-0.5cm
+\evensidemargin0,5cm
+\oddsidemargin0,5cm
+\headheight14pt
+
+%%Seitenformat
+% Keine Einr¸ckung am Absatzbeginn
+\parindent0pt
+
+\DeclareMathOperator{\unif}{Unif}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
+
+
+\def\AA{ \mathcal{A} }
+\def\PM{ \EuScript{P} } 
+\def\EE{ \mathcal{E} }
+\def\BB{ \mathfrak{B} } 
+\def\DD{ \mathcal{D} } 
+\def\NN{ \mathcal{N} } 
+
+% Komische Symbole
+\def\folgt{\ensuremath{\implies}}
+\newcommand{\folgtnach}[1]{\ensuremath{\DOTSB\;\xRightarrow{\text{#1}}\;}}
+\def\equizu{\ensuremath{\iff}}
+\def\d{\mbox{d}}
+
+%Nummerierungen
+\newtheorem{Def}{Definition}[chapter]
+\newtheorem{Sa}{Satz}[chapter]
+\newtheorem{Lem}[Sa]{Lemma}
+\newtheorem{Kor}[Sa]{Korollar}
+\theorembodyfont{\normalfont}
+\newtheorem{Bsp}{Beispiel}[chapter]
+\newtheorem{Bem}{Bemerkung}[chapter]
+\theoremsymbol{\ensuremath{_\blacksquare}}
+\theoremstyle{nonumberplain}
+\newtheorem{Bew}{Beweis}
+
+% Kopf- und Fusszeilen
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+\fancyfoot[C]{}
+\fancyhead[LO]{\rightmark}
+
+\renewcommand{\indexname}{Stichwortverzeichnis}
+
+\makeindex
+\title{Stochastik II - Prof. Dr. B"auerle\\
+		im Wintersemester 06/07}
+\author{Das \texttt{latexki}-Team\\[8 cm]
+Dieses Dokument ist eine pers"onliche Vorlesungsmitschrift der \\
+Vorlesung Stochastik II im Wintersemester 2006/07 bei Prof. Dr. B"auerle. \\
+\\
+Das latexki-Team gibt keine Garantie f"ur die \\
+Richtigkeit oder Vollst"andigkeit des Inhaltes und "ubernimmt keine\\
+Verantwortung f"ur etwaige Fehler.\\
+Auch ist Frau B‰uerle nicht verantwortlich f¸r den Inhalt dieses Skriptes.
+}
+\date{Stand: \today}
+
+
+\begin{document}
+
+\thispagestyle{empty}
+\maketitle
+\newpage
+\thispagestyle{empty}
+\tableofcontents
+\thispagestyle{empty}
+
+\chapter{Maﬂ-Integral und Erwartungswert}
+%\setcounter{page}{1}
+Stochastik I: Ein Wahrscheinlichkeitsraum $(\Omega, \AA, P)$ bestehend aus:
+\begin{enumerate}
+\item [(i)] $\Omega\ne\emptyset$ bel. Menge, der Ergebnisraum
+\item [(ii)] $\AA \subset\PM(\Omega)$ eine $\sigma$-Algebra, d.h.
+\begin{itemize}
+\item $\Omega\in\AA$
+\item $A\in\AA\folgt A^c\in\AA$
+\item $A_1, A_2,\ldots\in\AA\folgt\bigcup^\infty_{i=1}A_i\in\AA$
+\end{itemize}
+\item [(iii)] $P:\AA\rightarrow[0,1]$ ein Wahrscheinlichkeitsmaﬂ, d.h.
+\begin{itemize}
+\item $P(\Omega)=1$
+\item $A_1, A_2, \ldots\in\AA$, paarweise disjunkt $\folgt P(\sum_{i=1}^\infty A_i) = \sum_{i=1}^\infty P(A_i)$ ($\sigma$-Additivit‰t)
+\end{itemize}
+\end{enumerate}
+
+Statt das Wahrscheinlichkeitsmaﬂes $P$ betrachten wir jetzt eine allgemeine Funktion $\mu:\AA\rightarrow\R_+ \cup \{\infty\}$, die beliebige positive Werte annehmen kann.
+
+\begin{Def}$\\$
+Sei $(\Omega, \AA)$ ein messbarer Raum. Eine Abbildung $\mu:\AA\rightarrow\R_+\cup\{\infty\}$ heiﬂt \textbf{Maﬂ}\index{Mass@Maﬂ} auf $(\Omega, \AA)$, wenn $\mu(\emptyset)=0$ und $\mu(\sum_{i=1}^\infty A_i) = \sum_{i=1}^\infty \mu(A_i)$ f¸r alle paarweise disjunkten Ereignisse $A_1, A_2, \ldots, (\Omega, \AA, \mu)$  heiﬂt \textbf{Maﬂraum}.\index{Massraum@Maﬂraum}
+\end{Def}
+
+\begin{Bem}$\\$
+Da $\mu(A)=\infty$ mˆglich, definieren wir: $a+\infty=\infty\ \forall a\in\R\cup\{\infty\}$.
+\end{Bem}
+
+\begin{Def}$\\$
+Sei $\mu$ ein Maﬂ auf $(\Omega, \AA)$.
+\begin{enumerate}
+\item $\mu$ heiﬂt \textbf{endlich}\index{Mass@Maﬂ!endlich}, falls $\mu(\Omega)<\infty$,
+\item $\mu$ heiﬂt \textbf{$\sigma$-endlich}\index{Mass@Maﬂ!$\sigma$-endlich}, falls $\exists$ eine Folge $(A_i), i\in\N, A_i\in\AA$ mit $\bigcup_{i=1}^\infty A_i = \Omega$ und $\mu(A_i)<\infty\ \forall i\in\N$.
+\end{enumerate}
+\end{Def}
+
+\begin{Bsp}$\\$
+\begin{enumerate}
+\item [a)] Sei $(\Omega, \AA)$ ein messbarer Raum, $\omega \in\Omega$ fest.
+$$\delta_\omega(A):=
+\begin{cases}
+1, & \omega\in A\\
+0, & \text{sonst}
+\end{cases}$$
+f¸r $A\in\AA$ definiert ein Maﬂ.\\
+$\delta_\omega$ heiﬂt \textbf{Einpunktmaﬂ}\index{Einpunktmass@Einpunktmaﬂ} oder \textbf{Dirac-Maﬂ}\index{Dirac-Mass@Dirac-Maﬂ} im Punkt $\omega$. Da $\delta_\omega(\Omega)=1$ ist $\delta_\omega$ sogar ein Wahrscheinlichkeitsmaﬂ.
+\item [b)] $\mu:=\sum_{\omega\in\Omega} \delta_\omega$ ist das \textbf{abz‰hlende Maﬂ}\index{abzahlendes Mass@abz‰hlendes Maﬂ} auf $\Omega$.\\
+(Falls $|A|<\infty:\mu(A)=|A|$ Anzahl der Elemente in $A$.)\\
+\begin{tabular}[t]{rcl}
+$\mu$ ist endlich & $\Leftrightarrow$ & $\Omega$ ist endlich,\\
+$\mu$ ist $\sigma$-endlich & $\Leftrightarrow$ & $\Omega$ ist abz‰hlbar.\\
+\end{tabular}
+\item[c)]
+Sei $\Omega=\R$, $\AA=\BB(\R)$ Borelsche $\sigma$-Algebra.
+$$\BB(\R)=\sigma(\underbrace{\{(a,b], -\infty<a<b<\infty\}}_{=:\varepsilon\ \text{Erzeuger}})=\sigma(\varepsilon):=\bigcap_{\AA\ \sigma\text{-Algebra}, \varepsilon\subset\AA} \AA$$
+Sei $a, b\in\R$ mit $a<b$. Durch $\lambda((a,b]):=b-a$ wird auf $(\R,\BB(\R))$ ein Maﬂ definiert, das sogenannte \textbf{Lebesgue-Maﬂ}\index{Lebesgue-Mass@Lebesgue-Maﬂ}. Die Eindeutigkeit von $\lambda$ folgt aus dem \textbf{Eindeutigkeitssatz f¸r Maﬂe}\index{Eindeutitgkeitssatz fuer Masse@Eindeutigkeitssatz f¸r Maﬂe}:\\
+Sei $\AA=\sigma(\varepsilon)$ und $\varepsilon$ durchschnittsstabil (d.h.: $A,B\in\varepsilon\folgt A\cap B\in\varepsilon$). Weiter seien $\mu_1, \mu_2$ Maﬂe auf $\AA$ mit $\mu_1(A)=\mu_2(A)\ \forall A\in\varepsilon$. $\exists$ eine Folge $(A_n)_{n\in\N}\subset\varepsilon$ mit $A_n\uparrow\Omega$ und $\mu_1(A_n)=\mu_2(A_n)<\infty\ \forall n$, so gilt $\mu_1=\mu_2$.\\
+Eine nichttriviale Aufgabe ist es hier zu zeigen, dass $\lambda$ auf ganz $\BB(\R)$ zu einem Maﬂ fortgesetzt werden kann. (gezeigt von Carath\'eodary; s. z.B. Henze, Bauer)\\
+Bei $\Omega=\bar{\R}=\R\cup\{\infty,-\infty\}$, ist $\BB(\bar{\R}):=\{B\subset\bar{\R}|B\cap\R\in\BB(\R)\} = \{B, B\cup\{\infty\}, B\cup\{-\infty\}, B\cup\{\infty,-\infty\}|B\in\BB(\R)\}$ eine $\sigma$-Algebra (analog $\BB((-\infty,\infty))$ und $\bar{\lambda}(B)=\lambda(B)\ \forall B\in\BB(\R)$ und $\bar{\lambda}(\{\infty\})=\bar{\lambda}(\{-\infty\})=0$\\
+$\lambda$ ist \underline{nicht} endlich, da $\lambda((-\infty, a])=\sum_{n=1}^\infty \underbrace{\lambda((a-n, a-n+a])}_{=1}=\infty$, aber $\sigma$-endlich, da $\bigcup_{n=1}^\infty (-n, n] = \R, \lambda((-n, n])<\infty\ \forall n\in\N$.
+
+%%%
+% 2-Vorlesung
+%%%
+
+\item[d)] Seien $\mu_n$, $n\in\N$, so ist
+$$\mu:=\sum_{n=1}^\infty b_n\mu_n$$
+wieder ein Maﬂ.\\
+\textbf{Konvention:} $a\cdot\infty=\infty\cdot a=\infty, a>0, 0\cdot\infty=0$\\
+Spezialfall: $\mu_n=\delta_{\omega_n}(\omega_n\in\Omega), b\ge 0, \sum_{n=1}^\infty b_n = 1$
+$$\mu = \sum_{n=1}^\infty b_n\delta_{\omega_n}$$
+ist dann ein diskretes, auf $\{\omega_1, \omega_2, \ldots\}$ konzentriertes Wahrscheinlichkeitsmaﬂ.
+\item[e)] Sei $G:\R\to\R$ wachsend und rechtsseitig stetig (Eine Funktion mit diesen Eigenschaften heiﬂt \textbf{maﬂdefinierende Funktion}\index{massdefinierende Funktion@maﬂdefinierende Funktion}. Gilt zus‰tzlich $\lim_{x\to\infty}G(x)=1, \lim_{x\to -\infty}G(x)=0$, dann ist $G$ eine Verteilungsfunktion.)
+$$\mu_G ((a,b]) := G(b)-G(a)$$
+f¸r $a,b\in\R, a\le b$ definiert $G$ ein Maﬂ auf $(\R, \BB(\R))$, das sogenannte \textbf{Lebesgue-Stiltjes-Maﬂ}\index{Mass@Maﬂ!Lebesgue-Stiltjes}\index{Lebesgue-Stiltjes-Mass@Lebesgue-Stiltjes-Maﬂ} zu $G$. (Fortsetzungsproblem analog zu c) )\\
+Ist $G$ eine Verteilungsfunktion mit $G(x)=\int^x_{-\infty} f(y)\mbox{d} y$ mit 
+$$f\ge 0: \int_{-\infty}^\infty f(y)\mbox{d}y=1,$$
+so ist $\mu_G((a,b])=\int_a^bf(y)\mbox{d}y$ ein Wahrscheinlichkeitsmaﬂ mit Dichte $f$.
+\end{enumerate}
+\end{Bsp}
+
+\begin{Bem}$\\$
+Viele der in Stochastik I f¸r Wahrscheinlichkeitsmaﬂe besprochene Eigenschaften gelten auch f¸r allgemeine Maﬂe $\mu$, z.B. $\mu$ ist stetig von unten, d.h.
+$$\underbrace{A_n\uparrow}_{A_n\subset A_{n+1}} \mbox{mit} \bigcup_{i=1}^\infty A_i = A \folgt \mu(A)=\lim_{n\to\infty}(A_n)$$
+Bei der Stetigkeit von oben brauchen wir eine Zusatzbedingung:
+$$\underbrace{A_n\downarrow}_{A_n\supset A_{n+1}} \mbox{mit} \bigcap^\infty_{k=1}A_k = A, \underline{\mu(A_n)<\infty}\folgt \mu(A)=\lim_{n\to\infty}\mu(A_n)$$
+\end{Bem}
+\begin{Bsp}$\\$
+Lebesgue-Maﬂ: $A_n=(-\infty,-n]\downarrow, \Phi=\bigcap_{n=1}^\infty(-\infty,-n], \lim_{n\to\infty}\lambda((-\infty,-n])=\infty\ne 0=\lambda(\emptyset)$
+\end{Bsp}
+
+\begin{Def}$\\$
+Seien $(\Omega, \AA)$ und $(\Omega', \AA')$ zwei meﬂbare R‰ume. Eine Abbildung $f:\Omega\to\Omega'$ heiﬂt \textbf{$(\AA, \AA')$-messbar}, falls
+$$f^{-1}(A')\in\AA,\ \forall A'\in\AA'$$
+$f$ mit dieser Eigenschaft heiﬂt \textbf{Zufallsgrˆﬂe}\index{Zufallsgroesse@Zufallsgrˆﬂe}. Ist $\Omega'=\R,$ dann \textbf{Zufallsvariable}\index{Zufallsvariable}.
+\end{Def}
+
+Im Folgenden sei $(\Omega, \AA, \mu)$ ein Maﬂraum. Ziel ist es, mˆglichst vielen Funktionen $f:\Omega\to\bar\R$ ein Integral bez¸glich $\mu$ zuzuordnen. Die Konstruktion erfolgt in drei Schritten:
+\begin{enumerate}
+\item[1.)] Sei $\EE:=\{f:\Omega\to\R|f\ge 0, f \mbox{ ist $\AA$-messbar}, f(\Omega) \mbox{ endlich} \}$ die Menge der \textbf{Elementarfunktionen}\index{Elementarfunktion} auf $\Omega$.\\
+Ist $f(\Omega)=\{\alpha_1,\ldots,\alpha_n\}, \alpha_j\ge 0,$ so gilt:
+$$f=\sum^n_{j=1}\alpha_j 1_{A_j}$$
+mit $A_j:=f^{-1}(\{\alpha_j\})$ und $\Omega=\sum^n_{j=1}A_j.$ Eine Darstellung von $f$ mit dieser Eigenschaft heiﬂt "`Normaldarstellung"' von $f$. \\
+Normaldarstellung ist nicht eindeutig.
+\begin{Def}$\\$
+Ist $f$ eine Elementarfuntktion mit Normaldarstellung $f=\sum_{j=1}^n\alpha_j 1_{A_j},$ so heiﬂt $\int f\mbox{d}\mu:=\sum_{j=1}^n\alpha_j\mu(A_j)$ das \textbf{$\mu$-Integral}\index{$\mu$-Integral} von $f.$ Schreibweise $\int f\mbox{d}\mu = \mu(t).$
+\end{Def}
+
+\begin{Lem}(Unabh‰ngigkeit des Integrals von der Normaldarstellung)\\
+F¸r zwei Normaldarstellungen
+$$f=\sum_{j=1}^n\alpha_j 1_{A_j} = \sum_{i=1}^m\beta_i 1_{B_i}$$
+einer Funktion $f\in\EE$ gilt:
+$$\sum_{j=1}^n\alpha_j\mu(A_j)=\sum_{i=1}^m\beta_i\mu(B_i)$$
+\end{Lem}
+\begin{Bew}$\\$
+$$\mbox{Voraussetzung } \folgt\Omega=\sum_{j=1}^n A_j=\sum_{i=1}^m B_i$$
+\begin{eqnarray*}
+\folgt \mu(A_j) & \stackrel{\sigma-\mbox{Add.}}{=} & \sum_{i=1}^m \mu(A_j\cap B_i)\\
+\mu(B_i) & = & \sum_{i=1}^m \mu(A_j\cap B_i)
+\end{eqnarray*}
+$$\mu(A_j\cap B_i)\ne 0\folgt A_j\cap B_i\ne \emptyset \folgt\alpha_j=\beta_i$$
+Insgesamt:
+\begin{eqnarray*}
+\sum_{j=1}^n\alpha_j\mu(A_j) & = & \sum_{j=1}^n\sum_{i=1}^m\underbrace{\alpha_j}_{\beta_i}\mu(A_j\cap B_i)\\
+& = & \sum_{i=1}^m\beta_i\mu(B_i)
+\end{eqnarray*}
+\end{Bew}
+
+\begin{Lem} (Eigenschaften des $\mu$-Integrals) \\
+\begin{enumerate}
+\item[a)] $\int 1_A\mbox{d}\mu=\mu(A)$ f¸r $A\in\AA$
+\item[b)] $\int (\alpha f)\mbox{d}\mu=\alpha\int f\mbox{d}\mu$ f¸r $f\in\EE, \alpha\ge 0$
+\item[c)] $\int (f+g)\mbox{d}\mu = \int f\mbox{d}\mu + \int g\mbox{d}\mu$ f¸r $f, g\in\EE$
+\item[d)] $f\le g\folgt\int f\mbox{d}\mu\le\int g\mbox{d}\mu$ f¸r $f,g\in\EE$
+\end{enumerate}
+\end{Lem}
+\begin{Bew}$\\$
+a), b) klar\\
+\begin{enumerate}
+\item[c)] Sei $f=\sum_{j=1}^n\alpha_j 1_{A_j}, g=\sum_{i=1}^m\beta_i 1_{B_i}$\\
+\begin{eqnarray*}
+\folgt f & = & \sum_{j=1}^n\sum_{i=1}^m\alpha_j 1_{A_j\cap B_i}\\
+g &=& \sum_{i=1}^m\sum_{j=1}^n\beta_i 1_{B_i\cap A_j}\\
+\mbox{also } f+g &=& \sum_{j=1}^n\sum_{i=1}^m(\alpha_j+\beta_i) 1_{A_j\cap B_i}\\
+\folgt \mu(f+g) &=& \sum_{j=1}^n\sum_{i=1}^m(\alpha_j+\beta_i)\mu(A_j\cap B_i)\\
+&=& \sum_{j=1}^n\alpha_j\sum_{i=1}^m\mu(A_j\cap B_i)+\sum_{i=1}^m\beta_i\underbrace{\sum_{j=1}^n\mu(A_j\cap B_i)}_{=\mu(B_i)}\\
+&=& \mu(f)+\mu(g)
+\end{eqnarray*}
+\item[d)] folgt mit gleicher Darstellung wie in c)
+\end{enumerate}
+\end{Bew}
+
+\begin{Bem}$\\$
+\begin{enumerate}
+\item[a)] Ist $f=\sum_{j=1}^n\alpha_j 1_{A_j}\in\EE,$ aber nicht notwendig eine Normaldarstellung, so folgt aus Lemma 1.2 c) $\int f\mbox{d}\mu = \sum_{j=1}^n\alpha_j\mu(A_j)$
+\item[b)] Ist $(\Omega, \AA, P)$ ein Wahrscheinlichkeitsraum und $X:\Omega\to\R_+$ eine Zufallsvariable mit endlich vielen Werten $\{x_1, \ldots, x_n\},$ so gilt:
+\begin{eqnarray*}
+\int X\mbox{d}P &=&\sum_{j=1}^n x_j P(X^{-1}(\{x_j\})\\
+&=&\sum_{j=1}^n x_j P_X(\{x_j\})
+\end{eqnarray*}
+($A_j=X^{-1}(\{x_j\})$)\\
+Also: $\int X\mbox{d}P=EX$
+\end{enumerate}
+\end{Bem}
+\item[2.)] Sei $\EE^+:=\{f:\Omega\to\bar\R|f\ge 0, f\mbox{ ist } \AA\mbox{-messbar}\}.$ Wichtig: Elemente von $\EE^+$ kann man beliebig gut duch Elemente aus $\EE$ approximieren.
+\begin{Sa}$\\$
+Zu jedem $f\in\EE^+$ gibt es eine wachsende Folge $(u_n)_{n\in\N}$ aus $\EE$ mit $u_n\uparrow f$, d.h. $u_n\le u_{n+1}$ und $lim_{n\to\infty} u_n=f$ (jeweils punktweise).
+\end{Sa}
+\begin{Bew}$\\$
+Sei $\alpha_n:\bar\R\to[0,\infty]$ gegeben durch:
+$$\alpha_n(x):=
+\begin{cases}
+0, &\mbox{falls } x<0\\
+\frac{j}{2^n}, &\mbox{falls } \frac{j}{2n}\le x<\frac{j+1}{2^n}, j=0, 1, \ldots, n2^n-1\\
+n, &\mbox{falls } x\ge n
+\end{cases}$$
+(Hier fehlt ein Bild)\\
+$\alpha_n$ ist $\BB$-messbar. $\alpha_n\uparrow$ und $\lim_{n\to\infty}\alpha_n(x)=x$ f¸r $n\to\infty.$ Sei $u_n:=\alpha_n\circ f.$ Dann gilt $u_n\in\EE$ und $u_n\uparrow f$.
+\end{Bew}
+
+\begin{Bem}$\\$
+Ist $f$ beschr‰nkt, so konvergiert die Folge $(u_n)$ gleichm‰ﬂig gegen $f$, d.h. $\lim_{n\to\infty}\sup_{\omega\in\Omega}|f(\omega)-u(\omega)| = 0.$
+\end{Bem}
+
+\begin{Def}$\\$
+Sei $f\in\EE^+$ und $(u_n)$ eine wachsende Folge aus $\EE$ mit $\lim_{n\to\infty}u_n = f.$ Dann heiﬂt
+$$\int f\mbox{d}\mu := \lim_{n\to\infty}\int u_n\mbox{d}\mu$$
+das \textbf{$\mu$-Integral von $f$}\index{$\mu$-Integral}. Wir zeigen, dass $\int f\mbox{d}\mu$ wohldefiniert ist.
+\end{Def}
+
+\begin{Lem}$\\$
+Sind $(u_n)$ und $(v_n)$ wachsende Folgen aus $\EE$ mit $\lim_{n\to\infty}u_n = \lim_{n\to\infty}v_n$, so gilt:
+$$\lim_{n\to\infty}\int u_n\mbox{d}\mu = \lim_{n\to\infty}\int v_n\mbox{d}\mu$$
+\end{Lem}
+\begin{Bew}$\\$
+Wir zeigen zun‰chst: $\lim_{n\to\infty} u_n\ge v$ mit $v\in\EE\folgt\mu(v)\le\lim_{n\to\infty}\mu(u_n)$\\
+Denn: Sei $v=\sum_{j=1}^m\alpha_j 1_{A_j}\ (\alpha_j\ge 0, A_j\in\AA)$ und $0<c<1$ beliebig. Sei $B_n:=\{\omega|u_n(\omega)\ge c v(\omega)\}\in\AA.$ Da $u_n\ge cv 1_{B_n}$ folgt: $$\mu(u_n)\ge c\mu(v 1_{B_n})\ (*)$$
+Nach Voraussetzung: $v\le\lim_{n\to\infty}u_n, u_n\uparrow\folgt B_n\uparrow\Omega, A_j\cap B_n\uparrow A_j$\\
+\begin{eqnarray*}
+\folgt\mu(v)&=&\sum_{j=1}^m\alpha_j\mu(A_j)=\lim_{n\to\infty}\sum_{j=1}^m\alpha_j\mu(A_j\cap B_n)\\
+&=&\lim_{n\to\infty}\mu(v 1_{B_n})
+\end{eqnarray*}
+Nehme $\lim_{n\to\infty}$ in $(*)$:$\lim_{n\to\infty}\mu(u_n)\ge c\mu(v).$ Da $c<1$ folgt die Behauptung.\\
+Jetzt zur eigentlichen Aussage: Es gilt: $v_k\le\lim_{n\to\infty}u_n, u_k\le\lim_{n\to\infty}v_n\folgtnach{Hilfsaussage}\mu(v_k)\le\lim_{n\to\infty}\mu(u_n), \mu(u_k)\le\lim_{n\to\infty}\mu(v_n),\ \forall k\in\N.$\\
+$\lim_{k\to\infty}$ bei beiden Ungleichungen$\folgt$ Behauptung.
+\end{Bew}
+
+\begin{Bem}$\\$
+\begin{enumerate}
+\item[a)] Die letzten beiden Definitionen sind vertr‰glich
+\item[b)] Die Eigenschaften von Lemma 1.2 gelten weiter.
+\end{enumerate}
+\end{Bem}
+
+\item[3.)] $f:\Omega\to\bar\R$ ist $\AA$-messbar (ohne Vorzeichenbeschr‰nkung). $f^+:=\max\{0, f\}, f^-:=min\{0,f\}, f=f^+-f^-, |f|=f^++f^-$
+\begin{Def}$\\$
+Eine $\AA$-messbare Funktion $f:\Omega\to\bar\R$ heiﬂt $\mu$-integrierbar, falls $\int f^+\mbox{d}\mu<\infty, \int f^-\mbox{d}\mu<\infty.$ In diesem Fall heiﬂt $\int f\mbox{d}\mu=\mu(f)=\int f^+\mbox{d}\mu-\int f^-\mbox{d}\mu$ das \textbf{$\mu$-Integral von $f$}\index{$\mu$-Integral}.\\
+Schreibweise: $\int f\mbox{d}\mu = \int f(\omega)\mu(\mbox{d}\omega = \int_\Omega f\mbox{d}\mu; \int_A f\mbox{d}\mu := \int f\cdot 1_A\mbox{d}\mu$
+\end{Def}
+
+\begin{Bem}
+\begin{enumerate}
+\item[a)] Die letzten beiden Definitionen sind vertr‰glich
+\item[b)] Falls mindestens einer der Werte $\int f^+\mbox{d}\mu, \int f^-\mbox{d}\mu$ endlich ist, so heiﬂt $f$ \textbf{quasi-integrierbar}\index{quasi-integrierbar}.
+\item[c)] Ist $(\Omega, \AA, P)$ ein Wahrscheinlichkeitsraum, $X:\Omega\to\R$ eine Zufallsvariable, so gilt: $EX$ existiert $\equizu X$ ist $P$-integrierbar. In diesem Fall: $EX = \int X\mbox{d}P$
+\item[d)] Offenbar gil: $f$ ist integrierbar $\equizu |f|$ ist integrierbar
+\end{enumerate}
+\end{Bem}
+\end{enumerate}
+
+\begin{Sa}(Eigenschaften des $\mu$-Integrals)\\
+Es seien $f,g:\Omega\to\R$ $\mu$-integrierbar und $c\in\R$. Dann gilt:
+\begin{enumerate}
+\item[a)] $cf$ und $f+g$ sind $\mu$-integrierbar und 
+\begin{eqnarray*}
+\int cf\mbox{d}\mu&=&c\int f\mbox{d}\mu\\
+\int(f+g)\mbox{d}\mu&=&\int f\mbox{d}\mu + \int g\mbox{d}\mu
+\end{eqnarray*}
+\item[b)] $f\le g\folgt \int f\mbox{d}\mu\le\int g\mbox{d}\mu$
+\item[c)] $|\int f\mbox{d}\mu\le\int|f|\mbox{d}\mu$
+\end{enumerate}
+\end{Sa}
+\begin{Bew}
+\begin{enumerate}
+\item[a)]
+\begin{enumerate}
+\item[$\alpha$)] Sei $c\ge 0$ (analog $c\le 0$): $(cf)^+=cf^+, (cf)^-=cf^-$\\
+Also ist $cf$ integrierbar: $\folgtnach{Satz 1.1}\exists u_n^+\uparrow f^+, u_n^+\in\EE$
+\begin{eqnarray*}
+\int cf^+\mbox{d}\mu &=& \lim_{n\to\infty}\int cu_n^+\mbox{d}\mu\\
+&=& c\lim_{n\to\infty}\int u_n^+\mbox{d}\mu\\
+&=& c\int f^+\mbox{d}\mu
+\end{eqnarray*}
+Analog $f^-.$
+\item[$\beta$)] $|f+g|\le |f|+|g|\folgt f+g$ $\mu$-integrierbar.\\
+Sei zun‰chst $f,g\in\EE^+\folgtnach{Satz 1.1}\exists u_n\uparrow f, v_n\uparrow g, u_n, v_n\in\EE\folgt u_n+v_n\uparrow f+g, u_n+v_n\in\EE$\\
+Mit Lemma 1.2 folgt:
+\begin{eqnarray*}
+\int(f+g)\mbox{d}\mu &=& \lim_{n\to\infty}\int(u_n+v_n)\mbox{d}\mu\\
+&=& \lim_{n\to\infty}(\int u_n\mbox{d}\mu+\int v_n\mbox{d}\mu)\\
+&=& \lim_{n\to\infty}\int u_n\mbox{d}\mu+\lim_{n\to\infty}\int v_n\mbox{d}\mu\\
+&=& \int f\mbox{d}\mu + \int g\mbox{d}\mu
+\end{eqnarray*}
+Sei jetzt $f, g$ beliebig\\
+$(f+g)^+ -(f+g)^-= f+g=f^+-f^-+g^+-g^-\folgt (f+g)^++f^-+g^-=(f+g)^-+f^++g^+\folgtnach{s.o.}\int (f+g)^+\mbox{d}\mu+\int f^-\mbox{d}\mu+\int g^-\mbox{d}\mu=\int (f+g)^-\mbox{d}\mu+\int f^+\mbox{d}\mu +\int g^+\mbox{d}\mu$\\
+$\folgt\int(f+g)\mbox{d}\mu=\int(f+g)^+\mbox{d}\mu-\int(f+g)^-\mbox{d}\mu=\int f^+\mbox{d}\mu - \int f^-\mbox{d}\mu + \int g^+\mbox{d}\mu -\int g\mbox{d}\mu=\int f\mbox{d}\mu + \int g\mbox{d}\mu$
+\end{enumerate}
+\item[b)] vergleiche ‹bung
+\item[c)] $f\le|f|, -f\le|f|\folgtnach{b) mit $g=|f|$}$ Behauptung
+\end{enumerate}
+\end{Bew}
+
+\begin{Bem} Ist $\mu=\lambda$ das Lebesgue-Maﬂ, so heiﬂt $\int f\mbox{d}\mu=\int f\mbox{d}\lambda$ Lebesgue-Integral.
+\end{Bem}
+
+\begin{Bsp}
+\begin{enumerate}
+\item[a)] Sei $\delta_\omega$ das Dirac-Maﬂ, $f:\Omega\to\bar\R$ ist $\delta_\omega$-integrierbar falls $f(\omega)<\infty$ und dann gilt
+$$\int f\mbox{d}\delta_\omega=f(\omega)$$
+Denn: Sei $f\in\EE\folgt f=\sum_{j=1}^n \alpha_j 1_{A_j}\folgt \int f\d\delta_\omega=\sum_{j=1}^n\alpha_j\delta_\omega(A_j)=\alpha_k\cdot 1=f(\omega)$\\
+$f\in\EE^+:u_n\uparrow f, \int u_n\d\delta_\omega=u_n(\omega)\uparrow f(\omega)$\\
+$f$ allgemein $\folgt f=f^+-f^-$
+\item[b)] Sei $(\mu_n)$ eine Folge von Maﬂen und $\mu=\sum_{n=1}^\infty.$ F¸r $f:\Omega\to\bar\R$ gilt:
+\begin{center}
+$f$ ist $\mu$-integrierbar$\equizu\sum_{n=1}^\infty\int |f|\d\mu_n<\infty$\\
+$\int f\d\mu = \sum_{n=1}^\infty\int f\d\mu_n$ (vergleiche ‹bung)
+\end{center}
+Spezialfall: $(\Omega, \AA)=(\N,\PM(\N)), \mu=\sum_{n=1}^\infty\delta_n$ (Z‰hlmaﬂ auf $\N$\\
+$f$ ist $\mu$-integrierbar$\equizu\sum_{n=1}^\infty|f(n)|<\infty, \int f\d\mu=\sum_{n=1}^\infty f(n).$\\
+Summation ist ein Spezialfall von Integration. 
+Sei $\Omega=\{\omega_1, \omega_2, \ldots\}, \AA=\PM(\Omega). \mu=P:=\sum_{n=1}^\infty p_n\delta_{\omega_n}$ mit $p_n\ge 0, \sum_{n=1}^\infty p_n=1$ (Wahrscheinlichkeitsmaﬂ).\\
+Sei $X:\Omega\to\bar\R$ eine Zufallsvariable:
+$$EX \text{existiert} \equizu \sum_{n=1}^\infty|X(\omega_n)|p_n<\infty\equizu X \text{ist} P\text{-integrierbar}$$
+$$EX = \sum_{n=1}^\infty X(\omega_n)P_n=\sum_{n=1}^\infty X(\omega_n)P(\{\omega_n\})=\int X\d P$$
+\item[c)] Sei $\Omega=[a,b]$ und $\AA=\BB_{[a,b]}=\{A\cap [a,b]|A\in\BB\}$ (Spur von $\BB$ auf $[a,b]$)\\
+$\mu(A):=\lambda(A)\ \forall A\in\AA.$ Ist $f:\Omega\to\R$ messbar und $f$ Riemann-integrierbar, so ist auch $f$ $\mu$-integrierbar und es gilt:
+$$\int f\d\mu=\int f(x)\d x$$
+(Hier fehlt ein Bild zur Veranschaulichung)\\
+Das Lebesgue-Integral ist eine Erweiterung des Riemann-Integrals:\\
+Sei $f=1_{\Q\cap [0,1]}$ $f$ ist nicht Riemann-integrierbar. Da $f\in\EE$ gilt:
+$$\int f\d\lambda=0\cdot\lambda(\Q^c\cap[0,1])+1\cdot\lambda(\Q\cap[0,1])=0$$
+Das letzte Gleichheitszeichen gilt wegen:
+\begin{enumerate}
+\item[(i)] $\lambda(\{a\})=0,$ da $\{a\}=\cap_{n=1}^\infty[a,a+\frac{1}{n})$
+\item[(ii)] $\lambda(\sum_{i=1}^\infty\{a_i\})=\sum_{i=1}^\infty\lambda(\{a_i\})=0$
+\end{enumerate}
+Vorsicht bei uneigentlichen Riemann-Integralen! $\int_0^\infty\frac{\sin x}{x}\d x$ ist Riemann-integrierbar, aber nicht Lebesgue-integrierbar.
+\end{enumerate}
+\end{Bsp}
+
+\chapter{Eigenschaften des Maﬂ-Integrals}
+\section{Konvergenzs‰tze}
+Im Folgenden sei $(\Omega, \AA, \mu)$ ein Maﬂraum und $f, f_1, f_2, \ldots:\Omega\to\bar\R$ messbare Funktionen.
+\begin{Sa} (Satz von Beppo Levi, Satz von der monotonen Konvergenz)\\
+Sind $f, f_1, f_2,\ldots\ge 0$ mit $f_n\uparrow f$, so gilt 
+$$\lim_{n\to\infty}\int f_n\d\mu=\int f\d\mu.$$
+\end{Sa}
+\begin{Bew} $\forall f_n\ \exists(u_{nm})_{m\in\N}\subset\EE$ mit $u_{nm}\uparrow f_n$ f¸r $m\to\infty.$ Sei $h_m:=\max\{u_{1m},\ldots,u_{mm}\}\folgt h_m\uparrow$ und $(h_m)\supset\EE.$ Auﬂerdem: $u_{nm}\le h_m$ f¸r $n\le m.$\\
+Also: $f_n=\sup_{m\in\N}u_{nm}=\sup_{m\ge n}u_{nm}\le\sup_{m\in\N}h_m$ und $h_m\le f_m\le f.$ Insgesamt: $h_m\uparrow f$ und $\lim_{m\to\infty}\int h_m\d\mu=\int f\d\mu.$ Mit $\int h_m\d\mu\le\int f_m\d\mu\le\int f\d\mu$ folgt die Behauptung.
+\end{Bew}
+
+\newpage
+\renewcommand{\indexname}{Stichwortverzeichnis}
+
+\printindex
+
+\end{document}
