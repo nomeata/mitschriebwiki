@@ -13,6 +13,7 @@
 \usepackage{enumerate}
 \usepackage{url}
 \usepackage{mathtools}
+\usepackage[arrow, matrix, curve]{xy}
 %\usepackage{pst-all}
 %\usepackage{pst-add}
 %\usepackage{multicol}
@@ -55,6 +56,7 @@
 \newcommand{\folgtnach}[1]{\ensuremath{\DOTSB\;\xRightarrow{\text{#1}}\;}}
 \def\equizu{\ensuremath{\iff}}
 \def\d{\mbox{d}}
+\def\fs{\stackrel{f.s.}{\rightarrow }}
 
 %Nummerierungen
 \newtheorem{Def}{Definition}[chapter]
@@ -420,6 +422,114 @@ $$\lim_{n\to\infty}\int f_n\d\mu=\int f\d\mu.$$
 \begin{Bew} $\forall f_n\ \exists(u_{nm})_{m\in\N}\subset\EE$ mit $u_{nm}\uparrow f_n$ für $m\to\infty.$ Sei $h_m:=\max\{u_{1m},\ldots,u_{mm}\}\folgt h_m\uparrow$ und $(h_m)\supset\EE.$ Außerdem: $u_{nm}\le h_m$ für $n\le m.$\\
 Also: $f_n=\sup_{m\in\N}u_{nm}=\sup_{m\ge n}u_{nm}\le\sup_{m\in\N}h_m$ und $h_m\le f_m\le f.$ Insgesamt: $h_m\uparrow f$ und $\lim_{m\to\infty}\int h_m\d\mu=\int f\d\mu.$ Mit $\int h_m\d\mu\le\int f_m\d\mu\le\int f\d\mu$ folgt die Behauptung.
 \end{Bew}
+
+Im Folgenden sei $(\Omega, \AA, \mu)$ ein Maßraum und $f_1, f_2, f_3, \ldots:\Omega\to\bar\R$ messbare Funktionen.
+
+\begin{Sa} (Lemma von Fatou)\index{Lemma!von Fatou}\\
+Gilt $f_n\ge 0, n\in\N,$ so folgt
+$$\int\liminf_{n\to\infty} f_n\d\mu \le \liminf_{n\to\infty}\int f_n\d\mu$$
+\end{Sa}
+\begin{Bew} Sei $g_n:=\inf_{m\ge n} f_m, f:=\liminf_{n\to\infty} f_n,$ so gilt $g_n\uparrow f$ und mit Satz 2.1 $\int\liminf_{n\to\infty} f_n\d\mu=\lim_{n\to\infty}\int g_n\d\mu = \liminf_{n\to\infty}\int g_n\d\mu\le \liminf_{n\to\infty}\int f_n\d\mu$
+\end{Bew}
+
+\begin{Sa} (Satz von Lebesgue oder Satz von der majorisierten Konvergenz)\index{Satz!von Lebesgue}\index{Satz!von der majorisierten Konvergenz}\\
+Es gelte $\lim_{n\to\infty} f_n(\omega)=f(\omega)\ \forall\omega\in\Omega.$ Existert eine $\mu$-integrierbare Funktion $g:\Omega\to\R$ mit der Eigenschaft $|f_n(\omega)|\le g(\omega)\ \forall\omega\in\Omega, \ \forall n\in\N.$ So folgt:
+$$\lim_{n\to\infty}\int f_n\d\mu = \int f\d\mu$$
+\end{Sa}
+\begin{Bew} Sei $g_n:=|f_n - f|, h:=|f|+g.$ Wegen $|h|\le 2g$ ist $h$ $\mu$-integrierbar. Außerdem gilt
+\begin{eqnarray*}
+h-g_n &=& |f| + g - |f_n - f| \ge |f|+g-|f_n|-|f|\\
+&=& g-|f_n|\ge 0
+\end{eqnarray*}
+wegen $g_n\to 0$ gilt $h-g_n\to h,$ also folgt mit Satz 2.2
+\begin{eqnarray*}
+\int h\d\mu &=&\int \liminf_{n\to\infty}(h-g_n)\d\mu\\
+&\le&\liminf_{n\to\infty}\int(h-g_n)\d\mu\\
+&=&\underbrace{\int h\d\mu}_{<\infty} - \limsup_{n\to\infty}\int g_n\d\mu
+\end{eqnarray*}
+$\folgt \limsup_{n\to\infty}\int g_n\d\mu\le 0$ Wegen $g_n\ge 0$ bedeutet dies:
+$$\lim_{n\to\infty}\int|f_n - f|\d\mu = \lim_{n\to\infty}\int g_n\d\mu = 0$$
+und damit
+$$|\int f_n\d\mu - \int f\d\mu| = |\int(f_n-f)\d\mu| \le \int|f_n-f|\d\mu\to 0$$
+\end{Bew}
+
+\begin{Bem} Für Wahrscheinlichkeitsmaße lautet Satz 2.3:\\
+Ist $(X_n)_{n\in\N}$ eine Folge von Zufallsvariablen, so dass $X_n\fs X$ ($X$ ist dann automatisch wieder eine Zufallsvariable) und es gibt eine Zufallsvariable $Y$ mit $|X_n|\le Y\ \forall n\in\N$ und $EY<\infty,$ so gilt $\lim_{n\to\infty} EX_n = X.$\\
+Oft kommt man mit einer Majorante der Form $Y\equiv c, c\in\R$ zum Ziel.
+\end{Bem}
+
+\section{Verhalten bei Transformationen}
+Es sei $(\Omega, \AA, \mu)$ ein Maßraum und $(\Omega', \AA')$ ein messbarer Raum und $T:\Omega\to\Omega'$ eine $(\AA, \AA')$-messbare Abbildung. Aus Stochastik 1 ist bekannt (vgl. \S 5.2, Verteilung), dass durch
+$$\mu^T:\AA'\to[0,\infty], \mu^T(A'):=\mu(\underbrace{T^{-1}(A')}_{\in\AA})=\mu(\{\omega\in\Omega|T(\omega)\in A'\})$$
+ein Maß auf $(\Omega', \AA')$ definiert wird (Maßtransport)\index{Masstransport@Maßtransport} $\mu^T$ heißt \textbf{Bildmaß}\index{Bildmass@Bildmaß} von $\mu$ unter der Tranformation $T.$\\
+(Ist $X=T$ eine Zufallsgröße auf einem Wahrscheinlichkeitsraum $(\Omega, \AA, P)$ mit Werten in $(\Omega', \AA')$, so nennt man $\mu^T=P^x$ die Verteilung von $X$. Sei nun weiter $f:\Omega'\to\R$ messbar.\\
+\begin{center}
+Skizze:
+\begin{xy}
+  \xymatrix{
+      (\Omega,\AA) \ar[r]^T \ar[rd]_{f\circ T} & (\Omega',\AA') \ar[d]^f  \\
+                             & (\R,\BB)
+  }
+\end{xy}
+\end{center}
+
+\begin{Sa} (Integration bezüglich des Bildmaßes, Transformationssatz) \index{Satz!Integration bezuglich des Bildmasses@Integration bezüglich des Bildmaßes}\index{Transformationssatz}\index{Satz!Transformations-}\\
+Mit den obigen Bezeichnungen und Voraussetzungen gilt: $f$ ist genau dann $\mu^T$-integrierbar, wenn $f\circ T$ $\mu$-integrierbar ist.\\
+Dann gilt:
+$$\int f\d\mu^T = \int(f\circ T\d\mu)$$
+\end{Sa}
+\begin{Bew} $\\$
+\begin{enumerate}
+\item[(i)] Falls $f = 1_A, (A\in\AA)$ gilt
+\begin{eqnarray*}
+\int f\d\mu^T &=& \mu^T(A)\\
+&=&\mu(T^{-1}(A))\\
+&=&\int 1_{T^{-1}(A)}\d\mu\\
+&=&\int 1_A\circ T\d\mu\\
+&=&\int f\circ T\d\mu
+\end{eqnarray*}
+wegen Satz 1.2(a) folgt damit die Aussage für $f\in\EE$
+\item[(ii)] Sei jetzt $f\ge 0\folgt\ \exists(u_n)_{n\in\N}\subseteq\EE$ mit $u_n\uparrow f$ und $\int f\d\mu^T = \lim_{n\to\infty}\int u_n\d\mu^T$. Offenbar gilt $u_n\circ T\in\EE, (u_n\circ T)\uparrow (f\circ T)$\\
+Also folgt:
+\begin{eqnarray*}
+\int f\d\mu^T &=& \lim_{n\to\infty}\int u_n\d\mu^T\\
+&\stackrel{(i)}{=}&\lim_{n\to\infty}\int(u_n\circ T)\d\mu\\
+&=&\int (f\circ T)\d\mu
+\end{eqnarray*}
+\item[(iii)] Ist $f:\Omega'\to\R$ eine beliebige $(\AA',\BB)$-messbare Abbildung so gilt
+\begin{eqnarray*}
+\int f^+\d\mu^T<\infty &\equizu& \int f^+\circ T\d\mu < \infty\\
+\int f^-\d\mu^T<\infty &\equizu& \int f^-\circ T\d\mu < \infty
+\end{eqnarray*}
+Da $(f\circ T)^+ = f^+\circ T, (f\circ T)^- = f^-\circ T,$ folgt $f$ $\mu^T$-integrierbar $\equizu f\circ T$ $\mu$-integrierbar
+\begin{eqnarray*}
+\int f\d\mu^T&=&\int f^+\d\mu^T - \int f^-\d\mu^T\\
+&\stackrel{(ii)}{=}&\int f^+\circ T\d\mu - \int f^-\circ T\d\mu\\
+&=& \int(f\circ T)^+\d\mu - \int(f\circ T)^-\d\mu\\
+&=& \int f\circ T\d\mu.
+\end{eqnarray*}
+\end{enumerate}
+\end{Bew}
+
+\begin{Bem} Das Beweisverfahren (zuerst für $f\in\EE$ (bzw. $f=1_A$), dann für $f\in\EE^+,$ dann für $f$ beliebig) heißt \textbf{algebraische Indunktion}\index{algebraische Indunktion} und wird häufig verwendet.
+\end{Bem}
+
+\section{Nullmengen und Maße mit Dichten}
+Im Folgenden sei $(\Omega, \AA, \mu)$ ein Maßraum.
+\begin{Def} $N\in\AA$ heißt $\mu$-Nullmenge\index{$\mu$-Nullmenge}\index{Nullmenge}, falls $\mu(N) = 0.$
+\end{Def}
+
+\begin{Def}
+Ist $(A)$ eine Aussage, die von $\omega\in\Omega$ abhängt, so sagen wir, dass $(A)$ \textbf{$\mu$-fast überall}\index{$\mu$-fast uberall@$\mu$-fast überall}\index{fast uberall@fast überall} ($\mu$-f.ü.) gilt, wenn $(A)$ wahr ist $\forall\omega$ außerhalb einer $\mu$-Nullmenge. Ist $\mu=P$ ein Wahrscheinlichkeitsmaß, so sagt man $P$-fast-überall oder $P$-fast sicher (P-f.s.)
+\end{Def}
+
+\begin{Sa}$\\$
+$f,g:\Omega\to\R$ seien $(\AA, \BB)$ messbar.
+\begin{enumerate}
+\item[a)] Sei $f\ge 0$. Dann gilt: $\int f\d\mu=0\equizu f=0, \mu$-f.ü.
+\item[b)] Ist $f$ $\mu$-integrierbar und gilt $f=g$ $\mu$-f.ü., so ist auch $g$ $\mu$-integrierbar mit $\int f\d\mu = \int g\d\mu.$
+\end{enumerate}
+\end{Sa}
 
 \newpage
 \renewcommand{\indexname}{Stichwortverzeichnis}
