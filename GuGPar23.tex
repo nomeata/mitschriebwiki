@@ -8,8 +8,6 @@
 
 \begin{document}
 
-% Auf meiner Kopie fehlt der linke Rand. Das sollte jemand checken.
-
 \section{Cayley-Graphen von Gruppen}
 
 \begin{Bem}
@@ -50,10 +48,10 @@ $\Aut(\Gamma) \cong S_3$
 
 \item[3)] $\Gamma$ = \fbox{\xygraph{
 !{<0cm,0cm>;<1cm,0cm>:<0cm,0.7cm>::}
-!{(0,0) }*+{\bullet}="a"
-!{(2,0) }*+{\bullet}="b"
-!{(1,0.8) }*+{\bullet}="c"
-!{(1,2) }*+{\bullet}="d"
+!{(0,0)}*{\bullet}="a"
+!{(2,0)}*{\bullet}="b"
+!{(1,0.8)}*{\bullet}="c"
+!{(1,2)}*{\bullet}="d"
 "a"-"b"
 "a"-"c"
 "a"-"d"
@@ -359,18 +357,18 @@ Dann gilt:
   !{(2,3) }*+{\bullet^{id}}="id"
   !{(2,2) }*+{\bullet^{\sigma}}="s"
   !{(1,1) }*+{\bullet_{\sigma\tau}}="st"
-  !{(0,0) }*+{\bullet_{\tau^2}}="t2"
+  !{(0,0.3) }*+{\bullet_{\tau^2}}="t2"
   !{(3,1) }*+{\bullet_{\sigma\tau^2}}="st2"
-  !{(4,0) }*+{\bullet_{\tau}}="t"
-  "id"-@/^0.2cm/"s"
-  "id"-@/_0.2cm/"s"
+  !{(4,0.3) }*+{\bullet_{\tau}}="t"
+  "id"-@[red]@/^0.2cm/"s"
+  "id"-@[red]@/_0.2cm/"s"
   "s"-@[blue]"st"
   "st"-@[blue]"st2"
   "st2"-@[blue]"s"
-  "t2"-@/^0.2cm/"st"
-  "t2"-@/_0.2cm/"st"
-  "st2"-@/^0.2cm/"t"
-  "st2"-@/_0.2cm/"t"
+  "t2"-@[red]@/^0.2cm/"st"
+  "t2"-@[red]@/_0.2cm/"st"
+  "st2"-@[red]@/^0.2cm/"t"
+  "st2"-@[red]@/_0.2cm/"t"
   "id"-@[blue]@/^0.4cm/"t"
   "t"-@[blue]@/^0.4cm/"t2"
   "t2"-@[blue]@/^0.4cm/"id"
@@ -486,7 +484,128 @@ Sei $G$ eine Gruppe, $\Gamma$ ein Graph.
   \emp{Ineffektivitätskern}\index{Ineffektivitätskern} der Aktion $\rho$.
   \item Ist $\Gamma = \Gamma(G,S)$ eine Cayley-Graph, so operiert $G$ treu auf
   $\Gamma, \bar{\Gamma} \textrm{ und }\bar{\bar{\Gamma}}$.
+  \item Ist $\Gamma = \Gamma_H(G,S)$, so ist die Aktion $\rho$ von $G$ auf $\bar{\bar\Gamma}$ genau dann treu, wenn $$\bigcap_{g \in G} g H g^{-1} = \{1\}$$.
+
+\begin{Bew}
+Die Ecken von $\Gamma$ sind die Linksnebenklassen $g \cdot H$, $g \in G$.
+
+Sei $h \in G$ mit $\rho(h) = id$. Dann ist $h \cdot gH = gH$ f\"ur alle $g \in G$.
+
+d.h. $g^{-1} \cdot h gH = H$ $\Rightarrow$ $g^{-1} h g = h'$ f\"ur ein $h' \in H$.\\
+$\Rightarrow$ $h = g h' g^{-1} \in g H g^{-1}$ $\Rightarrow$ $h \in \bigcap_{g \in G} g H g^{-1}$.
+
+Ist umgekehrt $h \in \bigcap_{g \in G} gHg^{-1}$, so ist $\rho(h)_E = id_{E(\Gamma)} = {id}_{E(\bar{\bar\Gamma})}$. $\Rightarrow$ $\rho(h) = id$.
+\end{Bew}
+
 \end{enumerate}
 \end{DefFolg}
+
+\begin{Satz}[Frucht 1938]
+Sei $G$ eine abz\"ahlbare Gruppe. Dann gibt es einen zusammenh\"angenden Graphen $\Gamma$ mit $\Aut(\Gamma) \cong G$.
+
+\begin{nnBsp}
+$G = V_4 = D_2 = \{1, \sigma, \tau, \sigma\tau\}$. $S = \{\sigma, \tau\}$. $\Gamma = \Gamma(G,S)$.
+
+\centering\fbox{\xygraph{
+!{<0cm,0cm>;<1cm,0cm>:<0cm,1cm>::}
+!{(0,2)}*+{\bullet}*!R(4){1}="1"
+!{(2,2)}*+{\bullet}*!L(4){\sigma}="s"
+!{(0,0)}*+{\bullet}*!R(4){\tau}="t"
+!{(2,0)}*+{\bullet}*!L(2){\sigma\tau}="st"
+"1"- @[red]@`{(1,2.4)} "s"
+"1"- @[red]@`{(1,1.6)} "s" |\bot
+"s"- @[blue]@/^0.2cm/ "st"
+"s"- @[blue]@/_0.2cm/ "st"
+"st"- @[red]@/^0.2cm/ "t"
+"st"- @[red]@/_0.2cm/ "t"
+"t"- @[blue]@/^0.2cm/ "1"
+"t"- @[blue]@/_0.2cm/ "1"
+}}
+% TODO: Wie kriegen wir die Antennen hin?
+\end{nnBsp}
+
+\begin{Bew}
+Sei $S = \{s_1, s_2, \ldots\}$ ein Erzeugendensystem. $\tilde{\Gamma} = \Gamma(G,S)$.
+
+F\"ur $i \geq 1$ sei $T_i$ der Baum 
+\fbox{\xygraph{
+!{<0cm,0cm>;<1cm,0cm>:<0cm,1cm>::}
+!{(0,0)}*+{\bullet}*!D(2){a_i}="ai"
+!{(2,0)}*+{\bullet}*!D(2){p_i}="pi"
+!{(4,0)}*+{\bullet}*!D(2){q_i}="qi"
+!{(6,0)}*+{\bullet}*!D(2){b_i}="bi"
+!{(2,-1)}*+{\bullet}="pi1"
+!{(4,-1)}*+{\bullet}="qi1"
+!{(2,-2)}*+{\bullet}="pi2"
+!{(4,-2)}*+{\bullet}="qi2"
+!{(2,-3)}*+{\bullet}*!R(2){p_i'}="pie"
+!{(4,-3)}*+{\bullet}*!R(2){q_i'}="qie"
+"ai"-"pi"
+"pi"-"qi"
+"qi"-"bi"
+"pi"-"pi1"
+"qi"-"qi1"
+"pi1"-@{..}"pi2"
+"qi1"-@{..}"qi2"
+"pi2"-"pie"
+"qi2"-"qie"
+}}
+\\mit $d(p_i,p_i') = 2i$, $d(q_i,q_i') = 2i + 1$.
+
+Dann ist $T_i \neq T_j$ f\"ur $i \neq j$ und $\Aut(T_i) = \{id\}$.\\
+Sei $\Gamma$ der Graph, der aus $\tilde\Gamma$ entsteht, indem jeder Teilbaum
+\xygraph{
+!{<0cm,0cm>;<1cm,0cm>:<0cm,1cm>::}
+!{(0,0)}*+{\bullet}*!U(2){g}="g"
+!{(1,0)}*+{\bullet}*!U(2){gs_i}="gs"
+"g"-@{>}"gs"
+}
+($k=(g,s_i,1)$) ersetzt wird durch $T_i$.
+
+$\Gamma \rightarrow \tilde\Gamma$, $T_i \rightarrow $
+\xygraph{
+!{<0cm,0cm>;<1cm,0cm>:<0cm,1cm>::}
+!{(0,0)}*+{\bullet}*!U(2){g}="g"
+!{(1,0)}*+{\bullet}*!U(2){gs_i}="gs"
+"g"-@{>}"gs"
+}
+ist surjektiver Morphismus.
+
+Dann gilt:
+\begin{itemize}
+\item $G$ operiert auf $\Gamma$:
+\xygraph{
+!{<0cm,0cm>;<1cm,0cm>:<0cm,1cm>::}
+!{(0,0)}*+{\bullet}*!U(2){g}="g"
+!{(2,0)}*+{\bullet}*!U(2){gs_i}="gs"
+"g"-@{>}"gs"
+}
+\hspace{1cm}$\underset{\rho(g')}{\longrightarrow}$\hspace{1cm}
+\xygraph{
+!{<0cm,0cm>;<1cm,0cm>:<0cm,1cm>::}
+!{(0,0)}*+{\bullet}*!U(2){g'g}="g"
+!{(2,0)}*+{\bullet}*!U(2){g'gs_i}="gs"
+"g"-@{>}^{(g'g,s_i,1)}"gs"
+}
+
+\item Jeder Automorphismus von $\Gamma$ induziert einen Automorphismus von $\tilde\Gamma$, der ,,farbtreu`` ist ($s_i$-Kanten bilden auf $s_i$-Kanten ab).
+
+\item Ist $\gamma \in \Aut(\Gamma)$ und $x \in E(\Gamma)$ mit $\gamma_E(x) = x$, so ist $\gamma = id$.
+
+\emph{denn}: Ist $x \notin E(\tilde\Gamma)$, so gibt es $i \geq 1$ mit $x \in E(T_i) \setminus \{a_i, b_i\}$.
+
+Dann ist $\gamma|_{T_i} = {id}_{T_i}$. Also ohne Einschr\"ankung $x \in E(\tilde\Gamma)$. Es gibt f\"ur jedes $i \in I$ genau eine Kante der Form $(x,s_i,1)$ in $\tilde\Gamma$, also in $\Gamma$ genau einen Baum $T_i$ mit $x = a_i$. $\Rightarrow$ $\gamma = id$ auf jedem dieser Teilb\"aumen.\\
+Mit Induktion bzw. dem Zornschen Lemma folgt die Behauptung.
+
+\item $\Aut(\Gamma) = G$
+
+Sei $\gamma \in \Aut(\Gamma)$, $g \in E(\tilde\Gamma) = G$.\\
+Sei $g' = \gamma_E(g) \in E(\tilde\Gamma) = G$.\\
+Sei $h = g' g^{-1} \in G$ $\Rightarrow$ $\rho(h)_E(g) = h g = g'$ $\Rightarrow$ $(\gamma^{-1} \circ \rho(h))_E(g) = g$ $\Rightarrow$ $\gamma^{-1} \circ \rho(h) = id$ $\Rightarrow$ $\rho(h) = \gamma$.
+
+\end{itemize}
+\end{Bew}
+
+\end{Satz}
 
 \end{document}
