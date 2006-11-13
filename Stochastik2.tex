@@ -630,9 +630,94 @@ Hier stellen wir einige Hilfsmittel für später zusammen. Der folgende Satz behan
 Es sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum, $X:\Omega\to\R$ eine Zufallsvariable und $\gamma>0$. Dann gilt: \\
 \begin{displaymath}P(|X|\ge a)\le\frac{1}{a^\gamma}\cdot E|X|^\gamma \quad\forall a>0.\end{displaymath}
 Existiert die Varianz von X, so gilt:
-\begin{displaymath}P(|X-EX|\ge a)\le\frac{1}{a^2}\cdot Var(X) \quad\forall a>0.\end{displaymath}
+\begin{displaymath}P(|X-EX|\ge a)\le\frac{1}{a^2}\cdot \var(X) \quad\forall a>0.\end{displaymath}
 (Ungleichung von Tschebyschef, siehe Abschnitt 7.6, Stochastik I)
 \end{Sa}
+
+%%%%% Vorlesung 13.11.2006
+
+\begin{Bew} $\\$
+Sei $Y:\Omega\to\R$ definiert durch: 
+$$Y(\omega)=
+\begin{cases}
+a, & \text{falls } |X(\omega)|\ge a\\
+0, & \text{sonst}
+\end{cases} $$
+\begin{eqnarray*}
+&\folgt& |Y| \le |X|\\
+&\folgt& |Y|^\gamma \le |X|^\gamma\quad\forall\gamma> 0\\
+&\folgt& a^\gamma P(|X|\ge a) = a^\gamma P(|Y|\ge a) = E|Y|^\gamma \le E|X|^\gamma
+\end{eqnarray*}
+Für Teil 2 setze $\tilde X:=X-EX$ und $\gamma=2.$
+\end{Bew}
+
+Sei $I\subset\R$ ein offenes Intervall und $\Phi:I\to\R$ eine konvexe Funktion\index{konvex}, d.h.
+$$\Phi(\alpha x+(1-\alpha)y)\le\alpha\Phi(x)+(1-\alpha)\Phi(y)\quad \forall x, y\in I,\ \forall\alpha\in[0,1]$$
+Außerdem gilt $\forall y\in I, \exists m\in\R$, mit
+$$\Phi(x)\ge\Phi(y)+m(x-y)$$
+
+\begin{Sa} (Jensensche Ungleichung)\index{Jensensche Ungleichung}\index{Ungleichung!Jensensche} \\
+Es seien $I\subset\R$ ein offenes Intervall, $\Phi:I\to\R$ konvex und $X$ eine Zufallsvariable mit $E|X|<\infty, E|\Phi(X)|<\infty$ und $P(X\in I)=1.$ Dann gilt:
+$$EX\in I \text{ und } \Phi(EX)\le E\Phi(X)$$
+\end{Sa}
+\begin{Bew} $\\$
+Falls $I=(-\infty,\infty)$ ist automatisch $EX\in I.$ Ist $X<a$ P-f.s. so gilt: $EX\le Ea=a.$ Falls $E(a-X)=0$ folgt, da $a-X\ge 0\folgtnach{Satz 2.5} X=a$ P-f.s. Widerspruch!\\
+D.h., falls $I=(\cdot, a)\subset(-\infty, a)\folgt EX<a.$ Analog untere Schranke $\folgt EX\in I.$\\
+Mit der Vorüberlegung folgt $(y=EX, x=X(\omega))$
+$$\Phi(X)\ge\Phi(EX)+m(X-EX)\quad\text{P-f.s.}$$
+für ein $m\in\R.$ Erwartungswert auf beiden Seiten führt zur Behauptung (Nullmengen können wir vernachlässigen).
+\end{Bew}
+
+\begin{Bsp}$\\$
+Für $\Phi(x)=|x|, \Phi(x) = x^2$ folgt: $|EX|\le E|X|, (EX)^2\le EX^2.$ ($\folgt EX^2-(EX)^2=\var X\ge 0$)\\
+\end{Bsp}
+
+Im Folgenden sei $(\Omega, \AA, \mu)$ wieder ein Maßraum.
+
+\begin{Def}$\\$
+Eine messbare Funktion $f:\Omega\to\R$ heißt \textbf{$p$-fach $\mu$-integrierbar}\index{$p$-fach $\mu$-integrierbar}\index{$\mu$-integrierbar!$p$-fach}, wenn $\int |f|^p\d\mu< \infty$ mit $p>0.$ 
+$$L^p(\Omega, \AA, \mu):=\{ f:\Omega\to\R|\int|f|^p\d\mu <\infty\}$$
+$$||f||_p=\left(\int|f|^p\d\mu\right)^{\frac{1}{p}}$$
+Wie im vorigen Abschnitt ist $L^p$ bzw. $L^p(\Omega,\AA,\mu)/\sim_\mu$ ein Vektorraum über $\R$ und $||f||_p$ auf den Äquivalenzklassen eine Norm.
+\end{Def}
+
+\begin{Sa} $\\$
+\begin{enumerate}
+\item[a)] (Höldersche Ungleichung)\index{Holdersche Ungleichung@Höldersche Ungleichung}\index{Ungleichung!Holdersche@Höldersche} Es seien $p>1, f\in L^p(\Omega,\AA,\mu), g\in L^q(\Omega,\AA,\mu),$ wobei $\frac{1}{p}+\frac{1}{q}=1.$ Dann folgt: $f\cdot g\in L^1(\Omega,\AA,\mu)$ und es gilt:
+$$||f\cdot g||_1\le||f||_p \cdot||g||_q$$
+\item[b)] (Minkowskische Ungleichung)\index{Minkowskische Ungleichung}\index{Ungleichung!Minkowskische} Es seien $p\ge 1$ und $f,g\in L^p(\Omega,\AA,\mu).$ Dann folgt $f+g\in L^p(\Omega,\AA,\mu)$ und es gilt:
+$$||f+g||_p\le ||f||_p + ||g||_p$$
+\end{enumerate}
+\end{Sa}
+\begin{Bew} $\\$
+\begin{enumerate}
+\item[a)] Falls $\int |f|^p\d\mu = 0\folgtnach{Satz 2.5} f=0$ $\mu$-f.s. und die Ungleichung ist richtig. Sei also $||f||_p > 0$ und $||g||_q>0$ (gleiches Argument). $x\mapsto\log x$ ist konkav, d.h. es gilt: $\alpha\log(a)+(1-\alpha)\log(b)\le\log(\alpha a+(1+\alpha)b)\ \forall a,b>0, 0<\alpha<1.$ $\exp(\cdot)$ auf beiden Seiten:
+$$a^\alpha b^{1-\alpha}\le\alpha a+(1-\alpha)b\quad \forall a,b\ge 0, 0<\alpha<1$$
+Setze $a:=\frac{|f(\omega)|^p}{||f||^p_p}, b:=\frac{|g(\omega)|^q}{||g||_q^q}, \alpha=\frac 1 p$ ($\omega$ beliebig)
+\begin{eqnarray*}
+\folgt &\frac{|f(\omega)|\cdot|g(\omega)|}{||f||_p\cdot||g||_q} &\le \frac 1 p \frac{|f(\omega)|^p}{||f||_p^p} + \frac 1 q \frac{|g(\omega)|^q}{||g||_q^q}\\
+\folgt  &|f(\omega)|\cdot|g(\omega)| &\le \frac 1 p |f(\omega)|^p||f||_p^{1-p}||g||_q + \frac 1 q |g(\omega)|^q||g||_q^{1-q}||f||_p\\
+\folgtnach{Int. über $\omega$} & ||f\cdot g||_1 & \le \frac 1 p ||f||_p^p||f||_p^{1-p}||g||_q + \frac 1 q ||g||_q^q||g||_q^{1-q}||f||_p\\
+ & &= \frac 1 p ||f||_p||g||_q + \frac 1 q ||g||_q ||f||_p\\
+\folgt & \text{Behauptung}
+\end{eqnarray*}
+\item[b)] Wegen $|f+g|\le|f|+|g|$ gilt $||f+g||_p\le|| |f| + |g| ||_p.$ Also genügt es die Ungleichung für $f+g\ge 0$ zu beweisen. Falls $p=1$ folgt $||f+g||_1=\int (f+g)\d\mu=\int f\d\mu + \int g\d\mu = ||f||_1 + ||g||_1.$ Sei also $p>1.$ Mit $(f+g)^p\le(2\cdot\max\{f,g\})^p\le 2^p(f^p + g^p)\folgt (f+g)\in L^p,$ also $||f+g||_p<\infty.$ Sei $q:=\frac{1}{1-\frac 1 p}.$ Anwendung von Teil a) liefert:
+\begin{eqnarray*}
+||f+g||_p^p & =& \int f(f+g)^{p-1}\d\mu + \int g(f+g)^{p-1}\d\mu\\
+&\stackrel{\text{a)}}{\le}&(||f||_p + ||g||_p)||(f+g)^{p-1}||_q\quad (*)
+\end{eqnarray*}
+Wegen  $(p-1)q = p$ gilt:
+$$ ||(f+g)^{p-1}||_q = \left(\int (f+g)^{(p-1)q}\d\mu\right)^{\frac 1 q} = ||f + g||_p^{\frac p q} = ||f + g||_p^{p-1}$$
+Falls $||f+g||_p = 0$ ist die Ungleichung richtig. Sei also $||f+g||_p>0.$ Nehme $(*)$ und teile durch $||f+g||_p^{p-1}$ auf beiden Seiten $\folgt$ Behauptung.
+\end{enumerate}
+\end{Bew}
+
+\begin{Bem} $\\$
+Falls $p=q=2, \Omega=\{1,\ldots,n\}, \AA = \PM(\Omega),\mu = \sum_{k=1}^n\delta_k, f(i)=a_i, g(i) = b_i,$ bekommt man:
+$$\sum_{i=1}^n a_i b_i\le\left(\sum_{i=1}^n a_i^2\right)^{\frac 1 2} \cdot \left(\sum_{i=1}^n b_i^2\right)^{\frac 1 2}$$
+In diesem Fall ist Satz 2.12 a) die Cauchy-Schwarz-Ungleichung.\\
+Lineare Algebra: $|\langle a, b\rangle|\le ||a||\cdot||b||\quad\forall a, b \in\R^n$
+\end{Bem}
 
 \newpage
 \renewcommand{\indexname}{Stichwortverzeichnis}
