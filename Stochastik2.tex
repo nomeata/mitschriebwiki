@@ -3,6 +3,7 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+%\usepackage{amsthm}
 \usepackage{ngerman}
 %\usepackage{graphicx}
 \usepackage{fancyhdr}
@@ -60,12 +61,20 @@
 
 %Nummerierungen
 \newtheorem{Def}{Definition}[chapter]
+%Def ohne Nummer
+\newtheorem*{DefON}{Definition}[chapter]
 \newtheorem{Sa}{Satz}[chapter]
+%Satz ohne Nummer
+\newtheorem*{SaON}{Satz}[chapter]
 \newtheorem{Lem}[Sa]{Lemma}
+%Lemma ohne Nummer
+\newtheorem*{LemON}[Sa]{Lemma}
 \newtheorem{Kor}[Sa]{Korollar}
 \theorembodyfont{\normalfont}
 \newtheorem{Bsp}{Beispiel}[chapter]
 \newtheorem{Bem}{Bemerkung}[chapter]
+%Bem ohne Nummer
+\newtheorem*{BemON}{Bemerkung}[chapter]
 \theoremsymbol{\ensuremath{_\blacksquare}}
 \theoremstyle{nonumberplain}
 \newtheorem{Bew}{Beweis}
@@ -735,13 +744,13 @@ Dann ist $\langle f, g\rangle := \int f\cdot g\d\mu$ hierauf ein Skalarprodukt, 
 \section{Der allgemeine Fall}
 Im Folgenden sei $I \neq\emptyset$ eine beliebige Indexmenge. $\forall i\in I$ sei $(\Omega_i,\AA_i)$ ein messbarer Raum. Weiter sei $\Omega := \times_{i\in I} \Omega_i$ ein neuer Ergebnisraum. Wir definieren die \textbf{Projektion}\index{Projektion} auf die i-te Koordinate $\Pi_i:\Omega\to\Omega_i$ durch $\Pi_i(\omega)=\omega_i$.
 
-\begin{Def} Die \textbf{Produkt-$\sigma$-Algebra}\index{Produkt-$\sigma$-Algebra}\index{$\sigma$-Algebra!Produkt-} $\AA:=\bigotimes_{i\in I}\AA_i$ ist die kleinste $\sigma$-Algebra mit der Eigenschaft, dass für alle $i\in I$ die Abbildung $\Pi_i$ $(\AA,\AA_i)$-messbar ist. Genauer: \\
+\begin{DefON} Die \textbf{Produkt-$\sigma$-Algebra}\index{Produkt-$\sigma$-Algebra}\index{$\sigma$-Algebra!Produkt-} $\AA:=\bigotimes_{i\in I}\AA_i$ ist die kleinste $\sigma$-Algebra mit der Eigenschaft, dass für alle $i\in I$ die Abbildung $\Pi_i$ $(\AA,\AA_i)$-messbar ist. Genauer: \\
 \begin{displaymath}
 \AA := \sigma \left( \bigcup_{i\in I} \left\{ \Pi^{-1}_i(A_i) | A_i \in \AA_i\right\}\right)
 \end{displaymath}
-\end{Def}
+\end{DefON}
 
-\begin{Bem} Sei $J\subset I$, $\Pi_i:\Omega\to\times_{i\in I}\Omega_i$, $\Pi_i(\omega)(j)=\omega_j$ ($j\in J)$ die Projektion auf die $J$-Koordinaten, so bildet \\
+\begin{BemON} Sei $J\subset I$, $\Pi_i:\Omega\to\times_{i\in I}\Omega_i$, $\Pi_i(\omega)(j)=\omega_j$ ($j\in J)$ die Projektion auf die $J$-Koordinaten, so bildet \\
 \begin{displaymath}
 \left\{\Pi_J^{-1}\left(A_J\right) | A_J \in \bigotimes_{i\in J} \AA_i, J\subset I, J\text{ endlich}\right\}
 \end{displaymath}
@@ -749,7 +758,7 @@ ein durchschnittstabiles Erzeugendensystem von $\AA$. Man nennt diese Mengen auc
 \begin{displaymath}
 \left( A_J=A_{i_1}\times\dots\times A_{i_{|J|}}, \Pi_J^{-1}\left( A_J\right)=\bigcap_{k=1}^{|J|}\Pi_{i_k}^{-1}\left( A_{i_k}\right)\right)
 \end{displaymath}
-\end{Bem}
+\end{BemON}
 
 \begin{Bsp} Ist $I=\{1,\dots,n\}$ endlich, so ist (vgl. Stochastik I, §8): \\
 \begin{displaymath}
@@ -845,6 +854,89 @@ f_{\omega_1}^{-1}\left(B\right) &=& \left\{\omega_2\in\Omega_2|f\left(\omega_1,\
  &=& \left(\underbrace{f^{-1}\left(B\right)}_{\in\AA}\right)_{\omega_1}\in\AA_2\quad\forall B\in\BB\text{.}
 \end{eqnarray*}
 \end{Bew}
+
+\begin{Sa} (Satz von Fubini, Teil I, auch: Satz von Tonelli) \\
+Es seinen $\mu_1$ und $\mu_2$ $\sigma$-endlich sowie $f:\Omega\to\R_+$ $(\AA,\BB)$-messbar\footnote{Dass hier $f\ge 0$ gilt, ist wesentlich für Fubini I; den allgemeinen Fall behandelt Fubini II.}. Dann ist
+\begin{eqnarray*}
+\omega_1 & \mapsto & \int f_{\omega_1}\d\mu_2 \ \ (\AA_1,\BB_{(-\infty,\infty]})\text{-messbar und} \\
+\omega_2 & \mapsto & \int f_{\omega_2}\d\mu_1 \ \ (\AA_2,\BB_{(-\infty,\infty]})\text{-messbar und es gilt:} \\
+\end{eqnarray*}
+\begin{displaymath}
+\int f\d\left(\mu_1\otimes\mu_2\right) = \int\left(\int f_{\omega_2}\d\mu_1\right)\mu_2\left(\d\omega_2\right) = \int\left(\int f_{\omega_1}\d\mu_2\right)\mu_1\left(\d\omega_1\right).
+\end{displaymath}
+\end{Sa}
+\begin{Bew} mit algebraischer Induktion.
+\begin{enumerate}
+\item[(1)] Falls $f=\sum_{i=1}^n \alpha_i 1_{A_i}$ erhält man mit $(1_A)_{\omega_2}(\omega_1) = 1_{A_{\omega_2}}(\omega_1)$ die Beziehung
+\begin{displaymath}
+\int f_{\omega_2}\d\mu_1 \stackrel{lin.}{=} \sum_{i=1}^n\alpha_i \int 1_{\left(A_i\right)_{\omega_2}}\d\mu_1 = \sum_{i=1}^n\alpha_i \mu_1\left(\left(A_i\right)_{\omega_2}\right) $$\\$$
+\folgtnach{L.3.2.}\omega_2\mapsto\int f_{\omega_2}\d\mu_1 \text{ist messbar.} $$\\$$
+\folgt \int\left(\int f_{\omega_2}\d\mu_1\right)\mu_2\left(\d\omega_2\right) = \sum_{i=1}^n\alpha_i\int\mu_1\left(\left(A_i\right)_{\omega_2}\right)\mu_2\d\left(\omega_2\right) $$\\$$
+\stackrel{D.3.1.}{=}\sum_{i=1}^n\alpha_i\cdot\mu_1\otimes\mu_2\left(A_i\right) = \int f\d\left(\mu_1\otimes\mu_2\right).
+\end{displaymath}
+\item[(2)] $f\ge 0,\ f\ (\AA,\BB)$-messbar. \\
+$\folgt\exists (u_n)_{n\in\N} \subset\EE$ mit $u_n\uparrow f$ und $\int f\d\mu = \lim_{n\to\infty}(\int u_n\d\mu)$. \\
+Wegen $(u_n)_{\omega_2}\uparrow f_{\omega_2}$ und $g_n(\omega_2) := \int(u_n)_{\omega_2}\d\mu_1 \uparrow \int f_{\omega_2}\d\mu_1 \forall\ \omega_2\in\Omega_2$ ist nach Schritt 1 $\int g_n(\omega_2)\mu_2(\d\omega_2) = \int u_n\d(\mu_1\otimes\mu_2)$. Mit dem Satz von der monotonen Konvergenz folgt:
+\begin{eqnarray*}
+\int\left(\int f_{\omega_2}\d\mu_1\right)\mu_2\left(\d\omega_2\right) &=& \lim_{n\to\infty}\left(\int g_n\d\mu_2\right) \\
+ &=& \lim_{n\to\infty}\left(\int u_n\d\left(\mu_1\otimes\mu_2\right)\right) \\
+ &=& \int f\d\left(\mu_1\otimes\mu_2\right).\\
+\end{eqnarray*}
+\end{enumerate}
+Wiederhole die Schritte mit $\omega_2$ statt mit $\omega_1$ und erhalte den Rest der Behauptung.
+\end{Bew}
+
+Bevor wir den Satz von Fubini für allgemeine $f$ beweisen, benötigen wir folgende Überlegung:
+\begin{Bem} Ist $(\Omega,\AA,\mu)$ Maßraum, $A\in\AA$ mit $\mu(A^C)=0$, $f:A\to\R$, so nennen wir $f$ $(\AA,\BB)$-messbar, $\mu$-integrierbar, etc., wenn dies auf die folgende Fortsetzung $\bar{f}$ von $f$ zutrifft: \\
+$\bar{f}:\Omega\to\R,\ \bar{f}(\omega):=\begin{cases}
+f(\omega) & \omega\in A \\
+0 & \text{sonst}
+\end{cases}$\quad und schreiben dann $\int f\d\mu$ statt $\int\bar{f}\d\mu$.
+\end{Bem}
+
+\begin{Sa} (Satz von Fubini, Teil II) \\
+Es seien $\mu_1$ und $\mu_2$ $\sigma$-endlich, $f:\Omega\to\R$ $(\mu_1\otimes\mu_2)$-integrierbar. \\ Dann sind $\mu_1$-fast alle $f_{\omega_1}$ $\mu_2$-integrierbar und $\mu_2$-fast alle $f_{\omega_2}$ $\mu_1$-integrierbar. \\
+Weiter sind die Integrale \\
+$$\omega_1\mapsto\int f_{\omega_1}\d\mu_2$$ und $$\omega_2\mapsto\int f_{\omega_2}\d\mu_1$$ als Funktionen von $\omega_1$ bzw. $\omega_2$ im obigen Sinne $\mu_1$- bzw. $\mu_2$-integrierbar und es gilt:
+\begin{displaymath}
+\int f\d\left(\mu_1\otimes\mu_2\right) = \int\left(\int f_{\omega_2}\d\mu_1\right)\mu_2\left(\d\omega_2\right) = \int\left(\int f_{\omega_1}\d\mu_2\right)\mu_1\left(\d\omega_1\right)
+\end{displaymath}
+\end{Sa}
+\begin{Bew} \quad\\
+Es gilt $|f|_{\omega_1} = |f_{\omega_1}|$, $f_{\omega_1}^+ = (f_{\omega_1})^+$ und $f_{\omega_1}^- = (f_{\omega_1})^-$. \\
+Also folgt aus Satz 3.2.:
+\begin{eqnarray*}
+\int|f|\d\mu & = & \int\left(\int|f_{\omega_1}|\d\mu_2\right)\mu_1\left(\d\omega_1\right) < \infty \text{ (das ist die Voraussetzung)} \\
+ & \folgt & \mu_1\left(\left\{\omega_1|\int|f_{\omega_1}|\d\mu_2=\infty\right\}\right)=0 \\
+ & \folgt & f_{\omega_1} \text{ ist } \mu_1 \text{-f.ü. } \mu_2 \text{-integrierbar.} \\
+\end{eqnarray*}
+Satz 3.2. angewandt auf $f_{\omega_1}^+$ und $f_{\omega_1}^-$ ergibt, dass 
+\begin{displaymath}
+\omega_1\mapsto\int f_{\omega_1}\d\omega_2 = \left(\int f_{\omega_1}^+\d\mu_2\ -\ \int f_{\omega_1}^-\d\mu_2\right)
+\end{displaymath}
+$(\AA,\BB)$-messbar ist (auf einer $\mu_1$-Nullmenge könnte \textquotedblleft$\infty - \infty$\textquotedblright stehen und die Funktion wäre dort nicht definiert, siehe hierzu aber die vorstehende Bemerkung) und
+\begin{eqnarray*}
+\int\left(\int f_{\omega_1}\d\mu_2\right)\mu_1\left(\d\omega_1\right) &=& \int\left(\int f_{\omega_1}^+\d\mu_2\ -\ \int f_{\omega_1}^-\d\mu_2\right)\mu_1\left(\d\omega_1\right) \\
+ & = & \int f^+\d\mu\ -\ \int f^-\d\mu \\
+ & = & \int f\d\mu. \\
+\end{eqnarray*}
+Der Rest folgt mit dem Symmetrieargument.
+\end{Bew}
+
+\begin{Bem} \quad\\
+\begin{enumerate}
+\item[a)] Der Satz von Fubini läßt sich wie folgt schreiben:
+\begin{eqnarray*}
+\int f\d\left(\mu_1\otimes\mu_2\right) & = & \int\int f\left(\omega_1,\omega_2\right)\mu_1\left(\d\omega_1\right)\mu_2\left(\d\omega_2\right) \\
+ & = & \int\int f\left(\omega_1,\omega_2\right)\mu_2\left(\d\omega_2\right)\mu_1\left(\d\omega_1\right) \\
+\end{eqnarray*}
+Die Integrationsreihenfolge spielt also keine Rolle.
+\item[b)] Sind messbare Räume $(\Omega_i,\AA_i)\ (i\in I)$ gegeben mit $|I|$ endlich und $|I|>2$, so erhält man ein Maß $\mu:=\bigotimes_{i\in I}\mu_i$ auf der Produkt-$\sigma$-Algebra durch schrittweises Ausführen von Produkten mit 2 Faktoren. Insbesondere gilt auf Rechteckmengen $A_1\times\dots\times A_n$ mit $A_i\in\AA_i\ (i=1,\dots,n)$:
+$$\mu(A_1\times\dots\times A_n) = \Pi_{i=1}^n\mu_i(A_i).$$
+Da die Rechteckmengen ein durchschnittstabiler Erzeuger von $\AA$ sind, folgt wegen der Eindeutigkiet von $\mu$: \\
+$$(\mu_1\otimes\mu_2)\otimes\mu_3 = \mu_1\otimes(\mu_2\otimes\mu_3)\text{\quad(Assoziativität des Maßprodukts)}$$
+\end{enumerate}
+\end{Bem}
 
 \newpage
 \renewcommand{\indexname}{Stichwortverzeichnis}
