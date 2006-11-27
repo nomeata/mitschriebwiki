@@ -1,1 +1,143 @@
-Enter new page here
+\documentclass[a4paper,11pt]{book}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{ngerman}
+%\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{euscript}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage{mathtools}
+\usepackage[arrow, matrix, curve]{xy}
+%\usepackage{pst-all}
+%\usepackage{pst-add}
+%\usepackage{multicol}
+
+\usepackage[latin1]{inputenc}
+
+%%Zahlenmengen
+%Neue Kommando-Makros
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\Z}{{\mathbb Z}}
+% Seitenraender
+\textheight22cm
+\textwidth14cm
+\topmargin-0.5cm
+\evensidemargin0,5cm
+\oddsidemargin0,5cm
+\headheight14pt
+
+%%Seitenformat
+% Keine Einrückung am Absatzbeginn
+\parindent0pt
+
+\DeclareMathOperator{\unif}{Unif}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
+
+
+\def\AA{ \mathcal{A} }
+\def\PM{ \EuScript{P} } 
+\def\EE{ \mathcal{E} }
+\def\BB{ \mathfrak{B} } 
+\def\DD{ \mathcal{D} } 
+\def\NN{ \mathcal{N} } 
+
+% Komische Symbole
+\def\folgt{\ensuremath{\implies}}
+\newcommand{\folgtnach}[1]{\ensuremath{\DOTSB\;\xRightarrow{\text{#1}}\;}}
+\def\equizu{\ensuremath{\iff}}
+\def\d{\mbox{d}}
+\def\fs{\stackrel{f.s.}{\rightarrow }}
+
+%Nummerierungen
+\newtheorem{Def}{Definition}[chapter]
+\newtheorem{Sa}[Def]{Satz}
+\newtheorem{Lem}[Def]{Lemma}
+\newtheorem{Kor}[Def]{Korollar}
+\theorembodyfont{\normalfont}
+\newtheorem{Bsp}[Def]{Beispiel}
+\newtheorem{Bem}[Def]{Bemerkung}
+\theoremsymbol{\ensuremath{_\blacksquare}}
+\theoremstyle{nonumberplain}
+\newtheorem{Bew}[Def]{Beweis}
+\newcounter{chapter}
+\setcounter{chapter}{1}
+\newcounter{Def}
+\setcounter{Def}{1}
+
+% Kopf- und Fusszeilen
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+\fancyfoot[C]{}
+\fancyhead[LO]{\rightmark}
+
+\title{Funktionalanalysis - Prof. Dr. Schnaubelt\\
+		im Wintersemester 06/07}
+\author{Das \texttt{latexki}-Team\\[8 cm]
+
+\date{Stand: \today}
+\begin{document}
+
+\maketitle
+
+\chapter{Banachr"aume und lineare Operatoren}
+
+\section{Banachr"aume und metrische R"aume}
+
+Es sei $X$ ein VR "uber $\mathbb{K}\in{\mathbb{R},\mathbb{C}}$, wobei $X={0}$ solange nichts anderes gesagt wird.
+\begin{Def}
+Eine Halbnorm $p$ auf $X$ ist eine Abb. $p:X\rightarrow\mathbb{R}_{+}^{0}$ mit
+	\begin{enumerate}
+		\item [(a)] $p(\alpha x) = |\alpha|p(x) \qquad\qquad\forall 
+		x\in\mathbb{K},x\in X$ (Homogenit"at)
+		\item [(b)] $p(x+y)\leq p(x)+p(y) \qquad\forall x,y\in X$ 
+		($\triangle$-Ungleichung)
+		\item [(c)] $p(x)=0 \folgt x=0$ \qquad\qquad$\forall x\in X$ (Definitheit)
+	
+	\end{enumerate}
+so heißt $p$ \underline{Norm} und $(X,p)$ \underline{normierter VR} (nVR).
+Man schreibt meist $||x||=p(x)$ und $p$
+\end{Def}
+\begin{Bem}
+	\begin{enumerate}
+	\item [(a)] 	Es gilt: $\mid ||x||-||y|| \mid \leq ||x-y||$
+	\item [(b)] 	$||x|| =$ ''L"ange'' von $x$\\
+					$\triangle$-Ungl. $=$ Hier gehört eine kleine Zeichung rein!
+	\item [(c)] 1.1 a) $\folgt p(0)=p(0\cdot 0)=0\cdot p(0)=0$
+	
+	\end{enumerate}
+\end{Bem}
+\begin{Def}
+	Eine Folge $(x_{n})_{n\in \mathbb{N}} \subseteq X$ konvergiert gegen $x\in X$, wenn 
+	\begin{enumerate}
+	\item [(1.1)] $\forall \epsilon >0\quad \exists N_{\epsilon} \in \mathbb{N}\quad ||x_{n}-x||  \leq \epsilon \quad \forall n \geq N_{\epsilon}$ $(x_{n})$ ist eine Cauchy-folge (CF) in $X$, wenn
+	\item [(1.2)] $\forall \epsilon >0 \quad \exists N_{\epsilon} \in \mathbb{N}\quad ||x_{n}-x_{m}|| \leq \epsilon \quad \forall n,m \geq N_{\epsilon}$
+	\item [] Ein nVR $(X,||\cdot||)$ hei\ss t \underline{Banachraum}, wenn er \underline{vollst"andig} ist, d.h. jede Cauchy-Folge hat einen Grenzwert. Wenn die Norm klar ist, so schreibt man $X$ statt $(X,||\cdot||)$.
+
+	\end{enumerate}
+\end{Def}
+\begin{Bem}
+	\begin{enumerate}
+	\item [(a)] Eine konvergente Folge ist CF, da
+			\begin{displaymath}
+				||x_{n}-x_{m}|| \leq ||x_{n}-x|| + ||x-x_{m}|| \leq 2\epsilon \quad \forall n,m \geq N_{\epsilon}, N_{\epsilon} \textrm{ aus (1.1)}
+			\end{displaymath}
+	\item [(b)] Wenn $x_{n} \rightarrow x$ und $x_{n} \rightarrow y$ in $X$ $(n\rightarrow \infty)$, so gilt $x=y$, wegen Def. 1.1 c) und
+			\begin{displaymath}
+				||x-y|| \leq ||x-x_{n}|| + ||x_{n}-y|| \leq 2\epsilon\quad \textrm{f"ur}\quad n\geq \max\{N_{\epsilon}(x),N_{\epsilon}(y)\}.
+			\end{displaymath}
+			(wobei $N_{\epsilon}(x),N_{\epsilon}(y)$ aus (1.1)), hier ist $\epsilon >0$ beliebig\\ $\folgt ||x-y||=0 \folgtnach{1.1c)} x=y$
+	\item [(c)] CF und konvergente Folgen $(x_{n})_{n\in \mathbb{N}}$ sind beschr"ankt, d.h. $\sup\limits_{n\in\mathbb{N}}||x_{n}|| < \infty$
+	\end{enumerate}
+\end{Bem}
+
+\end{document}
