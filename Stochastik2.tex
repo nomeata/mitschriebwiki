@@ -30,6 +30,7 @@
 \newcommand{\Z}{{\mathbb Z}}
 %\newcommand{\ind}{1\hspace{-0,9ex}\raisebox{-0,2ex}{1}}
 \newcommand{\ind}{\text{\bf{1}}}
+\newcommand{\eps}{\varepsilon}
 
 % Seitenraender
 \textheight22cm
@@ -1180,6 +1181,125 @@ Es folgt:
 \end{eqnarray*}
 Für $d=12: 0.32$
 \end{Bsp}
+
+%Stochastik vom Mo, 04.12.2006 [bernhard]
+
+%Section 4!
+\section{Das starke Gesetz der gro"sen Zahlen}
+
+%Satz 4.1
+\begin{Sa}[Borel-Cantelli Lemma] \label{Sa4.1}
+Sei $(\Omega,\AA,P)$ ein W'Raum und $(A_n)_{n \in \N} \subset \AA$ eine Folge von Ereignissen.
+\[
+\limsup_{n \rightarrow \infty} A_n := \bigcap_{n=1}^{\infty} \bigcup_{k=n}^{\infty} A_k
+\]
+ist das Ereignis, dass unendlich viele der $A_n$'s eintreten.
+\begin{enumerate}
+\item[a)] Dann gilt: 
+\[
+\sum_{n=1}^{\infty} P(A_n) < \infty \Longrightarrow P(\limsup_{n \rightarrow \infty} A_n) = 0.
+\]
+
+\item[b)] Sind die Ereignisse $A_n,\ n \in \N$ stochastisch unabh"angig, so gilt:
+\[
+\sum_{n=1}^{\infty} P(A_n) = \infty \Longrightarrow P(\limsup_{n \rightarrow \infty}A_n) = 1.
+\]
+\end{enumerate}
+\end{Sa}
+
+\begin{Bew}
+\begin{enumerate}
+\item[a)] Sei $B_n := \cup_{k=n}^{\infty} A_k,\ n \in \N \Rightarrow P(B_n) \leq \sum_{k=n}^{\infty} P(A_k) \stackrel{n \rightarrow \infty}{\longrightarrow} 0$. Da $B_n \downarrow \cap_{n=1}^{\infty} B_n$ folgt:
+\[
+P(\limsup_{n \rightarrow \infty}A_n) = P(\sum_{n=1}^{\infty} B_n) = \lim_{n \rightarrow \infty} P(B_n) = 0.
+\]
+
+\item[b)] Sei $P_n := P(A_n),\ n \in \N. (A_n)$ stoch. unabh $\Rightarrow (A_n^c)$ stoch unabh. Es gilt:
+\begin{eqnarray*}
+0 \leq P(\cap_{n=1}^{\infty} A_k^c) & \stackrel{\text{stetig von oben}}{=} & \lim_{n \rightarrow \infty} P(\cap_{n=1}^{N} A_k^c) \\
+& \stackrel{\text{unabh.}}{=} & \lim_{N \rightarrow \infty} \prod_{k=1}^{N} (1-P_k)\\
+& \leq & \lim_{N \rightarrow \infty} exp(-\sum_{k=n}^{N} P_k) \stackrel{\text{nach Vor.}}{=} 0 
+\end{eqnarray*}
+Somit:
+\[
+0 \leq P( (\limsup_{n \rightarrow \infty} A_n)^c) = P(\cup_{n=1}^{\infty} \cap_{k=n}^{\infty} A_k^c) \leq \sum_{n=1}^{\infty} P( \cap_{k=n}^{\infty} A_k^c) = 0
+\]
+\end{enumerate}
+\end{Bew}
+
+\begin{Def}
+Es seien $X,X_1,X_2,\dots$ ZV auf einem W'Raum $(\Omega,\AA,P)$.\\
+$X_n$ konvergiert P-fast sicher gegen $X,\ (X_n \fs X)$ wenn gilt:
+\[
+P \left( \{ \omega \in \Omega \, | \, \lim_{n \rightarrow \infty} X_n(\omega) = X(\omega) \} \right) = 1.
+\]
+\end{Def}
+
+\begin{Bem}
+$\{ \lim_{n \rightarrow \infty} X_n(\omega) = X(\omega) \} \in \AA$, denn:
+\begin{enumerate}
+\item[(i)] $\sup_{n \geq 1} X_n$ ist $\AA$-messbar, da $\{ \sup_{n \geq 1} X_n \leq a \} = \cap_{n=1}^{\infty} \underbrace{\{ X_n \leq a \}}_{\in \AA} \in \AA.$\\
+$\inf\limits_{n \geq 1} X_n = - \sup\limits_{n \geq 1} (-X_n)$ ist $\AA$-mb. $\Rightarrow \limsup\limits_{n \rightarrow \infty} X_n = \inf\limits_{n \geq 1} \sup\limits_{k \geq n} X_k, \liminf\limits_{n \rightarrow \infty} X_n\ \AA$-messbar.
+\item[(ii)] $\{ \lim_{n \rightarrow \infty} X_n = X \} =  \liminf\limits_{n \rightarrow \infty} (X_n-X))^{-1}(\{0\}) \cap(\limsup\limits_{n \rightarrow \infty} (X_n-X))^{-1}(\{0\}) \in \AA$
+\end{enumerate}
+\end{Bem}
+
+Im Folgenden sei $(X_n)_{n \in \N}$ eine Folge von ZV auf einem W'Raum $(\Omega,\AA,P)$. Starke Gesetz der gro"sen Zahlen sind Resultate der Form
+\[
+\frac1{a_n} \left( \sum_{i = 1}^{n} X_i -b_n \right) \fs 0
+\]
+wobei $(a_n)_{n \in \N}, (b_n)_{n \in \N} \subset \R$. Der wichtigste Satz ist hier:
+
+%Satz 4.2
+\begin{Sa}[Starkes Gesetz der gro"sen Zahlen] \label{Sa4.2}
+Ist $(X_n)_{n \in \N}$ eine Folge von u.i.v. ZV mit $E|X_1| < \infty$, so gilt:
+\[
+\frac1{n} \underbrace{\sum_{n=1}^n X_i}_{=s_n} \fs EX_1.
+\]
+\end{Sa}
+
+%Für manche eine Mühe, für andere der wohl längste Beweis der Welt
+\begin{Bew}
+Sei zun"achst $X_k \geq 0\ \forall\, k \in \N$ und $Y_k := X_k \cdot \ind_{[X_k \leq k]}\ (Y_k$ entsteht aus $X_k$ durch Abschneiden bei $k)$. Sei $S_n^{\ast} := \sum_{k=1}^n Y_k\ EY_k = E[X_k \cdot \ind_{[X_k \leq k]}] = E[X_1 \cdot \ind_{[X_1 \leq k]} \stackrel{k \rightarrow \infty}{\longrightarrow} EX_1$ mit S.2.1 (Monotone Konvergenz).\\
+Aus der Analysis: Sei $(a_n)_{n \in \N} \subset \R$
+\[
+\lim_{n \rightarrow \infty} a_n = a \Rightarrow \lim_{n \rightarrow \infty} \frac1{n} \sum_{k=1}^n a_k = a.
+\]
+Damit folt:
+\[
+\lim_{n \rightarrow \infty} \frac1{n} E S_n^{\ast} = \lim_{n \rightarrow \infty} \frac1{n} \sum_{k=1}^n E Y_k = E X_1.
+\]
+Die $Y_n$'s sind wieder unabh. und es gilt:
+\[
+\var(S_n^{\ast}) = \sum_{k=1}^n \var(Y_k) \leq \sum_{k=1}^n EY_k^2 \leq \sum_{k=1}^n E[X_k^2 \cdot \ind_{[X_k \leq n]}] = n \cdot E[X_1^2 \cdot \ind_{[0,n]}(X_1)] \ (\ast)
+\]
+Sei $\alpha > 1$ und $m_n := \lfloor \alpha^n \rfloor \ \forall\, n \in \N$. F"ur $x > 0$ sei $\Psi(x) := \sum_{n = N(x)}^{\infty} \frac1{m_n}$ mit $N(x) := \min\{ n \, | \, m_n \geq x \}$
+
+F"ur beliebige $z \geq 1$ gilt: $\lfloor z \rfloor \geq \frac{z}2$ und somit $\frac1{m_n} = \frac1{\lfloor \alpha^n \rfloor} \leq \frac2{\alpha^n}$ und $\alpha^{N(x)} \geq \lfloor \alpha^{N(x)} \rfloor = m_{N(x)} \geq x$. Mit $k := \frac{2\alpha}{\alpha-1}$ gilt:
+\[
+\Psi(x) = \sum_{n=N(x)}^{\infty} \frac1{m_n} \leq 2 \cdot \sum_{n=N(x)}^{\infty} \frac1{\alpha^n} = 2 \cdot \alpha^{-N(x)} \cdot \frac1{1-\frac1{\alpha}} \leq \frac{k}{x} \ (\ast \ast)
+\]
+
+Die Ungl von Tschebyscheff liefert $\forall\, \eps > 0:$
+\begin{eqnarray*}
+\sum_{n=1}^{\infty} P\left( \frac1{m_n} | S_{m_n}^{\ast} - E S_{m_n}^{\ast} | > \eps \right) & \stackrel{(\ast)}{\leq} & \sum_{n=1}^{\infty} \frac1{\eps^2 m_n} E[X_1^2 \cdot \ind_{[0,m_n]}(X_1)] \\
+& \stackrel{\text{S.2.1}}{=} & \frac1{\eps^2} E[X_1^2 \sum_{n=1}^{\infty} \frac1{m_n} \cdot \ind_{[0,m_x]}(X_1)]\\
+& = & \frac1{\eps^2} E[X_1^2 \Psi(X_1)] \stackrel{(\ast \ast)}{\leq} \frac{k}{\eps^2} EX_1
+\end{eqnarray*}
+
+$\stackrel{\text{"Ub}}{\Longrightarrow} \frac1{m_n} (S_{m_n}^{\ast}-ES_{m_n}^{\ast}) \fs 0 \stackrel{\text{"Ub}}{\Longrightarrow} \frac1{m_n} S_{m_n}^{\ast} \fs EX_1.$\\
+\\
+N"achstes Ziel: $\ast$ weg bekommen.\\
+Es gilt:
+\begin{eqnarray*}
+\sum_{n=1}^{\infty} P(X_n \not= Y_n) & = & \sum_{n=1}^{\infty} P(X_1 > n) \\
+& \leq & \int_{[0,\infty]} P(X_1>x) \ind(x) \stackrel{\text{Bsp 3.1}}{=} EX_1 < \infty.
+\end{eqnarray*}
+$\stackrel{S.4.1a)}{\Longrightarrow} P(\underbrace{\{ \omega \in \Omega \, | \, X_n(\omega) \not= Y_n(\omega) \text{ f"ur unendlich viele }n \}}_{=:N_0}) = 0\\
+\forall\, w \not\in N_0,\ \exists\, k(\omega) \in \N$ mit $X_n(\omega) = Y_n(\omega) \ \forall\, n \geq k(\omega).$\\
+\\
+Der Beweis ist noch nicht zu Ende, diese Vorlesung aber schon :)
+\end{Bew}
 
 \newpage
 \renewcommand{\indexname}{Stichwortverzeichnis}
