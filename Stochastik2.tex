@@ -64,6 +64,8 @@
 \def\equizu{\ensuremath{\iff}}
 \def\d{\mbox{d}}
 \def\fs{\stackrel{f.s.}{\rightarrow }}
+\def\wto{\stackrel{w}{\rightarrow}}
+\def\dto{\stackrel{d}{\rightarrow}}
 
 %Nummerierungen
 \newtheorem{Def}{Definition}[chapter]
@@ -75,7 +77,7 @@
 \newtheorem{Lem}{Lemma}[chapter]
 %Lemma ohne Nummer
 \newtheorem*{LemON}{Lemma}
-\newtheorem{Kor}[Sa]{Korollar}
+\newtheorem{Kor}{Korollar}[chapter]
 \theorembodyfont{\normalfont}
 \newtheorem{Bsp}{Beispiel}[chapter]
 %Bsp ohne Nummer
@@ -1333,7 +1335,7 @@ n+1, & \text{mit Wahrscheinlichkeit }p_1 \\
 Sei $p_1=0,999,\ n=1000.\ \folgt\ p_{1000}=(0,999)^{1000} \approx 0,37$
 \end{Bsp}
 
-\chapter{Den Zentrale Grenzwertsatz von Lindeberg-L\'evy}
+\chapter{Zentraler Grenzwertsatz von Lindeberg-L\'evy}
 \section{Charakteristische Funktionen}
 \begin{DefON} $\\$
 Es sei $X$ Zufallsvariable auf einem Wahrscheinlichkeitsraum $(\Omega,\AA,P)$. Dann hei"st
@@ -1392,7 +1394,7 @@ Es sei $X$ Zufallsvariable mit charakteristischer Funktion $\phi_X$. Dann gilt f
 $$\frac{1}{2}P(X=a) + P(a<X<b) + \frac{1}{2}P(X=b) = \lim_{T\to\infty}\left(\frac{1}{2\pi}\int_{-T}^T\frac{e^{-ita}-e^{-itb}}{it}\phi_X(t)\d t\right)$$
 \end{Sa}
 \begin{Bew} $\\$
-Sei $I(t):=\frac{1}{2\pi}\int_{-T}^T\frac{e^{-ita}-e^{-itb}}{it}\phi_X(t)\d t$. Definiere $\psi:\R\times[-T,T]\to\C$ durch
+Sei $I(T):=\frac{1}{2\pi}\int_{-T}^T\frac{e^{-ita}-e^{-itb}}{it}\phi_X(t)\d t$. Definiere $\psi:\R\times[-T,T]\to\C$ durch
 $$\psi(t,x):=
 \begin{cases}
 \frac{e^{it(a-x)}-e^{it(b-x)}}{it}, & t\neq 0 \\
@@ -1400,8 +1402,8 @@ b-a, & t=0
 \end{cases}$$
 Mit Lemma \ref{Lem5.1} folgt, dass $\psi$ stetig ist und wegen
 $$\left|\frac{e^{-ita}-e^{-itb}}{it}\right| = \left|\int_a^b e^{ity}\d y\right| \leq b-a$$
-ist $|\psi| \leq b-a$, also ist $\psi$ $P^X\otimes\lambda_{[-T,T]}$-integrierbar. Mit Satz 3.3 (Fubini I) folgt:
-$$I(t) = \frac{1}{2\pi}\int_{-T}^T\frac{e^{-ita}-e^{-itb}}{it}\left(\int e^{itx}P^X(\d x)\right)\d t$$
+ist $|\psi| \leq b-a$, also ist $\psi$ $P^X\otimes\lambda_{[-T,T]}$-integrierbar. Mit Satz \ref{Sa3.3} (Fubini I) folgt:
+$$I(T) = \frac{1}{2\pi}\int_{-T}^T\frac{e^{-ita}-e^{-itb}}{it}\left(\int e^{itx}P^X(\d x)\right)\d t$$
 $$ = \frac{1}{2\pi}\int\underbrace{\int_{-T}^T\frac{1}{it}\left(e^{-it(a-x)}-e^{-it(b-x)}\right)\d t}_{=:\psi_{a,b,T}(x)} P^X(\d x)$$
 \underline{Inneres Integral:} \\
 Da $t\mapsto\frac{cos(t(x-a))}{it}$ punktsymmetrisch ist, gilt:
@@ -1420,10 +1422,82 @@ $$\folgt\psi_{a,b}(x) := \lim_{T\to\infty}\left(\psi_{a,b,T}\left(x\right)\right
 \pi, & x=a \text{ oder } x=b \\
 2\pi, & a<x<b
 \end{cases}$$
-Weiter: $\sup_{x>0}\{|Si(x)|\}<\infty$. \\
-Der Beweis ist noch nicht zu Ende. Sehen wir weiter am Montag...
+
+%%%%%% Vorlesung 11.12.2006
+
+$\folgt (\psi_{a,b,T})_{T\ge 0}$ besitzt eine (konstante) integrierbare Majorante. Mit dem Satz über die majorisierte Konvergenz gilt:
+\begin{eqnarray*}
+\lim_{T\to\infty} I(T) &=& \frac {1}{2\pi}\int \psi_{a,b}(x)P^x(\d x)\\
+&=& \frac 1 2 P(X=a) + \frac 1 2 P(X=b) + P(a < X < b)\\
+\end{eqnarray*}
 \end{Bew}
 
+\begin{Kor} \label{Kor5.1} $\\$
+Sind $X$ und $Y$ Zufallsvariablen mit derselben charakteristischen Funktion, so haben $X$ und $Y$ dieselbe Verteilung.
+\end{Kor}
+\begin{Bew}
+Sei $D=A(X)\cup A(Y)$ mit $A(X)=\{x\in\R|P(X=x)>0\}$ analog $A(Y).$ $A(X)$ ist abzählbar, da
+$A(X) = \bigcup^\infty_{n=1}\{x\in\R|P(X=x)\ge\frac 1 n\}$ und
+$\left|\{x\in\R|P(X=x) \ge \frac 1 n\}\right|\le n \folgt D$ abzählbar
+$$\DD := \{(a,b)| -\infty < a \le b < \infty, a, b\in D\}$$
+ist ein durchschnittstabiles Erzeugendensystem von $\BB(\R).$ $\folgtnach{Sa\ref{Sa5.2}} P^X$ und $P^Y$ stimmen auf $\DD$ überein $\folgtnach{Eindeutigkeitssatz}$ Behauptung.
+\end{Bew}
+
+\begin{Sa} \label{Sa5.3} $\\$
+Sei $X$ eine Zufallsvariable mit charakteristischer Funktion $\phi.$ Gilt $\int |\phi(t)|\d t<\infty,$ so hat $X$ eine stetige Dichte $f$, die gegeben ist durch
+$$ f(x) = \frac 1 {2\pi} \int e^{-itx}\phi(x)\d t\quad x\in\R$$
+\end{Sa}
+\begin{Bew} Wie in Beweis von Satz \ref{Sa5.3} gilt:
+$$\left|\frac{e^{-ita} - e^{-itb}}{it}\right|\le|b-a|\quad (*)$$
+Da $\phi$ $\lambda$-integrierbar ist, ist $|b-a||\phi|$ eine integrierbare Majorante für diesen Ausdruck in Satz \ref{Sa5.2}. Es folgt:
+$$\frac 1 2 P(X=a) + P(a<X<b) + \frac 1 2 P(X=b) = \frac 1 {2\pi} \int\frac{e^{-ita}-e^{-itb}}{it}\phi(t)\d t$$
+\begin{eqnarray*}
+\folgt & P(a<X<b) & \le \frac 1 {2\pi}|b-a|\underbrace{\int|\phi(t)|\d t}_{<\infty}\\
+\folgt & P(X=x) &=\lim_{n\to\infty} P(x-\frac 1 n < X < x + \frac 1 n)\\
+&&=0\\
+\end{eqnarray*}
+Ist $F$ die Verteilungsfunktion von $X$, so gilt:
+$$F(b)-F(a) = \frac 1 {2\pi}\int \frac{e^{-ita} - e^{-itb}}{it}\phi(t)\d t\quad \forall a < b$$
+Wegen $(*)$ kann man  den Satz von der majorisierten Konvergenz anwenden und bekommt:
+\begin{eqnarray*}
+\lim_{h\downarrow 0}\frac{F(x+h)-F(x)}{h} &=& \frac 1 {2\pi}\int e^{-itx}\lim_{h\downarrow 0}\frac{1-e^{-ith}}{ith}\phi(t)\d t\\
+&=& \frac 1 {2\pi}\int e^{-itx}\phi(t)\d t\\
+&=:& f(x)\\
+\end{eqnarray*}
+Außerdem folgt $x\mapsto f(x)$ ist stetig.
+\end{Bew}
+
+\section{Verteilungskonvergenz}
+
+\begin{DefON}
+\begin{enumerate}
+\item[a)] Gegeben sei der messbare Raum $(\R,\BB)$ mit Wahrscheinlichkeitsmaßen $P, P_1, P_2, \ldots$ und zugehörigen Verteilungsfunktionen $F, F_1, F_2,\ldots$\\ \textbf{$P_n$ konvergiert schwach}\index{schwache Konvergenz}\index{Konvergenz!schwache} gegen $P$ ($P\stackrel{w}{\to}P$), wenn $\lim_{n\to\infty}F_n(x) = F(x)\ \forall x\in\R$ an denen $F$ stetig ist.
+\item[b)] Seien $X, X_1, X_2,\ldots$ Zufallsvariablen auf (unter Umständen verschiedenen) Wahrscheinlichkeitsräumen $(\Omega, \AA, P), (\Omega_1, \AA_1, P_1),\ldots$\\
+\textbf{$X_n$ konvergiert in Verteilung}\index{Konvergenz!in Verteilung} gegen $X$ ($X_n\stackrel{d}{\to}X$), wenn $P^{X_n}\stackrel{w}{\to}P^X.$
+\end{enumerate}
+\end{DefON}
+
+\begin{Bsp} \label{Bsp5.2}
+Konvergenz in Verteilung  bzw. schwache Konvergenz ist schwächer als f.s.-Kovergenz.\\
+Sei z.B. $X\sim N(0,1)$ und $X_{2n}=X, X_{2n+1}=-X\ \forall n\in\N. \folgt P^{X_n} \equiv P = N(0,1)$ und $(X_n)$ konvergiert in Verteilung (gegen $X$) gedoch $X_n\not\stackrel{f.s.}{\to}X$
+\end{Bsp}
+Jedoch gilt folgender nützlicher Satz:
+\begin{Sa}[Darstellungssatz von Skorohod]\index{Darstellungssatz von Skorohod}\label{Sa5.4} $\\$
+Es seien $X, X_1, X_2, \ldots$ Zufallsvariablen mit $X_n\dto X.$ Dann existiert ein Wahrscheinlichkeitsraum $(\Omega, \AA, P)$ und hierauf Zufallsvariablen $X', X_1', X_2', \ldots$ mit $X'\stackrel{d}{=}X, X_n'\stackrel{d}{=}X_n\ \forall n\in\N$ derart, dass $X_n'\fs X'$.
+\end{Sa}
+\begin{Bew} Es seien $F, F_1, F_2, \ldots$ die Verteilungsfunktionen zu $X, X_1, X_2, \ldots$ und $(\Omega, \AA, P) = \left((0,1), \BB_{(0,1)}, \lambda_{(0,1)}\right).$ Weiter sei $F^{-1}:(0,1)\to\R, F^{-1}(y):=\inf\{x\in\R|F(x)\ge y\}$ die Quantilsfunktion zu $F,$ analog (Quantilsfunktion) $F^{-1}_n, n\in\N.$\\
+Satz 5.7 (Stoch 1) $\folgt X'\stackrel{d}{=}X, X_n'\stackrel{d}{=}X_n, n\in\N$ ($P(X'\le x) = P(F^{-1}(\omega)\le x)=\underbrace{P(\omega\le F(x))}_{=\lambda(0,1)}=F(x)$ )\\
+Es bleibt also zu zeigen , dass für $P$-fast alle $\omega\in\Omega:\lim_{n\to\infty}X_n'(\omega) = X'(\omega).$\\
+Sei $\omega\in (0,1).$ Da $X$ nur abzählbar viele Atome hat (vgl. Beweis von Korollar \ref{Kor5.1}) existiert zu $\eps > 0$ ein $x\in\R$ mit $X'(\omega)-\eps < x < X'(\omega)$ und $P(X=x) = 0.$\\
+Es gilt (Lemma 5.6, Stoch 1): $\forall y\in(0,1), x\in\R:$
+$$y\le F(x) \equizu F^{-1}(y)\le x$$
+Hier: $\omega\le F(x) \equizu F^{-1}(\omega) = X'(\omega)\le x.$ Wegen $X'(\omega)> x$ folgt $F(x)<\omega.$ Da $F_n(x)\to F(x)$ für $n\to\infty$ nach Voraussetzung, $\exists n_0\in\N,$ so dass $\forall n\ge n_0: F_n(x)<\omega.$ Also $X_n'>x.$\\
+Mit $\eps\downarrow 0$ folgt:\\
+$$\liminf_{n\to\infty}X_n'(\omega)\ge X'(\omega)\quad \forall \omega\in\Omega.$$
+Ist $\omega'>\omega$ und $\eps > 0,$ so $\exists$ ein $x$ mit $X'(\omega')<x<X'(\omega')+\eps$ und $P(X=x)=0.$ Da $F$ rechtsseitig stetig, folgt $F(F^{-1}(y))\ge y\ \forall y\in(0,1),$ also mit der Monotonie von $F:\omega<\omega'\le F(X'(\omega'))\le F(x).$\\
+Wegen $F_n(x)\to F(x)$ ($n\to\infty$), $\exists n_0\in\N$ sodass $\omega\le F_n(x)$ (d.h. $X_n'(\omega)\le x$) $\forall n\ge n_0$ gilt mit $\eps\downarrow 0$ ergibt das
+$$\limsup_{n\to\infty}X_n'(\omega)\le X'(\omega')\quad \forall\omega'>\omega.$$
+\end{Bew}
 
 \newpage
 \renewcommand{\indexname}{Stichwortverzeichnis}
