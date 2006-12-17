@@ -21,6 +21,7 @@
 
 \usepackage[utf8x]{inputenc}
 \PrerenderUnicode{ß}
+%\usepackage[latin1]{inputenc}
 
 %%Zahlenmengen
 %Neue Kommando-Makros
@@ -66,6 +67,8 @@
 \def\fs{\stackrel{f.s.}{\rightarrow }}
 \def\wto{\stackrel{w}{\rightarrow}}
 \def\dto{\stackrel{d}{\rightarrow}}
+\def\bewhin{\textquotedblleft\ensuremath{\Rightarrow}\textquotedblright: } %Hinrichtung eines Beweises
+\def\bewrueck{\textquotedblleft\ensuremath{\Leftarrow}\textquotedblright: } %Rueckrichtung eines Beweises
 
 %Nummerierungen
 \newtheorem{Def}{Definition}[chapter]
@@ -1324,7 +1327,7 @@ $$\overline{X_n} = \frac{1}{n}\sum_{k=1}^n X_k^+\ - \ \frac{1}{n}\sum_{k=1}^n X_
 %Beispiel 4.1
 \begin{Bsp}[Wiederholte Spiele] \label{Bsp4.2} $\\$
 Gegeben 2 Sieler. Spieler A erzielt in Runde $n$ $X_n$ Punkte und spieler B $Y_n$ Punkte. Die Zufallsvariablen seien alle unabh"angig und identisch verteilt. Es sei $D_n:=X_n-Y_n$. Spieler A gewinnt Runde $n$, falls $D_n>0$. \\
-Sei $p_n = P(\sum_{k=1}^n D_k > 0)$ die Wahrscheinlichkit, dass Spieler A nach $n$ Runden mehr Punkte hat. Es gilt nach S.\ref{Sa4.2}:
+Sei $p_n = P(\sum_{k=1}^n D_k > 0)$ die Wahrscheinlichkeit, dass Spieler A nach $n$ Runden mehr Punkte hat. Es gilt nach S.\ref{Sa4.2}:
 $$\frac{1}{n}\sum_{k=1}^n\ind_{[D_k > 0]}\ \fs\ E\left[\ind_{[D_1 > 0]}\right] = p_1.$$
 Ist $p_1>\frac{1}{2}$, so gewinnt Spieler A langfristig mehr Runden als B. Dies gilt jedoch nicht, wenn die Punkte addiert werden! Beispiel dazu:
 $$X_k :=
@@ -1469,7 +1472,7 @@ Außerdem folgt $x\mapsto f(x)$ ist stetig.
 
 \section{Verteilungskonvergenz}
 
-\begin{DefON}
+\begin{DefON} $\\$
 \begin{enumerate}
 \item[a)] Gegeben sei der messbare Raum $(\R,\BB)$ mit Wahrscheinlichkeitsmaßen $P, P_1, P_2, \ldots$ und zugehörigen Verteilungsfunktionen $F, F_1, F_2,\ldots$\\ \textbf{$P_n$ konvergiert schwach}\index{schwache Konvergenz}\index{Konvergenz!schwache} gegen $P$ ($P\stackrel{w}{\to}P$), wenn $\lim_{n\to\infty}F_n(x) = F(x)\ \forall x\in\R$ an denen $F$ stetig ist.
 \item[b)] Seien $X, X_1, X_2,\ldots$ Zufallsvariablen auf (unter Umständen verschiedenen) Wahrscheinlichkeitsräumen $(\Omega, \AA, P), (\Omega_1, \AA_1, P_1),\ldots$\\
@@ -1497,6 +1500,94 @@ $$\liminf_{n\to\infty}X_n'(\omega)\ge X'(\omega)\quad \forall \omega\in\Omega.$$
 Ist $\omega'>\omega$ und $\eps > 0,$ so $\exists$ ein $x$ mit $X'(\omega')<x<X'(\omega')+\eps$ und $P(X=x)=0.$ Da $F$ rechtsseitig stetig, folgt $F(F^{-1}(y))\ge y\ \forall y\in(0,1),$ also mit der Monotonie von $F:\omega<\omega'\le F(X'(\omega'))\le F(x).$\\
 Wegen $F_n(x)\to F(x)$ ($n\to\infty$), $\exists n_0\in\N$ sodass $\omega\le F_n(x)$ (d.h. $X_n'(\omega)\le x$) $\forall n\ge n_0$ gilt mit $\eps\downarrow 0$ ergibt das
 $$\limsup_{n\to\infty}X_n'(\omega)\le X'(\omega')\quad \forall\omega'>\omega.$$
+\end{Bew}
+
+%% Vorlesung 14.12.2006 %%
+%Satz 5.5
+\begin{Sa}\label{Sa5.5}
+Es sei $C_b(\R)$ die Menge aller stetigen und beschränkten Funktionen, $h:\R\to\R$. Dann gilt:
+$$X_n\stackrel{d}{\to}X \equizu Eh(X_n)\to Eh(X)\quad\forall k\in C_b(\R)$$ %TODO: welches k bitte?!
+\end{Sa}
+\begin{Bew} $\\$
+\bewhin Nach Satz \ref{Sa5.4} existieren ein Wahrscheinlichkeitsraum $(\Omega,\AA,P)$ und Zufallsvariablen $X'\stackrel{d}{=}X,\ X_n'\stackrel{d}{=}X_n\quad\forall n\in\N$ mit $X_n'\fs X'$. Es folgt:
+$$lim_{n\to\infty}\left(Eh\left(X_n\right)\right) = lim_{n\to\infty}\left(Eh\left(X_n'\right)\right) \stackrel{\text{h stetig}, X_n'\fs X'}{=} Eh\left(X'\right) = Eh\left(X\right).$$
+\bewrueck Für $a,b\in\R, a<b$ sei $h_{a,b}:\R\to\R$ definiert durch
+$$h_{a,b}\left(x\right):=\begin{cases}
+1 &, x\leq a \\
+\frac{b-x}{b-a} &,a<x<b \\
+0 &,x\geq b
+\end{cases}$$
+%FEHLT: Skizze
+$h_{a,b}$ ist stetig und beschränkt. Seien $F, F_n$ die Verteilungsfunktionen zu $X, X_n\quad\forall n\in\N$. Dann gilt $\forall y>x$:
+$$F_n\left(x\right) = E\left[\ind_{(-\infty,x)}\left(X_n\right)\right] \leq E\left[h_{x,y}\left(X_n\right)\right] \stackrel{n\to\infty}{\to} E\left[h_{x,y}\left(X\right)\right],$$
+$$E\left[h_{x,y}\left(X\right)\right] \leq E\left[\ind_{(-\infty,y)}\left(X\right)\right] = F\left(y\right).$$
+Also folgt da $F$ rechtsseitig stetig ist mit $y\downarrow x$:
+$$\limsup_{n\to\infty}\left(F_n\left(x\right)\right) \leq F\left(x\right)\quad\forall x\in\R$$
+Analog erhält man für $y<x$:
+$$F_n\left(x\right) \geq E\left[h_{y,x}\left(X_n\right)\right] \stackrel{n\to\infty}{\rightarrow} E\left[h_{y,x}\left(X\right)\right] \geq F\left(y\right)$$
+Mit $y\uparrow x$: $\liminf_{n\to\infty}(F_n(x)) \geq F(x-) \quad\forall x\in\R$. \\
+Ist $F$ in $x$ stetig, so gilt $F(x-) = F(x)$ und somit $F_n(X) \stackrel{n\to\infty}{\rightarrow}F(x)$.
+\end{Bew}
+
+%Satz 5.6 (Continuous Mapping Thoerem)
+\begin{Sa}[\textquotedblleft Continuous Mapping Theorem\textquotedblright] \label{Sa5.6} \index{Continuous Mapping Theorem} $\\$
+Es seien $X,X_1,X_2,\dots$ Zufallsvariablen mit $X_n\dto X$. Weiter sei $f:\R\to\R$ eine Borel-messbare Funktion mit $P(X\in\{x\in\R\ |\ f\text{ nicht stetig in }x\})=0$. \\
+Dann gilt auch $f(X_n)\dto f(X)$ für $n\to\infty$.
+\end{Sa}
+\begin{Bew}
+Übung.
+\end{Bew}
+
+%Satz 5.7 (Satz von Helly)
+\begin{Sa}[Satz von Helly\footnote{Eduard Helly (1884-1943), österreichischer Mathematiker, hauptsächlich Funktionalanalysis}] \label{Sa5.7} \index{Satz!von Helly}$\\$
+Zu jeder Folge $(F_n)_{n\in\N}$ von Verteilungsfunktionen existieren eine Teilfolge $(F_{n_k})_{k\in\N}$ und eine schwach monoton wachsende, rechtsseitig stetige Funktion $f:\R\to[0,1]$, sodass $\lim_{n\to\infty}(F_n(x)) = G(x) \quad\forall x\in\R$, an denen $G$ stetig ist. %TODO: wo kommt denn f hier vor?!
+\end{Sa}
+\begin{Bew}[Skizze] $\\$
+Für $x\in\R$ ist $(F_n(x))_{n\in\N} \subset [0,1]\quad\folgtnach{Bolzano-Weierstraß}\exists$ Häufungspunkt. Sei $(r_k)_{k\in\N}$ eine Abzählung von $\Q$. Wähle Teilfolgen $(F_{n_{k,j}})_{j\in\N}$ mit $F_{n_{k,j}} \stackrel{j\to\infty}{\rightarrow} G_0(r_k)$, wobei $(n_{k+1,j})_{j\in\N}$ eine Teilfolge von $(n_{k,j})_{j\in\N}$ ist. (Definition der Funktion $f_0$ auf $\Q$) \\
+Für die Diagonalfolge $(n_{j,j})_{j\in\N}$ gil dann: $F_{n_{j,j}} \rightarrow G_0$ auf $\Q$. Sei $G_0$ auf ganz $\R$ durch $G(x) := \inf\{G_0(r)\ |\ r\in\Q, r>x\}$ fortgesetzt. \\
+Rest: $\epsilon-\delta$-Argumente.
+\end{Bew}
+
+\begin{BemON}
+$G$ aus Satz \ref{Sa5.7} muß keine Verteilungsfunktion sein. \\
+Beispiel: $F_n := \ind_{[n,\infty]} \folgt G\equiv 0$
+\end{BemON}
+
+\begin{DefON}
+Eine Familie $\PM$ von Wahrscheinlichkeitsmaßen auf $(\R,\BB)$ heißt \textbf{straff}\index{straff}\index{Wahrscheinlichkeitsmaß!straffes}, wenn $\forall \epsilon>0 \ \exists$ kompaktes Intervall $[a,b] \subset \R$ mit:
+$$P\left(\left[a,b\right]\right) \geq 1-\epsilon \quad\forall P\in\PM$$
+\end{DefON}
+
+\begin{BemON} $\\$
+\begin{enumerate}
+\item[(i)] Ist $\PM$ straff, so auch jedes $\PM' \subset \PM$.
+\item[(ii)] Sind alle $\PM_i$ mit $i\in\{1,\dots,,n\}$ straff, so auch $\bigcup_{i=1}^n\PM_i$.
+\item[(iii)] Ist $|\PM| = 1$, so ist $\PM$ straff.
+\end{enumerate}
+\end{BemON}
+
+%Satz 5.8
+\begin{Sa}
+Ist $\{P_n\ |\ n\in\N\}$ eine straffe Familie von Wahrscheinlichkeitsmaßen auf $(\R,\BB)$, so existieren eine Teilfolge $(P_{n_k})_{k\in\N}$ von $(P_n)_{n\in\N}$ und ein Wahrscheinlichkeitsmaß $P$ derart, dass $P_{n_k} \wto P$ für $k\to\infty$.
+\end{Sa}
+\begin{Bew}
+Sei $F_n$ die Verteilungsfunktion zu $P_n \ \forall n\in\N$. \\
+$\folgtnach{Satz \ref{Sa5.7}} \exists$ Folge $(n_k)_{k\in\N}$ mit $F_{n_k}(x) \to G(x)$ für $k\to\infty \ \forall x\in\R$ mit $G$ stetig in $x$; $G$ ist wachsend und rechtsseitig stetig. \\
+Bleibt zu zeigen: $G$ ist Verteilungsfunktion, also $\lim_{x\to -\infty}(G(x)) = 0$ und $\lim_{x\to\infty}(G(x)) = 1$. Ist dann $P$ das Wahrscheinlichkeitsmaß zu $G$, so folgt $P_{n_k} \wto P$. \\
+Sei also $\epsilon>0$. Da $\{P_n\ |\ n\in\N\}$ straff ist $\folgt \exists a,b\in\R$ mit $P_n([a,b]) \geq 1-\epsilon \ \forall n\in\N. \folgt F_n(a) \leq \epsilon \ \forall n\in\N$. \\
+$G$ hat höchstens abzählbar viele Unstetigkeitsstellen. $\folgt \ \exists c<a$, in dem $G$ stetig. $\folgt G(c) = \lim_{k\to\infty}(F_{n_k}(c)) \leq \epsilon \ \folgt G(x) \leq \epsilon \ \forall x\leq c$. \\
+Also: $\forall \epsilon>0 \quad\exists c\in\R: \quad\forall x\leq c$ gilt $0 \leq G(x) \leq \epsilon \quad\folgt \lim_{x\to -\infty}(G(x)) = 0$ und $\lim_{x\to\infty}(G(x)) = 1$.
+\end{Bew}
+
+%Satz 5.9 (Struktursatz für charakteristische Funktionen)
+\begin{Sa}[Struktursatz für charakteristische Funktionen] \index{Struktursatz für charakteristische Funktionen} \label{Sa5.9} $\\$
+Es seien $X,X_1,X_2,\dots$ Zufallsvariablen, $\phi,\phi_1,\phi_2,\dots$ die zugehörigen charakteristischen Funktionen. Dann gilt:
+$$X_n \dto X \quad\equizu\quad \phi_n(t) \to \phi(t) \quad\forall t\in\R$$
+\end{Sa}
+\begin{Bew} $\\$
+\bewhin Sei $t\in\R.\ x\mapsto\cos(tx),\ x\mapsto\sin(tx)$ sind stetig und beschränkt. \\
+$\folgtnach{Satz \ref{Sa5.5}} \phi_n(t) = E\cos(tX_n) + iE\sin(tX_n) \rightarrow E\cos(tX) + iE\sin(tX) = \phi(t)$.
+%Ende der Vorlesung, Beweis geht noch weiter!
 \end{Bew}
 
 \newpage
