@@ -32,6 +32,7 @@
 \newcommand{\Z}{{\mathbb Z}}
 %\newcommand{\ind}{1\hspace{-0,9ex}\raisebox{-0,2ex}{1}}
 \newcommand{\ind}{\text{\bf{1}}}
+\newcommand{\id}{\text{\bf{id}}}
 \newcommand{\eps}{\varepsilon}
 
 % Seitenraender
@@ -1619,7 +1620,7 @@ Sei $\varphi_0$ charakteristische Funktion zu $P_0$. Also folgt mit der Hinricht
 
 Wir ben"otigen noch folgendes technisches Hilfslemma:
 %Lemma 5.10
-\begin{Lem} \label{le5.10} $\\$
+\begin{Lem} \label{Lem5.10} $\\$
 F"ur alle $z_1,\dots,z_n,w_1,\dots,w_n \in \{ z \in \C | |z| \leq 1 \}$ gilt:
 \[
 |\prod_{k=1}^n z_k - \prod_{k=1}^n w_k| \leq \sum_{k=1}^n |z_k-w_k|
@@ -1678,15 +1679,106 @@ Sei $X_{nk} := Y_k, r_n = n, (\Omega_n,\AA_n,P_n) = (\Omega,\AA,P)$. Es gilt: $s
 \[
 \frac1{s_n^2} \sum_{k=1}^{r_n} \int_{|X_{nk}- \mu_{nk}| > \eps s_n} (X_{nk} - \mu_{nk})^2 \d Pn = \frac1{\sigma^2} \int_{|Y_1-\mu_1| > \eps \sqrt{n} \sigma} (Y_1-\mu_1)^2 \d P =: I_n
 \]
-Da $z_n := \ind_{(\eps \sqrt{n} \sigma, \infty)} (|Y_1 - \mu_1|) (Y_1-\mu_1)^2 \leq (Y_1 - \mu_1)^2$ und $\lim_{n \rightarrow \infty} z_n = 0$ folgt mit majorisierter Konvergenz, dass $\lim_{n \rightarrow \infty} I_n = 0$. Also ist die Lindeberg-Bedingung erf"ullt und die Beh folgt mit S.5.11.
+Da $z_n := \ind_{(\eps \sqrt{n} \sigma, \infty)} (|Y_1 - \mu_1|) (Y_1-\mu_1)^2 \leq (Y_1 - \mu_1)^2$ und $\lim_{n \rightarrow \infty} z_n = 0$ folgt mit majorisierter Konvergenz, dass $\lim_{n \rightarrow \infty} I_n = 0$. Also ist die Lindeberg-Bedingung erf"ullt und die Beh folgt mit S.\ref{Sa5.11}.
 \end{Bew}
 
 \begin{Bew}
-Beweis von Satz 5.11 \\
+Beweis von Satz \ref{Sa5.11} \\
 O.B.d.A: $\mu_{nk}=0$ und $s_n=1$. Anderfalls ersetze $X_{nk}$ durch $\frac{X_{nk}-\mu_{nk}}{s_n}.$\\
-\textbf{Idee:} Verwende S.5.9: Sei $\varphi_{nk}$ die charakteristische Funktion von $X_{nk}$ und $\varphi_{s_n}$ die von $\sum_{n=1}^{r_n} X_{nk}: \varphi_{s_n}(t) = \prod_{k=1}^{r_n} \varphi_{nk}(t) \rightarrow \varphi_z(t) = e^{-\frac{t^2}{2}}$ \\
-Ende der Vorlesung...
+\textbf{Idee:} Verwende S.\ref{Sa5.9}: Sei $\varphi_{nk}$ die charakteristische Funktion von $X_{nk}$ und $\varphi_{s_n}$ die von $\sum_{n=1}^{r_n} X_{nk}: \varphi_{s_n}(t) = \prod_{k=1}^{r_n} \varphi_{nk}(t) \rightarrow \varphi_z(t) = e^{-\frac{t^2}{2}}$ \\
+Zu zeigen:
+$$\prod^{r_n}_{k=1}\phi_{n_k}(t)\to\phi_z(t)=e^{-\frac {t^2} 2}\quad\forall t\in\R$$
+Mit Lemma \ref{Lem5.1} ($m=3$):
+\begin{eqnarray*}
+\left| e^{itx} - (1+itx-\frac 1 2 t^2 x^2)\right| &\le&\min\{\frac{|tx|^3}{3!}, |tx|^2\}\quad\forall x\in\R\\
+&\le&\min\{|tx|^3, |tx|^2\}
+\end{eqnarray*}
+Integral über $x$ liefert (beachte: $EX=0$)
+$$\left|\phi_{n_k}(t) - ( 1- \frac 1 2 t^2\sigma_{n_k}^2)\right|\le E\min\{|tX_{n_k}|^2, |tX_{n_k}^3\} =: M_{n_k}$$
+Sei $\eps>0$ beliebig. Es gilt
+\begin{eqnarray*}
+M_{n_k} &\le& \int_{|X_{n_k}|\le\eps}|tX_{n_k}|^3\d P_n + \int_{|X_{n_k}|>\eps}|tX_{n_k}|^2\d P_n\\
+&\le& |t|^3\eps\sigma_{n_k}^2 + t^2\int_{|X_{n_k}|>\eps}X_{n_k}^2\d P_n
+\end{eqnarray*}
+$$\folgt\sum_{k=1}^{r_n}M_{n_k}\le|t|^3\eps + t^2\sum_{k_1}^{r_n}\int_{|X_{n_k}|>\eps}X_{n_k}\d P_n \stackrel{n\to\infty}{\to}\eps|t|^3 + 0 \quad\text{folgt mit }(L)$$
+Mit $\eps\downarrow 0$ folgt:
+$$\lim_{n\to\infty}\sum_{k=1}^{r_n}\left|\phi_n(t)-(1-\frac 1 2 t^2\sigma_{n_k}^2)\right| = 0 \quad\forall t\in\R\quad (1)$$
+Behauptung: $\lim_{n\to\infty}\left|\prod_{k_n}^{r_n}\phi_{n_k}(t) - \prod_{k=1}^{r_n}(1-\frac 1 2 t^2\sigma_{n_k}^2)\right|=0\quad\forall t\in\R\quad (2)$\\
+Beweis: $\forall\eps>0$ gilt:
+$$\sigma_{n_k}^2\le\int_{|X_{n_k}|>\eps}X_{n_k}^2\d P_n + \eps^2$$
+\begin{eqnarray*}
+&\folgt& \limsup_{n\to\infty}\max\{\sigma_{n_k}^2|1\le k=r_n\} \\
+&\le&\lim_{n\to\infty}\left(\eps^2+\sum_{k=1}^{r_n}\int_{|X_{n_k}|>\eps}X_{n_k}^2\d P_n\right)\\
+&\stackrel{(L)}{=}&\eps^2 + 0
+\end{eqnarray*}
+Mit $\eps\downarrow 0:$
+$$\lim_{n\to\infty}\max\{\sigma_{n_k}^2|1\le k\le r_n\}\quad (3)$$
+\begin{tabular}[b]{rp{0.8\textwidth}}
+$\folgt$ & $\forall t\in\R, \exists n_0\in\N,$ so dass $\forall n\le n_0: |1-\frac 1 2 t^2\sigma_{n_k}^2|\le 1\quad \forall k\in\{1,\ldots, r_n\}$\\
+$\folgt$ & Für $n\ge n_0$ läßt sich das $\prod$ in $(2)$ nach Lemma \ref{Lem5.10} durch die Summe in $(1)$ abschätzen, d.h. $(1)\folgt(2)$\\
+\end{tabular}\\
+Es bleibt zu zeigen:
+$$\lim_{n\to\infty}|\underbrace{\prod_{k=1}^{r_n}\exp(-\frac 1 2 t^2\sigma_{n_k}^2)}_{=e^{-\frac 1 2 t^2}} - \prod_{k=1}^{r_n}(1-\frac 1 2 t^2 r_{n_k}^2)| = 0 \quad\forall t\in\R$$
+Behauptung fogt mit Lemma \ref{Lem5.10} falls
+$$\lim_{n\to\infty}\sum_{k=1}^{r_n}\left|\exp(-\frac 1 2 t^2\sigma_{n_k}^2) - 1 + \frac 1 2 t^2\sigma_{n_k}^2\right| = 0\quad (4)$$
+Für $x\in\R$ mit $|x|\le\frac 1 2$ gilt $|e^x-1-x|\le\frac 1 2 \sum_{j=2}^\infty |x|^j\le x^2$
+$$\folgt \sum_{k=1}^{r_n}|\exp(\underbrace{-\frac 1 2 t^2\sigma_{n_k}^2}_{=x}) - 1 + \frac 1 2 t^2\sigma_{n_k}^2|\le \frac 1 4 t^4\sum_{k=1}^{r_n}\sigma_{n_k}^4$$
+Wegen $\sum_{k=1}^{r_n}\sigma_{n_k}^4\le\max\{\sigma_{n_k}^2|1\le k\le r_n\} \cdot\underbrace{\sum_{k=1}^{r_n}\sigma_{n_k}^2}_{=1}\stackrel{n\to\infty, (3)}{\to}0$\\
+Also $(3)\folgt(4)$
 \end{Bew}
+\begin{Bsp}[Rekorde]\label{Bsp5.3}$\\$
+Sei $(\Omega, \AA, P)$ ein Wahrscheinlichkeitsraum und $X_1, X_2,\ldots$ eine Folge von unabhängigen identisch  verteilten Zufallsvariablen darauf mit absolutstetiger Verteilungsfunktion $F.$ Setze:
+$$R_n := \begin{cases}
+1, &\text{falls } X_n>X_i, i=1,\ldots, n-1\\
+0, &\text{sonst}
+\end{cases}$$
+$R_n = 1 \equizu$ $n$-ter Versuch ist ein Rekord. $F$ stetig $\folgt P(X_i = X_j) = 0\ \forall i\not =j$
+\begin{eqnarray*}
+\folgt & A & :=\{\omega\in\Omega|\exists i\not =j, X_i(\omega) = X_j(\omega)\}\\
+&& = \bigcup_{i,j\in\N, i\not=j}\{X_i = X_j\}\\
+\folgt & P(A) & =0
+\end{eqnarray*}
+Sei $S_n$ die Menge der Permutationen der Zahlen $1,\ldots,n.$ Sei $\Psi_n:\Omega\to S_n$ gegeben durch
+$$\Psi_n = \pi\equizu X_{\pi(1)}<X_{\pi(2)}<\cdots<X_{\pi(n)}$$
+$\Psi_n$ ist messbar, da $\Psi^{-1}(\{\pi\})=\bigcap_{i=1}^n\{\underbrace{X_{\pi(i)}<X_{\pi(i+1)}}_{\in\AA}\}.$ Beispiel \ref{Bsp3.5} $\folgt (X_{\pi(1)},\ldots,X_{\pi(n)}) \stackrel{d}{=}(X_1,\ldots, X_n)\ \forall\pi\in S_n.$\\
+Ist $B:=\{(x_1, \ldots, x_n)\in\R^n|x_1<\cdots<x_n\}$ so gilt:
+\begin{eqnarray*}
+P(\Psi_n=\pi) &=& P((X_{\pi(1)},\ldots,X_{\pi(n)})\in B)\\
+&=&P((X_1,\ldots,X_n)\in B)\\
+&=&P(\Psi_n = \id)\quad\text{unanhängig von }\pi
+\end{eqnarray*}
+\begin{tabular}[b]{rp{0.8\textwidth}}
+$\folgt$ & $P(\Psi_n=\pi)=\frac 1 {n!}\ \forall\pi\in S_n$ und\\
+&$P(R_n = 1) = P(\Psi_n\in\{\pi\in S_n|\pi(n)=n\}) = \frac 1 n$\\
+$\folgt$ & $R_n\sim B(1,\frac 1 n)$ sind also nicht identisch verteilt
+\end{tabular}\\
+Wegen $\{R_{n+1}=1\}\cap\{\Psi_n=\pi\}=\{\Psi_{n+1}=\tilde\pi\}$ mit
+$$\tilde\pi (i) = \begin{cases}
+\pi(i) &, i\le n\\
+n+1 &, i=n+1
+\end{cases}$$
+folgt:
+$$P(\Psi_n=\pi, R_{n+1}=1) = \frac 1 {(n+1)!} = \underbrace{P(\Psi_n=\pi)}_{=\frac 1 {n!}} \underbrace{P(R_{n+1} = 1)}_{\frac 1 {n+1}}\quad\forall\pi\in S_n$$
+\begin{tabular}[b]{rp{0.8\textwidth}}
+$\folgt$ & $\Psi_n$ und $R_{n+1}$ sind unabhängig\\
+$\folgt$ & Da $(R_1, \ldots, R_n) = G(\Psi_n)$ sind $R_{n+1}$ und $(R_1,\ldots,R_n)$ unabhängig\\
+$\folgt$& $P(R_{i_1}=j_1,\ldots,R_{i_n}=j_n) =$\\
+&$P(R_{i_1}=j_1,\ldots,R_{i_{n-1}}=j_{n-1})\cdot P(R_{i_n}=j_n) = \ldots$\\
+&$P(R_{i_1}=j_1)\cdot\ldots\cdot P(R_{i_n} = j_n)$ für $i_1<i_2<\ldots<i_n, j_1,\ldots,j_n\in\{0,1\}.$\\
+$\folgt$ & die Zufallsvariablen $(R_n)_{n\in\N}$ sind unabhängig
+\end{tabular}\\
+Wie viele Rekorde gibt es unter den ersten $n$ Versuchen?
+$$S_n:=\sum_{i=1}^n R_i$$
+Es gilt:
+$$ES_n = \sum_{k=1}^n ER_k = \sum_{k=1}^n \frac 1 k$$
+$$\var(S_n) = \sum_{k=1}^n\var(R_k) = \sum_{k=1}^n\frac 1 n (1 - \frac 1 k ) = \sum_{k=1}^n\frac 1 k - \sum_{k=1}^n \frac 1 {k^2}$$
+Insbesondere:
+$$\frac{ES_n}{\log n}\stackrel{n\to\infty}{\to}1,\quad\frac{\var(S_n)}{\log n}\stackrel{n\to\infty}{\to}1$$
+Mit dem zentralen Genzwertsatz (ZGWS) bekommen wir genauere Aussagen: Sei $X_{n_k} = R_k, r_n = n \folgt s_n = \left(\var(S_n)\right)^{\frac 1 2}$\\
+Überprüfen der Lyapunov-Bedingung ($\delta = 1$):
+$$E|R_k - \underbrace{ER_k}_{= \frac 1 k}|^3 = \underbrace{P(R_k=1)}_{=\frac 1 k}(1-\frac 1 k )^3 + \underbrace{P(R_k = 0)}_{=\frac {k-1} k}\left(\frac 1 k\right)^k\le\frac 2 k$$
+$$\folgt 0\le\frac 1 {s_n^3}\sum_{k=1}^n E|R_k-ER_k|^3\le\frac 1 {s_n^3}\sum_{k=1}^n\frac 2 k\to 0 \text{ für } n\to\infty$$
+\end{Bsp}
 
 \newpage
 \renewcommand{\indexname}{Stichwortverzeichnis}
