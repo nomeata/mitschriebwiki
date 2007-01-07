@@ -50,6 +50,8 @@
 \def\BB{ \mathfrak{B} } 
 \def\DD{ \mathcal{D} } 
 \def\NN{ \mathcal{N} } 
+\def\sel{ \mathcal{l}}
+\def\seL{ \mathcal{L}}
 
 % Komische Symbole
 \def\folgt{\ensuremath{\implies}}
@@ -61,14 +63,16 @@
 %Nummerierungen
 \newtheorem{Def}{Definition}[chapter]
 \newtheorem{Sa}[Def]{Satz}
+\newtheorem{Theo}[Def]{Theorem}
 \newtheorem{Lem}[Def]{Lemma}
 \newtheorem{Kor}[Def]{Korollar}
 \theorembodyfont{\normalfont}
 \newtheorem{Bsp}[Def]{Beispiel}
 \newtheorem{Bem}[Def]{Bemerkung}
-\theoremsymbol{\ensuremath{_\blacksquare}}
+\newtheorem*{BemNO}{Bemerkung}
 \theoremstyle{nonumberplain}
-\newtheorem{Bew}[Def]{Beweis}
+\theoremsymbol{\ensuremath{_\blacksquare}}
+\newtheorem{Bew}{Beweis}
 \setcounter{chapter}{1}
 \setcounter{Def}{33}
 
@@ -85,7 +89,131 @@
 \begin{document}
 
 \maketitle
-\begin{Bsp}
-Test
-\end{Bsp}
+
+F"ur $A\in \seL_{d}$ und $f:A^{d}\rightarrow \C \qquad f:A\rightarrow[-\infty,\infty]$ beschr"ankt betrachtet man\\
+$\tilde{f}(x)= \begin{cases}
+f(x)&,x\in A\\ 
+0&, x\in \R^{d}\backslash A \end{cases}$\\
+$f$ hei\ss t \underline{integrierbar "uber A} wenn $\tilde{f}$ integrierbar ist ("uber $\R^{d})$ und wir setzen 
+\begin{displaymath}
+\int\limits_{A}{f}(x)dx = \int\limits_{\R^{d}}\tilde{f}(x)dx.
+\end{displaymath}
+Beachte: F"ur integrierbare $f$ auf $\R{d}$ gilt
+\begin{displaymath}
+\int\limits_{\R^{d}}\mathbb{1}_{A}(x){f}(x)dx = \int\limits_{A}{f}(x)dx.
+\end{displaymath}
+%Bemerkung 1.34
+\begin{Bem}$\\$
+\begin{enumerate}
+\item [a)] Die obigen Def. sind unabh"angig von der Darstellung der einfachen Funktionen und der Wahl der aprox. Fkt. $\varphi_{k}$ (siehe A§,X,2.1,2.7,3.2).
+Obiges Integral und das in K"onigsberger II stimmen "uberein.
+\item [b)] Sei $f:\R^{d} \rightarrow \C$ messbar. Dann ist $f$ int'bar $\equizu|f|$ int'bar. 
+\begin{Bew}:
+\glqq$\Rightarrow$\grqq verwende zu $\varphi_{n}$ aus Def. 1.33 die Folge $|\varphi_{n}|$ (AE,X,2.8).\\
+\glqq$\Leftarrow$\grqq Es gilt $f=f_{1}-f_{2}+if_{3}-if_{4}$ mit $0\leq f_{k}\leq |f|$. Verwende c).
+\end{Bew}
+\item [c)] F"ur $A\in\sL_{d}$ setzt man $\sL^{1}(A):\{f:A\rightarrow\C : f \textrm{integrierbar}\}$. \\
+Dann gilt: $\sL^{1}(A)$ ist VR und $||f||_{1}=\int\limits_{A}|f|dx$ ist Halbnorm auf $\sL^{1}(A)$.\\
+(Beachte $||\mathbb{1}_{N}||_{1} = \lambda (N) = 0$ f"ur jede NM $N$.)\\
+Seien $f,g\in\sL^{1}(A)$, $ \alpha $,$\beta \in \K$. Dann:
+\begin{enumerate}
+\item [i)] 
+\begin{displaymath}
+\int\limits_{A}(\alpha f+\beta g)dx=\alpha \int\limits_{A}f dx+\beta \int\limits_{A}gdx
+\end{displaymath}
+\item [ii)] 
+\begin{displaymath}
+\K = \R , f\leq g \folgt \int\limits_{A}fdx\leq \int\limits_{A}gdx.
+\end{displaymath}
+\item [iii)]
+\begin{displaymath}
+|\int\limits_{A}fdx|\leq\int\limits_{A}|f|dx\qquad \textrm{(nach b))}
+\end{displaymath}
+\item [iv)]
+$h$ messbar, $|h|\leq |f|$ dann $h\in \sL^{1}(A)$. Analoge Eigenschaften f"ur:\\ $f:A\rightarrow[0,\infty]$.
+(Folgt leicht per Approximation. Siehe AE 2.4,2.9,2.11,3.3)
+\end{enumerate}
+\item [d)]
+Sei $\varphi :A\rightarrow [0,\infty]$ messbar mit $\int\limits_{A}\varphi dx <\infty$. Dann ist $\varphi(x)<\infty$ ffa. $x\in A$.
+\end{enumerate}
+\begin{Bew}
+Anm.: $\varphi(x)=\infty$ f"ur $x\in B$ mit $\lambda(B)>0$. $B\subseteq A$ messbar. Dann folgt f"ur alle $n\in N$: $\int\limits_{A}\varphi dx\geq \int\limits_{A}n\cdot \mathbb{1}_{B}dx = n\cdot \lambda(B)\rightarrow_{n\rightarrow\infty} \infty$ Wid.!
+\end{Bew}
+\end{Bem}
+%Theorem 1.35
+\begin{Theo}(Lemma von Fatou, mojorisierte konvergenz)(Beppo Levi)\\
+Seien $f_{n}:A\rightarrow [0.\infty]$ messbar $(n\in \N)$, $A\in\sL_{d}$.\\
+Dann gelten:
+\begin{enumerate}
+\item [a)]
+\begin{displaymath}
+\int\limits_{A} \underline{\lim_{n\rightarrow \infty}} f_{n}dx \leq \underline{\lim_{n\rightarrow \infty}} \int\limits_{A} f_{n} dx. \textrm{(AE,X,3.7)}
+\end{displaymath}
+\item [b)]
+\begin{displaymath}
+f_{n} \leq f_{n+1} \folgt \int\limits_{A} \lim_{n\rightarrow \infty}f_{n}dx=\lim_{n\rightarrow \infty} \int\limits_{A} f_{n}dx
+\end{displaymath}
+\end{enumerate}
+\end{Theo}
+%Theorem 1.36
+\begin{Theo}(majorisierte Konvergenz)\\
+Seien $f_{n},g \in \sL^{1}(A), A\in \sL_{d}$ $f_{n}(x)\rightarrow f(x) (n\rightarrow \infty)$ ffa. $x\in A$\\
+ \underline{und} $ |f_{n}(x)|\leq g(x)$ ffa.
+$x\in A$ und alle $n\in \N$.Dann gilt:
+\begin{displaymath}
+f\in \sL^{1}(A) \textrm{ und } ||f_{n}-f||_{1} \rightarrow 0 (n\rightarrow \infty)\\
+\textrm{ somit } \int\limits_{A} f_{n}dx \rightarrow \int\limits_{A} fdx.
+\end{displaymath}
+\end{Theo}
+\begin{BemNO}Majorante bzw. Monotonie sind oben \underline{wesentlich}.\\
+\underline{Bsp:} hier steht eine Zeichnung!\\
+$\folgt f_{n}(x) \rightarrow 0 \quad\forall x\geq 0, n\rightarrow \infty$ aber 
+$||f_{n}||_{1} = n \quad\rightarrow\infty$\\
+F"ur $A\in\sL_{d}$, $p\in[1,\infty]$ messbare $f:A\rightarrow \C$ definiert man
+\begin{displaymath}
+||f||_{p} = (\int\limits_{A}|f(x)|^{p}dx)^{\frac{1}{p}} \quad p<\infty \textrm{(betrachte $|f|^{p}$ ist messbar.)}
+\end{displaymath}
+\begin{displaymath}
+\sn{f}=\inf\{c\geq 0: |f(x)| \leq c,\textrm{ f"uer }x\notin N=N(c)\}= ess \sup_{x\in A} |f(x)| \quad (\textrm{wobei } \inf \varnothing = \infty )
+\end{displaymath}
+$\sL^{p}(A) = \{f:A\rightarrow \C : \textrm{messbar und }  ||f||_{p} <\infty \}$\\
+Schon gesehen $\sL^{1}(A)$ ist VR, $||\cdot||_{1}$ ist Halbnorm.
+\end{BemNO}
+%Satz 1.37
+\begin{Sa}
+$\mathcal{L}^{\infty}(A) $ ist VR mit Halbnorm $ ||\cdot||_{\infty}$
+\end{Sa}
+\begin{Bew}$\\$
+Seien $f_{j} \in \mathcal{L}^{\infty}(A), |f_{j}(x)| \leq c_{j} \qquad x \notin N_{j} j=1,2,... N_{j}=NM$
+\\Dann: $|f_{1}(x)+f_{2}(x)|\leq c_{1} + c_{2}\qquad \forall x\notin N_{1}\bigcup N_{2}$, wobei $N=N_{1}\bigcup N_{2}=NM.$
+\\$\folgt f_{1}+f_{2} \in \mathcal{L}^{\infty}(A), ||f_{1}+f_{2}||_{\infty} \leq ||f_{1}||_{\infty} + ||f_{2}||_{\infty}$
+''$||\alpha f_{1}|| = |\alpha| ||f_{1}||_{\infty}$'' zeigt man genau so.
+\end{Bew}
+%Satz 1.38
+\begin{Sa}
+Seien $p\in [1,\infty], A \in \mathcal{L}_{d}, f,g \in \mathcal{L}^{p}(A), h\in \mathcal{L}^{p}(A).$ Dann: $\\$
+\begin{enumerate}
+\item [a)] $fh \in \mathcal{L}^{1}(A).\qquad \int\limits_{A}|fh|dx = ||fh||_{1} \leq ||f||_{p} \cdot ||h||_{p}$
+\item [b)] $||f+g||_{p} \leq ||f||_{p} + ||g||_{p}\\$
+und $\mathcal{L}^{p}(A)$ ist $VR$ mit Halbnorm $||\cdot||_{p}$ (Minkowski).
+\item [c)] $f_{n} \in \mathcal{L}^{p}(A), f_{n}\rightarrow\varphi$ für $(n\rightarrow\infty)$. $|f_{n}| \leq g$ fast "uberall, $g\in\mathcal{L}^{p}(A).$\\
+Dann $\varphi\in\mathcal{L}^{p}(A), f_{n}\rightarrow\varphi$ in $\mathcal{L}^{p}(A) \quad (n\rightarrow\infty).$
+\end{enumerate}
+\end{Sa}
+\begin{Bew}
+F"ur Fall $p=1$ ist klar, verwende f"ur H"older (Bem 1.40)
+$\\$ Sei also $p\in(1,\infty)$ und $p' = \frac{p}{(p-1)}$.
+\begin{enumerate}
+\item [a)] Da $f,g$ messbar sind, nur Absch"atzung zu zeigen. Wie in (1.26) liefert(1.4)\\
+$\int\limits_{A}|f(x)| |h(x)|dx \leq \frac{t^{p}}{p} \underbrace{\int\limits_{A}|f(x)|^{p}dx}_{=||f||_{p}^{p}} + \frac{t^{-p'}}{p'}\int\limits_{A}|h(x)|^{p'}dx \qquad \forall t>0$\\
+$\underbrace{inf}_{t>0}$ liefert Behauptung mit (1.4)
+\item [b)] $|f(x)+g(x)|^{p}\leq 2^{p} (|f(x)|^{p}+|g(x)|^{p})\folgt f+g\in \mathcal{L}^{p}(A) \\
+\underbrace{||f+g||_{p}^{p}}_{endlich}=\int\limits_{A}|f+g||f+g|^{p-1}dx \leq \int\limits_{A} |f|+|f+g|^{p-1}dx + \int\limits_{A}|g||f+g|^{p-1}dx \leq ||f||_{p} (\int\limits_{A}|f+g|^{(p-1)\frac{p}{p-1}} dx)^{\frac{p-1}{p}}
+\leq ||f||_{p}(\int\limits_{A}|f+g|^{p-1}\frac{p}{p-1} dx)^{\frac{p-1}{p}} + ||g||_{p} (\int\limits_{A}|f+g|^{p} dx)^{\frac{p-1}{p}}= (||f||_{p}+||g||_{p}) ||f+g||_{p}^{p-1} \folgt$ Behauptung (b).
+\item [c)] Haben $|f_{n}|^{p} \leq g^{p}$ fast "uberall $(n\in \mathbb{N})$\\ und $|f_{n}|^{p} \rightarrow |f|^{p}$ fast "uberall $(n \rightarrow \infty)$ \\
+major.konv. $\folgt |f|^{p} \in \sL^{1}(A) \folgt f \in \sL^{p}(A) \\$
+Setze $h_{n}=|f_{n}-f|^{p} \in\sL^{1}(A)\folgt h_{n}\rightarrow 0 \quad$ f."u. $(n\rightarrow\infty)$.\\
+$0\leq h_{n} \leq 2^{p} (|f_{n}|^{p}+|f|^{p})\leq 2^{p}(g^{p}+|f|^{p})\in\sL^{1}$. majorisierte Konvergenz: $||f-f_{n}||_{p}=||h_{n}||_{1}\rightarrow 0 (n\rightarrow\infty)$
+\end{enumerate} 
+\end{Bew}
 \end{document}
