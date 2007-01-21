@@ -20,7 +20,7 @@
 %\usepackage{multicol}
 
 % this works on Debian sid and stable
-\usepackage[utf8]{inputenc}
+\usepackage[utf8x]{inputenc}
 %\PrerenderUnicode{ß}
 %\usepackage[latin1]{inputenc}
 
@@ -58,6 +58,7 @@
 \def\AA{ \mathcal{A} }
 \def\PM{ \EuScript{P} } 
 \def\EE{ \mathcal{E} }
+\def\FF{ \mathfrak{F} }
 \def\BB{ \mathfrak{B} } 
 \def\DD{ \mathcal{D} } 
 \def\NN{ \mathcal{N} } 
@@ -590,7 +591,7 @@ Mit $||f^{[\mu]}||_1 := \int|f|\d\mu$ ist eine Norm definiert; sie ist wohldefin
 Wichtig: $f \mapsto \int|f|\d\mu =: ||f||$ ist auf $L^1(\Omega,\AA,\mu)$ keine Norm, da $||f|| = 0 \folgt f\equiv 0$ im Allgemeinen falsch ist!
 \end{Bem}
 
-\begin{Sa} %TODO label
+\begin{Sa} \label{Sa2.6}%TODO label überprüfen
 $(L^1(\Omega,\AA,\mu)/\sim_{\mu}, ||\cdot||_1)$ ist ein Banachraum.
 \end{Sa}
 
@@ -598,7 +599,7 @@ $(L^1(\Omega,\AA,\mu)/\sim_{\mu}, ||\cdot||_1)$ ist ein Banachraum.
 Es seien $\mu, \nu$ Maße auf dem messbaren Raum $(\Omega,\AA)$. Gilt dann $\mu(A)=0 \folgt \nu(A) = 0$ $\forall$ $A\in\AA$, so heißt $\nu$ \textbf{$\mu$-stetig}\index{$\mu$-stetig}, in Zeichen $\nu \ll \mu$. Man sagt auch, dass $\mu$ das Maß $\nu$ dominiert.
 \end{Def}
 
-\begin{Sa}und Definition\\ %TODO label
+\begin{Sa}und Definition\label{Sa2.7}\\ %TODO label überprüfen
 Sei $(\Omega,\AA,\mu)$ ein Maßraum und $f:\Omega\to\R_+$ $(\AA, \BB)$-messbar. Dann wird durch $\nu:\AA\to\R_+\cup\{\infty\}$, $\nu(A):=\int_A f\d\mu$ ein Maß auf $(\Omega,\AA)$ definiert. Man nennt $\nu$ das \textbf{Maß mit der Dichte $f$}\index{Mass mit Dichte@Maß mit Dichte} bzgl. $\mu$ und f eine \textbf{$\mu$-Dichte}\index{$\mu$-Dichte} von $\nu$. Schreibweise: $f=\frac{\d\nu}{\d\mu}$
 \end{Sa}
 
@@ -1871,7 +1872,7 @@ $$X \stackrel{d}{=} Y \quad\equizu\quad \phi_X(t) = \phi_Y(t) \quad\forall t\in\
 \item[b)] Die \textbf{Verteilungskonvergenz}\index{Verteilungskonvergenz} für Zufallsvektoren sei definiert durch \\
 $X_n \dto X \quad:\equizu\quad Eh(X_n) \to Eh(X) \quad\forall h\in\C_b(\R^d).$ (vgl. Satz \ref{Sa5.5}) \\
 Auch hier gelten \\
-$X_n \dto X \quad\equizu\quad \phi_h(t) \to \phi(t) \quad\forall t\in\R^d.$ (vgl. Satz \ref{Sa5.9}) \\
+$X_n \dto X \quad\equizu\quad \phi_n(t) \to \phi(t) \quad\forall t\in\R^d.$ (vgl. Satz \ref{Sa5.9}) \\
 und das \textquotedblleft Continous Mapping Theorem\textquotedblright. (vgl. Satz \ref{Sa5.6})
 \end{enumerate}
 \end{BemON}
@@ -2041,6 +2042,113 @@ Sei $X: \Omega \rightarrow \R$ eine ZV mit $E|X| < \infty$. Dann ist der bedingt
 E[X | Y = y_k ] := \frac1{P(A_k)} \int_{A_k} X dP, \quad k = 1,\dots,n
 \]
 \end{DefON}
+
+%%%%%%%%%%%%%%%%%%%%
+% Martin - Stochastik II 18.1.2006
+
+Falls $X$ diskret mit $x_1, \ldots, x_m$:
+\begin{eqnarray*}
+E[X|Y=y_k] &=& \frac 1 {P(Y=y_k)} \sum_{j=1}^m x_j\cdot P(X=x_j, Y=y_k)\\
+&=& \sum_{j=1}^m x_j\cdot P(X=x_j|Y=y_k)
+\end{eqnarray*}
+
+\begin{DefON} Der \textbf{bedingte Erwartungswert von $X$ gegeben $Y$} \index{bedingter Erwartungswert}\index{Erwartungswert!bedingt} ist $E[X|Y]:\Omega\to\R$ mit 
+$$E[X|Y](\omega):=\sum_{k=1}^n E[X|Y=y_k]\cdot \ind_{[Y=y_k]}(\omega)$$
+\end{DefON}
+
+\begin{BemON}\begin{enumerate}
+\item[a)] Offenbar ist $E[X|Y]$ $(\sigma(Y),\BB)$-messbar.
+\item[b)] Sei $Z:=E[X|Y].$ Dann gilt
+\begin{eqnarray*}
+\int_{A_k} Z\d P &=& \int_\Omega \ind_{A_k} Z\d P\\
+&=&E[X,Y=y_k]\cdot P(A_k)\\
+&=& \int_{A_k}X\d P
+\end{eqnarray*}
+Wegen der Struktur von $\sigma(Y)$ folgt auch
+$$\int_A Z\d P = \int_{A}X\d P\quad\forall A\in\sigma(Y)$$
+\item[c)] $E[X|Y] = g(Y)$ mit
+$$g(Y)=\sum_{k=1}^n E[X|Y=y_k]\cdot\ind_{\{y_k\}}(y)$$
+\item[d)] Offenbar hängt die Definition von $E[X|Y]$ nur davom ab, auf welchen Mengen $A_k$ $Y$ die verschiedenen Werte annimmt, nicht aber welche Werte das genau sind.\\
+Deshalb schreibt man auch:
+$$E[X|Y]=E[X|\sigma(Y)]$$
+\end{enumerate}
+\end{BemON}
+
+\begin{Bsp}\label{Bsp7.1} Sei $([0,1), \BB_{[0,1)}, \underbrace{\lambda_{[0,1)}}_{=:P}), X(\omega) = \omega$\\
+- Hier fehlt ein Bild -\\
+$$A_k=\left[\frac {k-1} n\right., \left.\frac k n\right), k = 1, \ldots, n,\quad \FF:=\left\{\sum_{k\in I} A_k| I\subset\{1,\ldots, n\}\right\}$$
+\begin{eqnarray*}
+E[X, A_k] &=& \frac 1 {P(A_k)} \int_{A_k}\omega P(\d\omega)\\
+&=& n\int_{\frac {k-1} n}^{\frac k n} \omega\d\omega\\
+&=& \frac 1 2 \frac {2k-1} n
+\end{eqnarray*}
+$E[X, \FF]$ ist also eine "`Approximation"' oder "`Vergröberung"' von $X.$ Bezüglich einer beliebigen Sum-$\sigma$-Algebra $\FF\subset\AA$ wird der bedingte Erwartungswert wie folgt definiert:
+\end{Bsp}
+
+\begin{DefON} Sei $X$ eine Zufallsvariable mit $E|X|<\infty$ und $\FF\subset\AA$ eine Sub-$\sigma$-Algebra von $\AA.$ Dann heißt $Z:\Omega\to\R$ \textbf{eine Version des bedingten Erwartungswertes $E[X|\FF]$ von $X$}\index{bedingter Erwartungswert}\index{Erwartungswert!Version des bedingten} unter $\FF,$ wenn gilt
+\begin{enumerate}
+\item[(i)] $Z$ ist $\FF$-messbar
+\item[(ii)] $\int_A Z\d = \int_A X\d P\quad\forall A\in\FF$
+\end{enumerate}
+\end{DefON}
+
+\begin{Sa}\label{Sa7.1} $\\$
+Der bedingte Erwartungswert existiert und ist bis auf Nullmengen eindeutig.
+\end{Sa}
+\begin{Bew} Sei $X\ge 0$. Durch
+$$Q(A):=\int_A X(\omega)P(\d\omega)\quad\forall A\in\FF$$
+wird ein Maß auf $(\Omega, \FF)$ definiert (Satz \ref{Sa2.7}).\\
+Sei $P_\FF$ die Einschränkung von $P$ auf $\FF.$ Offenbar $Q\ll P_\FF.$ Satz von Radon-Nikodym $\folgt Q$ besitzt eine Dichte $Z$ bzgl. $P_\FF$ und $Z$ ist nach Definition $\FF$-messbar.\\
+Falls $X$ beliebig: $X = X^+ - X^-$\\
+P-f.s. Eindeutigkeit: Seien $Z, \tilde Z$ Versionen von $E[X, \FF].$
+$$\folgt \int_A (Z-\tilde Z)\d P = 0 \quad\forall A\in\FF$$
+Wegen $\{Z>\tilde Z\} \in\FF, \{Z<\tilde Z\}\in\FF$ folgt:
+$$E|Z-\tilde Z| = \int_{\{Z>\tilde Z\}}(Z-\tilde Z)\d P - \int_{\{Z<\tilde Z\}}(Z-\tilde Z)\d P = 0$$
+$\folgt Z = \tilde Z$ P-f.s.
+\end{Bew}
+
+\begin{BemON} Der bedingte Erwartungswert ist also eigentlich die Äquivalenzklasse
+$$E[X|\FF] = \left\{Z\in L^1(\Omega, \FF, P)|\int_A Z\d P = \int_A X\d P\ \forall A\in\FF\right\}$$
+Ein Element davon nennt man "`Version"'. Oft wird $E[X|\FF]$ mit einer Version identifiziert.
+\end{BemON}
+
+\begin{DefON} Sei $A\in\FF.$ Eine Version von $E[\ind_A|\FF]$ bezeichnet man als \textbf{Version der bedingten Wahrscheinlichkeit $P(A|\FF).$}
+\end{DefON}
+
+\begin{BemON} Es gilt für $B\in\FF:$
+$$\int_B P(A|\FF)\d P \stackrel{(ii)}{=} \int_B \ind_A\d P = P(AB)$$
+\end{BemON}
+
+\begin{Sa}\label{Sa7.2} $\\$
+Sei $X\in L^2(\Omega, \AA, P)$ mit $||X||^2 = EX^2.$ Dann gilt:
+$$||X-E[X|\FF]||^2 = \inf\left\{||X-Y||^2|Y\in L^2(\Omega, \FF, P)\right\}$$
+\end{Sa}
+\begin{Bew} siehe Henze Stochastik II, S.214
+\end{Bew}
+
+\begin{Sa}[Rechenregeln für bedingte Erwartungswerte] \label{Sa7.3} $\\$
+Es seien $X, Y\in L^1(\Omega, \AA, P), \FF, \FF_1, \FF_2$ Sub-$\sigma$-Algebren von $\AA.$ Dann gilt:
+\begin{enumerate}
+\item[a)] $E[aX + bY|\FF] = aE[X|\FF] + bE[Y|\FF]$ P-f.s. $a, b\in\R$
+\item[b)] $E[E[X|Y]] = EX$
+\item[c)] $X\le Y \folgt E[X|\FF]\le E[Y|\FF]$ P-f.s.
+\item[d)] Für $\FF_1\subset\FF_2$ gilt $E[E[X|\FF_2]|\FF_1] = E[X|\FF_1]$\\
+          Für $\FF_1\supset\FF_2$ gilt $E[E[X|\FF_2]|\FF_1] = E[X|\FF_2]$
+\item[e)] Falls $Y$ $\FF$-messbar und $EXY<\infty$ gilt:
+$$E[XY|\FF] = YE[X|\FF]$$
+\item[f)] Falls $X$ von $\FF$ unabhängig ist (d.h. falls die $X$ und $\ind_A\ \forall A\in\FF$ unabhängig sind), dann gilt:
+$$E[X|\FF] = EX$$
+\end{enumerate}
+\end{Sa}
+
+\begin{BemON} Aus Satz \ref{Sa7.3} bekommt man:
+\begin{enumerate}
+\item[1.] $X\equiv c\in\R \folgtnach{f)}E[c|\FF] = c$
+\item[2.] $\FF = \{\emptyset, \Omega\} \folgtnach{f)}E[X|\FF] = EX$
+\item[3.] $X$ $\FF$-messbar $\folgtnach{e)} E[X|\FF] = X$
+\item[4.] $X\ge 0\folgtnach{c)} E[X|\FF] \ge 0$ P-f.s.
+\end{enumerate}
+\end{BemON}
 
 \newpage
 \renewcommand{\indexname}{Stichwortverzeichnis}
