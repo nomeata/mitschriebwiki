@@ -499,7 +499,7 @@ Skizze:
 \end{xy}
 \end{center}
 
-\begin{Sa} [Integration bezüglich des Bildmaßes, Transformationssatz] \index{Satz!Integration bezuglich des Bildmasses@Integration bezüglich des Bildmaßes}\index{Transformationssatz}\index{Satz!Transformations-}$\\$ %TODO label
+\begin{Sa} [Integration bezüglich des Bildmaßes, Transformationssatz] \index{Satz!Integration bezuglich des Bildmasses@Integration bezüglich des Bildmaßes}\index{Transformationssatz}\index{Satz!Transformations-}\label{Sa2.4}$\\$ %TODO label überprüfen
 Mit den obigen Bezeichnungen und Voraussetzungen gilt: $f$ ist genau dann $\mu^T$-integrierbar, wenn $f\circ T$ $\mu$-integrierbar ist.\\
 Dann gilt:
 $$\int f\d\mu^T = \int(f\circ T)\d\mu$$
@@ -2149,6 +2149,112 @@ $$E[X|\FF] = EX$$
 \item[4.] $X\ge 0\folgtnach{c)} E[X|\FF] \ge 0$ P-f.s.
 \end{enumerate}
 \end{BemON}
+
+%%%%%%
+% Vorlesung 22.1.2006 - mrtrac
+
+\begin{Bew} von Satz \ref{Sa7.3}:
+\begin{itemize}
+\item[a)]
+\begin{eqnarray*}
+\int_A E[aX+bY|\FF]\d P &=& \int_A aX+bY\d P \\
+&\stackrel{\text{Linearität}}{=}& a\int_A X\d P + b\int_A Y\d P \\
+&=& a\int_A E[X|\FF]\d P + b\int_A E[Y|\FF]\d P \\
+&=& \int_A \left(aE[X|\FF] + bE[Y|\FF]\right)\d P \quad\forall A\in\FF
+\end{eqnarray*}
+$\folgt$ Behauptung, da $aE[X|\FF] + bE[Y|\FF]$ $\FF$-messbar und Radon-Nikodym-Dichte $P$-f.s. eindeutig.
+\item[b)]
+$$E[E[X|\FF]] = \int_\Omega E[X|\FF]\d P = \int_\Omega X\d P = EX$$
+\item[c)]
+\begin{eqnarray*}
+A&:=&\left\{\omega\in\Omega\left| E[X|\FF](\omega)>E[Y|\FF](\omega)\right.\right\}\in\FF\\
+&=& \bigcup_{n\in\N}\underbrace{\left\{\omega\in\Omega\left|E[X|\FF](\omega)>E[Y|\FF](\omega)+\frac 1 n\right.\right\}}_{A_n}
+\end{eqnarray*}
+Annahme: $P(A)>0 \folgt\exists n\in\N$ mit $P(A_n) > 0$
+\begin{eqnarray*}
+\folgt 0 &\le& \int_{A_n}(Y-X)\d P\\
+&=&\int_{A_n}E[Y|\FF]\d P - \int_{A_n} E[X|\FF]\d P \\
+&=&\int_{A_n}\left(E[Y|\FF]-E[X|\FF]\right)\d P\\
+&\le& -\frac 1 n \cdot P(A_n)\\
+&<& 0 \quad\text{Widerspruch!}
+\end{eqnarray*}
+\item[d)] Z.z. Für $\FF_1\subset\FF_2$ gilt: $E[E[X|\FF_2]|\FF_1] = E[X|\FF_1].$ Sei $A\in\FF_1\folgt A\in\FF_2$ und
+$$\int_A E[X|\FF_1]\d P = \int_A X\d P = \int_A E[X|\FF_2]\d P = \int_A E[E[X|\FF_2]|\FF_1] \d P$$
+$\folgt$ Behauptung, da Radon-Nikodym-Dichte eindeutig.\\
+Für $\FF_1\supset\FF_2$ ähnlich.
+\item[e)] Mit algebraischer Induktion:
+\begin{itemize}
+\item Sei $Y = \ind_B, B\in\FF$ und $A\in\FF$ beliebig.
+$$\int_A Y\cdot E[X|\FF]\d P = \int_{A\cap B} E[X|\FF]\d P = \int_{A\cap B} X\d P = \int_A YX\d P$$
+Außerdem ist $Y\cdot E[X|\FF]$ $\FF$-messbar $\folgt$ Behauptung, da Radon-Nikodym-Dichte $P$-f.s. eindeutig.
+\item Linearität des Integrals + Teil a) $\folgt$ Aussage für $Y\in\EE. Y\ge 0:$ Bedingte Version des Satzes von der monotonen Konvergenz ($\rightarrow$ Übung).
+\item Dann $Y = Y^+ - Y^-$
+\end{itemize}
+\item[f)]
+\begin{eqnarray*}
+\int_A E[X|\FF]\d P &=& \int_A X\d P\\
+&=& \int_\Omega\ind_A X\d P\\
+&\stackrel{\text{unabh.}}{=}& \int \ind_A\d P\cdot\underbrace{\int X\d P}_{=EX}\\
+&=&\int_A EX\d P
+\end{eqnarray*}
+$\folgt$ Behauptung, da $EX$ $\FF$-messbar.
+\end{itemize}
+\end{Bew}
+
+\begin{Sa}[Faktorisierungssatz]\label{Sa7.4} \index{Faktorisierungssatz}\index{Satz!Faktorisierungs-}$\\$
+Es seien $(\Omega, \AA), (\Omega', \AA')$ Messräume und $Y:\Omega\to\Omega'$ ein Zufallsgröße. Ist $X:\Omega\to\R$ eine $(\sigma(Y),\BB)$-messabare Zufallsvariable. Dann gibt es eine $\BB$-messbare Funktion $g:\Omega'\to\R$ mit
+$$X = g\circ Y.$$
+\end{Sa}
+\begin{Bew} Algebraische Induktion:
+\begin{itemize}
+\item[(i)] Sei $X = \sum_{j=1}^n a_j\ind_{A_j} \in\EE$ mit $a_j\ge 0, A_j\in\sigma(Y).$\\
+\begin{tabular}[b]{rp{0.8\textwidth}}
+$\folgt$ & $A_j = Y^{-1}(A_j'), A_j'\in\AA'.$ Wähle $g = \sum_{j=1}^n a_j\ind_{A_j'}$\\
+$\folgt$ & $X = g\circ Y$\\
+$\folgt$ & Behauptung\\
+\end{tabular}
+\item[(ii)] Sei $X\ge 0$ und $(\sigma(Y), \BB)$-messbar. $\folgt\exists (X_n)\subset \EE, 0\le X_n\uparrow X$ und wegen (i) $\exists(\AA', \BB)$-messbare Funktion $g_n$ mit $X_n = g_n\circ Y, n\in\N.$
+$$\folgt X = \sup_{n\in\N} X_n = \sup_{n\in\N}(g_n\circ Y) = (\sup_{n\in\N} g_n)\circ Y$$
+Wähle also $g = \sum_{n\in\N} g_n$
+\item[(iii)] $X = X^+ - X^- \folgtnach{(ii)} X = g_1\circ Y - g_2\circ Y.$
+Wähle $g = g_1 - g_2.$
+\end{itemize}
+\end{Bew}
+
+\begin{BemON}
+Statt $E[X|\sigma(Y)]$ schreiben wir auch $E[X|Y]$ und wegen Satz \ref{Sa7.4} $\exists g:\Omega'\to\R$ $(\AA', \BB)$-messbar mit $E[X|Y] = g\circ Y$ $P$-f.s.. Die Funktion $g$ ist $P^Y$-f.s. eindeutig.
+\end{BemON}
+
+\begin{DefON}
+Ist $E[X|Y] = g\circ Y$ wie oben, so heißt $E[X|Y=y] = g(y)$ (ein) \textbf{bedingter Erwartungswert von $X$ unter der Bedingung $Y=y$.}\index{Erwartungswert!bedingt}\index{bedingter Erwartungswert}
+\end{DefON}
+
+\begin{Sa} \label{Sa7.5} $\\$
+Für alle $A'\in\AA'$ gilt: $$\int_{A'} E[X|Y=y]P^Y(\d y) = \int_{Y^{-1}(A')} X\d P$$
+\end{Sa}
+\begin{Bew}
+$$\int_{A'} E[X|Y=y] P^Y(\d y) = \int_{A'} g\d P^Y \stackrel{\text{Sa. \ref{Sa2.4}}}{=} \int_{Y^{-1}(A')} g\circ Y\d P = \int_{Y^{-1}(A')} X\d P.$$
+\end{Bew}
+
+\begin{BemON}
+Für $A\in\AA$ heißt $P(A|Y=y) := E[\ind_A|Y=y]$ (eine) \textbf{bedingte Wahrscheinlichkeit von $A$ unter der Bedingung $Y=y.$} Bedingte Wahrscheinlichkeiten treten oft bei gekoppelten Zufallsexperimenten auf. Die folgende Sichtweise ist konstruktiver:
+\end{BemON}
+
+\begin{DefON}
+Es seien $(\Omega_1, \AA_1), (\Omega_2, \AA_2)$ messbare Räume. Eine Abbildung $Q:\Omega_1\times\AA_2\to[0,1]$ mit
+\begin{itemize}
+\item[(i)] $\omega_1 \mapsto Q(\omega_1, A_2)$ ist $\AA_1$-messbar $\ \forall A_2\in\AA.$
+\item[(ii)] $A_2\mapsto Q(\omega_1, A_2)$ ist ein Wahrscheinlichkeitsmaß auf $(\Omega_2, \AA_2)\ \forall\omega_1\in\Omega_1$
+\end{itemize}
+nennt man \textbf{Übergangskern}\index{Uebergangskern@Übergangskern} oder \textbf{Kern}\index{Kern} von $(\Omega_1, \AA_1)$ nach $(\Omega_2, \AA_2).$
+\end{DefON}
+
+\begin{Sa} \label{Sa7.6} $\\$
+Es seien $(\Omega_1, \AA_1, P_1)$ ein Wahrscheinlichkeitsraum, $(\Omega_2, \AA_2)$ ein Messraum und $Q$ ein Übergangskern von $(\Omega_1, \AA_1)$ nach $(\Omega_2, \AA_2).$ Dann wird durch
+$$P(A):=\int_{\Omega_1}\left(\int_{\Omega_2}\ind_A(\omega_1, \omega_2)Q(\omega_1, \d\omega_2)\right)P_1(\d\omega_1)$$
+ein Wahrscheinlichkeitsmaß $P =: P_1 \otimes Q$ auf $\AA_1\otimes\AA_2$ definiert. $P$ heißt \textbf{Koppelung}\index{Koppelung} und ist das einzige Wahrscheinlichkeitsmaß auf $\AA_1\otimes \AA_2$ mit der Eigenschaft
+$$P(A_1\times A_2) = \int_{A_1} Q(\omega_1, A_2)P_1(\d\omega_1)$$
+\end{Sa}
 
 \newpage
 \renewcommand{\indexname}{Stichwortverzeichnis}
