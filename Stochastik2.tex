@@ -20,7 +20,7 @@
 %\usepackage{multicol}
 
 % this works on Debian sid and stable
-\usepackage[utf8]{inputenc}
+\usepackage[utf8x]{inputenc}
 %\PrerenderUnicode{ß}
 %\usepackage[latin1]{inputenc}
 
@@ -2360,6 +2360,117 @@ P\left(A\right) &=& P^{X,Y}\left(B\right) \\
 \end{eqnarray*}
 So läßt sich zum Beispiel auch $\pi$ näherungsweise bestimmen.
 \end{Bsp}
+
+\chapter{Martingale und Stoppzeiten}
+\begin{DefON}
+Sei $I\ne \emptyset$ eine beliebige Indexmenge und $(\Omega, \AA, P)$ ein Wahrscheinlichkeitsraum.
+\begin{itemize}
+\item[a)] Eine Familie von Zufallsvariablen $(X_t)_{t\in I}$ auf $(\Omega, \AA, P)$ heißt \textbf{stochastischer Prozess}\index{stochastischer Prozess} ($I\subset\R$)
+\item[b)] Eine Familie von $\sigma$-Algebren $(\FF_t)_{t\in I}$, mit $\FF_t\subset\AA$ und $\FF_s\subset\FF_t,$ für $s\le t$ heißt \textbf{Filtration}\index{Filtration}.
+Ein stochastischer Prozess $(X_t)_{t\in I}$ heißt \textbf{$(\FF_t)_{t\in I}$-adaptiert}\index{adaptiert}, falls $X_t$ $\FF_t$-messbar $\forall t\in I.$
+\end{itemize}
+\end{DefON}
+
+\begin{BemON} Oft wird $\FF_t := \sigma(\{X_s, s\le t\})$ gewählt. Dann ist $(\FF_t)_{t\in I}$ ein Filtration und $X_t$ ist $\FF_t$-messbar.
+\end{BemON}
+
+\begin{DefON}
+Gegeben sei ein Wahrscheinlichkeitsraum $(\Omega, \AA, P), I\subset\R,$ eine Filtration $(\FF_t)_{t\in I}$ und ein dazu adaptierter stochastischer Prozess $(X_t)_{t\in I}.$ Ist $E|X_t|<\infty\ \forall t\in I,$ so heißt $(X_t)_{t\in I}$ ein \textbf{$(\FF_t)_{t\in I}$-Martingal}\index{Martingal}, falls $E[X_t|\FF_s] = X_s\ \forall s, t\in I, s\le t.$\\
+Ist $X_s\le E[X_t|\FF_s]$ bzw. $X_s\ge E[X_t|\FF_s],$ so nennt man $(X_t)_{t\in I}$ ein \textbf{$(\FF_t)_{t\in I}$-Submartingal}\index{Submartingal}\index{Martingal!Sub-} bzw. \textbf{$(\FF_t)_{t\in I}$-Supermartigal}\index{Supermartingal}\index{Martingal!Super-}.
+\end{DefON}
+
+\begin{BemON}
+\begin{itemize}
+\item[a)] Beim Martingal gilt: $EX_s = E\left[E\left[X_t\left|\FF_s\right.\right]\right] = EX_t\ \forall t\in I$, d.h. der Erwartungswert ist konstant (wachsend beim Submartingal, fallnd beim Supermartingal).
+\item[b)] Ist $I = \N,$ so genügt z.z.:
+$$E[X_{t+1}|\FF_t] = X_t\ \forall t\in\N$$
+\item[c)] Ist $(F_t)_{t\in I}$ die natürliche Filtration, so sagt man oft nur $(X_t)_{t\in I}$ ist ein Martingal.
+\end{itemize}
+\end{BemON}
+
+\begin{Bsp} \label{Bsp8.1}
+Sei $I=\N, (X_n)_{n\in\N}$ eine Folge von unabhängigen und identisch verteilten Zufallsvariablen mit Erwartungswert $\mu$. Sei $S_n:=\sum_{k=1}^n X_k\ \forall n\in\N$ und $\FF_n:=\sigma(S_1,\ldots, S_n).$ Dann gilt $\forall n\in\N: E[S_{n+1}|\FF_n] = E[S_n|\FF_n] + E[S_{n+1}|\FF_n] = S_n + \mu.$\\
+Also: \begin{tabular}[t]{rcp{0.8\textwidth}}
+$\mu = 0$ & $\folgt$ & $(S_n)$ ist Martingal\\
+$\mu \le 0$ & $\folgt$ & $(S_n)$ ist Supermartingal\\
+$\mu \ge 0$ & $\folgt$ & $(S_n)$ ist Submartingal\\
+\end{tabular}
+\end{Bsp}
+
+\begin{Bsp} \label{Bsp8.2}
+Sei $(\FF_t)_{t\in I}$ ein Filtration und $X$ eine Zufallsvariable mit $E|X|<\infty.$ Sei $X_t:=E[X|\FF_t].$ dann ist $(X_t)_{t\in I}$ $(\FF_t)_{t\in I}$-adaptiert und $\forall s, t\in I, s\le t:$
+$$E[X_t|\FF_s] = E\left[E\left[X|\FF_t\right]|\FF_s\right] \stackrel{S.\ref{Sa7.3} a)}{=} E[X|\FF_s] = X_s$$
+$\folgt (X_t)_{t\in I}$ ist ein $(\FF_t)_{t\in I}$-Martingal.
+\end{Bsp}
+
+\begin{Sa} \label{Sa8.1} $\\$
+Ist $(X_t)_{t\in I}$ ein $(\FF_t)_{t\in I}$-Martingal und $\Phi:\R\to\R$ eine konvexe Funktion mit $E|\Phi(X_t)|<\infty\ \forall t\in I,$ so ist $(\Phi(X_t))_{t\in T}$ ein $(\FF_t)_{t\in I}$-Submartingal.
+\end{Sa}
+\begin{Bew} Sei $s,t\in I, s\le t: E[\Phi(X_t)|\FF_s]\stackrel{Jensen}{\ge}\Phi(\underbrace{E[X_t|\FF_s]}_{=X_s})$
+\end{Bew}
+
+Im Folgenden: $I=\{1,2,\ldots, n\}$ und $X^*:=\max_{1\le i\le n} X_i$
+
+\begin{Sa}[Submartingal-Ungleichung von Doob] \label{Sa8.2} \index{Submartingal-Ungleichung}\index{Ungleichung!Submartingal-}\index{Satz!von Doob} $\\$
+Ist $(X_i)_{i=1,\ldots,n}$ ein $(\FF_i)_{i=1,\ldots,n}$-Submartingal, so gilt $\forall c>0:$
+$$c\cdot P(X^*>c)\le\int_{\{X^*>c\}} X_n\d P \le EX_n^+$$
+\end{Sa}
+\begin{Bew}
+Sei $A:=\{X^*>c\}, A_i:=\{X_1\le c, \ldots, X_{i-1}\le c, X_i>c\}, i=1, \ldots, n$\\
+\begin{tabular}[t]{rp{0.9\textwidth}}
+$\folgt$ & $A=A_1 + \ldots + A_n, A_i\in\FF_i$ und $X_i>c$ auf $A_i, i=1,\ldots, n.$\\
+$\folgt$ & $\int_{A_i} X_n\d P\stackrel{bed. EW}{=}\int_{A_i} E[X_n|\FF_i]\d P\stackrel{Sub-M.}{\ge}\int_{A_i} X_i\d P\ge c P(A_i), i=1,\ldots, n$\\
+\end{tabular}\\
+Summation über $i=1,\ldots,n \folgt$ 1. Ungleichung\\
+2. Ungleichung: $X_n\cdot \ind_A\ge X_n^+$
+\end{Bew}
+
+\begin{Sa}[$L^p$-Ungleichung von Doob]\label{Sa8.3}\index{$L^p$-Ungleichung}\index{Ungleichung!$L^p$-}\index{Satz!von Doob} $\\$
+Es sei $p>1$ und $(X_i)_{i=1,\ldots,n}$ ein nicht-negatives $(\FF_i)_{i=1,\ldots,n}$-Submartingal mit der Eigenschaft $\sup_{i=1,\ldots,n}EX_i^p<\infty.$ Dann gilt:
+$$E(X^*)^p\le\left(\frac p {p-1}\right)^p EX_n^p$$
+\end{Sa}
+\begin{Bew}
+\begin{eqnarray*}
+E(X^*)^p &=& E\int_0^{X^*} p\cdot y^{p-1}\d y \\
+&=& E\int_0^\infty p\cdot y^{p-1}\ind_{[X^*\ge y]}\d y\\
+&\stackrel{\text{Fubini}}{=}&\int_0^\infty py^{p-1}\cdot P(X^*\ge y)\d y\\
+&\stackrel{S.\ref{Sa8.2}}{\le}& \int_0^\infty p\cdot y^{p-2} E\left[X_n\cdot\ind_{[X^*\ge y]}\right]\d y\\
+&\stackrel{\text{Fubini}}{=} & E\left[X_n\int_0^{X^*}py^{p-2}\d y\right] \\
+&=& \frac p {p-1} E\left[X_n(X^*)^{p-1}\right]\\
+&\stackrel{\text{Hölder}}{\le} & \frac p {p-1}\left(EX_n^p\right)^{\frac 1 p}\left(E\left(\left(X^*\right)^{p-1}\right)^q\right)^{\frac 1 q}\\
+&=& \frac p {p-1} \left(EX_n^p\right)^{\frac 1 p} \cdot \left( E\left(X^*\right)^p\right)^{1-\frac 1 p}\\
+\end{eqnarray*}
+Teile Ungleichung durch $\left(E\left(X^*\right)^p\right)^{1-\frac 1 p}$ (falls $E(X^*)^p=0$ ist Aussage richtig) und nehme $p$-te Potenz $\folgt$ Behauptung.
+\end{Bew}
+
+\begin{BemON}
+\begin{itemize}
+\item[a)] Ist $\frac 1 p + \frac 1 q = 1,$ so lässt sich Satz \ref{Sa8.3} schreiben als $||X^*||_p\le q\cdot ||X_n||_p$
+\item[b)] Ein stochastischer Prozess $(X_t)_{t\in I}$ mit $\sup_{t\in I}||X_t||_p<\infty$ heißt \textbf{$L^p$-beschränkt}\index{beschränkt!$L^p$-}.
+\item[c)] Ist $(X_i)_{i=1,\ldots,n}$ ein Martingal, so ist $(|X_i|)_{i=1,\ldots,n}$ ein nicht negatives Submartingal (Satz \ref{Sa8.1})
+\end{itemize}
+\end{BemON}
+
+\begin{Bsp} \label{Bsp8.3}
+Sei $(\Omega, \AA, P)$ ein Wahrscheinlichkeitsraum und $(X_n)_{n\in\N_0}$ ein stochastischer Prozess. Interpretation von $(X_n)$:\\
+\begin{tabular}[b]{rcl}
+$X_0$ & $\equiv$ & Anfangskapital des Spielers\\
+$X_n - X_{n-1}$ & $\equiv$ & Gewinnn pro gesetzter Geldeinheit in der $n$-ten Runde
+\end{tabular}\\
+Wird immer eine Geldeinheit pro Runde gesetzt, so ist also $X_n=X_0 + \sum_{k=1}^n (X_k - X_{k-1})$ das Kapital des Spielers nach $n$ Runden. Es sei
+$$\FF_n = \sigma(X_0, X_1-X_0, \ldots, X_n - X_{n-1}) = \sigma(X_0, X_1, \ldots, X_n)$$
+Das entspricht der Information nach $n$ Runden.
+$$\folgt E[X_{n+1}-X_n|\FF_n] = E[X_{n+1}|\FF_n] - X_n$$
+Das entspricht dem erwarteten Gewinn pro gesetzter Geldeinheit bei Kenntnis des bisherigen Spielverlaufs.\\
+Offfenbar gilt:
+\begin{tabular}[t]{rcp{0.8\textwidth}}
+$X$ Martingal &$\equizu$& Spiel fair\\
+$X$ Supermartingal &$\equizu$& Spiel nachteilig\\
+$X$ Submartingal &$\equizu$& Spiel vorteilhaft\\
+\end{tabular}
+
+\end{Bsp}
+
 
 
 \newpage
