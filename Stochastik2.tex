@@ -2081,7 +2081,7 @@ E[X, A_k] &=& \frac 1 {P(A_k)} \int_{A_k}\omega P(\d\omega)\\
 &=& n\int_{\frac {k-1} n}^{\frac k n} \omega\d\omega\\
 &=& \frac 1 2 \frac {2k-1} n
 \end{eqnarray*}
-$E[X, \FF]$ ist also eine "`Approximation"' oder "`Vergröberung"' von $X.$ Bezüglich einer beliebigen Sum-$\sigma$-Algebra $\FF\subset\AA$ wird der bedingte Erwartungswert wie folgt definiert:
+$E[X, \FF]$ ist also eine "`Approximation"' oder "`Vergröberung"' von $X.$ Bezüglich einer beliebigen Sub-$\sigma$-Algebra $\FF\subset\AA$ wird der bedingte Erwartungswert wie folgt definiert:
 \end{Bsp}
 
 \begin{DefON} Sei $X$ eine Zufallsvariable mit $E|X|<\infty$ und $\FF\subset\AA$ eine Sub-$\sigma$-Algebra von $\AA.$ Dann heißt $Z:\Omega\to\R$ \textbf{eine Version des bedingten Erwartungswertes $E[X|\FF]$ von $X$}\index{bedingter Erwartungswert}\index{Erwartungswert!Version des bedingten} unter $\FF,$ wenn gilt
@@ -2359,6 +2359,8 @@ P\left(A\right) &=& P^{X,Y}\left(B\right) \\
 So läßt sich zum Beispiel auch $\pi$ näherungsweise bestimmen.
 \end{Bsp}
 
+% Vorlesung - mrtrac
+
 \chapter{Martingale und Stoppzeiten}
 \begin{DefON}
 Sei $I\ne \emptyset$ eine beliebige Indexmenge und $(\Omega, \AA, P)$ ein Wahrscheinlichkeitsraum.
@@ -2379,7 +2381,7 @@ Ist $X_s\le E[X_t|\FF_s]$ bzw. $X_s\ge E[X_t|\FF_s],$ so nennt man $(X_t)_{t\in 
 
 \begin{BemON}
 \begin{itemize}
-\item[a)] Beim Martingal gilt: $EX_s = E\left[E\left[X_t\left|\FF_s\right.\right]\right] = EX_t\ \forall t\in I$, d.h. der Erwartungswert ist konstant (wachsend beim Submartingal, fallnd beim Supermartingal).
+\item[a)] Beim Martingal gilt: $EX_s = E\left[E\left[X_t\left|\FF_s\right.\right]\right] = EX_t\ \forall t\in I$, d.h. der Erwartungswert ist konstant (wachsend beim Submartingal, fallend beim Supermartingal).
 \item[b)] Ist $I = \N,$ so genügt z.z.:
 $$E[X_{t+1}|\FF_t] = X_t\ \forall t\in\N$$
 \item[c)] Ist $(F_t)_{t\in I}$ die natürliche Filtration, so sagt man oft nur $(X_t)_{t\in I}$ ist ein Martingal.
@@ -2469,9 +2471,141 @@ $X$ Submartingal &$\equizu$& Spiel vorteilhaft\\
 
 \end{Bsp}
 
-%Ab hier Bernhard vom 05.02.2007
-%Meine VL beginnt aber mit Bsp 8.6, es scheint was zu fehlen. :(
+%Vorlesung vom 1. Februar, curry
+%Beispiel 8.3
+\begin{Bsp} \label{Bsp8.3} $\\$
+$X_n - X_{n-1}$ sei der Gewinn pro gesetzter Geldeinheit (GE) in der $n$-ten Runde. \\
+Jetzt: In Runde $n$ werden $c_n$ GE gesetzt mit $c_n$ $\FF_{n-1}$-messbar. \\
+$\FF_n = \sigma(X_0,X_1-X_0,\dots,X_n-X_{n-1})$, d.h. $(c_n)_{n\in\N}$ ist vorhersagbar. \\
+Kapital nach $n$ Spielen:
+$$X_0 + \sum_{k=1}^n c_k(X_k-X_{k-1})$$
+\end{Bsp}
 
+%Satz 8.4
+\begin{Sa} \label{Sa8.4} $\\$
+Es seien $(c_n)_{n\in\N}$ ein vorhersagbarer Prozess und $X = (X_n)_{n\in\N}$ ein Prozess mit $E|c_n(X_n-X_{n-1})| < \infty \quad\forall n\in\N$. Wir setzen
+$$Y_n := X_0 + \sum_{k=1}^n c_k(X_k-X_{k-1}),\ Y = (Y_n)_{n\in\N}.$$
+Dann gilt:
+\begin{enumerate}
+\item[a)] Ist $X$ ein Martingal, so auch $Y$.
+\item[b)] Ist $X$ ein Sub- bzw. Supermartingal und $c_n \geq 0 \quad\forall n$, so ist auch $Y$ ein Sub- bzw. Supermartingal.
+\end{enumerate}
+\end{Sa}
+\begin{Bew} 
+$$E[Y_{n+1}-Y_n | \FF_n] = E[c_{n+1}(X_{n+1}-X_n) | \FF_n] \stackrel{c_{n+1} \FF_n-m.b.}{=} c_{n+1}\cdot E[X_{n+1}-X_n | \FF_n].$$
+\end{Bew}
+
+\begin{DefON} $\\$
+Eine Abbildung $\tau:\Omega\to\N_0\cup\{\infty\}$ heißt \textbf{Stoppzeit}\index{Stoppzeit} bezüglich einer Filtration $(\FF_n)_{n\in\N}$, wenn
+$$\{\tau \leq k\} \in \FF_n \quad\forall k\in\N_0.$$
+\end{DefON}
+
+\begin{BemON} $\\$
+\begin{enumerate}
+\item[a)] Stoppzeiten kann man analog für $\tau:\Omega\to\R_+\cup\{\infty\}$ definieren.
+\item[b)] $\tau:\Omega\to\N_0\cup\{\infty\}$ ist Stoppzeit $\equizu$ $\{\tau=n\} \in \FF_n \quad\forall n\in\N_0$. (Übung)
+\end{enumerate}
+\end{BemON}
+
+%Beispiel 8.4
+\begin{Bsp} \label{Bsp8.4} $\\$
+\begin{enumerate}
+\item[a)] $\tau \equiv n_0$ ist Stoppzeit, da \\
+$\{\tau \leq n\} = \begin{cases}
+\Omega & n \geq n_0 \\
+\emptyset & n < n_0 \\
+\end{cases} \quad\in\FF_n$
+\item[b)] Sei $(X_n)_{n\in\N_0}$ ein zu $(\FF_n)_{n\in\N_0}$ adaptierter rellwertiger Prozess und $A\in\BB$. Sei $\tau_A:\Omega\to\N\cup\{\infty\}$ definiert durch
+$$\tau_A\left(\omega\right) := \inf\left\{n\in\N_0\ |\ X_n\left(\omega\right)\in A\right\}\quad\left(\inf\left\{\emptyset\right\} := \infty\right)$$
+$\tau_A$ heißt \textbf{Eintrittszeit}\index{Eintrittszeit} in $A$. \\
+$\tau_A$ ist Stoppzeit, da
+$$\left\{\tau_A \leq n\right\} = \bigcup_{i=1}^n\underbrace{\left\{X_i\in A\right\}}_{\in\FF_i} \in \FF_n.$$
+\end{enumerate}
+\end{Bsp}
+
+%Lemma 8.1
+\begin{Lem} \label{Lem8.1} $\\$
+\begin{enumerate}
+\item[a)] Für eine Stoppzeit ist
+$$\FF_{\tau} := \left\{A\in\AA\ |\ A \cap \left\{\tau \leq n\right\} \in \FF_n\quad\forall n\in\N_0\right\}$$
+eine $\sigma$-Algebra, die \textbf{$\sigma$-Algebra der $\tau$-Vergangenheit}\index{$\sigma$-Algebra!der $\tau$-Vergangenheit}.
+\item[b)] Sind $\tau_1,\,\tau_2$ Stoppzeiten mit $\tau_1 \leq \tau_2$, so gilt $\FF_{\tau_1} \subset \FF_{\tau_2}$.
+\item[c)] Ist $\tau$ eine Stoppzeit, so ist $X_{\tau}^*:\Omega\to\R$ mit 
+$$X_{\tau}^*\left(\omega\right) := \begin{cases}
+X_{\tau(\omega)}(\omega) & \text{wenn }\tau(\omega) < \infty \\
+0 & \text{sonst} \\
+\end{cases}\quad \FF_{\tau}\text{-messbar}$$
+\end{enumerate}
+\end{Lem}
+\begin{Bew} $\\$
+\begin{enumerate}
+\item[a)] Übung.
+\item[b)] Sei $A\in\FF_{\tau_1}$ beliebig. $\forall n\in\N$ gilt:
+$$\{\tau_2 \leq n\} \subset \{\tau_1 \leq n\} \quad\folgt\quad A\cup\{\tau_2 \leq n\} = \underbrace{A\cup\{\tau_1 \leq n\}}_{\in\FF_n} \cup \underbrace{\{\tau_2 \leq n\}}_{\in\FF_n} \in\FF_n.$$
+$\folgt$ Beh.
+\item[c)] zu zeigen: $\{X_{\tau}^* \in A\} \in \FF_{\tau} \quad\forall A\in\BB$ \\
+zeige also: $\{X_{\tau}^* \in A\} \cup \{\tau \leq n\} \in\FF_n \quad\forall n\in\N_0$ \\
+Es gilt: 
+$$\{X_{\tau}^* \in A\} \cup \{\tau \leq n\} = \bigcup_{k=0}^n \underbrace{\{X_k \in A\}}_{\in\FF_k} \cup \underbrace{\{\tau = k\}}_{\in\FF_k} \in\FF_k,$$
+$$\text{da } \{\tau = k\} = \underbrace{\{\tau \leq k\}}_{\in\FF_k} \cup \underbrace{\{\tau \leq k-1\}}_{\in\FF_k} \in \FF_k.$$
+$\folgt$ Beh.
+\end{enumerate}
+\end{Bew}
+
+\begin{BemON} $\\$
+\begin{enumerate}
+\item[a)] $\FF_{tau} \equiv$ Information, die bis zur zufälligen Zeit $\tau$ vorhanden ist.
+\item[b)] Falls $\tau$
+%?
+?-endlich, schreibt man $X_{\tau}$ statt $X_{\tau}^*$.
+\item[c)] Ist $\tau$ eine Stoppzeit und $(X_n)_{n\in\N_0}$ ein stochastischer Prozess, so ist $X^{\tau} = (X_n^{\tau})_{n\in\N_0}$ mit $X_n^{\tau} := X_{\tau\,1\,n} \quad\forall n\in\N_0$ der \textbf{gestoppte Prozess}\index{gestoppter Prozess}\index{Prozess!gestoppter}. \\
+Da $\tau\,1\,n$ eine Stoppzeit ist, ist wegen Lemma \ref{Lem8.1}c) $X_{\tau\,1\,n}$ $\FF_{\tau\,1\,n}$-messbar und $(X_n^{\tau})$ ist $(\FF_{\tau\,1\,n})$-adaptiert.
+\end{enumerate}
+\end{BemON}
+
+%Satz 8.5
+\begin{Sa} \label{Sa8.5} $\\$
+Ist $X$ ein (Sub-, Super-) Martingal und ist $\tau$ eine Stoppzeit, so ist auch $X^{\tau}$ ein (Sub-, Super-) Martingal.
+\end{Sa}
+\begin{Bew} $\\$
+Sei $c_n := \ind_{\{\tau \leq n\}} \folgt \{\tau \leq n\} = \{\tau \leq n-1\}^C \in \FF_{n-1}.$ \\
+$\folgt (c_n)_{n\in\N_0}$ ist vorhersagbar. Da $X_0 + \sum_{k=1}^n c_k(X_k - X_{k-1}) = X_{\tau\,1\,n}$, folgt die Behauptung mit Satz \ref{Sa8.4}.
+\end{Bew}
+
+\begin{BemON} $\\$
+Ist $X$ ein Martingal, so auch $X^{\tau}$ und damit gilt $EX_{\tau\,1\,n} = EX_0$. \\
+Betrachte Bsp \ref{Bsp8.3} mit $\tau := \inf\{k\in\N_0\ |\ X_n \geq X_0 + c\}$ und $c_n := \ind_{\{\tau \geq n\}}$: \\
+Solange $c$ nicht erreicht ist, wird eine Geldeinheit gesetzt, danach aufgehört. Spielt man maximal n-mal, so ist $X_{\tau\,1\,n}$ das Kapital am Ende. Im Mittel kann man das Kapital bei einem fairen Spiel nicht erhöhen.
+\end{BemON}
+
+%Beispiel 8.5
+\begin{Bsp}[Kartenspiel] \label{Bsp8.5} $\\$
+Sei
+\begin{itemize}
+\item $S_0$ die Anzahl der schwarzen Karten und
+\item $R_0$ die Anzahl der roten Karten und
+\item $N := S_0 + R_0$ die Gesamtzahl an Karten.
+\item $(R_,S_n)$ die Anzahl der roten / schwarzen Karten im Stapel, nachdem $n$ Karten aufgedeckt wurden.
+\item $Z_n$ die Farbe der $n$-ten aufgedeckten Karte.
+\item $\FF_n = \sigma(Z_1,\dots,Z_n)$ und
+\item $X_n := \frac{S_n - R_n}{S_n + R_n}$.
+\end{itemize}
+Behauptung: $(X_n)$ ist $(\FF_n)$-Martingal!
+\begin{eqnarray*}
+E\left[X_{n+1}\,|\,\FF_n\right] &=& E\left[\frac{S_{n+1} - R_{n+1}}{S_{n+1} + R_{n+1}}\,|\,Z_1,\dots,Z_n\right] \\
+&=& \frac{S_n}{S_n + R_n}\left[ \frac{S_n - 1 - R_n}{S_n - 1 + R_n} \right] + \frac{R_n}{S_n + R_n}\left[ \frac{S_n - R_n + 1}{S_n + R_n - 1} \right] \\
+&=& \frac{(R_n + S_n - 1)(S_n - R_n)}{(S_n + R_n)(S_n + R_n - 1)} \\
+&=& \frac{S_n - R_n}{S_n + R_n} \\
+\end{eqnarray*}
+Sei $\tau$ eine Stoppzeit ($\leq N$). Erwarteter Gewinn:
+$$E\left[ \ind_{\left[Z_{\tau + 1} = \text{ schwarz} \right]} - \ind_{\left[Z_{\tau + 1} = \text{ rot} \right]} \right]$$
+$$= E\left[ \sum_{k=1}^N\left( \ind_{\left[Z_{k + 1} = \text{ schwarz} \right]} - \ind_{\left[Z_{k + 1} = \text{ rot} \right]}\right) \,\ind_{\left[\tau = k\right]} \right]$$
+$$= \sum_{k=1}^N E\left[ E\left[ \left( \ind_{\left[Z_{k + 1} = \text{ schwarz} \right]} - \ind_{\left[Z_{k + 1} = \text{ rot} \right]}\right) \,\ind_{\left[\tau = k\right]}\ |\ \FF_k\right] \right]$$
+$$= \sum_{k=1}^N E\left[ \ind_{\left[\tau = k\right]} \underbrace{E\left[ \ind_{\left[Z_{k + 1} = \text{ schwarz} \right]} - \ind_{\left[Z_{k + 1} = \text{ rot} \right]} \ |\ \FF_k \right]}_{= \frac{S_k - R_k}{S_k + R_k} = X_k} \right]$$
+$$= E\left[ X_{\tau} \right] = EX_0 = \frac{S_0 - R_0}{S_0 + R_0}$$
+\end{Bsp}
+
+%Ab hier Bernhard vom 05.02.2007
 
 %Beispiel 8.6
 $EX_{\tau} = EX_0$ gilt nur unter einer Bedingung, wie dieses Beispiel zeigt.
@@ -2482,7 +2616,7 @@ Sei $(Y_n)_{n \in \N}$ eine Folge von u.i.v. ZVen mit
 P(Y_n = -1) = P(Y_n = 1) = \frac12, \quad X_0 \equiv 0
 \]
 $Y_n$ = Ergebnis M"unzwurf in Runde $n$.\\
-Der Spieler setzt $2^{n-1}$ GE in der $n$-ten Runde, bei Gewinn erh"alt er $2^n$ GE, d.h. $Y_n - 2^{n-1}$ ist der Geldzu-/abgang in der $n$-ten Runde.\\
+Der Spieler setzt $2^{n-1}$ GE in der $n$-ten Runde, bei Gewinn erh"alt er $2^n$ GE, d.h. $Y_n \cdot 2^{n-1}$ ist der Geldzu-/abgang in der $n$-ten Runde.\\
 Kapital nach $n$ Runden:
 \[
 X_n := \sum_{i=1}^n 2^{i-1}Y_i
@@ -2495,7 +2629,7 @@ P(\tau > k) = \left( \frac12 \right)^k \ \forall\, k \in \N \Rightarrow P(\tau <
 \]
 und
 \[
-X_{\tau} = \sum_{k=1}^{\infty} X_k \ind_{\tau = k} = \sum_{k=1}^{\infty} \underbrace{\left( - \sum_{i=1}^{k-1} 2^{i-1} + 2^{k-1} \right)}_{= 1} \id_{\tau = k} \equiv 1
+X_{\tau} = \sum_{k=1}^{\infty} X_k \ind_{\tau = k} = \sum_{k=1}^{\infty} \underbrace{\left( - \sum_{i=1}^{k-1} 2^{i-1} + 2^{k-1} \right)}_{= 1} \ind_{\tau = k} \equiv 1
 \]
 Also ist hier $EX_{\tau} = 1 \not= EX_0 = 0$.\\
 Vorsicht  bei der Nachahmung!\\
@@ -2508,8 +2642,8 @@ E(-X_{\tau-1}) & = & E \left( \sum_{k=1}^{\tau-1} 2^{k-1} \right) \\
 \end{Bsp}
 
 %Satz 8.6
-\begin{Sa}[Optional Stopping Theorem OST] \label{Sa8.6}
-Es sei $X = (X_n)_{n \in \N}$ ein Supermartingal und $\tau$ eine Stoppzeit. Jede jede der folgenden Bedingungen impliziert, dass $E|X_{\tau}| < \infty$ und $EX_{\tau} \leq EX_0$ gilt:
+\begin{Sa}[Optional Stopping Theorem OST] \label{Sa8.6} \index{OST} \index{Optional Stopping Threorem} \index{Theorem!Optional Stopping-}$\\$
+Es sei $X = (X_n)_{n \in \N}$ ein Supermartingal und $\tau$ eine Stoppzeit. Jede der folgenden Bedingungen impliziert, dass $E|X_{\tau}| < \infty$ und $EX_{\tau} \leq EX_0$ gilt:
 \begin{enumerate}
 \item $\tau$ ist f.s. beschr"ankt, also $P(\tau < c) = 1$ f"ur ein $c \in \R$.
 
