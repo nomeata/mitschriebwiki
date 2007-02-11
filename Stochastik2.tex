@@ -2715,9 +2715,108 @@ Dann ist $(M_n)_{n \in \N_0}$ ein $(\FF_n)$-Martingal. Das OST ist anwendbar, da
 \Rightarrow 0 = (1-P(X_{\tau} = -n))(N-n) - P(X_{\tau} = -n)n \Rightarrow P(X_{\tau} = -n) = \frac{N-n}{N}
 \]
 
-\item[Fall 2:] folgt in der nächsten Vorlesung am Mittwoch.
+%Vorlesung vom 8. Febuar 2007, curry
+\item[Fall 2:] $p \neq \frac12$ \\
+Sei $\Theta := \log(\frac{1-p}{p}) \neq 0$ und $L_0 := 1$, $L_n := \prod_{k=1}^n e^{\Theta Y_k} = e^{\Theta X_n}$. \\
+$(L_n)_{n\in\N}$ ist ein $(\FF_n)_{n\in\N}$-Martingal, da
+$$E\left[L_{n+1}\ |\ \FF_n\right] = \prod_{k=1}^n e^{\Theta Y_k} \cdot \underbrace{E\left[ e^{\Theta Y_{n+1}} \right]}_{pe^{\Theta} + (1-p)e^{-\Theta} = 1} = L_n$$
+Das Optional Stopping Theorem \ref{Sa8.6} ist anwendbar, da (iv) erfüllt \\
+$E|L_{\tau}| = Ee^{\Theta X_{\tau}} \leq e^{|\Theta|N} < \infty$ und
+$$\int_{\left\{ \tau > n \right\}} |L_n| \d P \leq e^{|\Theta|N} \underbrace{P\left( \tau > n \right)}_{\to 0\ (n\to\infty)}$$
+$\folgt 1 = EL_0 = EL_{\tau} = P(X_{\tau} = N-n)e^{\Theta(N-n)} + P(X_{\tau} = -n)e^{-\Theta n}$ \\
+$\folgt 1 = (1 - P(X_{\tau} = -n))\cdot(\frac{1-p}{p})^{N-n} + P(X_{\tau} = -n)(\frac{p}{1-p})^n$ \\
+$\folgt P(X_{\tau} = -n) = \frac{\phi^N - \phi^n}{\phi^N - 1},\ \phi = \frac{1-p}{p}$
 \end{enumerate}
 \end{Bsp}
+
+\underline{Optimales Stoppen} \\
+Sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum und $X = (X_n)_{n=1,\dots,N}$ ein stochastischer Prozess adaptiert an eine Filtration $(\FF_n)_{n=1,\dots,N}$. Es sei $E|X_k| < \infty \quad\forall k=1,\dots,N$. \\
+Betrachte das Optimierungsproblem
+$$v := \sup_{\tau\text{ ist Stoppzeit }\leq N} \left\{ EX_{\tau} \right\} = EX_{\tau_0}$$
+$v$ = maximaler Wert, \\
+$\tau_0$ = optimale Stoppzeit (falls existent). Wegen
+$$E|X_{\tau}| = \sum_{n=1}^N E\left( |X_n|\cdot\ind_{\left\{ \tau = n \right\}} \right) \leq \sum_{n=1}^N E|X_n| < \infty$$
+nach Voraussetzung ist $v < \infty$. Ist $(X_n)_{n=1,\dots,N}$ ein $(\FF_n)_{n=1,\dots,N}$ ein Supermartingal, so folgt mit Satz \ref{Sa8.6}: $EX_1 \geq EX_{\tau} \quad\forall$ Stoppzeiten $\tau \leq N$. \\
+Also: $\tau_0 \equiv 1$ ist optimal (sofort aufhören).
+
+\begin{DefON} $\\$
+Der Prozess $Z = (Z_n)_{n=1,\dots,N}$ mit
+$$Z_N := X_N,\ Z_n := \max\left\{ X_n,\,E\left[ Z_{n+1}\,|\,\FF_n \right] \right\},\ n=N-1,\dots,1$$
+heißt \textbf{Snell-Einhüllende}\index{Snell-Einhüllende} von $X$.
+\end{DefON}
+
+%Satz 8.7
+\begin{Sa} \label{Sa8.7} Mit den obigen Bezeichnungen gilt:
+\begin{enumerate}
+\item[a)] $Z$ ist ein $(\FF_n)_{n=1,\dots,N}$-Supermartingal mit $Z_n \geq X_n$ für $n=1,\dots,N$.
+\item[b)] $Z$ ist das kleinste $(\FF_n)$-Supermartingal, welches $X$ dominiert, d.h. ist $(Y_n)_{n=1,\dots,N}$ ein weiteres $(\FF_n)$-Supermartingal mit $Y_n \geq X_n,\,n=1,\dots,N$ so gilt: $Y_n \geq Z_n$ für $n=1,\dots,N$.
+\end{enumerate}
+\end{Sa}
+\begin{Bew} $\\$
+\begin{enumerate}
+\item[a)] Aus der Definition: $Z_n \geq X_n \ \forall n,\ Z_n \geq E[Z_{n+1}\,|\,\FF_n]$, also $(Z_n)$ Supermartingal.
+\item[b)] Rückwärtsinduktion: \\
+($n=N$): $Y_N \geq X_N = Z_N$ \\
+($n\to n-1$): $Y_{n-1} \stackrel{Y\text{ Supermartingal}}{\geq} E\left[ Y_n\,|\,\FF_{n-1} \right] \stackrel{\text{I.H.}}{\geq} E\left[ Z_n\,|\,\FF_{n-1} \right]$ und $Y_{n-1} \geq X_{n-1}$ \\
+$\folgt Y_{n-1} \geq \max\{X_{n-1}, E[Z_{n}\,|\,\FF_{n-1}]\} = Z_{n-1}$
+\end{enumerate}
+\end{Bew}
+
+%Satz 8.8
+\begin{Sa} \label{Sa8.8} $\\$
+Mit den obigen Bezeichnungen und $\tau_0 = \min\{n\in\{1,\dots,N\}\,|\,X_n = Z_n\}$ gilt:
+\begin{enumerate}
+\item[a)] $\tau_0$ ist eine Stoppzeit.
+\item[b)] $(Z_n^{\tau_0})_{n=1,\dots,N}$ ist ein $(\FF_n)_{n=1,\dots,N}$-Martingal.
+\item[c)] $EX_{\tau_0} = \sup_{\tau\text{ Stoppzeit}}\{EX_{\tau}\}$
+\end{enumerate}
+\end{Sa}
+\begin{Bew} $\\$
+\begin{enumerate}
+\item[a)] Wegen $Z_N = X_N$ ist $\tau_0 \leq N$. Es gilt:
+$$\left\{ \tau_0 \leq n \right\} = \bigcup_{i=1}^n \underbrace{\left\{ Z_i = X_i \right\}}_{\in\FF_i} \in \FF_n$$
+\item[b)] Es gilt:
+$$\underbrace{Z_{n+1}^{\tau_0}}_{=Z_{(n+1) \wedge \tau_0}} - \underbrace{Z_n^{\tau_0}}_{=Z_{n \wedge \tau_0}} = \ind_{\{\tau_0 \geq n+1\}} \left( Z_{n+1} - E\left[ Z_{n+1}\,|\,\FF_n \right] \right)\ (*)$$
+da
+\begin{enumerate}
+\item[Fall 1:] $\tau_0 \geq n+1$ \\
+linke Seite = $Z_{n+1} - Z_n$, \\
+rechte Seite = $Z_{n+1} - \underbrace{E[Z_{n+1}\,|\,\FF_n]}_{=Z_n}$, da $X_n < Z_n$ auf $\{\tau_0 \geq n+1\}$. (stimmt)
+\item[Fall 2:] $\tau_0 \leq n$ \\
+$0=0$ (stimmt)
+\end{enumerate}
+Wende nun $E[\,\cdot\,|\,\FF_n]$ auf (*) an: \\
+Da $\{\tau_0 \geq n+1\} = \{\tau_0 \leq n\}^C \in\FF_n$ folgt
+$$E\left[ Z_{n+1}^{\tau_0} - Z_n^{\tau_0}\,|\,\FF_n \right] = \ind_{\left\{ \tau_0 \geq n+1 \right\}} E\left[ Z_{n+1} - E\left[ Z_{n+1}\,|\,\FF_n \right]\,|\,\FF_n \right] = 0$$
+$\folgt (Z_n^{\tau_0})$ ist $(\FF_n)$-Martingal.
+\item[c)] Wegen b) und Satz \ref{Sa8.6}:
+$$EZ_1 = EZ_1^{\tau_0} = EZ_N^{\tau_0} = EZ_{\tau_0} = EX_{\tau_0}$$
+Für eine beliebige Stoppzeit $\tau$ gilt: \\
+$EZ_1 \geq EZ_{\tau}$, da $Z$ Supermartingal. Und weiterhin: \\
+$EX_{\tau_0} = EZ_1 \geq EZ_1 \geq EZ_{\tau} \geq EX_{\tau} \quad\folgt$ Beh.
+\end{enumerate}
+\end{Bew}
+
+%Beispiel 8.8
+\begin{Bsp}[Das Sekretärinnenproblem] \label{Bsp8.8} $\\$
+$N$ Bewerber um eine Stelle stellen sich nacheinander vor. Nach jedem Interview muss entschieden werden, ob die Person die Stelle bekommt. \\
+Annahme: Die Bwerber lassen sich linear anordnen und erscheinen in beliebiger Reihenfolge. ($\folgt N!$ mögliche Reihenfolgen) \\
+Welche Strategie maximiert die Wahrscheinlichkeit, dass der beste Bewerber die Stelle bekommt? Sei \\
+$A_n$ = absoluter Rang des Kandidaten unter allen $N$ und \\
+$R_n$ = dessen relativer Rang unter den ersten $n$, also \\
+$R_n = \#\{1 \leq m \leq n\,|\,A_m \leq A_n\}$ \\
+Es gibt eine Bijektion zwischen den $A$-Werten und den $R$-Werten und somit gilt:
+$$P(R_1=r1,\dots,R_N=r_N) = \frac{1}{N!} \quad\forall r1,\dots,r_N,\ 1 \leq r_i \leq i,\ 1 \leq i \leq N$$
+Bestimme die Randverteilungen:
+$$P(R_n = l) = \frac{1}{n} \text{ für } l=1,\dots,n \quad\forall n\in\left\{ 1,\dots,N \right\} \text{ und } R_1,\dots,R_N \text{ unabhängig}$$
+Sei nun
+$$\overline{X_n} := \begin{cases}
+1 & A_n = 1 \\
+0 & \text{sonst} \\
+\end{cases},\ \FF_n = \sigma\left( R_1,\dots,R_N \right) \text{ und } X_n = E\left[ \overline{X_n}\,|\,\FF_n \right].$$
+$(X_n)$ ist $(\FF_n)$-adaptiert und $P(\overline{X_{\tau}} = 1) \to$ max.
+\end{Bsp}
+
 
 \newpage
 \renewcommand{\indexname}{Stichwortverzeichnis}
