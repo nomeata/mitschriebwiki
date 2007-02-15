@@ -2799,29 +2799,133 @@ $EX_{\tau_0} = EZ_1 \geq EZ_1 \geq EZ_{\tau} \geq EX_{\tau} \quad\folgt$ Beh.
 \end{Bew}
 
 %Beispiel 8.8
-\begin{Bsp}[Das Sekretärinnenproblem] \label{Bsp8.8} $\\$
-$N$ Bewerber um eine Stelle stellen sich nacheinander vor. Nach jedem Interview muss entschieden werden, ob die Person die Stelle bekommt. \\
-Annahme: Die Bwerber lassen sich linear anordnen und erscheinen in beliebiger Reihenfolge. ($\folgt N!$ mögliche Reihenfolgen) \\
-Welche Strategie maximiert die Wahrscheinlichkeit, dass der beste Bewerber die Stelle bekommt? Sei \\
-$A_n$ = absoluter Rang des Kandidaten unter allen $N$ und \\
-$R_n$ = dessen relativer Rang unter den ersten $n$, also \\
-$R_n = \#\{1 \leq m \leq n\,|\,A_m \leq A_n\}$ \\
-Es gibt eine Bijektion zwischen den $A$-Werten und den $R$-Werten und somit gilt:
-$$P(R_1=r_1,\dots,R_N=r_N) = \frac{1}{N!} \quad\forall r1,\dots,r_N,\ 1 \leq r_i \leq i,\ 1 \leq i \leq N$$
-Bestimme die Randverteilungen:
-$$P(R_n = l) = \frac{1}{n} \text{ für } l=1,\dots,n \quad\forall n\in\left\{ 1,\dots,N \right\} \text{ und } R_1,\dots,R_N \text{ unabhängig}$$
-Sei nun
-$$\overline{X_n} := \begin{cases}
-1 & A_n = 1 \\
-0 & \text{sonst} \\
-\end{cases},\ \FF_n = \sigma\left( R_1,\dots,R_N \right) \text{ und } X_n = E\left[ \overline{X_n}\,|\,\FF_n \right].$$
-$(X_n)$ ist $(\FF_n)$-adaptiert und $P(\overline{X_{\tau}} = 1) \to$ max.
+\begin{Bsp}[Das Sekret"arinnenproblem] \label{Bsp8.8}
+
+$N$ Bewerber(innen) um eine Stelle stellen sich nacheinander vor. Nach jedem Interview muss entschieden werden, ob die Person die Stelle bekommt.\\
+Annahme: Die Bewerber lassen sie linear anordnen und erscheinen in beliebiger Reihenfolge. ($N!$ m"ogliche Reihenfolgen)\\
+Welche Strategie maximiert die Wahrscheinlichkeit, dass die beste Person die Stelle bekommt?
+\begin{enumerate}
+\item[$\bullet$] $A_n$ = absoluter Rang des $n$-ten Kandianten unter allen $N$.
+
+\item[$\bullet$] $R_n$ = dessen relativer Rang unter den ersten $N$. $R_n = \{1 \leq m \leq n\ |\ A_m \leq A_n\}$.
+\end{enumerate}
+
+Es gibt eine Bijektion zwischen den $A$-Werten und den $R$-Werten. Somit gilt $\forall\, r_1,\dots,r_N$, $1 \leq r_i \leq i$, $1 \leq i \leq N$:
+\[
+P(R_1 = r_1,\dots,R_N = r_N) = \frac1{N!}
+\]
+Bestimme Randverteilungen:
+\[
+P(R_n = l) = \frac1{n}\ \text{ f"ur } l = 1,\dots,n\ \ \forall\, n \in \{1,\dots,N\}
+\]
+und $R_1,\dots,R_N$ unabh"angig. Sei nun
+\[
+\overline{X}_n := \begin{cases}
+1, & A_n = 1 \\
+0, & \text{sonst}
+\end{cases},\ \FF_n = \sigma(R_1,\dots,R_n)
+\]
+und $X_n = E[\overline{X}_n|\FF_n]$. $(X_n)$ ist $(\FF_n)$-adaptiert. $P(\overline{X}_{\tau} = 1) \rightarrow \max$.
+\begin{eqnarray*}
+P(\overline{X}_{\tau} = 1) & = & \sum_{n=1}^N P(\overline{X}_n = 1,\ \tau=n) = \sum_{n=1}^N E \ind_{[\tau=n,\ \overline{X}_n=1]} \\
+& = & \sum_{n=1}^N \int_{\{\tau=n\}} \overline{X}_n dP = \sum_{n=1}^N \int_{\{\tau=n\}} \underbrace{E[\overline{X}_n|\FF_n]}_{=X_n} dP \\
+& = & EX_{\tau}
+\end{eqnarray*}
+
+Also maximiere $EX_{\tau}$ mit Satz \ref{Sa8.8}.
+\begin{eqnarray*}
+P(R_1 = r_1,\dots,R_{n-1} = r_{n-1}, A_n = 1) & = & P(R_1 = r_1,\dots,R_{n-1}=r_{n-1}, R_n = 1, R_{n+1}>1,\dots,R_N>1) \\
+& = & \frac1{N!} \cdot 1 \cdot \cdots \cdot 1 \cdot n \cdot (n+1) \cdot \cdots \cdot (N-1) = \frac{n}{N} \cdot \frac1{n!}
+\end{eqnarray*}
+\begin{eqnarray*}
+\Rightarrow P(A_n = 1\ |\ R_1 = r_1,\dots,R_{n-1} = r_{n-1},R_n = 1) & = & \frac{P(R_1=r_1,\dots,R_{n-1}=r_{n-1},R_n=1,A_n=1)}{P(R_1=r_1,\dots,R_{n-1}=r_{n-1},R_n=1)} \\
+& = & \frac{\frac{n}{N} \cdot \frac1{n!}}{\frac1{n!}} = \frac{n}{N}
+\end{eqnarray*}
+\[
+\Rightarrow X_n = E[\ind_{\{1\}}(A_n)|\FF_n] = \begin{cases}
+\frac{n}{N}, & \text{falls } R_n = 1 \\
+0, & \text{sonst}
+\end{cases} \quad (\ast)
+\]
+\textbf{Behauptung:} $\exists\, (c_n)_{n=1,\dots,N} \subset \R$, $c_n\downarrow$, $c_N = \frac1{N}$ und $E[Z_n|\FF_{n-1}] \equiv c_n$ f"ur $n=1,\dots,N$, wobei $Z$ die Snell-Einh"ullende von $X$ ist.\\
+\textbf{Beweis:} R"uchw"artsinduktion:
+\begin{enumerate}
+\item[$n=N$:]
+\begin{eqnarray*}
+E[Z_N|\FF_{N-1}] & = & E[X_N|\FF_{N-1}] \stackrel{A_N=R_N}{=} E[\ind_{\{1\}}(R_N)|\FF_{N-1}] \\
+& \stackrel{R_N,\FF_N \text{ unabh.}}{=} & P(R_N = 1) = \frac1{N} = c_N.
+\end{eqnarray*}
+
+\item[$n+1 \leadsto n$:]
+\begin{eqnarray*}
+E[Z_n|\FF_{n-1}] & = & E[\max\{X_n\ E[Z_{n+1}|\FF_n]\}|\FF_{n-1}] \\
+& \stackrel{(\ast)}{=} & E[\max\{\frac{n}{N} \cdot \ind_{\{1\}}(R_n), c_{n+1}\}|\FF_{n-1}] \\
+& = & E[\ind_{\{1\}}(R_n) \cdot \max\{ \frac{n}{N}, c_{n+1}\} + (1-\ind_{\{1\}}(R_n))c_{n+1} | \FF_{n-1}] \\
+& \stackrel{R_n,\FF_{n-1} \text{ unabh.}}{=} & P(R_n=1) \cdot \max\{\frac{n}{N}, c_{n+1}\} + (1-P(R_n=1))\cdot c_{n+1} \\
+& = & \frac1{n} \max\{\frac{n}{N}, c_{n+1}\} + (1-\frac1{n})c_{n+1}
+\end{eqnarray*}
+\[
+\Rightarrow c_n = c_{n+1} + \underbrace{ \max\{ \frac1{N}, \frac{c_{n+1}}{n}\} - \frac{c_{n+1}}{n} }_{\geq 0} \Rightarrow c_n \geq c_{n+1}
+\]
+\end{enumerate}
+
+$\tau^{\ast} := \inf\{ n\ |\ Z_n = X_n\}$\\
+Stoppregel nach Satz \ref{Sa8.8}: $\tau^{\ast} = \min \{n\ |\ X_n = Z_n\}$.
+\begin{enumerate}
+\item[$\bullet$] gestoppt wird vor $N$ nur, wenn $R_n=1$.
+
+\item[$\bullet$] die Werte $X_n \not= 0$ sind wachsend.
+
+\item[$\bullet$] die Werte $E[Z_{n+1} | \FF_n] = c_{n+1}$ fallend.
+\begin{eqnarray*}
+\tau^{\ast} & = & \min\{ 1 \leq n \leq N-1\ |\ R_n = 1,\, \frac{n}{N} \geq c_{n+1}\} \wedge N \\
+& = & \min\{ n \geq k_n\ |\ R_n = 1 \} \wedge N.
+\end{eqnarray*}
+\end{enumerate}
+
+Wir bestimmen jetzt noch $k_N$.\\
+Sei $\tau_{k} := \inf\{ n \geq k\ |\ R_n=1\} \wedge N$. Bestimme $EX_{\tau_k}$.\\
+$k_N$ ist dann der $k$-Wert, bei dem $EX_{\tau_k}$ maximal ist. Es gilt
+\begin{eqnarray*}
+EX_{\tau_k} & = & \sum_{l=k}^N E[X_l \cdot 1_{\{l\}} (\tau_k)] \\
+& = & \sum_{l=k}^N \frac{l}{N} \underbrace{ P(R_m>1 \text{ f"ur } m=k,\dots,l-1,R_l = 1) }_{=P(\tau_k = l)} \\
+& = & \sum_{l=k}^N \frac{l}{N} \underbrace{ \left( \prod_{m=k}^{l-1} \frac{m-1}{m} \right)}_{=P(R_m>1)} \cdot \underbrace{\frac1{l}}_{=P(R_l=1)} \\
+& \stackrel{\text{Teleskop. Prod.}}{=} & \frac{k-1}{N} \sum_{l=k}^N \frac1{l-1}
+\end{eqnarray*}
+$\Phi(k) := \frac{k-1}{N} \sum_{l=k}^N \frac1{l-1}$ wird maximal in $k_N := \inf\{ k\ |\ \frac1{k} + \frac1{k+1} + \cdots + \frac1{N-1} \leq 1\}$. Beachte: $\lim_{N \rightarrow \infty} \frac{k_N} = \frac1{e}$.\\
+Bei einem gro"sen Bewerberkreis wird man etwa $37$ Prozent der Bewerber passieren lassen und dann den ersten nehmen, der besser als alle vorangegangenen ist.
 \end{Bsp}
 
 
+%Chapter 9
+\chapter{Konverg"anzs"atze f"ur Martingale}
+Im Folgenden sei $(\Omega,\AA,P)$ ein W'Raum, $(\FF_n)_{n \in \N}$ eine Filtration und $\FF_{\infty} := \sigma(\cup_{n \in \N} \FF_n)$.
+
+\begin{Def}
+Sei $X_1,\dots,X_n$ eine Folge von ZV und $-\infty < a < b < \infty$.\\
+$U_n[a,b]$ sei die \textbf{Anzahl der aufsteigenden "Uberschreitungen} des Intervalls $[a,b]$ durch $X_1,\dots,X_n$ also
+\[
+U_n[a,b] = \max\{ k \leq \lfloor \frac{n}2 \rfloor\ |\ \exists \text{ Indizes } 1 < i_1 < \dots < i_{2k} \leq n \text{ mit } X_{i_{2j-1}} \leq a,\, b \leq X_{i_2} \text{ f"ur } j = 1,\dots,k \}
+\]
+\end{Def}
+
+\begin{Bem}
+Wegen
+\[
+\{U_n[a,b] \geq k\} = \bigcup_{1\leq i_1<\dots<i_{2_k}\leq n} \ \bigcap_{j=1}^k \{ X_{i_{2j-1}} \leq a \} \cap \{X_{i_{2j}} \geq b\} \in \FF_n
+\]
+ist $U_n[a,b]$ eine ZV.
+\end{Bem}
+
+%Lemma 9.1
+\begin{Lem} \label{Le9.1}
+Ist $(X_n)$ ein Supermartingal, so gilt:
+\[
+EU_n[a,b] \leq \frac1{b-a} E(X_n-a)^-
+\]
+\end{Lem}
 
 
-%fehlt: Teil von Bernhard vom Montag (12. Februar)
 
 
 
