@@ -2818,6 +2818,102 @@ $(X_n)$ ist $(\FF_n)$-adaptiert und $P(\overline{X_{\tau}} = 1) \to$ max.
 \end{Bsp}
 
 
+
+
+%fehlt: Teil von Bernhard vom Montag (12. Februar)
+
+
+
+
+%Vorlesung vom 15. Februar 2007, curry
+%Lemma 9.1
+\begin{Lem} \label{Lem9.1} 
+Sei $(X_n)_{n\in\N}$ ein Supermartingal. Dann gilt:
+$$EU_n\left[a,b\right] \leq \frac{1}{b-a}E(X_n\cdot a)^{-}$$
+\end{Lem}
+\begin{Bew} $\\$
+Sei $p:= \lfloor \frac{n}{2} \rfloor +1,\ \tau_0 \equiv 1$ und für $k=1,\dots,p$: \\
+$\tau_{2k-1} := \min\{j \geq \tau_{2k-2}\ |\ X_j \leq a\} \wedge n$ \\
+$\tau_{2k} := \min\{j \geq \tau_{2k-1}\ |\ X_j \geq b\} \wedge n$ \\
+Die $(\tau_k)$ sind Stoppzeiten mit $1 \leq \tau_1 \leq \tau_2 \leq \dots \leq \tau_{2p} = n$ und \\
+falls $\tau_{2k-1} < k$, ist $\tau_{2k-1} < \tau_{2k}$. \\
+Sei $k_0 := U_n[a,b]$, d.h.
+$X_{\tau_{2k}} - X_{\tau_{2k-1}} \geq b-a$ für $k=1,\dots,k_0$ \\
+$X_{\tau_{2k_0+1}} - X_{\tau_{2k+1}} \neq 0 \folgt X_{\tau_{2k_0+1}} \leq a,\ X_{\tau_{2k_0+2}} = X_n$ \\
+$\folgt X_{\tau_{2k_0+2}} - X_{\tau_{2k_0+1}} \geq X_n - a \geq \min\{X_n-a,0\} = -(X_n\cdot a)^{-}$ \\
+$\folgt \sum_{k=1}^p (X_{\tau_{2k}} - X_{\tau_{2k-1}}) \geq (b-a) \cdot U_n[a,b] - (X_n-a)^{-}$ \\
+Wir zeigen jetzt: $E(X_{\tau_{2k}} - X_{\tau_{2k-1}}) \geq 0$. \\
+Sei $c_j := \ind_{\{\tau_{2k-1} < j \leq \tau_{2k}\}}$. $(c_j)_{j\geq 2}$ ist vorhersehbar. \\
+$\{c_j = 1\} = \{ \tau_{2k-1} \leq j-1 \} \cap \{ \tau_{2k} \leq j-1 \}^C\ \in\FF_{j-1}$ \\
+Sei $Y_n = X_1 + \sum_{j=2}^n c_j(X_j-X_{j-1}),\,n\in\N;\ Y_1 := X1.$ \\
+$\folgtnach{Satz \ref{Sa8.4}} (Y_n)$ ist ein Supermartingal. \\
+\begin{eqnarray*}
+\folgt EY_n &=& E]X_1 + \sum_{j=1}^n c_j(X_j - X_{j--1})] \\
+&=& EX_1 + \underbrace{E[X_{\tau_{2k}} - X_{\tau_{2k-1}}}_{\leq 0} \\
+&\leq& EY_1 = EX_1 \\
+\end{eqnarray*}
+$\folgt$ Beh.
+\end{Bew}
+
+%Satz 9.1
+\begin{Sa}[Vorwärtskonvergenzsatz von Doob] \label{Sa9.1} $\\$
+Sei $(X_n)_{n\in\N}$ ein $(\FF_n)_{n\in\N}$-Supermartingal mit der Eigenschaft $\sup_{n\in\N}\{E|X_n|\} < \infty$. \\
+Dann existiert eine $\FF_{\infty}$\footnote{$\FF_{\infty} = \sigma(\cup_{n\in\N} \FF_n)$} -messbare Zufallsvariable $X_{\infty}$ mit $E|X_{\infty}| < \infty$ und $\lim_{n\to\infty} X_n = X_{\infty}\Pfs$
+\end{Sa}
+\begin{Bew} $\\$
+Sei $N := \{\omega \in \Omega\ |\ \liminf_{n\to\infty}\{ X_n(\omega) \} < \limsup_{n\to\infty}\{ X_n(\omega) \} \}$ und \\
+$U_{\infty}[a,b] := \lim_{n\to\infty}\{ U_n[a,b] \}$ (existiert, da $ U_n[a,b]$ wachsend) \\
+$\folgt N = \cup_{a,b\in\Q,\,a<b} \{ \omega\in\Omega\ |\ U_{\infty}[a,b](\omega) = \infty \}$ \\
+$\folgtnach{Lemma \ref{Lem9.1}} (b-a)EU_n[a,b] \leq E(X_n-a)^{-} \leq |a| + E|X_n| \quad\forall n\in\N$ \\
+Mit der Voraussetzung und monotoner Konvergenz: $EU_{\infty}[a,b] < \infty$. \\
+$\folgt P(U_{\infty}[a,b] = \infty) = 0 \quad\folgt P(N) = 0$, da $N$ abzählbare Vereinigung von $P$-Nullmengen. Außerdem: $N\in\FF_{\infty}$. \\
+Sei $\tilde{X}_{\infty}(\omega) :=
+\begin{cases}
+\lim_{n\to\infty} \{ X_n(\omega) \} & \omega\in N^C (\text{ evtl. } \tilde{X}_{\infty}(\omega) = \infty)\\
+0 & \omega\in N
+\end{cases}$ \\
+\begin{eqnarray*}
+\folgt E\left|\tilde{X}_{\infty}\right| &=& E\left[ \liminf_{n\to\infty} \left\{|X_n|\right\} \right] \\
+&\stackrel{\text{Lem. von Fatou}}{\leq}& \limsup_{n\to\infty} \left\{ E|X_n| \right\} \\
+&\leq& \sup_{n\in\N} \left\{ E|X_n| \right\} \\
+&<& \infty \\
+\end{eqnarray*}
+Sei $\tilde{N} := \{ \omega\in\Omega\ |\ \tilde{X}_{\infty} \in \{-\infty,\infty\} \} \quad\folgt P(\tilde{n}) = 0$ \\
+$folgt X_{\infty} := \tilde{X}_{\infty}\cdot\ind_{\tilde{N}^C}$ erfüllt die Bedingung.
+\end{Bew}
+
+\begin{BemON} $\\$
+\begin{enumerate}
+\item[(i)] $(X_n)_{n\in\N}$ mit der Eigenschaft $\sup_{n\in\N} \{E|X_n|\} < \infty$ heißt \textbf{$L^1$-beschränkt}\index{$L^1$-beschränkt}\index{beschränkt!$L^1$-}.
+\item[(ii)] Bei Supermartingalen folgt die $L^1$-Beschränktheit aus $\sup_{n\in\N} \{EX_n^{-}\} < \infty$, also z.B. falls $X_n \geq 0$.
+\end{enumerate}
+\end{BemON}
+
+%Beispiel 9.1
+\begin{Bsp}[Verzweigungsprozesse] \label{Bsp9.1} $\\$
+Es sei $\{ Y_{nk}\,|\,n,k\in\N \}$ eine Familie von unabhängigen und identisch verteilten $N_0$-wertigen Zufallsvariablen.
+$$P_j := P(Y_{nk} = j) \quad\forall j\in\N_0$$
+Sei $(Z_n)$ definiert durch
+$$Z_1 := 1,\ Z_{n+1} := \sum_{k=1}^{Z_n} Y_{nk} \quad\forall n\in\N_0 \text{ und } \mu := \sum_{k=1}^{\infty} kp_k < \infty$$
+$$\FF_n = \sigma(\{ Y_{mk}\ |\ k\in\N,\ m \leq n-1 \})$$
+Es gilt: 
+\begin{eqnarray*}
+E\left[ Z_{n+1}\,|\,\FF_n \right] &=& E\left[ \sum_{k=1}^{Z_n} Y_{nk}\,|\,\FF_n \right] \\
+&=& E\left[ \sum_{l=0}^{\infty}\left( \sum_{k=1}^{l} Y_{nk} \right)\cdot\ind_{\left\{ Z_n = l \right\}}\,|\,\FF_n \right] \\
+&=& \sum_{l=0}^{\infty} \underbrace{E\left[ \sum_{k=1}^l Y_{nk}\,|\,\FF_n \right]}_{= E\left[ \sum_{k=1}^l Y_{nk} \right]}\cdot\ind_{\left\{ Z_n = l \right\}} \\
+&=& \sum_{l=0}^{\infty} l\cdot\mu\cdot\ind_{\left\{ Z_n = l \right\}} = \mu\cdot Z_n \\
+\end{eqnarray*}
+Sei $X_n := \frac{Z_n}{\mu^n} \folgt (X_k)_{k\in\N}$ ist ein $(\FF_n)_{n\in\N}$-Martingal. \\
+Insbesondere gilt:
+$$EZ_n = \mu^n \cdot EX_n = \mu^n EX_1 = \mu^{n-1}EZ_1 = \mu^{n-1} \quad(*) $$
+$(X_n)_{n\in\N}$ ist $L^1$-beschränkt, da $E|X_n| = EX_n = \frac{1}{\mu} \quad\forall n\in\N$. \\
+$\folgtnach{Satz \ref{Sa9.1}} \exists X_{\infty}$ mit $X_n \to X_{\infty}\Pfs$. \\
+\underline{Falls $\mu < 1$:} $\folgtnach{(*)} P(Z_n \geq \epsilon) \to 0\ (n\to\infty) \quad\folgt X_{\infty} \equiv 0$ \\
+\underline{Falls $\mu = 1$:} $X_n$ ganzzahlig $\folgt$ Folge irgendwann konstant. Wenn $P_1 \neq 1 \quad\folgt X_{\infty} \equiv 0$ \\
+\underline{Falls $\mu > 1$:} $X_{\infty}$ ist nicht degeneriert. $P(X_{\infty} = 0)$ ist Lösung von $g(z) = z$, wobei $g$ erzeugende Funktion von $Y$ ist.
+\end{Bsp}
+
+
 \newpage
 \renewcommand{\indexname}{Stichwortverzeichnis}
 
