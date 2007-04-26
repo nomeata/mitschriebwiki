@@ -8,6 +8,9 @@
 \renewcommand{\da}{\coloneqq}
 \newcommand{\ad}{\eqqcolon}
 
+\renewtheorem{satz}{Satz}
+
+
 \newsavebox{\envbox}
 %\newenvironment{definitionX}{
 \renewenvironment{definition}{
@@ -331,12 +334,155 @@ $v(f) \da 0$
 Wie rechnet man mit Funktionskeimen? Praktisch genügt es mit Repräsentanten, also in $p$ differenzierbare Funktionen zu rechnen.
 
 \begin{lemma}
-$v$ erfülle (T1) und (T2) für Funktionen, die in $p$ differenzierbar sind. Falls $f$ und $g$ in einer Umgebung von $p$ übereinstimmen (d.h. $f\sim g \gdw [f] = [g]$) so ist $v(f) = v(g)$. Also insbesondere: $\tilde v([f]) \da v(f)$.
+\begin{itemize}
+\item[a)]
+$v:V^\infty(p) \to \MdR$ erfülle (T1) und (T2) für Funktionen, die in $p$ differenzierbar sind. Falls $f$ und $g$ in einer Umgebung von $p$ übereinstimmen (d.h. $f\sim g \gdw [f] = [g]$) so ist $v(f) = v(g)$. Also insbesondere: $\tilde v([f]) \da v(f)$.
+\item[b)]
+Falls $h$ in einer Umgebung von $p$ konstant ist, so ist $v(h)=0$.
+\end{itemize}
 \end{lemma}
 
+\begin{beweis}
+\begin{itemize}
+\item[a)] Da $v$ linear ist, genügt es zu zeigen: Falls $f=0$ in einer Umgebung $U$ von $p$, so ist $v(f)=0$. Dazu betrachte die „Abscheidefunktion“ $\tilde g$ mit 
+\begin{enumerate}
+\item Träger von $\tilde g \da \{ q\in M \mid \tilde g(q) \ne 0\} \subset U$
+\item $0\le \tilde g \le 1$ auf $M$
+\item $\tilde g = 1$ in einer Umgebung $V$ von $p$, $V \subset U$.
+\end{enumerate}
+Es ist dann $f\tilde g = 0$ auf $M$. Nun folgt aus den Axiomen (T1) und (T2) dass wegen $v(0)= v(0+0) = v(0) + v(0)$ gilt: $v(0)=v(0)$. Somit ist
+\[
+0 = v(0) = v(f\tilde g) \gleichwegen{(T2)} v(f)\underbrace{\tilde g(p)}_{=1} + \underbrace{f(p)}_{=0}v(\tilde g) = v(f)\,.
+\]
+\item[b)] Nach a) können wir annehmen dass $h$ konstant $c$ auf $M$ ist. Es ist dann $v(h)= v(c\cdot1) = c\cdot v(1)$. Aus $v(1) = v(1\cdot 1) = v(1)\cdot 1 + 1\cdot v(1)$ folgt $v(1)=0$ und damit die Behauptung.
+\end{itemize}
+\end{beweis}
+
+$T_pM$ ist ein $\MdR$-Vektorraum: ($v,w \in T_pM$, $f\in C^\infty(p)$, $a\in\MdR$)
+\begin{align*}
+\bigl(v + w\bigr)(f) &\da v(f) + w(f) \\
+\bigl(a\cdot v\bigr)(f)   &\da a\cdot v(f) 
+\end{align*}
+
+Was ist die Definition dieses Vektorraumes?
+
+Weitere Beispiele von Tangentialvektoren via Karten:
+\newcommand{\ptv}[1]{\left.\frac{\partial}{\partial x^{#1}}\right|_p}
+
+Sei $\varphi=(x^1,\ldots,x^n)$ ein Koordinatensystem (eine Karte) von $M$ im Punkt $p$. (d.h. $x^i=u^i\circ\varphi$). Für $f\in C^{\infty}(p)$ setze:
+\[
+\frac{\partial f}{\partial x^i}(p) \da \frac{\partial (f\circ \varphi^{-1})}{\partial u^i}\bigl(\varphi(p)\bigr) % \qquad \text{$i$-te partielle Ableitung im $\MdR^n$}
+\]
+
+Eine direkte Rechnung zeigt:
+\[
+\ptv{i}:
+\begin{aligned}
+C^\infty{p} &\to \MdR \\
+f &\mapsto \ptv{i}(f) \da \frac{\partial f}{\partial x^i}(p)
+\end{aligned}
+\]
+ist ein Tangentialvektor in $p$.
+
+\begin{satz}[Basis-Satz]
+Sei $M$ eine $m$-dimensionale differenzierbare Mannigfaltigkeit und $\varphi=(x^i,\ldots,x^n)$ eine Karte um $p\in M$. Dann bilden die Tangentialvektoren $\ptv{i}$, $i=1,\ldots,n$, eine Basis von $T_pM$ und es gilt für alle $v\in T_pM$:
+\[
+v = \sum_{i=1}^m v(x^i) \ptv{i}
+\]
+Insbesondere ist $\dim T_pM = m = \dim M$.
+\end{satz}
+
+Für diesen Satz benötigen wir noch das
+\begin{lemma}[Analysis]
+Sei $g$ eine $C^\infty$-Funktion in einer bezüglich $o$ sternförmigen offenen Umgebung von $o\in \MdR^n$. Dann gilt: $g = g(0) + \sum_{j=1}^n u^jg_j$ für $C^\infty$-Funktionen $g_j$, $j=1,\ldots,n$.
+\end{lemma}
+
+\begin{beweis}[Lemma 2]
+Taylorintegralformel:
+\[
+g(u)-g(0) = \int_0^1 \frac d{dt} g(tu) dt = \sum_{j=1}^n u^j \int_0^1 \frac{\partial g}{\partial u^j}(tu) dt
+\]
+\end{beweis}
+
+\begin{beweis}[Satz 1]
+\begin{enumerate}
+\item[(a)] $\ptv{i}$ ist ein Tangentialvektor in $p$. (Rechnung hier ausgelassen) und für die $k$-te Koordinatensysten $x^k\da u^k\circ \varphi$ gilt:
+\[
+\ptv{i}p(x^k) = \frac{\partial (x^k\circ\varphi^{-1})}{\partial u^i}\bigl(\varphi(p)\bigr) = \frac{\partial u^k}{\partial u^i}\bigl(\varphi(p)\bigr) = \delta_{ik}\,.
+\]
+\item[(b)] Die Vektoren $\ptv{i}$, $i=1,\ldots,n$, sind linear unabhängig:
+Sei 
+\[
+\sum_{i=1}^m \lambda_i \ptv{i} = 0 
+\qquad (\lambda_i\in\MdR)
+\]
+Dann ist für $k=1,\ldots,m$:
+\[
+0 = 0(x^k) = 
+\sum_{i=1}^m \lambda_i \underbrace{\ptv{i}(x^k)}_{\delta_{ik}} = \lambda_k
+\]
+\item[(c)]  Die Vektoren $\ptv{i}$, $i=1,\ldots,n$, bilden ein Erzeugendensystem. Ohne Einschränkung gelte $\varphi(p)=0$ ($(*)$). Sei $v\in T_pM$ und $a_k \da v(x^k)$, $k=1,\ldots,m$. Setze 
+\[w\da v-\sum_{k=1}^m a_k \ptv{k} \in T_pM\,.\]
+Dann ist für alle $k=1,\ldots,m$: 
+\[
+w(x^k) = v(x^k) - \sum_{k=1}^m  a_k \ptv i (x^k) = a_k \sum_{k=1}^m  a_i \lambda_{ik} = 0 \quad (**)
+\]
+Nun wollen wir zeigen: $w=0$, d.h. $w(f) = 0$ für alle $f\in C^{\infty}(p)$.
+Sei $f\in C^\infty(p)$. Dann ist $g \da f \circ \varphi^{-1} \in C^\infty\bigl(\varphi(p)\bigr)$.
+\begin{align*}
+w(f) &= w(f \circ \varphi^{-1} \circ \varphi) \\
+&= w(g \circ \varphi) \\
+&\gleichnach{Lemma 2} w\bigl( g(0) + \sum_{j=1}^m (u^j\varphi \circ)\cdot(g_j \circ \varphi ) \bigr) \\
+& \gleichnach{(T1),(T2)} 0 + \sum_{j=1}^m \underbrace{w(x^j)}_{\gleichwegen{(**)}0} \cdot (g_j\circ\varphi)(p) + \underbrace{x^j(p)}_{\gleichwegen{(*)}0} \cdot w(g_j \circ\varphi ) ) \\
+& = 0
+\end{align*}
+\end{enumerate}
+
+\end{beweis}
+
+
+\section{Tangentialabbildungen}
+
+In diesem Abschnitt verwendete Notation: $\Phi: M\to N$ differenzierbar, $f\in C^\infty(M)$ oder $f\in C^\infty(p)$, $\varphi: U \to U'$ eine Karte.
+
+Sei $\Phi:M^m\to N^n$ eine differenzierbare Abbildung zwischen differenzierbaren Mannigfaltigkeiten. Das Ziel ist $\Phi$ in jedem Punkt von $p\in M$ durch lineare Abbildungen $d\Phi_p: T_pM \to T_{\Phi(p)}N$ zu „approximieren“. 
+
+\begin{definition}
+\index{Differential}
+\index{Tangentialabbildung}
+Das Differential (oder die Tangentialabbildung) von $\Phi$ in $p$ ist:
+$ d\Phi_p : T_pM \to T_{\Phi(p)}N $ mit $d\Phi_p(v) : C^\infty(\Psi(p)) \to \MdR$ gegeben durch
+\[ d\Phi_p(v)(f) \da v(f \circ \Phi)\,. \]
+\end{definition}
+
+Nun ist zu zeigen dass $d\Phi_p(v) \in T_{\Phi(p)}N$:
+\begin{itemize}
+\item{(T1)}
+\begin{align*}
+d\Psi_p(v)(af + bg) 
+&= v( (af+bd) \circ \Phi) \\
+&=v(af \circ \Phi + bg \circ \Phi) \\
+&=a v(f\circ \Phi) + b v(g\circ \Phi) \\
+&=a d\Phi_p(v)(f) + b d\Phi_p(v)(g)
+\end{align*}
+\item{(T2)}
+\begin{align*}
+d\Psi_p(v)(fg) 
+&= v( (fg)\circ \Phi) \\
+&= v( (f\circ \Phi)\cdot(g\circ\Phi) ) \\
+&= v(f\circ \Phi)(g\circ \Phi)(p) + v(g\circ \Phi)(f\circ \Phi)(p) \\
+&= d\Phi_p(v)(f) + \cdots 
+\end{align*}
+\end{itemize}
+
+Beachte dass direkt aus der Definition folgt: Ist $\Phi = \text{id}_M: M\to M,\> p\mapsto p$, so gilt $d\Phi_p(v) = d(\text{id})_p(v) = v$ für alle $v\in T_pM$.
+
+
+
+
 \appendix
-%\chapter{Satz um Satz (hüpft der Has)}
-%\listtheorems{satz,wichtigedefinition}
+\chapter{Satz um Satz (hüpft der Has)}
+\listtheorems{satz,wichtigedefinition}
 
 \renewcommand{\indexname}{Stichwortverzeichnis}
 \addtocounter{chapter}{1}
