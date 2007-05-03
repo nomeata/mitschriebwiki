@@ -446,11 +446,11 @@ Nun ist zu zeigen dass $d\Phi_p(v) \in T_{\Phi(p)}N$:
 \begin{itemize}
 \item[(T1)]
 \begin{align*}
-d\Phi_p(v)(af + bg) 
-&= v( (af+bd) \circ \Phi) \\
-&=v(af \circ \Phi + bg \circ \Phi) \\
-&=a v(f\circ \Phi) + b v(g\circ \Phi) \\
-&=a d\Phi_p(v)(f) + b d\Phi_p(v)(g)
+d\Phi_p(v)(a\cdot f + b\cdot g) 
+&= v( (a\cdot f+b\cdot g) \circ \Phi) \\
+&=v(a\cdot f \circ \Phi + b\cdot g \circ \Phi) \\
+&=a\cdot v(f\circ \Phi) + b\cdot v(g\circ \Phi) \\
+&=a\cdot d\Phi_p(v)(f) + b\cdot d\Phi_p(v)(g)
 \end{align*}
 \item[(T2)]
 \begin{align*}
@@ -462,10 +462,145 @@ d\Phi_p(v)(fg)
 \end{align*}
 \end{itemize}
 
-Beachte dass direkt aus der Definition folgt: Ist $\Phi = \text{id}_M: M\to M,\> p\mapsto p$, so gilt $d\Phi_p(v) = d(\text{id})_p(v) = v$ für alle $v\in T_pM$.
+Beachte, dass aus der Definition direkt folgt: Ist $\Phi = \text{id}_M: M\to M,\> p\mapsto p$, so gilt $d\Phi_p(v) = d(\text{id})_p(v) = v$ für alle $v\in T_pM$.
 
+\begin{lemma}
+\label{lem3}
+Sei $\Phi \in C^\infty(M,N)$, $\xi = (x^1,\ldots,x^m)$ eine Karte um $p\in M$ und $\eta = (y^1,\ldots,y^n)$ eine Karte um $\Phi(p)\in N$. Dann gilt:
+\[
+d\Phi_p\left(\ptv{j}\right) = \sum_{i=1}^n \frac{ \partial(y^j\circ \Phi)}{\partial x^j}(p) \left.\frac{\partial}{\partial y^i}\right|_{\Phi(p)} \qquad (*)
+\]
+\end{lemma}
 
+\begin{beweis}
+Sei $w\in T_{\Phi(p)}N$ die linke Seite von $(*)$. Dann gilt nach dem Basis-Satz (Satz \ref{basissatz}) ist 
+\[ w = \sum w(y^i) \left.\frac{\partial}{\partial y^i}\right|_{\Phi(p)}\,.\]
+Nach der Definition des Differentials ist
+\[ w(y^i) = d\Phi_p(\ptv j)(y^i) = \frac{\partial(y^j\circ \Phi)}{\partial x^j}(p)\,.\]
+\end{beweis}
 
+\begin{definition}
+Die Matrix 
+\[
+\left( \frac{\partial (y^j\circ \Phi)}{\partial x^j}(p)\right) 
+= \left( \frac{\partial(y^j\circ \Phi \circ \xi^{-1})}{\partial u^j}\big(\xi(p)\big)\right)
+\qquad (1\le i\le n, 1\le j\le m)
+\]
+heißt Jakobi-Matrix von $\Phi$ bezüglich $\xi$ und $\eta$.
+\index{Jakobi-Matrix}
+\end{definition}
+
+\begin{lemma}[Kettenregel]
+\label{lem4}
+Falls $\Phi\in C^\infty(M,N)$ und $\Psi \in C^\infty(N,L)$, so gilt
+\[
+d(\Psi\circ\Phi)_p = d\Psi_{\Phi(p)} \circ d\Phi_p\,.
+\]
+\end{lemma}
+
+\begin{beweis}
+Mit einer Testfunktion $g$ überprüfen wir:
+\[
+d(\Psi \circ \Phi)(v)(g) = v(g \circ \Psi \circ \Phi) = d\Phi(v)(g \circ \Psi) = d\Psi(d\Phi(v))(g)
+\]
+\end{beweis}
+
+\begin{bemerkung}
+Falls $\Phi: M\to N$ ein Diffeomorphismus ist, so folgt wegen
+\[ \text{id} = d(\text{id})_p = d(\Phi \circ \Phi^{-1})|_p \gleichnach{Lemma \ref{lem4}} d\Phi_p \circ d\Phi^{-1}_{\Phi(p)} \]
+dass
+\[ (d\Phi_p)^{-1} = d\Phi_{\Phi(p)}^{-1}\,. \]
+Das heißt insbesondere, dass $d\Phi_p$ ein Vektorraum-Isomophismus ist, und $\dim M = \dim N$.
+\end{bemerkung}
+
+\begin{satz}[Inverser Funktionensatz für Mannigfaltigkeiten]
+\label{invfunk}
+\index{Lokaler Diffeomorphismus}
+\index{Diffeomorphismus!lokaler}
+Ist $\Phi \in C^\infty(M,N)$ und $d\Phi_p:T_pM \to T_{\Phi(p)}N$ ein Vektorraum-Isomorphismus für ein Punkt $p\in M$, dann existiert eine Umgebung $V$ von $p$ und eine Umgebung $W$ von $\Phi(p)$ so dass $\Phi|_V$ ein Diffeomorphismus von $V$ auf $\Phi(V)=W$ ist. $\Phi|_V$ nennen wir einen lokalen Diffeomorphismus.
+\end{satz}
+
+\begin{beweis}
+Wähle eine Karte $\xi$ um $p\in M$ und eine Karte $\eta$ um $\Phi(p)\in N$. Nach dem Satz über inverse Funktionen (Analysis II) ist $\eta \circ \Phi \circ \xi^{-1}$ ein lokaler Diffeomorphismus (da $d(\eta \circ \Phi \circ \xi^{-1}) = d\eta \circ d\Phi \circ (d\xi)^{-1}$, was jeweils reguläre lineare Abbildungen sind).
+\end{beweis}
+
+\section{Tangentialvektoren an Kurven}
+
+Die bisherige Herangehensweise an die Tangentialvektoren war sehr abstrakt, was Vor- und Nachteile hat. Ein weiterer Ansatz ist der Zugang über Kurven, den wir im Folgenden untersuchen.
+
+\index{Kurve}
+Eine Kurve ist eine $C^\infty$-Abbildung $c:I\to M$, wobei $I$ ein offenes Intervall in $\MdR$ (meist mit $0\in I$) und $M$ eine differenzierbare Mannigfaltigkeit ist.
+
+Die erste (und einzige) Koordinatenfunktion der trivialen Karte von $I\subset\MdR$ schreiben wir als $u\da u^1$. Der Tangentialvektor ist dann $\frac{d}{d u}|_t \da\frac{\partial}{\partial u^1}|_t \in T_tI = T_t\MdR$.
+
+\begin{definition}
+Der Tangentialvektor an $c$ in $c(t)$ ist
+\[
+c'(t) \da dc_t \left(\left. \frac d{du}\right|_t\right) \in T_{c(t)}M\,.
+\]
+\end{definition}
+
+Diese Tangentialvektoren haben interessante Eigenschaften:
+\begin{enumerate}
+\item Für $f\in C^\infty(M)$ ist $c'(t)(f) = \frac{d(f\circ c)}{du}(t)$ (Richtungsableitung)
+\item Falls $v\in T_pM$ und $c$ eine Kurve mit $c(0)=p$ und $c'(0) = v$, dann gilt:
+\[
+v(f) = \frac{d}{dt}\big(f\circ c\big) (0)
+\]
+\item Ist $c:I\to M$ eine glatte Kurve und $\Phi:M\to N$ eine differenzierbare Abbildung, so ist $\Phi \circ c: I \to N$ eine glatte Kurve in $N$ und es gilt dass
+\[
+d\Phi_{c(t)}\big(c'(t)\big) = \big(\Phi \circ c\big)'(t)
+\]
+\begin{beweis}
+$d\Phi\big(c'\big)(f) = c'(f\circ \Phi) = \frac{d}{du}\big(f\circ \Phi \circ c\big) (t) 
+= \big(\Phi \circ c\big)'(t)(f)$
+\end{beweis}
+\item Ist $\varphi$ eine Karte um $p$ und $c_i(t):\varphi^{-1}(\varphi(p) + te_i)$, $i=1,\ldots,n$ die $i$-te Koordinatenline\index{Koordinatenlinie} um $p$ bezüglich $\varphi$, so gilt
+\[
+c_i'(0) = \ptv{i} \qquad (i=1,\ldots,n)
+\]
+\begin{beweis}
+Sei $f\in C^\infty(p)$.
+\begin{align*}c_i\big(p\big) (f) &= \frac d{dt}\big(f\circ c_i\big)(0)  \\
+&= \frac d{dt} \big(f\circ \varphi^{-1}(\varphi(p) + te_i)\big)(0) \\
+&= \frac{\partial}{\partial u^i}\big(f\circ \varphi^{-1}\big)(\varphi(p))\\
+&= \ptv{i}(f)
+\end{align*}
+\end{beweis}
+\end{enumerate}
+
+\section{Untermannigfaltigkeiten und spezielle differenzierbare Abbildungen}
+
+Eine $C^\infty$-Abbildung $\Phi:M^m\to N^n$ heißt 
+\begin{itemize}
+\item Immersion, falls $d\Phi_p: T_pM \to T_{\Phi(p)}N$ injektiv ist für alle $p\in M$.\index{Immersion}
+\item Submersion, falls $d\Phi_p: T_pM \to T_{\Phi(p)}N$ surjektiv ist für alle $p\in M$.\index{Submersion}
+\item Einbettung, $\Phi$ eine Immersion ist und $M$ homöomoph zu $\Phi(M)\subset N$ (versehen mit der Teilraum-Topologie) ist. \index{Einbettung}
+\end{itemize}
+
+Eine Teilmenge $M\subset N$ heißt (reguläre) Untermannigfaltigkeit,\index{Untermannigfaltigkeit!reguläre} falls die Inklusionsabbildung $i:M\hookrightarrow N$, $i(p) \da p$, eine differenzierbare Einbettung ist.
+
+Manchmal definiert man eine (allgemeine) Untermannigfaltigkeit\index{Untermannigfaltigkeit!allgemein} als injektive Immersion $\Phi:M\to N$, so dass $M$ und $\Phi(M)$ diffeomorph sind. Dabei hat $\Phi(M)$ nicht notwendigerweise die Teilraum-Topologie.
+
+\begin{beispiele}
+\item Immersion:
+\begin{align*}
+\MdR^k &\to \MdR^{k+l} \\
+(x^1,\ldots,x^k) &\mapsto (x^1,\ldots,x^k,0,\ldots,0)
+\end{align*}
+Man kann zeigen: Lokal sieht jede Immersion so aus.
+\item Submersion:
+\begin{align*}
+\MdR^{k+l} &\to \MdR^k\\
+(x^1,\ldots,x^{k+l}) &\mapsto (x^1,\ldots,x^k)
+\end{align*}
+Auch hier kann man zeigen, dass jede Submersion lokal so aussieht.
+
+\item  Die Kurve $c : \MdR \to \MdR^2$, $t\mapsto (t^3, t^2)$ ist differenzierbar, aber keine Immersion, denn
+\[ c'(o) = dc_0\Big(\underbrace{\frac d{dt}}_{\ne 0}\Big) = (0,0)\,.\]
+
+\item  Die Kurve $c : \MdR \to \MdR^2$, $t\mapsto (t^3 - 4t, t^2 -4)$ ist eine Immersion, aber keine Einbettung.
+\end{beispiele}
 
 \appendix
 \chapter{Satz um Satz (hüpft der Has)}
