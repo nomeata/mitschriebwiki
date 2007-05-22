@@ -11,6 +11,7 @@
 \renewcommand{\da}{\coloneqq}
 \newcommand{\ad}{\eqqcolon}
 \newcommand{\VM}{\mathcal V M}
+\newcommand{\VU}{\mathcal V U}
 
 \author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
 \title{Riemann’sche Geometrie}
@@ -356,6 +357,7 @@ $T_pM$ ist ein $\MdR$-Vektorraum: ($v,w \in T_pM$, $f\in C^\infty(p)$, $a\in\MdR
 
 Weitere Beispiele von Tangentialvektoren via Karten:
 \newcommand{\ptv}[1]{\left.\frac{\partial}{\partial x^{#1}}\right|_p}
+\newcommand{\qtv}[1]{\left.\frac{\partial}{\partial x^{#1}}\right|_q}
 
 Sei $\varphi=(x^1,\ldots,x^n)$ ein Koordinatensystem (eine Karte) von $M$ im Punkt $p$. (d.h. $x^i=u^i\circ\varphi$). Für $f\in C^{\infty}(p)$ setze:
 \[
@@ -988,8 +990,94 @@ Ist $\asp_p$ ein Skalarprodukt auf $T_pM$?
 
 \section[Erste Anwendung von Riemann’schen Metriken: Länge von Kurven]{Anwendung: Länge von Kurven}
 
+Sei $c: I \to M$ eine differenzierbare Kurve in einer Riemann’schen Mannigfaltigkeit $M$. Dann ist die Länge von $c$
+\[
+L(c) \da \int_I \sqrt{\ksp {c'(t)}{c'(t)}}dt  = \int _I \|c'(t)\|dt
+\]
+(Ein Spezialfall sind $C^\infty$-Kurven in $\MdR^n$ versehen mit Standardskalarprodukt)
+
+Die Länge ist unabhängig von der Parametrisierung der Kurve und invariant unter Isometrien $\Phi : (M,\asp_1) \to (N,\asp_2)$, also $L(\Phi \circ c) = L(c)$, da $L(\Phi \circ c) = \int_I\|(\Phi \circ c)'\|_2dt = \int_I\|d\Phi_{c(t)}\cdot c'(t)\|_2dt \gleichnach{$\Phi$ iso.} \int_I\|c'\|_1dt = L(c)$.
 
 
+\chapter{Affine Zusammenhänge und Parallelverschiebung}
+
+\section{Motivation}
+
+In $\MdR^n$ kann man Tangentialräume in verschiedenen Punkten vergleichen:
+Die Tangentialräume von $x$ und $y$ sind $T_x\MdR^n = \{x\}\times \MdR^n \simeq \MdR^n$ und $T_y\MdR^n \simeq \MdR^n$. Es gibt dann eine Translation (Parallelverschiebung) $T_{y-x}:T_x\MdR^n \to T_y\MdR^n$; $(x,y)\mapsto (T_{y-x}(x), v)$, wobei $T_{y-x}(x) = x + (y-x) = y$.
+
+Die Situation für Mannigfaltigkeiten ist lokal die gleiche: Ist $(U,\varphi)$ eine Karten, so gilt $TU \simeq U\times\MdR^n$ (vergleiche Basis-Satz, Satz \ref{basissatz}). Ist $p,q\in U$, so gilt: ($[\ldots]$ affine Hülle)
+\[ T_pM = \left[ \ptv1,\ldots, \ptv n \right] \text{ und } T_qM = \left[ 
+\qtv1 ,\ldots, \qtv n
+ \right] \]
+ Die Parallelverschiebung $T_pM \to T_qM$ bildet jetzt 
+$v=\sum a_i \ptv i$ auf $\bar v = \sum a_i \qtv i$ ab.
+
+Der globale Vergleich von Tangentialräumen erfordert jedoch eine Zusatzstruktur („Fernparallelismus“)
+
+In der Flächentheorie realsisiert man die Parallelverschiebung via Kovariante Ableitung: Ist $c$ eine Flächenkurve der Fläche $F$, so ist $\frac D {dt} c'$ die orthogonale Projektvion von $c''$  in die Tangentialebene $T_{c(t)}F$. Die Geodätischen in $F$ (die „verallgemeinerten Geraden“) sind definiert als Lösungen von $\frac D {dt} c' = 0$.
+
+\section{Affine Zusammenhänge}
+
+\begin{definition}[Affiner Zusammenhang]
+\index{Affiner Zusammenhang}
+Ein Affiner Zusammenhang $D$ auf einer differenzierbaren Mannigfaltigkeit $M$ ist eine Abbildung
+\[
+D: 
+\begin{aligned}
+\VM \times \VM &\to \VM \\
+(X,Y) &\mapsto D_XY
+\end{aligned}
+\]
+so dass für alle $X,Y,Z \in \VM$ und $f,g \in C^\infty M$ gilt:
+\begin{enumerate}[(Z1)]
+\item $D_{fX + gY} Z = fD_XZ + gD_YZ$
+\item $D_X(Y + Z) = D_X Y + D_X Y$
+\item $D_X(fY) = fD_XY + (Xf)Y$
+\end{enumerate}
+\end{definition}
+
+\begin{beispiele}
+\item Flächentheorie: $D_X Y \da Y_T'$
+\item In $\MdR^n$: $X= \sum a_i \frac\partial{\partial x^i}$, $\sum b_i \frac\partial{\partial x^i}$, $D_XY\da \sum X(b_i) \frac\partial{\partial x^i}$
+\end{beispiele}
+
+$D$ ist ein lokaler Begriff: Wähle Karte $(U,\varphi)$ mit Basisfelder $X_i=\frac\partial{\partial x^i}$. $X,Y\in \VU$: $X=\sum_{i=1}^n v^iX_i$, $Y=\sum_{j=1}^n w^j X_j$. Dann: 
+\begin{align*}
+D_XY &= D_{\sum_i v^iX_i}(\sum_jw^jX_j) \\
+     &\gleichnach{\clap{(Z1)}} \sum_i v^i D_{X_i}(\sum_jw^jX_j) \\
+     &\gleichnach{\clap{(Z2)}} \sum_i v^i \sum_j D_{X_i} (w^j X_j) \\
+     &\gleichnach{\clap{(Z3)}} \sum_{i,j} v^iw^j D_{X_i}X_j + \sum_{i,j} v^i X_i(w^j)X_j
+\end{align*}
+wobei $D_{X_i}X_j = \sum_{k=1}^n \Gamma^k_{ij} X_k$ (diese Darstellung existiert wegen dem Basissatz \ref{basissatz}) für lokal definierte $C^\infty$-Funktionen $\Gamma_{ij}^k: U \to \MdR$ (Christoffel-Symbole)\label{Christoffel-Symbole}.
+
+Wir haben also:
+\[
+D_XY = \sum_{k=1}^n (\sum_{i,j=1}^n v^i w^j \Gamma_{ij}^k + X(w^k))X_k
+\]
+Die Formel zeigt, dass $D_XY(p)$ bestimmt ist durch $v^i(p)$, $w^j(p)$ und $X_p(w^k)$ (und $\Gamma_{ij}^k$). Insbesondere braucht man das Vektorfeld $Y$ (bzw. $w^k$) nur „in Richtung $X$“ zu kennen.
+
+Wir folgern: Man kann Vektorfelder längs einer Kurve in Richtung dieser Kurve ableiten: Falls $Y$ ein Vektorfeld ist längs $c$ (also $Y\big(c(t)\big) = \sum_{i=1}^n w^k(t)X_k\big(c(t)\big)$), dann ist
+\[
+D_{c'}Y \da \sum_{k=1}^n\Big(\sum_{ij}^n {x^i}'(t) w^j(t) \Gamma_{ij}^k\big(c(t)\big) + {w^k}'(t)\Big)
+\]
+(wobei $\varphi \circ c(t) = \big(x^1(t),\ldots, x^n(t)\big)$ und damit $c' = \sum {x^i}'X_i$)
+
+\begin{definition}
+Ein Vektorfeld $Y$ längs einer Kurve $c$ heißt parallel\index{parallel} bezüglich einem affinen Zusammenhang $D$, falls $D_{c'}Y = 0$.
+\end{definition}
+
+\begin{beispiele}
+\item Im $\MdR^n$ haben wir $D_{c'}Y = \sum_{j=1}^n {w^j}'X_j = \sum_{j=1}^n 0 X_j= 0$, da bei Vektorfeldern in $\MdR^n$ parallel und konstant gleichwertig ist.
+\item Ein Vektorfeld entlang eines Klein-Kreises der Sphäre ist nicht parallel. (Durch Skizze motiviert). Ein Vektorfeld entlang eines Groß-Kreises ist jedoch parallel, da $c''$ orthogonal zum Groß-Kreis zum Mittelpunkt zeigt, die Projektion auf die Sphäre also 0 ist.
+\end{beispiele}
+
+Später werden wir sehen, dass Geodätische (Kurven mit $D_{c'}c' = 0$) Geraden verallgemeinert.
+
+\begin{satz}
+\label{eindpara}
+Sei $M$ eine differenzierbare Mannigfaltigkeit mit affinem Zusammenhang $D$. Sei $c: I=[a,b] \to M$ eine differenzierbare Kurve und $v_o \in T_{c(a)}M$. Dann existiert genau ein paralleles Vektorfeld $V$ längs $c$ mit $V\big(c(a)\big)= v_0$.
+\end{satz}
 
 \appendix
 \chapter{Satz um Satz (hüpft der Has)}
