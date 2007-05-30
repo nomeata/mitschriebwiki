@@ -14,7 +14,7 @@
 \newcommand{\VU}{\mathcal V U}
 
 \author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
-\title{Riemann’sche Geometrie (unvollständig)}
+\title{Riemann’sche Geometrie}
 \makeindex
 
 \begin{document}
@@ -131,7 +131,7 @@ sind Karten mit glatten ($C^\infty$) Kartenwechsel, was wir am Beispiel $n=2$ ü
 
 \item Kurven und Flächen in $\MdR^3$ sind $1$- bzw. 2-dimensionale Mannigfaltigkeiten
 
-\index{Reel-Projektiver Raum}
+\index{Reell-Projektiver Raum}
 \index{$P^n\MdR$}
 \item[(4a)] Der $n$-dimensionale reell-projektiver Raum $P^n\MdR$
 \begin{definition}
@@ -1021,6 +1021,7 @@ In der Flächentheorie realsisiert man die Parallelverschiebung via Kovariante A
 
 \begin{definition}[Affiner Zusammenhang]
 \index{Affiner Zusammenhang}
+\index{Zusammenhang!affiner}
 Ein Affiner Zusammenhang $D$ auf einer differenzierbaren Mannigfaltigkeit $M$ ist eine Abbildung
 \[
 D: 
@@ -1064,25 +1065,231 @@ D_{c'}Y \da \sum_{k=1}^n\Big(\sum_{ij}^n {x^i}'(t) w^j(t) \Gamma_{ij}^k\big(c(t)
 (wobei $\varphi \circ c(t) = \big(x^1(t),\ldots, x^n(t)\big)$ und damit $c' = \sum {x^i}'X_i$)
 
 \begin{definition}
-Ein Vektorfeld $Y$ längs einer Kurve $c$ heißt parallel\index{parallel} bezüglich einem affinen Zusammenhang $D$, falls $D_{c'}Y = 0$.
+Ein Vektorfeld $Y$ längs einer Kurve $c$ heißt parallel\index{paralleles Vektorfeld} bezüglich einem affinen Zusammenhang $D$, falls $D_{c'}Y = 0$.
 \end{definition}
 
 \begin{beispiele}
-\item Im $\MdR^n$ haben wir $D_{c'}Y = \sum_{j=1}^n {w^j}'X_j = \sum_{j=1}^n 0 X_j= 0$, da bei Vektorfeldern in $\MdR^n$ parallel und konstant gleichwertig ist.
+\item Im $\MdR^n$ haben wir für ein paralleles Vektorfeld $Y$, dass $D_{c'}Y = \sum_{j=1}^n {w^j}'X_j = \sum_{j=1}^n 0 X_j= 0$, da bei Vektorfeldern in $\MdR^n$ parallel und konstant gleichwertig ist.
 \item Ein Vektorfeld entlang eines Klein-Kreises der Sphäre ist nicht parallel. (Durch Skizze motiviert). Ein Vektorfeld entlang eines Groß-Kreises ist jedoch parallel, da $c''$ orthogonal zum Groß-Kreis zum Mittelpunkt zeigt, die Projektion auf die Sphäre also 0 ist.
 \end{beispiele}
 
 Später werden wir sehen, dass Geodätische (Kurven mit $D_{c'}c' = 0$) Geraden verallgemeinert.
 
-\begin{satz}
+\begin{satz}[Eindeutigkeit der Parallelverschiebung]
 \label{eindpara}
 Sei $M$ eine differenzierbare Mannigfaltigkeit mit affinem Zusammenhang $D$. Sei $c: I=[a,b] \to M$ eine differenzierbare Kurve und $v_o \in T_{c(a)}M$. Dann existiert genau ein paralleles Vektorfeld $V$ längs $c$ mit $V\big(c(a)\big)= v_0$.
 \end{satz}
 
+\begin{definition}
+Der Vektor $V(t)$ (aus Satz \ref{eindpara}) heißt der längs $c$ parallel verschobene Vektor $V_0$. Die Abbildung
+\[
+c\|_a^t: 
+\begin{aligned}
+T_{c(a)}M &\to T_{c(t)}M \\
+v_0&\to V(t)
+\end{aligned}
+\]
+heißt Parallelverschiebung.
+\end{definition}
+
+\begin{beweis}
+Im ersten Schritt betrachten wir die Situation lokal. Sei $t_1\in I$, so dass $c([a,t_1]) \subset U$ (Kartengebiet um $c(a)$). In der Karte $(U,\varphi)$ ist die Definitionsgleichung $D_{c'}V=0$ äquivalent zu:
+\[
+\sum_k \bigg(\frac{dv^k}{dt} + \sum_{i,j} \frac{dx^i}{dt}v^j \Gamma_{ij}^k \bigg) X_k = 0
+\]
+wobei $V = \sum_{i=1}^n v^i X_i$, $X_i = \frac\partial{\partial x^i}$, $\varphi \circ c(t) = \big(x^1(t),\ldots,x^n(t)\big)$, $c'(t) = \sum_i \frac{dx^i}{dt}(t)X_i\big(c(t)\big)$. Das heißt wir haben ein System von $l$ linearen Differentialgleichungen 1. Ordnung in $v_k(t)$:
+\[
+0 = \frac{dv^k}{dt} + \sum_{i,j} \Gamma_{ij}^k \frac{dx^i}{dt} v^j, \qquad k=1,\ldots,n
+\]
+Dieses System hat zu gegebenen Anfangsbedingungen $v(a)=v_0 = (v^1(a),\ldots,v^n(a))$ genau eine Lösung für alle $t\in [a,t_1]$. Dann existiert eindeutig ein Parallelfeld $V$ längs $c([a,t_1])$ mit $V(a)=v_0$.
+
+Im zweiten Schritt sei $t_2\in I$ beliebig. Das Segment $c([a,t_2])$ ist kompakt in $M$ und kann daher mit endlich vielen Karten überdeckt werden. In jeder Karte existiert ein $V$ und ist eindeutig (nach Schritt 1). Daraus folgt, dass $V$ global eindeutig existiert auf $c([a,t_2])$ für beliebige $t_2$.
+\end{beweis}
+
+\section{Der Levi-Civita-Zusammenhang}
+
+\paragraph{Motivation:} Ein Parallelfeld im Euklidischen Raum $(\MdR^n,\asp)$ ist eine Isometrie. 
+
+\begin{definition}
+Ein affiner Zusammenhang $D$ auf einer Riemann’schen Mannigfaltigkeit $(M,\asp)$ heißt verträglich \index{Zusammenhang!verträglicher}\index{verträglicher Zusammenhang}mit der Riemann’schen Struktur $\asp$ falls für jede differenzierbare Kurve $c:I\to M$ und jedes Paar von parallelen Vektorfeldern $V_1,V_2$ längs $C$ gilt:
+\[
+\lsp {V_1\big(c(t)\big)}{V_2\big(c(t)\big)}_{c(t)} \text{ ist für alle $t\in I$ konstant.}
+\]
+Das heißt dass die Parallelverschiebung $c\|_{t_1}^{t_2}: T_{c(t_1)}M \to T_{c(t_2)}M$ eine lineare Isometrie ist.
+\end{definition}
+
+\begin{satz}[Äquivalente Formulierung der Verträglichkeit]
+Sei $(M,\asp)$ eine Riemann’sche Mannigfaltigkeit. Ein affiner Zusammenhang $D$ ist verträglich \index{Zusammenhang!verträglicher}\index{verträglicher Zusammenhang}mit $\asp$ genau dann, wenn für beliebige Vektorfelder $V$, $W$ längs einer beliebigen Kurve $c:I\to M$ für alle $t\in I$ gilt:
+\[
+\frac d{dt} \ksp {V(t)}{W(t)}_{c(t)} = \ksp {D_{c'}V}W_{c(t)} + \ksp V {D_{c'}W}_{c(t)} \quad (*)
+\]
+\end{satz}
+
+\begin{beweis}
+$(*) \folgt$ verträglich: $V$, $W$ parallel ist äquivalent zu $D_{c'}V = D_{c'}W = 0$, also $\frac d{dt} \ksp {V(t)}{W(t)}_{c(t)} = 0$, also verträglich.
+
+Umgekehrt gilt: Sei $D$ verträglich, wir haben also eine Parallelverschiebung, die Isometrie ist. Wähle eine Orthonormalbasis $\{P_1(t_0),\ldots,P_n(t_0)\}$ von $T_{c(t_0)}M$. Mittels der der Parallelverschiebung erhalten wir wieder für alle $t\in I$ eine Orthonormalbasis $\{P_1(t),\ldots,P_n(t)\}$ von $T_{c(t)}M$. Wir können schreiben: 
+\[ V(t) = \sum_{i=1}^n v_i(t) P_i(t)\quad \text{sowie}\quad
+   W(t) = \sum_{i=1}^n w_i(t) P_i(t) \]
+wobei $v_i, w_i \in C^\infty$. Also:
+\[
+D_{c'}V = \sum_{i=1}^n \underbrace{c'(v_i)}_{v_i'} P_i + \sum_{i=1}^n v_i \underbrace{D_iP_i}_{=0}
+\]
+das heißt: $D_{c'}V = \sum_{i=1}^n v_i' P_i$ und $D_{c'}W = \sum_{i=1}^n w_i' P_i$. Wir wollen zeigen, dass $(*)$ gilt. Die rechte Seite ist:
+\begin{align*}
+\ksp{D_{c'}V}W + \ksp V{D_{c'}W} &= \lsp {\sum v_i' P_i} {\sum w_jP_j} + \lsp {\sum v_i P_i} {\sum w_j'P_j} \\
+&= \sum_{i,j} \left( v_i' w_j \ksp {P_i}{P_j} + v_iw_j' \ksp {P_1}{P_j}\right) \\
+&= \sum_{i,j} \left( v_i' w_j \delta_{ij} + v_iw_j' \delta_{ij}\right) \\
+&= \sum_{i=1}^n (v_i' w_j + v_i w_j')\\
+&= \frac d{dt} \left( \sum_{i=1}^n v_i w_j \right)
+\intertext{Die linke Seite ist:}
+\frac d{dt} \ksp V W &= \frac d{dt} \ksp {\sum_i v_iP_i}{\sum_j w_j P_j} \\
+&= \frac d{dt} \left( \sum_{ij} v_i w_j \ksp {P_i} {P_j} \right) \\
+&= \frac d{dt} \left( \sum_{i=1}^n v_i w_j \right)
+\end{align*}
+\end{beweis}
+
+Die Frage ist jetzt, ob zu einer gegebener Riemann’schen Struktur ein verträglicher Zusammenhang existiert.
+
+\begin{definition}
+Ein affiner Zusammenhang $D$ heißt symmetrisch\index{symmetrischer Zusammenhang} (oder torsionsfrei) falls für alle $X,Y\in \VM$:
+\[
+T(X,Y) \da D_XY - D_YX - [X,Y] = 0
+\]
+\end{definition}
+
+\begin{bemerkung}
+In lokalen Koordinaten $(U,\varphi)$ gilt für $D$ symmetrisch und Basisfelder $X_i = \frac\partial{\partial x^i}$:
+\[
+D_{X_i} X_j - D_{X_j}X_i  = [X_i,Y_j] = \left[\frac{\partial}{\partial x_i},\frac{\partial}{\partial x_i}\right] = 0
+\]
+da $\left[\frac{\partial}{\partial x_i},\frac{\partial}{\partial x_i}\right] f = \frac{\partial}{\partial x_i} \frac{\partial}{\partial x_j} f - \frac{\partial}{\partial x_j} \frac{\partial}{\partial x_i} f = 0$ wegen $f\in C^\infty$ und Vertauschbarkeit der partiellen Ableitungen. Weiter gilt:
+\[
+D_{X_i} X_j - D_{X_j}X_i  = \sum_k \Gamma_{ij}^kX_k - \sum_k \Gamma_{ji}^kX_k = \sum_k( \Gamma_{ij}^k - \Gamma_{ji}^k) X_k \folgt \Gamma_{ij}^k = \Gamma_{ji}^k
+\]
+\end{bemerkung}
+
+\begin{satz}[Levi-Civita-Zusammenhang]
+Auf jeder Riemann’schen Mannigfaltigkeit $(M,\asp)$ existiert genau ein affiner Zusammenhang $D$, so dass gilt:
+\begin{enumerate}
+\item $D$ ist symmetrisch
+\item $D$ ist verträgliche mit $\asp$
+\end{enumerate}
+\end{satz}
+
+Dieser eindeutige Zusammenhang $D$ heißt Levi-Civita-Zusammenhang\index{Levi-Civita-Zusammenhang} von $M$ bezüglich $\asp$.
+
+\begin{beweis}
+Wir nehmen an, dass ein solches $D$ existiert. Was sin die Eigenschaften?
+
+$D$ verträglich:
+\begin{align*}
+X\ksp Y Z &= \ksp {D_X Y} Z  + \ksp Y {D_XZ} \\
+\intertext{Der Trick ist jetzt, die Gleichung zyklisch zu vertauschen:}
+Y\ksp Z X &= \ksp {D_Y Z} X  + \ksp Z {D_YX} \\
+-Z\ksp X Y &= -\ksp {D_Z X} Y  - \ksp X {D_ZY} \\
+\intertext{Summe der unteren beiden Gleichungen}
+X \ksp Y Z + Y \ksp Z X - Z \ksp X Y &=
+\ksp {[X,Z]}Y + \ksp {[X,Y]} Z + 2 \ksp Z {D_YX} + \ksp {[Y,Z]} X
+\end{align*}
+Wir erhalten die Kozul-Formel\index{Kozul-Formel}
+\[
+\ksp Z {D_YX} = \frac 12 \Big( X \ksp Y Z + Y \ksp Z X  - Z \ksp X Y -\ksp {[X,Z]}Y - \ksp {[X,Y]} Z  - \ksp {[Y,Z]} X \Big) \mathrlap{\quad (*)}
+\]
+Diese Formel zeigt, dass $D$ eindeutig durch die Riemann’sche Struktur $\asp$ bestimmt ist, denn seien $D$ und $\tilde D$ zwei affine Zusammenhänge, die (1) und (2) erfüllen, dann gilt $(*)$ für beide, also $\ksp Z {D_YX} = \ksp Z {\tilde D_Y X}$ für alle $X,Y,Z\in \VM$, was heißt dass $\ksp {D_YX - \tilde D_YX} Z = 0$, was heißt das $D_YX - \tilde D_YX=0$. Also ist $D=\tilde D$.
+
+Die Existenz folgt daraus, dass man $D$ durch $(*)$ definieren kann.
+\end{beweis}
+
+\paragraph{Lokale Form von $D$} Gegeben eine Karte $(U,\varphi)$ mit Basisfelder $X_i \da \frac \partial {\partial x^i}$, $i=1,\ldots,n$, auf $U$.
+Wir haben $g_{ij}=\ksp {X_i} {X_j}$, $D_{X_i}X_j = \sum_{k=1}^n \Gamma_{ij}^k X_k$, $[X_i, X_j] = 0$. Kozulformel:
+\[
+\ksp {X_k} {D_{X_i}X_j} = \frac 1 2 \Big( \frac {\partial g_{ik}}{\partial x^j} + \frac {\partial g_{jk}}{\partial x^i} - \frac {\partial g_{ij}}{\partial x^k} + 0 \Big) = \lsp {X_k} {\sum_{l=1}^n \Gamma_{ij}^l X_l} = \sum_{l=1}^n \Gamma_{ij}^l g_{kl}
+\]
+$[g_{kl}]$ hat inverse Matrix $[g^{mk}]$. Damit
+\[
+\Gamma_{ij}^m = \frac 1 2 \sum_{k=1}^n g^{mk} \Big( \frac {\partial g_{ik}}{\partial x^j} + \frac {\partial g_{jk}}{\partial x^i} - \frac {\partial g_{ij}}{\partial x^k} \Big)\,.
+\]
+Dieser Ausdruck zeigt nochmals: Levi-Civita-Zusammenhang ist eindeutig durch die Metrik bestimmt.
+
+\begin{beispiel}
+Im Euklidischer Raum ($\MdR^n$, Standardskalarprodukt) ist $g_{ij}=\delta_{ij}$, also $\Gamma_{ij}^k = 0$. Also: Der kanonische Zusammenhang ist der Levi-Civita-Zusammenhang.
+\end{beispiel}
+
+\chapter{Geodätische Linien}
+
+Gegeben ist eine Riemann’sche Mannigfaltigkeit ($M,\asp)$ mit Levi-Civita-Zusammenhang $D$. Das Ziel ist es, ein Analogon für Geraden zu finden. Mögliche Charakterisierung von Geraden in der Euklidischen Geometrie sind:
+\begin{itemize}
+\item kürzeste Verbindung zweier Punkte (Variationseigenschaft).
+\item Kurven $c(t)$ (mit Bogenlänge parametrisiert) mit $c''(t)=0$ (Differentialgleichung).
+\end{itemize}
+
+\section{Definition von Geodätischen}
+
+\index{Geodätische}
+Eine Geodätische (Linie) in $(M,\asp)$ ist eine differenzierbare Kurve $\gamma: I \to M$ so dass gilt: $D_{\gamma'(t)}\gamma'(t) = 0$ für alle $t\in I$. (Das heißt: Geodätische sind autoparallele Vektorfelder).
+
+Das Tangentialvektorfeld ist parallel. $\gamma' = \frac {d\gamma}{dt} \da d\gamma(\frac\partial{\partial t})$.
+
+Folgerungen aus der Definition:
+\begin{enumerate}
+\item $\|\gamma'(t)\|_{\gamma(t)}$ ist konstant.
+
+\begin{beweis}
+$\|\gamma'\|^2 = \ksp {\gamma'}{\gamma'}$. Also $\frac d{dt} \|\gamma'\|^2 = \frac d{dt} \ksp {\gamma'}{\gamma'} = \ksp{D_{\gamma'}\gamma'}{\gamma'} + \ksp {\gamma'}{D_{\gamma'}\gamma'} = 0$
+\end{beweis}
+Ein (entarteter) Spezialfall ist $\gamma(t)$ konstant $p\in M$.
+\item Eine Geodätische ist proportional zur Bogenlänge parametrisiert:
+\[
+s(\gamma) \da \int_a^t \|\gamma'(\tau)\| d\tau = k |t-a|
+\]
+Ist $k=1$ so spricht man von einer normalen Geodätischen\index{normale Geodätische} sowie von isometrischen Kopien von Intervallen.
+\item Ob eine Kurve eine „Geodätische“ ist hängt von der Parametrisierung ab, nicht nur vom Bild $\gamma(I)\subset M$.
+\begin{beispiel}
+$\gamma_1(t) = (t,0)$ ist eine Geodätische, aber $\gamma_2(t) = (t^3,0)$ nicht, da $\|\gamma_2'\|=3t^2$ nicht konstant ist.
+\end{beispiel}
+\end{enumerate}
+
+\section{Lokale Darstellung und Differentialgleichung für Geodätische}
+Sei $\gamma: I\to M$ eine Geodätische in $(M,\asp)$ und $(U,\varphi)$ eine Karte um $\gamma(t_0)$ mit $\varphi \circ \gamma(t) = (x^1(t),\ldots, x^n(t))$.
+
+Dann ist $\gamma'(t) = \sum_{i=1}^n x_i' (t) \left. \frac \partial{\partial x^i}\right|_{\gamma(t)}$. Die allgemeine Formel für Parallelfelder imn lokalen Koordinaten (vgl 3.2) ergibt:
+\[
+0 = D_{\gamma '}\gamma' = \sum_{k=1}^n \Big(x''^k + \sum_{i,j=1}^n \Gamma_{ij}^k x'^i x'^j\Big) \frac{\partial}{\partial x^k}
+\]
+lokal gilt also: $D_{\gamma '}\gamma'= 0$ ist äquivalent zu dem System von $n$ Differentialgleichung 2. Ordnung
+\[
+x''^k(t) = - \sum_{i,j=1}^n \Gamma_{ij}^k(x(t)) x'^i(t) x'^j(t)\mathrlap{\qquad (1)}
+\]
+
+\section{Das Geodätische Vektorfeld auf $TM$}
+Das System 2. Ordnung (1) ist äquivalent zu System 1. Ordnung:
+\[
+\begin{aligned}
+x'^k &\ad y^k \\
+y'^k &= -\sum_{i,j=1}^n \Gamma_{ij}^k(x(t)) y^i(t) y^j(t)
+\end{aligned}\mathrlap{\qquad (2)}
+\]
+Was ist die Interpretation der von $y^i$ in der Mannigfaltigkeit? Die Geodätische $t\mapsto \gamma(t)$ in $M$ definiert differenzierbare Kurve $t \mapsto \big(\gamma(t), \gamma'(t)\big)$ in $TM = \{(p,v) \mid p\in M, v\in T_pM\}$. Lokale Koordinaten für $TM$: Sei $(U,\varphi)$ eine Karte in $M$, $TU \cong U\times \MdR^n$ (nach Basissatz). Dies ergibt eine Darstellung von  $(p,v)$ als $(x^1,\ldots,x^n,y^1,\ldots,x^n)$ mit $v=\sum y^i \frac\partial{\partial x^i}$. Speziell gilt $\big(\gamma(t),\gamma(t)\big) \to \big(x^1(t),\ldots,x^n(t),x'^1(t), \ldots x'^n(t)\big)$.
+
+\begin{lemma}
+Es existiert genau ein Vektorfeld $G\in \mathcal V(TM)$ auf $TM$ dessen Integralkurven (vergleiche 1.7) von der Form $\tilde \gamma(t) = \big(\gamma(T), \gamma'(t)\big)$ sind, wobei $\gamma(t)$ jeweils eine Geodätische in $M$ ist.
+\end{lemma}
+\begin{beweis}
+\begin{enumerate}[(a)]
+\item Eindeutigkeit (unter der Annahme der Existenz): Die Integralkurven von $G$ auf $TU$ sind nach Voraussetzung gegeben durch $\tilde \gamma(t) = \big( \gamma(t), \gamma'(t)\big)$. Diese Kurve ist aber Lösung von (2), also zu gegebener Anfangsbedingung eindeutig:
+\[
+\tilde G\big(\tilde \gamma(t)\big) = \tilde\gamma'(t) = G\big(\tilde\gamma(t)\big)
+\]
+\item Existenz: Wir definieren die Komponenten von $G$ bezüglich Basisfelder lokal durch (2). Wegen (a) ist $G$ auf ganz $TM$ eindeutig.
+\end{enumerate}
+\end{beweis}
+
+\begin{definition}
+$G$ heißt geodätisches Vektorfeld\index{geodätisches Vektorfeld}\index{Vektorfeld!geodätisches} auf $M$. ($G(p,v) \in T_{(p,v)}(TM) \subset T(TM)$)
+\end{definition}
+
 \appendix
-
-{\Huge Mangels Interesse ist kein weitere Mitschrieb online verfügbar. Falls ich mich da geirrt habe, bitte ich um Nachricht! -- Joachim}
-
 
 \chapter{Satz um Satz (hüpft der Has)}
 \listtheorems{satz,wichtigedefinition}
