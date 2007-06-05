@@ -1354,13 +1354,139 @@ Wobei $B_\ep(0)$ ein offener Ball mit Radius $\ep$ und $0$ ist.
 \end{bemerkungen}
 
 \begin{satz}
-Für jeden Punkt $p$ einer $n$-dimensionalen differenzierbaren Riemann’schen Mannigfaltigkeit existiert ein $r=r(p)>0$, so dass die Abbildung $\exp_p: B_r(0)\subset T_pM \to M$ (mit $B_r(0) \da \{v\in T_pM \mid \|v\|<r\}$ ein Diffeomorphismus auf die offene Umgebung $V\da \exp_p(B_r(0))$ von $p$ ist.
+Für jeden Punkt $p$ einer $n$-dimensionalen differenzierbaren Riemann’schen Mannigfaltigkeit existiert ein $r=r(p)>0$, so dass die Abbildung $\exp_p: B_r(0)\subset T_pM \to \exp_p(B_r(0)) \subset M$ (mit $B_r(0) \da \{v\in T_pM \mid \|v\|<r\}$) ein Diffeomorphismus auf die offene Umgebung $V\da \exp_p(B_r(0))$ von $p$ ist.
 \end{satz}
 
 \begin{beweis}
 Wir benutzen den Umkehrsatz für Mannigfaltigkeit (Satz \ref{invfunk}). Zu zeigen ist: $d\exp_p|_0: T_p(B_r(0)) \cong T_pM \to T_{\exp_p(0))}M = T_pM$ ist ein Vektorraum-Isomophismus.
 
 Wähle dazu die Kurve $c(t) = tv$ (mit $c(0)=0$, $c'(0)=v$). Dann ist: $d\exp_p|_0(v) = \frac d{dt}|_0 (\exp _p \circ c)(t) = \frac d{dt}|_0 \exp_p(tv) = \frac d{dt}|_0 \gamma(1,p,tv) = \frac d{dt}|_0 \gamma(t,p,v) = v$. Also ist $d\exp_p|_0 = \text{id}$, und damit ein Vektorraum-Isomophismus.
+\end{beweis}
+
+\begin{definition}
+Eine geodätische Normalumgebung\index{geodätische Normalumgebung}  von $p\in M$ ist eine Umgebung $U$ von $p$, so dass $\exp_p: V\to U$ ein Diffeomorphismus ist.
+
+$B_r(p) \da \exp_p(B_r(0))$ heißt geodätischer\index{geodätischer Ball} Ball vom Radius $r$.
+
+Die Koordinatenfunktionen der Karte $\exp_p^{-1} : U = \exp_p(V) \to V \otm T_pM \cong \MdR^n$ heißen geodätische Normalkoordinaten\index{geodätische Normalkoordinaten}.
+\end{definition}
+
+\begin{beispiele}
+\item Im $\MdR^n$ mit Standardskalarprodukt sind die Geodätischen gerade die Geraden (mit Bogenlänge parametrisiert). Also, da $T_p\MdR^n \cong \MdR^n$, $\exp_0: \MdR^n \to \MdR^n$ ist die Identität.
+\item In $M=S^n$ mit der von $\MdR^{n+1}$ induzierten Metrik sind die Geodätischen die Großkreise (mit Bogenlänge parametrisiert, siehe 4.5). Durch Skizzen für die Fälle $n=1,2$ motiviert: $\exp_0$ ist ein Diffeomorphismus auf $B_\pi(0)$.
+\item Der Name „Exponentialabbildung“ kommt aus der Lie-Theorie. $G = U(1) \cong S^1$ sind die unitäre $(1\times 1)$-Matrizen, dann steht der Tangentialraum am Punkt 1 senkrecht, also $T_1U(1) \cong i\MdR$, und daher $\exp_0(t) = e^{t}$.
+\item In der Lie-Gruppe $G=(\MdR_{>0},\cdot)$ ist $T_1\MdR \cong (\MdR,+)$. Hier ist $\exp_1(t) = e^t$.
+\item $G=O(n)=\{A\in \MdR^{n\times n} \mid A A^t = E \}$. Hier ist $T_EO(n)$ die Menge der schiefsymetrischen Matrizen. Für $B\in T_EO(n)$ setze $A \da \exp(sB) \da E + sB + \frac{s^2}{2}B^2 + \frac{s^3}{3!}B^3 + \cdots$. Es gilt: $A\in O(n)$.
+\end{beispiele}
+
+\section{Minimaleigenschaft von Geodätischen}
+
+Zur technischen Vorbereitung benötigen wir „Vektorfelder längs Flächen“. Sei $A$ eine zusammenhängende Menge in $\MdR^2$ mit stückweise differenzierbarem Rand und $M$ seieine differenzierbare Mannigfaltigkeit. Eine parametrisierte Fläche\index{paramterisierte Fläche} in $M$ ist eine differenzierbare Abbildung $f: A (\subset \MdR^2) \to M$; $(u,v) \mapsto f(u,v)$.
+
+Ein Vektorfeld längs $f$ ist eine differenzierbare Abbildung $V: A \to TM$ mit $V(u,v) \in T_{f(u,v)}M$. Die Parameterlinien $f(u,v_0)$ bzw. $f(u_0,v)$ mit $v_0$ bzw. $u_0$ fest definieren die „Tangential-Vektorfelder“ 
+\[
+\frac {\partial f}{\partial u}(u,v) \da df|_{(u,v)} \Big(\left.\frac\partial{\partial u}\right|_{(u,v)}\Big)
+\quad\text{sowie}\quad
+\frac {\partial f}{\partial v}(u,v) \da df|_{(u,v)} \Big(\left.\frac\partial{\partial v}\right|_{(u,v)}\Big)
+\]
+
+Weiter definieren wir die kovariante Ableitung für ein Vektorfeld $V$ längs $f$ wie folgt:
+\[
+\frac{DV}{\partial u}(u,v_0) \da D_{\frac{\partial f}{\partial u}(u,v_0)} V(u,v_0)
+\quad\text{sowie}\quad
+\frac{DV}{\partial v}(u_0,v) \da D_{\frac{\partial f}{\partial v}(u_0,v)} V(u_0,v)
+\]
+
+
+\begin{lemma}[Symmetrie]
+\label{flaechsymm} Sei $M$ ein differenzierbare Mannigfaltigkeit und $D$ ein symmetrischer Zusammenhang auf $M$. Für eine parametrisierte Fläche $f: A \to M$ gilt:
+\[
+\frac D {\partial v} (\frac {\partial f}{\partial u}) =
+\frac D {\partial u} (\frac {\partial f}{\partial v})
+\]
+\end{lemma}
+
+\begin{beweis}
+In lokalen Koordinaten $(U,\varphi)$ in der Umgebung eines Punktes von $f(A)\subset M$ sei $\varphi\circ f(u,v) = \big(x^1(u,v), \ldots, x^n(u,v)\big)$. Es gilt:
+\begin{align*}
+\frac D {\partial v} (\frac {\partial f}{\partial u}) &= \frac D{\partial v} (\sum_{i=1}^n \frac {\partial x^i}{\partial u} \frac{\partial}{\partial x^i}) \\
+&= \sum_{i=1}^n \frac {\partial^2 x^i}{\partial v\partial u} \frac{\partial}{\partial x^i} + \sum_{i=1}^n \frac{\partial x^i}{\partial u} D_{\sum_j \frac{\partial x^j}{\partial v}\frac{\partial}{\partial x^j}} \frac \partial {\partial x^i} \\
+&= \sum_{i=1}^n \frac {\partial^2 x^i}{\partial v\partial u} \frac{\partial}{\partial x^i} + \sum_{i=1,j}^n \frac{\partial x^i}{\partial u}\frac{\partial x^j}{\partial v}  D_{\frac{\partial}{\partial x^j}} \frac \partial {\partial x^i} \\
+\intertext{Wegen der Symmetrie von D erhalten wir dann durch zurückrechnen}
+&= \frac D {\partial u} (\frac {\partial f}{\partial v})
+\end{align*}
+\end{beweis}
+
+\begin{satz}[Gauß-Lemma]
+\label{gausslemma} Sei $(M,\asp)$ eine Riemann’schen Mannigfaltigkeit. Sei $p\in M$ und $v\in T_pM$ so dass $\exp_p(v)\ad q$ definiert ist. Für $w\in T_v(T_pM) \cong T_pM$ gilt:
+\[
+\lsp {d(\exp_p)|_v v} {d(\exp_p)|_v w}_q = \ksp v w_p
+\]
+\end{satz}
+\begin{beweis}
+Zerlege $w = w_T + w_N$, wobei $w_T$ die Komponente in Richtung $v$ und $w_N$ die dazu orthogonale Komponente ist (also $w_T = \ksp v w \frac v {\|v\|}$, $w_N = w- w_T$). Das Differential 
+\[
+d\exp_p|_v : T_v(T_pM) \cong T_pM \to T_{\exp_pv}M = T_qM
+\]
+ist linear. Also: 
+\[
+d\exp_p|_v (w_T + w_N) = d\exp_p|_v(w_T) + d\exp_p|_v(w_N)
+\]
+
+Es gilt zunächst
+\[
+d\exp_p|_v w_T = \left.\frac d{dt}\right|_0 \exp_p(v + tw_T) = \left.\frac d{dt}\right|_0 \exp_q(tw_T) = w_T
+\]
+sowie
+\[
+d\exp_p|_v v = \left.\frac d{dt}\right|_0 \exp_p(v + tv) = \left.\frac d{dt}\right|_0 \exp_q(tv) = v
+\]
+das heißt, das Gauß-Lemma gilt für $w=w_T$.
+
+Ohne Einschränkung sei nun $w=w_N$. Nach Voraussetzung ist $q=\exp_p(v)$, also existiert ein $\ep>0$, so dass die Exponentialabbildung definiert ist für: $u\da tv(s)$ wobei $v(s)$ eine Kurve in $T_pM$ mit $v(0)=v$, $\|v(s)|$ konstant und $v'(0)=w\>(\bot v)$. Die Fläche $A\subset \MdR^2$ ist jetzt die Menge der $u$ für $0\le t\le 1$ und $-\ep < s < \ep$.
+
+Betrachte jetzt die parametrisierte Fläche
+\[
+f: A \to M ; f(t,s) \da \exp_p(tv(s))
+\]
+Es gilt: $f(t,s_o)$ ist eine Geodätische für ein festes $s_0$, sowie $f(1,0) = \exp_p v = q$.
+
+Wir haben für $t=1$
+\[
+\left.\frac{\partial f}{\partial s}\right|_{(1,0)} \gleichnach{Lemma \ref{lem3}} (d\exp_p)_v(v'(0)) = d\exp_p|_v (w)
+\]
+und für $s=0$
+\[
+\left.\frac{\partial f}{\partial t}\right|_{(1,0)} = v = d\exp_p|_v(v)
+\]
+Also ist zu zeigen:
+\[
+\lsp {\left.\frac{\partial f}{\partial s}\right|_{(1,0)} }{\left.\frac{\partial f}{\partial t}\right|_{(1,0)} }_q = 0 \mathrlap{\qquad (*)}
+\]
+
+Wir zeigen dazu zuerst: 
+\[
+\lsp {\left.\frac{\partial f}{\partial s}\right|_{(t,s)} }{\left.\frac{\partial f}{\partial t}\right|_{(t,s)} }_q
+\]
+ist unabhängig von $t$.
+\begin{align*}
+\frac\partial {\partial t} \lsp {\left.\frac{\partial f}{\partial s}\right|_{(t,s)} }{\left.\frac{\partial f}{\partial t}\right|_{(t,s)} }_q &\gleichnach{Verträglichkeit} 
+\lsp {\frac D{\partial t}\frac{\partial f}{\partial s}}{\frac{\partial f}{\partial t}}_q + 
+\lsp {\frac{\partial f}{\partial s}}{\underbrace{\frac D{\partial t}\frac{\partial f}{\partial t}}_{=0}}_q \\
+&\gleichnach{Lemma \ref{lem3}} \lsp {\frac D{\partial s}\frac{\partial f}{\partial t}}{\frac{\partial f}{\partial t}} \\
+&= \frac 1 2 \frac{\partial}{\partial s} \underbrace{\lsp {\frac{\partial f}{\partial t}}{\frac{\partial f}{\partial t}}}_{\mathclap{\text{konstant (Geodätische!)}}} = 0
+\end{align*}
+Es war $t$ beliebig, also wählen wir $t=0$.
+\[
+(*) \gdw 
+\lsp {\left.\frac{\partial f}{\partial s}\right|_{(0,0)} }{\left.\frac{\partial f}{\partial t}\right|_{(0,0)} }_q = 0
+\]
+Aber für ein festes $t$ gilt:
+\begin{align*}
+\left.\frac{\partial f}{\partial s}\right|_{(t,0)} &= (d\exp_p)_{tv(s)} (tv'(s))\bigg|_{s=0} \\
+&=d\exp_p|_{tv}(tw)
+\end{align*}
+
 \end{beweis}
 
 \appendix
