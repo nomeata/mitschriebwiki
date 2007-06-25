@@ -773,6 +773,7 @@ Beweisidee: Ergänze $v$ zu einem Vektorfeld in einer Umgebung von $p$ und wende
 \newcommand{\ksp}[2]{\langle#1,#2\rangle} % Konkretes Skalarprodukt mit zwei Parameter
 \newcommand{\lsp}[2]{\left\langle#1,#2\right\rangle} % großes Skalarprodukt mit zwei Parameter
 \newcommand{\aasp}{\langle\langle\cdot,\cdot\rangle\rangle} % Abstraktes Skalarprodukt 2
+\newcommand{\kksp}[2]{\langle\langle#1,#2\rangle\rangle} % großes Skalarprodukt 2
 
 \index{Riemann’sche Metrik}
 \index{Riemann’sche Struktur}
@@ -1592,6 +1593,7 @@ für alle Argumente von $T$, $X,Y \in \V M$
 \end{definition}
 
 \begin{satz}
+\label{tensorfeld}
 $R$ ist ein (1,3)-Tensorfeld
 \end{satz}
 \begin{beweis}
@@ -1602,6 +1604,7 @@ $D_YD_X(fZ) - D_XD_Y(fZ) = f(D_YD_XZ - D_XD_YZ) + (YXf - XYf)Z$; $D_{[X,Y]}fZ = 
 \end{beweis}
 
 \begin{satz}[Symmetrie-Eigenschaften]
+\label{symeig}
 $(M,\asp)$ sei eine Riemann’sche Mannigfaltigkeit. $D$ der Levi-Civita-Zusammenhang und $R$ ein Krümmungstensor. Dann gilt
 \begin{enumerate}
 \item $R(X,Y)Z + R(X,Z)X + R(Z,X)Y = 0$ (zyklisch Vertauschbar). „Bianchi-Identität“
@@ -1615,7 +1618,7 @@ $(M,\asp)$ sei eine Riemann’sche Mannigfaltigkeit. $D$ der Levi-Civita-Zusamme
 \begin{enumerate}
 \item ist äquivalent zur Jakobi-Identität für Lie-Klammern.
 \item folgt direkt aus der Definition.
-\item ist äquivalent zu $\ksp {R(X,Y) W} W$ (setzte $W=Z+T$ und verwende Satz 1).
+\item ist äquivalent zu $\ksp {R(X,Y) W} W$ (setzte $W=Z+T$ und verwende Satz \ref{tensorfeld}).
 
 Es ist $\ksp {R(X,Y)W} W = \ksp {D_YD_XW - D_XD_YW + D_{[X,Y]}W} W$, $\ksp {D_YD_X W} W \gleichnach{Levi-Civita, vertraeglich} Y \ksp{D_XW} W  - \ksp {D_X W} {D_Y W}$,
 analog $\ksp{D_XD_Y W} W$; $\ksp {D_{[X,Y]}W}W = \frac 12 [X,Y]\ksp W W$. Somit: $\ksp{R(X,Y)W}W = Y \ksp{D_XW}W - \ksp {D_XW}{D_YW} - X\ksp{D_YW}W + \ksp{D_YW}{D_XW} + \frac 12 [X,Y] \ksp W W = 0$.
@@ -1630,7 +1633,7 @@ Die Basisfelder seien $X_i \da \frac{\partial}{\partial x^i}$, $i=1,\ldots,n$. D
 
 Für beliebige Vektorfelder $X,Y,Z\in \V M$ mit 
 \[ X =\sum_{i=1}^n u^i X_i,\quad Y=\sum_{j=1}^n v^jX_j,\quad Z=\sum_{k=1}^n w^k X_k \]
-gilt wegen Satz 1:
+gilt wegen Satz \ref{tensorfeld}:
 \[ R(X,Y)Z = \sum_{i,j,k,l=1}^n u^i v^j w^k R_{ijk}^l X_l \mathrlap(*) \]
 (man muss alles an der Stelle $p$ kennen).
 
@@ -1652,7 +1655,7 @@ Setze nun
 \[
 R_{ijks} \da \sum_{l=1}^n R_{ijk}^l \cdot g_{ls} = \ksp {R(X_i,X_j)X_k} {X_s}
 \]
-„Herunterziehen von Indizes“, „Ricci-Kalkül“. Nach Satz 2 gilt:
+„Herunterziehen von Indizes“, „Ricci-Kalkül“. Nach Satz \ref{symeig} gilt:
 \begin{itemize}
 \item $R_{ijks} + R_{jkis} + R_{kijs} = 0$
 \item $R_{ijks} = -R_{ijsk}$
@@ -1664,7 +1667,189 @@ R_{ijks} \da \sum_{l=1}^n R_{ijk}^l \cdot g_{ls} = \ksp {R(X_i,X_j)X_k} {X_s}
 Für $\dim M=2$ sind $i,j,k,s \in \{1,2\}$ und aufgrund obiger Symmetrien ist im wesentlichen nur $R_{1212} \ne 0$. Dies ist gerade die Gauß-Krümmung.
 \end{bemerkung}
 
+
+\subsection*{Riemann’scher Krümmungstensor}
+
+Sei $(M,\asp)$ eine Riemann’sche Mannigfaltigkeit und $D$ der zugehöriger Levi-Civita-Zusammenhang. Dann ist
+\[
+R:
+\begin{aligned}
+\V M \times \V M \times \V M  &\to \V M \\
+(X,Y,Z) &\mapsto R(X,Y)Z \da D_YD_XZ - D_XD_YZ - D_{[X,Y]}Z
+\end{aligned}
+\]
+multilinear bezüglich $C^\infty M$.
+
+\section{Schnittkrümmung}
+
+Vorbemerkung aus der Linearen Algebra. Sei $V$ ein $\MdR$-Vektorraum mit Skalarprodukt $\asp$. Für $x,y\in V$ setze 
+\[
+| x \wedge y| \da \sqrt{\|x\|^2 \|y\|^2 - <x,y>^2} \ge 0
+\]
+(Flächeninhalt des des von $x$ und $y$ aufgespannten Parallelogramms). Für orthonormierte Vektoren ist $|x\wedge y| = 1$.
+
+\begin{lemma}
+Sei $(M,\asp)$ eine Riemann’sche Mannigfaltigkeit, $p\in M$, $\sigma$ ein 2-dimensionaler Untervektorraum von $T_pM$ mit Basis $x,y$. Dann ist 
+\[
+R(x,y) \da \frac{\ksp {R(x,y)x} y_p}{|x\wedge y|^2}
+\] unabhängig von der Wahl der Basis.
+\end{lemma}
+
+In der Konsequenz macht folgende Definition Sinn:
+\begin{definition}
+Für $p\in M$, $\sigma \subset T_pM$ ein 2-dimensionaler Untervektorraum setze $K(p,\sigma) \da K(x,y)$ für eine beliebige Basis $\{x,y\}$ von $\sigma$. $K(p,\sigma)$ heißt Schnittkrümmung von $\sigma$ in $p\in M$.
+\end{definition}
+
+\begin{bemerkungen}
+\item Für $n=2$ ist $K(p,\sigma) = K(p)$ die Gauß-Krümmung von $M$ im Punkt $p$. Die Menge der Krümmungstensoren $R$ im Punkt $p$ ist vollständig bestimmt.
+\begin{beispiel}
+Schnittkrümmung von $(\MdR^n,???)$ ist konstant null, da $R=0$.
+\end{beispiel}
+\item $(S^n,???)$. Behauptung: Schnittkrümmung ist konstant 1.
+\begin{lemma}
+Sei $f:(M,\asp) \to (N,\aasp)$ eine Riemann’sche Isometrie. Für $\sigma \subset T_pM$ ist $df|_p(\sigma) \subset T_{f(p)}N$ ein 2-dimensionaler Untervektorraum und $K^M(p,\sigma) = K^N(f(p),df|_p(\sigma))$. Das heißt: Schnittkrümmung ist invariant unter Isometrie.
+\end{lemma}
+\begin{beweis}
+Es gilt (Übungsblatt 7 Aufgabe 1):
+\begin{itemize}
+\item $D_{dfx}^N df(y) = df(D_x^my)$
+\item $[df(x), df(y)]^N = df([x,y]^M)$
+\item $\kksp {df(x)}{df(y)} = \ksp x y$
+\end{itemize}
+$\folgt R^N(df(x), df(y)) df(z) = df(R^M(x,y)z)$. Es genügt zu zeigen: Zu $\sigma \subset T_xS^n$ und $\tau \subset T_yS^n$, jeweils 2-dimensionale Untervektorräume, existiert eine Isometrie $f: S^n \to S^n$ mit $df_x(\sigma) = \tau$.
+
+Sei nun $\sigma = [u,v]$, $\tau = [\tilde u, \tilde v]$, wobei $u,v$ bzw. $\tilde u, \tilde v$ Orthonormalbasen sind. $l_1=x$, $l_2=u$, $l_3=v$.
+\[
+y =
+\begin{pmatrix}
+y_1 \\ \vdots \\ y_{n+1}
+\end{pmatrix}
+= f_1
+\qquad
+\tilde u =
+\begin{pmatrix}
+\tilde u_1 \\ \vdots \\ \tilde u_{n+1}
+\end{pmatrix}
+= f_2
+\qquad
+\tilde v =
+\begin{pmatrix}
+\tilde v_1 \\ \vdots \\ \tilde v_{n+1}
+\end{pmatrix}
+= f_3
+\]
+ergänze zu einer Orthonormalbasis $\{f_1,\ldots,f_{n+1}\}$ von $\MdR^{n+1}$. Dann ist $A \da [f_1,f_2,\ldots,f_{n+1}] \in O(n+1)$, also eine orthogonale $(n+1)\times(n+1)$-Matrix, mit $A_{li} = f_i$, $f: \MdR^{n+1} \to \MdR^{n+1}$; $w\mapsto Aw$ ist eine euklidische Isometrie (Rotation von $(\MdR^{n+1},???)$ die $S^n$ invariant lässt. Dies Induzier also eine Isometrie von $(S^n,???)$.
+
+Da $f$ linear ist, $df=f$, also $df_x(\sigma) = df_x([u,v]) = [df_xu, df_yv] = [\tilde u, \tilde v] = \tau \folgt$ Behauptung. $S^n$ hat konstante Schnittkrümmung. Es glit $K=1$ (siehe später).
+\end{beweis}
+
+\item $n$-dimensionale hyperbolische Räume $H^n\MdR \da \{ x\in\MdR^n \mid x_n > 0\}$ mit der Identität als Karte und lokalen Koordinaten $x_1,\ldots,x_n$. Es ist
+\[
+(g_{ij}) \da 
+\begin{pmatrix}
+\frac{1}{(x_n)^2} & & 0 \\
+& \ddots & \\
+0 & & \frac 1 {(x_n)^2}
+\end{pmatrix} = \frac 1 {(x_n)^2} 
+\begin{pmatrix}
+1 & & 0 \\
+& \ddots & \\
+0 & & 1
+\end{pmatrix}
+\] Berechnung der $R_{ijk}$ zeigt: Schnittkrümmung $R$ ist konstant $-1$.
+
+\item Konfrome Änderung der Metrik $(M,g)$ einer Riemann’schen Mannigfaltigkeit um $\lambda \in C^\infty M$, $\lambda >0$: $\tilde g \da \lambda g$ ist wieder eine Riemann’sche Metrik.
+
+Für konstantes $\lambda>0$ ist die Schnittkrümmung für $\tilde g$: $\tilde R=\frac 1\lambda R$. Insbesondere kann man jede Mannigfaltigkeit mit beliebiger, konstaner Krümmung durch Reskalierung der Riemann’schen Metrik zu $S^n$ oder $H^n$ formen. (besseres verb bitte?!?)
+
+\end{bemerkungen}
+
+\subsection*{Ergänzende Sätze (ohne Beweis, vergleiche: de Corso? Kapitel 8)}
+
+\begin{satz*}
+$(M, \asp)$ hat konstante Schnittkrümmung, also
+\[ K(p,\sigma) = K_0 \forall \sigma \subset T_pM
+\forall p \in M \gdw \ksp {R(x,y)w} z = K_0 (\ksp x w \ksp y z - \ksp y w \ksp x z)
+\]
+insbesondere ist $\ksp {R(x,y)x} y = K_0(\|x\|^2\|y\|^2 - \ksp x y ^2)$.
+\end{satz*}
+
+\begin{satz*}[Hopf]
+Eine vollsändige, einfach zusammenhängende, ??? Riemann’sche Mannigfaltigkeit mit konstanter Krümmung 0,1 oder -1 ist isometrisch zu $\MdR^n$, $S^n$, $H^n\MdR$. Dabe heißt
+\begin{itemize}
+\item Vollständig: Jede Geometrie ist auf ganz $\MdR$? definiert
+\item Einfach zusammenhängend: Jede geschlossene Kurve ist auf einen Punkt zusammenziehbar
+\item „???“ = Riemann’sche Mannigfaltigkeit konstanter Krümmung.
+\end{itemize}
+
+\end{satz*}
+
+\section{Ricci-Krümmung}
+
+Sei $R$ der Krümmungstensor einer Riemann’schen Mannigfaltigkeit $(M,\asp)$ und $X,Y,Z \in \V M$. In jedem Punkt $p\in M$ ist $Y(p) \to R(X(p),Y(p))Z(p)$ ein Endomorphismus von $T_pM$. Oder:Für $X,Z \in \V M$ fest ist $R(X,\cdot)Z$ ein (1,1)-Tensormodul.
+
+Für ein beliebiges (1,1)-Tensorfeld $A$ ist $A(p):T_pM \to T_pM$ ein Endomorphismus und wir definieren die Spur von $A$ durch
+\[
+(\spur A)(p) \da \sum_{i=1}^n \ksp {A(p)e_i, e_i}_p
+\] wobei $[e_i]$ eine Orthonormalbasis von $T_pM$ ist. Linere Algebra: Es gibt einen Endomorphismus $\Phi$ mit Abbildungsmatrix $A$ und $\spur \Phi = \spur A = \sum_{i=1}^n A_{ii}$ (insbesondere für Orthonormalbasen, $a_{ii} = \ksp {A_{e_i} {e_i}})$.
+
+Der Ricci-Tensor von $M$ ist der (0,2)-Tensor $Ric(X,Z)\da \spur(y\mapsto R(x,y)z)($„$\frac1{n-1}$“). Die Ricci-Krümmung von $M$ in Richtung $v\in T_pM$ ist \[r(u) \da \frac{Ric(v,u)}{\|v^2\|}\,.\]
+
+Für eine Orthonormalbasis $\{e_i\}$ von $T_pM$ ist $Ric(v,w) = \sum_{i=1}^n \ksp {R(v,e_i)w} {e_i}$. Also insbesondere ist der Ricci-Tensor symmetrisch und$r(v) = \sum_{i=1}^n K(p,[u,e_i])$.
+
+Die Skalar ??? ist eine differenzierbare Funktion auf $S:M\to \MdR$, $p\mapsto \sum_{j=1}^n r(e_j)$, wobei $\{e_j\}$ eine Orthonormalbasis von $T_pM$ ist. $S(p) = \sum_{j=1}^n r(e_j) = \sum_{j=1}^n Ric(e_j, e_i) \sum_{j=1}^n \ksp {R(e_j, e_i)e_j} e_i =\sum_{i,j =1}^n K(p, [e_i, e_j])$.
+
+Eine Riemann’sche Mannigfaltigkeit $(M,g)$ heißt Einstein-Raum falls $Ric(x,y) = \lambda g(x,y) \forall x,y\in \V M$, wobei $\lambda:M \to \MdR$ eine differenzierbare Funktion ist.
+
+\begin{beispiel}
+Räume mit konstanter Krümmung sind Einstein-Räume: $K=c_0$ konstant. $Ric(X,X)=\sum_{i=1}^n k([x,e_i]) g(x,x) = (n-1) c_0 g(x,x)$
+\end{beispiel}
+
+\begin{bemerkung}
+Der Einstein-Tensor ist\dots (bitte jemand eintragen!)
+\end{bemerkung}
+
+\chapter{Jacobi-Felder (Verbindung Geometrie--Krümmung)}
+\section{Jacobi-Gleichung}
+
+Sei $(M,\asp)$ eine Riemann’sche Mannigfaltigkeit. Für $v\in T_pM$ sei $\exp_p$ definiert. Wir betrachten die parametrisierte Fläche $f(t,s) \da \exp_p(t v(s))$ mit $0\le t \le 1$ und $-\ep \le s \le \ep$, wobei $v(s)$ eine Kurve in $T_pM$ mit $\|v(s)\| = \|v(0)\|$, $v(0) = v$, $v'(0) = w$ ist.
+
+Es gilt (vergleiche Beweis Gauß-Lemma):
+\[
+d\exp_p|_v w  = \frac{\partial l}{\partial s}(1,0) = T_{\exp_p(v)}M\,.
+\] $\|d\exp_p|_v w\|$ ist ein Maß dafür, wie schnell die Geodätischen $t\mapsto f(t,s)$ auseinanderlaufen.
+
+
+Betrachte dazu das Vektorfeld $d\exp_p|_{tv} tw = \frac{\partial f}{\partial s}(t,v)$ längs $\gamma(t) \da \exp_p(tv)$, $0\le t\le 1$. Wir halten fest: Da $\gamma$ eine Geodätische ist, gilt für alle $t,s$: $\frac D{\partial t}\frac{\partial f}{\partial t}(t,s)=0$.
+
+\begin{lemma}
+\[
+f: 
+\begin{aligned}
+A\subset \MdR^2 &\to M \\ (u,v) &\mapsto f(u,v)
+\end{aligned}
+\] sei eine parametrisierte Fläche und $V(u,v)$ sei ein Vektorfeld längs $f$. Dann gilt:
+\[
+\frac{D}{\partial V}\frac{D}{\partial u} V - \frac{D}{\partial U}\frac{D}{\partial V} V
+ = R(\frac{\partial f}{\partial U}, \frac{\partial f}{\partial V})V
+\]
+wobei $\frac{D}{\partial U} = D_{\frac{\partial f}{\partial U}}$.
+\end{lemma}
+\begin{beweis}
+
+Betrachte Karte $(U,\varphi)$. Dann sind die Basisfelder also $V=\sum_{i=1}^n v^iX_i$, $v^i= v^i(u,v)$, $\frac{D}{\partial U}V = \frac{D}{\partial U}(\sum_{i=1}^n u^ix_i) = \sum_{i=1}^n \frac{\partial u^i}{\partial U} x_i + \sum_{i=1}^n v^i \frac{D}{\partial u}x_i$. $\frac D {\partial u}(\frac D{\partial U} V) = \sum_{i=1}^n \frac{\partial ^2 u^i}{\partial v \partial u} x_i + \sum_{i=1}^n \frac{\partial v^i}{\partial u} \frac D{\partial v} x_i + \sum_{i=1}^n \frac{\partial u^i}{\partial v} \frac{\partial D}{\partial u} x_i$
+$\folgt \frac{D}{\partial v}\frac D{\partial u} v - \frac D {\partial u}\frac D{\partial v} v = \sum_{i=1}^n v_i (\frac{D}{\partial v}\frac{D}{\partial u} x_i - \frac D{\partial u}\frac D{\partial v} x_i)\quad (+)$ (Bitte auf $v$- und $u$-Verwechsler prüfen!)
+
+Berechne $\frac D{\partial v}\frac D{\partial u} x_i$: Für $f(u,v) = (x^1(u,v),\ldots, x^n(u,v,))$ ist $\frac {\partial f}{\partial u} = \sum_{j=1}^n \frac{\partial x^j}{\partial u} x_j$; $\frac {\partial f}{\partial v} = \sum_{k=1}^n \frac{\partial x^k}{\partial u} x_k$ und $\frac D {\partial u} x_i = D_{\frac {\partial f}{\partial u}} x_i = \sum_{j=1}^n \frac{\partial x^j}{\partial u} D_{x_j} x_j$. $\frac D{\partial v}\frac D {\partial u} v_i = \sum_{j=1}^n = \frac{\partial ^2 x^j}{\partial v\partial u} D_{x_j}  x_i + \sum \frac{\partial x^j}{\partial u} D_{\frac{\partial f}{\partial u}} (D_{x_j}x_i) = \sum_{j} \frac{\partial ^2 x^j}{\partial u\partial v} D_{x_j}x_i + \sum_d \frac{\partial x^i}{\partial u} (\sum_k \frac{\partial x^k}{\partial u} D_{x_k}D_{x_j}x_i) = \sum_{j}$ WTF\dots.
+
+\end{beweis}
+
+
+
+
+
 \appendix
+
 
 
 \chapter{Satz um Satz (hüpft der Has)}
