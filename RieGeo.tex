@@ -2023,11 +2023,105 @@ Im euklidischen ist $L(K_r) = 2\pi r$, also $K(p,\sigma) = 0$. Im sphärischen i
 
 
 
+\chapter{Riemann’sche Mannigfaltigkeiten als metrische Räume}
+
+Sei $(M,\asp)$ eine differenzierbare Mannigfaltigkeit, also insbesondere ein topologischer Raum (nach Definition), der Hausdorff’sch ist, eine abzählbare Basis hat und und lokal euklidisch ist. Solche topologischen Räume sind metrisierbar.
+
+Bisher waren die Konzepte „lokal“, etwa die Geodätischen, die Exponentialabbildung, der Krümmungstensor, die Jacobi-Felder. Für globale Aussagen benötigen wir zusätzliche topologische Voraussetzungen.
+
+Ein Prototyp für eine solche Voraussetzung ist der Satz von Gauß-Bounet in der Flächentheorie: Gegeben eine kompakte Fläche $S$ im $\MdR^3$ ohne Rand und die Gauß-Krümmung $K$, so ist $\int_S KdA = 2\pi \chi(S) = 2\pi (2 - 2g)$, wobei $\chi$ die Euler-Charakteristik ist. Diese Gleichung verbindet links eine Aussage über die „lokale Geometrie“ mit rechts einer topologische Invariante.
+
+Die einfachste Globale Frage ist: Gegeben zwei Punkte $p,q\in M$, gibt es einen stetigen Weg zwischen $p$ und $q$? Notwendig dafür ist: $M$ zusammenhängend\footnote{Ein topologischer Raum $X$ heißt zusammenhängend wenn $X$ nicht in zwei disjunkte, offene, nichtleere Teilmengen zerlegt werden kann. Dazu äquivalent: $X$ und $\emptyset$ sind die einzigen Teilmengen von $X$ die sowohl offen als auch abgeschlossen sind.}. Zusammenhängend ist auch hinreichend:
+\begin{lemma}
+Ist $M$ zusammenhängend, so ist $M$ auch wegzusammenhängend. Das heißt, dass zu $p,q\in M$ ein stetiger Weg $c:[0,1]\to M$ mit $c(0)=p$ und $c(1)=q$ existiert.
+\end{lemma}
+
+\begin{bemerkung}
+In allgemeinen topologischen Räumen gilt: Aus wegzusammenhängend folgt zusammenhängend, aber aus zusammenhängend folgt nicht zwingend wegzusammenhängend. Ein Beispiel dafür ist $X\da [(0,-1),(0,1)] \cup \{(x,\sin \frac1x)\in\MdR^2\mid x>0\}$ mit der von $\MdR^2$ induzierten Topologie. (Für einen Beweis siehe: Singer-Therpe, Elementary Topology \& Geometry, Seite 53)
+\end{bemerkung}
+
+\begin{beweis}
+Sei $p\in M$ und $A\da \{q \in M\mid q$ ist mit $p$ durch einen stetigen Weg verbindbar$\}$.
+\begin{itemize}
+\item  $A\ne \emptyset$, da $p\in A$: $c:[0,1] \to M$; $c(t)\da p$.
+\item  $A$ ist offen: Ist $q\in A$ und $r\in B_\ep(q)$ (= normale Umgebung von $q$), dann ist $r \in A$.
+\item $A$ ist abgeschlossen, also $M\setminus A$ ist offen: Ist $q\in M \setminus A$, $r\in B_\ep(q)$, dann ist $r\in M\setminus A$.
+\end{itemize}
+\end{beweis}
+
+Daher sei in diesem Kapitel stets vorausgesetzt, dass $M$ zusammenhängend ist. 
+
+Daraus folgt: Zwei beliebige Punkte $p,q\in M$ sind durch stückweise differenzierbare (bzw. stückweise geodätische) Wege verbindbar.
+
+\begin{beweis}
+Wähle stetigen Weg zwischen $p$ und $q$: $c:[0,1]\to M$. $c([0,1])$ ist kompakt. Diese Menge kann durch endlich viele total normale Umgebungen überdeckt werden. In  diesem Umgebungen lässt sich der Weg wie gewünscht abändern.
+\end{beweis}
+
+\begin{bemerkung}
+Im Allgemeinen existiert zwischen zwei Punkten $p$ und $q$ einer Riemann’schen Mannigfaltigkeit keine Geodätische! Etwa in $(\MdR^2\setminus\{0\},\kan)$, wo Geodätische Geradenstücken entsprechen, gibt es keine Geodätische zwischen $(0,-1)$ und $(0,1)$.
+\end{bemerkung}
+
+Setze $\Omega_{qp}\da \{$stückweise differenzierbare Kurven zwischen $p$ und $q\}$.
+
+\begin{satz}[Längenmetrik]
+$(M,\asp)$ sein eine Riemann’sche Mannigfaltigkeit. 
+\[
+d : 
+\begin{aligned}
+M \times M &\to \MdR_{\ge 0} \\
+(p,q) &\mapsto \inf_{c\in \Omega_{pq}} L(c)
+\end{aligned}
+\]
+Dann ist $(M,d)$ ein metrischer Raum, also es gilt für $p,q,r\in M$: 
+\begin{enumerate}
+\item $d(p,q) = d(q,p) \ge 0$
+\item $d(p,q) \le d(p,r) + d(r,q)$
+\item $d(p,q) = 0 \gdw p = q$
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+\begin{enumerate}
+\item „rückwärts laufen“: $c[0,l]\to M$, $t\mapsto c(t)$, sei Kurve zwischen $p$ und $q$, also $c\in \Omega_{pq}$. Dann ist $\tilde c(t) \da c(t-l) \in \Omega_{qp}$ und $L(c) = L(\tilde c)$.
+\item Da $\Omega_{pq}$ eine Obermenge der Wege von $p$ nach $q$ über $r$ ist, gilt $\inf_{c\in\Omega_{pq}} L(c) \le \inf_{c\in\Omega_{pr}} L(c) + \inf_{c\in\Omega_{rq}} L(c)$
+\item Klar: Ist $p=q$, so ist hat der konstate Weg $c[0,1]\to M$; $t\mapsto p$ die Länge 0, also $d(p,q)=0$.
+
+Annahme $p\ne q$. Wähle eine normale Umgebung $U_\ep(p)$ um $p$ mit $q\notin U_\ep(p)$ Dann gilt für eine beliebiges $c\in \Omega_{pq}$ nach Satz \ref{geolokmin}: $L(c) \ge \ep \folgt d(p,q) \ge \ep$.
+\end{enumerate}
+\end{beweis}
+
+\begin{korrolar}
+\begin{enumerate}
+\item  Die Topologie des metrischen Raumes $(M,d)$ ist äquivalent zur ursprünglich auf $M$ gegebenen Topologie (also $U$ ist offen in $M$ $\gdw$ $U$ ist offen in $(M,d)$). Das heißt: Riemann’sche Mannigfaltigkeiten sind metrisierbar.
+\item Für $p_0\in M$ ist $d_{p_0}: M \to \MdR$; $d_{p_0}(p) \da d(p_0,p)$ ist stetig (gilt für beliebige metrische Räume).
+\item Ist $M$ kompakt, so ist der Durchmesser von $M$ beschränkt: \[ Diam(M) = \sup_{p,q\in M} d(p,q) < \infty \]
+\end{enumerate}
+\end{korrolar}
+
+\begin{beweis}
+\begin{enumerate}
+\item Nach Satz \ref{geolokmin} sind normale offene Bälle von genügend kleinem Radius $r$ identisch mit metrischen Bällen von Radius $r$ (bezüglich $d$):
+\[
+B_r^{(d)}(p) \da \{q\in M \mid d(p,q) < r\} = \exp_p(B_r(0))
+\] wobei $B_r(0) = \{ v\in T_pM \mid \| v\|< r\}$.
+\item $|d_{p_0}(p) - d_{p_0}(q)| = |d(p_0,p) - d(p_0,q)| \le d(p,q)$
+\item Seien $p,q$ beliebig aus $M$ kompakt.
+\[
+d(p,q) \le d(p,p_0) + d(p_0,q) \le 2 \max_{r\in M} d(p_0,r) < \infty
+\]
+Das Maximum wird angenommen, da $M$ kompakt und $d_{p_0}$ stetig ist.
+\end{enumerate}
+\end{beweis}
+
+\begin{definition}
+$(M,d)$ ist vollständig\index{vollständig} genau dann, wenn jede Cauchy-Folge konvergiert.
+
+$(M,\asp)$ ist geodätisch vollständig\index{geodätisch vollständig} genau dann, wenn für jedes $p\in M$ die Exponentialabbildung $\exp_p$ auf ganz $T_pM$ definiert ist, also jede Geodätische $\gamma(t)$ mit $\gamma(0) = p$ ist für alle $t\in \MdR$ definiert.
+
+\end{definition}
 
 
 \appendix
-
-
 
 \chapter{Satz um Satz (hüpft der Has)}
 \listtheorems{satz,wichtigedefinition}
