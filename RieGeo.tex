@@ -2069,7 +2069,7 @@ $(M,\asp)$ sein eine Riemann’sche Mannigfaltigkeit.
 d : 
 \begin{aligned}
 M \times M &\to \MdR_{\ge 0} \\
-(p,q) &\mapsto \inf_{c\in \Omega_{pq}} L(c)
+(p,q) &\mapsto \inf_{\mathclap{c\in \Omega_{pq}}} L(c)
 \end{aligned}
 \]
 Dann ist $(M,d)$ ein metrischer Raum, also es gilt für $p,q,r\in M$: 
@@ -2094,7 +2094,7 @@ Annahme $p\ne q$. Wähle eine normale Umgebung $U_\ep(p)$ um $p$ mit $q\notin U_
 \begin{enumerate}
 \item  Die Topologie des metrischen Raumes $(M,d)$ ist äquivalent zur ursprünglich auf $M$ gegebenen Topologie (also $U$ ist offen in $M$ $\gdw$ $U$ ist offen in $(M,d)$). Das heißt: Riemann’sche Mannigfaltigkeiten sind metrisierbar.
 \item Für $p_0\in M$ ist $d_{p_0}: M \to \MdR$; $d_{p_0}(p) \da d(p_0,p)$ ist stetig (gilt für beliebige metrische Räume).
-\item Ist $M$ kompakt, so ist der Durchmesser von $M$ beschränkt: \[ Diam(M) = \sup_{p,q\in M} d(p,q) < \infty \]
+\item Ist $M$ kompakt, so ist der Durchmesser von $M$ beschränkt: \[ \operatorname{Diam}(M) = \sup_{p,q\in M} d(p,q) < \infty \]
 \end{enumerate}
 \end{korrolar}
 
@@ -2117,9 +2117,69 @@ Das Maximum wird angenommen, da $M$ kompakt und $d_{p_0}$ stetig ist.
 $(M,d)$ ist vollständig\index{vollständig} genau dann, wenn jede Cauchy-Folge konvergiert.
 
 $(M,\asp)$ ist geodätisch vollständig\index{geodätisch vollständig} genau dann, wenn für jedes $p\in M$ die Exponentialabbildung $\exp_p$ auf ganz $T_pM$ definiert ist, also jede Geodätische $\gamma(t)$ mit $\gamma(0) = p$ ist für alle $t\in \MdR$ definiert.
-
 \end{definition}
 
+\begin{satz}[Hopf-Rinow, 1931]
+Sei $M$ eine zusammenhängende Riemann’sche Mannigfaltigkeit und $p\in M$. Folgende Aussagen sind äquivalent:
+\begin{enumerate}
+\item $\exp_p$ ist auf ganz $T_pM$ definiert.
+\item Jede abgeschlossene Teilmenge $A\subset M$ mit beschränktem Durchmesser ist kompakt.
+\item Der metrische Raum $(M,d)$ ist vollständig, das heißt, jede Cauchy-Folge konvergiert.
+\item $M$ ist geodätisch vollständig.
+\end{enumerate}
+In diesem Falle gilt: Für jeden Punkt $q\in M$ existiert mindestens eine Geodätische $\gamma$, welche $p$ und $q$ verbindet und für die gilt: $L(\gamma) = d(p,q)$, das heißt, $\gamma$ realisiert die kürzeste Verbindung zwischen $p$ und $q$.
+\end{satz}
+
+\begin{beweis}
+Die Vorgehensweise ist: $1 \folgt 2 \folgt 3 \folgt 4 \folgt 1$.
+\begin{enumerate}[(1)$\folgt$(2)]
+\item[(1)$\folgt$(2)] $A$ ist abgeschlossen. \[\operatorname{Diam}(A) = \sup_{a,b\in A}d(a,b) \le c < \infty\,.\]
+Für ein festes $q_0\in A$ gilt für alle $q\in A$: \[d(p,q) \le d(p,q_0) + d(q_0,q) \le d(p,q_0) + c \ad R\,.\]
+Das heißt: $A \subset \overline{B_{2R}(p)} \gleichwegen{(1)} \exp_p(\overline{B_{2R}(0)})$ ist kompakt, da $\exp_p$ stetig und $\overline{B_{2R}(0)}\subset T_pM$ kompakt ist. Also ist $A$ als abgeschlossene Teilmenge einer kompakten Menge selbst auch kompakt.
+\item[(2)$\folgt$(3)] 
+Eine Cauchy-Folge $\{p_n\}_{n\in \MdN}$ ist beschränkt: Wähle $\ep>0$, so gilt $d(p_n,p_m) < \ep$ für alle $m,n \ge n_0(\ep)$. Also ist nach (2) $\{p_n\}_{n\in \MdN}$ in einer kompakten Menge enthalten. Insbesondere hat $\{p_n\}_{n\in \MdN}$ eine konvergente Teilfolge. Da $\{p_n\}_{n\in \MdN}$ eine Cauchy-Folge ist, konvergiert $\{p_n\}_{n\in\MdN}$ selbst.
+\item[(3)$\folgt$(4)] 
+Sei $\gamma: I\to M$ eine normale Geodätische in $M$. Zu zeigen: $I$ ist offen und abgeschlossen in $\MdR$, also $I=\MdR$.
+
+$I$ ist offen (und nicht leer): Aus der (lokalen) Eindeutigkeit und Existenz von Geodätischen (Satz \ref{eindgeo}) folgt: Ist $\gamma(t_0)$ definiert, so auch $\gamma(t_0+t)$ für genügend kleine $t$.
+
+$I$ abgeschlossen: Sei $(t_n)_{n\in \MdN}$ eine monoton wachsende Folge in $I$, welche gegen $t_*$ konvergiert. Zu zeigen: $t_* \in I$. Zunächst ist für $m\ge n$ \[d(\gamma(t_n),\gamma(t_m)) \le L(\gamma|_{[t_n,t_m]}) = |t_n - t_m|\,.\] Daher ist $(\gamma(t_n))_{n\in\MdN}$ eine Cauchy-Folge in $M$ und nach Voraussetzung(3) konvergent.
+
+Sei $p\da \lim_{n\to\infty} \gamma(t_n)$. Sei $W(p)$ eine total normale Umgebung um $p$. Satz \ref{totnormumg} besagt: Es existiert ein $\delta > 0$, so dass jede normale Geodätische, welche in $W(p)$ beginnt, auf $(-\delta,\delta)$ definiert ist. Wähle $n$ so groß, dass $|t_n - t_*|<\frac\delta2$ und $\gamma(t_n) \in W(p)$. Dann ist $\gamma(t)$ definiert für alle $t$ mit $|t_n - t| < \delta$, also insbesondere für $t_*$, das heißt $t_*\in I$ und $I$ ist abgeschlossen.
+\item[(4)$\folgt$(1)] 
+Klar.
+\end{enumerate}
+Es gelte nun (1), und wir zeigen die letzte Aussage des Satzes.
+
+\begin{enumerate}[1. {Schritt:}]
+\item Wir finden einen Kandidatenen für die Geodätische $\gamma$. Sei $r\da d(p,q)$ und für $0< \delta < r$ sei $B_\delta(p)$ ein normaler Ball um $p$ mit geodätischer Sphäre $S_\delta(p) = \partial B_\delta(p)$ als Rand. $S_\delta(p)$ ist kompakt.
+
+Die Idee ist, $x_0$ als denjenigen Punktauf dem Rand zu wählen, wo die stetige Funktion $d_q|_{S_\delta} \da d(q,\cdot)|_{S_\delta}$ ein Minimum annimmt. Dann existiert nach Voraussetzung (1) ein $v\in T_pM$ mit $\|v\|=1$ und $x_0 = \exp_p(\delta v)$.
+
+Definiere $\gamma(s) \da \exp_p(s v),$ $s\in \MdR$, was nach Voraussetzung (1) geht.
+
+\item Wir zeigen, dass $\gamma$ die Punkte $p$ und $q$ verbindet. Zu zeigen ist also: $\gamma(r)=q$ (bzw. $d(q,\gamma(r)) = 0$). Betrachte dazu die Menge
+\[A\da \{ s\in [0,r] \mid d(\gamma(s),q) = r - s \quad (*) \}\,.\]
+Wir zeigen, dass $A = [0,r]$. $A$ ist abgeschlossen. $A \ne \emptyset$, da $0\in A$. Sei $s_0 \da \max A$.
+
+Annahme: $s_0 < r$. Betrachte wieder normalen Ball $B_{\delta'}(\gamma(s_0))$ mit Rand $S'$ um $\gamma(s_0)$ mit $\delta'$ so klein, dass $q\notin B_{\delta'}(\gamma(s_0))$. $x_0'$ sei ein Punkt auf $S'$ in dem, $d_q|_{S'}$ ein Minimum annimmt.
+
+Behauptung: Es gilt $x_0' = \gamma(s_0 + \delta')\quad (**)$.
+\begin{beweis}[der Behauptung]
+Zunächst ist 
+\[d(\gamma(s_0),q) = \delta' + \min_{x\in S'} d(x,q) = \delta' + d(x_0',q)\,.\]
+Nach Voraussetzung ($(*)$ und Definition von $s_0$) ist $d(\gamma(s_0),q) = r - s_0$, also \[r-s_0 = \delta' + d(x_0',q)\,.\quad(***)\]
+Weiter mit der Dreiecks-Ungleichung: \[d(p,x_0') \ge d(p,q) - d(q,x_0') \gleichwegen{(++)} r - (r - s_0 - \delta') = s_0 + \delta'\]
+Ebenso gilt für die stückweise differenzierbare Kurve $c$: \[d(p,x_0') \le d(p,\gamma(s_0)) + d(\gamma(s_0),x_0') \le s_0 + \delta '\]
+Die Kurve $c$ ist also minimierend und somit eine Geodätische, also keinen „Knick“ bei $s_0$. Daher gilt: $x_0' = \gamma(s_0+\delta')$.
+\end{beweis}
+Aus $(**)$ und $(***)$ folgt:
+\[
+r - (s_0 + \delta ') \gleichwegen{(***)} d(x_0',q) \gleichwegen{(**)} d(\gamma(s_0 + \delta'),q)
+\]
+Also gilt $(*)$ für $\delta_0 + \delta' > s_0$ im Widerspruch zur Definition von $s_0$. Daher ist die Annahme $s_0 < r$ falsch und $s_0 =r$.
+\end{enumerate}
+\end{beweis}
 
 \appendix
 
