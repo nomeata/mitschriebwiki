@@ -12,6 +12,7 @@
 \newcommand{\ad}{\eqqcolon}
 \newcommand{\V}{\mathcal V}
 \newcommand{\kan}{\text{kan}}
+\DeclareMathOperator{\cut}{Cut}
 
 \author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
 \title{Riemann’sche Geometrie}
@@ -2164,14 +2165,14 @@ Wir zeigen, dass $A = [0,r]$. $A$ ist abgeschlossen. $A \ne \emptyset$, da $0\in
 
 Annahme: $s_0 < r$. Betrachte wieder normalen Ball $B_{\delta'}(\gamma(s_0))$ mit Rand $S'$ um $\gamma(s_0)$ mit $\delta'$ so klein, dass $q\notin B_{\delta'}(\gamma(s_0))$. $x_0'$ sei ein Punkt auf $S'$ in dem, $d_q|_{S'}$ ein Minimum annimmt.
 
-Behauptung: Es gilt $x_0' = \gamma(s_0 + \delta')\quad (**)$.
+\paragraph{Behauptung:} Es gilt $x_0' = \gamma(s_0 + \delta')\quad (**)$.
 \begin{beweis}[der Behauptung]
 Zunächst ist 
 \[d(\gamma(s_0),q) = \delta' + \min_{x\in S'} d(x,q) = \delta' + d(x_0',q)\,.\]
 Nach Voraussetzung ($(*)$ und Definition von $s_0$) ist $d(\gamma(s_0),q) = r - s_0$, also \[r-s_0 = \delta' + d(x_0',q)\,.\quad(***)\]
-Weiter mit der Dreiecks-Ungleichung: \[d(p,x_0') \ge d(p,q) - d(q,x_0') \gleichwegen{(++)} r - (r - s_0 - \delta') = s_0 + \delta'\]
+Weiter mit der Dreiecks-Ungleichung: \[d(p,x_0') \ge d(p,q) - d(q,x_0') \gleichwegen{(***)} r - (r - s_0 - \delta') = s_0 + \delta'\]
 Ebenso gilt für die stückweise differenzierbare Kurve $c$: \[d(p,x_0') \le d(p,\gamma(s_0)) + d(\gamma(s_0),x_0') \le s_0 + \delta '\]
-Die Kurve $c$ ist also minimierend und somit eine Geodätische, also keinen „Knick“ bei $s_0$. Daher gilt: $x_0' = \gamma(s_0+\delta')$.
+Die Kurve $c$ ist also minimierend und somit eine Geodätische, hat also keinen „Knick“ bei $s_0$. Daher gilt: $x_0' = \gamma(s_0+\delta')$.
 \end{beweis}
 Aus $(**)$ und $(***)$ folgt:
 \[
@@ -2180,6 +2181,80 @@ r - (s_0 + \delta ') \gleichwegen{(***)} d(x_0',q) \gleichwegen{(**)} d(\gamma(s
 Also gilt $(*)$ für $\delta_0 + \delta' > s_0$ im Widerspruch zur Definition von $s_0$. Daher ist die Annahme $s_0 < r$ falsch und $s_0 =r$.
 \end{enumerate}
 \end{beweis}
+
+\begin{korrolar}
+Eine zusammenhängende kompakte Riemann’sche Mannigfaltigkeit ist (geodätisch) vollständig.
+\end{korrolar}
+
+\begin{beweis}
+$(M,d)$ ist vollständig, also nach Hopf-Rinow geodätisch vollständig.
+\end{beweis}
+
+\begin{korrolar}
+$M$ sei eine zusammenhängende und vollständige, aber nicht kompakte, Riemann’sche Mannigfaltigkeit. Dann existiert ein geodätischer Strahl in $M$, also eine Geodätische $\gamma:[0,\infty)\to M$, welche für alle $t\in [0,\infty)$ minimierend ist: $d(\gamma(t),\gamma(0)) = t$.
+\end{korrolar}
+
+\begin{beweis}
+Wähle Folge $(q_n)_{n\in\MdN}$ in $M$, so dass $d(q_0,q_n)\to \infty$ für $n\to\infty$. Schreibe $q_n = \exp(t_n v_n)$, $\|v_n\|=1$. Die Folge $(v_n)_{n\in\MdN} \subset \{ w \in T_{q_0}M\mid \|w\|=1\}$ kompakt, also hat $(v_n)_{n\in\MdN}$ eine konvergente Teilfolge, ohne Einschränkung sei diese $(v_n)_{n\in \MdN}$: $v_n \to v$.
+
+Nun haben wir die Geodätischen $\gamma_n(t) \da \exp_{q_0}(tv_n)$ und  $\gamma(t) \da \exp_{q_0}(tv)$. Zu zeigen ist $d(\gamma(t_1), \gamma(t_2)) = |t_1 - t_2|$: Aber $\lim_{n\to\infty} \gamma_n(t) = \lim_{n\to\infty} \exp_{q_0}(tv_n) = \exp_{q_0}(\lim_{n\to\infty}tv_n) = \exp_{q_0}(tv) = \gamma(t) \folgt$ Behauptung.
+\end{beweis}
+
+\section{Schnittort einer vollständigen Riemann’schen Mannigfaltigkeit}
+
+\begin{lemma}
+$M$ sei eine zusammenhängende vollständige Riemann’sche Mannigfaltigkeit und $\gamma:[a,b]\to M$ sei eine normale Geodätische.
+
+\begin{enumerate}
+\item Falls keine weitere Geodätische zwischen $\gamma(a)$ und $\gamma(b)$ existiert, die kürzer ist als $\gamma$, dann ist $\gamma$ minimierend auf $[a,b]$.
+\item Falls eine Geodätische $c\ne \gamma$ zwischen $\gamma(a)$ und $\gamma(b)$ mit $L(c)=L(\gamma)$ existiert, so ist $\gamma$ nicht mehr minimierend auf $[a,b+\ep]$ für ein $\ep >0$.
+\item Ist $\gamma$ minimierend auf einem Intervall $I$, so ist sie auch auf $J\subseteq I$ minimierend.
+\end{enumerate}
+\end{lemma}
+
+\begin{beweis}
+\begin{enumerate}
+\item 
+Nach Hopf-Rinow existiert eine minimierende Geodätische $\gamma^*$ zwischen $\gamma(a)$ und $\gamma(b)$. Es ist dann $L(\gamma^*)\le L(\gamma)$, also nach Voraussetzung $L(\gamma*)=L(\gamma)$, also muss $\gamma$ minimierend sein.
+\item Sei $c$ eine Geodätische zwischen $\gamma(a)$ und $\gamma(b)$, $c\ne \gamma$, mit $L(c) = L(\gamma)$. Wähle $\delta>0$, so dass $W=W(\delta)$ eine total normale Umgebung von $\gamma(b)$ (siehe Satz \ref{totnormumg}). Betrachte die Kurve
+\[
+\alpha(t) \da 
+\begin{cases}
+c(t), & t\in [a,b] \\
+\gamma(t), & t\in [b,b+\frac\delta2]
+\end{cases}
+\]
+$\alpha$ verbindet $\gamma(0)$ und $\gamma(b+\frac\delta4)$. Da $W$ total normal ist existiert eine minimale Geodätische zwischen $\alpha(b-\frac\delta4)$ und $\alpha(b+\frac\delta4)$. $\alpha$ ist keine Geodätische (wegen dem „Knick“ bei $\gamma(b)$), also ist die Länge des minimalen geodätischen Segments zwischen $\alpha(b-\frac\delta4)$ und $\alpha(b+\frac\delta4)$ echt kleiner als das entsprechende Stück von $\alpha$. Daher existiert eine Kurve von $\gamma(a)$ nach $\gamma(\frac\delta4)$ die kürzer ist als $\alpha|_{[a,b+\frac\delta4]}$. Konstruktion ist $L(\gamma_{[a,b+\frac\delta4]}) = L(\alpha|_{[a,b+\frac\delta4]})$ und somit nicht mehr kürzeste nach $\gamma(b)$.
+\item Annahme: $\gamma$ nicht minimierend auf $J\subseteq I$, dann wäre $\gamma$ nicht minimierend auf $J$.
+\end{enumerate}
+\end{beweis}
+
+Für $p\in M$, $v\in T_pM$, $\|v\|=1$ sei $\gamma_v \da \exp_p(tv)$ die eindeutige normale Geodätische mit $\gamma_v(0)=p$, $\gamma_v'(0)=v$. Setze $I_v \da \{ t\in [0,\infty) \mid d(\gamma_v(t), \gamma_v(0))=t\}$, das heißt: $\gamma$ minimierend zwischen $\gamma_v(0)$ und $\gamma_v(t)$. $I_v \ne \emptyset$, da $[0,\ep]\subseteq I_v$ für genügend kleines $\ep$. $I_v$ ist abgeschlossen, da $d(\gamma_v(0),\cdot)$ stetig. Es gilt also entweder $I_v = [0,\infty)$, also $\gamma_v$ ist geodätischer Strahl, oder es existiert $s(v)>0$, so dass $I_v=[0,s(v)]$. In diesem Fall heißt $\gamma_v(s(v))$ Schnittpunkt\index{Schnittpunkt} von $p$ längs $\gamma_v$.
+
+\begin{bemerkung}
+\begin{enumerate}[(a)]
+\item Es gilt (ohne Beweis): Die Abbildung 
+\[
+s:
+\begin{aligned}
+E_pM \da \{v \in T_pM \mid \|v\|=1\} &\to \MdR\cup\{\infty\} \\
+v &\mapsto s(v)
+\end{aligned}
+\] ist stetig.
+\item Für kompakte $M$ ist $s(v) < \infty$ für alle $v\in E_pM$, $p\in M$.
+\item Ist $M$ nicht kompakt, so existiert nach dem Korrolar ein geodätischer Strahl und somit $p\in M$ und $v\in T_pM$, so dass $s(v)=\infty$.
+\end{enumerate}
+\end{bemerkung}
+
+Für ein beliebiges, aber festes $p\in M$ ist
+\[
+U_p \da \{ w\in T_pM\setminus \{0\} \mid \|w\| < s(\frac w {\|w\|})\} \cup \{0\}
+\] eine offene Umgebung von $0\in T_pM$. Der Rand von $U_p$, $\partial U_p$, ist die Menge $\{w\in T_pM | \|w\| = s(\frac w{\|w\|})\} = \{s(v) \cdot v \in T_pM \mid v \in E_pM\}$. Der Schnittort\index{Schnittort} von $p\in M$ ist \[ \cut(p) \da \exp_p(\partial U_p)\,.\]
+
+\begin{beispiel}
+In $(S^n,\kan)$ sind die Geodätischen mit Bogenlänge parametrisierte Großkreise der Länge $2\pi$. Also sind Geodätische $\gamma_v(t)$ minimierend für $t<\pi$. Also ist für alle $p\in S^n_1$ ist $U_p=\{w\in T_pM \mid \|w\| <\pi\}$, also \[\exp_p(U_p) = \{q\in S^n \mid d(p,q)<\pi \} = S^n\setminus \{-p\}\] und \[\cut(p) = \{q\in S^n \mid d(p,q)=\pi \} = \{-p\}\,.\] Man kann also die Sphäre disjunkt zerlegen in $\exp_p(U_p)$ und $\exp_p(\partial U_p) = \cut(p)$. Dies gilt allgemein!
+\end{beispiel}
+
 
 \appendix
 
