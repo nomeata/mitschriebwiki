@@ -1,7 +1,7 @@
 \documentclass[a4paper,twoside,DIV15,BCOR12mm]{scrbook}
 
 \usepackage{mathe}
-\usepackage{saetze-leutzinger}
+\usepackage{saetze-leuzinger}
 \usepackage{skull}
 \usepackage{faktor}
 \usepackage{enumerate}
@@ -2205,6 +2205,7 @@ Nun haben wir die Geodätischen $\gamma_n(t) \da \exp_{q_0}(tv_n)$ und  $\gamma(
 \end{beweis}
 
 \section{Schnittort einer vollständigen Riemann’schen Mannigfaltigkeit}
+\label{schnittort}
 
 \begin{lemma}
 $M$ sei eine zusammenhängende vollständige Riemann’sche Mannigfaltigkeit und $\gamma:[a,b]\to M$ sei eine normale Geodätische.
@@ -2370,11 +2371,91 @@ In der linearen Algebra bezeichnen wir das Volumen des von $a_1,\ldots,a_n\in\Md
 \begin{definition}
 Das Volumen\index{Volumen} des Gebietes bezeichnen wir als
 \[
-\vol(G) \da \int_{\varphi(G)} \sqrt{\det g_{ij}(\varphi^{-1}(x))} dx^1\ldots dx^n \ad \int_{\varphi(G)}d\vol
-\] mit $g_{ij}(p) = \ksp{\frac{\partial}{\partial x^i}|_p}{\frac{\partial}{\partial x^j}|_p}$.
+\vol(G) \da \int_{\varphi(G)} \sqrt{\det (g_{ij}(\varphi^{-1}(x)))} dx\mathrlap{^1}\ldots dx^n \ad \int_{\varphi(G)}d\vol
+\] mit $g_{ij}(p) = \ksp{\frac{\partial}{\partial x^i}|_p}{\frac{\partial}{\partial x^j}|_p}_p$.
 \end{definition}
 
-Nach der Substitutionsregel für Integrale gilt: $\vol(G)$ ist unabhängig von der gewählten Karten.
+Nach der Substitutionsregel für Integrale gilt: $\vol(G)$ ist unabhängig von der gewählten Karten und invariant unter Isometrien.
+
+\begin{bemerkung}
+Um das Volumen eines kompakten Gebietes $G$, das nicht ganz in einem Kartengebiet liegt, zu definieren benutzt man eine Überdeckung von $G$ durch (endlich viele) Karten $(U_i,\varphi_i)$ und eine zugehörige Zerlegung der Eins $(f_i)_{i\in I}$. Dann setzt man:
+\[
+\vol (G) \da \sum_{i\in I} \int_{\varphi_i(G\cap U_i)} f_i d \vol_i 
+\]
+wobei $d\vol_i \da \sqrt{\det(g_{ij}(\varphi^{-1}(p)))}dx_i^1\ldots x_i^n$.
+
+Man kann zeigen, dass $\vol(G)$ nicht von der Wahl der Karten und der entsprechenden Zerlegung der Eins abhängt.
+\end{bemerkung}
+
+\begin{beispiele}
+\item In der Flächentheorie ist $d\vol = dA = \sqrt{EG-F^2}du dv$.
+\item $(\MdR^n,\text{id})$. Hier ist $d\vol = dx^{\mathrlap 1}\ldots dx^n$ bezüglich cartesischen Koordinaten.
+
+Bezüglich Polarkoordinaten $(t,u)$, $u\in S^{n-1}$, ist $d\vol = t^{n-1}dtd\sigma$, wobei $d\sigma$ das Volumenelement auf der Einheitssphäre $S^{n-1}\subset \MdR^n$ ist.
+\end{beispiele}
+
+Wir wissen:
+\begin{itemize}
+\item $M=\exp_p(U_p) \uplus \cut(p)$.
+\item $\cut(p)$ hat keine inneren Punkte, also ist $\vol(M) = \vol(\exp_p(U_p))$.
+\item $\exp_p|_{U_p}$ ist ein Diffeomorphismus auf das Bild in $M$. 
+\end{itemize}
+Das heißt: Wir können $\exp_p^{-1}: \exp_p(U_p) \to T_pM\cong \MdR^n$ als Karte benutzen.
+
+Sei $c(t)\da \exp_p(tu)$ eine normale Geodätische und $\{u,e_2,\ldots,e_n\}$ eine Orthonormalbasis von $T_pM$. Weiter seien $Y _i(t)$, $i=1,\ldots,n$, die eindeutigen Jacobifelder längs $c(t)$ mit $Y _i(0)=0$ und $Y _i(0)=e_i$. Es gilt (siehe \ref{schnittort}): $d\exp_p|_{tu}(u)= c'(t)$ und $d\exp_p|_{tu}(te_i)=Y _i(t)$, $i=2,\ldots,n$.
+
+$(t=x^1,\ldots,x^n)$ seien die Koordinaten in $T_pM$ bezüglich der Orthonormalbasis $\{u,e_2,\ldots,e_n\}$. Dann gilt:
+\begin{align*}
+\frac{\partial}{\partial t}|_{c(t)} &= c'(t) \text{ und } c'(0)=u \\
+\frac{\partial}{\partial x^i}|_{c(t)} &= \frac{\partial}{\partial s}|_0 \exp_p(tu+se_i) = d\exp_p|_{tu}(e_i) = \frac 1 t Y _i(t)
+\end{align*}
+Also:
+\begin{align*}
+g_{11}(c(t)) &= \ksp{\frac\partial{\partial t}}{\frac\partial{\partial t}}_{c(t)} = 1 \\
+g_{1k}(c(t)) &= \ksp{\frac\partial{\partial t}}{\frac\partial{\partial x^k}}_{c(t)} = 0 \\
+g_{ij}(c(t)) &= \ksp{\frac\partial{\partial x^i}}{\frac\partial{\partial x^j}}_{c(t)} = \frac 1 {t^2} \ksp{Y _i(t)}{Y _j(t)}_{c(t)} \\
+\end{align*}
+und
+\[
+\sqrt{\det (g_{ij}(c(t)))} = \frac 1 {t^{n-1}} \sqrt{\det \underbrace{\ksp{Y _i}{Y _j}_{c(t)}}_{\mathclap{\text{$(n-1)\times(n-1)$-Matrix}}}} \ad J(u,t)
+\]
+Also:
+\begin{align*}
+d\vol &= \sqrt{\det(g_ij)}dx^{\mathrlap 1}\ldots dx^n \\
+ &= J(u,t)x^{\mathrlap 1}\ldots dx^n = J(u,t)t^{n-1}dt du
+\end{align*}
+wobei $du$ das euklidische Volumen-Element auf der Einheitssphäre $S^{n-1}\subset T_pM$ ist.
+
+Daraus können wir folgende Volumenformel ableiten:
+
+Ist $s(u) \in \MdR\cup\{\infty\}$ der Abstand von $p$ zum Schnittort von $p$ in Richtung $u\in T_pM$, $\|u\|=1$, so gilt:
+\begin{align*}
+\vol(M) &= \vol(\exp_p(U_p)) \\
+&= \int_{S^{n-1}} \int_0^{s(u)} J(u,t) t^{n-1} dt du
+\end{align*}
+Allerdings kann man im allgemeinen $J(u,t)$ nicht explitzit berechnen, nur abschätzen.
+
+Einfache Beispiele sind Mannigfaltigkeiten mit konstanter Krümmung.
+\begin{enumerate}
+\item $(\MdR^n,\kan)$ mit Schnittkrümmung konstant 0. Hier ist $Y _i(t) = t E_i(t)$, wobei $E_i(t) = \|_{c(t)}e_i$ ein Parallelfeld längs $c$ ist. Hier ist $J(t,u)=1$. 
+\item $(S^n,\kan)$. Hier ist $Y_i(t) = \sin(t) E_i(t)$. Also 
+\[ \vol(S^n)= \int_{S^{n-1}} \int_0^\pi \left(\frac{\sin(t)}{t}\right)^{n-1} t^{n-1} dt du = \vol(S^{n-1}) \int_0^\pi (\sin t)^{n-1}dt \]
+Diese Rekursionsformel führt zu:
+\begin{align*}
+\vol(S^{2n}) &= \frac {2 (2\pi)^n} {(2n-1)(2n-3)\cdots 3\cdot 1} \\
+\vol(S^{2n+1}) &= 2\frac {\pi^{n+1}} {n!}
+\end{align*}
+Das heißt auch: $\vol(S^n)\to 0$ für $n\to \infty$.
+\item Hyperbolische Räume $H^n$. Hier ist $s(u)=\infty$ für alle $u\in S^{n-1}\subset T_pM$. $Y_i(t) = \sinh(t)E_i(t)$. $J(u,t) = \left( \frac {\sinh(t)} t \right)^{n-1}$.
+Daraus ergibt sich $\vol(H^n)=\infty$. Betrachten wir also einen Ball von Radius $R$ (das heißt $B_R(p) \da \{ q\in H^n, d(p,q)\le R\}$):
+\[
+\vol(B_R(p)) = \int_{S^{n-1}} \int_0^R (\sinh t)^{n-1} dt du = \vol(S^{n-1}) \int_0^R (\sinh t)^{n-1} dt
+\]
+Für sehr große $R$ wächst $\vol(B_R(p))$ wie $e^{(n-1)R}$: Das Volumenwachstum von Bällen vom Radius $R$ in hyperbolischen Räumen ist exponentiell in $R$. Vergleiche das mit dem Volumenwachstum von Bällen von Radius $R$ in $\MdR^n$, welches polynomial ist.
+
+Diese Beobachtungen waren Ausgangspunkt um den Krümmungsbegriff in allgemeinen metrischen Räumen einzuführen.
+\end{enumerate}
+
 
 \appendix
 
