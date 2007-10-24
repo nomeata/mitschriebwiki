@@ -17,10 +17,12 @@
 %\usepackage{color}
 \usepackage{a4}
 \usepackage{amsmath,amssymb,amsfonts}
+\usepackage{mathtools}
 \usepackage[utf8]{inputenc}
 \usepackage{fontenc}[german]
 \usepackage[all]{xy}
 \usepackage{german}
+\usepackage{faktor}
 \selectlanguage{german}
 %\renewcommand{\thefootnote}{\fnsymbol{footnote}}
 %\pagestyle{empty}
@@ -33,8 +35,11 @@
 \newtheorem{hilfs}[alles]{Hilfssatz}
 \newtheorem{defini}[alles]{Definition}
 \newtheorem{bsp}[alles]{Beispiel}
+\newtheorem{bsp*}{Beispiel}
 \newtheorem{fazit}[alles]{Fazit}
 \newtheorem{Folgerung}[alles]{Folgerung}
+
+\newcommand{\da}{\coloneqq}
 
 \author{Dr. Stefan Kühnlein und \url{http://mitschriebwiki.nomeata.de/}}
 \title{Topologie}
@@ -135,7 +140,7 @@ topologisches Phänomen verstehen.
 
 
 
-\section{Beispiele - was macht die Topologie?}
+\section{Beispiele -- was macht die Topologie?}
 
 \begin{bsp} \label{Lasso}{\bf Nullstellenfang mit dem Lasso}
 
@@ -193,7 +198,7 @@ etwas aus\dots
 
 In der linearen Algebra wei\ss\  man sehr genau, wann es 
 zwischen zwei Vektorräumen einen Isomorphismus gibt, das hängt ja nur an 
-der Dimension. \"Ahnlich versucht man in der Topologie, zu topologischen 
+der Dimension. Ähnlich versucht man in der Topologie, zu topologischen 
 Räumen zugeordnete Strukturen zu finden, die nur vom Isomorphietyp 
 abhängen, und deren Isomorphieklassen man besser versteht als die der 
 topologischen Räume.
@@ -262,7 +267,7 @@ Fixpunktsatz}
 $W=[0,1]^n$ in sich selbst hat einen Fixpunkt.
 
 Für $n=1$ ist das im Wesentlichen der Zwischenwertsatz. Ist $f:[0,1]
-\longrightarrow [0,1]$ stetig, so ist auch $g(x) := f(x)-x$ eine stetige 
+\longrightarrow [0,1]$ stetig, so ist auch $g(x) \da f(x)-x$ eine stetige 
 Abbildung von $[0,1]$ nach $\mathbb R$, und es gilt $g(0)\geq 0, g(1)\leq 0.$
 
 Also hat $g$ auf jeden Fall eine Nullstelle $x_0$, aber das heißt dann 
@@ -296,67 +301,75 @@ disjunkte, nichtleere Mengen $M_i,i\in I,$ wobei $I$ eine Indexmenge ist:
 $$M=\bigcup_{i\in I} M_i,\ \ \forall i\neq j: M_i\cap M_j = \emptyset, 
 M_i\neq\emptyset.$$
 
-Hand in Hand mit solchen Partitionen gehen \"Aquivalenzrelationen auf $M.$
+Hand in Hand mit solchen Partitionen gehen Äquivalenzrelationen auf $M.$
 Die Relation zur Partition $M_i,i\in I$ wird gegeben durch
 $$m\sim \tilde m \iff \exists i\in I: m,\tilde m\in M_i.$$
-Umgekehrt sind die \"Aquivalenzklassen zu einer \"Aquivalenzrelation $\sim $ 
-eine Partition von $M.$ Die Menge der \"Aquivalenzklassen nennen wir auch den
-\index{Faktorraum}{\it Faktorraum} $M/\sim$:
-$$M/\sim = \{M_i\mid i\in I\}.$$
-Die Abbildung $\pi_\sim: M\longrightarrow M/\sim, \pi_\sim(m):= [m] = $ 
-\"Aquivalenzklasse von $m$ heißt die {\it kanonische Projektion von } $M$ 
-auf $M/\sim$.
+Umgekehrt sind die Äquivalenzklassen zu einer Äquivalenzrelation $\sim $ 
+eine Partition von $M$. Die Menge der Äquivalenzklassen nennen wir auch den
+\index{Faktorraum}{\it Faktorraum} $\faktor M\sim$:
+$$\faktor M \sim = \{M_i\mid i\in I\}.$$
+Die Abbildung $\pi_\sim: M\longrightarrow \faktor{M}{\sim},\ \pi_\sim(m)\da [m] = $ 
+Äquivalenzklasse von $m$ heißt die {\it kanonische Projektion von } $M$ 
+auf $\faktor M \sim$.
 
-Ist $\sim$ eine \"Aquivalenzrelation auf $M$ und $f:M\longrightarrow N$ eine
+Ist $\sim$ eine Äquivalenzrelation auf $M$ und $f:M\longrightarrow N$ eine
 Abbildung, sodass
-jede \"Aquivalenzklasse von $\sim$ in einer Faser von $f$ enthalten ist (d.h.
+jede Äquivalenzklasse von $\sim$ in einer Faser von $f$ enthalten ist (d.h.
 $f$ ist konstant auf den Klassen), so wird durch 
-
-$$\tilde f:M/\sim \longrightarrow N, \tilde f([m]) := f(m),$$
+$$\tilde f:\faktor M \sim \longrightarrow N,\ \tilde f([m]) \da f(m),$$
 eine Abbildung definiert, für die $f=\tilde f \circ \pi_\sim$ gilt. Das ist
 die mengentheoretische Variante des Homomorphiesatzes.
 
 \begin{bsp}{\bf Gruppenaktionen}
 
-{\rm Ein auch in der Topologie wichtiges Beispiel, wie \"Aquivalenzrelationen 
+{\rm Ein auch in der Topologie wichtiges Beispiel, wie Äquivalenzrelationen 
 bisweilen entstehen, ist das der \index{Gruppenoperation}{\it Operation} 
-einer Gruppe $G$ auf der Menge $M$.
+einer Gruppe $G$ auf der Menge $X$.
 
 Solch eine Gruppenaktion ist eine Abbildung
-$$\bullet:G\times M\longrightarrow M,$$
+$$\bullet:G\times X\longrightarrow X,$$
 die die folgenden Bedingungen erfüllt:
-
-$$\begin{array}{rl}\forall m\in M:& e_G\bullet m = m\\
-\forall g,h\in G, m\in M:& g\bullet (h\bullet m) = (gh)\bullet m.\\
+$$\begin{array}{rl}\forall x\in X:& e_G\bullet x = x\\
+\forall g,h\in G, x\in X:& g\bullet (h\bullet x) = (gh)\bullet x.\\
 \end{array}$$
 Hierbei ist $e_G$ das neutrale Element von $G$ und $gh$ ist das Produkt von 
 $g$ und $h$ in $G$.
 
+\paragraph{Beispiel zum Beispiel:} Für jede Menge $X$ gibt es die symmetrische Gruppe $S_X \da {\rm Sym}(X) \da \{ f : X\longrightarrow X \mid f \text{ bijektiv}\}$, als Verknüpfung benutzen wir die Hintereinanderausführung von Abbildungen. Das neutrale Element ist ${\rm Id}_X : X\longrightarrow X$, ${\rm Id}_X(x) = x$ für alle $x\in X$.
+Betrachte nun: $\bullet:{\rm Sym}(X) \times X \longrightarrow X$, $(f,x)\mapsto f(x)$. Dies ist eine Grupenoperation.
+
 Für jedes $g\in G$ ist die Abbildung 
-$$\rho_g:M\longrightarrow M,\rho_g(m) := g\bullet m,$$
-eine Bijektion von $M$ nach $M$, die Inverse ist $\rho_{g^{-1}},$ und 
+$$\rho_g:X\longrightarrow X,\ \rho_g(x) \da g\bullet x,$$
+eine Bijektion von $X$ nach $X$, die Inverse ist $\rho_{g^{-1}},$ und 
 $$g\mapsto \rho_g$$
-ist ein Gruppenhomomorphismus von $G$ in die symmetrische Gruppe von $M$.
+ist ein Gruppenhomomorphismus von $G$ in die symmetrische Gruppe von $X$.
 
-Die \index{Bahn}{\it Bahn} von $m\in M$ unter der Operation von $G$ ist 
-$$G\bullet m := \{g\bullet m\mid g\in G\}.$$
+Die \index{Bahn}{\it Bahn} (oder der Orbit) von $x\in X$ unter der Operation von $G$ ist 
+$$G\bullet x \da \{g\bullet x\mid g\in G\}.$$
 Man kann leicht verifizieren, dass die Bahnen einer Gruppenoperation eine
-Partition von $M$ bilden.
+Partition von $X$ bilden. Mit $\faktor{X}{G} \da \{G\bullet x \mid x \in X\}$ bezeichnen wir den Bahnenraum von $X$ unter der Operation von $G$.
 
-Umgekehrt ist es so, dass jede Partition $(M_i)_{i\in I}$ von $M$ von der 
-natürlichen Aktion einer geeigneten Untergruppe $G$ von ${\rm Sym}(M)$ 
+\paragraph{Weiteres Beispiel zum Beispiel:} Betrachte $\bullet : \mathbb Z ^2 \times \mathbb R^2 \longrightarrow \mathbb R^2$, $(k,v)\mapsto k+v$. Dann ist etwa der Orbit des Nullpunktes die Menge aller ganzzahligen Vektoren. 
+Der Bahnenraum $\faktor{\mathbb R^2}{\mathbb Z^2} \cong [0,1)^2$ entspricht dann topologisch dem Torus.
+
+Umgekehrt ist es so, dass jede Partition $(X_i)_{i\in I}$ von $X$ von der 
+natürlichen Aktion einer geeigneten Untergruppe $G$ von ${\rm Sym}(X)$ 
 herkommt. Hierzu wähle man einfach
-$$G:=\{\sigma\in {\rm Sym}(M) \mid \forall i\in I: \sigma(M_i)= M_i\}$$
+$$G\da\{\sigma\in {\rm Sym}(X) \mid \forall i\in I: \sigma(X_i)= X_i\}$$
 und verifiziere was zu verifizieren ist.
+
+Ist $\bullet: G\times X \longrightarrow X$ eine Gruppenaktion, so heißt für $x\in X$ die Menge ${\rm Stab}_G(x) \da \{g\in G\mid g\bullet x = x \}$ der \textit{Stabilisator}\index{Stabilisator} oder „Fixgruppe“ von $x$. ${\rm Stab}_G(x) \subseteq G$ ist eine Untergruppe.
+
+Die Gruppenaktion heißt \textit{transitiv}\index{transitiv}, wenn es nur eine Bahn gibt: $\exists x \in X: X = G\bullet x$.
 }
 \end{bsp}
 \begin{bsp} {\bf projektive Räume}
 
 {\rm Es seien $K$ ein Körper und $n$ eine natürliche Zahl.
 
-Auf $X:=K^{n+1}\smallsetminus\{0\}$ operiert die Gruppe $K^\times$ durch
+Auf $X\da K^{n+1}\smallsetminus\{0\}$ operiert die Gruppe $K^\times$ durch
 die skalare Multiplikation
-$$a\bullet v := a\cdot v.$$
+$$a\bullet v \da a\cdot v.$$
 Die Bahn von $v\in X$ unter dieser Operation ist $Kv\smallsetminus \{0\}.$
 Da die $0$ ohnehin zu jeder Geraden durch den Ursprung gehört, kann man
 den Bahnenraum $X / K^\times$ mit der Menge aller Geraden durch den Ursprung
@@ -416,7 +429,7 @@ wobei in der Notation die Abbildungen $f_A$ unf $f_B$ unterdrückt werden.
 \medskip
 
 Ein Faserprodukt existiert immer. Wir können nämlich 
-$$F:=\{(a,b)\in A\times B \mid f_A(a) = f_B(b)\} $$
+$$F\da\{(a,b)\in A\times B \mid f_A(a) = f_B(b)\} $$
 wählen und für $\pi_A,\pi_B$ die Projektion auf den ersten beziehungsweise
 zweiten Eintrag. 
 
@@ -467,7 +480,7 @@ schon zur Genüge\dots
 \begin{itemize}
 \item [a)] Ein reeller Vektorraum mit einem Skalarprodukt 
 $\langle\cdot,\cdot\rangle$ wird bekanntlich mit 
-$$d(v,w) := \sqrt{\langle v-w,v-w\rangle} = |v-w|$$
+$$d(v,w) \da \sqrt{\langle v-w,v-w\rangle} = |v-w|$$
 zu einem metrischen Raum
 \item[b)] Jede Menge $X$ wird notfalls durch 
 $$d(x,y) = \left\{\begin{array}{rl} 1, & {\rm falls}\ x\neq y,\\
@@ -477,12 +490,12 @@ zu einem metrischen Raum. Diese Metrik heißt die {\it diskrete Metrik}
 \index{diskrete Metrik} auf $X.$
 \item[c)] Es sei $X$ eine Menge und ${\cal B}(X)$ der Vektorraum der 
 beschränkten reellwertigen Funktionen auf $X.$ Dann wird $X$ vermöge
-$$d(f,g) := \sup\{|f(x)-g(x)|\mid x\in X\}$$
+$$d(f,g) \da \sup\{|f(x)-g(x)|\mid x\in X\}$$
 zu einem metrischen Raum. 
 
 Anstelle der Norm aus einem Skalarprodukt benutzt man hier also die sogenannte
 Maximumsnorm 
-$$|f|_\infty := \sup\{|f(x)|\mid x\in X\},$$
+$$|f|_\infty \da \sup\{|f(x)|\mid x\in X\},$$
 um eine Metrik zu konstruieren. Diese kommt nicht von einem Skalarprodukt her,
 wenn $X$ mindestens 2 Elemente hat.
 
@@ -493,7 +506,7 @@ $X$ nach $Y$. Dabei heißt $f$ beschränkt, wenn ein $R\in \mathbb R$
 existiert mit
 $$\forall x_1,x_2\in X: e(f(x_1),f(x_2)) < R.$$
 Dann wird ${\cal B}(X,Y)$ zu einem metrischen Raum vermöge
-$$d(f,g) := \sup\{e(f(x),g(x))\mid x\in X\}.$$
+$$d(f,g) \da \sup\{e(f(x),g(x))\mid x\in X\}.$$
 \item[d)] Auf den rationalen Zahlen lässt sich für eine Primzahl $p$
 auf folgende Art eine Metrik konstruieren:
 
@@ -502,7 +515,7 @@ $p^{{\rm v}_p(q)} \cdot \frac ab,$ wobei $a,b\in \mathbb Z$ keine Vielfachen von
 $p$ sind. Dann ist $v_p(q)$ eindeutig bestimmt.
 
 Wir setzen für zwei rationale Zahlen $x,y$
-$$d_p(x,y) :=\left\{\begin{array}{rl}
+$$d_p(x,y) \da\left\{\begin{array}{rl}
 0, & {\rm falls}\ x=y,\\
 p^{-{\rm v}_p(x-y)}, & {\rm sonst}.\\ \end{array}\right.$$
 Dies ist die sogenannte $p$-adische Metrik auf $\mathbb Q.$
@@ -569,7 +582,7 @@ stark in Anspruch nehmen sollte.
 
 {\rm Es seien $(X,d)$ ein metrischer Raum und $x\in X$ sowie $r>0$ eine reelle 
 Zahl. Dann heißt
-$$B_r(x) := \{y\in X \mid d(x,y)<r\}$$
+$$B_r(x) \da \{y\in X \mid d(x,y)<r\}$$
 die {\it offene Kugel} vom Radius $r$ um den Mittelpunkt $x.$ 
 
 {\bf Vorsicht:} Weder $x$ noch $r$ müssen durch die Menge $B_r(x)$ eindeutig 
@@ -733,7 +746,7 @@ Diese kommt nicht von einer Metrik her.
 {\rm Es seien $X$ ein topologischer Raum und $A\subseteq X$ eine offene 
 Teilmenge. Das {\it Innere} ${\stackrel\circ A}$ von $A$ ist definiert als die
 Vereinigung
-$$\stackrel\circ A := \bigcup_{U\subseteq_o A} U,$$
+$$\stackrel\circ A \da \bigcup_{U\subseteq_o A} U,$$
 wobei das Symbol $\subseteq_o$ bedeutet, dass $U$ eine (in $X$) offene 
 Teilmenge von $A$ ist.
 
@@ -745,7 +758,7 @@ abgeschlossenen Teilmengen von $X$, die $A$ enthalten.
 $\bar B$ ist abgeschlossen.
 
 Der {\it Rand} von $A$ ist die Menge 
-$\partial A:=\bar A\smallsetminus \stackrel\circ A.$
+$\partial A\da\bar A\smallsetminus \stackrel\circ A.$
 
 }
 \end{defini}
@@ -827,7 +840,7 @@ $A,B\subseteq Y$ gilt
 $$f^{-1}(A\cup B) = f^{-1}(A)\cup f^{-1}(B), \ \ 
 f^{-1}(A\cap B) = f^{-1}(A)\cap f^{-1}(B).$$
 Das zeigt im wesentlichen bereits, dass 
-$${\cal T}:= \{ f^{-1}(U) \mid U\in {\cal S}\}$$
+$${\cal T}\da \{ f^{-1}(U) \mid U\in {\cal S}\}$$
 eine Topologie auf $X$ ist. Man nennt sie die \index{Spurtopologie}
 {\it Spurtopologie} auf $X$ 
 (bezüglich $f$).
@@ -849,12 +862,12 @@ $V\subseteq Y$ verwenden.
 
 \begin{defini} \label{Quotienten}{\bf Quotiententopologie}
 
-{\rm Es sei $X$ ein topologischer Raum und $\equiv$ eine \"Aquivalenzrelation
-auf $X.$ Dann wird auf dem Raum $X/\equiv$ der \"Aquivalenzklassen von $X$ 
+{\rm Es sei $X$ ein topologischer Raum und $\equiv$ eine Äquivalenzrelation
+auf $X.$ Dann wird auf dem Raum $X/\equiv$ der Äquivalenzklassen von $X$ 
 eine Topologie eingeführt, indem man für offenes $U\subseteq X$ die
 Menge 
 $$\{[u]\mid u\in U\}$$
-aller \"Aquivalenzklassen von Elementen aus $U$ zur offenen Menge erklärt
+aller Äquivalenzklassen von Elementen aus $U$ zur offenen Menge erklärt
 und die davon erzeugte Topologie verwendet. Diese Topologie heißt die
 {\it Quotiententopologie}\index{Quotiententopologie} auf $X/\equiv.$
 
@@ -981,15 +994,15 @@ Funktion auf einem beschränkten und abgeschlossenen Intervall gleichmäß
 ig stetig ist.
 
 \item[b)]
-Ein metrischer Raum, in dem diese \"Aquivalenz nicht gilt, ist zum Beispiel
+Ein metrischer Raum, in dem diese Äquivalenz nicht gilt, ist zum Beispiel
 der folgende:
 
-Es sei $X:={\cal C}_0(\mathbb N)$ der Raum der beschränkten Funktionen 
+Es sei $X\da{\cal C}_0(\mathbb N)$ der Raum der beschränkten Funktionen 
 auf $\mathbb N$ (siehe \ref{L_unendlich}). 
 
 Für $n\in\mathbb N$ sei $\delta_n$ die Funktion auf $\mathbb N,$ die
 auf $n$ den Wert 1 annimmt, und sonst den Wert 0. Die Menge
-$$D:=\{ \delta_n \mid n\in \mathbb N\}$$
+$$D\da\{ \delta_n \mid n\in \mathbb N\}$$
 ist eine beschränkte, abgeschlossene Teilmenge von $X.$ Aber kompakt ist sie 
 nicht, denn in $B_{1/2}(\delta_n)$ liegt kein weiteres 
 $\delta_k, k\in \mathbb N,$ und so ist
@@ -1061,7 +1074,7 @@ Ist umgekehrt $A$ ein Intervall, so sei $A=B\cup C$ eine nichttriviale
 disjunkte Zerlegung. Ohne Einschränkung gebe es ein $b_0\in B$ und ein 
 $c_0\in C$ mit $b_0<c_0.$ 
 
-Es sei $z:= \sup\{b\in B\mid b<c_0\}.$ Dies liegt in $A,$ und damit auch in 
+Es sei $z\da \sup\{b\in B\mid b<c_0\}.$ Dies liegt in $A,$ und damit auch in 
 $B$ oder $C.$ Wäre $z\in B$ und $B$ offen in $A$, so müsste es ein $r>0$ 
 geben mit
 $$\forall a\in A: |z-a| < r \Rightarrow z\in B.$$
@@ -1081,7 +1094,7 @@ zusammenhängend ist.
 
 {\rm Es sei $X$ ein topologischer Raum. Wir nennen zwei Punkte $x,y$ in $X$
 {\it äquivalent}, falls es eine zusammenhängende Teilmenge von $X$ gibt, 
-die beide enthält. Dies ist tatsächlich eine \"Aquivalenzrelation:
+die beide enthält. Dies ist tatsächlich eine Äquivalenzrelation:
 \begin{itemize}
 \item $x\simeq x$ ist klar für alle $x\in X,$ denn $\{x\}$ ist 
 zusammenhängend. 
@@ -1097,7 +1110,7 @@ Mengen enthalten und hat mit der anderen leeren Schnitt. Aus
 $B\subseteq U$ folgt $V=\emptyset,$ während aus $B\subseteq V$ folgt, dass
 $U$ und $V$ nicht disjunkt sind: beide enthalten $y.$
 \end{itemize}
-Die \"Aquivalenzklasse ovn $x$ heißt die {\it Zusammenhangskomponente} von 
+Die Äquivalenzklasse ovn $x$ heißt die {\it Zusammenhangskomponente} von 
 $x$. Diese ist weder zwangsläufig offen noch zwangsläufig abgeschlossen.
 }
 \end{defini}
@@ -1130,7 +1143,7 @@ Elementen und der Topologie $\{\emptyset, X\}.$
 
 {\rm Jedes Kompaktum $K$ in einem Hausdorffraum $X$ ist abgeschlossen. Denn:
 Ist $x\in X\smallsetminus K$, so gibt es für jedes $k\in K$ disjunkte
-offene Umgebungen $U_k$ von $k$ und $V_k$ von $x$. Es ist $\dots U := \{ U_k\mid k\in K\}$ eine offene Überdeckung von $K,$ und wegen der Kompaktheit 
+offene Umgebungen $U_k$ von $k$ und $V_k$ von $x$. Es ist $\dots U \da \{ U_k\mid k\in K\}$ eine offene Überdeckung von $K,$ und wegen der Kompaktheit 
 gibt es endlich viele $k_1,\dots ,k_n$ in $K,$ sodass 
 $$K \subseteq \bigcup_{i=1}^n U_{k_i}.$$
 Dazu disjunkt ist $\bigcap_{i=1}^n V_{k_i},$ aber das ist eine offene Umgebung
@@ -1211,7 +1224,7 @@ immer stetig.
 Die Verknüpfung zweier stetiger Abbildungen $f:X\longrightarrow  Y, 
 g:Y\longrightarrow Z$ ist wieder stetig. 
 
-Insbesondere zeigt das, dass homöomorph zu sein eine \"Aquivalenzrelation
+Insbesondere zeigt das, dass homöomorph zu sein eine Äquivalenzrelation
 auf jeder Menge von topologischen Räumen ist.
 
 \item[c)]
@@ -1248,7 +1261,7 @@ hausdorff'sch.
 {\it Beweis.} 
 \begin{itemize}
 \item[a)] Es sei $\ddot V$ eine offene Überdeckung von $f(X)$ in $V.$ Dann
-ist $\ddot U:= \{f^{-1}(U)\mid U\in \ddot U\}$ eine offene Überdeckung 
+ist $\ddot U\da \{f^{-1}(U)\mid U\in \ddot U\}$ eine offene Überdeckung 
 von $X.$ Da $X$ kompakt ist, gibt es endlich viele $V_1,\dots,V_n\in \ddot V,$
 sodass bereits $\{f^{-1}(V_i)\mid 1\leq i\leq n\}$ eine Überdeckung von $X$ 
 ist. 
@@ -1337,7 +1350,7 @@ die auf dem Intervall $[0,1]$ gleichmäßig gegen die Wurzelfunktion
 konvergiert.
 
 Um dies einzusehen setzen wir $u_1\equiv 0$ und definieren rekursiv
-$$u_{n+1} (t) := u_n(t) + \frac12(t-u_n(t)^2), n\geq 1.$$
+$$u_{n+1} (t) \da u_n(t) + \frac12(t-u_n(t)^2), n\geq 1.$$
 Dann ist $(u_n)$ punktweise monoton steigend (auf $[0,1]$ wohlgemerkt, nur dort
 betrachten wir das) und beschränkt. Punktweise gilt also (wegen des 
 Monotoniekriteriums) $\lim_{n\to\infty} u_n(t) = \sqrt(t).$ Dann impliziert der 
@@ -1345,7 +1358,7 @@ Satz von Dini\footnote{Ulisse Dini, 1845-1918}, was in 1.\ behauptet wird.
 
 \item[2.] Für jedes $f\in {\cal A}$ gehört $|f|$ zu $\overline{\cal A}.$
 
-Denn für $a:= \max_{x\in K}|f(x)|$ ist $(u_n(f^2/a^2))$ (mit $u_n$ aus Punkt 
+Denn für $a\da \max_{x\in K}|f(x)|$ ist $(u_n(f^2/a^2))$ (mit $u_n$ aus Punkt 
 1.) eine Folge in $\cal A,$ die gegen $|f|$ konvergiert.
 
 \item[3.] Für $x\neq y\in K$ und $a,b\in \mathbb R$ gibt es $f\in {\cal A}$ 
@@ -1353,7 +1366,7 @@ mit $f(x)=a, f(y) = b.$
 
 Denn: Es gibt ja nach Voraussetzung in ${\cal A}$ eine Funktion $g$ mit
 $g(x)\neq g(y).$ Setze nun 
-$$f:= \frac a{g(x)-g(y)}(g-g(y)) + \frac b{g(y)-g(x)}(g-g(x)).$$
+$$f\da \frac a{g(x)-g(y)}(g-g(y)) + \frac b{g(y)-g(x)}(g-g(x)).$$
 NB: $x,y$ sind fest, die Variable versteckt sich hinter dem nackten $g.$
 
 \item[4.] Für jedes $f\in {\cal C}(K),$ jedes $x\in K$ und jedes 
@@ -1367,7 +1380,7 @@ $$h_z(y) \leq f(y)+\varepsilon, \ \ y\in U_z$$
 gilt. Da $K$ kompakt ist, wird es von endlich vielen der $U_z$ überdeckt, 
 es gibt also $z_1,\dots , z_n\in K: K=\cup_i U_{z_i}.$
 
-Setze nun $g(y):= inf_i h_{z_i}(y).$ 
+Setze nun $g(y)\da inf_i h_{z_i}(y).$ 
 Diese Funktion liegt wegen 
 $\inf(p,q) = \frac12(p+q-|p-q|)$ in $\overline{\cal A}$ und hat die 
 gewünschte Eigenschaft.
@@ -1380,7 +1393,7 @@ $$h_x(x) = f(x),\ \ \forall y\in K: h_x(y)\leq f(y)+\varepsilon.$$
 Die Stetigkeit von $h_x$ zeigt, dass jedes $x\in K$ eine offene Umgebung 
 $V_x$ hat mit
 $$\forall y\in V_x: h_x(y)\geq f(y)-\varepsilon.$$
-\"Ahnlich wie in 4.\ gibt es $x_1,\dots ,x_r\in K,$ sodass $K$ von den 
+Ähnlich wie in 4.\ gibt es $x_1,\dots ,x_r\in K,$ sodass $K$ von den 
 $V_x$ überdeckt wird. Auch ähnlich wie eben liegt das Supremum $g$ der 
 Funktionen $h_{x_i},1\leq i\leq r,$ in $\overline{\cal A},$ und es gilt
 $$||f-g||_\infty \leq\varepsilon.$$
@@ -1687,14 +1700,14 @@ $\mathbb P^n(K)$ mit der früher eingeführten Quotiententopologie eine
 topologische Mannigfaltigkeit.
 
 Denn er lässt sich überdecken durch die offenen Mengen 
-$$U_k:=\{(x_i)_{1\leq i\leq n+1} \mid x_k = 1\},\ 1\leq k\leq n+1,$$
+$$U_k\da\{(x_i)_{1\leq i\leq n+1} \mid x_k = 1\},\ 1\leq k\leq n+1,$$
 und diese werden beim Quotientenbilden mit ihrem Bild auch topologisch 
 identifiziert, liefern also einen endlichen Atlas von $\mathbb P^n(K).$
 
 \item[c)] Keine topologische Mannigfaltigkeit ist zum Beispiel der folgende
 Raum, obwohl er einen endlichen Atlas hat: Wir nehmen die Einheitssphäre 
 $S^1\subseteq \mathbb C$ und definieren $X=S^1/\simeq,$
-wobei die \"Aquivalenzrelation $\simeq$ durch $x\simeq -x$ für $x\neq 
+wobei die Äquivalenzrelation $\simeq$ durch $x\simeq -x$ für $x\neq 
 \pm1$ definiert ist. 
 
 Ein offener Halbkreis wird hierbei injektiv nach $X$ abgebildet, und wir 
