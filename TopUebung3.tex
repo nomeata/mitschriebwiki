@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{mathrsfs}
+\usepackage{stmaryrd}
+
+\usepackage{mathe}
+
+\title{3. Topologie-Übung}
+\author{Joachim Breitner}
+
+\begin{document}
+\maketitle
+\section*{1. Aufgabe}
+
+Sei $(X, d)$ ein beschränkter metrischer Raum, $\mathcal C_b(x) (X) \da \{\text{beschränkte reellwertige Fnktionen auf $X$}\}$, $|f|_\infty \da \sup \{ |f(x)| \mid x \in X\}$, Metrik $d_\infty(f,g) = |f-g|_\infty$ auf $\mathcal C_b(X)$.
+
+\paragraph{Behauptung:} Für jedes $a\in X$ ist die Funktion $f_a: X\to \MdR$, $x\mapsto d(a,x)$ stetig und beschränkt.
+
+Seien $x\in x$, $f_a(x) \da r \in \MdR$, $\ep > 0$. Dann gilt für alle $y\in B_{\frac\ep2}(x)$ dass $d(a,y) \le d(a,x) + d(x,y) \le d(a,x) + \frac\ep2$ sowie dass $d(a,x) \le d(a,y) + d(y,x) \le d(a,y) + \frac\ep2$. Also ist $d(x,a)-\frac\ep2 \le d(y,a) \le d(x,a) + \frac\ep2$ und $f_a(y)= d(a,y) \in B_\ep(f_a(x))$.
+
+Mit $\delta = \frac\ep2$ gilt also: $f_a(B_\delta(x)) \subseteq B_\ep(f_a(x)) = B_\ep(r)$, also ist $f_a$ stetig.
+
+$f_a$ ist beschränkt, da $X$ beschränkt ist (klar nach Definition von $f_a$).\hfill$\blacksquare$
+
+\paragraph{Behauptung:} $\varphi : X\to \mathcal C_b(X)$, $x\mapsto f_X$ ist abstandserhaltend bezüglich $d$ und $d_\infty$.
+
+Zu zeigen ist: $\forall x,y\in X: d_\infty(f_x,f_y) = d(x,y)$. Einerseits gilt: $d_\infty(f_x,f_y) = \sup_{x\in X} | f_x(t) - f_y(t) | = \sup _{x\in X} |d(x,t) - d(y,t)| \le d(x,y)$ wegen der Dreiecksungleichung für $d$. Andererseits gilt: $d_\infty(f_x, f_y) = \sup_{x\in X} |f_x(t) - f_y(t)| \ge |f_x(y) - f_y(y)| = |d(x,y) - 0| = d(x,y)$. Insgesamt gilt also: $d_\infty(f_x,f_y) = d(x,y)$ \hfill$\blacksquare$
+
+\section*{2. Aufgabe}
+
+$(X,d)$ metrischer Raum, $f:\mathbb R_{\ge0} \to \mathbb R_{\ge0}$ monoton wachsend, nicht konstant, konkav mit $f(0)=0$.
+
+\paragraph{Behauptung:} $f\circ d$ ist Metrik auf $X$.
+
+\begin{itemize}
+\item Symmetrie: \checkmark
+\item $f(d(x,x)) = f(0) = 0$ für alle $x\in X$.
+\item $f(d(x,y)) = 0 \iff x=y$;
+
+Da $f$ monoton wachsend, nicht konstant und konkav ist, ist $0$ die einzige Nullstelle von $f$: Es gibt ein $\tilde x \in X : f(\tilde x) > 0$, da $f$ nicht konstant ist. Wäre $x\ne 0$ eine weitere Nullstelle von $f$, so gelte $x<\tilde x$, da $f$ monoton ist. Dann: $0 = f(x) = f(\frac x {\tilde x}\cdot \tilde x)\ge \frac x {\tilde x} f(\tilde x) > 0$, $\lightning$.
+
+\item $\Delta$-Ungleichung. Zu zeigen: $f(a) + f(b) \ge f(a + b)$, denn dann gilt $\forall x,y,z\in X: f(d(x,y)) + f(d(y,z)) \ge f(d(x,y) + d(y,z)) \ge f(d(x,z))$
+
+Es ist: $f(a) = f(\frac a {a+b}(a+b)) = f(\frac a {a+b} (a+b) + 0 ) \ge \frac a{a+b} f(a+b) + (1- \frac a{a+b}) f(0) = \frac a{a+b} f(a+b)$. Ebenso ist: $f(b) \ge \frac b{a+b} f(a+b)$. Addiert man diese Ungleichungen, erhält man $f(a) + f(b) \ge \frac a{a+b}f(a+b) + \frac b{a+b}f(a+b) = f(a+b)$.\hfill$\blacksquare$
+\end{itemize}
+
+\paragraph{Behauptung:} Ist $f$ streng monoton, dann definieren $f$ und $f\circ d$ die selbe Topologie auf $X$.
+
+$f$ streng Monoton wachsend, also gilt $\forall \ep>0: d(x,y) <\ep \iff f(d(x,y)) < f(\ep)$. Also ist: $B_\ep^d(x) = \{y\in X\mid d(x,y) <\ep \} = \{y\in X\mid f(d(x,y))< f(\ep)\} = B_{f(x)}^{f\circ d}(x)$. Also ist jeder offene Ball bezüglich $d$ ist ein offener Ball bezüglich $f\circ g$ und umgekehrt.
+
+\emph{Das ist falsch!} Gegenbeispiel: $X\in R$, $d$ der euklidische Abstand, $f:\mathbb R_{\ge0} \to \mathbb R_{\ge0}$, $0 \mapsto 0$, $x\mapsto 1+x$ für $x>0$. Dann ist $B_{\frac 12}^{f\circ d}(x) = \{x\}$
+
+Der Beweis funktioniert mit der zusätzlichen Annahme $\lim_{x\to 0} f(x) = 0$.
+
+\paragraph{Behauptung} Auch wenn $f$ streng monoton ist könnte $X$ bezüglch $f\circ d$ vollständig sein und bezüglich $d$ nicht.
+
+Beispiel: Sei $(X,d)$ ein nicht vollständiger Raum und $f$ wie im letzten Gegenbeispiel. Dann sind Cauchyfolgen gerade die, die konstant wird, also konvergieren sie.
+
+\section*{3. Aufgabe}
+
+Sei $X=\MdR^2$ versehen mit der SNCF-Metrik:
+\[
+d(x,y) =
+\begin{cases}
+|x-y|, &x = \lambda y,\, y\in \MdR \\
+|x|+|y|, &\text{sonst.}
+\end{cases}
+\]
+
+Einfach zu zeigen: $d$ ist eine Metrik.
+
+
+
+\section*{4. Aufgabe}
+\end{document}
