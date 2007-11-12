@@ -5,6 +5,8 @@
 \usepackage{cmbright}
 \usepackage{url}
 \usepackage{makeidx}
+\usepackage{framed}
+\usepackage{xcolor}
 
 \usepackage[utf8]{inputenc}
 
@@ -139,6 +141,38 @@
  \hfill \end{minipage} }
 }
 
+\newenvironment{ourshaded}{%
+  \def\FrameCommand{\colorbox{shadecolor}}%
+  \edef\frmlw{\linewidth}
+  \MakeFramed{\setlength\hsize{\linewidth}\FrameRestore}%
+  \noindent}{\endMakeFramed}
+
+\renewcommand{\bew}[2]
+{\definecolor{shadecolor}{rgb}{0.85,0.85,1}
+ \begin{shaded}
+ \textit{\textbf{Beweis: }}
+ #1
+ \begin{enum} #2
+ \hfill \rule{2,1mm}{2,1mm} \end{enum}
+ \end{shaded}
+}
+
+\renewcommand{\sbew}[1]
+{\definecolor{shadecolor}{rgb}{0.85,0.85,1}%
+ \begin{ourshaded}%
+ \textit{\textbf{Beweis:}} #1%
+ \hfill \rule{2,1mm}{2,1mm}
+ \end{ourshaded}
+}
+
+\renewcommand{\bsp}[1]
+{\definecolor{shadecolor}{rgb}{0.85,1,0.85}
+ \begin{shaded}
+ \textit{\textbf{Beispiel: }}
+ #1
+ \end{shaded} 
+}
+
 \newcommand{\sbsp}[2]
 {\noindent \fcolorbox{white}{green!12!white}{
  \begin{minipage}{#1\textwidth}
@@ -162,6 +196,7 @@
 
 \newcommand{\Kern}{\mathop{\rm Kern}\nolimits}
 \newcommand{\Bild}{\mathop{\rm Bild}\nolimits}
+\newcommand{\ord}{\mathop{\rm ord}\nolimits}
 
 \maketitle
 
@@ -203,11 +238,11 @@
     Sei $(M,\cd)$ ein Magma.
     
     \begin{enum}
-        \item In $M$ gibt es höchstens ein neutrales Element. \newline
+        \item In $M$ gibt es höchstens ein neutrales Element.
         \sbew{Sind $e, e'$ neutrale Elemente, so ist $e=e\cd e' = e'$}
 
         \item Ist $M$ Monoid, so gibt es zu $x \in M$ höchstens ein inverses 
-        Element.\newline
+        Element.
         \sbew{Seien $x',x''$ zu $x$ invers, so ist $x'=(x'' \cd x)\cd x' =
         x'' \cd (x \cd x')=x''$}
     \end{enum}
@@ -234,8 +269,8 @@
         U$
         
         \item $U \subseteq M$ Untergruppe $\lra U \neq \emptyset$ und $\forall
-        x,y \in U: x \cd y^{-1} \in U$ \newline \sbew{\newline
-        ''$\Leftarrow$'': \newline Sei $x \in U \> \Rightarrow e=x \cd x^{-1}
+        x,y \in U: x \cd y^{-1} \in U$
+	\sbew{''$\Leftarrow$'': \newline Sei $x \in U \> \Rightarrow e=x \cd x^{-1}
         \in U \Rightarrow $ mit $x$ ist auch $x^{-1}$ in $U \Rightarrow$ mit
         $x,y$ ist auch $xy = x(y^{-1})^{-1} \in U$}
     \end{enum}
@@ -243,7 +278,7 @@
 
 \begin{Bem} 
     Sei $ (M,\cd)$ Monoid. Dann ist $M^x \defeqr \{x \in M:$ es gibt inverses
-    $x^{-1}$ zu $x \in M\}$ eine Gruppe. \newline
+    $x^{-1}$ zu $x \in M\}$ eine Gruppe.
     \sbew{ $\\e \in M^x$, da $e\cd e = e$, also $M^x \neq \emptyset$.
     Sind $x,y \in M^x$, so ist $x \cd y \in M^x$, da $xy \cd
     (y^{-1}x^{-1})=e \Rightarrow \cd$ ist Verknüpfung auf $M^x \Rightarrow
@@ -259,7 +294,8 @@
         gelten: $\\\\f(e) = e'$ \hfill \textmd{(ii)}
         
         \item Ist $f:G \ra G'$ Abbildung von Gruppen, die \textmd{(i)} erfüllt,
-        so ist $f$ Homomorphismus. \newline \sbew{ $f(e) = f(e \cd e) =
+        so ist $f$ Homomorphismus.
+	\sbew{ $f(e) = f(e \cd e) =
         f(e) * f(e) \overset{\cd f(e)^{-1}}{\Rightarrow} e' = f(e)$} 
         
         \item Ein Homomorphismus $f:M \ra M'$ heißt \emp{Isomorphismus}, wenn es
@@ -281,21 +317,21 @@
     Sei $f:M \ra M'$ Hom von \bla.
     
     \begin{enum}
-        \item $Bild(f) \defeqr \{f(x):x \in M\} \subseteq M'$ ist ein
-        Unter-\bla. \newline
+        \item $\Bild(f) \defeqr \{f(x):x \in M\} \subseteq M'$ ist ein
+        Unter-\bla. 
         \sbew{Sind $x,x' \in M$, so ist $f(x)*f(x')=f(x \cd x') \in 
-        Bild(f)$. Sind $M,M'$ Monoide, so gilt: $f(e) = e' \in$ Bild$(f)$.
-        Sind $M, M'$ Gruppen, so gilt: $f(x)^{-1} = f(x^{-1}) \in$ Bild$(f)$, da
+        \Bild(f)$. Sind $M,M'$ Monoide, so gilt: $f(e) = e' \in$ $\Bild(f)$.
+        Sind $M, M'$ Gruppen, so gilt: $f(x)^{-1} = f(x^{-1}) \in$ $\Bild(f)$, da
         $f(x\cd x^{-1}) = f(e) = e' = f(x) * f(x^{-1})$}
         
-        \item Sind $M, M'$ Monoide/Gruppen, so ist Kern$(f) \defeqr \{x \in M :
-        f(x) = e'\}$ Untermonoid/-gruppe von $M$. \newline
-        \sbew{$x,y \in$ Kern$(f) \Rightarrow f(xy) = f(x) * f(y) = e'*e' =
-        e' \Rightarrow xy \in$ Kern$(f), e \in$ Kern$(f) \;\chk$ \\
-        $x\in$ Kern$(f) \Rightarrow f(x^{-1}) = f(x)^{-1} = (e')^{-1} = e'
-        \Rightarrow x^{-1} \in$ Kern$(f)$}
+        \item Sind $M, M'$ Monoide/Gruppen, so ist $\Kern(f) \defeqr \{x \in M :
+        f(x) = e'\}$ Untermonoid/-gruppe von $M$. 
+        \sbew{$x,y \in$ $\Kern(f) \Rightarrow f(xy) = f(x) * f(y) = e'*e' =
+        e' \Rightarrow xy \in$ $\Kern(f), e \in$ $\Kern(f) \;\chk$ \\
+        $x\in$ $\Kern(f) \Rightarrow f(x^{-1}) = f(x)^{-1} = (e')^{-1} = e'
+        \Rightarrow x^{-1} \in$ $\Kern(f)$}
 
-        \item Sind $G,G'$ Gruppen, so ist $f$ genau dann injektiv, wenn Kern$(f)
+        \item Sind $G,G'$ Gruppen, so ist $f$ genau dann injektiv, wenn $\Kern(f)
         = \{e\}$
     \end{enum}
 \end{Def}
@@ -344,7 +380,6 @@ M_i$ ein Homomorphismus. Dann gibt es genau einen Homomorphismus
 $\displaystyle G:M \ra \prod_{i \in I} M_i$, so daß $g_i = pr_i
 \circ G$, wobei $\displaystyle pr_i: \prod_{j \in I} M_j \ra M_i$
 Projektion.
-\newline
 
 %\[\begindc{\commdiag} \obj(1,1){$M$}
 %                      \obj(5,1){$M_i$}
@@ -389,7 +424,7 @@ f_j(m_j) = F((e,\dots,e,m_i,e,\dots,e)) + F((e,\dots,e,m_j,e,\dots,e))$}
 \underset{\in S^m}{(y_1,\dots,y_m)} \defeqr \underset{\in
 S^{n+m}}{(x_1, \dots, x_n, y_1, \dots, y_m)}$ $F^a(S)$ heißt freie Halbgruppe oder ''Worthalbgruppe'' über
 $S$.
-\newline
+
 Definiert man $S^0 \defeqr \{\varepsilon\}$, dann ist $F_0^a(S) \defeqr \bigcup_{n=1}^\infty S^n$ ein Monoid mit neutralem Element $\varepsilon$, dem „leeren Wort“. Für $S=\{1\}$ ist $F_0^a(S) = (\mathbb N_0,+)$.
 \end{enum}
 \end{DefBem}
@@ -398,8 +433,8 @@ Definiert man $S^0 \defeqr \{\varepsilon\}$, dann ist $F_0^a(S) \defeqr \bigcup_
 Ist $(H,\cd)$ Halbgruppe, $f:S\ra H$ eine
 Abbildung, so gibt es genau einen Homomorphismus $\varphi:F^a(S) \ra H$
 mit $\varphi(s) = f(s)$ für alle $s\in S$, wobie man $S$ als $S^1\subset F^a(S)$ auffasst.
-\newline \sbew{
-Für $(x_1,\ldots,x_n)\in S^n$ muss gelten: $\varphi(x_1,\ldots,x_n) = \varphi(x_1)\cdot\cdots\cdot\varphi(x_n) = f(x_1)\cdot\cdots\cdot f(x_n)$. Also ist $\varphi$ eindeutig und existiert, da es so definiert werden kann.
+
+\sbew{Für $(x_1,\ldots,x_n)\in S^n$ muss gelten: $\varphi(x_1,\ldots,x_n) = \varphi(x_1)\cdot\cdots\cdot\varphi(x_n) = f(x_1)\cdot\cdots\cdot f(x_n)$. Also ist $\varphi$ eindeutig und existiert, da es so definiert werden kann.
 }
 \end{Bem}
 
@@ -414,7 +449,7 @@ Sei $(M,\cd)$ ein Monoid und $(G,\cd)$ eine Gruppe
 \item Für $g \in G$, so ist $\varphi_g: \mathbb{Z} \to G$, $n \mapsto g^n$
 ein Gruppenhomomorphismus.
 
-\item $\langle g \rangle \defeqr Bild(\varphi_g)$ heißt die von
+\item $\langle g \rangle \defeqr \Bild(\varphi_g)$ heißt die von
 $g$ erzeugte \emp{zyklische Untergruppe} von $G$.
 
 \item $G$ heißt zyklisch, wenn es ein $g\in G$ gibt mit $\langle g\rangle =G$.
@@ -444,14 +479,14 @@ $g$ erzeugte \emp{zyklische Untergruppe} von $G$.
     \tau    &   :   &   G \ra \mbox{Perm}(G) \\
             &       &   g \mapsto \tau_g
     \end{array} \]
-ist ein injektiver Gruppenhomomorphismus. \newline
+ist ein injektiver Gruppenhomomorphismus. 
 \bew{}{ \item[(1)]
 $\tau_g \in$ Perm$(G) : \tau_g$ ist bijektiv mit Umkehrabbildung
 $\tau_{g^{-1}}$
 \item[(2)] $\tau$ ist Homomorphismus: $\tau(g_1 g_2) = \tau(g_1)
 \circ \tau(g_2)$, denn: $\forall x \in G: \tau(g_1 \circ g_2)(x) = (g_1 g_2)x =
 g_1(g_2 x) = \tau_{g_1}(\tau_{g_2}(x)) = (\tau_{g_1}
-\circ \tau_{g_2})(x)$ \item[(3)] Kern$(\tau)$ = $\{e\}$, denn ist
+\circ \tau_{g_2})(x)$ \item[(3)] $\Kern(\tau)$ = $\{e\}$, denn ist
 $\tau(g) = id_g$, so ist $\forall x \in G: \tau_g(x) = gx = x$, also $g = e$}
 \end{enum}
 \end{DefBem}
@@ -462,32 +497,37 @@ Sei $G$ Gruppe, $g \in G$
 \begin{enum}
 \item Die Abbildung $c_g:G \ra G, x \mapsto gxg^{-1}$ ist ein
 \emp{Automorphismus}, sie heißt \emp{Konjugation} mit $g$.
-\newline \sbew{$c_g$ ist Homomorphismus: $c_g(x_1 x_2) = g(x_1
+
+\sbew{$c_g$ ist Homomorphismus: $c_g(x_1 x_2) = g(x_1
 x_2)g^{-1} \\ c_g(x_1) c_g(x_2) = (g x_1 g^{-1})(g x_1 g^{-1}) = c_g(x_1)\cdot c_g(x_2) \\
 c_g$ ist bijektiv: Die Umkehrabbildung ist $c_{g^{-1}}$ }
+
 \item Die Abbildung $c:G \ra$ Aut$(G), g \mapsto c_g$ ist ein
-Gruppenhomomorphismus. \newline \sbew{$\forall x \in G: c(g_1 g_2)(x) = (g_1
+Gruppenhomomorphismus.
+\sbew{$\forall x \in G: c(g_1 g_2)(x) = (g_1
 g_2)x(g_1 g_2)^{-1} = g_1(g_2 x g_2^{-1})g_1^{-1} = (c(g_1) \circ
 c(g_2))(x)$ }
 
-\item Die Elemente von Bild$(c) \defeql$ Aut$_i(G)$ heißen \emp{innere
+\item Die Elemente von $\Bild(c) \defeql$ Aut$_i(G)$ heißen \emp{innere
 Automorphismen} von $G$.
 
-\item $Z(G)\defeqr$ Kern$(c)$ heißt \emp{Zentrum} von $G$. Es ist $Z(G) =
+\item $Z(G)\defeqr$ $\Kern(c)$ heißt \emp{Zentrum} von $G$. Es ist $Z(G) =
 \{ g \in G:\forall x \in G:gx=xg \}$
 
 \item Eine Untergruppe $N \subseteq G$ heißt \emp{Normalteiler} in
 $G$, wenn $\forall g \in G: c_g(N) \subseteq N$.
 Äquivalent: $\forall g \in G, x \in N: g x g^{-1} \in N$
 
-\item Ist $f:G \ra G'$ Gruppenhomomorphismus, so ist Kern$(f)$
-Normalteiler in G. \newline \sbew{\newline Sei $x \in$
-Kern$(f), g \in G$. Dann ist $f(g x g^{-1}) = f(g)
+\item Ist $f:G \ra G'$ Gruppenhomomorphismus, so ist $\Kern(f)$
+Normalteiler in G.
+
+\sbew{Sei $x \in$
+$\Kern(f), g \in G$. Dann ist $f(g x g^{-1}) = f(g)
 \underset{e'}{\underbrace{f(x)}} f(g)^{-1} = e'$.}
 
 \item Aut$_i(G)$ ist Normalteiler in Aut$(G)$
-\newline
-\sbew{\newline Sei $\varphi \in \mbox{Aut}(G), g\in G :
+
+\sbew{Sei $\varphi \in \mbox{Aut}(G), g\in G :
 \mbox{z.z.: } \varphi \cd c_g \cd \varphi^{-1} \in \mbox{Aut}_i(g).
 \\ \mbox{Es ist } (\varphi \cd c_g \cd \varphi^{-1})(x) =
 \varphi(c_g(\varphi^{-1}(x))) = \varphi(g \cd \varphi^{-1}(x)\cd
@@ -508,26 +548,30 @@ G$ Untergruppe. \begin{enum}
 
 
 \item Für $g_1$, $g_2 \in G$ gilt: $g_1 H \cap g_2 H \neq
-\emptyset \lra g_1 H = g_2 H$ \newline \sbew{Sei $ y = g_1
+\emptyset \lra g_1 H = g_2 H$
+
+\sbew{Sei $ y = g_1
 h_1 = g_2 h_2 \in g_1 H \cap g_2 H$ und $h1, h2, h \in H \Rightarrow g_1 = g_2
 h_2 h_1^{-1} \Rightarrow g_1 h = g_2h_2h_1^{-1} \in g_2 H \Rightarrow g_1 H \subseteq g_2 H$, die Umkehrung
 folgt analog.}
 \item $H$ ist genau dann Normalteiler, wenn $\forall g\in G: g\cd H = H \cd g
-$ \newline \sbew{$gH = Hg \lra H =
+$ 
+\sbew{$gH = Hg \lra H =
 gHg^{-1}$}
 
 \item Alle Nebenklassen von $G$ bzgl. $H$ sind gleichmächtig.
-\newline
+
 \sbew{$\tau_g: \underset{e\cd H}{\underbrace{H}} \ra g\cd H, h
 \mapsto g\cd h$ ist bijektiv.}
 \item Die Anzahl der Linksnebenklassen bzgl. $H$ ist gleich der
 Anzahl der Rechtsnebenklassen. Sie heißt \emp{Index} $[G:H]$ von $H$
-in $G$. \newline \sbew{Die Zuordnung \[\begin{array}{lcl}
+in $G$. 
+\sbew{Die Zuordnung \[\begin{array}{lcl}
     \{\mbox{Linksnebenklasse}\} & \ra & \{\mbox{Rechtsnebenklasse}\} \\
     g\cd H                      & \mapsto & H \cd g^{-1}
     \end{array}\]
 ist \emp{wohldefiniert} und bijektiv.
-\newline
+
 \textbf{Wohldefiniertheit:} ist $g_1 H = g_2 H$, also $g_2 = g_1 h$
 für ein $h \in H \Rightarrow Hg_2^{-1} = H(g_1 h)^{-1} = H\cd
 h^{-1}g_1^{-1} = Hg_1^{-1}$}
@@ -556,7 +600,7 @@ Elemente.} \label{\thesubsection \theenumiii}
 	
 	Weiter sei $\bar M \defeqr M/\sim_f \defeqr \{ \bar x : x \in M\}$
 
-	\item $\bar f : \bar M\to \mbox{Bild}(f)$, $\bar x\mapsto f(x)$ ist eine bijektive Abbildung.
+	\item $\bar f : \bar M\to \Bild(f)$, $\bar x\mapsto f(x)$ ist eine bijektive Abbildung.
 
     \end{enum}
 \end{DefBem}
@@ -564,8 +608,8 @@ Elemente.} \label{\thesubsection \theenumiii}
 \begin{Def}
         Ist $(M,\cd)$ und $(M',\ast)$ ein \bla, und $(M,\cd) \ra (M', \ast)$ ein Homomorphismus, so wird durch
         $\bar x \bar y \defeqr \overline{xy}$ eine Verknüpfung auf $\bar M$ 
-        definiert. So wird $(\bar M,\cd)$ auch zu einem \bla.\newline
-        \sbew{\newline z.z.: $\cd$ ist wohldefiniert. 
+        definiert. So wird $(\bar M,\cd)$ auch zu einem \bla.
+        \sbew{z.z.: $\cd$ ist wohldefiniert. 
         Seien also $x' \in \bar x, y' \in \bar y$ zu zeigen: $\overline{x'\cdot y'} =
         \overline{x\cdot y}$ dh. $f(x'\cdot y') = f(x\cdot y)$ dh. $f(x')=f(x), f(y') = f(y)$ Es ist
         $f(x'\cdot y') = f(x') \ast f(y') = f(x) \ast f(y) = f(x\cdot y)$}
@@ -578,11 +622,11 @@ Elemente.} \label{\thesubsection \theenumiii}
     
     \begin{enum}
         \item $\bar G = G/\sim_f$ ist
-        die Menge der Linksnebenklassen bzgl. $Kern(f)$ also ist für jedes $g\in G$: $[g]_f = g\cdot \Kern{}(f) = \Kern{}(f)\cdot g$.
+        die Menge der Linksnebenklassen bzgl. $\Kern(f)$ also ist für jedes $g\in G$: $[g]_f = g\cdot \Kern{}(f) = \Kern(f)\cdot g$.
 
         \item  $\bar G = G/\Kern(f)$ heißt \emp{Faktorgruppe} von $G$ bzgl.
-        $\Kern(f)$. \newline
-        \sbew{\newline Seien $x,y \in G$. Dann gilt: $\bar x = \bar y \lra
+        $\Kern(f)$. 
+        \sbew{Seien $x,y \in G$. Dann gilt: $\bar x = \bar y \lra
         f(x) = f(y) \lra f(x) \cdot f(y^{-1}) = e' \lra xy^{-1} \in \Kern{}(f)
         \lra y=(xy^{-1})^{-1} x \in \Kern{}(f) \cd  x \lra x^{-1}y \in
         \Kern{}(f) \lra y = x(x^{-1}y) \in x \cd \Kern{}(f) \lra y \cd
@@ -596,7 +640,7 @@ Die Abbildung $[0,1)\to\mathbb R/\mathbb Z$, $t \mapsto [t]_f$ ist bijektiv, spi
 
 \begin{Bem}
     Sei $G$ Gruppe. Es ist $N \subseteq G$ Normalteiler, genau dann, wenn es eine Gruppe $G'$ mit einem surjektivem Gruppenhomomorphismus $f:G \ra G'$ und $N
-    =\Kern(f)$ gibt. \newline
+    =\Kern(f)$ gibt. 
     
     \bew{Die Richtung $\impliedby$ folgt aus \ref{kernundnormalteiler} f). 
     Sei $G' \defeqr \{x \cd N, x\in G\}$ $(\subseteq \mathcal{P}(G))$ Für
@@ -611,7 +655,7 @@ Die Abbildung $[0,1)\to\mathbb R/\mathbb Z$, $t \mapsto [t]_f$ ist bijektiv, spi
     
     \item[(ii)] alle übrigen Eigenschaften ''vererben'' sich von $G \mbox{ auf }
     G'\\$ $f: G \ra G',\; x \mapsto x \cd N$ ist surjektiver 
-    Gruppenhomomorphismus mit Kern$(f)$ = N }
+    Gruppenhomomorphismus mit $\Kern(f)$ = N }
 \end{Bem}
     
 \begin{DefBem}
@@ -641,7 +685,7 @@ Ist $f:G \to G'$ ein Gruppenhomomorphismus, so ist $G/\Kern f \cong \Bild f$
 %\enddc\]
 \item \emp{Universelle Abbildungseigenschaft (UAE) der Faktorgruppe} \newline
 Sei $G$ Gruppe, $N \subseteq G$ Normalteiler. Dann gibt es zu jedem
-Gruppenhomomorphismus $f:G \ra G'$ mit $N \subseteq$ Kern$(f)$ genau
+Gruppenhomomorphismus $f:G \ra G'$ mit $N \subseteq$ $\Kern(f)$ genau
 einen Gruppenhomomorphismus $f_N: G/N \ra G' \mbox{ mit } f = f_N \circ p_N$, wobei $p_N$ die Restklassenabbildung ist.
 \end{enum} \noindent
 
@@ -668,7 +712,7 @@ $f_N$ ist wohldefiniert: Ist $gN = g'N$, so ist $(g')^{-1}g \in N \subset \Kern 
             g^n$ (siehe \ref{1.9}) \newline $\varphi_g$ ist surjektiver 
             Gruppenhomomorphismus. \newline
             Nach Satz \ref{Satz 1} ist $G \cong
-            \mathbb{Z}/\mbox{Kern}(\varphi_g)$ \newline
+            \mathbb{Z}/{\Kern(\varphi_g)}$ \newline
             Da jede Untergruppe von $\mathbb{Z}$ von der Form $H=n\mathbb{Z}$
             für ein $n \in \mathbb{N}$ ist, folgt die Behauptung.
         }
@@ -704,7 +748,7 @@ $f_N$ ist wohldefiniert: Ist $gN = g'N$, so ist $(g')^{-1}g \in N \subset \Kern 
 
         \item Für jedes $n \in \mathbb{N} \setminus \{0\}$ gilt: $\ds n =
         \sum_{d \mid n} \varphi(d)$
-        \newline
+
         \sbew{
             $n = |G| = \displaystyle \sum_{d \mid n} | \{x \in G, \mbox{ord}(x)
             = d\}| 
@@ -713,7 +757,7 @@ $f_N$ ist wohldefiniert: Ist $gN = g'N$, so ist $(g')^{-1}g \in N \subset \Kern 
         
 	\item Ist $G$ zyklische Gruppe der Ordnung $n$, so gilt für jeden 
         Teiler $d$ von $n$: $|\{x \in G : \mbox{ord}(x) = d\}| = \varphi(d)$
-        \newline
+
         \sbew{
             Sei $G=\langle g \rangle$. Für $x = g^k \in G$ ist ord$(x) = 
             \frac{n}{\mbox{\small ggT}(k,n)}$. Also ist ord$\ds (x) = d \lra 
@@ -832,8 +876,7 @@ Jede Untergruppe einer freien abelscen Gruppe von endlichem Rang $n$ ist frei mi
     \mathbb{N} \setminus \{0\}$ mit $a_i$ teilt $a_{i+1}$ für $i = 1,\dots,r-1$,
     so daß $a_1 x_1, \dots, a_r x_r$ eine Basis von $H$ ist. Die $a_i$ sind eindeutig bestimmt.
     
-    \sbew{\newline
-        \textbf{1. Schritt}: $H$ ist endlich erzeugt: Induktion über $n$:
+    \sbew{\textbf{1. Schritt}: $H$ ist endlich erzeugt: Induktion über $n$:
         \newline
         \textbf{$n=1$ }:
             $\chk$\newline
@@ -851,21 +894,18 @@ Jede Untergruppe einer freien abelscen Gruppe von endlichem Rang $n$ ist frei mi
             $\pi(H) = l\mathbb{Z}$ für ein $l \in \mathbb{N} \setminus \{0\}$
             Sei $y \in H$ mit $\pi(y) = l$ \newline
             \textbf{Beh}.:
-                $H \cong \langle y \rangle \oplus (H \cap \mbox{Kern}(\pi))$
-            Dann folgt die Behauptung von Schritt 1, da Kern$(\pi) \cong
-            \mathbb{Z}^{n-1}$, $H \cap$ Kern$(\pi)$ Untergruppe von
+                $H \cong \langle y \rangle \oplus (H \cap \Kern(\pi))$
+            Dann folgt die Behauptung von Schritt 1, da $\Kern(\pi) \cong
+            \mathbb{Z}^{n-1}$, $H \cap$ $\Kern(\pi)$ Untergruppe von
             $\mathbb{Z}^{n-1}$, existiert also nach \textbf{IV} $\Ra$
             \smallskip\newline
             \textbf{Bew. der Beh.}.:
-                $\langle y \rangle \cap (H \cap \mbox{Kern}(\pi)) = \{0\}$ nach
+                $\langle y \rangle \cap (H \cap \Kern(\pi)) = \{0\}$ nach
                 Definition von $y \Ra$ Summe direkt. \newline Sei $z \in H$ mit
                 $\pi(z) = k \cd l$ für ein $k \in \mathbb{Z} \Ra z - ky \in H
-                \cap \mbox{Kern}(\pi) \Ra$ Beh. \newline $\longrightarrow$
-    }
+                \cap \Kern(\pi) \Ra$ Beh. 
 
-    \noindent \sbew{
-        \smallskip \newline
-        \textbf{2. Schritt}:
+        \noindent\textbf{2. Schritt}:
             Sei $y_1, \dots, y_r$ Erzeugendensystem von $H$. Nach Schritt 1 kann
             $r \leq n$ erreicht werden. Schreibe $y_j = \displaystyle \sum_{i=1}^n a_{ij}
             e_i$. Dann ist $A\defeqr(a_{ij}) \in \mathbb{Z}^{n \times r}$ eine 
@@ -881,10 +921,9 @@ Jede Untergruppe einer freien abelscen Gruppe von endlichem Rang $n$ ist frei mi
             Spaltenumformungen auf Diagonalgestalt: \newline $\widetilde{A} = 
             \begin{pmatrix} a_1 & & 0 \\ &  \ddots \\ 0  & & a_r \end{pmatrix}$
             mit $a_i \in \mathbb{Z}$ und $a_i$ teilt $a_{i+1}\; \forall\;
-            i=1,\dots,r-1 \\$ $\longrightarrow$
-    }
-    \noindent\sbew{\newline
-        \textbf{3. Schritt}:
+            i=1,\dots,r-1$
+
+    \noindent\textbf{3. Schritt}:
             Das geht! Ganzzahliger Gauß-Algorithmus, „Elementarteileralgorithmus“.
             \begin{enum}
                 \item[(i)] Suche den betragsmäßig kleinsten Matrixeintrag $\neq
@@ -903,11 +942,7 @@ Jede Untergruppe einer freien abelscen Gruppe von endlichem Rang $n$ ist frei mi
                 a_{11} \\ 0 \\ \vdots \\ 0 \end{array} \right) \] gemacht,
                 indem man von der $i$-ten Zeile das $\frac{a_{i1}}{a_{11}}$-fache
                 der ersten Zeile abzieht. Gegebenenfalls zurück zu (i).
-            \end{enum}
-    }
-    
-    \sbew{
-        \begin{enum}
+
             \item[(iv)] Genauso wird die erste Zeile zu $(a_{11}, 0, \dots, 0)$
             
             \item[(v)] Gibt es jetzt noch einen Matrixeintrag, der nicht durch 
@@ -924,9 +959,8 @@ Jede Untergruppe einer freien abelscen Gruppe von endlichem Rang $n$ ist frei mi
             \mbox{\LARGE $A'$}\\ 0 \end{pmatrix},\] in der alle Einträge von
             $A'$ durch $a_{11}$ teilbar sind. Wende nun den Algorithmus auf $A'$ an.
         \end{enum}
-    }
 
-    \sbew{
+
         Noch zu zeigen: Die Eindeutigkeit de $a_i$:
 
 	$r$ ist eindeutig, da $r$ der Rang von $H$ ist.
@@ -974,12 +1008,12 @@ Jede endlich erzeugte abelsche Gruppe $A$ ist die direkte Summe von zyklischen G
         $\varphi: \mathbb{Z}^n \to A$ mit $\varphi(e_i) = x_i$, für
         $i=1,\dots,n$.\newline
         Nach Homomorphiesatz (Satz \ref{Satz 1}) ist dann $A \cong \mathbb{Z}^n /
-        $Kern$(f)$. \newline
+        $$\Kern(f)$. \newline
         Nach Satz \ref{Satz 2} gibt es $m \in \mathbb{N}, m \leq
         n$, eine Basis $\{z_1, \dots , z_n\}$ von $\mathbb{Z}^n$ und
         Elementarteiler $a_1, \dots, a_m$ mit $a_i$ teilt $a_{i+1}$ für $i = 1,
-        \dots, m-1$, so dass $\{a_1z_1, \dots, a_mz_m\}$ Basis von Kern$(\varphi)$
-        ist. Dann ist $A \cong \mathbb{Z}^n /$Kern$(\varphi) \cong \left(
+        \dots, m-1$, so dass $\{a_1z_1, \dots, a_mz_m\}$ Basis von $\Kern(\varphi)$
+        ist. Dann ist $A \cong \mathbb{Z}^n /$$\Kern(\varphi) \cong \left(
         \displaystyle \bigoplus_{i=1}^m z_i \mathbb{Z} \right) / \left(
         \displaystyle \bigoplus_{i=1}^m a_iz_i \mathbb{Z} \right) \cong 
         \displaystyle \bigoplus_{i=1}^m \left( z_i \mathbb{Z} / a_i z_i
@@ -1020,7 +1054,7 @@ Jede endlich erzeugte abelsche Gruppe $A$ ist die direkte Summe von zyklischen G
         \item $(\mathbb{Z},+)$ ist frei mit Basis $\{1\}$ oder Basis $\{-1\}$
 
         \item Ist $F$ frei mit Basis $X$ und $|X| \geq 2$, so ist $F$ nicht 
-        abelsch. \newline
+        abelsch. 
         
         \sbew{
             Seien $x_1, x_2 \in X: x_1 \neq x_2 \Ra x_1 x_2 x_1^{-1} x_2^{-1}
@@ -1102,7 +1136,7 @@ Untergruppe $H$ von $G$ mit $S \subseteq H$ ist $G$ selbst). Sei
 $F(S)$ die freie Gruppe mit Basis $S$, $f:S \ra G$ die Identität und
 $\varphi:F(S) \ra G$ der Homomorphismus aus (b). $\varphi$ ist
 surjektiv, weil $\varphi(F(S))$ Untergruppe ist, die $S$ enthält.
-Also ist nach Homomorphiesatz $G \cong F(S)/\mbox{Kern}(\varphi)$
+Also ist nach Homomorphiesatz $G \cong F(S)/\Kern(\varphi)$
 \item[(d)] ''$\Leftarrow$'' Sei $f:X \ra Y$ bijektive Abbildung. Dazu gibt
 es Gruppenhomomorphismus $\varphi_f: F(X) \ra F(Y)$, sowie
 $\varphi_f^{-1} F(Y) \ra F(X)\\$ $\varphi_f \circ
@@ -1237,7 +1271,7 @@ F_X(G) \ra Hom_{Gr}(F(X),G)$
         }
 
         \item Eine Aktion heißt \emp{effektiv} (oder \emp{treu}), wenn 
-        Kern$(\rho) = \{e\}$. \newline Allgemein heißt Kern$(\rho)$ 
+        $\Kern(\rho) = \{e\}$. \newline Allgemein heißt $\Kern(\rho)$ 
         \emp{Ineffektivitätskern} (''Nichtsnutz'') der Aktion.
 \newline\sbsp{0.9}{\begin{enumerate}
 \renewcommand{\labelenumi}{(\theenumi)}
@@ -1249,13 +1283,15 @@ F_X(G) \ra Hom_{Gr}(F(X),G)$
 \item Für $x \in X$ heißt $Gx \defeqr \{ gx : g \in G\}$ die \emp{Bahn}
 von $x$ unter $G$.
 \item $X$ ist disjunkte Vereinigung von $G$-Bahnen.
-\newline\sbew{Ist $y \in Gx$, so ist $Gy = Gx$, denn $y=gx \Ra
+
+\sbew{Ist $y \in Gx$, so ist $Gy = Gx$, denn $y=gx \Ra
 \forall h \in G: hy = hgx \in Gx \Ra g^{-1}y = x,\; hg^{-1}y = hx$}
 \item Für $x \in X$ heißt $G_x \defeqr \{ g \in G : gx = x\}$ die
 \emp{Fixgruppe} von $x$ unter $G$. (oder \emp{Stabilisator,
 Isotropiegruppe)}
 \item Für $x \in X,\; g \in G$ ist $G_{gx} = g G_{x} g^{-1}$
-\newline\sbew{ Für $h \in G$ gilt: $h \in G_{gx} \lra h(gx) = gx \lra
+
+\sbew{ Für $h \in G$ gilt: $h \in G_{gx} \lra h(gx) = gx \lra
 g^{-1} h g x = x \lra g^{-1} h g \in G_x$ }
 \end{enum}
 \end{DefBem}
@@ -1375,12 +1411,14 @@ g^{-1} h g x = x \lra g^{-1} h g \in G_x$ }
 Ist $G$ eine endliche Gruppe und $p$ eine
 Primzahl, die die Gruppenordnung $|G|$ teilt, so enthält $G$ ein Element
 von Ordnung $p$.
-\newline\sbew{Sei $|G| = p^k m$ mit $p \nmid m$, $k\geq 1$.
+
+\sbew{Sei $|G| = p^k m$ mit $p \nmid m$, $k\geq 1$.
 $S \subseteq G$ eine $p$-Sylowgruppe und $x \in S$, $x \neq e$.
 $\overset{\mbox{\scriptsize \ref{1.12}}}{\Ra}$ ord$(x)$ ist Teiler
 von $|S| = p^k \Ra$ ord$(x) = p^d$ für ein $d$, $1 \leq d \leq k$ $\Ra
-x^{p^{d-1}}$ hat dann Ordnung $p$. } \newline
-\newline\bsp{$G=A_5$ hat 60 Elemente, z.B.: $(12345)$, konjugiert dazu
+x^{p^{d-1}}$ hat dann Ordnung $p$. }
+
+\bsp{$G=A_5$ hat 60 Elemente, z.B.: $(12345)$, konjugiert dazu
 $(13245)$ } 
 \end{Folg}
 
@@ -1398,7 +1436,7 @@ Sei $(\ast) \dots \ra G_{i-1}
 \overset{\alpha_{i-1}}{\ra} G_i \overset{\alpha_i}{\ra} \dots$ eine
 Sequenz (Folge) von Gruppen und Gruppenhomomorhpismen.
 \newline $(\ast)$ heißt \emp{exakt} an der Stelle $i$, wenn
-Kern$(\alpha_i) =$ Bild$(\alpha_{i-1})$. \smallskip\newline \bsp{
+$\Kern(\alpha_i) =$ $\Bild(\alpha_{i-1})$. \smallskip\newline \bsp{
 \[0 \ra \mathbb{Z}/2\mathbb{Z} \ra \mathbb{Z}/4\mathbb{Z} \ra
 \mathbb{Z}/2\mathbb{Z} \ra 0\] und \[0 \ra \mathbb{Z}/2\mathbb{Z}
 \ra \mathbb{Z}/2\mathbb{Z} \oplus \mathbb{Z}/2\mathbb{Z} \ra
@@ -1489,7 +1527,7 @@ Transpositionen (mind. 4).
 $\widetilde{\sigma} \in A_n$, $\widetilde{\sigma}(i) = i$ für
 $i=1,\dots,8$ $\alpha = \sigma^{-1}(345)\sigma(354)$ erfüllt
 $\alpha(i)=i$, falls $\sigma(i) = i$, und $\alpha(1) = 1 \Ra
-k_{\alpha} < k_{\sigma} \Ra \blitzc$!  }\newline -}
+k_{\alpha} < k_{\sigma} \Ra \blitzc$!  } }
 \end{Prop}
 
 \begin{Satz}[Jordan-Hölder]
@@ -1623,7 +1661,8 @@ x(-y) = - (xy) = (-x)y \\
 \newline $(-x)(-y) = -((-x)y) = -(-(xy)) = xy$}
 
 \item Ist $R$ ein Ring mit Eins und $R \neq \{0\}$, so ist $0 \neq
-1$ in $R$ \newline \sbew{0.9}{Wäre $0 = 1$, so gälte für jedes $x
+1$ in $R$ 
+\sbew{Wäre $0 = 1$, so gälte für jedes $x
 \in R :x =x\cd 1 = x\cd 0 = 0$, also doch $R = \{0\}$}
 \end{enum}
 \end{DefBem}
@@ -1670,17 +1709,18 @@ Funktor: Ringe mit Eins $\ra$ Gruppen.
 Sei $\varphi: R \ra R'$ Ringhomomorphismus.
 Dann gilt:
 \begin{enum}
-\item Bild ($\varphi$) ist Unterring von $R'$
-\item Kern ($\varphi$) ist Ideal in $R$, Kern($\varphi$) =
+\item $\Bild(\varphi)$ ist Unterring von $R'$
+\item $\Kern(\varphi)$ ist Ideal in $R$, $Kern(\varphi)$ =
 $\varphi^{-1}(0)$ \newline
-\sbew{0.9}{ Sei $x \in$ Kern($\varphi$),
+\sbew{ Sei $x \in$ $\Kern(\varphi)$,
 $r \in R \Ra \varphi(rx) = \varphi(r)\varphi(x) = \varphi(r)0 = 0
-\Ra rx \in$ Kern($\varphi$)}
+\Ra rx \in$ $\Kern(\varphi)$}
 \item Ist $R$ Schiefkörper, $R'$ Ring mit Eins, $\varphi$ Homomorphismus von Ringen mit
 Eins, so ist $\varphi$ injektiv (oder $R' = \{0\}$)
-\newline \sbew{0.9}{Sei $x \in R \setminus \{0\} \Ra \varphi(x)
+
+\sbew{Sei $x \in R \setminus \{0\} \Ra \varphi(x)
 \varphi(x^{^-1}) = \varphi(1) = 1_{R'} \neq 0$, sofern $R' \neq
-\{0\}$ $\Ra \varphi(x) \neq 0 \Ra$ Kern($\varphi$) = $\{0\} \Ra
+\{0\}$ $\Ra \varphi(x) \neq 0 \Ra$ $\Kern(\varphi$) = $\{0\} \Ra
 \varphi$ injektiv.}
 \end{enum}
 \end{Bem}
@@ -1692,12 +1732,12 @@ Sei $R$ Ring mit Eins.
 n \cd 1 = \underset{n}{\underbrace{1+\dots+1}} & n \geq 0 \\
 -n \cd 1 & n \leq 0 \end{array} \right.\] ist Homomorphismus von
 Ringen mit Eins. %\end{enum}
-\item Ist Kern($\varphi_R$)$=n\mathbb{Z}\;(n\geq 0)$, so heißt $n$
+\item Ist $\Kern(\varphi_R$)$=n\mathbb{Z}\;(n\geq 0)$, so heißt $n$
 die \emp{Charakteristik} von $R:\;n =$char($R$)
 \item Ist $R$ nullteilerfrei, so ist char($R$)$= 0$, oder
 char($R$)$=p$ für eine Primzahl $p$.
 \item Ist $K$ (Schief-)Körper der Charakteristik $p>0$, so ist
-Bild($\varphi_K$)$\cong \mathbb{Z}/n\mathbb{Z} = \mathbb{F}_p$ der
+$\Bild(\varphi_K$)$\cong \mathbb{Z}/n\mathbb{Z} = \mathbb{F}_p$ der
 kleinste Teilkörper von $K$. Er heißt \emp{Primkörper}. Ist
 char($K$)$=0$, so ist der kleinste Teilkörper von $K$ isomorph zu
 $\mathbb{Q}$
@@ -1742,7 +1782,8 @@ auch Hauptidealringe.}
 \item Sei $R$ kommutativer Ring mit Eins, $R \neq \{0\}$. Dann gilt:
 \newline $R$ ist Körper $\lra (0)$ und $R$ sind die einzigen Ideale
 in $R$
-\newline\sbew{0.9}{''$\Ra$'' Sei $ I \subset R$ Ideal, $a \in I
+
+\sbew{''$\Ra$'' Sei $ I \subset R$ Ideal, $a \in I
 \setminus \{0\} \Ra$ es gibt $a^{-1} \in R \Ra 1 = a a^{-1} \in I
 \Ra I = R\;(x \in R \Ra x = 1x)$
 \newline ''$\Leftarrow$'' Sei $a \in R \setminus\{0\} \Ra (a) = R \Ra
@@ -1820,7 +1861,8 @@ $\ds \varphi_y(a_0,a_1,\dots) = \varphi_y(\sum_{i=0}^n a_i X^i) = \sum_{i=0}^n
 \begin{Folg}
 Die Zuordnung $R \mapsto R[X]$ ist ein
 kovarianter Funktor: Ringe mit Eins $\ra$ Ringe mit Eins.
-\newline \sbew{1.0}{Ist $\alpha: R \ra R'$ Ringhomomorphismus,
+
+\sbew{Ist $\alpha: R \ra R'$ Ringhomomorphismus,
 so sei $\Psi: R[X] \ra R'[X]$ der Homomorphismus, der durch
 $\alpha:R \ra R' \underset{2.8(c)}{\hookrightarrow} R'[X]$ und $X
 \mapsto X$ bestimmt ist.}
@@ -1861,7 +1903,7 @@ R[X_1,\dots,X_n]$
 \item $(H,\cd) \mapsto (R[H],\cd), h \mapsto 1_R h$ ist injektiver
 Halbgruppenhomomorphismus.
 \item Ist $(H,\cd)$ Monoid, so ist $R \ra R[H], \; r\mapsto r\cd
-1_H$ injektiver Ringhomomorphismus. \end{enum} \sbew{1.0}{-}
+1_H$ injektiver Ringhomomorphismus. \end{enum} \sbew{-}
 \end{DefBem}
 
 \begin{Satz}[Universelle Abbildungseigenschaft des Monoidrings]
@@ -1870,7 +1912,8 @@ Homomorphismus $\varphi: R \ra R'$ von Ringen mit Eins und jedem
 Monoidhomomorphismus $\sigma: H\ra (R',\cd)$ genau einen
 Ringhomomorphismus $\Phi: R[H] \ra R'$ mit $\Phi_{|R} = \varphi$ und
 $\Phi_{|H} = \sigma$. Dabei werden $R$ und $H$ wie in \ref{2.13} in
-$R[H]$ eingebettet. \newline \sbew{1.0}{Es muß gelten: $\Phi(\sum_h
+$R[H]$ eingebettet. 
+\sbew{Es muß gelten: $\Phi(\sum_h
 a_h h) = \sum_h \varphi(a_h) \sigma(h)$. Dies zeigt die
 Eindeutigkeit, taugt aber auch als Definition von $\Phi$, was die
 Existenz zeigt.}
@@ -1900,7 +1943,7 @@ gilt: $R\llbracket X\rrbracket^x = \{ f = \sum_{i=0}^\infty a_i x^i
 X\rrbracket \setminus K\llbracket X\rrbracket^x = \{ \sum a_i x^i :
 a_0 = 0\}$ Ideal in $K\llbracket X\rrbracket$
 
-\sbew{0.9}{(a), (b), (d) $\chk$\begin{enumerate}
+\sbew{(a), (b), (d) $\chk$\begin{enumerate}
 \item[(c)] ''$\subseteq$'': Sei $f = \sum a_i x^i \in R\llbracket
 X\rrbracket^x$. Dann gibt es $g = \sum b_i x^i \in R\llbracket
 X\rrbracket$ mit $1=fg = a_0 b_0 + (a_1 b_0 + a_0 b_1)x + \dots \Ra
@@ -1923,11 +1966,11 @@ kommutativer Ring mit Eins. $R/I$ heißt \emp{Faktorring} oder
 \emp{Quotientenring} von $R$ und $I$
 
 \item Die Restklassenabbildung $\pi: R \ra R/I, \; x \mapsto
-\bar x$ ist surjektiver Ringhomomorhpismus mit Kern($\pi$)$=I$.
+\bar x$ ist surjektiver Ringhomomorhpismus mit $\Kern(\pi$)$=I$.
 
 \item (UAE des Faktorrings:) Sei $\varphi: R \ra R'$ ein
 Ringhomomorphismus. Dann gibt es zu jedem Ideal $I \subseteq R$ mit
-$I \subseteq$ Kern($f$) einen eindeutig bestimmten
+$I \subseteq$ $\Kern(f$) einen eindeutig bestimmten
 Ringhomomorphismus $\bar \varphi: R/I \ra R'$ mit $\varphi = \bar
 \varphi \circ \pi$
 
@@ -1942,7 +1985,7 @@ Ringhomomorphismus $\bar \varphi: R/I \ra R'$ mit $\varphi = \bar
 
 \item (Homomorhpiesatz für Ringe:) Ist $\varphi: R \ra R'$
 surjektiver Ringhomomorhpismus, dann ist $R' \cong
-R/$Kern($\varphi$).
+R/$$\Kern(\varphi$).
 \end{enum}
 \bew{}{\item \emp{Wohldef. des Produkts:} Seien $x', y' \in R$ mit
 $\overline{x'} = \overline x, \; \overline{y'} = \overline{y}$. Dann gibt es $a,b \in I$
@@ -1951,7 +1994,7 @@ I}{\underbrace{ay + bx + ab}} \Ra \bar{x'} \bar{y'} = \bar x
 \bar y$. \newline Die restlichen Eigenschaften vererben sich dann
 von $R$.
 \item $\pi$ ist surjektiver Gruppenhomomorphismus mit
-Kern($\varphi$)$=I$ nach Satz \ref{Satz 1}(a). $\pi(xy) = \pi(x) \cd \pi(y)$
+$\Kern(\varphi$)$=I$ nach Satz \ref{Satz 1}(a). $\pi(xy) = \pi(x) \cd \pi(y)$
 nach Definition der Verknüpfung.
 \item Nach Satz \ref{Satz 1}(b) gibt es einen eindeutig bestimmten
 Gruppenhomomorphismus $\bar \varphi: R/I \ra R'$ mit $\varphi = \bar
@@ -2012,7 +2055,8 @@ $C$ ist Ring mit komponentenweiser $+$ und $\cd$ (vornehm: $C
 > n$)\newline
  $N$ ist Ideal in $C:\chk$ \newline
 \textbf{Beh.}: $C/N$ ist Körper (bzw. $N$ ist maximal)
-\newline \sbew{0.9}{Sei $a = (a_n)_{n \in \mathbb{N}} \in C
+
+\sbew{Sei $a = (a_n)_{n \in \mathbb{N}} \in C
 \setminus N$. zu zeigen: $1 \in N + (a) = \langle N \cup
 \{a\}\rangle$. \newline $(a_n) \not \in N \Ra a_n = 0$ nur für
 endlich viele $n$, dh. $a_i\neq 0$ für $i > n_0$. \[b_n \defeqr \left\{
@@ -2040,7 +2084,7 @@ Dann gilt:
 x &\mapsto& (p_1(x),\dots,p_n(x)) \end{array}$ ist surjektiv.
 
 \item $R/I_1 \times \dots \times R/I_n \cong R/\bigcap_{\nu=1}^n
-I_\nu$ (klar nach Homomorphiesatz: Kern($\varphi$)$= \bigcap_{\nu =
+I_\nu$ (klar nach Homomorphiesatz: $\Kern(\varphi$)$= \bigcap_{\nu =
 1}^n I_\nu$
 \item (Simultane Kongruenzen:) \newline Für paarweise teilerfremde ganze
 Zahlen $m_1,\dots,m_n$ und beliebige $r_1,$ $\dots,r_n \in
@@ -2049,7 +2093,7 @@ m_\nu$ für $\nu = 1,\dots,n$ (Spezialfall von (a) für
 $R=\mathbb{Z}$) \end{enum} \noindent \bew{}{\item Es genügt z.z.:
 $\begin{array}{lcl}(0,\dots,0,&\underbrace{1},&0,\dots,0) \\ &
 \nu\mbox{-te Stelle} &
-\end{array} \in$ Bild($\varphi$) für jedes $\nu$, dh. es gibt $e_\nu
+\end{array} \in$ $\Bild(\varphi$) für jedes $\nu$, dh. es gibt $e_\nu
 \in R\; (\nu=1,\dots,n)$ mit $e_\nu \in I_\mu$ für $\nu \neq \mu$ und
 $1-e_\nu \defeql a_\nu \in I_\nu$ (denn für $x = (\bar
 x_1,\dots, \bar x_n) \in R/I_1 \times \dots \times R/I_n$ sei $e
@@ -2084,7 +2128,7 @@ $b$,(Schreibweise ggT($a$,$b$)) wenn gilt:
 \item Ist $d \in R$ ein ggT von $a$ und $b$ und $e \in R^x$, so ist
 auch $e \cd d$ ein ggT. Ist $R$ nullteilerfrei und
 sind $d,d'$ beide ggT von $a$ und $b$, so gibt es $e \in R^x$ mit
-$d' = ed$. \sbew{0.9}{Nach Definition gibt es $x,y \in R$ mit $d' = xd$ und
+$d' = ed$. \sbew{Nach Definition gibt es $x,y \in R$ mit $d' = xd$ und
 $d=yd' \Ra d' = xy d' \Ra d'(1-xy) = 0 \underset{\substack{d'\neq
 0\\R \mbox{ \scriptsize nullteilerfrei}}}{\Longrightarrow} 1 = xy
 \lra x,y \in R^x$}{\item[]}
@@ -2109,7 +2153,8 @@ R$ mit $f = qg + r$ mit $r=0$ oder $\delta(r) < \delta(q)$.
 \end{enum}
 \sbsp{1.0}{$\mathbb{Z}$ mit $\delta(a) = |a|, K[X]$ mit $\delta(f)
 =$ Grad($f$)}
-\newline \bew{}{\item[(b)] \OE sei $\delta(a) \geq
+
+\bew{}{\item[(b)] \OE sei $\delta(a) \geq
 \delta(b)$. Nach Voraussetzung gibt es $q_1,r_1 \in R$ mit $a = q_1
 b + r_1$, $\delta(r_1) < \delta(b)$ oder $r_1 = 0$.
 \newline Ist $r_1 = 0$, so ist $a \in (b) = (a,b)$ und
@@ -2157,7 +2202,8 @@ y_2$ folgt $x \mid y_1$ oder $x \mid y_2$.
 dann irreduzibel (bzw. prim), wenn $y$ irreduzibel(prim) ist.
 
 \item Ist $R$ nullteilerfrei, so ist jedes Primelement irreduzibel.
-\newline\sbew{0.9}{Sei $(x)$ Primideal und $x=y_1 y_2,\; y_1,y_2 \in R
+
+\sbew{Sei $(x)$ Primideal und $x=y_1 y_2,\; y_1,y_2 \in R
 \Ra$ \OE: $y_1 \in (x)$, dh. $y_1 = xa$ für ein $a \in R$ (R
 nullteilerfrei, $x \neq 0$) $\Ra x = xay_2 \Ra x(1-ay_2) = 0 \underset{\mbox{\scriptsize $x\neq 0$}}{\Ra}
 ay_2 = 1 \Ra
@@ -2204,7 +2250,7 @@ R^x$ und für jedes $p \in \mathcal{P}$ ein $\ds\nu_p(x) \geq
 0:x=e\prod_{p \in \mathcal{P}} p^{\nu_p}$. (beachte $\nu_p \neq 0$
 nur für endlich viele $p$).
 \end{enum}
-\sbew{1.0}{\begin{description}\item[(i) $\Ra$ (ii)] $\chk$
+\sbew{\begin{description}\item[(i) $\Ra$ (ii)] $\chk$
 \item[(ii) $\Ra$ (iii)] Sei $x \neq 0, x = ep_1\cd \dots \cd
 p_r,\; p_i \in \mathcal{P},\; e \in R^x$. \newline Sei weiter $x = q_1 \cd \dots
 \cd q_s$ mit irreduziblem Element $q_j$. \newline Es ist $x \in
@@ -2228,7 +2274,8 @@ Einheiten)\end{description}}
 \begin{Bem}
 Ist $R$ faktorieller Ring, so gibt es zu
 allen $a,b \in R\setminus\{0\}$ einen ggT($a$,$b$).
-\newline\sbew{1.0}{Sei $\mathcal{P}$ wie in \ref{2.21} Vertretersystem der
+
+\sbew{Sei $\mathcal{P}$ wie in \ref{2.21} Vertretersystem der
 Primelemente. \[a = e_1 \prod_{p \in \mathcal{P}} p^{\nu_p(a)}, \; b
 = e_2 \prod_{p \in \mathcal{P}} p^{\nu_p(b)} \Longrightarrow d
 \defeqr \prod_{p \in \mathcal{P}} p^{\nu_p(d)}\] mit $\nu_p(d) =
@@ -2282,7 +2329,9 @@ Eins, $S \subseteq (R,\cd)$ ein Untermonoid.
 Brüche} von $R$ mit Nennern in $S$. (oder \emp{Lokalisierung} von
 $R$ nach $S$) Schreibweise: $\frac{a}{s}$ sei eine Äquivalenzklasse
 von $(a,s)$
-\newline \sbew{0.9}{z.z.: $\sim$ ist Äquivalenzrelation:
+
+\sbew{
+z.z.: $\sim$ ist Äquivalenzrelation:
 \newline reflexiv $\chk$
 \newline symmetrisch $\chk$
 \newline transitiv: $\left. \begin{array}{lcc}
@@ -2302,8 +2351,8 @@ a_1 s_3 s_2) \overset{(2)}{=} t(t' a_2 s_3 s_1 - t' a_1 s_3 s_2) =
 \item Mit $\frac{a_1}{s_1} \cd \frac{a_2}{s_2} = \frac{a_1 a_2}{s_1
 s_2}$ und $\frac{a_1}{s_1} + \frac{a_2}{s_2} = \frac{a_1 s_2 + a_2
 s_1}{s_1 s_2}$ ist $R_S$ ein kommutativer Ring mit Eins.
-\newline \sbew{0.9}{
-\newline $\mathbf{\cd}$ \textbf{wohldefiniert}: Sei $\frac{a_1'}{s_1'} =
+
+\sbew{$\mathbf{\cd}$ \textbf{wohldefiniert}: Sei $\frac{a_1'}{s_1'} =
 \frac{a_1}{s_1} \Ra \exists t \in S: t(a_1' s_1 - a_1 s_1') = 0
 (\ast) \Ra t(a_1' a_2 s_1 s_2 - a_1 a_2 s_2 s_1')
 \overset{(\ast)}{=} (ta_1 s_1' a_2 s_2 - t a_1 a_2 s_2 s_1') = 0$
@@ -2362,18 +2411,20 @@ Ringhomomorhpismus
 
 \item $i_S$ ist injektiv, falls $S$ keinen Nullteiler von $R$
 enthält. ($0 \not \in S$)
-\newline \sbew{0.9}{$\frac{a}{1} = 0 = \frac{0}{1}$ in $R_S \Ra
+
+\sbew{$\frac{a}{1} = 0 = \frac{0}{1}$ in $R_S \Ra
 \exists s \in S$ mit $s(a 1 - 0 1) = 0$}
 
 \item $i_S(S) \subset (R_S)^x$
-\newline
-\sbew{0.9}{$(\frac{s}{1})^{-1} = \frac{1}{s}$}
+
+\sbew{$(\frac{s}{1})^{-1} = \frac{1}{s}$}
 
 \item (UAE) Zu jedem Homomorhpismus $\varphi: R \ra R'$ von Ringen
 mit Eins mit $\varphi(S) \subset (R')^x$ gibt es genau einen
 Homomorphismus $\widetilde{\varphi}:R_S \ra R'$ mit $\varphi =
 \widetilde{\varphi} \circ i_S$
-\newline \sbew{0.9}{$\widetilde{\varphi}(\frac{a}{s}) = \widetilde{\varphi}(a
+
+\sbew{$\widetilde{\varphi}(\frac{a}{s}) = \widetilde{\varphi}(a
 \frac{1}{s}) = \widetilde{\varphi}(\frac{a}{1} (\frac{s}{1})^{-1}) =
 \varphi(a) \varphi(s)^{-1}$}
 
@@ -2406,7 +2457,8 @@ X^i$ und $p \in \mathcal{P}$ sei $\nu_p(f) \defeqr
 Sei $R$ faktoriell: $\ds f = \sum_{i=0}^n a_i X^i \in R[X]$
 primitiv mit $a_n \neq 0$, weiter sei $p \in \mathcal{P}$ $p \nmid a_n,\;p \mid a_i$ für $i=0,\dots,n-1$, $p^2 \nmid a_0$. Dann ist $f$
 irreduzibel.
-\newline \sbew{1.0}{Sei $f = gh$ mit $\ds g=\sum_{i=0}^r b_i X^i$, $\ds h =
+
+\sbew{Sei $f = gh$ mit $\ds g=\sum_{i=0}^r b_i X^i$, $\ds h =
 \sum_{i=0}^s c_i X^i$ $b_r \neq 0 \neq c_s \Ra n=r+s,\;a_n = b_r
 c_s$, $a_0 = b_0 c_0 \Ra p \nmid b_r$, $p \nmid c_s$ und (\OE) $p
 \mid b_0$, $p \nmid c_0$.
@@ -2442,15 +2494,18 @@ Primelement, $\bar R = R/(p)$
 a_i X^i, a_n \neq 0$) Ist $\bar f \in \bar R[X]$ irreduzibel, so ist
 $f$ irreduzibel in $R[X]$.
 \end{enum}
-\bew{}{\item $R \ra \bar R$ induziert surjektiven Homomorphismus $\varphi: R[X]
-\ra \bar R[X]$, Kern($\varphi$)$= \{f \in \sum_{i=0}^n a_i X^i,\; p
+\bew{}{
+\item $R \ra \bar R$ induziert surjektiven Homomorphismus $\varphi: R[X]
+\ra \bar R[X]$, $\Kern(\varphi$)$= \{f \in \sum_{i=0}^n a_i X^i,\; p
 \mid a,\;$ für $i=0,\dots,n\} = p R[X]$ Mit dem Homomorhpiesatz folgt
 die Behauptung.
 \item Sei $f = gh \Ra \bar f = \bar g \bar h$ (Schreibe $h =
 \sum_{i=0}^s c_i X^i$). Also ist \OE $\bar h \in (\bar R[X])^x =
 \bar{R}^x \Ra p \mid c_i$ für $i=1,\dots,s$. Wäre $s \geq 1$, so wäre
-$c_s$ durch $p$ teilbar, also auch $b_r c_s = a_n \blitza$}
-\newline \sbsp{1.0}{$f = X^2 - 5 \in \mathbb{Z}[X]$ und
+$c_s$ durch $p$ teilbar, also auch $b_r c_s = a_n \blitza$
+}
+
+\sbsp{1.0}{$f = X^2 - 5 \in \mathbb{Z}[X]$ und
 $\begin{array}{ll} p = 2 & \bar f = X^2 -1 = (X-1)^2\\
                    p = 5 & \bar f = X^2 \\
                    p = 3 & \bar f = X^2 + 1 \in \mathbb{F}_3[X]
@@ -2459,7 +2514,8 @@ $\begin{array}{ll} p = 2 & \bar f = X^2 -1 = (X-1)^2\\
 
 \begin{Satz}[Gauß]
 Ist $R$ faktorieller Ring, so ist $R[X]$ faktoriell.
-\newline \sbew{1.0}{Sei $K \defeqr$ Quot($R$). Dann ist $K[X]$ faktoriell,
+
+\sbew{Sei $K \defeqr$ Quot($R$). Dann ist $K[X]$ faktoriell,
 $R[X] \subseteq K[X]$ Unterring.
 \newline Sei $0 \neq f \in R[X]$ läßt sich als Produkt von
 Primelementen in $K[X]$ schreiben. Zu zeigen also: die Faktoren
@@ -2481,7 +2537,8 @@ Für $\ds f = \sum_{i=0}^n a_i X^i$ ist $\ds \nu_p(f) = \min_{i=0}^n
 Für $\ds x = \frac{a}{b} \in K$ sei $\ds \nu_p(x) = \nu_p(a) -
 \nu_p(b) \in \mathbb{Z}$ (wohldefiniert!).
 
-\bew{}{\item[(1)] Grad($f$)$= 0$, dh. $f = a_0 \in K$, $\ds g\in
+\bew{}{
+\item[(1)] Grad($f$)$= 0$, dh. $f = a_0 \in K$, $\ds g\in
 \sum_{i=0}^n b_i X^i \Ra fg = \sum_{i=0}^n a_0 b_i X^i$
 
 $\ds \nu_p(fg) = \min_{i=0}^n \nu_p(a_0 b_i) = \min_{i=0}^n
@@ -2495,9 +2552,8 @@ R[X]$ ist primitiv. \newline Seien also $af$ und $bf$ primitiv ($a,b
 \in K \setminus \{0\}$ geeignet). \newline Es gelte nun: (nach
 Schritt (1)) \[\nu_p(af \cd bg) = \nu_p(af) + \nu_p(bg)\] Dann gibt
 es \[\nu_p(ab) + \nu_p(fg)\qquad\; \nu_p(a) + \nu_p(f) + \nu_p(b) +
-\nu_p(g)\] Also folgt $\nu_p(fg) = \nu_p(f) + \nu(g)$. }
+\nu_p(g)\] Also folgt $\nu_p(fg) = \nu_p(f) + \nu(g)$. 
 
-\bew{}{
 \item[(3)] Für primitive $f,g \in R[X]$ gilt $\nu_p(fg) = \nu_p(f) +
 \nu_p(g)$. \newline Sei $p \in \mathcal{P}, \bar R = R/(p) \Ra \bar
 f \neq 0 \neq \bar g$ in $\bar R[X] \Ra \bar f \bar g \neq 0$, da
@@ -2507,7 +2563,8 @@ $f,g$ primitiv $\Ra \nu_p(f) = \nu_p(g) = 0 \Ra \nu_p(fg) = 0$ Sei
 $\widetilde{\mathcal{P}}$ Vertretersystem der Primelemente in
 $K[X]$. Alle $f_i \in\widetilde{\mathcal{P}}$ seien in $R[X]$ und
 primitiv.
-\newline Sei nun $f \in R[X], f \neq 0$ Schreibe $f = c
+
+Sei nun $f \in R[X], f \neq 0$ Schreibe $f = c
 f_1 \cd \dots \cd f_n,\;f_i \in \widetilde{\mathcal{P}}$ (mit $c \in
 K^x$) \textbf{Beob.}: $c \in R$, denn: für $p \in \mathcal{P}$ ist
 \[0 \leq \nu_p(f) = \nu_p(c) + \sum_{p=1}^n \nu_p(f_i) = \nu_p(c)
@@ -2517,7 +2574,8 @@ und $p_i \in \mathcal{P}$. \newline Noch zu zeigen:
 \item[(i)] $p_i \in R[X]$ ist prim
 \item[(ii)] $f_i$ ist prim in $R[X]$
 \end{enumerate}
-\sbew{0.9}{\begin{enumerate}
+
+\begin{enumerate}
 \item[(i)] Zeige: $R[X]/(p_i)$ ist nullteilerfrei
 \newline$R[X]/p_i R[X] \cong
 \underset{\mbox{nullteilerfrei, da} p_i \mbox{ prim}}{\underbrace{
@@ -2528,7 +2586,7 @@ liegen, dh. $g = f_i \widetilde{g}$ für ein $\widetilde{g} \in
 K[X]$.\newline Für jedes $p \in \mathcal{P}$ ist dann \[0 \leq
 \nu_p(g) = \underset{=0}{\underbrace{\nu_p(f_i)}} +
 \nu_p(\widetilde{g}) \Ra \widetilde{g} \in R[X]\] $\Ra f_i$ prim in
-$R[X]$ \end{enumerate}}.}
+$R[X]$ \end{enumerate}.}
 \end{Bem}
 
 \section{Moduln}
@@ -2588,8 +2646,8 @@ Sei $M$ ein $R$-Modul.
 $\mathbf{R}$\emp{-Untermodul} von $M$, wenn $R\cd U \subseteq U$
 ist, dh. wenn $U$ selbst $R$-Modul ist.
 
-\item Ist $\varphi:M \ra M'$ $R$-linear, so sind Kern($\varphi$) und
-Bild($\varphi$) Untermoduln von $M$ bzw. $M'$ (denn $\varphi(x) = 0
+\item Ist $\varphi:M \ra M'$ $R$-linear, so sind $\Kern(\varphi$) und
+$\Bild(\varphi$) Untermoduln von $M$ bzw. $M'$ (denn $\varphi(x) = 0
 \Ra \varphi(ax)=0 \forall \dots$ und $a\varphi(x) = \varphi(ax)
 \forall \dots$)
 
@@ -2690,44 +2748,44 @@ Sei $L/K$ Körpererweiterung,
 $\alpha \in L$, $\\\varphi_\alpha: K[X] \ra L,\;f\mapsto f(\alpha)$
 Einsetzunghomomorphismus.
 \begin{enum}
-\item Kern$(\varphi_\alpha)$ ist Primideal in $K[X]$
-\newline
-\sbew{0.9}{Kern$(\varphi_\alpha)$ ist Ideal, da $\varphi_\alpha$
+\item $\Kern(\varphi_\alpha)$ ist Primideal in $K[X]$
+
+\sbew{$\Kern(\varphi_\alpha)$ ist Ideal, da $\varphi_\alpha$
 Homomorphismus ist. Seien nun $f,g \in K[X]$ mit $f g \in$
-Kern$(\varphi_\alpha) \Ra
+$\Kern(\varphi_\alpha) \Ra
 (fg)(\alpha) = f(\alpha)g(\alpha) = 0 \overset{L \scriptsize\mbox{ Körper}}{\Ra} f(\alpha)
 = 0$ oder $g(\alpha) =0$}
 
-\item $\alpha$ algebraisch $\lra$ Kern$(\varphi_\alpha) \neq \{0\}$
+\item $\alpha$ algebraisch $\lra$ $\Kern(\varphi_\alpha) \neq \{0\}$
 
 \item Ist $\alpha$ algebraisch über $K$, so gibt es ein eindeutig
 bestimmtes, irreduzibles und normiertes Polynom $f_\alpha \in K[X]$
-mit $f_\alpha(\alpha) = 0$ und Kern$(\varphi_\alpha) = (f_\alpha)$.
+mit $f_\alpha(\alpha) = 0$ und $\Kern(\varphi_\alpha) = (f_\alpha)$.
 \newline $f_\alpha$ heißt \emp{Minimalpolynom} von $\alpha$.
-\newline
-\sbew{0.9}{$K[X]$ ist Hauptidealring $\Ra \exists
-\widetilde{f_\alpha}$ mit Kern$(\varphi_\alpha) =
+
+\sbew{$K[X]$ ist Hauptidealring $\Ra \exists
+\widetilde{f_\alpha}$ mit $\Kern(\varphi_\alpha) =
 (\widetilde{f_\alpha})$. Wegen (a) ist $\widetilde{f_\alpha}$
 irreduzibel, eindeutig bis auf Einheit in $K[X]$, also ein Element
 aus $K^x \Ra \exists! \lambda \in K^x$, so daß $\lambda
 \widetilde{f_\alpha} = f_\alpha$ normiert ist.}
 
-\item $K[\alpha] \defeqr$ Bild$(\varphi_\alpha) = \{f(\alpha):\;f
+\item $K[\alpha] \defeqr$ $\Bild(\varphi_\alpha) = \{f(\alpha):\;f
 \in K[X]\} \subset L$ ist der kleinste Unterring von $L$, der $K$
 und $\alpha$ enthält.
 
 \item $\alpha$ ist transzendent $\lra$ $K[\alpha] \cong K[X]$
-\newline
-\sbew{0.9}{
-    $\alpha$ ist transzendent $\Ra$ Kern$(\varphi_\alpha) = \{ 0 \} \Ra \varphi_\alpha$
+
+\sbew{
+    $\alpha$ ist transzendent $\Ra$ $\Kern(\varphi_\alpha) = \{ 0 \} \Ra \varphi_\alpha$
     injektiv }
 
 \item Ist $\alpha$ algebraisch über $K$, so ist $K[\alpha]$ ein
 Körper und $[K[\alpha]:K] =$ deg$(f_\alpha)$
 
-\sbew{0.9}{Nach Homomorphiesatz ist $K[\alpha] \cong
-K[X]/$Kern$(\varphi_\alpha)$.
-\newline Kern$(\varphi_\alpha)$ ist maximales Ideal, da Primideal
+\sbew{Nach Homomorphiesatz ist $K[\alpha] \cong
+K[X]/$$\Kern(\varphi_\alpha)$.
+\newline $\Kern(\varphi_\alpha)$ ist maximales Ideal, da Primideal
 $\neq (0)$ in $K[X]$ (siehe Bew. Satz \ref{Satz 9}, Beh.2) $\Ra K[\alpha]$ ist
 Körper.
 \newline $f_\alpha(\alpha) = 0$, also $\alpha^n + c_{n-1} \alpha^{n-1} + \dots
@@ -2768,7 +2826,7 @@ Für eine Körpererweiterung $L/K$ sind
 Elementen erzeugt.
 \end{enumerate}
 
-\sbew{1.0}{
+\sbew{
 \begin{description}
 \item[(i) $\Ra$ (ii)] Sei $[L:K] = n$, $\alpha \in L \Ra 1, \alpha,
 \alpha^2, \dots, \alpha^n$ sind $K$-linear abhängig $\Ra \exists c_i
@@ -2787,7 +2845,7 @@ Seien $K\subset L \subset M$ Körper.
 \begin{enum}
 \item Sind $M/L$ und $L/K$ algebraisch, so auch $M/K$
 \newline
-\sbew{0.9}{ Sei $\alpha \in M$, $f_\alpha = \displaystyle \sum_{i=0}^n c_i X^i
+\sbew{ Sei $\alpha \in M$, $f_\alpha = \displaystyle \sum_{i=0}^n c_i X^i
 \in L[X]$ mit $f_\alpha(\alpha) = 0$. Dann ist $\alpha$ algebraisch über
 $K(c_0,\dots,c_n) \defeql L' \subset L, L'$ ist endlich erzeugt über 
 $K \overset{\ref{3.4}}{\Ra} L'/K$ endlich.
@@ -2797,7 +2855,7 @@ endlich $\Ra \alpha$ algebraisch über $K$.}
 \item Sind $M/L$ und $L/K$ endlich, so auch $M/K$ und es gilt $[M:K]
 = [M:L]\cd[L:K]$
 
-\sbew{0.9}{Sei $b_1,\dots,b_m$ $K$-Basis von $L$ und
+\sbew{Sei $b_1,\dots,b_m$ $K$-Basis von $L$ und
 $e_1,\dots,e_n$ $L$-Basis von $M \Ra B = \{e_i
 b_j:\;i=1,\dots,n;j=1,\dots,m\}$ ist $K$-Basis von $M$.
 \newline \textbf{denn}: $B$ erzeugt $M$: Sei $\alpha \in M$, $\ds
@@ -2810,7 +2868,7 @@ Ist $\sum \mu_{ij} e_i b_j = 0$, so ist für jedes feste $i$ :
 $\displaystyle \sum_{j=1}^n \mu_{ij} b_j = 0$, da $e_i$ über $L$ linear unabhängig
 sind. Da die $b_j$ linear unabhängig sind, sind die $\mu_{ij} = 0$
 \newline \textbf{Notation}: $L/K$ Körpererweiterung, $\alpha \in L$,
-$K[\alpha] = $ Bild$(\varphi_\alpha) = \dots\\$ $K(\alpha)=$
+$K[\alpha] = $ $\Bild(\varphi_\alpha) = \dots\\$ $K(\alpha)=$
 Quot$(K[\alpha]) = K[\alpha]$, falls $\alpha$ algebraisch.}
 \end{enum}
 
@@ -2841,14 +2899,14 @@ Sei $K$ Körper, $f\in K[X]$
 \item Es gibt eine endliche Körpererweiterung $L/K$, so daß $f$ in
 $L$ eine Nullstelle hat.
 \newline
-\sbew{0.9}{\OE $f$ irreduzibel. Setze $L \defeqr K[X]/(f)$. $L$ ist
+\sbew{\OE $f$ irreduzibel. Setze $L \defeqr K[X]/(f)$. $L$ ist
 Körper, da $(f)$ maximales Ideal ist. $\alpha = \bar X$ = Klasse von $X$ in
 $L$ ist Nullstelle von $f$.
 }
 \item Es gibt eine endliche Körpererweiterung $L/K$, so daß $f$
 über $L$ in Linearfaktoren zerfällt.
 \newline
-\sbew{0.9}{Induktion über $n =$ deg$(f)$:
+\sbew{Induktion über $n =$ deg$(f)$:
 \begin{description}
 \item[$n=1$] $\chk$
 \item[$n\geq 1$] $L_1$ wie in $(a)$. Dann ist $f(X) = (X - \alpha)
@@ -2865,7 +2923,7 @@ $f$ erzeugt wird.
 \item Ist $f$ irreduzibel und $n =$ deg$(f)$, so ist $[Z(f) : K]
 \leq n!$
 \newline
-\sbew{0.9}{
+\sbew{
 In (a) ist $[L:K] = n =$ deg$(f)$ und $f = (X-\alpha) \cd f_1$
 mit deg$(f_1) = n-1$. Mit Induktion folgt die Behauptung. }
 \end{enum}
@@ -2910,7 +2968,7 @@ Körpererweiterung.
 \end{enumerate}
 \end{enum}
 
-\sbew{1.0}{
+\sbew{
 \begin{description}
 \item[(i)$\Ra$(iii)] Angenommen $L/K$ algebraisch, $\alpha \in L
 \setminus K$. Dann sei $f_\alpha \in K[X]$ das Minimalpolynom
@@ -2926,7 +2984,7 @@ Zu jedem Körper $K$ gibt es eine algebraische Körpererweiterung
 $\bar K/K$, so daß $\bar K$ algebraisch abgeschlossen ist. $\bar K$
 heißt \emp{algebraischer Abschluß} von $K$.
 
-\sbew{1.0}{
+\sbew{
 
 \textbf{Hauptschritt}: Es gibt algebraische Körpererweiterung
 $K'/K$, so daß jedes nichtkonstante $f\in K[X]$ in $K'$ eine
@@ -2961,7 +3019,7 @@ ist algebraisch,
 \mathcal{X}$ und $f(X_f) = 0$ in $K'$, weil $f(X_f) \in I \subset
 \mathfrak{m}$. $f$ hat in $K'$ die Nullstellen (Klasse von) $X_f$. }
 
-\sbew{1.0}{noch zu zeigen:
+\sbew{noch zu zeigen:
 \begin{enumerate}
 \item[(1)] $I \neq R$
 \item[(2)] Es gibt maximales Ideal $\mathfrak{m}$ mit $I \subset
@@ -3043,7 +3101,7 @@ $\wt{\sigma}: \underset{=L}{K[X]}/(f) \ra K'$ }
 Sei $f \in K[X] \setminus K$. Dann ist der
 Zerfällungskörper $Z(f)$ bis auf Isomorphie eindeutig.
 
-\sbew{1.0}{Seien $L,L'$ Zerfällungskörper, $L =
+\sbew{Seien $L,L'$ Zerfällungskörper, $L =
 K(\alpha_1,\dots,\alpha_n)$, $\alpha_i$ die Nullstelle von $f$. Sei
 weiter $\beta_1 \in L'$ Nullstelle von $f$. Nach \ref{3.8} gibt es
 $\sigma: K(\alpha_1) \ra L'$ mit $\sigma_{|K} = $id$_K$ und
@@ -3063,7 +3121,7 @@ $\bar K$ ein algebraisch abgeschlossener Körper. $\sigma: K \ra \bar
 K$ ein Homomorphismus. Dann gibt es eine Fortsetzung $\wt{\sigma}: L
 \ra \bar K$.
 
-\sbew{1.0}{ Ist $L/K$ endlich, so folgt die Aussage aus \ref{3.8}.
+\sbew{ Ist $L/K$ endlich, so folgt die Aussage aus \ref{3.8}.
 Für den allgemeinen Fall sei $\mathcal{M} \defeqr \{(L', \tau):
 L'/K$ Körpererw., $L' \subseteq L, \tau:L'\ra \bar K$ Fortsetzung
 von $\sigma\}$, $\mathcal{M}\neq \emptyset: (K,\sigma) \in \mathcal{M}$
@@ -3095,7 +3153,7 @@ $\Ra (\wt{L}(\alpha), \sigma') \in \mathcal{M}$ und $(\wt{L},
 Für jeden Körper $K$ ist der algebraische
 Abschluß $\bar K$ bis auf Isomorphie eindeutig bestimmt.
 
-\sbew{1.0}{ Seien $\displaystyle \underset{\substack{\supset \\
+\sbew{ Seien $\displaystyle \underset{\substack{\supset \\
 K}}{\bar{K}} \underset{\overset{\mbox{\scriptsize
 id}}{\longrightarrow}}{\mbox{und}} \underset{\substack{\supset
 \\K}}{C}$ algebraische Abschlüsse von $K$. Nach Proposition
@@ -3124,7 +3182,7 @@ id$_K\}$
 \item Ist $L/K$ endlich, $\bar K$ algebraischer Abschluß von $K$, so
 ist $|$Hom$_K(L,\bar K)| \leq [L:K]$.
 
-\sbew{0.9}{Sei $L = K(\alpha_1,\dots,\alpha_n)$, $\alpha_i$
+\sbew{Sei $L = K(\alpha_1,\dots,\alpha_n)$, $\alpha_i$
 algebraisch über $K$. Induktion über $n$:
 \begin{description}
 \item[$n=1$] Sei $f\in K[X]$ das Minimalpolynom von $\alpha_1$. Für
@@ -3167,7 +3225,7 @@ ist.
 1$. Dabei ist für $f = \ds\sum_{i=0}^n a_i X^i ,\; f' = \sum_{i=1}^n i
 a_i X^{i-1}$
 
-\sbew{0.9}{Sei $f(X) = \ds\prod_{i=1}^n
+\sbew{Sei $f(X) = \ds\prod_{i=1}^n
 (X-\alpha_i),\;\alpha_i \in \bar K \Ra f'(X) = \sum_{i=1}^n \prod_{j
 \neq i} (X - \alpha_j)$ nach Definition ist $f$ separabel $\lra
 \alpha_i \neq \alpha_j$ für $i \neq j$.
@@ -3232,7 +3290,7 @@ daß $f(X) = g(X^{p^r})$ für ein $r \geq 0$.
 
 \item Jede Nullstelle von $f$ in $\bar K$ hat Vielfachheit $p^r$.
 \end{enum}
-\sbew{1.0}{ Sei $f$ nicht separabel, $f = \ds\sum_{i=0}^n a_i X^i$, $f' =\ds\sum_{i=1}^n i a_i
+\sbew{ Sei $f$ nicht separabel, $f = \ds\sum_{i=0}^n a_i X^i$, $f' =\ds\sum_{i=1}^n i a_i
 X^{i-1} = 0 \Ra i a_i = 0$ für $i=1,\dots,n \Ra a_i = 0$, falls $i$
 nicht durch $p$ teilbar $\Ra f$ ist Polynom in $X^p$, dh. $f =
 g_1(X^p)$. Mit Induktion folgt die Behauptung.}
@@ -3320,7 +3378,7 @@ K\}| \overset{g \mbox{ \scriptsize separabel}}{=}$ deg$(g)\;(\ast)
 Jede endliche separable
 Körpererweiterung $L/K$ ist einfach.
 
-\sbew{1.0}{Ist $K$ endlich, so folgt aus \ref{3.17}, daß $L^x$ zyklische
+\sbew{Ist $K$ endlich, so folgt aus \ref{3.17}, daß $L^x$ zyklische
 Gruppe ist. Ist $L^x = \langle \alpha \rangle$, so ist $L =
 K[\alpha]$.
 
@@ -3356,7 +3414,7 @@ $\gamma \in L$, folgt $K(\gamma) = L$.}
 Ist $K$ ein Körper, so ist jede endliche
 Untergruppe von $(K^x,\cd)$ zyklisch.
 
-\sbew{1.0}{Sei $G \subseteq K^x$ endliche Untergruppe, $a \in G$ ein
+\sbew{Sei $G \subseteq K^x$ endliche Untergruppe, $a \in G$ ein
 Element maximaler Ordnung. Sei $n=$ord$(a)$, $G_n \defeqr \{b\in G:$
 ord$(b) \mid n$\}.
 
@@ -3380,7 +3438,7 @@ Dann gilt: \begin{enum}
 \cong \mathbb{F}_q$
 \end{enum}
 
-\sbew{1.0}{\begin{enum}
+\sbew{\begin{enum}
 \item $f(X) = X^q - X$ ist separabel, da $f'(X) = -1 \Ra$
 ggT$(f,f') = 1 \Ra f$ hat $q$ verschiedene Nullstellen in
 $\mathbb{F}_q \Ra |\mathbb{F}_q| \geq q$.
@@ -3404,7 +3462,7 @@ $\mathbb{F}_q$ (bis auf Isomorphie).
 Jede algebraische Erweiterung eines
 endlichen Körpers ist separabel.
 
-\sbew{1.0}{$\mathbb{F}_q/\mathbb{F}_p$ separabel, da $X^q - X$
+\sbew{$\mathbb{F}_q/\mathbb{F}_p$ separabel, da $X^q - X$
 separables Polynom ist. Ist $K$ endlich, also $K = \mathbb{F}_q$,
 $L/K$ algebraisch, $\alpha \in L$, so ist $K(\alpha)/K$ endlich,
 also separabel (da $K(\alpha) = \mathbb{F}_{q^r}$ für ein $r \geq 1$)
@@ -3466,7 +3524,7 @@ Koeffizienten in $\mathbb{Q}(M)$)}
 ist $L \subseteq K(M)$.
 \end{enum}
 
-\sbew{1.0}{
+\sbew{
 Seien $a,b \in K(M)$. Zu zeigen: $a+b, -a, a \cd b, \frac{1}{a} \in
 K(M)$.\newline
 $a+b \in K(M):$
@@ -3475,14 +3533,14 @@ $a+b \in K(M):$
 \end{center}
 }
 
-\sbew{1.0}{
+\sbew{
 $-a \in K(M):$
 \begin{center}
 \includegraphics[width=\textwidth]{alg16a2.png}
 \end{center}
 }
 
-\sbew{1.0}{
+\sbew{
 $a \cd b \in K(M):$\newline
 Strahlensatz: $\frac{1}{a} = \frac{b}{x}$, also $x = a \cd b$. Winkel addieren
 $\chk \Ra a \cd b$ allgemein $\chk$
@@ -3491,14 +3549,14 @@ $\chk \Ra a \cd b$ allgemein $\chk$
 \end{center}
 }
 
-\sbew{1.0}{
+\sbew{
 $\frac{1}{a} \in K(M):$ \OE $a \in \mathbb{R}$
 \begin{center}
 \includegraphics[width=\textwidth]{alg16a4.png}
 \end{center}
 }
 
-\sbew{1.0}{
+\sbew{
 Wurzelziehen: $a \in \mathbb{R}$
 \begin{center}
 \includegraphics[width=\textwidth]{alg16b.png}
@@ -3523,7 +3581,7 @@ $\overset{\scriptsize\mbox{Höhensatz}}{\Ra} b^2=|-a| \cd 1 = a$
 
         \item Ist $L/K$ normal, so ist Hom$_K(L,\bar K) =$ Aut$_K(L)$ (wobei 
         $\bar K$ algebraischer Abschluß von $L$ sei)\newline
-        \sbew{0.9}{
+        \sbew{
             ''$\supseteq$'' gilt immer. ''$\subseteq$'': Sei $L =
             Z(\mathcal{F})$, $f \in \mathcal{F}$, $\alpha \in L$ Nullstelle von
             $f \Ra$ Für $\sigma \in$ Hom$_K(L,\bar K)$ ist $\sigma(\alpha)$ auch
@@ -3541,7 +3599,7 @@ $\overset{\scriptsize\mbox{Höhensatz}}{\Ra} b^2=|-a| \cd 1 = a$
 
         \item Eine endliche Erweiterung $L/K$ ist genau dann galoissch, wenn 
         $|$Aut$_K(L)| = [L:K]$
-        \sbew{0.9}{''$\Ra$'' Aus (b) folgt \[|\mbox{Aut}_K(L)| = 
+        \sbew{''$\Ra$'' Aus (b) folgt \[|\mbox{Aut}_K(L)| = 
         |\mbox{Hom}_K(L,\bar K)| = [L:K]_s \overset{\mbox{\scriptsize
 \ref{Satz 13}}}{=} [L:K] (\ast)\]
 
@@ -3557,7 +3615,7 @@ $\sigma \in$ Aut$_K(L) \Ra \beta \in L \Ra L =$ Z$(f)$. }
 \item Ist $L/K$ galoissch und $E$ ein Zwischenkörper, so ist $L/E$
 galoissch und Gal$(L/E) \subseteq$ Gal$(L/K)$.
 
-\sbew{0.9}{$L/E$ normal, da Zerfällungskörper von $\mathcal{F}
+\sbew{$L/E$ normal, da Zerfällungskörper von $\mathcal{F}
 \subset K[X] \subseteq E[X]$. $L/E$ separabel, da $L/K$ separabel.}
 
 \item Ist in (f) zusätzlich auch $E/K$ galoissch, so ist \[1 \ra
@@ -3565,7 +3623,7 @@ galoissch und Gal$(L/E) \subseteq$ Gal$(L/K)$.
 \sigma_{|E}}{\mbox{Gal}(L/K) \overset{\beta}{\ra} \mbox{Gal}(E/K)}
 \ra 1\] exakt.
 
-\sbew{0.9}{Für $\sigma \in$ Gal$(L/K) =$ Aut$_K(L)$ ist
+\sbew{Für $\sigma \in$ Gal$(L/K) =$ Aut$_K(L)$ ist
 $\sigma_{|E}: E \ra L$, also $\sigma \in$ Hom$_K(E,L) \subseteq$
 Hom$_K(E, \bar K) =$ Aut$_K(E)$, da $E/K$ galoissch ist. $\Ra \beta$
 ist wohldefiniert.
@@ -3575,7 +3633,7 @@ $\beta$ \textbf{surjektiv}: Sei $\sigma \in$ Gal$(E/K)$. Nach
 K$, $\wt{\sigma} \in$ Hom$_K(L, \bar K) =$ Aut$_K(L)$ = Gal$(L/K)$
 und $\beta(\wt{\sigma}) = \wt{\sigma}_{|E} = \sigma$
 
-Kern $\beta = \{ \sigma \in$ Gal$(L/K):\; \sigma_{|E} = id_E\} =$
+$\Kern \beta = \{ \sigma \in$ Gal$(L/K):\; \sigma_{|E} = id_E\} =$
 Aut$_E(L) =$ Gal$(L/E)$}
 \end{enum}
 \end{DefProp}
@@ -3647,7 +3705,8 @@ Gal$(L/K)$: \begin{enum}
 
 \item Gal$(L/E \cap E') = \langle$ Gal$(L/E)$,
 Gal$(L/E')\rangle$
-\newline \sbew{0.9}{Tutorium?}
+
+\sbew{Tutorium?}
 \end{enum}
 \end{Folg}
 
@@ -3655,7 +3714,7 @@ Gal$(L/E')\rangle$
 Zu jeder endlichen separablen
 Körpererweiterung gibt es nur endlich viele Zwischenkörper.
 
-\sbew{1.0}{Ist $L/K$ endliche Galoiserweiterung, so entsprechen die
+\sbew{Ist $L/K$ endliche Galoiserweiterung, so entsprechen die
 Zwischenkörper (nach \ref{Satz 17}) bijektiv den Untergruppen der
 endlichen Gruppe$(L/K)$. Im allgemeinen ist $L=K(\alpha)$ (\ref{Satz 14}). Sei
 $f$ das Minimalpolynom von $\alpha$ über $K$. $f$ ist separabel, da $L/K$
@@ -3671,7 +3730,8 @@ eine endliche Untergruppe. $K \defeqr L^G = \{\alpha \in
 L:\,\sigma(\alpha) = \alpha\;\forall\; \sigma \in G\}$
 
 Dann ist $L/K$ Galoiserweiterung und Gal$(L/K) = G$
-\newline\newline\sbew{1.0}{\begin{itemize}
+
+\sbew{\begin{itemize}
 \item $L/K$ ist algebraisch und separabel. Sei dazu $\alpha \in L$.
 $\{\sigma(\alpha):\; \sigma \in G\} = G \alpha$  ist endlich. Sei
 $G\alpha = \{\sigma_1(\alpha),\dots,\sigma_r(\alpha)\}$ mit
@@ -3726,7 +3786,8 @@ Permutation der Nullstellen von $f$)
 
 \item Ist $L/K$ separable Körpererweiterung vom Grad $n$, so ist
 Aut$_K(L)$ isomorph zu einer Untergruppe von $S_n$.
-\newline \sbew{0.9}{Sei $L=K(\alpha)$, $f \in K[X]$ Minimalpolynom
+
+\sbew{Sei $L=K(\alpha)$, $f \in K[X]$ Minimalpolynom
 von $\alpha$, $\alpha= \alpha_1,\dots,\alpha_d$ die Nullstellen von
 $f$ in $L \Ra$ jedes $\sigma \in$ Aut$_K(L)$ permutiert
 $\alpha_1,\dots,\alpha_d$.}
@@ -3803,7 +3864,7 @@ $\mathbf{n}$\emp{-te Einheitswurzeln}.
 \item $\mu_n(\bar K) \defeqr \{\zeta \in \bar K: \zeta^n = 1\}$ ist
 zyklische Untergruppe von ${\bar K}^x$ der Ordnung $n$.
 
-\sbew{0.9}{$\mu_n(\bar K)$ Untergruppe $\checkmark$, also zyklisch
+\sbew{$\mu_n(\bar K)$ Untergruppe $\checkmark$, also zyklisch
 nach \ref{3.17}. $f(X) = X^n-1$ ist separabel, da $f'(X) = nX^{n-1}$
 (Bem \ref{3.13})}
 
@@ -3820,7 +3881,7 @@ $\varphi(n) = |(\mathbb{Z}/n\mathbb{Z})^x| = \{ m\in \{1,\dots,n\} :
 $ggT$(m,n) = 1\}$ ($n \mapsto \varphi(n)$ ist Eulersche
 $\varphi$-Funktion)
 
-\sbew{0.9}{Ist $\zeta$ primitive $n$-te Einheitswurzel, so ist
+\sbew{Ist $\zeta$ primitive $n$-te Einheitswurzel, so ist
 $\mu_n(\bar K) = \{1,\zeta, \zeta^2, \dots, \zeta^{n-1}\}$, $\zeta^k$
 erzeugt $\{1,\zeta, \zeta^2, \dots, \zeta^{n-1}\} \lra$ ggT$(n,k) = 1$.}
 
@@ -3828,7 +3889,7 @@ erzeugt $\{1,\zeta, \zeta^2, \dots, \zeta^{n-1}\} \lra$ ggT$(n,k) = 1$.}
 (Primfaktorzerlegung) so ist $\varphi(n) = \displaystyle \prod_{i=1}^r
 p_i^{\nu_i-1} (p_i - 1)$
 
-\sbew{0.9}{$\mathbb{Z}/n\mathbb{Z} =
+\sbew{$\mathbb{Z}/n\mathbb{Z} =
 \mathbb{Z}/p_1^{\nu_1}\mathbb{Z} \bigoplus \dots \bigoplus
 \mathbb{Z}/p_r^{\nu_r} \mathbb{Z}$ (Satz \ref{Satz 8}) $\Ra
 (\mathbb{Z}/n\mathbb{Z})^x  = (\mathbb{Z}/p_1^{\nu_1} \mathbb{Z})^x
@@ -3843,12 +3904,14 @@ Einheitswurzeln, so heißt $\Phi_n(X) \defeqr
 \emp{Kreisteilungspolynom}
 
 \item $X^n - 1 = \displaystyle \prod_{d \mid n} \Phi_d(X)$
-\newline\sbew{0.9}{$X^n - 1 = \displaystyle \prod_{\zeta \in \mu_n} (X-\zeta) =
+
+\sbew{$X^n - 1 = \displaystyle \prod_{\zeta \in \mu_n} (X-\zeta) =
 \prod_{d \mid n} \prod_{\substack{\zeta \in \mu_n \\ ord(\zeta) = d}} (X-\zeta) = \prod_{d
 \mid n} \Phi_d(X)$}
 
 \item Sei $\zeta$ primitive $n$-te Einheitswurzel. Dann ist
-$K(\zeta)/K$ Galois-Erweiterung.\newline \sbew{0.9}{$K(\zeta)$ ist
+$K(\zeta)/K$ Galois-Erweiterung.
+\sbew{$K(\zeta)$ ist
 Zerfällungskörper von $X^n - 1$ über $K$, also normal. $X^n - 1$ ist
 separabel (\ref{4.8})}
 
@@ -3858,7 +3921,7 @@ separabel (\ref{4.8})}
 \newline $\sigma(\zeta) = \zeta^{\chi_n(\sigma)}$. ($\chi_n$ heißt
 \emp{zyklotonischer Charakter})
 
-\sbew{0.9}{$\chi_n(\sigma) \in (\mathbb{Z}/n\mathbb{Z})^x$, da
+\sbew{$\chi_n(\sigma) \in (\mathbb{Z}/n\mathbb{Z})^x$, da
 $\sigma(\zeta)$ primitive Einheitswurzel sein muß.
 
 $\chi_n$ ist Gruppenhomomorphismus: $\sigma_1, \sigma_2 \in$
@@ -3874,7 +3937,7 @@ $\chi_n$ injektiv: $\chi_n(\sigma) = 1 \Ra \sigma(\zeta) = \zeta \Ra
 \begin{array}{ll} \mathbb{Z}[X] \mbox{ (primitiv) } &:\mbox{char}(K) =
 0 \\ \mathbb{F}_p[X] &:\mbox{char}(K) = p \end{array}\right.$
 \newline
-\sbew{0.9}{
+\sbew{
 Induktion über $n$: $n=2\;\checkmark$
 
 $n>2$: $\underset{(\ast)}{\underbrace{X^n - 1}} \overset{(d)}{=} \Phi_n(X)
@@ -3896,7 +3959,7 @@ $\overset{\mbox{\scriptsize Lemma von Gauß}}{\Ra} \Phi_n(X) \in
 ein Isomorphismus. $\mathbb{Q}(\zeta)$ heißt $n$-ter
 \emp{Kreisteilungskörper}.
 
-\sbew{0.9}{
+\sbew{
 Es genügt zu zeigen: $\Phi_n$ irreduzibel (dann folgt $\chi_n$
 Isomorphismus aus (e) und (f))
 
@@ -3934,7 +3997,8 @@ Koeffizienten $0,1$ oder $-1$.
 \begin{Folg}
 Das regelmäßige $n$-Eck ist genau dann mit
 Zirkel und Lineal (aus $\{0,1\}$) konstruierbar, wenn $\varphi(n)$ eine Potenz von
-$2$ ist.\newline\newline \sbew{1.0}{z.z.: $\zeta_n$ (primitive
+$2$ ist.
+\sbew{z.z.: $\zeta_n$ (primitive
 $n$-te Einheitswurzel) $\in K(\{0,1\}) \lra \varphi(n) = 2^l$ für
 ein $l \geq 1\; \lra
 \underset{\varphi(n)}{\underbrace{[\mathbb{Q}(\zeta_n) :
@@ -3966,7 +4030,7 @@ $X_K(G)$ ist linear unabhängige Teilmenge des $K$-Vektorraums
 Abb$(G,K)$
 
 
-\sbew{0.9}{Angenommen $X_K(G)$ ist linear abhängig. Dann sei
+\sbew{Angenommen $X_K(G)$ ist linear abhängig. Dann sei
 $n > 0$ minimal, so daß es in $X_K(G)$ $n$ paarweise verschieden
 linear abhängige Elemente gibt. Es gebe also $\chi_1,\dots,\chi_n
 \in X_K(G)$, $\lambda_1,\dots,\lambda_n \in K^x$ mit $\displaystyle \sum_{i=1}^n
@@ -3997,7 +4061,8 @@ Körpererweiterung, $q\defeqr \frac{[L:K]}{[L:K]_s}$ ($=p^r,\;p=$char$(K)$), $n
 $\alpha$ (über $K$)
 
 \item $\forall \alpha \in L:$ tr$_{L/K}(\alpha) \in K$
-\newline\sbew{0.9}{ \OE $L/K$ separabel. Ist $L/K$ normal, also
+
+\sbew{\OE $L/K$ separabel. Ist $L/K$ normal, also
 galoissch, so ist Hom$_K(L,\bar K) =$ Gal$(L/K) \defeql G$ und
 tr$_{L/K}(\alpha) \in L^G = K$ (da invariant unter allen $\sigma_i$). Andernfalls sei
 $\wt{L}$ normale Erweiterung von
@@ -4015,7 +4080,8 @@ $\alpha$ (über $K$).
 \item $N_{L/K}(\alpha) \in K$
 
 \item $N_{L/K}: L^x \ra K^x$ ist Gruppenhomomorphismus
-\newline\sbew{0.9}{\begin{enum}
+
+\sbew{\begin{enum}
 \item[(e)] Ist $L/K$ separabel, so
 argumentiere wie in (b). Sonst siehe Bosch.
 \end{enum}
@@ -4030,7 +4096,7 @@ $m_\alpha$ ist $K$-linear und es gilt:
 \[\mbox{tr}_{L/K}(\alpha) = \mbox{Spur}(m_\alpha),\;N_{L/K}(\alpha)
 = \mbox{det}(m_\alpha)\]
 
-\sbew{1.0}{Ist $L/K$ separabel, so sei $L=K(\alpha)$. Dann ist
+\sbew{Ist $L/K$ separabel, so sei $L=K(\alpha)$. Dann ist
 $1,\alpha,\alpha^2,\dots,\alpha^{n-1}$ eine $K$-Basis von $L$,
 $[L:K] = n$. Weiter sei $f(X) = X^n + c_{n-1} X^{n-1} + \dots + c_1
 X + c_0\;\in K[X]$ das Minimalpolynom von $\alpha$ über $K$. Dann
@@ -4047,7 +4113,7 @@ $1,\dots,\alpha^{n-1}$
 
 $\Ra$ Spur$(m_\alpha) = -c_{n-1}$, det$(m_\alpha) = (-1)^n c_0$ }
 
-\sbew{1.0}{In $\bar K[X]$ zerfällt $f$ in Linearfaktoren:
+\sbew{In $\bar K[X]$ zerfällt $f$ in Linearfaktoren:
 
 $f = \prod_{i=1}^n(X-\sigma_i(\alpha)) \Ra c_{n-1} = \sum_{i=1}^n
 \sigma_i(\alpha)$, $c_0 = (-1)^n \prod_{i=1}^n \sigma_i(\alpha)$
@@ -4081,7 +4147,7 @@ $\sigma$)
 \item Ist $\beta \in L$ mit $N_{L/K}(\beta) = 1$, so gibt es ein
 $\alpha \in L^x$ mit $\beta = \frac{\alpha}{\sigma(\alpha)}$
 
-\sbew{0.9}{ $n \defeqr [L:K]$. Nach \ref{4.10} sind die Charaktere
+\sbew{ $n \defeqr [L:K]$. Nach \ref{4.10} sind die Charaktere
 $id, \sigma,\dots,\sigma^{n-1}:\; L^x \ra L^x$ linear unabhängig
 über $L$.
 
@@ -4099,7 +4165,7 @@ $\beta \sigma(\alpha) = \beta \sigma(\gamma) + \beta \sigma(\beta)
 ein Erzeuger. Zu $\beta \in L$ mit tr$_{L/K}(\beta) = 0$ gibt es $\alpha
 \in L$ mit $\beta = \alpha - \sigma(\alpha)$
 
-\sbew{0.9}{Sei $\gamma \in L$ mit tr$_{L/K}(\gamma) \neq 0$ und $\\\alpha
+\sbew{Sei $\gamma \in L$ mit tr$_{L/K}(\gamma) \neq 0$ und $\\\alpha
 \defeqr \frac{1}{\mbox{\small tr}_{L/K}(\gamma)} \cd [ \beta \sigma(\gamma) +
 (\beta + \sigma(\beta))\sigma^2(\gamma) + \dots + (\beta +
 \sigma(\beta) + \dots + \sigma^{n-2}(\beta))\sigma^{n-1}(\gamma)]$
@@ -4258,8 +4324,8 @@ durch Radikale auflösbar, denn $S_5 \supset A_5 \supset \{e\}$ ist
 Kompositionsreihe. Nach Jordan-Hölder tritt $A_5$ in jeder
 Kompositionsreihe für $S_5$ als Faktorgruppe auf.}
 
-\sbew{1.0}{
-\newline ''$\Ra$'': Sei $K=L_0 \subset L_1 \subset \dots
+\sbew{
+''$\Ra$'': Sei $K=L_0 \subset L_1 \subset \dots
 \subset L_m$ Kette wie in Def. mit $L \subseteq L_m$.
 
 \textbf{Induktion über $\mathbf{m}$:}
@@ -4330,7 +4396,7 @@ id_{L'M}$, da $\sigma_{|L'} = id_{L'}$ nach Voraussetzung.
 Also \OE $L=L'$, $L'M' = M$.
 \end{description}}
 
-\sbew{1.0}{ \begin{description}
+\sbew{ \begin{description}
 \item[m$>$1 (Forts.)] Ist $M/K$ galoissch, so ist Gal$(M/K)$
 auflösbar, da dann \[ 1 \ra \underset{\mbox{\scriptsize
 auflösbar}}{\underbrace{\mbox{Gal}(M/K)}} \ra \mbox{Gal}(M/K) \ra
