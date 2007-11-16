@@ -31,10 +31,13 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amsthm}
+\usepackage{mathtools}
 
 \usepackage{graphicx}
 
 %\usepackage{algebra}
+\newcommand{\da}{\coloneqq}
+\newcommand{\ad}{\eqqcolon}
 
 
 \newtheoremstyle{saetze}% Name des Stils
@@ -1133,22 +1136,31 @@ beider Paare, erhalte $w''$ mit $l(w'') = l(w) - 4
 Dies muss eindeutig so sein, und so wird ein Homomorphismus definiert.
 \item[(c)] Sei $S \subseteq G$ ein Erzeugendensystem (d.h. die einzige
 Untergruppe $H$ von $G$ mit $S \subseteq H$ ist $G$ selbst). Sei
-$F(S)$ die freie Gruppe mit Basis $S$, $f:S \ra G$ die Identität und
+$F(S)$ die freie Gruppe mit Basis $S$, $f:S \ra G$ die Inklusion und
 $\varphi:F(S) \ra G$ der Homomorphismus aus (b). $\varphi$ ist
 surjektiv, weil $\varphi(F(S))$ Untergruppe ist, die $S$ enthält.
 Also ist nach Homomorphiesatz $G \cong F(S)/\Kern(\varphi)$
+
+\paragraph{Beispiele:}
+\begin{enumerate}
+\item $G$ zyklisch von Ordnung $n\in \mathbb N\setminus \{0\}$, dann ist $G\cong \mathbb Z / n \mathbb Z$.
+
+\item $\mathbb Z^2 \da \mathbb Z \times \mathbb Z$, $S=\{(0,1) \ad x, (1,0) \ad y\}$. Der Homomorphismus $\varphi : F(s) \to \mathbb Z^2$, $x\mapsto (0,1)$, $y\mapsto (1,0)$ bildet $w = x^{n_1}y^{m_1}\cdots y^{m_d} \in F(S)$ auf $\varphi(w) = (\sum_{i=1}^s n_i, \sum_{i=1}^s m_i)$ ab, also ist $\Kern\varphi = \{ w = x^{n_1}y^{m_1}\cdots y^{m_d} \in F(S) \mid \sum_{i=1}^s n_i = \sum_{i=1}^s m_i = 0\} = \langle \{ w_1w_2w_1^{-1}w_2^{-1}, w_1, w_2\in F(S)\}\rangle = G^{\text{ab}}$. $\Kern\varphi$ ist kleinster Normalteiler von $F(\{x,y\})$, der $xyx^{-1}y^{-1}$ enthält, daher ist $\mathbb Z^2 \cong F(\{x,y\}) / \langle xyx^{-1}y^{-1}\rangle_\text{NT}$.
+\end{enumerate}
+
 \item[(d)] ''$\Leftarrow$'' Sei $f:X \ra Y$ bijektive Abbildung. Dazu gibt
 es Gruppenhomomorphismus $\varphi_f: F(X) \ra F(Y)$, sowie
-$\varphi_f^{-1} F(Y) \ra F(X)\\$ $\varphi_f \circ
-\varphi_{f^{-1}}\mid Y = id_Y,\; \varphi_f \circ \varphi_{f^{-1}}
-\mid X = id_X\\$ $id_{F(Y)}\mid Y = id_Y \overset{\mbox{Eindt. in
-(b)}}{\Ra} \varphi_f \circ \varphi_{f^{-1}} = id_{F(Y)}$, ebenso
-$\varphi_f \circ \varphi_{f^{-1}} = id_{F(X)}$
-\newline ''$\Ra$'' Sei $|X| \neq |Y|$. Die Anzahl der
+$\varphi_{f^{-1}} F(Y) \ra F(X)$.  Es ist sowohl
+$\varphi_{f^{-1}} \circ \varphi_{f}
+|_X = id_X$ als auch $id_{F(X)}|_X = id_X$, also folgt aus der Eindeutigkeit (b), dass $\varphi_{f^{-1}} \circ \varphi_{f} = id_{F(X)}$. Analog;
+$\varphi_f \circ \varphi_{f^{-1}} = id_{F(Y)}$. Also ist $\varphi$ ein Isomorphismus.
+\newline ''$\Ra$'' Die Anzahl der
 Gruppenhomomorphismen von $F(X)$ in $\mathbb{Z}/2\mathbb{Z}$ ist
 gleich der Anzahl der Abbildungen von $X$ nach
-$\mathbb{Z}/2\mathbb{Z}$. (wegen (b))\newline Diese ist $|2^x| =
-2^{|x|} = |(\mathbb{Z}/2\mathbb{Z})^x| = 2^{|x|}$}
+$\{0,1\}$ (wegen (b)), und diese ist $|2^x| = |\mathcal P(X)|$
+
+Sei $|X| \neq |Y|$, dann ist $|\mathcal P(X)|\ne |\mathcal P(Y)|$. 
+}
 \end{Satz}
 
 \section{Kategorien und Funktoren}
@@ -1212,15 +1224,19 @@ $F(g\circ f) = F(f) \circ F(g)$
 
 \bsp{\begin{enumerate}
 \renewcommand{\labelenumi}{(\theenumi)}
-\item Gruppen $\ra$ Mengen, $(G,\cd) \mapsto G$ (''Vergißfunktor'')
-\item $\mathcal{P}$: Mengen $\ra$ Mengen : $X\mapsto \mathcal{P}(X)$
-(Potenzmenge) \newline Für $f:X\ra Y$ sei
-$\mathcal{P}(f):\mathcal{P}(X) \ra \mathcal{P}(Y)$, $U \mapsto f(U)$
+\item $V:$ \underline{Gruppen} $\ra$ \underline{Mengen}, $(G,\cd) \mapsto G$, $V(f) = f$ ist der „Vergissfunktor“
+
+\item
+\begin{enumerate}
+\item $Im:$ \underline{Mengen} $\ra$ \underline{Mengen}, $Im(X) = \mathcal P(x)$, für $f: X \to Y$ ist $Im(f): \mathcal P(X) \to \mathcal P(Y)$, $Im(f)(U) = f(U)$, $U\in \mathcal P(X)$ ist kovariant.
+\item $Urb:$ \underline{Mengen} $\ra$ \underline{Mengen}, $Im(X) = \mathcal P(x)$, für $f: X \to Y$ ist $Urb(f): \mathcal P(Y) \to \mathcal P(X)$, $Im(f)(V) = f^{-1}(V)$, $V\in \mathcal P(Y)$ ist kontravariant.
+\end{enumerate}
+
 \item Sei $\mathcal{C}$ Kategorie, $X$ ein Objekt in $\mathcal{C}$.
-Definiere Funktoren $\mathcal{C} \ra$ Mengen durch \newline
+Definiere Funktoren $\mathcal{C} \ra$ \underline{Mengen} durch \newline
 Hom$(X,\cd): Y \mapsto Mor_{\varphi}(X,Y)$ (kovariant)\newline
 Hom$(\cd,X): Y \mapsto Mor_{\varphi}(Y,X)$ (kontravariant) \newline
-Für $f:Y \ra Z$ ist Hom$(X,\cd)(f): Mor(X,Y) \ra Mor(X,Z)$ gegeben durch $g
+Für $f\in $Hom$(Y,Z)$ ist Hom$(X,\cd)(f): Mor(X,Y) \ra Mor(X,Z)$ gegeben durch $g
 \mapsto f \circ g$ und
 Hom$(\cd, X)(f): Mor(Z,X) \ra Mor(Y,X),\;g \mapsto g \circ f$
 \item Sei $X$ Menge, $F_X$: Gruppen $\ra$ Mengen, $G \mapsto Abb(X,G) =
