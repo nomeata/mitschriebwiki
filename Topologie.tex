@@ -35,7 +35,7 @@
 \newtheorem{bemX}[alles]{Bemerkung}
 \newenvironment{bem}[1]{\begin{bemX}{\bf #1}\par\rm}{\end{bemX}}
 \newtheorem{satzX}[alles]{Satz}
-\newenvironment{satz}[1]{\begin{satzX}{\bf #1}\par}{\end{satzX}}
+\newenvironment{satz}[1]{\begin{satzX}{\bf #1}\nopagebreak\par}{\end{satzX}}
 \newtheorem{hilfsX}[alles]{Hilfssatz}
 \newenvironment{hilfs}[1]{\begin{hilfsX}{\bf #1}\par}{\end{hilfsX}}
 \newtheorem{definiX}[alles]{Definition}
@@ -1386,102 +1386,136 @@ Wenn $x_1\ne x_2$ in $X$, so gibt es ein $f\in \mathcal A$ mit $f(x_1) \ne f(x_2
 \end{bem}
 
 Insbesondere ist also ${\cal C}(X) = {\cal C}_0(X),$ wenn $X$ kompakt ist, und 
-dies ist als Teilraum von ${\cal B}(X)$ ein metrischer Raum. Hier gibt es nun 
-den wichtigen Satz 
+dies ist als Teilraum von ${\cal B}(X)$ ein metrischer Raum.
+
+%Hier gibt es nun den wichtigen Satz 
+
+\begin{satz}{von Dini\footnote{Ulisse Dini, 1845-1918}}
+\label{satzvondini}
+Es sei $X$ ein kompakter Raum, $Y$ ein metrischer Raum, $(f_n)$ eine Folge in $\mathcal C(X,Y)$, die punktweise gegen $f\in \mathcal C(X,y)$ konvergiert. Weiterhin gelte für alle $x\in X$, $n\in \mathbb N$:
+\[
+d(f_n(x), f(x)) \ge d(f_{n+1}(x), f(x))
+\]
+Dann konvergiert $(f_n)$ gleichmäßig gegen $f$, das heißt in der $\infty$-Norm auf $\mathcal C(X,Y) \subseteq B(X,Y)$
+\end{satz}
+
+{\textit Beweis.}
+Sei $\varepsilon >0$. Für jedes $x\in X$ gibt esein $n(x)$ derart, dass
+\[
+\forall m \ge n(x): d(f_m(x),f(X)) < \frac\varepsilon3
+\]
+Weiter gibt es eine Umgebung $U_x$ von $x$, so dass für jedes $y\in U_x$ gilt: $d(f(y),f(x)) < \frac\varepsilon3$ und $d(f_{n(X)}(y), f_{n(x)}(x)) < \frac\varepsilon3$. Also gilt für jedes $m\ge n(x)$ und $y\in U_x$:
+\begin{align*}
+d(f_m(y), f(y)) &\le d(f_{n(x)}(y), f(y)) \\&\le d(f_{n(x)}(y), f_{n(x)}(x)) + d(f_{n(x)}(x), f(x)) +  d(f(x), f(y)) \\&< \varepsilon
+\end{align*}
+Aus $X=\bigcup_{x\in X}U_x$ folgt, dass es $x_1,\ldots,x_k\in X$ gibt mit $X=\bigcup_{i=1}^k U_{x_i}$. Sei $N=\max\{n(x_i)\mid 1\le i \le k\}$, also gilt $\forall y\in X, m\ge N: d(f_n(y),f(y))<\varepsilon$.\qed
+
+
+\textbf{Anwendung:} Sei $X=[0,1]$, $Y=\mathbb R$. Für $n\in \mathbb N_0$ sei rekursiv die Funktion $w_k$ definiert durch $w_0=0$, $w_{n+1}(x) = w_n(x) + \frac12(x-w_n(x)^2)$. Das sind alles Polynome. Dann gilt: $w_n\to \sqrt\cdot$ gleichmäßig auf $[0,1]$:
+
+Punkteweise Konvergenz: Sei $x\in [0,1]$. Für die Funktion $f:[0,\sqrt x] \to \mathbb R$, $w\mapsto w + \frac12 (x-w^2)$ gilt: $f(0) = \frac12x \le f(\sqrt x) = \sqrt x$. $f'(w) = 1-w\ge 0$, also ist $f$ monoton wachsend. $f(w) \in [0,\sqrt x]$, also $w\le f(w)$. Damit gilt: $w_0=0$, $w_{n+1} = f(w_n)$ ist monoton wachsend, also konvergiert $(w_n)$ gegen ein $y\in [0,1]$.
+
+$f$ ist stetig, also $f(y) = \lim_{n\to\infty} f(w_n) = \lim_{k\to \infty}w_{n+1} = y$, also $f(y) = y + \frac12(x-y^2) = y \implies y ^2 = x$, also $y=\sqrt x$. Nach Satz von Dini gilt die Behauptung.
+
+\begin{satz}{von Stone\footnote{Marshall Harvey Stone, 1903-1989}-Weierstra\ss\footnote{Karl Theodor Wilhelm Weierstra\ss, 1815-1897}}
+Es sei $K$ ein kompakter topologischer Raum und ${\cal A}\subseteq {\cal C}(K)$
+ein Teilring, der die konstanten Funktionen enthält und die Punkte von $X$ trennt, d.h.:
+$$\forall x\neq y\in K:\exists f\in {\cal A}:f(x) \ne f(y).$$
+Dann ist $\cal A$ dicht in ${\cal C}(K)$.
+\end{satz}
+
+%{\bf Das heißt:} Jede stetige Funktion auf $X$ lässt sich gleichmäßig
+%durch eine Folge in ${\cal A}$ approximieren. 
+
+%Die Bedingung an ${\cal A}$ hat einen Namen: man sagt, ${\cal A} $ 
+%{\it trenne die Punkte} von $X.$
+%Insbesondere impliziert dies, dass $K$ hausdorff'sch ist.
+
+%Ein beliebter Spezialfall des
+%Satzes ist der eines Kompaktums $X\subseteq \mathbb R^n$, wobei man dann für
+%${\cal A}$ gerne den Ring der Polynomfunktionen (in $n$ Variablen) auf $X$ 
+%wählt. Klar: Schon die linearen Abbildungen langen, um Punkte zu trennen.
+
+{\it Beweis.}  Hier folge ich den Grundzügen der modernen Analysis
+von Dieudonn\'e\footnote{Jean Alexandre Eug\`ene Dieudonn\'e, 1906-1992}.
+
+%Wir bezeichnen mit $\bar{\mathcal A}$ den Abschluss von $\cal A$ in 
+%${\cal C}(K).$
+
+
+%\item[1.] Es gibt eine Folge von reellen Polynomen $u_n\in \mathbb R[X],$
+%die auf dem Intervall $[0,1]$ gleichmäßig gegen die Wurzelfunktion 
+%konvergiert.
+%
+%Um dies einzusehen setzen wir $u_1\equiv 0$ und definieren rekursiv
+%$$u_{n+1} (t) \da u_n(t) + \frac12(t-u_n(t)^2), n\geq 1.$$
+%Dann ist $(u_n)$ punktweise monoton steigend (auf $[0,1]$ wohlgemerkt, nur dort
+%betrachten wir das) und beschränkt. Punktweise gilt also (wegen des 
+%Monotoniekriteriums) $\lim_{n\to\infty} u_n(t) = \sqrt(t).$ Dann impliziert der 
+%Satz von Dini, was in 1.\ behauptet wird.
+
+Für jedes $f\in {\cal A}$ gehört $|f|$ zu $\bar{\mathcal A}$:
+
+Denn: Sei $m=\max\{|f(x)|\mid x\in X\}$, $\frac fm\in \mathcal A$, genauso $\frac{f^2}{m^2} \in \mathcal A$. Verwende die Folge $(w_n)$ aus der Anwedung zum Satz von Dini und betrachte rekursiv: $f_0=0$, $f_{n+1}(x) = f_n(x) + \frac12(\frac {f^2}{m^2}(x) - f_n^2(x))$. $(f_n)$ konvergiert gleichmäßig gegen $\sqrt {\frac{f^2}{m^2}} = |\frac fm|$, also konverigiert $(mf_n)$ gleichmäßig gegen $|f|$.
+
+Mit $f,g \in \mathcal A$ liegen auch die Funktionen $x\mapsto \max(f(x),g(x))$ und $x\mapsto \min(f(x),g(x))$ in $\mathcal A$, denn $\max(f,g)=\frac 12(f+g+|f-g|)$ beziehungsweise $\min(f,g) = \frac12 (f + g -|f-g|)$.
+
+
+%\item Für $x\neq y\in K$ und $a,b\in \mathbb R$ gibt es $f\in {\cal A}$ 
+%mit $f(x)=a, f(y) = b.$
+%
+%Denn: Es gibt ja nach Voraussetzung in ${\cal A}$ eine Funktion $g$ mit
+%$g(x)\neq g(y).$ Setze nun 
+%$$f\da \frac a{g(x)-g(y)}(g-g(y)) + \frac b{g(y)-g(x)}(g-g(x)).$$
+%NB: $x,y$ sind fest, die Variable versteckt sich hinter dem nackten $g.$
+
+Sei $f\in {\cal C}(K)$, und $\varepsilon >0$. Zeige: Es existiert ein $g\in \bar{\mathcal A}$ mit $d(f,g)<\varepsilon$.
+
+Zunächst zeige: Es gibt für jedex $x\in X$ ein $g\in \bar{\mathcal A}$, so dass $g(x)=f(x)$ und für jedes $y\in X$ gilt: $g(y)<f(y)+\varepsilon$.
+
+Sei $x\in X$ fest. Für $y\in X$ existiert dann eine Funktion $g_y\in \mathcal A$ mit $f(x) = g_y(x)$, $f(y) = g_y(y)$, denn wenn $x=y$, so wähle $g_y$ konstant gleich $f(x)$, und wenn $yx\ne y$, so gibt es ein $h$ mit $h(x)\ne h(y)$. Setzte für $z\in X$:
+\[
+g_y(z) \da \frac{h(z) -h(y)}{h(x)-h(y)}\cdot f(x) + \frac{h(z) - h(x)}{h(y) - h(x)}\cdot f(y)
+\]
+$g_y$ ist stetig, also gibt es eine Umgebung $U_y$ von $y$ mit $\forall y\in U_y: |f(z)-g(y)|<\varepsilon$.
+
+$X = \bigcup_{y\in X}U_y$, also existierten $y_1,\ldots,y_k$ mit $X=\bigcup_{i=1}^k U_{y_i}$. Setze $g\da \min_{1\le i\le k}(g_{y_i})\in \bar{\mathcal A}$. $g(x) = f(X)$, da $g_y(x)=f(x)$ für jedes $y\in X$ gilt. Für jedes $x\in X$ gib es ein $i=1,\ldots,k$, so dass $z\in U_{y_i}$, also gilt $g(z) \le g_{y_i}(z)< f(z) + \varepsilon$, womit gezeigt ist, was zunächst zu zeigen war.
+
+Um die Existenz von $g\in \bar{\mathcal A}$ mit $d(f,g)<\varepsilon$ einzusehen, wählen wir für jedes $x\in X$ eine Funktion $h_x\in \bar{\mathcal A}$ mit $h_x(x)=f(x)$ und $\forall y\in X: h_x(y) < f(y) + \varepsilon$.
+
+Dies geht, denn für alle $x\in X$ gibt es eine Umgebung $V_x$ von $x$ mit $\forall y\in V_x$: $h_x(y) > f(y) -\varepsilon$, den $h_x - f$ ist stetig und hat bei $x$ den Funktionswert $0$.
+
+$X=0\bigcup_{x\in X}V_x$. Wähle $x_1,\ldots,x_n\in x$ mit $X=\bigcup_{i=1}^r V_{x_i}$ und setzte $g\da \max_{1\le i \le r}(h_{x_i}) \in \bar{\mathcal A}$. Dann gilt $d(g,f)<\varepsilon$.
+\qed
+
+\begin{bsp}
+
+\begin{enumerate}
+\item Jede stetige Funktion $f$ auf $[a,b]$ lässt sich gleichmäßig durch Polynomfunktionen approximieren.
+
+$\bar {\rm A}$llgemeiner: Für kompaktes $X\subseteq \mathbb R^n$ lässt sich jede stetige Funktion gleichmäßig durch Polynomfunktionen in $n$ Variablen approximieren.
+
+\item Funktionen auf $\faktor{\mathbb R}{\mathbb Z}$. Die stetigen Abbildungen von $\faktor{\mathbb R}{\mathbb Z}$ nach $Y$ entsprechen den periodischen stetigen Abbildungen von $\mathbb R$ nach $Y$ mit Periode $1$. Für $n\in \mathbb N$ sind $x\mapsto \sin(2\pi n x)$ und $x\mapsto \cos(2\pi n x)$ in $\mathcal C(\faktor{\mathbb R}{\mathbb Z})$. Die Additionstheoreme für Sinus und Kosinus implizieren, dass $\mathcal A=\{x\mapsto \sum_{k=1}^\infty a_i \sin 2\pi kx + \sum_{l=0}^n b_l \sin2\pi lk\mid a_k, b_k \in \mathbb R\}$ ein Teilring von $\mathcal C(\faktor{\mathbb R}{\mathbb Z})$ ist. Insbesondere lässt sich jede stetige Funktion auf $\faktor{\mathbb R}{\mathbb Z}$ gleichmäßig durch Elemente aus $\mathcal A$ approximieren.
+
+Sei $f\in \mathcal C(\faktor{\mathbb R}{\mathbb Z})$, $g\in \mathcal A$, $|f-g|<\varepsilon$. Dann ist $\int_0^1|f-g|^2 dx< \varepsilon^2$, also $d_2(f,g)=\sqrt{\int_0^1|f-g|^2 dx}<\varepsilon$. Das heißt: Zu jedem $\varepsilon >0$ gibt es ein $g\in \mathcal A$: $d(f,g)<\varepsilon$. Schreibe $g=\sum_{k=1}^n a_k\sin 2\pi kx + \sum_{l=0}^n k_l\cos 2\pi lx \in \mathcal A_n = \{\sum_{k=1}^n a_k\sin 2\pi kx + \sum_{l=0}^n k_l\cos 2\pi lx \mid n\text{ fest}\}$.
+
+Auf $\mathcal C(\faktor{\mathbb R}{\mathbb Z})$ habne wir ein Skalarprodukt
+\[
+\langle p,q\rangle \da \int_0^1p(x)\cdot q(g) dx
+\]
+Aufgabe: Bestimme den Abstand $d_2(f,\mathcal A_n)$. Benutze dazu eine Orthonormalbasis in $\mathcal A_n$: $S_k(x) = \frac 1{\sqrt 2} \sin 2\pi k x$, $C_0(x) = 1$, $C_l(x) = \frac1{\sqrt 2} \cos 2\pi lx$, $l>0$. Dann minimiert
+\[
+g = \sum_{k=1}^n \langle f,S_k\rangle S_k + \sum_{l=0}^n \langle f,C_l\rangle C_l
+\]
+den Abstand $d_2(f,h)$ für $h\in \mathcal A_n$.
+
+
+\end{enumerate}
+\end{bsp}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \hrule\textsc{Stand der Vorlesung}\hrule
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{satz} {\bf von Stone\footnote{Marshall Harvey Stone, 1903-1989}-Weierstra\ss\footnote{Karl Theodor Wilhelm Weierstra\ss, 1815-1897}}
-
-Es sei $K$ ein kompakter topologischer Raum und ${\cal A}\subseteq {\cal C}(K)$
-ein Teilring, der die konstanten Funktionen enthält und folgende Bedingung 
-erfüllt:
-
-$$\forall x\neq y\in K:\exists f\in {\cal A}:f(x)=0, f(y)=1.$$
-
-Dann ist $\cal A$ dicht in ${\cal C}(K).$
-
-\end{satz}
-
-{\bf Das heißt:} Jede stetige Funktion auf $X$ lässt sich gleichmäßig
-durch eine Folge in ${\cal A}$ approximieren. 
-
-Die Bedingung an ${\cal A}$ hat einen Namen: man sagt, ${\cal A} $ 
-{\it trenne die Punkte} von $X.$
-Insbesondere impliziert dies, dass $K$ hausdorff'sch ist.
-
-Ein beliebter Spezialfall des
-Satzes ist der eines Kompaktums $X\subseteq \mathbb R^n$, wobei man dann für
-${\cal A}$ gerne den Ring der Polynomfunktionen (in $n$ Variablen) auf $X$ 
-wählt. Klar: Schon die linearen Abbildungen langen, um Punkte zu trennen.
-
-{\it Beweis.} des Satzes. Hier folge ich den Grundzügen der modernen Analysis
-von Dieudonn\'e\footnote{Jean Alexandre Eug\`ene Dieudonn\'e, 1906-1992}.
-
-Wir bezeichnen mit $\overline{\cal A}$ den Abschluss von $\cal A$ in 
-${\cal C}(K).$
-
-Wir führen den Beweis des Satzes in mehreren Schritten.
-
-\begin{itemize}
-\item[1.] Es gibt eine Folge von reellen Polynomen $u_n\in \mathbb R[X],$
-die auf dem Intervall $[0,1]$ gleichmäßig gegen die Wurzelfunktion 
-konvergiert.
-
-Um dies einzusehen setzen wir $u_1\equiv 0$ und definieren rekursiv
-$$u_{n+1} (t) \da u_n(t) + \frac12(t-u_n(t)^2), n\geq 1.$$
-Dann ist $(u_n)$ punktweise monoton steigend (auf $[0,1]$ wohlgemerkt, nur dort
-betrachten wir das) und beschränkt. Punktweise gilt also (wegen des 
-Monotoniekriteriums) $\lim_{n\to\infty} u_n(t) = \sqrt(t).$ Dann impliziert der 
-Satz von Dini\footnote{Ulisse Dini, 1845-1918}, was in 1.\ behauptet wird.
-
-\item[2.] Für jedes $f\in {\cal A}$ gehört $|f|$ zu $\overline{\cal A}.$
-
-Denn für $a\da \max_{x\in K}|f(x)|$ ist $(u_n(f^2/a^2))$ (mit $u_n$ aus Punkt 
-1.) eine Folge in $\cal A,$ die gegen $|f|$ konvergiert.
-
-\item[3.] Für $x\neq y\in K$ und $a,b\in \mathbb R$ gibt es $f\in {\cal A}$ 
-mit $f(x)=a, f(y) = b.$
-
-Denn: Es gibt ja nach Voraussetzung in ${\cal A}$ eine Funktion $g$ mit
-$g(x)\neq g(y).$ Setze nun 
-$$f\da \frac a{g(x)-g(y)}(g-g(y)) + \frac b{g(y)-g(x)}(g-g(x)).$$
-NB: $x,y$ sind fest, die Variable versteckt sich hinter dem nackten $g.$
-
-\item[4.] Für jedes $f\in {\cal C}(K),$ jedes $x\in K$ und jedes 
-$\varepsilon >0$ gibt es eine Funktion $g\in \overline{\cal A}$ derart, dass
-$$g(x) = f(x),\ \ \forall y\in K: g(y)\leq f(y)+\varepsilon.$$
-
-Zunächst gibt es wegen 3.\ für jedes $z\in K$ eine Hilfsfunktion 
-$h_z\in {\cal A},$ so dass $h_z(x) = f(x),\ h_z(z)\leq f(z)+\frac\varepsilon 2.$
-Da $h_z$ stetig ist, gibt es eine Umgebung $U_z$ von $z,$ in der 
-$$h_z(y) \leq f(y)+\varepsilon, \ \ y\in U_z$$
-gilt. Da $K$ kompakt ist, wird es von endlich vielen der $U_z$ überdeckt, 
-es gibt also $z_1,\dots , z_n\in K: K=\cup_i U_{z_i}.$
-
-Setze nun $g(y)\da inf_i h_{z_i}(y).$ 
-Diese Funktion liegt wegen 
-$\inf(p,q) = \frac12(p+q-|p-q|)$ in $\overline{\cal A}$ und hat die 
-gewünschte Eigenschaft.
-
-\item[5.] $\overline{\cal A} = {\cal C}(K).$
-
-Es sei $f\in {\cal C}(K)$ und $\varepsilon >0.$ Für jedes $x\in K$ gibt es
-eine Funktion $h_x\in {\cal A}$ mit 
-$$h_x(x) = f(x),\ \ \forall y\in K: h_x(y)\leq f(y)+\varepsilon.$$
-Die Stetigkeit von $h_x$ zeigt, dass jedes $x\in K$ eine offene Umgebung 
-$V_x$ hat mit
-$$\forall y\in V_x: h_x(y)\geq f(y)-\varepsilon.$$
-Ähnlich wie in 4.\ gibt es $x_1,\dots ,x_r\in K,$ so dass $K$ von den 
-$V_x$ überdeckt wird. Auch ähnlich wie eben liegt das Supremum $g$ der 
-Funktionen $h_{x_i},1\leq i\leq r,$ in $\overline{\cal A},$ und es gilt
-$$||f-g||_\infty \leq\varepsilon.$$
-Das ist die Behauptung.\qed
-
-\end{itemize}
-
 \begin{defini} {\bf Wo ein Weg ist\dots}
 
 
