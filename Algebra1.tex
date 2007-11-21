@@ -31,6 +31,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amsthm}
+\usepackage{amscd}
 \usepackage{mathtools}
 
 \usepackage{graphicx}
@@ -120,37 +121,14 @@
         \right\}$
 \end{tiny}}
 
-\newcommand{\bew}[2]
-{\noindent\fcolorbox{white}{blue!7!white}{
- \begin{minipage}{1.0\linewidth}
- \textit{\textbf{Beweis: }}
- #1
- \begin{enum} #2
- \hfill \rule{2,1mm}{2,1mm} \end{enum}  \end{minipage} }
-}
-
-\newcommand{\sbew}[1]
-{\noindent \fcolorbox{white}{blue!7!white}{
- \begin{minipage}{\linewidth}
- \textit{\textbf{Beweis: }} #1
- \hfill \rule{2,1mm}{2,1mm} \end{minipage} }
-}
-
-\newcommand{\bsp}[1]
-{\noindent \fcolorbox{white}{green!12!white}{
- \begin{minipage}{1.0\textwidth}
- \textit{\textbf{Beispiel: }}
- #1
- \hfill \end{minipage} }
-}
 
 \newenvironment{ourshaded}{%
   \def\FrameCommand{\colorbox{shadecolor}}%
-  \edef\frmlw{\linewidth}
+  \edef\frmlw{\linewidth}%
   \MakeFramed{\setlength\hsize{\linewidth}\FrameRestore}%
   \noindent}{\endMakeFramed}
 
-\renewcommand{\bew}[2]
+\newcommand{\bew}[2]
 {\definecolor{shadecolor}{rgb}{0.85,0.85,1}
  \begin{shaded}
  \textit{\textbf{Beweis: }}
@@ -160,27 +138,19 @@
  \end{shaded}
 }
 
-\renewcommand{\sbew}[1]
+\newcommand{\sbew}[1]
 {\definecolor{shadecolor}{rgb}{0.85,0.85,1}%
  \begin{ourshaded}%
  \textit{\textbf{Beweis:}} #1%
- \hfill \rule{2,1mm}{2,1mm}
+ \hfill \rule{2,1mm}{2,1mm}%
  \end{ourshaded}
 }
 
-\renewcommand{\bsp}[1]
-{\definecolor{shadecolor}{rgb}{0.85,1,0.85}
- \begin{shaded}
- \textit{\textbf{Beispiel: }}
- #1
- \end{shaded} 
-}
-
-\newcommand{\sbsp}[2]
-{\noindent \fcolorbox{white}{green!12!white}{
- \begin{minipage}{#1\textwidth}
- \textit{\textbf{Beispiel: }} #2
- \hfill \end{minipage} }
+\newcommand{\bsp}[1]
+{\definecolor{shadecolor}{rgb}{0.85,1,0.85}%
+ \begin{ourshaded}%
+ \textit{\textbf{Beispiel:}} #1%
+ \end{ourshaded} 
 }
 
 \newcommand{\ra}[0]{\rightarrow}
@@ -1221,6 +1191,7 @@ gilt:
 Mor_{\mathcal{A}} (X,Y) \ra Mor_{\mathcal{B}}(F(Y),F(X))$, ... und
 $F(g\circ f) = F(f) \circ F(g)$
 \end{enum}
+\end{Def}
 
 \bsp{\begin{enumerate}
 \renewcommand{\labelenumi}{(\theenumi)}
@@ -1239,17 +1210,76 @@ Hom$(\cd,X): Y \mapsto Mor_{\varphi}(Y,X)$ (kontravariant) \newline
 Für $f\in $Hom$(Y,Z)$ ist Hom$(X,\cd)(f): Mor(X,Y) \ra Mor(X,Z)$ gegeben durch $g
 \mapsto f \circ g$ und
 Hom$(\cd, X)(f): Mor(Z,X) \ra Mor(Y,X),\;g \mapsto g \circ f$
-\item Sei $X$ Menge, $F_X$: Gruppen $\ra$ Mengen, $G \mapsto Abb(X,G) =
-Mor_{Mengen}(X,G)$ (mit Vergißfunktor). Für
-jedes $f:X \ra G$ gibt es $\varphi:F(X) \ra G$ (Satz \ref{Satz 4}) \newline
-Für jedes $f:X \ra G$ gibt es $\varphi: F(X) \ra G$, also Bijektion: $\alpha_G:
-F_X(G) \ra Hom_{Gr}(F(X),G)$
-
-% TODO hab hier noch dastehen G \to G' Homomorphismus, aber wo ist G'???
-
+\item Sei $X$ Menge, $F_X$: \underline{Gruppen} $\ra$ \underline{Mengen}.
+$G \mapsto Abb(X,G) = Mor_{Mengen}(X,G)$ ist kovarianter Funktor (also Komposition des Vergissfunktors und des Homomorphismen-Funktors Hom($X,\cdot$)).
 \end{enumerate}
 }
+
+\begin{Def}
+Sei $\mathcal C$ eine Kategorie, $X,Y$ Objekte in $\mathcal C$. $f\in Mor_{\mathcal C}(X,y)$ heißt \emp{Isomorphismus}, wenn es $g\in Mor_{\mathcal C}(Y,X)$ gibt, so dass $g \circ f = id_X$ und $f \circ g = id_Y$.
 \end{Def}
+
+\begin{Def}
+Seien $\mathcal A$, $\mathcal B$ Kategorien und $F,G:A\to B$ kovariante Funktoren. $F$ und $G$ heißen \emp{isomorph}, wenn es zu jedem Objekt $A\in Ob\mathcal A$ einen Isomorphismus $\alpha_A: F(A) \to G(A)$, also $\alpha_A\in Mor_{\mathcal B}(F(A),G(A))$ gibt, so dass für alle Morphismen $f:A \to A'$ in $\mathcal A$ das folgende Diagramm kommutiert:
+\[
+\begin{CD}
+F(A) @>\alpha_A>> G(A) \\
+@VF(f)VV         @VVG(f)V \\
+F(A') @>>\alpha_{A'}> G(A') 
+\end{CD}
+\]
+Also: $G(f)\circ \alpha_A = \alpha_{A'} \circ F(f)$.
+
+Sind die $\alpha_A$ nur Morphismen (also nicht notwendigerweise Isomorphismen), so heißt $\alpha: F\to G$ eine \emp{natürliche Transformation} von Funktoren.
+\label{funktorisomorphismus}
+\end{Def}
+
+\begin{Prop}
+Sei $X$ eine Menge, $F(X)$ die freie Gruppe mit Basis $X$. Dann sind die Funktoren $F_X$ und $Hom(F(X),\cdot):$ \underline{Gruppen} $\to$ \underline{Mengen} isomorph.
+\end{Prop}
+
+\sbew{
+Nach Satz \ref{Satz 4} gibt es für jede Gruppe $G$ eine bijektive Abbildung $\alpha_G:F_X(G)=Abb(X,C) \to Hom(F(X),\cdot)$, $f\mapsto \varphi = \hat f$. Sei $\rho:G\to G'$ ein Gruppenhomomorphismus. Dann kommutiert:
+\[\begin{CD}
+F_X(G) @>\alpha_G>> Hom(F(X),G) \\
+@VF_X(\rho)VV         @VVHom(F(X),\cdot)(\rho)V \\
+F_X(G') @>>\alpha_{G'}> Hom(F(X),G')
+\end{CD}\]
+Denn für $f\in F_X(G)$ ist $\alpha_G(f)=\hat f$ und $\big((Hom(F(X),\cdot)(\rho)\big)(\hat f) = \rho \circ \hat f$ sowie $F_X(\rho)(\hat f) = \rho \circ f$ und $\alpha_{G'}(\rho \circ f) = \widehat{g\circ f}$. Beides ist \emp{der} eindeutig bestimmte Gruppenhomomorphismus $F(X)\to G'$, der auf $X$ die Abbildung $g\circ f$ ist.
+}
+
+\begin{DefBem}
+\strut
+\begin{enumerate}
+\item Sei $\mathcal C$ eine Kategorie und $F:\mathcal C\to$ \underline{Mengen} ein kovarianter Funktor. Ein Objekt $U\in \mathcal C$ heißt \emp{darstellendes Objekt} für $F$, wenn $F$ isomorph zu $Hom(U,\cdot)$ ist.
+
+Analog gilt das für kontravariante Funktoren, wenn $F$ isomorph zu $Hom(\cdot, U)$ ist.
+\item $F$ heißt \emp{darstellbar}, wenn es ein darstellendes Objekt für $F$ gibt.
+\item Ist $F$ darstellbar, so sind je zwei darstellende Objekte für $F$ isomorph.
+\end{enumerate}
+\end{DefBem}
+
+\sbew{Seien $U$, $W$ darstellende Objekte für $F$. Dann gibt es einen Isomorphismus von Funktoren $\alpha \da h_U \da Hom(U,\cdot) \to Hom(w,\cdot)$, insbesondere also bijektive Abbdilungen $\alpha_U : Mor(U,U) \to Mor(W,U)$ und $\alpha_W: Mor(U,W)\to Mor(W,W)$. Sei $\varphi \da \alpha_U(id_U)$, $\psi \da \alpha_{W}^{-1}(id_W)$. Zu zeigen: $\varphi \circ \psi = id_U$, $\psi \circ \varphi = id_W$.
+
+Das kommutative Diagramm aus Definition \ref{funktorisomorphismus} für den Morphismsu $\psi$ ist:
+\[
+\begin{CD}
+Mor(U,U) @>\alpha_U>> Mor(W,U)\\
+@Vh_U(\psi)VV         @VVh_W(\psi)V \\
+Mor(U,W) @>>\alpha_{W}> Mor(W,W)
+\end{CD}
+\]
+Also gilt 
+\begin{align*}
+id_W &= \alpha_W(\psi) \\
+&= \alpha_W(\psi \circ id_U) \\
+&= (\alpha_W \circ h_U(\psi))(id_U)\\
+&= (h_W(\psi) \circ \alpha_U)(id_U)\\
+&= h_W(\psi)(\varphi) \\
+&= \psi\circ \varphi
+\end{align*}
+und analog folgt $\varphi\circ\psi = id_U$.
+}
 
 \section{Gruppenaktionen und die Sätze von Sylow}
 
@@ -1270,12 +1300,27 @@ F_X(G) \ra Hom_{Gr}(F(X),G)$
             \in X$
         \end{enum}
         
-        \sbew{$gx = \rho(g)(x)$ ergibt die gewünschte Bijektion }
-        \sbsp{0.9}{
+        \sbew{
+Sei $\rho:G\to \operatorname{Perm}(X)$ ein Homomorphismus. Dann erfüllt $G\times X\to X$, $(g,x)\mapsto \rho(g)(x)$ die Eigenschaften (i) und (ii), denn $\rho(e)=id_X$ und $\rho(g_1g_2)(x)=\rho(g_1)(\rho(g_2)(x))$.
+
+Ist umgekehrt $\mu:G\times X\to X$ mit (i), (ii) gegeben, so sei für $g\in G$ die Abbildung $\rho(g):X\to X$ definiert durch $\rho(g)(x)=\mu(g,x)$. $\rho(g)$ ist bijektiv, da $\rho(g^{-1})$ die Umkehrabbildung ist:
+\begin{align*}
+\rho(g^{-1})(\rho(g)(x)) &= \mu (g^{-1},\mu(g,x))\\
+&=g^{-1}\cdot(g\cdotx) \\
+&= (g^{-1}\cdot g)\cdot x\\
+&=e\cdot x\\
+&=x
+\end{align*}
+Dann ist $\rho: G\to \operatorname{Perm}(X)$, $g\mapsto \rho (g)$ wegen (ii) ein Homomorphismus.
+	}
+
+        \bsp{
             \begin{enumerate}
                 \renewcommand{\labelenumi}{(\theenumi)}
                 \item $G \times G \ra G,\; (g_1, g_2) \mapsto g_1 g_2$ 
                 (''Linksmultiplikation'')
+
+		\item $(g,h)\mapsto h\cdot g$ ist keine Gruppenaktion, aber $(g,h)\mapsto hg^{-1}$ ist eine.
 
                 \item $G \times G \ra G,\; (g,h) \mapsto ghg^{-1}$ 
                 (''Konjugation'')
@@ -1289,7 +1334,8 @@ F_X(G) \ra Hom_{Gr}(F(X),G)$
         \item Eine Aktion heißt \emp{effektiv} (oder \emp{treu}), wenn 
         $\Kern(\rho) = \{e\}$. \newline Allgemein heißt $\Kern(\rho)$ 
         \emp{Ineffektivitätskern} (''Nichtsnutz'') der Aktion.
-\newline\sbsp{0.9}{\begin{enumerate}
+
+\bsp{\begin{enumerate}
 \renewcommand{\labelenumi}{(\theenumi)}
 \item ist effektiv
 \item Der Ineffektivitätskern ist das Zentrum $Z(G)$
@@ -1300,15 +1346,14 @@ F_X(G) \ra Hom_{Gr}(F(X),G)$
 von $x$ unter $G$.
 \item $X$ ist disjunkte Vereinigung von $G$-Bahnen.
 
-\sbew{Ist $y \in Gx$, so ist $Gy = Gx$, denn $y=gx \Ra
-\forall h \in G: hy = hgx \in Gx \Ra g^{-1}y = x,\; hg^{-1}y = hx$}
+\sbew{
+Durch $x\sim y \iff \exists g\in G: y=gx$ wird eine Äquivalenzrelation definiert, deren Äquivalenzklassen gerade die $G$-Bahnen sind.
+}
 \item Für $x \in X$ heißt $G_x \defeqr \{ g \in G : gx = x\}$ die
 \emp{Fixgruppe} von $x$ unter $G$. (oder \emp{Stabilisator,
-Isotropiegruppe)}
+Isotropiegruppe})
 \item Für $x \in X,\; g \in G$ ist $G_{gx} = g G_{x} g^{-1}$
 
-\sbew{ Für $h \in G$ gilt: $h \in G_{gx} \lra h(gx) = gx \lra
-g^{-1} h g x = x \lra g^{-1} h g \in G_x$ }
 \end{enum}
 \end{DefBem}
 
@@ -1655,7 +1700,8 @@ ist.
 dh. wenn jedes $x \in R \setminus \{0\}$ invertierbar bzgl. $\cd\;$
 ist.
 \item Ein kommutativer Schiefkörper heißt \emp{Körper}.
-\newline\newline\sbsp{0.9}{ \[H = \{a+bi + cj +dk: a,b,c,d \in R\}\] mit
+
+\bsp{ \[H = \{a+bi + cj +dk: a,b,c,d \in R\}\] mit
 komponentenweiser Addition und folgender Multiplikation: \[ i^2 =
 j^2 = k^2 = -1;\; ij = k = -ji \] (z.B. ist dann $ik = iij = -j,\;
 kj = ijj = i(-1) = -i$ etc.)\newline
@@ -1787,7 +1833,7 @@ $R$. Es ist $a \in (a)$, falls $R$ eine Eins hat.
 ein $a \in R$ gibt mit $I = (a)$
 \item Ein kommutativer Ring mit Eins heißt \emp{Hauptidealring}, wenn
 jedes Ideal in $R$ ein Hauptideal ist.
-\newline \sbsp{0.9}{Sei $I \subseteq \mathbb{Z}$ Ideal, $a \in I$ mit $|a| \leq |b| \forall b
+\bsp{Sei $I \subseteq \mathbb{Z}$ Ideal, $a \in I$ mit $|a| \leq |b| \forall b
 \in I \setminus \{0\}$.
 \newline Beh.: $I=(a)$ \textbf{denn}:
 \newline ''$\supseteq$'' $\chk\;$ ''$\subseteq$'': Sei $b \in I$.
@@ -1967,7 +2013,8 @@ a_0 \in R^x$
 \newline ''$\supseteq$'': Definiere $g = \sum b_i x^i$ rekursiv durch
 $b_0 = a_0^{-1}, b_i \defeqr a_0^{-1} \cd \sum_{k=1}^i (-1)^k
 a_k b_{i-k},\; i \geq 1$. Dann ist $fg = 1$
-\newline\sbsp{0.9}{$i=1:b_i=a_0^{-1}(a_1 b_0$)}
+
+\bsp{0.9}{$i=1:b_i=a_0^{-1}(a_1 b_0$)}
 \end{enumerate}
 }\end{enum}
 \end{DefBem}
@@ -2029,7 +2076,8 @@ Ideal $I'$ in $R$ gibt mit $I \subsetneq I' \subsetneq R$
 
 \item Ein Ideal $I \subsetneq R$ heißt \emp{Primideal}, wenn für $x,y
 \in R$ mit $xy \in I$ gilt: $x \in I$ oder $y \in I$
-\newline\sbsp{0.9}{\begin{enum} \item[(1)]$p$ prim $\lra p \mathbb{Z}$
+
+\bsp{\begin{enum} \item[(1)]$p$ prim $\lra p \mathbb{Z}$
 ist Primideal in $\mathbb{Z}$ (sogar maximal)
 \item[(2)] $(x)$ ist Primideal in $R \llbracket X \rrbracket \lra R$
 ist Körper.\end{enum}}
@@ -2167,7 +2215,7 @@ R$ mit $f = qg + r$ mit $r=0$ oder $\delta(r) < \delta(q)$.
     \end{enum}
 \item Jeder euklidische Ring ist ein Hauptidealring.
 \end{enum}
-\sbsp{1.0}{$\mathbb{Z}$ mit $\delta(a) = |a|, K[X]$ mit $\delta(f)
+\bsp{$\mathbb{Z}$ mit $\delta(a) = |a|, K[X]$ mit $\delta(f)
 =$ Grad($f$)}
 
 \bew{}{\item[(b)] \OE sei $\delta(a) \geq
@@ -2521,7 +2569,7 @@ die Behauptung.
 $c_s$ durch $p$ teilbar, also auch $b_r c_s = a_n \blitza$
 }
 
-\sbsp{1.0}{$f = X^2 - 5 \in \mathbb{Z}[X]$ und
+\bsp{$f = X^2 - 5 \in \mathbb{Z}[X]$ und
 $\begin{array}{ll} p = 2 & \bar f = X^2 -1 = (X-1)^2\\
                    p = 5 & \bar f = X^2 \\
                    p = 3 & \bar f = X^2 + 1 \in \mathbb{F}_3[X]
@@ -2620,7 +2668,7 @@ alle $a,b \in R,\; x,y\in M$ gilt:
 \item[(iii)] $(ab)x = a(bx)$
 \item[(iv)] $ 1x = x$
 \end{enumerate}
-\sbsp{0.9}{\begin{enumerate}
+\bsp{\begin{enumerate}
 \item[(1)] $R$ ist $R$-Modul. (mit $\cd$ als Ringmultiplikation)
 \item[(2)] Ist $R$ ein Körper, so ist $R$-Modul = $R$-Vektorraum.
 \item[(3)] $R=\mathbb{Z}$, $M = \mathbb{Z}/2\mathbb{Z} = \{\bar 0,
