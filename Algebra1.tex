@@ -33,6 +33,7 @@
 \usepackage{amsthm}
 \usepackage{amscd}
 \usepackage{mathtools}
+\usepackage{faktor}
 
 \usepackage{graphicx}
 
@@ -1713,11 +1714,73 @@ mit abelschen Faktorgruppen besitzt.
 \item Eine endliche Gruppe ist genau dann auflösbar, wenn die
 Faktoren in ihrer Kompositionsreihe zyklisch von Primzahlordung
 sind.
-\item Sei $1 \ra G' \ra G \ra G'' \ra 1$ kurze exakte Sequenz von Gruppen.
-Dann gilt: \newline$G$ auflösbar $\lra G'$ und $G''$ auflösbar.
+
+\sbew{
+„$\impliedby$“: Klar
+
+„$\implies$“: Sei
+\[
+G=G_0\triangleright G_1 \triangleright\cdots\triangleright G_m=\{1\}
+\]
+eine Normalreihe mit $G_i/G_{i+1}$ abelsch für $i=0,\ldots,m-1$. Verfeinere sie zur Kompositionsreihe
+\[
+G= G_0 = H_{0,0} \triangleright H_{0,1} \triangleright \cdots H_{0,d_0} = G_1 = H_{1,0} \triangleright \cdots \triangleright H_{1,d_1} = G_2 \cdots G_m = \{1\}
+\]
+Dabei ist 
+\[
+\faktor{H_{i,j}}{H_{i,j+1}} \cong \faktor{ H_{i,j}/G_{i+1} }{ H_{i,j+1}/H_{i+1}} \subseteq \faktor{ G_i/G_{i+1} }{ H_{i,j+1}/H_{i+1}} 
+\]
+also ist $H_{i,j}/{H_{i,j+1}}$ kongruent zu einer Untergruppe einer Faktorgruppe einer abelschen Gruppe, also selbst auch abelsch.
+}
 \end{enum}
 \end{DefBem}
 
+\bsp{
+\begin{itemize}
+\item $D_n = \{ 1, \tau, \ldots, \tau^{n-1}, \sigma, \sigma\tau, \sigma\tau^{n-1}\} \triangleright \{1, \tau, \ldots, \tau^{n-1}\} \cong \mathbb Z / n\mathbb Z \triangleright \{1\}$, also ist $D_n$ auflösbar.
+\item Für $n\ge 5$ ist $S_n \triangleright A_n \triangleright \{1\}$ Kompositionsreihe, also ist $S_n$ nicht auflösbar.
+\end{itemize}
+}
+
+\begin{Prop}
+Sei $1 \ra G' \ra G \ra G'' \ra 1$ kurze exakte Sequenz von Gruppen, das heißt: $G'$ ist Normalteiler zu $G$ und $G'' = G/G'$.
+Dann ist $G$ auflösbar genau dann, wenn $G'$ und $G''$ auflösbar sind.
+\end{Prop}
+
+\sbew{
+„$\implies$“: Sei
+\[
+G=G_0\triangleright G_1 \triangleright\cdots\triangleright G_m=\{1\}
+\]
+eine Normalreihe mit $G_i/G_{i+1}$ abelsch für $i=0,\ldots,m-1$. Dann ist 
+\[
+G'=G_0\cap G'\triangleright G_1\cap G' \triangleright\cdots\triangleright G_m\cap G'=\{1\}
+\]
+nach Weglassen von Wiederholungen eine Normalreihe für $G'$. Die Faktorgruppen
+\[
+\faktor{ G_i \cap G' }{ G_{i+1} \cap G'} \cong \faktor{ G_{i+1} \cdot (G_i \cap G')}{G_{i+1}} \subseteq \faktor{G_i}{G_{i+1}}
+\]
+sind abelsch.
+\[
+G''=G_0/(G_0\cap G')\triangleright G_1/(G_1\cap G') \triangleright\cdots\triangleright G_m/(G_m\cap G')=\{1\}
+\]
+ist ebenso nach Weglassen von Wiederholungen eine Normalreihe für $G''$ mit abelschen Faktorgruppen.
+
+
+„$\impliedby$“: Ist
+\[
+G' = G_0 \triangleright G_1 \triangleright\cdots\triangleright G_m = \{1\}
+\]
+eine Normalreihe für $G'$ mit abelschen Faktoren, 
+\[
+G'' = H_0 \triangleright H_1 \triangleright\cdots\triangleright H_n = \{1\}
+\]
+eine solche für $G''$ und $\pi : G\to G/G'=G''$ die Restklassenabbildung, dann ist
+\[
+G = \pi^{-1}(H_0) \triangleright \pi^{-1}(H_1) \triangleright \cdots \triangleright \pi^{-1}(H_n) = G_0 \triangleright G_1\triangleright \cdots\triangleright G_m = \{1\}
+\]
+eine Normalreihe für $G$, da $\pi^{-1}(H_{i+1})$ Normalteiler in $\pi^{-1}(H_i)$ ist und $\pi^{-1}(H_i)/\pi^{-1}(H_{i+1}) \cong H_i/H_{i+1}$ abelsch ist.
+}
 
 
 \chapter{Ringe}
@@ -1743,22 +1806,31 @@ $\cd$, so daß gilt:
 \item $R$ heißt \emp{Ring mit Eins}, wenn $(R,\cd)$ Monoid ist.
 \item $R$ heißt \emp{kommutativer Ring}, wenn $(R,\cd)$ kommutativ
 ist.
-\item $R$ heißt \emp{Schiefkörper}, wenn $R^x = R \setminus \{0\}$,
+\item Ein Ring $R$ mit Eins heißt \emp{Schiefkörper}, wenn $R^x = (R,\cdot)^\times = R \setminus \{0\}$,
 dh. wenn jedes $x \in R \setminus \{0\}$ invertierbar bzgl. $\cd\;$
 ist.
+\bsp{
+\[
+\mathbb H \da \{
+\begin{pmatrix}
+w & z \\ -\bar z & \bar w
+\end{pmatrix}, w,z \in \mathbb C\}
+\]
+ist ein Schiefkörper, genannt die \emp{Hamilton-Quaternionen}.
+}
 \item Ein kommutativer Schiefkörper heißt \emp{Körper}.
 
-\bsp{ \[H = \{a+bi + cj +dk: a,b,c,d \in R\}\] mit
-komponentenweiser Addition und folgender Multiplikation: \[ i^2 =
-j^2 = k^2 = -1;\; ij = k = -ji \] (z.B. ist dann $ik = iij = -j,\;
-kj = ijj = i(-1) = -i$ etc.)\newline
-
-\textbf{Es gilt}: $H$ ist Schiefkörper (\emp{Hamilton-Quaternionen})
-
-\[\ds (a+bi+cj+dk)(a-bi-cj-dk) =\] \[a^2 - abi - acj -adk + abi + b^2
-+ \dots + c^2 + d^2 = a^2 + b^2 + c^2 + d^2\] \[\Ra
-\frac{1}{a+bi+cj+dk} = \frac{a}{a^2+b^2 +c^2+d^2} + \frac{b}{\sum}
-+\frac{c}{\sum} + \frac{d}{\sum}\;\hfill((a,b,c,d) \neq (0,0,0,0)) \] }
+%  \bsp{ \[H = \{a+bi + cj +dk: a,b,c,d \in R\}\] mit
+%  komponentenweiser Addition und folgender Multiplikation: \[ i^2 =
+%  j^2 = k^2 = -1;\; ij = k = -ji \] (z.B. ist dann $ik = iij = -j,\;
+%  kj = ijj = i(-1) = -i$ etc.)\newline
+%  
+%  \textbf{Es gilt}: $H$ ist Schiefkörper (\emp{Hamilton-Quaternionen})
+%  
+%  \[\ds (a+bi+cj+dk)(a-bi-cj-dk) =\] \[a^2 - abi - acj -adk + abi + b^2
+%  + \dots + c^2 + d^2 = a^2 + b^2 + c^2 + d^2\] \[\Ra
+%  \frac{1}{a+bi+cj+dk} = \frac{a}{a^2+b^2 +c^2+d^2} + \frac{b}{\sum}
+%  +\frac{c}{\sum} + \frac{d}{\sum}\;\hfill((a,b,c,d) \neq (0,0,0,0)) \] }
 
 \item In jedem Ring gilt:
 \[\left. \begin{array}{l}
@@ -1784,6 +1856,11 @@ ist. umgekehrt heißt $R$ dann \emp{Ring\-erweiterung} von $R'$.
 \item $I \subseteq R$ heißt (zweiseitiges) \emp{Ideal}, wenn $(I,+)$
 Untergruppe von $(R,+)$ ist und $rx \in I, xr \in I$ für alle $x \in
 I, r \in R$.
+
+\bsp{
+In $R=\mathbb Z$ sind $n\mathbb Z$ für jedes $n\in \mathbb Z$ Ideale. In $R=\mathbb Q$ dagegen sin diese für $n\ne 0$ keine Ideale.
+}
+
 \item $x\in R$ heißt (Links-/Rechts-)\emp{Nullteiler}, wenn es ein
 $y \in R \setminus \{0\}$ gibt mit $xy = 0$. (bzw. $yx = 0$)
 \item $R$ heißt \emp{nullteilerfrei}, wenn $0$ der einzige
@@ -1794,6 +1871,22 @@ nullteilerfrei und kommutativ ist und eine Eins besitzt.
 \end{enum}
 \end{Def}
 
+\begin{DefBem}
+Sei $R$ ein kommutativer Ring.
+\begin{enum}
+\item Für $a$ ist $(a) \da a \cdot R = \{a \cdot r, r\in R\}$ ein Ideal in $R$.
+\item Ein Ideal $I$ in $R$ heißt \emp{Hauptideal}, wenn es ein $a\in R$ gibt mit $I=(a)$.
+\item $R$ heißt \emp{Hauptidealring}, wenn jedes Ideal in $R$ ein Hauptideal ist.
+\item $\mathbb Z$ ist ein Hauptidealring.
+\item Sei $R$ ein kommutativer Ring mit Eins, $R\ne \{0\}$. Dann ist $R$ ein Körper genau dann, wenn $(0)$ und $R$ die einzigen Ideale in $R$ sind.
+\sbew{''$\Ra$'' Sei $ I \subset R$ Ideal, $a \in I
+\setminus \{0\} \Ra$ es gibt $a^{-1} \in R \Ra 1 = a a^{-1} \in I
+\Ra I = R\;(x \in R \Ra x = 1x)$
+\newline ''$\Leftarrow$'' Sei $a \in R \setminus\{0\} \Ra (a) = R \Ra
+\exists b \in R : ab =1$ }
+\end{enum}
+\end{DefBem}
+  
 \begin{DefBem}
 \begin{enum}
 \item Eine Abbildung $\varphi: R \ra R'$ ($R,R'$ Ringe) heißt
