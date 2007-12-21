@@ -2510,7 +2510,7 @@ nicht als Produkt von irreduziblen Elementen darstellbar ist.
 \newline Sei $x$ Störenfried. Dann ist $x \not \in R^x$ und $x$
 nicht irreduzibel, also $x = x_1 y_1$ mit $x_1,y_1 \not \in R^x$.
 \newline \OE sei $x_1$ Störenfried (sonst ist $x$
-doch Produkt von irredziblen Elementen). Also $x_1 = x_2y_2,\; x_2,
+doch Produkt von irreduziblen Elementen). Also $x_1 = x_2y_2,\; x_2,
 y_2 \not \in R^x$.
 \newline \OE sei $x_2$ Störenfried. Induktiv erhalten
 wir $x,x_1,x_2,\dots$ alles Störenfriede mit $(x) \subset (x_1)
@@ -2519,6 +2519,51 @@ wir $x,x_1,x_2,\dots$ alles Störenfriede mit $(x) \subset (x_1)
 $\chk \Ra$ \newline Es gibt $a \in R$ mit $I = (a) \Ra \exists i$
 mit $a \in (x_i) \Ra x_j \in (x_i)$ für alle $j>i \blitzb$ }
 \end{Satz}
+
+\begin{Bem}
+Sei $R$ ein faktorieller Ring, $\mathcal P$ ein Vertretersystem der Primelemente $\ne 0$. Für $x\in R\setminus\{0\}$ sei $x=e\prod_{p\in\mathcal P}p^{\nu_p(x)}$ die eindeutige Darstellung, also $e\in R^\times$, $\nu_p(x)\in \mathbb N$, $\nu_p(x)\ne 0$ nur für endlich viele $p\in \mathcal P$. Dann gilt für jedes $p\in\mathcal P$:
+\begin{enum}
+\item $\nu_p(x)=n \iff p^n\mid x$ und $p^{n+1}\mid x$
+\item Die Abbildung $\nu_{p}\to \mathbb N$ erfüllt
+\begin{enumerate}
+\item[(i)] $\nu_p(x\cdot y) = \nu_p(x) + \nu_p(y)$
+\item[(ii)] $\nu_p(x+y) \ge \min(\nu_p(x), \nu_p(y))$, falls $x+y\ne 0$
+\end{enumerate}
+\item Sei $\rho\in \mathbb R$, $0<\rho<1$. Dann ist die Abbildung $|\cdot|_\rho:R\to \mathbb R$,
+\[
+|x|_\rho = 
+\begin{cases}
+\rho^{\nu_p(x)}, & x \ne 0\\
+0 & x = 0
+\end{cases}
+\]
+ein „nichtarchimedischer Betrag“ auf $R$, d.h. $|x\cdot y|_\rho = |x|_\rho \cdot |y|_\rho$ und $|x+y|_\rho \le \max(|x|_\rho, |y|_\rho)$.
+\item $d_\rho(x,y) = |x-y|_\rho$ ist eine Metrik auf $R$.
+\end{enum}
+\end{Bem}
+
+\bsp{
+$R=\mathbb Z$, $\mathcal P = \{p\in\mathbb N_{>0}, p$ Primzahl$\}$. $\nu_p$ ist die \emp{$p$-adische Bewertung} und $|\cdot|_{\frac1p}$ ist der \emp{$p$-adische Betrag} auf $\mathbb Z$ (und $\mathbb Q$).
+}
+
+\begin{Satz}[Irreduzibilitätskriterium für Polynome]
+Sei $R$ ein faktorieller Ring, $p\in \mathcal P$, $f = \sum_{i=0}^n a_i X^i \in R[X]$ mit $a_n \neq 0$, $\operatorname{ggT}(a_0,\ldots,a_n)=1$, $p\nmid a_n$.
+\begin{enum}
+\item (Eisenstein) Ist $n>0$, $p\mid a_i$ oder $a_i=0$ für $i=0,\ldots,n-1$, $p^2\nmid a_0\ne 0$, so ist $f$ irreduzibel.
+\end{enum}
+\end{Satz}
+
+\bew{Sei $f = gh$ mit $\ds g=\sum_{i=0}^r b_i X^i$, $\ds h =
+\sum_{i=0}^s c_i X^i$ $b_r \neq 0 \neq c_s \Ra n=r+s,\;a_n = b_r
+c_s$, $a_0 = b_0 c_0 \Ra p \nmid b_r$, $p \nmid c_s$}{
+\item \OE $p
+\mid b_0$, $p \nmid c_0$.
+\newline Sei $t$ maximal mit $p \mid b_i$ für $i=0,\dots,t$
+\newline Dann ist $0 \leq t \leq r-1$ und
+\[ \underset{\not \in (p)}{\underbrace{a_{t+1}}} = \underset{\not \in
+(p)}{\underbrace{b_{t+1} \cd c_0 }} + \underset{\in
+(p)}{\underbrace{\sum_{i=0}^t b_i c_{t+1-i}}}\notin (p)\] $\Ra t+1 = n
+\Longrightarrow r =n \Ra s= 0 \Ra f=c_0\cdot g$, nach Voraussetzung ist dann $c_0\in R^\times$.}
 
 \section{Brüche}
 
@@ -2661,22 +2706,6 @@ X^i$ und $p \in \mathcal{P}$ sei $\nu_p(f) \defeqr
 \in \mathcal{P}$
 \end{Def}
 
-\begin{Satz}[Irreduzibilitätskriterium von Eisenstein]
-Sei $R$ faktoriell: $\ds f = \sum_{i=0}^n a_i X^i \in R[X]$
-primitiv mit $a_n \neq 0$, weiter sei $p \in \mathcal{P}$ $p \nmid a_n,\;p \mid a_i$ für $i=0,\dots,n-1$, $p^2 \nmid a_0$. Dann ist $f$
-irreduzibel.
-
-\sbew{Sei $f = gh$ mit $\ds g=\sum_{i=0}^r b_i X^i$, $\ds h =
-\sum_{i=0}^s c_i X^i$ $b_r \neq 0 \neq c_s \Ra n=r+s,\;a_n = b_r
-c_s$, $a_0 = b_0 c_0 \Ra p \nmid b_r$, $p \nmid c_s$ und (\OE) $p
-\mid b_0$, $p \nmid c_0$.
-\newline Sei $t$ maximal mit $p \mid b_i$ für $i=0,\dots,t$
-\newline Dann ist $0 \leq t \leq r-1$ und
-\[ \underset{\not \in (p)}{\underbrace{a_{t+1}}} = \underset{\not \in
-(p)}{\underbrace{b_{t+1} \cd c_0 }} + \underset{\in
-(p)}{\underbrace{\sum_{i=0}^t b_i c_{t+1-i}}}\notin (p)\] $\Ra t+1 = n
-\Longrightarrow r =n \Ra s= 0 \Ra \blitzb$ }
-\end{Satz}
 
 \begin{Bspe}
 \label{Bsp 2.27}
