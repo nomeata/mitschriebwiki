@@ -240,7 +240,14 @@ Definiere rekursiv eine "`Umordnung"' $(b_k)_{k\ge 1}$ von $a_k = (-1)^{k+1}\fra
 \noindent Setze: $m = 1$: $b_1 \da 1$, $b_2 \da -\frac{1}{2}$ \folgt $b_1 + b_2 \ge \frac{1}{4}$\\
 $m = 2$: $b_3 \da \frac{1}{3}$, $b_4 \da \frac{1}{5}$, $b_5 \da -\frac{1}{4} \folgt b_3 + b_4 + b_5 \ge \frac{1}{2}$\\
 
-\noindent Definiert seien $b_{n_m} = -\frac{1}{2m}$ für ein \nat{m} mit $m\ge 2$ ...
+\noindent Definiert seien $b_{n_m} = -\frac{1}{2m}$ für ein \nat{m} mit $m\ge 2$, sowie 
+\[b_{n_{m-1}+1} = \frac{1}{2 l_{m+1} +1}, \dotsc, b_{n_{m}-1} = \frac{1}{2l_m -1}\] 
+für ein \nat{l_m}. Da $\sum_{k\ge l_m} \frac{1}{2k+1}$ divergiert (Übung) finden wir ein \nat{j}
+\[b_{n_m +1} = \frac{1}{2l_m +1}, \dotsc, b_{n_m + j} = \frac{1}{2l+j},\] 
+sodass: $b_{n_m+1} + \dotsb + b_{n_m + j} \ge \frac{1}{4} + \frac{1}{2m+2}.$\\
+
+\noindent Setze $n_{m+1} = n_m + j +1$ und $b_{n_{m+1}} = -\frac{1}{2m+2}$
+\folgt erhalten rekursiv $(b_k)_{k\ge 1}$ mit \[\sum_{k=1}^{n_m +1} b_n \ge (m+1)\frac{1}{4} \ra \infty,\quad (m\ra\infty)\]
 \end{bsp}
 
 \paragraph{Fazit.} $\sum_{k\ge 0}a_k$ divergiert, \emph{obwohl} die Reihe $\sum_{k=1}^\infty a_k$ mit
@@ -324,24 +331,22 @@ Dann:
 	\sum_{(j,k)\in Q_n\backslash Q_{(\frac{n}{2})}} \abs{a_j}\abs{b_k} \\
 	&= \sum_{(j,k)\in Q_n} \abs{a_j}\abs{b_k} - \sum_{(j,k)\in Q_{(\frac{n}{2})}} \abs{a_j}\abs{b_k}\\
 	&= A_n^*B_n^* - A_{(\frac{n}{2})}^*B_{(\frac{n}{2})}^*
+	%& \ra A^*B^*\text{ nach Satz~\ref{satz:konv.greg}} &\ra A^*B^*\quad(\ninf) %TODO
 \end{align*}
-
-...
-
 \[\folgt \exists\lim_{\ninf} \abs{A_nB_n - C_n} = 0\]
 
 Da $A_nB_n \ra AB (\ninf)$, folgt $\exists\sum_{n=0}^\infty C_n - AB \folgt$ (\ref{eqn:reihen.cauchy-prod}).
 Ferner: \[\sum_{n=0}^N \abs{c_n} \nach{\le}{(\ref{eqn:reihen.diag-summe})}
 \sum_{n=0}^N\sum_{j=0}^n \abs{a_j}\abs{b_{n-j}} \le %s.o.
-A_N^*B_n^* \le A^*B^*\] für alle \nat{N}. Nach Satz \ref{satz:reihen.beschr-gwert} folgt die absolute Konvergenz von $\sum c_n$
+A_N^*B_N^* \le A^*B^*\] für alle \nat{N}. Nach Satz \ref{satz:reihen.beschr-gwert} folgt die absolute Konvergenz von $\sum c_n$
 \end{proof}
 
 \begin{bsp}[Exponentialreihe]\label{bsp:reihen.expon-reihe}
 Sei $z$, \kmplx{w}, $\exp(z) \da \sum_{k=0}^\infty \frac{z^k}{k!}$.
 Die Reihe konvergiert absolut nach Bsp.~\ref{bsp:reihen.quot-krit} ($\forall \kmplx{z}$).
-Beachte: $\exp(0) = 1$, $\exp(1) = \mathrm{e}$ (Bsp.~\ref{bsp:reihen.wurzel-krit})
+Beachte: $\exp(0) = 1$, $\exp(1) = \mathrm{e}$ (Bsp.~\ref{bsp:reihen.wurzel-krit})\\
 
-Beh.
+\noindent\emph{Behauptung:}
 \begin{enumerate}
 \item $\exp(z+w) = \exp(z)\exp(w)$\label{bsp:reihen.expon-reihe.a}
 \item $\exp(z) \neq 0, \exp(-z) = \frac{1}{\exp(z)}$\label{bsp:reihen.expon-reihe.b}
@@ -355,8 +360,8 @@ Beh.
 = \exp(z+w)\]
 \item $1 = \exp(0) = \exp(z-z) \nach{=}{a)} \exp(z)\exp(-z) \folgt$ b)
 \item Sei $p = \frac{m}{n}$, $m\in\set{Z}$. \nat{n}. Dann gilt für $m > 0$ 
-\[\exp(p)^n = \underbrace{\exp(p)\cdot\dotsm\cdot\exp(p)}_{\text{$n$-mal}} \nach{=}{a)} \exp(np) [FIXME] 
-= \exp(\underbrace{1+\dotsb+1}_{\text{$m$-mal}}) \nach{=}{a)} \mathrm{e}^m\]
+\[\exp(p)^n = \underbrace{\exp(p)\cdot\dotsm\cdot\exp(p)}_{\text{$n$-mal}} \nach{=}{a)} \exp(\underbrace{np}_m)
+= \exp(\underbrace{1+\dotsb+1}_{\text{$m$-mal}}) = \exp(1)^m =\mathrm{e}^m\]
 $\folgt \exp(p) = \mathrm{e}^{\frac{m}{n}}$. Fall $m < 0$ mit b).
 \end{enumerate}
 \end{proof}
@@ -494,15 +499,14 @@ cos genauso.
 \begin{satz}
 Sei \kmplx{z}. Dann gelten:
 \[\text{Euler: }\exp(iz) = \cos(z) + i\sin(z), \quad (\cos z)^2 + (\sin z)^2 = 1\] % FIXME, Euler nur erste Formel
-
 \begin{equation}\label{eqn:reihen....}
 \cos z = \frac{1}{2}(\exp(iz) + \exp(-iz)),\quad \sin z = \frac{1}{2i}(\exp(iz) - \exp(-iz))
 \end{equation}
-
-...
+Für \reell{x} folgt mit (\ref{eqn:reihen.reell-sincos}) $\Re \exp(ix) = \cos x$, $\Im \exp(iz) = \sin x$, 
+$\abs{\exp(iz)} = 1$, $\abs{\cos x}$, $\abs{\sin x} \le 1$.
 \end{satz}
 \begin{proof}
-...
+Es gilt: $\exp(iz) = $
 \end{proof}
 
 \begin{kor}
