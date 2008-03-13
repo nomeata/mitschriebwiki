@@ -16,7 +16,15 @@
 
 \setcounter{chapter}{-1}
 \chapter{Vorbemerkungen}
-...
+\label{cha:vor}
+
+\section{Bezeichnungen}
+\label{sec:vor.bezeichnungen}
+TODO
+
+\section{Vollständige Induktion}
+\label{sec:vor.vollstInd}
+TODO
 
 \chapter{Reelle und komplexe Zahlen}
 \label{cha:zahlen}
@@ -390,7 +398,250 @@ Lineare Algebra: $(\set{C},0,1,+,\cdot)3$ ist ein Körper.
 \end{proof}
 
 \chapter{Konvergenz von Folgen}
-...
+\label{cha:konv}
+
+\section{Einfache Eigenschaften}
+\label{sec:konv.eigenschaften}
+\begin{dfn}
+\label{dev:konv.folge}
+Eine Abbildung $A: \set{N} \ra \set{C}$ heißt \emph{Folge}. Man schreibt $a_n$ statt $A(n)$ für \nat{n} und $(a_n)_{n\ge1}$ oder $(a_n)$ statt $A$. Wenn $\reell{a_n}\,\forall \nat{n}$, so heißt $(a_n)$ \emph{reelle Folge}.
+\end{dfn}
+
+\begin{dfn}
+\label{dfn:konv.konv}
+Seien $(a_n)$ eine Folge und \kmplx{a}. $(a_n)$ \emph{konvergiert} gegen $a$, wenn es zu jeden $\ep>0$ ein $\nat{N_\ep}$ gibt, sodass $\abs{a_n-a}\le\ep$ für alle $n\ge N_\ep$, wobei $\nat{n}$, also 
+\[\forall\ep>0\,\exists \nat{N_\ep}\,\forall n\ge N_\ep:\abs{a_n-a}\le\ep.\]
+$a$ heißt dann \emph{Grenzwert} (oder \emph{Limes}) von $(a_n)$ und man schreibt "`$a = \lim_{\ninf}a_n$"' oder "`$a_n \to a$ für $n \to \infty$"'. Wenn $(a_n)$ keinen Grenzwert hat, so heißt $(a_n)$ \emph{divergent} (div.).
+\end{dfn}
+
+\begin{bem*}
+$\abs{a_n-a}\le\ep \gdw a_n \in \abg{B}(a,\ep) \gdw $ Abstand von $a_n$ und $a$ ist kleiner als $\ep$
+\end{bem*}
+
+\begin{bem*}
+Wenn $a_n \to 0$ für $\ninf$, dann heißt $(a_n)$ Nullfolge (NF). Somit $a_n \to a$ für $\ninf \gdw \left(\abs{a_n-a}\right)_{n\ge1}$ ist Nullfolge.
+\end{bem*}
+
+\begin{bsp}
+\label{bsp:konv.konv}
+(Sei stets \nat{n})
+\begin{enumerate}
+\item Sei \kmplx{z} und $a_n = z \,\forall n$.\\
+\emph{Behauptung.} $a_n\to z$ (\ninf).
+\begin{proof} Sei $\ep>0$ beliebig gegeben. Wähle $N_\ep=1$. Sei $n \ge N_\ep=1$. Dann $\abs{a_n-z}=0<\ep$. \end{proof}
+\item Sei $p\in\set{Q}$ mit $p>0$ und $a_n=n^{-p}$, also $\left(a_n\right)=(1,\frac{1}{2^p},\frac{1}{3^p}, \ldots)$.\\
+\emph{Behauptung.} $a_n\to0$ (\ninf) (speziell für $p=1$: $\frac{1}{n}\to0$ (\ninf).
+\begin{proof} Sei $\ep>0$ beliebig gegeben. Wähle $\nat{N_\ep}$ mit $N_\ep\ge\ep^{-\frac{1}{p}}$ ($N_\ep$ existiert nach Satz~\ref{satz:zahlen.arch-ord}). Sei $n\ge N_\ep$. Dann:
+\[\abs{a_n-0}=n^{-p} \nach{\le}{\ref{satz:zahlen.potenzen}\ref{satz:zahlen.potenzen.d}} N_\ep^{-p} \nach{\le}{\ref{satz:zahlen.potenzen}\ref{satz:zahlen.potenzen.d}} \left(\ep^{-\frac{1}{p}}\right)^{-p}=\ep.\]
+\end{proof}
+\item Sei $a_n=(-1)^n$.\\
+\emph{Behauptung.} Diese Folge ist divergent.
+\begin{proof} Zu zeigen: $\forall \kmplx{a}\,\exists \ep_a>0 \,\forall \nat{N} \,\exists n=n_{a,N}\ge N: \abs{a_N-a}>\ep_a$.\\
+1. Fall: $a=1$. Wähle $\ep_1=1$. Sei $\nat{N}$ gegeben. Sei $n \ge N$ ungerade. Dann $\abs{a_n-a}=\abs{-1-1}=2>1=\ep_1$.\\
+2. Fall: $a=-1$ genauso.\\
+3. Fall: $\kmplx{a}\backslash\{-1,1\}$. Wähle $\ep_a=\frac12\min\{\abs{1-a},\abs{-1-a}\}>0$. Sei $\nat{N}$ gegeben. Wähle $n=N$. Dann \[\abs{a_n-a}=\begin{cases} \abs{1-a}, & \text{wenn }n\text{ gerade}\\ \abs{-1-a}, & \text{wenn }n\text{ ungerade} \end{cases}\ >\ep_a.\] \end{proof}
+\end{enumerate}
+\end{bsp}
+
+\begin{satz}
+\label{satz:konv.konv}
+Die Folge $(a_n)$ konvergiere gegen $\kmplx{a}$. Dann gelten:
+\begin{enumerate}
+\item $(a_n)$ ist beschränkt, d.h. $\exists M\ge0: \abs{a_n}\le M, \,\forall \nat{n}$. \label{satz:konv.konv.a}
+\item Wenn $a_n \to b$ für $\ninf$ und $\kmplx{b}$, dann $a=b$. \label{satz:konv.konv.b}
+\end{enumerate}
+\end{satz}
+\begin{proof}
+\begin{enumerate}
+\item Wähle $\ep=1$. Nach Def.~\ref{dfn:konv.konv} gibt es $\nat{N}$ mit $\abs{a_n-a}\le1,\,\forall n\ge N$
+\begin{align*}
+&\folgt \abs{a_n}=\abs{a_n-a+a} \nach{\le}{$\triangle$-Ungl.} \abs{a_n-a}+\abs{a} \le 1+\abs{a},\,\forall n\ge N\\
+&\folgt \abs{a_n} \le \max \{1+\abs{a},\abs{a_1},\abs{a_2},\dotsc,\abs{a_{N-1}}\} =: M,\,\forall \nat{n}.
+\end{align*}
+\item Sei $\ep>0$ gegeben. Nach Vorraussetzung und Def. \ref{dfn:konv.konv} existieren $\nat{N_{\ep,\,a}}$ und $\nat{N_{\ep,\,b}}$, sodass $\abs{a_n-a}\le\ep\,\forall n\ge N_{\ep,\,a}$ und $\abs{a_n-b}\le\ep\,\forall n\ge N_{\ep,\,b}$. Setze $N_\ep=\max \{N_{\ep,\,a},\,N_{\ep,\,b}\}$. Dann 
+\[0\le\abs{a-b}=\abs{a-a_n+a_n-b}\nach{\le}{$\triangle$-Ungl.}\abs{a-a_n}+\abs{a_n-b}\le2\ep\]
+(nach obiger Abschätzung). Da $\ep>0$ beliebig war, folgt $\abs{a-b}=0$, also $a=b$ (siehe Satz~\ref{satz:zahlen.arch-ord}\ref{satz:zahlen.arch-ord.c})
+\end{enumerate}
+\end{proof}
+
+\begin{bsp}
+\label{bsp:konv.konv.a}
+Sei $p\in\set{Q}$ mit $p>0$ und $a_n=n^p$ für $\nat{n}$.\\
+\emph{Behauptung.} $(a_n)$ ist unbeschränkt, also divergent nach Satz~\ref{satz:konv.konv}\ref{satz:konv.konv.a}
+\begin{proof} Ann.: Es existiere ein $M\ge0$ mit $a_n=n^p\le M,\,\forall \nat{n} \folgtnach{\ref{satz:zahlen.potenzen}\ref{satz:zahlen.potenzen.d}} n\le M^{\frac1p}\,\forall \nat{n}$ \folgt $\blitz$ Satz~\ref{satz:zahlen.arch-ord} \end{proof}
+\end{bsp}
+
+\begin{bem}
+\label{bem:konv.konv-c-n0}
+\begin{enumerate}
+\item Sei $\left(a_n\right)_{n\ge1}$ eine Folge. Es gebe ein $\kmplx{a}$ und eine Konstante $c>0$, sodass:
+\begin{equation}\label{eqn:konv.konv-c-n0.sternchen}
+\forall\ep>0\,\exists \nat{N_\ep}\,\forall n\ge N_\ep:\abs{a_n-a}\le c\ep
+\tag{$*$}
+\end{equation}
+\emph{Behauptung.} Dann $a_n \to a$ für $\ninf$.\\
+\begin{proof} Setze $\eta=c\ep \gdw \ep=\frac \eta c$. Setze $N_\eta=N_\ep$. Dann liefert (\ref{eqn:konv.konv-c-n0.sternchen}):
+\[\forall\eta>0\,\exists \nat{N_\eta}\,\forall n\ge N_\eta:\abs{a_n-a}\le \eta\]
+\end{proof}
+Vorsicht: $c$ darf \emph{nicht} von $n$, $\ep$ abhängen! \label{bem:konv.konv-c-n0.a}
+\item Für $n_0\in\set{Z}$ setze $J(n_0)=\{n\in\set{Z}:n\ge n_0\}$. Eine Abbildung $A: J(n_0)\ra\set{C}$ bezeichnet man auch als Folge. Man schreibt wieder $a_n$ statt $A(n)$ und $\left(a_n\right)_{n\ge n_0}$ statt $A$. Die Konvergenz von $\left(a_n\right)_{n\ge n_0}$ definiert man wie in Def.~\ref{dfn:konv.konv}, wobei man zusätzlich $N_\ep\ge n_0$ fordert. Indem man $b_n:=a_{n+n_0-1}$ für $\nat{n}$ setzt, erhält man eine Folge $\left(b_n\right)_{n\ge1}$ mit Indexbereich $J(n_0)$. Offenbar konvergiert $\left(a_n\right)_{n\ge n_0}$ genau dann, wenn $\left(b_n\right)_{n\ge1}$ konvergiert, und die jeweiligen Grenzwerte sind gleich. Somit können wir uns weiterhin auf den Fall $n_0=1$ beschränken. \label{bem:konv.konv-c-n0.b}
+\end{enumerate}
+\end{bem}
+
+\begin{satz}
+\label{satz:konv.greg}
+Seien $\left(a_n\right)_{n\ge1}$ und $\left(b_n\right)_{n\ge1}$ Folgen und $a, b \in \set{C}$. Es gelte $a_n \to a$ und $b_n \to b$ für $\ninf$. Dann:
+\begin{enumerate}
+\item $a_n+b_n \to a+b$ für $\ninf$ \label{satz:konv.greg.a}
+\item $a_n \cdot b_n \to ab$ für $\ninf$ (speziell $ab_n \to ab$ für $\ninf$)\label{satz:konv.greg.b}
+\item Wenn $a\ne0$, dann existiert ein $\nat{N}$, sodass $a_n\ne0$ für alle $n \ge N$ und es gilt $\frac{1}{a_n}\to\frac{1}{a}$ für $\ninf$ ($n\ge N$). \label{satz:konv.greg.c}
+\end{enumerate}
+\end{satz}
+\begin{proof}
+Sei $\ep>0$ (beliebig) gegeben. Nach Voraussetzung:
+\begin{equation}\label{eqn:konv.greg.defkonv} \exists \nat{N_{\ep,\,a}}, \nat{N_{\ep,\,b}} \text{, sodass} \abs{a_n-a}\le\ep\,\forall n\ge N_{\ep,\,a} \text{ und } \abs{b_n-b}\le\ep\,\forall n\ge N_{\ep,\,b} \end{equation}
+Setze $N_\ep = \max{\{N_{\ep,\,a},\,N_{\ep,\,b}\}}$. Sei $n\ge N_\ep$.
+\begin{enumerate}
+\item $\abs{a_n+b_n-(a+b)} \nach{\le}{$\triangle$-Ungl.} \abs{a_n-b}+\abs{b_n-b} \nach{\le}{(\ref{eqn:konv.greg.defkonv})} 2\ep,\,\forall \nat{n} \folgtnach{Bem~\ref{bem:konv.konv-c-n0}}$ Beh. a)
+\item \begin{align*}
+\abs{a_nb_n-ab} &=
+\abs{(a_n-a)b+a(b_n-b)} \nach{\le}{$\triangle$-Ungl., \ref{satz:zahlen.kreg}}
+\abs{a_n-a}\cdot\underbrace{\abs{b_n}}_{\le M \text{ nach \ref{satz:konv.konv}}}+\abs{a}\cdot\abs{b_n-b}\\
+&\nach{\le}{(\ref{eqn:konv.greg.defkonv})} (M+\abs{a})\cdot\ep\quad\forall n\ge N_\ep \folgtnach{Bem~\ref{bem:konv.konv-c-n0}} \text{Beh. b)}
+\end{align*}
+\item Sei $\ep_0=\frac{\abs{a}}{2}>0$ (da $a\ne0$). Sei $\nat{N=N_{\ep_0,\,a}}$ aus (\ref{eqn:konv.greg.defkonv}). Dann gilt für $n\ge N$: $\abs{a_n}=\abs{a+a_n-a} \nach{\ge}{\ref{satz:zahlen.kreg}\ref{satz:zahlen.kreg.h}} \abs{a}-\abs{a_n-a} \nach{\ge}{(\ref{eqn:konv.greg.defkonv})} \abs{a}-\ep_0 = \frac{\abs{a}}{2} > 0 \folgt$ erste Beh.\\
+Setze $\tilde{N_\ep} = \max{\{N_\ep, N\}}$. Sei $n\ge\tilde{N_\ep}$. Dann
+\[\abs{\frac{1}{\ep_n}-\frac{1}{a}} = \abs{\frac{a-a_n}{a_n}} \nach{=}{\ref{satz:zahlen.kreg}\ref{satz:zahlen.kreg.h}} \frac{\abs{a-a_n}}{\abs{a}-\abs{a_n}} \nach{\le}{(\ref{eqn:konv.greg.defkonv})} \frac{\ep}{\abs{a}\cdot\frac{\abs{a}}{2}} \quad(\forall n\ge\tilde{N_\ep})\]
+\end{enumerate}
+\end{proof}
+
+\begin{bsp}
+\label{bsp:konv.greg}
+\[a_n = \frac{3n^2+2n}{5n^2+4n+i}\]
+\emph{Behauptung.}$\ a_n\to\frac35$ für $\ninf$
+\begin{proof}
+\[a_n=\frac{3+\frac{2}{n}}{5+\frac{4}{n}+\frac{i}{n^2}},\quad\nat{n}.\]
+Nach Bsp.~\ref{bsp:konv.konv}: $3\to3$, $5\to5$, $\frac{1}{n}\to0$, $\frac{1}{n^2}\to0$ ($\ninf$). Satz~\ref{satz:konv.greg}: Zähler $\to 3+2\cdot0=3$, Nenner $\to 5\ne0$ ($\ninf$) \folgtnach{Satz~\ref{satz:konv.greg}\ref{satz:konv.greg.c}} $a_n\to\frac35$ für $\ninf$
+\end{proof}
+\end{bsp}
+
+\begin{satz}
+\label{satz:konv.grenzw-ordn}
+Seien $\left(a_n\right)_{n\ge1}$, $\left(b_n\right)_{n\ge1}$, $\left(c_n\right)_{n\ge1}$ reelle Folgen mit $a_n \to a$ und $b_n \to b$ für $\ninf$. Dabei sei $a, \reell{b}$ (dies gilt stets gemäß Satz~\ref{satz:konv.grenzw-komplex}). Sei $\nat{n_0}$.
+\begin{enumerate}
+\item Wenn $a_n\le b_n$ für $n\ge n_0$, dann $a\le b$. \label{satz:konv.grenzw-ordn.a}
+\item Wenn $a_n\le c_n\le b_n$ für $n\ge n_0$ und $a=b$, dann $c_n\to a$ für $\ninf$ ("`Sandwichprinzip"'). \label{satz:konv.grenzw-ordn.b}
+\end{enumerate}
+\end{satz}
+\begin{proof}
+Sei $\ep>0$ gegeben. Wie in (\ref{eqn:konv.greg.defkonv}) existiert ein $\nat{N_\ep}$, sodass
+\begin{equation}\abs{a_n-a}\le\ep\text{, }\abs{b_n-b}\le\ep\text{ für alle }n\ge N_\ep \label{eqn:konv.sternchen}\tag {$*$} \end{equation}
+Sei $n\ge\max{\{N_\ep, n_o\}}$.
+\begin{enumerate}
+\item \[a-b = a-a_n+\underbrace{a_n-b_n}_{\le0\text{ (n.V.)}}+b_n-b \le \abs{a-a_n}+\abs{b-b_n} \nach{\le}{(\ref{eqn:konv.sternchen})} 2\ep.\] Da $\ep>0$ beliebig ist, folgt $a-b\le0$ (Wenn $a-b>0$ wäre, dann folgte $\blitz$ mit Satz~\ref{satz:zahlen.arch-ord}\ref{satz:zahlen.arch-ord.c}) \folgt $a\le b$.
+\item 
+\begin{align*}
+\abs{c_n-a}&=\begin{cases} c_n-a \nach{\le}{n.V.} b_n-a \le \abs{b_n-a} & \text{für }c_n\ge a\\a-c_n \nach{\le}{n.V.} a-a_n \le \abs{a_n-a} & \text{für }c_n<a \end{cases}\\
+&\negthickspace\nach{\le}{(\ref{eqn:konv.sternchen})}\ep \text{ für }n\ge\max{\{N_\ep,n_0\}}\text{, da }a=b \quad\folgt c_n\to a\text{ für }\ninf
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+\begin{bsp}
+\label{bsp:konv.kte-wurzel}
+\emph{Behauptung.}
+Sei $q>0$. Dann $a_n := q^{\frac{1}{n}}\to1$ für $\ninf$.\\$(a_n)=(a, \sqrt{a}, \sqrt[3]{a}, \sqrt[4]{a}, \dotsc)$
+\begin{proof}
+\begin{enumerate}
+\item Sei zuerst $q\ge1$. Dann $a_n\ge$ nach Satz~\ref{satz:zahlen.potenzen}\ref{satz:zahlen.potenzen.d}. Weiter:
+\begin{gather*}
+q=a_n^n=\Big(1+\underbrace{\left(a_n+1\right)}_{>-1}\Big)^n \nach{\ge}{Bernoulli-U.} 1+n\left(a_n-1\right)\\
+\folgt 0\le a_n-1 \le \frac{q-1}{n} \to 0\text{ für }\ninf
+\end{gather*}
+ (nach Bsp.~\ref{bsp:konv.konv}, Satz~\ref{satz:konv.greg}) \folgt nach Satz~\ref{satz:konv.grenzw-ordn}\ref{satz:konv.grenzw-ordn.b} $a_n-1\to0 \folgt a_n\to1$ für $\ninf$.\\
+\item Sei nun $0<q<1$. Dann $\frac1q>1$ und $\frac{1}{a_n}=\left(\frac1a\right)^\frac1n\to1$ nach Teil a). Nach Satz~\ref{satz:konv.greg}\ref{satz:konv.greg.c} \folgt $a_n=\left(\frac{1}{a_n}\right)^{-1}\to1$ für $\ninf$.
+\end{enumerate}
+\end{proof}
+\end{bsp}
+
+\begin{satz}
+\label{satz:konv.grenzw-komplex}
+Sei $(a_n)$ eine Folge. Dann:
+\begin{enumerate}
+\item Sei zusätzlich $a_n\to a$ für $\ninf$. Dann gelten $\overline{a_n}\to\overline{a}$, $\Re{a_n}\to\Re{a}$, $\Im{a_n}\to\Im{a}$, $\abs{a_n}\to\abs{a}$ (jeweils für $\ninf$). Wenn zusätzlich $(a_n)$ reell ist, dann ist $\reell{a}$.
+\item Es gelte $\Re{a_n}\to b$ und $\Im{a_n}\to c$ für $\ninf$. Dann $a_n\to b+ic$ für $\ninf$.
+\end{enumerate}
+\end{satz}
+\begin{proof}
+\begin{enumerate}
+\item $0\le\abs{\overline{a_n}-\overline{a}} \nach{=}{\ref{satz:zahlen.kreg}} \abs{\overline{a_n-a}} \nach{=}{\ref{satz:zahlen.kreg}} \abs{a_n-a}\to0$ für $\ninf$. Satz~\ref{satz:konv.grenzw-ordn}\ref{satz:konv.grenzw-ordn.b} \folgt $\abs{\overline{a_n}-\overline{a}}\to0$ \folgt $\overline{a_n}\to\overline{a}$ für $\ninf$. \folgt $\Re{a_n} \nach{=}{\ref{satz:zahlen.kreg}} \frac12(a_n+\overline{a_n})\to\frac12(a+\overline{a})=\Re{a}$ für $\ninf$. Entsprechend $\Im{a_n}\to\Im{a}$ (verwende in beiden Fällen Satz~\ref{satz:konv.greg}). Ferner $\abs{\abs{a_n}-\abs{a}} \nach{\le}{\ref{satz:zahlen.kreg}} |a_n-a| \nach{\ra}{n.V.} 0$ ($\ninf$). Satz~\ref{satz:konv.grenzw-ordn}\ref{satz:konv.grenzw-ordn.b} \folgt $\abs{a_n}\to\abs{a}$ für $\ninf$. Wenn $\reell{a_n}$, dann $\Im{a_n}=0$ \folgt $\Im{a}=0$.
+\item $0\le\abs{a_n-(b+ic)}=\abs{(\Re{a_n}-b)+i(\Im{a_n}-c)} \nach{\le}{$\triangle$-Ungl.} \abs{\Re{a_n}-b}+\abs{\Im{a_n}-c}\to0$, n.\,V. ($\ninf$). Satz~\ref{satz:konv.grenzw-ordn}\ref{satz:konv.grenzw-ordn.b} \folgt Beh. b)
+\end{enumerate}
+\end{proof}
+
+\section{Monotone Folgen}
+\label{sec:konv.folge-monoton}
+
+\begin{dfn}
+\label{dfn:konv.monotonie}
+Sei $\left(a_n\right)_{n\ge1}$ eine reelle Folge.
+\begin{enumerate}
+\item $\left(a_n\right)$ \emph{wächst} (\emph{strikt}), wenn $a_{n+1}\ge a_n$ ($a_{n+1}>a_n$) für alle \nat{n}.
+\item $\left(a_n\right)$ \emph{fällt} (\emph{strikt}), wenn $a_{n+1}\le a_n$ ($a_{n+1}<a_n$) für alle \nat{n}.
+\item $\left(a_n\right)$ ist (\emph{strikt}) \emph{monoton}, wenn $\left(a_n\right)$ (strikt) wächst oder (strikt) fällt.
+\end{enumerate}
+\begin{bem*}
+$\left(a_n\right)$ wächst (strikt) \gdw $\left(-a_n\right)$ fällt (strikt)
+\end{bem*}
+\end{dfn}
+
+\begin{bsp}
+\label{bsp:konv.monotonie}
+\begin{enumerate}
+\item Sei $0<p\in\set{Q}$. Dann fällt $a_n=n^{-p}$ (\nat{n}) strikt, da $(n+1)^{-p}<n^{-p}$ nach Satz~\ref{satz:zahlen.potenzen}\ref{satz:zahlen.potenzen.d}.
+\item $a_n = \frac{n}{2n+1} = \frac12\cdot\frac{2n+1-1}{2n+1} = \frac12 - \frac12\cdot\frac{1}{2n+1}$ wächst strikt, da $\frac{1}{2n+1}$ strikt fällt (vgl. a)).
+\item $a_n=(-1)^n$ ist nicht monoton, da $a_{n+1}=1>-1=a_n$ für ungerade $n$ und $a_{n+1}=-1<1=a_n$ für gerade $n$.
+\end{enumerate}
+\end{bsp}
+
+\noindent Standardbsp. für divergente Folgen:
+\begin{enumerate}
+\item $a_n=(-1)^n$ nicht monoton, aber beschränkt
+\item $a_n=n$ monoton, aber nicht beschränkt
+\end{enumerate}
+
+\begin{thm}
+\label{thm:konv.mon-beschr}
+Sei $\left(a_n\right)_{n\ge1}$ eine reelle Folge. Dann gelten:
+\begin{enumerate}
+\item Wenn $\left(a_n\right)$ wächst und nach oben beschränkt ist, dann existiert
+\[\lim_{\ninf}{a_n}=\sup_{n\ge1}{a_n}:=\sup{\{a_n:\nat{n}\}}\]
+\label{thm:konv.mon-beschr.a}
+\item Wenn $\left(a_n\right)$ fällt und nach unten beschränkt ist, dann existiert
+\[\lim_{\ninf}{a_n}=\inf_{n\ge1}{a_n}:=\inf{\{a_n:\nat{n}\}}\]
+\label{thm:konv.mon-beschr.b}
+\end{enumerate}
+\end{thm}
+\begin{proof}
+\begin{enumerate}
+\item n. V. $\exists a:=\sup_{n\ge1}{a_n}$. Sei $\ep>0$ beliebig gegeben. Satz~\ref{satz:zahlen.sup-schranke} \folgt $\exists \nat{N_\ep}$ mit $a-\ep < a_{N_\ep}\le a$. Sei $n\ge N_\ep$. Da $\left(a_n\right)$ wächst und $a=\sup{a_n}$ gilt:
+\[a-\ep \le a_{N_\ep} \le a_n \folgt a_n-a \le \ep \quad \forall n\ge N_\ep\]
+\item Betrachte $-a_n$ und verwende Teil a) und Satz~\ref{satz:zahlen.sup-intervalle}\ref{satz:zahlen.sup-intervalle.d}
+\end{enumerate}
+\end{proof}
+
+\begin{bsp}[Heron-Verfahren zur Quadratwurzelbestimmung]
+\label{bsp:konv.heron}
+\noindent Sei $x>0$ gegeben. Definiere rekursiv $a_1=1$ und $a_{n+1}=\frac12(a_n+\frac{x}{a_n})$ für \nat{n}. (Beachte: $a_1>0$. Wenn $a_n>0$, dann $a_{n+1}>0$ \folgtnach{Indukt.} $a_k>0$ für alle \nat{k}.
+\emph{Behauptung.} $a_n\to\sqrt{x}$ (\ninf)
+\begin{proof}
+1.Schritt: Zeige Konvergenz mit Thm.~\ref{thm:konv.mon-beschr}.\\
+Sei \nat{n}. Dann
+\begin{equation} \label{eqn:konv.heron.sternchen}
+a_{n+1}-a_n \nach{=}{Def.} \frac{a_n}{2} + \frac{x}{2a_n}-a_n = \underbrace{\frac{1}{2a_n}}_{>0} \underbrace{\left(x-a_n^2\right)}_{\text{Vorzeichen?}}
+\tag{$*$} \end{equation}
+\end{proof}
+\end{bsp}
 
 \chapter{Reihen}
 ...
@@ -477,7 +728,7 @@ c_n = \sum_{l=0}^n a_lb_{n-l}, n \in \set{N}
 $c_n = $ "`Summe über $a_jb_k$ mit $j+k = n$.
 
 \begin{satz}\label{satz:reihen.cauchy-prod}
-Seien $\sum_k a_k$, $\sum_k b_k$ absolut konvergente Reihen. Seien $c_n (n\in\set{N})$ in (\ref{eqn:reihen.diag-summe}) definiert.
+Seien $\sum_k a_k$, $\sum_k b_k$ absolut konvergente Reihen. Seien $c_n \nat{(n})$ in (\ref{eqn:reihen.diag-summe}) definiert.
 Dann konvergiert $\sum_{n\ge0} c_n$ absolut und es gilt:
 
 \begin{equation}\label{eqn:reihen.cauchy-prod}
@@ -562,7 +813,7 @@ Sei $\varrho$ der Konvergenzradius von $\sum_{k \ge 0} a_kz^k$. Dann gelten:
 \begin{enumerate}
 \item $0 < \varrho < \infty$, dann konvergiert $\sum a_kz^k$ absolut für $\abs{z} < \varrho$
 und divergiert für $\abs{z} > \varrho$, wobei \kmplx{z}.\label{thm:reihen.konvradius.a}
-\item Wenn $\varrho = 0$, dann divergiert $\sum a_kz^k$ für alle $z\in\set{C}\backslash\{0\}$\label{thm:reihen.konvradius.b}
+\item Wenn $\varrho = 0$, dann divergiert $\sum a_kz^k$ für alle $\kmplx{z}\backslash\{0\}$\label{thm:reihen.konvradius.b}
 \item Wenn $\varrho = \infty$, dann konvergiert $\sum a_kz^k$ absolut für alle \kmplx{z}\label{thm:reihen.konvradius.c}
 \end{enumerate}
 Also: $\varrho = \sup \left\{r \ge 0\colon \sum a_kz^k\text{ konvergiert }\forall \kmplx{z}\text{ mit }\abs{z} \le r\right\}$ 
@@ -700,7 +951,7 @@ Stets sei $D \neq \emptyset$.
 \section{Grenzwerte stetiger Funktionen}
 \label{sec:fnkt.grenzw-stetigk}
 \begin{dfn}\label{dfn:fnkt.abschluss}
-Sei $D \subseteq \set{R}$. Dann heißt die Menge $\abg{D} \da \{x\in\set{R}\colon \exists x_n\in D$ (\nat{n})
+Sei $D \subseteq \set{R}$. Dann heißt die Menge $\abg{D} \da \reell{\{x}\colon \exists x_n\in D$ (\nat{n})
 mit $ x_n \ra x$, $\ninf\}$ der \emph{Abschluss} von $D$. $D$ heißt \emph{abgeschlossen} (abg.) falls $D = \abg{D}$.
 \end{dfn}
 
@@ -766,13 +1017,13 @@ Sei $D \subseteq \set{R}$, $x_0\in\abg{D}$, $f: D \ra \set{R}$, \reell{y_0}. Dan
 aus \ref{satz:fnkt.ep-delta.b}). Dann $\exists N_\ep \in\set{N}$ mit $\abs{x_n - x_0} \le \delta_\ep$ für alle $n \ge N_\ep$. \ref{satz:fnkt.ep-delta.b}) liefert:
 $\abs{f(x_n) - y_0} \le \ep$ ($\forall n \ge N_\ep$) \folgt $f(x_n) \ra y_0$, \ninf{} \folgt \ref{satz:fnkt.ep-delta.a})
 \item Es gelte \ref{satz:fnkt.ep-delta.a}). Annahme: \ref{satz:fnkt.ep-delta.b}) sei falsch. Daraus folgt mit $\delta = \frac{1}{n}$:
-$\exists \ep_\delta > 0\,\forall n\in\set{N}\,\exists x_n \in D$ mit $\abs{x_0 - x_n} \le \frac{1}{n}$ und $\abs{f(x) - y_0} > \ep_0$, 
+$\exists \ep_\delta > 0\,\forall \nat{n}\,\exists x_n \in D$ mit $\abs{x_0 - x_n} \le \frac{1}{n}$ und $\abs{f(x) - y_0} > \ep_0$, 
 d.\,h. $x_n \ra x_0$ (Satz~\ref{satz:konv.grenzw-ordn}) und $f(x_n) \not\ra y_0$ (\ninf) $\blitz$\ref{satz:fnkt.ep-delta.a}) \folgt \ref{satz:fnkt.ep-delta.b}
 \end{enumerate}
 \end{proof}
 
 \begin{satz}\label{satz:fnkt.grenzw-reg}
-Es seien $D \subseteq \set{R}$, $x_0\in\abg{D}$, $f, g: D\ra\set{R}$, $y_0, z_0\in\set{R}$, sodass $\exists \lim_{x\ra x_0}f(x) = y_0$,
+Es seien $D \subseteq \set{R}$, $x_0\in\abg{D}$, $f, g: D\ra\set{R}$, $y_0, \reell{z_0}$, sodass $\exists \lim_{x\ra x_0}f(x) = y_0$,
 $\exists \lim_{x\ra x_0}g(x) = z_0$. Dann gelten:
 \begin{enumerate}
 \item $\exists \lim\limits_{x\ra x_0} (f(x) + g(x)) = y_0 + z_0$\label{satz:fnkt.grenzw-reg.a}
