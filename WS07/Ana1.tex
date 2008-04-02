@@ -247,7 +247,7 @@ $b_\eta \in B$ mit $x-\eta < a_\eta \le x$ bzw. $y-\eta < b_\eta \le y
 \subsection*{Potenzen mit rationalen Exponenten}
 Seien \reell{a, b} mit $a, b > 0$, $r=\frac{m}{n}$, $n\in\set{N}$, $m\in\set{Z}$ gegeben.\\
 \emph{Ziel:} Definiere $a^\frac{m}{n}$ und zeige Potenzgesetze. Vorrausgesetzt wird dabei der Fall
-\[a^m =
+<\[a^m =
 \begin{cases}
 \underbrace{a \cdot a \cdot \dotsm \cdot a}_{m\text{ mal}} &\text{für }m>0\\
 1 &\text{für }m=0\\
@@ -690,16 +690,104 @@ Sei $\left(a_n\right)_{n\ge1}$ eine reelle Folge. Dann gelten:
 
 \begin{bsp}[Heron-Verfahren zur Quadratwurzelbestimmung]
 \label{bsp:konv.heron}
-\noindent Sei $x>0$ gegeben. Definiere rekursiv $a_1=1$ und $a_{n+1}=\frac12(a_n+\frac{x}{a_n})$ für \nat{n}. (Beachte: $a_1>0$. Wenn $a_n>0$, dann $a_{n+1}>0$ \folgtnach{Indukt.} $a_k>0$ für alle \nat{k}.
-\emph{Behauptung.} $a_n\to\sqrt{x}$ (\ninf)
+Sei $x>0$ gegeben. Definiere rekursiv $a_1=1$ und $a_{n+1}=\frac12(a_n+\frac{x}{a_n})$ für \nat{n}. (Beachte: $a_1>0$. Wenn $a_n>0$, dann $a_{n+1}>0$ \folgtnach{Indukt.} $a_k>0$ für alle \nat{k}.
+\\\emph{Behauptung.} $a_n\to\sqrt{x}$ (\ninf)
 \begin{proof}
-1.Schritt: Zeige Konvergenz mit Thm.~\ref{thm:konv.mon-beschr}.\\
+1. Schritt: Zeige Konvergenz mit Thm.~\ref{thm:konv.mon-beschr}.\\
 Sei \nat{n}. Dann
-\begin{equation} \label{eqn:konv.heron.sternchen}
+\begin{equation} \label{eqn:konv.heron.stern}
 a_{n+1}-a_n \nach{=}{Def.} \frac{a_n}{2} + \frac{x}{2a_n}-a_n = \underbrace{\frac{1}{2a_n}}_{>0} \underbrace{\left(x-a_n^2\right)}_{\text{Vorzeichen?}}
 \tag{$*$} \end{equation}
+Sei $n\ge2$. Dann
+\begin{multline*} \label{eqn:konv.heron.doppelstern}
+a_n^2 - x \nach{=}{Def.} \frac14 \left( a_{n-1} + \frac{x}{a_{n-1}} \right)^2 - x = \frac14 \left( a_{n-1}^2 + 2x + \frac{x^2}{a_{n-1}^2} - 4x\right) - y \\= \frac14 \left( a_{n+1} - \frac{x}{a_{n-1}} \right)^2 \ge 0
+\tag{$**$} \end{multline*}
+$\xLongrightarrow[\text{(\ref{eqn:konv.heron.doppelstern})}]{\text{(\ref{eqn:konv.heron.stern})}}$ $a_{n+1}-a_n \le 0$ und $a_n^2 \ge x$ \folgtnach{\ref{satz:zahlen.potenzen}} $a_n \ge \sqrt{x}$ (für $n\ge2$).\\Thm. \ref{thm:konv.mon-beschr} \folgt $\exists\,a:=\lim_{\ninf}{a_n}$.\\
+2. Schritt: Berechne $a$ mit Hilfe der Rekursion. Satz \ref{satz:konv.grenzw-ordn}: $a \ge \sqrt{x} > 0$.\\Ferner: $\underbrace{a_{n+1}}_{\to a}=\underbrace{\frac12\left(a_n+\frac{x}{a_n}\right)}_{\to \frac12\left(a+\frac{x}{a}\right)}$ für \ninf (nach Satz \ref{satz:konv.greg}, $a\ne0$). Nach Satz \ref{satz:konv.konv}:
+\[a = \frac12\left(a+\frac{x}{a}\right) \gdw a = \frac{x}{a} \gdw x = a^2 \gdwwegen{a>0} a = \sqrt{x}\]
 \end{proof}
 \end{bsp}
+
+\begin{bsp}[Die \textsc{Euler}sche Zahl $e$]
+\label{bsp:konv.e}
+Sei \nat{x}, \[a_n = \left(1+\frac1n\right)^n \text{, } b_n=\sum_{j=0}^{n}{\frac{1}{j!}} = 1+1+\frac12+\frac16+\dotsb+\frac{1}{n!}\]\\
+\emph{Behauptung.} $\exists\,\lim_{\ninf}{a_n}=\lim_{\ninf}{b_n}=:e\approx2,71828\dotsc$
+\begin{proof}
+Überblick:
+\begin{enumerate}
+\item[Beh. a)] $\left(a_n\right)$ wächst strikt
+\item[Beh. b)] $a_n \le b_n < 3 \,\forall\nat{n}$
+\begin{equation*} \label{eqn:konv.e.stern}
+(*) \begin{cases} \text{a)}+\text{b)}+\text{Thm. \ref{thm:konv.mon-beschr}} &\folgt \,\exists\,\lim_{\ninf}{a_n}=:a, \lim_{\ninf}{b_n}=:b \\ \text{b)}+\text{Satz \ref{satz:konv.grenzw-ordn}\,\ref{satz:konv.grenzw-ordn.a}} &\folgt a \le b  \end{cases}
+\end{equation*}
+\item[Beh. c)] $a \ge b$
+\end{enumerate}
+Beachte: $\left(b_n\right)$ wächst strikt.\\\folgt Beh.
+\begin{enumerate}
+\item Sei \nat{n}. Dann
+\begin{gather*}
+\frac{a_{n+1}}{a_n} = \left(1+\frac{1}{n+1}\right) \frac{\left(1+\frac{1}{n+1}\right)^n}{\left(1+\frac1n\right)^n} = \frac{n+2}{n+1} \left( \frac{\frac{n+2}{n+1}}{\frac{n+1}{n}} \right)^n = \frac{n+2}{n+1} \left( \frac{\left(n+1\right)^2-1}{\left(n+1\right)^2} \right)^n \\= \underbrace{\frac{n+2}{n+1}}_{>0} \Big(1-\underbrace{\frac{1}{\left(1+n\right)^2}}_{>-1} \Big)^n \nach{\ge}{\ref{satz:zahlen.bernoulli}} \frac{n+2}{n+1} \left(1-\frac{n}{\left(1+n\right)^2} \right) = \frac{n+2}{n+1} \cdot \frac{1+n+n^2}{\left(1+n\right)} \\= \frac{n^3+3n^2+3n+2}{\left(1+n\right)^3} \nach{=}{\ref{bsp:vor.binom}} \frac{\left(n+1\right)^3+1}{\left(n+1\right)^3} > 1
+\end{gather*}
+$\left(b_n\right)$ wächst offensichtlich
+\item \[a_n \nach{=}{\ref{bsp:vor.binom}} \sum_{j=0}^{n}\binom{n}{j}\left(\frac1n\right)^j\]
+Für $1\le j \le n$ ist
+\begin{equation} \label{eqn:konv.e.plus}
+\binom{n}{j}\frac{1}{n^j} = \frac{1}{j!}\cdot\frac{n!}{(n-j)!}\cdot\frac{1}{n^j} = \frac{1}{j!}\cdot\underbrace{\frac{n}{n}}_{=1}\cdot\underbrace{\frac{n-1}{n}}_{\in(0,1)}\cdot\underbrace{\frac{n-2}{n}}_{\in(0,1)}\dotsm\underbrace{\frac{n-j+1}{n}}_{\in(0,1)} \le \frac{1}{j!} \le \frac{1}{2^{j-1}}
+\tag{$+$} \end{equation}
+\emph{Behauptung.} $2^{n-1}\le n!\,\forall\,\nat{}$
+\begin{proof} (per vollst. Ind.)\\
+IA: $n=1$ ist klar.\\
+IS: Beh. gelte für ein \nat{n} (IV).\\
+\folgt $2^n \nach{\le}{IV} 2n! \le (n+1)n! = (n+1)!$
+\end{proof}
+\begin{multline*}
+\folgt a_n=1+\sum_{j=1}^{n}\binom{n}{j}\frac{1}{n^j} \nach{\le}{(\ref{eqn:konv.e.plus})} 1 + \sum_{j=1}^{n} \frac{1}{j!} = b_n\\
+\le 1+\sum_{j=1}^{n} \frac{1}{2^{j-1}} \wegen{=}{k:=j-1} 1 + \sum_{k=0}^{n-1} \left(\frac12\right)^k \nach{=}{\ref{eqn:vor.np1-ueber-j}} 1+\frac{1-\left(\frac12\right)^n}{1-\frac12} < 1 + \frac{1}{\frac12} = 3
+\end{multline*}
+\item Sei \nat{m} und $n\ge m$, $m$ fest. Wie in b):
+\begin{multline*} \label{eqn:konv.e.doppelplus}
+a_n=1+\sum_{j=1}^{n}\underbrace{\frac{1}{j!}\cdot\frac{n}{n}\cdot\frac{n-1}{n}\cdot\frac{n-2}{n}\dotsm\frac{n-j+1}{n}}_{>0}\\\ge
+1+\sum_{j=1}^{n}\frac{1}{j!}\underbrace{\left(1-\frac1n\right)}_{\to1(\ninf)}\dotsm\underbrace{\left(1-\frac{j-1}{n}\right)}_{\to1(\ninf)}=:c_{mn} \tag{$++$}
+\end{multline*}
+nach Bsp. \ref{bsp:konv.konv}, Satz \ref{satz:konv.greg} \folgt $c_{mn}\to 1+\sum_{j=1}^{m} \frac{1}{j!}=b_m$ für \ninf, $m$ fest. Lasse \ninf gehen in (\ref{eqn:konv.e.doppelplus}). Dann liefern (\ref{eqn:konv.e.stern}) und Satz \ref{satz:konv.grenzw-ordn}, dass $a\ge b_m$ für \nat{m}. Mit $m\to\infty$, (\ref{eqn:konv.e.stern}), Satz \ref{satz:konv.grenzw-ordn} folgt $a\ge b$.
+\end{enumerate}
+\end{proof}
+\end{bsp}
+
+\section{Teilfolgen und Vollständigkeit}
+\label{sec:konv.teilfolgen}
+
+\paragraph{Motivation:} $\left(a_n\right) = \left(\left(-1\right)^n\right) = \left(-1,1,-1,1,\dotsc\right)$ ist divergent, enthält aber konvergente "`Teile"'.
+
+\begin{dfn}
+\label{dfn:konv.teilfolge}
+Sei $\left(a_n\right)_{n\ge1}$ eine Folge und $\varphi: \set{N} \rightarrow \set{N}$ eine strikt wachsende Funktion (d.h. $\varphi(n+1)>\varphi(n)\,\forall\nat{n}$). Setze $b_j=a_{\varphi(j)}, \nat{j}$. Dann heißt die Folge $\left(b_j\right)_{j\ge1}$ \emph{Teilfolge} von $\left(a_n\right)_{n\ge1}$ (TF). Man schreibt meist  $\left(a_{n_j}\right)_{j\ge1}$ statt $\left(b_j\right)_{j\ge1}$.
+\end{dfn}
+
+\begin{bsp*}
+\begin{enumerate}
+\item $(a_n)$ ist Teilfolge von sich selbst, wähle $\varphi(j)=j\,\forall\nat{j}$
+\item Sei $a_n=(-1)^n$. Wähle $\varphi(j)=2j$ für \nat{j}. Dann ist $b_j:=a_{2j}=1 \,\forall\nat{j}$.
+\item \[a_n = \begin{cases} \frac{1}{n^2} & \text{wenn } n \text{ Primzahl} \\ 1 & \text{sonst} \end{cases} \text{, } \nat{n} \text{. } (a_n) = (1, \frac14, \frac19, 1, \frac{1}{25}, 1, \dotsm)\] Setze $\varphi(j)=j$-te Primzahl, \nat{j}. \folgt $(b_j) = (a_{\varphi(j)}) = (\frac14, \frac19, \frac{1}{25},\dotsm)$
+\end{enumerate}
+\end{bsp*}
+
+\begin{bem*}
+$a_n\to a$ (\ninf) \folgt $a_{n_j}\to a$ ($j\to\infty$) für jede Teilfolge.
+\end{bem*}
+
+\begin{dfn}
+\label{dfn:konv.hp}
+Sei $(a_n)$ eine Folge und \kmplx{a}. Dann heißt $a$ \emph{Häufungspunkt} (HP) von $(a_n)$, wenn für jedes $\ep>0$ für unendlich viele $n$ die Ungleichung $\abs{a-a_n}\le\ep$ gilt.
+\end{dfn}
+\begin{bsp*}
+\begin{enumerate}
+\item $(-1)^n$ hat HP $+1$ und $-1$, da $a_n\in\bar{B}(1,\ep)$ für alle $\ep>0$ und alle geraden \nat{n}, sowie $a_n\in\bar{B}(-1,\ep)$ für alle $\ep>0$ und alle ungeraden \nat{n}.
+\item Die Folge $a_n=n$ hat keinen HP, da $\abs{a_n-a_m}\ge1$, $n\ne m$. Also liegt in einer Kugel $\bar{B}(a, \frac13)$ höchstens ein $a_n$.
+\end{enumerate}
+\end{bsp*}
+
+
 
 \chapter{Reihen}
 ...
