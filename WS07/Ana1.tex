@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{ngerman, url}
 \usepackage{hyperref}
+\usepackage{tikz}
 
 \author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
 \title{Analysis I}
@@ -334,7 +335,8 @@ p<0 &\folgt a^p < b^p
 \end{cases}$\\
 Annahme: $a^\frac{1}{n} \le b^\frac{1}{n}$, \nat{n}
 $a \nach{=}{Def.} (a^\frac{1}{n})^n \nach{\le}{\ref{eqn:zahlen.ordn-potenzen}} (b^\frac{1}{n})^n \nach{=}{Def.} b 
-\blitz \folgt a^\frac{1}{n} > b^\frac{1}{n}$ n-te Potenz, \ref{eqn:zahlen.ordn-potenzen}, Übung 2.5, \ref{satz:zahlen.potenzen.a} f+r $m<0$ liefern \ref{satz:zahlen.potenzen.d}
+\blitz \folgt a^\frac{1}{n} > b^\frac{1}{n}$ n-te Potenz, \ref{eqn:zahlen.ordn-potenzen}, Übung 2.5, \ref{satz:zahlen.potenzen.a} 
+für $m<0$ liefern \ref{satz:zahlen.potenzen.d}
 
 \end{enumerate}
 \end{proof}
@@ -344,12 +346,28 @@ $a \nach{=}{Def.} (a^\frac{1}{n})^n \nach{\le}{\ref{eqn:zahlen.ordn-potenzen}} (
 Ausgangspunkt: Löse $x^2 = -1$ Nach Satz \ref{satz:zahlen.oreg} hat diese Gleichung keine Lösung in einem geordneten Körper, insbesondere
 keine Lösung in $\set{R}$. Idee: Konstruiere einen nicht geordneten Körper, der $\set{R}$ enthält und in dem $x^2 = -1$ lösbar ist. 
 \paragraph{Ansatz.} Auf $\set{R}^2$ gibt es (Vektor-)addition: $\begin{pmatrix} x\\y \end{pmatrix} + \begin{pmatrix} u\\v \end{pmatrix} =
-\begin{pmatrix} x+u \\ y+v \end{pmatrix}$
-Def.: $\begin{pmatrix} x\\ y \end{pmatrix} \cdot \begin{pmatrix} u \\ c \end{pmatrix} := \begin{pmatrix} xu-yv \\ xv+xy \end{pmatrix} \in \set{R}^2$, Bsp.:
-$\begin{pmatrix} 0 \\ 1 \end{pmatrix}\cdot\begin{pmatrix} 0 \\ 1 \end{pmatrix}=\begin{pmatrix} -1 \\ 0 \end{pmatrix}$
-Neue Bezeichnungen: $1$ statt $\begin{pmatrix} 1 \\ 0 \end{pmatrix}$, $i statt \begin{pmatrix} 0 \\ 1 \end{pmatrix}$, 
-$x+iy = z$ statt $ \begin{pmatrix} x \\ y \end{pmatrix}$ mit \reell{x,y} (also $i^2=-1$)
-%TODO BILD
+\begin{pmatrix} x+u \\ y+v \end{pmatrix}$\\
+Def.: $\begin{pmatrix} x\\ y \end{pmatrix} \cdot \begin{pmatrix} u \\ c \end{pmatrix} := \begin{pmatrix} xu-yv \\ xv+xy \end{pmatrix} \in \set{R}^2$,\\
+Bsp.: $\begin{pmatrix} 0 \\ 1 \end{pmatrix}\cdot\begin{pmatrix} 0 \\ 1 \end{pmatrix}=\begin{pmatrix} -1 \\ 0 \end{pmatrix}$\\
+Neue Bezeichnungen: $1$ statt $\begin{pmatrix} 1 \\ 0 \end{pmatrix}$, $i$ statt $\begin{pmatrix} 0 \\ 1 \end{pmatrix}$, 
+$x+iy = z$ statt $ \begin{pmatrix} x \\ y \end{pmatrix}$ mit \reell{x,y} (also $i^2=-1$) \\
+
+\begin{tikzpicture}
+	\draw[->] (-1.5,0) -- (1.9, 0) node[anchor=north] {$\set{R}$};
+	\draw[->] (0,-1.5) -- (0, 2.9) node[anchor=east] {$i\set{R}$};
+	\draw (0 , 0) -- (1.4, 2.4) node[anchor=west] {$z = x+ iy$};
+	
+	\draw (-.15, -1) node[anchor=east] {-1} -- (.15,-1);
+	\draw (-.15, 1) node[anchor=east] {1} -- (.15,1);
+	\draw (-.15, 2) node[anchor=east] {2} -- (.15,2);	
+
+	\draw (-1, -.15) node[anchor=north] {-1} -- (-1, .15);
+	\draw (1, -.15) node[anchor=north] {1} -- (1, .15);
+	
+	\draw[dotted] (0, 2.4) node[anchor=east] {$y$} -- (1.4,2.4) -- (1.4, 0) node[anchor=north] {$x$};
+	
+	\path node at (-1.6, 2.6) {$\set{C}$};
+\end{tikzpicture}
 
 \begin{dfn*}
 $\set{C} := \{z=x+iy : x,y \in \set{R}\}$
@@ -362,38 +380,77 @@ $$ z+w = (x+iy) + (u+iv) := (x+u) + i(y+v) \in \set{C}$$
 $$ z\cdot w := (xu-yr) + i(yu+xv) \in \set{C}$$
 \paragraph{Beachte.} Auf der rechten Seite der obigen Definition stehen in den Klammern nur reelle Ausdrücke, die somit wohldefiniert sind.
 Falls $z=x \in \set{R}$ und $w=u \in \set{R}$, so erhält man wieder die reelen $+, -$
-Lineare Algebra: $(\set{C},0,1,+,\cdot)3$ ist ein Körper.
+Lineare Algebra: $(\set{C},0,1,+,\cdot)$ ist ein Körper.
 
 \begin{dfn}\label{dfn:zahlen.komplex}
+Sei $z=x+iy \in \set{C} $ mit $x,y \in \set{R}$. Dann heißt $x$ der Realteil von $z$, $y$ der Imaginärteil von $z$, 
+$\abs{z}_\set{C} := \sqrt{x^2+y^2}$ der Betrag von $z$ und $\bar{z}:=x-iy$ das konjungiert Komplexe von $z$.
+Man schreibt $x = \Re{z}$ und $ y = \Im{z}$.
 
+\begin{bem*}
+Für $z = x \in \set{R}$ gilt $\abs{x}_\set{C} = \sqrt{x^2} \wegen{=}{\ref{satz:zahlen.bernoulli}} \abs{x}_\set{R}$ . 
+Somit schreiben wir $\abs{z}$ statt $\abs{z}_\set{C}$ für $z \in \set{C}$.
+\end{bem*}
+Sei $z \in \set{C}$, $r \in \set{R}, r>0$. Dann ist $B(z,r) = \{w \in \set{C}:\abs{z-w}<r\}$
+die offene Kreisscheibe in $\set{R}^2$ mit Mittelpunkt $z = \begin{pmatrix} x \\ y \end{pmatrix}$ und Radius
+$r$, $\bar{B}(z,r)   = \{w \in \set{C}:\abs{z-w}\le r\}$ die abgeschlossene Kreisscheibe,
+$s(z,r)   = \{w \in \set{C}:\abs{z-w}= r\}$ die Kreislinie.\\
+Ferner: Sei $z = x \in \set{R}$	. Dann $ B(x,r) \cap \set{R} = \{x-r, x+r\}$.
 \end{dfn}
 
-\begin{bsp*}
-
-\end{bsp*}
-
 \begin{satz}\label{satz:zahlen.kreg}
+Für $w$, $z \in \set{C}$ gelten:
 \begin{enumerate}
-\item ...\label{satz:zahlen.kreg.a}
-\item ...\label{satz:zahlen.kreg.b}
-\item ...\label{satz:zahlen.kreg.c}
-\item ...\label{satz:zahlen.kreg.d}
-\item ...\label{satz:zahlen.kreg.e}
-\item ...\label{satz:zahlen.kreg.f}
-\item ...\label{satz:zahlen.kreg.g}
-\item ...\label{satz:zahlen.kreg.h}
+\item \label{satz:zahlen.kreg.a}
+$\bar{\bar{z}} = z$, $\abs{z}^2 = z \cdot \bar{z}$ ($\folgt \frac{1}{z} = \frac{\bar{z}}{\abs{z}^2}, z \ne 0$)
+\item \label{satz:zahlen.kreg.b}
+$\overline{z+w} = \bar{z} + \bar{w}$, $\overline{zw} = \bar{z} \cdot \bar{w}$
+\item \label{satz:zahlen.kreg.c}
+$\Re{z} = \frac{1}{2}(z + \bar{z}), \Im{z} = \frac{1}{2}(z-\bar{z})$
+\item \label{satz:zahlen.kreg.d}
+$\abs{\Re{z}} \le \abs{z}, \abs{\Im{z}} \le \abs{z}, \abs{\bar{z}} = \abs{z}$
+\item \label{satz:zahlen.kreg.e}
+$\abs{z} \ge 0$, $z = 0 \gdw \abs{z} = 0$ 
+\item \label{satz:zahlen.kreg.f}
+$\abs{zw} = \abs{z} \cdot \abs{w}$
+\item \label{satz:zahlen.kreg.g}
+$\abs{z+w} \le \abs{z} + \abs{w}$ (Dreiecksungleichung)
+\item \label{satz:zahlen.kreg.h}
+$\abs{z-w}\ge \abs{\abs{z} - \abs{w}}$
 \end{enumerate}
 \end{satz}
 \begin{proof}
+Seien $z = x+iy$, $w = u+iv$ für $x,y,u,v \ in \set{R}$.
 \begin{enumerate}
-\item ...
-\item ...
-\item ...
-\item ...
-\item ...
-\item ...
-\item ...
-\item ...
+\item[a1)]
+$\bar{\bar{z}} = \overline{x+i(-y)} = x - i(-y) = z$
+\item[a2)]
+$z\bar{z} = (x+iy)(x-iy) = x^2 - ixy + ixy - i^2y^2 = x^2 +y^2 = \abs{z}^2$
+\item[b1)]
+ist klar
+\item[b2)]
+$\overline{zw} = \overline{xu - yv + i(xv+yu)} = xu-yv-i(xv-yu)$
+$= xu - yv - ixv -iyu = (x-iy)(u-iv) = \bar{z}\bar{w}$
+\item[c1)]
+$z + \bar{z} = x+ iy + x - iy = 2x \gdw \frac{1}{2}(z + \bar{z} = x)$
+\item[c2)]
+genauso
+\item[d1)]
+$\abs{\Re{z}} = \abs{x} \wegen{=}{\ref{dfn:zahlen.gk}} \sqrt{x^2} \wegen{\le}{\ref{satz:zahlen.potenzen}} \sqrt{x^2 +y^2} = \abs{z}$
+\item[d2)]
+genauso
+\item[d3)]
+$\abs{\bar{z}} = \sqrt{x^2 + {-y}^2} = \abs{z}$
+\item[e1)]
+klar
+\item[e2)]
+$\abs{z} = \sqrt{x^2+y^2} = 0 \gdw x^2 +y^2 = 0 \gdw x=0$, $y=0$
+\item[f)]
+$\abs{zw}^2 = zw \cdot \overline{zw} = z\bar{z}w\bar{w} \cdot \abs{z}^2 \abs{w}^2$
+\item[g)]
+$\abs{z+w}^2 = (z+w)(\bar{z}+\bar{w}) = z\bar{z} + z\bar{w} + w\bar{z} + w\bar{w} = 
+\abs{z}^2 + \underbrace{z\bar{w} + \overline{w\bar{w}}}_{=2\Re{(z\bar{w})}} + \abs{w}^2$
+$\le \abs{z}^2 + 2\underbrace{\abs{z\bar{w}}}_{\abs{z}\cdot\abs{w}} + \abs{w}^2 = (\abs{z} +\abs{w})^2 \folgtwegen{\sqrt{\,\,}}$ Beh.
 \end{enumerate}
 \end{proof}
 
