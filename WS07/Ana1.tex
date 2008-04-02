@@ -1356,75 +1356,120 @@ $x\le 2\delta$, $y=\frac{x}{2}$ \folgt $\abs{x-y} = \frac{x}{2} \le \delta$. ...
 \label{sec:fnkt.hauptsaetze}
 
 \begin{thm}\label{thm:fnkt.abg-beschr-glm-stetig}
-
+Sei $D\subseteq\set{R}$ abgeschlossen und beschränkt, $f: D\ra\set{R}$ sei stetig. Dann: $f$ ist glm. stetig. (Beispiel: $D=[a, b]$)
 \end{thm}
 \begin{proof}
-
+Annahme: $f$ sei nicht glm. stetig. (\ref{eqn:fnkt.glm-stetig}) (mit $\delta=\frac{1}{n}$) liefert: 
+\begin{equation}\label{eqn:fnkt.abg-beschr-glm-stetig.1}\tag{$*$}
+\exists \ep_0 >0\,\forall\nat{n}\,\exists x_n,\,y_n\in D: \abs{x_n - y_n} \le \frac{1}{n},\;\abs{f(x_n)-f(y_n)} > \ep_0
+\end{equation}
+$D$ beschränkt, Thm.~\ref{thm:konv.bw} (=BW) \folgt $\exists \text{ TF }x_{n_k} \to x$ (\kinf), $y_{n_{k_l}}\to y$ ($l\to\infty$) \folgt
+$x, y \in \abg{D} \nach{=}{n.V.} D$. Ferner: 
+\[\abs{x-y} \le \abs{x-y_{n_{k_l}}} + \underbrace{\abs{x_{n_{k_l}}-y_{n_{k_l}}}}_{\nach{\le}{(\ref{eqn:fnkt.abg-beschr-glm-stetig.1})} \frac{1}{n_{k_l}}} + \abs{y_{n_{k_l}} - y} \to 0\quad (l\to\infty)\]
+\folgtnach{\ref{satz:zahlen.arch-ord}.\ref{satz:zahlen.arch-ord.c}} $x=y$. 
+$f$ stetig: $f(x_{n_{k_l}}) - f(y_{n_{k_l}}) \to f(x)-f(y) = f(x) - f(x) = 0$ ($l\to\infty$) $\blitz$ (\ref{eqn:fnkt.abg-beschr-glm-stetig.1})
 \end{proof}
 
 \begin{dfn}\label{dfn:fnkt.stetige-forts}
-
+Sei $D\subseteq\set{R}$ nicht abgeschlossen. $x_0,\,y_0\in\set{R}$, $x_0\in\abg{D}\backslash D$. Die Funktion
+$\tilde{f}(x) = \begin{cases}
+f(x), &x\in D\\
+y_0, & x = x_0
+\end{cases}$ (definiert auf $\tilde{D} = D\cup\{x_0\}$) heißt \emph{stetige Fortsetzung} von $f$ in $x_0$, wenn $\lim_{x\to x_0} f(x) = y_0$.
 \end{dfn}
 
 \begin{bsp}\label{bsp:fnkt.stetige-forts}
 \begin{enumerate}
-\item ...\label{bsp:fnkt.stetige-forts.a}
-\item ...\label{bsp:fnkt.stetige-forts.b}
+\item Sei $D=\set{R}\backslash\{1\}$, $f(x)=\frac{x^2-1}{x-1}$, $x\in D$, $x_0=1$, $y_0=2$\\
+\folgt $\tilde{f}(x)=\begin{cases}
+\frac{x^2-1}{x-1} = x+1, &x\ne 1\\
+2, & x=1
+\end{cases}$, also $\tilde{f}(x) = x+1$, $x\in\tilde{D}=\set{R}.$\\
+Da $\tilde{f}$ stetig auf $\set{R}$, ist $f$ in 1 stetig fortsetzbar. (Wenn man $y_0=3$ setzen würde, wäre $\tilde{f}$ keine
+stetige Fortsetzung).\label{bsp:fnkt.stetige-forts.a}
+\item Sei $D=\set{R}\backslash\{0\}$. Nicht stetig fortsetzbar sind $f(x)=\frac{1}{x}$, $f(x)=\charfnkt{\set{R}_+}(x)$, 
+da jeweils $\lim_{x\to 0}f(x)$ nicht existiert. (siehe Bsp.~\ref{bsp:fnkt.grenzw-fnkt})\label{bsp:fnkt.stetige-forts.b}
 \end{enumerate}
 \end{bsp}
 
-\begin{satz}\label{satz:fnkt.glm-stetig-forts}
+\begin{satz}Sei $f:D\ra \set{R}$ stetig, $x_0\in\abg{D}\backslash D$, \reell{x_0}. Dann:\label{satz:fnkt.glm-stetig-forts}
 \begin{enumerate}
-\item ...\label{satz:fnkt.glm-stetig-forts.a}
-\item ...\label{satz:fnkt.glm-stetig-forts.b}
+\item Wenn $f$ auf $D$ gleichmäßig stetig ist, dann hat $f$ in $x_0$ eine stetige Fortsetzung. \label{satz:fnkt.glm-stetig-forts.a}
+\item Wenn $\tilde{D}=D\cup\{x_0\}$ abgeschlossen und beschränkt ist und $f$ in $x_0$ stetig fortsetzbar ist, 
+dann ist $f$ mit $D$ gleichmäßig stetig.\label{satz:fnkt.glm-stetig-forts.b}
 \end{enumerate}
 \end{satz}
 \begin{proof}
+\begin{enumerate}\setcounter{enumi}{1}
+\item Thm.~\ref{thm:fnkt.abg-beschr-glm-stetig}: $\tilde{f}$ ist gleichmäßig stetig auf $\tilde{D}$. \folgt 
+$f$ gleichmäßig stetig auf $D$.\setcounter{enumi}{0}
+\item Sei $f$ gleichmäßig stetig.
 \begin{enumerate}
-\item ...
-\item ...
+\item Sei $x_n\in D$ mit $x_n\to x_0$. Sei $\ep>0$ gegeben. Sei $\delta_\ep$ aus (\ref{eqn:fnkt.glm-stetig}). Dann:
+$\exists N_\ep: \abs{x_n - x_0} \le \frac{\delta_\ep}{2}\quad (\forall n \ge N_\ep)$
+\folgt $\abs{x_n - x_m} \le \abs{x_n - x_0} + \abs{x_0 - x_m} \le \delta_\ep\quad (\forall n,\,m \ge N_\ep)$ 
+\folgtnach{(\ref{eqn:fnkt.glm-stetig})} $\abs{f(_n) - f(x_m)} \le \ep$ $(\forall n,\,m \ge N_\ep)$. 
+Thm.~\ref{thm:konv.cauchyfolge} \folgt $\exists \lim_{\ninf} f(x_n) \ad y_0$
+\item Sei $\tilde{x_n}$ in $D$ eine weitere Folge mit $\tilde{x_n} \to x_0$. Dann $\exists \tilde{N_\ep} \ge N_\ep$
+mit $\abs{\tilde{x_n} - x_0} \le \frac{\delta_\ep}{2}$ ($\forall n \ge \tilde{N_\ep}$)
+\folgt $\abs{x_n - \tilde{x_n}} \le \abs{x_n - x_0} + \abs{x_0 - \tilde{x_n}} \le \delta_\ep$ ($\forall n \ge \tilde{N_\ep}$)
+\folgtnach{(\ref{eqn:fnkt.glm-stetig})} $\abs{f(x_n) - f(\tilde{x_n})} \le \ep$  ($\forall n \ge \tilde{N_\ep}$)
+\folgt $\abs{f(\tilde{x_n}) - y_0} \le \abs{f(\tilde{x_n}) - f(x_n)} + \abs{f(x_n) - y_0} \nach{\le}{1)}
+\ep + \lim_{m\to\infty}\abs{f(x_n)-f(x_m)} \nach{\le}{1)} 2\ep$ ($\forall n \ge \tilde{N_\ep}$)
+\folgt $f(\tilde{x_n}) \to y_0$ \folgt $\exists\lim_{x\to x_0} f(x) = y_0$.
+\end{enumerate}
 \end{enumerate}
 \end{proof}
 
-\begin{thm}\label{thm:fnkt.max}
-
+\begin{thm}[Satz vom Maximum]\label{thm:fnkt.max}
+Sei $D\subseteq\set{R}$ abgeschlossen und beschränkt und $f: D\ra\set{R}$ stetig. Dann $\exists x_{\pm}\in D$ mit
+$f(x_+) = \max_{x\in D} f(x)$, $f(x_-) = \min_{x\in D} f(x)$. Insbesondere ist $f$ beschränkt, d.\,h. 
+$\abs{f(x)} \le M$ $(\da \max\{f(x_+), f(x_-)\})$, $\forall x\in D.$
 \end{thm}
 \begin{proof}
-
+\begin{enumerate}
+\item ... % TODO
+\item ...
+\end{enumerate}
 \end{proof}
 
 \begin{kor}\label{kor:fnkt.max-kor}
-
+Sei $D\subseteq\set{R}$ abgeschlossen und beschränkt, $f: D\ra\set{R}$ stetig, $f(x) > 0 \forall x\in D$.
+Dann: $f(x) \ge f(x_-) > 0$ $(\forall x\in D)$, (wobei $x_-\in D$ aus Thm.~\ref{thm:fnkt.max}).
 \end{kor}
 
 \begin{bsp*}
+Wenn $D$ nicht abgeschlossen oder unbeschränkt, dann sind Thm. und Kor. im Allgemeinen falsch.
 \begin{enumerate}
-\item ...
-\item ...
+\item $D=(0, 1]$, $f(x) = \frac{1}{x}$. $D=\set{R}_+$, $g(x) = x$. \folgt $f$, $g$ stetig und unbeschränkt.
+\item $D = [1, \infty), f(x) = \frac{1}{x} > 0$ $\forall x\ge 1$. Aber $\inf_{x\in D} f(x) = 0$.
 \end{enumerate}
 \end{bsp*}
 
-\paragraph{Frage.} ...
+\paragraph{Frage.} Wie sieht Bild von $f$ aus? $f(D)$ kann Lücken haben, wenn:
+% TODO, bilder
 
-\begin{thm}\label{thm:fnkt.zws}
-
+\begin{thm}[Zwischenwertsatz/ZWS]\label{thm:fnkt.zws}
+Sei $f: [a, b] \ra \set{R}$ stetig. Dann: $f([a, b]) = \left[\min_{[a, b]} f, \max_{[a, b]} f\right]$.
+Also: $\forall y_0 \in [\min f, \max f]\,\exists x_0\in [a, b]$ mit $f(x_0) = y_0$.
 \end{thm}
 \begin{proof}
-
+...
 \end{proof}
 
-\begin{kor}\label{kor:fnkt.nst}
-
+\begin{kor}[Nullstellensatz]\label{kor:fnkt.nst}
+Sei $f:[a,b]\ra\set{R}$ stetig und $f(a)\cdot f(b) \le 0$. Dann $\exists x_*\in [a, b]: f(x_*) = 0$. 
 \end{kor}
 \begin{proof}
-
+Nach Vorraussetzung $f(x) \le 0 \le f(b)$, $f(b) \le 0 \le f(a)$ \folgt $0\in f([a, b])$. ZWS \folgt Beh.
 \end{proof}
 
 \begin{kor}\label{kor:fnkt.intervallsatz}
-
+Sei $I$ ein Intervall und $f: I\ra\set{R}$ stetig. Dann ist $f(I)$ ein Intervall (Intervallsatz).
 \end{kor}
 \begin{proof}
-
+Annahme: $f(I)$ sei kein Intervall \folgt $\exists a, b\in I$ mit $y\da f(a) < f(b) \ad z$ und $u\in (y, z)$
+mit ...
 \end{proof}
 
 \begin{bsp}\label{bsp:fnkt.nst-intsatz-bsp}
