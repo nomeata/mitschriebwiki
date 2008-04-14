@@ -1,0 +1,167 @@
+\documentclass[a4paper,twoside,DIV15,BCOR12mm]{scrbook}
+
+\usepackage{mathe}
+\usepackage{saetze-baeuerle}
+\usepackage{faktor}
+\usepackage{enumerate}
+
+\newcommand{\cF}{\mathcal{F}}
+
+\author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
+\title{Stochasitsche Prozesse}
+\makeindex
+
+\begin{document}
+\maketitle
+ 
+
+\renewcommand{\thechapter}{\arabic{chapter}}
+%\chapter{Inhaltsverzeichnis}
+\stepcounter{chapter}
+%\renewcommand{\tocname}{bla}
+\addcontentsline{toc}{chapter}{\protect\numberline {\thechapter}Inhaltsverzeichnis}
+\tableofcontents
+
+ % Vorwort
+
+\chapter{Vorwort}
+%\addcontentsline{toc}{chapter}{Vorwort}
+
+\section*{Über dieses Skriptum}
+Dies ist ein Mitschrieb der Vorlesung \glqq Stochastische Prozesse\grqq\ von Prof. Dr. Bäuerle im
+Sommersemester 08 an der Universität Karlsruhe (TH).
+Die Mitschriebe der Vorlesung werden mit ausdrücklicher Genehmigung von Prof Dr. Bäuerle hier veröffentlicht,
+Prof. Dr. Bäuerle ist für  den Inhalt nicht verantwortlich.
+\section*{Wer}
+Gestartet wurde das Projekt von Joachim Breitner.
+
+
+\section*{Wo}
+Alle Kapitel inklusive \LaTeX-Quellen können unter \url{http://mitschriebwiki.nomeata.de} abgerufen werden.
+Dort ist ein von Joachim Breitner programmiertes \emph{Wiki}, basierend auf \url{http://latexki.nomeata.de} installiert. 
+Das heißt, jeder kann Fehler nachbessern und sich an der Entwicklung
+beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
+
+\setcounter{chapter}{0}
+% section mit §?
+\renewcommand{\thechapter}{\Roman{chapter}}
+
+
+\chapter{Markov-Ketten mit diskretem Zeitparameter}
+
+\section{Elementare Eigenschaften von Markov-Ketten}
+
+Gegeben sei eine Folge von Zufallsvariablen $(X_n)$ auf dem Wahrscheinlichkeitsraum $(\Omega, \cF, P)$ mit $X_n:\Omega -> S$ wobei $S$ nicht leer, und endlich oder abzählbar unendlich ist.
+
+\begin{definition}
+Eine $S\times S$-Matrix $P=(p_{ij})$ heißt \emph{stochastische Matrix}\index{stochastische Matrix}, falls $p_{ij}>0$ ist und für alle $i\in S$ die Zeilensumme $\sum_{j\in S} p_{ij} = 1$ ist.
+\end{definition}
+
+\begin{definition}
+Sei $P$ eine stochastische Matrix. Eine (endliche oder unendliche) Folge $X_0, X_1, X_2,\ldots$ von $S$-wertigen Zufallsvariablen heißt (homogene\footnote{kurz für zeit-homogen. Die Übergangswahrscheinlichkeiten hängen nicht vom aktuellen Zeitpunkt ab.}) \emph{Markov-Kette}\index{Markov-Kette} mit Übergangsmatrix $P$, falls für alle $n\in \MdN$\footnote{Hier ist $\MdN=1,2,\ldots$} und für alle Zustände $i_k\in S$ mit 
+\[
+P(X_0=i_0,\ldots,X_n=i_n) >0
+\]
+gilt
+\[
+P(X_{n+1} = i_{n+1} \mid X_0 = i_0, \ldots, X_n=i_n) = 
+P(X_{n+1} = i_{n+1} \mid X_n=i_n) = p_{i_n i_{n+1}}.
+\]
+
+Die $p_{ij}$ heißen Übergangswahrscheinlichkeiten und die \emph{Startverteilung} $\nu$ der Kette ist definiert durch $\nu(i)=P(X_0=i)$ für $i\in S$.
+\end{definition}
+
+\begin{bemerkung}
+Jede Folge von unabhängigen Zufallsvariablen ist eine Markov-Kette.
+\end{bemerkung}
+
+\begin{satz}[Eigenschaften von Markov-Ketten]
+$(X_n)$ ist genau dann eine Markovkette mit Übergangsmatrix $P$, falls gilt:
+\[
+P(X_k = i_k,\, 0\le k\le n) = P(X_0 = i_0)\prod_{k=0}^{n-1} p_{i_k i_{k+1}} \quad \forall n\in \MdN_0 \ \forall i_k\in S
+\]
+genau dann wenn gilt:
+\[
+P(X_k = i_k,\, 1\le k\le n \mid X_0=i_0) = \prod_{k=0}^{n-1} p_{i_k i_{k+1}} \quad \forall n\in \MdN_0 \ \forall i_k\in S\text{ mit $P(X_0=i_0)>0$}
+\]
+genau dann wenn gilt:
+\[
+P(X_k = i_k,\,m\le k\le m+n) = \prod_{k=m}^{m+n-1} p_{i_k i_{k+1}} \quad \forall m,n\in \MdN_0 \ \forall i_k\in S
+\]
+\end{satz}
+
+\begin{beweis}
+Zur ersten Äquivalenz. Sei $A_k \da [X_k=i_k]$, $k\in\MdN_0$.
+
+„$\Longrightarrow$“ Induktion über $n$: $n=0$ $\checkmark$, $n\curvearrowright n+1:$ 
+\begin{align*}
+P(A_0A_1\ldots A_nA_{n+1}) &= P(A_0\ldots A_n)\cdot P(A_{n+1}\mid A_0\ldots A_n) \\
+&= P(A_0\ldots A_n)\cdot p_{i_ni_{n+1}} && \text{(Markov-Eigenschaft)}\\
+&= P(X_0=i_0)\prod_{k=0}^n p_{i_ki_{k+1}} && \text{(I.V.)}
+\end{align*}
+
+„$\Longleftarrow$“ 
+\begin{align*}
+P(A_{n+1}\mid A_0\ldots A_n) &= \frac{P(A_0\ldots A_nA_{n+1})}{P(A_0\ldots A_n)} \\
+&= p_{i_ni_{n+1}} && \text{(Vor.)}
+\end{align*}
+Die weiteren Äquivalenzen sind ähnlich zu beweisen.
+\end{beweis}
+
+\paragraph{Konstruktion einer Markov-Kette.} Seien $(Y_n)$ Zufallsvariablen, unabhängig und identisch gleichverteilt (u.i.v.), in $Z$. Weiter ist $g:S\times Z\to S$ eine messbare Abbildung. Definiere die Folge $(X_n)$ mit 
+\[X_0=c\in S, \quad X_n = g(X_{n-1},Y_n).\]
+Die so konstruierte Folge $(X_n)$ ist eine Markov-Kette mit Werten in $S$ und Übergangsmatrix $P=(p_{ij})$ mit $p_{ij} = P(g(i,X_n),j)$.
+
+\begin{beweis}
+Die Variablen $X_0,\ldots,X_n$ hängen nur von $X_0,Y_1,\ldots Y_n$ ab, sind also unabhängig von $Y_{n+1}$.
+\begin{align*}
+P(X_{n+1} = i_{n+1} \mid X_k = i_k, 0\le k\le n) 
+&= \frac{P(X_k = i_k,\, 0\le k\le n+1)}{P(X_k = i_k,\, 0\le k\le n)} \\
+&= \frac{P(X_k = i_k,\, 0\le k\le n,\, g(i_n,Y_{n+1})=i_{n+1})}{P(X_k = i_k,\, 0\le k\le n)} \\
+&= \frac{P(X_k = i_k,\, 0\le k\le n)\cdot P(g(i_n,Y_{n+1})=i_{n+1})}{P(X_k = i_k,\, 0\le k\le n)} \\
+&= P(g(i_n,Y_{n+1})=i_{n+1}) \\
+&= \frac{P(g(i_n,Y_{n+1})=i_{n+1})\cdot P(X_n=i_n)}{P(X_n =i_n)} \\
+&= \frac{P(g(i_n,Y_{n+1})=i_{n+1}, X_n=i_n)}{P(X_n =i_n)} \\
+&= P(g(i_n,Y_{n+1})=i_{n+1}\mid X_n=i_n) \\
+&= P(X_{n+1} = i_{n+1} \mid X_n=i_n)
+\end{align*}
+\end{beweis}
+
+\begin{bemerkung}
+Umgekehrt kann zu jeder stochastischen Matrix $P$ eine Markovkette $(X_n)$ konstruiert werden mit $X_n=g(X_{n-1},Y_n)$, wobei $(Y_n)$ u.i.v. und o.B.d.A $Y_n \sim U[0,1]$.
+\end{bemerkung}
+
+\begin{beispiel}[Lagerhaltung]
+Sei $Y_n$ die Nachfrage nach einem gelagerten Produkt im Zeitintervall $(n-1,n]$. $(Y_n)$ sei u.i.v. und $Y_n\in \MdN_0$. Die Auffüll-Politik sei eine $(z,Z)$-Politik mit $z\le Z$, $z,Z\in \MdN$, die wie folgt funktiert: Falls der der Lagerbestand zur Zeit $n\le z$ ist, dann fülle auf $Z$ auf, sonst tue nichts.
+
+Sei $X_n$ der Lagerbestand zum Zeitpunkt $n$, $S=\MdN_0$. Es gilt
+\[
+X_n =
+\begin{cases}
+(Z - Y_n)^+, & X_{n-1} \le z \\
+(X_{n+1} - Y_n)^+, & X_{n-1} > z
+\end{cases}
+\]
+Also ist $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P=(p_{ij})$ und
+\[
+p_{ij} = 
+\begin{cases}
+P( (Z-Y_n)^+ = j), & i\le z \\
+P( (i-Y_n)^+ = j), & i > z
+\end{cases}
+\]
+\end{beispiel}
+
+\begin{beispiel}[Ruinspiel]
+% später
+\end{beispiel}
+
+
+\chapter{Satz um Satz (hüpft der Has)}
+\listtheorems{satz,wichtigedefinition}
+
+\renewcommand{\indexname}{Stichwortverzeichnis}
+\addtocounter{chapter}{1}
+\addcontentsline{toc}{chapter}{\protect\numberline {\thechapter}Stichwortverzeichnis}
+\printindex
+\end{document}
