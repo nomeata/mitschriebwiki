@@ -4,6 +4,7 @@
 \usepackage{saetze-baeuerle}
 \usepackage{faktor}
 \usepackage{enumerate}
+\usepackage{tikz}
 
 \newcommand{\cF}{\mathcal{F}}
 
@@ -15,7 +16,7 @@
 \maketitle
  
 
-\renewcommand{\thechapter}{\arabic{chapter}}
+\renewcommand{\thechapter}{\Roman{chapter}}
 %\chapter{Inhaltsverzeichnis}
 \stepcounter{chapter}
 %\renewcommand{\tocname}{bla}
@@ -43,15 +44,14 @@ Das heißt, jeder kann Fehler nachbessern und sich an der Entwicklung
 beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
 
 \setcounter{chapter}{0}
-% section mit §?
-\renewcommand{\thechapter}{\Roman{chapter}}
-
+%\renewcommand{\thesection}{{\rm\bfseries §}\arabic{section}}
+\renewcommand{\thechapter}{\arabic{chapter}}
 
 \chapter{Markov-Ketten mit diskretem Zeitparameter}
 
 \section{Elementare Eigenschaften von Markov-Ketten}
 
-Gegeben sei eine Folge von Zufallsvariablen $(X_n)$ auf dem Wahrscheinlichkeitsraum $(\Omega, \cF, P)$ mit $X_n:\Omega -> S$ wobei $S$ nicht leer, und endlich oder abzählbar unendlich ist.
+Gegeben sei eine Folge von Zufallsvariablen $(X_n)$ auf dem Wahrscheinlichkeitsraum $(\Omega, \cF, P)$ mit $X_n:\Omega \to S$ wobei $S$ nicht leer, und endlich oder abzählbar unendlich ist.
 
 \begin{definition}
 Eine $S\times S$-Matrix $P=(p_{ij})$ heißt \emph{stochastische Matrix}\index{stochastische Matrix}, falls $p_{ij}>0$ ist und für alle $i\in S$ die Zeilensumme $\sum_{j\in S} p_{ij} = 1$ ist.
@@ -153,9 +153,166 @@ P( (i-Y_n)^+ = j), & i > z
 \end{beispiel}
 
 \begin{beispiel}[Ruinspiel]
-% später
+Zwei Spieler mit Startkapital $B\in\MdN$ Euro spielen in Runden um jeweils einen Euro, etwa mit einem Münzwurf. Spieler I gewinnt dabei mit Wahrscheinlichkeit $p$. Sei $Y_n = 1$, falls Spieler I die $n$-te Runde gewinnt, und $Y_n= -1$, falls er die $n$-Runde verliert. Wir nehmen an, dass $Y_n$ u.i.v. ist.
+
+Wir interessieren uns für das Kapital $X_n$ von Spieler I nach der $n$-ten Runde. Damit ist der Zustandsraum $S=\{0,1,\ldots,2B\}$.
+
+Es gilt $X_0 = B$ und
+\[
+X_n = 
+\begin{cases}
+2B, &X_{n-1} = 2B \\
+X_{n-1} + Y_n, & 0 < X_{n-1} < 2B \\
+0, &X_{n-1} = 0.
+\end{cases}
+\]
+Es folgt aus der Konstruktion direkt dass $(X_n)$ eine Markov-Kette ist mit Übergangsmatrix $P=(p_{ij})$, und
+$p_{00} = p_{2B,2B} = 1$ sowie
+\[
+p_{ij} = 
+\begin{cases}
+p, &j=i+1\\
+1-p, &j=i-1 
+\end{cases}\text{ für } 0<i<2B.
+\]
+% Wer lust hat: Hier skizze mit Übergangswahrscheinlichkeiten.
+\begin{center}
+\begin{tikzpicture}
+\foreach \x in {0,1,2,3,4,5,6}
+	\draw (\x cm,-1pt) -- (\x cm, 1pt);
+\node (null) at (0,0) {}; \draw (null) node[anchor=north] {$0$};
+\node (a) at (2,0) {}; \draw (a) node [anchor=north] {$i-1$};
+\node (b) at (3,0) {}; \draw (b) node [anchor=north] {$i$};
+\node (c) at (4,0) {}; \draw (c) node [anchor=north] {$i+1$};
+\node (zb) at (6,0) {}; \draw (zb) node [anchor=north] {$2B$};
+\draw (null) -- (zb);
+\draw [->] (b) .. controls +(up:1cm) and +(up:1cm) .. node [anchor=south] {$1-p$}  (a);
+\draw [->] (b) .. controls +(up:1cm) and +(up:1cm) .. node [anchor=south] {$p$}  (c);
+\draw [->] (b) .. controls +(up:1cm) and +(up:1cm) .. node [anchor=south] {$p$}  (c);
+\draw [->] (null) .. controls +(0.7,1) and +(-0.7,1) .. node [anchor=south] {$1$}  (null);
+\draw [->] (zb) .. controls +(0.7,1) and +(-0.7,1) .. node [anchor=south] {$1$}  (zb);
+\end{tikzpicture}
+\end{center}
 \end{beispiel}
 
+\begin{beispiel}[Wartesystem]
+Zu jedem Zeitpunkt $n=0,1,\ldots$ können maximal $m$ Kunden bedient werden. $Y_n$ sei die Anzahl der zufällig im Zeitintervall $(n-1,n]$ eintreffenden Kunden und sei u.i.v.
+
+Sei $X_n$ die Anzahl der zur Zeit $n$ wartenden Kunden, $S=\MdN_0$. Es gilt $X_0 = C$ und $X_n = (X_{n-1}-m)^+ + Y_n$. Also ist $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P=(p_{ij})$ und $p_{ij} = P(Y_n = j-(i-m)^+)$, $i,j\in \MdN_0$.
+\end{beispiel}
+
+\begin{definition}
+Sei $P$ eine stochastische $S\times S$-Matrix. Dann heißen die Elemente $p_{ij}^{(n)}$ von $P^n$ die $n$-Schritt-Übergangswahrscheinlichkeiten zu $P$. Wir definieren $P^0=E$, also $p_{ij}= \delta_{ij}$.
+\end{definition}
+
+\begin{satz}
+Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P$. Dann gilt:
+\begin{enumerate}[a)]
+\item $P(X_{n+m} = j\mid X_m = i) = p_{ij}^{(n)}$ für alle $i,j\in S$, $m,n\in\MdN_0$ mit $P(X_m=1)>0$.
+\item $P(X_n = j) = \sum_{i\in S} P(X_0=i)p_{ij}^{(n)}$, $j\in S$, $n\in\MdN$.
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+\begin{enumerate}[a)]
+\item 
+\begin{align*}
+P(X_{n+m} =i_{n+m} , X_m=i_m) &= \sum_{i_{m+1},\ldots,i_{n+m+1}} P(X_m = i_m) \prod_{k=m}^{m+n+1} p_{i_ki_{k+1}} \\
+&= P(X_m = i_m) p_{i_mi_{m+n}}^{(n)}
+\end{align*}
+\item 
+\begin{align*}
+P(X_n=j) &= \sum_{i\in S} P(X_n=j, X_0=i) \\
+&= \sum_{i\in S} P(X_n = j \mid X_0 = i)\cdot P(X_0 = i) \\
+&= \sum_{i\in S} P(X_0) p_{ij}^{(n)}
+\end{align*}
+\end{enumerate}
+\end{beweis}
+
+\begin{bemerkung}
+\begin{enumerate}[(i)]
+\item Wegen $p^{n+m}  = p^n \cdot p^m$ gilt: 
+\[
+p_{ij}^{(n+m)}  = \sum_{k\in S} p_{ij}^{(n)}p_{kj}^{(m)} \text{ für } i,j\in S
+\]
+Dies ist die „Chapman-Kologomorov-Gleichung“\index{Chapman-Kologomorov-Gleichung}.
+\item Ist $X_0 \sim \nu$, so gilt $X_n \sim \nu\cdot P^n$.
+\end{enumerate}
+\end{bemerkung}
+
+\begin{satz}[Existenzssatz für Markov-Ketten]
+Sei $\nu$ ein Wahrscheinlichkeitsmaß auf $S$ und $P$ eine stochastische $S\times S$-Matrix. Sei $X_n$ die $n$-te Projektion auf $\Omega \da S^{\MdN_0}$, also $X_n : \Omega\to s$, $n\in\MdN_0$ mit $X_n(\omega) = X_n( (i_0,i_1,\ldots) ) = i_n$.
+
+Dann existiert ein Wahrscheinlichkeitsmaß $P$ auf $\cF = \oplus_{n=0}^\infty \mathcal P (S)$, so dass $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P$ und Startverteilung $\nu$ ist, d.h:
+\begin{itemize}
+\item $P(X_0 = i_0)= \nu(i_0)$, $i_0\in S$
+\item $P(X_{n+1} = j \mid X_n= j) = p_{ij}$, $i,j\in S$, $P(X_n=i)>0$.
+\end{itemize}
+\end{satz}
+
+\begin{beweis}
+Staz von Ionescu-Tulcea über die Fortsetzung von Maßen und die Existenz zufälliger Folgen.
+\end{beweis}
+
+\section{Klassifikation von Zuständen, Rekurrenz und Transienz}
+
+In diesem Paragraphen widmen wir uns Fragestellungen wie diesen:
+Welche Zustände in $S$ werden von der Markov-Kette mit Sicherheit besucht und welche nicht? Wenn sie besucht werden, wie oft? 
+
+\begin{definition}
+Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P=(p_{ij})$.
+\begin{enumerate}[a)]
+\item $i\in S$ \emph{führt nach} $j\in S$ (kurz $i\rightsquigarrow j$)\index{$\rightsquigarrow$}, falls es ein $n\in \MdN$ gibt mit $p_{ij}^{(n)}>0$.
+
+\item $i\in S$ \emph{kommuniziert} mit $j\in S$ (kurz $i\leftrightarrow j)$\index{$\leftrightarrow$} falls sowohl $i\rightsquigarrow j$ als auch $j\rightsquigarrow i$ gilt.
+\end{enumerate}
+\end{definition}
+
+\begin{bemerkung}
+Für $i,j\in S$ sei $i\sim j$ definiert als $(i\leftrightarrow j) \vee (i=j)$. Diese Relation ist eine Äquivalentrelation auf $S$, da sie reflexiv, symmetrisch und transitiv ist.
+
+Dies liefert uns eine Partition von $S$ mit den Äquivalenzklassen $K(i) \da \{j\in S \mid i\sim j\}$. Die Äquivalenzklasse $K(i)$ von $i$ enthält $i$ selbst und die mit $i$ kommunizierenden Zustände.
+\end{bemerkung}
+
+\begin{definition}
+Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P=(p_{ij})$.
+\begin{enumerate}[a)]
+\item $J\subset S$ heißt \emph{abgeschlossen}\index{abgeschlossene Zustandsmenge}, wenn es keine zwei Zustände $i\in J$ und $i\in S\setminus J$ gibt mit $j\rightsquigarrow i$.
+\item Die Markov-Kette $(X_n)$ beziehungsweise die Übergangsmatrix $P$ heißen \emph{irreduzibel}\index{irreduzibel}, falls $S$ nur aus einer Klasse besteht, also für alle $i,j\in S$, $i\ne j$, gilt $i\leftrightarrow j$.
+\end{enumerate}
+\end{definition}
+
+\begin{beispiel}
+\emph{Skizze, hier ausgelassen}
+\end{beispiel}
+
+\begin{beispiel}[Ruinspiel]
+$\mbox{}$
+\begin{center}
+\begin{tikzpicture}
+\foreach \x in {0,1,2,3,4,5,6}
+	\draw (\x cm,-1pt) -- (\x cm, 1pt);
+\node (null) at (0,0) {}; \draw (null) node[anchor=north] {$0$};
+\node (a) at (2,0) {}; \draw (a) node [anchor=north] {$i-1$};
+\node (b) at (3,0) {}; \draw (b) node [anchor=north] {$i$};
+\node (c) at (4,0) {}; \draw (c) node [anchor=north] {$i+1$};
+\node (zb) at (6,0) {}; \draw (zb) node [anchor=north] {$2B$};
+\draw (null) -- (zb);
+\draw [->] (b) .. controls +(up:1cm) and +(up:1cm) .. node [anchor=south] {$1-p$}  (a);
+\draw [->] (b) .. controls +(up:1cm) and +(up:1cm) .. node [anchor=south] {$p$}  (c);
+\draw [->] (b) .. controls +(up:1cm) and +(up:1cm) .. node [anchor=south] {$p$}  (c);
+\draw [->] (null) .. controls +(0.7,1) and +(-0.7,1) .. node [anchor=south] {$1$}  (null);
+\draw [->] (zb) .. controls +(0.7,1) and +(-0.7,1) .. node [anchor=south] {$1$}  (zb);
+\draw (-0.4,-0.4) rectangle (0.4,1.5);
+\draw (0,-0.4) node [anchor=north] {$K(0)$};
+\draw (0.6,-0.4) rectangle (5.4,1.5);
+\draw (3,-0.4) node [anchor=north] {$K(i)$};
+\draw (5.6,-0.4) rectangle (6.4,1.5);
+\draw (6,-0.4) node [anchor=north] {$K(2B)$};
+\end{tikzpicture}
+\end{center}
+
+\end{beispiel}
 
 \chapter{Satz um Satz (hüpft der Has)}
 \listtheorems{satz,wichtigedefinition}
