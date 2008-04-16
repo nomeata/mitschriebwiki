@@ -15,8 +15,19 @@
 \begin{document}
 \maketitle
  
+\newenvironment{enuma}{%
+\begin{enumerate}[\hspace{1em}a)]%
+}{%
+\end{enumerate}%
+}
 
-\renewcommand{\thechapter}{\Roman{chapter}}
+\newenvironment{enumi}{%
+\begin{enumerate}[\hspace{1em}i)]%
+}{%
+\end{enumerate}%
+}
+
+\renewcommand{\thechapter}{\arabic{chapter}}
 %\chapter{Inhaltsverzeichnis}
 \stepcounter{chapter}
 %\renewcommand{\tocname}{bla}
@@ -45,7 +56,8 @@ beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
 
 \setcounter{chapter}{0}
 %\renewcommand{\thesection}{{\rm\bfseries §}\arabic{section}}
-\renewcommand{\thechapter}{\arabic{chapter}}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thechapter}{\Roman{chapter}}
 
 \chapter{Markov-Ketten mit diskretem Zeitparameter}
 
@@ -76,7 +88,7 @@ Jede Folge von unabhängigen Zufallsvariablen ist eine Markov-Kette.
 \end{bemerkung}
 
 \begin{satz}[Eigenschaften von Markov-Ketten]
-$(X_n)$ ist genau dann eine Markovkette mit Übergangsmatrix $P$, falls gilt:
+$(X_n)$ ist genau dann eine Markov-Kette mit Übergangsmatrix $P$, falls gilt:
 \[
 P(X_k = i_k,\, 0\le k\le n) = P(X_0 = i_0)\prod_{k=0}^{n-1} p_{i_k i_{k+1}} \quad \forall n\in \MdN_0 \ \forall i_k\in S
 \]
@@ -128,7 +140,7 @@ P(X_{n+1} = i_{n+1} \mid X_k = i_k, 0\le k\le n)
 \end{beweis}
 
 \begin{bemerkung}
-Umgekehrt kann zu jeder stochastischen Matrix $P$ eine Markovkette $(X_n)$ konstruiert werden mit $X_n=g(X_{n-1},Y_n)$, wobei $(Y_n)$ u.i.v. und o.B.d.A $Y_n \sim U[0,1]$.
+Umgekehrt kann zu jeder stochastischen Matrix $P$ eine Markov-Kette $(X_n)$ konstruiert werden mit $X_n=g(X_{n-1},Y_n)$, wobei $(Y_n)$ u.i.v. und o.B.d.A $Y_n \sim U[0,1]$.
 \end{bemerkung}
 
 \begin{beispiel}[Lagerhaltung]
@@ -207,14 +219,14 @@ Sei $P$ eine stochastische $S\times S$-Matrix. Dann heißen die Elemente $p_{ij}
 
 \begin{satz}
 Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P$. Dann gilt:
-\begin{enumerate}[a)]
+\begin{enuma}
 \item $P(X_{n+m} = j\mid X_m = i) = p_{ij}^{(n)}$ für alle $i,j\in S$, $m,n\in\MdN_0$ mit $P(X_m=1)>0$.
 \item $P(X_n = j) = \sum_{i\in S} P(X_0=i)p_{ij}^{(n)}$, $j\in S$, $n\in\MdN$.
-\end{enumerate}
+\end{enuma}
 \end{satz}
 
 \begin{beweis}
-\begin{enumerate}[a)]
+\begin{enuma}
 \item 
 \begin{align*}
 P(X_{n+m} =i_{n+m} , X_m=i_m) &= \sum_{i_{m+1},\ldots,i_{n+m+1}} P(X_m = i_m) \prod_{k=m}^{m+n+1} p_{i_ki_{k+1}} \\
@@ -226,18 +238,18 @@ P(X_n=j) &= \sum_{i\in S} P(X_n=j, X_0=i) \\
 &= \sum_{i\in S} P(X_n = j \mid X_0 = i)\cdot P(X_0 = i) \\
 &= \sum_{i\in S} P(X_0) p_{ij}^{(n)}
 \end{align*}
-\end{enumerate}
+\end{enuma}
 \end{beweis}
 
 \begin{bemerkung}
-\begin{enumerate}[(i)]
+\begin{enumi}
 \item Wegen $p^{n+m}  = p^n \cdot p^m$ gilt: 
 \[
 p_{ij}^{(n+m)}  = \sum_{k\in S} p_{ij}^{(n)}p_{kj}^{(m)} \text{ für } i,j\in S
 \]
 Dies ist die „Chapman-Kologomorov-Gleichung“\index{Chapman-Kologomorov-Gleichung}.
 \item Ist $X_0 \sim \nu$, so gilt $X_n \sim \nu\cdot P^n$.
-\end{enumerate}
+\end{enumi}
 \end{bemerkung}
 
 \begin{satz}[Existenzssatz für Markov-Ketten]
@@ -261,11 +273,11 @@ Welche Zustände in $S$ werden von der Markov-Kette mit Sicherheit besucht und w
 
 \begin{definition}
 Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P=(p_{ij})$.
-\begin{enumerate}[a)]
+\begin{enuma}
 \item $i\in S$ \emph{führt nach} $j\in S$ (kurz $i\rightsquigarrow j$)\index{$\rightsquigarrow$}, falls es ein $n\in \MdN$ gibt mit $p_{ij}^{(n)}>0$.
 
 \item $i\in S$ \emph{kommuniziert} mit $j\in S$ (kurz $i\leftrightarrow j)$\index{$\leftrightarrow$} falls sowohl $i\rightsquigarrow j$ als auch $j\rightsquigarrow i$ gilt.
-\end{enumerate}
+\end{enuma}
 \end{definition}
 
 \begin{bemerkung}
@@ -276,10 +288,10 @@ Dies liefert uns eine Partition von $S$ mit den Äquivalenzklassen $K(i) \da \{j
 
 \begin{definition}
 Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P=(p_{ij})$.
-\begin{enumerate}[a)]
+\begin{enuma}
 \item $J\subset S$ heißt \emph{abgeschlossen}\index{abgeschlossene Zustandsmenge}, wenn es keine zwei Zustände $i\in J$ und $i\in S\setminus J$ gibt mit $j\rightsquigarrow i$.
 \item Die Markov-Kette $(X_n)$ beziehungsweise die Übergangsmatrix $P$ heißen \emph{irreduzibel}\index{irreduzibel}, falls $S$ nur aus einer Klasse besteht, also für alle $i,j\in S$, $i\ne j$, gilt $i\leftrightarrow j$.
-\end{enumerate}
+\end{enuma}
 \end{definition}
 
 \begin{beispiel}
@@ -311,7 +323,141 @@ $\mbox{}$
 \draw (6,-0.4) node [anchor=north] {$K(2B)$};
 \end{tikzpicture}
 \end{center}
+\end{beispiel}
 
+\begin{lemma}
+$J\subset S$ ist genau dann abgeschlossen, wenn $(p_{ij},\, i,j\in J)$ stochastisch ist.
+\end{lemma}
+\begin{beweis}
+„$\Longrightarrow$“: Klar. „$\Longleftarrow$“: Es gilt: $(p_{ij},\, i,j\in J)$ stochastisch $\iff$ $(p_{ij}^{(n)},\, i,j\in J)$ für alle $n\in \MdN$.
+\end{beweis}
+
+\pagebreak[2]
+Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P=(p_{ij})$. Es sei
+\[
+T_i \da \inf\{n\in\MdN\mid X_n =i\}
+\]
+die (zufällige) Ersteintrittszeit der Markov-Kette in den Zustand $i$.
+
+Wir setzen dabei $\inf\emptyset \da \infty$. Weiter sei für $i,j\in S$, $n\in \MdN$:
+\begin{align*}
+f_{ij}^{(n)} &\da P(T_j=n\mid X_0=i) = P_i(T_j=n) \\
+&=P(X_n=j,\, X_\nu\ne j \text{ für } 1 < \nu < n\mid X_0=i) \\
+f_{ij}^{(0)} &\da 0
+\end{align*}
+
+Offenbar ist $f_{ij}^{(1)} = p_{ij}$. Weiter definieren wir
+\[
+f_{ij}^{*} \da \sum_{n=0}^\infty f_{ij}^{(n)} = \sum_{n=0}^\infty P_i(T_j=n) = P_i(T_j<\infty) = P_i(\exists n\in \MdN: X_n=j)\in[0,1]
+\]
+
+\begin{definition}
+Ein Zustand $i\in S$ heißt \emph{rekurrent}\index{rekurrent}, falls $f_{ii}^{*} = 1$ und \emph{transient}\index{transient} sonst. % Das sind ganz wichtige Begriffe.
+\end{definition}
+
+\begin{lemma}
+\label{lem2.2}Für alle $n\in\MdN$, $i,j\in S$ gilt:
+\[
+p_{ij}^{(n)} = \sum_{k=1}^n f_{ij}^{(k)} p_{jj}^{(n-k)}
+\]
+\end{lemma}
+
+\begin{beweis}[Methode des ersten Besuches]
+Unter Verwendung der Formel $P(AB\mid C) = P(B\mid C)\cdot P(A\mid BC)$ für Ereignisse $A,B,C$ zeigen wir:
+\begin{align*}
+p_{ij}^{(n)} &= P_i(X_n=j) = \sum_{k=1}^n P({X_n=j},\, {X_\mu\ne j,\, 1<\mu<k,\, X_k = j}\mid {X_0=i}) \\
+&= \sum_{k=1}^n P_i(X_\mu\ne j,\, 1<\mu<k,\, X_k = j)\cdot\\
+&\quad\quad\quad\quad \underbrace{P(X_n=j\mid X_0=i,\,X_\mu\ne j,\, 1<\mu<k,\, X_k = j)}_{=P(X_n=j\mid  X_k=j)}\\
+&=\sum_{k=1}^nf_{ij}^{(k)} p_{jj}^{(n-k)}
+\end{align*}
+\end{beweis}
+
+\begin{satz}
+\label{satz2.3}%
+$i\in S$ ist rekurrent genau dann, wenn gilt:
+\[
+\sum_{n=0}^\infty p_{ii}^{(n)} = \infty
+\]
+\end{satz}
+
+\begin{beweis}
+Für $s\in(0,1)$ erhalten wir aus Lemma \ref{lem2.2}:
+\begin{align*}
+\sum_{n=0}^\infty p_{ii}^{(n)} s^n &= 1 + \sum_{n=1}^\infty p_{ii}^{(n)} s^n = \\
+&= 1 + \sum_{n=1}^\infty s^n\sum_{k=1}^n f_{ii}^{(k)}p_{ii}^{(n-k)} \\
+&= 1 + \sum_{k=1}^\infty f_{ii}^{(k)} s^k \sum_{n=k}^\infty p_{ii}^{(n-k)} s^{n-k} \\
+&= 1 + \sum_{k=1}^\infty f_{ii}^{(k)} s^k \sum_{n=0}^\infty p_{ii}^{(n)} s^{n} 
+\end{align*}
+
+Abkürzend schreiben wir $P(s)\da \sum_{k=1}^\infty f_{ii}^{(k)} s^k$ und $F(s)=\sum_{n=0}^\infty p_{ii}^{(n)} s^{n}$, also gilt \[P(S) = 1 + F(s)\cdot P(s).\]
+Nun sei $s\to 1$ (monotone Konvergenz!), und wir erhalten
+\[
+P(1) = 1 + P(1)\cdot f_{ii}^*.
+\]
+Es folgt: Ist $f_{ii}^* = 1$, so gilt $P(1) = 1 + P(1)$, also ist $P(1) = \sum_{n=0}^\infty p_{ii}^{(n)} = \infty$. Ist ansonsten $f_{ii}^{*}<1$, so gilt $P(1) = \frac1{1-f_{ii}^*} < \infty$.
+\end{beweis}
+%$p,P,\pi,\Pi, \mathcal P, \mathfrak P, \mathfrak p$
+
+\begin{bemerkung}
+Die im Satz \ref{satz2.3} auftretende Reihe kann wie folgt interpretiert werden:
+\begin{align*}
+\sum_{n=0}^\infty p_{ii}^{(n)}
+= \sum_{n=0}^\infty E_i[1_{[X_n=i]}]
+= \sum_{n=0}^\infty E_i[1_{[X_n=i]}]
+= E(\sum_{n=0}^\infty 1_{[X_n=i]})
+\end{align*}
+Sie bezeichnet also die erwartete Anzahl der Besuche des Zustandes $i\in S$.
+\end{bemerkung}
+
+\begin{satz}[Solidaritätsprinzip]
+Ein Zustand $i\in S$ ist rekurrent (bzw. transient), wenn jeder Zustand in $K(i)$ rekurrent (bzw. transient) ist.
+\end{satz}
+
+\begin{beweis}
+Sei $i$ rekurrent und $j\in K(i)$, $j\ne i$, das heißt es gibt $n,m\in \MdN$, so dass $p_{ij}^{(m)}\cdot p_{ji}^{(n)}>0$.
+Mit der Abschätzung
+\begin{align*}
+\sum_{k=0}^\infty p_{jj}^{(k)} 
+&\ge \sum_{k=0}^\infty p_{jj}^{(m+n+k)} 
+\ge \sum_{k=0}^\infty p_{ji}^{(n)} p_{ii}^{(k)} p_{ij}^{(m)}
+= p_{ij}^{(m)} p_{ji}^{(n)} \sum_{k=0}^\infty p_{ii}^{(k)}
+\end{align*}
+und Satz \ref{satz2.3} ist $\sum_{k=0}^\infty p_{jj}^{(k)}=\infty$ und $j$ rekurrent.
+\end{beweis}
+
+\begin{bemerkung}
+Ist $i\in S$ rekurrent (bzw. transient), so sagen wir $K(i)$ ist rekurrent (bzw. transient).
+
+Ist $(X_n)$ irreduzibel, und ein $i\in S$ ist rekurrent (bzw. transient), so sagen wir $(X_n)$ ist rekurrent (bzw. transient).
+\end{bemerkung}
+
+\begin{beispiel}[Irrfahrt auf den ganzen Zahlen, „Random Walk“]
+Es sei $X_n=\sum_{k=1}^n Y_k = X_{n-1}+Y_k$ und $X_0=0$, wobei $(Y_n)$ u.i.v. mit \[P(Y_n=1)=p = 1 - P (Y_n=-1) =1-q,\quad p\in (0,1)\] ist ($S=\MdZ$).
+
+\begin{center}
+\begin{tikzpicture}
+\foreach \x in {0,1,2,3,4,5,6}
+	\draw (\x cm,-1pt) -- (\x cm, 1pt);
+%\node (null) at (0,0) {}; \draw (null) node[anchor=north] {$0$};
+\node (a) at (2,0) {}; \draw (a) node [anchor=north] {$i-1$};
+\node (b) at (3,0) {}; \draw (b) node [anchor=north] {$i$};
+\node (c) at (4,0) {}; \draw (c) node [anchor=north] {$i+1$};
+%\node (zb) at (6,0) {}; \draw (zb) node [anchor=north] {$2B$};
+\draw (null) -- (zb);
+\draw [->] (b) .. controls +(up:1cm) and +(up:1cm) .. node [anchor=south] {$q$}  (a);
+\draw [->] (b) .. controls +(up:1cm) and +(up:1cm) .. node [anchor=south] {$p$}  (c);
+\draw [->] (b) .. controls +(up:1cm) and +(up:1cm) .. node [anchor=south] {$p$}  (c);
+%\draw [->] (null) .. controls +(0.7,1) and +(-0.7,1) .. node [anchor=south] {$1$}  (null);
+%\draw [->] (zb) .. controls +(0.7,1) and +(-0.7,1) .. node [anchor=south] {$1$}  (zb);
+\end{tikzpicture}
+\end{center}
+Die Markov-Kette $(X_n)$ ist nach Konstruktion eine irreduzible Markov-Kette. Ist $(X_n)$ rekurrent oder transient?
+
+Wir wenden Satz \ref{satz2.3} an und untersuchen o.B.d.A $i=0$. Es gilt für alle $n\in \MdN_0$:
+\begin{align*}
+p_{00}^{(2n+1)} &= 0\\
+p_{00}^{(2n)} &= p^nq^n \binom{2n}{n} = p^nq^n \frac{(2n)!}{(n!)^2}
+\end{align*}
 \end{beispiel}
 
 \chapter{Satz um Satz (hüpft der Has)}
