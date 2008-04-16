@@ -14,41 +14,3528 @@
 \addcontentsline{toc}{chapter}{Inhaltsverzeichnis}
 \tableofcontents
 
-\input{Ana3Vorwort}
-\input{Ana3Vorbereitung}
+\chapter{Vorwort}
+
+\section{Über dieses Skriptum}
+Dies ist ein erweiterter Mitschrieb der Vorlesung \glqq Analysis III\grqq\ von Herrn Schmoeger im
+Wintersemester 05/06 an der Universität Karlsruhe (TH). Die Mitschriebe der Vorlesung werden mit
+ausdrücklicher Genehmigung von Herrn Schmoeger hier veröffentlicht, Herr Schmoeger ist für den
+Inhalt nicht verantwortlich.
+
+\section{Wer}
+Gestartet wurde das Projekt von Joachim Breitner. Beteiligt am Mitschrieb sind außer Joachim
+noch Pascal Maillard, Wenzel Jakob und andere.
+
+\section{Wo}
+Alle Kapitel inklusive \LaTeX-Quellen können unter \url{http://mitschriebwiki.nomeata.de} abgerufen werden.
+Dort ist ein \emph{Wiki} eingerichtet und von Joachim Breitner um die \LaTeX-Funktionen erweitert.
+Das heißt, jeder kann Fehler nachbessern und sich an der Entwicklung
+beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
+
+\chapter{Vorbereitung}
+
+\begin{definition}
+Seien $a=(a_1,a_2,a_3), b=(b_1,b_2,b_3) \in \MdR^3$
+\[ a\times b := (a_2b_3 - a_3b_2, a_3b_1 - a_1b_3, a_1b_2-a_2b_1) \in \MdR^3 \]
+heißt das \begriff{Kreuzprodukt} von $a$ und $b$
+
+Formal gilt mit $e_1=(1,0,0)$, $e_2=(0,1,0)$, $e_3=(0,0,1)$:
+\[ a\times b = \det \begin{pmatrix} e_1 & e_2 & e_3 \\ a_1 & a_2 & a_3 \\ b_1 & b_2 & b_3 \end{pmatrix} \]
+\end{definition}
+
+\begin{beispiel}
+$a = (1,1,2), b=(1,1,0)$. 
+\[ a \times b  = \det \begin{pmatrix} e_1 & e_2 & e_3 \\ 1 & 1 & 2 \\ 1 & 1 & 0 \end{pmatrix} = e_3 + 2e_2 - e_3 -2e_1 = (-2,2,0) \]
+\end{beispiel}
+
+\begin{bemerkung}[Regeln]
+\begin{eqnarray*}
+b\times a &=& - (a\times b) \\
+(\alpha a) \times (\beta b) &=& \alpha\beta (a\times b) \ \forall \alpha, \beta \in\MdR \\
+a \times a &=& 0 \\
+a \cdot (a\times b) &= & 0 = b \cdot (a\times b)
+\end{eqnarray*}
+\end{bemerkung}
+
+\begin{definition}
+Sei $\emptyset \ne D \subseteq \MdR^3$, $D$ offen und $F=(P,Q,R)\in C^1(D,\MdR^3)$.
+\[ \rot F := (R_y - Q_z , P_z - R_x, Q_x-P_y) \]
+heißt \begriff{Rotation} von $F$.
+
+Formal: $\rot F = (\frac\partial{\partial x}, \frac\partial{\partial y}, \frac\partial{\partial z})\times(P,Q,R) $
+\end{definition}
+
+\begin{definition}
+Sei $\emptyset \ne D \subseteq \MdR^n$,$D$ offen, $f=(f_1,f_2,\ldots,f_n)\in C^1(D,\MdR^n)$
+\[ \divv f := \frac{\partial f_1}{\partial x_1} + \frac{\partial f_2}{\partial x_2} + \cdots + \frac{\partial f_n}{\partial x_n} \]
+heißt \begriff{Divergenz} von $f$.
+\end{definition}
+
+\begin{definition}
+Sei $\gamma : [a,b] \to \MdR^n$ ein Weg. Ist $\gamma$ in $t_0\in[a,b]$ differenzierbar und ist $\gamma'(t_0) \ne 0$, so heißt $\gamma'(t_0)$ \begriff{Tangentialvektor} von $\gamma$ in $t_0$.
+\end{definition}
+
 
 \renewcommand{\thechapter}{\arabic{chapter}}
 \renewcommand{\chaptername}{§}
 \setcounter{chapter}{0}
-\input{Ana3Par1}
-\input{Ana3Par2}
-\input{Ana3Par3}
-\input{Ana3Par4}
-\input{Ana3Par5}
-\input{Ana3Par6}
-\input{Ana3Par7}
-\input{Ana3Par8}
-\input{Ana3Par9}
-\input{Ana3Par10}
-\input{Ana3Par11}
-\input{Ana3Par12}
-\input{Ana3Par13}
-\input{Ana3Par14}
-\input{Ana3Par15}
-\input{Ana3Par16}
-\input{Ana3Par17}
-\input{Ana3Par18}
-\input{Ana3Par19}
-\input{Ana3Par20}
-\input{Ana3Par21}
-\input{zornscheslemma}
+\chapter{Satz von Arzelà-Ascoli}
+
+In diesem Paragraphen sei $\emptyset \ne A \subseteq \MdR$ und $\F$ sei eine Familie (Menge) von Funktionen $f:A\to\MdR$.
+
+\begin{definition}
+$\F$ heißt auf $A$ 
+\begin{liste}
+\item \begriff{punktweise beschränkt} $:\equizu$ $\forall x\in A \ \exists c = c(x) \ge 0:$
+\[|f(x)| \le c \ \forall f\in \F \]
+\item \begriff{gleichmäßig beschränkt} $:\equizu$ $\exists \gamma \ge 0: $
+\[ |f(x)| \le \gamma  \ \forall x \in A \ \forall f\in \F \]
+\item \begriff{gleichstetig} $:\equizu$ $\forall \ep > 0 \ \exists \delta = \delta(\ep) > 0$:
+\[ |f(x) - f(y)|<\ep \ \forall x,y \in A \text{ mit } |x-y| < \delta \text{ und } \forall f\in \F \]
+\end{liste}
+\end{definition}
+
+\begin{satz*}[Satz von Arzelà-Ascoli]
+$A$ sei beschränkt und abgeschlossen, $\F$ sei punktweise beschränkt und gleichstetig auf $A$ und $(f_n)$ sei eine Folge in $\F$.
+
+Dann enthält $(f_n)$ eine Teilfolge, welche auf $A$ gleichmäßig konvergiert.
+\end{satz*}
+
+\begin{beweis}
+Analysis II, 2.3 $\folgt$ es existiert eine abzählbare Teilmenge $B=\{x_1,x_2,\ldots\} \subseteq A$ mit $\overline{B} = A$.
+
+$(f_n(x_1))$ ist beschränkt \folgtnach{Analysis I} $(f_n)$ enthält eine Teilfolge $(f_{1,n})$ mit $(f_{1,n}(x_1))$ konvergent.\\
+$(f_{1,n}(x_2))$ ist beschränkt \folgtnach{Analysis I} $(f_{1,n})$ enthält eine Teilfolge $(f_{2,n})$ mit $(f_{2,n}(x_2))$ konvergent.
+
+Wir erhalten Funktionenfolgen
+\begin{eqnarray*}
+(f_{1,n}) &=& (f_{1,1},f_{1,2},f_{1,3},\ldots)  \\
+(f_{2,n}) &=& (f_{2,1},f_{2,2},f_{2,3},\ldots)  \\
+(f_{3,n}) &=& (f_{3,1},f_{3,2},f_{3,3},\ldots)   \\
+& \vdots &
+\end{eqnarray*}
+
+$(f_{k+1,n})$ ist eine Teilfolge von $(f_{k,n})$ und $(f_{k,n}(x_k))_{n=1}^\infty$ konvergiert ($k\in\MdN$).
+
+$g_j := f_{j,j}\ (j\in\MdN)$; $(g_j)$ ist eine Teilfolge von $(f_n)$.
+
+$(g_k, g_{k+1}, g_{k+2}, \ldots)$ ist eine Teilfolge von $(f_{k,n})$ $\folgt$ $(g_j(x_k))_{j=1}^\infty$ ist konvergent $(k=1,2,\ldots)$.
+
+Sei $\ep > 0$. Wir zeigen: 
+\[(*)\quad \exists j_0\in\MdN:\ |g_j(x) - g_\nu(x)| < 3\ep \ \forall j,\nu \ge j_0\ \forall x\in A\] 
+(woraus die gleichmäßige Konvergenz von $(g_j)$ folgt)
+
+$\F$ gleichstetig \folgt 
+\[ (i) \quad \exists \delta >0: |g_j(x)-g_j(y)| < \ep \ \forall x,y\in A\text{ und }|x-y| <\delta\ \forall j\in\MdN\]
+$A\subseteq \bigcup_{x\in A} U_{\frac\delta2}(x)$. Analysis II, 2.3 \folgt $\exists y_1,\ldots,y_p \in A4$:
+\[ (ii) \quad A \subseteq \bigcup_{j=1}^p U_{\frac\delta2}(y_j) \]
+$\overline{B} = A \folgt \ \forall q\in\{1,\ldots,p\} \ \exists z_q \in B: z_q \in U_{\frac\delta2}(y_q)$
+$(g_j)(z_q))_{j=1}^\infty$ ist konvergent für alle $q\in\{1,\ldots,p\}$ \folgt $\exists j_0\in\MdN$:
+\[ (iii)\quad | g_j(z_q) - g_\nu(z_q) | < \ep \ \forall j,\nu \ge j_0 \ (q=1,\ldots,p)\]
+Seien $j,\nu \ge j_0$ und $x\in A \folgtwegen{(ii)} \ \exists q\in\{1,\ldots,p\}: x\in U_{\frac\delta2}(y_q) \folgt |x-z_q| = |x-y_q+y_q-z_q| \le |x-y_q| + |y_q-z_q| < \frac{\delta}2 + \frac\delta2 = \delta \folgtwegen{(i)} |g_j(x) - g_j(z_q)| < \ep$, $|g_\nu (x) - g_\nu (z_q)|<\ep$ $(iv)$
+
+\begin{eqnarray*}
+\folgt |g_j(x)-g_\nu(x)| &=& |g_j(x)-g_j(z_q) + g_j(z_q) - g_\nu(z_q) + g_\nu(z_q)-g_\nu(x)| \\
+&\le& \underbrace{|g_j(x) - g_j(z_q)|}_{< \ep\ (iv)} + \underbrace{|g_j(z_q) - g_\nu(z_q)|}_{< \ep\ (iii)} + \underbrace{|g_\nu(z_q) - g_\nu(x)|}_{< \ep\ (iv)}\\
+&<& 3 \ep \folgt (*)
+\end{eqnarray*}
+\
+ 
+\end{beweis}
+
+
+\chapter{Der Integralsatz von Gauss im $\MdR^2$}
+
+Stets in diesem Paragraphen: $(x_0,y_0) \in \MdR^2$ sei fest, $R:[0,2\pi] \to (0,\infty)$ sei stetig und stückweise stetig differenzierbar, $R(0) = R(2\pi)$.
+\[ \gamma(t) := (x_0 + R(t)\cos t, y_0 + R(t) \sin t) \quad (t\in[0,2\pi]) \]
+$\gamma$ ist stückweise stetig differenzierbar, also rektifizierbar, $\gamma(0) = \gamma(2\pi)$
+\[ B:= \{ (x_0+r\cos t, y_0+ r\sin t) : t\in[0,2\pi], 0\le r\le R(t) \} \]
+
+% Danke für die Zeichnung, aber pstricks tut nicht mit pdflatex. Ich empfehle 
+% pgf für Zeichnungen.
+%\begin{figure}[ht]
+% \begin{center}
+%  \begin{pspicture}(0,0)(7,4)
+%   \psset{arrowsize=5pt, arrowinset=.4}
+%   \psline{->}(0,0)(7,0)
+%   \psline{->}(0,0)(0,4)
+%   \pscurve[fillstyle=hlines,hatchcolor=gray](4,0.5)(5.5,1)(5.5,1.8)(4,3.5)(2,3)(1,1)(4,.5)
+%   \pscurve{->}(4,0.5)(5.5,1)(5.5,1.8)(4,3.5)(2,3)(1,1)(4,.5)
+%   \rput(1.5,1){$B$}
+%   \psdots*[dotscale=0.7 0.7](3,1.8)
+%   \psline(5.5,1.8)(3,1.8)(4,3.5)
+%   \rput(4,3.8){$\gamma (t)$}
+%   \rput(6.7,1.8){$\gamma (0)=\gamma (2\pi)$}
+%   \rput(3,1.5){$(x_{0},y_{0})$}
+%   \psbrace(4,3.5)(3,1.8){}
+%   \rput(2.7,3){$R(t)$}
+%  \end{pspicture}
+% \end{center}
+%\end{figure}
+
+Sind $\gamma$ und $B$ wie oben, so heißt $B$ \begriff{zulässig}. $B$ ist beschränkt und abgeschlossen, $\partial B = \Gamma_\gamma = \gamma([0,2\pi])$. Analysis II, 17.1 \folgt $B$ ist messbar.
+
+\begin{beispiel}
+$R(t) = 1 \folgt \gamma(t) = (x_0 + \cos t, y_0 + \sin t)$. $B= \overline{U_1(x_0,y_0)}$
+\end{beispiel}
+
+\begin{satz}[Integralsatz von Gauss im $\MdR^2$]
+$B$ und $\gamma = (\gamma_1,\gamma_2)$ seien wie oben, $B$ also zulässig und $\partial B = \Gamma_\gamma$. Weiter sei $D \subseteq \MdR^2$ offen, $D \supseteq B$ und $f = (u,v) \in C^1(D,\MdR^2)$.
+Dann:
+\begin{liste}
+\item $\int_B u_x(x,y)d(x,y) = \int_\gamma u(x,y)dy$
+\item $\int_B v_y(x,y)d(x,y) = -\int_\gamma v(x,y)dx$
+\item $\int_B div f(x,y)d(x,y) = \int_\gamma (udy-vdx)$
+\end{liste}
+\end{satz}
+\begin{anwendung}
+$B$ und $\gamma$ seien wie in $2.1$. Mit $f(x,y)=(x,y)$ folgt $$\lambda_2(B) = \int_\gamma xdy = -\int_\gamma ydx = \frac{1}{2} \int_\gamma(xdy-ydx)$$
+\end{anwendung}
+\begin{beweis}
+(nach Lemmert)\\
+Wir zeigen nur $(1)$. ($(2)$ zeigt man Analog, $(3)$ folgt aus $(1)$ und $(2)$.)\\
+OBdA: $(x_0,y_0)=(0,0)$ und $\gamma$ stetig db. Also: $\gamma(t)=(R(t)\cos{t},R(t)\sin{t})$ mit $R(t)$ stetig db.\\
+$A:=\int_B u_x(x,y)d(x,y)$. Z.z.: $A=\int_0^{2\pi}u(\gamma(t))\gamma_2'(t)dt$\\
+Polarkoordinaten, Substitution, Fubini $\folgt$ $A=\int^{2\pi}_0(\int^{R(t)}_0 u_x(r \cos{t},r \sin{t})r dr)dt$.\\
+$\beta(r,t):=u(r \cos{t}, r \sin{t})$. Nachrechnen: $u_x(r \cos{t},r \sin{t})r=r\beta_r(r,t)\cos{t}-\beta_t(r,t)\sin{t} \folgt A=\int_0^{2\pi}(\int_0^{R(t)}(r\beta_r(r,t)\cos{t}-\beta_t(r,t)\sin{t})dr)dt$\\
+$\int_0^{R(t)}r\beta_r(r,t)dr=\underbrace{r\beta(r,t)|_{r=0}^{r=R(t)}}_{=R(t)\beta(R(t),t)=R(t)u(\gamma(t))} - \underbrace{\int_0^{R(t)}\beta(r,t)dr}_{=:\alpha(t)}$\\
+AII,$21.3\folgt \alpha$ ist stetig db und $\alpha'(t)=R'(t)\beta(R(t),t)+\int_0^{R(t)}\beta_t(r,t)dr$ \\
+$\folgt \int_0^{R(t)}\beta_t(r,t)dr=\alpha'(t)-R'(t)u(\gamma(t))$\\
+$\folgt A=\int_0^{2\pi}(R(t)u(\gamma(t))\cos{t}-\alpha(t)\cos{t}-\alpha'(t)\sin{t}+R'(t)u(\gamma(t))\sin{t})dt$\\
+$=\int_0^{2\pi}u(\gamma(t))(\underbrace{R(t)\sin{t})'}_{\gamma_2'(t)}dt-\underbrace{\int_0^{2\pi}(\alpha(t)\sin{t})'dt}_{=\alpha(t)\sin{t}|_0^{2\pi}=0}$
+\end{beweis}
+
+\chapter{Flächen im $\MdR^3$}
+
+\begin{definition}
+\indexlabel{Flächen}
+Sei $\emptyset \ne B \subseteq \MdR^2$, $B$ sei beschränkt und abgeschlossen,
+$D \subseteq \MdR^2$ sei offen, $B \subseteq D$ und es sei $\phi(u,v) = (\phi_{1}, \phi_{2}, \phi_{3}) \in C^{1}(D,\MdR^3)$.
+Die Einschränkung $\phi_{|B}$ von $\phi$ auf $B$ heißt eine \textbf{Fläche}, $S := \phi(B)$ heißt \textbf{Flächenstück}, $B$ heißt 
+\textbf{Parameterbereich}.
+
+$$\phi' = 
+\left(
+\underbrace{
+\begin{array}{ccc}
+\frac{\partial \phi_1}{\partial u} \\
+\frac{\partial \phi_2}{\partial u} \\ 
+\frac{\partial \phi_3}{\partial u} \\
+\end{array}
+}_{=:\phi_u}
+\underbrace{
+\begin{array}{ccc}
+\frac{\partial \phi_1}{\partial v} \\
+\frac{\partial \phi_2}{\partial v} \\ 
+\frac{\partial \phi_3}{\partial v} \\
+\end{array}
+}_{=:\phi_v}
+\right)$$
+
+Sei weiterhin $(u_0, v_0) \in B$. Dann ist $N(u_0,v_0) := \phi_u(u_0,v_0) \times \phi_v(u_0,v_0)$ der \textbf{Normalenvektor} 
+von $\phi$ in $(u_0,v_0)$. $I(\phi) := \int_B ||N(u,v)|| d(u,v)$ wird als \textbf{Flächeninhalt} von $\phi$ bezeichnet.
+\end{definition}
+
+\begin{beispiele}
+\item
+$B := [0,2\pi] \times [-\frac\pi2, \frac\pi2]$ \\
+$\phi(u,v) := (\cos(u)\cdot \cos(v), \sin(u)\cdot \cos(v), \sin(v))$  $(D = \MdR^2) \\
+S = \phi(B) = \{ (x,y,z) \in \MdR^3 | x^2 +y^2 +z^2 = 1 \} = \partial U_1(0)$\\
+$N(u,v) = \phi_u(u,v) \times \phi_v(u,v) = \cos(v)\cdot \phi(u,v) \\
+|| N(u,v) || = | \cos (v) | \cdot  \underbrace{|| \phi(u,v) ||}_{=1} = | \cos(v) |$ \\
+\folgt $I(\phi) = \int_{B} | \cos (v) | d(u,v) = 4\pi$ \\
+Beachte $\lambda_3(S)$ $=$ $0$! (siehe: Analysis II 17.6)
+
+\item \textbf{Explizite Parameterdarstellung} \\
+$B$ und $D$ seien wie oben. Es sei $f \in C^1(D,\MdR)$ und $\phi(u,v) := (u,v,f(u,v))$ \\
+Dann ist $ S = \phi(B) = $ Graph von $f_{|B}$ und $\phi_u = (1,0,f_u)$ $\phi_v = (0,1,f_v)$ \folgt $N(u,v) = \phi_u \times \phi_v = (-f_u, -f_v, 1)$ \folgt $I(\phi) = \int_{B} (f_{u}^2 + f_{v}^2 +1)^{\frac12} d(u,v)$ \\
+Beachte wieder $\lambda_3(S)$ $=$ $0$!!
+
+
+\item
+Sei $B = \{(u,v) \in \MdR^2 | u^2 + v^2 \le 1 \}$ und $f(u,v) := u^2  + v^2$, sowie $\phi(u,v) = (u,v, f(u,v)) = (u,v, u^2 + v^2)$.
+$S = \phi(B)$ ist ein Paraboloid. Weiter ist $f_u = 2u$ und $f_v = 2v$ \folgt $I(\phi) = \int_{B} (4u^2+4v^2+1)^{\frac12} d(u,v)$. \\
+Substitution mit $u = r\cdot \cos(\varphi)$, $v = r\cdot \sin(\varphi)$ und Fubini \folgt 
+$I(\phi) = \int_{0}^{2\pi} ( \int_0^1 (4r^2 +1)^{\frac12}\cdot r dr) d \varphi = 2\pi \int_0^1 (4r^2 +1)^{\frac12}\cdot r dr = \frac\pi6 \cdot  ((\sqrt{5})^3-1)$
+
+\end{beispiele}
+
+
+
+\chapter{Der Integralsatz von Stokes}
+
+
+\begin{definition}
+
+Sei $\Phi = ( \Phi_1, \Phi_2, \Phi_3)$ eine Fläche mit Parameterbereich $B
+\subseteq \MdR^2, D \subseteq \MdR^2$ offen, $B~\subseteq~D, \Phi~\in~C^1~(D,~\MdR^3)$ und $S~=~\Phi(B)$.\\
+Für $f: S \rightarrow \MdR$ stetig und $F: S \rightarrow \MdR^3$ stetig:
+
+\[
+\left. \begin{array}{ll}
+               \int_{\Phi} f \, \mathrm{d}\sigma & := \int_B f\left( \Phi
+(u,v) \right) \cdot \parallel\! N (u,v) \! \parallel \mathrm{d}(u,v) \\
+               \int_{\Phi} F \cdot n \, \mathrm{d}\sigma & := \int_B F
+\left( \Phi (u,v) \right) \cdot N(u,v) \, \mathrm{d}(u,v)
+               \end{array}
+       \right\}
+       \mbox{Oberfl\"achenintegrale}
+\]
+\end{definition}
+
+\begin{wichtigebeispiele}
+\item
+Für $f \equiv 1 : \int_{\Phi} 1 \, \mathrm{d}\sigma =: \int_{\Phi}
+\mathrm{d}\sigma = I ( \Phi )$\\
+\item
+Sei $B := \{ (u,v) \in \MdR^2 : u^2 + v^2 \leq  1\}, \, \Phi (u,v) :=
+(u,v,u^2 + v^2)$, $F(x,y,z)~=~(x,y,z)$\\
+Bekannt: $N (u,v) = (-2u, -2v, 1)$, $F\left( \Phi(u,v) \right) = (u,v,u^2 +
+v^2) \Rightarrow~\int_{\Phi}~F~\cdot~n~\,~\mathrm{d}\sigma = \int_B
+(u,v,u^2+v^2) \cdot (-2u, -2v, 1) \mathrm{d}(u,v) = - \int_B (u^2+v^2)
+d(u,v) \stackrel{u = r\cos \varphi, v = r \sin \varphi}{=} - \int_0^{2\pi} (\int_0^1 r^3 \mathrm{d}r ) \mathrm{d} \varphi~=~-~\frac{\pi}{2}$
+
+\end{wichtigebeispiele}
+
+\begin{satz}[Integralsatz von Stokes]
+
+$B, D, \Phi$ seien wie oben. $B$ sei zul"assig, $\partial B = \Gamma
+\gamma$, wobei $\gamma = (\gamma_1, \gamma_2)$ wie in~\textsection 2. Es
+sei $\Phi \in C^2 (D, \MdR^3),\, G \subseteq \MdR^3$ sei offen, $F \subseteq
+G$ und $F~=~(F_1,F_2,F_3)~\in~C^1(G,\MdR^3)$. Dann:
+\[
+\underbrace{\int_{\Phi} \rot F \cdot n \,
+\mathrm{d}\sigma}_{\mbox{Oberfl"achenintegral}} = \underbrace{\int_{\Phi
+\circ \gamma} F(x,y,z) \, \mathrm{d}(x,y,z)}_{\mbox{Wegintegral}}
+\]
+\end{satz}
+
+
+\begin{beweis}
+$ \varphi := \Phi \circ \gamma, \varphi = (\varphi_1,\varphi_2,\varphi_3),$
+also: $\varphi_j = \Phi_j \circ \gamma \quad (j=1,2,3)$\\
+Zu zeigen: $\int_{\Phi} \rot F \cdot n \, \mathrm{d}\sigma = \int_0^{2\pi} F
+( \varphi (t) ) \cdot \varphi' (t) \mathrm{d}t = \sum_{j=1}^3 \int_0^{2\pi}
+F_j ( \varphi (t) ) \cdot \varphi'_j(t) \mathrm{d}t$\\
+Es ist $\int_{\Phi} \rot F \cdot n \, \mathrm{d}\sigma = \int_B \underbrace{
+(\rot F) (\Phi(x,y)) \cdot (\Phi_x(x,y) \times \Phi_y(x,y))}_{=: g(x,y)}
+\mathrm{d}(x,y)$\\
+Für $j = 1,2,3 : g_j(x,y) := ( \underbrace{F_j(\Phi(x,y)) \frac{\partial
+\Phi_j}{\partial y} (x,y)}_{=: u_j(x,y)}, \underbrace{-F_j(\Phi(x,y))
+\frac{\partial \Phi_j}{\partial x} (x,y)}_{=: v_j(x,y)} ), \, \, \, (x,y)~\in~D$\\
+$F \in C^1, \Phi \in C^2 \Rightarrow g_j \in C^1(D, \MdR^2)$\\
+Nachrechnen: $g = \divv \, g_1 + \divv \, g_2 + \divv \, g_3 \Rightarrow
+\int_{\Phi} \rot F \cdot n \, \mathrm{d}\sigma = \sum_{j=1}^3 \int_B \divv \,
+g_j (x,y) \mathrm{d}(x,y)$\\
+$\int_B \divv \, g_j(x,y) \mathrm{d}(x,y) \stackrel{2.1}{=} \int_{\gamma} (u_j
+\mathrm{d}y - v_j \mathrm{d}x) = \int_0^{2\pi}~(~u_j~(\gamma~(t)~)~\cdot
+\gamma'_2(t)~-~v_j(~\gamma(t))~\cdot~\gamma'_1(t))~\mathrm{d}t =
+\int_0^{2\pi} ( F_j( \varphi (t)) \frac{\partial \Phi_j}{\partial y}
+\gamma(t) \gamma'_2(t) + F_j( \varphi (t)) \frac{\partial \Phi_j}{\partial
+x} \gamma(t) \gamma'_1(t) ) \mathrm{d}t = \int_0^{2\pi} F_j ( \varphi (t))
+\cdot \varphi'_j(t) \mathrm{d}t \Rightarrow \int_{\Phi} \rot F \cdot n
+\mathrm{d}\sigma = \sum_{j=1}^3 \int_B \divv \, g_j(x,y) \mathrm{d}(x,y) =
+\sum_{j=1}^3 \int_0^{2\pi} F_j( \varphi (t)) \cdot \varphi'_j (t)
+\mathrm{d}t$
+\end{beweis}
+
+
+\begin{beispiel}
+
+$B, \Phi, F$ seien wie in Beispiel 4.1.(2). $\gamma (t) = (\cos t, \sin
+t), t \in [0,2\pi].$ Verifiziere~4.2\\
+Hier: $\rot F = 0$, also $\int_{\Phi} \rot F \cdot n \mathrm{d}\sigma = 0. \, \, (\Phi \circ \gamma) (t) = (\cos t, \sin t, 1) \Rightarrow \int_{\Phi \circ
+\gamma} F(x,y,z) \, \mathrm{d}(x,y,z) = \int_0^{2\pi} (\cos t, \sin t, 1) \cdot (-\sin t, \cos t, 0) \, \mathrm{d}t = 0$
+
+\end{beispiel}
+
+
+\chapter{Der Integralsatz von Stokes}
+
+
+\begin{definition}
+
+Sei $\Phi = ( \Phi_1, \Phi_2, \Phi_3)$ eine Fläche mit Parameterbereich $B
+\subseteq \MdR^2, D \subseteq \MdR^2$ offen, $B~\subseteq~D, \Phi~\in~C^1~(D,~\MdR^3)$ und $S~=~\Phi(B)$.\\
+Für $f: S \rightarrow \MdR$ stetig und $F: S \rightarrow \MdR^3$ stetig:
+
+\[
+\left. \begin{array}{ll}
+               \int_{\Phi} f \, \mathrm{d}\sigma & := \int_B f\left( \Phi
+(u,v) \right) \cdot \parallel\! N (u,v) \! \parallel \mathrm{d}(u,v) \\
+               \int_{\Phi} F \cdot n \, \mathrm{d}\sigma & := \int_B F
+\left( \Phi (u,v) \right) \cdot N(u,v) \, \mathrm{d}(u,v)
+               \end{array}
+       \right\}
+       \mbox{Oberfl\"achenintegrale}
+\]
+\end{definition}
+
+\begin{wichtigebeispiele}
+\item
+Für $f \equiv 1 : \int_{\Phi} 1 \, \mathrm{d}\sigma =: \int_{\Phi}
+\mathrm{d}\sigma = I ( \Phi )$\\
+\item
+Sei $B := \{ (u,v) \in \MdR^2 : u^2 + v^2 \leq  1\}, \, \Phi (u,v) :=
+(u,v,u^2 + v^2)$, $F(x,y,z)~=~(x,y,z)$\\
+Bekannt: $N (u,v) = (-2u, -2v, 1)$, $F\left( \Phi(u,v) \right) = (u,v,u^2 +
+v^2) \Rightarrow~\int_{\Phi}~F~\cdot~n~\,~\mathrm{d}\sigma = \int_B
+(u,v,u^2+v^2) \cdot (-2u, -2v, 1) \mathrm{d}(u,v) = - \int_B (u^2+v^2)
+d(u,v) \stackrel{u = r\cos \varphi, v = r \sin \varphi}{=} - \int_0^{2\pi} (\int_0^1 r^3 \mathrm{d}r ) \mathrm{d} \varphi~=~-~\frac{\pi}{2}$
+
+\end{wichtigebeispiele}
+
+\begin{satz}[Integralsatz von Stokes]
+
+$B, D, \Phi$ seien wie oben. $B$ sei zul"assig, $\partial B = \Gamma
+\gamma$, wobei $\gamma = (\gamma_1, \gamma_2)$ wie in~\textsection 2. Es
+sei $\Phi \in C^2 (D, \MdR^3),\, G \subseteq \MdR^3$ sei offen, $F \subseteq
+G$ und $F~=~(F_1,F_2,F_3)~\in~C^1(G,\MdR^3)$. Dann:
+\[
+\underbrace{\int_{\Phi} \rot F \cdot n \,
+\mathrm{d}\sigma}_{\mbox{Oberfl"achenintegral}} = \underbrace{\int_{\Phi
+\circ \gamma} F(x,y,z) \, \mathrm{d}(x,y,z)}_{\mbox{Wegintegral}}
+\]
+\end{satz}
+
+
+\begin{beweis}
+$ \varphi := \Phi \circ \gamma, \varphi = (\varphi_1,\varphi_2,\varphi_3),$
+also: $\varphi_j = \Phi_j \circ \gamma \quad (j=1,2,3)$\\
+Zu zeigen: $\int_{\Phi} \rot F \cdot n \, \mathrm{d}\sigma = \int_0^{2\pi} F
+( \varphi (t) ) \cdot \varphi' (t) \mathrm{d}t = \sum_{j=1}^3 \int_0^{2\pi}
+F_j ( \varphi (t) ) \cdot \varphi'_j(t) \mathrm{d}t$\\
+Es ist $\int_{\Phi} \rot F \cdot n \, \mathrm{d}\sigma = \int_B \underbrace{
+(\rot F) (\Phi(x,y)) \cdot (\Phi_x(x,y) \times \Phi_y(x,y))}_{=: g(x,y)}
+\mathrm{d}(x,y)$\\
+Für $j = 1,2,3 : g_j(x,y) := ( \underbrace{F_j(\Phi(x,y)) \frac{\partial
+\Phi_j}{\partial y} (x,y)}_{=: u_j(x,y)}, \underbrace{-F_j(\Phi(x,y))
+\frac{\partial \Phi_j}{\partial x} (x,y)}_{=: v_j(x,y)} ), \, \, \, (x,y)~\in~D$\\
+$F \in C^1, \Phi \in C^2 \Rightarrow g_j \in C^1(D, \MdR^2)$\\
+Nachrechnen: $g = \divv \, g_1 + \divv \, g_2 + \divv \, g_3 \Rightarrow
+\int_{\Phi} \rot F \cdot n \, \mathrm{d}\sigma = \sum_{j=1}^3 \int_B \divv \,
+g_j (x,y) \mathrm{d}(x,y)$\\
+$\int_B \divv \, g_j(x,y) \mathrm{d}(x,y) \stackrel{2.1}{=} \int_{\gamma} (u_j
+\mathrm{d}y - v_j \mathrm{d}x) = \int_0^{2\pi}~(~u_j~(\gamma~(t)~)~\cdot
+\gamma'_2(t)~-~v_j(~\gamma(t))~\cdot~\gamma'_1(t))~\mathrm{d}t =
+\int_0^{2\pi} ( F_j( \varphi (t)) \frac{\partial \Phi_j}{\partial y}
+\gamma(t) \gamma'_2(t) + F_j( \varphi (t)) \frac{\partial \Phi_j}{\partial
+x} \gamma(t) \gamma'_1(t) ) \mathrm{d}t = \int_0^{2\pi} F_j ( \varphi (t))
+\cdot \varphi'_j(t) \mathrm{d}t \Rightarrow \int_{\Phi} \rot F \cdot n
+\mathrm{d}\sigma = \sum_{j=1}^3 \int_B \divv \, g_j(x,y) \mathrm{d}(x,y) =
+\sum_{j=1}^3 \int_0^{2\pi} F_j( \varphi (t)) \cdot \varphi'_j (t)
+\mathrm{d}t$
+\end{beweis}
+
+
+\begin{beispiel}
+
+$B, \Phi, F$ seien wie in Beispiel 4.1.(2). $\gamma (t) = (\cos t, \sin
+t), t \in [0,2\pi].$ Verifiziere~4.2\\
+Hier: $\rot F = 0$, also $\int_{\Phi} \rot F \cdot n \mathrm{d}\sigma = 0. \, \, (\Phi \circ \gamma) (t) = (\cos t, \sin t, 1) \Rightarrow \int_{\Phi \circ
+\gamma} F(x,y,z) \, \mathrm{d}(x,y,z) = \int_0^{2\pi} (\cos t, \sin t, 1) \cdot (-\sin t, \cos t, 0) \, \mathrm{d}t = 0$
+
+\end{beispiel}
+
+
+\chapter{Differentialgleichungen: Grundbegriffe}
+
+In diesem Paragraphen sei $I$ stets ein Intervall in $\MdR$.
+
+\paragraph{Erinnerung:}
+Sei $p\in\MdN$ und $y:I\to \MdR^p,\ y=(y_1,\ldots,y_p).\ y$ heißt auf $I$ k-mal (stetig) db auf $I \equizu y_j$ ist auf $I$ k-mal (stetig) db $(j=1,\ldots,p).$
+
+In diesem Fall gilt: $$y^{(j)} = (y_1^{(j)},\ldots,y_p^{(j)})\quad(j=0,\ldots,k)$$
+
+\begin{definition}
+\indexlabel{Differentialgleichung}
+\indexlabel{Differentialgleichung!gewöhnliche}
+Seien $n,p\in\MdN$ und $D\subseteq\MdR\times\underbrace{\MdR^p\times\ldots\times\MdR^p}_{n+1\text{ Faktoren}}$ und $F:D\to\MdR^p$ eine Funktion.
+
+Eine Gleichung der Form $$(i)\quad F(x,y,y',\ldots,y^{(n)})=0$$ heißt eine \textbf{(gewöhnliche) Differentialgleichung (Dgl) $n$-ter Ordnung}.
+
+\indexlabel{Differentialgleichung!Lösung einer gewöhnlichen}
+\indexlabel{Lösung einer gewöhnlichen Differentialgleichung}
+
+Eine Funktion $y:I\to\MdR^p$ heißt eine \textbf{Lösung} von $(i)$, gdw. gilt:
+\begin{itemize}
+\item $y$ ist auf $I$ $n$-mal db,
+\item $\forall x\in I: (x,y(x),y'(x),\ldots,y^{(n)}(x))\in D$ und
+\item $\forall x\in I: F(x,y(x),y'(x),\ldots,y^{(n)}(x)) = 0.$
+\end{itemize}
+\end{definition}
+
+\begin{beispiele}
+\item $n=p=1,\ F(x,y,z) = y^2+z^2-1,\ D=\MdR^3$.
+
+Dgl: $y^2+y'^2-1=0.$
+
+$y:\MdR\to\MdR,\ y(x)=1$ ist eine Lösung,\\
+$\bar{y}:\MdR\to\MdR,\ \bar{y}(x)=\sin x$ ist eine weitere Lösung.
+
+\item $n=p=1,\ F(x,y,z)=z+\frac{y}{x},\ D=\{(x,y,z)\in\MdR^3:x\ne0\}$.
+
+Dgl: $y'+\frac{y}{x}=0.$
+
+$y:(0,\infty)\to\MdR,\ y(x)=\frac{1}{x}$ ist eine Lösung,\\
+$\bar{y}:(-\infty,0)\to\MdR,\ \bar{y}(x)=\frac{17}{x}$ ist eine weitere Lösung.
+
+\item $n=1,p=2.$ Mit $y=(y_1,y_2):$
+$$y'=\begin{pmatrix}y_1'\\ y_2'\end{pmatrix} = \begin{pmatrix}-y_2\\ y_1\end{pmatrix}$$
+
+$y:\MdR\to\MdR^2,\ y(x)=(\cos x,\ \sin x)$ ist eine Lösung.
+\end{beispiele}
+
+\begin{definition}
+\indexlabel{explizite Differentialgleichung}
+\indexlabel{Differentialgleichung!explizite}
+Seien $n,p \in\MdN,\ D\subseteq\MdR\times\underbrace{\MdR^p\times\ldots\times\MdR^p}_{n\text{ Faktoren}}$ und $f:D\to\MdR^p$.
+
+Eine Gleichung der Form $$(ii)\quad y^{(n)} = f(x,y,y',\ldots,y^{(n-1)})$$ heißt \textbf{explizite Differentialgleichung $n$-ter Ordnung}.
+
+\indexlabel{Anfangswertproblem}
+\indexlabel{AWP}
+
+Ist $(x_0,y_0,y_1,\ldots,y_{n-1})\in D$ (fest), so heißt das Gleichungssystem
+$$(iii)\quad\begin{cases}y^{(n)} = f(x,y,y',\ldots,y^{(n-1)})\\ y(x_0)=y_0,\ y'(x_0)=y_1,\ldots,\ y^{(n-1)}(x_0)=y_{n-1}\end{cases}$$
+
+ein \textbf{Anfangswertproblem (AWP)}
+
+\indexlabel{Differentialgleichung!Lösung einer expliziten}
+\indexlabel{Lösung einer expliziten Differentialgleichung}
+
+$y:I\to\MdR^p$ heißt eine \textbf{Lösung} von $(ii)$, gdw. gilt:
+\begin{itemize}
+\item $y$ ist auf $I$ $n$-mal db,
+\item $\forall x\in I: (x,y(x),y'(x),\ldots,y^{(n-1)}(x))\in D$ und
+\item $\forall x\in I: y^{(n)}(x) = f(x,y(x),y'(x),\ldots,y^{(n-1)}(x)).$
+\end{itemize}
+
+\indexlabel{Anfangswertproblem!Lösung eines}
+\indexlabel{Lösung eines Anfangswertproblems}
+
+$y:I\to\MdR^p$ heißt eine \textbf{Lösung} von $(iii)$, gdw. gilt:
+\begin{itemize}
+\item $y$ ist eine Lösung von $(ii)$,
+\item $x_0 \in I$ und
+\item $y^{(j)}(x_0) = y_j\ (j=0,\ldots,n-1)$
+\end{itemize}
+
+\indexlabel{Anfangswertproblem!eindeutig lösbares}
+\indexlabel{endeutig lösbares Anfangswertproblem}
+Das AWP $(iii)$ heißt eine \textbf{eindeutig lösbar}, gdw. gilt:
+\begin{itemize}
+\item $(iii)$ hat eine Lösung und
+\item für je zwei Lösungen $y_1:I_1\to\MdR^p,\ y_2:I_2\to\MdR^p$ von $(iii)\ (I_1,I_2$ Intervalle in $\MdR)$ gilt: $y_1\equiv y_2$ auf $I_1 \cap I_2$
+\end{itemize}
+\end{definition}
+
+\begin{beispiele}
+\item $$\text{AWP: }\begin{cases}y'=2\sqrt{|y|}\\ y(0)=0\end{cases}\ (n=1,\ p=1)$$
+
+$y:\MdR\to\MdR,\ y(x)=0$ ist eine Lösung des AWPs,\\
+$\bar{y}:[0,\infty)\to\MdR,\ \bar{y}(x)=x^2$ ist eine weitere Lösung.
+
+\item $$\text{AWP: }\begin{cases}y'=2y\\ y(0)=1\end{cases}\ (n=1,\ p=1)$$
+$y:\MdR\to\MdR,\ y(x)=e^{2x}$ ist eine Lösung des AWPs.
+
+Sei $\bar{y}:I\to\MdR$ eine Lösung des AWPs. Wir definieren $$g(x) := \frac{\bar{y}(x)}{e^{2x}}\ (x\in I)$$.
+
+Nachrechnen: $g'(x)=0\ \forall x\in I \folgt \exists c\in\MdR:g(x)=c\ \forall x\in I \folgt \bar{y}(x) = ce^{2x}\ (x\in I).$
+
+$1=\bar{y}(0)=c \folgt \bar{y}(x)=e^{2x}\ \forall x\in I.$
+
+Das AWP ist also eindeutig lösbar.
+\end{beispiele}
+
+\chapter{Lineare Differentialgleichungen 1. Ordnung}
+
+\indexlabel{lineare Differentialgleichung}
+\indexlabel{Differentialgleichung!lineare}
+\indexlabel{Differentialgleichung!homogene}
+\indexlabel{Differentialgleichung!inhomogene}
+
+Stets in diesem Paragraphen: $n=p=1,\ I\subseteq \MdR$ sei ein Intervall und $a,s:I\to\MdR$ stetig. Die Differentialgleichung $$y'=a(x)y+s(x)$$ heißt eine \textbf{lineare Differentialgleichung (1. Ordnung)}, sie heißt \textbf{homogen}, falls $s\equiv 0$, anderenfalls \textbf{inhomogen}, $s$ heißt \begriff{Störfunktion}.
+
+Wir betrachten zunächst die zu obiger Gleichung gehörende \textbf{homogene} Gleichung $$(H)\quad y'=a(x)y$$
+
+Wegen Ana I, 23.14 besitzt $a$ auf $I$ eine Stammfunktion $A$.
+
+\begin{satz}[Lösung einer linearen Dgl 1. Ordnung]
+Sei $J\subseteq I$ ein Intervall und $y:J\to\MdR$ eine Funktion. $y$ ist eine Lösung von $(H)$ auf $J \equizu \exists c\in\MdR:y(x)=ce^{A(x)}$
+\end{satz}
+
+\begin{beweis}
+\begin{itemize}
+\item["`$\Longleftarrow$"':] $y'(x)=ce^{A(x)}A'(x)=a(x)y(x)\ \forall x\in J \folgt y\text{ löst }(H).$
+\item["`$\Longrightarrow$"':] $g(x):=\frac{y(x)}{e^{A(x)}}\ (x\in J).$ Nachrechnen: $g'(x)=0\ \forall x\in J \folgt \exists c\in\MdR:g(x)=c\ \forall x\in J \folgt y(x)=ce^{A(x)}\ (x\in J).$
+\end{itemize}
+\end{beweis}
+
+\begin{satz}[Eindeutige Lösbarkeit eines linearen AWPs 1. Ordnung]
+Seien $x_0\in I$ und $y_0\in\MdR.$ Dann hat das
+$$\text{AWP: }\begin{cases}y'=a(x)y\\y(x_0)=y_0\end{cases}$$
+
+auf $I$ genau eine Lösung.
+\end{satz}
+
+\begin{beweis}
+Sei $c\in\MdR$ und $y(x):=ce^{A(x)}\ (x\in I).$
+
+$y_0=y(x_0) \equizu y_0=ce^{A(x)} \equizu c=y_0e^{-A(x_0)}.$
+\end{beweis}
+
+\begin{beispiel}
+$$\text{AWP: }\begin{cases}y'=(\sin x)y\\y(0)=1\end{cases}\ (I=\MdR)$$
+
+$a(x)=\sin x,\ A(x)=-\cos x;$ allgemeine Lösung der Dgl: $y(x)=ce^{-\cos x}\ (c\in\MdR)$
+
+$1=y(0)=ce^{-\cos 0} = ce^{-1} \folgt c=e.$
+
+Lösung des AWPs: $y(x)=ee^{-\cos x}=e^{1-\cos x}\ (x\in\MdR).$
+\end{beispiel}
+
+Wir betrachten jetzt die \textbf{inhomogene Gleichung}$$(IH)\quad y'=a(x)y+s(x).$$
+
+\indexlabel{Variation der Konstanten}
+
+Für eine spezielle Lösung $y_s$ von $(IH)$ auf $I$ macht man folgenden Ansatz: $y_s(x)=c(x)e^{A(x)}$, wobei $c:I\to\MdR$ db. Dieses Verfahren heißt \textbf{Variation der Konstanten}.
+
+$y_s$ ist eine Lösung von $(IH)$ auf $I\\
+\equizu y_s'(x)=a(x)y_s(x)+s(x)\\
+\equizu c'(x)e^{A(x)}+c(x)e^{A(x)}a(x) = a(x)y_s(x)+s(x)\\
+\equizu c'(x)e^{A(x)}+a(x)y_s(x) = a(x)y_s(x)+s(x)\\
+\equizu c'(x)e^{A(x)} = s(x)\\
+\equizu c'(x)=e^{-A(x)}s(x)\\
+\equizu c$ ist eine Stammfunktion von $e^{-A}s$ auf $I$.
+
+Nach Ana I, 23.14 besitzt $e^{-A}s$ eine Stammfunktion auf $I$.
+
+\textbf{Fazit:} Die Gleichung $(IH)$ besitzt Lösungen auf $I$.
+
+%Wiederholung: $$(H) y' = a(x)y$$
+%$$(IH) y' = a(x)y + s(x)$$
+Aus 7.1 folgt $$L_H = \{y: I \rightarrow \mathbb{R}: y \textnormal{ löst } (H) \textnormal{ auf } I \}$$
+$$L_{IH} := \{y: I \rightarrow \mathbb{R}: y \textnormal{ löst } (IH) \textnormal{ auf } I\}$$
+Bekannt: $$L_{IH} \ne \emptyset$$
+
+\begin{satz}[Spezielle Lösungen bei AWPs]
+$J \subseteq I$ sei ein Intervall, $y_s \in L_{IH}$, $x_0 \in I$, $y_0 \in \mathbb{R}$
+\begin{itemize}
+\item[(1)] Ist $y: J \rightarrow \mathbb{R}$ eine Lösung von $(IH)$ auf $J \Rightarrow \exists y_1 \in L_H: y = y_1 + y_s$ auf $J$.
+\item[(2)] $y \in L_{IH} \Leftrightarrow y = y_1 + y_s$ mit $y_1 \in L_H$
+\item[(3)] Das AWP $y'= a(x)y + s(x)$, $y(x_0) = y_0$, ist auf $I$ eindeutig lösbar
+\end{itemize}
+\end{satz}
+
+\begin{beweis}
+\begin{itemize}
+\item[(1)] $y_1 := y - y_s $ auf $ J \Rightarrow y_1' = y' - y_s' = a(x)y + s(x) - (a(x)y_s + s(x)) + s(x)) = a(x)(y-y_s) = a(x)y_1 \Rightarrow y_1$ löst $(H)$ auf $J \Rightarrow \exists c \in \mathbb{R}: y_1(x) = c e^{A(x)} \Rightarrow y(x) = c e ^{A(x)} + y_s(x) \forall x \in J$
+\item[(2)] "`$\Rightarrow$"': folgt aus (1) mit $J=I$ \\
+"`$\Leftarrow$"': $y= y_1 + y_s \Rightarrow y' = y_1' + y_s' = a(x)y_1 + y(x) y_s + s(x) = a(x)(y_1 + y_s) + s(x) = a(x) y + s(x)
+\Rightarrow y \in L_H$
+\item[(3)] Sei $c \in \mathbb{R}$ und $y(x) = c e ^{A(x)} + y_s(x)
+\stackrel{(2)}{\Rightarrow} y \in L_{IH}; y_0 = y(x_0) \Leftrightarrow c e ^{A(x_0)}+y_s(x_0)=y_0 \Leftrightarrow c = (y_0 - y_s(x_0))e^{-A(x_0)}$
+\end{itemize}
+\end{beweis}
+
+\begin{beispiel}
+\begin{itemize}
+	\item [(1)] Bestimme die allgemeine Lösung von $y'=2xy + x$ auf $\mathbb{R}$ \\
+	1. Schritt: homogene Gleichung: $y'= 2xy$; allgemeine Lösung: \\
+	$y(x) = c e ^{x^2} (c \in \mathbb{R})$ \\
+	2. Schritt: Ansatz für eine spezielle Lösung der inhomogenen Gleichung: \\
+	$y_s(x) = c(x) e^{x^2}$. \\
+	$y_s' = c'(x) e^{x^2} + c(x) 2 x e ^{x^2} \stackrel{!}{=}2xy_s(x)+x
+	= 2x c(x) e^{x^2} + x \\
+	\Rightarrow c'(x) = xe^{-x^2} \Rightarrow c(x) = - \frac{1}{2} e^{-x^2} \\
+	\Rightarrow y_s(x) = - \frac{1}{2} e^{-x^2} e^{x^2} = - \frac{1}{2}$ \\
+	Allgemeine Lösung von $y' = 2xy + x$: \\
+	$y(x) = ce ^{x^2} - \frac{1}{2} (c \in \mathbb{R})$
+	\item[(2)] Löse das AWP: $y' = 2y + e^x$, $y(0) = 1$ \\
+	1. Schritt: homogene Gleichung $y' = 2y$, \\
+	allgemeine Lösung $y(x) = c e^{2x} (c\in \mathbb{R}$ \\
+	2. Schritt: Ansatz für eine spezielle Lösung der inhomogenen Gleichung: \\
+	$y_s(x) = c(x) e^{2x}$ \\
+	$y_s'(x) = c'(x) e^{2x} + c(x) 2e^{2x} \stackrel{!}{=} 2y_s(x) + e^x$ \\
+	$= 2c(x)e^{2x}+e^x$ \\
+	$\Rightarrow c'(x) e^{2x} = e^x \Rightarrow c'(x) = e^{-x}$ 
+	$\Rightarrow c(x) = -e^{-x} \Rightarrow y_s(x) = -e^{x}$ \\
+	Allgemein Lösung von $y'=2y + e^x: y(x) = ce^{2x} - e^x$ \\
+	3. Schritt: $1 = y(0) = c - 1 \Rightarrow c = 2$ \\
+	Lösung des AWP: $y(x) = 2e^{2x} - e^x$
+\end{itemize}
+\end{beispiel}
+
+
+\chapter{Differentialgleichungen mit getrennten Veränderlichen}
+
+%\indexlabel{lineare Differentialgleichung}
+%\indexlabel{Differentialgleichung!lineare}
+%\indexlabel{Differentialgleichung!homogene}
+%\indexlabel{Differentialgleichung!inhomogene}
+
+Stets in diesem Paragraphen: $I, J$ seien Intervalle in $\MdR$, $f:I\to\MdR,\ g:J\to\MdR$ stetig, $x_0\in I, y_0\in J$.
+
+Wir betrachten: $(i)\quad y'=g(y)f(x)$, \textbf{Differentialgleichung mit getrennten Veränderlichen} und das zugehörige AWP $(ii) \begin{cases}y'=g(y)f(x)\\y(x_0)=y_0 \end{cases}$
+
+\begin{satz}[AWP mit getrennten Veränderlichen]
+Sei $y_0\in J^0$ und $g(y)\ne 0\ \forall y\in J$. Dann esistiert ein Intervall $I_{x_0}\in I$ und $x_0 \in I_{x_0}$ und es gilt:
+
+\begin{liste}
+\item Das AWP $(ii)$ hat eine Lösung $y:I_{x_0}\to\MdR$
+\item Die Lösung aus $(1)$ erhält man durch Auflösen der Gl $$\int_{y_0}^{y(x)} \frac{\ud t}{g(t)} = \int_{x_0}^{x} f(t) \ud t \text{\quad nach } y(x) $$ 
+\item Ist $U\subseteq I$ ein Intervall und $u:U\to \MdR$ eine Lösung des AWPs, $x_0 \in U$, $\folgt U\subseteq I_{x_0}$ und $u=y$ auf $U$.
+\item Das AWP $(ii)$ ist eindeutig lösbar.
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+\begin{itemize}
+\item[$(4)$] folgt aus $(3)$
+\item Definiere $G:J\to \MdR$ durch $G(y):=\int_{y_0}^y \frac{dt}{g(t)}$, $G$ ist stetig db, $G'=\frac{1}{g}$ auf $J$ und $G(y_0)=0$. $g$ stetig, $g(y)\ne 0\ \forall y\in J \folgt G'>0$ auf $J$ oder $G'<0$ auf $J \folgt \exists G^{-1}:G(J)\to J,\ K:=G(J),\ K$ ist ein Intervall, $0\in K$, $y_0 \in J^0 \folgt 0\in K^0\folgt \exists \varepsilon >0:(-\varepsilon,\varepsilon)\subseteq K$
+Definiere $F:I\to\MdR$ durch $F(x):=\int_{x_0}^xf(t)\ud t$; $F$ ist stetig db, $F'=f$, $F(x_0)=0$. $F$ stetig in $x_0\folgt \exists \delta >0: |F(x)-F(x_0)|=|F(x)| < \varepsilon\ \forall x\in \underbrace{U_\delta (x_0) \cap I}_{=:M_0}$\\
+$M_0$ ist ein Intervall, $x_0\in M_0$, $M_0 \subseteq I$, $F(M_0)\subseteq K$ \\
+$\mathfrak{M}:=\{M\subseteq I : M \text{ ist ein Intervall, } x_0\in M,\ F(M)\subseteq K\}$, $M_0\in \mathfrak{M} \ne \emptyset$; $I_{x_0}:=\cup_{M\in \mathfrak{M}} M \folgt I_{x_0} \in \mathfrak{M}$\\
+Definiere $y:I_{x_0}\to\MdR$ durch $y(x):=G^{-1}(F(x))$. $y$ ist stetig db auf $I_{x_0}$, $y(x_0)=G^{-1}(F(x_0))=G^{-1}(0)=y_0$; $\forall x \in I_{x_0}: G(y(x))=F(x) \folgt (2)$ und (Diff): $\underbrace{G'(y(x))}_{=\frac{1}{g(y(x))}}y'(x)=F'(x)=f(x)\folgt y'(x)=g(y(x))f(x)\ \forall x\in I_{x_0} \folgt (1)$
+\item[$(3)$] Sei $u:U\to\MdR$ eine Lösung des AWPs, $U\subseteq I$. $u(x_0)=y_0$ und $u'(t)=g(u(t))f(t)\ \forall t\in U \folgt f(t)=\frac{u'(t)}{g(u(t))}\ \forall t\in U,\ u(U)\subseteq J$\\
+$\forall x\in U: F(X)=\int_{x_0}^x f(t)\ud t = \int_{x_0}^x\frac{u'(t)}{g(u(t))}\ud t=\begin{array}{l} \text{Subst:}\\s=u(t)\\\ud s=u'(t)\ud t\end{array}=\int_{y_0}^{u(x)}\frac{\ud s}{g(s)}=G(u(x))$ Also: $F(x)=G(u(x))\ \forall x\in U)$.
+$x \in U \folgt u(x)\in J\folgt G(u(x))\in G(J)=K\folgt F(x)\in K\folgt F(U)\subseteq K\folgt U\in \mathfrak{M} \folgt U\subseteq I_{x_0}.\\
+F(x)=G(u(x))\ \forall x\in U \folgt u(x)=G^{-1}(F(x))=y(x)\ \forall x\in U$
+
+\textbf{Der Fall} $G(y_0) = 0$. $y(x) = y_0$ ist eine Lösung des AWPs.
+\end{itemize}
+\end{beweis}
+
+\begin{beispiel}
+Untersuchung des AWPs:
+$$ AWP: \begin{cases}
+y' = \sqrt{|y|} \\
+y(0) = 0
+\end{cases} (I = J = \mathbb{R})$$
+$y_1(x) = 0$ ist eine Lösung des AWPs \\
+$y_2(x) = \frac{x^2}{4}$ ist eine Lösung des AWPs auf $[0, \infty)$
+$$ y_3(x) = 
+\left\{ \begin{array}{ll}
+\frac{x^2}{4} & x > 0 \\
+0 & x \le 0
+\end{array} \right. $$
+ist eine Lösung des AWPs auf $\mathbb{R}$. Mehrdeutige L"osbarkeit, da nicht gilt: $g(y)\ne 0$ auf $J$.
+\end{beispiel}
+
+\indexlabel{Trennung der Ver"anderlichen}
+\indexlabel{TDV}
+\paragraph{Verfahren f"ur die Praxis:} Trennung der Ver"anderlichen (TDV):
+Schreibe ($i$) in der Form: $\frac{\ud y}{\ud x}=f(x)g(y)$. TDV:
+$\frac{\ud y}{g(y)}=f(x)\ud x\folgt \ (iii)\ \int\frac{\ud y}{g(y)}=\int f(x)\ud x + c\ (c\in\MdR)$
+
+Die allgemeine L"osung von $(i)$ erh"alt man durch Aufl"osen von $(iii)$ in der Form $y=y(x;\ c)$. Die L"osung
+von $(ii)$ erh"alt man, indem man $c$ der Bedingung $y(x_0)=y_0$ anpasst.
+
+\begin{beispiele}
+\item[(1)] $y'=-2xy^2\ (*)\ (g(y)=y^2).\ \frac{\ud y}{\ud x}=-2xy^2$\\
+TDV: $\frac{\ud y}{y^2}=-2x\ud x\folgt\int\frac{\ud y}{y^2}=\int(-2x)\ud x+c\folgt -\frac{1}{y}=-x^2+c\folgt y=\frac{1}{-c+x^2}$. Allgemeine L"osung von $(*)$ $y(x)=\frac{1}{x^2-c}\ (c\in\MdR)$
+\item[(1.1)] $$\text{AWP: }\begin{cases} (*) \\ y(0)=-1\end{cases}$$
+	$-1=y(0)=-\frac{1}{c}\folgt c=1\folgt$ L"osung des AWPs: $y(x)=\frac{1}{x^2-1}$ auf $(-1,1)\ (=I_{x_0})$
+\item[(1.2)] $$\text{AWP: }\begin{cases} (*) \\ y(0)=1\end{cases}$$
+	$1=y(0)=-\frac{1}{c}\folgt c=-1\folgt$ L"osung des AWPs: $y(x)=\frac{1}{x^2+1}$ auf $\MdR\ (=I_{x_0})$
+\item[(1.3)] $$\text{AWP: }\begin{cases} (*) \\ y(0)=0\end{cases}$$
+	$0=y(0)=-\frac{1}{c}\folgt$ AWP hat die L"osung $y\equiv 0$, allerdings ist das Verfahren hier nicht anwendbar.
+\item[(2)]$$\text{Dgl: }y'=\frac{x^2}{1-x}\cdot\frac{1+y}{y^2}$$ $\frac{\ud y}{\ud x}=\frac{x^2}{1-x}\cdot\frac{1+y}{y^2}\folgt
+	\frac{y^2}{1+y}\ud y=\frac{x^2}{1-x}\folgt\int\frac{y^2}{1+y}\ud y=\int\frac{x^2}{1-x}\ud x+c$\\
+	Nachrechnen: $\frac{y^2}{2}-y+\log(1+y)=-\frac{x^2}{2}-x-\log(1-x)+c$ (L"osungen in impliziter Form).
+\end{beispiele}
+
+\chapter{Einige Typen von Differentialgleichungen 1. Ordnung}
+
+\paragraph{(I): }$y'=f(\frac{y}{x})$. Setze $u:=\frac{y}{x}$. Dies f"uhrt auf eine Differentialgleichung mit getrennten Ver"anderlichen f"ur u.
+
+\begin{beispiel}
+$$\text{AWP: }\begin{cases}y'=\frac{y}{x}-\frac{x^2}{y^2}\\ y(1)=1\end{cases}$$
+\begin{eqnarray*}
+u:=\frac{y}{x}&\folgt&y=xu\\
+y'=u+xu'&\folgt&u+xu'=u-\frac{1}{u^2}\\
+&\folgt& u'=-\frac{1}{xu^2}\\
+&\folgt& \frac{du}{\ud x}=-\frac{1}{xu^2}\\
+&\folgt& u^2\ud u=-\frac{1}{x}\ud x\\
+&\folgt& \frac{1}{3}u^3=-\log x+c\\
+&\folgt& u^3=-3\log x+3c\ (c\in\MdR)\\
+u(1)=\frac{y(1)}{1}=1 & \folgt & 1=u^3(1)=3c\\
+&\folgt &c=\frac{1}{3}\\
+u^3=1-3\log x&\folgt& y(x)=x\sqrt[3]{1-3\log x}\text{ auf }(0, \sqrt[3]{e})\text{ (L"osung des AWPs)}
+\end{eqnarray*}
+\end{beispiel}
+
+\paragraph{(II) Bernoullische Differentialgleichung: }
+$y'+p(x)y+q(x)y^\alpha=0$, wobei $p$ und $q$ stetig sind und $0\ne\alpha\ne 1$.
+Dividiere durch $y^\alpha$ und setze $u:=y^{1-\alpha}$. Dies f"uhrt auf eine
+lineare Differentialgleichung f"ur $u$.
+
+\begin{beispiel}
+$(*)\ y'-xy+3xy^2=0\ (\alpha=2)$. Dann: $\frac{y'}{y^2}-\frac{x}{y}+3x=0;\ 
+u:=\frac{1}{y}\folgt u'=-\frac{y'}{y^2}\folgt -u'-xu+3x=0\folgt u'=-xu+3x$. Allgemeine L"osung hiervon:
+$u(x)=ce^{-\frac{1}{2}x^2}+3\ (c\in\MdR)$. Allgemeine L"osung von $(*)$:
+$y(x)=\frac{1}{ce^{-\frac{1}{2}x^3}+3}\ (c\in\MdR)$
+\end{beispiel}
+
+\paragraph{(III) Riccatische Differentialgleichung: }
+$(*)\ y'+g(x)y+h(x)y^2=k(x)$, wobei g, h, k stetig sind.
+Sei $y_1$ eine bekannte L"osung von $(*)$; setze $z:=\frac{1}{y-y_1}$.
+Nachrechnen: $(**)\ z'=(g(x)+2y_1(x)h(x))z+h(x)$ (lin. Dgl f"ur $z$). Die
+%                                     ^ hier muss ein x hin, hab es nachgerechnet
+allgemeine L"osung von $(*)$ lautet: $y(x)=y_1(x)+\frac{1}{z(x)}$ wobei
+$z$ die allgemeinen L"osungen von $(**)$ durchl"auft.
+
+\chapter{Exakte Differentialgleichungen}
+
+\begin{vereinbarung}
+In diesem Paragraphen sei $D\subseteq\MdR^2$ stets ein Gebiet, $P, Q\in C(D,\MdR)$
+und $(x_0, y_0)\in D$
+\end{vereinbarung}
+Wir betrachten die Gleichung $P(x,y)+Q(x,y)y'=0$. Diese Gleichung schreibt
+man in der Form:
+\begin{liste}
+\item[$(i)$] $P(x,y)\ud x + Q(x,y)\ud y =0$. Weiter betrachten wir das AWP:
+\item[$(ii)$] $\begin{cases}P(x,y)\ud x + Q(x,y)\ud y=0 \\ y(x_0)=y_0\end{cases}$
+\end{liste}
+
+\begin{erinnerung}
+Analysis 2, Paragraph 14
+\begin{liste}
+\item Eine Funktion $F\in C^1(D,\MdR)$ hei"st eine Stammfunktion von $(P, Q):\equizu F_x=P, F_y=Q$.
+\item Ist $D$ sternf"ormig und sind $P, Q\in C^1(D,\MdR)$, so gilt: $(P, Q)$ hat auf D eine Stammfunktion
+$\equizu P_y=Q_x$ auf $D$.
+\end{liste}
+\end{erinnerung}
+
+\begin{definition}
+Die Gleichung $(i)$ hei"st auf D exakt $:\equizu (P,Q)$ besitzt auf D eine Stammfunktion.
+\end{definition}
+
+\begin{satz*}
+Die Gleichung $(i)$ sei auf $D$ exakt und $F$ sei eine Stammfunktion $(P, Q)$ auf $D$.
+\begin{liste}
+\item Sei $I\subseteq\MdR$ ein Intervall, $y:I\to\MdR$ differenzierbar und $(x, y(x))\in D\ \forall x\in I$.
+$y$ ist eine L"osung von $(i)$ auf $I\equizu\ \exists c\in\MdR:\ F(x,y(x))=c\ \forall x\in I$.
+\item Ist $Q(x_0, y_0)\ne 0$, so existiert eine Umgebung $U$ von $x_0$: das AWP $(ii)$ hat auf $U$
+genau eine L"osung.
+\end{liste}
+\end{satz*}
+
+\begin{beweise}
+\item $g(x):=F(x, y(x))\ (x\in I);\ g$ ist differenzierbar auf $I$ und $g'(x)=F_x(x,y(x))\cdot 1+F_y(x,y(x))y'(x)=P(x,y(x))+Q(x,y(x))y'(x)$.
+$y$ ist eine L"osung von $(i)\equizu g'(x)=0\ \forall x\in I\equizu\exists c\in\MdR:\ g(x)=c\ \forall x\in I\equizu\exists c\in\MdR:\ F(x,y(x))=c\ \forall x\in I$.
+\item $f(x,y):=F(x,y)-F(x_0, y_0)\ ((x,y)\in D)$. $f(x_0, y_0)=0, f_y(x_0, y_0)=F_y(x_0,y_0)=Q(x_0,y_0)\ne 0$. Analysis 2, Paragraph 10 $\folgt \exists$ Umgebung $U$
+von $x_0$, $V$ von $y_0$ und \emph{genau} eine differenzierbare Funktion $y:U\to V$ mit: $U\times V\subseteq D, y(x_0)=y_0$ und $f(x,y(x))=0\ \forall x\in U\folgt F(x,y(x))=F(x_0, y_0)\ \forall x\in U\folgtnach{(1)}$Behauptung.
+\end{beweise}
+
+\begin{beispiele}
+\item $$\text{AWP: }\begin{cases} x \ud x + y\ud y=0\\ y(0)=1,\ (D=\MdR^2, P=x, Q=y)\end{cases}$$
+$P_y=Q_x\folgt$ die Dgl. ist auf D exakt. $F(x,y)=\frac{1}{2}(x^2+y^2)$ ist eine Stammfunktion von $(P, Q)$ auf $D$. $\frac{1}{2}(x^2+y^2)=c\equizu y^2=2c-x^2\equizu y(x)=\pm \sqrt{2c-x^2}\ (c\in\MdR)$ allgemeine L"osung der Dgl. $1=y(0)^2-2c\folgt c=\frac{1}{2}$. L"osung des AWPs: $y(x)=+\sqrt{1-x^2}$ auf $(-1, 1)$.
+\item $$\text{AWP: }\begin{cases}x\ud x + y\ud y=0\\ y(0)=0\end{cases}$$
+$0=y(0)^2=2c\folgt c=0\folgt y^2=-x^2$, Widerspruch! Das AWP ist nicht l"osbar.
+\item $$\text{AWP: }\begin{cases}x\ud x - y\ud y=0\\ y(0)=0\end{cases}$$
+$F(x,y)=\frac{1}{2}(x^2-y^2)$ ist eine Stammfunktion von $(P, Q)$ auf $\MdR^2$. $\frac{1}{2}(x^2-y^2)=c\equizu y^2=x^2-2c$; also: $y(x)=\pm\sqrt{x^2-2c}.\ 0=y(0)^2=-2c\folgt c=0$. $y(x)=x$ und $y(x)=-x$ sind L"osungen des AWPs auf $\MdR$.
+\item $D=(0,\infty)\times(0,\infty);\ (*)\underbrace{\frac{1}{y}\ud x}_{=P}+\underbrace{\frac{1}{x}\ud y}_{=Q}=0$. $P_y=-\frac{1}{y^2}$, $Q_x=-\frac{1}{x^2}\folgt (*)$ ist auf $D$ nicht exakt. Multiplikation von $(*)$ mit $\underbrace{xy}_{\ne 0}\folgt (**)\ x\ud x + y\ud y=0$.
+\end{beispiele}
+
+\begin{definition}
+Sei $\mu \in C(D,\MdR)$ und $\mu(x,y)\ne0 \ \forall(x,y)\in  D$.\\
+$\mu$ heißt ein \begriff{Multiplikator} von (i) auf $D$
+$:\equizu$ $(iii)$ $(\mu P)dx + (\mu Q)dy = 0 \text{ ist auf }D\text{ exakt.}$
+\end{definition}
+
+\begin{bemerkung}
+Es sei $\mu\in C(D,\MdR)$ und $\mu(x,y) \ne 0 \ \forall(x,y)\in D$
+\begin{liste}
+\item Ist $I\subseteq \MdR$ ein Intervall, $y(I)\to\MdR$ eine Funktion und $(x,y(x)) \in D \ \forall x\in I$, so gilt: $y$ ist Lösung von $(i)$ auf $I$ $\equizu$ $y$ ist Lösung von $(iii)$ auf $I$.
+\item Ist $D$ sternförmig und sind $P,Q,\mu\in C^1(D,\MdR)$, so gilt: $\mu$ ist Multiplikator von $(i)$ auf $D$ $\equizu$ $(\mu P)_y = (\mu Q)_x$ auf $D$.
+\item Hängt $f:=\frac1Q(P_y-Q_x)$ nur von $x$ ab, so ist $\mu(x)=e^{\int{f(x)} dx}$ ein Multiplikator.\\
+Hängt $f:=\frac1P(P_y-Q_x)$ nur von $y$ ab, so ist $\mu(x)=e^{-\int{f(y)} dy}$ ein Multiplikator.
+\begin{beispiel}
+$$(*)\quad \underbrace{(2x^2y+2xy^3+y)}_{=P} dx + \underbrace{(3y^2+x)}_{=Q} dy = 0$$
+$P_y=2x^2+6xy^2+1$; $Q_x=1$ $\folgt$ $(*)$ ist nicht exakt. $\frac{P_y-Q_x}{Q} = 2x \folgt \mu(x)=e^{x^2}$ ist ein Multiplikator. Lösung von $(*)$ in impliziter Form: $(xy(x) + y(x)^3)e^{x^2}=c\ (c\in\MdR)$.
+\end{beispiel}
+\end{liste}
+\end{bemerkung}
+
+\chapter{Hilfsmittel aus der Funktionalanalysis}
+
+In diesem Paragraphen sei $X$ stets ein Vektorraum (VR) über $\MdK$, wobei $\MdK=\MdR$ oder $\MdK = \MdC$.
+
+\begin{definition}
+Eine Abbildung $\|\cdot\|:X\to\MdR$ heißt eine \begriff{Norm auf $X$} $:\equizu$
+\begin{liste}
+\item[(i)] $\|x\| \ge 0\ \forall x\in X$; $\|x\| = 0 \equizu x=0$
+\item[(ii)] $\|\alpha x \| = |\alpha| \|x\| \ \forall \alpha\in\MdR, x\in X$
+\item[(iii)] $\|x+y\| \le \|x\| + \|y\|$ (Dreiecks-Ungleichung)
+\end{liste}
+\end{definition}
+In diesem Fall heißt $(X,\|\cdot\|)$ ein \begriff{normierter Raum} (NR). Meist schreibt man nur $X$ statt $(X,\|\cdot\|)$.
+
+\begin{beispiele}
+\item $X = \MdK^n$, für $x=(x_1,\ldots,x_n)$: $\|x\| = \left( \sum_{j=1}^n |x_j|^2 \right)^\frac12$. Analysis II $\folgt$ $(X,\|\cdot\|)$ ist ein normierter Raum.
+\item $A\subseteq \MdR^n$ sei beschränkt und abgeschlossen. $X=C(A,\MdR^n)$; \\
+$\|f\|_\infty = \max\{\|f(x)\|, x\in A\}$ $(f\in X)$. Dann ist $(X,\|\cdot\|_\infty)$ ein normierter Raum.
+\item $X=L(\MdR^n)$. Für $f\in L(\MdR)$: $\|f\|_1 := \int_{\MdR^n} |f(x)|dx$; $\|f\|_2 := \left(\int_{\MdR^n} |f(x)|^2 dx\right)^\frac12 $;
+Analysis II 16.1 $\folgt$ $\|\cdot\|_1$ hat die Eigenschaft (ii) und (iii) einer Norm, $\|f\|_1\ge 0$ aber $\|f\|_1=0 \equizu f=0$ fast überall auf $\MdR^n$.\\
+Es ist üblich, zwei Funktionen $f,g \in L(\MdR^n)$ als gleich zu betrachten, wenn $f=g$ fast überall. In diesem Sinne: $(L(\MdR),\|\cdot\|_1)$ ist ein normierter Raum.
+\end{beispiele}
+
+Für den Rest des Paragraphen sei $(X,\|\cdot\|)$ stets ein normierter Raum. Wie in Analysis II zeigt man:
+$$ \left| \|x\| - \|y\| \right| \le \|x-y\| \ \forall x,y\in X\, $$
+$\|x-y\|$ heißt Abstand von $x$ und $y$.
+
+\begin{definition}
+Sei $(x_n)$ eine Folge in X
+\begin{liste}
+\item $(x_n)$ heißt konvergent $:\equizu$ $\exists x\in X: \|x_n - x\| = 0\ (n\to\infty)$\\
+In diesem Fall ist $x$ eindeutig bestimmt (Beweis wie in $\MdR^n$) und heißt der Grenzwert (GW) oder Limes von $(x_n)$. Man schreibt:
+\[ x_n \to x \ (x\to\infty) \text{ oder } x_n \to \infty \text{ oder } \lim_{n\to\infty}x_n = x \]
+\item $\sum_{n=1}^\infty x_n$ bedeutet die Folge $(s_n)$ wobei $s_n := x_1+\cdots+x_n \ (n\in\MdN)$\\
+ $\sum_{n=1}^\infty x_n$  heißt konvergent $:\equizu$ $(s_n)$ ist konvergent.\\
+ $\sum_{n=1}^\infty x_n$  heißt divergent $:\equizu$ $(s_n)$ ist divergent.\\
+ Im Konvergenzfall: $\sum_{n=1}^\infty x_n := \lim_{n\to\infty} s_n$
+\end{liste}
+\end{definition}
+Wie üblich zeigt man: Aus $x_n\to x$ und $y_n\to y$ folgt:
+\[x_n+y_n = x + y\]
+\[\alpha x_n \to \alpha x \ (\alpha \in \MdK)\]
+\[\|x_n\|\to \|x\|\]
+
+
+\begin{definition}
+Sei $(x_n)$ eine Folge in $X$ und $A\subseteq X$
+\begin{liste}
+\item $A$ heißt \begriff{konvex} $:\equizu$ aus $x,y\in A$ und $t\in[0,1]$ folgt stets: $x+t(y-x) \in A$
+\item $A$ heißt \begriff{beschränkt} $:\equizu$ $\exists c\ge0: \|x\|\le c \ \forall x\in A$
+\item $A$ heißt \begriff{abgeschlossen} $:\equizu$ der Grenzwert jeder konvergenten Folge aus $A$ gehört zu $A$
+\item $A$ heißt \begriff{kompakt} $:\equizu$ jede Folge in $A$ enthält eine konvergente Teilfolge, deren Grenzwert zu $A$ gehört.
+\item $(x_n)$ heißt eine Cauchyfolge (CF) in $X$ $:\equizu$\\ $\forall \ep>0 \ \exists n_0\in\MdR: \|x_n-x_m\|<\ep \ \forall n,m\ge n_0$
+\end{liste}
+\end{definition}
+
+\begin{bemerkung}
+\begin{liste}
+\item Wie in Analysis II: $(x_n)$ konvergiert $\folgt$ $(x_n)$ ist eine Cauchyfolge in $X$
+\item Ist $A\subseteq \MdR^n$: $A$ ist kompakt $:\equizu$ $A$ ist beschränkt und abgeschlossen (Analysis II, 2.2)
+\item $A$ kompakt $\folgt$ $A$ abgeschlossen
+\item $X=C[a,b]$ mit $\|\cdot\|_\infty$. Sei $(f_n)$ eine Folge in $X$ und $f\in X$. Dann $(f_n) \to f$ bezüglich $\|\cdot\|_\infty$ $\equizu$ $(f_n)$ konvergiert auf $[a,b]$ gleichmäßig gegen $f$ (Analysis  I, Übungsblatt 10, Aufgabe 37)
+\end{liste}
+\end{bemerkung}
+
+\begin{beispiel}
+$X=C[-1,1]$ mit $\|\cdot\|_2 = \left(\int_{-1}^1|f(x)|^2dx\right)^\frac12$.
+\[f_n=
+\begin{cases}
+-1, & 1\le x\le -\frac1n \\
+nx, & -\frac1n \le x \le \frac1n \\
+1, & \frac1n \le x \le 1
+\end{cases}\]
+In der Übung: $(f_n)$ ist eine Cauchyfolge in $X$, aber es existiert kein $f\in X: f_n\to f$ (bezüglich $\|\cdot\|_2$)
+\end{beispiel}
+
+\begin{definition}
+Ein normierter Raum $X$ heißt \begriff{vollständig} oder ein \begriff{Banachraum} (BR) $:\equizu$ jede Cauchyfolge in $X$ ist konvergent.
+\end{definition}
+
+\begin{beispiele}
+\item Sei $X$ und $\|\cdot\|_2$ wie im obigen Beispiel. Dann ist $X$ kein Banachraum.
+\item $\MdR^n$ ist mit der üblichen Norm ein Banachraum (Siehe Analysis II)
+\item $C[a,b]$ ist mit $\|\cdot\|_\infty$ ein Banachraum (Analysis I, Übungsblatt 10, Aufgabe 37)
+\item $L(\MdR^n)$ ist mit $\|\cdot\|_1$ ein Banachraum (Analysis II, 18.1)
+\end{beispiele}
+
+\begin{definition}
+$X$ sei ein normierter Raum, $x_0 \in X$ und $\epsilon > 0$.
+\begin{itemize}
+	\item[(1)] $U_{\epsilon}(x_0) := \{ x \in X: \Vert x - x_0 \Vert < \epsilon \}$ heißt 		
+	$\epsilon$ - Umgebung von $U$
+	\item[(2)] $D \subseteq X$ heißt offen $: \Leftrightarrow\ \forall x \in D \ \exists \epsilon
+	=	\epsilon(x) > 0 : U_{\epsilon} (x) \subseteq D$
+\end{itemize}
+\end{definition}
+
+Wie in Analysis 2 zeigt man:
+
+\begin{satz}[Verweis auf Analysis 2.3(3)]
+\begin{itemize}
+	\item[(1)] $D$ ist offen $: \Leftrightarrow X \setminus D$ ist abgeschlossen.
+	\item[(2)] Ist $A \subseteq X$ kompakt, so gilt die Aussage des Satzes 2.3(3) aus Analysis 2 
+	wörtlich
+\end{itemize}
+\end{satz}
+
+\begin{definition}[Operator]
+ $X$ sei ein normierter Raum, $A \subseteq X$ und $T: A \to X$ eine Abbildung. $T$ heißt auch ein \begriff{Operator} auf $A$, man schreibt meist $T_x$ statt $T(x)$ $(x \in A)$.
+\begin{itemize}
+	\item[(1)] $x^*$ heißt ein \begriff{Fixpunkt} von $T$ $: \Leftrightarrow T_{x^*} = x^*$.
+	\item[(2)] $T$ heißt in $x_0 \in A$ stetig $: \Leftrightarrow $ für jede Folge $(x_n)$ in 
+	$A$. mit $x_n \to x_0: T_{x_n} \to T_{x_0}$. \\
+	(Übung: $\Leftrightarrow\ \forall \epsilon > 0 \ \exists \delta > 0: \Vert T_x - T_0 \Vert <
+	\epsilon\ \forall x \in U_{\delta}(x_0) \cap A$)
+	\item[(3)] $T$ heißt stetig auf $A$ $: \Leftrightarrow T$ ist stetig in jedem $x \in A$.
+	\item[(4)] $T$ heißt auf $A$ \begriff{kontrahierend} $: \Leftrightarrow\ \exists \ L \in
+	[0,1): \Vert T_x - T_y \Vert \le L \Vert x-y \Vert\ \forall x,y \in A$
+\end{itemize}
+\end{definition}
+
+\begin{beispiel}[Wichtig!]
+$x=C[a,b]$  ist mit $\Vert \cdot \Vert_{\infty}$ ein Banachraum. Definiere $T: X \to X$ durch $(T_y)(x) = y_0 + \int_{x_0}^xf(t,y(t))dt \ (x \in [a,b])$ wobei $x_0 \in [a,b]$, $y_0 \in \MdR$ und $f:[a,b] \times \MdR \to \MdR$ stetig. $(T_y \in C^1[a,b])$
+
+Behauptung: $T$ ist stetig auf $X$.
+\end{beispiel}
+\begin{beweis}
+Sei $z_0 \in X$. Sei $z \in X$ mit $\Vert z - z_0 \Vert \le 1$. $\forall t \in [a,b]: |z(t)| \le \Vert z \Vert_{\infty} = \Vert z - z_0 + z_0 \Vert _{\infty} \le \Vert z - z_0 \Vert _{\infty} + \Vert z_0 \Vert_{\infty} \le 1 + \Vert z_0 \Vert _{\infty} =: \gamma$
+
+$R:= [a,b] \times [-\gamma, \gamma]$. D.h. $(t,z(t)) \in R\ \forall t \in [a,b]\ \forall z \in X$ mit $\Vert z - z_0 \Vert _{\infty} \le 1$.
+
+$f$ ist glm. stetig auf $R$ (da $R$ kompakt). Sei $\epsilon > 0$. $\exists \ \delta > 0: | f(\alpha) - f(\beta) | < \epsilon\ \forall \alpha, \beta \in R$ mit $\Vert \alpha - \beta \Vert < \delta$ und $\delta \le 1$.
+
+Sei $z \in X$ mit $\Vert z - z_0 \Vert_{\infty} < \delta \le 1$. Dann: $\Vert(t,z(t)) - (t,z_0(t)) \Vert = \Vert (0, z(t) - z_0(t)) \Vert = | z(t) - z_0(t) | \le \Vert z - z_0 \Vert_{\infty} < \delta \ \forall \ t \in [a,b]$
+
+$\folgt |f(t,z(t)) - f(t,z_0(t))| < \epsilon \ \forall \ t \in [a,b]$
+
+$\folgt |(T_z)(x) - (T_{z_0})(x)| = | \int_{x_0}^x (f(t,z(t))) - (f(t,z_0(t))) dt | \le \epsilon |x-x_0| \le (b-a)\ \forall \ x \in [a,b]$
+
+$\folgt \Vert T_z - T_{z_0} \Vert_{\infty} \le \epsilon(b-a) \folgt T$ ist stetig in $z_0$.
+\end{beweis}
+
+\begin{satz}[Fixpunktsatz von Banach]
+$X$ sei ein Banachraum. $A \subseteq X$ sei abgeschlossen, $T: A \to X$ sei kontrahierend, also $\exists \ L \in [0,1): \|T_x - T_y \| \le L \| x-y \|\ \forall x,y \in A$ und es sei $T(A) \subseteq A$. Dann hat $T$ genau einen Fixpunkt $x^* \in A$.
+
+Sei $x_0 \in A$ beliebig und $x_{n+1} := T_{x_n} (n \ge 0)$. Dann:
+\begin{itemize}
+	\item [(i)] $x_n \in A\ \forall n \in \MdN_0$
+	\item [(ii)] $x_n \to x^*$
+	\item [(iii)] $\| x_n - x^*\| \le \frac{L^n}{1-L} \|x_0 - x_1 \|\ \forall n \in \MdN_0$.
+\end{itemize}
+$(x_n)$ heißt \begriff{Folge der sukzessiven Approximation}.
+\end{satz}
+
+\begin{beweis}
+Sei $x_0 \in A$. Definiere $x_{n+1} := T_{x_n} (n \ge 0) \folgt (i)$.
+
+$ \|x_{k+1} - x_k \| = \| T_{x_k} - T_{x_{k-1}} \| \le L \|x_k - x_{k-1} \| (\forall k \ge 1)$
+
+Induktiv: $ \| x_{k+1} - x_k \| \le L^k \| x_k - x_0 \|\ \forall k \ge 0$
+
+Seien $m,n \in \MdN, m > n$. $\|x_m - x_n \| = \| x_m - x_{m-1} + x_{m-1} - x_{m-2} + \dots + x_{n+1} - x_n \| \le \|x_m - x_{m-1}\| + \| x_{m-1} - x_{m-2} \| + \dots + \|x_{n+1} - x_n\| \le (L^{m^1} + L^{m-2} + \dots + L^n) \| x_1 - x_0 \| = L^n \underbrace{(1+L+ \dots + L^{m-1-n})}_{\le \sum_{i=0}^{\infty} L^j = \frac{1}{1-L}}\|x_1-x_0\| \le \frac{L^n}{1-L}\|x_1 - x_0\| (*)$
+
+$(*) \folgt (x_n)$ ist eine Cauchy-Folge in $X$. $X$ Banachraum $\folgt\ \exists x^* \in X: x_n \to x^*$. $(iii)$ folgt aus $(*)$ mit $m \to \infty$
+
+$A$ abgeschlossen $\folgt x^* \in A$
+
+$\|T_{x^*} - x^* \| = \| T_{x^^*} - x_{n+1} + x_{n+1} - x^* \| \le \| T_{x^*} - \underbrace{x_{n+1}}_{=T_{x_n}} \| + \| x_{n+1} - x^*\| \le \underbrace{L \|x^* - x_n \| + \|x_{n+1} - x^* \Vert}_{\to 0 (n \to \infty)} \folgt \| T_{x^*} - x^* \| = 0 \folgt T_{x^*} = x^*$
+
+Sei $z \in A$ und $T_z = z$. $\| x^* -z \| = \|T_{x^*} - T_z \| \le L\|x^* - z \|$; wäre  $\|x^* - z \| \ne 0 \folgt L \ge 1$, Wid., also $x^*=z$.
+\end{beweis}
+Ohne Beweis:
+\begin{satz}[Fixpunktsatz von Schauder]
+$X$ sei ein normierter Raum, $A \subseteq X$ sei konvex und kompakt und $T: A \to X$ sei stetig und $T(A) \subseteq A$. Dann hat $T$ einen Fixpunkt (in $A$).
+\end{satz}
+
+%Lars hier
+\begin{satz}[Konvergente Teilfolgen von Funktionen]
+Sei $I=[a,b]\subseteq\mathbb{R}$, $x_0\in I$, $y_0 \in \mathbb{R}$, $M \ge 0$ und $(y_n)$ eine Folge in $C(I)$ mit: $y_n(x_0)=y_0\ \forall n \in \mathbb{N}$ und $ | y_n(x) - y_n(\overline{x}) | \le M | x - \overline{x} |\ \forall n \in \MdN\ \forall x, \overline{x} \in I$
+Dann enthält $(y_n)$ eine auf $I$ gleichmäßig konvergente Teilfolge.
+\end{satz}
+
+\begin{beweis}
+$\mathcal{F} := \{y_n : n \in \MdN \}$. $\mathcal{F}$ ist auf $I$ gleichstetig. $\forall n \in \MdN\ \forall x \in I: |y_n(x)| = |y_n(x)-y_0+y_0| \le | y_n(x)-y_0| + |y_0| = |y_n(x)-y_n(x_0)| + |y_0| \le M |x-x_0| + |y_0| \le M(b-a)\cdot |y_0| \folgt \mathcal{F}$ ist gleichmäßig beschränkt. $§1 \folgt$ Behauptung.
+\end{beweis}
+
+\begin{satz}[Konvexe und Kompakte Teilmenge]
+$I=[a,b] \subseteq \MdR$, $x_0 \in I$, $y_0 \in \MdR$, $M \ge 0$, \\
+$A:=\{y \in C(I): y(x_0)=y_0 \text{ und } |y(x)-y(\overline{x})| \le M|x-\overline{x}|\ \forall x,\overline{x} \in I \}$ \\
+Dann ist $A$ eine nicht leere, konvexe und kompakte Teilmenge des Banachraumes \nolinebreak $(C(I) \nolinebreak , \nolinebreak \| \nolinebreak \cdot \nolinebreak \|_\infty)$.
+\end{satz}
+
+\begin{beweis}
+\item $A \ne \emptyset$ \quad ($y(x) \equiv y_0 \folgt y \in A$)
+\item Übung: $A$ ist konvex.
+\item Sei $(y_n)$ ein Folge in $A$. $11.4 \folgt (y_n)$ enthält eine auf $I$ gleichmäßig konvergente Teilfolge $(y_{n_k})$, $y(x):=\lim_{n \to \infty} y_{n_k}(x)\ (x \in I)\ \folgtnach{A I} y \in C(I)$ \\
+z.zg: $y \in A$. $y(x_0)=lim_{n \to \infty} y_{n_k}(x_0) = y_0$ \\
+$\forall k \in \MdN\ \forall x,\overline{x} \in I: |y_{n_k}(x)-y_{n_k}(\overline{x})| \le M|x-\overline{x}| \folgtwegen{k \to \infty} |y(x)-y(\overline{x})| \le M|x-\overline{x}|$. Also: $y \in A$
+\end{beweis}
+% Lars Ende
+\chapter{Der Existenzsatz von Peano}
+
+\begin{definition}
+Sei $D \subseteq \MdR^2, f:D \to \MdR$ eine Funktion und $(x_0, y_0) \in D$ und $I \subseteq \MdR$ ein Intervall. Die Gleichung:
+\begin{liste}
+\item[$(i)$] $\ds y(x) = y_0 + \int_{x_0}^{x} f(t,y(t)) dt \quad (x \in I)$
+\end{liste} 
+\end{definition} 
+heißt eine \begriff{Integralgleichung}. $y \in C(I)$ heißt eine \begriff{Lösung von $(i)$ auf $I$} $:\equizu$ $(t,y(t)) \in D$ $\forall t \in I$ 
+und es gilt $(i)$ $\forall x \in I$. \\
+Wir betrachten auch noch das AWP 
+\begin{liste}
+\item[$(ii)$] $\begin{cases} y' = f(x,y) \\ y(x_0) = y_0 \end{cases}$
+\end{liste} 
+
+\begin{satz}[Zusammenhang Integral- und Differenzialgleichung]
+$D,f,(x_0,y_0)$ und $I$ seien wie oben und $y \in C(I)$. Es sei $f \in C(D,\MdR) $.
+\begin{liste}
+\item[(1)] y ist eine Lösung von $(i)$ auf $I$ $\equizu$ y ist eine Lösung von $(ii)$ auf $I$
+\item[(2)] Sei $I=[a,b]$ und $D= I \times R$. Ist $T: C(I) \to C(I)$ def. durch $(T_y)(x) := y_0+\int_{x_0}^{x} f(t,y(t)) dt$, $x \in I$, so gilt:
+y ist eine Lösung von $(ii)$ auf $I$ $\equizu$ $T_y = y$
+\end{liste} 
+\end{satz}
+
+\begin{beweis}
+\begin{liste}
+\item[(1)] "$\folgt$": $y(x_0) = y_0$; Durch Differentation: $y'(x) = f(x,y(x))$ $\forall x \in I$ \\
+"$\Leftarrow$": $y'(x) = f(t,y(t))$ $\forall t \in I$ und $y(x_0) = y_0$ $\folgt \int_{x_0}^{x} f(t,y(t)) dt = \int_{x_0}^{x} y'(t) dt = y(x)-y(x_0) = y(x) - y_0$ $\forall x \in I$ 
+\item[(2)] $T_y = y \equizu y$ löst $(i)$ auf $I$ $\equizu$ y löst $(ii)$ auf $I$.
+\end{liste} 
+\end{beweis}
+
+\begin{satz}[Lösungen auf Teilintervallen]
+Sei $D \subseteq \MdR^2, f: D \to \MdR$ eine Funktion und $\Gamma \neq \emptyset$ ($\Gamma$ ist Indexmenge). 
+Für jedes $\gamma \in \Gamma$ sei $y_{\gamma}: I_{\gamma} \to \MdR$ (wobei $I_{\gamma} \subseteq \MdR$ ein Intervall) eine Lösung der Dgl.: $$(+)\text{ } y'(x) = f(x,y)$$ 
+auf $I_{\gamma}$.\\ 
+Weiter sei $\bigcap_{\gamma \in \Gamma} I_{\gamma} \neq \emptyset$ und für je zwei Lösungen $y_{\gamma_1}: I_{\gamma_1} \to \MdR$, $y_{\gamma_2}: I_{\gamma_2} \to \MdR$ von $(+)$ gelte 
+$y_{\gamma_1} = y_{\gamma_2}$ auf $I_{\gamma_1} \cap I_{\gamma_2}$.\\
+Setzt man $I := \bigcup_{\gamma \in \Gamma} I_{\gamma}$ und $y(x) := y_{\gamma}(x)$, falls $x \in I_{\gamma}$, so ist $I$ ein Intervall und y eine Lösung von $(+)$
+auf $I$. 
+\end{satz}
+
+\begin{beweis}
+Übung.
+\end{beweis}
+
+\begin{folgerung}
+Sei $I = [a,b], S:= I \times \MdR, f:S \to \MdR$ eine Funktion, $x_0 \in (a,b), y_0 \in \MdR, I_1 := [a,x_0], I_2 := [x_0,b]$ und 
+$y_1: I_1 \to \MdR, y_2: I_2 \to \MdR$ seien Lösungen des AWPs \\
+$$\begin{cases} y' = f(x,y) \\ y(x_0) = y_0 \end{cases}$$ \\ auf $I_1$ bzw $I_2$. Definiert man $y:I \to \MdR$ durch \\
+$$y(x):=
+\begin{cases}
+y_1(x), & \text{falls } x \in I_1  \\
+y_2(x), & \text{falls } x \in I_2
+\end{cases}$$\\
+so ist $y$ eine Lösung des AWPs auf $I$.
+\end{folgerung}
+
+\begin{satz}[Der Existenzsatz von Peano (Version I)]
+$I$ und $S$ seien wie in 12.3, $x_0 \in I, y_0 \in \MdR$ und $ f \in C(S,\MdR)$ sei beschränkt.
+Dann hat das AWP: \\\ $$\begin{cases} y' = f(x,y) \\ y(x_0) = y_0 \end{cases}$$ \\\ eine Lösung auf $I$. \\
+\end{satz}
+
+Wir führen zwei Beweise. In beiden sei $M := \sup \{|f(x,y)| : (x,y) \in S\}$ und $T: C(I) \to C(I)$ sei definiert durch
+$(T_y)(x) := y_0 + \int_{x_0}^{x}f(t,y(t))$ ($x \in I$)
+
+\begin{beweis}[mit 11.3]
+Sei $A \subseteq C(I)$ sei wie in 11.5 (mit obigen M). 11.5 $\folgt A \neq \emptyset$, $A$ ist konvex und kompakt. $T:A \to C(I)$ ist stetig. 
+Wegen 11.3 und 12.1(2) ist nur noch zu zeigen: $T(A) \subseteq A$. Sei $y \in A$. Dann $(T_y)(x_0) = y_0$. Weiter gilt \\ 
+$\forall x,\overline{x} \in I : | (T_y)(x) - (T_y)(\overline{x}) | = | \int_{x}^{\overline{x}} \underbrace{f(t,y(t))}_{\leq M} dt | \leq M \cdot |x-\overline{x}|$. 
+Also: $T_y \in A.$ Somit: $T(A) \subseteq A$
+\end{beweis}
+
+\begin{beweis}[Nr.2]
+Wir unterscheiden 3. Fälle: $x_0 = a, x_0 = b$ und $x_0 \in (a,b)$. Wir führen den Beweis nur für den Fall $x_0 = a$ (den Fall $x_0 = b$ zeigt man analog; 
+der Fall $x_0 \in (a,b) $ folgt aus 12.3 und den ersten beiden Fällen). \\ Sei also $x_0 = a$. o.B.d.A. $x_0+\frac{1}{n}=a+\frac{1}{n} \in I$ $\forall n \in I$. \\
+Für $n \in \MdN$ definieren wir $z_n : (-\infty,b] \to \MdR$ durch 
+$$z_n(x):=
+\begin{cases}
+y_0, & \text{falls } x \leq x_0 = a  \\
+y_0 +\int_{x_0}^{x}f(t,z_n(t-\frac{1}{n}) dt, & \text{falls } x \in I
+\end{cases}$$\\\
+Beh.: $z_n$ ist auf $I$ wohldefiniert.\\
+Sei $x \in [x_0, x_0+\frac{1}{n}]$ und $ t \in [x_0, x]$ $\folgt t-\frac{1}{n} \leq x-\frac{1}{n} \leq x_0$
+$\folgt z_n(t-\frac{1}{n}) = y_0 \folgt z_n(x) = y_0 + \int_{x_0}^{x}f(t,y_0) dt$, also $z_n(x)$ ist wohldef.\\
+Sei $x \in [x_0+\frac{1}{n},x_0+\frac{2}{n}]$ und $t \in [x_0,x]$ $\folgt t-\frac{1}{n} \leq x-\frac{1}{n} \in [x_0, x_0+\frac{1}{n}]$
+$\folgt z_n(t-\frac{1}{n})$ wohldef. $\folgt z_n(x)$ ist wohldefiniert, etc... \\\\
+Übung: $z_n \in C(-\infty, b]$. \\\\
+Insbesondere: $z_n \in C(I)$. Es ist $z_n(x_0) = y_0$. Für $x,\overline{x} \in I: 
+|z_n(x)-z_n(\overline{x})| = | \int_{x}^{\overline{x}}f(t,z_n(t-\frac{1}{n})) dt | \leq M \cdot |x-\overline{x}|.$ 
+11.4 $\folgt (z_n)$ enthält eine auf $I$ gleichmäßige konvergente Teilfolge. o.B.d.A.: $(z_n)$ konvergiert auf $I$ glm. \\
+$y(x):= \lim_{n \to \infty} z_n(x)$ $(x \in I)$. AI $\folgt y \in C(I)$. Also $z_n \to y$ bzgl. $\left\|\cdot\right\|_{\infty}$. 
+($\left\|z_n-y\right\|_{\infty} \to 0$ $( n \to \infty ) $); \\ $g_n(t) := z_n(t-\frac{1}{n})$ $(t \in I)$. 
+$\forall t \in I : |g_n(t)-y(t)| = | g_n(t)-z_n(t)+z_n(t)-y(t) | \leq |\underbrace{z_n(t-\frac{1}{n})-z_n(t)}_{\leq \frac{M}{n}}|+|\underbrace{z_n(t)-y(t)}_{\leq \left\|z_n-y \right\|_{\infty}} |$\\
+$\folgt \left\| g_n(t) - y(t) \right\|_{\infty} \leq \frac{M}{n} +\left\|z_n-y \right\|_{\infty} \forall n \in \MdN$
+$\folgt g_n \to y $ bzgl. $\left\|\cdot\right\|_{\infty}$ (glm. konv.) \\
+$T: C(I) \to C(I)$ ist stetig $\folgt T_{g_n} \to T_y $ bzgl. $\left\|\cdot\right\|_{\infty}$ \\
+$(T_{g_n})(x) = y_0 + \int_{x_0}^{x}f(t,z_n(t-\frac{1}{n})) dt = z_n(x) \forall x \in I$ 
+$\folgt T_{g_n}=z_n$ auf $I$. \\ Also $T_y = y$ und damit folgt, $y$ löst das AWP auf $I$.
+\end{beweis}
+
+\begin{satz}[Der Existenzsatz von Peano (Version II)]
+Es sei $I = [a,b] \subseteq \MdR, x_0 \in I, y_0 \in \MdR, s > 0$ und $R:=I \times [y_0-s, y_0+s]$ \\
+Es sei $f \in C(R,\MdR), M := \max \{ |f(x,y)| : (x,y) \in R \}$ und \\
+$J := I \cap [x_0-\frac{s}{M},x_0+\frac{s}{M}].$ Dann hat das AWP:
+\\\ $$\begin{cases} y' = f(x,y) \\ y(x_0) = y_0 \end{cases}$$ \\\ eine Lösung auf $J$.
+\end{satz}
+
+\begin{beweis}
+$S := I \times \MdR.$ Def. $g: S \rightarrow \MdR$ durch: \\
+\ $$ g(x,y) = \begin{cases} f(x,y), & (x,y) \in \MdR \\ f\left(x, y_0 + s \frac {y - y_0}{|y - y_0|}\right), & x \in I, |y - y_0| \geq s\end{cases}$$ \\
+Dann: $g = f$ auf $R$ , $|g| \leq M$ auf $S$ und $g \in C(S,\MdR)$ \\
+Betrachte das AWP \\ $$(+)\begin{cases} y'= g(x,y) \\ y(x_0) = y_0 \end{cases}$$ \\
+12.4 $\folgt (+)$ hat eine Lösung $\overline{y}$ auf $I$. 12.1 $\folgt$ \\
+$$ (*) \; \overline{y}(x) = y_0 + \int_{x_0}^{x}g(t,\overline{y}(t)) dt \; \forall x \in I $$
+Sei $x \in J.$ Sei $y := \overline{y}|_J.$ Dann: $|y(x) - y_0| = |\overline{y}(x) - y_0|$ \\
+$\stackrel{(*)}{=} | \int_{x_0}^{x} g(t,\overline{y}(t)) dt | \leq M |x - x_0| \leq M \cdot \frac{s}{M} = s 
+\folgt (x,y(x)) \in R$ \\
+$\folgt (t,y(t)) \in R$ für $t$ zwischen $x$ und $x_0$. \\
+$\folgt y(x) = y_0 + \int_{x_0}^{x} f(t,g(t)) dt \; \forall x \in J$ \\
+$\folgtnach{12.1} y$ löst das AWP auf $J$
+\end{beweis}
+
+\begin{satz}[Der Existenzsatz von Peano (Version III)]
+Sei $D \in \MdR^{2}$ offen, $(x_0,y_0) \in D$ und $f \in C(D, \MdR)$. Dann ex. $\delta > 0$ : das AWP
+$$\begin{cases} y' = f(x,y) \\ y(x_0) = y_0 \end{cases}$$
+hat eine Lösung $y: K \rightarrow \MdR$, wobei $K = [x_0 - \delta, x_0 + \delta]$ (also $x_0 \in K^{0}$)
+\end{satz} 
+
+\begin{beweis}
+$D$ offen $\folgt \exists \; r, s > 0 : R := [x_0 - r, x_0 + r] \times [y_0 - s, y_0 + s] \subseteq D \\
+M := \max \{|f(x,y)| : (x,y) \in \MdR \} \\
+\delta := \max \{r, \frac {s}{M}\}, K := [x_0 - \delta, x_0 + \delta]$ 12.5 $\folgt$ Beh.
+\end{beweis}
+
+
+\chapter{Der Existenz- und Eindeutigkeitssatz von Picard - Lindelöf}
+
+EuE = Existenz und Eindeutigkeit
+
+\begin{definition}
+Sei $D \subseteq \MdR^2$ und $f: D \rightarrow \MdR$ eine Funktion. \\
+\begriff{$f$ genügt auf $D$ einer Lipschitzbedingung (LB) bzgl. $y$ :} \equizu \\
+$\exists \; \gamma \geq 0 : |f(x,y) - f(x,\overline{y})| \leq \gamma |y - \overline{y}| \; \forall (x,y), (x,\overline{y}) \in D$ \; (*)
+\end{definition}
+
+\begin{vorbetrachtungen}
+Sei $I = [a,b] , x_0 \in I, y_0 \in \MdR, S := I \times \MdR$ und $f \in C(S,\MdR)$ genüge auf S einer LB bzgl. $y$ mit $\gamma \geq 0$ wie in (*), $T : C(I) \rightarrow C(I)$ sei def. durch $T_y(x) = y_0 + \int_{x_0}^{x}f(t,y(t)) dt \; (x \in I)$ \\
+$$ \text{Aus 12.1 folgt: das AWP} \begin{cases} y' = f(x,y) \\ y(x_0) = y_0 \end{cases}$$
+hat auf $I$ genau eine Lösung $\equizu T$ hat genau einen Fixpunkt. \\
+Frage: ist $T$ bzgl. $\left\| \cdot \right\|_{\infty}$ kontrahierend? \\
+Seien $u, v \in C(I), x \in I: |T_u(x) - T_v(x)| = |\int_{x_0}^{x}f(t,u(t)) - f(t,v(t)) dt| \\ \leq \gamma |\int_{x}^{x_0} \underbrace{|u(t) - v(t)|}_{\leq \left\|u - v\right\|_{\infty}} dt \leq \gamma \left\|u -v\right\|_\infty |\int_{x_0}^{x} dt| = \gamma|x - x_0| \left\|u - v\right\|_\infty \\ \leq \gamma (b - a)\left\|u - v\right\|_{\infty} \\ \folgt \left\|T_u - T_v\right\|$ ist nur dann kontrahierend, wenn $\gamma(b - a) < 1.$ \\\\
+Sei $\varphi(x) := e^{-2\gamma|x - x_0|} \; (x \in I)$ Auf $C(I)$ def. die folgende Norm: \\ 
+$\|y\| := \max \{\varphi(x) |y(x)| : x \in I\} (= \|\varphi y\|_{\infty})$ \\
+$\alpha := \min \{\varphi(x) : x \in I\} \folgt 0 < \alpha < \varphi < 1$ auf $I$ \\
+$\folgt \alpha\|y\|_{\infty} \leq \|y\| \leq \|y\|_{\infty} \; \forall \; y \in C(I)$ \\
+Sei $(y_n)$ eine Folge in $C(I)$ und $y \in C(I)$ \\
+$\alpha \|y_n - y\|_{\infty} \leq \|y_n - y\| \leq \|y_n - y\|_{\infty}$ \\\\
+Fazit: Konvergenz bzgl. $\left\|\cdot\right\| = $ Konvergenz bzgl $\left\|\cdot\right\|_{\infty} = $ gleichmäßige Konvergenz auf $I$. \\
+$(y_n)$ ist CF bzgl. $\left\|\cdot\right\| \equizu (y_n)$ ist CF bzgl. $\left\|\cdot\right\|_{\infty} \\ (C(I), \left\|\cdot\right\|)$ ist ein Banachraum.  
+\end{vorbetrachtungen}
+
+\textbf{Behauptung} \\
+$T$ ist bzgl. $\left\|\cdot\right\| $ kontrahierend. Seien $u, v \in C(I), x \in I$. \\
+$|T_u(x) - T_v(x)| \stackrel{s.o.}{\leq} \gamma | \int_{x_0}^{x}|u(t) - v(t)| dt | = \gamma | \int_{x_0}^{x} \underbrace{|u(t) - v(t)| \varphi(t)}_{\leq \|u - v\|} \frac{1}{\varphi(t)} dt| \\
+\leq \gamma \|u - v\| \,| \int_{x_0}^{x}e^{-2\gamma|t - x_0|} dt | = \gamma \|u - v\| \frac{1}{2\gamma}(e^{-2\gamma|x - x_0|} - 1) \leq \frac{1}{2} \|u - v\| \frac{1}{\varphi(x)} \folgt  \varphi(x)|(T_u)(x) - (T_v)(x)| \leq \frac{1}{2} \|u - v\| \; \forall x \in I \\
+\folgt \|T_u - T_v\| \leq \frac{1}{2}\|u - v\|$ \\\\
+Aus 11.2 und 12.1 folgt: 13.1
+
+\begin{satz}[EuE - Satz von Picard - Lindelöf (Version I)]
+$I, x_0, y_0, S$ und $f$ seien wie in der Vorbetrachtung und $f$ genüge auf $S$ einer LB bzgl. $y$.
+Dann hat das AWP: $$\begin{cases} y' = f(x,y) \\ y(x_0) = y_0 \end{cases}$$ auf $I$ genau eine Lösung. Sei $z_0 \in C(I)$ beliebig und $z_{n+1}(x) := y_0  + \int_{x_0}^{x} f(t,z_n(t)) dt \; (x \in I)$, (also $z_{n+1} = T_{z_n}$,) dann konvergiert die Folge der sukzessiven Approximationen $(z_n)$ auf $I$ gleichmäßig gegen die Lösung des AWPs.
+\end{satz}
+
+\begin{beispiel}
+$ $ \\Zeige (mit 13.1): das AWP: $\begin{cases} y' = 2x (1 + y) \\ y(0) = 0 \end{cases}$ hat auf $\MdR$ genau eine Lösung. Berechne diese. \\\\
+$f(x,y) = 2x (1 + y)$ Sei $a > 0$ und $I = [-a , a]$ Für $(x , y) , (x , \overline{y}) \in I \times \MdR:\\
+|f(x,y) - f(x,\overline{y})| = |2x| \, |y - \overline{y}| \leq 2a |y - \overline{y}|$ \\
+13.1 $\folgt$ das AWP hat auf $I$ genau eine Lösung $y$. Sei $z_0(x) = 0$. \\
+$z_1(x) = \int_{0}^{x} 2t dt = x^2$ ; $z_2(x) = \int_0^x 2t (1 + t^2) dt = x^2 + \frac{1}{2}x^4$ ; \\ 
+$z_3(x) = x^2 + \frac{1}{2}x^4 + \frac{1}{6}x^6$ \\
+Induktiv: $z_n(x) = x^2 + \frac{1}{2!}x^4 + \frac{1}{3!}x^6 + \ldots + \frac{1}{n!}x^{2n}$ \\\\
+Analysis I $\folgt (z_n)$ konvergiert auf $I$ gleichmäßig gegen $e^{x^2} - 1$ \\
+13.1 $\folgt y(x) = e^{x^2} - 1$ auf $I$ \\
+$a > 0$ beliebig $\folgt y(x) = e^{x^2} - 1$ ist \underline{die} Lösung des AWPs auf $\MdR$.
+\end{beispiel}
+
+\begin{satz}[Der EuE-Satz von Picard-Lindel"of (Version II)]
+Sei $I=[a,b]\subseteq \MdR,\ x_0\in I,\ y_0 \in \MdR,\ s>0,\ R:=I\times[y_0-s,y_0+s]$ und $f\in C(R,\MdR).\ M:=\max\{|f(x,y)|:(x,y)\in R\}.\ f$ gen"uge auf $R$ einer LB bzgl. $y$. Dann hat das AWP
+$$\begin{cases}
+y'     & =f(x.y)\\
+y(x_0) & =y_0
+\end{cases}$$
+genau eine L"osung auf $J:=I\cap [x_0-\frac{s}{M}, x_0+\frac{s}{M}].$ Diese L"osung kann iterativ gewonnen werden (vgl. 13.1).
+\end{satz}
+
+\begin{beweis}
+"Ahnlich wie 12.5 aus 12.4 gewonnen wurde.
+\end{beweis}
+
+\begin{definition}
+\indexlabel{Lipschitzbedingung!lokale}
+Sei $D\subseteq \MdR^2$ offen und $f:D\to\MdR$ eine Funktion. \textbf{$f$ gen"ugt auf $D$ einer lokalen LB bzgl. $y$} $:\equizu \forall (x_0,y_0)\in D\ \exists $ Umgebung $U$ von $(x_0,y_0)$ mit: $U\subseteq D$ und $f$ gen"ugt auf $U$ einer LB bzgl. $y$.
+\end{definition}
+
+\begin{satz}[Partielle Differenzierbarkeit und lokale Lipschitzbedingung]
+$D$ und $f$ seien wie in obiger Definition. Ist $f$ auf $D$ partiell db nach $y$ und ist $f_y\in C(D,\MdR) \folgt f$ gen"ugt auf $D$ einer lokalen LB bzgl. $y$.
+\end{satz}
+
+\begin{beweis}
+Sei $(x_0,y_0) \in D.\ D$ offen $\folgt \exists \ep>0: U:=\overline{U_\ep(x_0,y_0)}\subseteq D.\ f_y$ ist stetig $\folgt \exists \gamma:=\max\{|f_y(x,y)|:(x,y)\in U\}.$
+
+Seien $(x,y),(x,\overline{y})\in U: |f(x,y)-f(x,\overline{y})| \overset{\text{MWS}}{=} \underbrace{|f_y(x,\xi)|}_{\le \gamma}|(y-\overline{y})| \le \gamma |y-\overline{y}|$ mit $\xi$ zwischen $y$ und $\overline{y}\ (\folgt (x,\xi)\in U).$
+\end{beweis}
+
+\begin{bemerkung}
+Ist $I=[a,b]$ und $R:=I\times[c,d]\ (S:=I\times\MdR)$ und $f:R\to\MdR\ (f:S\to\MdR)$ stetig und partiell db nach $y$ auf $R\ (S)$ und $f_y$ ist beschr"ankt auf $R\ (S)$. Wie im Beweis von 13.3 zeigen wir: $f$ gen"ugt auf $R\ (S)$ einer LB bzgl. $y$.
+\end{bemerkung}
+
+\begin{beispiel}
+$R:=[0,1]\times[-1,1],\ f(x,y)=e^{x+y^2}.$ Zeige: das AWP $y'=f(x,y),\ y(0)=0$ hat auf $[0,\frac{1}{e^2}]$ genau eine L"osung.
+\end{beispiel}
+
+\begin{beweis}
+$|f(x,y)| = e^xe^{y^2} \le e\cdot e=e^2,\ f(1,1) = e^2 \folgt M=\max\{|f(x,y)|:(x,y)\in R\} = e^2.$
+
+$|f_y(x,y)| = |2y e^{x+y^2}| = 2|y|e^{x+y^2}\le 2 e^2\ \forall (x,y)\in R \folgt f$ gen"ugt auf $R$ einer LB bzgl. $y$.
+
+13.2 $\folgt$ das AWP hat auf $J=[0,1]\cap[-\frac{s}{M},\frac{s}{M}] \overset{s=1}{=} [0,1]\cap[-\frac{1}{e^2},\frac{1}{e^2}] = [0,\frac{1}{e^2}]$ genau eine L"osung.
+\end{beweis}
+
+\begin{satz}[Der EuE-Satz von Picard-Lindel"of (Version III)]
+Es sei $D\subseteq\MdR^2$ offen, $(x_0,y_0)\in D$ und $f\in C(D,\MdR)$ gen"uge auf $D$ einer lokalen LB bzgl. $y$. Dann ist das AWP
+$$\begin{cases}
+y'    &=f(x,y)\\
+y(x_0)&=y_0
+\end{cases}$$
+eindeutig l"osbar. (zur Erinnerung d.h.: das AWP hat eine L"osung. $y:I\to\MdR$ ($I$ ein Intervall) und f"ur je zwei L"osungen $y_1:I_1\to\MdR,\ y_2:I_2\to\MdR$ ($I_1,I_2$ Intervalle) gilt: $y_1 \equiv y_2$ auf $I_1\cap I_2$).
+\end{satz}
+
+\begin{beweis}
+12.6 $\folgt$ das AWP hat eine L"osung. Seien $y_1:I_1\to\MdR$ und $y_2:I_2\to\MdR$ L"osungen des AWPs ($I_1,I_2$ Intervalle).
+
+Annahme: $\exists x_1\in I_1\cap I_2: y_1(x_1)\ne y_2(x_1).$ Dann: $x_1 \ne x_0,$ etwa $x_1>x_0$, dann: $[x_0,x_1]\subseteq I_1\cap I_2.$
+
+$M:=\{x\in[x_0,x_1]:y_1(x)=y_2(x)\}\subseteq [x_0,x_1],\ x_0\in M.\ \xi_0:=\sup M,\ y_1,y_2$ stetig $\folgt y_1(\xi_0) = y_2(\xi_0) =:\eta_0.$
+
+Es gilt: $y_1(x) \ne y_2(x)\ \forall x\in(\xi_0,x_1]\quad (*)$
+
+W"ahle $r,s>0$, dass $\xi_0+r<x_1,\ R:=[\xi_0,\xi_0+r]\times[\eta_0-s,\eta_0+s]\subseteq D$ und $f$ gen"ugt auf $R$ einer LB bzgl. $y$.
+
+Aus 13.2 folgt: $\exists \alpha\in(0,r):$ das AWP (+)$\begin{cases}
+y'       &=f(x,y)\\
+y(\xi_0) &=\eta_0
+\end{cases}$ hat auf $[\xi_0,\xi_0+\alpha]$ genau eine L"osung. $y_1$ und $y_2$ sind L"osungen von (+) auf $[\xi_0,\xi_0+\alpha] \folgt y_1 \equiv y_2$ auf $[\xi_0,\xi_0+\alpha]$, Widerspruch zu (*).
+\end{beweis}
+
+\chapter{Matrizenwertige und vektorwertige Funktionen}
+
+Sei $m\in\MdN.$ $\MdM_m$ sei der Vektorraum aller $(m\times m)$-Matrizen
+
+$$A=(a_{jk}) = \begin{pmatrix}
+a_{11} & \cdots & a_{1m}\\
+\vdots &        & \vdots\\
+a_{m1} & \cdots & a_{mm}
+\end{pmatrix}$$
+
+"uber $\MdK$ (wobei $\MdK=\MdR$ oder $\MdK=\MdC$). $\dim \MdM_m = m^2$
+
+Sei $A=(a_{jk})\in\MdM_m$, mit $a^{(k)}$ bez. wir die $k$-te Spalte von $A$, also $A=(a^{(1)},\ldots,a^{(m)}).$
+
+$E$ sei die Einheitsmatrix in $\MdM_m$, also
+$$E=\begin{pmatrix}
+1 &  & 0\\
+  & \ddots &\\
+0 &  & 1
+\end{pmatrix} = (e_1,\ldots,e_m),\ e_k:=(0,\ldots,0,1,0,\ldots,0)^T.$$
+
+F"ur $A=(a_{jk})\in\MdM_m: \bar{A} := (\overline{a_{jk}})$ (also: $A=\bar{A} \equizu a_{jk}\in \MdR\ (j,k=1,\ldots,m)$)
+
+$\Re A:=(\Re a_{jk}),\ \Im A:=(\Im a_{jk}).$ Dann: $A=\Re A+i\Im A.$
+
+$\Re A = \frac{1}{2}(A+\bar{A}),\ \Im A = \frac{1}{2i}(A-\bar{A}).$ F"ur $B\in\MdM_m: \overline{AB} = \bar{A}\bar{B}.$
+
+Sei $A\in\MdM_m$. $\lambda\in\MdK$ hei"st ein \begriff{Eigenwert} (EW) von A $:\equizu \exists x\in \MdK^m: x\ne 0$ und $Ax=\lambda x$. In diesem Fall hei"st $x$ ein \begriff{Eigenvektor} (EV) von $A$ zum EW $\lambda$.
+
+Ist $A\in\MdM_m,\ \lambda\in\MdK,\ x\in\MdK^m$ und $Ax=\lambda x$, so gilt, falls $A=\bar{A}: A\overline{x} = \overline{\lambda} \overline{x}$, wobei $\overline{x} = (\overline{x_1},\ldots,\overline{x_m})$, wenn $x=(x_1,\ldots,x_m).$
+
+\indexlabel{charakteristisches Polynom}
+$p(\lambda):=\det(A-\lambda E)$ hei"st das \textbf{charakteristische Polynom von $A$}. $\lambda_0\in\MdK$ ist ein EW von $A \equizu p(\lambda_0)=0$. Ist $\lambda_0$ eine $q$-fache Nullstelle von $p$, so hei"st $q$ die (algebraische) Vielfachheit von $\lambda_0$.
+
+Sind $\lambda_1,\ldots,\lambda_k$ EWe von $A$ mit $\lambda_j\ne\lambda_\nu\ (j\ne\nu)$ und $x^{(j)}$ ein zu $\lambda_j$ geh"orender EV ($j=1,\ldots,k$), so sind $x^{(1)},\ldots,x^{(k)}$ linear unabh"angig im $\MdK^m$.
+
+Bekannt aus der Linearen Algebra:
+
+\begin{satz}[Existenz der Jordan-Normalform]
+Sei $A\in\MdM_m$, $\lambda_1,\ldots,\lambda_k$ seien die verschiedenen EWe von $A$ mit den Vielfachheiten $q_1,\ldots,q_k$ (also: $\lambda_j \ne \lambda_\nu\ (j\ne\nu))$ und $q_1+\ldots+q_k = m$). Es ex. eine invertierbare Matrix $C=(c^{(1)},\ldots,c^{(m)})\in\MdM_m$ mit:
+
+$$C^{-1}AC = \diag(A_1,\ldots,A_k) := \begin{pmatrix}
+A_1 &     &        & 0\\
+    & A_2 &        &\\
+    &     & \ddots &\\
+0   &     &        & A_k
+\end{pmatrix}$$
+
+mit 
+
+$$A_j = \begin{pmatrix}
+\lambda_j & 1 & & 0\\
+   & \ddots & \ddots &\\
+   &        & \ddots & 1\\
+ 0 &        &        & \lambda_j
+\end{pmatrix} \in \MdM_{q_j}$$
+\end{satz}
+
+Ist speziell $A=\bar{A}$, so kann man die EWe wie folgt anordnen:
+
+$\lambda_1,\ldots,\lambda_l\in\MdC\backslash\MdR,\ \lambda_{l+1} = \overline{\lambda_1},\ldots,\lambda_{2l} = \overline{\lambda_l}\ (\in\MdC\backslash\MdR),\ \lambda_{2l+1},\ldots,\lambda_k\in\MdR$
+
+Dann: $A_{l+1} = \bar{A_1},\ldots,A_{2l}=\bar{A_l};\ A_{2l+1},\ldots,A_k$ sind reell.
+
+$q:=q_1+\cdots+q_l.\ c^{(q+1)} = \overline{c^{(1)}},\ldots,c^{(2q)} = \overline{c^{(q)}},\ c^{(2q+1)},\ldots,c^{(m)}\in\MdR^m$.
+
+\begin{definition}
+Sei $z = x + iy \in \MdC \; (x, y \in \MdR), |z| = (x^2 + y^2)^\frac{1}{2} \; (= \|(x,y)\|).$ Sei $(z_n)$ eine Folge in $\MdC$ $z_n \rightarrow z$ bzgl. $|\cdot| \equizu$ Re $z_n \rightarrow x,$ Im $z_n \rightarrow y$
+\end{definition}
+
+\begin{definition}
+Sei $A = (a_{jk}) \in \MdM_m , \|A\| := (\sum_{j,k =1}^{m} |a_{jk}|^2)^\frac{1}{2}. \\
+(\MdM_m, \|\cdot\|)$ ist ein NR. Sei $(A_n) = ((a_{jk}^{(n)}))$ eine Folge in $\MdM_m$ \\
+$A_n \rightarrow A$ bzgl. $\|\cdot\| \equizu a_{jk}(n) \rightarrow a_{jk}$ für $j, k = 1,\ldots,m.$ \\
+Insbesondere: $(\MdM_m, \|\cdot\|)$ ist ein BR.
+Analysis II, §1: \\
+$\|AB\| \leq \|A\| \|B\| \, \forall A, B \in \MdM_m, \|Ax\| \leq \|A\| \|x\| \, \forall A \in \MdM_m, x \in \MdK^m$
+\end{definition}
+
+\begin{erinnerung} [Analysis II, §12]
+Sei $y = (y_1,\ldots, y_m): [a, b] \rightarrow \MdR^m$. Es gelte: $y_j \in R [a, b] \; (j = 1, \ldots, m)$. $\int_{a}^{b} y(x) dx = (\int_{a}^{b}y_1(x) dx, \ldots, \int_{a}^{b} y_m(x) dx) (\in \MdR^m) \\
+\|\int_{a}^{b} y(x) dx\| \leq \int_{a}^{b} \|y(x)\| dx$
+\end{erinnerung}
+
+\begin{definition}
+Sei $\varphi \in C([a, b])$ und $\varphi > 0$ auf $[a, b]$. \\ 
+Für $y \in C([a, b], \MdR^m) : \|y\|:=\max\{\varphi(x) \|y(x)\|: x \in [a, b]\}$
+Wie in §13:  $(C([a, b], \MdR^m), \|\cdot\|)$ ist ein BR. Und Konvergenz bzgl. $\|\cdot\| = $ glm. Konvergenz auf $[a, b]$.
+\end{definition}
+
+\begin{satz}[Konvex und Kompakt]
+Sei $I = [a, b] \subseteq \MdR, x_0 \in I, y_0 \in \MdR^m$ und $M \geq 0$. \\
+$A := \{y \in C(I, \MdR^m): y(x_0) = y_0, \|y(x)-y(\overline{x})\| \leq M|x - \overline{x}| \, \forall x, \overline{x} \in I\}$\\
+Dann ist $A$ eine konvexe und kompakte Teilmenge des Banachraumes $(C(I,\MdR^m), \|\cdot\|)$.
+\end{satz}
+
+\begin{beweis}
+Wie in 11.5
+\end{beweis}
+
+\begin{definition}
+Sei $I \subseteq \MdR$ ein Intervall, $[a, b] \subseteq I$, $A : I \rightarrow \MdM$ sei eine Matrixwertige Funktion. \\
+$$A(x) = (a_{jk}(x)) = \begin{pmatrix}
+a_{11}(x) & \cdots & a_{1m}(x) \\
+\vdots & & \vdots \\
+a_{m1}(x) & \cdots & a_{mm}(x) \end{pmatrix} \;\; \text{mit } a_{jk} : I \rightarrow \MdR.$$ \\
+A heißt \begriff{in $x_0$ stetig} \equizu \, alle $a_{jk}$ sind in $x_0$ stetig. \\
+A heißt \begriff{auf $I$ stetig} \equizu \, alle $a_{jk}$ sind auf $I$ stetig. \\
+A heißt \begriff{auf $I$ differenzierbar} \equizu \, alle $a_{jk}$ sind auf $I$ differenzierbar. \\
+etc. \ldots \\\\
+Sind alle $a_{jk} \in R[a, b]: \int_{a}^{b} A(x) dx := (\int_{a}^{b} a_{jk}(x) dx)$ \\
+Übung: $\|\int_{a}^{b} A(x) dx \| \leq \int_{a}^{b} \|A(x)\| dx$ \\
+Ist $B: I \rightarrow \MdM$ eine weitere Funktion und $y: I \rightarrow \MdR^m$ eine Funktion, $A$, $B$ und $y$ seien auf $I$ differenzierbar: \\
+$(AB)' = A'B + AB'$ (Reihenfolge beachten!), $(Ay)' = A'y + Ay'$ \\
+$(\det A)' = \sum_{k=1}^{m} \det (a^{(1)}, \ldots, a^{(k-1)}, (a^{(k)})', a^{(k+1)}, \ldots, a^{(m)})$ \\
+wobei $A = (a^{(1)}, \ldots, a^{(m)})$ \; (Beweis: Übung)\\\\
+Jetzt sei $z = (z_1, \ldots, z_m) : I \rightarrow \MdC^m$ eine Funktion und $W = (w_{jk}): I \rightarrow \MdM$ eine Funktion und $w_{jk} : I \rightarrow \MdC$. \\
+Sei $z = u + iv$ mit $u, v: I \rightarrow \MdR^m. \; U := $ Re $W$ und $V := $ Im $W$. \\
+Dann: $W = U + iV, U,V: I \rightarrow \MdM$ (reellwertig) \\
+Konvergenz, Stetigkeit, Ableitung, Integral, \ldots werden über Real- und Imaginärteil definiert. \\
+z.B.: $W'(x) = U'(x) + iV'(x), z'(x) = u'(x) + iv'(x), 
+\\ \int_{a}^{b} W(x) dx = \int_{a}^{b} U(x) dx + i\int_{a}^{b} V(x) dx$ \\
+Sei $(A_n)_{n=0}^\infty = ((a_{jk}^{(n)}))$ eine Folge in $\MdM. \, S_n := A_0 + A_1 + \ldots + A_n. \\
+\sum_{n=0}^{\infty}A_n $ heißt \begriff{konvergent} : \equizu $ (S_n)$ ist konvergent \equizu \, alle $\sum_{n=0}^{\infty}a_{jk}^{(n)}$ sind konvergent. \\
+$\sum_{n=0}^{\infty}A_n $ heißt \begriff{divergent} : \equizu $ (S_n)$ ist divergent \equizu \, ein $\sum_{n=0}^{\infty}a_{jk}^{(n)}$ ist divergent. \\
+Im Konvergenzfall: $\sum_{n=0}^{\infty} A_n = \lim_{n \rightarrow \infty} S_n = (\sum_{n=0}^{\infty} a_{jk}^{(n)})$ \\
+$\sum_{n=0}^{\infty} A_n$ heißt \begriff{absolut konvergent} : \equizu $\sum_{n=0}^{\infty} \|A_n\|$ ist konvergent.
+
+Wie in Ana 1 zeigt man:
+\end{definition}
+
+\begin{satz}[Rechenregeln für Matrixreihen und -folgen]
+$(A_n), (B_n)$ seien Folgen in $\MdM_m, A, B \in \MdM_m$.
+\begin{liste}
+\item $\sum_{n=0}^{\infty}A_n$ konvergiert absolut \equizu \, alle $\sum_{n=0}^{\infty} a_{jk}^{(n)}$ konvergieren absolut. In diesem Fall ist $\sum_{n=0}^{\infty}A_n$ konvergent und \\
+$\|\sum_{n=0}^{\infty}A_n\| < \sum_{n=0}^{\infty}\|A_n\|$
+\item $\sum_{n=0}^{\infty}A_n $, $\sum_{n=0}^{\infty}B_n$ seien absolut konvergent. \\
+$C_n := A_0B_n + A_1B_{n-1} + \ldots + A_mB_0 \; (n \in \MdN_0)$
+Dann konvergiert $\sum_{n=0}^{\infty}C_n$ absolut und $\sum_{n=0}^{\infty}C_n = (\sum_{n=0}^{\infty}A_n)(\sum_{n=0}^{\infty}B_n)$
+\item Aus $A_n \rightarrow A, B_n \rightarrow B$ folgt: $A_nB_n \rightarrow AB$
+\end{liste}
+\end{satz} 
+
+\begin{definition}
+$A^0 := E (A \in \MdM)$
+\end{definition}
+
+\begin{satz}[Absolute Konvergenz von Matrixreihen]
+Sei $\sum_{n=0}^{\infty}a_nx^n$ eine Potenzreihe mit dem Konvergenzradius $r > 0$ \\ ($r = \infty$ ist zugelassen) \\ 
+$f(x) := \sum_{n=0}^{\infty}a_nx^n$ für $x \in (-r, r)$. Sei $A \in \MdM_m$ und $\|A\| < r$. Dann ist $\sum_{n=0}^{\infty}a_nA^n$ absolut konvergent.\\\\
+$$f(A) := \sum_{n=0}^{\infty}a_nA^n$$
+\end{satz}
+
+\begin{beweis}
+$\|A^2\| \leq \|A\|^2$, allgemein (induktiv): $\|A^n\| \leq \|A\|^n,\ \forall n \geq 1 \\
+\folgt \|a_nA^n\| \leq \|a_n\| \|A\|^n = |a_n|c^n, c:=\|A\| < r$ \\
+Analysis I $\folgt \sum_{n=0}^{\infty}|a_n|c^n$ ist konvergent $\folgtnach{\text{Majorantenkrit.}} \sum_{n=0}^{\infty}\|a_nA^n\|$ ist konvergent \folgt Beh.
+\end{beweis}
+
+\begin{wichtigebeispiele}
+\item $\sum_{n=0}^{\infty} \frac{x^n}{n!} (= e^x) ; e^A := \sum_{n=0}^{\infty} \frac{A^n}{n!} \, (A \in \MdM)$ \\
+Spezialfall: $m = 1$ Dann: $e^z = \sum_{n=0}^{\infty} \frac{z^n}{n!}$ für $z \in \MdC$
+\item $\sum_{n=0}^{\infty} x^n \, (r=1)$. Sei $A \in \MdM$, dann konvergiert $\sum_{n=0}^{\infty} A^n$ absolut, falls $\|A\|<1$. \\\\
+\textbf{Behauptung} \\
+$(E - A)$ ist invertierbar und $\sum_{n=0}^{\infty} A^n = (E - A)^{-1}$ \\
+\begin{beweis}
+$B:= \sum_{n=0}^{\infty} A^n, S_n:= \sum_{k=0}^{n}A^k = E + A + \ldots + A^n \\
+S_n(E - A) = (E - A)\cdot S_n = S_n - AS_n = E + A + \ldots + A^n - (A + A^2 + \ldots + A^n + A^{n+1})
+= E - A^{n+1}  \\
+\|A^{n+1}\| \leq \|A\|^{n+1} \rightarrow 0 (n \rightarrow \infty) \folgt A^{n+1} \rightarrow 0 \\
+\folgt \underbrace{(E - A)S_n}_{\rightarrow (E - A)B} = \underbrace{S_n(E - A)}_{\rightarrow B(E - A)} \rightarrow E \\
+\folgt (E - A)B = B(E - A) = E \; \folgt (E - A)$ ist invertierbar und \\ $(E - A)^{-1} = B$
+\end{beweis}
+\end{wichtigebeispiele} 
+
+\begin{satz}[Matrixexponentialrechnung]
+Seien A,B $\in \MdM_m$. \\
+\begin{itemize}
+\item[(1)] $e^0 = E$, $e^{\alpha A} = e^{\alpha} E$ $(\alpha \in \MdK)$
+\item[(2)] $\overline{e^A}=e^{\overline{A}}$
+\item[(3)] Ist $ A = \diag(A_1,...,A_k)$, dann $e^A = \diag(e^{A_1},...,e^{A_k})$
+\item[(4)] Ist $ C \in \MdM_m$ invertierbar $\folgt e^{C^{-1} A C} = C^{-1} e^A C$
+\item[(5)] Ist $AB = BA \folgt e^{A+B} = e^Ae^B = e^Be^A$
+\item[(6)] $e^A$ ist invertierbar und $(e^A)^{-1} = e^{-A}$
+\end{itemize}
+\end{satz}
+
+\begin{beweis}
+(1),(2) klar \\
+(3) $A^n = diag(A_1^n,...,A_k^n)$ $\forall n \in \MdN \folgt$ Beh. \\
+(4) $(C^{-1}AC)^2 = C^{-1}ACC^{-1}AC = C^{-1}A^2C$.  Induktiv: $(C^{-1}AC)^n = C^{-1}A^nC \folgt$ Beh. \\
+(5) $(A+B)^n = \sum_{k=0}^{n} \binom{n}{k}A^kB^{n-k}$ (da AB=BA). Rest: wie in AI (13.5), beachte Cauchyprodukt (14.3(2)) \\
+(6) $e^A\cdot e^{-A} = e^{-A}\cdot e^{A} = e^{A-A} = e^0 = E$
+\end{beweis}
+
+
+\begin{folgerung}
+\begin{itemize}
+\item[(1)] $e^{it} = cos(t) + i \cdot sin(t)$ $(\forall t \in \MdR)$, $| e^{it} = 1 |$ 
+\item[(2)] $e^{z_1 + z_2} = e^{z_1}\cdot e^{z_2}$ $(\forall z_1,z_2 \in \MdC$ 
+\item[(3)] $cos(nt) + i \cdot sin(nt) = (cos(t) + i \cdot sin(t))^n $ $\forall n \in \MdN \forall t \in \MdR$ 
+\item[(4)] Ist $z = x+ iy$ $(x,y \in \MdR)$ $\folgt e^{z} = e^{x+iy} = e^x \cdot e^{iy} = e^x \cdot (cos(y) + i\cot sin(y))$. Und $|e^z|=e^x$
+\end{itemize}
+\end{folgerung}
+
+\begin{beweis}
+(1) $z := it$ $(t \in \MdR)$. $z^2 = -t^2, z^3 = -it^3, z^4=t^4,... .$ \\
+Einsetzen in Potenzreihe und Aufspalten in geraden Exponententeil und ungerade Exponententeil $\folgt$ Beh., $|e^{it}|= |cos(t)+i\cdot sin(t)| = cos^2(t)+sin^2(t) = 1.$ \\
+(2) folgt aus 14.5(5) \\
+(3) $cos(nt)+i \cdot sin(nt) = e^{int} = (e^{it})^n = (cos(t) + i\cdot sin(t))^n$ \\
+(4) folgt aus (2) und (1).
+\end{beweis}
+
+\begin{satz}[Ableitung der Matrixexponentfunktion]
+Sei A $\in \MdM_m$ und $\phi(x):=e^{xA}$ für $x$ aus $\MdR$. $\phi$ ist auf $\MdR$ db und 
+$\phi'(x) = Ae^{xA}=e^{xA}A$.
+\end{satz}
+
+\begin{beweis}
+Sei $A^n = (a_{jk}^{(n)}) (n\in \MdN_0). $ Dann: 
+$\phi(x) = (\underbrace{\sum_{n=0}^{\infty}\frac{x^n}{n!}a_{jk}^{(n)})}_{f_{jk}(x)} = (f_{jk}(x))$. $f_{jk}$ ist eine Potenzreihe mit KR $=\infty \folgt f_{jk}$ ist auf $\MdR$ db und
+$f_{jk}'(x) = \sum_{n=1}^{\infty}\frac{x^{n-1}}{(n-1)!}a_{jk}^{(n)} \folgt \phi$ db auf $\MdR$
+und $\phi'(x) = (f_{jk}(x)) = $
+$(\sum_{n=0}^{\infty}\frac{x^n}{n!}a_{jk}^{(n+1)})$ 
+$ = \sum_{n=0}^{\infty} \frac{x^n}{n!} A^{n+1} = Ae^{xA}$
+\end{beweis}
+
+\begin{beispiel} [für $e^{xA}$]
+Sei $ q \in \MdN, \lambda \in \MdK$ und
+$ A= \begin{pmatrix}
+\lambda &        &      *  \\
+        &  \ddots&         \\
+  0     &        & \lambda \\
+     
+\end{pmatrix} \in \MdM_q$. 
+\\
+Dann $A-\lambda E = 
+\begin{pmatrix}
+  0  &        &      *  \\
+        &  \ddots&         \\
+  0     &        & 0 
+     
+\end{pmatrix}$, 
+\\
+$(A-\lambda E)^2 = 
+A_j = \begin{pmatrix}
+0 & 0 & & *\\
+   & \ddots & \ddots &\\
+   &        & \ddots & 0\\
+ 0 &        &        & 0
+\end{pmatrix} $, \\ $\vdots$
+\\
+$(A-\lambda E)^{q-1} = 
+\begin{pmatrix}
+  0     &  \hdots    &  *    \\
+        &  \ddots    & \vdots\\
+  0     &           &  0     \\
+\end{pmatrix}$ \\
+$(A-\lambda E)^n = 0$ $\forall n \geq q$ \\
+$e^{xA} = e^{\lambda xE + x(A-\lambda E)}$
+$= e^{\lambda x E} e^{x(A-\lambda E)}$
+$= e^{\lambda x} e^{x(A-\lambda E)}$ 
+$= e^{\lambda x} \sum_{n=0}^{\infty} \frac{x^n}{n!} (A-\lambda E)^{n}$
+$= e^{\lambda x} \sum_{n=0}^{q-1} \frac{x^n}{n!} (A-\lambda E)^{n} $ \\
+$=e^{\lambda x}(\underbrace{E+x(A-\lambda E)+\frac{x^2}{2}(A-\lambda E)^2 + ... +\frac{x^{q-1}}{(q-1)!}(A-\lambda E)^{q-1})}_{=:B(x)}$ \\
+Dann: $B(x) \in \MdM_q$ und in der k-ten Spalte von B(x) stehen Polynome in $x$ vom Grad $\leq k-1$. \\
+Z.B. $(q=3,\lambda = 2)$, 
+$ A= \begin{pmatrix}
+2 &       1 &      -1  \\
+ 0       &  2&       -1  \\
+  0     &    0    & 2 
+     
+\end{pmatrix} \in \MdM_q$. 
+Dann $A-2E = 
+\begin{pmatrix}
+  0  &    1    &      -1  \\
+        0& 0&       -1  \\
+  0     &0        & 0 
+\end{pmatrix}$, 
+$(A-2 E)^2 = 
+\begin{pmatrix}
+  0     &    0    &    -1 \\
+  0     &    0     &   0 \\
+  0     &    0     &   0    
+\end{pmatrix},
+(A-2 E)^{n} = 0 (\forall n \geq 3)$  \\ $\folgt 
+e^{xA} = 
+e^{2x}(
+\begin{pmatrix}
+  1  &    0    &    0  \\
+  0  &    1    &    0  \\
+  0  &    0    &    1 
+\end{pmatrix} + x \cdot
+\begin{pmatrix}
+  0  &    1    &      -1  \\
+  0  &    0    &      -1  \\
+  0  &    0    &       0 
+\end{pmatrix}+\frac{x^2}{2}
+\begin{pmatrix}
+  0  &    0    &      -1 \\
+  0  &    0    &       0 \\
+  0  &    0    &       0 
+\end{pmatrix})$
+\\\\
+Aus obiger Betrachtung und 14.5(3) folgt:
+\begin{satz}[Exponierung von Matrizen entlang der Diagonalen]
+Seien $q_1,\ldots,q_k \in \MdN$, $m = q_1+ \cdots + q_k$, $A \in \MdM_m$, $A = \diag(A_1,\ldots,A_k)$ mit 
+\[ A_j = \begin{pmatrix}
+  \lambda_j  &       &     * \\
+    &    \ddots    &        \\
+  0  &        &      \lambda_j 
+\end{pmatrix} \in \MdM_{q_j}\quad (j=1..k)\,,\]
+wobei $\lambda_1,\ldots,\lambda_k \in \MdK$ (vgl. 14.1).\\
+Dann: $e^{xA}=\diag(e^{\lambda_1x}B_1(x),\ldots,e^{\lambda_kx}B_k(x))$, wobei $B_j(x) \in \MdM_{q_j}$ 
+und in der $\nu$-ten Spalte von $B_j(x)$ stehen Polynome in x vom Grad $\leq \nu-1$ $(j=1..k).$ 
+
+\end{satz}
+
+\end{beispiel}
+
+\chapter{Existenz- und Eindeutigkeitssätze für Dgl.Systeme 1. Ordnung}
+
+Stets in diesem Paragraphen: $D \subseteq \MdR^{m+1}, (x_0,y_0) \in D$ und $x_0 \in \MdR, 
+y_0 \in \MdR^m$ und $f=(f_1,...,f_m): D \to \MdR^m$ eine Funktion.\\
+Ein \begriff{System von Dgl. 1. Ordnung} hat die Form: \\
+$
+\begin{cases} 
+y_1' = f_1(x,y_1,...,y_m) \\
+y_2' = f_2(x,y_1,...,y_m) \\
+\vdots \\
+y_m' = f_m(x,y_1,...,y_m)\\ 
+\end{cases}$
+
+Setzt man $y=(y_1,...,y_m)$, so schreibt sich das System in der Form $y' = f(x,y)$. Wir 
+betrachten auch noch das AWP (A) $\begin{cases} y' = f(x,y) \\ y(x_0) = y_0 \end{cases}$ \\
+Wir übertragen die Sätze aus den Paragraphen 12 und 13 auf Systeme. Die Beweise dort lassen sich fast wörtlich für Systeme wiederholen. (beachte 14.2) ($\|\cdot\|$ anstatt $|\cdot|$).
+
+\begin{satz} [Peano]
+
+
+\begin{itemize}
+\item[(1)] 
+Sei $D=I \times \MdR^m$ und $I=[a,b] \subseteq \MdR$, $x_0 \in I, y_0 \in \MdR^m$ und $ f \in C(D,\MdR^m)$ sei beschränkt. Dann hat das AWP (A) eine Lösung auf I.
+
+\item[(2)] 
+Es sei $I = [a,b] \subseteq \MdR, x_0 \in I, y_0 \in \MdR^m, s > 0$ und 
+$D:=\{(x,y) \in \MdR^{m+1} | ||y-y_0|| < s\}$.
+Es sei $f \in C(D,\MdR^m), M := \max \{ ||f(x,y)|| : (x,y) \in D \}$ und 
+$J := I \cap [x_0-\frac{s}{M},x_0+\frac{s}{M}].$ Dann hat das AWP (A) eine Lösung auf J.
+
+\item[(3)] Sei $D$ offen, $(x_0,y_0) \in D$ und $f \in C(D, \MdR^m)$. Dann ex. eine Lösung 
+$y: K \to \MdR^m$ von (A) mit $x_0 \in K$ und $ K \subseteq \MdR$ ein Intervall.
+\end{itemize}
+\end{satz}
+
+\begin{definition}
+\begin{itemize}
+\item[(1)]
+\begriff{$f$ genügt auf $D$ einer Lipschitzbedingung (LB) bzgl. $y$ :} \equizu \\
+$\exists \; \gamma \geq 0 : ||f(x,y) - f(x,\overline{y})|| \leq \gamma ||y - \overline{y}|| \; \forall (x,y), (x,\overline{y}) \in D$ \; (*)
+\item[(2)]
+Sei $D$ offen. \textbf{$f$ gen"ugt auf $D$ einer lokalen LB bzgl. $y$} $:\equizu \forall (x_0,y_0)\in D\ \exists $ Umgebung $U$ von $(x_0,y_0)$ mit: $U\subseteq D$ und $f$ gen"ugt auf $U$ einer LB bzgl. $y$.
+\end{itemize}
+\end{definition}
+
+\begin{satz} [Picard-Lindelöf]
+\begin{itemize}
+\item[(1)]
+$I, x_0, y_0, D$ seien wie in 15.1(1) und $f \in C(D,\MdR^m)$ genüge auf D einer LB bzgl. $y$.
+Dann hat das AWP (A) auf I genau eine Lösung. Ist  $y^{[0]} \in C(I,\MdR^m)$ beliebig und setzt man $y^{[n+1]}(x) := y_0  + \int_{x_0}^{x} f(t,y^{[n]}(t)) dt \; (x \in I, n \in \MdN)$. Dann konvergiert $(y^{[n]})$ auf $I$ glm. gegen die Lösung von (A).
+
+\item[(2)] 
+$I, x_0, y_0, D, s, M$ und $J$ seien wie in 15.1(2) und $f \in C(D,\MdR^m)$ genüge auf $D$ eine LB bzgl. y. Dann hat (A) auf J genau eine Lsg.
+
+\item[(3)] 
+Es sei $D$ offen, $f$ gen"uge auf $D$ einer lokalen LB bzgl. $y$. Dann ist das AWP (A) eindeutig lösbar.
+\end{itemize}
+
+\end{satz}
+
+
+
+\chapter{Lineare Systeme}
+
+\begin{vereinbarung}
+$I\subseteq\MdR$ sei ein Intervall, $m\in\MdN,\ x_0\in I,\ y_0\in\MdR^m$.
+$D\da I\times\MdR^m,\ a_{jk}, b_j:I\to\MdR$ seien auf $I$ stetig.
+\end{vereinbarung}
+
+Das Dgl.-System
+\begin{eqnarray*}
+y_1'&=&a_{11}(x)y_1 + \ldots + a_{1m}(x)y_m + b_1(x)\\
+&\vdots &\\
+y_m'&=&a_{m1}(x)y_1 + \ldots + a_{mm}(x)y_m + b_m(x)
+\end{eqnarray*}
+hei"st ein \begriff{lineares System}. Mit $A(x)\da (a_{jk}(x)),\ b(x)\da (b_1(x),\ldots,b_m(x))$ und $y\da (y_1, \ldots, y_m)$
+schreibt sich obiges System in der Form
+\[
+	(S)\quad y'=A(x)y+b(x)
+\]
+Ist $b\equiv 0$, so hei"st $(S)$ \begriff{homogen}, anderenfalls \begriff{inhomogen}. (Der Fall $m=1$: §7).
+Wir betrachten noch das AWP
+\[
+	(A)\quad \begin{cases}
+		y'=A(x)y+b(x)\\
+		y(x_0)=y_0
+	\end{cases}
+\]
+und die zu $(S)$ geh"orende homogene Gleichung
+\[
+	(H)\quad y'=A(x)y
+\]
+
+\begin{satz}[Lösungen linearer Systeme]
+\begin{liste}
+\item $(A)$ hat auf $I$ genau eine L"osung.
+\item $(S)$ hat eine L"osung auf $I$.
+\item Ist $J\subseteq I$ ein Intervall und $\widehat{y}:J\to\MdR^m$ eine L"osung von $(S)$ auf J, dann existiert eine L"osung $y:I\to\MdR^m$ von $(S)$ auf $I$ mit: $\widehat{y}=y_{|_J}$
+\item Sei $y_s$ eine spezielle L"osung von $(S)$ auf $I$ und ist $y:I\to\MdR^m$ eine Funktion, so gilt: $y$ ist eine L"osung von $(S)$ auf $I\equizu \exists y_h:I\to\MdR^m$ mit:
+$y_h$ l"ost $(H)$ auf $I$ und $y=y_h+y_s$.
+\end{liste}
+\end{satz}
+
+\begin{wichtigebemerkung}	
+Wegen 16.1(3) k"onnen wir immer annehmen, da"s L"osungen von $(S)$ auf ganz $I$ definiert sind.
+\end{wichtigebemerkung}
+
+\begin{beweis}[von 16.1]
+\begin{liste}
+\item[(2)] folgt aus (1)
+\item[(4)] wie in §7
+\item[(1)] \underline{Fall 1}: $I=[a,b].\ f(x,y)\da A(x)y+b(x),\ \gamma\da \max\{\|A(x)\|\ :\ x\in I\}$.\\
+F"ur $(x,y),\ (x,\tilde{y})\in D:\ \|f(x,y)-f(x,\tilde{y})\|=\|A(x)(y-\tilde{y})\|\le\|A(x)\|\|y-\tilde{y}\|\le\gamma\|y-\tilde{y}\|$.
+15.2 $\folgt$ Beh.
+
+\underline{Fall 2}: $I$ beliebig.
+\[
+	\MM\da \{K:\ K\text{ ist ein kompaktes Intervall, }K\subseteq I, x_0\in K\}
+\]
+\[
+	\folgt I=\bigcup_{K\in\MM}K.
+\]
+Fall 1 $\folgt\ \forall\ K\in\MM$ existiert genau eine L"osung $y_K:K\to\MdR^m$ von $(A)$ auf $K$. Def: $y:I\to\MdR^m$ durch $y(x)\da y_k(x)$, falls
+$x\in K\in\MM$.\\
+$y$ ist wohldefiniert. Sei $x\in K_1\cap K_2\ (K_1, K_2\in\MM)$. z.z: $y_{K_1}(x)=y_{K_2}(x)$.
+
+O.B.d.A: $x\ne x_0$, etwa $x>x_0$, $K_3\da [x_0,x]\subseteq K_1\cap K_2$.
+$K_3\in\MM$.
+
+Fall 1 $\folgt (A)$ hat auf $K_3$ genau eine L"osung. $y_{K1}$ und $y_{K2}$ sind L"osungen von $(A)$ auf $K_3$ \folgt $y_{K1}=y_{K2}$ auf $K_3$
+\folgt $y_{K1}(x)=y_{K2}(x)$. Klar: $y$ l"ost $(A)$ auf $I$. Sei $\tilde{y}$ eine weitere L"osung von $(A)$ auf $I \overset{\text{Fall 1}}{\folgt}y=\tilde{y}$ auf $K\ \forall\ K\in\MM$. $\folgt y=\widehat{y}$ auf $I$.
+\item[(3)]Sei $\xi\in J,\ \eta\da \widehat{y}(\xi)$. (1)$\folgt$ das AWP 
+\[
+	(+)\quad\begin{cases}
+		y'=A(x)y+b(x)\\
+		y(\xi)=\eta
+	\end{cases}
+\]
+hat auf $I$ genau eine L"osung $y$. Sei $x\in J$. Z.z: $\widehat{y}(x)=y(x)$. O.B.d.A: $x\ne\xi$, etwa $x>\xi$. $(+)$ hat auf $[\xi,x]$ genau eine L"osung (wegen (1)), $\widehat{y}$, $y$ sind L"osungen von $(+)$ auf $[\xi,x]\folgt y(x)=\widehat{y}(x)$
+\end{liste}
+\end{beweis}
+
+Wir betrachten jetzt die homogene Gleichung $(H)\ y'=A(x)y$.
+\[
+	\MdL\da \{y:I\to\MdR^m:\ y\text{ l"ost } (H) \text{ auf } I\}
+\]
+\begin{satz}[Vektorraum der Lösungen] % 16.3
+\begin{liste}
+\item $\MdL$ ist ein reeller Vektorraum.
+\item Seien $y^{(1)},\ldots,y^{(k)}\in\MdL$. Dann sind "aquivalent:
+\begin{liste}
+\item $y^{(1)},\ldots,y^{(k)}$ sind linear unabh"anging in $\MdL$.
+\item $\forall x\in I$: $y^{(1)}(x),\ldots, y^{(k)}(x)$ sind linear unabh"anging im $\MdR^m$.
+\item $\exists \xi\in I: y^{(1)}(\xi),\ldots, y^{(k)}(\xi)$ sind linear unabh"angig im $\MdR^m$.
+\end{liste}
+\item $\dim \MdL=m$.
+\end{liste}
+\end{satz}
+\begin{beweise}
+\item Nachrechnen!
+\item
+\begin{liste}
+\item[(i)]\folgt (ii): Sei $x_1\in I$, $\alpha_1, \ldots, \alpha_k\in\MdR$ und $0=\alpha_1 y^{(1)}(x_1)+\cdots+\alpha_k y^{(k)}(x_1)$.
+$y\da \alpha_1 y^{(1)}+\cdots+\alpha_k y^{(k)}\folgt y\in\MdL$ und $y$ l"ost das AWP
+\[
+	\begin{cases}
+		y'=A(x)y\\
+		y(x_1)=0
+	\end{cases}
+\]
+Die Funktion 0 l"ost dieses AWP ebenfalls $\overset{16.1}{\folgt} y\equiv 0\overset{\text{Vor.}}{\folgt}\alpha_1=\ldots=\alpha_k=0$.
+\item[(ii)]\folgt (iii): Klar
+\item[(iii)]\folgt (i): Seien $\alpha_1,\ldots,\alpha_k\in\MdR$ und $0=\alpha_1 y^{(1)}+\cdots+\alpha_k y^{(k)}\folgt 0=\alpha_1 y^{(1)}(\xi)+\cdots+\alpha_ky^{(k)}(\xi)\overset{\text{Vor.}}{\folgt}\alpha_1=\ldots=\alpha_k=0$.
+\end{liste}
+\item[(3)]Aus $(2)$: $\dim\MdL\le m$. F"ur $j=1,\dots,m$ sei $y^{(j)}$ \underline{die} L"osung des AWPs
+\[
+\begin{cases}
+	y'=A(x)y\\
+	y(x_0)=e_j
+\end{cases}
+\]
+(2) $\folgt y^{(1)},\dots, y^{(m)}$ sind linear unabh"angig in $\MdL\folgt\dim\MdL\ge m$.
+\end{beweise}
+Ist also $y^{(1)},\ldots,y^{(m)}$ eine Basis von $\MdL$, so lautet die allgemeine L"osung von $(H)$:
+$y=c_1y^{(1)}+\cdots+c_my^{(m)}\ (c_1,c_2,\ldots,c_m\in\MdR)$.
+
+\paragraph{Ein Spezialfall:}Es sei $m=2$ und $A(x)$ habe die Gestalt 
+\[
+	A(x)=\begin{pmatrix}
+		a_1(x) & -a_2(x) \\
+		a_2(x) & a_1(x)
+	\end{pmatrix}
+\]
+$a_1, a_2:I\to\MdR$ stetig. Sei $y=(y_1, y_2)$ eine L"osung von
+\[
+	(\MdR)\ y'=A(x)y
+\]
+$z\da y_1+iy_2,\ a\da a_1+ia_2;\ \int a(x)\text{d}x\da \int a_1(x)\text{d}x + i\int a_2(x)\text{d}x$.
+Nachrechnen: $z$ ist eine L"osung der \underline{komplexen} linearen Differentialgleichung 1. Ordnung
+\[
+	(\MdC)\ z'=a(x)z
+\]
+Ist umgekehrt $z$ eine L"osung von ($\MdC$), so setze $y_1\da \text{Re }z,\ y_2\da \text{Im }z,\ y\da (y_1, y_2)$. Nachrechnen: $y$ l"ost $(\MdR)$.
+Wie in §7: die allgemeine L"osung von ($\MdC$) lautet:
+\[
+	z(x)=ce^{\int a(x)\text{d}x}\ (c\in\MdC)
+\]
+$z_0\da e^{\int a(x)\text{d}x};\ y_1\da \text{Re }z_0,\ y_2\da \text{Im }z_0,\ y^{(1)}\da (y_1, y_2)$. $y^{(1)}$ ist eine L"osung von $(\MdR)$.
+
+$z_1(x)=ie^{\int a(x)\text{d}x}=iz_0(x)=i(y_1+iy_2)=-y_2+iy_1\folgt y^{(2)}\da (-y2, y1)$ ist eine L"osung von $(\MdR)$.\\
+\begin{eqnarray*}
+	\det\begin{pmatrix}
+		y_1(x) & -y_2(x)\\
+		y_2(x) & y-1(x)
+	\end{pmatrix}&=&y_1(x)^2+y_2(x)^2\\
+	&=&|z_0(x)|^2=|e^{\int a(x)\text{d}x}|^2\\
+	&=&\left(e^{\int a_1(x)\text{d}x}\right)^2\ne 0\ \forall x\in I
+\end{eqnarray*}
+$\folgtnach{16.3} y^{(1)}, y^{(2)}$ sind in $\MdL$ linear unabh"angig $(\dim\MdL=2)$.
+\begin{beispiele}
+\item \underline{Beh.}: $\exists$ genau ein Paar von Funktionen $(y_1, y_2)$ mit: $y_1, y_2\in C^1(\MdR,\MdR), y_1'=y_2,\ y_2'=-y_1,\ y_1(0)=0,\ y_2(0)=1$ n"amlich $y_1(x)=\sin x,\ y_2(x)=\cos x$\\
+
+\textbf{Beweis}: $I=\MdR; A\da \left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$, mit $y=(y_1, y_2):$
+\[
+	y'=Ay\equizu y_1'=y_2,\ y_2'=-y_1
+\]
+\[
+	\text{AWP:}\quad\begin{cases}
+		y'=Ay\\
+		y(0)=(0,1)
+	\end{cases}
+\]
+16.1$\folgt$ Beh.
+
+$a_1(x)\equiv 0,\ a_2(x)\equiv -1,\ a(x)=-i,\ z_0(x)=e^{-ix}=(\cos x, -\sin x)$,
+
+$y^{(1)}(x)=(\cos x, -\sin x),\ y^{(2)}(x)=(\sin x, \cos x)$. Die allgemeine L"osung von $y'=\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)y:$
+\[
+	y(x)=c_1\begin{pmatrix}\cos x \\-\sin x\end{pmatrix}+c_2\begin{pmatrix}\sin x\\ \cos x\end{pmatrix}\quad (c_1, c_2\in\MdR)
+\]
+\item $I=(0,\infty)$, $A(x)=\begin{pmatrix}\frac{1}{x}&-2x\\ 2x&\frac{1}{x}\end{pmatrix}$.
+$a_1(x)=\frac{1}{x},\ a_2(x)=2x$
+
+$\folgt a(x)=\frac{1}{x}+i2x\folgt\int a(x)\text{d}x=\log x+ix^2 \folgt z_0(x)=e^{\log x + ix^2}=e^{\log x}e^{ix^2}=x(\cos x^2 + i\sin x^2)$.
+$\folgt$
+\begin{eqnarray*}
+	y^{(1)}(x)&=&(x\cos x^2, x\sin x^2)\\
+	y^{(2)}(x)&=&(-x\sin x^2, x\cos x^2)
+\end{eqnarray*}
+Die allgemeine L"osung von $y'=A(x)y: $
+\[
+	y(x)=c_1\begin{pmatrix}x\cos x^2\\ x\sin x^2\end{pmatrix}+c_2\begin{pmatrix}-x\sin x^2\\ +x\cos x^2\end{pmatrix}
+\]
+\end{beispiele}
+
+
+%ab hier Bernhard vom 16.12.2005
+
+% Joachim: Ich bin mal so frei und formuliere die Definition um. Möge Schmoeger mir vergeben
+\begin{definition}
+\begin{liste}
+\item Seien $y^{(1)},\dots,y^{(m)} \in \MdL$. Dann heißt $y^{(1)},\dots,y^{(m)}$ ein \begriff{Lösungssystem}
+\item $Y(x)\da \left(y^{(1)}(x),\ldots,y^{(m)}(x)\right)$ ($\in \MdM_m$) heißt dann eine \begriff{L"osungsmatrix} (LM) von (H)
+\item $W(x) \da  \det Y(x)$ ($x\in I$) heißt \begriff{Wronskideterminante}.
+\item Sind $y^{(1)},\dots,y^{(m)}$ linear unabhängig in $\MdL$, so hei\ss t $y^{(1)},\dots,y^{(m)}$ ein \begriff{Fundamentalsystem} (FS) von (H) und $Y$ hei\ss t eine \begriff{Fundamentalmatrix} (FM) von (H).
+
+\end{liste}
+\end{definition}
+
+\begin{satz}[Lösungssyteme und -matrizen] %16.4
+Seien $y^{(1)},\dots,y^{(m)}, Y$ und $W$ wie oben.
+\begin{liste}
+\item[(1)] $Y'(x) = A(x)Y(x) \, \forall x \in I.$
+\item[(2)] $\{ Yc:c\in \MdR^m \} \subseteq \MdL$
+\item[(3)] $y^{(1)},\dots,y^{(m)}$ ist eine FS von (H) $\equizu Y(x)$ ist invertierbar $\forall x \in I \Leftrightarrow W(x) \not= 0 \, \forall x \in I \Leftrightarrow W(\xi) \not= 0$ für ein $\xi \in I$.
+\item[(4)] Sei $Y$ eine FM von (H) und $Z: I \rightarrow \MdM_m$ eine Funktion. $Z$ eine FM von (H) $\equizu \exists C \in \MdM_m: C$ ist invertierbar, $C = \overline{C}$ und $Z(x)=Y(x)C \ \forall x \in I.$
+\item[(5)] Für $\xi \in I: W(x) = W(\xi)e^{\int_{\xi}^{x} \spur A(t)dt} \ \forall x \in I.$
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item[(1)] klar.
+\item[(2)] Sei $c = (c_1,\dots,c_m) \in \MdR^m: Yc = c_1y^{(1)} + \dots + c_my^{(m)}$
+\item[(3)]folgt aus 16.3
+\item[(4)] "`$\folgt$"': Sei $Z(x) = (z^{(1)}(x),\dots,z^{(1)}(x))$ (2) $\Rightarrow \forall j \in \{1,\dots,m\} \exists c^{(j)} \in \MdR^m: z^{(j)} = Yc^{(j)} C\da (c^{(1)},\dots,c^{(m)}) \in \MdM_m \Rightarrow C = \overline{C}$ und $Z = YC$, $0 \not= \det Z(x) = \det Y(x) \det C \Rightarrow \det C \not= 0.$\\
+"`$\Leftarrow$"': $Z'(x) = Y'(x) C \stackrel{1}{=} A(x)Y(x) C = A(x)Z(x) \Rightarrow Z$ ist eine LM von (H). $\det Z(x) = \det Y(x) \det C \not= 0 \Rightarrow Z$ ist eine FM von (H).
+\item[(5)] Wegen (3): O.B.d.A.:$W(x) \not= 0 \, \forall x \in I. \stackrel{(3)}{\Rightarrow} Y$ ist eine FM von (H). Sei $x_0 \in I, z^{(j)} $\underline{die} L"osung des AWPs
+\[
+	\begin{cases}
+		y'=A(x)y\\
+		y(x_0)=e_j\quad (j = 1,\dots,m)
+	\end{cases}
+\]
+16.3 $\Rightarrow Z(x) = (z^{(1)}(x),\dots,z^{(m)}(x))$ ist eine FM von (H) (4) $\Rightarrow \exists C \in M: C = \overline{C}, C$ ist invertierbar und $Y(x) = Z(x)C \Rightarrow Y(x_0) = \underbrace{Z(x_0)}_{E}C = C \Rightarrow Y(x) = Z(x) Y(x_0) \Rightarrow W(x) = \underbrace{\det Z(x)}_{=: \varphi (x)} W(x_0) \Rightarrow W'(x) = \varphi'(x) W(x_0) \, \forall x \in E \,\, (\ast)$\\
+$\varphi(x) \stackrel{§ 14}{=} \sum_{k=1}^m \det(z^{(1)}(x),\dots,z^{(k-1)}(x),(z^{(k)}(x))',z^{(k+1)}(x),\dots,z^{(m)}(x))$
+$(z^{(k)}(x))' = A(x) z^{(k)}(x) = (z^{(k)}(x))'_{|x=x_0} = A(x_0) z^{(k)}(x_0) = A(x_0)e_k =$ k-te Spalte von $A(x_0).$
+\[
+\varphi'(x_0) = \sum_{k=1}^m \underbrace{ \left| \begin{array}{ccccccccc}
+1      & 0       & \cdots   & 0      & a_{1k}(x_0) & 0      & \cdots  & \cdots & 0 \\
+0      & 1       & \ddots  & \vdots & \vdots      & \vdots &        &        & \vdots \\
+\vdots & \ddots  & \ddots  & 0      & \vdots      & \vdots &        &        & \vdots \\
+\vdots &         & \ddots  & 1      & \vdots      & \vdots &        &        & \vdots \\
+\vdots &         &         & 0      & a_{kk}(x_0) & 0      &        &        & \vdots \\
+\vdots &         &         & \vdots & \vdots      & 1      & \ddots &        & \vdots \\
+\vdots &         &         & \vdots & \vdots      & 0      & \ddots & \ddots & \vdots \\
+\vdots &         &         & \vdots & \vdots      & \vdots & \ddots & 1      & 0\\
+0      & \cdots  & \cdots  & 0      & a_{mk}(x_0) & 0      & \cdots & 0      &1 \\
+\end{array} \right|}_{a_{kk}(x_0)} = \spur A(x_0)
+\]
+$\stackrel{(\ast),x=x_0}{\Rightarrow} W'(x_0) = (\spur A(x_0)W(x_0) \stackrel{x_0\mbox{bel.}}{\Rightarrow} W' = (\spur A(x))W \mbox{auf} \, I.$ Sei $\xi \in I.$ Dann ist $\int_{\xi}^x \spur A(t) dt$ eine Stammfunktion von $\spur A \stackrel{§7}{\Rightarrow} \, \exists c \in \MdR: W(x) = c e^{\int_{\xi}^{x} \spur A(t) dt} \stackrel{x=\xi}{\Rightarrow} c = W(\xi) \Rightarrow$ Beh.
+\end{beweise}
+
+Wir betrachten jetzt die inhomogene GL (IH) $y' = A(x) y + b(x)$\\
+Motivation: Sei $m=1$. I.d.Fall ist $y(x) = e^{\int A(x)dx}$ ein FS von (H). F"ur eine spezielle L"osung von (IH) machten wir den Ansatz: $y_s(x) = y(x)c(x)$ und erhielten $c(x) = \int \underbrace{e^{- \int A(x)dx}}_{\frac{1}{y(x)}} b(x) dx$ also $y_s(x) = y(x) \int \frac{1}{y(x)} b(x)dx$.
+
+\begin{satz}[Spezielle Lösung per Cramerscher Regel] %16.5
+Sei $Y= (y^{(1)},\dots,y^{(m)})$ eine FM von (H) und $y_s(x) := Y(x) \int (Y(x))^{-1}b(x) dx \ \ (x \in I)$. Dann ist $y_s$ eine spezielle L"osung des (IH). F"ur $k=1,\dots,m$ sei $W_k(x) := \mbox{det} (y^{(1)}(x),\dots,y^{(k-1)}(x),b(x),y^{(k+1)}(x),\dots,y^{(m)}(x))$. Dann:
+\[
+y_s(x) =  \sum_{k=1}^m \left( \int \frac{W_k(x)}{W(x)} dx \right) \cdot y^{(k)}(x)
+\]
+\end{satz}
+
+\begin{beweis}
+$y_s'(x) = Y'(x) \cdot \int (Y(x))^{-1} b(x) dx + y(x) Y(x)^{-1} b(x) = A(x) \underbrace{Y(x) \int Y(x)^{-1} b(x) dx}_{y_s(x)} + b(x) = A(x) y_s(x) + b(x)$\\
+F"ur $x \in I$ betrachte das LGS $Y(x)v = b(x)$, dann $v=(v_1,\dots,v_m)=Y(x)^{-1} b(x)$. Cramersche Regel $\Rightarrow v_j = \frac{W_j(x)}{W(x)} \Rightarrow Y(x)^{-1} b(x) = 
+\left( \frac{W_1(x)}{W(x)},\dots,\frac{W_m(x)}{W(x)} \right) \Rightarrow$ Beh.
+\end{beweis}
+
+\begin{beispiel}
+$A= \begin{pmatrix} 0 & 1 \\ -1 & 0\end{pmatrix}$; Bestimme die allgemeine L"osung von $y'=Ay + \begin{pmatrix} \sin x \\ \cos x \end{pmatrix}$ \ ($m=2$)\\
+Bekannt: FS von $y'=Ay: y^{(1)}(x) = (\sin x, \cos x), y^{(2)}(x) = (\cos x, -\sin x). W(x) = \left| \begin{array}{cc}
+\sin x      & \cos x \\
+\cos x      & -\sin x \\
+\end{array} \right| = -1 = W_1(x), W_2(x) = \left| \begin{array}{cc}
+\sin x      & \sin x \\
+\cos x      & \cos x \\
+\end{array} \right| = 0 \Rightarrow y_s(x) = x \cdot \begin{pmatrix} \sin x \\ \cos x \end{pmatrix}$\\
+Allgemeine L"osung der inhomogenen Gleichung: $y(x)=c_1\begin{pmatrix}\sin x \\ \cos x\end{pmatrix}+c_2\begin{pmatrix}\cos x\\ -\sin x\end{pmatrix} + x\begin{pmatrix}\sin x \\ \cos x\end{pmatrix}, c_1,c_2 \in \MdR, Y(x) = \left( \begin{array}{cc}
+\sin x      & \cos x \\
+\cos x      & -\sin x \\
+\end{array} \right)$ FM von $y'=Ay$. Dann $Y(x)^TY(x) = E$. Sei $y=(y_1,y_2)$ eine L"osung von $y'=Ay \Rightarrow y_1 = c_1 \sin x + c_2 \cos x, y_2 = c_1 \cos x - c_2 \sin x$. Nachrechnen: $y_1^2+y_2^2 = c_1^2 + c_2^2$
+\end{beispiel}
+
+\begin{satz}[Schiefsymmetrische Systeme] %16.6
+Sei $A(x)^T = -A(x) \ \forall x \in I, Y$ sei eine FM von (H) $y' = A(x)y.$
+\begin{liste}
+\item[(1)] $Y(x)^T Y(x)$ ist auf $I$ konstant.
+\item[(2)] Ist $y=(y_1,\dots,y_m)$ eine L"osung von (H) $\Rightarrow y_1^2+y_2^2+\cdots+y_m^2$ ist konstant auf $I$.
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item[(1)] $(Y^T Y)' = (Y^T)'Y + Y^T Y' = (Y')^T Y + Y^T Y' = (AY)^T Y + Y^T AY = Y^T \underbrace{A^T}_{-A} Y + Y^T AY = 0$ auf $I \Rightarrow$ Beh.
+\item[(2)] O.B.d.A: $y \not\equiv 0, y^{(1)} := y.$ Dann ist $y^{(1)}$ l.u. in $\MdL$. Dann existieren $y^{(2)}, \dots , y^{(m)} \in \MdL$ mit: $y^{(1)}, \dots , y^{(m)}$ ist ein FS von (H). $Y:= (y^{(1)}, \dots , y^{(m)}), Z(x) := Y(x)^T Y(x) \stackrel{(1)}{\Rightarrow} Z$ ist auf $I$ konstant. Sei $Z(x) = (z_{jk}).$ Dann $y_1^2+ \cdots + y_m^2 = z_{11}$
+\end{beweise}
+
+
+\chapter{Lineare Systeme mit konstanten Koeffizienten}
+
+Wir betrachten Systeme der Form:
+$$(\text{S})\; y' = Ay + b(x)$$
+wobei $A = (a_{jk}) \in \MdM_m$ und die $a_{jk}$ \begriff{konstant} sind. Die Lösung solcher Systeme lässt sich auf Eigenwerte von $A$ zurückführen. Ist $A$ reell, so kann $A$ \begriff{komplexe} Eigenwerte haben. \\
+Also stets in diesem Paragraphen: $m \in \MdN, A = (a_{jk}) \in \MdM_m, a_{jk} \in \MdC, I \subseteq \MdR$ ein Intervall, $x_0 \in I, y_0 \in \MdC^m$ und $b: I \rightarrow \MdC^m$ stetig.\\
+Erweiterter Lösungsbegriff: Sei $y: I \rightarrow \MdC^m$ differenzierbar. $y$ heißt eine Lösung von $(\text{S})$ auf $I :\equizu \; y'(x) = Ay + b(x) \; \forall x \in I.$ \\
+$y$ heißt eine Lösung des AWPs $(\text{A}) \begin{cases} y' = Ay + b(x) \\ y(x_0) = y_0 \end{cases}$ auf $I :\equizu \, y$ ist eine Lösung von $(\text{S})$ auf $I$ und $y(x_0) = y_0$
+
+\begin{satz}
+$(\text{A})$ hat auf $I$ genau eine Lösung.
+\end{satz}
+
+\begin{beweis}
+$U:=\Re A,\; V:=\Im A,\; g:=\Re b,\; h:= \Im b,\; \gamma_0:=\Re y_0,\; \delta:=\Im y_0,\; \\ \tilde{b}:=(g,h): I \rightarrow \MdR^{2m},\; \tilde{y_0}:=(\gamma_0,\; \delta_0) \in \MdR^{2m}$ \\
+$B:=\begin{pmatrix}U & -V \\ V & U \end{pmatrix} \in \MdM_{2m} \; (B=\overline{B})$ \\
+Betrachte das AWP $(\tilde{\text{A}}) \begin{cases}z' = Bz + \tilde{b}(x) \\ z(y_0) = \tilde{y_0} \end{cases}$ \\
+Sei $y: I \rightarrow \MdC^m$ eine Funktion, $z:=(\Re y, \Im y): I \rightarrow \MdR^{2m}$ Dann: $y$ ist eine Lösung von $(\text{A})$ auf $I \equizu z$ ist eine Lösung von $(\tilde{\text{A}})$ auf $I$. 16.1 \folgt Beh.
+\end{beweis}  
+
+Wir betrachten das homogene System
+\[(\text{H}) \quad y' = Ay\]
+
+\begin{folgerung}
+Alle Definitionen und die Sätze 16.3, 16.4 und 16.5 des §16 bleiben im komplexen Fall gültig. Der Raum $\mathbb{L}$ ist ein komplexer VR, $\dim \mathbb{L} = m$. In 16.4 schreibe $c \in \MdC^m$ und $C \in \MdM_m$ komplex. Ist $y \in \mathbb{L}$ und $A$ reell \folgtnach{Bew. ü. 17.1} $\Re y, \Im y \in \mathbb{L}$ 
+\end{folgerung}
+
+\begin{satz}
+$e^{xA}$ ist eine Fundamentalmatrix von $(\text{H})$.
+\end{satz}
+
+\begin{beweis}
+$Y(x):=e^{xA}$; 14.5 $\folgt e^{xA}$ ist invertierbar. $\folgt \det Y(x) \neq 0 \\
+Y'(x) \gleichnach{14.5} Ae^{xA} = AY(x) \folgt Y$ ist eine LM von $(\text{H})$
+\end{beweis}
+
+\begin{beispiel}[m=2]
+\[ A=\begin{pmatrix}1 & 0 \\ 1 & 1 \end{pmatrix},\, A^2 = \begin{pmatrix} 1 & 0 \\ 2 & 1 \end{pmatrix} \text{, 
+induktiv: } A^n = \begin{pmatrix} 1 & 0 \\ n & 1 \end{pmatrix} \; \forall n \in \MdN_0 \]
+\[ \folgt e^{xA} = \sum_{n=0}^{\infty} \frac{x^n}{n!}A^n = \begin{pmatrix} \sum_{n=0}^{\infty} \frac{x^n}{n!} & o \\
+\sum_{n=0}^{\infty} \frac{nx^n}{n!} & \sum_{n=0}^{\infty} \frac{x^n}{n!} \end{pmatrix} \]
+\[\sum_{n=0}^{\infty} \frac{nx^n}{n!} = \sum_{n=1}^{\infty} \frac{x^n}{(n-1)!} = x\sum_{n=1}^{\infty} \frac{x^{n-1}}{(n-1)!} = xe^x \]
+\[ \folgt e^{xA} = \begin{pmatrix} e^x & 0 \\ xe^x & e^x \end{pmatrix}\]
+Fundamentalsystem von $y' = Ay:$  \begin{eqnarray*} y^{(1)}(x) &=& e^x\begin{pmatrix}1\\x \end{pmatrix} \\ y^{(2)}(x) &=& e^x\begin{pmatrix}0\\1\end{pmatrix}\end{eqnarray*} 
+\end{beispiel}
+
+\begin{motivation}
+Sei $\lambda$ ein Eigenwert von $A$, $c \in \MdC^m\setminus\{0\}$ und $Ac = \lambda c$ \\
+$y(x) := e^{\lambda x}c$\\
+$y'(x) = \lambda e^{\lambda x}c = e^{\lambda x}(\lambda c) = e^{\lambda x}(Ac) = A(e^{\lambda x}c) = Ay(x)$
+\vspace{1em}
+\end{motivation}
+
+\begin{satz} %17.4
+Die Eigenwerte von $A$ seien \begriff{alle einfach}, d.h. $A$ habe die Eigenwerte $\lambda_1, \ldots, \lambda_m$
+$(\lambda_j \neq \lambda_k$ für $j \neq k)$. $c^{(j)}$ sei ein Eigenvektor zu $\lambda_j (j=1,\ldots,m)$. Es sei $y^{(j)}(x):=e^{\lambda jx}c^{(j)}.$ 
+$$\text{Dann ist } (*) \; y^{(1)}, \ldots, y^{(m)} \text{ ein (komplexes) FS von } (\text{H}) $$
+Sei $A$ reell: Wir können mit einem $l \in \MdN$ annehmen: \\
+$\lambda_1, \ldots, \lambda_l \in \MdC \setminus \MdR; \, (\lambda_{l+1} = \overline{\lambda_1}), \ldots, (\lambda_{2l} = \overline{\lambda_l}); \, \lambda_{2l+1}, \ldots, \lambda_m \in \MdR$ \\
+$$\text{Dann ist } (+) \Re y^{(1)}, \ldots, \Re y^{(l)}, \Im y^{(1)}, \ldots, \Im y^{(l)}, y^{(2l+1)}, \ldots, y^{(m)}$$ ein reelles FS von $(\text{H})$.
+\end{satz}
+
+
+\begin{beweis}
+Obige Motivation $\folgt y^{(1)}, \ldots, y^{(m)} \in \mathbb{L}$. \\
+Seien $\alpha_1, \ldots, \alpha_m \in \MdC$ und $0 = \alpha_1 y^{(1)} + \ldots + \alpha_m y^{(m)} \\
+\folgt 0 = \alpha_1 y^{(1)}(0) + \ldots + \alpha_m y^{(m)}(0) \folgt 0 = \alpha_1 c^{(1)} + \ldots + \alpha_m c^{(m)} \\
+\folgt \alpha_1 = \ldots = \alpha_m = 0 \folgt y^{(1)}, \ldots, y^{(m)}$ ist ein FS von $(\text{H})$. Sei $A$ reell: 17.2 \folgt in $(+)$ stehen Lösungen von $(\text{H})$.\\
+Übung: diese Lösungen sind linear unabhängig.
+\end{beweis}
+
+\begin{beispiele} %Die Matrix KANN nicht stimmen!
+\item Bestimme ein komplexes FS von
+$$y' = \underbrace{\begin{pmatrix}i & 0 & 2 \\ 1 & 1+i & 0 \\ 1-i & 1+i & 1+2\end{pmatrix}}_{=A}\,y$$
+$\det(A-\lambda E) = (\lambda - 1)(\lambda - i)(1+i-\lambda)$; Eigenwerte: $\lambda_1 = i, \lambda_2 = 1+i, \lambda_3 = 1$ \\
+EV zu $\lambda_1: (1,-1,i)$, EV zu $\lambda_2: (2, 2i, 1+i)$, EV zu $\lambda_3: (0, 1, 0)$ \\
+FS: $y^{(1)}(x) = e ^{ix} \begin{pmatrix}1\\-1\\i\end{pmatrix}$, $y^{(2)}(x) = e ^{(1+i)x} \begin{pmatrix}2\\2i\\1+i\end{pmatrix}$, $y^{(3)}(x) = e ^{x} \begin{pmatrix}0\\1\\0\end{pmatrix}$
+
+\item Bestimme ein reelles FS von
+$$y' = \underbrace{\begin{pmatrix}1 & 0 & 1 \\ 0 & 1 & 1 \\ -3 & 1 & -1\end{pmatrix}}_{=A} \, y$$
+$\det(A - \lambda E) = (\lambda - i)(\lambda + i)(1 - \lambda)$ \\
+$\lambda_1 = i, \lambda_2 = \overline{\lambda_1}, \lambda_3 = 1$ \\
+EV zu $\lambda_1: (1, 1, 1-i)$ , EV zu $\lambda_3: (1, 3, 0)$ \\
+\begin{align*}
+y(x) :&= e^{ix}\begin{pmatrix} 1\\1\\1-i \end{pmatrix} = (\cos x + i\sin x)\begin{pmatrix} 1\\1\\1-i \end{pmatrix} \\
+     &= \begin{pmatrix} \cos x + i\sin x \\ \cos x + i\sin x \\ \cos x + \sin x + i(\sin x - \cos x) \end{pmatrix} \\
+     &=\underbrace{\begin{pmatrix} \cos x \\ \cos x \\ \cos x + \sin x\end{pmatrix}}_{=:y^{(1)}(x)} + i\underbrace{\begin{pmatrix} \sin x \\ \sin x \\ \sin x - \cos x \end{pmatrix}}_{=:y^{(2)}(x)} \\
+y^{(3)}(x) &= e^x\begin{pmatrix}1\\3\\0\end{pmatrix} \\
+\text{Fundamentalsystem:}&\ y^{(1)}, y^{(2)}, y^{(3)}
+\end{align*}
+\end{beispiele}
+
+\begin{hilfssatz}[1]
+Sei $\lambda$ ein $q$-facher Eigenwert von $A$ und $c^{(1)},\ldots,c^{(\nu)}$ seien linear unabhängig in $\kernn (A-\lambda E)^q$. Für $j=1,\ldots,\nu$:
+\[ y^{(j)}(x) := e^{\lambda x} \left( c^{(j)} + x(A-\lambda E) c^{(j)} + \frac{x^2}{2!} (A-\lambda E)^2 c^{(j)} + \cdots + \frac{x^{(q-1)}}{(q-1)!} (A-\lambda E)^{q-1}c^{(j)} \right) \]
+Dann sind $y^{(1)},\ldots, y^{(\nu)}$ linear unabhängige Lösungen von $(H)$.
+\end{hilfssatz}
+
+\begin{beweis}
+1. Schreibe $c$ statt $c^{(j)}$ und $y$ statt $y^{(j)}$. Also:
+\begin{align*}
+y(x) &= e^{\lambda x} \sum_{k=0}^{q-1} \frac{x^k}{k!} (A-\lambda E)^k c \\
+y'(x) &= \lambda y(x) + e^{\lambda x} \sum_{k=1}^{q-1} \frac{x^{k-1}}{(k-1)!} (A-\lambda E)^k c \\
+& = \lambda y(x) + e^{\lambda x}  \sum_{k=1}^{q} \frac{x^{k-1}}{(k-1)!} (A-\lambda E)^k c \\
+& = \lambda y(x) + e^{\lambda x}  \sum_{k=0}^{q-1} \frac{x^{k}}{k!} (A-\lambda E)^{k+1} c \\
+& = \lambda y(x) + (A-\lambda E) \underbrace{\left( e^{\lambda x}  \sum_{k=0}^{q-1} \frac{x^{k}}{k!} (A-\lambda E)^k c\right) }_{=y(x)} \\
+& = \lambda y(x) + (A-\lambda E) y(x) = Ay(x)
+\end{align*}
+2. $y^{(j)}(0) = c^{(j)} \folgtnach{16.3} y^{(1)},\ldots, y^{(\nu)}$ sind linear unabhängig in $\MdL$
+\end{beweis}
+
+\begin{hilfssatz}[2]
+Seien $\lambda_1,\ldots,\lambda_k$ die paarweisen verschienden Eigenwerte von $A$ und $q_1,\ldots,q_k$ deren Vielfachheiten (also: $k\le m, q_1+\cdots+q_k=m$). 
+\[ V_j := \kernn (A-\lambda_jE)^{q_j}\quad(j=1,\ldots,k)\,.\]
+Dann:
+\[\MdC^m = V_1\oplus V_2 \oplus \cdots \oplus V_k\]
+\end{hilfssatz}
+
+\begin{beweis}
+Siehe lineare Algebra
+\end{beweis}
+
+\paragraph{Konstruktion für die Praxis:}
+Bezeichnungen wie im Hilfssatz 2. Sei $j\in\{i,\ldots,k\}$. Dann:
+\[\kernn (A-\lambda_j E)\subseteq \kernn(A-\lambda_jE)^2\subseteq \kernn(A-\lambda_jE)^3\subseteq \cdots \subseteq V_j\]
+Bestimme eine Basis von $V_j$ wie folgt:
+
+Bestimme eine Basis von $\kernn(A-\lambda_jE)$. Erweitere diese zu einer Basis von $\kernn(A-\lambda_jE)^2$, \ldots
+
+Aus den Hilfssätzen (1) und (2) und obiger Konstrutktion folgt:
+
+\begin{satz}
+$\lambda_1,\ldots,\lambda_k$ und $q_1,\ldots,q_k$ seien wie im Hilfssatz (2). Zu $\lambda_j$ gibt es $q_j$ linear unabhängige Lösungen von $(H)$ der Form:
+\[ (**)\quad e^{\lambda_jx}p_0^{(j)}(x), e^{\lambda_jx}p_1^{(j)}(x), \ldots, e^{\lambda_jx}p_{q_j-1}^{(j)}(x) \]
+wobei im Vektor $p_\nu^{(j)}(x)$ Polynome vom Grad kleiner oder gleich $\nu$ stehen.
+
+Führt man diese Konstruktion für jedes $\lambda_j$ durch, so erhält man ein (komplexes) Fundamentalsystem von $(H)$.
+
+Ist also $A$ reell, so kann man mit einem $l\in\MdN$ annehmen:
+\[ \lambda_1,\ldots,\lambda_l \in \MdC\setminus\MdR,\ \lambda_{l+1} = \overline{\lambda_1},\ldots,\lambda_{2l} = \overline{\lambda_l},\ \lambda_{2l+1},\ldots,\lambda_k \in \MdR \]
+und 
+\[ p_0^{(j)}(x), \ldots, p_{q-1}^{(j)}(x) \in \MdR^m \quad (j=2l+1,\ldots,k)\]
+Ein reelles Fundamentalsystem von $(H)$ erhält man wie folgt:
+
+1. Für $\lambda_1,\ldots,\lambda_l$ zerlege die Lösungen in ($**$) in Real- und Imaginärteil (und lasse die Lösungen für $\lambda_{k+1},\ldots,\lambda_{2l}$ unberücksichtigt).
+
+2. Für $\lambda_{2l+1},\ldots,\lambda_{k}$ übernehme die Lösungen aus $(**)$.
+\end{satz}
+
+\paragraph{Bezeichnung:} Für $a^{(1)},\ldots,a^{(\nu)} \in \MdC^m$ sei $[a^{(1)},\ldots,a^{(\nu)}]$ die lineare Hülle von $a^{(1)},\ldots,a^{(\nu)}$
+
+\begin{beispiele}
+\item
+\[ y'  = 
+\underbrace{\begin{pmatrix}
+0&1&0&0\\
+0&0&1&0\\
+0&0&0&1\\
+-1&0&-2&0
+\end{pmatrix}}_{=A} y \]
+$\lambda_1=i$ ist ein 2-facher Eigenwert von $A$, $\lambda_2=\overline{\lambda_1}=-i$ ist ein 2-facher Eigenwert von $A$.
+\[\kernn(A-iE) = [
+\begin{pmatrix}
+1\\i\\-1\\-i
+\end{pmatrix}]\subseteq [
+\begin{pmatrix}
+1\\i\\-1\\-i
+\end{pmatrix}, 
+\begin{pmatrix}
+0\\1\\2i\\-3
+\end{pmatrix}
+] = \kernn(A-i E)^2 \]
+\begin{align*}
+y^{(1)} (x) &= e^{ix}
+\begin{pmatrix}
+1\\i\\-1\\-i
+\end{pmatrix}\\
+y^{(2)}(x) &=  e^{ix}\left(
+\begin{pmatrix}
+0\\1\\2i\\-3
+\end{pmatrix} + x(A-iE)
+\begin{pmatrix}
+0\\1\\2i\\-3
+\end{pmatrix}\right) = e^{ix}
+\begin{pmatrix}
+x\\1+ix\\-x+2i\\3-ix
+\end{pmatrix}
+\end{align*}
+Dann ist $\Re y^{(1)},\Im y^{(1)},\Re y^{(2)},\Im y^{(3)}$ ein reelles FS.
+\[ y^{(1)}(x) =
+\begin{pmatrix}
+\cos x + i \sin x\\
+-\sin x + i \cos x \\
+-\cos x - i \sin x\\
+\sin x - i \cos x
+\end{pmatrix} = 
+\begin{pmatrix}
+\cos x \\
+-\sin x\\
+-\cos x\\
+\sin x
+\end{pmatrix} + i
+\begin{pmatrix}
+\sin x\\
+\cos x\\
+-\sin x\\
+-\cos x
+\end{pmatrix}
+\]
+
+\item 
+\[ y' = \underbrace{
+\begin{pmatrix}
+0&1&-1\\
+-2&3&-1\\
+-1&1&1
+\end{pmatrix}}_{=A} y \]
+
+$\det(A-\lambda E) = -(\lambda-1)(\lambda-1)^2$; $\lambda_1 = 1, q_1=2, \lambda_2=2, q_2 = 1$; 
+\[\kernn(A-E)= [
+\begin{pmatrix}
+1\\1\\0
+\end{pmatrix}] \subseteq [
+\begin{pmatrix}
+1\\1\\9
+\end{pmatrix} , 
+\begin{pmatrix}
+0\\0\\-1
+\end{pmatrix}] = \kernn (A-E)^2\]
+\begin{align*}
+y^{(1)}(x) &= e^x
+\begin{pmatrix}
+1\\1\\0
+\end{pmatrix} \\
+y^{(2)}(x) &= e^x\left(
+\begin{pmatrix}
+0\\0\\-1
+\end{pmatrix} + x(A-E)
+\begin{pmatrix}
+0\\0\\-1
+\end{pmatrix}\right) \\
+&= e^x\left(
+\begin{pmatrix}
+0\\0\\-1
+\end{pmatrix} + x
+\begin{pmatrix}
+1\\1\\0
+\end{pmatrix}\right) \\
+&= e^x
+\begin{pmatrix}
+x\\x\\-1
+\end{pmatrix}\\
+& \kernn(A-2E) = [
+\begin{pmatrix}
+0\\1\\1
+\end{pmatrix}] \\
+y^{(3)}(x) &= e^{2x}
+\begin{pmatrix}
+0\\1\\1
+\end{pmatrix}
+\end{align*}
+Das Fundamentalsystem ist $y^{(1)}, y^{(2)}, y^{(3)}$.
+
+\item
+
+\[y' = \underbrace{
+\begin{pmatrix}
+1  & -2 & 1 \\
+0 & -1 & 1 \\
+0 & -4 & 3 
+\end{pmatrix}}_{=A}y
+\]
+$\det(A-\lambda E) = -(\lambda-1)^3$; $\lambda_1 = 1$, $q_1=3$
+
+\begin{align*}
+\kernn(A-E) &= [
+\begin{pmatrix}
+1\\0\\0
+\end{pmatrix}]\\
+&\subseteq [
+\begin{pmatrix}
+1\\0\\0
+\end{pmatrix},
+\begin{pmatrix}
+0\\1\\-2
+\end{pmatrix}] = \kernn(A-E)^2\\
+&\subseteq [
+\begin{pmatrix}
+1\\0\\0
+\end{pmatrix},
+\begin{pmatrix}
+0\\1\\-2
+\end{pmatrix},
+\begin{pmatrix}
+0\\0\\1
+\end{pmatrix}
+] = \kernn(A-E)^3
+\end{align*}
+\begin{align*}
+y^{(1)}(x) &= e^x
+\begin{pmatrix}
+1\\0\\0
+\end{pmatrix}\\
+y^{(2)}(x) &= e^x \left(
+\begin{pmatrix}
+0\\1\\-2
+\end{pmatrix} + x(A-E)
+\begin{pmatrix}
+0\\1\\-2)
+\end{pmatrix}\right) \\
+&=e^x \left(
+\begin{pmatrix}
+0\\1\\2
+\end{pmatrix}+ x 
+\begin{pmatrix}
+-4 \\0\\0
+\end{pmatrix}\right) \\
+&= e^x
+\begin{pmatrix}
+-4x\\1\\-2
+\end{pmatrix} \\
+y^{(3)}(x) &= e^x \left(
+\begin{pmatrix}
+0\\0\\1
+\end{pmatrix}
++ x(A-E) 
+\begin{pmatrix}
+0\\0\\1
+\end{pmatrix} + \frac{x^2}2 (A-E)^2
+\begin{pmatrix}
+0\\0\\1
+\end{pmatrix}\right)\\
+&= e^x
+\begin{pmatrix}
+x-2x^2\\
+-x\\
+1+2x
+\end{pmatrix}
+\end{align*}
+Das Fundamentalsystem ist $y^{(1)},y^{(2)},y^{(3)}$.
+
+\end{beispiele}
+
+\paragraph{Zum inhomogenen System}
+$(IH)\quad Ay + b(x)$. Sei $y^{(1)},\ldots,y^{(m)}$ ein Fundamentalsystem von $(H$). Für eine spezielle Lösung $y_s$ von ($IH$) macht man den Ansatz
+\[ y_s(x) = c_1(x)y^{(1)}+\cdots+c_m(x) y^{(m)} \]
+und gehe damit in $(IH)$ ein.
+
+\chapter{Differentialgleichungen höherer Ordnung}
+
+In diesem Paragraphen: $m \in \MdN, \, \emptyset \neq D \subseteq \MdR^{m}$, $f:D\rightarrow \MdR$
+eine Funktion, $x_0, y_0, \ldots, y_{m-1} \in \MdR$ mit $(x_0, y_0, \ldots, y_{m-1}) \in D$.
+
+Wir betrachten die Differentialgleichung
+$$(\text{D})\quad y^{(m)} = f(x, y, y', \ldots, y^{(m-1)})$$
+und das Anfangswertproblem
+$$(\text{A}_1)\quad
+\begin{cases}
+(\text{D}) \\
+y(x_0) = y_0, y'(x_0) = y_1, \ldots, y^{(m-1)}(x_0) = y_{m-1}
+\end{cases}$$
+
+(Lösungsbegriff für (D) und (A$_1$) $\rightarrow$ § 6)
+
+Für $z = (z_1, \ldots, z_m)$ betrachten wir das System
+$$(\text{S}) \quad
+\begin{cases}
+z_1'=z_2\\
+z_2'=z_3\\
+\vdots\\
+z_{n-1}'=z_n\\
+z_n'=f(x, z_1, \ldots z_m)
+\end{cases}$$
+
+\begin{satz} %18.1
+Sei $I \subseteq \MdR$ ein Intervall.
+\begin{liste}
+\item Ist $y:I\rightarrow \MdR$ eine Lösung von (D) auf $I \folgt z := (y, y', \ldots, y^{(m-1)})$ ist eine Lösung von (S) auf $I$.
+\item Ist $z = (z_1, \ldots , z_m):I \rightarrow \MdR^m$ eine Lösung von (S) auf $I \folgt y:=z_1$ ist eine Lösung von (D).
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+Nachrechnen.
+\end{beweis}
+
+\begin{satz} %18.2
+Sei $h:D \rightarrow \MdR^m$ definiert durch $h(x,y):=(y_2, \ldots, y_m, f(x,y))$, wobei $(x,y) \in D$ und $x \in \MdR, y \in \MdR^m$.
+\begin{liste}
+\item $h \in C(D, \MdR^m) \equizu f \in C(D,\MdR)$
+\item $f$ genügt auf $D$ einer (lokalen) Lipschitzbedingung bezüglich $y \equizu h$ genügt auf $D$ einer (lokalen) Lipschitzbedingung bezüglich $y$.
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+\begin{liste}
+\item Klar.
+\item Nachrechnen.
+\end{liste}
+\end{beweis}
+
+Aus 18.1, 18.2 und 15.3 folgt:
+
+\begin{satz}
+Sei $I=[a,b] \subseteq \MdR, D:=I\times \MdR^m, f \in C(D,\MdR)$ und genüge auf $D$ einer Lipschitzbedingung bezüglich $y$. Dann hat (A$_1$) auf $I$ genau eine Lösung.
+\end{satz}
+
+\begin{bemerkung}
+Die weiteren Sätze aus § 15 lassen sich ebenfalls auf Differentialgleichungen $m$-ter Ordnung übertragen.
+\end{bemerkung}
+
+\chapter{Lineare Differentialgleichungen $m$-ter Ordnung}
+
+In diesem Paragraphen: $I \subseteq \MdR$ ein Intervall, $a_0, a_1, \ldots,
+a_{m-1}, b \in C(I,\MdR), x_0, y_0, \ldots, y_{m-1} \in \MdR$. Die
+Differentialgleichung $y^{(m)} + a_{m-1}(x)y^{(m-1)} + \ldots + a_1(x)y' +
+a_0(x)y = b(x)$ heißt eine \begriff{lineare Differentialgleichung $m$-ter
+Ordnung}.
+
+Setze $Ly:= y^{(m)} + a_{m-1}(x)y^{(m-1)} + \ldots + a_1(x)y' + a_0(x)y$. Dann schreibt sich obige Gleichung in der Form
+$$Ly = b(x)$$.
+
+Diese Gleichung heißt \begriff{homogen}, falls $b\equiv 0$, anderenfalls \begriff{inhomogen}.
+Das zur Gleichung $Ly=b$ gehörende System (S) aus § 18 lautet
+$$z'=A(x)z+b_0(x)$$
+mit $b_0(x) = (0, \ldots 0, b(x))$ und $A(x) =\begin{pmatrix}
+0 & 1 & 0 & \ldots & 0\\
+0 & 0 & 1 & & 0\\
+\vdots & \vdots & & \ddots & 0\\
+0 & 0 & 0 & & 1\\
+-a_0(x) & \ldots & \ldots & \ldots & -a_{m-1}(x)\\
+\end{pmatrix}$
+
+Die Beweise der folgenden Sätze 19.1 bis 19.4 folgen aus den Paragraphen 16 und 18.
+
+\begin{satz} %19.1
+Das Anfangswertproblem $\begin{cases}Ly=b(x)\\y(x_0)=y_0, y'(x_0)=y_1, \ldots, y^{(m-1)}(x_0)=y_{m-1}\end{cases}$ hat auf $I$ genau eine Lösung.
+\end{satz}
+
+{\bf Wie in § 16:} Ist $J \subseteq I$ ein Intervall und $\hat{y}:J\rightarrow \MdR$
+eine Lösung von $Ly=b$ auf $J$, so existiert eine Lösung $y:I\rightarrow \MdR$
+der Gleichung $Ly=b$ auf $I$ mit $\hat{y}=y|_J$.
+
+Daher betrachten wir immer Lösungen $y:I\rightarrow \MdR$.
+
+Die zu $Ly=b$ gehörende \emph{homogene} Gleichung lautet: $(\text{H})\quad Ly=0$.
+
+\begin{satz} %19.2
+Sei $y_s$ eine spezielle Lösung der Gleichung $Ly=b$ und $y:I\rightarrow \MdR$ eine Funktion.
+
+Dann: $y$ ist eine Lösung von $Ly=b \equizu \exists \; y_0:I\rightarrow \MdR: y_0$ ist eine Lösung von (H) und $y = y_0 + y_s$.
+
+$\MdL := \{ y:I\rightarrow \MdR: y\; \text{löst (H) auf}\; I \}$.
+\end{satz}
+
+\begin{satz} %19.3
+\begin{liste}
+\item $\MdL$ ist ein reeller Vektorraum, $\dim \MdL = m$.
+\item Für $y_1, \ldots, y_k \in \MdL$ sind äquivalent:
+\begin{liste}
+\item $y_1, \ldots, y_k$ sind linear unabhängig in $\MdL$;
+\item $\forall x \in I$ sind $(y_j(x), y_j'(x), \ldots, y_j^{(m-1)}(x))\quad (j=1,\ldots k)$ linear unabhängig in $\MdR^m$;
+\item $\exists x \in I:(y_j(x), y_j'(x), \ldots, y_j^{(m-1)}(x))\quad (j=1,\ldots, k)$ sind linear unabhängig in $\MdR^m$.
+\end{liste}
+\end{liste}
+\end{satz}
+
+\begin{definition} 
+Seien $y_1, \ldots, y_m \in \MdL$. $y_1, \ldots, y_m$ heißt ein
+\begriff{Lösungssystem} (LS) von (H) und
+\[W(x) := \left|\begin{array}{ccc}
+y_1(x) & \ldots & y_m(x)\\y_1'(x) & \ldots & y_m'(x)\\ \vdots & & \vdots\\
+y_1^{(m-1)}(x) & \ldots & y_m^{(m-1)}(x)\end{array}\right|\] heißt
+\begriff{Wronskideterminante}.
+
+Sind $y_1, \ldots, y_m$ linear unabhängig in $\MdL$, so heißt $y_1, \ldots, y_m$ ein \begriff{Fundamentalsystem} (FS) von (H).
+\end{definition}
+
+\begin{satz} %19.4
+Sei $y_1, \ldots y_m$ ein Lösungssystem von (H).
+\begin{liste} 
+\item $W(x) = W(\xi)e^{-\int_{\xi}^{x}a_{m-1}(t)dt} \  (x, \xi \in I)$
+\item $y_1, \ldots y_m$ ist ein Fundamentalsystem von (H) $\equizu W(x) \neq 0 \, \forall x \in I \equizu \exists \xi \in I: W(\xi) \neq 0$
+\end{liste}
+\end{satz}
+
+\begin{satz}[Reduktionsverfahren von d'Alembert ($m=2$)]
+Sei $y_1$ eine Lösung von $(*)\quad y''+a_1(x)y'+a_0(x)y=0$ und $y_1(x) \neq 0 \, \forall x \in I$. Sei $z$ eine Lösung von $z'=-(a_1(x) + \frac{2y_1'(x)}{y_1(x)})z$, $z \neq 0$ und $y_2(x):=y_1(x)\int z(x)dx$.
+
+Dann ist $y_1, y_2$ ein Fundamentalsystem von (*).
+\end{satz}
+
+\begin{beweis}
+Nachrechnen: $y_2$ löst (*).
+$W(x)=\left|\begin{array}{cc} y_1 & y_2 \\ y_1' & y_2'\end{array}\right| =
+\left|\begin{array}{cc} y_1 & y_1\int zdx \\ y_1' & y_1'\int zdx + y_1 z
+\end{array}\right| =\\ y_1y_1'\int zdx+y_1^2z-y_1y_1'\int zdx = 
+\underbrace{y_1^2}_{>0}z \folgtnach{19.4} y_1, y_2$ sind linear unabhängig in
+$\MdL$.
+
+\end{beweis}
+
+\begin{beispiel}
+$(**)\quad y''+\frac{2x}{1-x^2}y'-\frac{2}{1-x^2}y = 0\quad (I=(1,\infty)); \, y_1(x)=x$
+
+$z'=-(\frac{2x}{1-x^2}+\frac{2}{x})z = - \frac{2x^2+2(1-x^2)}{x(1-x^2)}z = \frac{2}{x(x^2-1)}z\quad (***)$
+
+$\int \frac{2}{x(x^2-1)}dx = \log (1-\frac{1}{x^2})$
+
+§ 7 $\folgt$ allgemeine Lösung von (***): $z(x) = c e^{\log (1-\frac{1}{x^2})} = c(1-\frac{1}{x^2)} \quad (c \in \MdR)$
+
+$z(x) = 1 - \frac{1}{x^2} \folgt \int z(x) dx = x + \frac{1}{x} \folgt y_2(x) = x(x+\frac{1}{x}) = 1 + x^2$
+
+Fundamentalsystem: $y_1, y_2$. Allgemeine Lösung von (**): $y(x) = c_1x+c_2(1+x^2)\quad (c_1, c_2 \in \MdR)$
+\end{beispiel}
+
+\begin{satz} %19.6
+Sei $y_1, \ldots, y_m$ ein FS von (H). $W$ sei die Wronskideterminante von $y_1, \ldots, y_m$ und für $k=1, \ldots, m$ sei $W_k(x)$ die Determinante, die aus $W(x)$ entsteht, indem man in $W(x)$ die $k$-te Spalte ersetzt durch $(0, \ldots, 0, b(x))^T$. Dann ist
+$$y_s:=\sum_{k=1}^{m}y_k\int\frac{W_k}{W}dx$$
+eine spezielle Lösung von $L_y = b(x)$.
+\end{satz}
+
+\begin{beweis}
+§16, §18
+\end{beweis}
+
+\begin{beispiel}
+$y''+\frac{2x}{1-x^2}y'-\frac{2}{1-x^2}y = x^2-1$ \\\\
+FS der homogenen Gleichung: $x, x^2+1$ \\
+$W(x) = \left|\begin{array}{cc}x & x^2+1 \\ 1 & 2x\end{array}\right| = 2x^2 - (x^2+1) = x^2 - 1$ \\
+$W_1(x) = \left|\begin{array}{cc}0 & x^2+1 \\ x^2-1 & 2x\end{array}\right| = -(x^2+1)(x^2-1) \folgt \frac{W_1(x)}{W(x)} = -(x^2+1)$ \\
+$\folgt \int\frac{W_1}{W}dx = -\frac{1}{3}x^3 - x$ \\
+$W_2(x) = \left|\begin{array}{cc}x & 0 \\ 1 & x^2-1\end{array}\right| = x(x^2-1) \folgt \frac{W_2(x)}{W(x)} = x \folgt \int\frac{W_2}{W}dx = \frac{1}{2}x^2 \\
+\folgt y_s(x) = -\frac{1}{3}x^4 - x^2 + (x^2+1)\frac{1}{2}x^2 = \frac{1}{6}x^4 - \frac{1}{2}x^2$. \\\\
+Allgemeine Lösung der inhomogenen Gleichung: \\
+$y(x) = c_1x + c_2(x^2+1)+\frac{1}{6}x^4+\frac{1}{2}x^2 (c_1,c_2 \in \MdR)$
+\end{beispiel}
+
+\chapter{Lineare Differentialgleichungen $m$-ter Ordnung mit konstanten Koeffizienten}
+
+Wir gehen wie in §17 den Weg über das Komplexe: \\
+$I \subseteq \MdR$ sei ein Intervall, $a_0, a_1, \ldots, a_{m-1} \in \MdC, b: I \rightarrow \MdC$ sei stetig;$ x_0 \in I, y_0, \ldots, y_{m-1} \in \MdC$ \\
+Wir betrachten die DGL:
+$$Ly := y^{(m)} + a_{m-1}y^{(m-1)} + \ldots + a_1y' + a_0y = b(x)$$
+§18/19 obiger Gleichung entspricht das folgende System
+$$z' = \begin{pmatrix}
+0 	& 1 	 & 0 	  & \cdots & 0 \\ 
+\vdots 	& \ddots & \ddots & \ddots & \vdots \\
+\vdots 	& 	 & \ddots & \ddots & 0 \\
+0	& \cdots & \cdots & 0	   & 1 \\
+-a_0	& -a_1	 & \cdots & \cdots & -a_{m-1} \end{pmatrix}z + \begin{pmatrix}0 \\ \vdots \\ \vdots \\ 0 \\ b(x) \end{pmatrix}$$
+
+Aus §17 folgt:
+
+\begin{satz} %20.1
+\begin{liste}
+\item $$\text{das AWP} \begin{cases} Ly = b(x) \\ y(x_0) = y_0, y'(x_0) = y_1, \ldots, y^{(m-1)}(x_0) = y_{m-1}\end{cases}$$ hat auf $I$ genau eine Lösung.
+\item Die Definitionen und Sätze des §en 19 gelten auch im Komplexen. $\MdL$ ist ein komplexer VR, $\dim\MdL = m$. \\
+Wir betrachten zunächst die homogene Gleichung (H) $Ly=0$ \\
+$p(\lambda) := \lambda ^m + a_{m-1}\lambda ^{m-1} + \ldots + a_1\lambda + a_0$ heißt das charakteristische Polynom von (H). Beachte: $p(\lambda) = \det (\lambda E - A)$.
+\end{liste}
+\end{satz}
+
+\begin{satz}[ohne Beweis] %20.2
+Sie $p$ das char. Polynom von (H) \\
+\begin{liste}
+\item $\lambda_0$ sei eine $q$-fache Nullstelle von $p$. Dann sind $e^{\lambda_0x}, xe^{\lambda_0x}, \ldots, x^{q-1}e^{\lambda_0x}$ linear unabhängige Lösungen von (H).
+\item Führt man (1) für jede Nullstelle von $p$ durch, so erhält man ein (komplexes) FS von (H).
+\item Es seien $a_0, a_1, \ldots, a_{m-1} \in \MdR$. Dann erhält man ein reelles FS von (H) wie folgt: \\
+Sei $\lambda$ eine Nullstelle von $p$.
+\begin{enumerate}
+\item Ist $\lambda_0 \in \MdR$, so übernehme die Lösungen aus (1).
+\item Ist $\lambda_0 \notin \MdR$, und $y$ eine Lösung aus (1), so bilde die reellen Lösungen $\Re y$ und $\Im y$ und streiche die zu $\overline{\lambda_0}$ gehörenden Lösungen.
+\end{enumerate}
+\end{liste}
+\end{satz}
+
+\begin{beispiele}
+\item $y^{(6)} - 6y^{(5)} + 9y^{(4)} = 0 \\
+p(\lambda) = \lambda ^6 - 6\lambda ^5 + 9 \lambda ^4= \lambda ^4(\lambda ^2 - 6\lambda + 9) = \lambda ^4(\lambda - 3)^2$ \\\\
+$$\begin{array}{ll} \lambda_1 = 0: 1, x, x^2, x^3 \\ \lambda_2 = 3: e^{3x}, xe^{3x} \end{array}\Bigg\}\text{FS obiger Gleichung}$$\\
+Allgemeine Lösung: $y(x) = c_1 + c_2x + c_3x^2 + c_4x^3 + c_5e^{3x} + c_6xe^{3x}$
+
+\item $y''' - 2y'' + y' - 2y = 0 \\
+p(\lambda) = \lambda ^3 - 2\lambda ^2 + \lambda - 2 = (\lambda - 2)(\lambda ^2 + 1) = (\lambda - 2)(\lambda - i)(\lambda + i) \\
+\lambda_1 = i : $ komplexe Lösung $e^{ix} = \cos x + i \sin x \\
+\lambda_2 = 2 : e^{2x} $ \\
+FS : $e^{2x} , \cos x, \sin x$ \\
+Allgemeine Lösung : $y(x) = c_1e^{2x} + c_2\cos x + c_3 \sin x \; (c_1, c_2, c_3 \in \MdR)$
+
+\item Löse das AWP: 
+$$\begin{cases}y''' - 2y'' + y' - 2y = 0 \\ y(0) = 0, y'(0) = 1, y''(0) = 0\end{cases}$$
+Allgemeine Lösung der DGL: $y(x) = c_1e^{2x} + c_2\cos x + c_3 \sin x \\
+0 = y(0) = c_1 + c_2 \quad c_1 = -c_2 \\
+1 = y'(0) = 2c_1e^{2\cdot 0} - c_2\sin 0 + c_3\cos 0 = 2c_1 + c_3 \\
+y''(x) = 4c_1e^{2x} - c_2\cos x - c_3\sin x \folgt 0 = 4c_1 - c_2 \\
+\folgt c_1 = c_2 = 0, c_3 = 1 $ \quad Lösung des AWPs: $y(x) = \sin x$
+
+\item $y'' - 2y' + 5y = 0 \\
+p(\lambda) = \lambda ^2 - 2\lambda + 5 = (\lambda - (1+2i))(\lambda - (1-2i)) \\
+\lambda = 1+2i : $ komplexe Lösung $e^{1+2i}x = e^xe^{2ix} = e^x(\cos 2x + i\sin 2x)$ \\
+FS: $e^x\cos (2x), e^x\sin (2x)$
+
+\item Löse das \begriff{Randwertproblem} (RWP): \\
+$y'' + y = 0, y(0) = 1, y(\frac{\pi}{2}) = 1 \\
+p(\lambda) = \lambda ^2 + 1 = (\lambda - i)(\lambda + i).$ FS: $\cos x, \sin x$ \\
+Allgemeine Lösung der DGL: $y(x) = c_1\cos x + c_2\sin x \\
+1 = y(0) = c_1, 1 = y(\frac{\pi}{2}) = c_2$ Lösung des RWPs: $y(x) = \cos x + \sin x$
+
+\item Löse das RWP:
+$y'' + \pi ^2y = 0, y(0) = y(1) = 0 \\
+p(\lambda) = \lambda ^2 + \pi ^2 = (\lambda - i\pi)(\lambda + i\pi)$ \\
+Allgemeine Lösung der DGL $y(x) = c_1\cos (\pi x) + c_2\sin (\pi x) \\
+0 = y(0) = c_1, 0 = y(1) = c_2 \sin \pi$ \\
+Lösungen des RWPs: $y(x) = c\cdot\sin (\pi x) \quad c \in \MdR$
+
+
+\end{beispiele}
+
+% Michael Knoll, 21.1.2006
+
+Wir betrachten nun den inhomogenen Fall:
+\begin{displaymath}
+(IH) \, Ly = b(x)
+\end{displaymath}
+
+Um eine spezielle Lösung des inhomogenen Problems zu finden, kann man 19.6 anwenden (Lösung eines inhomogenen Systems).
+
+Sei dazu $p$ das charakteristische Polynom von $(H)$. 
+\begin{definition}[0-fache Nullstelle]
+$\mu \in \mathbb{C}$ ist eine \begriff{0-fache Nullstelle} von $p: \Leftrightarrow p(\mu) \ne 0$
+\end{definition}
+
+
+\begin{satz}[Regel - ohne Beweis]
+Seien $\alpha, \beta \in \MdR$, $n, q \in \MdN_0$ und $b$ sei von der Form:
+
+$b(x)=(b_0+b_1x+ \dots +b_n x^n) \cdot e^{\alpha x} \cdot \cos \beta x$ bzw.
+
+$b(x)=(b_0+b_1x+ \dots +b_n x^n) \cdot e^{\alpha x} \cdot \sin \beta x$
+
+Ist $\alpha + i \beta$ eine $q$-fache Nullstelle von $p$, so gibt es eine spezielle Lösung $y_s$ von $(IH)$ der Form
+
+$y_s(x)= x^q \cdot e^{\alpha x}((A_0+A_1 x+ \dots + A_n x^n)\ cos \beta x + (B_0 + B_1 x + \dots + B_n x^n) \sin \beta x)$
+\end{satz}
+
+\begin{beispiel}
+\begin{itemize}
+	\item[(1)] $y''' - y' = x-1$
+	
+	Erster Schritt: Lösung der homogenen Gleichung $y''' - y' = 0$. Charakteristisches Polynom: $p(\lambda) = \lambda^3-\lambda = \lambda(\lambda^2 - 1) = \lambda( \lambda + 1)(\lambda - 1)$ \\	
+	Fundamentalsystem: $1, e^x, e^{-x}$
+	
+	Zweiter Schritt: Spezielle Lösung der inhomogenen Gleichung. System ist von obiger Form mit $\alpha= \beta = 0$; $\alpha + i \beta = 0$ ist 1-fache Nullstelle von $p$. Ansatz: Für eine spezielle Lösung der inhomogenen Gleichung:
+	
+	$y_s(x) = x ( A_0 + A_1 x) = A_0x + A_1 x^2$
+	
+	$y_s'(x) = A_0 + 2x A_1$
+	
+	$y_s'''(x) = 0$
+	
+	$x-1 \stackrel{!}{=}y_s''' - y_s' = -A_0 - 2xA_1 \Rightarrow A_0 = 1; A_1 = -\frac{1}{2}$
+	
+	Allgemeine Lösung der Differentialgleichung:
+	
+	$y(x) = c_1 + c_2e^x + c_3e^{-x} + x - \frac{1}{2}x^2$ $(c_1, c_2, c_3 \in \MdR)$
+	
+	\item[(2)] $y'' - y = x e^x$
+	
+	1. Schritt: Lösung der homogenen Gleichung $y'' - y = 0$. Charakteristisches Polynom $p(\lambda) = \lambda^2 - 1 = (\lambda - 1)(\lambda + 1)$
+	
+	Fundamentalsystem: $e^x, e^{-x}$
+	
+	2. Schritt: Spezielle Lösung der inhomogenen Gleichung. System ist von obiger Form mit $\alpha = 1, \beta = 0$; $\alpha + i \beta = 1$ ist einfach Nullstelle von $p$. Ansatz für eine spezielle Lösung:
+	
+	$y_s(x) = x(A_0 + A_1 x) e^x$
+	
+	Nachrechnen: $y_s''(x) - y_s(x) = (2 A_0 + 2 A_1 + 4 A_1 x) e^x \stackrel{!}{=} xe^x \Leftrightarrow 2 A_0 + 2 A_1 + 4 A_1 x = x \Rightarrow A_1 = \frac{1}{4}, A_0 = - \frac{1}{4}$
+	
+	$y_s(x) = \frac{1}{4} x ( x-1) e^x$
+	
+	Allgemeine Lösung der Differentialgleichung:
+	
+	$y(x) = c_1 e^x + c_2 e^{-x} + \frac{1}{4}x(x-1)e^x$ $(c_1,c_2 \in \MdR)$
+	
+\end{itemize}
+\end{beispiel}
+	
+
+
+\chapter{Die Eulersche Differentialgleichung}
+
+\indexlabel{Differentialgleichung!Eulersche}
+
+%\section{Die Eulersche Differentialgleichung}
+
+Darunter versteht man eine Differentialgleichung der Form
+
+\begin{itemize}
+	\item [(i)] $x^m y^{(m)} + a_{m-1} x^{m-1} y^{(m-1)} + \dots + a_1 x y' + a_0 y = 0$ mit $a_0, \dots, a_{m-1} \in \MdR$
+\end{itemize}
+
+Wir suche Lösungen von $(i)$ auf $(0, \infty)$. Beachte: Ist $y: (0, \infty) \to \MdR$ eine Lösung von $(i)$ auf $(0, \infty) \Rightarrow z(x) := y(-x)$ ist eine Lösung von $(i)$ auf $(-\infty, 0)$.
+
+
+\begin{satz}[Lösungsansatz] %21.1
+	Sei also $x>0$. Substituiere $x = e^t$ und setze $u(t):=y(e^t) = y(x)$, also $y(x) = u( \log x)$
+	Dann: 
+	
+	$u'(t) = y'(e^t)e^t = y'(x) \cdot x = x \cdot y'(x)$
+	
+	$u''(t) = y''(e^t)(e^{2t}) + e^t y'(e^t) = y''(x) \cdot x^2 + x \cdot y'(x) = x^2 \cdot y'' + x \cdot y'$
+	
+	etc. 
+	
+	Dies führt auf eine lineare Differentialgleichung mit konstanten Koeffizienten für $u$:
+	
+	Übung: Ist $y: (0,\infty) \to \MdR$ eine Funktion und $u(t):=y(e^t), t \in \MdR$, so gilt: $y$ ist eine Lösung von $(i)$ auf $(0, \infty) \Leftrightarrow u$ ist eine Lösung von $(ii)$ auf $\MdR$.
+%Wo zum Teufel ist (ii)??
+	
+	Wir betrachten nun die inhomogene Gleichung:
+	
+\begin{itemize}
+	\item [(iii)] $x^m y^{(m)} + a_{m-1} x^{m-1} y^{(m-1)} + \dots + a_1 x y' + a_0 y = b(x)$
+\end{itemize}
+	Diese Gleichung heißt ebenfalls Eulersche Differentialgleichung.
+	
+	Die allgemeine Lösung von $(iii)$ erhält man wie folgt:
+	
+	Setze $x= e^t$ und bestimme die allg. Lösung von $u^{(m)} + b_{m-1}u^{(m-1)} + \dots + b_1 u' + b_0 u = b(e^t)$. Setze in der allgemeinen Lösung dieser Gleichung $t = \log x.$
+\end{satz}	
+
+\begin{beispiel}
+	
+\begin{itemize}
+	\item [(1)] $x^2 y'' - 3 x y' + 7y = 0 (*)$
+	
+	Setze $x = e^t$, $u(t) = y(e^t)$
+	
+	Dann (s.o.):
+	
+	$u'(t) = x y'(x)$
+	
+	$u''(t) = x^2 y''(x) + xy'(x) = x^2y''(x) + u'(t)$
+	
+	$\Rightarrow x^2y''(x) = u''(t) - u'(t)$
+	
+	$\Rightarrow u'' - u' - 3u' + 7u = u'' - 4u' + 7u = 0$
+	
+	Charakteristisches Polynom: $p(\lambda) = \lambda^2 - 4 \lambda + 7 = (\lambda-(2+i\sqrt{3}))(\lambda - (2-i\sqrt{3}))$
+	
+	Allgemeine Lösung: $y(x) = c_1 \cdot x^2 \cos(\sqrt{3} \log x) + c_2 \cdot x^2 \sin (\sqrt{3} \log x)$ für $x > 0$, $(c_1, c_2 \in \MdR)$
+	
+	\item[(2)] $x^2 y'' - 7x y' + 15 y = x (**)$
+	
+	Setze $x = e^t$, $u(t) = y(e^t) \Rightarrow u'' - 8u' + 15 u = e^x$
+	
+	Diese Gleichung hat die allgemeine Lösung: $u(t) = c_1 e^{3t} + c_2 e^{5t} + \frac{1}{8}e^t$
+	
+	Die allgemeine Lösung von $(**)$: $y(x) = c_1 x^3 + c_2 x^5 + \frac{1}{8} x$ $(x > 0; c_1, c_2 \in \MdR)$
+\end{itemize}
+\end{beispiel}
+
+\chapter{Einschub: Das Zornsche Lemma}
+
+Es sei $\emptyset \neq \mathcal{L}$ eine Menge und $\triangleleft$ eine \begriff{Ordnungsrelation} auf $\mathcal{L}$, d.h. für $a, b, c \in \mathcal{L}$ gilt:
+\begin{liste}
+\item $a \triangleleft a$ \\
+\item aus $a \triangleleft b$ und $b \triangleleft a \folgt a = b$ \\
+\item aus $a \triangleleft b$ und $b \triangleleft c \folgt a \triangleleft c$ \\
+\end{liste}
+
+Es sei $\emptyset \neq \mathcal{K} \subseteq \mathcal{L}$. $\mathcal{K}$ heißt eine \begriff{Kette} $:\equizu$ aus $a, b \in \mathcal{K}$ folgt stets: $a \triangleleft b$ oder $b \triangleleft a$. Sei $\mathcal{M} \subseteq \mathcal{L}$ und $a \in \mathcal{L}$. $a$ heißt eine \begriff{obere Schranke} von $\mathcal{M} :\equizu x \triangleleft a \; \forall x \in \mathcal{M}$. $v \in \mathcal{L}$ heißt ein \begriff{maximales Element} von $\mathcal{L} :\equizu$ aus $a \in \mathcal{L}$ und $v \triangleleft a$ folgt: $v = a$
+
+\begin{lemma}[\textbf{Das Zornsche Lemma}]
+$\mathcal{L}$ und $\triangleleft$ seien wie oben. Besitzt \textbf{jede} Kette in $\mathcal{L}$ eine obere Schranke in $\mathcal{L}$, so enthält $\mathcal{L}$ ein maximales Element.
+\end{lemma}
+
+
 \setcounter{chapter}{21}
-\input{Ana3Par22}
-\input{Ana3Par23}
-\input{Ana3Par24}
-\input{Ana3Par25}
-\input{Ana3Par26}
-\input{Ana3Par27}
+\chapter{Nicht fortsetzbare L"osungen}
+
+In diesem Paragraphen: $\emptyset \ne D \subseteq \MdR^2,\ f:D\to\MdR,\ (x_0,y_0) \in D$ und $I,J,K,\ldots$ seien Intervalle in $\MdR$.
+
+Wir betrachten das AWP \[(A) \begin{cases} y' =f(x,y)\\ y(x_0) =y_0 \end{cases}\]
+
+\begin{bemerkung}
+Die Definitionen und S"atze dieses Paragraphen gelten allgemeiner f"ur Systeme, also $D \subseteq \MdR^{m+1},\ f:D\to\MdR^m,\ (x_0,y_0) \in D,\ x_0\in\MdR,\ y_0\in\MdR^m$ (vgl. Paragraph 15).
+\end{bemerkung}
+
+\paragraph{Definitionen und Bezeichnungen}
+\begin{liste}
+\item $\L_{(A)} := $ Menge aller L"osungen von $(A)$.
+\item F"ur $y\in\L_{(A)}$ bezeichne $I_y$ das Definitionsintervall von $y$.
+\item Seien $u,v \in \L_{(A)}$. $v$ hei"st eine \textbf{Fortsetzung} von $u$, gdw. $I_u \subseteq I_v$ und $u=v$ auf $I_u$. I.d. Fall schreiben wir $u\ole v$.
+\item $v \in \L_{(A)}$ hei"st \textbf{nicht fortsetzbar (nf)}, gdw. aus $y\in\L_{(A)}$ und $v\ole y$ folgt $I_v=I_y$ (also $y=v$).
+\end{liste}
+
+\paragraph{Erinnerung:}
+$(A)$ ist eindeutig l"osbar $\equizu$ aus $y_1,y_2 \in \L_{(A)}$ folgt: $y_1 = y_2$ auf $I_{y_1} \cap I_{y_2}$.
+
+\begin{satz} %22.1
+Sei $u \in \L_{(A)}.$ Dann existiert ein $v \in \L_{(A)}: v$ ist eine nicht fortsetzbare Fortsetzung von $u$ ("`Maximale Fortsetzung von $u$"').
+\end{satz}
+
+\begin{beweis}
+$\L:=\{y\in\L_{(A)}:u\ole y\},\ \L\ne\emptyset$, denn $u\in\L.$ $\ole$ ist eine Ordnungsrelation auf $\L$. Weiter gilt f"ur $v\in\L: v$ ist ein maximales Element in $\L \equizu v$ ist nicht fortsetzbar. Wegen des Zornschen Lemmas ist z.z.: jede Kette in $\L$ hat eine obere Schranke in $\L$. Sei also $\emptyset \ne \K \subseteq \L$ eine Kette in $\L$. $I:=\bigcup_{y\in\K} I_y.$ Wegen $x_0\in I_y\ \forall y\in\K: I$ ist ein Intervall.
+
+Definiere $z:I\to\MdR$ wie folgt: Ist $x\in I \folgt \exists y\in\K: x\in I_y.\ z(x) := y(x).$ Gilt auch noch $x\in I_{\tilde{y}},\ \tilde{y} \in \K,\ \K$ Kette $\folgt y \ole \tilde{y}$ oder $\tilde{y} \ole y$. Etwa: $y\ole\tilde{y}$. D.h.: $I_y\subseteq I_{\tilde{y}}$ und $y=\tilde{y}$ auf $I_y \folgt y(x)=\tilde{y}(x).$
+
+$z$ ist wohldefiniert. Klar: $z(x_0) = y_0$. 12.2 $\folgt z \in \L_{(A)}$ Nach Konstruktion: $y\ole z\ \forall y\in\K$.
+
+Sei $y\in\K \folgt u\ole y$ und $y\ole z \folgt u\ole z \folgt z \in \L.\ z$ ist also eine obere Schranke von $\K$ in $\L$.
+\end{beweis}
+
+\begin{satz} %22.2
+Sei $D$ offen und $f\in C(D,\MdR)$.
+\begin{liste}
+\item $\exists y\in\L_{(A)}: x_0\in I_y^\circ$
+\item Ist $y\in\L_{(A)}$, so existiert eine nicht fortsetzbare Fortsetzung $\widehat{y}\in\L{(A)}$ von $y$ mit $I_{\widehat{y}}$ ist offen.
+\item Ist $(A)$ eindeutig l"osbar, so hat $(A)$ eine eindeutig bestimmte, nicht fortsetzbare L"osung $y:(\omega_-,\omega_+)\to\MdR$, wobei $\omega_-<\omega_+,\ \omega_-\in\MdR\cup\{-\infty\},\ \omega_+\in\MdR\cup\{\infty\}$ ("`die"' L"osung des AWPs).
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+\begin{liste}
+\item 12.6 (Peano, III)
+\item Wegen 22.1 ist nur zu zeigen: $I_{\widehat{y}}$ ist offen.
+
+Annahme: $I_{\widehat{y}}$ ist \emph{nicht} offen. Dann existiert $\max I_{\widehat{y}}$ oder $\min I_{\widehat{y}}.$ Etwa: $\exists b:=\max I_{\widehat{y}}.$
+
+$x_1:=b,\ y_1:=\widehat{y}(b).$ AWP $(B)\begin{cases}y' & = f(x,y)\\ y(x_1) & = y_1\end{cases}$
+
+Wende (1) auf (B) an. Dann existiert eine L"osung $\tilde{y}:K\to\MdR$ von (B) mit $x_1 = b\in\K^\circ \folgt \exists \ep>0: [b,b+\ep) \subseteq K.$ Definiere $z:I_{\widehat{y}} \cup [b,b+\ep) \to \MdR$ durch $z(x):=\begin{cases} \widehat{y}(x), & x\in I_{\widehat{y}}\\ \tilde{y}(x), & x \in [b,b+\ep) \end{cases}.$ Klar: $z(x_0) = \widehat{y}(x_0) = y_0.$ 12.3 $\folgt z \in \L_{(A)}$.
+
+Weiter: $I_{\widehat{y}} \subsetneqq I_z = I_{\widehat{y}}\cup[b,b+\ep)$ und $\widehat{y} = z$ auf $I_{\widehat{y}}$. Widerspruch, denn $\widehat{y}$ ist nicht fortsetzbar.
+\item folgt aus (2).
+\end{liste}
+\end{beweis}
+
+\begin{folgerung}
+Es sei $D\subseteq\MdR^2$ offen, $f \in C(D,\MdR)$, $f$ sei auf $D$ partiell differenzierbar nach $y$ und $f_y\in C(D,\MdR)$. Dann hat (A) eine eindeutig bestimmte nicht fortsetzbare L"osung $y:(\omega_-,\omega_+)\to\MdR.$
+\end{folgerung}
+
+\begin{beweis}
+13.3, 13.4, 22.2
+\end{beweis}
+
+\begin{beispiele}
+\item $D=\MdR^2,\ f(x,y) = 1+y^2$, AWP $\begin{cases} y' & = 1+y^2 \\ y(0) & =0 \end{cases}$
+
+Voraussetzungen obiger Folgerung sind erf"ullt.
+
+$\frac{\ud y}{\ud x} = 1+y^2 \folgt \int \frac{\ud y}{1+y^2} = \int \ud x + c \folgt \arctan y = x+c \folgt y(x) = \tan (x+c),\ 0=y(0) = \tan c \folgt c=0.$
+
+Die eindeutig bestimmte, nicht fortsetzbare L"osung des AWPs lautet: $y(x) = \tan x,\ x \in (\omega_-,\omega_+),\ \omega_- = -\pi/2,\ \omega_+ = \pi/2$ (also: $\omega_+ = -\omega_-$).
+
+\item $f$ erf"ulle die Voraussetzungen obiger Folgerung und es gelte $D = \MdR^2$ und \[(*)\quad f(x,y) = f(-x,y) = f(-x,-y) = f(x,-y)\ \forall (x,y) \in \MdR^2.\] Dann gilt f"ur die eindeutig bestimmte, nicht fortsetzbare L"osung $y:(\omega_-,\omega_+) \to \MdR$ des AWPs $\begin{cases} y' &=f(x,y)\\ y(0) &=0 \end{cases}: \omega_+ = -\omega_-$.
+
+\begin{beweis}
+Klar: $\omega_-<0<\omega_+$. Wir zeigen $\omega_+\ge-\omega_-$ (analog: $\omega_+ \le \omega_-).$ Annahme: $\omega_+<-\omega_-$.
+
+Sei $x\in[0,-\omega_-) \folgt -x \in (\omega_-,0] \subseteq (\omega_-,\omega_+).$ Definiere $z:[0,-\omega_-)\to\MdR$ durch $z(x):=-y(-x).$
+
+$z(0) = -y(0) = 0,\ z'(x) = -y'(-x)(-1) = y'(-x) = f(-x,y(-x)) \overset{(*)}{=} f(x,y(-x)) \overset{(*)}{=} f(x,-y(-x)) = f(x,z(x)).$ Also: $z$ l"ost das AWP auf $[0,-\omega_-).$ Eindeutige L"osbarkeit $\folgt y=z$ auf $[0,\omega_+)$. Definiere $u:(\omega_-,-\omega_-) \to \MdR$ durch $u(x):=\begin{cases} y(x), & x\in (\omega_-,0]\\ z(x), & x\in[0,-\omega_-) \end{cases}.$
+
+$u(0) = y(0) = 0$, 12.3 $\folgt u$ l"ost das AWP auf $(\omega_-,-\omega_-)$.
+\end{beweis}
+\end{beispiele}
+
+Ohne Beweis:
+
+\begin{satz}
+Sei $I=[a,b] \subseteq \MdR,\ D:=I\times\MdR$ und $f \in C(D,\MdR)$ sei auf $D$ beschr"ankt. (12.4 $\folgt \exists u\in\L_{(A)}: I_u=I).$
+
+Ist $y\in\L_{(A)}$, so existiert ein $\tilde{y}\in\L_{(A)}: I_{\tilde{y}} = I$ und $y=\tilde{y}$ auf $I_y$.
+\end{satz}
+\chapter{Minimal- und Maximallösung}
+Stets in diesem Paragraphen: $\emptyset \ne D \subseteq \MdR^2, f:D\to\MdR$ eine Funktion, $(x_0, y_0) \in D $. Wieder betrachten wir das 
+AWP  \[(A) \begin{cases} y' = f(x,y)\\ y(x_0) = y_0 \end{cases}\]
+$L_{(A)} $ und $I_y$ für $ y \in L_{(A)}$ seien wie in Paragraph 22 definiert.
+ 
+\begin{definition}
+ $y^* \in L_{(A)} $ heißt eine \begriff{Maximallösung} von (A) $:\equizu$ $y \leq y^*$ auf $I_y \cap I_{y^*} \forall y \in L_{(A)}$.\\
+ $y_* \in L_{(A)} $ heißt eine \begriff{Minimallösung} von (A) $:\equizu$ $y \geq y_*$ auf $I_y \cap I_{y_*} \forall y \in L_{(A)}$
+\end{definition}
+
+\begin{beispiel}
+$D = \MdR^2, f(x,y) = \sqrt{|y|},$ AWP \[(A) \begin{cases} y' = \sqrt{|y|} \\ y(0) =0 \end{cases}\]
+
+Für $\alpha \geq 0: y_{\alpha}(x) : = \begin{cases} 0 &, x \leq \alpha \\ \frac{(x-\alpha)^2}{4} &, x \geq \alpha \end{cases} $
+
+Es gilt weiterhin $\tilde{y}_{\alpha}(x) := -y_{\alpha}(-x)$. \\
+Nachrechnen: $y_{\alpha}(x), \tilde{y}_{\alpha}(x)$ lösen das AWP auf $\MdR$.
+
+F"ur $\alpha, \beta \geq 0: y_{\alpha,\beta} := 
+\begin{cases}  y_{\alpha}(x) &, x \geq \alpha \\ 0 &, -\beta \leq x \leq \alpha \\ \tilde{y}_{\beta}(x) &, x \leq -\beta  \end{cases}$
+
+"Ubung: Sei $y: I \to \MdR$ eine Funktion, $I \subseteq \MdR$ ein Intervall und $0 \in I$.
+y löst das AWP auf I $\equizu y = 0$ auf I oder $\exists \alpha \geq 0: y = (y_{\alpha})_{|I}$ oder 
+$\exists \alpha \geq 0: y = (\tilde{y}_{\alpha})_{|I}$ oder $\exists \alpha, \beta \geq 0: y = (\tilde{y}_{\alpha,\beta})_{|I}.$
+
+Damit ist $y_0$ eine Maximallösung  und $\tilde{y_0}$ eine Minimallösung. 
+Ab jetzt sei $I = [a,b] \subseteq \MdR, D := I \times \MdR, f \in C(D,\MdR)$ sei beschr"ankt, $x_0 \in I, y_0 \in \MdR, 
+M := sup\{ |f(x,y)| : (x,y) \in D \}$.
+\end{beispiel}
+
+Vorbemerkungen: 
+\begin{liste}
+\item Das AWP (A) hat Lösungen auf $I$ (12.4, Peano)
+\item $\mathcal{X} := C(I,\MdR)$ mit $||.||_{\infty}$ ist ein BR.
+\item $T:\mathcal{X} \to \mathcal{X}$ sei definiert durch $(Ty)(x) := y_0 + \int_{x_0}^{x} f(t,y(t)) dt$  $(y\in \mathcal{X}, x\in I)$, T ist stetig;
+F"ur $y \in \mathcal{X}$ gilt: y löst das AWP auf $I \equizu Ty = y$.
+\item Sei $y \in \mathcal{X}$ eine Lösung von (A) auf $I$: f"ur $x, \tilde{x} \in I$:
+$| y(x) - y(\tilde{x}) | = |y'(\xi)| | x - \tilde{x}| = |f(\xi,y(\xi))| | x - \tilde{x}| \leq M | x - \tilde{x}|$
+\end{liste}
+
+\begin{satz}
+Das AWP (A) hat eine Maximallösung $y^*: I \to \MdR$ und eine Minimallösung $y_*:I \to \MdR$.
+\end{satz}
+
+\begin{beweis}
+Wir zeigen nur die Existenz von $y^* : I \to \MdR$.
+  $\mathcal{L} := \{ y \in \mathcal{L}_{(A)} : I_y = I\}$. 12.4 $\folgt \mathcal{L} \neq \emptyset$.
+Sei $y \in \mathcal{L}, x \in I : |y(x)| = |y_0 + \int_{x_0}^{x} f(t,y(t)) dt| \leq |y_0| + | \int_{x_0}^{x} f(t,y(t)) dt|
+\leq |y_0| + M |x-x_0| \leq \underbrace{|y_0| + M | b-a |}_{c}.$
+
+Also: $y(x) \leq c \ \forall y \in \mathcal{L} \ \forall x \in I.$ 
+Es existiert also $y^*(x) := sup \{ y(x) : y \in \mathcal{L} \} (x \in I).$
+Sei $y \in  \mathcal{L}$ (also $I_y = I$). Dann $y \leq y^*$ auf I. Sei $y \in \mathcal{L}_{(A)}$ (also $I_y \subseteq I$). 
+
+22.3 $\folgt \exists \hat{y} \in \mathcal{L}: y = \hat{y}_{|I_y} \folgt y \leq \hat{y} \leq y^*$ auf $I_y$.
+
+Noch zu zeigen: $y^* \in \mathcal{L}.$
+
+Sei $I \cap \MdQ = \{ x_1,x_2,x_3, \dots \} $
+
+Seien $j,k \in \MdN$. Dann ex. ein $y_{jk} \in \mathcal{L}: y_{jk}(x_j) \geq y^*(x_j) - \frac{1}{k}.$
+
+Für $k \in \MdN$ und $x\in I: y_k(x) := max\{y_{1k}(x),y_{2k}(x),\dots, y_{kk}(x)\}. $\\ "Ubung: $y_k \in \mathcal{L} \ \forall k \in \MdN$.
+Für $k,j  \in \MdN, j \leq k: y_k(x_j) \geq  y_{jk}(x_j) > y^*(x_j) - \frac{1}{k}$.
+
+Vorbemerkung (4) und 11.4 $\folgt (y_k)$ enth"alt eine auf I gleichmäßig konvergente Teilfolge. o.B.d.A $(y_k)$ konvergiert gleichm"aßig auf I.
+$\hat{y}(x) := \lim_{k \to \infty} y_k(x) ( x \in I )$.
+ $T y_k = y_k \ \forall k \in \MdN, T\text{ stetig }\folgt T \hat{y} = \hat{y} \folgt \hat{y} \in \mathcal{L}.$
+ 
+Es ist $\hat{y} \leq  y^*$ auf I. Sei $x_j \in I \cap \MdQ.$
+$\hat{y}(x_j) = \lim_{k \to \infty} y_k(x_j) \geq  \lim_{k \to \infty} (y^*(x_j)-\frac{1}{k}) = y^*(x_j) \folgt 
+\hat{y} = y^*$ auf $I\cap \MdQ$.
+
+Annahme: $\exists \xi \in I: \hat{y}(\xi) < y^*(\xi) \folgt \exists u \in \mathcal{L} : \hat{y}(\xi) < u(\xi).$
+F"ur $x_{\mu} \in I \cap \MdQ$ hinreichend nahe bei $\xi$ : $\hat{y}(x_{\mu}) < u(x_{\mu}) \leq y^*(x_{\mu})$, Widerspruch.
+
+D.h. $\hat{y} \geq y^*$ auf $I$. Also $y^* = \hat{y}$ auf I,  somit gilt $ y^* \in \mathcal{L}.$
+\end{beweis}
+
+\begin{definition}
+$T := \{ (x,y) \in \MdR^2 : x \in I, y_*(x) \leq y \leq y^*(x) \}$ heißt \begriff{Lösungstrichter} von (A).
+\end{definition}
+
+
+\begin{satz} %23.2
+Sei $(\sigma, \tau) \in T$. Dann existiert eine Lösung $v: I \to \MdR$ von (A) auf $I$ mit $v(\sigma) = \tau$.
+\end{satz}
+
+\begin{beweis}
+Betrachte das AWP $ (B) \begin{cases} y' =f(x,y) \\ y(\sigma) = \tau  \end{cases}.$
+12.4 (Peano) $\folgt (B)$ hat eine  Lösung $ w: I \to \MdR$ auf I. 
+Ist $\sigma = x_0 \folgt \tau = y_0 \folgt v := w$ leistet das Verlangte. Sei also $\sigma \neq x_0$, etwa $x_0 < \sigma$.
+Ist $w(x_0) = y_0 \folgt v := w$ leistet das Verlangte. Sei also $w(x_0) \neq y_0$.
+Es ist $y_*(\sigma)  \leq \tau = w(\sigma) \leq y^*(\sigma)$.
+
+Fall 1: $w(x_0) > y_0 = y^*(x_0) \folgt w(x_0) - y^*(x_0) > 0$ und $w(\sigma) - y^*(\sigma) \leq 0$.
+Zwischenwertsatz $\folgt \exists \xi \in [x_0, \sigma] : w(\xi) = y^*(\xi)$
+
+Definiere: $v:I \to \MdR$ durch $ v(x) := \begin{cases} y^*(x),& x \in [a, \xi] \\ w(x),& x \in [\xi, b] \end{cases}$
+$v(x_0) = y^*(x_0) = y_0$, $v(\sigma) = w(\sigma) = \tau.$ 12.3 $\folgt v$ löst das AWP (A) auf $I$.
+
+
+Fall 2: $w(x_0) < y_0 = y_*(x_0) \folgt w(x_0) - y_*(x_0) < 0$ und $w(\sigma) - y_*(\sigma) \geq 0$.
+Zwischenwertsatz $\folgt \exists \xi \in [x_0, \sigma] : w(\xi) = y_*(\xi)$
+
+Definiere: $v:I \in \MdR$ durch $v(x) := \begin{cases} y_*(x),& x \in [a, \xi] \\ w(x),& x \in [\xi, b] \end{cases}$
+$v(x_0) = y_*(x_0) = y_0$, $v(\sigma) = w(\sigma) = \tau.$ 12.3 $\folgt v$ löst das AWP (A) auf $I$
+\end{beweis}
+
+
+
+
+
+
+
+
+\chapter{Ober- und Unterfunktionen}
+
+\begin{vereinbarung}
+I.d. Paragraphen: $x_0, y_0\in\MdR, a>0,$ \mbox{$I:=[x_0, x_0+a]$}, \mbox{$I_0:=(x_0, x_0+a]$}, 
+$D:=I\times \MdR$ und $f:D\to\MdR$ eine Funktion.
+\end{vereinbarung}
+
+Wir betrachten das AWP
+\[
+	(A)\begin{cases}
+		y'=f(x,y)\\
+		y(x_0)=y_0
+	\end{cases}
+\]
+
+\begin{definition}
+$v,w:I\to\MdR$ seien differenzierbar auf $I$.
+
+$v$ hei"st eine \begriff{Unterfunktion} (UF) bzgl. $(A)$ $:\equizu$
+\[
+	v'(x)<f(x,v(x))\ \forall x\in I\text{ und }v(x_0)\le y_0
+\]
+$w$ hei"st eine \begriff{Oberfunktion} (OF) bzgl. $(A)$ $:\equizu$
+\[
+	w'(x)>f(x,w(x))\ \forall x\in I\text{ und }w(x_0)\ge y_0
+\]
+\end{definition}
+
+\begin{wichtigerhilfssatz}
+$\phi,\psi:I_0\to\MdR$ seien differenzierbar auf $I_0$. Es sei $\ep>0,\ep<a$ und es gelte: $\phi<\psi$ auf $(x_0, x_0+\ep)$.
+Weiter sei
+\[
+	\phi'(x)-f(x,\phi(x)) < \psi'(x)-f(x,\psi(x))\ \forall x\in I_0
+\]
+Dann: $\phi<\psi$ auf $I_0$.
+\end{wichtigerhilfssatz}
+\begin{beweis}
+Anname: $\exists x_1\in I_0: \phi(x_1)\ge \psi(x_1)$.
+Zwischenwertsatz $\folgt$ \mbox{$M:=\{x\in I_0: \phi(x)=\psi(x)\}\ne\emptyset$.}
+
+$\xi:=\inf M$; $\phi,\psi$ stetig$\folgt \phi(\xi)=\psi(\xi)\folgt\xi=\min M$ und $\phi<\psi$ auf $(x_0,\xi)$.
+Sei $h>0$ so, da"s $\xi-h>x_0\folgt\phi(\xi-h)<\psi(\xi-h)$
+\[
+	\folgt
+	\frac{\phi(\xi-h)-\phi(\xi)}{h}<\frac{\psi(\xi-h)-\psi(\xi)}{h}
+\]
+\[
+	\folgt 
+	\frac{\phi(\xi-h)-\phi(\xi)}{-h}>\frac{\psi(\xi-h)-\psi(\xi)}{-h}
+\]
+
+$\overset{h\to 0}{\folgt} \phi'(\xi)\ge\psi'(\xi)$
+Aber: $\phi'(\xi)-f(\xi,\phi(\xi)) < \psi'(\xi)-f(\xi,\underbrace{\psi(\xi)}_{=\phi(\xi)})
+\folgt \phi'(\xi)<\psi'(\xi)$, Widerspruch!
+\end{beweis}
+
+\begin{satz}[Absch"atzung von L"osungen mittels Ober- und Unterfunktionen]
+Gegeben: $v,w,y:I\to\MdR$. $v$ sei eine Unterfunktion bez"uglich $(A)$, $w$ sei eine Oberfunktion
+bez"uglich $(A)$ und $y$ sei eine L"osung des AWPs $(A)$ auf $I$. Dann: $v<y<w$ auf $I_0$.
+\end{satz}
+\begin{beweis}
+Wir zeigen nur $v<y$ auf $I_0$.
+\[
+	\forall x\in I:\ v'(x)-f(x, v(x))<0=y'(x)-f(x,y(x)).
+\]
+Wegen 24.1 gen"ugt es z.z:
+\[
+	(*)\quad \exists\ep\in(0,a): v<y\text{ auf } (x_0, x_0+\ep)
+\]
+\textbf{Fall 1}: $v(x_0)<y_0=y(x_0);\ v,y$ stetig $\folgt$ es gilt (*).
+
+\textbf{Fall 2}: $v(x_0)=y_0=y(x_0);\ h:=y-v$; dann: $h(x_0)=0$ und
+\[
+	v'(x_0)-f(x_0, v(x_0))<0=y'(x_0)-f(x,\underbrace{y(x_0)}_{=v(x_0)})
+\]
+$\folgt\ v'(x_0)<y'(x_0)$, also $h'(x_0)>0$.
+Annahme: $(*)$ gilt nicht. Dann existiert zu jedem $n\in\MdN$ ein $x_n\in(x_0, x_0+\frac{1}{n})$: $h(x_n)\le 0$
+\[
+	\folgt \frac{h(x_n)}{x_n-x_0}=\frac{h(x_n)-h(x_0)}{x_n-x_0}\le 0\ \forall n\in\MdN\overset{n\to\infty}{\folgt}h'(x_0)\le 0
+\]
+Widerspruch!
+\end{beweis}
+
+\begin{bemerkung}
+Man kann auch folgende Situation betrachten:
+
+$x_0$, $y_0\in\MdR$, $a>0$, $J:=[x_0-a, x_0]$, $D:=J\times\MdR$, $f:D\to\MdR$
+\[
+	\text{AWP}\begin{cases}
+		y'=f(x,y)\\
+		y(x_0)=y_0
+	\end{cases}
+\]
+Dann lauten die Bedingungen f"ur eine
+
+\begin{tabular}{lll}
+Unterfunktion:&$v'(x)>f(x,v(x))$&$\ \forall x\in I, v(x_0)\le y_0$\\
+Oberfunktion:&$w'(x)<f(x,w(x))$&$\ \forall x\in I, w(x_0)\ge y_0$
+\end{tabular}
+
+($\to$ Walter: Gew"ohnliche Differentialgleichungen).
+\end{bemerkung}
+\paragraph{Anwendung von 24.2, schwer klausurrelevant! :-)}: $f(x,y) = \frac{x^2+1}{2}+y^2$.
+\[
+	\text{AWP }(+) \begin{cases}
+		y'=f(x,y)\\
+		y(0)=1
+	\end{cases}
+\]
+$f\in C(\MdR^2,\MdR)$, $f$ ist partiell differenzierbar nach $y$ und $f_y\in C(\MdR^2, \MdR)$
+Paragraph 22 $\folgt (+)$ hat eine eindeutig bestimmte, nicht fortsetzbare L"osung $y:(\omega_-, \omega_+)\to\MdR$.
+($\omega_-<0<\omega_+$). Wir untersuchen diese L"osung f"ur $x\ge 0$.
+
+\textbf{Behauptung}:\begin{liste}
+	\item $w_+\in[\frac{\pi}{4},1]$
+	\item $\frac{1}{1-x}<y(x)\ \forall x\in(0,\omega_+)$
+	\item $\frac{1}{1-x}<y(x)<\tan(x+\frac{\pi}{4})\ \forall x\in(0,\frac{\pi}{4})$
+\end{liste}
+\begin{beweis}
+$f_1(x,y)=y^2\folgt f_1<f$ auf $\MdR^2$. Das
+\[
+	\text{AWP }\begin{cases}
+		v'=v^2=f_1(x,v)\\
+		v(0)=1
+	\end{cases}
+\]
+hat die L"osung $v(x)=\frac{1}{1-x}$ auf $(-\infty, 1)$ (TDV!).
+\end{beweis}
+Sei $a\in (0,1), a<\omega_+$. F"ur $x\in[0,a]$:
+\[
+	v'(x)=f_1(x, v(x)) < f(x,v(x)),\quad v(0)=1
+\]
+$v$ ist eine Unterfunktion bez"uglich $(+)$ auf $[0,a]$. 24.2 $\folgt v<y$ auf $(0,a]\ (i)$.
+
+Annahme: $\omega_+>1\folgt (i)$ gilt $\forall a\in(0,1)\folgt v<y$ auf $(0,1)$.
+$\folgt \ds\lim_{x\to 1-}y(x)=\infty$. Aber: 1 $\in (\omega_-,\omega_+)\folgt$
+$y(x)\to y(1)\ (x\to 1-)$, Widerspruch! (also: $\omega_+\le 1)$.
+
+Weiter: $(i)$ gilt $\forall a\in (0,\omega_+)\folgt v<y$ auf $(0,\omega_+)$. 
+$f_2(x,y):=1+y^2$, dann: $f_2>f$ auf $[0,1)\times\MdR$. Das
+\[
+	\text{AWP }\begin{cases}
+		w'=1+w^2\\
+		w(0)=1
+	\end{cases}
+\]
+hat die L"osung $w(x)=\tan(x+\frac{\pi}{4})$ auf $(-\frac{3}{4}\pi,\frac{1}{4}\pi)$ (TDV!).
+Sei $a\in (0,\omega_+)$, a$<\frac{\pi}{4}$; f"ur $x\in [0,a]: w'(x)=f_2(x,w(x))>f(x,w(x)),\ 
+w(0)=1\folgt$ w ist eine Oberfunktion bzgl $(+)$ auf $[0,a]$. 24.2 $\folgt y<w$ auf $(0,a]$ $(ii)$.
+
+Annahme: $\omega_+ < \frac{\pi}{4}\folgt$ $(ii)$ gilt $\forall a\in (0,\omega_+)\folgt
+y<w$ auf $(0,\omega_+)$. $y'(x)=\frac{x^2+1}{2}+y(x)^2>0\folgt y$ ist streng wachsend. $y$ ist
+nach oben beschr"ankt auf $[0,\omega_+) \folgt \exists \beta:=\ds\lim_{x\to\omega_+-}y(x)$ und
+$\beta\in\MdR$.
+\[
+	z(x):=\begin{cases}
+		y(x),& x\in (\omega_-, \omega_+)\\
+		\beta,& x=\omega_+
+	\end{cases}
+	\quad (\folgt z\in C(\omega_-,\omega_+))
+\]
+\[
+	\lim_{x\to\omega_+-}\frac{z(x)-z(\omega_+)}{x-\omega_+}=\lim_{x\to\omega_+-}\frac{y(x)-\beta}{x-\omega_+}
+	\overset{\text{l'Hosp.}}{=}\lim_{x\to\omega_+-}y'(x)
+\]
+\[
+	= \lim_{x\to\omega_+-}f(x,y(x))=f(\omega_+, \beta)
+\]
+$\folgt z$ ist in $\omega_+$ differenzierbar und $z'(\omega_+)=f(\omega_+,\beta)=f(\omega_+,z(\omega_+))$
+$\folgt z$ l"ost das AWP $(+)$ auf $(\omega_-,\omega_+]$, Widerspruch!, denn $y$ ist nicht fortsetzbar.
+Also: $\omega_+\ge\frac{\pi}{4}$. Dann gilt $(ii)$ $\forall a\in (0,\frac{\pi}{4})\folgt y<w$ auf $(0,\frac{\pi}{4})$.
+
+\chapter{Stetige Abhängigkeit}
+
+In diesem Paragraphen: $I = [a,b]\subseteq \MdR$, $D:= I\times \MdR$, $f\in C(D,\MdR)$.
+
+\begin{satz}
+Sei $(f_n)$ eine Folge in $C(D,\MdR)$, $(x_n)$ eine Folge in $I$, $(\eta_n)$ eine Folge in $\MdR$ und $M\ge 0$. Es gelte:
+\begin{enumerate}
+\item[(a)] $|f_n(x,y)| \le M$, $|\eta_n|\le M\ \forall n\in\MdN \ \forall (x,y)\in D$
+\item[(b)] $(f_n)$ konvergiere auf $R:= I \times [-(b-a+1)M, (b-a+1)M ]$ gleichmäßig gegen $f$.
+\item[(c)] Zu jedem $n\in\MdN$ sei $y_n: I \to \MdR$ eine Lösung des Anfangswertproblems:
+\[ \begin{cases} y'=f_n(x,y) \\ y(x_n) = \eta_n \end{cases} \]
+auf $I$.
+\end{enumerate}
+Dann gilt: 
+\begin{enumerate}
+\item $(y_n)$ enthält eine auf $I$ gleichmäßig konvergente Teilfolge $(y_{n_k})$ und $y(x) := \lim_{k\to\infty} y_{n_k}(x) \ (x\in I)$ so gilt: $y'(x)  =f(x,y(x))\ \forall x\in I$
+\item  Gilt $x_n\to x_0\ (\in I)$ und $\eta_n\to y_0$ und hat das Anfangswertproblem 
+\[
+\begin{cases}
+y'=f(x,y) \\ y(x_0)= y_0
+\end{cases}\]
+auf $I$ genau eine Lösung $y:I\to\MdR$, so konvergiert $(y_n)$ auf $I$ gleichmäßig gegen $y$.
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+\begin{enumerate}
+\item 12.1 $\folgt y_n(x) = \eta_n + \int_{x_n}^{x} f_n(t,y_n(t))dt \ \forall x\in I\ \forall n\in\MdN\ (*)$.
+
+Für $x,\tilde x \in I, n\in\MdN$: $|y_n(x)|\le |\eta_n| + |\int_{x_n}^x|f_n(t,y_n(t))|dt|\le M + M|x-x_n| \le M + (b-a)M = (b-a+1)M \folgt (x,y_n(x) )\in R \ \forall n\in\MdN\ \forall x\in I \ (**)$
+
+$|y_n(x) - y_n(\tilde x)| \gleichnach{MWS} |y_n'(\xi_n)||x-\tilde x| = |f_n(\xi_n, y_n(\xi_n))||x-\tilde x| \le M|x-\tilde x|$
+
+§1 $\folgt (y_n)$ enthält eine auf $I$ gleichmäßig konvergente Teilfolge. o.B.d.A.: $(y_n)$ konvergiert auf $I$ gleichmäßig.
+
+$y(x) := \lim_{n\to\infty} y_n(x)\ (x\in I)$; Analysis I $\folgt y\in C(I,\MdR)$. $(**) \folgt (x,y(x))\in R \ \forall x\in I$. $g(t) ;= f(t,y(t))$, $g_n(t) ;= f_n(t,y_n(t))\ (t\in I)$. Übung: $(g_n)$ konvergiert auf $I$ gleichmäßig gegen $g$. o.B.d.A: $(x_n)$ konvergent, $(\eta_n)$ konvergent, etwa $x_n\to x_0$, $\eta_n \to y_0$. (Bolzano-Weierstraß!).
+\begin{align*}
+(*) &\folgt y_n(x) = \eta_n + \int_{x_n}^x g_n(t)dt\ \forall n\in\MdN \ \forall x\in I\\
+&\folgtwegen{n\to\infty} y(x) = y_0 + \int_{x_0}^x g(t)dt \ \forall x\in I\\
+&\folgt y(x_0) = y_0 \text{ und } y'(x) = g(x) = f(x,y(x)) \ \forall x\in I
+\end{align*}
+\item $a_n ;= \|y-y_n\|_\infty$. Zu zeigen ist: $a_n\to0$.
+
+\textbf{Annahme:} $a_n\nrightarrow 0 \folgt \exists \ep_0 >0$ und eine Teilfolge $(a_{n_k}): a_{n_k} \ge \ep_0 \ \forall k\in\MdN$.
+
+(1) $\folgt (y_{n_k})$ enhält eine auf $I$ gleichmäßig konvergente Teilfolge $y_{n_{k_l}}$; $z(x) := \lim_{l\to\infty}y_{n_{k_l}}\ (x\in I)$
+
+(1) + Beweis von (1) $\folgt z$ löst das Anfangswertproblem $y'=f(x,y);\ y(x_0) = y_0$. Die eindeutige Lösbarkeit liefert $z=y$ auf $I$ $\folgt a_{n_{k_l}} = \| y - y_{n_{k_l}}\|_\infty = \|z - y_{n_{k_l}}\|_\infty \to 0$ ($l\to\infty$), Widerspruch denn $a_{n_{k_l}}\ge \ep_0 \ \forall l\in\MdN$.
+\end{enumerate}
+\end{beweis}
+
+\begin{satz}
+Es sei $x_0\in I$, $\eta_1, \eta_2\in\MdR$, $L\ge 0$ und es gelte: 
+\[ |f(x,y) - f(x,\tilde y)| \le L(y-\tilde y)\ \forall (x,y),(x,\tilde y)\in D\,.\]
+Für $i=1,2$ sei $y_i: I\to\MdR$ die (nach 13.1) eindeutig bestimmte Lösung des Anfangswertproblems:
+%\[
+\begin{gather*}
+\begin{cases}
+y'=f(x,y) \\ y(x_0) = \eta_i
+\end{cases}
+\intertext{Dann gilt:}
+|y_1(x) - y_2(x)| \le e^{L(b-a)}|\eta_1-\eta_2| \ \forall x\in I\,.
+\end{gather*}
+\end{satz}
+
+\begin{beweis}
+$\alpha := \|y_1-y_2\|_\infty = \max\{|y_1(x) - y_2(x)| : x\in I \}$. Für $x\in I$: 
+\begin{align*}
+|y_1(x)-y_2(x)| &= \left |\eta _1 + \int_{x_0}^x f(t,y_1(t))dt - (\eta_2 +  \int_{x_0}^x f(t,y_2(t))dt)\right|\\
+&\le |\eta_1 - \eta_2| + \left|\int_{x_0}^x \underbrace{|f(t,y_1(t)) - f(t,y_2(t))|}_{L|y_1(t) - y_2(t)| \le L \alpha} dt \right|\\
+&\le |\eta_1-\eta_2| + L\alpha |x-x_0|\\
+\text{Allgemein gilt:}
+&\le \underbrace{\frac{L^{n+1}}{(n+1)!} \alpha|x-x_0|^{n+1}}_{=: \alpha_n(x)} + |\eta_1-\eta_2| \underbrace{\sum_{k=0}^n \frac{L^k|x-x_0|^k}{k!}}_{=: \beta_n(x)}%\\
+%&\forall x\in I \ \forall n\in\MdN_0
+\end{align*}
+$\beta_n(x) \to e^{L|x-x_0|}\ (n\to\infty)$, $\alpha_n(x) \to 0 \ (n\to\infty)$ $\folgt |y_1(x) -y_2(x)| \le e^{L|x-x_0|}|\eta_1-\eta_2| \le e^{L(b-a)}|\eta_1-\eta_2|$
+\end{beweis}
+
+\chapter{Zwei Eindeutigkeitssätze}
+
+Stets in diesem Paragraphen: $I=[a,b]\subseteq\MdR$, $x_0\in I$, $y_0\in\MdR$ und $f\in C(D,\MdR)$. Wir betrachten das Anfangswertproblem:
+\[ \text{(A)} \quad 
+\begin{cases}
+y'=f(x,y) \\ y(x_0) = y_0
+\end{cases}
+\]
+
+\begin{satz}[Satz von Nagumo]
+Es gelte \[|f(x,y) - f(x,\tilde y)| \le \frac{|y-\tilde y|}{|x-x_0|} \ \forall (x,y),(x,\tilde y)\in D\text{ mit }x\ne x_0\,.\]
+Dann hat (A) höchstens eine Lösung auf $I$.
+\end{satz}
+
+\begin{beweis}
+Seien $y_1,y_2: I \to \MdR$ Lösungen von (A) auf $I$, $y:= y_1-y_2$. ($\folgt y(x_0)=0$)
+
+$\lim_{x\to x_0} \frac{y(x)}{x-x_0} = \lim_{x\to x_0} \frac{y(x) - y(x_0)}{x-x_0} = y'(x_0) = y_1'(x_0) - y_2'(x_0) = f(x_0,y_1(x_0))  - f(x_0,y_2(x_0)) = 0$.
+
+Definiere $h:i\to\MdR$ durch $h(x) := 
+\begin{cases}
+\frac{|y(x)|}{|x-x_0|}, & x\in I\setminus\{x_0\}\\
+0, &x=x_0
+\end{cases} \folgt h \in C(I,\MdR)
+$. Voraussetzung $\folgt |f(t,y_1(t)) - f(t,y_2(t))| \le h(t) \ \forall t\in I$.
+\begin{align*}
+\forall x\in I: |y(x)| &=|y_1(x) - y_2(x)| \\
+&\gleichnach{12.1} \left|\int_{x_0}^x (f(t,y_1(t)) - f(t,y_2(t))) dt \right| \\
+&\le \left| \int_{x_0}^x |f(t,y_1(t)) - f(t,y_2(t))| dt \right| \\
+&\le \left|\int_{x_0}^x h(t) dt\right|
+\end{align*}
+\textbf{Annahme:} $\exists x_1 \in I: y(x_1)\ne0$. Dann: $x_1\ne x_0$, etwa $x_0<x_1$; $h(x_1) >0$, $h(x_0) = 0$. $\exists \xi \in [x_0,x_1]: h(t) \le h(\xi) \ \forall t\in[x_0,x_1]$. Dann: $h(\xi) > 0 \folgt \xi \ne x_0$, also $x_0 < \xi$.
+\begin{multline*}
+\text{Dann: }h(\xi) = \frac{|y(\xi)|}{|\xi-x_0|} = \frac{|y(\xi)|}{\xi-x_0} 
+\le \frac1{\xi-x_0} \left|\int_{x_0}^\xi h(t) dt \right|\\ = \frac{1}{\xi-x_0} \int_{x_0}^\xi h(t) dt < \frac1{\xi-x_0} \int_{x_0}^\xi h(\xi) dt = h(\xi)\text{, Widerspruch.}
+\end{multline*}
+\end{beweis}
+
+\begin{satz}[Satz von Osgood]
+Es sei $\phi:(0,\infty)\to\MdR$ stetig und $>0$ auf $(0,\infty)$, $t_0>1$ und das uneigentliche Integral $\int_0^{t_0}\frac{du}{\phi(u)}$ sei divergent.\\
+Weiter gelte \[|f(x,y)-f(x,\tilde y)|\le\phi(|y-\tilde y|) \forall (x,y),(x,\tilde y) \in D\text{ mit } y\ne \tilde y.\] \\
+Dann hat (A) auf I h"ochstens eine L"osung.
+\end{satz}
+\begin{bemerkung}
+f gen"uge auf D einer LB bzgl. y mit der Lipschitz-Konstanten L: $\phi(u):=Lu$
+\end{bemerkung}
+\begin{beweis}
+o.B.d.A: $x_0=a$. $\int_0^{t_0}\frac{du}{\phi(u)}$ div. \folgt  $\int_{\frac{1}{k}}^{t_0}\frac{du}{\phi(u)}\to\infty(k\to\infty)$.\\
+Daher: o.B.d.A:   $\int_{\frac{1}{k}}^{t_0}\frac{du}{\phi(u)} > 2(b-a)\forall k\in\MdN$.\\
+
+\textbf{(I):} Sei $k\in\MdN$. Definiere $g_k:[\frac{1}{k},\infty)\to\MdR$ durch $g_k(t):= \int_{\frac{1}{k}}^{t}\frac{du}{\phi(u)}$\\
+Dann: $g_k \in C^1([\frac{1}{k},\infty)$, $g'_k=\frac{1}{\phi}>0$, $g_k$ ist streng wachsend, $g_k(\frac{1}{k})=0$, $g_k(t_0)>2(b-a)$\\
+ZWS $\folgt [0,2(b-a)] \subseteq g_k([\frac{1}{k},\infty))$\\
+F"ur $x \in I = [a,b]:2(x-a) \in [0,2(b-a)]$.\\ Definiere $\Psi_k:I\to\MdR$ durch $\Psi_k(x):=g_k^{-1}(2(x-a))$.\\
+$\folgt (i): 2(x-a) = g_k(\Psi_k(x)) = \int_{\frac{1}{k}}^{\Psi_k(x)}\frac{du}{\phi(u)} \forall x \in I$.\\
+$g_k$ streng wachsend $\folgt g_k^{-1}$ streng wachsend $\folgt \Psi_k$ streng wachsend.\\
+$\Psi_k(a)=\Psi_k(x_0)=g_k^{-1}(0)=\frac{1}{k}$, $\Psi_k(x)>\frac{1}{k}\forall x \in (a,b]$.\\
+$g_k$ ist stetig db $\folgt g_k^{-1}$ stetig db $\folgt \Psi_k$ stetig db.\\
+Aus (i): $2 =g'_k(\Psi_k(x))\Psi'_k(x) = \frac{1}{\phi(\Psi_k(x))}\Psi'_k(x)\forall x \in I$\\
+$\folgt$ (ii): $\Psi'_k=2\phi(\Psi_k(x))>0\forall x \in I$.\\
+
+\textbf{(II):} \underline{Behauptung:} $\Psi_k(x)\to 0 (k\to \infty) \forall x \in I$.\\
+\underline{Beweis:} Sei $x\in I$. \textbf{ Annahme: } $\Psi_k(x) \not\to 0 (k \to \infty)$. \\
+Dann $\exists \epsilon_0 > 0$ und eine TF $(\Psi_{k_j}(x))$ von $(\Psi_k(x))$ mit:\\
+$\epsilon_0 \ge 0 \Psi_{k_j}(x)\forall j \in \MdN$.\\
+$c_j:=\int_{\frac{1}{k_j}}^{\epsilon_0}\frac{du}{\phi(u)} (j \in \MdN)$. Vorraussetzung $\folgt c_j \to \infty (j\to\infty)$.\\
+Aber: $c_j=\int^{\ep_0}_{\frac{1}{k_j}}\frac{du}{\phi(u)} \le \int_{\frac{1}{k_j}}^{\Psi_{k_j}(x)}\frac{du}{\phi(u)} \gleichwegen{(1)} 2(x-a)\forall j\in\MdN$.\\
+\textbf{Widerspruch zu $c_j \to \infty$!}\\
+
+\textbf{(III):} Sei $y_1$, $y_2:I\to \MdR$ L"osungen von (A) auf $I$. $y:=y_1-y_2$. \\
+Wir zeigen: $|y(x)|\le \Psi_k(x) \forall k \in \MdN \forall x \in I$. (Mit (II) folgt dann: $y == 0$ auf I.)\\
+Sei $k \in \MdN$.\\
+\textbf{Annahme:} $M:={x \in I:|y(x)| > \Psi_k(x)}\ne \emptyset$.\\
+$y(a) = y(x_0)=y_1(x_0)-y_2(x_0)=0 \folgt a \not \in M. \xi := \inf M$\\
+$y$,$\Psi_k$ stetig $\folgt |y(\xi)|\ge\Psi_k(\xi) \folgt \xi > a$ und $|y(x)| \le \Psi_k(x) \forall x \in [a,\xi)$ (iii)\\
+$\folgtwegen{x\to\xi-} |y(\xi)|\le \Psi_k(\xi).$ Also: $|y(\xi)|=\Psi_k(\xi).$ D.h.: $+- y(\xi) = \Psi_k(\xi).$ o.B.d.A: $y(\xi)=\Psi_k(\xi)$. (sonst betrachte $y_2-y_1=-y$).\\
+Aus (iii) folgt: $\exists \alpha > 0$ so, dass $\xi-\alpha \ge a$ und $0 < y \le \Psi_k$ auf $[\xi-a,\xi]$.\\
+Sei $x\in(\xi-\alpha,\xi) \folgt y(x)\le \Psi_k(x) \folgt y(x)-y(\xi)\le \Psi_k(x)-\Psi_k(\xi)$\\
+$\folgt \frac{y(x)-y(\xi)}{x-\xi}\ge \frac{\Psi_k(x)-\Psi_k(\xi)}{x-\xi} \folgtwegen{x\to\xi-} y'(\xi)\ge\Psi'_k(\xi) \folgt \Psi'_k(\xi)\le y'(\xi)=y'_1(\xi)-y'_2(\xi)$\\
+$=f(\xi,y_1(\xi))-f(\xi,y_2(\xi)) \gleichwegen{(ii)} \frac{1}{2}\Psi'_k(\xi) \folgt \Psi'_k(\xi)\le 0$, Widersruch zu (ii)!.
+
+\end{beweis}
+
+
+\chapter{Randwertprobleme (Einblick)}
+
+Sei $D \subseteq \MdR^2$, $I=[a,b]\subseteq \MdR$, $f:I x D \to \MdR$ eine Funktion. \\
+Wir betrachten das \begriff{Randwertproblem} (RWP):
+\[ \quad
+\begin{cases}
+y''=f(x,y,y') \\ \alpha_1 y(a) + \alpha_2 y''(a) = \gamma_a, \beta_1 y(b) + \beta_2 y''(b) = \gamma_b
+\end{cases}
+\]
+mit $\alpha_1$,$\alpha_2$,$\beta_1$,$\beta_2$,$\gamma_a$,$\gamma_b \in \MdR$.\\
+\begin{beispiel}
+Die Dgl $y''=-\pi^2 y$ hat die allg. L"osung $y(x) = c_1 \cos(\pi x)+c_2 \sin(\pi x)$\\
+Die Dgl $y''=-\pi^2 y + 1$ hat die allg. L"osung $y(x) = c_1 \cos(\pi x)+c_2 \sin(\pi x)+\frac{1}{\pi^2}$\\
+\[ \quad
+\text{RWP (1)}
+\begin{cases}
+y'' = -\pi^2 y\\
+y(0)=y(1)=0
+\end{cases}
+(I=[0,1])
+\]
+$0=y(0)=c_1\cos(\pi0) + c_2sin(\pi0)=c_1$\\
+$0=y(1)=c_2\sin(\pi0)=0$. D.h.: das RWP hat unendlich viele L"osungen: $y(x)=c\sin(\pi x) (c\in\MdR)$.\\
+\[ \quad
+\text{RWP (2)}
+\begin{cases}
+y'' = -\pi^2 y+1\\
+y(0)=y(1)=0
+\end{cases}
+(I=[0,1])
+\]
+$0=y(0)=c_1\cos(\pi0) + c_2sin(\pi0)+\frac{1}{\pi^2}=c_1+\frac{1}{\pi^2}\folgt c_1=-\frac{1}{\pi^2}$\\
+$0=y(1)=-\frac{1}{\pi^2}\cos(\pi)+c_2\sin(\pi)+\frac{1}{\pi^2}=\frac{2}{\pi^2}$. D.h.: das RWP ist unl"osbar.\\
+\[ \quad
+\text{RWP (3)}
+\begin{cases}
+y'' = -\pi^2y\\
+y(0)=y'(1)=0
+\end{cases}
+(I=[0,1])
+\]
+$0=y(0)\folgt c_1=0 \folgt y(x)=c_2\sin(\pi x)$\\
+$y'(x) = c_2\pi\cos(\pi x) \folgtwegen{x=1} c_2\pi\cos(\pi) = -c_2\pi \folgt c_2 = 0$\\
+$\folgt y=0$ ist die eindeutig bestimmte L"osung des RWPs.\\
+
+\textbf{Beachte} f"ur sp"ater:\\
+In Bsp(1) und (3): $f(x,y)=-\pi^2 y$\\
+In Bsp(2): $f(x,y)=-\pi^2 y+1$\\
+In allen 3 Bsp'en: $|f(x,y)-f(x,\tilde y)|=\underbrace{\pi^2}_L |y-\tilde y|$.
+($\folgt \exists$ kein $L\in[0,\pi^2):|f(x,y)-f(x,\tilde y)|\le L|y-\tilde y|$ )
+\end{beispiel}  
+Definition: Die Funktion $G:[0,1]\times[0,1]\to\MdR$ sei definiert durch: 
+\[ \quad
+G(x,t):=
+\begin{cases}
+t(x-1)\text{, falls } 0\le t\le x\text{.}\\
+x(t-1)\text{, falls } 0\le x\le t\text{.}
+\end{cases} \]
+Klar: $G\le0; G(0,t)=G(1,t)=0\ \forall t\in[0,1]$.
+"Ubung: G ist stetig auf $[0,1]\times[0,1]$.
+
+\begin{wichtigerhilfssatz}
+Gegeben: $h:[0,1]\to\MdR \text{ stetig. } \phi:[0,1]\to\MdR$ sei definiert durch 
+$$ \phi(x) := \int_0^1G(x,t)h(t)dt\text{.}$$ \\
+Dann: $ \phi(0)=\phi(1)=0, \phi\in C^2([0,1]$ und $\phi''=h\text{ auf }[0,1]$.\\
+\end{wichtigerhilfssatz}
+\begin{beweis}
+$\phi(0) = \int_0^1\underbrace{G(0,t)}_{=0}h(t)dt = 0;\phi(1)=\int_0^1\underbrace{G(1,t)}_{=0}h(t)dt=0$\\
+$\forall x\in[0,1]: \phi(x)=\int_0^xG(x,t)h(t)dt+\int_x^1G(x,t)h(t)dt=\int_0^x(tx-t)h(t)dt+\int_x^1(xt-x)h(t)dt$\\
+$=x\int_0^x th(t)dt-\int_0^x th(t)dt+x\int_x^1 th(t)dt-x\int_x^1 h(t)dt$\\
+$=x\int_0^1 th(t)dt-\int_0^xth(t)dt+x\int_1^xh(t)dt$\\
+$\folgt \phi$ ist db auf $[0,1]$ und $\phi'(x)=\int_0^1th(t)dt-xh(x)+\int_1^xh(t)dt+xh(x)$\\
+$=\int_0^1th(t)dt+\int_1^xh(t)dt$.
+$\folgt \phi$ ist auf $[0,1]$ 2 mal db und $\phi''(x) =h(t)$.
+\end{beweis}
+
+\begin{beispiel}
+$\int_0^1G(x,t)dt=\underbrace{\int_0^1G(x,t)1dt}_{=:\phi(x)}\folgtnach{27.1} \phi''(x)=1=\phi'(x)=x+c_1$\\
+$\folgt \phi(x)=\frac{1}{2}x^2+c_1x+c_2$\\
+$0=\phi(0)=c_2$\\
+$0=\phi(1)=\frac{1}{2}+c_1\folgt c_1=-\frac{1}{2}$\\
+$\folgt \int_0^1G(x,t)dt=\frac{1}{2}x^2-\frac{1}{2}x\ \forall x\in[0,1]$.\\
+\end{beispiel}
+\begin{definition}
+$f:[0,1]\times\MdR\to\MdR$ sei stetig. Das RWP
+\[ \quad
+(R)
+\begin{cases}
+y''=f(x,y)\\
+y(0)=y(1)=0
+\end{cases}
+\]
+heisst \begriff{Dirichlet Randwert-Problem} und obige Funktion $G$ heisst die zu (R) geh"orende \begriff{Greensche Funktion}.
+\end{definition}
+Im Folgenden sei $X:=C([0,1],\MdR)$ und der Operator $T:X\to X$ definiert durch\\
+$$(T_y)(x):=\int_0^1G(x,t)f(t,y(t))dt (y\in X, x\in[0,1])$$
+Aus 27.1: $(T_y)(0)=(T_y)(1)=0, T_y \in C^2[0,1]$ und $(T_y)''(x)=f(x,y(x))\ \forall y\in X\ \forall x\in[0,1]$.
+\begin{satz}
+Sei $y\in X$.
+$$y \text{ l"ost (R) auf } [0,1] \equizu T_y=y$$
+\end{satz}
+\begin{beweis}
+"$\folgt$":\\
+$\forall x\in I: y''(x) = f(x,y(x)) \gleichnach{s.o.} (T_y)''(x);\Psi(x):=y(x)-(T_y)(x)$\\
+$\folgt \Psi'' = 0$ auf $[0,1]$ $\folgt \Psi'(x) = c_1 \folgt \Psi(x) = c_1x+c_2$\\
+$\Psi(0)=y(0)-(T_y)(0)=0 \folgt c_2=0$.\\
+$\Psi(1)=y(1)-(T_y)(1)=0 \folgt c_1=0$.\\
+"$\Leftarrow$":\\
+Sei $y=T_y \folgtnach{27.1} y\in C^2([0,1])$ und $y''(x)=(T_y)''(x)=f(x,y(x))\ \forall x\in[0,1]$\\
+$y(0)=(T_y)(0)\gleichnach{s.o.}0$\\
+$y(1)=(T_y)(1)\gleichnach{s.o.}0$.
+\end{beweis}
+
+\textbf{Vorbetrachtung:}\\
+Sei $0<c<\pi$, $\phi(x):=\cos{c(x-\frac{1}{2})}(x\in[0,1])$.\\
+$\phi \in C([0,1],\MdR)$. $x\in[0,1]\folgt c(x-\frac{1}{2}) \in [-\frac{c}{2},\frac{c}{2}]\subsetneq[-\frac{\pi}{2},\frac{\pi}{2}]$\\
+$\folgt \phi(x)>\frac{c}{2}>0\ \forall x \in [0,1]$\\
+
+\begin{satz}[Satz von Lettenmeyer]
+$f:[0,1]\times \MdR \to \MdR$ sei stetig. Es sei $L \ge 0$ und es gelte:\\
+$|f(x,y)-f(x,\tilde y)|\le L|y-\tilde y|\ \forall(x,y),(x,\tilde y) \in [0,1] \times \MdR.$\\
+Ist $L < \pi^2$, so hat (R) auf $[0,1]$ genau eine L"osung.
+\end{satz}
+\begin{bemerkung}$\ $
+  \begin{liste}
+   \item Die Beispiele am Anfang des Paragrafen zeigen, dass die Schranke $\pi^2$ optimal ist.
+   \item Allgemein kann man das RWP 
+    \[ \quad 
+      \begin{cases}
+        y''=f(x,y)\\
+	y(a)=y(b)=0
+      \end{cases}
+    \]
+    (mit $f:[a,b]\times\MdR\to\MdR$ stetig) betrachten. Dann ist $\pi^2$ durch $\frac{\pi^2}{(a-b)^2}$ zu ersetzen.
+  \end{liste}
+\end{bemerkung}
+
+\begin{beweis}
+Sei $c:=(\frac{c+\pi^2}{2})^{\frac{1}{2}}$. Dann: $L<c^2<\pi^2$, $q=\frac{L}{c^2}$, also $q<1$.\\
+Sei $\phi$ wie in der Vorbetrachtung. Wir versehen nun $X$ mit folgender Norm:
+$$ ||u|| := \max\{\frac{u(x)}{\phi(x)}:0\le x\le 1\}\ (u \in X) \text{ \begriff{gewichtete Max-Norm}}$$
+Bekannt: $(X,||\cdot||)$ ist ein BR (Par. 13). Wir werden zeigen: \\
+$||T_u-T_v||\le q||u-v||\ \forall u,v \in X.$\\
+Aus 11.2 folgt dann: $T$ hat genau einen Fixpunkt. Aus 27.2 folgt dann die Behauptung.\\
+Seien $u,v \in X$ und $x\in[0,1]$.
+$|(T_u)(x)-(T_v)(x)|=|\int_0^1G(x,t)(f(t,u(t))-f(t,v(t))dt|\le\int_0^1|G(x,t)|L|u(t)-v(t)|dt$\\
+$=L\int_0^1|G(x,t)|\underbrace{\frac{|u(t)-v(t)|}{\phi(t)}}_{ \le||u-v||}\phi(t)dt \le L||u-v||\int_0^1|G(x,t)|\phi(t)dt$\\
+$\gleichwegen{G\le0} L||u-v||(-\underbrace{\int_0^1G(x,y)\phi(t)dt}_{=:g(x)})$\\
+27.1 $\folgt g(0)=g(1)=0$,$g\in C^2([0,1])$ und $g''=\phi$. Dann: $g'(x)=\frac{1}{c}\sin{c(x-\frac{1}{2})}+c_1$\\
+$\folgt g(x) = -\frac{1}{c^2}\cos{c(x-\frac{1}{2})}+c_1x+c_2=-\frac{1}{c^2}\phi(x)+c_1x+c_2.$\\
+$0=g(0)=-\frac{1}{c^2}\phi(0)+c_2 \folgt c_2 = \frac{1}{c^2}\cos{\frac{c}{2}}$
+$0=g(1)=-\frac{1}{c^2}\phi(1)+\frac{1}{c^2}\cos{\frac{c}{2}} \folgt c_1 = 0$
+$\folgt g(x)=-\frac{1}{c^2}\phi(x)+\frac{1}{c^2}\cos{\frac{c}{2}}$\\
+$\folgt |(T_u)(x)-(T_v)(x)|\le L||u-v|| \frac{1}{c^2}(\phi(x)-\cos{\frac{c}{2}}) = \frac{L}{c^2}||u-v||(\phi(x)-\cos{\frac{c}{2}})$
+$\folgt \underbrace{|(T_u)(x)-(T_v)(x)|}_{=\phi(x)}\le \frac{L}{c^2}||u-v||(1-\frac{\cos{\frac{c}{2}}}{\phi(x)})\le\frac{L}{c^2}||u-v||=q||u-v||$\\
+$\folgt ||T_u-T_v||\le q||u-v||$.
+\end{beweis}
+
+\begin{satz}[Satz von Scorza-Dragoni]
+Sei $I=[a,b]\subseteq \MdR$, $D:= I\times \MdR$ und $f\in C(D,\MdR)$ sei auf $D$ beschränkt.
+
+Dann hat das Randwertproblem
+\[ \begin{cases} y'' = f(x,y) \\ y(a) = y(b) = 0 \end{cases} \]
+eine Lösung auf $I$.
+\end{satz}
+
+\begin{beispiel}
+\[I = [0,\pi], \quad
+f(x,y) = \begin{cases} 1,&y\le -1\\ -y,&|y|\le 1\\ -1,&y\ge 1\end{cases}\]
+Wir betrachten das Randwertproblem
+\[ \begin{cases} y'' = f(x,y) \\ y(0) = y(\pi) = 0 \end{cases} \]
+Sei $\alpha \in \MdR$, $|\alpha|\le 1$ und $y_\alpha(x) := \alpha \sin x$, $|y_\alpha| \le 1$, $y_\alpha''(x) = - \alpha \sin x = - y_\alpha(x) = f(x,y_\alpha(x))$, $y_\alpha(0) = y_\alpha(\pi) = 0$. Das heißt: Ein Randwertproblem wie in 27.4 muß \emph{nicht} eindeutig lösbar sein.
+\end{beispiel}
+
+\begin{beweis}
+Wir führen den Beweis nur unter der zusätzlichen Voraussetzung:
+\[\exists L \ge 0: |f(x,y) - f(x,\tilde y)| \le L|y-\tilde y| \ \forall(x,y),(x,\tilde y)\in D\]
+Sei $M\ge 0$ so, dass $|f|\le M$ auf $D$.
+
+Sei $s\in\MdR$. Wir betrachten das Anfangswertproblem:
+\[ \begin{cases} y'' = f(x,y) \\ y(a) =  0 , y'(a) = s \end{cases} \]
+18.3 $\folgt$ obiges Anfangswertproblem hat genau eine Lösung $y_s$ auf $I$. §18 und 25.2 $\folgt |y_{s_1}(x) - y_{s_2}(x)| \le c |s_1 - s_2 | \ \forall x\in I, s_1,s_2\in \MdR$.
+
+$h(s) := y_s(b)$ ($s\in\MdR$), damit $h:\MdR\to\MdR$ stetig. Ist $s_0\in\MdR$ und $h(s_0) = 0$, so ist $y:=y_{s_0}$ eine Lösung des Randwertproblems.
+
+\begin{align*}
+\forall x\in I: y_s'(x) - s &= y_s'(x) -y'_s(a) = \int_a^xy_s''(t)dt = \int_a^xf(t,y_s(t))dt\\
+\folgt y_s'(x) &= s+ \int_a^x f(t,y_s(t))dt\\
+\folgt y_s(b) &= y_s(b) - y_s(a) \\
+&\gleichnach{MWS} y_s'(\xi)(b-a) \\
+&= \left(s + \int_a^\xi f(t,y_s(t))dt\right)(b-a)\\
+&= s(b-a) + \int_a^\xi f(t,y_s(t))dt (b-a) \\
+\end{align*}
+\begin{align*}
+&\folgt |h(s) - s(b-a)| = |\int_a^\xi f(t,y_s(t))dt(b-a)|\le M(\xi - a) \le M(b-a) =: c\\
+&\folgt -c \le h(s)-s(b-a) \le c \ \forall s\in\MdR\\
+&\folgt s(b-a) -c \le h(s) \le c+s(b-a) \ \forall s\in\MdR\\
+&\folgt h(s) \to \infty \ (s\to\infty)\text{ und }h(s) \to -\infty \ (s\to-\infty)
+\end{align*}
+Der Zwischenwertsatz liefert nun: $\exists s_0 \in\MdR: h(s_0) = 0$
+\end{beweis}
+
+\begin{satz}
+Sei $A>0$, $0<B<\pi^2$, $f\in C([0,1]\times \MdR, \MdR)$ und es gelte
+\[|f(x,y)|\le A+ B|y| \ \forall x\in[0,1], y\in\MdR\]
+Dann hat das Randwertproblem
+\[ \begin{cases} y'' = f(x,y) \\ y(0) = y(1) = 0 \end{cases} \]
+eine Lösung auf $[0,1]$
+\end{satz}
+
+\begin{bemerkung}
+Die Schranke $\pi^2$ ist optimal:
+\[ \begin{cases} y'' = -\pi^2y + 1 \\ y(0) = y(1) = 0 \end{cases} \]
+ist unlösbar!
+\end{bemerkung}
+
 
 \appendix
 \chapter{Satz um Satz (hüpft der Has)}
@@ -58,6 +3545,33 @@
 \addcontentsline{toc}{chapter}{Stichwortverzeichnis}
 \printindex
 
-\input{Ana3Credits}
+\chapter{Credits für Analysis III} Abgetippt haben die folgenden Paragraphen:\\% no data in Ana3Vorbereitung.tex
+% no data in Ana3Vorwort.tex
+\textbf{§ 1: Satz von Arzelà-Ascoli}: Joachim Breitner\\
+\textbf{§ 2: Der Integralsatz von Gauss im $\MdR^2$}: Joachim Breitner, Florian Mickler\\
+\textbf{§ 3: Flächen im $\MdR^3$}: Christian Schulz\\
+\textbf{§ 4: Der Integralsatz von Stokes}: Bernhard Konrad\\
+\textbf{§ 5: Der Integralsatz von Gauss im $\MdR^3$}: Bernhard Konrad\\
+\textbf{§ 6: Differentialgleichungen: Grundbegriffe}: Pascal Maillard\\
+\textbf{§ 7: Lineare Differentialgleichungen 1. Ordnung}: Pascal Maillard, Michael Knoll\\
+\textbf{§ 8: Differentialgleichungen mit getrennten Veränderlichen}: Lars Volker, Wenzel Jakob\\
+\textbf{§ 9: Einige Typen von Differentialgleichungen 1. Ordnung}: Wenzel Jakob\\
+\textbf{§ 10: Exakte Differentialgleichungen}: Wenzel Jakob und Joachim Breitner\\
+\textbf{§ 11: Hilfsmittel aus der Funktionalanalysis}: Joachim Breitner, Lars und Michael Volker - Knoll\\
+\textbf{§ 12: Der Existenzsatz von Peano}: Christian Schulz, Ferdinand Szekeresch\\
+\textbf{§ 13: Der Existenz- und Eindeutigkeitssatz von Picard - Lindelöf}: Ferdinand Szekeresch und Pascal Maillard\\
+\textbf{§ 14: Matrizenwertige und vektorwertige Funktionen}: Pascal Maillard, Ferdinand Szekeresch und Christian Schulz\\
+\textbf{§ 15: Existenz- und Eindeutigkeitssätze für Dgl.Systeme 1. Ordnung}: Christian Schulz\\
+\textbf{§ 16: Lineare Systeme}: Wenzel Jakob, Bernhard Konrad\\
+\textbf{§ 17: Lineare Systeme mit konstanten Koeffizienten}: Ferdinand Szekeresch und Joachim Breitner\\
+\textbf{§ 18: Differentialgleichungen höherer Ordnung}: Jonathan Picht\\
+\textbf{§ 19: Lineare Differentialgleichungen $m$-ter Ordnung}: Jonathan Picht und Ferdinand Szekeresch\\
+\textbf{§ 20: Lineare Differentialgleichungen $m$-ter Ordnung mit konstanten Koeffizienten}: Ferdinand Szekeresch\\
+\textbf{§ 22: Nicht fortsetzbare L"osungen}: Pascal Maillard\\
+\textbf{§ 23: Minimal- und Maximallösung}: Christian Schulz\\
+\textbf{§ 24: Ober- und Unterfunktionen}: Wenzel Jakob\\
+\textbf{§ 25: Stetige Abhängigkeit}: Joachim Breitner\\
+\textbf{§ 26: Zwei Eindeutigkeitssätze}: Joachim Breitner, Florian Mickler\\
+\textbf{§ 27: Randwertprobleme (Einblick)}: Florian Mickler und Joachim Breitner\\
 
 \end{document}
