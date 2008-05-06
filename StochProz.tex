@@ -432,6 +432,7 @@ Ist $(X_n)$ irreduzibel, und ein $i\in S$ ist rekurrent (bzw. transient), so sag
 \end{bemerkung}
 
 \begin{beispiel}[Irrfahrt auf den ganzen Zahlen, „Random Walk“]
+\label{bsp2.3}
 Es sei $X_n=\sum_{k=1}^n Y_k = X_{n-1}+Y_k$ und $X_0=0$, wobei $(Y_n)$ u.i.v. mit \[P(Y_n=1)=p = 1 - P (Y_n=-1) =1-q,\quad p\in (0,1)\] ist ($S=\MdZ$).
 
 \begin{center}
@@ -533,7 +534,7 @@ Ist $j$ transient, so folgt $m_j=\infty$.
 \end{bemerkung}
 
 \begin{definition}
-Ein Zustand $i\in S$ heißt \emph{positiv rekurrent}\index{positiv rekurrent}, falls $j_i<\infty$ und \emph{nullrekurrent}\index{nullrekurrent}, falls $i$ rekurrent und $m_i=\infty$ ist.
+Ein Zustand $i\in S$ heißt \emph{positiv rekurrent}\index{positiv rekurrent}, falls $m_i<\infty$ und \emph{nullrekurrent}\index{nullrekurrent}, falls $i$ rekurrent und $m_i=\infty$ ist.
 \end{definition}
 
 \begin{bemerkung}
@@ -541,7 +542,7 @@ Jeder positiv rekurrente Zustand ist auch rekurrent.
 \end{bemerkung}
 
 \begin{satz}
-Sei $(X_n)$ eine irreduzible Markov-Kette. Die folgenden Aussagen sind äquivalent:
+\label{satz3.2}Sei $(X_n)$ eine irreduzible Markov-Kette. Die folgenden Aussagen sind äquivalent:
 \begin{enumi}
 \item Es existiert eine stationäre Verteilung.
 \item Es gibt einen positiv rekurrenten Zustand.
@@ -612,6 +613,121 @@ also
 \pi(1) = \frac\beta{\alpha + \beta}, \quad \pi(2)=\frac{\alpha}{\alpha+\beta}.
 \]
 \end{beispiel}
+
+\begin{beispiel}[Irrfahrt]
+Siehe Beispiel \ref{bsp2.3}: Für $p\ne q$ ist die Markov-Kette transient. Existiert ein invariantes Maß? Ansatz:
+\[
+\gamma(j) = \sum_{i\in \MdZ} \gamma (i) p_{ij} = \gamma(j+1)\cdot q = \gamma(j-1)\cdot p
+\]
+\[
+\implies \gamma(j+1) - \gamma(j) = \frac pq (\gamma(j) - \gamma(j-1)
+\]
+Also: $\gamma_1(j) = 1$  und $\gamma_2(j) = (\frac pq)^{j}$, $j\in \MdZ$, sind verschiedene invariante Maße.
+
+Ist $p=q=\frac 12$, so ist die Markov-Kette rekurrent. Ist sie nullrekurrent oder positiv rekurrent? Es gibt keine stationäre Verteilung (siehe oben), die Markov-Kette ist also nullrekurrent.
+\end{beispiel}
+
+\begin{beispiel}[Geburts- und Todesprozess in diskreter Zeit]
+Es sei $(X_n)$ eine Markov-Kette mit $S=\MdN_0$ und Übergangsmatrix 
+\[
+P = 
+\begin{pmatrix}
+p_{00} & p_{01} & 0 & \cdots \\
+p_{10} & p_{11} & p_{12} & 0 & \cdots \\
+0 & p_{21} & p_{22} & p_{23} & \ddots \\
+\vdots & 0 & p_{32} & p_{33}  & \ddots \\
+ & \vdots &\ddots & \ddots & \ddots  & 
+ \end{pmatrix}
+\]
+mit $p_{01}>0$, $p_{i,i+1}>0$, $p_{i,i-1}>0$ für alle $i\ge 1$, also ist $(X_n)$ irreduzibel. Wan ist $(X_n)$ positiv rekurrent? 
+
+Der Ansatz $\pi P=\pi$ liefert:
+\begin{align*}
+\pi(0) &= p_{00} \cdot \pi(0) + p_{10}\cdot \pi(1) \\
+\pi(i) &= p_{i-1,i}\cdot \pi(i-1) + p_{ii}\cdot \pi(i) + p_{i,i+1}\cdot\pi(i+1) \\
+\iff p_{i,i-1}\cdot \pi(i) + p_{i,i+1} \pi(i) &= p_{i-1,i}\cdot \pi(i-1) + p_{i+1,i} \cdot \pi(i+1) \\
+\iff p_{i+1,i}\cdot \pi(i+1) - p_{i,i+1}\cdot \pi(i) &= p_{i,i-1}\cdot \pi(i) - p_{i-1,i}\cdot \pi(i-1) \\
+&= \ldots = p_{10}\cdot\pi(1) - p_{01}\cdot\pi(0) \\
+\intertext{Aus der ersten Gleichung folgt $p_{01}\cdot\pi(0) = p_{10}\cdot\pi(1)$ und damit:}
+p_{i+1,i}\cdot \pi(i+1) - p_{i,i+1}\cdot \pi(i) &= 0 \\
+\implies \pi(i+1) &= \frac{p_{i,i+1}}{p_{i+1,i}} \pi(1) \\
+&= \ldots = \pi(0) \cdot \prod_{k=1}^i \frac{p_{k,k+1}}{p_{k+1,k}}
+\end{align*}
+Für $\pi(0)>0$ erhält man ein invariantes Maß. $(X_n)$ ist positiv rekurrent, falls 
+\[
+\sum_{i=1}^\infty \prod_{k=0}^i \frac{p_{k,k+1}}{p_{k+1,k}} < \infty.
+\]
+Im Spezialfall $p_{k,k+1}=p$, $p_{k,k-1}=q=1-p$, $k\ge 1$ und $p_{01} = p$, $p_{00}=1-p$ gilt
+\[
+\text{$(X_n)$ ist positiv rekurrent} \iff \sum_{i=1}^\infty \left(\frac pq\right)^{i+1} < \infty \iff p<q
+\]
+
+\end{beispiel}
+
+\section{Konvergenz gegen die stationäre Verteilung}
+
+Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P$. Wir nehmen an, dass $(X_n)$ beziehungsweise $P$ aperiodisch ist, das heißt: Für alle Zustände $i\in S$ gilt: 
+\[
+d_i \da \operatorname{ggT}\{n\in \MdN \mid p_{ii}^{(n)}>0 \} = 1
+\]
+
+\begin{lemma}
+\label{lem4.1}
+$P$ ist genau dann irreduzibel und aperiodisch, wenn für alle $i,j\in S$ eine Zahl $n_0\in\MdN$ existiert, so dass für alle $n\ge n_0$ gilt: $p_{ij}^{(n)}>0$.
+\end{lemma}
+
+(ohne Beweis)
+
+\begin{satz}[Konvergenzzatz]
+Es sei $(X_n)$ irreduzibel, aperiodisch und positiv rekurrent mit stationärer Verteilung $\pi$. Dann gilt für alle $i,j\in S$:
+\[
+\lim_{n\to\infty} p_{ij}^{(n)} = \pi(j) = \frac1{m_j}
+\]
+\end{satz}
+
+\begin{beweis}
+Wir benutzen ein sogenanntes „Kopplungsargument“: Sei $(Y_n)$ eine weitere Markov-Kette, unabhängig von $(X_n)$ mit gleicher Übergangsmatrix und Startverteilung $\pi$, also $Y_n\sim \pi$ für alle $n\in \MdN$. Es sei
+\[
+T\da \inf\{n\in \MdN \mid X_n = Y_n\}
+\]
+die Treffzeit der Markov-Kette. Wir zeigen zunächst: $P(T<\infty) = 1$.
+
+Offenbar ist $(X_n,Y_n)_{n\in\MdN_0}$ eine Markov-Kette auf $S^2$ mit Übergangsmatrix $\hat P=(\hat p_{(ij)(kl)})$, wobei $\hat p_{(ij)(kl)} = p_{ik}\cdot p_{jl}$. Weiter ist $\hat p_{(ij)(kl)}^{(n)} = p_{ik}^{(n)} \cdot p_{jl}^{(n)}$ und mit Lemma \ref{lem4.1}: Die Kette $(X_n,Y_n)$ ist irreduzibel und aperiodisch. Man kann nachrechnen:
+\[
+\hat \pi (i,j) \da \pi(i)\cdot\pi(j)
+\]
+ist eine stationäre Verteilung für $(X_n,Y_n)$, also ist sie nach Satz \ref{satz3.2} positiv rekurrent.
+
+Sei $X_0=i$. Die Startverteilung $\hat \nu$ von $(X_n,Y_n)$ gegeben durch $\hat \nu (k,l) = \delta_i(k) \cdot\pi(l)$. Für $b\in S$ sei 
+\[
+T_{(b,b)} \da \inf\{n\in\MdN \mid (X_n,Y_n) = (b,b) \}.
+\]
+Offenbar ist $T\le T_{(b,b)}$ und $P_{\hat \nu}(T_{(b,b)}<\infty)=1$. Daraus folgt, dass $P_{\hat \nu}(T<\infty)=1$.
+
+
+Betrachte $(Z_n)_{n\in\MdN_0}$ definiert durch
+\[
+Z_n= 
+\begin{cases}
+X_n, &\text{ für } n\le T \\
+Y_n, &\text{ für } n>T.
+\end{cases}
+\]
+Es ist $(Z_n)$ eine Markov-Kette mit Markov-Kette $P$ und $Z_0=i$, denn:
+
+Nach dem Satz $\ref{satz3.1}$ genügt es zu zeigen: 
+\[\forall n\in\MdN\ \forall i,k\in S: P_{\hat\nu}(z_k=i_k,\, 0\le k\le n) = \delta_i(i_0) \prod_{k=0}^{n-1}p_{i_k}p_{i_{k+1}}\]
+Es gilt:
+\begin{align*}
+&\quad P_{\hat \nu}(Z_k=i_k,\,0\le k\le n)\\
+&= \sum_{r=0}^n P_{\hat \nu}(z_k=i_,\, 0\le k\le n,\, T=r)\\
+&\quad + P_{\hat \nu}(Z_k = i_k,\, 0\le k \le n,\, T>n) \\
+&= \sum_{r=0}^n \underbrace{P(X_k = i_k,\, 0\le k\le r,\, Y_k=i_k,\, r+1\le k\le n,\, Y_0\ne i_0,\ldots, Y_{r-1}\ne i_{r-1},\, Y_r=i_r)}_{\ad \text{I}} \\
+&\quad + \underbrace{P_{\hat \nu}(X_k = i_k, \, 0\le k\le n,\, Y_0\ne i_0,\ldots,Y_n\ne i_n)}_{\ad \text{II}}
+\end{align*}
+
+\end{beweis}
+
 
 \chapter{Satz um Satz (hüpft der Has)}
 \listtheorems{satz,wichtigedefinition}
