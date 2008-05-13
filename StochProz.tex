@@ -728,6 +728,152 @@ Es gilt:
 
 \end{beweis}
 
+\begin{centering}
+\Large Hier bitte Vorlesung vom 7.5. eintragen:
+\end{centering}
+
+\section{Markov-Ketten und Martingale}
+
+\begin{lemma}
+
+\end{lemma}
+
+\begin{satz}
+
+\end{satz}
+
+\begin{bemerkung}
+Bemerkung: Ist $h:S\to \mathbb R$ eine beschränkte Funktion, so wird durch
+\begin{align*}
+Z_n^h &\coloneqq h(X_n) - \sum_{k=1}^n (E[h(X_k)\mid F_{k-1}] - h(X_{k-1})) \\
+&= h(X_n) - \sum_{k=1}^n (Ph-h)(X_{k-1})
+\end{align*}
+ein Martingal definiert, genannt Levi-Martingal\index{Levi-Martingal} zu $(X_n)$.
+\end{bemerkung}
+
+Die Markoveigenschaft lässt sich über Levi-Martingale charakterisieren:
+
+\begin{satz}
+Es sei $(X_n)_{n\in\mathbb N_0}$ ein stochastischer Prozess mit Werten in $S$ und natürlicher Filtration $(\mathcal F_n)$, d.h. $\mathcal F_n=\sigma(X_0,\ldots,X_n)$, und $P$ sei eine stochastische Matrix auf $S$. Ist dann für alle beschränkten $h:S\to \mathbb R$ der Prozess
+\begin{align*}
+Z_n^h\coloneqq h(X_n) - \sum_{k=1}^n (Ph-h)(X_{k-1})
+\end{align*}
+ein $(\mathcal F_n)$-Martingal, so ist $X_n$ eine homogene Markov-Kette mit Übergangsmatrix $P$.
+\end{satz}
+
+\begin{beweis}
+Aus $E[Z_{n+1}^h\mid \mathcal F_n] = Z_n^h$ erhält man 
+\begin{align*}
+E[h(X_{n+1})\mid \mathcal F_n] = (Ph)(X_n)
+\end{align*}
+bzw. 
+\begin{align*}
+\int_A h(X_{n+1})dP = \int_A (Ph)(X_n)dP \text{ für alle }A\in \mathcal F_n
+\end{align*}
+Es sei $i_0,i_1,\ldots,i_{n+1}\in S$ und $A\coloneqq \{X_0 = i_0,\ldots,X_n=i_n\}$ und wir setzen $h\da 1_{\{1_{n+1}\}}$. Die linke Seite der letzten Gleichung ergibt dann 
+\begin{align*}
+\int_A h(X_{n+1})dP &= P(X_0=i_0,\ldots,X_n=i_n,X_{n+1}=i_{n+1})
+\end{align*}
+und die rechte Seite ergibt
+\begin{align*}
+\int_A (Ph)(X_n)dP &= \int_{\{X_0=i_0,\ldots,X_n=i_n\}} (Ph)(i_n)dP \\
+&= \int_{\{X_0=i_0,\ldots,X_n=i_n\}} p_{i_ni_{n+i}}dP \\
+&= p_{i_ni_{n+1}} \cdot P(X_0=i_0,\ldots,X_n=i_n).
+\end{align*}
+Durch Teilen der rechten Wahrscheinlichkeit erhält man
+\begin{align*}
+P(X_{n+1}=i_{n+1} \mid X_0=i_0,\ldots,X_n=i_n) = p_{i_ni_{n+1}}.
+\end{align*}
+\end{beweis}
+
+\begin{bemerkung}
+Es gilt: Ist $(X_n)_{n\in\mathbb N_0}$ ein nicht-negatives Supermartingal, so gibt es eine Zufallsvariable $X_\infty$ mit 
+\[
+\lim_{n\to\infty} X_n = X_\infty \quad P-\text{f.s.}
+\]
+\end{bemerkung}
+
+\begin{beispiel}
+Jedem Feld eines schachbrettartigen $N\times N$-Gitters wird eine von $L$ möglichen Farben zugewiesen. Diese Färbung wird mittels Zufallsexperimenten modifiziert: Eine Zelle wird gleichverteilt gewählt, daraufhin wird einer der vier Nachbarn (modulo $N$) zufällig gewählt und dessen Farbe dem zuerst gewählten Feld zugewiesen. Offensichtlich ist dies eine Markov-Kette, und die monochromen Zustände sind die absorbierenden.
+
+\begin{center}
+\begin{tikzpicture}
+\draw[fill,color=blue] (0,0) rectangle +(1,1);
+\draw[fill,color=blue] (4,2) rectangle +(1,1);
+\draw[fill,color=blue] (4,5) rectangle +(1,1);
+\draw[fill,color=blue] (5,3) rectangle +(1,1);
+\draw[fill,color=blue] (2,5) rectangle +(1,1);
+\draw[fill,color=black] (1,0) rectangle +(1,1);
+\draw[fill,color=black] (3,2) rectangle +(1,1);
+\draw[fill,color=black] (4,2) rectangle +(1,1);
+\draw[fill,color=black] (3,4) rectangle +(1,1);
+\draw[fill,color=yellow] (3,0) rectangle +(1,1);
+\draw[fill,color=yellow] (0,2) rectangle +(1,1);
+\draw[fill,color=yellow] (5,1) rectangle +(1,1);
+\draw[fill,color=yellow] (5,2) rectangle +(1,1);
+\draw[fill,color=yellow] (0,3) rectangle +(1,1);
+\draw[fill,color=red] (1,3) rectangle +(1,1);
+\draw[fill,color=red] (4,4) rectangle +(1,1);
+\draw[fill,color=red] (0,5) rectangle +(1,1);
+\draw[fill,color=red] (2,1) rectangle +(1,1);
+\draw[fill,color=green] (1,1) rectangle +(1,1);
+\draw[fill,color=green] (5,4) rectangle +(1,1);
+\draw[fill,color=green] (1,4) rectangle +(1,1);
+\draw[fill,color=green] (2,3) rectangle +(1,1);
+\draw (0,0) grid (6,6);
+\end{tikzpicture}
+\end{center}
+
+Formal seien $L,N\in \mathbb N$, $L,N\ge 2$. $I\coloneqq\{1,\ldots,N\}^2$, $S\coloneqq \{1,\ldots,L\}^I = \{f:I\to \{1,\ldots,L\}\}$. Sei $(X_n)$ die Markov-Kette in $S$, die die Zustandsfolge angibt.
+
+Wie verhält sich die Folge für $n\to\infty$? Sei $l\in\{1,\ldots,L\}$ fest, und es sei $Y_n$ die Anzahl der Felder mit Farbe $l$ im Zustand $X_n$. Sei $(A,B)$ ein Nachbarpaar im Gitter. Wäre dies die Wahl in einem Zustandsübergang, so gelte: Ist $X_n(A)=X_n(B)$ oder $X_n(A)\ne l, X_n(B)\ne l$, so gilt auch $Y_{n+1}=Y_n$. Ist dagegen $X_n(A)=l$ und $X_n(B)\ne l$, so ist $Y_{n+1}=Y_n-1$. Ist letzlich $X_n(A)\ne l$ und $X_n(B) =l$, so ist $Y_{n+1}=Y_n+1$.
+
+Die Wahrscheinlichkeit, erst $A$, dann $B$ zu wählen ist gleich der Wahrscheinlichkeit, erst $B$ und dann $A$ zu wählen. Damit ist
+\[
+E[Y_{n+1} \mid X_1,\ldots,X_n] = Y_n
+\]
+Sei $\mathcal F_n \coloneqq \sigma(X_0,\ldots,X_n)$. Dann ist $(Y_n)_{n\in\mathbb N_0}$ ein $(\mathcal F_n)$-Martingal. Nach der Bemerkung folgt: $Y_n\to Y_\infty$ für ein $n\to\infty$ $P$-fast-sicher. Da $(Y_n)$ ganzzahlig, ist $Y_n(\omega)$ konstant ab einem $n\ge n_0(\omega)$. Als Konstanten kommen nur $0$ und $N^2$ in Frage, denn für $k\in \{1,\ldots,N^2-1\}$ gilt
+\begin{align*}
+P(Y_{n+j} = k \mid Y_n = \ldots = Y_{n+j-1} = k) &\le 1 - \frac1{N^24} \\
+\implies P(Y_n = \ldots = Y_{n+j} = k) &\le (1-\frac1{N^24})^j \\
+\implies P(\underbrace{Y_m = k,\, \forall m\ge n}_{\eqqcolon A_n}) &= 0
+\end{align*}
+Es gilt $\{\omega \in \Omega \mid \exists n\ \forall m\ge n: Y_m(\omega)=k\} = \bigcup_{n=0}^\infty A_n$. Damit ist \[
+P(\lim_{n\to\infty} Y_n=k) = P(\exists n\ \forall m\ge n: Y_n=k) \le \sum_{n=0}^\infty P(A_n) =0
+\]
+und wir folgern dass $P(Y_\infty \in \{0,N^2\}) = 1$.
+
+Außerdem gilt noch, da $Y_n$ beschränkt sind:
+\begin{align*}
+EY_\infty = \lim_{n\to \infty} EY_n = EY_0
+\end{align*}
+Damit ist die Wahrscheinlichkeit, dass das Feld irgendwann komplett blau ist, gleich 
+\begin{align*}
+P(Y_\infty =N^2)=\frac 1{N^2} EY_\infty = \frac 1{N^2}EY_0 = \frac1{N^2}\#\{A\in I\mid X_0(A)=l\}.
+\end{align*}
+
+Anwendungen dieses Modells findet man in der Physik (Vielteilchensysteme), in der Biologie (Ausbreitung von Infektionen) oder in der Finanzmathematik (Kreditrisiken).
+\end{beispiel}
+
+\section{Die starke Markov-Eigenschaft}
+
+Gegeben si eine Markov-Kette $(X_n)_{n\in\mathbb N_0}$ mit Zustandsraum $S$ auf dem Wahrscheinlichkeitsraum $(\Omega = S_0^{\mathbb N_0}, \mathcal F\da \otimes_{n=0}^\infty \mathcal P(S), P)$. Beachte, dass die Mengen
+\begin{align*}
+Z(i_0,i_1,\ldots,i_n) \coloneqq \{i_0\} \times \{i_1\} \times \cdots \times \{i_n\} \times S \times S \times \cdots
+\end{align*}
+für $n\in \mathbb N_0$, $i_0,\ldots i_n\in S$ ein durchschnittstabiles Erzeugendensystem für $\mathcal F$ bilden. Weiter sei $\mathcal (F_n)_{n\in \mathbb N_0}$ mit $\mathcal F_n=\sigma(X_0,\ldots,X_n)$ die natürliche Filtration von $(X_n)$.
+
+$\tau:\Omega \to \mathbb N_0$ sei eine $(\mathcal F_n)$-Stoppzeit\index{Stoppzeit}, das heißt $\{\tau \le n\} \in \mathcal F_n$ und $P(\tau <\infty) = 1$. Die gestoppte Markov-Kette $X^\tau=(X_n^\tau)_{n\in\mathbb N_0}$ ist
+\begin{align*}
+X_n^\tau \da X_{\min(\tau,n)}
+\end{align*}
+für $n\in \mathbb N_0$ und $Y=(Y_n)_{n\in\mathbb N_0}$ definiert durch
+\begin{align*}
+Y_n \da X_{\tau + n}
+\end{align*}
+heißt der Post-$\tau$-Prozess.\index{Post-$\tau$-Prozess}
+
+
 
 \chapter{Satz um Satz (hüpft der Has)}
 \listtheorems{satz,wichtigedefinition}
