@@ -469,34 +469,120 @@ p_{00}^{(2n)} &= p^nq^n \binom{2n}{n} = p^nq^n \frac{(2n)!}{(n!)^2}
 \Large Hier bitte Vorlesung vom 23.4. eintragen:
 \end{centering}
 
+
 \section{Stationäre Verteilungen}
+
+Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P$ und Startverteilung $\nu$.
+
+Dann ist $X_n \sim \nu \cdot P^n$. Im Allgemeinen hängt diese Verteilung von $\nu$ ab. Es gibt aber spezielle Verteilungen
+$\nu$, so dass die mit dieser Verteilung gestartete Kette zu jedem Zeitpunkt $n$ die selbe Verteilung $\nu$ besitzt. Man sagt dann,
+die Kette ist \emph{im Gleichgewicht} bzw. \emph{stationär}.
+
+\begin{definition}
+  Eine Abbildung $\nu: S \rightarrow \MdR_{\geq 0}$ heißt \emph{Maß}.
+
+  NB: Ein Maß $\nu$ definiert ein Maß $\mathcal{P}(S) \rightarrow \MdR_{\geq 0}, A \mapsto \sum_{a \in A} \nu(a) $ im gewöhnlichen Sinne.
+  Falls $\sum_{a \in S} \nu(a) = 1$, so definiert es sogar eine Verteilung.
+\end{definition}
+
+\begin{definition}
+  Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P = (p_{i,j})$. Ein Maß $\nu$ heißt \emph{invariant} für $P$, falls $\nu \cdot P = \nu$, d.h.
+  falls gilt
+  \begin{align*}
+    \sum_{i \in S} \nu(i) \cdot p_{i,j} = \nu(j)
+  \end{align*}
+  Ist $\nu$ eine Verteilung und invariant, so nennt man $\nu$ auch \emph{stationäre Verteilung} oder \emph{Gleichgewichts-Verteilung}.
+\end{definition}
+
+\begin{bemerkung}
+  a) Ist $S$ endlich, so kann jedes (nichtdegenerierte) invariante Maß zu einer stationären Verteilung normiert werden.
+
+  b) Ist $\nu$ invariant, so gilt $\nu \cdot P^n = \nu$ ($n \in \MdN_0$).
+
+  Ist $\nu$ eine stationäre Verteilung, so gilt
+  \begin{align*}
+    P_\nu(X_n = j) = \sum_{i \in S} v(i) \cdot p_{i,j}^{(n)} = \nu(j),
+  \end{align*}
+  d.h. die mit $\nu$ gestartete Kette hat zu jedem Zeitpunkt die Verteilung $\nu$.
+
+  c) Ist $P$ irreduzibel und $\nu \neq 0$ ein invariantes Maß, so ist $\nu > 0$.
+
+  Denn: $\nu \neq 0$, also existiert $i_0 \in S$ mit $\nu(i_0) \geq 0$.
+  Wegen der Irreduzibilität gibt es ferner für jedes $j \in S$ ein $n \in \MdN_0$ mit $p_{i_0,j}^{(n)} \geq 0$. Zusammen:
+  \begin{align*}
+    \nu(j) = \sum_{i \in S} \nu(i) \cdot p_{i,j}^{(n)} \geq \nu(i_0) p_{i_0,j}^{(n)} > 0
+  \end{align*}
+\end{bemerkung}
+
+
+Gibt es immer ein invariantes Maß bzw. eine stationäre Verteilung? Ist es eindeutig?
+
+Im Folgenden sei $P$ irreduzibel. Wir definieren für ein beliebiges $k \in S$ das Maß $\gamma_k$ wie folgt:
+\begin{align*}
+  \gamma_k(i) := E_k[\sum_{n=1}^{T_k} 1_{[X_n = i]}]
+\end{align*}
+
+
 \begin{satz}
 \label{satz3.1}
-% Hier satz 3.1 eintragen
+  Sei $(X_n)$ irreduzibel und rekurrenz, $k \in S$. Dann gilt:
+  \begin{enuma}
+  \item $\gamma_k$ ist ein invariantes Maß
+  \item $0 < \gamma_k < \infty$
+  \item $\gamma_k$ ist das einzige invariante Maß mit $\gamma_k(k) = 1$ (d.h. $\gamma_k$ ist eindeutig bis auf Vielfache)
+  \end{enuma}
 \end{satz}
-
 
 \begin{beweis}
 \begin{enuma}
-\item % Hier Beweis von Satz 3.1 a) eintragen
-\item % Hier Beweis von Satz 3.1 b) eintragen
-\item 
-Sei $\lambda$ ein weiteres, invariantes Maß mit $\lambda(k)=1 \implies \lambda(j) =\sum_{i\in S\setminus\{k\}} \lambda(i)p_{ij} + p_{kj}$
-\begin{align*}
-\implies \lambda(j) &= 
-\sum_{i\in S\setminus\{k\}} (\sum_{k\in S\setminus\{k\}} \lambda(l)p_{li} + p_{kj})p_{ij} + p_{kj} \\
-&= \sum_{i,l\in S\setminus\{k\}} \lambda(l) p_{li}p_{ij} + \sum_{i\in S\setminus\{k\}} p_{ki}p_{ij} + p_{kj} \\
-&= \sum_{i,l\in S\setminus\{k\}} \lambda(l) p_{li}p_{ij} + P_k(X_2 =j,\, T_k\ge 2) + P_k(X_1=j,\, T_k\ge 1)
-\end{align*}
-Durch Iteration erhalten wir für alle $n\in\mathbb N$:
-\begin{align*}
-\lambda(j) 
-&= \sum_{i_0,i_1,\ldots,i_n\in S\setminus\{k\}} \lambda (i_n) \prod_{r=1}^n p_{i_ri_{r-1}} p_{i_0j} + \sum_{r=1}^{n+1} P_k(X_r=j,\, T_{k} \ge 1) \\
-&\ge \sum_{r=1}^{n+1} P_k(X_r=j,\, T_{k} \ge 1) \\
-&= E_k[\sum_{r=1}^{\min\{n+1,T_k\}} 1_{[X_r=j]}] \towegen{n\to\infty} \gamma_k(j)
-\end{align*}
+\item Zunächst gilt:
+  \begin{align*}
+      \gamma_k(i)
+    &= E_k[\sum_{n=1}^{T_k} 1_{[X_n = i]}]
+     = E_k[\sum_{n=1}^\infty 1_{[X_n = i, n \leq T_k]}]
+     = \sum_{n=1}^\infty P_k(X_n = i, n \leq T_k)\\
+    &= \sum_{n=1}^\infty \sum_{j \in S} P_k(X_n = i, X_{n-1} = j, n \leq T_k)
+  \end{align*}
+  Für $j \neq k$ erhält man
+  \begin{align*}
+      &P_k(X_n = i, X_{n-1} = j, n \leq T_k)\\
+    = &P_k(X_n = i, X_{n-1} = j, X_{n-2} \neq k, \ldots, X_1 \neq k, X_0 = k) / P(X_0 = k)\\
+    = &P_k(X_n = i | X_{n-1} = j, X_{n-2} \neq k, \ldots, X_1 \neq k, X_0 = k) \cdot P_k(X_{n-1} = j, X_{n-2} \neq k, \ldots, X_1 \neq k)\\
+    = &p_{j,i} \cdot P_k(X_{n-1} = j, n \leq T_k)
+  \end{align*}
+  Die so erhaltene Identität gilt auch für $j = k$, und es folgt
+  \begin{align*}
+    \gamma_k(i) &= \sum_{n=1}^\infty \sum_{j \in S} P_k(X_n = i, X_{n-1} = j, n \leq T_k)\\
+                &= \sum_{n=1}^\infty \sum_{j \in S} p_{j,i} \cdot P_k(X_{n-1} = j, n \leq T_k)\\
+                &= \sum_{j \in S} p_{j,i} \sum_{n=0}^\infty P_k(X_n = j, n+1 \leq T_k)\\
+                &= \sum_{j \in S} p_{j,i} E_k[\sum_{n=0}^{T_{k-1}} 1_{[X_n = j]}]\\
+                &= \sum_{j \in S} p_{j,i} E_k[\sum_{n=0}^{T_k} 1_{[X_n = j]}]
+                 = \sum_{j \in S} \gamma_k(j) p_{j,i}
+  \end{align*}
 
-Insgesamt ist für alle $j\in S$: $\lambda(j) \ge \gamma_k(j)$, also ist $\lambda-\gamma_k$ ebenfalls ein invariantes Maß mit $\lambda(k)-\gamma_k(k)=0$, also folgt aus der Bemerkung c): $\lambda =\gamma_k$.
+\item
+  Nach Bemerkung c) oben gilt $\gamma_k > 0$, denn $\gamma_k(k) = 1$. Wegen $\gamma_k = \gamma_k \cdot P^n$ folgt
+  \begin{align*}
+    1 = \gamma_k(k) \geq \gamma_k(j) \cdot p_{j,k}^{(n)}
+  \end{align*}
+  für jedes $j \in S$. Es gibt allerdings mindestens ein $p_{j,k}^{(n)} > 0$, denn die Markov-Kette ist irreduzibel; daran erkennt man
+  $\gamma_k < \infty$.
+
+\item 
+  Sei $\lambda$ ein weiteres, invariantes Maß mit $\lambda(k)=1$. Es gilt also:
+  \begin{align*}
+    \lambda(j) &= \sum_{i \in S\setminus\{k\}} \lambda(i) \cdot p_{i,j} + 1 \cdot p_{k,j}\\
+               &= \sum_{i \in S\setminus\{k\}} \left( \sum_{l \in S\setminus\{k\}} \lambda(l) \cdot p_{l,i} + p_{k,i} \right) p_{i,j} + p_{k,j}\\
+               &= \sum_{i,l \in S\setminus\{k\}} \lambda(l) \cdot p_{l,i} \cdot p_{i,j} + \sum_{i \in S\setminus\{k\}} p_{k,i} \cdot p_{i,j} + p_{k,j}\\
+               &= \sum_{i,l \in S\setminus\{k\}} \lambda(l) \cdot p_{l,i} \cdot p_{i,j} + P_k(X_2 = j, T_k \geq 2) + P_k(X_1 = j, T_k \geq 1)
+  \end{align*}
+  Iterativ erhalten wir für $n \in \MdN$:
+  \begin{align*}
+    \lambda(j) &= \sum_{i_0, i_1, \ldots, i_n \in S\setminus\{k\}} \lambda (i_n) \prod_{r=1}^n p_{i_r,i_{r-1}} p_{i_0,j} + \sum_{r=1}^{n+1} P_k(X_r = j, T_k \geq 1)\\
+               &\geq \sum_{r=1}^{n+1} P_k(X_r = j, T_k \geq 1) = E_k[\sum_{r=1}^{\min(n+1,T_k)} 1_{[X_r = j]}] \towegen{LDC} \gamma_k(j)
+  \end{align*}
+  Es ist also $\lambda - \gamma_k$ ebenfalls ein invariantes Maß mit $(\lambda - \gamma_k)(k) = 0$; nach Bemerkung c) folgt
+  $\lambda - \gamma_k = 0$, d.h. $\lambda = \gamma_k$.
 \end{enuma}
 
 \end{beweis}
