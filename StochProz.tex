@@ -772,7 +772,9 @@ Es sei $(X_n)$ irreduzibel, aperiodisch und positiv rekurrent mit stationärer V
 \end{satz}
 
 \begin{beweis}
-Wir benutzen ein sogenanntes „Kopplungsargument“: Sei $(Y_n)$ eine weitere Markov-Kette, unabhängig von $(X_n)$ mit gleicher Übergangsmatrix und Startverteilung $\pi$, also $Y_n\sim \pi$ für alle $n\in \MdN$. Es sei
+Wir benutzen ein sogenanntes ``Kopplungsargument''.
+
+(1) Sei $(Y_n)$ eine weitere Markov-Kette, unabhängig von $(X_n)$ mit gleicher Übergangsmatrix und Startverteilung $\pi$, also $Y_n\sim \pi$ für alle $n\in \MdN$. Es sei
 \[
 T\da \inf\{n\in \MdN \mid X_n = Y_n\}
 \]
@@ -791,7 +793,7 @@ T_{(b,b)} \da \inf\{n\in\MdN \mid (X_n,Y_n) = (b,b) \}.
 Offenbar ist $T\le T_{(b,b)}$ und $P_{\hat \nu}(T_{(b,b)}<\infty)=1$. Daraus folgt, dass $P_{\hat \nu}(T<\infty)=1$.
 
 
-Betrachte $(Z_n)_{n\in\MdN_0}$ definiert durch
+(2) Betrachte $(Z_n)_{n\in\MdN_0}$ definiert durch
 \[
 Z_n= 
 \begin{cases}
@@ -801,9 +803,9 @@ Y_n, &\text{ für } n>T.
 \]
 Es ist $(Z_n)$ eine Markov-Kette mit Markov-Kette $P$ und $Z_0=i$, denn:
 
-Nach dem Satz $\ref{satz3.1}$ genügt es zu zeigen: 
+Nach Satz $\ref{satz3.1}$ genügt es zu zeigen, dass
 \[\forall n\in\MdN\ \forall i,k\in S: P_{\hat\nu}(z_k=i_k,\, 0\le k\le n) = \delta_i(i_0) \prod_{k=0}^{n-1}p_{i_k}p_{i_{k+1}}\]
-Es gilt:
+Es gilt
 \begin{align*}
 &\quad P_{\hat \nu}(Z_k=i_k,\,0\le k\le n)\\
 &= \sum_{r=0}^n P_{\hat \nu}(z_k=i_,\, 0\le k\le n,\, T=r)\\
@@ -811,25 +813,106 @@ Es gilt:
 &= \sum_{r=0}^n \underbrace{P(X_k = i_k,\, 0\le k\le r,\, Y_k=i_k,\, r+1\le k\le n,\, Y_0\ne i_0,\ldots, Y_{r-1}\ne i_{r-1},\, Y_r=i_r)}_{\ad \text{I}} \\
 &\quad + \underbrace{P_{\hat \nu}(X_k = i_k, \, 0\le k\le n,\, Y_0\ne i_0,\ldots,Y_n\ne i_n)}_{\ad \text{II}}
 \end{align*}
+mit
+\begin{align*}
+  \text{I} &= P_{\hat \nu}(X_k = i_k, 0 \leq k \leq r) \cdot P_{\hat \nu}(Y_k = i_k, r+1 \leq k \leq n | Y_0 \neq i_0, \ldots, Y_{r-1} \neq i_{r-1}, Y_r = i_r) \cdot\\
+           &~~~~ P_{\hat \nu}(Y_0 \neq i_0, \ldots, Y_{r-1} \neq i_{r-1}, Y_r = i_r)\\
+           &= \delta_i(i_0) \cdot \prod_{k=0}^{r-1} p_{i_k,i_{k+1}} \cdot \prod_{k=r}^{n-1} p_{i_k,i_{k+1}} \cdot P_{\hat \nu}(Y_0 \neq i_0, \ldots, Y_{r-1} \neq i_{r-1}, Y_r = i_r)\\
+           &= \delta_i(i_0) \cdot \prod_{k=0}^{n-1} p_{i_k,i_{k+1}} \cdot P_{\hat \nu}(Y_0 \neq i_0, \ldots, Y_{r-1} \neq i_{r-1}, Y_r = i_r),\\
+  \text{II} &= \ldots = \delta_i(i_0) \cdot \prod_{k=0}^{n-1} p_{i_k,i_{k+1}} \cdot P_{\hat \nu}(Y_0 \neq i_0, \ldots, Y_{n-1} \neq i_{n-1}, Y_n \neq i_n)
+\end{align*}
+Tatsächlich gilt also
+\begin{align*}
+  P_{\hat \nu}(Z_k=i_k, 0 \leq k \leq n) = \delta_i(i_0) \cdot \prod_{k=0}^{n-1} p_{i_k,i_{k+1}}
+\end{align*}
 
+(3) Es gilt nun
+\begin{align*}
+    &p_{i,j}^{(n)} = P_{\hat \nu}(Z_n = j) = P_{\hat \nu}(Z_n = j, T \leq n) + P_{\hat \nu}(Z_n = j, T > n)\\
+    &\pi(j) = P_{\hat \nu}(Y_n = j) = \underbrace{P_{\hat \nu}(Y_n = j, T \leq n)}_{= P_{\hat \nu}(Z_n = j, T \leq n)} + P_{\hat \nu}(Y_n = j, T > n)\\
+  \Rightarrow \quad &|p_{i,j}^{(n)} - \pi(j)| \leq 2 \cdot P_{\hat \nu}(\underbrace{T > n}_{\downarrow \{T = \infty\}}) \longrightarrow 0
+\end{align*}
 \end{beweis}
 
-\begin{centering}
-\Large Hier bitte Vorlesung vom 7.5. eintragen:
-\end{centering}
+\begin{satz}
+  Seien $i$, $j \in S$ Zustände sowie $d_j$ die Periode von $j$. Dann gilt:
+  \begin{align*}
+    \lim_{n \rightarrow \infty} p_{i,j}^{n \cdot d_j + r} = \frac{d_j}{m_j} \sum_{k=0}^\infty f_{i,j}^{k \cdot d_j + r} \qquad r=1,\ldots,d_j
+  \end{align*}
+  Speziell:
+  \begin{enuma}
+  \item Ist $j$ transient oder nullrekurrent (d.h. $m_j = \infty$), so gilt $p_{i,j}^{(n)} \longrightarrow 0$
+  \item Ist $j$ aperiodisch (d.h. $d_j = 1$), so gilt $p_{i,j}^{(n)} \longrightarrow \frac{1}{m_j} f_{i,j}^*$
+  \end{enuma}
+\end{satz}
+
 
 \section{Markov-Ketten und Martingale}
 
+\begin{erinnerung}
+  $(X_n)$ heißt \emph{Martingal}, falls
+  \begin{enuma}
+  \item $E|X_n| < \infty$
+  \item $E[X_{n+1}|X_1,\ldots,X_n] = X_n$, bzw.
+  \item[b')] $E[X_{n+1}|\mathcal{F}_n] = X_n$, wobei $\mathcal{F}_n := \sigma(X_1, \ldots, X_n)$ die \emph{natürliche Filtration} bezeichnet.
+  \end{enuma}
+\end{erinnerung}
+
+\begin{erinnerung}
+  Sei $(\Omega, \mathcal{F}, P)$ W-Raum, $X$ Zufallsvariable mit $E|X| < \infty$, $\mathcal{G} \subseteq \mathcal{F}$ Unter-$\sigma$-Algebra.
+  $Z =: E[X|\mathcal{G}]$ heißt bedingter Erwartungswert von $X$ bzgl. $\mathcal{G}$, falls
+  \begin{enuma}
+  \item $Z$ ist $\mathcal{G}$-messbar
+  \item $\int_A Z \cdot dP = \int_A X \cdot dP$ \quad $\forall A \in \mathcal{G}$
+  \end{enuma}
+\end{erinnerung}
+
+Sei $(X_n)$ eine Markov-Kette auf dem Zustandsraum $S$ mit Übergangsmatrix $P$ sowie $\mathcal{F}_n := \sigma(X_1,\ldots,X_n)$ die natürliche
+Filtration. Weiter sei $h: S \rightarrow \MdR$ und $P: (S \rightarrow \MdR) \rightarrow (S \rightarrow \MdR)$ definiert durch
+\begin{align*}
+  (Ph)(i) := \sum_{j \in S} p_{i,j} \cdot h(j)
+\end{align*}
+NB: ``Ph'' macht Sinn im Sinne einer ``Matrix$\cdot$Vektor''-Multiplikation.
+
+
 \begin{lemma}
-
+  \label{lemma_5_1}
+  Sei $h: S \rightarrow \MdR$ eine Funktion mit $\left\|P \left|h\right| \right\|_\infty < \infty$. Dann gilt:
+  \begin{align*}
+    (Ph)(X_n) = E[h(X_{n+1}|\mathcal{F}_n)
+  \end{align*}
 \end{lemma}
+\begin{beweis}
+  Wir prüfen, dass $(Ph)(X_n)$ ein bedingter Erwartungswert von $h(X_{n+1})$ bzgl. $\mathcal{F}_n$ ist.
 
-\begin{satz}
+  a) $(Ph)(X_n)$ ist $\mathcal{F}_n$-messbar, denn $X_n$ ist $\mathcal{F}_n$-messbar.
 
-\end{satz}
+  b) Sei $A := \{X_0 = i_0, \ldots, X_n = i_n\} \in \mathcal{F}_n$. Dann:
+  \begin{align*}
+      &\int_A (Ph)(X_n) \cdot dP = \int 1_A \cdot (Ph)(X_n) \cdot dP = \int 1_{\{X_0 = i_0, \ldots, X_n = i_n\}} (Ph)(i_n) \cdot dP\\
+    = &(Ph)(i_n) \cdot P(A) = \sum_{j \in S} p_{i_n,j} \cdot h(j) \cdot P(X_0 = i_0) \cdot \prod_{k=0}^{n-1} p_{i_k,i_{k+1}}\\
+    = &\sum_{j \in S} h(j) \cdot P(X_0 = i_0, \ldots, X_n = i_n, X_{n+1} = j) = \sum_{j \in S} \int_{A \cap \{X_{n+1} = j\}} h(X_{n+1}) \cdot dP\\
+    = &\sum_{j \in S} \int_A 1_{\{X_{n+1} = j\}} h(X_{n+1}) \cdot dP \stackrel{LDC}{=} \int_A h(X_{n+1}) \cdot dP
+  \end{align*}
+  Da jedes $A \in \mathcal{F}_n$ abzählbare Vereinigung solcher ``Elementarereignisse'' ist, folgt die Behauptung.
+\end{beweis}
+
+\begin{satzunddefinition}
+  Seien $P$ eine Übergangsmatrix auf $S$ und $h: S \rightarrow \MdR$ eine Funktion mit $\left\|P \left|h\right| \right\|_\infty < \infty$. Gilt
+  dann $Ph = h$, so nennen wir $h$ \emph{harmonisch}. Im Fall $Ph \geq h$ bzw. $Ph \leq h$ heißt $h$ \emph{sub-} bzw. \emph{superharmonisch}.
+
+  Ist $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P$ und $h$ [sub-/super-]harmonisch, so ist $(h(X_n))$ ein $(\mathcal{F}_n)$-[Sub-/Super-]Martingal.
+\end{satzunddefinition}
+\begin{beweis}
+  Nach Lemma \ref{lemma_5_1} gilt
+  \begin{align*}
+    E[h(X_{n+1})|\mathcal{F}_n] = h(X_n) + (Ph - h)(X_n)
+  \end{align*}
+  $\leadsto$ Behauptung.
+\end{beweis}
 
 \begin{bemerkung}
-Bemerkung: Ist $h:S\to \mathbb R$ eine beschränkte Funktion, so wird durch
+Ist $h:S\to \mathbb R$ eine beschränkte Funktion, so wird durch
 \begin{align*}
 Z_n^h &\coloneqq h(X_n) - \sum_{k=1}^n (E[h(X_k)\mid F_{k-1}] - h(X_{k-1})) \\
 &= h(X_n) - \sum_{k=1}^n (Ph-h)(X_{k-1})
