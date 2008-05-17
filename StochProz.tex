@@ -1042,6 +1042,130 @@ Y_n \da X_{\tau + n}
 \end{align*}
 heißt der Post-$\tau$-Prozess.\index{Post-$\tau$-Prozess}
 
+\begin{satz}[Starke Markov Eigenschaft]
+  \label{Satz6.1}
+  Mit den oben eingeführten Bezeichnungen gilt:
+  \begin{enuma}
+  \item $Y$ ist eine Markov-Kette mit Übergangsmatrix $P$ 
+    und Startverteilung $\nu$, wobei $X_\tau\backsim\nu$.
+  \item $X^\tau$ und $Y$ sind unter $X_\tau$ bedingt unabhängig.
+  \end{enuma}
+\end{satz}
+
+\begin{beweis}
+  a.) Es gilt:
+  \begin{align*}
+    & P(Y_0,\dots,Y_n=i_n,Y_{n+1}=i_{n+1}) \\
+    = & \sum_{k=0}^\infty P(\tau=k,X_k=i_0,\dots,X_{k+n+1}=i_{n+1}) \\
+    = & \sum_{k=0}^\infty P(X_{k+n+1} \vert X_k=i_0,\dots,X_{k+n}=i_n,\tau=k) 
+    \cdot P(X_k=i_0,\dots,X_{k+n}=i_n,\tau=k) \\
+    = & p_{i_n i_{n+1}} \sum_{k=0}^\infty P(X_k=i_0,\dots,X_{k+n}=i_n,\tau=k) \\
+    = & p_{i_n i_{n+1}} P(Y_0=i_0,\dots,Y_n=i_n) \implies \text{ Behauptung}.
+  \end{align*}
+  b.) Seien
+  \begin{align*}
+    & A:=Z(i_0,\dots,i_m)={i_0}\times\dots\times {i_m}\times S\times S \times\dots \\
+    & B:=Z(j_0,\dots,j_n)
+  \end{align*}
+  dann gilt:
+  \begin{align*}
+    & P(X^\tau\in A,Y\in B,X_\tau =j) \\
+    =& \sum_{k=0}^\infty P(\tau=k,X_{0\wedge k}=i_0,\dots,X_{m\wedge k}=i_m,
+    X_k=j_0,\dots,X_{k+n}=j_n,X_k=j) \\
+    =& \sum_{k=0}^\infty P(X_k=j_0,\dots,X_{k+n}=j_n\vert 
+    X_{0\wedge k}=i_0,\dots,X_{m\wedge k}=i_m,X_k=j,\tau=k) \\
+    & \quad \cdot P(X_{0\wedge k}=i_0,\dots,X_{m\wedge k}=i_m,x_k=j,\tau=k) \\
+    =& P(X_0=j_0,\dots,X_n=j_n\vert X_0=j) \cdot P(X^\tau \in A, X_\tau=j) \\
+    =& P(Y\in B\vert X_j=j) \cdot P(X^\tau\in A\vert X_\tau=j) \cdot P(X_\tau=j) 
+  \end{align*}
+  Teilen durch $P(X_\tau=j) \implies$ Behauptung.
+\end{beweis}
+
+\chapter{Markov-Ketten in stetiger Zeit}
+
+\section{Ein wichtiger Spezialfall: der Poissen-Prozeß}
+
+Gegeben sei ein Wahrscheinlichkeitsraum $(\Omega,\cF,P)$.
+Wir betrachten jetzt einen stochastischen Prozeß $N=(N_t)_{t\geq 0}$
+mit Zustandsraum $\mathbb{N}_0$,d.h. $(N_t)_{t\geq 0}$ ist eine Familie von
+$(\cF,\mathcal{P}(\mathbb{N}_0))$-messbaren ZV, der bestimmte Ereignisse zählen soll
+(z.B. Emission von Partikeln beim radioaktiven Zerfall, Ankünfte von Kunden in einem
+Bediensystem, Schäden bei einer Versicherung). \\
+Wir nehmen an, dass mindestens ein Ereignis eintritt und die Anzahl der Ereignisse in einem
+kompakten Intervall soll endlich sein. \\
+Wir stellen folgende Forderungen an $N$:
+\\ (A1) Alle Pfade $t \mapsto N(t,\omega)$ liegen in
+\[
+D_0:=\{f:[0,\infty)\longrightarrow\mathbb{N}_0\vert f(0)=0,f\uparrow,f \text{ stetig von rechts }\}
+\]
+Hier fehlt ein Bild \\
+\\ (A2) $(N_t)_{t\geq 0}$ hat unabhängige Zuwächse, d.h. für alle 
+$0\leq t_0\leq t_1 \leq \dots \leq t_n, n\in \mathbb{N}$ sind die ZV
+\[
+N_{t_0},N_{t_1}-N_{t_0},\dots,N_{t_n}-N_{t_{n-1}}
+\]
+stochastisch unabhängig.
+\\ (A3) $(N_t)_{t\geq 0}$ hat stationäre Zuwächse, d.h. $\forall t>0$ hängt die Verteilung
+von $N_{s+t}-N_s$ nicht von s ab.
+\\ (A4) Ereignisse treten einzeln auf, d.h. $P(N_h\geq2)=o(h)$ mit $h\downarrow 0$.
+\begin{bemerkung}
+  Der stochastische Prozeß kann als Zufallsgröße mit Werten in einem
+  Funktionenraum aufgefasst werden, d.h.
+  \[
+  \Omega\ni\omega\mapsto N(\cdot,\omega)\in D_0
+  \]
+  Als $\sigma$-Algebra auf $D_0$ wählen wir 
+  \[
+  \mathcal Le(D_0):=\sigma(\{\pi_t:t\geq 0\})
+  \]
+  wobei $\pi_t:D_0\longrightarrow\mathbb{N}_0,f\mapsto f(t)$ die $t$-te Projektion ist. \\
+  Es gilt: $N_t:\Omega\longrightarrow D_0$ ist $(\cF,\mathcal Le(D_0))$-messbar 
+  $\Longleftrightarrow N_t:\Omega\longrightarrow\mathbb{N}_0$ sind 
+  $(\cF,\mathcal P(\mathbb N_0))$-messbar $\forall t\geq0$. 
+  (Stochastik II Übungsaufgabe 21) \\
+  Die Mengen der Form
+  \[
+  A(t_1,\dots,t_n,i_1,\dots,i_n):=\{f\in D_0\vert f(t_j)-f(t_{j-1})=i_j \text{ für } f=1,\dots,n\}
+  \]
+  mit $0=:t_0\leq t_1\leq\dots\leq t_n\leq\infty,i_1,\dots,i_n\in\mathbb N$ 
+  bilden ein durchschnittstabiles Erzeugendensystem von $\mathcal Le(D_0)$.
+\end{bemerkung}
+
+\begin{satz}
+  \label{Satz 7.1}
+  Es sei $(N_t)_{t\geq 0}$ ein stochastischer Prozeß, der den Bedingungen (A1)-(A4) genügt.
+  Dann hat $N$ mit Wahrscheinlichkeit $1$ nur Sprünge der Höhe $1$ und es existiert ein
+  $\lambda>0$, so dass:
+  \begin{enuma}
+  \item $\forall s,t\geq 0$ ist $N_{s+t}-N_s$ Poisson-verteilt mit Parameter $\lambda t$.
+  \item Die Zeiten zwischen aufeinanderfolgenden Sprüngen des Protesses sind unabhängig und exponentialverteilt mit Parameter $\lambda$.
+  \end{enuma}
+\end{satz}
+
+\begin{beweis}
+  Sprünge der Höhe $1$:d.h. z.z.
+  \[
+  P(N_s-N_{s-}\geq 2 \text{ für ein } s>0)=0
+  \]
+  wobei $N_{s-}$ der linksseitige Grenzwert ist. \\
+  Für festes t>0 gilt:
+  \begin{align*}
+   & P(N_s-N_{s-}\geq 2 \text{ für ein } s\in (0,t]) \\
+\leq \, & P(N_{\frac{kt}{n}}-N_{\frac{(k-1)t}{n}}\geq 2 \text{ für ein } k\in\{1,\dots,n\} \\    
+\leq \, & n\cdot P(N_{\frac{t}{n}}\geq 2)
+  \end{align*}
+
+(das letzte $\leq$ gilt wegen (A3)) \\
+Aus (A4) folgt:
+\[
+\lim_{n\rightarrow\infty} \frac{P(N_{\frac{t}{n}}\geq 2)}{\frac{t}{n}}\cdot t=0
+\]
+Weiter gilt mit Stetigkeit des Wahrscheinlichkeitsmaßes:
+\[
+P(N_s-N_{s-}\geq 2 \text{ für ein } s>0)=
+\lim_{t\rightarrow\infty}P(N_s-N_{s-}\geq 2 \text{ für ein } s\in (0,t])=0
+\]
+\end{beweis}
 
 
 \chapter{Satz um Satz (hüpft der Has)}
