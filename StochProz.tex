@@ -1198,7 +1198,7 @@ P(N_t = 0 \text{ für alle } t\ge 0)= \lim_{t\to\infty} \phi(t) = 1
 im Widerspruch zur Forderung, dass mindestens ein Ereignis eintritt, und wäre $\Phi(1) = 0$, dann gälte für alle $n\in \MdN$
 \begin{align*}
 P(N_1\ge u) 
-&\ge P(N_{\frak kn} - N_{\frak {k-1}n} \ge 1 \text{ für } k =1,\ldots,n)\\
+&\ge P(N_{\frac kn} - N_{\frac {k-1}n} \ge 1 \text{ für } k =1,\ldots,n)\\
 &= \Big(1-\Phi(\frac 1n)\Big) ^n &\text{((A2), (A3))} \\
 &= 1
 \end{align*}
@@ -1219,7 +1219,7 @@ X_{nk} &\da 1_{\MdN}\big(N_{\frac{kt}n} - N_{\frac{(k-1)t}n}\big)\\
 \end{align*}
 Wegen (A2) sind die $X_{n1},\ldots,X_{nn}$ unabhängig und wegen (A3) identisch verteilt mit $B(1,1-e^{-\lambda \frac tn})$. Dann gilt
 \begin{align*}
-\sum_{k=1}^n X_{nk} \sim B(n,1-e^{-\lambda \frac tn}) \tomit d P_0(\lambda t)
+\sum_{k=1}^n X_{nk} \sim B(n,1-e^{-\lambda \frac tn}) \tomit d \operatorname{Po}(\lambda t)
 \end{align*}
 da $n(1-e^{-\lambda \frac tn}) \tomit{n\to \infty} \lambda t$.
 
@@ -1231,7 +1231,7 @@ P(\sum_{k=1}^n X_{nk} \ne N_t)
 \end{align*}
 und damit haben wir gezeigt, dass
 \[
-N_t \sim P_0(\lambda t).
+N_t \sim \operatorname{Po}(\lambda t).
 \]
 
 \textbf{b)} Sei
@@ -1255,10 +1255,10 @@ Der Prozess $N=(N_t)_{t\ge 0}$ in Satz \ref{satz:7.1} heißt \emph{Poisson-Proze
 
 Die Bedinungen (A2) und (A3) können etwas „abstrakter“ gefasst werden: Für $u\ge 0$ definiere
 \begin{align*}
-S_u &: D_0 \to D_0,  & f &\mapsto f(\cdot\wedge n)\\
-Z_u &: D_0 \to D_0,  & f &\mapsto f(n+\cdot)-f(n)
+S_u &: D_0 \to D_0,  & f &\mapsto f(\cdot\wedge u)\\
+Z_u &: D_0 \to D_0,  & f &\mapsto f(u+\cdot)-f(u)
 \end{align*}
-wobei $(\cdot \wedge n)$ die Abbildung $m\mapsto \min (m,n)$ darstellt.
+wobei $(\cdot \wedge u)$ die Abbildung $v\mapsto \min (v,u)$ darstellt.
 
 Beide Abbildungen sind $(\frak L(D_0), \frak L(D_0))$-messbar.
 
@@ -1303,7 +1303,7 @@ S_\tau(N) = (N_{\tau \wedge t})_{t\ge 0}
 \]
 heißt \emph{Prä-$\tau$-Prozess}\index{Prä-$\tau$-Prozess} und der Prozess 
 \[
-Z_\tau(N) = (N_{\tau + t} - N_\tau)_{\tau \ge 0}
+Z_\tau(N) = (N_{\tau + t} - N_\tau)_{t \ge 0}
 \]
 heißt \emph{Post-$\tau$-Prozess}\index{Post-$\tau$-Prozess}.
 \end{definition}
@@ -1312,6 +1312,104 @@ heißt \emph{Post-$\tau$-Prozess}\index{Post-$\tau$-Prozess}.
 \label{lem:7.2}
 Ist $\tau$ eine endliche Stoppzeit, so sind die Prozesse $(N_{\tau \wedge t})_{t\ge 0}$ und $(N_{\tau + t}-N_\tau)_{t\ge 0}$ stochastisch unabhängig. Außerdem hat $(N_{\tau + t}-N_\tau)_{t\ge 0}$ dieselbe Verteilung wie $(N_t)_{t\ge 0}$.
 \end{lemma}
+
+\begin{beweis}
+Zunächst nehmen wir an, dass $\tau$ Werte in $\mathbb Q_+$ annimmt. Für $0\le s_1\le\cdots\le s_k$, $0\le t_1\le \cdots\le t_l$ und beliebige $i_1,\ldots,i_k,j_1,\ldots,j_k\in \mathbb N_0$ gilt
+\begin{align*}
+C&\da P\big(S_\tau(N) \in \underbrace{A(s_1,\ldots,s_k;i_1,\ldots,s_k)}_{\ad A},\,
+Z_\tau(N) \in \underbrace{A(t_1,\ldots,t_l;j_1,\ldots,j_l)}_{\ad B}
+\big) \\
+&= \sum_{u\in \mathbb Q_+} P(\tau = u,\, S_u(N)\in A,\, Z_u(N)\in B)\\
+\intertext{Da $\{\tau = u \} \in \cF_u$ kann dieses Ereignis durch $S_u(N)$ ausgedrückt werden. Da $S_u(N)$ und $Z_u(N)$ unabhängig sind, folgt:
+}
+\cdots &= \sum_{u\in\mathbb Q_+} P(\tau = u, S_u(N)) \cdot P(\underbrace{Z_u(N)\in B}_{= N\in B}) \\
+&= P(N\in B) \cdot P(S_\tau(N) \in A)
+\end{align*}
+Im Fall $k=1,s_1=0,i_1=0$ folgt:
+\begin{align*}
+P(Z_\tau(N)\in B) = P(N\in B)
+\end{align*}
+also gilt $Z_\tau(N) \gleichnach{d} N$ und damit
+\begin{align*}
+P(S_\tau (N) \in A,\, Z_\tau(N)\in B) = P(Z_\tau (N) \in B) \cdot P(S_\tau(N)\in A)
+\end{align*}
+also sind $Z_\tau(N)$ und $S_\tau(N)$ unabhängig.
+
+Weiter sei $\tau$ beliebig. Betrachte die Folge 
+\[
+\tau_n \da \frac{\lceil 2^n \tau \rceil}{2^n},\, n\in \mathbb N,
+\]
+für die $\tau_n\in \mathbb Q_+$ $P$-fast-sicher gilt und $\tau_n\to \tau$ für $n\to\infty$. Mit (A1) folgt für alle $t\ge 0$
+\[
+N_{\tau_n\wedge t} \tomit{n\to\infty} N_{\tau \wedge t},\quad N_{\tau_n+t}\tomit{n\to\infty}N_{\tau+t}
+\]
+$P$-fast-sicher und
+\begin{align*}
+P(S_\tau(N)\in A,\, Z_\tau(N)\in B) 
+&= \lim_{n\to\infty} P(S_{\tau_n}(N)\in A,\, Z_{\tau_n}(N)\in B) \\
+&= \lim_{n\to\infty} P(S_{\tau_n}(n)\in A) \cdot P(Z_{\tau_n}(N)\in B)\\
+&= P(S_\tau(N)\in A)\cdot P(Z_\tau(N)\in B)
+\end{align*}
+
+Analog kann man die Aussage $Z_\tau(N)\gleichnach{d}N$ auf beliebige $\tau$ erweitern.
+\end{beweis}
+
+Damit können wir den Beweise von Satz $\ref{satz:7.1}$ abschließen:
+
+Es seien
+\begin{align*}
+T_1 &\da \inf\{t>0\mid N_t\ne 0\} \\
+S_1 &\da T_1 \\
+S_k &\da \inf\{t>S_{k-1} \mid N_t \ne T_{t-}\},\ k=2,3,\ldots\\
+T_k &\da S_k - S_{k-1},\ k=2,3,\dots
+\end{align*}
+Wir wissen bereits, dass $T_1 \sim \exp(\lambda)$. Induktiv nehmen wir dann, dass $T_1,\ldots,T_k$ unabhängig und identisch exponential-verteilt seien. $\tau \da T_1 + \cdots + T_k = S_k$ ist eine Stoppzeit, da $\{\tau \le t\} = \{N_t \ge k\} \in \cF_t$. Da $P(\tau > t)= P(N_t < k) \to 0$ für $t\to\infty$ gilt, ist $\tau$ $P$-fast-sicher endlich.
+
+$T_{k+1}$ ist die Zeit bis zum ersten Sprung im Post-$\tau$-Prozess. Nach Lemma $\ref{lem:7.2}$ ist $T_{k+1}\gleichnach{d} T_1\sim \exp(\lambda)$ und $T_{k+1}$ ist unabhängig von $S_\tau(N)$, also auch von $T_1,\ldots,T_k$.
+
+\begin{beispiel}[Bedingte Gleichverteilungseigenschaft]
+Es seien $K,X_1,X_2,\ldots$ unabhängige Zufallsvariablen mit $K\sim \operatorname{Po}(\lambda T)$, $T>0$, und $X_i\sim U(0,T)$.
+
+Wir definieren\[
+N_t \da \#\{1\le i \le K\mid X_i\le t\},\, t\ge 0.
+\]
+Es sei $0\ad t_0\le t_1 \le \cdots\le t_n=T$ eine Zerlegung des Intervals $[0,T]$. Betrachte für $i_1,\ldots,i_n\in \mathbb N_0$ das Ereignis
+\[
+A \da \{N_{t_1} - N_{t_0} = i_1,\ldots,N_{t_n}-N_{t_{n_1}} = i_n\}.
+\]
+Für $\omega \in A$ folgt $k \da K(\omega) = i_1+\cdots+ i_n$. Man erhält (siehe Definition der Multinomialveteilung, Henze, Stochastik I, S. 121)
+\begin{align*}
+P(N_{t_1} - N_{t_0}=1,\ldots,N_{t_n} - N_{t_{n-1}} = i_n) 
+&= e^{-\lambda T}\frac{(\lambda T)^k}{k!} \frac{k!}{i_1!\cdots i_n!}\Big(\frac{t_1\cdot t_0}{T}\Big)^{i_1}\cdots \Big(\frac{t_n\cdot t_{n-1}}{T}\Big)^{i_n} \\
+&= \prod_{l=1}^n \underbrace{e^{-\lambda(t_l-t_{l-1})} \frac{(\lambda (t_l - t_{l-1}))^{i_l}}{i_l!}}_{=P(M_l=i_l)}
+\end{align*}
+wobei $M_l\sim \operatorname{Po}(\lambda(t_l-t_{l-1}))$. Das zeigt: Die Zuwächse des Prozesses $\tilde N=(N_t)_{0\le t\le T}$ sind unabhängig und stationär und Poisson-verteilt mit Parameter $\lambda\cdot$Intervalllänge, und (A1), (A4) ist erfüllt, also ist $\tilde n$ ein bei $T$ gestoppter Poisson-Prozess.
+\end{beispiel}
+
+\begin{beispiel}[Das Inspektions-Paradox]
+Es seien $X_1,X_2,\ldots$ unabhängig und identisch verteilte Zuvallsvariablen mit $X_k\sim \exp(\lambda)$, welche die Lebensdauer von Glühbirnen modellieren.
+
+Es sei $S_n \da \sum_{k=1}^n X_k$ der Zeitpunkt, an dem die $n$-te Birne kaputt geht und eine neue Birne eingesetzt wird, und $N_t$ die Anzahl der Erneuerungen bis zum Zeitpunkt $t$ und damit ein Poisson-Prozess mit Parameter $\lambda$.
+
+In der Erneuerungstheorie interessiert man sich für 
+\begin{align*}
+V_t &\da S_{N_t+1}-t = \text{Restlebensdauer} \\
+W_t &\da t- S_{N_t} = \text{Alter} \\
+L_t &\da  W_t + V_t = \text{Gesamtlebensdauer}
+\end{align*}
+der zum Zeitpunkt $t$ in Gebrauch befindlichen Glühbirne.
+
+Es ist $V_t \sim \exp(\lambda)$. Die Variable $W_t$ kann höchstens $t$ sein, das heißt $P(W_t > s) = 0$ für $s>t$. Für $0\le s \le t$ gilt $P(W_t \ge s) = P(N_t-N_{t-s} = 0) = e^{-\lambda s}$. Damit ist
+\begin{align*}
+F_{W_t}(s) \da 
+\begin{cases}
+1-e^{-\lambda s},& 0\le s \le t \\
+1, & s\ge t
+\end{cases}
+\end{align*}
+
+\end{beispiel}
+
 
 \chapter{Satz um Satz (hüpft der Has)}
 \listtheorems{satz,wichtigedefinition}
