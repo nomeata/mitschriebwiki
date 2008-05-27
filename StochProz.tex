@@ -5,6 +5,7 @@
 \usepackage{faktor}
 \usepackage{enumerate}
 \usepackage{tikz}
+\usepackage{german}
 
 \usepackage{remreset}
 \makeatletter
@@ -75,7 +76,7 @@ Eine $S\times S$-Matrix $P=(p_{ij})$ heißt \emph{stochastische Matrix}\index{st
 \end{definition}
 
 \begin{definition}
-Sei $P$ eine stochastische Matrix. Eine (endliche oder unendliche) Folge $X_0, X_1, X_2,\ldots$ von $S$-wertigen Zufallsvariablen heißt (homogene\footnote{kurz für zeit-homogen. Die Übergangswahrscheinlichkeiten hängen nicht vom aktuellen Zeitpunkt ab.}) \emph{Markov-Kette}\index{Markov-Kette} mit Übergangsmatrix $P$, falls für alle $n\in \MdN$\footnote{Hier ist $\MdN=1,2,\ldots$} und für alle Zustände $i_k\in S$ mit 
+Sei $P$ eine stochastische Matrix. Eine (endliche oder unendliche) Folge $X_0, X_1, X_2,\ldots$ von $S$-wertigen Zufallsvariablen heißt (homogene\footnote{kurz für zeit-homogen. Die Übergangswahrscheinlichkeiten hängen nicht vom aktuellen Zeitpunkt ab.}) \emph{Markov-Kette}\index{Markov-Kette!zeitdiskrete} mit Übergangsmatrix $P$, falls für alle $n\in \MdN$\footnote{Hier ist $\MdN=1,2,\ldots$} und für alle Zustände $i_k\in S$ mit 
 \[
 P(X_0=i_0,\ldots,X_n=i_n) >0
 \]
@@ -1399,17 +1400,161 @@ L_t &\da  W_t + V_t = \text{Gesamtlebensdauer}
 \end{align*}
 der zum Zeitpunkt $t$ in Gebrauch befindlichen Glühbirne.
 
-Es ist $V_t \sim \exp(\lambda)$. Die Variable $W_t$ kann höchstens $t$ sein, das heißt $P(W_t > s) = 0$ für $s>t$. Für $0\le s \le t$ gilt $P(W_t \ge s) = P(N_t-N_{t-s} = 0) = e^{-\lambda s}$. Damit ist
+Es ist $V_t \sim \exp(\lambda)$, da die Exponentialverteilung gedächtnislos ist. Die Variable $W_t$ kann höchstens $t$ sein, das heißt $P(W_t > s) = 0$ für $s>t$. Für $0\le s \le t$ gilt $P(W_t \ge s) = P(N_t-N_{t-s} = 0) = e^{-\lambda s}$. Damit ist
 \begin{align*}
-F_{W_t}(s) \da 
+F_{W_t}(s) = 
 \begin{cases}
 1-e^{-\lambda s},& 0\le s \le t \\
-1, & s\ge t
+1, & s\ge t.
 \end{cases}
 \end{align*}
-
+Außerdem sind nach der starken Markoveigenschaft die Zufallsvariablen $W_t$ und $V_t$ unabhängig. $L_t$ ergibt sich als Faltung dieser Variablen. Die Dichte $F_{L_t}$ für $s\ge t$:
+\begin{align*}
+f_{L_t}(s) &= \int_0^s f_{V_t}(s-u)F_{W_t}(du) \\
+&= \int_0^t \lambda e^{-\lambda(s-u)}\lambda e^{-\lambda} du + \lambda e^{-\lambda(s-t)}\cdot e^{-\lambda t} \\
+&= \lambda (1+\lambda t)e^{-\lambda s}\\
+\intertext{und für $s < t$:}
+f_{L_t}(s) &= \int_0^s \lambda e^{-\lambda(s-u)}\lambda ^{-\lambda u}du \\
+&= \lambda ^2 s e^{-\lambda s}
+\end{align*}
+Also ist $L_t$ \emph{nicht} $\exp(\lambda)$-verteilt! Für großes $t$ gilt
+\[
+EL_{t} \approx 2 EX_i=\frac 2 {\lambda}.
+\]
+Dieses Ergebnis lässt sich sich erklären: Inspiziert man zu einer zufälligen Zeit die aktuell leuchtende Glühbirne, so ist die Wahrscheinlichkeit, eine länger lebende zu erwischen, größer, als eine kurzlebige Birne anzutreffen.
 \end{beispiel}
 
+\section{Der allgemeine Fall im Schnelldurchgang}
+
+\begin{definition}
+Ein stochastischer Prozess $(X_t)_{t\ge 0}$ mit abzählbarem Zustandsraum $S$ heißt (homogene) Markov-Kette,\index{Markov-Kette!zeitstetig} falls gilt:
+Für alle $n\in\mathbb N$ und $0\le t_0 < t_1 < \cdots < t_n$, $t,h>0$ und $i_k\in S$ mit $P(X_{t_k}=i_k,\, 0\le k\le n) > 0$:
+\begin{align*}
+P(X_{t_n+h}=i_{n+1} \mid X_{t_k}=i_k,\, 0\le k\le n) &= P(X_{t_n+k} = i_{k+1} \mid X_{t_n} = i_n) \\ 
+&= P(X_{t+h} = i_{n+1} \mid X_t=i_n)
+\end{align*}
+\end{definition}
+
+\begin{bemerkung}
+Definieren wir für alle $i,j\in S$
+\[
+P_{ij}(t) \da P(X_t = j \mid X_0 = i)
+\]
+und die Matrix
+\[
+P(t) = \big(p_{ij}(t)\big)_{i,j\in S}
+\]
+so gelten analog zum diskreten Fall die Chapman-Kolmogorov-Gleichungen für alle $i,j\in S$, $s,t>0$:\index{Chapman-Kolmogorov-Gleichungen}
+\[
+p_{ij}(t+s) = \sum_{k\in S} p_{ik}(t) p_{kj}(s)
+\]
+Mit $P(0)=E$ wird $\{P(t): t\ge 0\}$ zu einer Halbgruppe von stochastischen Matritzen. Diese nennen wir \emph{Übergangsmatritzenfunktion}\index{Übergangsmatritzenfunktion}.
+
+Falls zusätzlich für $i,j\in S$ 
+\[
+\lim_{t\downarrow 0} p_{ij}(t)=\delta_{ij}
+\]
+gilt, also $P(t)$ rechtseitig stetig ist, dann heißt sie \emph{Standardübergangsmatritzenfunktion}\index{Standardübergangsmatritzenfunktion}.
+\end{bemerkung}
+
+
+\begin{satzunddefinition}
+Sei $\{P(t): t\ge 0\}$ eine Standardübergangsmatritzenfunktion. Dann ist jedes $p_{ij}(t)$ in 0 rechtseitig differenzierbar, das heißt es existiert für alle $i,j\in S$
+\[
+q_{ij} \da \lim_{t\downarrow 0} \frac 1t (p_{ij}(t) - \delta_{ij}).
+\]
+Die Matrix $Q\da (q_{ij})$ heißt \emph{Intensitätsmatrix}\index{Intensitätsmatrix} oder \emph{infinitesimaler Erzeuger}\index{infinitesimaler Erzeuger} (Generator) zu $\{P(t): t\ge 0\}$.
+\end{satzunddefinition}
+
+\begin{beispiel}
+Es sei $N=(N_t)_{t\ge 0}$ ein Poisson-Prozess mit Itensität $\lambda$. Dann gilt für $i_{n+1}\ge i_n$:
+\begin{align*}
+P(N_{t_{n+1}} = i_{n+1} \mid N_{t_0} = i_0 ,\ldots,N_{t_n}=i_n)
+&= P(N_{t_{n+1}} - N_{t_n} = i_{n+1} - i_n)\\
+&= e^{-\lambda (t_{n+1}-t_n)}\frac{(\lambda(t_{n+1}-t_n))^{i_{n+1}-i_n}}{(i_{n+1}-i_n)!}
+\end{align*}
+Also ist $N$ eine homogene Markov-Kette mit Übergangsmatrix
+\[
+p_{ij}(t) = 
+\begin{cases}
+e^{-\lambda t}\frac{(\lambda t)^{j-i}}{(j-i)!}, &\text{falls }j\ge i \\
+0,&\text{sonst}
+\end{cases}
+\]
+weiter gilt 
+\begin{align*}
+\lim_{t\downarrow 0} \frac 1t(p_{ij}(t) - \delta_{ij}) =
+\begin{cases}
+\phantom{-}\lambda,&\text{falls }j=i+1 \\
+-\lambda, &\text{falls }j=i \\
+\phantom{-}0, &\text{sonst.}
+\end{cases}
+\end{align*}
+\end{beispiel}
+
+\begin{lemma}
+Sei $\{P(t):t\ge 0\}$ eine Standardübergangsmatritzenfunktion. Dann gilt für $q_{ij} \da p_{ij}'(0)$:
+\begin{enuma}
+\item $0\le q_{ij} < \infty$, $i\ne j$, $-\infty \le  q_{ii} \le 0$.
+\item $\sum_{j\ne i} q_{ij} \le -q_{ii} \ad q_i$. Falls $S$ endlich ist, gilt für alle $i\in S$: $q_i = \sum_{j\ne i} q_{ij}$. In diesem Fall heißt die Standardübergangsmatritzenfunktion \emph{konservativ}\index{konservativ}.
+\end{enuma}
+\end{lemma}
+
+\begin{beweis}
+\begin{enuma}
+\item $0\le q_{ij}$ für $i\ne j$ und $q_{ii} \le 0$ klar, da $0\le p_{ij} \le 1$. Schwieriger ist zu zeigen, dass $p_{ij}<\infty$, hier wird auf die Literatur verwiesen.
+\item  Es gilt für $t\ge 0$:
+\begin{align*}
+\sum_{i\ne j} \frac {p_{ij}(t)}t &= \frac{1-p_{ii}(t)}t 
+\end{align*}
+und damit mit Fatour
+\begin{align*}
+-q_{tt} = \lim_{t\downarrow 0}  \frac{1-p_{ii}(t)}t 
+\ge \sum_{i\ne j} \limsup_{t\downarrow 0} \frac{p_{ij}(t)}{t} = \sum_{i\ne j} q_{ij}
+\end{align*}
+und Gleichheit für endliche $S$.
+\end{enuma}
+\end{beweis}
+
+\begin{satz}
+\label{satz:8.3}
+Sei $\{P(t) : t\ge 0\}$ eine Standardübergangsmatritzenfunktion und $S$ sei endlich. Dann gilt das sogenannte \emph{Kolmogorovsche Rückwärtsdifferentialgleichungssystem}\index{Kolmogorovsche Rückwärts-DGL}: Für $t\ge 0$ ist
+\begin{align*}
+P'(t) = QP(t)
+\end{align*}
+das heißt für alle $i,j\in S$ ist
+\begin{align*}
+p_{ij}'(t) = -q_i p_{ij}(t) + \sum_{k\ne i} q_{ik}p_{kj}(t).
+\end{align*}
+\end{satz}
+
+\begin{beweis}
+Wegen Chapman-Kolmogorov gilt für $i,j\in S$, $t,h>0$:
+\begin{align*}
+p_{ij}(t+h) &= \sum_{k\in S} p_{ik}(h) p_{kj}(t) \\
+\implies \frac{p_{ij}(t+h) - p_{ij}(t)}h &=
+\frac{p_{ii}(h) - 1}h p_{ij}(t) + \sum_{k\ne i} \frac{p_{ik}(h)}h p_{kj}(t) 
+\end{align*}
+Für $h\downarrow0$ geht die rechte Seite gegen
+\[
+-q_i p_{ij}(t) + \sum_{k\ne i}q_{ik}p_{kj}(t)
+\]
+woraus die Behauptung folgt.
+\end{beweis}
+
+\begin{bemerkung}
+\begin{enuma}
+\item Unter milden Bedingungen ($\{P(t): t\ge 0\}$ eine konservative Standardübergangsmatritzenfunktion und $q_i$ für alle $i\in S$ endlich) gilt Satz \ref{satz:8.3} auch für abzählbares $S$. Weitere Bedinungen sind nötig für das Kolmogorovsche-Vorwärtsdifferentialgleichungssystem
+\[
+P'(t) = P(t)Q.
+\]
+\item Falls $S$ endlich ist, ist die Lösung von $P'(t) =QP(t)$, $P(0)=E$ gegeben durch
+\[
+P(t) =e^{tQ} = \sum_{n=0}^\infty \frac{(tQ)^n}{n!}
+\]
+\end{enuma}
+
+\end{bemerkung}
 
 \chapter{Satz um Satz (hüpft der Has)}
 \listtheorems{satz,wichtigedefinition}
