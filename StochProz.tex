@@ -1556,6 +1556,136 @@ P(t) =e^{tQ} = \sum_{n=0}^\infty \frac{(tQ)^n}{n!}
 
 \end{bemerkung}
 
+\begin{beispiel}
+  \begin{align*}
+    & S=\{0,1\}, 0<q_0,q_1<\infty \\
+    & Q=\left(
+    \begin{array}{cc}
+      -q_0 & q_0 \\
+      q_1 & -q_1 \\
+    \end{array}
+    \right)
+  \end{align*}
+  Rückwärts-Differentialgleichung $P'(t)=QP(t)$
+  \[
+  P(t)=\left(
+  \begin{array}{cc}
+    p_{00}(t) & p_{01}(t) \\
+    p_{10}(t) & p_{11}(t) \\
+  \end{array}
+  \right)
+  \]
+  \begin{align*}
+   (1) \quad p_{00}'(t)=-q_0p_{00}(t)+q_0p_{10}(t) \\
+   (2) \quad p_{01}'(t)=-q_0p_{01}(t)+q_0p_{11}(t) \\
+   (3) \quad p_{10}'(t)=-q_1p_{10}(t)+q_1p_{00}(t) \\
+   (4) \quad p_{11}'(t)=-q_1p_{11}(t)+q_1p_{01}(t) \\    
+  \end{align*}
+  Es gilt: $p_{01}(t)=1-p_{00}(t), p_{11}(t)=1-p_{10}(t)$ \\
+  Eingesetzt in (2): $-p_{00}'(t)=-q_0+q_0p_{00}(t)+q_0-q_0p_{10}(t)=$ (1) \\
+  also ist (2) überflüssig. Analog: (4) ist überflüssig. Sei
+  \[
+  y(t)=\left(
+  \begin{array}{c}
+    p_{00}(t) \\ p_{10}(t) \\
+  \end{array}
+  \right) \]
+  Zu lösen: $y'(t)=Qy(t), y(0)=(1,0)^T$. Die Eigenwerte von Q sind:
+  $\lambda_1=0, \lambda_2=-(q_0+q_1)$ Eigenvektoren:
+  $v_1=\begin{pmatrix} 1 \\ 1 \end{pmatrix}, v_2 =\begin{pmatrix} -q_0 \\ q_1 \end{pmatrix}$
+  \[
+  \implies y(t)=\alpha\begin{pmatrix} 1 \\ 1\end{pmatrix}+\beta\begin{pmatrix} -q_0 \\ q_1 
+  \end{pmatrix} e^{-(q_0+q_1)t}
+  \]
+  $y(0)=\begin{pmatrix} 1 \\ 0\end{pmatrix}$ liefert $\alpha=\frac{q_1}{q_0+q_1},
+  \beta=-\frac{1}{q_0+q_1}$ \\
+  Insgesamt also:
+  \begin{align*}
+    & p_{00}(t)=\frac{q_1}{q_0+q_1}+\frac{q_0}{q_0+q_1}e^{-(q_0+q_1)t} \\
+    & p_{10}(t)=\frac{q_1}{q_0+q_1}-\frac{q_1}{q_0+q_1}e^{-(q_0+q_1)t} \\
+  \end{align*}
+  Hier fehlt ein kleines Bild, das zeigt, wie $p_{00}$ und $p_{10}$ so aussehen. \\
+  Wir wollen weiter annehmen, dass die Pfade der Markov-Kette $(X_t)_{t\geq 0}$ in
+  \[
+  D(s):=\{f:[0,\infty)\longrightarrow S\vert f(t+)=f(t) \ \forall t\geq0,f(t-) \text{ existiert } \forall t>0\}
+  \]
+  liegen (diskrete Topologie auf $S$). Die Eigenschaft der $f$ in $D(s)$ wird auch mit RCLL oder
+  càdlàg bezeichnet. \\
+\end{beispiel}
+  Gegeben sei jetzt eine Intensitätsmatrix $Q=(q_{ij}),q_{ij}\in\mathbb R$ mit
+  (Q1) $q_{ij}\geq0\ \forall i,j\in S, i\neq j, q_{ij}\leq 0 \ \forall i\in S$ \\
+  (Q2) $\sum_{j\in S}q_{ij}=0 \ \forall i\in S$ \\
+  (Q3) $0<\sup_{i\in S}|q_{ij}|=:\lambda<\infty$ \\
+  \begin{satz}
+    \label{Satz 8.4}
+    Für eine Matrix $Q$ gelte (Q1)-(Q3). Es sei $N=(N_t)_{t\geq0}$ ein Poisson-Prozeß mit
+    Intensität $\lambda$ und $Y=(Y_n)_{n\in\mathbb N_0}$ eine von $N$ unabhängige Markov-Kette
+    mit Start in $i_0\in S$ und Übergansmatrix $\tilde{P}=(\tilde{p}_{ij})_{i,j\in S},
+    \tilde{P}:=E+\frac{1}{\lambda}Q$, also
+    \[
+    \tilde{p}_{ij}=\delta_{ij}+\frac{q_{ij}}{\lambda} \quad \forall i,j\in S.
+    \]
+    Dann ist $X=(X_t)_{t\geq0}$ mit $X_t:=Y_{N_t} \quad\forall t\geq0$ eine Markov-Kette
+    mit Start in $i_0$, Pfaden in $D(s)$ und Intensitätsmatrix $Q$.
+  \end{satz}
+  \begin{beweis}
+    Offenbar ist $\tilde{P}$ eine stochastische Matrix, $X_0=i_0$ und die Pfade in $D(s)$.
+    Für $0\leq t_0<t_1<\dots<t_{n+1}, \ i_0,\dots,i_{n+1}\in S$ gilt:
+    \begin{align*}
+      & P(X_{t_m}=i_m,0\leq m\leq n+1) \\
+      =& \sum_{k_0,\dots,k_{n+1}\in\mathbb N_0} P(N_{t_m}=k_m, Y_{k_m}=i_m, 0\leq m\leq n+1) \\
+      =& \sum_{k_0,\dots,k_{n+1}\in\mathbb N_0} P(N_{t_m}=k_m, 0\leq m\leq n+1)\cdot P(Y_{k_m}=i_m, 0\leq m\leq n+1) \\
+    \end{align*}
+    Betrachte die Faktoren:
+    \begin{align*}
+      & P(N_{t_m}=k_m, 0\leq m\leq n+1)=P(N_{t_{n+1}}-t_n=k_{n+1}-k_n)\cdot P(N_{t_m}=k_m, 0\leq m \leq n) \\
+      & P(Y_{k_m}=i_m, 0\leq m \leq n+1) = P(Y_{k_m}=i_m, 0\leq m \leq n) \cdot \tilde{p}_{i_ni_{n+1}}^{(k_{n+1}-k_n)} \\
+    \end{align*}
+    Sei jetzt $l:=k_{n+1}-k_n$, dann
+    \begin{align*}
+      & P(X_{t_m}=i_m, 0\leq m \leq n+1) \\ 
+      =& P(X_{t_m}=i_m, 0\leq m \leq n)\cdot \sum_{l=0}^\infty \tilde{p}_{i_ni_{n+1}}^{(l)} \cdot P(N_{t_{n+1}t_n}=l) \\
+    \end{align*}
+    $\implies X$ ist eine Markov-Kette in stetiger Zeit (und homogen) mit Übergansmatrix:
+    \[
+    p_{ij}(t)=\sum_{l=0}^\infty\tilde{p}_{ij}^{(l)}e^{-\lambda t} \frac{(\lambda t)^l}{l!}
+    \]
+    Bestimme Ableitungen $p_{ij}'(0) \ \implies \ Q$ ist wie gewünscht.
+  \end{beweis}
+  Eine "Umkehrung" des Satzes gilt: \\
+  Dazu sei $X=(X_t)_{t\geq 0}$ eine Markov-Kette mit Zustandsraum $S$ und Sprungzeiten: 
+  \begin{align*}
+    & S_0=0 \\
+    & S_1=\inf\{t\geq0\vert X_t\neq X_0\} \\
+    & S_n:=\inf\{t>S_{n-1}\vert X_t\neq X_{S_{n-1}} \}, n\geq 2. \\
+  \end{align*}
+  Verweildauern: $n\geq 1$:
+  \[
+  T_n:=S_n-S_{n-1}
+  \]
+  Weiter sei die eingebettete Markov-Kette $Y=(Y_N)$ gegeben durch: $Y_n:=X_{S_n}, n\in\mathbb N_0$.
+  \begin{satz}
+    \label{satz8.5}
+    Es sei $X=(X_t)_{t\geq0}$ eine Markov-Kette mit Zustandsraum $S$ und Intensitätsmatrix $Q$, 
+    wobei (Q1)-(Q3) erfüllt seien. \\
+    Dann gilt:
+    \begin{enuma}
+    \item $Y=(Y_n)$ ist eine (zeitdiskrete) Markov-Kette mit Übergansmatrix $P=(p_{ij})$, wobei
+      \begin{align*}
+	& p_{ij}=\begin{cases}
+	\frac{q_{ij}}{q_i} & , \text{ falls } i\neq j \\
+	0 & , \text{ falls } i=j
+	\end{cases} , \text{ falls } q_i>0 \\
+	& p_{ij}=\delta_{ij}, \text{ falls } q_i=0 \\
+      \end{align*}
+    \item $T_1,T_2,\dots$ sind bedingt unter $(Y_n)$ stochastisch unabhängig mit
+      \[
+      T_n\sim \exp(q_{Y_{n-1}})
+      \]
+      Hier fehlt ein Bild.
+    \end{enuma}
+  \end{satz}
+
 \chapter{Satz um Satz (hüpft der Has)}
 \listtheorems{satz,wichtigedefinition}
 
