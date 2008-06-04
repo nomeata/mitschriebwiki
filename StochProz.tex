@@ -12,7 +12,8 @@
 \@removefromreset{section}{chapter}
 \makeatother
 
-\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\borel}{{\mathfrak B}}
 
 \author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
 \title{Stochastische Prozesse}
@@ -860,12 +861,12 @@ Tatsächlich gilt also
   \begin{enuma}
   \item $E|X_n| < \infty$
   \item $E[X_{n+1}|X_1,\ldots,X_n] = X_n$, bzw.
-  \item[b')] $E[X_{n+1}|\mathcal{F}_n] = X_n$, wobei $\mathcal{F}_n := \sigma(X_1, \ldots, X_n)$ die \emph{natürliche Filtration} bezeichnet.
+  \item[b')] $E[X_{n+1}|\cF_n] = X_n$, wobei $\cF_n := \sigma(X_1, \ldots, X_n)$ die \emph{natürliche Filtration} bezeichnet.
   \end{enuma}
 \end{erinnerung}
 
 \begin{erinnerung}
-  Sei $(\Omega, \mathcal{F}, P)$ W-Raum, $X$ Zufallsvariable mit $E|X| < \infty$, $\mathcal{G} \subseteq \mathcal{F}$ Unter-$\sigma$-Algebra.
+  Sei $(\Omega, \cF, P)$ W-Raum, $X$ Zufallsvariable mit $E|X| < \infty$, $\mathcal{G} \subseteq \cF$ Unter-$\sigma$-Algebra.
   $Z =: E[X|\mathcal{G}]$ heißt bedingter Erwartungswert von $X$ bzgl. $\mathcal{G}$, falls
   \begin{enuma}
   \item $Z$ ist $\mathcal{G}$-messbar
@@ -873,7 +874,7 @@ Tatsächlich gilt also
   \end{enuma}
 \end{erinnerung}
 
-Sei $(X_n)$ eine Markov-Kette auf dem Zustandsraum $S$ mit Übergangsmatrix $P$ sowie $\mathcal{F}_n := \sigma(X_1,\ldots,X_n)$ die natürliche
+Sei $(X_n)$ eine Markov-Kette auf dem Zustandsraum $S$ mit Übergangsmatrix $P$ sowie $\cF_n := \sigma(X_1,\ldots,X_n)$ die natürliche
 Filtration. Weiter sei $h: S \rightarrow \MdR$ und $P: (S \rightarrow \MdR) \rightarrow (S \rightarrow \MdR)$ definiert durch
 \begin{align*}
   (Ph)(i) := \sum_{j \in S} p_{i,j} \cdot h(j)
@@ -885,34 +886,34 @@ NB: ``Ph'' macht Sinn im Sinne einer ``Matrix$\cdot$Vektor''-Multiplikation.
   \label{lemma_5_1}
   Sei $h: S \rightarrow \MdR$ eine Funktion mit $\left\|P \left|h\right| \right\|_\infty < \infty$. Dann gilt:
   \begin{align*}
-    (Ph)(X_n) = E[h(X_{n+1}|\mathcal{F}_n)
+    (Ph)(X_n) = E[h(X_{n+1}|\cF_n)
   \end{align*}
 \end{lemma}
 \begin{beweis}
-  Wir prüfen, dass $(Ph)(X_n)$ ein bedingter Erwartungswert von $h(X_{n+1})$ bzgl. $\mathcal{F}_n$ ist.
+  Wir prüfen, dass $(Ph)(X_n)$ ein bedingter Erwartungswert von $h(X_{n+1})$ bzgl. $\cF_n$ ist.
 
-  a) $(Ph)(X_n)$ ist $\mathcal{F}_n$-messbar, denn $X_n$ ist $\mathcal{F}_n$-messbar.
+  a) $(Ph)(X_n)$ ist $\cF_n$-messbar, denn $X_n$ ist $\cF_n$-messbar.
 
-  b) Sei $A := \{X_0 = i_0, \ldots, X_n = i_n\} \in \mathcal{F}_n$. Dann:
+  b) Sei $A := \{X_0 = i_0, \ldots, X_n = i_n\} \in \cF_n$. Dann:
   \begin{align*}
       &\int_A (Ph)(X_n) \cdot dP = \int 1_A \cdot (Ph)(X_n) \cdot dP = \int 1_{\{X_0 = i_0, \ldots, X_n = i_n\}} (Ph)(i_n) \cdot dP\\
     = &(Ph)(i_n) \cdot P(A) = \sum_{j \in S} p_{i_n,j} \cdot h(j) \cdot P(X_0 = i_0) \cdot \prod_{k=0}^{n-1} p_{i_k,i_{k+1}}\\
     = &\sum_{j \in S} h(j) \cdot P(X_0 = i_0, \ldots, X_n = i_n, X_{n+1} = j) = \sum_{j \in S} \int_{A \cap \{X_{n+1} = j\}} h(X_{n+1}) \cdot dP\\
     = &\sum_{j \in S} \int_A 1_{\{X_{n+1} = j\}} h(X_{n+1}) \cdot dP \stackrel{LDC}{=} \int_A h(X_{n+1}) \cdot dP
   \end{align*}
-  Da jedes $A \in \mathcal{F}_n$ abzählbare Vereinigung solcher ``Elementarereignisse'' ist, folgt die Behauptung.
+  Da jedes $A \in \cF_n$ abzählbare Vereinigung solcher ``Elementarereignisse'' ist, folgt die Behauptung.
 \end{beweis}
 
 \begin{satzunddefinition}
   Seien $P$ eine Übergangsmatrix auf $S$ und $h: S \rightarrow \MdR$ eine Funktion mit $\left\|P \left|h\right| \right\|_\infty < \infty$. Gilt
   dann $Ph = h$, so nennen wir $h$ \emph{harmonisch}. Im Fall $Ph \geq h$ bzw. $Ph \leq h$ heißt $h$ \emph{sub-} bzw. \emph{superharmonisch}.
 
-  Ist $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P$ und $h$ [sub-/super-]harmonisch, so ist $(h(X_n))$ ein $(\mathcal{F}_n)$-[Sub-/Super-]Martingal.
+  Ist $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P$ und $h$ [sub-/super-]harmonisch, so ist $(h(X_n))$ ein $(\cF_n)$-[Sub-/Super-]Martingal.
 \end{satzunddefinition}
 \begin{beweis}
   Nach Lemma \ref{lemma_5_1} gilt
   \begin{align*}
-    E[h(X_{n+1})|\mathcal{F}_n] = h(X_n) + (Ph - h)(X_n)
+    E[h(X_{n+1})|\cF_n] = h(X_n) + (Ph - h)(X_n)
   \end{align*}
   $\leadsto$ Behauptung.
 \end{beweis}
@@ -929,21 +930,21 @@ ein Martingal definiert, genannt Levi-Martingal\index{Levi-Martingal} zu $(X_n)$
 Die Markoveigenschaft lässt sich über Levi-Martingale charakterisieren:
 
 \begin{satz}
-Es sei $(X_n)_{n\in\mathbb N_0}$ ein stochastischer Prozess mit Werten in $S$ und natürlicher Filtration $(\mathcal F_n)$, d.h. $\mathcal F_n=\sigma(X_0,\ldots,X_n)$, und $P$ sei eine stochastische Matrix auf $S$. Ist dann für alle beschränkten $h:S\to \mathbb R$ der Prozess
+Es sei $(X_n)_{n\in\mathbb N_0}$ ein stochastischer Prozess mit Werten in $S$ und natürlicher Filtration $(\cF_n)$, d.h. $\cF_n=\sigma(X_0,\ldots,X_n)$, und $P$ sei eine stochastische Matrix auf $S$. Ist dann für alle beschränkten $h:S\to \mathbb R$ der Prozess
 \begin{align*}
 Z_n^h\coloneqq h(X_n) - \sum_{k=1}^n (Ph-h)(X_{k-1})
 \end{align*}
-ein $(\mathcal F_n)$-Martingal, so ist $X_n$ eine homogene Markov-Kette mit Übergangsmatrix $P$.
+ein $(\cF_n)$-Martingal, so ist $X_n$ eine homogene Markov-Kette mit Übergangsmatrix $P$.
 \end{satz}
 
 \begin{beweis}
-Aus $E[Z_{n+1}^h\mid \mathcal F_n] = Z_n^h$ erhält man 
+Aus $E[Z_{n+1}^h\mid \cF_n] = Z_n^h$ erhält man 
 \begin{align*}
-E[h(X_{n+1})\mid \mathcal F_n] = (Ph)(X_n)
+E[h(X_{n+1})\mid \cF_n] = (Ph)(X_n)
 \end{align*}
 bzw. 
 \begin{align*}
-\int_A h(X_{n+1})dP = \int_A (Ph)(X_n)dP \text{ für alle }A\in \mathcal F_n
+\int_A h(X_{n+1})dP = \int_A (Ph)(X_n)dP \text{ für alle }A\in \cF_n
 \end{align*}
 Es sei $i_0,i_1,\ldots,i_{n+1}\in S$ und $A\coloneqq \{X_0 = i_0,\ldots,X_n=i_n\}$ und wir setzen $h\da 1_{\{1_{n+1}\}}$. Die linke Seite der letzten Gleichung ergibt dann 
 \begin{align*}
@@ -1007,7 +1008,7 @@ Die Wahrscheinlichkeit, erst $A$, dann $B$ zu wählen ist gleich der Wahrscheinl
 \[
 E[Y_{n+1} \mid X_1,\ldots,X_n] = Y_n
 \]
-Sei $\mathcal F_n \coloneqq \sigma(X_0,\ldots,X_n)$. Dann ist $(Y_n)_{n\in\mathbb N_0}$ ein $(\mathcal F_n)$-Martingal. Nach der Bemerkung folgt: $Y_n\to Y_\infty$ für ein $n\to\infty$ $P$-fast-sicher. Da $(Y_n)$ ganzzahlig, ist $Y_n(\omega)$ konstant ab einem $n\ge n_0(\omega)$. Als Konstanten kommen nur $0$ und $N^2$ in Frage, denn für $k\in \{1,\ldots,N^2-1\}$ gilt
+Sei $\cF_n \coloneqq \sigma(X_0,\ldots,X_n)$. Dann ist $(Y_n)_{n\in\mathbb N_0}$ ein $(\cF_n)$-Martingal. Nach der Bemerkung folgt: $Y_n\to Y_\infty$ für ein $n\to\infty$ $P$-fast-sicher. Da $(Y_n)$ ganzzahlig, ist $Y_n(\omega)$ konstant ab einem $n\ge n_0(\omega)$. Als Konstanten kommen nur $0$ und $N^2$ in Frage, denn für $k\in \{1,\ldots,N^2-1\}$ gilt
 \begin{align*}
 P(Y_{n+j} = k \mid Y_n = \ldots = Y_{n+j-1} = k) &\le 1 - \frac1{N^24} \\
 \implies P(Y_n = \ldots = Y_{n+j} = k) &\le (1-\frac1{N^24})^j \\
@@ -1032,13 +1033,13 @@ Anwendungen dieses Modells findet man in der Physik (Vielteilchensysteme), in de
 
 \section{Die starke Markov-Eigenschaft}
 
-Gegeben si eine Markov-Kette $(X_n)_{n\in\mathbb N_0}$ mit Zustandsraum $S$ auf dem Wahrscheinlichkeitsraum $(\Omega = S_0^{\mathbb N_0}, \mathcal F\da \otimes_{n=0}^\infty \mathcal P(S), P)$. Beachte, dass die Mengen
+Gegeben si eine Markov-Kette $(X_n)_{n\in\mathbb N_0}$ mit Zustandsraum $S$ auf dem Wahrscheinlichkeitsraum $(\Omega = S_0^{\mathbb N_0}, \cF\da \otimes_{n=0}^\infty \mathcal P(S), P)$. Beachte, dass die Mengen
 \begin{align*}
 Z(i_0,i_1,\ldots,i_n) \coloneqq \{i_0\} \times \{i_1\} \times \cdots \times \{i_n\} \times S \times S \times \cdots
 \end{align*}
-für $n\in \mathbb N_0$, $i_0,\ldots i_n\in S$ ein durchschnittstabiles Erzeugendensystem für $\mathcal F$ bilden. Weiter sei $\mathcal (F_n)_{n\in \mathbb N_0}$ mit $\mathcal F_n=\sigma(X_0,\ldots,X_n)$ die natürliche Filtration von $(X_n)$.
+für $n\in \mathbb N_0$, $i_0,\ldots i_n\in S$ ein durchschnittsstabiles Erzeugendensystem für $\cF$ bilden. Weiter sei $(\cF_n)_{n\in \mathbb N_0}$ mit $\cF_n=\sigma(X_0,\ldots,X_n)$ die natürliche Filtration von $(X_n)$.
 
-$\tau:\Omega \to \mathbb N_0$ sei eine $(\mathcal F_n)$-Stoppzeit\index{Stoppzeit}, das heißt $\{\tau \le n\} \in \mathcal F_n$ und $P(\tau <\infty) = 1$. Die gestoppte Markov-Kette $X^\tau=(X_n^\tau)_{n\in\mathbb N_0}$ ist
+$\tau:\Omega \to \mathbb N_0$ sei eine $(\cF_n)$-Stoppzeit\index{Stoppzeit}, das heißt $\{\tau \le n\} \in \cF_n$ und $P(\tau <\infty) = 1$. Die gestoppte Markov-Kette $X^\tau=(X_n^\tau)_{n\in\mathbb N_0}$ ist
 \begin{align*}
 X_n^\tau \da X_{\min(\tau,n)}
 \end{align*}
@@ -1124,10 +1125,10 @@ von $N_{s+t}-N_s$ nicht von s ab.
   \]
   Als $\sigma$-Algebra auf $D_0$ wählen wir 
   \[
-  \mathfrak L(D_0):=\sigma(\{\pi_t:t\geq 0\})
+  \borel(D_0):=\sigma(\{\pi_t:t\geq 0\})
   \]
   wobei $\pi_t:D_0\longrightarrow\mathbb{N}_0,f\mapsto f(t)$ die $t$-te Projektion ist. \\
-  Es gilt: $N_t:\Omega\longrightarrow D_0$ ist $(\cF,\mathfrak Le(D_0))$-messbar 
+  Es gilt: $N_t:\Omega\longrightarrow D_0$ ist $(\cF,\borel(D_0))$-messbar 
   $\Longleftrightarrow N_t:\Omega\longrightarrow\mathbb{N}_0$ sind 
   $(\cF,\mathcal P(\mathbb N_0))$-messbar $\forall t\geq0$. 
   (Stochastik II Übungsaufgabe 21) \\
@@ -1136,7 +1137,7 @@ von $N_{s+t}-N_s$ nicht von s ab.
   A(t_1,\dots,t_n,i_1,\dots,i_n):=\{f\in D_0\vert f(t_j)-f(t_{j-1})=i_j \text{ für } f=1,\dots,n\}
   \]
   mit $0=:t_0\leq t_1\leq\dots\leq t_n\leq\infty,i_1,\dots,i_n\in\mathbb N$ 
-  bilden ein durchschnittstabiles Erzeugendensystem von $\mathfrak L(D_0)$.
+  bilden ein durchschnittsstabiles Erzeugendensystem von $\borel(D_0)$.
 \end{bemerkung}
 
 \begin{satz}
@@ -1263,7 +1264,7 @@ wobei $(\cdot \wedge u)$ die Abbildung $v\mapsto \min (v,u)$ darstellt.
 
 Beide Abbildungen sind $(\frak L(D_0), \frak L(D_0))$-messbar.
 
-Wir können also auch stochastische Prozesse $S_u(N) = (N_{t\wedge u})_{t\ge 0}$ und $Z_u(N) = (N_{u+t} - N_n)_{t\ge 0}$ als Zufallsgröße mit Werten in $(D_0,\mathfrak L(D_0))$ auffassen.
+Wir können also auch stochastische Prozesse $S_u(N) = (N_{t\wedge u})_{t\ge 0}$ und $Z_u(N) = (N_{u+t} - N_n)_{t\ge 0}$ als Zufallsgröße mit Werten in $(D_0,\borel(D_0))$ auffassen.
 
 Weiter gilt mit 
 \[
@@ -1295,10 +1296,10 @@ P\big(Z_u(N) \in A(s_1,\ldots,s_l;j_1,\ldots,j_l)\big)
 \]
 Also haben $Z_u(N)$ und $N$ dieselbe Verteilung.
 
-Diese Aussagen können jetzt auf Stoppzeiten verallgemeinert werden. Es sei dazu $\mathcal F_t \da \sigma(\{N_s, s\le t\})$ für $t\ge 0$ und $(\mathcal F_t)_{t\ge 0}$ die natürliche Filtration.
+Diese Aussagen können jetzt auf Stoppzeiten verallgemeinert werden. Es sei dazu $\cF_t \da \sigma(\{N_s, s\le t\})$ für $t\ge 0$ und $(\cF_t)_{t\ge 0}$ die natürliche Filtration.
 
 \begin{definition}
-Sei $\tau$ eine $(\mathcal F_t)_{t\ge 0}$-Stopptzeit\index{Stoppzeit}, das heißt $\{\tau \le t \} \in \mathcal F_t$. Der Prozess 
+Sei $\tau$ eine $(\cF_t)_{t\ge 0}$-Stopptzeit\index{Stoppzeit}, das heißt $\{\tau \le t \} \in \cF_t$. Der Prozess 
 \[
 S_\tau(N) = (N_{\tau \wedge t})_{t\ge 0}
 \]
@@ -1622,7 +1623,7 @@ P(t) =e^{tQ} = \sum_{n=0}^\infty \frac{(tQ)^n}{n!}
 
   \begin{satz}
     \label{Satz 8.4}
-    Für eine Matrix $Q$ gelte (Q1)-(Q3). Es sei $N=(N_t)_{t\geq0}$ ein Poisson-Prozeß mit
+    Für eine Matrix $Q$ gelte (Q1)-(Q3). Es sei $N=(N_t)_{t\geq0}$ ein Poisson-Prozess mit
     Intensität $\lambda$ und $Y=(Y_n)_{n\in\mathbb N_0}$ eine von $N$ unabhängige Markov-Kette
     mit Start in $i_0\in S$ und Übergansmatrix $\tilde{P}=(\tilde{p}_{ij})_{i,j\in S},
     \tilde{P}:=E+\frac{1}{\lambda}Q$, also
@@ -1820,11 +1821,118 @@ Nach Beispiel \ref{bsp:3.3} ist $(Y_n)$ (positiv) rekurrent, falls
 &\sum_{n=1}^\infty \prod_{k=0}^n p_{k,k+1}p_{k+1,k} < \infty 
 \iff  \sum_{n=1}^\infty  \frac{\lambda_0\cdots\lambda_{i\phantom{+1}}}{\mu_1\cdots\mu_{i+1}}<\infty.
 \end{align*}
-Also ist nach Satz \ref{satz:8.7} $X$ positiv rekurrent, falls $(*)$ gilt und $\pi$ ist die Grenzverteilung.
+Also ist nach Satz \ref{satz:8.7} $X$ positiv rekurrent, falls $(*)$ gilt, und $\pi$ ist die Grenzverteilung.
 
 Fals $\lambda_i=\lambda$ und $\mu_i=\mu$ ist, dann ist $X$ eine M/M/1-Warteschlange mit stationärer Verteilung (falls $\rho\da \frac\lambda\mu < 1$): $\pi_i=(1-\rho)\rho^i$ für $i\in\MdN_0$.
 \end{beispiel}
 
+\chapter{Die Brownsche Bewegung}
+
+\section{Definition und erste Eigenschaften}
+
+Es sei $(\Omega, \cF, P)$ ein Wahrscheinlichkeitsraum und $T\subseteq\MdR$, $T\ne\emptyset$ eine Zeitindexmenge. Wir betrachten jetzt einen stochastischen Prozess $X=(X_t)_{t\in T}$ mit Zustandsraum $\MdR$, das heißt dass $(X_t)_{t\in T}$ eine Familie von $(\cF, \borel)$-messbaren Zufallsvariablen.
+
+$X$ können wir betrachten als Abbildung
+\begin{align*}
+X:\Omega \to \MdR^T=\{f:T\to \MdR\}.
+\end{align*}
+
+Wir schreiben dabei statt $\big(X(\omega)\big)(t)$ auch $X_t(\omega)$ oder $X(t,\omega)$.
+
+Weiter sei $\pi_t:\MdR^T \to \MdR$, $f\mapsto f(t)$ die $t$-te Projektion. Eine $\sigma$-Algebra $\borel^T$ auf $\mathbb R^T$ ist gegeben durch
+\[
+\borel^T \da \sigma(\{\pi_t\mid t\in T\}) = \bigoplus_{t\in T}\borel
+\]
+$X$ ist genau dann $(\cF,\borel^T)$-messbar, wenn $\pi_t\circ X$ für alle $t\in T$ schon $(\cF,\borel)$-messbar ist (Siehe Stochastik II, Übungsaufgabe 21), also ist $X$ $(\cF,\borel^T)$-messbar.
+
+$X$ induziert ein Wahrscheinlichkeitsmaß $P^X$ auf $(\MdR^T,\borel^T)$.
+
+Im Folgenden sei $T_0 \da\{t_1,\ldots,t_n\}$ mit $t_1<t_2<\cdots<t_n$, $t_i\in T$, $n\in \MdN$. Die Abbildung
+\[
+\pi_{T_0}:\MdR^T \to \MdR^{T_0},\quad f\mapsto (f(t_1),\ldots,f(t_n))
+\]
+sei die Projektion auf die $T_{0}$-Koordinaten.
+
+Die Verteilung von $(X_{t_1},\ldots,X_{t_n})$ ist dann ein Wahrscheinlichkeitsmaß auf $(\MdR^{T_0},\borel^{T_0})$ und ergibt sich als Bild von $P^X$ unter $\pi_{T_0}$.
+
+Die Gesamtheit dieser Verteilungen nennt man Familie der endlich-dimensionalen Verteilungen des Prozesses (engl.: finite dimensional distribution, Fidis).
+
+\begin{definition}
+Ein Prozess, bei dem endlich-dimensionalen Verteilungen Normalverteilungen sind, heißt \emph{Gauss-Prozess}\index{Gauss-Prozess}.
+
+Ist $(X_t)_{t\in T}$ ein Gauss-Prozess, so nennen wir die Abbildung \[ t\mapsto EX_t\] die \emph{Erwartungswertfunktion}\index{Erwartungswertfunktion} und \[ (s,t)\mapsto \operatorname{Cov}(X_s,X_t)\] die \emph{Kovarianzfunktion}\index{Kovarianzfunktion} zu $X$.
+\end{definition}
+
+\begin{bemerkung}
+Beim Gauss-Prozess definiert die Erwartungswertfunktion und die Kovarianzfunktion bereits alle endlich-dimensionalen Verteilungen. Da für $T_0=\{t_1,\ldots,t_n\}$ und $B_1,\ldots,B_n\in \borel$ die Mengen
+\begin{align*}
+\pi_{T_0}^{-1}(B_1\times \cdots \times B_n) = \{f\in B^T\mid f(t_1)\in B_1,\ldots,f(t_n)\in B_n\}
+\end{align*}
+ein durchschnittsstabiles Erzeugendensystem von $\borel^T$ bilden, ist $P^X$ auf $(\MdR^T,\borel^T)$ durch die endlich-dimensionalen Verteilungen beziehungsweise durch die Erwartungswertfunktion und Kovarianzfunktion festgelegt.
+\end{bemerkung}
+
+Im Folgenden wollen wir weiter voraussetzen, dass die Pfade von $X$ stetig sind, also 
+\[
+X: \Omega \to C(T) \da \{f:T\to \MdR\mid f\text{ stetig}\}
+\]
+wobei $T=[0,1]$ oder $T=[0,\infty)$ ist.
+
+Jetzt ist $\pi_t : C(T) \to \MdR$ und $\borel(C(T)) \da \sigma(\{\pi_t \mid t\in T\})$. Auch hier ist die Verteilungen eines Prozesses durch seine endlich-dimensionalen Verteilungen festgelegt.
+
+\begin{definition}
+Es sei $(\sigma,\cF,P)$ ein Wahrscheinlichkeitsraum, $T=\MdR_+$ oder $T=[0,R]$ mit $R>0$, $(\cF_t)_{t\in T}$ eine Filtration und $(B_t)_{t\in T}$ ein $(\cF_t)_{t\in T}$
+-adaptiver Prozess, d.h. $B_t$ ist $(\cF_t,\borel)$-messbar. Gilt 
+\begin{enuma}
+\item $P(B_0=0)=1$
+\item $P$-fast-alle Pfade von $(B_t)_{t\in T}$ sind stetig.
+\item Für alle $s,t\in T$ mit $s<t$ ist $B_t-B_s$ unabhängig von $\cF_s$ (d.h. $B_t-B_s$ unabhängig von $1_A$, $A\in \cF_s$) und $N(0,t-s)$-verteilt
+\end{enuma}
+so heißt $(B_t,\cF_t)_{t\in T}$ eine (eindimensionale) \emph{Brownsche Bewegung}\index{Brownsche Bewegung} oder auch \emph{Wiener-Prozess}\index{Wiener-Prozess}.
+\end{definition}
+
+\begin{bemerkung}
+\begin{enuma}
+\item Falls $\cF_t = \sigma(\{B_s,\, s\le t\})$, so spricht man von \emph{der} Brownschen Bewegung.
+\item Wir können $B$ auf einer Nullmenge abändern zu $\tilde B$ und $\tilde B$ ist wieder eine Brownsche Bewegung. Dies hat aber Auswirkungen auf die Filtration.
+\item Eine Brownsche Bewegung hat unabhängige Zuwächse (folgt aus Teil c) der Definition).
+\item 1827 beobachtet Brown die Bewegung von Pollen in einer Flüssigkeit. 1900 verwendet Bachelier die Brownsche Bewegung zur Modellierung von Aktienkursen. 1905 beschrieb Einstein die Molekülbewegung mit der Brownschen Bewegung. 192? baute Wieder das mathematische Fundament der Brownschen Bewegung.
+\end{enuma}
+\end{bemerkung}
+
+\begin{lemma}
+Die Brownsche Bewegung $(B_t,\cF_t)_{t\in T}$ ist ein $(\cF_t)$-Martingal.
+\end{lemma}
+
+\begin{beweis}
+Offenbar ist $E|B_t|<\infty$. Für $s\le t$ gilt:
+\begin{align*}
+E[B_t\mid \cF_s] &= E[B_s + (B_t - B_s) \mid \cF_s] \\
+&= B_s + E[B_t-B_s \mid \cF_s] \\
+&= B_s + 0
+\end{align*}
+\end{beweis}
+
+\begin{satz}
+Die Brownsche Bewegung $(B_t)_{t\in T}$ ist ein Gauss-Prozess mit Erwartungswertfunktion $EB_t =0$ und Kovarianzfunktion $\operatorname{Cov}(B_s,B_t)=s\wedge t = \min\{s,t\}$.
+
+Ist umgekehrt $(X_t)_{t\in T}$ ein Gauss-Prozess mit $EX_t=0$ und $\operatorname{Cov}(B_s,B_t)=s\wedge t$ und fast-sicher stetigen Pfaden, so ist $(X_t)_{t\in T}$ eine Brownsche Bewegung.
+\end{satz}
+
+\begin{beweis}
+Ist $(B_t)_{t\in T}$ die Brownsche Bewegung, so gilt $B_0=0$ und $B_t-B_0=B_t\sim N(0,t)$, also ist $EB_t=0$ für alle $t\in T$. Da Zuwächse unabhängig sind folgt für $s\le t$:
+\begin{align*}
+\operatorname{Cov}(B_s,B_t) &= EB_sB_t - EB_sEB_t\\
+&= EB_s(B_s + (B_t-B_s)) - 0\\
+&= EB_s^2 + EB_s(B_t-Bs) \\
+&= EB_s^2 + 0 \\
+&= \operatorname{Var}(B_s)  \\
+&= s \\
+&= s\wedge t
+\end{align*}
+
+Außerdem ist für $0\le t_1\le\cdots\le t_n$ der Vektor $(B_{t_1},B_{t_2}-B_{t_1},\ldots,B_{t_n}-B_{t_{n-1}})\sim N(0,\Sigma)$ multivariant normalverteilt. Aus diesem Vektor erhalten wir duch Multiplikation mit einer geeignten Matrix den Vektor $(B_{t_1},\ldots,B_{t_n})$, der demnach auch normalverteilt ist.
+
+\end{beweis}
 
 \chapter{Satz um Satz (hüpft der Has)}
 \theoremlisttype{optname}
