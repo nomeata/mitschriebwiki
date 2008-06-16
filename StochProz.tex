@@ -2011,6 +2011,120 @@ F &\da \bigcap_{n=1}^\infty \bigcup_{m=1}^\infty \bigcap_{q\in \MdQ\cap(0,\frac 
 Wegen $A\subseteq F$ gilt $P(\tilde F)=1$, damit $P(\tilde F\cap A)=1$. Also sind $P$-fast-sicher alle Pfade von $\tilde B$ auch stetig in $t=0$.
 \end{beweis}
 
+\section{Existenz}
+
+Die Existenz der Brownschen Bewegung wurde erst 1923 von Norbert Wiener bewiesen. Heute gibt es drei Standardverfahren, diese zu beweisen. Wir wählen hier einen funktional-analytischen Zugang.
+
+\begin{satz}
+Es gibt einen Wahrscheinlichkeitsraum $(\Omega, \cF, P)$, auf dem ein stochastischer Prozess $(B_t)_{0\le t \le 1}$ definiert werden kann, mit den Eigenschaften
+\begin{enuma}
+\item $B_0(\omega) = 0$ für alle $\omega\in \Omega$
+\item $t\mapsto B_t(\omega)$ ist stetig für alle $\omega\in\Omega$
+\item Für alle $0\le s\le t\le 1$ ist $B_t-B_s$ unabhängig von $\sigma(\{B_u,\,u\le s\})$ und $N(0,t-s)$-verteilt.
+\end{enuma}
+\end{satz}
+
+
+\begin{center}
+\begin{tikzpicture}
+\draw[->] (0,-2.5) -- (0,2.5);
+\draw[->] (0,0) -- (9,0);
+\draw (0,0) node[anchor=east] {$0$};
+\draw (4,0) node[anchor=north] {$\frac 12$};
+\draw (8,0) node[anchor=north] {$1$};
+\draw (8.8,0) node[anchor=north] {$t$};
+\foreach \x in {0,2,4,6,8}
+	\draw (\x,-2pt) -- (\x, 2pt);
+\path (0,0) node {$\times$}--  (2,1.25)node {$\times$} -- (4,1.5) node {$\times$}--  (6,-1.2)node {$\times$} -- (8,-2.5)node {$\times$};
+\draw[color=red] (0,0)  -- node[below] {$X_0(t)$} (8,-2.5);
+\draw[color=green] (0,0) -- node[below] {$X_1(t)$} (4,1.5) -- (8,-2.5);
+\draw[color=blue] (0,0) -- node[above] {$X_2(t)$} (2,1.25) -- (4,1.5) --  (6,-1.2) -- (8,-2.5);
+\end{tikzpicture}
+\end{center}
+
+Es sei $L^2=L^2([0,1],\borel_{[0,1]}, \lambda_{[0,1]}) \da \{f :[0,1]\to \MdR\text{ messbar} \mid \int_0^1 f^2(x)dx <\infty\}$ beziehungsweise der Äquivalenzklassen. Versehen mit
+\[
+\langle f,g \rangle \da \int_0^1 f(x)\cdot g(x) dx
+\]
+ist $L^2$ ein Hilbertraum. Weiter sei für alle $n\in \mathbb N_0$
+\[
+S_n\da\{(n,k) \mid 1\le k \le 2^k, k\text{ ungerade}\}
+\]
+und $S=\bigcup_{n=0}^\infty S_n$. Definiere für $(n,k)\in S$
+\begin{align*}
+g_{01}(t) &\da 1\\
+g_{nk}(t) &\da 2^{\frac{(n-1)}2}\big( 1_{[(k-1)2^{-n},\,k2^{-n})}(t) - 1_{[k2^{-n},\,(k+1)2^{-n})}(t)\big) \quad \text{für } n\ne 0,\,0\le t\le 1.
+\end{align*}
+Diese Funktionen bilden eine Orthonormalbasis (die \emph{Haar-Basis}\index{Haar-Basis}) von $L^2$, das heißt $\|g_{nk}\|=1$, $\langle g_{nk},g_{ml} \rangle = 0$ für $(n,k)\ne (m,l)$ und es gilt die sogenannte Parsevalsche Gleichung:
+\[
+\langle f,g\rangle = \sum_{n=0}^\infty \sum_{(n,k)\in S_n} \langle f,g_{nk}\rangle\langle g,g_{nk}\rangle
+\]
+
+Es sei nun $\{Z_{nk} \mid (n,k)\in S\}$ eine Familie von unabhängigen $N(0,1)$-verteilten Zufallsvariablen auf einem Wahrscheinlichkeitsraum $(\Omega, \cF, P)$.
+
+Wir definiern $(X_n(t))_{0\le t\le 1}$, $n\in \MdN_0$, durch
+\begin{align*}
+X_n(t) \da \sum_{m=0}^n \sum_{(m,k)\in S_m} f_{nk}(t) \cdot Z_{mk}
+\end{align*}
+wobei für alle $t\in[0,1], (m,k)\in S$
+\begin{align*}
+f_{mk}(t) \da \int_0^t g_{mk}(s) ds 
+\end{align*}
+die sogenannte \emph{Schauder-Funktionen} sind. Diese $(X_n)_{0\le t\le 1}$ sind stetige stochastische Prozesse auf $(\Omega,\cF, P)$.
+
+Es gilt $0\le f_{nk} \le 2^{-\frac{(n+1)}2}$. Wir behaupten, dass für $P$-fast-alle $\omega\in \Omega$ die $(X_n(t,\omega))_{0\le t\le 1}$ für $n\to\infty$ gleichmäßig konvergiert. Dann wäre die Grenzfunktion $X$ automatisch stetig.
+
+Für $Z\sim N(0,1)$ verwenden wir ohne Beweis die Abschätzung
+\[
+P(|Z|\ge a) \le \sqrt {\frac2\pi}\frac 1a e^{-\frac{a^2}2}\text{ für alle }a>0.
+\]
+
+Sei $\|f\|_{\infty}\da \sup_{0\le t\le 1}|f(t)|$ für $f\in C[0,1]$. Dann gilt für alle $n\in \MdN$: 
+\begin{align*}
+P(\|X_n - X_{n-1}\|_{\infty} > a_n) &= P(\|\sum_{(n,k)\in S_n}f_{nk}(t) Z_{nk}\| > a_n) \\
+&= P(\sup_{(n,k)\in S_n} |Z_{nk}| > 2^{\frac{(n+1)}2} a_n) \\
+&\le \sum_{(n,k)\in S_n} P(|Z_{nk}| > 2^{\frac{(n+1)}2} a_n) \\
+&= |S_n| \cdot P(|Z_{01}| > 2^{\frac{(n+1)}2} a_n) \\
+&\le 2^n\cdot P(|Z_{01}| > 2^{\frac{(n+1)}2} a_n) \\
+&\le 2^n\cdot \sqrt {\frac2\pi}\frac 1 {a_n} 2^{-\frac{(n+1)}2}  e^{-\frac1 2  2^{(n+1)} a_n^2} \\
+\intertext{mit $a_n\da \sqrt{n2^{-n}}$ wird daraus}
+&= \sqrt {\frac2\pi} 2^n 2^{-\frac{n+1}2} n^{-\frac 12} 2^{\frac n2} e^{-\frac 12 2^{n+1} n 2^{-n} } \\
+&= \frac1{\sqrt \pi} 2^n n^{-\frac12} e^{-n} \\
+\end{align*}
+das heißt dass mit $A_n\da \{\|X_n-X_{n-1}\|> (n2^{-n})^{\frac12}\}$ gilt 
+\begin{align*}
+\sum_{n=1}^\infty P(A_n) <\infty.
+\end{align*}
+Nach dem Lemma von Borel-Cantelli gilt dann
+\begin{align*}
+P(\underbrace{\limsup_{n\to\infty} A_n}_{\ad N}) = 0.
+\end{align*}
+Das heißt dass für jedes $\omega \notin A$ gibt es einen Index $n_0=n_0(\omega)\in \MdN$, so dass $\omega \notin A$ für alle $m,n\ge n_0$ gilt:
+\begin{align*}
+\|X_m(\omega)-X_n(\omega)\|_\infty &\le \sum_{k=(m\wedge n)+1}^{m\vee n} \|X_k(\omega)-X_{k-1}(\omega)\|_\infty \\
+&\le \sum_{k=(m\wedge n)+1}^{\infty} \sqrt{k2^{-k}} \to 0 \text{ für } m,n\to\infty
+\end{align*}
+Es ist also $(X_n(\omega))_{n\in \MdN}$ ist eine Cauchy-Folge in $(C[0,1],\|\cdot\|_\infty)$ für $\omega \notin N$. Dieser Raum ist vollständig, also existiert eine Grenzfunktion $X(\omega)$, wobei wir $X(\omega)\da0$ für $\omega\in N$ setzen.
+
+Der Prozess $(X_t)_{0\le t\le 1}$ hat $P$-fast-sicher stetige Pfade. Wir zeigen nun, dass dieser Prozess ein Gauss-Prozess wie in Satz \ref{satz:9.2} ist:
+
+Es gilt jetzt für alle $n\in\MdN$, $0\le s,t\le 1$
+\begin{align*}
+EX_n(t) &= \sum_{m=0}^n \sum_{(m,k)\in S_m} f_{nk}(t) \cdot EZ_{mk} \\
+&= \sum_{m=0}^n \sum_{(m,k)\in S_m} f_{nk}(t) \cdot 0 \\
+&= 0
+\end{align*}
+und, wobei die gemischten Terme verschwinden, da die $Z_{nk}$ unabhängig sind,
+\begin{align*}
+EX_n(t)X_n(s) &= \sum_{m=0}^n \sum_{(m,k)\in S_m} f_{nk}(t)f_{nk}(s) E{Z_{nk}}^2 \\
+ &= \sum_{m=0}^n \sum_{(m,k)\in S_m} f_{nk}(t)f_{nk}(s)  \\
+\end{align*}
+Offenbar ist $f_{mk}(s)=\langle 1_{[0,s]},g_{mk}\rangle$
+
+
+
+
+
 \chapter{Satz um Satz (hüpft der Has)}
 \theoremlisttype{optname}
 \listtheorems{satz,beispiel}
