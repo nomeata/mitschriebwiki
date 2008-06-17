@@ -254,7 +254,7 @@ P(X_n=j) &= \sum_{i\in S} P(X_n=j, X_0=i) \\
 \[
 p_{ij}^{(n+m)}  = \sum_{k\in S} p_{ij}^{(n)}p_{kj}^{(m)} \text{ für } i,j\in S
 \]
-Dies ist die „Chapman-Kolmogorov-Gleichung“\index{Chapman-Kolmogorov-Gleichung}.
+Dies ist die „Chapman-Kolmogorov-Gleichung“\index{Chapman-Kolmogorov-Gleichung!zeitdiskret}.
 \item Ist $X_0 \sim \nu$, so gilt $X_n \sim \nu\cdot P^n$.
 \end{enumi}
 \end{bemerkung}
@@ -1445,7 +1445,7 @@ und die Matrix
 \[
 P(t) = \big(p_{ij}(t)\big)_{i,j\in S}
 \]
-so gelten analog zum diskreten Fall die Chapman-Kolmogorov-Gleichungen für alle $i,j\in S$, $s,t>0$:\index{Chapman-Kolmogorov-Gleichungen}
+so gelten analog zum diskreten Fall die Chapman-Kolmogorov-Gleichungen für alle $i,j\in S$, $s,t>0$:\index{Chapman-Kolmogorov-Gleichung!zeitstetig}
 \[
 p_{ij}(t+s) = \sum_{k\in S} p_{ik}(t) p_{kj}(s)
 \]
@@ -1952,6 +1952,7 @@ transformiert. Man kann nachrechnen, dass $\Sigma$ Diagonalform hat, das heißt,
 \end{beweis}
 
 \begin{satz}
+\label{satz:9.3}
 Ist $(B_t)_{t\ge0}$ die Brownsche Bewegung, so auch
 \begin{enuma}
 \item $(-B_t)_{t\ge 0}$
@@ -2024,7 +2025,6 @@ Es gibt einen Wahrscheinlichkeitsraum $(\Omega, \cF, P)$, auf dem ein stochastis
 \end{enuma}
 \end{satz}
 
-
 \begin{center}
 \begin{tikzpicture}
 \draw[->] (0,-2.5) -- (0,2.5);
@@ -2042,7 +2042,9 @@ Es gibt einen Wahrscheinlichkeitsraum $(\Omega, \cF, P)$, auf dem ein stochastis
 \end{tikzpicture}
 \end{center}
 
-Es sei $L^2=L^2([0,1],\borel_{[0,1]}, \lambda_{[0,1]}) \da \{f :[0,1]\to \MdR\text{ messbar} \mid \int_0^1 f^2(x)dx <\infty\}$ beziehungsweise der Äquivalenzklassen. Versehen mit
+\begin{beweis}
+
+Es sei $L^2=L^2([0,1],\borel_{[0,1]}, \lambda_{[0,1]}) \da \{f :[0,1]\to \MdR\mid f \text{ messbar, } \int_0^1 f^2(x)dx <\infty\}$ beziehungsweise der Äquivalenzklassen. Versehen mit
 \[
 \langle f,g \rangle \da \int_0^1 f(x)\cdot g(x) dx
 \]
@@ -2118,13 +2120,95 @@ und, wobei die gemischten Terme verschwinden, da die $Z_{nk}$ unabhängig sind,
 \begin{align*}
 EX_n(t)X_n(s) &= \sum_{m=0}^n \sum_{(m,k)\in S_m} f_{nk}(t)f_{nk}(s) E{Z_{nk}}^2 \\
  &= \sum_{m=0}^n \sum_{(m,k)\in S_m} f_{nk}(t)f_{nk}(s)  \\
+\intertext{Offenbar ist $f_{mk}(s)=\langle 1_{[0,s]},g_{mk}\rangle$ und mit der Parsevalschen Gleichung folgt:}
+\mathllap{(*) \quad} \lim_{n\to\infty} EX_n(t)X_n(s) &= \sum_{m=0}^\infty \sum_{(m,k)\in S_m} \langle 1_{[0,s]},g_{mk}\rangle \langle 1_{[0,t]},g_{mk}\rangle \\
+&= \langle 1_{[0,s]}, 1_{[0,t]}\rangle\\
+&= s\wedge t
 \end{align*}
-Offenbar ist $f_{mk}(s)=\langle 1_{[0,s]},g_{mk}\rangle$
+
+Sei $t_1,\ldots,t_k\in [0,1]$. Es gilt
+\[
+(X_n(t_1),\ldots,X_n(t_k)) \to (X(t_1),\ldots,X(t_k))\quad \text{$P$-f.s.}
+\]
+woraus die Konvergenz in Verteilung folgt und, dazu äquivalent, die Konvergenz der charakteristischen Funktionen $\varphi_n:\MdR^k\to \MdC$, $\varphi_n(\theta)=E\exp(i\sum_{\nu=1}^k \theta_\nu X_n(t_\nu))$, also 
+\[
+\varphi_n(\theta)\tomit{n\to\infty} \varphi(\theta) = \exp(i\sum_{\nu=1}^k\theta_\nu X(t_\nu)).
+\]
+Es gilt $\varphi_n(\theta) = \exp(-\frac 12 \theta^\top\Sigma_n\theta)$ mit $(\Sigma_n)_{i,j}=EX_n(t_i)X_n(t_j)$. Mit $(*)$ folgt dann
+\begin{align*}
+\lim_{n\to\infty} (\Sigma_n)_{i,j} = t_i\wedge t_j \ad (\Sigma)_{i,j}
+\intertext{also}
+\varphi_n(\theta) \to \varphi(\theta) = \exp(-\frac12 \theta^\top \Sigma \theta)
+\end{align*}
+Daraus folgt, dass $(X_{t_1},\ldots,X_{t_k})$ normalverteilt ist, mit $EX_t=0$ für alle $t\in[0,1]$ und $\operatorname{Cov}(X_s,X_t)=s\wedge t$ für alle $s,t\in[0,1]$. Mit Satz \ref{satz:9.2} folgt die Behauptung.
+\end{beweis}
+
+\begin{bemerkung}
+Auf $(C[0,1],\borel(C[0,1]))$ definiert die Verteilung $P^B$ von $(B_t)_{0\le t\le 1}$ ein Wahrscheinlichkeitsmaß, das sogenannte Wiener-Maß\index{Wiener-Maß}. Mit $(\Omega,\cF, P)=(C[0,1],\borel(C[0,1]),P^B)$ und $B_t=\pi_t$ hat man ein explizites Modell für $(B_t)_{0\le t\le 1}$, die sogenannte Kanonische Konstruktion.
+\end{bemerkung}
+
+\section{Pfadeigenschaften}
+
+\begin{satz}
+Its $(B_t)_{t\ge 0}$ eine Brownschen Bewegung auf einem Wahrscheinlichkeitsraum $(\Omega, \cF, P)$, so gilt für $P$-fast-alle $\omega\in \Omega$, dass 
+\begin{align*}
+\sup_{t\ge 0} B_t = \infty, &&\inf_{t\ge 0}B_t(\omega)=-\infty.
+\end{align*}
+\end{satz}
+\begin{beweis}
+Sei $Z\da \sup_{t\ge 0}B_t$. Nach Satz \ref{satz:9.3} c) gilt für alle $c>0$:
+$Z\gleichnach{d} c\cdot Z$. Da $Z\ge 0$ folgt $P(Z \in \{0,\infty\})=1$.
+
+Nach Satz \ref{satz:9.3} b) ist $(B_{1+t}-B_1)_{t\ge 0}$ wieder eine Brownsche Bewegung, das Supremum davon ist also wieder $P$-f.s. $0$ oder $\infty$.
+\begin{align*}
+P(Z=0) &\le P(B_1\le 0\text{ und }B_t\le 0\text{ für alle } t\ge 1) \\
+&=P(B_1\le 0 \text{ und } \sup_{t\ge 0}(B_{1+t}-B_1) \le |B_1|) \\
+&= P(B_1 \le 0 \text{ und } \sup_{t\ge 0}(B_{1+t}-B_1) = 0) \\
+\intertext{$(B_{1+t}-B_1)$ ist unabhängig von $B_1$, also gilt weiter}
+&= P(B_1\le 0)\cdot P(\sup_{t\ge 0}(B_{1+t}-B_1) = 0) \\
+&= \frac12 \cdot P(Z=0)
+\end{align*}
+Das heißt, dass $P(Z=0)\le \frac 12 P(Z=0)$, also muss $P(Z=0)=0$ und $P(\sup_{t\ge 0}B_t =\infty) = 1$ gelten.
+
+Die Aussage für das Infimum folgt dann aus Satz \ref{satz:9.3} a).
+\end{beweis}
 
 
+\begin{bemerkung}
+Für alle $a\in \MdR$ ist $\{t\ge 0\mid B_t=a\}$ $P$-fast-sicher unbeschränkt, da stetige Funktionen auf kompakten Intervallen beschränkt sind. Insbesondere kehrt $(B_t)_{t\ge 0}$ mit Wahrscheinlichkeit 1 unendlich oft nach 0 zurück, und es gibt für $P$-fast-alle $\omega\in\Omega$ eine Folge $(t_n)_{n\in \MdN}  = (t_n(\omega))_{n\in\MdN}$ mit $t_n\to \infty$ und $B_{t_n}(\omega)=0$ für alle $n\in\MdN$. Mit der Zeitumkehr $\tilde B_t=tB_{\frac 1t}$, $\tilde B_0=0$ folgt, dass für $P$-fast alle $\omega\in \Omega$ die Nullstellen des Pfades $t\to B_t(\omega)$ einen Häufungspunkt in $0$ haben.
+\end{bemerkung}
 
+\begin{definition}
+Eine Funktion $f:\MdR_{+}\to \MdR$ heißt Lipschitz-stetig in $x\in\MdR_+$ wenn es ein $\delta>0$ und ein $K<\infty$ gibt mit
+\[ |f(x)-f(y)| \le K|x-y|\]
+für alle $y\in[x-\delta,x+\delta]\cap\MdR_+$.
+\end{definition}
 
+\begin{satz}
+$P$-fast-alle Pfade einer Brownschen Bewegung sind in keinem Punkt Lipschitz-stetig.
+\end{satz}
+\begin{beweis}
+Es seien $0<a<b<\infty$ fest und $K>0$. Für $n\in\MdN$ mit $a-\frac 2n>0$ sei 
+\[
+A_n \da \{\omega\in \Omega\mid \exists s\in (a,b)\ \forall t\in[s-\frac2n,s+\frac2n]: |B_t(\omega) - B_s(\omega)| \le K|t-s|\}
+\]
+Für jedes $I=[s-\frac2n,s+\frac2n]$ gibt es ein $k\in\MdN$ mit $\frac{k-2}n,\frac{k-1}n,\frac kn,\frac{k+1}n\in I$. Auf $A_n$ gilt für $j=k-1,k,k+1$
+\begin{align*}
+\underbrace{|B(\frac jn)-B(\frac {j-1}n)|}_{\ad \Delta_{n,j}} &\le | B(\frac jn) - B(s)| + |B(s) - B(\frac {j-1}n)| \\
+&\le K\cdot \frac 2n + K\cdot \frac 2n\\
+&= \frac{4K}n
+\end{align*}
+Also ist 
+\[
+A_n\subseteq \bigcup_{k=\lfloor na\rfloor}^{\lceil nb+1\rceil} \{\omega\in \Omega\mid \Delta_{n,j}(\omega) \le \frac{4K}n\text{ für }j=k-1,k,k+2\}
+\]
+Die Zuwächse der Brownschen Bewegung sind unabhängigkeit, also folgt:
+\begin{align*}
+P(A_n) &\le \sum_{k=\lfloor na\rfloor}^{\lceil nb+1\rceil} P\Big(\Delta_{n,k-1}\le \frac{4K}n\Big)\cdot P\Big(\Delta_{n,k}\le \frac{4K}n\Big)\cdot P\Big(\Delta_{n,k+1}\le \frac{4K}n\Big) \\
+&\le {\lceil nb+1\rceil}\cdot P\Big(\Delta_{n,1}\le \frac{4K}n\Big)^3
+\end{align*}
 
+\end{beweis}
 \chapter{Satz um Satz (hüpft der Has)}
 \theoremlisttype{optname}
 \listtheorems{satz,beispiel}
