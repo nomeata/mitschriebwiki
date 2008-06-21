@@ -2202,13 +2202,121 @@ Also ist
 \[
 A_n\subseteq \bigcup_{k=\lfloor na\rfloor}^{\lceil nb+1\rceil} \{\omega\in \Omega\mid \Delta_{n,j}(\omega) \le \frac{4K}n\text{ für }j=k-1,k,k+2\}
 \]
-Die Zuwächse der Brownschen Bewegung sind unabhängigkeit, also folgt:
+Die Zuwächse der Brownschen Bewegung sind unabhängig, also folgt:
 \begin{align*}
 P(A_n) &\le \sum_{k=\lfloor na\rfloor}^{\lceil nb+1\rceil} P\Big(\Delta_{n,k-1}\le \frac{4K}n\Big)\cdot P\Big(\Delta_{n,k}\le \frac{4K}n\Big)\cdot P\Big(\Delta_{n,k+1}\le \frac{4K}n\Big) \\
 &\le {\lceil nb+1\rceil}\cdot P\Big(\Delta_{n,1}\le \frac{4K}n\Big)^3
 \end{align*}
+Da $\sqrt{n}(B(\frac{1}{n})-B(\frac{0}{n}))\sim\mathcal N(0,1)$ folgt
+\begin{align*}
+  P\Big(\Delta_{n,1}\leq\frac{4k}{n}\Big) &=P\Big(\Delta_{n,1}\sqrt{n}\leq\frac{4k}{\sqrt{n}}\Big) \\
+  &=\int_{-\frac{4k}{\sqrt{n}}}^{\frac{4k}{\sqrt{n}}}\frac{1}{\sqrt{2\pi}}e^{\frac{x^2}{2}}dx\leq\frac{8k}{\sqrt{2\pi n}} \\
+\end{align*}
+und insgesamt $P(A_n)\longrightarrow 0$ für $n\longrightarrow\infty$. \\
+Sei $n_0(a):=\inf\left\{n\in\mathbb N\vert a-\frac{2}{n} > 0\right\}$. Wegen $A_n\subset A_{n+1}$
+folgt für $A:=\bigcup_{n=n_0}^\infty A_n$, dass $P(A)=0$. \\
+$A=A(k)$ hängt von $k$ ab. $N:=\bigcup_{k\in\mathbb N}A(k)$ ist wieder eine Nullmenge, so dass
+$\forall \omega\notin N$ gilt: zu keinem $s\in(a,b)$ und keinem $\delta > 0$, $\exists k<\infty$ mit
+\[
+\vert B_t(\omega)-B_s(\omega)\vert\leq k\vert t-s\vert\text{ mit }t\in[s-\delta,s+\delta]
+\]
+$\implies$ Die Pfade, die in einem $s\in (a,b)$ lipschitzstetig sind, sind in einer $P$-Nullmenge. \\
+ \[ 
+N=N(a,b)\implies\tilde{N}=\bigcup_{\begin{array}{c} k\in\mathbb N \\ a=\frac{1}{k},b=k \end{array}} N(a,b)\text{ ist wieder Nullmenge }
+\]
+$\implies$ $P$-f.a. Pfade sind in keinem $s>0$ lipschitzstetig. Bleibt $s=0$ (Übung)  
 
 \end{beweis}
+
+\begin{bemerkung}
+  Ist eine Funktion $f:\mathbb R_+\longrightarrow\mathbb R$ in $s\in \mathbb R$ differenzierbar, so existiert
+\[
+\lim_{t\rightarrow s}\frac{f(t)-f(s)}{t-s}
+\]
+und $f$ wäre in $s$ lipschitzstetig. Satz 11.2 impliziert also, dass $P$-f.a. Pfade der Brownschen Bewegung in keinem Punkt differenzierbar sind.
+\end{bemerkung}
+
+\begin{definition}
+  Sei $f:\mathbb R_+\longrightarrow\mathbb R$. Die Totalvariation $V_a^b f$ von $f$ auf $[a,b]\subset\mathbb R_+$ ist
+\[
+V_a^bf=\sup_{\mathcal Z}\sum_{j=1}^n\vert f(t_j)-f(t_{j-1})\vert,
+\]
+wobei $\mathcal Z=\{a=t_0<t<\dots<t_n=b\}$ eine Zerlegung von $[a,b]$ ist.
+\end{definition}
+
+\begin{bemerkung}
+  Funktionen mit endlicher Totalvariation sind fast überall differenzierbar. Also haben die Pfade der Brownschen Bewegung $P$-f.s. unbeschränkte Totalvariation, d.h. auch kleine Stücke sind ``unendlich lang''.
+\end{bemerkung}
+
+\begin{definition}
+  Sind die ZV $X,X_1,X_2,\dots\in L^2(\Omega,\mathcal F,P)$, so heißt die Folge $(X_n)_{n\in\mathbb N}$ im \emph{quadratischen Mittel konvergent} gegen $X$ ($X_n\tomit{L^2} X$), falls gilt:
+\[
+\lim_{n\rightarrow\infty}E(X_n-X)^2=0
+\]
+\end{definition}
+\begin{bemerkung}
+  $X_n\tomit{L^2}X\implies X_n\tomit{P}X$.
+\end{bemerkung}
+\begin{satz}
+  \label{Satz 11.3}
+  Es sei $(\mathcal Z_n), \mathcal Z_n=\{0=t_{n_0}\leq t_{n_1}\leq\dots\leq t_{n_{k_n}}=t\}$ eine Folge von Zerlegungen von $[0,t]$ mit Feinheitsgraden
+\[
+\delta(\mathcal Z_n)=\max_{j=1,\dots,k_n}\vert t_{n_j}-t_{n_{j-1}}\vert
+\]
+so dass $\lim_{n\rightarrow\infty}\delta(\mathcal Z_n)=0$. Dann gilt mit $n\to\infty$:
+\[
+\underbrace{\sum_{j=1}^{k_n}(B(t_{n_j})-B(t_{n_{j-1}}))^2}_{=:V_{\mathcal Z_n}}\tomit{L^2}t
+\] 
+\end{satz}
+\begin{beweis}
+  Zu zeigen ist: $E(V_{\mathcal Z_n}-t)^2\to 0$ für $n\to\infty$. Es gilt:
+  \begin{enumerate}
+  \item $EV_{\mathcal Z_n}=\sum_{j=1}^{k_n}(t_{n_j}-t_{n_{j-1}})=t$
+  \item $E(B(t_{n_j})-B(t_{n_{j-1}}))^4=3(t_{n_j}-t_{n_{j-1}})^2$
+  \end{enumerate}
+Insgemsamt:
+\begin{align*}
+  EV_{\mathcal Z_n}^2 &= \sum_{j=1}^{k_n}E(B(t_{n_j})-B(t_{n_{j-1}}))^4+2\sum_{j<l}E(B(t_{n_j})-B(t_{n_{j-1}}))^2\cdot E(B(t_{n_j})-B(t_{n_{j-1}}))^2 \\
+&=3\left(\sum_{j=1}^{k_n}(t_{n_j}-t_{n_{j-1}})\right)^2+2\sum_{j=1}^{k_n}(t_{n_j}-t_{n_{j-1}})^2 \\
+&=t^2+2\sum_{j=1}^{k_n}(t_{n_j}-t_{n_{j-1}})^2
+\end{align*}
+\begin{align*}
+  \implies E(V_{\mathcal Z_n}-t)^2 &= EV_{\mathcal Z_n}^2-2t^2+t^2 \\
+&= 2\sum_{j=1}^{k_n}(t_{n_j}-t_{n_{j-1}})^2 \\
+& \leq 2\delta(\mathcal Z_n)\cdot t\to 0 \text{ für } n\to\infty
+\end{align*}
+\end{beweis}
+\begin{bemerkung}
+  Beachte, dass die Zerlegungsfolge $\mathcal Z_n$ nicht von $\omega$ abhängt. Gilt zusätzlich $\mathcal Z_n\subset\mathcal Z_{n+1}$, so gilt sogar $V_{\mathcal Z_n}\tomit{f.s.}t$. Dieser Grenzwert heißt quadratische Variation des Prozesses.
+\end{bemerkung}
+\begin{bemerkung}
+  Eine stetige Funktion $f$ auf einem kompakten Intervall $[a,b]$ mit $V_a^bf<\infty$, hat stets quadratische Variation $0$, da
+  \[
+    \sum_{k=1}^n(f(t_k)-f(t_{k-1}))^2 \leq\max_{1\leq k\leq n}\vert f(t_k)-f(t_{k-1})\vert\cdot\sum_{i=1}^n\vert f(t_k)-f(t_{k-1})\vert
+  \]
+Also $V_a^b B(\cdot,\omega)=\infty\quad\forall 0\leq a<b<\infty$.
+\end{bemerkung}
+\section{Die Brownsche Bewegung als Markov-Prozeß}
+\begin{definition}
+  Ein \emph{stochastischer Kern} (Übergangswahrscheinlichkeit) $P(x,A)$ von $(\mathbb R, \mathcal Le)$ nach $(\mathbb R, \mathcal Le)$ ist eine Funktion, so dass
+  \begin{enuma}
+  \item $A\mapsto P(x,A)$ ist ein Wahrscheinlichkeitsmaß $\forall x\in\mathbb R$
+  \item $x\mapsto P(x,A)$ ist messbar $\forall A\in\mathcal Le$.
+  \end{enuma}
+\end{definition}
+\begin{definition}
+    Eine Familie $(P_t)_{t\geq 0}$ von stochastischen Kernen von $(\mathbb R, \mathcal Le)$ nach $(\mathbb R, \mathcal Le)$ heißt \emph{Markov-Halbgruppe} oder \emph{Übergangs-Halbgruppe}, wenn $\forall s,t\geq 0\forall A\in\mathcal Le$ gilt:
+\[
+P_{s+t}(x,A)=\int P_t(y,A)P_s(x,dy)
+\]
+\end{definition}
+\begin{bemerkung}
+  Wir schreiben kurz: $P_{s+t}=P_s\otimes P_t$.
+\end{bemerkung}
+\begin{beispiel}
+  $\forall t\geq0$ sei $P_t(x,\cdot)=\mathcal N(x,t)=$ Normalverteilung mit Erwartungswert $x$ und Varianz $t$. $\mathcal N(x,0):=\delta_x$
+\end{beispiel}
+
 \chapter{Satz um Satz (hüpft der Has)}
 \theoremlisttype{optname}
 \listtheorems{satz,beispiel}
