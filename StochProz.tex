@@ -2425,6 +2425,127 @@ E[e^{i\theta B_{s+t}}\mid \cF_s] &= E[e^{i\theta(B_s+B_{s+t}-B_s)}\mid \cF] \\
 \end{align*}
 \end{bemerkung}
 
+In Kapitel II haben wir gesehen, dass die Übergangsmatrizenfunktion $(P(t))_{t\geq0}$ durch die Intensitätsmatrix $Q$ in bestimmten Fällen charakterisiert werden kann. \\
+Insbesondere ist:
+\[
+q_{ij}:=\lim_{t\downarrow0}\frac{p_{ij}(t)-\delta_{ij}}{t}
+\]
+Unter bestimmten Voraussetzungen kann auch $(P_t)_{t\geq0}$ bei allgemeinen Markov-Prozessen aus dem sogenannten Generator
+\[
+\mathcal G:=\lim_{t\downarrow0}\frac{1}{t}(P_t-P_0)
+\]
+bestimmt werden. Wir betrachten hier die Brownsche Bewegung.
+\[
+C_b^2(\mathbb R):=\{f:\mathbb R\to\mathbb R\vert f \text{ ist zweimal stetig differenzierbar, $f$ beschränkt}\}
+\]
+\begin{satz}
+\label{satz:12.2}
+  Es sei $(P_t)_{t\geq0}$ die Übergangshalbgruppe zur Brownschen Bewegung. Dann gilt:
+\[
+\mathcal Gf:=\lim_{t\downarrow0}\frac{1}{t}(P_tf-f)=\frac{1}{2}f''\text{ für alle }f\in C_b^2(\mathbb R)
+\]
+\end{satz}
+\begin{beweis}
+  Sei $f\in C_b^2(\mathbb R)$.
+  \begin{align*}
+    \frac{1}{2}(P_tf-f)(x)&=\int\frac{1}{t}(f(y)-f(x))\mathcal N(x,t)(dy) \\
+&=\frac{1}{\sqrt{2\pi}}\int t^{-\frac{3}{2}}(f(y)-f(x))e^{-\frac{(y-x)^2}{2t}}dy =(*)
+  \end{align*}
+Substitution mit $z=\frac{y-x}{\sqrt{t}}$ liefert:
+\[
+(*)=\frac{1}{\sqrt{2\pi}}\int\frac{1}{t}(f(x+2\sqrt{t})-f(x))e^{-\frac{1}{2}z^2}dz
+\]
+Taylor-Entwicklung:
+\[
+f(x+2\sqrt{t})=f(x)+z\sqrt{t}f'(x)+\frac{1}{2} z^2tf''(\xi)\text{ mit }\xi\in(x,x+z\sqrt{t})
+\]
+Daraus folgt:
+\[
+\frac{1}{t}(P_tf-f)(x)=\frac{1}{\sqrt{2\pi}}\frac{f'(x)}{\sqrt{t}}\int2e^{-\frac{1}{2}z^2}dz+\frac{1}{2}\int\frac{1}{\sqrt{2\pi}}z^2f''(\xi)e^{-\frac{1}{2}z^2}dz
+\]
+Es gilt: $f''(\xi)\to f''(x)$ für $t\to0$. Da $f''$ beschränkt ist, folgt mit majorisierter Konvergenz:
+\[
+\lim_{t\downarrow0}\frac{1}{t}(P_tf-f)(x)=\frac{1}{2}f''(x)\underbrace{\int\frac{1}{\sqrt{2\pi}}z^2e^{-\frac{1}{2}z^2}dz}_{=1}
+\]
+\end{beweis}
+\section{Die starke Markov-Eigenschaft mit Anwendungen}
+Wir benötigen zunächst folgende Hilfsüberlegungen: \\
+Ist $\tau:\Omega\longrightarrow[0,\infty]$ eine Stoppzeit, so ist
+\[
+\mathcal F_\tau:=\{A\in\mathcal F\vert A\cap\{\tau\leq t\}\in\mathcal F_t\text{ für alle } t\geq0\}
+\]
+die $\sigma$-Algebra der $\tau$-Vergangenheit (vgl. Stochastik II).
+
+\begin{lemma}
+\label{lemma:13.1}
+  \begin{enuma}
+  \item Ist $\tau$ eine Stoppzeit, so wird durch
+\[
+\tau_n(\omega):=\left\{\begin{array}{cc}\frac{\lceil2^n\tau(\omega)\rceil}{2^n} &,\text{falls } \tau(\omega)<\infty \\ \infty &,\text{falls } \tau(\omega)=\infty\end{array}\right.
+\]
+eine Folge $(\tau_n)_{n\in\mathbb N}$ von Stoppzeiten definiert, die für $n\to\infty$ fast sicher gegen $\tau$ konvergiert. \\
+Ist $\tau$ beschränkt, so nimmt jedes $\tau_n$ nur endlich viele Werte an.
+\item Ist $X=(X_t)_{t\geq0}$ ein $(F_t)_{t\geq0}$ adaptierter Prozess mit rechtsseitig stetigen Pfaden, so ist für alle $t\geq0$ die Abbildung
+\[
+[0,t]\times\Omega\ni(s,\omega)\mapsto X_s(\omega)\in\mathbb R
+\]
+$\borel[0,t]\otimes\mathcal F_t$-messbar.
+\item Ist $\tau$ eine endliche Stoppzeit und $(X_t)_{t\geq0}$ ein adaptierter Prozess mitrechtsseitig stetigen Pfaden, so ist
+\[
+X_\tau:\Omega\longrightarrow\mathbb R, \omega\mapsto X_{\tau(\omega)}(\omega)
+\]
+$\mathcal F_t$-messbar.
+  \end{enuma}
+\end{lemma}
+\begin{bemerkung}
+  Einen stochastischen Prozess $X$ mit der Messbarkeitseigenschaft aus Teil b.) nennt man \emph{progressiv messbar}.
+\end{bemerkung}
+\begin{beweis}
+  \begin{enuma}
+  \item Es ist zu zeigen, dass $\tau_n$ eine Stoppzeit ist:
+\[
+\{\tau_n\leq t\}=\left\{\tau\leq\underbrace{\frac{\lceil 2^nt\rceil}{2^n}}_{\leq t}\right\}\in\mathcal F_t\text{ für alle }t\geq0.
+  \]
+Die anderen Aussagen sind ``klar''.
+\item Wir zeigen zunächst:
+\[
+(s,\omega)\mapsto1_{[u,v)}(s)\cdot X_v(\omega)
+\]
+ist $\borel[0,t]\otimes\mathcal F_t$-messbar für $0\leq u<v\leq t$. Denn: Sei $A\in\borel$ mit $0\notin A$, dann ist
+\[
+(1_{[u,v)}X_v)^{-1}(A)=\underbrace{[u,v)}_{\in\borel[0,t]}\times\underbrace{X_v^{-1}(A)}_{\mathcal F_v\subset\mathcal F_t}
+\]
+Analog: $(s,\omega)\mapsto1_{t}(s)X_t(\omega)$ ist messbar.
+Sei jetzt: 
+\[
+X^{(n)}(s,\omega):=\sum_{k=0}^{n-1}1_{[\frac{kt}{n},\frac{(k+1)t}{n})}(s)\cdot X(\frac{(k+1)t}{n},\omega)+1_{t}(s)\cdot X_t(\omega)
+\]
+$X^{(n)}$ ist eine linear Kombination von Abbildungen vom obigen Typ, also $\borel[0,t]\otimes\mathcal F_t$-messbar.
+\item Es ist zu zeigen: Für alle $A\in\borel$ und $t\geq0$ ist
+\[
+X_t^{-1}(A)\cap\{\tau\leq t\}\in\mathcal F_t
+\]
+Wir betrachten die Abbildungen:
+\begin{align*}
+  & g:\Omega\longrightarrow\times\Omega ,g(\omega)=(\tau(\omega)\wedge t,\omega) \\
+  & h:[0,t]\times\Omega\longrightarrow\mathbb R ,h(s,\omega)=X_s(\omega)
+\end{align*}
+mit der $\sigma$-Algebra $\borel[0,t]\otimes\mathcal F_t$ auf $[0,t]\times\Omega$. $g$ ist $(\mathcal F_t,\borel[0,t]\otimes\mathcal F_t)$-messbar, da für alle $A\in\mathcal F_t, s\leq t$ gilt:
+\[
+\{\omega\in\Omega\vert(\tau(\omega)\wedge t,\omega)\in[0,s]\times A\}=A\cap\underbrace{\{\tau\leq s\}}_{\in\mathcal F_s}\in\mathcal F_t
+\]
+Die Messbarkeit von $h$ folgt aus b.). Es gilt also:
+\begin{align*}
+  & h(g(\omega))=h(\tau(\omega)\wedge t,\omega)=X_{\tau(\omega)\wedge t}(\omega)\text{ ist $(\mathcal F_t,\borel)$-messbar} \\
+\implies & X_{\tau\wedge t}^{-1}(A)\in\mathcal F_t\text{ für alle }A\in\borel \\
+\implies & X_\tau^{-1}(A)\cap\{\tau\leq t\}=\underbrace{X_{\tau\wedge t}^{-1}(A)}_{\in\mathcal F_t}\cap\underbrace{\{\tau\leq t\}}_{\in\mathcal F_t}\in\mathcal F_t
+\end{align*}
+  \end{enuma}
+\end{beweis}
+\begin{satz}
+  \label{satz:13.2}
+Es sei $(B_t,\mathcal F_t)_{t\geq0}$ eine Brownsche Bewegung, $\tau$ eine endliche Stoppzeit. Dann sind die $\sigma$-Algebra $\mathcal F_t$ und der Prozess $(B_{\tau+t}-B_{\tau})_{t\geq0}$ stochastisch unabhängig und $(B_{\tau+t}-B_{\tau})_{t\geq0}$ hat dieselbe Verteilung wie $(B_t)_{t\geq0}$.
+\end{satz}
 
 
 \chapter{Satz um Satz (hüpft der Has)}
