@@ -2025,6 +2025,30 @@ Es gibt einen Wahrscheinlichkeitsraum $(\Omega, \cF, P)$, auf dem ein stochastis
 \end{enuma}
 \end{satz}
 
+% Data generated with this python code:
+%    from random import normalvariate
+%    
+%    def intp(x, y, vx, vy):
+%            m = (x+y)/2
+%            vm = normalvariate(0,(x-y)/2) + (vx+vy)/2
+%    
+%            if (y-x) > 1.0/16:
+%                    intp(x,m,vx,vm)
+%            print "%f %f"  % (m, vm)
+%            if (y-x) > 1.0/16:
+%                    intp(m,y,vm,vy)
+%            
+%    print "0 0"
+%    intp(0.0, 2.0, 0, 1.25)
+%    print "2 1.25"  
+%    intp(2.0, 4.0, 1.25, 1.5)
+%    print "4 1.5"
+%    intp(4.0, 6.0, 1.5, -1.2)
+%    print "6 -1.2" 
+%    intp(6.0, 8.0, -1.2, -2.5)
+%    print "8 -2.5" 
+
+
 \begin{center}
 \begin{tikzpicture}
 \draw[->] (0,-2.5) -- (0,2.5);
@@ -2036,6 +2060,7 @@ Es gibt einen Wahrscheinlichkeitsraum $(\Omega, \cF, P)$, auf dem ein stochastis
 \foreach \x in {0,2,4,6,8}
 	\draw (\x cm,-2pt) -- (\x cm, 2pt);
 \path (0,0) node {$\times$}--  (2,1.25)node {$\times$} -- (4,1.5) node {$\times$}--  (6,-1.2)node {$\times$} -- (8,-2.5)node {$\times$};
+\draw[color=black] plot file {BBplot.data};
 \draw[color=red] (0,0)  -- node[below] {$X_0(t)$} (8,-2.5);
 \draw[color=green] (0,0) -- node[below] {$X_1(t)$} (4,1.5) -- (8,-2.5);
 \draw[color=blue] (0,0) -- node[above] {$X_2(t)$} (2,1.25) -- (4,1.5) --  (6,-1.2) -- (8,-2.5);
@@ -2249,7 +2274,7 @@ wobei $\mathcal Z=\{a=t_0<t<\dots<t_n=b\}$ eine Zerlegung von $[a,b]$ ist.
 \end{bemerkung}
 
 \begin{definition}
-  Sind die ZV $X,X_1,X_2,\dots\in L^2(\Omega,\mathcal F,P)$, so heißt die Folge $(X_n)_{n\in\mathbb N}$ im \emph{quadratischen Mittel konvergent} gegen $X$ ($X_n\tomit{L^2} X$), falls gilt:
+  Sind die ZV $X,X_1,X_2,\dots\in L^2(\Omega,\cF,P)$, so heißt die Folge $(X_n)_{n\in\mathbb N}$ im \emph{quadratischen Mittel konvergent} gegen $X$ ($X_n\tomit{L^2} X$), falls gilt:
 \[
 \lim_{n\rightarrow\infty}E(X_n-X)^2=0
 \]
@@ -2472,7 +2497,7 @@ Es gilt: $f''(\xi)\to f''(x)$ für $t\to0$. Da $f''$ beschränkt ist, folgt mit 
 Wir benötigen zunächst folgende Hilfsüberlegungen: \\
 Ist $\tau:\Omega\longrightarrow[0,\infty]$ eine Stoppzeit, so ist
 \[
-\mathcal F_\tau:=\{A\in\mathcal F\vert A\cap\{\tau\leq t\}\in\mathcal F_t\text{ für alle } t\geq0\}
+\cF_\tau:=\{A\in\cF\vert A\cap\{\tau\leq t\}\in\cF_t\text{ für alle } t\geq0\}
 \]
 die $\sigma$-Algebra der $\tau$-Vergangenheit (vgl. Stochastik II).
 
@@ -2489,12 +2514,12 @@ Ist $\tau$ beschränkt, so nimmt jedes $\tau_n$ nur endlich viele Werte an.
 \[
 [0,t]\times\Omega\ni(s,\omega)\mapsto X_s(\omega)\in\mathbb R
 \]
-$\borel[0,t]\otimes\mathcal F_t$-messbar.
+$\borel[0,t]\otimes\cF_t$-messbar.
 \item Ist $\tau$ eine endliche Stoppzeit und $(X_t)_{t\geq0}$ ein adaptierter Prozess mitrechtsseitig stetigen Pfaden, so ist
 \[
 X_\tau:\Omega\longrightarrow\mathbb R, \omega\mapsto X_{\tau(\omega)}(\omega)
 \]
-$\mathcal F_t$-messbar.
+$\cF_t$-messbar.
   \end{enuma}
 \end{lemma}
 \begin{bemerkung}
@@ -2504,49 +2529,166 @@ $\mathcal F_t$-messbar.
   \begin{enuma}
   \item Es ist zu zeigen, dass $\tau_n$ eine Stoppzeit ist:
 \[
-\{\tau_n\leq t\}=\left\{\tau\leq\underbrace{\frac{\lceil 2^nt\rceil}{2^n}}_{\leq t}\right\}\in\mathcal F_t\text{ für alle }t\geq0.
+\{\tau_n\leq t\}=\left\{\tau\leq\underbrace{\frac{\lceil 2^nt\rceil}{2^n}}_{\leq t}\right\}\in\cF_t\text{ für alle }t\geq0.
   \]
 Die anderen Aussagen sind ``klar''.
 \item Wir zeigen zunächst:
 \[
 (s,\omega)\mapsto1_{[u,v)}(s)\cdot X_v(\omega)
 \]
-ist $\borel[0,t]\otimes\mathcal F_t$-messbar für $0\leq u<v\leq t$. Denn: Sei $A\in\borel$ mit $0\notin A$, dann ist
+ist $\borel[0,t]\otimes\cF_t$-messbar für $0\leq u<v\leq t$. Denn: Sei $A\in\borel$ mit $0\notin A$, dann ist
 \[
-(1_{[u,v)}X_v)^{-1}(A)=\underbrace{[u,v)}_{\in\borel[0,t]}\times\underbrace{X_v^{-1}(A)}_{\mathcal F_v\subset\mathcal F_t}
+(1_{[u,v)}X_v)^{-1}(A)=\underbrace{[u,v)}_{\in\borel[0,t]}\times\underbrace{X_v^{-1}(A)}_{\cF_v\subset\cF_t}
 \]
 Analog: $(s,\omega)\mapsto1_{t}(s)X_t(\omega)$ ist messbar.
 Sei jetzt: 
 \[
 X^{(n)}(s,\omega):=\sum_{k=0}^{n-1}1_{[\frac{kt}{n},\frac{(k+1)t}{n})}(s)\cdot X(\frac{(k+1)t}{n},\omega)+1_{t}(s)\cdot X_t(\omega)
 \]
-$X^{(n)}$ ist eine linear Kombination von Abbildungen vom obigen Typ, also $\borel[0,t]\otimes\mathcal F_t$-messbar.
+$X^{(n)}$ ist eine linear Kombination von Abbildungen vom obigen Typ, also $\borel[0,t]\otimes\cF_t$-messbar.
 \item Es ist zu zeigen: Für alle $A\in\borel$ und $t\geq0$ ist
 \[
-X_t^{-1}(A)\cap\{\tau\leq t\}\in\mathcal F_t
+X_t^{-1}(A)\cap\{\tau\leq t\}\in\cF_t
 \]
 Wir betrachten die Abbildungen:
 \begin{align*}
   & g:\Omega\longrightarrow\times\Omega ,g(\omega)=(\tau(\omega)\wedge t,\omega) \\
   & h:[0,t]\times\Omega\longrightarrow\mathbb R ,h(s,\omega)=X_s(\omega)
 \end{align*}
-mit der $\sigma$-Algebra $\borel[0,t]\otimes\mathcal F_t$ auf $[0,t]\times\Omega$. $g$ ist $(\mathcal F_t,\borel[0,t]\otimes\mathcal F_t)$-messbar, da für alle $A\in\mathcal F_t, s\leq t$ gilt:
+mit der $\sigma$-Algebra $\borel[0,t]\otimes\cF_t$ auf $[0,t]\times\Omega$. $g$ ist $(\cF_t,\borel[0,t]\otimes\cF_t)$-messbar, da für alle $A\in\cF_t, s\leq t$ gilt:
 \[
-\{\omega\in\Omega\vert(\tau(\omega)\wedge t,\omega)\in[0,s]\times A\}=A\cap\underbrace{\{\tau\leq s\}}_{\in\mathcal F_s}\in\mathcal F_t
+\{\omega\in\Omega\vert(\tau(\omega)\wedge t,\omega)\in[0,s]\times A\}=A\cap\underbrace{\{\tau\leq s\}}_{\in\cF_s}\in\cF_t
 \]
 Die Messbarkeit von $h$ folgt aus b.). Es gilt also:
 \begin{align*}
-  & h(g(\omega))=h(\tau(\omega)\wedge t,\omega)=X_{\tau(\omega)\wedge t}(\omega)\text{ ist $(\mathcal F_t,\borel)$-messbar} \\
-\implies & X_{\tau\wedge t}^{-1}(A)\in\mathcal F_t\text{ für alle }A\in\borel \\
-\implies & X_\tau^{-1}(A)\cap\{\tau\leq t\}=\underbrace{X_{\tau\wedge t}^{-1}(A)}_{\in\mathcal F_t}\cap\underbrace{\{\tau\leq t\}}_{\in\mathcal F_t}\in\mathcal F_t
+  & h(g(\omega))=h(\tau(\omega)\wedge t,\omega)=X_{\tau(\omega)\wedge t}(\omega)\text{ ist $(\cF_t,\borel)$-messbar} \\
+\implies & X_{\tau\wedge t}^{-1}(A)\in\cF_t\text{ für alle }A\in\borel \\
+\implies & X_\tau^{-1}(A)\cap\{\tau\leq t\}=\underbrace{X_{\tau\wedge t}^{-1}(A)}_{\in\cF_t}\cap\underbrace{\{\tau\leq t\}}_{\in\cF_t}\in\cF_t
 \end{align*}
   \end{enuma}
 \end{beweis}
 \begin{satz}
   \label{satz:13.2}
-Es sei $(B_t,\mathcal F_t)_{t\geq0}$ eine Brownsche Bewegung, $\tau$ eine endliche Stoppzeit. Dann sind die $\sigma$-Algebra $\mathcal F_t$ und der Prozess $(B_{\tau+t}-B_{\tau})_{t\geq0}$ stochastisch unabhängig und $(B_{\tau+t}-B_{\tau})_{t\geq0}$ hat dieselbe Verteilung wie $(B_t)_{t\geq0}$.
+Es sei $(B_t,\cF_t)_{t\geq0}$ eine Brownsche Bewegung, $\tau$ eine endliche Stoppzeit. Dann sind die $\sigma$"~Algebra $\cF_t$ und der Prozess $(B_{\tau+t}-B_{\tau})_{t\geq0}$ stochastisch unabhängig und $(B_{\tau+t}-B_{\tau})_{t\geq0}$ hat dieselbe Verteilung wie $(B_t)_{t\geq0}$.
 \end{satz}
 
+\begin{beweis}
+Wir zeigen zunächst: Für alle $t\ge 0$ ist $B_{\tau+t}-B_\tau$ unabhängig von $\cF_\tau$ und hat Verteilung $\mathcal N(0,t)$. Angenommen, $\tau$ nimt nur abzählbar viele Werte an. Dann gilt für alle $A\in \cF_\tau$, $C\in \borel$, dass
+\begin{align*}
+P(A\cap \{B_{\tau + t}-B_\tau \in C\}) 
+&= \sum_{s\ge 0} P(\underbrace{A\cap \{\tau = s\}}_{\in \cF_s} \cap \{B_{\tau +t} - B_\tau \in C\}) \\
+&= \sum_{s\ge 0} P(A\cap \{\tau =s\})\cdot\underbrace{ P(B_{s+t}-B_s\in C)}_{\mathcal N(0,t)(C)}\\
+&= P(A) \cdot \mathcal N(0,t)(C).
+\end{align*}
+Mit $A=\Omega$ ergibt das: 
+\begin{align*}
+P(B_{\tau + t} - B_\tau \in C) = \mathcal N(0,t)(C)
+\end{align*}
+und für alle $A\in \cF_\tau $ und $C\in \borel$ gilt
+\begin{align*}
+P(A\cap \{B_{\tau +t} - B_\tau \in C\}) = P(A) \cdot P(B_{\tau +t}-B_\tau\in C).
+\end{align*}
+
+Sei jetzt $\tau$ eine beliebige (endliche) Stoppzeit und 
+\begin{align*}
+\tau_n \da \frac{ \lceil 2^n\tau \rceil}{2^n}.
+\end{align*}
+Wegen $\cF_\tau\subset\cF_{\tau_n}$ folgt für alle $A\in\cF_\tau$:
+\begin{align*}
+P(A \cap \{B_{\tau_n+t} - B_{\tau_n}\in C\})  
+&= P(A) \cdot \mathcal N(0,t)(C)
+\end{align*}
+Für die Unabhängigkeit genügt es, $C=(-\infty, c)$, $c\in \MdR$, zu betrachten, da diese ein durchschnittsstabiles Erzeugendensystem von $\borel$ bilden.
+
+Es bleibt zu zeigen:
+\begin{align*}
+\lim_{n\to\infty} \int_A 1_{(-\infty,c)} (B_{\tau_n +t}- B_{\tau_n}) dP 
+&= \int_A 1_{(-\infty,c)} (B_{\tau+t}-B_\tau) dP \tag{$*$}
+\end{align*}
+Stetigkeit der Pfade impliziert $B_{\tau_n} \to B_\tau$, $B_{\tau_n+t}\to B_{\tau+t}$ mit $n\to \infty$ und mit majorisierter Konvergenz ($1_{(-\infty,c)} \le 1$) folgt
+\begin{align*}
+\lim_{n\to\infty} \int_A 1_{(-\infty,c)} (B_{\tau_n +t} - B_{\tau_n}) dP 
+&= \int_A \lim_{n\to\infty} 1_{(-\infty,c)} (B_{\tau_n+t} - B_{\tau_n}) dP
+\end{align*}
+Das Problem ist nun, dass die Indikatorfunktion nicht stetig ist. Jedoch ist $B_{\tau _n+t}-B_{\tau _n}\sim \mathcal N(0,t)$, also ist $B_{\tau +t} - B_{\tau} \sim \mathcal N(0,t)$ und $P(B_{\tau+t}-B_\tau= c) = 0$, und damit gilt $(*)$.
+Damit ist die Anfangsbehauptung gezeigt.
+
+Sei jetzt $A\in \cF_\tau$, $0\ad t_0 < t_1 <\cdots < t_n$, $C_1,\ldots,C_n\in \borel$. Wende die bisher bewiesene Aussage auf die Stoppzeiten $\tau + t_{n-1},\tau + t_{n-2},\ldots,\tau+t_0$ an, so folgt:
+\begin{align*}
+P(A\cap \bigcap_{k=1}^n \{B(\tau + t_k) - B(\tau +t_{k-1}) \in C_k\}) 
+&=  P(A) \cdot \prod_{k=1}^nP(B(\tau+t_k) - B(\tau + t_{k-1}) \in C_k)
+\end{align*}
+Da die Mengen 
+\begin{align*}
+\bigcup_{k=1}^n \{B(\tau +t_k) - B(\tau +t_{k-1}) \in C_k\}
+\end{align*}
+ein durchschnittsstabiles Erzeugendensystem der von $(B_{\tau +t}-B_\tau)_{t\ge 0}$ erzeugten $\sigma$"~Algebra bilden, folgt die Unahbhängigkeit. Analog folgt die Verteilungsaussage.
+\end{beweis}
+
+\begin{bemerkung}
+$(B_{\tau \wedge t})_{t\ge 0}$ heißt Prä-$\tau$-Prozess, $(B_{\tau+t}-B_\tau)_{t\ge 0}$ heißt Post-$\tau$-Prozess.
+\end{bemerkung}
+
+\begin{satz}[Das Spiegelungsprinzip]
+\label{satz:13.3}
+Es sei $(B_t)_{t\ge 0}$ die Brownsche Bewegung, $\tau$ eine endliche Stoppzeit. Dann ist auch der ab $\tau$ gespiegelte Prozess $(\tilde B_t)_{t\ge 0}$:
+\begin{align*}
+\tilde B_t(\omega) \da 
+\begin{cases}
+2B{\tau (\omega)}-B_t(\omega),& t\ge \tau(\omega) \\
+B_t(\omega), & t< \tau(\omega)
+\end{cases}
+\end{align*}
+eine Brownsche Bewegung.
+\end{satz}
+
+\begin{beweis}
+Es sei $X_t \da B_{\tau\cap t}$, $Y_t\da B_{\tau+t}-B_\tau$, $t\ge 0$. Sei jetzt 
+\begin{align*}
+\psi: [0,\infty) \times C[0,\infty) \times C[0,\infty) &\to C[0,\infty) \\
+(a, f , g) &\mapsto h
+\end{align*}
+wobei
+\begin{align*}
+h(t) \da 
+\begin{cases}
+f(t), &\text{falls } t\le a \\
+f(a) + g(t-a), &\text{sonst}
+\end{cases}
+\end{align*}
+Nun ist $B= \psi(\tau, X, Y)$. Nach Satz \ref{satz:13.2} ist $(\tau,X)$ unabhängig von $Y$ und $Y$ ist eine Brownsche Bewegung, also ist $(\tau, X)$ unabhängig von $-Y$ und $-Y$ ist eine Brownsche Bewegung, das heißt
+\begin{align*}
+(\tau,X,Y) \gleichnach{d} (\tau,X,-Y)
+\end{align*}
+also ist $B=\psi(\tau,X,Y) \gleichnach{d} \psi(\tau,X,-Y)=\tilde B$.
+\end{beweis}
+
+Eine klassische Anwendung des Spiegelungsprinzip ist die Bestimmung der Verteilung von $M_t \da \sup_{0\le s\le t}B_s$. Dazu betrachten wir die Stoppzeit 
+\begin{align*}
+\tau_a \da \inf_{t\ge 0\mid B_t=a}
+\end{align*}
+für ein $a\in \MdR$ (wobei wir $\inf\emptyset = \infty$ setzen).
+
+\begin{satz}
+Es sei $t\ge 0$. Dann haben $M_t$, $M_t-B_t$ und $|B_t|$ dieselbe Verteilung.
+\end{satz}
+
+\begin{beweis}
+Es sie $x>0$ und $y<x$. Sei $f:[0,t]\to \MdR$ so, dass $f(0)=0$, $f(t)\le y$, $\max_{0\le s\le t}f(s) \ge x$. Es sei 
+\begin{align*}
+g(t) = 
+\begin{cases}
+f(t), &t\le \tau_x\\
+2x-f(t), &t>\tau _x
+\end{cases}
+\end{align*}
+also ist $g(0)=0$ und $g(t) \ge 2x-y$. Dann ist 
+\begin{align*}
+P(M_t\ge x, B_t\le y) &= P(\tilde B_t\ge 2x-y) \\
+&\gleichnach{\ref{satz:13.3}} P(B_t\ge 2x-y)
+\end{align*}
+für alle $x>0$, $y<x$.
+\end{beweis}
 
 \chapter{Satz um Satz (hüpft der Has)}
 \theoremlisttype{optname}
