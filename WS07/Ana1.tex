@@ -2781,16 +2781,16 @@ da $f=\exp p$, $p(x) = 1+2x^2$ (Hier sei vorrübergehend $B(0, \infty) = \set{R}
 \begin{proof}[Beweis des Theorems.]
 Sei $x_0$, $x_n \in (-\varrho, \varrho)$ mit $x_n\to x_0$ (\ninf). Setze $d\da \varrho-\abs{x_0} > 0$
 \folgt $\exists x_0\in\set{N}: \abs{x_n-x_0} \le \frac{d}{2}$ ($\forall n\ge n_0$)
-\begin{equation}\label{...}\tag{$*$}
+\begin{equation}\label{...}\tag{$*$}%TODO
 \folgt \abs{x_n} \le \abs{x_n - x_0} + \abs{x_0} \le ... + \abs{x_0} = \varrho - \frac{d}{2} < \varrho\quad (n\ge n_0)
 \end{equation}
 
 Setze $r=p - ...$. Dann (nach Thm.~\ref{thm:reihen.konvradius}) $\exists...$. Sei $\ep >0$ beliebig, fest gegeben.
 Dann $\exists J_\ep\in\set{N}$, sodass 
-\begin{equation}\label{...}\tag{$**$}
+\begin{equation}\label{...}\tag{$**$}%TODO
 \sum_{j=J_\ep + 1}^\infty \abs{a_j}r^j \le \ep
 \end{equation}
-\noindent Setze $p_\ep(x) = ...$
+\noindent Setze $p_\ep(x) = ...$%TODO
 \end{proof}
 
 \begin{satz}\label{satz:fnkt.stetigk-aequiv}
@@ -2802,7 +2802,7 @@ Seien $D\subseteq\set{R}$, $f:D\ra\set{R}$, $x_0\in D$. Dann sind äquivalent:
 \end{enumerate}
 \end{satz}
 \begin{proof}
-...
+...%TODO
 \end{proof}
 
 \begin{dfn}\label{dfn:fnkt.glm-stetig}
@@ -2925,7 +2925,7 @@ Sei $f: [a, b] \ra \set{R}$ stetig. Dann: $f([a, b]) = \left[\min_{[a, b]} f, \m
 Also: $\forall y_0 \in [\min f, \max f]\,\exists x_0\in [a, b]$ mit $f(x_0) = y_0$.
 \end{thm}
 \begin{proof}
-...
+...%TODO
 \end{proof}
 
 \begin{kor}[Nullstellensatz]\label{kor:fnkt.nst}
@@ -2957,7 +2957,7 @@ $f(0)=1$, $f(1)=\frac{1}{e} -1 <0$. \ref{kor:fnkt.nst} \folgt $\exists x_0: f(x_
 \begin{dfn}\label{dfn:fnkt.} %Def. 4.26
 
 \end{dfn}
-
+%TODO
 \begin{bsp*}
 \begin{enumerate}
 \item ...
@@ -3587,18 +3587,56 @@ diesem Fall gilt Satz~\ref{satz:int.r-intbar-folgerungen} entsprechend.
 
 \begin{dfn}
   \label{dfn:int.stammfkt}
-
+  Sei $f: [a,b] \rightarrow \set{R}$. Eine Funktion $F: [a,b]
+  \rightarrow \set{R}$ heißt \emph{Stammfunktion} von $f$, wenn $F$
+  differenzierbar ist und $F'=f$ ist. Man schreibt
+  $F=\int{f\;\mathrm{d}t}=\int{f}=f^{[1]}$. Beachte: mit $F$ ist auch
+  die Funktion $F(x)+c$ für ein beliebiges \reell{c} ($x\in[a,b]$)
+  eine Stammfunktion von $f$.
 \end{dfn}
 
 \begin{lem}
   \label{lem:int.integral-stammfkt}
-
+  Sei $f\in R([a,b])$ und $f$ sei stetig bei $x_0\in[a,b]$. Dann ist
+  das unbestimmte Integral $F_0(x)=\Integral{a}{x}{f(t)}{t}$,
+  $x\in[a,b]$, differenzierbar bei $x_0$ und $F'(x_0)=f(x_0)$.
 \end{lem}
+\begin{proof}
+  Sei $x\in[a,b]\setminus\{x_0\}$. Dann
+  \begin{multline*}
+    \abs{\frac{1}{x-x_0}\left(F_0(x)-F_0(x_0)\right)-f(x_0)}
+    \nach{=}{Bsp.~\ref{bsp:int.r-int}}\\
+    \abs{\frac{1}{x-x_0}\left(\Integral{a}{x}{f(t)}{t}-\Integral{a}{x_0}{f(t)}{t}\right)
+      - \frac{1}{x-x_0}\Integral{x_0}{x}{f(x_0)}{t}}
+    \nach{=}{Satz~\ref{satz:int.r-intbar-folgerungen}}\\
+    \frac{1}{\abs{x-x_0}}
+    \abs{\Integral{x_0}{x}{\left(f(t)-f(x_0)\right)}{t}}
+    \nach{\le}{Satz~\ref{satz:int.r-intbar-folgerungen}}
+    \frac{1}{\abs{x-x_0}} \abs{x-x_0} \underbrace{\sup_{\abs{x_0-t}\le\abs{x-x_0}}{\abs{f(t)-f(x_0)}}}_{\to 0\ (x\to x_0)}
+  \end{multline*}
+\end{proof}
 
-\begin{thm}
+\begin{thm}[Hauptsatz der Differential- und Integralrechnung]
   \label{thm:int.hs-diff-int}
-
+  \begin{enumerate}
+    \item \label{thm:int.hs-diff-int.a} Sei $f\in C([a,b])$. Dann ist
+      \emph{jede} Stammfunktion $F$ gegeben durch
+      \[F(x)=F(a)+\Integral{a}{x}{f(t)}{t} \quad (\forall
+      x\in[a,b]).\]
+      Speziell $x=b$: \[\Integral{a}{b}{f(t)}{t}=F(b)-F(a)=:F|_b^a.\]
+    \item \label{thm:int.hs-diff-int.b} Sei $g\in C^1([a,b])$. Dann $\Integral{a}{b}{g'(t)}{t}=g(b)-g(a)$.
+  \end{enumerate}
 \end{thm}
+\begin{proof}
+  \begin{enumerate}
+  \item Lem.~\ref{lem:int.integral-stammfkt} \folgt
+    $F_0(x)=\integral{0}{x}{f(t)}{t}$ ist eine Stammfunktion von
+    $f$. Sei $F$ eine weitere Stammfunktion von $f$. Dann
+    $(F-F_0)'=f-f=0$ \folgtnach{TODO 5.20}
+    $F(x)-F_0(a)=F(a)-F_0(a)=F(a)$.
+  \item folgt aus \ref{thm:int.hs-diff-int.a} mit $f=g'$.
+  \end{enumerate}
+\end{proof}
 
 \begin{bsp}
   \label{bsp:int.stammfkt}
