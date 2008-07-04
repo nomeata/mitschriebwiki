@@ -3705,6 +3705,115 @@ diesem Fall gilt Satz~\ref{satz:int.r-intbar-folgerungen} entsprechend.
 %\label{par:int.int-rationale-fkt}
 %Abschnitt 6.15 !!! TODO
 
+\begin{bem}[Integration rationaler Funktionen]
+  Sei $f(x)=\frac{p(x)}{q(x)}$, wobei $p$, $q$ reelle gekürzte
+  Polynome, $q$ sei nicht konstant $0$, höchster Koeffizient von $p$
+  und $q$ sei gleich $1$.
+  \begin{enumerate}
+  \item Polynomdivison: es existieren Polynome $p_0$, $r$ mit
+    $\mathrm{grad}\ p_0 \le \mathrm{grad}\ q$, sodass
+    $f=r+\frac{p_0}{q}$. \folgt $r$ kann integriert werden
+  \item \label{par:int.fundamentalsatz-algebra} Fundamentalsatz der Algebra: $\exists!\
+    z_1,\dotsc,z_m\in\set{C}$ (mit $z_i\ne z_j$ für $i\ne j$) und
+    $\exists!\ n_1,\dotsc,n_m\in\set{N}$, sodass:
+    $q(x)=(x-z_1)^{n_1}\cdot\dotsc\cdot(x-z_m)^{n_m}$.
+    \item Komplexe Partialbruchzerlegung (TODO Königsberger §4.3): $\exists!\ \kmplx{c_{jk}}:$
+      \begin{equation}
+        \label{eqn:int.kmplx-partialbrzerl}
+        \frac{p_0(x)}{q(x)} =
+        \frac{c_{11}}{(x-z_1)}+\dotsc+\frac{c_{1n_1}}{(x-z_1)^{n_1}} +
+        \dotsc + \frac{c_{m1}}{(x-z_m)}+\dotsc+\frac{c_{mn_m}}{(x-z_m)^{n_m}}
+      \end{equation}
+    \item Integration:
+      \begin{enumerate}
+      \item Terme mit $\reell{c_{jk},z_j}$ in
+        (\ref{eqn:int.kmplx-partialbrzerl}) können integriert werden
+        (man hat Formel für Stammfunktion)
+      \item Komplexer Fall für Nennerpotenz $k=1$: Da $p_0$, $q$
+        reell sind, gilt (für \kmplx{x}):
+        \[\frac{p_0(x)}{q(x)} =
+        \overline{\frac{p_0(\overline{x})}{q(\overline{x})}}
+        \nach{=}{(\ref{eqn:int.kmplx-partialbrzerl})}
+        \sum_{j,k}{\frac{c_{jk}}{(\overline{x}-z_j)^k}} =
+        \sum_{j,k}{\frac{\overline{c_{jk}}}{(x-z_j)^k}}\]
+        Da (\ref{eqn:int.kmplx-partialbrzerl}) eindeutig ist, gilt:
+        wenn $c_{jk},z_j\notin\set{R}$, dann $\exists l\ne j$, sodass
+        $\overline{z_j}=z_l$ und $\overline{c_{jk}}=c_{lk}$ (gleiches
+        $k$). Für $k=1$ treten im komplexen Fall also Terme der Form
+        auf:
+        \begin{equation}
+          \label{eqn:int.terme-komplex}
+          \frac{c}{x-z}+\frac{\overline{c}}{x-\overline{z}} =
+          \frac{(c+\overline{c})x-(c\overline{z}+\overline{c}z)}{(x-z)(x-\overline{z})}
+          =
+          \frac{2\Re(c)x-2\Re(c\overline{z})}{x^2-2\Re(z)x+\abs{z}^2}
+          =: \frac{ax+b}{x^2+\alpha x+\beta},
+        \end{equation}
+      \end{enumerate}
+      mit \reell{a,b,\alpha,\beta}, $\beta>\frac{\alpha^2}{4}$. \\
+      Übung: Stammfunktion für (\ref{eqn:int.terme-komplex})
+    \item Komplexer Fall für $k>1$: Mit komplexer Integration erhält
+      man:
+      \begin{equation}
+        \label{eqn:int.komplexe-integration}
+        \int{\left(\frac{c}{(t-z)^k}+\frac{\overline{c}}{(t-\overline{z})^k}\right)}\mathrm{d}t
+        = \frac{-2\Re{\left(c(x-\overline{z})^k\right)}}{(k+1)\left(x^2-2\Re(z)x+\abs{z}^2\right)^{k-1}}
+      \end{equation}
+      (siehe TODO Amann/Escher: Analysis II, Bem. II.5.10)\\
+      reelle Methode: Walter, Analysis I, §11.5
+  \end{enumerate}
+  \paragraph{Fazit.} \ref{par:int.fundamentalsatz-algebra}
+  zugestanden, findet man Formel für eine Stammfunktion von $f$.
+\end{bem}
+
+\begin{bsp*}
+  \begin{enumerate}
+  \item Seien \reell{a,b} gegeben, $a\ne b$,
+    $x\in\set{R}\setminus\{a,b\}$. \begin{equation} \label{eqn:int.ratfkt-stern-a}
+      f(x)=\frac{1}{(x-a)(x-b)}
+    \nach{=}{(\ref{eqn:int.kmplx-partialbrzerl}), Ansatz}
+    \frac{c_1}{x-a}+\frac{c_2}{x-b} \folgt 1=c_1(x-b)+c_2(x-a)
+    \tag{$*$} \end{equation}
+    (für zu bestimmende \reell{c_1,c_2})\\
+    Berechne $c_1$, $c_2$: (\ref{eqn:int.ratfkt-stern-a}) gilt nach
+    stetiger Fortsetzung für alle \reell{x}. Einsetzen:
+    \begin{align*}
+      x=a &:\quad 1=c_1(a-b)\ne0 &\folgt c_1 = \frac{1}{a-b} \\
+      x=b &:\quad 1=0+c_2(b-a)   &\folgt c_2 = \frac{1}{b-a}
+    \end{align*}
+    \[\folgt f(x)= \frac{1}{b-a}\left(-\frac{1}{x-a}+\frac{1}{x-b}\right)\]
+    \begin{align*}
+      \folgt \int{f(t)\mathrm{d}t} &=
+      -\frac{1}{b-a}\left(\int{\frac{\mathrm{d}t}{t-a}}-\int{\frac{\mathrm{d}t}{t-b}}\right)\\
+      &= -\frac{1}{b-a}\left(\ln{\abs{x-a}}-\ln{\abs{x-b}}\right)
+      \\ &= \frac{1}{a-b}\ln{\abs{\frac{x-a}{x-b}}} \quad (x\ne a,b) \ \mathrm{(Probe!)}
+    \end{align*}
+  \item \[f(x)=\frac{x}{(1+x^2)(x-1)^2}\quad(x\ne1)\]
+    Ansatz mit (\ref{eqn:int.kmplx-partialbrzerl}) und
+    (\ref{eqn:int.terme-komplex}):
+    \[f(x)=\frac{a}{x-1}+\frac{b}{(x-1)^2}+\frac{cx+d}{1+x^2},\
+    \text{wobei}\ \reell{a,b,c,d}\ \text{zu bestimmen sind}\]
+    \begin{equation}
+      \label{eqn:int.ratfkt-stern-b}
+      \folgt x=a(x-1)(1+x^2)+b(1+x^2)+(cx+d)(x-1)^2 \tag{$*$}
+    \end{equation}
+    Einsetzen:
+    \begin {equation} \label{eqn:int.ratfkt-plus} \begin{aligned}
+      x=1 &:\quad 1=0+2b+0 &\folgt b=\frac12 \\
+      x=0 &:\quad 0=-a+b+d &\folgt a-d=\frac12
+    \end{aligned} \tag{$+$} \end{equation}
+    Koeffizientenvergleich (vgl. Thm.~TODO 5.28):
+    \begin{equation} \label{eqn:int.ratfkt-doppelplus}\begin{aligned}
+      \text{für } x^2 &:\quad 0=a+0+c                     &\folgt c=-a \\
+      \text{für } x^3 &:\quad 0=-a+b-2c+d=-a+\frac12+2c+d &\folgt a+b=-\frac12
+    \end{aligned} \tag{$++$} \end{equation}
+    (\ref{eqn:int.ratfkt-plus}) und (\ref{eqn:int.ratfkt-doppelplus}):
+    $2a=0$ \folgt $a=0=c$, $d=-\frac12$
+    \[\folgt f(x)=\frac{\frac12}{(x-1)^2}-\frac{\frac12}{1+x^2}\]
+    \[\folgt \int{f(t)\mathrm{d}t}=\frac12\int{\left(\frac{1}{(t-1)^2}
+        -\frac{1}{1+t^2}\right)\mathrm{d}t}=-\frac12\left(\frac{1}{x-1}+\arctan{x}\right)\]
+  \end{enumerate}
+\end{bsp*}
 
 \section{Skalare Differentialgleichungen erster Ordnung}
 \label{sec:skalare-dgl}
