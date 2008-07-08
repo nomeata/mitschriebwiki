@@ -2784,7 +2784,7 @@ Es gilt: $E\tau_a=\infty$.\\
 Wir betrachten jetzt $Z(\omega):=\{t\geq0\vert B_t(\omega)=0\}$ die Nullstellen der Pfade $t\mapsto B_t(\omega)$ einer Brownschen Bewegung.
 \end{bemerkung}
 \begin{definition}
-Eine Menge $A\subset\mathbb R$ heißt perfekt, wenn sie mit der Menge ihrer Häufungspunkte übereinstimmt.
+Eine Menge $A\subset\mathbb R$ heißt \emph{perfekt}\index{perfekte Menge}, wenn sie mit der Menge ihrer Häufungspunkte übereinstimmt.
 \end{definition}
 \begin{satz}
 \label{satz:13.4}
@@ -2798,7 +2798,7 @@ Für $q>0,q\in\mathbb Q$ seien
   \tau_q(\omega):=&\inf\{t\geq q\vert B_t(\omega)=0\} \\
 A_q:=&\{\omega\in\Omega\vert\tau_q(\omega)\text{ ist Häufungspunkt von $Z(\omega)\cap(\tau_q(\omega),\infty)$}\}
 \end{align*}
-Da $\tau_q$ eine Stoppzeit ist, ist $\tilde B_t:=B_{\tau_q+t}-\underbrace{B_{\tau_q}}_{=0, P-f.s.}=B_{\tau_q+t}$ nach Satz \ref{satz:13.1} wieder eine Brownsche Bewegung. Daraus folgt: $P(A_q)=1$.\\
+Da $\tau_q$ eine Stoppzeit ist, ist $\tilde B_t:=B_{\tau_q+t}-\underbrace{B_{\tau_q}}_{=0, P-f.s.}=B_{\tau_q+t}$ nach Satz \ref{satz:13.2} wieder eine Brownsche Bewegung. Daraus folgt: $P(A_q)=1$.\\
 Sei
 \[
 A:=C\cap\bigcap_{\begin{array}{c}q\in\mathbb Q,\\q\geq0\end{array}}A_q
@@ -2809,22 +2809,123 @@ Also gilt die Behauptung.
 \end{beweis}
 \begin{bemerkung}
   Man kann zeigen, dass $Z(\omega)$ für $P$-fast alle $\omega\in\Omega$ eine Lebesgue-Nullmenge ist  (also insbesondere kein Intervall $[a,b]$ enthält). Weiter gilt, dass nichtleere perfekte Mengen überabzählbar sind.
+\end{bemerkung}
+
 \section{Das Invarianzprinzip von Dansker}
 Eine Brownsche Bewegung kann durch eine geeignet skalierte Irrfahrt approximiert werden: \\
 Sei $\xi_1,\xi_2,\dots$ eine Folge von unabhängig identisch verteilten Zufallsvariablen, mit $E\xi_i=0, \operatorname{Var}(\xi_i)=\sigma^2,0<\sigma<\infty$ (z.B. $P(\xi_i=1)=P(\xi_i=-1)=\frac{1}{2}$). Weiter sei
 \[
-S_k:=\sum_{j=1}^k\xi_i,k\in\mathbb N,S_0=0
+S_k:=\sum_{j=1}^k\xi_i,k\in\mathbb N,\,S_0=0
 \]
 und
 \[
-y_t:=S_{\lfloor t\rfloor}+(t-\lfloor t\rfloor)\xi_{\lfloor t\rfloor+1},t\geq0.
+Y_t:=S_{\lfloor t\rfloor}+(t-\lfloor t\rfloor)\xi_{\lfloor t\rfloor+1}\text{ für }t\geq0.
 \]
-\emph{Hier fehlt ein Bild, auf dem zu sehen ist, dass $y_t$ das lineare Interolationspolynom der Punkte $S_k$ ist} \\
-Wir skalieren jetzt $(y_t)$ in der Zeit und im Zustandsraum
+\emph{Hier fehlt ein Bild, auf dem zu sehen ist, dass $Y_t$ das lineare Interpolationspolynom der Punkte $S_k$ ist.}
+
+Wir skalieren jetzt $(Y_t)$ in der Zeit und im Zustandsraum
 \[
-X_t^{(n)}:=\frac{1}{\sigma\sqrt{n}}y_{nt},\quad t\geq0
+X_t^{(n)}:=\frac{1}{\sigma\sqrt{n}}Y_{n\cdot t},\quad t\geq0
 \]
+
+\begin{bemerkung}
+Offenbar ist
+\begin{align*}
+D_k^{(n)} = X_{\frac{(k+1)}n}^{(n)} - X_{\frac kn}^{(n)}
+= \frac 1 {\sigma\sqrt n} \xi_{k+1}
+\end{align*}
+unabhängig von $\sigma(\xi_1,\ldots,\xi_k)$ und es gilt $ED_k^{(n)} = 0$ und $\operatorname{Var}(D_k^{(n)}) = \frac 1n$, also ist $(X^{(n)})_{t\ge 0}$ der Brownschen Bewegung nicht unähnlich.
 \end{bemerkung}
+
+\begin{lemma}
+Seien $(X_n)$, $X$ und $(Y_n)$ Zufallsvariablen auf einem gemeinsamen Wahrscheinlichkeitsraum mit Werten in einem metrischen Raum $(S,\rho)$. Falls $X_n \tonach{d} X$ und $\rho(X_n,Y_n)\tonach{P} 0$, dann gilt $Y_n \tonach{d} X$.
+\label{lemma:14.1}
+\end{lemma}
+
+\begin{satz}
+Mit $(X^{(n)})$ definiert wie oben und Zeitpunkte $0\le t_1<\cdots<t_l<\infty$ gilt:
+\begin{align*}
+(X_{t_1}^{(n)},\ldots,X_{t_l}^{(n)}) \tonach{d} (B_{t_1},\ldots,B_{t_l}),\ n\to \infty,
+\end{align*}
+wobei $(B_t)_{t\ge 0}$ die Brownsche Bewegung ist.
+\end{satz}
+
+\begin{beweis}
+Wir betrachten hier den Fall $l=2$ (Rest analog) und zeigen $(X_s^{(n)}, X_t^{(n)}) \tonach d (B_s,B_t)$ für $0\le s < t$.
+
+Es gilt:
+\begin{align*}
+P(|X_t^{(n)} - \frac 1 {\sigma \sqrt n} S_{\lfloor tn\rfloor}| > \varepsilon) &\le P(|\frac 1{\sigma\sqrt n} \cdot 1 \cdot  \xi_{\lfloor tn\rfloor +1}|>\varepsilon) \\
+&\le \frac{1}{\varepsilon^2n} \to 0\text{ für }n\to\infty
+\end{align*}
+Also folgt
+\begin{align*}
+&\phantom{=.}P(\| (X_s^{(n)},X_t^{(n)}) - \frac 1 {\sigma \sqrt n}(S_{\lfloor sn\rfloor}, S_{\lfloor tn\rfloor})\|^2 >\varepsilon) \\
+&\le P(|X_t^{(n)} - \frac1{\sigma \sqrt n} S_{\lfloor tn\rfloor}|^2 > \frac \varepsilon e) +
+P(|X_s^{(n)} - \frac1{\sigma \sqrt n} S_{\lfloor sn\rfloor}|^2 > \frac \varepsilon e)
+\end{align*}
+und damit genügt es nach \ref{lemma:14.1} zu zeigen, dass 
+\begin{align*}
+\frac1{\sigma\sqrt n} (S_{\lfloor sn\rfloor}, S_{\lfloor tn\rfloor }) \tonach d (B_s,B_t)
+\end{align*}
+Nach dem „Continuous Mapping Theorem“ genügt es zu zeigen:
+\begin{align*}
+\frac1{\sigma\sqrt n} (\sum_{j=1}^{\lfloor sn\rfloor}\xi_j, \sum_{\lfloor sn\rfloor+1}^{\lfloor tn\rfloor+1}\xi_j) \tonach d (B_s,B_t-B_s)
+\end{align*}
+
+Wir betrachten die charakteristische Funktion:
+\begin{multline*}
+\lim_{n\to\infty} E(\exp(\frac{i\theta}{\sigma\sqrt n} \sum_{j=1}^{\lfloor sn\rfloor}\xi_j  + \frac{i\gamma}{\sigma\sqrt n} \sum_{\lfloor sn\rfloor+1}^{\lfloor tn\rfloor+1}\xi_j)) \\
+\gleichnach{$\xi_i$ unabh.}
+\lim_{n\to\infty} E(\exp(\frac{i\theta}{\sigma\sqrt n} \sum_{j=1}^{\lfloor sn\rfloor}\xi_j))  + E(\exp(\frac{i\gamma}{\sigma\sqrt n} \sum_{\lfloor sn\rfloor+1}^{\lfloor tn\rfloor+1}\xi_j))
+\end{multline*}
+Nach dem Zentralem Grenzwertsatz können wir verwenden, dass
+\begin{align*}
+\frac{\sqrt S}{\sigma \sqrt{\lfloor sn\rfloor}} \sum_{j=1}^{\lfloor sn\rfloor} \xi _j \to Z\sqrt S, \quad Z\sim \mathcal N(0,1)
+\end{align*}
+Da 
+\begin{align*}
+\big|(\frac{1}{\sigma \sqrt n} - \frac{\sqrt S}{\sigma\sqrt{\lfloor sn\rfloor}}) \sum_{j=1}^{\lfloor sn\rfloor}\big| \gleichnach P 0 \text{ für } n\to \infty
+\end{align*}
+folgt mit \ref{lemma:14.1} dass
+\begin{align*}
+\lim_{n\to\infty} E(\exp(\frac{i\theta}{\sigma\sqrt n} \sum_{j=1}^{\lfloor sn\rfloor}\xi_j)) = e^{-\theta^2 \frac s2}
+\end{align*}
+und analg für den zweiten Grenzwert. Mit dem Stetigkeitssatz für charakteristische Funktionen folgt die Behauptung.
+\end{beweis}
+
+Also konvergieren alle endlich-diemensionalen Verteilungen gegen die entsprechenden endlich-dimensionalen Verteilungen der Brownschen Bewegung.
+
+Schwache Konvergenz kann man aber noch allgemeiner auffassen:
+
+\begin{definition}
+(vergleiche Stochastik 2) Sei $(S,\rho)$ ein metrischer Raum mit Borel-$\sigma$-Algebra $\borel(S)$. Seien $\{P_n\}, P$ Wahrscheinlichkeitsmaße auf $(S,\borel(S))$. $\{P_n\}$ konvergiert schwach gegen $P$  ($P_n\tonach w P$) genau dann, wenn
+\begin{align*}
+\lim_{n\to\infty} \int_S f(s) dP_n(s) = \int_S f(s) dP(s)
+\end{align*}
+für alle beschränkten, stetigen Funktionen $f$ auf $S$ gilt.
+\end{definition}
+
+Auf dem gegeben Wahrscheinlichkeitsraum $(\Omega,\cF, P)$ fassen wir die Brownsche Bewegung $B=(B_t)_{t\ge 0}$ als Abbildung $B:\Omega \to C[0,\infty) = \{f: [0,\infty) \to \MdR \mid f \text{ stetig}\}$ auf. Auf $C[0,\infty)$ betrachten wir die Metrik
+\begin{align*}
+\rho(f,g) \da \sum_{n=1}^\infty \frac{1}{2^n} \max_{0\le t\le n}( | f(t)-g(t)| \wedge 1).
+\end{align*}
+
+Offenbar gilt: $X^{(n)} \tonach w X$ impliziert $(X_{t_1}^{(n)},\ldots,X_{t_l}^{(n)})\tonach d (X_{t_1},\ldots,X_{t})$, da für $f:\MdR^l\to \MdR$, $f$ stetig und beschränkt, auch $f\circ \pi_{T_0}: C[0,\infty) \to \MdR$, $T_0=\{t_1,\ldots,t_l\}$, wieder stetig und beschränkt ist und also gilt
+\begin{align*}
+\lim_{n\to\infty} \int f(X_t^{(n)},\ldots,X_{t_l}^{(n)}) dP 
+&=\lim_{n\to\infty} \int (f\circ \pi_{T_0}) (X^{(n)}) dP\\
+&= \int(f\circ \pi_{T_0})(X)dP \\
+&= \int f(X_{t_1},\ldots,X_{t_n})dP.
+\end{align*}
+
+Reicht jetzt die Konvergenz der Fidis aus, damit $X^{(n)} \tonach w X=B$?
+
+\begin{definition}
+(vergleiche Stochastik 2) Sei $(S,\rho)$ ein metrischer Raum mit Borel-$\sigma$-Algebra $\borel(S)$, $\{P_n, n\in\MdN\}$ eine Familie von Wahrscheinlichkeitsmaßen auf $(S,\borel(S))$. Diese Familie heißt straff, falls für alle $\varepsilon >0$ eine kompakte Menge $K\subseteq S$ existiert, so dass für alle $P\in \{P_n,n\in\MdN\}$ gilt dass $P(K) > 1-\varepsilon$.
+\end{definition}
+
+
 
 \chapter{Satz um Satz (hüpft der Has)}
 \theoremlisttype{optname}
