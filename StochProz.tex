@@ -2928,6 +2928,109 @@ Reicht jetzt die Konvergenz der Fidis aus, damit $X^{(n)} \tonach w X=B$?
 (vergleiche Stochastik 2) Sei $(S,\rho)$ ein metrischer Raum mit Borel-$\sigma$-Algebra $\borel(S)$, $\{P_n, n\in\MdN\}$ eine Familie von Wahrscheinlichkeitsmaßen auf $(S,\borel(S))$. Diese Familie heißt straff, falls für alle $\varepsilon >0$ eine kompakte Menge $K\subseteq S$ existiert, so dass für alle $P\in \{P_n,n\in\MdN\}$ gilt dass $P(K) > 1-\varepsilon$.
 \end{definition}
 
+\begin{beispiel}
+  Sei $(X_t^{(n)})_{t\geq0}$ definiert durch
+\[
+X_t^{(n)}=
+\begin{cases}
+nt, & 0\leq t\leq \frac{1}{2n} \\
+1-nt, & \frac{1}{2n}\leq t\leq\frac{1}{n} \\
+0, & t>\frac{1}{n}
+\end{cases}
+\]
+\emph{Hier fehlt ein Bild von $X_t^{(n)}$} \\
+eine Folge von (deterministischen) Prozessen in $C[0,\infty)$ und $X\equiv 0$. Offenbar gilt für alle $0\leq t_1<\dots<t_l$, dass $(X_{t_1}^{(n)},\dots,X_{t_l}^{(n)})\tomit{n\to\infty}(X_{t_1},\dots,X_{t_l})=(0,\dots,0)$. \\
+Allerdings ist für $H:C[0,\infty)\longrightarrow\mathbb R$ gegeben durch 
+  \begin{align*}
+  & H(f):=\left(\max_{0\leq t\leq1}f(t)\right)\wedge1\quad \text{(stetig und beschänkt)} \\
+ & \int H(f)dP_n=\frac{1}{2}\text{ konvergiert für $n\to\infty$ nicht gegen } \int H(f)dP(f)
+  \end{align*}
+Also gilt $P_n\tomit{w}P$ nicht.
+\end{beispiel}
+\begin{satz}
+  \label{satz:14.3}
+Sei $\{X_{(n)},n\in\mathbb N\}$ eine straffe Familie von stetigen Prozessen, so dass für alle $0\leq t_1<\dots<t_l<\infty$ die Folge $((X_{t_1}^{(n)},\dots,X_{t_l}^{(n)}))_n$ in Verteilung konvergiert. Sei $P_n$ das von $X^{(n)}$ induzierte Wahrscheinlichkeitsmaß auf $([0,\infty),\borel([0,\infty)))$. Dann existiert ein Wahrscheinlichkeitsmaß $P$ mit $P_n\tomit{w}P$ unter dem für die Projektionen $X_t:C[0,\infty)\longrightarrow\mathbb R,X_t(\omega)=\omega_t$ gilt: $(X_{t_1}^{(n)},\dots,X_{t_l}^{(n)})\tomit{d}(X_{t_1},\dots,X_{t_l})$
+\end{satz}
+\begin{beweis}
+  Offenbar ist jede Teilfolge $\{\hat{X}^{(n)}\}$ von $\{X^{(n)}\}$ straff. Nach dem Satz von Prohorov (Stochastik II, Satz 5.8 oder Karatzas/Shrewe S. 67) hat jede straffe Folge eine schwach konvergente Teilfolge. Seien $\{\hat{X}^{(n)}\}$ und $\{\check{X}^{(n)}\}$ verschiedene Teilfolgen, die Maße auf $C[0,\infty)$ induzieren, die gegen ein Maß $P$ beziehungsweise $Q$ konvergieren (d.h. $\hat P^n\tomit{w}P,\check P^n\tomit{w}Q)$). \\
+Nach Voraussetzung gilt:
+\begin{align*}
+ & \, P(f\in C[0,\infty) \vert (f(t_1),\dots,f(t_l))\in A) \\
+=& \, Q(f\in C[0,\infty) \vert (f(t_1),\dots,f(t_l))\in A) \\
+\end{align*}
+für alle $A=(-\infty,x_1]\times\dots\times(-\infty,x_l],l\geq1,x_i\in\mathbb R, 0\leq t_1 <\dots< t_l<\infty$. Wegen dem Maßeindeutigkeitssatz folgt $P=Q$. \\
+Annahme: Es existiert eine Folge $\{P^n\}$ von $\{X^{(n)}\}$ induzierten Maßen, die nicht schwach gegen $P$ konvergieren. Dann existiert eine beschränkte stetige Funktion $h:C[0,\infty)\longrightarrow\mathbb R$ mit $\int h(f)P_n(df)\nrightarrow \int h(f)P(df),n\to\infty$. \\
+Sei jetzt $\{\tilde P^n\}$ eine Teilfolge, so dass $\lim_{n\to\infty}\int h(f)\tilde P^n(df)$ existiert, aber ungleich $\int h(f)P(df)$ ist. Für jede Teilfolge $\{\hat P^n\}$ von $\{\tilde P^n\}$ gilt $\lim_{n\to\infty}\int h(f)\hat P^n(df)\neq\int h(f)P(df)$ und der Limes existiert. Das ist ein Widerspruch zu obiger Überlegung.
+\end{beweis}
+Wie kann man jetzt Straffheit für $S=C[0,\infty)$ charakterisieren? Dazu sei für $f\in C[0,\infty)$ $T>0,\delta>0$ das ``Stetigkeitsmodul'' definiert als
+\[
+m^T(f,\delta):=\max_{\begin{array}{c} \vert s-t\vert\leq S \\ 0\leq S,t\leq T \end{array}}\vert f(s)-f(t)\vert
+\]
+Für $m^T(f,\delta)$ gilt jetzt:
+\begin{lemma}
+  \label{lemma:14.4}
+Das Stetigkeitsmodul $m^T(f,\delta)$ besitzt folgende Eigenschaften:
+\begin{enuma}
+\item $f\mapsto m^T(f,\delta)$ ist stetig bezüglich der Metrik $\rho$
+\item $\delta\mapsto m^T(f,\delta)\uparrow$
+\item $\lim_{\delta\to 0} m^T(f,\delta)=0 \text{ für alle } f\in C[0,\infty)$.
+\end{enuma}
+\end{lemma}
+ohne Beweis. \\
+Wir benötigen folgenden Satz:
+\begin{satz}
+  \label{satz:14.5}
+Sei $A\subset C[0,\infty)$. Der Abschluss $\bar A$ ist kompakt, genau dann wenn
+\[
+\sup_{f\in A}\vert f(0)\vert < \infty
+\]
+und
+\[
+\lim_{f\downarrow 0} \sup_{f\in A} m^T(f,\delta)=0
+\]
+für alle $T>0$.
+\end{satz}
+ohne Beweis (Karatzas/Shrewe S. 62) \\
+Die Charakterisierung der Straffheit auf $C[0,\infty)$ ist jetzt wie folgt:
+  \begin{satz}
+    \label{satz:14.6}
+Eine Folge $\{F_n\}_{n\in\mathbb N}$ von Wahrscheinlichkeitsmaßen auf $(C[0,\infty),\borel(C[0,\infty)))$ ist straff, genau dann wenn
+      \begin{enuma}
+      \item $ \lim_{a\to0}\sup_{n\in\mathbb N}P_n(\{f_\vert f(0)\vert > a\})=0 $
+      \item $ \lim_{\delta\downarrow0}\sup_{n\in\mathbb N}P_n(\{f:m^T(f,\delta)>\varepsilon\})=0$ für alle $T>0,\varepsilon>0$.
+      \end{enuma}
+  \end{satz}
+  \begin{beweis}
+    Sei zunächst $\{P_n\}_{n\in\mathbb N}$ straff. Nach Definition existiert zu jedem $\eta>0$ ein kompaktes $K$ mit $P_n(K)\geq 1-\eta$ für alle $n\in\mathbb N$. 
+    \begin{align*}
+      & \implies^{\ref{satz:14.3}} \forall f\in K \text{ ist }\vert f(0)\vert<a \text{ für großes }a\in\mathbb R \\
+& \implies \text{ a.) ist erfüllt }.
+    \end{align*}
+Weiter gilt nach Satz $\ref{satz:14.5}$ für $T$ und $\varepsilon>0$: \\
+Es existiert $\delta_0>0$ mit
+\[
+\forall f\in K,0\leq\delta<\delta_0:m^T(f,\delta)\leq\varepsilon
+\]
+$\implies$ b.) ist erfüllt. \\
+Umgekehrt gilt jetzt a.) und b.). Für $T\in\mathbb N$ und $\eta>0$ wählen wir $a>0$ so, dass
+\[
+\sup_{n\in\mathbb N}P_n(\{f:\vert f(0)\vert>a\})\leq\frac{\eta}{2^{T+1}}
+\]
+Wähle $\delta_k>0, k=1,2,\dots$ so, dass
+\[
+\sup_{n\in\mathbb N}P_n(\{f:m^T(f,\delta_k)>\frac{1}{k}\})\leq\frac{\eta}{2^{T+k+1}}
+\]
+Definiere $A_T:=\{f:\vert f(0)\vert\leq a,m^T(f,\delta_k)\leq\frac{1}{k},k=1,2,\dots \}$,
+\[
+A:=\bigcap_{T=1}^\infty A_T
+\]
+Die Mengen $A_T,A$ sind abgeschlossen (vergleiche Lemma $\ref{lemma:14.4}$ a.) ). Es gilt
+\[
+P_n(A_T)=1-P_n(A_T^c)\geq1-\sum_{k=0}^\infty\frac{\eta}{2^{T+k+1}}=1-\frac{\eta}{2^T}
+\]
+für alle $n\in\mathbb N$. Daraus folgt $P_n(A_T^c)\leq\frac{\eta}{2^T}$ für alle $n\in\mathbb N$.
+
+  \end{beweis}
 
 
 \setcounter{secnumdepth}{-1}
