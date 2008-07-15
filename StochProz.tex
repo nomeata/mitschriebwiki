@@ -255,7 +255,7 @@ P(X_n=j) &= \sum_{i\in S} P(X_n=j, X_0=i) \\
 \begin{enumi}
 \item Wegen $p^{n+m}  = p^n \cdot p^m$ gilt: 
 \[
-p_{ij}^{(n+m)}  = \sum_{k\in S} p_{ij}^{(n)}p_{kj}^{(m)} \text{ für } i,j\in S
+p_{ij}^{(n+m)}  = \sum_{k\in S} p_{ik}^{(n)}p_{kj}^{(m)} \text{ für } i,j\in S
 \]
 Dies ist die „Chapman-Kolmogorov-Gleichung“\index{Chapman-Kolmogorov-Gleichung!zeitdiskret}.
 \item Ist $X_0 \sim \nu$, so gilt $X_n \sim \nu\cdot P^n$.
@@ -399,10 +399,10 @@ Für $s\in(0,1)$ erhalten wir aus Lemma \ref{lem:2.2}:
 &= 1 + \sum_{k=1}^\infty f_{ii}^{(k)} s^k \sum_{n=0}^\infty p_{ii}^{(n)} s^{n} 
 \end{align*}
 
-Abkürzend schreiben wir $P(s)\da \sum_{k=1}^\infty f_{ii}^{(k)} s^k$ und $F(s)=\sum_{n=0}^\infty p_{ii}^{(n)} s^{n}$, also gilt \[P(S) = 1 + F(s)\cdot P(s).\]
+Abkürzend schreiben wir $F(s)\da \sum_{k=1}^\infty f_{ii}^{(k)} s^k$ und $P(s)=\sum_{n=0}^\infty p_{ii}^{(n)} s^{n}$, also gilt \[P(S) = 1 + F(s)\cdot P(s).\]
 Nun sei $s\to 1$ (monotone Konvergenz!), und wir erhalten
 \[
-P(1) = 1 + P(1)\cdot f_{ii}^*.
+P(1) = 1 + f_{ii}^*\cdot P(1).
 \]
 Es folgt: Ist $f_{ii}^* = 1$, so gilt $P(1) = 1 + P(1)$, also ist $P(1) = \sum_{n=0}^\infty p_{ii}^{(n)} = \infty$. Ist ansonsten $f_{ii}^{*}<1$, so gilt $P(1) = \frac1{1-f_{ii}^*} < \infty$.
 \end{beweis}
@@ -414,7 +414,7 @@ Die im Satz \ref{satz2.3} auftretende Reihe kann wie folgt interpretiert werden:
 \sum_{n=0}^\infty p_{ii}^{(n)}
 = \sum_{n=0}^\infty E_i[1_{[X_n=i]}]
 %= \sum_{n=0}^\infty E_i[1_{[X_n=i]}]
-= E(\sum_{n=0}^\infty 1_{[X_n=i]})
+= E_i(\sum_{n=0}^\infty 1_{[X_n=i]})
 \end{align*}
 Sie bezeichnet also die erwartete Anzahl der Besuche des Zustandes $i\in S$.
 \end{bemerkung}
@@ -759,7 +759,7 @@ Jeder positiv rekurrente Zustand ist auch rekurrent.
 \begin{enumi}
 \item Es existiert eine stationäre Verteilung.
 \item Es gibt einen positiv rekurrenten Zustand.
-\item Alle Zustände sind in $S$ positiv rekurrent.
+\item Alle Zustände in $S$ sind positiv rekurrent.
 \end{enumi}
 Sind diese Bedingungen erfüllt, so ist die stationäre Verteilung eindeutig und durch \[\pi(i)=\frac 1 {m_i}\] gegeben.
 \end{satz}
@@ -1365,7 +1365,7 @@ der erste Sprungzeitpunkt. Wir erhalten
 P(T_1 > t) = P(N_t = 0) = e^{-\lambda t}\text{ mit } t \ge 0
 \end{align*} und damit
 \[
-T_1 \sim \exp(\lambda).
+T_1 \sim \operatorname{Exp}(\lambda).
 \]
 Die weiteren Aussagen werden später gezeigt.
 \end{beweis}
@@ -1551,7 +1551,7 @@ Dieses Ergebnis lässt sich sich erklären: Inspiziert man zu einer zufälligen 
 Ein stochastischer Prozess $(X_t)_{t\ge 0}$ mit abzählbarem Zustandsraum $S$ heißt (homogene) Markov-Kette,\index{Markov-Kette!zeitstetig} falls gilt:
 Für alle $n\in\mathbb N$ und $0\le t_0 < t_1 < \cdots < t_n$, $t,h>0$ und $i_k\in S$ mit $P(X_{t_k}=i_k,\, 0\le k\le n) > 0$:
 \begin{align*}
-P(X_{t_n+h}=i_{n+1} \mid X_{t_k}=i_k,\, 0\le k\le n) &= P(X_{t_n+k} = i_{k+1} \mid X_{t_n} = i_n) \\ 
+P(X_{t_n+h}=i_{n+1} \mid X_{t_k}=i_k,\, 0\le k\le n) &= P(X_{t_n+h} = i_{n+1} \mid X_{t_n} = i_n) \\ 
 &= P(X_{t+h} = i_{n+1} \mid X_t=i_n)
 \end{align*}
 \end{definition}
@@ -1888,7 +1888,7 @@ wobei $\tilde T_i$ der erste Rückkehrzeitpunkt in den Zustand $i$ ist.
 \begin{satz}
 Sei $X$ eine Markov-Kette mit Intensitätsmatrix $Q$, wobei (Q1) bis (Q3) erfüllt seien. Sind alle Zustände rekurrent und ist die Markov-Kette irreduzibel, so gilt:\label{satz:8.7}
 \begin{enuma}
-\item $\lim_{t\to\infty} P_{ij}(t) = \frac1{m_j q_j}$ für alle $i,j\in S$, unabhängig von $i\in S$.
+\item $\lim_{t\to\infty} p_{ij}(t) = \frac1{m_j q_j}$ für alle $i,j\in S$, unabhängig von $i\in S$.
 \item $X$ besitzt genau dann eine stationäre Verteilung $\pi=(\pi_i)_{i\in S}$, wenn es einen positiv rekurrenten Zustand gibt. In diesem Fall ist $\pi(j) = \frac1{m_j q_j}>0$ für jedes $j\in S$ und alle Zustände sind positiv rekurrent.
 \end{enuma}
 \end{satz}
@@ -2820,7 +2820,7 @@ eine Brownsche Bewegung.
 \end{center}
 
 \begin{beweis}
-Es sei $X_t \da B_{\tau\cap t}$, $Y_t\da B_{\tau+t}-B_\tau$, $t\ge 0$. Sei jetzt 
+Es sei $X_t \da B_{\tau\wedge t}$, $Y_t\da B_{\tau+t}-B_\tau$, $t\ge 0$. Sei jetzt 
 \begin{align*}
 \psi: [0,\infty) \times C[0,\infty) \times C[0,\infty) &\to C[0,\infty) \\
 (a, f , g) &\mapsto h
@@ -2963,7 +2963,7 @@ Seien $(X_n)$, $X$ und $(Y_n)$ Zufallsvariablen auf einem gemeinsamen Wahrschein
 \end{lemma}
 
 \begin{satz}
-Mit $(X^{(n)})$ definiert wie oben und Zeitpunkte $0\le t_1<\cdots<t_l<\infty$ gilt:
+\label{satz:14.2}Mit $(X^{(n)})$ definiert wie oben und Zeitpunkte $0\le t_1<\cdots<t_l<\infty$ gilt:
 \begin{align*}
 (X_{t_1}^{(n)},\ldots,X_{t_l}^{(n)}) \tonach{d} (B_{t_1},\ldots,B_{t_l}),\ n\to \infty,
 \end{align*}
