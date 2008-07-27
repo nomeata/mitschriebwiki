@@ -108,7 +108,7 @@ P(X_k = i_k,\, 1\le k\le n \mid X_0=i_0) = \prod_{k=0}^{n-1} p_{i_k i_{k+1}} \qu
 \]
 genau dann wenn gilt:
 \[
-P(X_k = i_k,\,m\le k\le m+n) = \prod_{k=m}^{m+n-1} p_{i_k i_{k+1}} \quad \forall m,n\in \MdN_0 \ \forall i_k\in S
+P(X_k = i_k,\,m\le k\le m+n) = P(X_m=i_m)\prod_{k=m}^{m+n-1} p_{i_k i_{k+1}} \quad \forall m,n\in \MdN_0 \ \forall i_k\in S
 \]
 \end{satz}
 
@@ -130,9 +130,9 @@ P(A_{n+1}\mid A_0\ldots A_n) &= \frac{P(A_0\ldots A_nA_{n+1})}{P(A_0\ldots A_n)}
 Die weiteren Äquivalenzen sind ähnlich zu beweisen.
 \end{beweis}
 
-\paragraph{Konstruktion einer Markov-Kette.} Seien $(Y_n)$ Zufallsvariablen, unabhängig und identisch gleichverteilt (u.i.v.), in $Z$. Weiter ist $g:S\times Z\to S$ eine messbare Abbildung. Definiere die Folge $(X_n)$ mit 
+\paragraph{Konstruktion einer Markov-Kette.} Seien $(Y_n)$ Zufallsvariablen, unabhängig und identisch verteilt (u.i.v.), in $Z$. Weiter ist $g:S\times Z\to S$ eine messbare Abbildung. Definiere die Folge $(X_n)$ mit 
 \[X_0=c\in S, \quad X_n = g(X_{n-1},Y_n).\]
-Die so konstruierte Folge $(X_n)$ ist eine Markov-Kette mit Werten in $S$ und Übergangsmatrix $P=(p_{ij})$ mit $p_{ij} = P(g(i,X_n),j)$.
+Die so konstruierte Folge $(X_n)$ ist eine Markov-Kette mit Werten in $S$ und Übergangsmatrix $P=(p_{ij})$ mit $p_{ij} = P(g(i,Y_n),j)$.
 
 \begin{beweis}
 Die Variablen $X_0,\ldots,X_n$ hängen nur von $X_0,Y_1,\ldots Y_n$ ab, sind also unabhängig von $Y_{n+1}$.
@@ -154,14 +154,14 @@ Umgekehrt kann zu jeder stochastischen Matrix $P$ eine Markov-Kette $(X_n)$ kons
 \end{bemerkung}
 
 \begin{beispiel}[Lagerhaltung]
-Sei $Y_n$ die Nachfrage nach einem gelagerten Produkt im Zeitintervall $(n-1,n]$. $(Y_n)$ sei u.i.v. und $Y_n\in \MdN_0$. Die Auffüll-Politik sei eine $(z,Z)$-Politik mit $z\le Z$, $z,Z\in \MdN$, die wie folgt funktioniert: Falls der der Lagerbestand zur Zeit $n\le z$ ist, dann fülle auf $Z$ auf, sonst tue nichts.
+Sei $Y_n$ die Nachfrage nach einem gelagerten Produkt im Zeitintervall $(n-1,n]$. $(Y_n)$ sei u.i.v. und $Y_n\in \MdN_0$. Die Auffüll-Politik sei eine $(z,Z)$-Politik mit $z\le Z$, $z,Z\in \MdN$, die wie folgt funktioniert: Falls der Lagerbestand zur Zeit $n\le z$ ist, dann fülle auf $Z$ auf, sonst tue nichts.
 
 Sei $X_n$ der Lagerbestand zum Zeitpunkt $n$, $S=\MdN_0$. Es gilt
 \[
 X_n =
 \begin{cases}
 (Z - Y_n)^+, & X_{n-1} \le z \\
-(X_{n_1} - Y_n)^+, & X_{n-1} > z
+(X_{n-1} - Y_n)^+, & X_{n-1} > z
 \end{cases}
 \]
 Also ist $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P=(p_{ij})$ und
@@ -230,7 +230,7 @@ Sei $P$ eine stochastische $S\times S$-Matrix. Dann heißen die Elemente $p_{ij}
 \begin{satz}
 Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P$. Dann gilt:
 \begin{enuma}
-\item $P(X_{n+m} = j\mid X_m = i) = p_{ij}^{(n)}$ für alle $i,j\in S$, $m,n\in\MdN_0$ mit $P(X_m=1)>0$.
+\item $P(X_{n+m} = j\mid X_m = i) = p_{ij}^{(n)}$ für alle $i,j\in S$, $m,n\in\MdN_0$ mit $P(X_m=i)>0$.
 \item $P(X_n = j) = \sum_{i\in S} P(X_0=i)p_{ij}^{(n)}$, $j\in S$, $n\in\MdN$.
 \end{enuma}
 \end{satz}
@@ -239,7 +239,7 @@ Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P$. Dann gilt:
 \begin{enuma}
 \item 
 \begin{align*}
-P(X_{n+m} =i_{n+m} , X_m=i_m) &= \sum_{i_{m+1},\ldots,i_{n+m+1}} P(X_m = i_m) \prod_{k=m}^{m+n+1} p_{i_ki_{k+1}} \\
+P(X_{n+m} =i_{n+m} , X_m=i_m) &= \sum_{i_{m+1},\ldots,i_{n+m-1}} P(X_m = i_m) \prod_{k=m}^{m+n-1} p_{i_ki_{k+1}} \\
 &= P(X_m = i_m) p_{i_mi_{m+n}}^{(n)}
 \end{align*}
 \item 
@@ -293,7 +293,7 @@ Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P=(p_{ij})$.
 \begin{bemerkung}
 Für $i,j\in S$ sei $i\sim j$ definiert als $(i\leftrightarrow j) \vee (i=j)$. Diese Relation ist eine Äquivalentrelation auf $S$, da sie reflexiv, symmetrisch und transitiv ist.
 
-Dies liefert uns eine Partition von $S$ mit den Äquivalenzklassen $K(i) \da \{j\in S \mid i\sim j\}$. Die Äquivalenzklasse $K(i)$ von $i$ enthält $i$ selbst und die mit $i$ kommunizierenden Zustände.
+Dies liefert uns eine Partition von $S$ mit den Äquivalenzklassen $K(i) \da \{j\in S \mid i\sim j\}$. Die Äquivalenzklasse $K(i)$ enthält $i$ selbst und die mit $i$ kommunizierenden Zustände.
 \end{bemerkung}
 
 \begin{definition}
@@ -352,7 +352,7 @@ die (zufällige) Ersteintrittszeit der Markov-Kette in den Zustand $i$.
 Wir setzen dabei $\inf\emptyset \da \infty$. Weiter sei für $i,j\in S$, $n\in \MdN$:
 \begin{align*}
 f_{ij}^{(n)} &\da P(T_j=n\mid X_0=i) = P_i(T_j=n) \\
-&=P(X_n=j,\, X_\nu\ne j \text{ für } 1 < \nu < n\mid X_0=i) \\
+&=P(X_n=j,\, X_\nu\ne j \text{ für } 1 \le \nu < n\mid X_0=i) \\
 f_{ij}^{(0)} &\da 0
 \end{align*}
 
@@ -375,9 +375,9 @@ p_{ij}^{(n)} = \sum_{k=1}^n f_{ij}^{(k)} p_{jj}^{(n-k)}
 \begin{beweis}[Methode des ersten Besuches]
 Unter Verwendung der Formel $P(AB\mid C) = P(B\mid C)\cdot P(A\mid BC)$ für Ereignisse $A,B,C$ zeigen wir:
 \begin{align*}
-p_{ij}^{(n)} &= P_i(X_n=j) = \sum_{k=1}^n P({X_n=j},\, {X_\mu\ne j,\, 1<\mu<k,\, X_k = j}\mid {X_0=i}) \\
-&= \sum_{k=1}^n P_i(X_\mu\ne j,\, 1<\mu<k,\, X_k = j)\cdot\\
-&\quad\quad\quad\quad \underbrace{P(X_n=j\mid X_0=i,\,X_\mu\ne j,\, 1<\mu<k,\, X_k = j)}_{=P(X_n=j\mid  X_k=j)}\\
+p_{ij}^{(n)} &= P_i(X_n=j) = \sum_{k=1}^n P({X_n=j},\, {X_\mu\ne j,\, 1\le\mu<k,\, X_k = j}\mid {X_0=i}) \\
+&= \sum_{k=1}^n P_i(X_\mu\ne j,\, 1\le\mu<k,\, X_k = j)\cdot\\
+&\quad\quad\quad\quad \underbrace{P(X_n=j\mid X_0=i,\,X_\mu\ne j,\, 1\le\mu<k,\, X_k = j)}_{=P(X_n=j\mid  X_k=j)}\\
 &=\sum_{k=1}^nf_{ij}^{(k)} p_{jj}^{(n-k)}
 \end{align*}
 \end{beweis}
@@ -399,7 +399,7 @@ Für $s\in(0,1)$ erhalten wir aus Lemma \ref{lem:2.2}:
 &= 1 + \sum_{k=1}^\infty f_{ii}^{(k)} s^k \sum_{n=0}^\infty p_{ii}^{(n)} s^{n} 
 \end{align*}
 
-Abkürzend schreiben wir $F(s)\da \sum_{k=1}^\infty f_{ii}^{(k)} s^k$ und $P(s)=\sum_{n=0}^\infty p_{ii}^{(n)} s^{n}$, also gilt \[P(S) = 1 + F(s)\cdot P(s).\]
+Abkürzend schreiben wir $F(s)\da \sum_{k=1}^\infty f_{ii}^{(k)} s^k$ und $P(s)=\sum_{n=0}^\infty p_{ii}^{(n)} s^{n}$, also gilt \[P(s) = 1 + F(s)\cdot P(s).\]
 Nun sei $s\to 1$ (monotone Konvergenz!), und wir erhalten
 \[
 P(1) = 1 + f_{ii}^*\cdot P(1).
@@ -443,7 +443,7 @@ Ist $(X_n)$ irreduzibel, und ein $i\in S$ ist rekurrent (bzw. transient), so sag
 
 \begin{beispiel}[Irrfahrt auf den ganzen Zahlen, „Random Walk“]
 \label{bsp2.3}
-Es sei $X_n=\sum_{k=1}^n Y_k = X_{n-1}+Y_k$ und $X_0=0$, wobei $(Y_n)$ u.i.v. mit \[P(Y_n=1)=p = 1 - P (Y_n=-1) =1-q,\quad p\in (0,1)\] ist ($S=\MdZ$).
+Es sei $X_n=\sum_{k=1}^n Y_k = X_{n-1}+Y_n$ und $X_0=0$, wobei $(Y_n)$ u.i.v. mit \[P(Y_n=1)=p = 1 - P (Y_n=-1) =1-q,\quad p\in (0,1)\] ist ($S=\MdZ$).
 
 \begin{center}
 \begin{tikzpicture}
