@@ -469,17 +469,17 @@ Wir wenden Satz \ref{satz2.3} an und untersuchen o.B.d.A $i=0$. Es gilt für all
 p_{00}^{(2n+1)} &= 0\\
 p_{00}^{(2n)} &= p^nq^n \binom{2n}{n} = p^nq^n \frac{(2n)!}{(n!)^2}\\
 \intertext{
-Mit der Stirling-Formel ($n! \simeq \frac n l ^n\cdot \sqrt{2\pi n}$) erhält man dann}
-p_{00}^{(2n)} &\approx (pn)^n\cdot \frac{(\frac{2n}l)^{2n} \sqrt{4\pi n}}{(\frac nl) ^{2n} 2\pi n} = \frac{(4pq)^n}{\sqrt{\pi n}}
+Mit der Stirling-Formel ($n! \simeq (\frac n e )^n\cdot \sqrt{2\pi n}$) erhält man dann}
+p_{00}^{(2n)} &\approx (pq)^n\cdot \frac{(\frac{2n}e)^{2n} \sqrt{4\pi n}}{(\frac ne) ^{2n} 2\pi n} = \frac{(4pq)^n}{\sqrt{\pi n}}
 \end{align*}
 
-\paragraph{Fall 1} Ist $p=q=\frac12$, so ist $p_{00}^{(2n)} \approx \frac1{\pi n}$, also ist $\sum_{n=0}^\infty p_{00}^{(2n)} = \infty$ und die Markovkette ist rekurrent.
+\paragraph{Fall 1} Ist $p=q=\frac12$, so ist $p_{00}^{(2n)} \approx \frac1{\sqrt{\pi n}}$, also ist $\sum_{n=0}^\infty p_{00}^{(2n)} = \infty$ und die Markovkette ist rekurrent.
 
-\paragraph{Fall 2} Ist dagegen $p\ne q$, also $pq<\frac14$, so ist $\sum_{n=0}^\infty p_{00}^{(2n)} \le \text{konstanter Term } \sum_{n=0}^\infty (4pq)^n < \infty$, also ist die Markovkette transient.
+\paragraph{Fall 2} Ist dagegen $p\ne q$, also $pq<\frac14$, so ist $\sum_{n=0}^\infty p_{00}^{(2n)} \le c\cdot\sum_{n=0}^\infty (4pq)^n < \infty$, also ist die Markov-Kette transient.
 \end{beispiel}
 
 \begin{bemerkung}
-Betrachtet man die symmetrische Irrfahrt auf $\MdZ^d$, also $p_{ij}= \frac1{2d}$ für $\|i-j\|=1$, mit $\|\cdot\|$ der $l^1$-Norm und $i,j\in \MdR^d$, so ist die Irrfahrt rekurrent für $d=1,2$ und transient sonst.
+Betrachtet man die symmetrische Irrfahrt auf $\MdZ^d$, also $p_{ij}= \frac1{2d}$ für $\|i-j\|=1$, mit $\|\cdot\|$ der $l^1$-Norm und $i,j\in \MdZ^d$, so ist die Irrfahrt rekurrent für $d=1,2$ und transient sonst.
 \end{bemerkung}
 
 \begin{lemma}
@@ -504,8 +504,8 @@ Summiere die Gleichung in Lemma \ref{lem:2.2} über alle $n$:
 \begin{align*}
 \sum_{n=0}^\infty p_{ij}^{(n)} &=
 \delta_{ij} + \sum_{n=1}^\infty \sum_{k=1}^n f_{ij}^{(k)}p_{jj}^{(n-k)} \\
-&= \delta_{ij} + \sum_{k=1}^\infty f_{ij}^{(k)} \sum_{n=0}^\infty p_{jj}^{(n-k)} \\
-&= \delta_{ij} + f_{ij}^* \underbrace{\sum_{n=0}^\infty p_{jj}^{(n-k)}}_{<\infty\text{ da $j$ transient}}  <\infty
+&= \delta_{ij} + \sum_{k=1}^\infty f_{ij}^{(k)} \sum_{n=k}^\infty p_{jj}^{(n-k)} \\
+&= \delta_{ij} + f_{ij}^* \underbrace{\sum_{n=0}^\infty p_{jj}^{(n)}}_{<\infty\text{ da $j$ transient}}  <\infty
 \end{align*}
 \end{beweis}
 
@@ -521,7 +521,7 @@ Angenommen, $j\rightsquigarrow i$ gelte nicht, also $p_{ji}^{(n)} = 0$ für alle
 P_i(X_N=j,X_n=i)=0
 \]
 Denn für $n>N$ gilt
-$P_i(X_N=j,X_n=i)=p_{ij}^{(N)} p_{ji}^{(n-N)} = 0$ und für $n<N$ gilt: $P_i(X_N=j,X_n=i)=p_{ij}^{(n)} p_{ji}^{(N-n)} = 0$, da $N-n<N$.
+$P_i(X_N=j,X_n=i)=p_{ij}^{(N)} p_{ji}^{(n-N)} = 0$ und für $n<N$ gilt: $P_i(X_N=j,X_n=i)=p_{ii}^{(n)} p_{ij}^{(N-n)} = 0$, da $N-n<N$.
 
 Also ist $P(T_i\le m,X_N=j) = \sum_{n=1}^m P_i(T_i=n,X_N=j) \le \sum_{n=1}^m P_i(X_n=i, X_N=j) = 0$ und damit 
 \begin{align*}
@@ -531,9 +531,9 @@ Also ist $P(T_i\le m,X_N=j) = \sum_{n=1}^m P_i(T_i=n,X_N=j) \le \sum_{n=1}^m P_i
 &\le P_i(X_N\ne j) \\
 &=1-P_i(X_N=j) = 1-p_{ij}^{(N)}
 \end{align*}
-Für $n\to\infty$ folgt dann
+Für $m\to\infty$ folgt dann
 \begin{align*}
-1=f_{ii}^* = \sum_{n=1}^\infty \le 1-p_{ij}^{(N)} < 1
+1=f_{ii}^* = \sum_{n=1}^\infty f_{ii}^{(n)}\le 1-p_{ij}^{(N)} < 1
 \end{align*}
 was ein Widerspruch ist.
 \end{beweis}
@@ -543,7 +543,7 @@ Ist die Klasse $K$ endlich und abgeschlossen, so ist $K$ rekurrent.\label{satz:2
 \end{satz}
 
 \begin{beweis}
-Da $(p_{ij},\,i,j\in K)$ stochastisch ist folgt induktiv, dass $(p_{ij}^{(n)},\, i,j\in K)$ ist stochastisch für alle $n\in\MdN$. Angenommen, $K$ wäre transient. Sei dann $j\in K$, dann ist nach Lemma \ref{lem:2.6} $p_{ij}^{(n)}\to 0$ für $n\to\infty$ und alle $i\in S$. Für $i\in K$ folgt also: $1=\sum_{j\in K} p_{ij}^{(n)} \to 0$ für $n\to\infty$, im Widerspruch zur Abgeschlossenheit von $K$.
+Da $(p_{ij},\,i,j\in K)$ stochastisch ist folgt induktiv, dass $(p_{ij}^{(n)},\, i,j\in K)$ ist stochastisch für alle $n\in\MdN$. Angenommen, $K$ wäre transient. Sei dann $j\in K$, dann ist nach Lemma \ref{lem:2.6} $p_{ij}^{(n)}\to 0$ für $n\to\infty$ und alle $i\in S$. Für $i\in K$ folgt also: $1=\sum_{j\in K} p_{ij}^{(n)} \to 0$ für $n\to\infty$. Widerspruch.
 \end{beweis}
 
 \begin{bemerkung}
@@ -555,9 +555,9 @@ Die Irrfahrt ist irreduzibel und rekurrent nach Satz \ref{satz:2.8}.
 \end{beispiel}
 
 \subsection*{Absorbtionswahrscheinlichkeiten}
-Sei $(X_n)_{n\in\MdN}$ eine Markov-Kette mit Zustandsraum $Z$ und Übergangsmatrix $P=(p_{ij})$. Aufgrund der bisherigen Ergebnisse können wir $S$ zerlegen in rekurrente Klassen $K_1,K_2,\ldots$ und eine Menge von transienten Zuständen $T$, also $S=T\cup K_1\cup K_2\cup\ldots$.
+Sei $(X_n)_{n\in\MdN}$ eine Markov-Kette mit Zustandsraum $S$ und Übergangsmatrix $P=(p_{ij})$. Aufgrund der bisherigen Ergebnisse können wir $S$ zerlegen in rekurrente Klassen $K_1,K_2,\ldots$ und eine Menge von transienten Zuständen $T$, also $S=T\cup K_1\cup K_2\cup\ldots$.
 
-Es sei $\tau \da \inf\{n\ge 0 \mid X_n\ne T\}$  die Austrittszeit aus der Menge der transienten Zustände. Für $i\in T$, $k\in T^c$ interessiert uns $u_{ik}=P_i(X_\tau = k)$, vorausgesetzt $P_i(\tau <\infty)=1$.
+Es sei $\tau \da \inf\{n\ge 0 \mid X_n\notin T\}$  die Austrittszeit aus der Menge der transienten Zustände. Für $i\in T$, $k\in T^c$ interessiert uns $u_{ik}=P_i(X_\tau = k)$, vorausgesetzt $P_i(\tau <\infty)=1$.
 
 Wir unterteilen $P=(p_{ij})$ in 
 \[
@@ -572,7 +572,7 @@ wobei $Q$ die Einschränkung von $P$ auf die transienten Zustände ist, also $Q=
 \begin{satz}
 \label{satz:2.9}Für $i\in T$, $j\in T^c$ gilt:
 \[
-u_{ij} = \sum_{k\in T} q_{ij}u_{kj} + p_{ij}
+u_{ij} = \sum_{k\in T} q_{ik}u_{kj} + p_{ij}
 \]
 \end{satz}
 
@@ -581,12 +581,12 @@ Sei $i\in T$, $j\in T^c$.
 \begin{align*}
 u_{ij} &= P_i(X_\tau = j)\\
 &= \sum_{k\in S} (X_\tau  = j, X_1=k) \\
-&= \underbrace{\sum_{k=\in T} P_i(X_\tau = j, X_1=k)}_{\ad A} + \underbrace{\sum_{k\in T^c} P_i(X_\tau = j, X_1 = k)}_{=p_{ij}} \\
+&= \underbrace{\sum_{k\in T} P_i(X_\tau = j, X_1=k)}_{\ad A} + \underbrace{\sum_{k\in T^c} P_i(X_\tau = j, X_1 = k)}_{=p_{ij}} \\
 A &= \sum_{k\in T}\sum_{n\ge 2} P_i(\tau = n, X_n = j, X_1=k)\\
 &= \sum_{k\in T}\sum_{n\ge 2} P_i(X_2\in T, \ldots, X_{n-1}\in T, X_n= j, X_1=k) \\
 &= \sum_{k\in T}\sum_{n\ge 2} P_i(X_2\in T, \ldots, X_{n-1}\in T, X_n= j\mid  X_1=k) \cdot P_i(X_1=k) \\
-&= \sum_{k\in T}\sum_{n\ge 2} p_{ik} P_i(X_2\in T,\ldots,X_{n-1}\in T, X_{n-1}=j) \\
-&= \sum_{k\in T}\sum_{n\ge 2} p_{ik} P_i(\tau = n-1, X_\tau = j) \\
+&= \sum_{k\in T}\sum_{n\ge 2} p_{ik} P_k(X_2\in T,\ldots,X_{n-2}\in T, X_{n-1}=j) \\
+&= \sum_{k\in T}\sum_{n\ge 2} p_{ik} P_k(\tau = n-1, X_\tau = j) \\
 &= \sum_{k\in T} p_{ik} P_k(X_\tau = j) \\
 &= \sum_{k\in T} p_{ik} u_{kj}
 \end{align*}
@@ -594,7 +594,7 @@ Da für $i,j\in T$ gilt: $p_{ik}=q_{ik}$, folgt die Behauptung.
 \end{beweis}
 
 \begin{bemerkung}
-Es sei $U=(u_{ij})_{i\in T, j\in T^c}$. Dann lässt sich Satz \ref{satz:2.9} schrieben als $U=QU+R$ beziehungsweise $U-QU=R$, also $(I-Q)U=R$. Falls $I-Q$ invertibel ist, ist $U=(I-Q)^{-1}R$
+Es sei $U=(u_{ij})_{i\in T, j\in T^c}$. Dann lässt sich Satz \ref{satz:2.9} schrieben als $U=QU+R$ beziehungsweise $U-QU=R$, also $(I-Q)U=R$. Falls $I-Q$ invertierbar ist, ist $U=(I-Q)^{-1}R$
 \end{bemerkung}
 
 \section{Stationäre Verteilungen}
@@ -613,10 +613,10 @@ die Kette ist \emph{im Gleichgewicht} bzw. \emph{stationär}.
 \end{definition}
 
 \begin{definition}
-  Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P = (p_{i,j})$. Ein Maß $\nu$ heißt \emph{invariant}\index{invariantes Maß!zeitdiskret} für $P$, falls $\nu \cdot P = \nu$, d.h.
+  Sei $(X_n)$ eine Markov-Kette mit Übergangsmatrix $P = (p_{ij})$. Ein Maß $\nu$ heißt \emph{invariant}\index{invariantes Maß!zeitdiskret} für $P$, falls $\nu \cdot P = \nu$, d.h.
   falls gilt
   \begin{align*}
-    \sum_{i \in S} \nu(i) \cdot p_{i,j} = \nu(j)
+    \sum_{i \in S} \nu(i) \cdot p_{ij} = \nu(j)
   \end{align*}
   Ist $\nu$ eine Verteilung und invariant, so nennt man $\nu$ auch \emph{stationäre Verteilung}\index{stationäre Verteilung!zeitdiskret} oder \emph{Gleichgewichts-Verteilung}.
 \end{definition}
@@ -628,16 +628,16 @@ die Kette ist \emph{im Gleichgewicht} bzw. \emph{stationär}.
 
   Ist $\nu$ eine stationäre Verteilung, so gilt
   \begin{align*}
-    P_\nu(X_n = j) = \sum_{i \in S} v(i) \cdot p_{i,j}^{(n)} = \nu(j),
+    P_\nu(X_n = j) = \sum_{i \in S} v(i) \cdot p_{ij}^{(n)} = \nu(j),
   \end{align*}
   d.h. die mit $\nu$ gestartete Kette hat zu jedem Zeitpunkt die Verteilung $\nu$.
 
   c) Ist $P$ irreduzibel und $\nu \neq 0$ ein invariantes Maß, so ist $\nu(j) > 0$ für jedes $j\in S$.
 
   Denn: $\nu \neq 0$, also existiert $i_0 \in S$ mit $\nu(i_0) > 0$.
-  Wegen der Irreduzibilität gibt es ferner für jedes $j \in S$ ein $n \in \MdN_0$ mit $p_{i_0,j}^{(n)} > 0$. Zusammen:
+  Wegen der Irreduzibilität gibt es ferner für jedes $j \in S$ ein $n \in \MdN_0$ mit $p_{i_0j}^{(n)} > 0$. Zusammen:
   \begin{align*}
-    \nu(j) = \sum_{i \in S} \nu(i) \cdot p_{i,j}^{(n)} \geq \nu(i_0) p_{i_0,j}^{(n)} > 0
+    \nu(j) = \sum_{i \in S} \nu(i) \cdot p_{ij}^{(n)} \geq \nu(i_0) p_{i_0j}^{(n)} > 0
   \end{align*}
 \end{bemerkung}
 
@@ -668,44 +668,44 @@ Im Folgenden sei $P$ irreduzibel. Wir definieren für ein beliebiges $k \in S$ d
     &= E_k[\sum_{n=1}^{T_k} 1_{[X_n = i]}]
      = E_k[\sum_{n=1}^\infty 1_{[X_n = i, n \leq T_k]}]
      = \sum_{n=1}^\infty P_k(X_n = i, n \leq T_k)\\
-    &= \sum_{n=1}^\infty \sum_{j \in S} P_k(X_n = i, X_{n-1} = j, n \leq T_k)
+    &= \sum_{n=1}^\infty \sum_{j \in S,j\neq k} P_k(X_n = i, X_{n-1} = j, n \leq T_k)
   \end{align*}
   Für $j \neq k$ erhält man
   \begin{align*}
       &P_k(X_n = i, X_{n-1} = j, n \leq T_k)\\
-    = &P_k(X_n = i, X_{n-1} = j, X_{n-2} \neq k, \ldots, X_1 \neq k, X_0 = k) / P(X_0 = k)\\
-    = &P_k(X_n = i \mid X_{n-1} = j, X_{n-2} \neq k, \ldots, X_1 \neq k, X_0 = k) \cdot P_k(X_{n-1} = j, X_{n-2} \neq k, \ldots, X_1 \neq k)\\
-    = &p_{j,i} \cdot P_k(X_{n-1} = j, n \leq T_k)
+    = &P(X_n = i, X_{n-1} = j, X_{n-2} \neq k, \ldots, X_1 \neq k, X_0 = k) / P(X_0 = k)\\
+    = &P(X_n = i \mid X_{n-1} = j, X_{n-2} \neq k, \ldots, X_1 \neq k, X_0 = k) \cdot P_k(X_{n-1} = j, X_{n-2} \neq k, \ldots, X_1 \neq k)\\
+    = &p_{ji} \cdot P_k(X_{n-1} = j, n \leq T_k)
   \end{align*}
   Die so erhaltene Identität gilt auch für $j = k$, und es folgt
   \begin{align*}
     \gamma_k(i) &= \sum_{n=1}^\infty \sum_{j \in S} P_k(X_n = i, X_{n-1} = j, n \leq T_k)\\
-                &= \sum_{n=1}^\infty \sum_{j \in S} p_{j,i} \cdot P_k(X_{n-1} = j, n \leq T_k)\\
-                &= \sum_{j \in S} p_{j,i} \sum_{n=0}^\infty P_k(X_n = j, n+1 \leq T_k)\\
-                &= \sum_{j \in S} p_{j,i} E_k[\sum_{n=0}^{T_{k-1}} 1_{[X_n = j]}]\\
-                &= \sum_{j \in S} p_{j,i} E_k[\sum_{n=0}^{T_k} 1_{[X_n = j]}]
-                 = \sum_{j \in S} \gamma_k(j) p_{j,i}
+                &= \sum_{n=1}^\infty \sum_{j \in S} p_{ji} \cdot P_k(X_{n-1} = j, n \leq T_k)\\
+                &= \sum_{j \in S} p_{ji} \sum_{n=0}^\infty P_k(X_n = j, n+1 \leq T_k)\\
+                &= \sum_{j \in S} p_{ji} E_k[\sum_{n=0}^{T_{k-1}} 1_{[X_n = j]}]\\
+                &= \sum_{j \in S} p_{ji} E_k[\sum_{n=0}^{T_k} 1_{[X_n = j]}]
+                 = \sum_{j \in S} \gamma_k(j) p_{ji}
   \end{align*}
 
 \item
   Nach Bemerkung c) oben gilt $\gamma_k > 0$, denn $\gamma_k(k) = 1$. Wegen $\gamma_k = \gamma_k \cdot P^n$ folgt
   \begin{align*}
-    1 = \gamma_k(k) \geq \gamma_k(j) \cdot p_{j,k}^{(n)}
+    1 = \gamma_k(k) \geq \gamma_k(j) \cdot p_{jk}^{(n)}
   \end{align*}
-  für jedes $j \in S$. Es gibt allerdings mindestens ein $p_{j,k}^{(n)} > 0$, denn die Markov-Kette ist irreduzibel; daran erkennt man
+  für jedes $j \in S$. Es gibt allerdings mindestens ein $p_{jk}^{(n)} > 0$, denn die Markov-Kette ist irreduzibel; daran erkennt man
   $\gamma_k < \infty$.
 
 \item 
   Sei $\lambda$ ein weiteres, invariantes Maß mit $\lambda(k)=1$. Es gilt also:
   \begin{align*}
-    \lambda(j) &= \sum_{i \in S\setminus\{k\}} \lambda(i) \cdot p_{i,j} + 1 \cdot p_{k,j}\\
-               &= \sum_{i \in S\setminus\{k\}} \left( \sum_{l \in S\setminus\{k\}} \lambda(l) \cdot p_{l,i} + p_{k,i} \right) p_{i,j} + p_{k,j}\\
-               &= \sum_{i,l \in S\setminus\{k\}} \lambda(l) \cdot p_{l,i} \cdot p_{i,j} + \sum_{i \in S\setminus\{k\}} p_{k,i} \cdot p_{i,j} + p_{k,j}\\
-               &= \sum_{i,l \in S\setminus\{k\}} \lambda(l) \cdot p_{l,i} \cdot p_{i,j} + P_k(X_2 = j, T_k \geq 2) + P_k(X_1 = j, T_k \geq 1)
+    \lambda(j) &= \sum_{i \in S\setminus\{k\}} \lambda(i) \cdot p_{ij} + 1 \cdot p_{kj}\\
+               &= \sum_{i \in S\setminus\{k\}} \left( \sum_{l \in S\setminus\{k\}} \lambda(l) \cdot p_{li} + p_{ki} \right) p_{ij} + p_{kj}\\
+               &= \sum_{i,l \in S\setminus\{k\}} \lambda(l) \cdot p_{li} \cdot p_{ij} + \sum_{i \in S\setminus\{k\}} p_{ki} \cdot p_{ij} + p_{kj}\\
+               &= \sum_{i,l \in S\setminus\{k\}} \lambda(l) \cdot p_{li} \cdot p_{ij} + P_k(X_2 = j, T_k \geq 2) + P_k(X_1 = j, T_k \geq 1)
   \end{align*}
   Iterativ erhalten wir für $n \in \MdN$:
   \begin{align*}
-    \lambda(j) &= \sum_{i_0, i_1, \ldots, i_n \in S\setminus\{k\}} \lambda (i_n) \prod_{r=1}^n p_{i_r,i_{r-1}} p_{i_0,j} + \sum_{r=1}^{n+1} P_k(X_r = j, T_k \geq 1)\\
+    \lambda(j) &= \sum_{i_0, i_1, \ldots, i_n \in S\setminus\{k\}} \lambda (i_n) \prod_{r=1}^n p_{i_ri_{r-1}} p_{i_0j} + \sum_{r=1}^{n+1} P_k(X_r = j, T_k \geq 1)\\
                &\geq \sum_{r=1}^{n+1} P_k(X_r = j, T_k \geq 1) = E_k[\sum_{r=1}^{\min(n+1,T_k)} 1_{[X_r = j]}] \towegen{LDC} \gamma_k(j)
   \end{align*}
   Es ist also $\lambda - \gamma_k$ ebenfalls ein invariantes Maß mit $(\lambda - \gamma_k)(k) = 0$; nach Bemerkung c) folgt
@@ -721,11 +721,11 @@ Im Folgenden sei $P$ irreduzibel. Wir definieren für ein beliebiges $k \in S$ d
 
 Ansgenommen es existiert eine stationäre Verteilung $\pi$. Dann ist
 \begin{align*}
-\pi(j) &= \sum_{i\in S} \pi(i) P_{ij}^{(n)}.
+\pi(j) &= \sum_{i\in S} \pi(i) p_{ij}^{(n)}.
 \end{align*}
 Für $n\to\infty$ wird daraus (mit majorisierter Konvergenz und der bekannten Eigenschaft transienter Übergangswahrscheinlichkeiten):
 \begin{align*}
-\pi(j) &= \sum_{i\in S} \pi(i) \lim_{n\to\infty} P_{ij}^{(n)} \\
+\pi(j) &= \sum_{i\in S} \pi(i) \lim_{n\to\infty} p_{ij}^{(n)} \\
 &= \sum_{i\in S} \pi(i) \cdot 0 \\
 &= 0
 \end{align*}
@@ -758,7 +758,7 @@ Jeder positiv rekurrente Zustand ist auch rekurrent.
 \label{satz3.2}Sei $(X_n)$ eine irreduzible Markov-Kette. Die folgenden Aussagen sind äquivalent:
 \begin{enumi}
 \item Es existiert eine stationäre Verteilung.
-\item Es gibt einen positiv rekurrenten Zustand.
+\item Es gibt einen positiv rekurrenten Zustand $i\in S$.
 \item Alle Zustände in $S$ sind positiv rekurrent.
 \end{enumi}
 Sind diese Bedingungen erfüllt, so ist die stationäre Verteilung eindeutig und durch \[\pi(i)=\frac 1 {m_i}\] gegeben.
@@ -830,7 +830,7 @@ also
 \begin{beispiel}[Irrfahrt]
 Siehe Beispiel \ref{bsp2.3}: Für $p\ne q$ ist die Markov-Kette transient. Existiert ein invariantes Maß? Ansatz:
 \[
-\gamma(j) = \sum_{i\in \MdZ} \gamma (i) p_{ij} = \gamma(j+1)\cdot q = \gamma(j-1)\cdot p
+\gamma(j) = \sum_{i\in \MdZ} \gamma (i) p_{ij} = \gamma(j+1)\cdot q + \gamma(j-1)\cdot p
 \]
 \[
 \implies \gamma(j+1) - \gamma(j) = \frac pq (\gamma(j) - \gamma(j-1))
@@ -964,7 +964,7 @@ Tatsächlich gilt also
 \begin{satz}
   Seien $i$, $j \in S$ Zustände sowie $d_j$ die Periode von $j$. Dann gilt:
   \begin{align*}
-    \lim_{n \rightarrow \infty} p_{i,j}^{n \cdot d_j + r} = \frac{d_j}{m_j} \sum_{k=0}^\infty f_{i,j}^{k \cdot d_j + r} \qquad r=1,\ldots,d_j
+    \lim_{n \rightarrow \infty} p_{i,j}^{(n \cdot d_j + r)} = \frac{d_j}{m_j} \sum_{k=0}^\infty f_{i,j}^{(k \cdot d_j + r)} \qquad r=1,\ldots,d_j
   \end{align*}
   Speziell:
   \begin{enuma}
@@ -1041,7 +1041,7 @@ NB: ``Ph'' macht Sinn im Sinne einer ``Matrix$\cdot$Vektor''-Multiplikation.
 \begin{bemerkung}
 Ist $h:S\to \mathbb R$ eine beschränkte Funktion, so wird durch
 \begin{align*}
-Z_n^h &\coloneqq h(X_n) - \sum_{k=1}^n (E[h(X_k)\mid F_{k-1}] - h(X_{k-1})) \\
+Z_n^h &\coloneqq h(X_n) - \sum_{k=1}^n (E[h(X_k)\mid \cF_{k-1}] - h(X_{k-1})) \\
 &= h(X_n) - \sum_{k=1}^n (Ph-h)(X_{k-1})
 \end{align*}
 ein Martingal definiert, genannt Levi-Martingal\index{Levi-Martingal} zu $(X_n)$.
@@ -1066,14 +1066,14 @@ bzw.
 \begin{align*}
 \int_A h(X_{n+1})dP = \int_A (Ph)(X_n)dP \text{ für alle }A\in \cF_n
 \end{align*}
-Es sei $i_0,i_1,\ldots,i_{n+1}\in S$ und $A\coloneqq \{X_0 = i_0,\ldots,X_n=i_n\}$ und wir setzen $h\da 1_{\{1_{n+1}\}}$. Die linke Seite der letzten Gleichung ergibt dann 
+Es sei $i_0,i_1,\ldots,i_{n+1}\in S$ und $A\coloneqq \{X_0 = i_0,\ldots,X_n=i_n\}$ und wir setzen $h\da 1_{\{i_{n+1}\}}$. Die linke Seite der letzten Gleichung ergibt dann 
 \begin{align*}
 \int_A h(X_{n+1})dP &= P(X_0=i_0,\ldots,X_n=i_n,X_{n+1}=i_{n+1})
 \end{align*}
 und die rechte Seite ergibt
 \begin{align*}
 \int_A (Ph)(X_n)dP &= \int_{\{X_0=i_0,\ldots,X_n=i_n\}} (Ph)(i_n)dP \\
-&= \int_{\{X_0=i_0,\ldots,X_n=i_n\}} p_{i_ni_{n+i}}dP \\
+&= \int_{\{X_0=i_0,\ldots,X_n=i_n\}} p_{i_ni_{n+1}}dP \\
 &= p_{i_ni_{n+1}} \cdot P(X_0=i_0,\ldots,X_n=i_n).
 \end{align*}
 Durch Teilen der rechten Wahrscheinlichkeit erhält man
