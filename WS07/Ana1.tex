@@ -3860,7 +3860,7 @@ Wachstum
 \end{equation}
 Gegeben sind $\lambda, u_0, u_\infty>0$ ($\lambda$:
 Wachstumsparameter, $u_\infty$: Sättigungsparameter, $u_0$:
-Anfangswert). Gesucht: $u\in C^1(\set{R}^+)$, das
+Anfangswert). Gesucht: $u\in C^1(\set{R}_+)$, das
 (\ref{eqn:int.verhulst}) für $t\ge0$ löst.
 
 \begin{bem*}
@@ -3904,15 +3904,113 @@ löst.
   $u_0>u_\infty$
 \end{itemize}
 
+\noindent Gegeben sei $f\in C([a,b])$, $g\in C(\set{R}_+)$,
+$u_0\in(a,b)$. Suchen $u\in C^1([0,\tau))$ und $\tau\in(0,\infty)$,
+sodass $u(t)\in(a,b)$ für alle $t\in[0,\tau)$ und
+\begin{equation}
+  \label{eqn:int.tv}
+  \begin{cases} u'(t)=g(t)f(u(t)),\\u(0)=u_0 \end{cases},
+  \quad 0 \le t < \tau.
+\end{equation}
+(in (\ref{eqn:int.verhulst}):
+$f(x)=\left(1-\frac{x}{u_\infty}\right)x$, $g(x)=\lambda$)
 
-\begin{satz}
+\begin{satz}[Trennung der Variablen]
   \label{satz:int.tv}
-
+  Sei $f\in C((a,b))$, $g\in C(\set{R}_+)$,
+  $u_0\in(a,b)$, $f(u_0)\neq0$. Dann existiert ein $t_0>0$ und eine
+  eindeutige Lösung $u\in C^1([0,t_0])$ von (\ref{eqn:int.tv}).
 \end{satz}
+\begin{proof}
+  Sei etwa $f(u_0)>0$ und $\tau>0$. Wähle $\ep\in(0,f(u_0))$. Da $f$
+  stetig ist, existiert $\delta>0$ mit $f(x)>0$ für alle
+  $x\in[u_0-\delta, u_0+\delta] \subseteq (a,b)$. Sei
+  $M:=\max\limits_{\abs{x-u_0}\le\delta}{f(x)}<\infty$ (Satz vom
+  Maximum). Setze $t_0=\min{\{\frac{\delta}{Mc}, T\}}$,
+  $c=\max\limits_{0\le t\le T}{\abs{g(t)}}$.
+  \begin{enumerate}
+  \item Eindeutigkeit: Sie $u\in C^1([0,\tau))$ eine Lösung von
+    (\ref{eqn:int.tv}). Annahme: $\tau>t_0$ und es existiere
+    $t_1\in(0,t_0)$ mit $\abs{u(s)-u_0}\le\delta$ für alle $0\le
+    s<t_1$ und $\abs{u(t_1)-u_0}=\delta$.
+    \begin{multline*}
+      \folgt \abs{u(t_1)-u_0} \nach{=}{HS}
+      \abs{\Integral{0}{t_1}{\underbrace{u'(s)}_
+          {\nach{=}{(\ref{eqn:int.tv})}f(u(s))g(s)}}{s}}
+      \\\nach{\le}{Satz \ref{satz:int.r-intbar-folgerungen}}
+      \Integral{0}{t_1}{\abs{f(u(s))}\abs{g(s)}}{s} \le
+      \Integral{0}{t_1}{Mc}{s} \le Mct_1 < Mct_0=\delta \quad \blitz
+    \end{multline*}
+    \folgt $\abs{u(s)-u_0}\le\delta$ für alle $0\le s <
+    \min{\{t_0,T\}}=:\bar{t}$. Damit (\ref{eqn:int.tv})\folgt
+    $\frac{u'(s)}{f(u(s))}=g(s)$.
+    \begin{equation}
+      \label{eqn:int.tv-g}
+      \folgt G(t):=\Integral{0}{t}{g(s)}{s} =
+      \Integral{0}{t}{u'(s)}{f(u(s))}{s} \wegen{=}{x=u(s)}
+      \int\limits_{u_0}^{u(t)}{\frac{\mathrm{d}x}{f(x)}} \; \text{ für
+        alle } 0\le t <\bar{t}
+    \end{equation}
+    Setze $H(y)=\int\limits_{u_0}^{y}{\mathrm{d}x}{f(x)}$ für
+    $y\in[u_0-\delta, u_0+\delta]$ \folgt $H(u(t))=G(t)$. H ist strikt
+    wachsend
+    \begin{equation} \label{eqn:int.tv-lsg}
+      u(t) = H^{-1}(G(t)) \quad (\forall\ 0\le t<\bar{t})
+    \end{equation}
+  \item Existenz: Sei $u$ durch (\ref{eqn:int.tv-lsg}) für $0\le
+    t\le t_0$ gegeben. Dann
+    $u(0)=H^{-1}(G(0))=H^{-1}(0)=u_0$. Kettenregel und Umkehrsatz
+    liefern: \[\exists u'(t)=\frac{1}{H'(H^{-1}(G(t)))}G'(t)
+    \nach{=}{HS} \frac{1}{H'(u(t))} \nach{=}{HS}
+    \frac{1}{\frac{1}{f(u(t))}}g(t) = f(u(t))g(t)\]
+    \folgt $u$ löst (\ref{eqn:int.tv}).
+  \end{enumerate}
+  Fazit: $u$ aus (\ref{eqn:int.tv-lsg}) ist eine Lösung von
+  (\ref{eqn:int.tv}) und jede weitere Lösung ist auf $[0,t_0]$ gleich
+  diesem $u$ und kann, falls $\tau<t_0$, zu $u$ auf $[0,t_0]$
+  fortgesetzt werden. %TODO Fehler bei den Intervallen? muss das erste nicht \tau sein??
+\end{proof}
 
 \begin{bsp}
   \label{bsp:int.tv}
-
+  \begin{enumerate}
+  \item \[\text{Betrachte } \begin{cases}
+      u'(t)=u(t)^2\\u(0)=u_0 \end{cases} , t \ge 0. \text{ Es sei }
+    u_0>0.\]
+    \begin{align*}
+      &\folgt f(x)=x^2,\ g(t)=1.\\
+      &\folgtnach{TV, (\ref{eqn:int.tv-g})}
+      \underbrace{\int\limits_{u_0}^{u(t)}{\frac{\mathrm{d}x}{x^2}}}_{=-\frac1x|_{u_0}^{u(t)}} =
+      \Integral{0}{t}{1}{s} = t\\
+      &\folgt t = \frac{1}{u_0}-\frac{1}{u(t)}\\
+      &\folgt u(t) = \frac{1}{\frac{1}{u_0}-t} \text{ für } 0\le t<
+      \frac{1}{u_0} =: \tau
+    \end{align*}
+    Zum Beispiel für $u_0=1$: $u(t)=\frac{1}{1-t}$ (Probe!). "`blow
+    up"'.
+  \item \[\text{Sei } a\in C(\set{R}),\
+    \reell{u_0}. \text{ Betrachte } \begin{cases} u'(t) = a(t)u(t)\\
+      u(0)=u_0 \end{cases}, t\ge0. \]
+    \folgt $f(x)=x$. Sei $u_0>0$. Trennung der Variablen liefert
+    \[\underbrace{\int\limits_{u_0}^{u(t)}{\frac{\mathrm{d}x}{x}}}_
+    {=\ln{u(t)}-\ln{u_0}} = \Integral{0}{t}{a(s)}{s}\]
+    \[\folgt u(t)=\exp{\left(\ln{u_0}+\Integral{0}{t}{a(s)}{s}\right)}
+    = \exp{\left(\Integral{0}{t}{a(s)}{s}\right)}u_0\]
+    Probe zeigt: Dies löst die Gleichung für alle \reell{t} und
+    \reell{u_0}.
+  \item $u'(t)=\sqrt{u(t)}$, $u(0)=0$, $t\ge0$. \folgt
+    $f(x)=\sqrt{x}$, $g(t)=1$. \folgt $f(0)=f(u_0)=0$, haben Lösung
+    $v(x)=0\ \forall \reell{x}$. Führe Trennung der Variablen trotzdem
+    durch. Sei $u$ eine weitere Lösung, die auf $(0,t_0]$ ungleich $0$
+    ist. Dann $\frac{u'(s)}{\sqrt{u(s)}}=1$ für $0<s\le t_0$. Sei
+    $\ep>0$, $\ep<t_0$
+    \[\folgtnach{TV} \Integral{\ep}{t}{1}{s} =
+    \Integral{\ep}{t}{\frac{u'(s)}{\sqrt{u(s)}}}{s} =
+    \int\limits_{u(\ep)}^{u(t)}{\frac{\mathrm{d}x}{\sqrt{x}}} =
+    2\left(\sqrt{u(t)}-\sqrt{u(\ep}\right).\]
+    $\ep\to0$: $t=2\sqrt{u(t)}$ ($0<t\le t_0$) \folgt
+    $u(t)=\frac{t^2}{4}$. Probe: $u$ löst Gleichung.
+  \end{enumerate}
 \end{bsp}
 
 \section{Uneigentliche Integrale}
