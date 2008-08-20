@@ -18,11 +18,45 @@
 
 \maketitle
 
+Algorithmus~\ref{floyd-warshall} gibt viele schöne Zahlen aus.
 Klappt das? Auch \LaTeX{}? Anscheined ja. :-)
 
 Scheiße, alle Formatierungsbefehle vergessen :-(
 \newline
 Wie ging das nochmal mit 'ner Gleichung?
+
+\begin{algorithm}
+  \label{floyd-warshall}
+  \caption{Floyd, Warshall 1962}
+  \begin{algorithmic}[5]
+    \STATE Eingabe: Multigraph $G=(V,E)$
+    \STATE Ausgabe: Matrix $D= (d_{st})$, Matrix $\Sigma= (\sigma_{st})$
+    \FOR {$v,w \in V$}
+      \IF {$v=w$}
+        \STATE $d_{vw} \leftarrow 0$
+	\STATE $\sigma_{vw} \leftarrow 1$
+      \ELSIF {$(v,w) \in E$}
+        \STATE $d_{vw} \leftarrow 1$
+	\STATE $\sigma_{vw} \leftarrow \#(v,w)$
+      \ELSE
+        \STATE $d_{vw} \leftarrow \infty$
+	\STATE $\sigma_{vw} \leftarrow 0$
+      \ENDIF
+    \ENDFOR
+    \FOR{$v \in V$}
+      \FOR{$s \in S:= V \setminus \{v\}$}
+        \FOR{$t \in S$}
+	  \IF {$d_{st} = d_{sv} + d_{vt}$}
+	    \STATE $\sigma_{st} \leftarrow \sigma_{st} + \sigma_{sv}\sigma_{vt}$
+	  \ELSIF {$d_{sv} + d_{vt} < d_{st}$}
+	    \STATE $d_{st} \leftarrow d_{sv} + d_{vt}$
+	    \STATE $\sigma_{st} \leftarrow \sigma_{sv}\sigma_{vt}$
+	  \ENDIF
+	\ENDFOR
+      \ENDFOR
+    \ENDFOR
+  \end{algorithmic}
+\end{algorithm}
 
 Warum darf ich denn in einer displaymath-Umgebung keine Leerzeilen haben? ein Bug?
 
