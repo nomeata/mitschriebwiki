@@ -1,0 +1,2214 @@
+\documentclass{scrartcl}
+\usepackage{ngerman, amsmath, amssymb, amsthm, MnSymbol}
+\usepackage{hyperref}
+\begin{document}
+
+\newenvironment{aaufz}
+               {\renewcommand{\labelenumi}{\alph{enumi})}
+                \renewcommand{\labelenumii}{\alph{enumii})}
+                \begin{enumerate}}
+               {\end{enumerate}}
+
+\newenvironment{iaufz}
+               {\renewcommand{\labelenumi}{(\roman{enumi})}
+                \renewcommand{\labelenumii}{(\roman{enumii})}
+                \begin{enumerate}}
+               {\end{enumerate}}
+\newenvironment{1aufz}
+               {\renewcommand{\labelenumi}{\arabic{enumi}.)}
+                \renewcommand{\labelenumii}{\arabic{enumii}.)}
+                \begin{enumerate}}
+               {\end{enumerate}}
+
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\LL}{\mathbb{L}}
+\newcommand{\rd}{\mathrm{rd}}
+\newcommand{\Vvert}{\vert \hspace{-0.7pt} \vert \hspace{-0.7pt} \vert}
+\newcommand{\supp}{\mathrm{supp} \,}
+\newcommand{\gradient}{\mathrm{grad} \, }
+\newcommand{\divergenz}{\mathrm{div} \, }
+\newcommand{\tridiag}{\mathrm{tridiag}}
+\newcommand{\diag}{\mathrm{diag}}
+\newcommand{\cond}{\mathrm{cond}}
+\newcommand{\Bild}{\mathrm{Bild}}
+\newcommand{\Rang}{\mathrm{Rang}}
+\newcommand{\spann}{\mathrm{span}}
+\newcommand{\spec}{\mathrm{spec}}
+\newcommand{\compl}{\mathrm{compl}}
+\newcommand{\Tol}{\mathrm{Tol}}
+\renewcommand{\d}{\, \mathrm{d}}
+\renewcommand{\O}{\mathcal{O}}
+\newcommand{\subsubsub}[1]{\paragraph*{#1} \ }
+
+\newtheorem{Lemma}{Lemma}
+\newtheorem{Thm}{Theorem}
+\newtheorem{Satz}{Satz}
+\newtheorem*{Beweis}{Beweis}
+\newtheorem*{Def}{Definition}
+
+
+\newenvironment{Bew}{\begin{Beweis}}{\qed \end{Beweis}}
+
+\title{Numerik I D"orfler WS08 - Vorlesungsmitschrieb}
+\author{Markus Maier}
+\date{}
+\maketitle
+
+\tableofcontents
+
+\section*{Einteilung der angewandten und numerischen Mathematik}
+
+\subsection{Aufgaben}
+
+\begin{itemize}
+\item Modellbildung (mathematische Formulierung f"ur physikalische, technische, biologische, "okonomische, ... Prozesse)
+\item Diskretes Modell (Reduktion auf ein Modell mit endlich vielen zu bestimmenden Parametern)
+\item Algorithmenentwurf (Befehlsfolge zur L"osung des diskreten Problems)
+\item Nachweis der "`Konvergenz"' und "`Stabilit"at"'
+\item Komplexit"at und Effizienz
+\end{itemize}
+
+\subsection{Hilfsmittel}
+\begin{itemize}
+\item Ana I-III, lineare Algebra, Funktionalanalysis, partielle Differentialgleichungen und andere "`reine Mathematik"'
+\item Programmiersprachen
+\item Rechnerarchitekturen
+\item Kenntnisse im Anwendungsgebiet
+\item Bandbreite: Numerische Analysis - wissenschaftliches Rechnen
+\end{itemize}
+
+\section{Anwendungsbeispiele}
+
+\subsection{ComputerTomographie}
+
+\subsubsection{Modell}
+%Bild1
+
+\subsubsub{Tomographie-Problem:} \\
+Rekonstruiere aus den Intensit"atsmessungen die innere Struktur von $\Omega$.
+
+\subsubsection{Das Tomographie-Problem}
+$x$ Koordinate l"angs eines Strahles $S$, \\
+$I(x)$ Intensit"at in $x$, $I(0) = I_0$, $I_S = I(x_D)$, $S = [ 0, x_D]$\\
+$\varrho(x)$ Absorptionskoeffizient in $x$: $\varrho(x) \geq 0$ f"ur $x \in [0, x_D]$ und $\varrho = 0$ au"serhalb von $\Omega$ \\
+
+\subsubsub{Modell der Absorption} \\
+Abnahme der Intensit"at zwischen $x$ und $x + \Delta x$ ($\Delta x$ klein) ist proportional zur Intensit"at 
+$$I(x+ \Delta x) - I(x) \sim - I(x) \Delta x$$
+
+%Bild 2
+
+Wir setzen daher $I(x + \Delta x) - I(x) = - \varrho(x) I(x) \Delta x + \underbrace{\O(\Delta x^2)}_{\leq C(\Delta x)^2}$. \\
+Teilen durch $\Delta x$ und $\Delta x \rightarrow 0$ f"uhrt auf
+$$ \frac{dI}{dx}(x) = I'(x) = - \varrho(x) I(x) \ \forall x \in S$$
+F"ur $I(x) > 0$ gilt
+$$(\log (I(x)))' = \frac{I'(x)}{I(x)} = - \varrho(x)$$
+Integration von $0$ nach $x_D$ liefert:
+$$ \log´\left(\frac{I_0}{I_S}\right) = \int\limits_{0}^{x_D} \varrho(x) \d x = \int\limits_{S} \varrho$$
+
+\subsubsub{Die Radontransformation} \\
+Zu einem Winkel $\varphi$ betrachten wir ein B"undel von Parallelstrahlen, welche mittels $s$ parametrisiert sind.
+$$\omega(\varphi) = [ \cos (\varphi); \sin(\varphi) ]$$
+d.h. $\vert \omega(\varphi) \vert = 1$. $\omega(\varphi)^\top$ sei der um $\frac{pi}{2}$ gedrehte Vektor in mathematisch positiver Richtung (Gegenuhrzeigersinn) \\
+% Bild \\
+Zu $\varrho: \RR^2 \rightarrow \RR$, gegeben, mit Tr"ager in $\Omega$ ($\supp(\varrho) := \overline{ \{ x \in \RR^2: \varrho(x) > 0\} }$) definieren wir die Radontransformierte $R_\varrho: \RR \times [0, 2 \pi] \rightarrow \RR$ wie folgt:
+$$R_{\varrho}(\delta, \varphi) = \int\limits_{\RR} \varrho(\delta \omega(\varphi) + t \omega(\varphi)^\top) \d t$$
+
+\subsubsub{Bemerkung} \\
+Die Radontransformierte $R$ ist linear:
+$R(\lambda \varrho_1 + \varrho_2) = \lambda R_{\varrho_1} + R_{\varrho_2}$ f"ur alle $\lambda \in \RR$ und Funktionen $\varrho_1, \varrho_2$.
+
+\subsubsub{Mathematisches Tomographie-Problem:}\\
+Finde zu gegebenem $f: \RR \times [0, 2 \pi ) \rightarrow \RR$ ein $\varrho: \RR^2 \rightarrow \RR$ mit $R_\varrho = f$
+
+\subsubsub{Aufgabe:} \\
+Existenz und Eindeutigkeit einer L"osung (unter Voraussetzungen). Diskutiere "`Stabilit"at"': Ist $\Delta f$ eine St"orung des Datums $f$ und $\Delta \varrho$ die daraus resultierende St"orung der L"osung $\varrho$, gilt dann $ \Vert \Delta \varrho \Vert \leq C \Vert \Delta f \Vert$ mit nicht zu gro"sem $C$ ($\Vert \cdot \Vert$ Abstand)
+
+\subsubsection{Ein diskretes Tomographi-Problem}
+
+Datenerhebung ist diskret \\
+$s_1, \ldots, s_n$ Parameter der Parallelstrahlen \\
+$\varphi_1, \ldots, \varphi_m$ Winkeleinstellungen \\
+
+\subsubsub{Problem:} Zu gegebenem $f: \RR \times [0, 2 \pi ) \rightarrow \RR$ finde $\varrho: \RR^2 \rightarrow \RR$ mit 
+$$ R_\varrho(s_i, \varphi_j) = f(s_i, \varphi_j) \quad i=1,\ldots,n; \ j=1, \ldots, m$$
+So nicht l"osbar, denn es gibt unendlich viele $\varrho$, die dies l"osen. \\
+Wir ben"otigen ein endlich dimensionales Modell f"ur $\varrho$
+\subsubsub{Idee:} F"uhre Rasterungen ein (Fernsehen, Zeitung)
+% Bild 4: 
+\subsubsub{lexikographische Anordnung:} Charakteristische Funktion einer Zeile $Z_i: \chi_{Z_i}: \RR^2 \rightarrow \RR$ 
+$$ \chi_{Z_i} = \left\{ \begin{array}{l l} 1, & x \in Z_i \\ 0, & \mathrm{sonst} \end{array} \right. $$
+Ansatz f"ur $\tilde{\varrho}$ (diskretes Modell) 
+$$ \tilde{\varrho} (x) = \sum\limits_{i=1}^M \tilde{\varrho_i} \chi_{Z_i} (x) $$
+Die Zahlen $\tilde{\varrho_i}$ sind zu bestimmen aus den Messdaten. \\
+Einsetzen: 
+$$f(s_i, \varphi_j) \stackrel{!}{=} R_{\tilde{\varrho}}(s_i, \varphi_j) = R(\sum\limits_{i=1}^M \tilde{\varrho_i} \chi_{Z_i})(s_i, \varphi_j) \stackrel{R \mathrm{ \ linear}}{=} \sum\limits_{i=1}^M \tilde{\varrho_i} (R \chi_{Z_i})(s_i, \varphi_j)$$
+Lexikographische Anordnung der Punktepaare 
+$[s_i, \varphi_j]$: \\
+$$\underbrace{[s_1,\varphi_1]}_{=x_1}, \underbrace{[s_2,\varphi_2]}_{=x_2}, \ldots, \underbrace{[s_n,\varphi_n]}_{=x_n}, \underbrace{[s_1,\varphi_2]}_{=x_{n+1}}, \ldots, \underbrace{[s_n,\varphi_m]}_{=x_N}, \quad N=n\cdot m$$
+Eineindeutige Zuordnung 
+$$x_k \leftrightarrow [s_i, \varphi_j], \ k=(j-1)m + i$$ 
+Wir schreiben: $f_k := f(s_i, \varphi_j)$, $A_{kl} = R \chi_{Z_l} (x_k) = R \chi_{Z_l} (s_i, \varphi_j)$ und erhalten 
+$$\sum\limits_{l=1}^M A_{kl} \tilde{\varrho_l} = f_k \ k=1, \ldots, N$$ 
+Dies kann man als lineares Gleichungssystem $A u = b$ schreiben mit $A = [ A_{kl} ]_{kl} \in \RR^{N,M}; \ b=[f_k]_k \in \RR^N; \ u= [\tilde{\varrho_l} ]_l \in \RR^M$
+
+\subsection{W"armeleitung} 
+
+\subsubsection{W"armeleitungsgleichung}
+
+W"armetransport entlang eines Stabes oder Drahtes (Eindimensionale Struktur) \\
+Bild \\
+$\Omega = (0,1)$, Variablen: $t$ Zeit, $x$ Ort \\
+$q(t,x)$ W"armestrom in $x$ zur Zeit $t$ \\
+
+\subsubsub{Erhaltungssatz} \\
+Die zeitliche "Anderung des Energieinhaltes in $I \subset \RR$ ist gleich der W"armeflussbilanz "uber dem Rand von $I$ zuz"uglich der in $I$ erzeugten oder verbrauchten Energie. \\
+\begin{eqnarray*}
+& \partial_t \left( \int\limits_{I} u(t,x) \d x \right) = q(t,x_+) + q(t,x_-) + \int\limits_{I} \underbrace{\varrho(t,x)}_{\mathrm{Quelldichte}} \d x  \\
+& \Leftrightarrow \\
+& \int\limits_{I} \left[ \partial_t u(t,x) - \partial_x q(t,x) - \varrho(t,x) \right] \d x = 0
+\end{eqnarray*}
+$I = [x_-, x_+]$ \\
+Da $I$ beliebig 
+$$\partial_t u(t,x) - \partial_x q(t,x) = \varrho(t,x) \quad \forall x \in (0,1), t > 0$$
+Fourier: $q(t,x) \sim\partial_x u(t,x)$, also zum Beispiel
+$$q(t,x) = \underbrace{a(t,x)}_{\mathrm{W"armeleitkoeff.}} \partial_x u(t,x)$$
+Wir erhalten dann die W"armeleitungsgleichung:
+$$ \partial_t u(t,x) - \partial_x(a(t,x) \partial_x u(t,x)) = \varrho(t,x) \ (*)$$
+Ziel: Gegeben $\alpha, \beta \in \RR$, $\varrho: \RR_{>0} \times [0,1) \rightarrow \RR$, $\varphi: [0,1] \rightarrow \RR$, $a: \RR_{>0} \times (0,1) \rightarrow \RR_{>0}$, finde $u: \RR_{\geq 0} \times (0,1) \rightarrow \RR$, welches $(*)$ l"ost und $u(t,0) = \alpha$, $u(t,1) = \beta$ und $u(0,x) = \varphi(x)$ \\
+
+\subsubsub{Beispiele:}
+\begin{itemize}
+\item keine Erzeugung, kein Verbrauch: $\varrho(t,x) = 0$ 
+\item W"armeabstrahlung: $\varrho(t,x) = \sigma u(t,x)^4$ (bei Draht)
+\item Chemische Reaktion: $\varrho(t,x) = \omega e^{-\lambda/u(t,x)}$ (Arrhenius Gesetz)
+\end{itemize}
+
+\subsubsub{Fragestllungen der Analysis} 
+\begin{itemize}
+\item Formulierung der Gleichung
+\item Existenz von L"osungen
+\item Qualitative Eigenschaften der L"osung
+\end{itemize}
+
+\subsubsub{station"ares Problem:} 
+Wir betrachten das zeitunabh"angige Problem und lassen die Variable $t$ weg (und $A = 1, a=0, b=1$). Es ergibt sich das RWP
+$$ \left\{ \begin{array}{l l} -u''(x) = \varrho(x) = \varphi(x, u(x)), & \forall x \in (0,1) \\
+u(0) = \alpha, \  u(1) = \beta\end{array} \right.$$
+
+\subsubsection{Diskretisierung} 
+Numerik des station"aren Modells. Suchen endliches Modell.
+
+\subsubsub{Finite Differenzen:} 
+W"ahle ein uniformes Gitter, d.h. zu $N \in \NN$ w"ahlen wir $h=\frac{1}{N+1}$ und "`Gitterpunkte"' $x_i = ih$ f"ur $i=0,\ldots,N+1$ ($N+2$ Punkte). \\
+Wir suchen Approximationen $u_i$ an $u(x_i)$. \\
+Randbedingungen $u_0 = \alpha, \ u_{N+1} = \beta$ 
+\begin{eqnarray*}
+u'(x_i) & \approx & \frac{u_i - u_{i-1}}{h} \\
+u''(x_i) & \approx & \frac{u'(x_{i+1}) - u'(x_i)}{h} \approx \frac{u_{i+1} - 2u_i + u_{i-1}}{h^2}
+\end{eqnarray*}
+Also: 
+\begin{eqnarray*}
+u_0 & = & \alpha, \\
+-u_{i-1} + 2u_i - u_{i+1} & = & h^2 \varphi(x_i, u_i) \quad i=1, \ldots, N \\
+u_{N+1} & = & \beta
+\end{eqnarray*}
+
+Als Gleichungssystem:
+$$
+\left[
+\begin{array}{c c c c c}
+1 & & & & \\
+-1 & 2 & -1 & & \\
+   & \ddots  &  \ddots  & \ddots  &  \\
+ & & -1 & 2 & -1 \\
+ & &    &   & 1 
+\end{array}
+\right]
+\cdot 
+\left[
+\begin{array}{c}
+u_0 \\ u_1 \\ \vdots \\\ u_N \\ u_{N+1}
+\end{array}
+\right]
+=
+h^2
+\left[
+\begin{array}{c}
+0 \\ \varphi(x_1, u_1) \\ \vdots \\ \varphi(x_N, u_N) \\ 0
+\end{array}
+\right]
++
+\left[
+\begin{array}{c}
+\alpha \\ 0 \\ \vdots \\ 0 \\ \beta 
+\end{array}
+\right]
+$$
+$\Leftrightarrow A u_h = \Phi(u_h)$ mit $A \in \RR^{N+2, N+2}, \ u_h \in \RR^{N+2}, \ \Phi: \RR^{N+2} \rightarrow \RR^{N+2}$ \\
+Besteht rechts keine Abh"angigkeit von $u_h$, so ist dies ein lineares Gleichungssystem. Andernfalls ist es ein Nullstellenproblem:
+$$ F(u_h) = A u_h - \Phi(u_h) \stackrel{!}{=} 0$$
+
+\subsubsub{Fragestellungen der Numerischen Analysis:}
+\begin{enumerate}
+\item Gilt $u_n \rightarrow u$ f"ur $N \rightarrow \infty$? In welchem Sinne?
+\item Wie findet man Nullstellen von $F$ ($N$ gro"s)?
+\item Wie l"ost man Gleichungssysteme f"ur gro"se $N$?
+\item $A$ ist "`d"unnbesetzt"', d.h. hat nur 3 Nichtnullelemente pro Zeile, unabh"angig von $N$.
+\item L"osbarkeit der diskreten Gleichung? Eigenschaften von $u_h$
+\item Verfahren effizient? Wie viele Operationen braucht ein Algorithmus? Was w"are ggf. optimal?
+\item Aussagen "uber die G"ute des Resultats
+\end{enumerate}
+
+\subsection{Berechnung elektrostatischer Felder}
+Bild \\
+$\Phi: \RR^2 \setminus \Omega \rightarrow \RR$ "`Potenzial"', 
+$\Phi(x) \rightarrow 0$ f"ur $\vert x \vert \rightarrow \infty$ \\
+Elektrisches Feld: $E = - \nabla \Phi = \left[ \begin{array}{c} - \partial_1 \Phi \\ - \partial_2 \Phi \\ - \partial_2 \Phi \end{array} \right]$
+
+\subsubsection{Elektrostatische Potenziale und Felder}
+Bild 
+$\partial \Omega = \partial O \cup \Gamma$ \\
+Wir suchen $\Phi$ mit $\Phi = 0$ auf $\Gamma$, $\Phi = 1$ auf $\partial O$. \\
+$\Phi$ hei"st Porenzial und $E := - \nabla \Phi$ das elektrische Feld (oder $\gradient(\Phi)$)
+
+\subsubsection{Das Prinzip der virtuellen Arbeit}
+Wie sieht $\Phi$ in $\Omega$ aus?
+Wir definieren eine Menge von Funktionen:
+$$U := \{ \varphi \in C^1(\Omega, \RR): \ \varphi = 0 \mathrm{\ auf \ } \Gamma, \ \varphi = 1 \mathrm{\ auf \ } \partial O \}$$
+die Menge der zul"assigen Potenziale. Das gesuchte Potenzial $\Phi$ ist dasjenige mit minimaler Feldenergie $\varepsilon$ in $U$, d.h. mit $\varepsilon: U \rightarrow \RR_{\geq 0}$ def. durch
+$$ \varepsilon(\Psi) = \frac{1}{2} \int\limits_{\Omega} \vert \nabla \Psi \vert ^2 = \frac{1}{2} \int\limits_{\Omega} \vert \partial_1 \Psi \vert^2 + \vert \partial_2 \Psi \vert^2$$ gilt $\varepsilon(\Phi) = \min\limits_{\Psi \in U} \varepsilon (\Psi)$ \\
+Weiter def. wir $U_0 := \{ \xi \in C^1(\Omega, \RR): \ \xi = 0$ auf $\partial \Omega \}$. Dann gilt: mit $\Phi \in U$ ist auch $\Phi + t\zeta \in U$, falls $\zeta \in U_0$ und $t \in \RR$ ist. Ist $\Phi$ ein Minimum von $\varepsilon$, so wird die reellwertige Funktion $t \mapsto \varepsilon(\Phi + t\zeta)$ station"ar in $t = 0$ sein.
+$$ \varepsilon'(\Phi)[\zeta] = \frac{\d}{\d t} \varepsilon( \Phi + t \zeta) \vert_{t=0} \stackrel{!}{=} 0$$
+Es folgt
+\begin{eqnarray*}
+0 & \stackrel{!}{=} & \frac{1}{2} \int\limits_{\Omega} \vert \nabla(\Phi + t \zeta) \vert ^2 \\
+  & = & \frac{1}{2} \frac{\d }{\d t} \cdot \left( \int\limits_{\Omega} \left\{ \vert \nabla \Phi \vert ^2 + 2 t \nabla \Phi \cdot \nabla \zeta + t^2 \cdot \vert \nabla \zeta \vert ^2 \right\} \right) \\
+  & = & \int\limits_{\Omega} \left\{ \nabla \Phi \cdot \nabla \zeta + t \vert \nabla \zeta \vert ^2 \right\}
+\end{eqnarray*}
+d.h. f"ur $t = 0:$
+$$ 0 = \int\limits_{\Omega} \nabla \Phi \cdot \nabla \zeta \quad \forall \zeta \in U_0$$ \\
+\subsubsub{"`Das Prinzip der virtuellen Arbeit"', "`Variatonsgleichung"'} 
+Erf"ullt $\Phi$ die Variationsgleichung, ist es dann ein Minimum? \\
+Sei $\Phi \in U$ beliebig. Dann ist $\Psi - \Phi \in U_0$. Es gilt:
+\begin{eqnarray*}
+\varepsilon(\Psi) & = & \varepsilon(\Phi + \underbrace{\Psi - \Phi}_{\in U_0}) \\
+& = & \varepsilon(\Phi) + \underbrace{\int\limits_{\Omega} \nabla \Phi \cdot \nabla( \Psi-\Phi)}_{=0} + \frac{1}{2} {\int\limits_{\Omega} \vert \nabla ( \Psi - \Phi)} \vert ^2 \varepsilon(\Phi) \\
+& \geq & \varepsilon(\Phi)
+\end{eqnarray*}
+Sogar: $\varepsilon(\Psi) > \varepsilon(\Phi)$, falls $\Psi \neq \Phi$. Denn: $\int_{\Omega} \vert \nabla(\Psi-\Phi) \vert ^2 = 0 \ \Rightarrow \nabla(\Psi - \Phi)(x) = 0 \ \forall x \in \Omega \ \Rightarrow (\Psi - \Phi)(x) = \mathrm{const \ in \ } \Omega \ \Rightarrow \Psi = \Phi \mathrm{ \ in \ } \Omega$, da $\Psi - \Phi \vert _{\partial \Omega} = 0$ ist.
+
+\subsubsection{Das Poisson-Problem}
+Gau"sscher Integralsatz:
+$$ \int\limits_{\Omega} \nabla \Phi \cdot \nabla \zeta = - \int\limits_{\Omega} \nabla \cdot \nabla \Phi \zeta \mathrm{ \ ,da \ } \zeta \vert _{\partial \Omega} = 0$$
+Es gilt $\nabla \cdot \nabla = \divergenz (\gradient) = \Delta = \partial_1^2 + \partial_2^2 \ \Rightarrow \int\limits_{\Omega} \Delta \Phi \zeta = 0 \ \forall \zeta \in U_0$
+$$ \Rightarrow \Delta \Phi = \partial_1^2 \Phi + \partial_2^2 \Phi = 0$$
+\subsubsub{Allgemein: Posisson-Problem} \\
+Zu $\Omega \subset \RR^d$ und $f: \Omega \rightarrow \RR$, $r: \Omega \rightarrow \RR$ finde $u: \Omega \rightarrow \RR$ mit
+\begin{eqnarray*}
+- \Delta u & = & f \mathrm{\ in \ } \Omega \\
+u & = & r\mathrm{ \ auf \ } \Omega
+\end{eqnarray*}
+
+\subsubsection{Diskretisierung des Poissonproblems}
+$\Omega = (0,1)^2$. Gitter sei $z_{ij} = \left[ \frac{i}{n+1}, \frac{j}{n+1} \right] = h \cdot [i,j], \ n \in \NN, \ i,j = 0,\ldots, n+1, \ h = \frac{1}{n+1}$ \\
+Bild \\
+Ist $x_k$ ein Randpunkt, so gelte $u_k = r(x_k) \ (u_k \approx u(x_k))$. F"ur die zweite Ableitung verwenden wir die Formeln aus dem eindimensionalen.
+\begin{eqnarray*}
+\partial_1^2 u(x_k) + \partial_2^2 u(x_k) & \approx & \frac{1}{h^2} (u_{k+1} - 2 u_k + u_{k-1} ) + \frac{1}{h^2} \left( (u_{k+(n+2)} - 2u_k + u_{k-(n+2)} \right) \\
+& = & \frac{1}{h^2} \left( u_{k+(n+2)} + u_{k+1} - 4 u_k + u_{k-1} - u_{k-(n+2)} \right)
+\end{eqnarray*}
+f"ur $x_k$ im Inneren von $\Omega$. Wir erhalten das Gleichungssystem:
+\begin{eqnarray*}
+-u_{k+(n+2)} - u_{k+1} + 4 u_k - u_{k-1} - u_{k-(n+2)} & = & h^2 f(x_k) \mathrm{ \ f"ur \ } x_k \in \Omega \\
+u_k &= & r(x_k) \mathrm{\ f"ur \ } x_k \in \partial \Omega
+\end{eqnarray*}
+Formuliere dies als ein Gleichungssystem in Matrixschreibweise f"ur den Vektor $[ u_1, \ldots, u_N]$
+\\
+Differenzenstern (hier "`5-Punkte-Stern"') \\
+
+Bild \\
+\subsubsub{Das Gleichungssystem in lexikographischer Anordnung}
+$$
+\left[
+\begin{array}{c c c c c c c c c }
+1 & & & & & & & & \\
+ & \ddots & & & & & & & \\
+ & & \ddots & & & & & \\
+ & & &  1 & & & & & \\
+ & -1 & & -1 & 4 & 1 & & -1 \\ 
+ & & & & & & & & \\ 
+ \\
+\end{array}
+\right]
+\cdot 
+\left[
+\begin{array}{c}
+u_1 \\ \vdots \\ \vdots \\ u_{n+3} \\ u_{n+4} \\ \ \\ \ 
+\end{array}
+\right]
+= 
+\left[
+\begin{array}{c}
+r_1 \\ \vdots \\ \vdots \\ r_{n+3} \\ h^2f_{n+4} \\ \ \\ \ 
+\end{array}
+\right]
+$$
+\subsubsub{Reduktion der Randwerte:} 
+Ziel: Eliminiere die trivialen Gleichungen \\
+Beispiel: 1d
+\begin{enumerate}
+\item $u_0 = \alpha$
+\item $-u_2 + 2u_1 - u_0 = h^2 f_1$
+\item $\vdots$
+\end{enumerate}
+Jetzt: Eliminiere 1. und 2. wie folgt
+$$u_2 + 2u_1 = \underbrace{h^2f_1 + \alpha}_{\mathrm{bekannt}}$$
+Nun: $Au = b$ mit $A \in \RR^{n,n}$, $b \in \RR^n$, $u \in \RR^n$ und $A$ hat die Gestalt 
+$$ A = \left[ 
+\begin{array}{c c c c c} 
+2 & -1 & & & \\ 
+-1 & 2 & -1 & \\ 
+& \ddots & \ddots & \ddots  \\
+& & \ddots  & \ddots & -1 \\
+& & & -1 & 2
+\end{array}
+\right] =: \tridiag(-1, 2, -1)$$
+Analog reduzieren wir die Randwerte im 2d-System.  Man erh"alt dann eine Blocktridiagonalmatrix 
+$\scriptsize \left[ 
+\begin{array}{c c c c c} 
+A & B & & & \\ 
+B & A & B & \\ 
+& \ddots & \ddots & \ddots  \\
+& & \ddots  & \ddots & B \\
+& & & B & A
+\end{array}
+\right] \in \RR^{n^2,n^2}$ mit $A, B \in \RR^{n,n}$
+
+\subsubsection{Konvergenzbetrachtung}
+"UA: Diese diskrete 2. Ableitung approximiert die exakte 2. Ableitung mit $\O (h^2)$ falls $u \in C^4(\RR)$. Mann kann dann zeigen, dass
+$$ \max\limits_{k} \vert u(x_k) - u_k \vert \leq C h^2$$
+mit einem von $u$ unabh"angigen $C$.
+
+\section{Rundungsfehler und numerische Stabilit"at}
+
+\subsection{Grenzen der Genauigkeit}
+
+Wir haben uns in Kapitel I darauf verlassen, dass $\lim\limits_{h \rightarrow 0} \frac{u(x + h) - u(x)}{h} = u'(x)$, falls $u \in C^1(\RR)$ auch auf dem Computer gilt. Wir rechnen das numerisch nach. Dazu definieren wir 
+\begin{eqnarray*}
+g^{(1)}(x,h) & = & \frac{1}{h} \left( u(x+h) - u(x) \right)\\
+g^{(2)}(x,h) & = & \frac{1}{2h} \left( u(x+h) - u(x-h) \right)
+\end{eqnarray*} \\
+\subsubsub{Vorw"artsdifferentienquotient bzw Mitteldifferenzenquotient} Sei $x$ fest gew"ahlt. \\ Wir stellen den Wert
+$$ E^{(i)} (h) := \vert g^{(i)} (x,h) - u'(x) \vert $$
+als Funktion von $h$ dar. Wir erwarten $E^{(i)} (h) = \O (h^{\kappa})$ f"ur ein $\kappa \in \NN$. Daraus folgt: $\log(E^{(i)} (h) ) = C + \kappa \cdot \log(h)$. Im doppelt logarithmischen Plot erwarten wir eine Gerade mit Steigung $\kappa$
+
+\subsection{Zahldarstellung}
+
+\subsubsection{Zahlsysteme}
+
+\paragraph*{Dezimalbasis:} Jede reelle Zahl $x$ hat zur Basis 10 die Darstellung 
+$$ x = x_M \cdot 10^M + x_{M-1}\cdot 10^{M-1} + \ldots + x_0 \cdot 10^0 + x_{-1} \cdot  10^{-1} + \ldots $$
+mit Faktoren $x_l \in \{ 0, \ldots, 9 \}$. Die Darstellung ist nicht notwendig endlich und nicht eindeutig ($0.\overline{9} = 1.0$).
+\paragraph*{Dualbasis:} Verwende 2 statt 10.
+$$ x = x_M \cdot 2^M + x_{M-1}\cdot 2^{M-1} + \ldots + x_0 \cdot 2^0 + x_{-1} \cdot  2^{-1} + \ldots $$ 
+\paragraph*{Hexadezimal:} zur Bais 16, Speicheradressen: $0, \ldots, 9, A, \ldots, F$
+\subsubsub{Beispiele:}
+\begin{eqnarray*}
+9_{10} & = & 8 + 1 = 2^3 + 2^0 = 1001_2 \\
+9.25_{10} & = & 1001.01_2 \\
+0.000\overline{1100}_2 & = & \sum\limits_{k=1}^{\infty} 2^{-4k} + 2^{-4k-1} = \sum\limits_{k=1}^{\infty} \left( \frac{1}{16} \right)^k + \frac{1}{2}  \left( \frac{1}{16} \right)^k \\
+& = & \frac{3}{2} \left( \frac{1}{1-\frac{1}{16}} - 1 \right)= \frac{1}{10}
+\end{eqnarray*} 
+\subsubsub{Bemerkung:}
+$\frac{1}{10}$ hat im Dezimalsystem eine endliche, im Dualsystem eine unendliche Darstellung. Jedoch gilt: $\frac{1}{2} = 5 \cdot 10^{-1}$. Daher hat jede endliche Darstellung im Dualsystem eine endliche im Dezimalsystem.
+
+\subsubsection{Maschinenzahlen}
+Ein Rechner kennt nur endlich viele Zahlen. Man definiert eine Abbildung $\rd: \RR \rightarrow \FF$ (Menge der Maschinenzahlen) durch \emph{Bestapproximation} oder \emph{Abschneiden}.. Im Dezimalsystem lautet die allgemeine Darstellung einer Maschinenzahl $y \in \FF(10, L, E_{min}, E_{max})$:
+$$ y = \pm 0, {\underbrace{* \cdots \cdots  *}_{ \genfrac{}{}{0pt}{}{\mathrm{Mantisse,}}{L  \ \mathrm{Ziffern}}   }}\cdot 10^e$$
+mit $e \in \{ E_{min}, \ldots, E_{max} \} \subset \ZZ$ \\ \\
+Die \emph{Maschinengenauigkeit} $\varepsilon$ hat nach Definition die Eigenschaft 
+$$ \varepsilon := \inf \{ x>0: \ \rd(1-x) < 1 $$
+und es gilt: $\left\vert \frac{x-\rd(x)}{x} \right\vert \leq \varepsilon$ f"ur $x \in [ \min \FF, \max \FF ] \setminus \{ 0 \}$ \\ \\
+In \scshape{C} \normalfont oder \scshape{Fortran} \normalfont
+\begin{quote}
+float, real*4 \quad $\varepsilon \approx 10^{-8}$ \\
+double, real*8 \quad $\varepsilon \approx 10^{-16}$
+\end{quote}
+Den arithmetischen Operationen $+, -, \cdot, /$ entsprechen Operationen in der Rechnerarithmetik $\tilde{+}, \tilde{-}, \tilde{\cdot}, \tilde{/}$ und es gilt f"ur $\circ \in \{ +, -, \cdot, / \}$ $$\rd(x) \, \tilde\circ \, \rd(y) = x \circ y (1 + \varepsilon_{xy}) \mathrm{\ mit \ } \vert \varepsilon_{xy} \vert \leq \varepsilon$$
+Leider gleten f"ur das Zahlensystem $\FF$ viele der "ublichen Regeln (z.B. Assoziativgesetz) ($\rightarrow$ "UA)
+
+\subsubsection{Rundungsfehleranalyse}
+\subsubsub{Differenzenquotient:} 
+Wir halten in 1.1 die Differenzenquotienten $g^{(1)} (x,h)$ und $g^{(2)} (x,h)$ definiert. 
+\begin{eqnarray*}
+g^{(1)} (x,h) & = & \frac{1}{h} \left( f(x+h)(1 + \varepsilon_1) - f(x) (1+ \varepsilon_2) \right) \cdot (1+ \varepsilon_0) \\
+& = & \left( \frac{f(xüh) - f(x)}{h} + \frac{\varepsilon_1}{h} f(x+h) - \frac{\varepsilon_2}{h} f(x) \right) (1+ \varepsilon_3)
+\end{eqnarray*}
+Dann ist $\vert g^{(1)} (x,h) - f'(x) \vert = \O(h) + \O \left( \frac{\varepsilon}{h} \right)$ \\ \\
+Die Absch"atzung ist optimal, wenn beide Summanden vergleichbar sind: $h \approx \frac{\varepsilon}{h} \ \Rightarrow \ h^2 \approx \varepsilon \Rightarrow h \approx \sqrt{\varepsilon}$. Der optimale Fehler ist dann $\O ( \sqrt{\varepsilon})$. Analog f"ur $g^{(2)}: h \approx \sqrt[3]{\varepsilon}$ und den Fehler $\sqrt[3]{\varepsilon}^2$ \\ \\
+\subsubsub{Skalarprodukt:} Sei $S \equiv S(y) := [ 1, \ldots, 1 ] \cdot y = \sum\limits_{k=1}^n y_k$ f"ur $y \in \RR^n$. \\
+Nun wollen wir $y \in \FF^n$ annehmen und die Summe $\tilde{S}$ in Rechnerarithmetik bestimmen.  \\ \\
+Algorithmus 
+\begin{quote}$
+\tilde{S} := y_1 \\
+\mathrm{for \ } k=2:n \\
+\tilde{S} = \tilde{S} \tilde+ y_k \\
+\mathrm{end}$
+\end{quote} 
+\subsubsub{Beispiel:} $n=3$ \\
+$$\tilde{S} = ((y_1 + y_2)(1+\varepsilon) + y_3)(1 + \varepsilon_2) = (y_1 + y_2)(1 + \varepsilon_1)(1+ \varepsilon_2) + y_3(1+ \varepsilon_2)$$
+Induktion: \\
+$$\tilde{S} = (y_1 + y_2) \prod\limits_{i=1}^{n-1} (1 + \varepsilon_i) + \sum\limits_{k=3}^n y_k \prod\limits_{i=k-1}^{n-1} (1 + \varepsilon_i)$$ mit $\vert \varepsilon_i \vert \leq \varepsilon$ f"ur $i =1, \ldots, n$
+
+\begin{Lemma}
+Seien $\varepsilon_i, \varepsilon$ wie oben, $\sigma_i \in \{ \pm 1 \}$ ($i = 1, \ldots, n$) \\
+Ist $n \varepsilon < 1$, so gilt
+$$\prod\limits_{i=1}^n (1+\varepsilon_i)^{\sigma_i} = 1 + \vartheta_n$$
+mit $\displaystyle \vartheta_n \in \RR, \ \vert \vartheta_n \vert \leq \frac{n \varepsilon}{1- n \varepsilon} =: \gamma_n$
+\end{Lemma}
+\subsubsub{Bemerkung:}
+$n \approx 10^6$ in einfacher und $n \approx 10^{15}$ in doppelter Genauigkeit.
+\begin{Bew}
+Mit Induktion "UA
+\end{Bew}
+
+\begin{Thm}
+F"ur die Summation von $n$ Zahlen in Rechnerarithmetik gilt die Absch"atzung
+$$ \vert \tilde{S} - S \vert \leq \vert y_1 + y_2 \vert \gamma_{n-1} + \sum\limits_{k=2}^n \vert y_k \vert \gamma_{n-k+1} $$
+sowie
+$$ \frac{ \vert \tilde{S} - S \vert }{\vert S \vert } \leq \gamma_{n-1} \left\vert \frac{ \sum\limits_{k=1}^n \vert y_k \vert }{ \sum\limits_{k=1}^n y_k } \right\vert = \gamma_{n-1} \frac{S(\vert y \vert)}{\vert S(y) \vert }$$
+wobei $\vert y \vert$ hier komponentenweise zu verstehen ist. \\ 
+\subsubsub{Beachte:} $\gamma_{n-1} \approx n \varepsilon$, falls $n \varepsilon \ll 1$
+\end{Thm}
+\begin{Bew}
+Direkt aus der Darstellung von $\tilde{S}$ und dem Lemma folgt die erste Absch"atzung. \\
+Die $\gamma_k$ wachsen monoton mit $k$, d.h. wir k"onnen $\vert \tilde{S} - S \vert \leq \gamma_{n-1} (\vert y_1 \vert + \vert y_2 \vert ) + \gamma_{n-1} \sum\limits_{k=3}^n \vert y_k \vert$ absch"atzen.
+\end{Bew} \subsubsub{Bemerkungen}
+\begin{itemize}
+\item $\gamma_{n-1} \approx n \varepsilon$
+\item Erst die betraglich kleinen Zahlen addieren
+\item Schlecht ist der Fall $\vert S(y) \vert \ll S(\vert y \vert)$, Dies gilt z.B. f"ur Differenzenquotienten
+\end{itemize}
+
+\subsection{Konditionen von Abbildungen}
+
+\subsubsub{Erinnerung:}  Vektornorm, zugeordnete Operatornorm, vertr"agliche Operatornorm $\rightarrow$ Erg"anzungsblatt \\ \\
+ Seien gegeben: Normierte lineare Vektorr"aume $X,Y$ sowie $f: X \rightarrow Y$ stetige Abbildung.
+ 
+ \subsubsection{Norm- und komponentenweise Kondition}
+ \begin{Def}
+ \emph{Normweise absolute Kondition} ist die kleinste Zahl $\kappa_{\mathrm{abs}}$ mit $$\Vert f(\tilde{x}) - f(x) \Vert_{Y} \leq \kappa_{\mathrm{abs}} \Vert \tilde{x} - x \Vert_{X} + o ( \Vert \tilde{x} - x \Vert )_{X}  \quad (\tilde{x} \rightarrow x)$$
+ \emph{Normweise relative Kondition} ist die kleinste Zahl $\kappa_\mathrm{rel}$ mit 
+ $$\frac{ \Vert f(\tilde{x}) - f(x) \Vert_Y}{\Vert f(x) \Vert_Y} \leq \kappa_{\mathrm{rel}} \frac{ \Vert \tilde{x} - x \Vert}{\Vert x \Vert_X} + o( \Vert \tilde{x} - x \Vert_X ) \quad (\tilde{x} \rightarrow x)$$
+ f"ur $x \neq 0, f(x) \neq 0$ \\
+ \emph{Komponentenweise relative Kondition} ist die kleinste Zahl $\kappa_rel$ mit 
+ $$ \left\Vert \frac{ f(\tilde{x}) - f(x)}{ f(x)} \right\Vert_Y \leq \kappa_{\mathrm{rel}} \left\Vert \frac{ \tilde{x} - x }{ x } \right\Vert_X + o( \Vert \tilde{x} - x \Vert_X ) \quad (\tilde{x} \rightarrow x)$$ \\ 
+ Je nach Gr"o"senordnung von $\kappa \in \{ \kappa_\mathrm{rel}, \kappa_\mathrm{abs} \}$ nennt man eine Abbildung von $f$ in $x$ \emph{gut} ($\kappa \approx 1$) oder \emph{schlecht} ($\kappa \gg 1$) \emph{konditioniert}
+ \end{Def}
+Ist $f$ \emph{differenzierbare} Abbildung, so setzen wir
+\begin{eqnarray*}
+\kappa_\mathrm{abs} & := & \Vvert f'(x) \Vvert \\
+\kappa_\mathrm{rel} & := & \frac{ \Vvert f'(x) \Vvert \cdot \Vert x \Vert_X}{\Vert f(x) \Vert_Y} \quad (\mathrm{normweise}) \\
+\kappa_\mathrm{rel} & := & \left\Vert \frac{ \vert f'(x) \vert \cdot \vert x \vert }{ \vert f(x) \vert } \right\Vert_Y \quad \mathrm{(komponentenweise)}
+\end{eqnarray*}
+Letzteres mit komponentenweiser Definition von $\vert \cdot \vert$ und Division. $\Vvert \cdot \Vvert$ Operatornorm zu $\Vert \cdot \Vert_X, \Vert \cdot \Vert_Y$ 
+
+\subsubsection{Beispiele}
+\begin{itemize}
+\item Addition: $f: \RR^2 \rightarrow \RR, \ [x_1, x_2] \mapsto x_1 + x_2$, $\Vert x \Vert := \vert x_1 \vert + \vert x_2 \vert =: \vert x \vert_1$. \\
+Es gilt: $f'(x) = [1,1]$. Also folgt: 
+\begin{eqnarray*}
+\kappa_\mathrm{abs} & = & \max\limits_y \frac{ \vert [1,1] \cdot y \vert }{\vert y \vert_1} \leq \frac{ \vert y_1 \vert + \vert y_2 \vert }{\vert y \vert_1} = 1 \\
+\kappa_\mathrm{rel} & = & \frac{ 1 \cdot \vert x \vert_1 }{ \vert \underbrace{x_1 + x_2}_{=f(x)} \vert} = \frac{\vert x_1 \vert + \vert x_2 \vert}{ \vert x_1 + x_2 \vert} \quad (\mathrm{normweise \ und \ komponentenweise})
+\end{eqnarray*}
+Die Addition zweier Zahlen ist "`schlecht konditioniert"' falls $x_1 \approx x_2$ (\emph{Stellenausl"oschung}). Sie ist"`gut konditioniert"' falls $\vert x_1 \vert + \vert x_2 \vert = \vert x_1 + x_2 \vert \Rightarrow \kappa_\mathrm{rel} = 1$.
+\item Multiplikation zweier Zahlen $f: \RR^2 \rightarrow \RR, \ [x_1, x_2] \mapsto x_1 \cdot x_2, \ \vert \cdot \vert_1$. \\
+Es gilt: $f'(x) = [x_2, x_1]$
+\begin{eqnarray*}
+\kappa_\mathrm{abs} & = & \max\limits_y \frac{ \vert f'(x) \cdot y \vert }{ \vert y \vert_1} = \frac{ \vert x_2 y_1 + x_1 y_2 \vert }{ \vert y_1 \vert + \vert y_2 \vert } \leq \max \{ \vert x_1\vert, \vert x_2 \vert \} \\
+\kappa_\mathrm{rel} & = & \left\vert \frac{ \vert f'(x) \vert \cdot \vert x \vert }{ \vert f(x) \vert } \right\vert = \frac{ \vert [x_2, x_1 ] \cdot [x_1, x_2] \vert}{ \vert x_1 \cdot x_2 \vert } = \frac{ 2 \cdot \vert x_1x_2 \vert }{\vert x_1 x_2 \vert} = 2 
+\end{eqnarray*}
+\item L"osen eines linearen Gleichungssystem: \\
+Gegeben: $A$ invertierbar in $\RR^{n,n}, \ b \in \RR^n$ \\
+Finde $u \in \RR^n$ sodass gilt  $Au = b$
+\begin{enumerate}
+\item St"orung der rechten Seite $b$: $f(b)  := u = A^{-1} b$ \\
+Wir betrachten die normweise Kondition: $f'(b) = A^{-1}$
+$$\Rightarrow \kappa_\mathrm{abs} = \Vvert A^{-1} \Vvert$$
+$\Vert \cdot \Vert$ gew"ahlte Vektornorm, $\Vvert \cdot \Vvert$ zugeordnete Operatornorm 
+\begin{eqnarray*}
+\kappa_\mathrm{rel} & = & \frac{ \Vvert A^{-1} \Vvert \cdot \Vert b \Vert}{ \Vert A^{-1} b \Vert} = \frac{ \Vvert A^{-1} \Vvert \cdot \Vert A A^{-1} b \Vert }{ \Vert A^{-1} b \Vert } \leq \frac{ \Vvert A^{-1} \Vvert \cdot \Vvert A \Vvert \cdot \Vert A^{-1} b \Vert }{\Vert A^{-1} b \Vert} \\
+& = & \Vvert A^{-1} \Vvert \cdot \Vvert A \Vvert =: \cond_{\Vvert \cdot \Vvert} (A) \ \mathrm{(Kondition \ von \ } A)
+\end{eqnarray*}
+\item Einfluss der St"orung von $A$: \\ Betrachte nun $u$ als Funktion von $A$: $f: \RR^{n,n} \rightarrow \RR^n, \ f(A) = u = A^{-1} b$ \\
+Es gilt:
+$$f'(A) E = -A^{-1} E A^{-1} b = -A^{-1}Eu$$
+Daraus folgt:
+\begin{eqnarray*}
+\Vvert f'(A) \Vvert & = & \sup\limits_E \frac{ \Vert f'(A) E \Vert }{\Vvert E \Vvert} = \sup\limits_E \frac{ \Vert A^{-1} E u \Vert }{ \Vvert E \Vvert } \\
+& \leq & \sup\limits_E \frac{ \Vvert A^{-1} \Vvert \cdot \Vvert E \Vvert \cdot \Vert u \Vert }{\Vvert E \Vvert } = \Vvert A^{-1} \Vvert \cdot \Vert u \Vert \\
+\Rightarrow \kappa_\mathrm{rel} & \leq & \frac{ \Vvert A^{-1} \Vvert \cdot \Vert u \Vert \cdot \Vvert A \Vvert }{ \Vert u \Vert } = \cond_{\Vvert \cdot \Vvert}(A)
+\end{eqnarray*}
+\end{enumerate}
+\end{itemize}
+
+\subsection{Stabilit"at numerischer Algorithmen}
+Die Kondition von $f$ in $x$ beschreibt den unvermeidlichen Fehler der Rechenvorschrift $x \mapsto f(x)$. \\
+Es sei $\tilde{f}(x)$ die Vorschrift zur Berechnung von $f(x)$ wir rechnen damit, dass selbst bei exakter Arithmetik auf $\FF$ der relative Fehler $\kappa_f(x) \varepsilon$ auftritt.
+\subsubsection{Vorw"artsanalyse}
+\begin{Def} Der \emph{Stabilit"atsindikator} des Algorithmus $\tilde{f}(x)$ zur Berechnung von $f(x)$ ist die kleinste Zahl $\sigma$, so dass gilt
+$$ \frac{ \Vert \tilde{f} (\tilde{x}) \Vert_Y}{ \Vert f(\tilde{x}) \Vert_Y } \leq \sigma \underbrace{\kappa_{f} (\tilde{x})}_{\genfrac{}{}{0pt}{}{\kappa_\mathrm{rel}}{ \mathrm{ \ normw.}}} \varepsilon + o(\varepsilon) \quad (\varepsilon \rightarrow 0)$$
+f"ur alle $\tilde{x}$ mit $\Vert \tilde{x} - x \Vert_X \leq \varepsilon \cdot \Vert x \Vert_X$ \\
+Der Algorithmus $\tilde{f}$ ist \emph{stabil im Sinne der Vorw"artsanalyse}, falls $\sigma$ kleiner gleich der Anzahl der elementaren Rechenoperationen ist.
+\end{Def}
+\subsubsub{Beispiel: Die Summation:} 
+\begin{quote}
+$\tilde{S}_1 := y_1$ \\
+for $i=2:n$ $\tilde{S}_i = \tilde{S}_{i-1} \oplus y$
+\end{quote}
+Es gilt: 
+$$ \frac{\vert \tilde{S} (y) - S(y) \vert}{ \vert S(y) \vert} \leq \gamma_{n-1} \varepsilon \cdot \frac{S(\vert y \vert) }{\vert S(y) \vert } = (n-1) \varepsilon \kappa_S + o(\varepsilon), \ \mathrm{falls \ } n\varepsilon \ll 1$$ 
+Also $\sigma < n-1$, d.h. die Summation ist vorw"artsstabil.
+\subsubsection{R"uckw"artsanalyse}
+\begin{Def}
+Der \emph{Stabilit"atsindikator} der R"uckw"artsanalyse des Algorithmus $x \mapsto \tilde{f} (x), \ x \in E$ ist die kleinstm"ogliche Zahl $\varrho$, so dass f"ur alle $\tilde{x} \in E$ mit $\Vert \tilde{x} - x \Vert_X \leq \varepsilon \Vert x \Vert_X$ ein $\hat{x} \in E$ existiert mit $\tilde{f}(\tilde{x}) = f(\hat{x})$, so dass
+$$ \frac{ \Vert \hat{x} - \tilde{x} \Vert_X }{ \Vert \tilde{x} \Vert_X} \leq \varrho \varepsilon + o(\varepsilon) \quad (\varepsilon \rightarrow 0)$$
+Der Algorithmus $\tilde{f}$ hei"st \emph{stabil} im Sinne der R"uckw"artsanalyse, falls $\varrho$ kleiner gleich der Anzahl der elementaren Rechenoperationen
+\end{Def}
+
+\begin{Lemma} (\emph{R"uckw"artsstabil $\Rightarrow$ Vorw"artsstabil})
+$$ \sigma \leq \varrho$$
+\end{Lemma}
+\begin{Bew}
+Sei $\tilde{x} \in E$ mit $\Vert x - \tilde{x} \Vert_X \leq \varepsilon \cdot \Vert x \Vert_X$. Dann gilt \\
+\begin{eqnarray*}
+\frac{ \Vert \tilde{f} (\tilde{x}) - f(\tilde{x}) \Vert_Y}{\Vert f(\tilde{x}) \Vert_Y} & \stackrel{\mathrm{Vor.}}{=} & \frac{ \Vert f(\hat{x}) - f(\tilde{x}) \Vert_Y}{ \Vert f(\tilde{x}) \Vert_Y} \\ 
+& \stackrel{\mathrm{Def \ } \kappa_f}{\leq} & \kappa_f(\hat{x}) \frac{ \Vert \hat{x} - \tilde{x} \Vert_X}{\Vert \tilde{x} \Vert_X} + o(\varepsilon) \\
+& \stackrel{\mathrm{Vor.}}{\leq} & \varrho \varepsilon \cdot \kappa_f(\tilde{x}) + o(\varepsilon)
+\end{eqnarray*}
+$\Rightarrow \sigma \leq \varrho$ nach Def. von $\sigma$
+\end{Bew} 
+\subsubsub{Beispiel: Summation:} Wir hatten f"ur $y \in \FF^n$
+$$ \tilde{S}(y) = (y_1 + y_2) (1 + \vartheta_{n-1}) + \sum\limits_{k=3}^n y_k (1 + \vartheta_{n-k+1})$$
+Definiere nun 
+\begin{eqnarray*}
+\hat{y_1} & := & y_1 (1 + \vartheta_{n-1})\\
+\hat{y_2} & := & y_2 (1 + \vartheta_{n-1}) \\
+\hat{y_k} & := & y_k (1 + \vartheta_{n-k+1}) \ \mathrm{ f"ur \ } k \geq 3
+\end{eqnarray*}
+$\Rightarrow S(\hat{y}) = \tilde{S}(y)$ \\
+Es gilt die Absch"atzung
+$$\vert \hat{y} - y \vert_1 \leq (\vert y_1 \vert + \vert y_2 \vert ) \vert \vartheta_{n-1} \vert + \sum\limits_{k=3}^n \vert y_k \vert \cdot \vert \vartheta_{n-k+1} \leq \gamma_{n-1} \vert y \vert_1$$
+Es folgt also
+$$\varrho = \gamma_{n-1} = \varrho$$
+\section{Lineare Gleichungssysteme}
+\subsection{Direkte Verfahren: Gau"s-Elimination} 
+\subsubsection{Das Gau"ssche Eliminationsverfahren}
+\subsubsub{$2 \times 2$ Systeme:} Betrachte das Gleichungssystem
+\begin{eqnarray*}
+A_{11} u_1 + A_{12} u_2 & = & b_1 \\
+A_{21} u_1 + A_{22} u_2 & = & b_2
+\end{eqnarray*}
+wobei die $A_{ij}$ und die $b_i$ gegeben (sodass $A_{11} \neq 0$) und die $u_i$ gesucht sind.
+\begin{eqnarray*}
+A_{11} u_1 + A_{12} u_2 & = & b_1  \quad \vert \ \cdot L_{21} = \frac{A_{21}}{A_{11}} \\
+A_{21} u_1 + A_{22} u_2 & = & b_2  \quad \vert \ - L_{21} \cdot \mathrm{1. \ Zeile}
+\end{eqnarray*}
+"Aquivalentes System:
+\begin{eqnarray*}
+A_{11} u_1 + A_{12} u_2 & = & b_1 \\
+0 \cdot u_1 + (A_{22} - L_{21} A_{12} ) u_2 & = & b_2 - L_{21} b_1
+\end{eqnarray*}
+$\tilde{A}_{22} := A_{22} - L_{21} A_{12}, \ \tilde{b}_2 = b_2 - L_{21} b_1$ \\
+2. Gleichung ist $\tilde{A}_{22} u_2 = \tilde{b}_2$ \\
+$\tilde{A}_{22} \neq 0 \Rightarrow u_2 = \tilde{b}_2 / \tilde{A}_{22} \Rightarrow u_1 = (b_1 - A_{12} \cdot \frac{\tilde{b}_2}{\tilde{A}_{22}}) / A_{11} $
+\subsubsub{$n \times n$ Systeme} \\
+$$
+\begin{array}{c c c c c c c c c }
+A_{11} u_1 & + &A_{12} u_2 & + & \ldots & + A_{1n} u_n & = & b_1 \\
+A_{21} u_1 & + &A_{22} u_2 & + & \ldots & + A_{2n} u_n & = & b_2 & \vert - L_{21} \cdot \mathrm{1. \ Zeile} \\
+\vdots & & \vdots & & & \vdots  & &  \vdots \\
+A_{n1} u_1 & + &A_{n2} u_2 & + & \ldots & + A_{nn} u_n & = & b_n & \vert - L_{n1} \cdot \mathrm{1. \ Zeile}
+\end{array}
+$$
+wobei $L_{j1} := \frac{A_{j1}}{A_{11}}$, falls $A_{11} \neq 0$ \\
+Mit $\tilde{A}_{22} := A_{22} - L_{21} \cdot A_{12}, \ldots, \tilde{A}_{2n} := A_{2n} - L_{21} \cdot A_{1n}, \ \tilde{A}_{23} := \ldots$, allgemein
+$$\tilde A_{ij} := A_{ij} - L_{i1} \cdot A_{1j} \quad \mathrm{und} \quad \tilde b_i := b_i - L_{i1} \cdot b_1$$ ergibt sich das "aquivalente System:
+$$
+\left[ 
+\begin{array}{c c c c }
+A_{11} & A_{12} & \ldots & A_{1n} \\
+0      & \tilde{A}_{22} & \ldots & \tilde{A}_{2n} \\
+\vdots & \vdots &        & \vdots \\
+0      & \tilde{A}_{n2}  & \ldots & \tilde{A}_{nn}
+\end{array}
+\right]
+\cdot 
+\left[
+\begin{array}{c}
+u_1 \\ u_2 \\ \vdots \\ u_n
+\end{array}
+\right]
+= 
+\left[
+\begin{array}{c}
+b_1 \\ \tilde{b}_2 \\ \vdots \\ \tilde{b}_n
+\end{array}
+\right]$$
+$\tilde{A}_{22} \neq 0$ erlaubt den Algorithmus auf die $n-1 \times n-1$ Untermatix anzuwenden. Nach $n-1$ Schritten erhalten wir, falls $\tilde{A}_{kk}^{(k)} \neq 0$ gilt
+$$ \left[
+\begin{array}{c c c}
+* & \cdots & * \\
+& \ddots & \vdots \\
+0 & & *
+\end{array}
+\right]
+\cdot
+\left[
+\begin{array}{c}
+u_1 \\ \vdots \\ u_n
+\end{array}
+\right]
+= 
+\left[
+\begin{array}{c}
+* \\ \vdots \\ *
+\end{array}
+\right] \quad (\mathrm{Rechts-obere \ Dreiecksmatrix})
+$$
+Dieses l"asst sich einfach aufl"osen: \\
+$n$-te Gleichung: $\tilde{A}_{nn}^{(n)} u_n = \tilde{b}_n^{(n)}$ 
+$$\Rightarrow u_n = \tilde{b}_n^{(n)} / A_{nn}^{(n)} \ \mathrm{falls} \  \tilde{A}_{nn}^{(n)} \neq 0$$
+$(n-1)$-te Gleichung: $\underbrace{\tilde{A}_{n-1,n-1}^{(n)}}_{\genfrac{}{}{0pt}{}{=\tilde{A}_{n-1,n-1}^{(n-1)}}{ \neq 0 \mathrm{\ n. \ Vor}}} u_{n-1} + \tilde{A}_{n-1,n}^{(n)} \underbrace{u_n}_{\mathrm{bek.}} = \tilde{b}_{n-1}^{(n)}$ \\
+$$\Rightarrow u_{n-1} = \ldots$$ usw...
+
+\subsubsection{Die LR-Zerlegung}
+Ziel: formalisiere diesen Algorithmus. \\
+Wir wollen die Elimination in der Form $A \mapsto L \cdot A$ schreiben. Suche $L$. Sei $L_1$ die Matrix, die die erste Spalte von $A$ (ab 2. Element) zu 0 mache:
+$$ (L_1 A)_{ij} = \sum\limits_{k=1}^{n} L_{1;ik} A_{kj} \stackrel{!}{=} A_{ij} - L_{i1} \cdot A_{1j}$$
+$k=i: \ L_{1;ii} = 1$ \\
+$k=1: L_{1;i1} = -L_{i1}$ und $L_{1;ik} = 0$ sonst. \\
+$L_1$ hat also die Gestalt $$L_1 = \left[ \begin{array}{c c c c} 1 & & \\ -L_{21} & \ddots & \\ \vdots & & \ddots & \\ -L_{n1} & & & 1 \end{array} \right]
+$$
+Genauso folgt:
+$$ L_2 = \left[ \begin{array}{ccccc} 1 & & \\  & 1  & \\  & -L_{32} & \ddots & \\ & \vdots & & \ddots\\ & -L_{n2} & & & 1 \end{array} \right]$$
+Nach Durchf"uhrung von $n-1$ Schritten erhalten wir die rechts-obere Dreiecksmatrix $$R = L_{n-1} \cdot \ldots \cdot L_2 \cdot L_1 \cdot A$$ sowie $$\tilde b = L_{n-1} \cdot \ldots \cdot \L_2 \cdot L_1 \cdot b$$ 
+\subsubsub{Schreibweise:} Zu $a,b \in \RR^n$ sei
+$$ a \otimes b := a b^{\top} \in \RR^{n,n} \ (a \mathrm{\ tensor \ } b)$$ 
+Achtung: $a \otimes b \stackrel{\mathrm{i.A.}}{\neq} b \otimes a$ \\ 
+Es gilt aber: $$(a \otimes b) \otimes c = \left( \sum\limits_j a_i \cdot b_j \cdot c_j \right)_i = a(b \cdot c)$$
+D.h. $\dim \big( \Bild(a \otimes b) \big) = 1$. \\ \\ \\Wir definieren
+\begin{eqnarray*}
+\vec{i_k} & := & k\mathrm{-ter \ euklidischer \ Einheitsvektor} \\
+\vec{L_k} & := & [ 0, \ldots, \underbrace{0}_k, L_{k+1, k}, \ldots, L_{n,k} ]
+\end{eqnarray*}
+Damit gilt: $L_k = Id_n - \vec{L_k} \otimes \vec{i_k} = \left[ 
+\begin{array}{c c c c c c}
+1 \\
+& \ddots \\
+& & 1 \\
+& & -L_{k+1,k} & \ddots \\
+& & \vdots & & \ddots \\
+& & -L_{n,k} & & & 1
+\end{array}
+\right]$  \\
+Nun ist 
+\begin{eqnarray*}
+(Id + \vec L_k \otimes  \vec i_k ) L_k & = & (Id + \vec L_k \otimes \vec i_k )(Id - \vec L_k \otimes \vec i_k) \\
+& = & Id + \underbrace{\vec L_k \otimes \vec i_k - \vec L_k \otimes \vec i_k}_0 - \underbrace{ \vec L_k \otimes \vec i_k \cdot \vec L_k \otimes \vec i_k}_{ = \vec L_k  (\underbrace{\vec i_k \cdot \vec L_k }_{=0}) \otimes \vec i_k} \\ & = & Id \\
+\end{eqnarray*}
+$$\Rightarrow L_k^{-1} = Id + \vec L_k \otimes \vec i_k$$ 
+Damit erhalten wir ($A = {L_1}^{-1} \cdot \ldots \cdot {L_{n-1}}^{-1} R$): \\
+\begin{eqnarray*}
+{L_1}^{-1} {L_2}^{-1} & = &  (Id + \vec L_1 \otimes \vec i_1 )( Id + \vec L_2 \otimes \vec i_2) \\
+& = & Id + \vec L_1 \otimes \vec i_1 + \vec L_2 \otimes \vec i_2 + \underbrace{\vec L_1 \otimes \vec i_1 \cdot \vec L_2 \otimes \vec i_2}_{= \underbrace{\vec i_1 \cdot \vec L_2}_{=0} \cdot \vec L_1 \otimes \vec i_2} \\
+& = & Id + \vec L_1 \otimes \vec i_1 + \vec L_2 \otimes \vec i_2
+\end{eqnarray*}
+Mit Induktion folgt: $$L := {L_1}^{-1} \cdot \ldots \cdot {L_{n-1}}^{-1} = Id + \sum\limits_{k=1}^{n-1} \vec L_k \otimes \vec i_k = 
+\left[
+\begin{array}{c c c c}
+1 \\
+L_{21} & \ddots \\
+\vdots & \ddots & \ddots \\
+L_{n1} & \cdots & L_{nn-1} & 1
+
+\end{array}
+\right]$$
+\begin{Satz}
+Ist die Gau"ssche Elimination f"ur ein $A \in \RR^{n,n}$ durchf"uhrbar (d.h. gilt $\tilde{A}_{kk}^{(k)} \neq 0$ f"ur $k=1, \ldots, n-1)$, so besitzt $A$ eine \emph{LR-Zerlegung}, d.h.
+$$ A = LR $$ 
+mit $L$ links-untere Dreiecksmatrix mit Diagonale 1 und $R$ eine rechts-obere Dreiecksmatrix. \\
+Diese Zerlegung ist f"ur invertierbare Matrizen \emph{eindeutig}.
+\end{Satz}
+\begin{Bew}
+\emph{Beh.:} $A$ invertierbar $\Leftrightarrow$ $R$ invertierbar \\
+(unter der Voraussetzung der Existenz von $L$ und $R$) \\
+\begin{align*}
+A & =  LR \\
+\Leftrightarrow  \quad A^{-1} & = R^{-1}L^{-1} \tag{1}\\
+\Leftrightarrow \quad R^{-1} &=   A^{-1} L \tag{2}
+\end{align*}
+$L^{-1}$ existiert immer. Weiter gilt:
+\begin{quote}
+$(1): A^{-1}$ ex. $\Rightarrow$ $R^{-1}$ ex. \\
+$(2): R^{-1}$ ex. $\Rightarrow$ $A^{-1}$ ex.
+\end{quote}
+Wegen der Behauptung folgt im Fall, dass $A$ invertierbar ist die Invertierbarkeit von $R$. \\
+ \emph{Eindeutigkeit:} Es sei $A = LR = \hat L \hat R$ 
+$$\Rightarrow \underbrace{R \hat R^{-1}}_{\mathrm{r.o. \ } \Delta\mathrm{matrix}} = \underbrace{L^{-1} \hat L}_{\mathrm{l.u. \ }\Delta \mathrm{matrix}}$$
+Beide Seiten sind also gleich der Identit"at, also folgt
+$R = \hat R$ und $L = \hat L$
+\end{Bew}
+
+\subsubsection{Pivotisierung}
+Tritt der Fall $\tilde A_{kk}^{(k)} = 0$ auf, so wollen wir den Algorithmus modifizieren: \\
+Skizze \\
+Finde nun $l \in \{ k+1, \ldots, n \}$, so dass 
+$$\vert \tilde A_{lk}^{(k)} \vert \geq \max \{ \vert \tilde A_{jk}^{(k)} \vert: j \in \{ k+1, \ldots, n \}$$
+ Ist $\vert \tilde A_{lk}^{(k)} \vert = 0$, so hat die Gesamtmatrix keinen maximalen Rang. Ist $A$ invertierbar, so kann dieser Fall nicht auftreten. \\
+Wir vertauschen nun die $k$-te mit der $l$-ten Zeile und setzen das Verfahren fort. \\
+Die mathematische Beschreibung dieser Vertauschung ist die Anwendung einer Permutationsmatrix $P$. \\
+z.B. hier: 
+$$ P = 
+\left[
+\begin{array}{c c c c c c c c c c c c}
+1 \\
+& \ddots \\
+& & 1 \\
+& & & 0 & & & & 1 \\
+& & & & 1 \\
+& & & & & \ddots \\
+& & & & & & 1 \\
+& & & 1 & & & & 0 \\
+& & & & & & & & 1 \\
+& & & & & & & & & \ddots \\
+& & & & & & & & & & 1
+\end{array}
+\right]
+\begin{array}{c}
+\\ \\ \\ \leftarrow k \\ \\ \\ \\ \leftarrow l \\ \\ \\ \\
+\end{array}
+ \quad \mathrm{f"ur \ } k \neq l
+$$
+bzw. $P = Id$ f"ur $k=l$. \\
+Die Elimination liefert also $R = L_{n-1} P_{n-1} \cdots L_1 P_1 A$. Dabei suchen wir in jedem Schritt das maximale Element. Man kann zeigen, dass man dies in der Form $LP$ schreiben kann, $L$ links-untere Dreiecksmatrix, $P$ Permutationsmatrix
+
+\begin{Satz}
+Ist $A \in \RR^{n,n}$ invertiebar, dann existiert eine Permutationsmatrix $P$, so dass $PA$ eine $LR$-Zerlegung besitzt.
+\end{Satz}
+
+\subsubsection{Rechenaufwand}
+$A \in \RR^{n,n}$ vollbesetzt. (Gau"sen): \\
+\# Multiplikationen ist $\sum\limits_{k=1}^{n-1} (n-k)^2 = \frac{1}{3} n^3 + \O (n^2) = \O(n^3)$. \\
+Speicher: Wird $A$ nicht mehr ben"otigt, so kann man die Matrizen $L$ und $R$ auf $A$ abspeichern. \\
+Die explizite Verwendung der Zerlegung $LR$ zur L"osung der gestaffelten Systeme empfielt sich, wenn man mehrere $GLS$ der Form $Ax = b$ zu versch. $b$ l"osen muss. Einmal $\O (n^3)$-Aufwand und dann nur noch $\O (n^2)$ f"ur jedes folgende System.
+
+\subsubsection{Gau"s-Elimination f"ur Bandmatrizen}
+
+\subsubsection*{Schwach besetzte Matrizen und Bandmatrizen} 
+
+$A \in \RR^{n,n}$ hei"st \emph{schwachbesetzt} ("`\emph{sparse}"'), falls gilt:
+$$ \compl(A) := \# \{ [i,j] \in \{ 1, \ldots, n \}^2: \ A_{ij} \neq 0 \} = \O(n)$$
+Wir definieren die \emph{Bandl"ange} von $A$ als das maximale $m \in \NN$, f"ur das gilt:
+$$ \vert i - j \vert > \left\lfloor \frac{m-1}{2} \right\rfloor \Rightarrow A_{ij} = 0$$ \\
+Diskretisierung von $-u''$ in 1d mit "`nat"urlicher Anordnung"' f"uhrte auf Tridiag-matrix ($m=3$). Diskretisierung von $- \Delta u$ in 2d in lexikographischer Anordnung ergab
+$$
+\left[
+\begin{matrix}
+\ddots & \ddots & & \ddots \\
+\ddots & \ddots & \ddots & \\
+  & \ddots & ´\ddots & \ddots \\
+\ddots & & \ddots & \ddots 
+\end{matrix}
+\right]$$
+$\compl(A) = \O(n)$, aber $m = O(\sqrt{n})$ \\
+Die Elimination zerst"ort die Bandstruktur ("`fill in"'), erh"alt aber die Bandl"ange. Im 1d-Beispiel bleibt es bei einer Tridiagonalmatrix ( $\compl(L) = \compl(R) = \O(n)$), aber in 2d folgt $\compl(L) = \compl(R) = \O (n^{\frac{3}{2}})$ 
+
+\subsubsection*{Gau"s-Elimination f"ur Bandmatrizen} 
+Hier nur Tridiagonalmatrizen:
+$$ A=
+\left[
+\begin{array}{c c c c c c}
+a_1 & a_1^+ \\
+a_2^- & a_2 & \ddots \\
+& \ddots & \ddots & \ddots \\
+& & \ddots & \ddots & a_{n-1}^+ \\
+& & & a_n^- & a_n
+\end{array}
+\right]
+$$
+mit $a_1 \neq 0$. \\
+1. Schritt: \\
+$$
+\tilde A^{(2)} = \left[
+\begin{array}{c c c c}
+a_1 & a_1^+ & 0 & \cdots \\
+0 & \underbrace{a_2 - \frac{a_2^-}{a_1} a_1^+}_{\tilde a_2^{(2)}} & a_2^+ & \cdots \\
+\cdots
+\end{array}
+\right]
+$$
+Induktiv: $L_{i,i-1} = a_i^- / \tilde a_{i-1}^{(i-1)}, \ \tilde a_i^{(i)} = \tilde a_i^{(i-1)} - L_{i,i-1} \cdot a_{i-1}^+$
+$$ L = \left[ \begin{matrix} 1 & & \\ L_{21} & \ddots \\ & \ddots & \ddots \\ & & L_{n,n-1} & 1  \end{matrix} \right], \quad R = \left[ \begin{matrix} * & a_1^+ \\ & \ddots & \ddots \\ & & \ddots & a_{n-1}^+ \\ & & & *\end{matrix} \right]$$
+Anzahl Operationen: $\sim 4n$, falls $\tilde a_{i-1}^{(i-1)} \neq 0$. Allgemein ist der Aufwand f"ur Bandmatrizen $\O (m^2n)$ ohne Pivotisierung. Pivotisierung zerst"ort die Bandstruktur.
+
+\subsubsection{Block-Gau"s-Elimination}
+$A \in \RR^{n,n}$ mit $n = n_1 + n_2$.
+$$A = \left[ \begin{matrix} A_{11} & A_{12} \\ A_{21} & A_{22} \end{matrix} \right], \quad A_{11} \in \RR^{n_1, n_2}; \ A_{22} \in \RR^{n_2, n_2}$$
+$u = [ u_1, u_2 ] \in \RR^{n_1 + n_2}, \ Au = [ b_1, b_2 ] \in \RR^{n_1 + n_2}$
+\begin{eqnarray*}
+A_{11} u_1 + A_{12} u_2 & = & b_1 \\
+A_{21} u_1 + A_{22} u_2 & = & b_2
+\end{eqnarray*}
+$A_{11}^{-1}$ existiere. Multipliziere 1. Zeile mit $A_{21} A_{11}^{-1} =: L_{21}$ und subtrahiere dies von der 2. Zeile. Wir erhalten das "aquivalente System:
+\begin{eqnarray*}
+A_{11} u_1 + A_{12} u_2 & = & b_1 \\
+0 \cdot u_1 + (\underbrace{A_{22} - A_{21} \cdot A_{11}^{-1} \cdot A_{12}}_{=\tilde A_{22}^{(2)}}) u_2 & = & \underbrace{b_2 - A_{21} \cdot A_{11}^{-1} \cdot b_1}_{=\tilde b_2^{(2)}}
+\end{eqnarray*}
+Die Block-$LR$-Zerlegung:
+$$A = LR = \left[ \begin{matrix} Id_{n_2} & 0 \\ L_{21} & Id_{n_2} \end{matrix} \right] \cdot \left[ \begin{matrix} A_{11} & A_{12} \\ 0 & \tilde A_{22}^{(2)} \end{matrix} \right]$$
+
+\subsubsection{Existenz der $LR$-Zerlegung ohne Pivotisierung}
+
+\begin{Satz}
+Sei $A \in \RR^{n,n}$. 
+\begin{iaufz}
+\item $A$ hei"st \emph{diagonaldominant}, falls 
+$$ \sum\limits_{\genfrac{}{}{0pt}{}{j=1}{j \neq i}}^{n} \vert A_{ij} \vert < \vert A_{ii} \vert \quad i=1, \ldots, n$$
+\item $A$ hei"st \emph{symmetrisch und positiv definit}, falls 
+$$A_{ij} = A_{ji} \mathrm{\ und \ } v \cdot Av > 0 \ \forall v \in \RR^{n} \setminus \{ 0 \} $$
+\end{iaufz}
+F"ur Matrizen $A$ mit (i) oder (ii) ist die Elimination ohne Pivotisierung durchf"uhrbar.
+\end{Satz}
+\begin{Bew}
+\begin{iaufz}
+\item $A_{11} \neq 0$ nach Voraussetzung \\
+z.z.: $\tilde A = L_1 A$ ist wieder diagonaldominant. \\
+Elimination: $\tilde A_{ij} = A_{ij} - L_{i1} A_{1j}$ f"ur $i,j = 2, \ldots, n$ \\
+F"ur $i = 2, \ldots, n$ gilt 
+\begin{eqnarray*}
+\sum\limits_{\genfrac{}{}{0pt}{}{j=2}{j \neq i}}^n \vert \tilde A_{ij} \vert & \leq & \sum\limits_{\genfrac{}{}{0pt}{}{j=2}{j \neq i}} \{ \vert A_{ij} \vert + \vert L_{i1} \vert \cdot \vert A_{1j} \vert \} \\
+& = & \sum\limits_{\genfrac{}{}{0pt}{}{j=1}{j \neq i}}^n \vert A_{ij} \vert - \vert A_{i1} \vert + \vert L_{i1} \vert \cdot \left( \sum\limits_{j=2}^n \vert A_{1j} \vert - \vert A_{1i} \vert \right) \\
+& < & \vert A_{ii} \vert - \vert A_{i1} \vert + \vert L_{i1} \vert \cdot ( \vert A_{11} \vert - \vert A_{1i} \vert ) \\
+& = &  \vert A_{ii} \vert - \vert A_{i1} \vert + \left\vert \frac{A_{i1}}{A_{11}} \right\vert \cdot ( \vert A_{11} \vert - \vert A_{1i} \vert ) \\
+& = & \vert A_{ii} \vert - \vert L_{i1} \vert \cdot \vert A_{1i} \vert \\
+& \leq & \vert A_{ii} - L_{i1} A_{1i} \vert = \vert \tilde A_{ii} \vert
+\end{eqnarray*}
+\item Reicht zu zeigen $\tilde A := L_1 A$ wieder symmetrisch und positiv definit. \\
+$A_{11} = \vec i_1 \cdot A \vec i_1 > 0$. \\
+$\tilde A$ symmetrisch: \\
+$$ \tilde A_{ij} = A_{ij} - \frac{1}{A_{11}} \underbrace{ A_{i1} \cdot A_{1j}}_{= A_{1j} \cdot A_{i1} = A_{j1} \cdot A_{1i}} = A_{ji} - \frac{1}{A_{11}} A_{j1} A_{1i}= \tilde A_{ji}$$
+$\tilde A$ positiv definit: \\
+wir schreiben $A = \left[ \begin{matrix} A_{11} & a_1^\top \\ a_1 & A' \end{matrix} \right]$, $v = \left[ \begin{matrix} v_1 \\ v' \end{matrix} \right] \in \RR \times \RR^{n-1}$. Sei $v \neq 0$.
+\begin{eqnarray*}
+0 < v \cdot Av & = & \left[ \begin{matrix} v_1 \\ v' \end{matrix} \right] \cdot \left[ \begin{matrix} A_{11} & a_1^\top \\ a_1 & A' \end{matrix} \right] \left[ \begin{matrix} v_1 \\ v' \end{matrix} \right] \\
+& = & \left[ \begin{matrix}v_1 \\ v' \end{matrix} \right] \cdot \left[ \begin{matrix} A_{11} v_1 + a_1 \cdot v' \\ v_1 a_1 + A' v' \end{matrix} \right] \\ 
+& = & A_{11} v_1^2 + 2v_1 a_1 \cdot v' + v' \cdot A' v' + \frac{1}{A_{11}}(a_1 \cdot v')^2 - \frac{1}{A_{11}}(a_1 \cdot v')^2 \\
+& = & A_{11} (v_1 - \frac{1}{A_{11}} a_1 \cdot v' ) ^2 + v' \cdot A' v' - \frac{1}{A_{11}} \underbrace{(a_1 \cdot v')^2}_{\genfrac{}{}{0pt}{}{v' \cdot a_1 a_1 \cdot v'}{= v' \dot a_1 \otimes a_1 v'}} \\
+& = & A_{11} (v_1 - \frac{1}{A_{11}}a_1 \cdot v')^2 + v' \cdot ( A' - \frac{1}{A_{11}}a_1 \otimes a_1) v'
+\end{eqnarray*}
+zu $v' \in \RR^{n-1}$ beliebig, w"ahle $v_1 = - \frac{1}{A_{11}} a_1 \cdot v'$ und erhalten
+$$0 < v' \cdot \underbrace{(A' - \frac{1}{A_{11}} a_1 \otimes a_1) v'}_{ij-\mathrm{Komponente \ ist \ } A_{ij} - \frac{1}{A_{11}} A_{1i} \cdot A_{1j} = \tilde A_{ij}}$$
+$\Rightarrow$ F"ur alle $v' \in \RR^{n-1} \setminus \{ 0 \}$ gilt 
+$0 < v' \cdot [ \tilde A_{ij} ]_{\genfrac{}{}{0pt}{}{i = 2, \ldots, n}{j = 2, \ldots, n}} v'$ $\Rightarrow$ Beh.
+\end{iaufz}
+\end{Bew}
+
+\subsubsection{Numerische Stabilit"at}
+
+\begin{Satz}
+Zu $A \in \RR^{n,n}$ sei $\tilde L \tilde R$ die numerisch berechnete $LR$-Zerlegung. Dann gilt:
+$$ \frac{ \Vert \tilde L \tilde R - A \Vert_{\infty}}{\Vert A \Vert_{\infty}} \leq 2 n^3 f(A) \varepsilon + o(\varepsilon)$$
+mit $\displaystyle f(A) = \frac{ \max \{ \vert \tilde a_{ij}^{(k)}  \vert : \ k,i,j \} }{ \max \{ \vert a_{ij} \vert : \ i,j \} }$. \\
+D.h. Stabilit"at liegt vor, falls $f(A) \in \O(1)$ ist. \\
+z.B. f"ur diagonaldominante Matrizen $f(A) \leq 2$, aber Beispiele mit $f(A) = 2^n$ sind explizit bekannt.
+\end{Satz}
+
+\subsubsection{Bemerkungen}
+
+\begin{itemize}
+\item Man kann mit der Gau"s-Elimination auch die Inverse einer Matrix berechnen (\emph{Gau"s-Jordan-Algorithmus}) 
+\item Mit der Gau"s-Elimination kann man $\det(A)$ berechnen:
+$$\det(A) = \det(LR) = \det(L) \cdot \det(R) = \det(R) = \prod\limits_{k=1}^n R_{kk} $$
+\end{itemize}
+
+\subsection{Cholesky-Zerlegung}
+
+\begin{Satz}
+Sei $A$ spd (symmetrisch, positiv definit) aus $\RR^{n,n}$. \\
+Dann ex. eine untere Dreiecksmatrix $L$ mit positiven Diagonaleintr"agen, so dass 
+$$ A = L \cdot L^T \quad (\mathrm{Cholesky-Zerlegung})$$
+\end{Satz}
+
+\begin{Bew}
+Mit Induktion "uber $n$: \\
+$n=1:$  $0 < A_{11} = \sqrt{A_{11}} \cdot \sqrt{A_{11}}$ \\
+$n-1 \curvearrowright n:$ Sei $A = \left[ \begin{matrix} A' & a_1 \\ a_1^\top & A_{nn} \end{matrix} \right]$ mit $A' \in \RR^{n-1,n-1}$, $a_1 \in \RR^{n-1}$ \\
+Mit $v = [v', 0]$ sieht man: $A'$ spd. \\
+$A'$ hat nach I.V. eine Zerlegung $A' = L'(L')^\top$ \\
+Ansatz:
+\begin{eqnarray*}
+A = \left[ \begin{matrix} A' & a_1 \\ a_1^\top & A_{nn} \end{matrix} \right] & \stackrel{!}{=} & \underbrace{\left[ \begin{matrix} L' & 0 \\ r^\top & \alpha \end{matrix} \right]}_L \cdot \underbrace{\left[ \begin{matrix} (L')^\top & r \\ 0 & \alpha \end{matrix} \right]}_{L^\top} \\
+& = & \left[ \begin{matrix} L'(L')^\top & L'r \\ (L'r)^\top & \vert r \vert^2 + \alpha^2 \end{matrix} \right]
+\end{eqnarray*}
+Ziel: Gib $r, \alpha$ an. \\
+$a_1 = L'r$ $\Rightarrow r = (L')^{-1} \cdot a_1$ \\
+Aber:
+\begin{eqnarray*}
+\vert r \vert ^2 + \alpha^2 & \stackrel{!}{=} & A_{nn} > 0 \\
+\alpha^2 & = & A_{nn} - \vert r \vert ^2 \stackrel{?}{>} 0
+\end{eqnarray*}
+Falls ja: $\alpha := \sqrt{ A_{nn} - \vert r \vert ^2}$ \\
+W"ahle $\tilde r := \left( (L')^\top \right)^{-1}   r \in \RR^{n-1}$ und nutze $0 < \left[ \begin{matrix} \tilde r \\ -1 \end{matrix} \right] \cdot A \left[ \begin{matrix} \tilde r \\ -1 \end{matrix} \right]$
+\end{Bew}
+
+\subsubsection*{Algorithmus:}
+Ansatz: $A_{ik} = \sum\limits_{j=1}^k L_{ij} \cdot L_{kj}, \ i \geq k$ \\
+Spaltenweise aufl"osen: \\
+$\begin{array}{l l l}
+k=1, & i=1, \ldots, n & A_{i1} = L_{i1} \cdot L_{11} \\
+     & i=1            & A_{11} = L_{11}^2 \Rightarrow L_{11} = A_{11}^{1/2} \\
+     & i> 1:          & L_{i1} = A_{i1} / L_{11} = A_{i1} / \sqrt{A_11} \\
+k=2, & i=2, \ldots, n & A_{i2} = L_{i1}L_{21} + L_{i2}L_{22} \\
+     & i=2            & A_{22} = L_{21}^2 + L_{22}^2 \Rightarrow L_{22} = \sqrt{A_{22} - L_{21}^2} \\
+     & i> 2:          & L_{i2} = \ldots
+\end{array}$
+
+\begin{Satz} Sei $A \in \RR^{n,n}$ spd. Algorithmus liefere $A = \tilde L (\tilde L ) ^\top$. \\
+Dann gilt
+$$ \frac{ \Vert \tilde L (\tilde L ) ^\top - A \Vert_2 }{\Vert A \Vert }_2 \leq 8 n(n+1) \varepsilon + o(\varepsilon) $$
+Der Algorithmus ist also r"uckw"artsstabil.
+\end{Satz}
+
+\subsection{Iterative Verfahren}
+
+\subsubsection{Basisiteration}
+
+\emph{Ziel:} Schreibe $Au = b$ als Fixpunktiteration zur L"osung $u = Tu + d$ mit geeignetem $T \in \RR^{n,n}$, $d \in \RR^n$ \\
+Sei $B \in \RR^{n,n}$ invertierbar. Dann gilt:
+$$Au = b \Leftrightarrow  BAu = Bb \Leftrightarrow u = u - BAu - Bb \Leftrightarrow u = \underbrace{(Id - BA)}_{=: T} u + \underbrace{Bb}_{=: d}$$
+$B$ nennt man \emph{Vorkonditionierung} (dient der Beschleunigung des folgenden Algorithmus) \\
+\emph{Basisiteration:} 
+$$u_{i+1} = (Id - BA) u_i + Bb \quad (\mathrm{Fixpunktiteration})$$
+Falls $u_i \rightarrow u \ (i \rightarrow \infty)$, so l"ost $u$ die Gleichung $Au = b$
+
+\paragraph*{Einschub zu 3.1.: Zerlegungen:} 
+Idee um an geeignetes $B$ zu kommen: $A = M-N$ ("`Hauptteil"' $M$ (invertierbar), "`Nebenteil"' $N$) \\
+$$ Au = b \Leftrightarrow Mu - Nu = b \Leftrightarrow Mu = Nu + b \Leftrightarrow u = \underbrace{M^{-1} N}_{=T}u + \underbrace{M^{-1}b}_{=d}$$
+bzw.. $B=M^{-1}$ \\
+In 3.3.2.: $M=D$, $N = D(L+R)$
+
+\subsubsection*{Bemerkung}
+Optimal w"are $B = A^{-1}$, aber $B$ sollte nur so komplex wie $A$ sein. Widerspricht sich.
+
+\subsubsection{Konvergenz linearer Interationen}
+
+\begin{Satz}
+Zu $u_0 \in \RR^n$ definieren wir $u_{i+1} := T u_i + d$. Ist $u$ L"osung zu $u = Tu + d$, dann gilt:
+\begin{1aufz}
+\item Gilt in einer Operatornorm $\Vert T \Vert < 1$, so konv die Folge $\{ u_i \}_{i \geq 0}$ gegen $u$ und es gilt:
+\begin{eqnarray*}
+\vert u_i - u \vert & \leq & \Vert T \Vert ^i \, \vert u_0 - u \vert \quad (\mathrm{A \ priori-Absch"atzung}) \\
+\vert u_i - u \vert & \leq & \frac{\Vert T \Vert }{1 - \Vert T \Vert } \vert u_i - u_{i-1} \vert \quad (\mathrm{A \ posteriori})
+\end{eqnarray*}
+\item Es gilt $u_i \rightarrow u \ (i \rightarrow \infty)$ f"ur alle $u_0 \in \CC^n$ $\Leftrightarrow$ $\varrho(T) < 1$
+\end{1aufz}
+\end{Satz}
+
+\begin{Bew}
+\begin{1aufz}
+\item Banachscher Fixpunktsatz: \\
+$(u_i - u = Tu_{i-1} + d - Tu - d = T(u_{i-1}-u)$ \\
+$\vert u_i - u \vert \leq \Vert T \Vert \cdot \vert u_{i-1} - u \vert \leq \ldots \leq \Vert T \Vert^i \vert u_0 - u \vert$ ) \\
+$q := \Vert T \Vert < 1$ \\
+\begin{eqnarray*}
+\vert u - u_i \vert & \leq & \vert u - u_{i+1} \vert + \vert u_{i+1} - u_i \vert \\
+& \leq & \vert u - u_{i+1} \vert + q \vert u_i - u_{i-1} \vert \\
+& \leq & \vert u - u_{i+2} \vert + q^2 \vert u_i - u_{i-1} \vert + q \vert u_i - u_{i-1} \vert  \leq \ldots \leq  \\
+& \leq & q \cdot \sum\limits_{j=0}^{\infty} q^j \vert u_i - u_{i-1} \vert \\
+& = & \frac{q}{1-q} \cdot \vert u_i - u_{i-1} \vert
+\end{eqnarray*}
+\item "`$\Rightarrow$"': Definiere $e_i := u - u_i$, dann gilt:
+$$e_{i+1} = Te_i$$
+Mit Induktion folgt:
+$$e_i = T^i e_0$$
+Beachte: Es gilt
+$$u_i \rightarrow 0 \ (i \rightarrow \infty) \Leftrightarrow e_i \rightarrow 0 \ (i \rightarrow \infty)$$
+Es sei $\lambda \in \CC$ ein Eigenwert von $T$ und $z$ ein zugeh"origer normierter Eigenvektor (also $\vert z \vert$ = 1)
+$$Tz = \lambda z$$
+W"ahle $u_0 := u - z$
+$$\Rightarrow e_i = T^i e_0 = T^i z = \lambda^i z$$
+Nach Vor. gilt $\vert \lambda \vert^i = \vert \lambda \vert ^i \vert z \vert = \vert e_i \vert \rightarrow 0 \ (i \rightarrow \infty)$, also gilt
+$$\vert \lambda \vert < 1$$
+Da $\lambda$ beliebiger Eigenwert war folgt $\Rightarrow \ \varrho(T) < 1$. \\ \\
+"`$\Leftarrow$"': Da $\varrho(T) < 1$, gibt es ein $\varepsilon > 0$ mit $\varrho(T) < 1 - \varepsilon$. Mit "UA gilt: $\exists \Vert \cdot \Vert_{\varepsilon}$, induzierte Matrixnorm, sodass gilt
+$$\Vert T \Vert_{\varepsilon} \leq \underbrace{\varrho(T) + \varepsilon }_{<1}$$
+\end{1aufz}
+\end{Bew}
+
+\subsubsection*{Eigenwerte von Tridiagonalmatrizen}
+Es seien $a,b,c \in \RR$ mit $ac > 0$ und $A := \tridiag_N[a,b,c]$ eine reelle Tridiagonalmatrix. Dann sind die Eigenvektoren von $A$ gegeben durch
+$$ s^k = \left[ \left( \frac{a}{c} \right) ^{\frac{j-1}{2}} \sin \left( \frac{ k \pi j}{N + 1} \right) \right]_{j=1,\ldots,N}, \quad k=1, \ldots, N$$
+Die zugeh"origen Eigenwerte sind
+$$ \lambda_k = b + 2 \, \mathrm{sgn}(a) \sqrt{ac} \cdot \cos \left( \frac{ k \pi }{N+1} \right), \quad k=1,\ldots,N$$
+
+\subsubsection{Die "`klassischen Iterationsverfahren"'}
+
+\paragraph{Richardson-Verfahren}
+$B = \omega \cdot Id$ f"ur ein geeignetes $\omega \in \RR$. D.h.
+$$ u_{i+1} = u_i - \omega (A u_i - b) \quad (i>0)$$
+Die Iterationsmatrix ist
+$$T_R = Id - \omega A$$
+
+\paragraph{Jakobi-Verfahren (Gesamtschrittverfahren)}
+Zerlegung von $A = D(Id - L - R)$ mit $D := \diag(A)$, $-DL$ der links-untere, $-DR$ der rechts-obere Anteil von $A$ (mit Diagonale 0)
+$$ \underbrace{\left[ \begin{matrix} * & * & * \\ * & * & * \\ * & * & * \end{matrix} \right]}_{A} = 
+\underbrace{\left[ \begin{matrix} * \\ & * \\ & & * \end{matrix} \right]}_D +
+\underbrace{\left[ \begin{matrix} \\ * \\ * & * & \end{matrix} \right]}_{-DL} + 
+\underbrace{\left[ \begin{matrix} & * & * \\ & & * \\ \ \end{matrix} \right]}_{-DR}$$
+Iteration: 
+$$ u_{i+1} = u_i - \underbrace{D^{-1}}_{=B} (A u_i - b)$$
+Die Iterationsmatrix lautet also:
+$$ T_J = Id - D^{-1}A$$
+In Komponenten:
+\begin{eqnarray*}
+u_{i+1,l} & = & u_{i,l} - \frac{1}{A_{ll}} \left( \sum\limits_{m=1}^n A_{lm} u_{i,m} - b_l \right) \\
+& = & -\frac{1}{A_{ll}} \left( \sum\limits_{\genfrac{}{}{0pt}{}{m=1}{m \neq l}}^n A_{lm} u_{i,m} - b_l \right)
+\end{eqnarray*}
+Oft verwendet man noch einen "`D"ampfungsfaktor"' $\omega \in \RR$
+$$ u_{i+1} = u_i - \omega D^{-1} (A u_i - b) \quad \mathrm{"`\emph{Ged"ampftes Jakobi-Verfahren}"'}$$
+Hier ist die Iterationsmatrix also
+$$ T_{J, \omega} = (Id - \omega D^{-1}A)$$
+\paragraph*{Bemerkung}
+$u = [ u_{i,l} ]_l, \ V \subset \RR^n$ \\
+$V \leftarrow AU$, $V \leftarrow V - b$, $V \leftarrow D^{-1}V$ \\
+$U \leftarrow U - \omega V$
+
+\paragraph{Gau"s-Seidel-Verfahren (Einzelschrittverfahren) und das SOR-Verfahren} 
+
+\paragraph*{Einzelschrittverfahren:}
+Idee: nutze schon die neu berechneten Komponenten, um $Au$ zu berechnen. 
+$$u_{i+1.l} = -\frac{1}{A_{ll}} \left( \sum\limits_{m=1}^{l-1} A_{l,m} u_{i+1, m} + \sum\limits_{m=l+1}^n A_{l,m} u_{i,m} - b_l\right) \ (*)$$
+In Matrix-Schreibweise:
+\begin{eqnarray*}
+D u_{i+1} - DL u_{i+1} - DR u_i & = & b \\
+D( Id - L) u_{i+1} & = & b + DR u_i \\
+\Rightarrow u_{i+1} & = & (Id - L)^{-1} D^{-1} (b + DR u_i)
+\end{eqnarray*}
+Die Iterationsmatrix ist also:
+$$T_\mathrm{GS} = (Id - L)^{-1}\cdot R$$
+(Formel! Die Implementierung ist die Formel (*)) \\
+Hier ist $M = D(Id- L)$ oder $B = (Id-L)^{-1}D^{-1}$
+
+\paragraph*{SOR-Verfahren} (successive overrelaxation)
+Mit D"ampfungsparameter $\omega \in \RR$
+$$ u_{i+1} = u_i - \omega D^{-1} ( D u_i - DL u_{i+1} - DR u_i - b)$$
+bzw.
+$$ u_{i+1} = u_i - \omega(Id - \omega L) ^{-1} D^{-1} (A u_i - b)$$
+Die Iterationsmatrix ist
+$$T_\omega^{\mathrm{SOR}^+} = Id - \omega(Id - \omega L)^{-1} D^{-1} A$$
+
+
+Implementierung: \\
+Mit Hilfe eines Unterprogramms $(U, l) \rightarrow (AU - b)_l$ spart man sich den Vektor $V$ gegen"uber 3.3.2. Das Verfahren ist aber abh"angig vom gew"ahlten Durchlauf
+
+\paragraph{SSOR-Verfahren (Symmetrisches SOR)}
+Erst SOR mit Durchlauf $1, \ldots, n$ dann $n, \ldots, 1$. \\
+Au"serdem erh"alt man damit eine symmetrische Iteration. \\
+Die Iterationsmatrix $T_\omega^{\mathrm{SSOR}}$ setzt sich zusammen aus
+\begin{eqnarray*}
+T_\omega^{\mathrm{SOR}^+} & := & Id - \omega(Id - \omega L)^{-1} D^{-1} A \quad \mathrm{und} \\
+T_\omega^{\mathrm{SOR}^-} & := & Id - \omega(Id - \omega R)^{-1} D^{-1} A
+\end{eqnarray*}
+zu deren Produkt:
+$$T_\omega^\mathrm{SSOR} = T_\omega^{\mathrm{SOR}^-} \cdot T_\omega^{\mathrm{SOR}^+}$$
+\subsubsection{Konvergenz des Jakobi- und Gau"s-Seidel-Verfahrens}
+
+\begin{Satz} Sei $A \in \RR^{n,n}$ mit $A_{ii} \neq 0$ f"ur alle $i$.
+\begin{iaufz}
+\item (\emph{Starkes Zeilensummenkriterium:}) Gilt
+$$ \Vert L + R \Vert_{\infty} < 1 \quad (\mathrm{Zeilensummennorm})$$
+dann konvergieren Jakobi und GS und es gilt
+$$ \varrho(T_{GS}) \leq \varrho(T_J) < 1$$
+\item (\emph{Schwaches Zeilensummenkriterium:}) Es gelte 
+$$ \sum\limits_{\genfrac{}{}{0pt}{}{j=1}{j \neq i}}^n \left\vert \frac{A_{ij}}{A_{ii}} \right\vert \leq 1, \quad i=1, \ldots, n$$
+aber "`$<$"' gelte f"ur wenigstens einen Index. Weiter sei $A$ unzerlegbar (\emph{irreduzibel}), d.h. gibt es Mengen $M_1, M_2 \subset I = \{ 1, \ldots, n \}$ mit $M_1 \cup M_2 = I$, aber $M_1 \cap M_2 = \emptyset$ und gilt $A_{ij} = 0$ f"ur alle $(i,j) \in M_1 \times M_2$, so folgt $M_1 = \emptyset$ oder $M_2 = \emptyset$. \\
+(Keine Permutation $P$ f"uhrt auf $PA = \left[ \begin{smallmatrix} * & 0 \\ * & * \end{smallmatrix} \right]$) ´\\
+Dann konvergieren Jakobi- und GS-Verfahren.
+\end{iaufz}
+\end{Satz}
+\begin{Bew}
+\begin{iaufz}
+\setcounter{enumi}{1}
+\item z.z. \emph{Jakobiverfahren:} $T \equiv T_J = Id - D^{-1} A \Rightarrow \varrho(T) < 1$. \\
+Sei $\lambda \in \CC$, $v \in \CC^n$ mit $\vert v \vert_{\infty} = 1$ und $Tv = \lambda v$. \\
+Annahme: $\vert \lambda \vert \geq 1$ \\
+Dann gilt f"ur jedes $i \in I = \{ 1, \ldots, n \}$ 
+$$\vert v_i \vert \leq \vert \lambda v_i \vert = \vert (Tv)_i \vert \leq \sum\limits_{\genfrac{}{}{0pt}{}{j=1}{j \neq i}} \left\vert \frac{A_{ij}}{A_{ii}} \right\vert \underbrace{ \vert v_j \vert }_{\leq 1} \leq \sum\limits_{\genfrac{}{}{0pt}{}{j=1}{j \neq i}} \left\vert \frac{A_{ij}}{A_{ii}} \right\vert \leq 1$$
+Sei $i_0$ ein Index mit "`$<$"'. \\
+Dann ist f"ur ein $j \in I$: $A_{i_0j} \neq 0$, denn sonst w"are $A$ reduzibel mit $M_1 = \{ i_0 \}, \ M_2 = I \setminus \{ i_0 \}$ 
+F"ur $i=i_0$ folgt dann also $\vert v_{i_0} \vert < 1$.  \\
+Nun sei $M_1 = \{ i \in I: \ \vert v_i \vert = 1 \}$ und $M_2 = I \setminus M_1$. \\
+Dann ist $M_1 \neq \emptyset$ nach Vor. $\vert v \vert_\infty = 1$. Sei $i \in M_1$. Weil nicht $A_{ij} = 0$ f"ur alle $j \in M_2$ gelten kann, kann man $\vert v_i \vert < 1$ wie oben zeigen. $\lightning$
+\\ \\
+\emph{Gau"s-Seidel-Verfahren:} W"ahle $\lambda, v$ wie oben f"ur $T = T_{GS}$ \\
+F"ur $T$ gilt: 
+$$ (Tv)_i = \sum\limits_{j=1}^{i-1} \frac{A_{ij}}{A_{ii}} (Tv)_j + \sum\limits_{j=i+1}^n \frac{A_{ij}}{A_{ii}} \cdot v_j$$
+Mit Induktion folgt: $\vert (Tv)_j \vert \leq 1$ f"ur $j \in I$. \\
+Damit $\vert (Tv)_j \vert = \vert \lambda v_j \vert = \vert \lambda \vert \cdot \vert v_j \vert \leq \vert v_j \vert \Rightarrow \vert \lambda \vert \leq 1$ \\
+Somit
+$$\vert (Tv)_i \vert \leq \sum\limits_{j=1}^{i-1} \Big\vert \frac{A_{ij}}{A_{ii}} \underbrace{(Tv)_j}_{\leq 1} \Big\vert + \sum\limits_{j=i+1}^n \left\vert \frac{A_{ij}}{A_{ii}} \right\vert \underbrace{v_j}_{\leq 1} \leq \sum\limits_{\genfrac{}{}{0pt}{}{j=1}{j \neq i}}^n \left\vert \frac{A_{ij}}{A_{ii}} \right\vert$$
+Dann geht der Beweis wie oben.
+\end{iaufz}
+\end{Bew}
+
+\subsubsection{Konvergenzsatz des SOR-Verfahrens}
+
+\begin{Satz}
+Es sei $A \in \RR^{n,n}$ mit $A_{ij} \neq 0, \ i=1, \ldots, n$ mit $T_{GS,\omega}$ sei die Iterationsmatrix des SOR-Verfahrens. Dann gilt:
+\begin{1aufz}
+\item $$\varrho(T_{GS, \omega}) \geq \vert \omega - 1 \vert$$D.h. SOR konvergiert h"ochstens f"ur $\omega \in (0,2)$
+\item Ist $A$ spd, so gilt:
+$$\varrho(T_{GS, \omega}) < 1 \quad \mathrm{f"ur \ } \omega \in (0,2)$$
+\end{1aufz}
+\end{Satz}
+\begin{Bew}
+\begin{1aufz}
+\item $T = T_{GS, \omega}$ hat die Form
+\begin{eqnarray*}
+T & = & Id - \omega(Id - \omega L)^{-1}D^{-1}A \\
+& = & (Id - \omega L)^{-1}(Id - \omega L - \omega D^{-1} A) \\
+& = & (Id - \omega L)^{-1}((1- \omega) Id + \omega R)
+\end{eqnarray*}
+$\det(T) = \det((Id - \omega L)^{-1})\cdot \det((1 - \omega) Id + \omega R) = (1- \omega)^n$. \\ Wegen $\det(T) = \prod\limits_{i=1}^n \lambda_i$ folgt: es ex ein $i_0 \in I$ mit $\varrho(T) \geq \vert \lambda_{i_0} \vert \geq \vert \omega - 1\vert$.
+\item Aufw"andig.
+\end{1aufz}
+\end{Bew}
+
+\paragraph{Bemerkung}
+Konvergenzkriterium ist unabh"angig von der Nummerierung.
+
+\subsubsection{Konvergenz des SSOR}
+
+\begin{Satz}
+Sei $A \in \RR^{n,n}$ spd. Zu $\omega \in \RR$ sei \\
+$T_{GS, \omega}^+$: SOR-Operator mit Durchlauf $i=1, \ldots, n$ \\
+$T_{GS, \omega}^-$: SOR-Oporator mit Durchlauf $i=n, \ldots, 1$ \\
+Dann ist die Iterationsmatrix des SSOR-Verfahrens durch $\delta_\omega = T_{GS, \omega}^- \cdot T_{GS, \omega}^+$ gegeben. Es gilt:
+$$ \varrho(\delta_\omega) \geq \vert \omega - 1 \vert^2 \mathrm{\ und \ } \varrho(\delta_\omega) < 1 \mathrm{ \ f"ur \ } \omega \in (0,2)$$
+\end{Satz}
+\begin{Bew}
+Korollar zum letzten Theorem
+\end{Bew}
+
+\subsubsection{Beispiele}
+
+$A := tridiag(-1,2,-1)$. \\
+Mit $h := \frac{1}{n+1}$ erhalten wir die Eigenwerte $\lambda_k = 2(1 - \cos(k \pi h))$
+Wir suchen $\varrho(T)$ f"ur verschiedene Verfahren:
+\begin{1aufz}
+\item Jakobi-Verfahren: \\
+$T_J = Id - D^{-1}A = Id - \frac{1}{2}A$ \\
+Eigenwerte: $\lambda_{J,k} = 1 - \frac{1}{2} \lambda_k = \cos (k \pi h)$ \\
+Bild \\
+$\Rightarrow \varrho(T_J) = \cos (\pi h) = 1 - \frac{1}{2} (\pi h)^2 + \O(h^4) = 1 - \frac{1}{2} \frac{\pi^2}{n^2} + \O(n^{-3})$ \\
+\item Gau"s-Seidel-Verfahren: \\
+F"ur die Komponenten von $T_{GS} \cdot u$ gilt: \\
+$$(T_{GS} u)_l = \frac{1}{2} ((T_{GS} u)_{l-1}+ u_{l+1})$$
+Ist $T_{GS} u = \lambda_{GS} u$, so folgt:
+\begin{eqnarray*}
+\lambda_{GS} u_l & = & \frac{1}{2} (\lambda_{GS} u_{l-1} + u_{l+1}) \quad \vert \cdot \lambda_{GS}^{-\frac{l+1}{2}} = \sqrt{\lambda_{GS}}^{-(l+1)} \\
+\Leftrightarrow \sqrt{\lambda_{GS}}^{-l+1} u_l & = & \frac{1}{2} ( \sqrt{\lambda_{GS}}^{-l+1} u_{l-1} + \sqrt{\lambda_{GS}}^{-l-1} u_{l+1} ) \\
+\Leftrightarrow \sqrt{\lambda_{GS}} v_l & = & \frac{1}{2} (v_{l-1} + v_{l+1}) = (T_J v)_l
+\end{eqnarray*}
+Ist $\lambda_J$ Eigenwert von $T_J$, so ist $\lambda_J^2$ Eigenwert von $T_{GS}$ \\
+$$ \varrho(T_{GS}) = \cos(\pi h)^2 = (1 - \pi h + \O(h^4))^2 = 1- \pi^2 h^2 + \O (n^3)$$
+\item SOR-Verfahren: \\
+$T_\omega \equiv T_{SOR, \omega}$ ($\omega = 1: T_1 = T_{GS}$) 
+$$(T_\omega u)_l = (1 - \omega) u_l + \frac{1}{2} \omega (\lambda_\omega u_{l-1} + u_{l+1}) )$$
+$$\Rightarrow (1- \omega) u_l + \frac{1}{2} \omega \sqrt{\lambda_\omega} ( \sqrt{ \lambda_\omega} u_{l-1} + \frac{1}{\sqrt{\lambda_\omega}} u_{l+1} ) = \lambda_\omega u_l$$ 
+Multiplikation der Gleichung mit $\sqrt{ \lambda_\omega}^{-l}$ und Substitution von $v_l = \sqrt{\lambda_\omega}^{-l} \cdot u_l$ ergibt:
+$$(1 - \omega) v_l + \frac{1}{2} \omega \sqrt{\lambda_\omega} (v_{l-1} + v_{l+1}) = \lambda_\omega v_l$$
+$$\Rightarrow \frac{1}{\omega \sqrt{\lambda_\omega}} (\lambda_\omega + \omega - 1) v_l = \frac{1}{2} (v_{l-1} + v_{l+1})$$
+D.h. $\lambda \omega \in \spec( T_\omega ) \Rightarrow \frac{1}{\omega \sqrt{\lambda_\omega}} (\lambda_\omega + \omega - 1) \in \spec(T_J) = \{ \cos(k \pi h): \ k=1, \ldots, n \}$ \\
+$$\Rightarrow (\sqrt{\lambda \omega})^2 - \omega \cos(k \pi h) \sqrt{\lambda_\omega} + \omega - 1 =0$$
+L"osung der quadratischen Gleichung ergibt die Eigenwerte des SOR-Verfahrens. \\
+($\omega = 1$: Eigenwerte des GS-Verfahrens: $\lambda_{\omega=1} = \cos(k \pi h)^2$ ) \\
+Wir berechnen nun $\omega$, so dass $\varrho(T_\omega)$ minimal ist. \\
+Bild \\
+Es folgt:
+\begin{eqnarray*}
+\omega_\mathrm{opt} & = & \frac{2}{1 + \sqrt{1- \varrho(T_J)^2}} \geq 1 \\
+\varrho_\mathrm{opt} & = & \omega_\mathrm{opt} -1
+\end{eqnarray*}
+F"ur unser Beispiel und $h \rightarrow 0$:
+\begin{eqnarray*}
+1 - \varrho(T_J)^2 & \approx & 1- (1- \frac{1}{2} \pi^2 h^2)^2 \approx \pi^2 h^2 \\
+\omega_\mathrm{opt} & = & \frac{2}{1+ \pi h} \approx 2(1 - \pi h) \\
+\varrho_\mathrm{opt} & \approx & 1 - 2 \pi h
+\end{eqnarray*}
+\end{1aufz}
+
+\subsubsection{Konsistent geordnete Matrizen}
+\begin{Def}
+$A \in \RR^{n,n}$ hei"st \emph{konsistent geordnet}, wenn gilt: bzgl. der Zerlegung $A = D(Id - L - R)$ sind die Eigenwerte von $\alpha L + \frac{1}{\alpha}R$ unabh"angig von $\alpha \in \CC \setminus \{ 0 \}$
+\end{Def}
+
+\begin{Satz}
+F"ur konsistent geordnete Matrizen $A$ mit $A_{ii} \neq 0$ und $\spec(T_J) \subset (-1,1)$ gilt
+$$\varrho( T_{GS} ) = \varrho (T_J)^2$$
+und f"ur das SOR-Verfahren gilt
+\begin{eqnarray*}
+\omega_\mathrm{opt} & = & \frac{2}{1 + \sqrt{1 - \varrho(T_J)^2}} \in (1,2) \\
+\varrho_\mathrm{opt} & = & \omega_\mathrm{opt} - 1
+\end{eqnarray*}
+\end{Satz}
+\begin{Bew}
+"UA
+\end{Bew}
+
+\paragraph{Beispiele konsistent geordneter Matrizen:}
+\begin{itemize}
+\item Tridiagonalmatrizen 
+\item Block-Tridiagonalmatrizen
+\item Zwei-zyklische oder Red-Black-Matirzen
+\end{itemize}
+$A$ hei"st \emph{zwei-zyklisch} oder \emph{red-black-Matrix}, falls es eine Permutation gibt, so dass $A$ auf die Form $\left[ \begin{smallmatrix} D_1 & * \\ * & D_2 \end{smallmatrix} \right]$ mit Diagonalmatrizen $D_1, D_2$ gebracht werden kann.
+
+\subsubsection{Rechenaufwand}
+\begin{1aufz}
+\item Es sei $\varrho = \varrho(T) < 1$ und $\compl(T) \approx \compl(A)$. Der Aufwand zur Fehlerreduktion um den Faktor $\tau \in (0,1)$ sei die Anzahl der Rechenoperationen um $u_m$ mit 
+$$ \vert u_m - u_* \vert \leq \tau \vert u_0 - u_* \vert$$
+($Au_* =b$) zu erhalten. \\
+Wir erhalten $\frac{\vert u_m - u_* \vert }{\vert u_0 - u_* \vert } \leq \varrho^m \stackrel{!}{\leq} \tau$. \\
+$\Rightarrow m \cdot \log(\varrho) \leq \log( \tau)$ \
+$\Rightarrow m \geq \frac{ \log(\tau) }{\log( \varrho)} = \frac{ \log(1/ \tau) }{ \log (1 / \varrho)}$ \\
+Aufwand$:= m \cdot \compl( T) \approx m \cdot \compl (A)$  \\
+$\compl(A) \sim n$
+$$ \log(1 / \varrho) = \vert \log (\varrho) \vert \approx \vert \log ( 1 - \frac{1}{2} \pi^2 h^2 ) \vert \approx \frac{1}{2} \pi^2 h^2 \approx \frac{1}{2} \frac{\pi^2}{n^2} $$
+f"ur das Beispiel aus 3.7 \\
+\begin{eqnarray*}
+\Rightarrow \mathrm{Aufwand}_J & \sim & n \cdot n^2 \cdot \log (1/ \tau) \sim n^3 \cdot \log(1/\tau) \\
+\mathrm{Aufwand}_{GS} & \approx & \frac{1}{2} \cdot \mathrm{Aufwand}_J \sim n^3 \cdot \log(1/\tau) \\
+\mathrm{Aufwand}_{SOR} & \sim & n \cdot \frac{ \log(1/\tau) }{h} \sim n^2 \cdot \log(1/\tau) \sim \frac{1}{n} \cdot \mathrm{Aufwand}_{GS}
+\end{eqnarray*}
+\item SSOR-Verfahren ist nicht schneller als das Gau"s-Seidel-Verfahren:
+$$ \varrho(\delta_\omega) = \varrho(T_{GS,\omega(2-\omega)}) \geq \varrho(T_{GS,1})$$
+\item Diagonaldominante $A$, $A = \tridiag(-1,a,-1)$ mit $a > 2$. Dann wird $\varrho(T_J) = 2/a < 1$ unabh"angig von $n$. Der Aufwand ist dann $\sim n \cdot log(1/\tau)$
+\end{1aufz}
+\paragraph*{Beispiel:}
+\begin{eqnarray*}
+\partial_t u - u'' & = & 0 \ \mathrm{in \ } (0,1) \\
+u(t,0) = u(t,1) & = & 0 \ \forall t > 0 \\
+u(0,x) & = & \varphi(x) \ \forall x \in (0,1)
+\end{eqnarray*}
+Wir diskretisieren: 
+$$ \partial_t u(t,x) \approx \frac{u(t,x) - u(t - \Delta t, x)}{\Delta t} $$
+Mit $u_i^k \approx u(t_k, x_i), \ t_k = k \Delta t, \ x_i = ih$\\
+$$ \frac{u_i^{k+1} - u_i^k}{\Delta t} + \frac{1}{h^2} ( - u_{i+1}^{k+1} + 2u_i^{k+1} - u_{i-1}^{k+1} ) = 0$$
+In Matrixschreibweise:
+$$ \left( Id_n + \frac{\Delta t}{h^2} \tridiag_n (-1, 2, -1) \right) u^{k+1} = u^k \quad (*)$$
+wobei $u^k = \left[ u_i^k \right]_{i=1, \ldots, n}$ \\
+$u^0$ (Startwert: $u_i^0 = \varphi(x_i))$ \\
+$\rightarrow u^1$ (L"ose $*$ f"ur $k=0$) \\
+$\rightarrow u_2$ (L"ose $*$ f"ur $k=1$) \\
+$\rightarrow \ldots$ \\
+\\
+Matrix in $(*)$ (Mult mit $\frac{h^2}{\Delta t}$ )\\
+$\tridiag_n (-1, \underbrace{ 2 + \frac{h^2}{\Delta t}}_{=: a > 2}, -1)$
+
+\paragraph*{Zusatz: 2D-Fall}
+Bsp.: $\left[ \begin{smallmatrix} & -1 \\ -1 & 4 & -1 \\ & -1 \end{smallmatrix} \right]$ auf $[0,1]^2$ mit lexikographischer Anordnung. \\
+Sei $n$ Anzahl der Punkte in einer Raumrichtung, $N = n^2$, $h = \frac{1}{n+1} \approx \frac1n = \frac{1}{\sqrt{N}}$
+\begin{eqnarray*}
+\varrho_J & = & 1 - \O(h^2) = 1 - \O \left( \frac1N \right) \\
+\varrho_\mathrm{GS} & = & 1 - \O (h^2) = 1 - \O \left( \frac 1N \right) \\
+\varrho_\mathrm{opt} & = & 1 - \O(h) = 1 - \O \left( \frac{1}{\sqrt{N}} \right)
+\end{eqnarray*}
+Weiter gilt:
+\begin{eqnarray*}
+\mathrm{Aufwand}_J & \sim & N^2 \\
+\mathrm{Aufwand}_\mathrm{GS} & \sim & N^2 \\
+\mathrm{Aufwand}_\mathrm{opt} & \sim & N \cdot \sqrt{N} = N^{3/2}
+\end{eqnarray*}
+Gau"selimination: Bandmatrix der Breite $m = n \approx \sqrt{N}$ 
+\begin{eqnarray*}
+\mathrm{Aufwand}_\mathrm{GE} & = & m^2 N \approx N^2
+\end{eqnarray*}
+Abbruchkriterium f"ur Iterationen:
+$$ \vert u_i - u_{i+1} \vert \leq \mathrm{Tol} \quad \mathrm{oder} \quad \underbrace{ \vert Au_i - b \vert }_{\mathrm{Residuum}} \leq \mathrm{Tol} \cdot \vert b \vert$$
+wobei $\mathrm{Tol} \in \RR_+$ die "`Toleranz"' ist.
+
+\subsubsection{Idee Des Mehrgitterverfahrens}
+Problem: Aufwand ist noch $\O(n^{\kappa})$ mit $\kappa > 1$. \\
+Wir suchen schnelle L"oser: $\kappa = 1$. \\
+Ged"ampftes Jakobi-Verfahren mit $\omega = 1/2$.
+$$ T_J = Id - \frac{1}{2}(\frac{1}{2})A = Id - \frac14 A$$
+im Beispiel aus 3.7.
+Dann ist 
+$$ \spec(T_{J,1/2}) = \left\{ 1 - \frac14 \lambda: \ \lambda \in \spec(A) \right\} = \left\{ \frac{1}{2} ( 1 + \cos ( k \pi n)): \ k=1, \ldots, n \right\}$$
+F"ur den Fehlervektor $e_{i+1}$ gilt: $e_{i+1} = T_{J, 1/2} e_i$. Sei $\{ s_l \}_{l=1, \ldots, n}$ Eigenbasis von $A$. Stelle $e_i$ als Linearkombination der $s_i$ dar: \\
+$$ e_i = \sum\limits_{l=1}^n \alpha_l^{(i)} s_l $$ 
+Dann folgt f"ur $i+1$:
+$$e_{i+1} = T_{J, 1/2} \,e_i = \sum\limits_{l=1}^n \lambda_l \alpha_l^{(i)} s_l $$
+Sei nun $n$ gerade. Wir definieren
+\begin{align}
+e_i^\mathrm{NF} & := \sum\limits_{l=1}^{n/2} \alpha_l^{(i)} s_l  \tag{Niederfrequenter Anteil}\\
+e_i^\mathrm{HF} & := \sum\limits_{l=\frac n2 +1}^n \alpha_l^{i)} s_l \tag{Hochfrequenter Anteil}
+\end{align}
+Bilder \\
+Es gilt:
+\begin{eqnarray*}
+\left\vert T_J \, e_i^\mathrm{NF} \right\vert & \leq & \left\vert e_i^\mathrm{NF} \right\vert \\
+\left \vert T_J \, e_i^\mathrm{HF} \right\vert & \leq & \frac12 \left\vert e_i^\mathrm{HF} \right\vert 
+\end{eqnarray*}
+Idee: Verwende 2 L"oser, einen f"ur den NF-Anteil und ged"ampftes Jakobi-Verfahren f"ur den HF-Anteil \\
+Bildchen \\
+NF-L"oser ist ein direktes Verfahren auf den Knoten echt unterhalb des feinsten Levels. \\
+Trick: Verfahre analog f"ur das Grobgitterproblem. Hierzu wird Jakobi heute noch verwendet. \\
+Theorie: $N$-unabh"angige Konvergenzrate. \\
+Entwicklung des Mehrgitter-Verfahrens: 1965-1990.
+
+
+\subsection{Das CG-Verfahren}
+
+\subsubsection{Das Gradientenverfahren}
+\begin{Def}
+Sei $A \in \RR^{n,n}$ spd und $b \in \RR^n$ beliebig. Dann hei"st die Abbildung $\varepsilon: \RR^n \longrightarrow \RR$ def. durch
+$$ \varepsilon(v) := v\cdot A v - b\cdot v$$
+die Energie.
+\end{Def}
+$\varepsilon$ ist strikt konvexe, nach unten beschr"ankte Funktion mit $\lim\limits_{\vert v \vert \rightarrow \infty} \varepsilon(v) = \infty$. Weiter gilt $\varepsilon'' = A$ \\
+Bildchen \\
+Also hat $\varepsilon$ ein eindeutiges Minimum in $u_*$ und dies ist ist charakterisiert durch $\varepsilon'(u_*)[d] = 0 \ \forall d \in \RR^n$. Es gilt:
+$$\varepsilon'(v) d = (Av - b) \cdot d \quad \forall d \in \RR^{n}$$
+Also folgt:
+$$ \varepsilon'(u_*) = 0 \Leftrightarrow Au_* = b$$
+Idee: konstruiere Folge $\{ u_k \}_k$, so dass $\varepsilon(u_{k+1}) < \varepsilon(u_k)$ ist mit $\lim\limits_{k \rightarrow \infty} \varepsilon(u_k) = \min\limits_{v \in \RR^n} \varepsilon(v) = \varepsilon(u_*)$ \\
+Der steilste Ansteig in $u_k$ ist 
+$$ - \nabla \varepsilon(u_k) = - (Au_k - b) =: -r_k $$
+Ansatz f"ur $k$-ten Schritt:
+$$ u_{k+1} = u_k - \alpha_k r_k$$
+Mit $\alpha_k \in \RR$. Bestimme $\alpha_k$ wie folgt: Def.
+$$ \Phi(\alpha) := \varepsilon(u_k - \alpha r_k) \quad (\alpha \in \RR)$$
+$\Phi$ ist nach unten beschr"ankt und strikt konvex mit $\lim\limits_{\vert v \vert \rightarrow \infty} \Phi(\alpha) = \infty$
+Daher ex. $\alpha_k$ mit $\Phi(\alpha_k) = \min\limits_{\alpha \in \RR} \Phi(\alpha)$ und es gilt: $\Phi'(\alpha_k) = 0$.
+\begin{eqnarray*}
+0 \stackrel{!}{=} \Phi'(\alpha_k) & = & \varepsilon'(u_k - \alpha_k r_k) \cdot (-r_k) \\
+& = & \big( A (u_k - \alpha_k r_k) - b \big) \cdot (-r_k) \\
+& = & -( r_k - \alpha_k A r_k ) \cdot r_k \\
+& = & - r_k \cdot r_k + \alpha_k A r_k \cdot r_k
+\end{eqnarray*}
+$\displaystyle \Rightarrow \alpha_k = \frac{\vert r_k \vert^2}{A r_k \cdot r_k}$ \\
+Denn: $r_k \cdot A r_k \stackrel{!}{=} 0 \Rightarrow r_k = 0 \Rightarrow Au_k = b$. Fertig!
+
+\begin{Satz}
+Sei $A$ spd, $(v,w)_A := Av \cdot w$, $\Vert v \Vert_A := (v,v)_A^{1/2}$ \\
+Ist $Au = b$ und $u_0 \in \RR^n$, so konvergiert die Folge $\{ u_k \}_k$ mit 
+$$ u_{k+1} = u_k - \frac{ \vert r_k \vert ^2}{\Vert r_k \Vert_A^2 } r_k, \quad k \geq 0, \ r_k = Au_k - b$$
+gegen $u$ und es gilt:
+\begin{eqnarray*}
+\Vert u_{k+1} - u \Vert_A \leq \frac{\kappa - 1}{\kappa + 1} \Vert u_k - u \Vert_A = \left( 1 - \frac{2}{\kappa + 1} \right) \Vert u_k - u \Vert_A
+\end{eqnarray*}
+wobei $\kappa = \cond_2(A) = \frac{\lambda_\mathrm{max}}{\lambda_\mathrm{min}}$. Bea.: $\Vert . \Vert$ hei"st \emph{Energienorm}.
+\end{Satz}
+
+\subsubsection{Fehlerminimierung auf Unterr"aumen}
+Algorithmus in 4.1 (CG-Verfahren) ist zu langsam. \\
+Idee: $\{ V_k \}_{k=1,\ldots, n}$ sei eine Folge von Unterr"aumen des $\RR^n$ mit $\dim V_k = k$. \\
+Ausgehend von $u_0 \in \RR^n$ machen wir den Ansatz
+$$u_{k+1} = u_k + p_{k+1} \quad \mathrm{mit \ } p_{k+1} \in V_{k+1}$$
+Wir definieren $p_{k+1}$ durch 
+$$\Vert e_{k+1} \Vert_A = \Vert e_k + p_{k+1} \Vert_A \stackrel{!}{=} \min\limits_{p \in V_{k+1}} \Vert e_k + p \Vert_A.$$
+Wegen $0 \in V_{k+1}$ gilt
+$\Vert e_{k+1} \Vert_A \leq \Vert e_k \Vert_A$
+und mit $V_n = \RR^n$ ist $u_n = u$ die L"osung. \\
+Wir definieren $\Phi: V^{k+1} \longrightarrow \RR$ durch
+$$\Phi(p) := \Vert e_k + p \Vert_A^2 \quad (p \in V^{k+1})$$
+$\Phi$ ist strikt konvex und es gilt $\Phi(p) \rightarrow \infty (\vert p \vert \rightarrow \infty)$. Das Minimum in $p_{k+1}$ ist vollst"andig charakterisiert durch
+\begin{eqnarray*}
+0 & \stackrel{!}{=}  & ( \nabla \Phi(p_{k+1}), q)_A \\
+& = & 2 (e_k + p_{k+1}, q)_A \\
+& = & 2(e_{k+1}, q)_A \quad \forall q \in V_{k+1}
+\end{eqnarray*}
+$\Rightarrow (e_{k+1},q)_A = 0$ f"ur alle $q \in V_{k+1}$. Wir nennen diese Eigenschaft von $e_{k+1}$ \emph{$A$-Orthogonalit"at} von $e_{k+1}$ und $V_{k+1}$ (Schreibweise $e_{k+1} \bot_A V_{k+1}$)
+
+\subsubsection{Krylovr"aume}
+F"ur die Idee aus 4.2 w"ahlen wir zu $d_0 \in \RR^n \setminus \{ 0 \}$ die R"aume
+$$ V_k \equiv V_k(A, d_0) = \spann \{ d_0, Ad_0, \ldots, A^{k-1} d_0 \} \quad (k \geq 1)$$
+Wir nehmen erstmal an, dass $\dim V_k = k$ ist. Wir errichten nun auf $V_k$ eine orthogonale Basis mit dem Gram-Schmidt-Verfahren ausgehend von $d_0$. Ansatz:
+$$ d_{k+1} = A d_k - \sum\limits_{l=0}^k \sigma_{kl} d_l$$
+Bestimme die $\sigma_{kl}$ durch die Forderung $(d_{k+1}, d_j)_A = 0 \ j=0, \ldots, k$. (Tats"achlich ben"otigt man nur $\sigma_{kk}$ und $\sigma_{k,k-1}$). Es gilt
+$$ V_k = \spann \{ d_0, \ldots, d_{k-1} \}$$ 
+und $Ad_k$ ist genau dann linear unabh"angig von $\{ d_0, \ldots, d_k \}$ solange $A^{k+1} d_0 \notin \spann \{ d_0, \ldots, A^k d_0 \}$ ist.
+\begin{Bew}
+Dazu: $d_1 \in Ad_0 + \spann\{ d_0 \} = Ad_0 + V_1 \subset V_2$ \\
+I.V.: $d_k \in A^k d_0 + \spann \{ d_0 , \ldots, d_{k-1} \} \subset A^k d_0 + V_k \Rightarrow Ad_k \in A^{k+1} d_0 + A V_k \subset V_{k+1}$
+\end{Bew}
+\subsubsection{Das CG-Verfahren nach Hestenes/ Stiefel (1954)}
+Idee aus 4.3 aber mit einer Modifikation, die die Zahl der Koeffizienten reduziert. \\
+$u_0 \in \RR^n$, $r_0 = Au_0 - b =: d_0$,
+$$d_{k+1} = r_{k+1} + \sum\limits_{l=0}^k \sigma_{kl} d_l \quad (k \geq 0)$$
+
+\begin{Lemma}
+$$\spann \{ d_l: \ l=0, \ldots, k \} \subset V_{k+1} (A, r_0) \equiv V_{k+1}$$
+\end{Lemma}
+\begin{Bew}
+$k=1$: $\spann \{ d_0 \} = \spann \{ r_0 \} = V_1$ \\
+Ann.: $\spann \{ d_l: \ l=0, \ldots, k \} \subset V_{k+1} \stackrel{!}{\Rightarrow} d_{k+1} \in V_{k+2}$ 
+\begin{eqnarray*}
+d_{k+1} \in r_{k+1} + \spann \{ d_0, \ldots, d_k \} & \stackrel{\mathrm{I.V.}}{=} & A u_{k+1} - b + V_{k+1} \\
+& \subset & A(u_k + V_{k+1}) - b + V_{k+1} \\
+& = & \underbrace{r_k}_{\in V_{k+1}} + A \, V_{k+1} + V_{k+1} \\
+& = & A \, V_{k+1} + V_{k+1} \subset V_{k+2}
+\end{eqnarray*}
+\end{Bew}
+
+\paragraph{Konstruktion des Verfahrens} \ \\
+Es gelte $e_k \bot_A V_k$, $(d_i, d_j)_A = 0$ f"ur $i,j \leq k, i \neq j$. \\
+Geforderte Minimalit"at des Fehlers:
+\begin{eqnarray*}
+0 \stackrel{!}{=} (e_{k+1}, d_j)_A & = & A \, e_{k+1} \cdot d_j \\
+& = & A(u_{k+1} - u) \cdot d_j \\
+& = & r_{k+1} \cdot d_j \quad (j=0, \ldots, k)
+\end{eqnarray*}
+Weiter
+$$ 0 = r_{k+1} \cdot Ad_i = (r_{k+1}, d_i)_A \quad (i=0, \ldots, k-1)$$
+Berechnung der $\sigma_{kl}$ f"ur $j=0, \ldots, k-1$:
+$$ 0 \stackrel{!}{=} (d_{k+1}, d_j)_A \stackrel{\mathrm{orth.}}{=} \underbrace{(r_{k+1}, d_j)_A}_{=0} + \sigma_{kj} \Vert d_j \Vert_A^2$$
+$\Rightarrow \sigma_{kj} = 0$ f"ur $j = 0, \ldots, k-1$. \\
+Es bleibt $j=k$:
+$$ 0 \stackrel{!}{=} (d_{k+1}, d_k )_A = (r_{k+1}, d_k)_A + \sigma_{kk} \Vert d_k \Vert_A^2$$
+$\Rightarrow \beta_k := \sigma_{kk} = -\frac{ (r_{k+1}, d_k)_A}{\Vert d_k \Vert_A^2} \ \Rightarrow d_{k+1} = r_{k+1} + \beta_k d_k$ \\
+Aus $e_k \bot_A V_k$ folgt 
+\begin{eqnarray*}
+(e_k, d_k)_A & = & (e_k, r_k)_A + \beta_{k-1} (e_k, \underbrace{d_{k-1})_A}_{\in V_k} \\
+& = & (e_k, r_k)_A = A e_k \cdot r_k = \vert r_k \vert ^2
+\end{eqnarray*}
+Orthogonalisierung des Fehlers $e_{k+1}$
+$$0 = (e_{k+1}, d_j)_A \ \mathrm{f"ur \ } j<k$$
+$\Rightarrow (e_k + p_{k+1}, \underbrace{d_j}_{\in V_k})_A = (p_{k+1}, d_j)_A$ f"ur $j<k$. Also $p_{k+1} \sim d_k$, etwa $p_{k+1} = \alpha_k d_k$ und damit
+$$ (*) \ u_{k+1} = u_k - \alpha_k d_k$$
+$\alpha_k$ folgt aus
+\begin{eqnarray*}
+(e_{k+1}, d_k)_A & = & (e_k - \alpha_k d_k, d_k)_A \\
+& = & (e_k, d_k)_A - \alpha_k \Vert d_k \Vert^2 \\
+& = & \vert r_k \vert ^2 - \alpha_k \Vert d_k \Vert_A^2
+\end{eqnarray*}
+$\Rightarrow \alpha_k = \frac{ \vert r_k \vert ^2 }{ \Vert d_k \Vert_A^2}$ \\
+Damit l"asst sich $\beta_k$ eleganter schreiben: aus $(*)$ folgt:
+$$r_{k+1} = r_k - \alpha_k A d_k$$
+Dann ist 
+\begin{eqnarray*}
+(r_{k+1}, d_k)_A & = & r_{k+1} \cdot A d_k \\
+& = & r_{k+1} \cdot \left( - \frac{1}{\alpha_k} (r_{k+1} - r_k) \right) \\
+& = & - \frac{ \Vert d_k \Vert_A^2}{ \vert r_k \vert^2} ( \vert r_{k+1} \vert ^2 - \underbrace{r_{k+1}\cdot r_k }_{=0 (z.z.)} ) 
+\end{eqnarray*}
+und es folgt $\beta_k = - \frac{ (r_{k+1}, d_k)_A}{ \Vert d_k \Vert_A^2} = \frac{ \vert r_{k+1} \vert^2 }{ \vert r_k \vert^2}$ \\
+Noch z.z.: $r_{k+1} \cdot r_k = 0$:
+\begin{eqnarray*}
+r_{k+1} \cdot r_k & = & (r_k - \alpha_k A d_k)  \cdot r_k \\
+& =& \vert r_k \vert^2 - \alpha_k A d_k \cdot r_k \\
+& = & \vert r_k \vert ^2 - \frac{\vert r_k \vert^2 }{\Vert d_k \Vert_A^2} A d_k \cdot (d_k - \beta_{k-1} d_{k-1} ) \\
+& = & \vert r_k \vert ^2 - \vert r_k \vert^2 = 0
+\end{eqnarray*}
+
+\subsubsection*{Der Algorithmus}
+\paragraph*{Initialisierung}
+$u_0 \in \RR^n, \ r_0 = A u_0 - b, \ d_0 = r_0$
+\paragraph*{Iteration $k \geq 0$}
+\begin{eqnarray*}
+\alpha_k & = & \frac{\vert r_k \vert^2}{d_k \cdot A d_k} = \frac{ \vert r_k \vert^2}{\Vert d_k \Vert^2_A} \\
+u_{k+1} & = & u_k - \alpha_k d_k \\
+r_{k+1} & = & r_k - \alpha_k A d_k \\
+\beta_k & = & \frac{ \vert r_{k+1} \vert^2 }{\vert r_k \vert^2 } \\
+d_{k+1} & = & r_{k+1} + \beta_k d_k
+\end{eqnarray*}
+Wohldefiniert? \\
+$r_k = 0 \Leftrightarrow A u_k = b \ \checkmark$ \\
+$d_{k+1} = 0$ ? \\
+Dann w"are $\sum\limits_{j=0}^{k+1} \gamma_j A^j d_0 = 0$ f"ur $\gamma \in \RR^{k+2} \setminus \{ 0 \}$ \\
+$\gamma_0 \neq 0$: $\underbrace{d_0}_{=r_0} = \sum\limits_{j=1}^{k+1} \frac{\gamma_j}{\gamma_0} A^j d_0$ 
+$$\Rightarrow e_0 = A^{-1} r_0 = A^{-1} d_0 = - \sum\limits_{j=0}^k \frac{\gamma_{j-1}}{\gamma_0} A^j d_0 \in V_{k+1}$$
+Folgt genauso, falls $\gamma_0 = 0$ und $\gamma_1 \neq 0$ w"are. 
+$$e_{k+1} = e_k + p_{k+1} = e_{k-1} + p_k + p_{k+1} = \ldots \in e_0 + V_{k+1} \subseteq V_{k+1} \ \mathrm{da \ } e_0 \in V_{k+1}$$
+$\Rightarrow e_{k+1} = 0$, da $e_{k+1} \bot_A V_{k+1}$
+
+\paragraph*{Aufwand}
+\begin{tabular}{c | c | c | c}
+MV & VV & SV & Speicher \\
+\hline $1$ & $2$ & $3$ & $3N$
+\end{tabular}
+\begin{itemize}
+\item MV $\hat=$ Matrix * Vektor 
+\item VV $\hat=$ Skalarprodukte 
+\item SV $\hat=$ Skalar * Vektor 
+\item Speicher: zus"atzlicher Speicher
+\end{itemize}
+
+\subsubsection{Konvergenz des CG-Verfahrens}
+Ausgangspunkt:
+$$\Vert e_k \Vert_A = \min\limits_{p \in V_k} \Vert e_{k-1} + p \Vert_A$$
+$V_k = \spann \{ d_0, \ldots, A^{k-1} d_0 \}$. Aus $u_k \in u_0 + V_k$ folgt $e_k \in e_0 + V_k$ 
+$$\Rightarrow e_k = e_0 + \sum\limits_{j=0}^{k-1} u_{kj} A^j d_0$$
+f"ur geeignete $u_{kj}$. Es ist $d_0 = r_0 = Ae_0$, also gilt
+$$e_k = e_0 + A\cdot \sum\limits_{j=0}^{k-1} u_{kj} \cdot A^j e_0$$
+Es gibt also ein Polynom $q_k \in \PP_k^* = \{ q \in \PP_k: \ q(0) = 1 \}$ mit $e_k = q_k(A) e_0$. D.h. wir k"onnen auch schreiben
+$$ \Vert e_k \Vert_A = \min\limits_{q \in \PP_k^*} \{ \Vert q(A) e_0 \Vert_A \}$$
+$A$ spd $\Rightarrow$ $\exists$ ONB $\{ z_l \}_l$ mit $A z_l = \lambda_l z_l$, $\lambda_l$ die Eigenwerte von $A$. Dann gilt etwa
+$$ q(A) e_0 = q(A) \sum\limits_{l=1}^n \alpha_l z_l = \sum\limits_{l=1}^n \alpha_l q(\lambda_l) z_l$$
+F"ur den Fehler $e_k$ gilt:
+\begin{eqnarray*}
+\Vert e_k \Vert_A^2 & = & \sum\limits_{l=1}^n \alpha_l^2 q_k(\lambda_l)^2 \\
+& \leq & \max \{ \vert q_k(\lambda_l) \vert^2 \} \cdot \sum\limits_{l=1}^n \alpha_l^2 \\
+& \leq & \max\limits_{\lambda \in \, \spec(A)} \{ \vert q_k(\lambda) \vert^2 \} \cdot \Vert e_0 \Vert_A^2
+\end{eqnarray*}
+Wir nehmen an, dass $\spec(A) \subset [a,b] \subset \RR_+$ ist. Dann ist 
+$$\max\limits_{\lambda \in \spec(A)} \{ \vert q_k (\lambda)^2 \} \leq \max\limits_{\lambda \in [a,b]} \{ \vert q_k(\lambda) \vert^2 \}$$
+Insgesamt ist
+$$ \Vert e_k \Vert_A^2 \leq \min\limits_{q \in \PP_k^*} \max\limits_{\lambda \in [a,b]} \vert q(\lambda)^2 \cdot \Vert e_0 \Vert_A^2$$
+Den Vorfaktor nennen wir $\varrho^2_{a,b,k}$ \\
+Bildchen \\
+Die L"osung ist lange bekannt, es gilt:
+$$\varrho_{a,b,k} \leq 2 \left( \frac{ \sqrt{\kappa} - 1}{ \sqrt{\kappa} + 1} \right)^k \mathrm{ \ mit \ } \kappa = b/a > 1$$
+$\kappa = 1 \Rightarrow b=a \Rightarrow A \sim Id$. \\
+Optimal: $a = \lambda_\mathrm{min}(A), \ b = \lambda_\mathrm{max}(A)$ \\
+$\Rightarrow \kappa$ ist die Kondition $\cond_2(A)$
+
+\begin{Satz}
+Das CG-Verfahren f"ur eine symmetrisch positive Matrix $A$ konvergiert f"ur alle Startwerte wenigstens linear, d.h.
+$$\Vert u_k - u \Vert_A \leq 2 \left( \frac{ \sqrt{\kappa} - 1 }{\sqrt{ \kappa} + 1} \right)^k \Vert u_0 - u \Vert_A = 2 \left( 1 - \frac{2}{\sqrt{\kappa} + 1} \right)^k \Vert u_0 - u \Vert_A$$
+\end{Satz}
+\begin{Bew}
+ÜA: Das Problem wird gel"ost von $q_k(x) = \frac{ T_k \left( \frac{b+a-2 x}{b-a} \right) }{ T_k \left( \frac{ b+a }{b-a} \right)}$, d.h
+$$ \max_{\lambda \in [a,b]} \vert q_k(\lambda) \vert^2 = \min_{q \in \PP_k^*} \min_{\lambda \in [a,b]} \vert q(\lambda) \vert^2$$ 
+$T_k$ ist das \emph{$k$-te Tschebyscheff-Polynom}:
+$$T_k(t) = \cos(k \cdot \arccos(t))$$
+Das Argument ist die Transformation $[a,b] \rightarrow [-1,1]$
+z.z.: $T_k$ ist ein Polynom: \\
+Sei $\theta := \arccos(t)$. Dann gilt:
+\begin{eqnarray*}
+T_k(t) & = & \cos(k \theta) \\
+& = & \frac12 \left( e^{ik \theta} + e^{-i k \theta} \right) \\
+& = & \frac12 \left( \left( e^{i \theta} \right)^k + \left( e^{-i \theta} \right)^k \right) \\
+& = & \frac12 \left( \left( \cos(\theta) + i \cdot \sin(\theta) \right)^k + \left( \cos (\theta) - i \cdot \sin(\theta) \right)^k \right) \\
+& = & \frac{1}{2} \cdot \sum\limits_{l=0}^k \left( \genfrac{}{}{0pt}{}{k}{l} \right) \cos(\theta)^{k-l} \left( (i \cdot \sin(\theta) )^2 + (-i \cdot \sin(\theta))^2 \right) \\
+& = & \sum\limits_{\genfrac{}{}{0pt}{}{l=0}{l \mathrm{\ gerade}}}^k \left( \genfrac{}{}{0pt}{}{k}{l} \right) {\underbrace{\cos(\theta)}_{=t}}^{k-l} \cdot {\underbrace{ (i \cdot \sin(\theta) )}_{= \sqrt{1 - t^2}}}^2 \\
+& \stackrel{l=2l'}{=} & - \sum\limits_{l'=0}^{\lfloor k/2 \rfloor} \left( \genfrac{}{}{0pt}{}{k}{2l'} \right) t^{k-2l'} (1-t^2)^{l'} \in \PP_k
+\end{eqnarray*}
+Also $q_k \in \PP_k$, $q_k(0) = 1$. F"ur $t \in [-1,1]$ ist $\vert T_k(t) \vert \leq 1$ und mit $\kappa = \frac{b}{a}$ gilt 
+$$\max\limits_{x \in [a,b]} \vert q_k(x) \vert \leq \frac{1}{T_k\left( \frac{\kappa + 1}{\kappa - 1} \right)}$$
+Aus der obigen Rechnung:
+$$T_k(t) = \frac12 \left( (t + \sqrt{t^2 - 1})^k + (t - \sqrt{t^2 - 1} )^k \right)$$ 
+Weiter gilt:
+$$ \left( \frac{\kappa + 1}{\kappa - 1} \right)^2 - 1 = \frac{ \kappa^2 + 2 \kappa + 1 - (\kappa^2 - 2 \kappa + 1)}{(\kappa - 1)^2} = \frac{4 \kappa}{(\kappa - 1)^\kappa}$$
+Insgesamt folgt:
+\begin{eqnarray*}
+T_k \left( \frac{\kappa + 1}{\kappa - 1} \right) & \geq & \frac12 \left( \frac{ \kappa + 1}{\kappa -1} + \sqrt{ \left( \frac{\kappa + 1}{\kappa - 1 } \right)^2 - 1 } \right)^k \\
+& \geq & \frac12 \left( \frac{\kappa + 1}{\kappa - 1} + \frac{2 \sqrt{\kappa}}{\kappa - 1} \right)^k \\
+& = & \frac12 \left( \frac{ ( \sqrt{\kappa} + 1)^2 }{ (\sqrt{\kappa} + 1)( \sqrt{\kappa} -1 )} \right)^k \\
+& = & \frac12 \left( \frac{ \sqrt{\kappa} + 1}{\sqrt{\kappa} - 1} \right)^k
+\end{eqnarray*}
+\end{Bew}
+
+\subsubsection{Vorkonditionierung}
+In der Praxis: $\kappa = \kappa_n \rightarrow \infty (n \rightarrow \infty)$ liefert zu langsame Konvergenz. \\
+$C$ sei spd. Dann schreiben wir
+$$CAu = Cb.$$
+Wir wenden das $CG$-Verfahren auf dieses System an. $CA$ ist i.A. nicht symmetrisch. Wir ben"otigen die Symmetrie aber nur im $(.,.)_A$-Skalarprodukt. Dies gilt: Seien $x,y \in \RR^n$:
+$$ (CAx, y)_A = A(CA)x \cdot y = CAx \cdot Ay = Ax \cdot CAy = (x, CAy)_A$$
+$\Rightarrow \mathrm{adj}_A( CA) = CA$. \\
+Damit schreibt sich das CG-Verfahren wie folgt:
+\paragraph*{Initialisierung:} \ \\
+$u_0, \ r_0 = Au_0 - b, \ d_0 = Cr_0 = h_0$ 
+\paragraph*{Iteration f"ur $k\geq 0$:} \ \\
+\begin{eqnarray*}
+\alpha_k & = & \frac{r_k \cdot h_k}{d_k \cdot A d_k} \\
+u_{k+1} & = & u_k - \alpha_k d_k \\
+r_{k+1} & = & r_k - \alpha_k A d_k \\
+h_{k+1} & = & C r_{k+1} \\
+\beta_k & = & \frac{r_{k+1} \cdot h_{k+1}}{(r_k \cdot h_k)} \\
+d_{k+1} & = & h_{k+1} + \beta_k d_k \\
+\end{eqnarray*}
+$C = Id:$ CG wie vorher. \\
+$h_{k+1} = h_k - \alpha_k$ ($Ad_k$ ist das Residuum der neuen Gleichung.) \\
+Der Krylorraum ist $V_k(CA, d_0)$ \\
+Abbruch:
+$$\sqrt{\frac{ \vert r_k \cdot h_k \vert }{b \cdot c b} } \leq \mathrm{Tol}$$
+In der Fehlerabsch"atzung steht dann $\kappa = \kappa(CA)$. \\
+Am besten: $C \approx A^{-1}$, aber auch $\compl(C) \approx \compl(A)$ - Widerspricht sich!
+
+\subsubsection*{Beispiele:}
+\begin{itemize}
+\item $C = \diag(A)^{-1}$ \\ Billig, aber nur sinnvoll, wenn die Diagonale stark variiert.
+\item $C = T$, $T$ \emph{ein} Schritt eines konvergenten iterativen Verfahrens. Etwa $T_\mathrm{SSOR}$ (symmetrisch!) \\
+Man erh"alt $\kappa = \O (\sqrt{N})$ statt $\O (N)$ f"ur das Poissonproblem auf $[0,1]^2$ \\
+oder $C = T_\mathrm{Multigrid}$ $\Rightarrow \kappa( CA ) = \O (1)$
+\end{itemize}
+
+\subsubsection*{Bemerkungen}
+\begin{itemize}
+\item Die Konvergenz des CG-Verfahrens beschleunigt im Laufe der Iteration \\
+Bildchen \\
+\item Die Konvergenz des CG-Verfahrens h"angt von der Eigenwertverteilung ab. \\ 
+Bildchen  
+\end{itemize}
+
+\subsection{GMRES (Generalized minimal residuals, 1986)}
+\subsubsection{Minmale Residuen}
+Problem: CG funktioniert nur f"ur symmetrisch positiv definite Matrizen $A$ \\
+In vielen Problemen ist $A$ weder symmetrisch noch positiv definit:
+\begin{align}
+-u'' + \beta u' & =f \tag{in $\RR$} \\
+- \Delta u + \underbrace{b \cdot \nabla u}_\mathrm{Transportterm} & =f \tag{im $\RR^d$}
+\end{align}
+Ziel: Nutze Prinzipien aus 4 \\
+Idee: $A$ invertierbar $\Rightarrow$ $A^\top A$ ist spd. \\
+$e_k$ Fehler $\Rightarrow \ \Vert e_k \Vert_{A^\top A} = \vert A e_k \vert_2 = \vert r_k \vert_2 = \vert A u_k - b \vert_2$ (i.F.: $\vert. \vert = \vert . \vert_2$) 
+$$Au = b \Rightarrow A^\top A u = A^\top b$$
+"`CG-Verfahren f"ur Normalengleichungen"' ("UA) \\
+Die Konvergenz, die sich aus den Fehlerabsch"atzungen von 4,5 ergibt, ist meist viel zu langsam: $\kappa(A^\top A) \stackrel{\mathrm{i.A.}}{\gg} \kappa(A)$. (Wir arbeiten hier auf $V_k(A^\top A)$!) \\
+Idee: Nutze $\Vert. \Vert _{A^\top A}$ f"ur den Fehler, aber minimiere auf $V_k = V_k(A, d_0)$. Finde $u_k \in u_0 + V_k$ mit $$\vert r_k \vert = \vert A u_k - b \vert = \min\limits_{v_k \in u_0 + V_k} \vert Av_k - b \vert \ (*)$$
+$V_k \in u_0 + V_k \Rightarrow v_k = u_0 + \sum\limits_{l=0}^{k-1} \alpha_l A^l r_0, \mathrm{\ falls \ } d_0 \sim r_0$ \\
+\begin{eqnarray*}
+\Rightarrow Av_k - b & = & \underbrace{A u_0 - b }_{=r_0} + A \cdot \sum\limits_{l=0}^{k-1} \alpha_l A^l r_0 \\
+& = & \left( Id + A \cdot \sum\limits_{l=0}^{k-1} \alpha_l A^l \right)r_0 \\
+& = & q(A) \, r_0 \quad \mathrm{\ mit \ einem \ } q \in \PP_k^*
+\end{eqnarray*}
+F"ur das Minimum gilt daher:
+$$ \vert r_k \vert = \min\limits_{q \in \PP_k^*} \vert q(A) \cdot r_0 \vert \leq \min\limits_{q \in \PP_k^*} \Vert q(A) \Vert_2 \vert r_0 \vert \ (**)$$
+Daraus gewinnen wir Fehlerabsch"atzungen
+\begin{Satz} (\emph{Fehlerabsch"atzung f"ur GMRES}) \\
+Sei $A \in \RR^{n,n}$ regul"ar, $u_k$ L"osung von 
+$$\vert A u_k - b \vert = \min\limits_{v_k \in u_0 + V_k} \vert A v_k - b \vert$$
+\begin{1aufz}
+\item $A$ diagonalisierbar mit $A = XDX^{-1}$, $D$ diagonal, $X,D \in \CC^{n,n}$, so gilt:
+$$\vert r_k \vert \leq \cond_2 (X) \cdot \max\limits_{\lambda \in \spec(A)} \vert q(\lambda) \vert \vert r_0 \vert \quad \forall q \in \PP_k^*$$
+\item $A$ \emph{normal} ($AA^\top = A^\top A$). Dann gilt 1.) mit $\cond_2(X) = 1$
+\item $\Vert Id - A \Vert_2 \leq \varrho < 1 \Rightarrow \vert r_k \vert \leq \vert r_0 \vert \varrho^k$
+\end{1aufz}
+\end{Satz}
+\begin{Bew}
+\begin{1aufz}
+\item $q(A) = q(XDX^{-1}) = X q(D) X^{-1}$ \\
+Also ist
+\begin{eqnarray*}
+\Vert q(A) \Vert_2 & \leq & \Vert X \Vert_2 \cdot \Vert X^{-1} \Vert_2 \cdot \Vert \diag( q(\lambda_1), \ldots, q(\lambda_n)) \Vert_2 \\
+& \leq & \cond_2(X) \cdot \max\limits_{\lambda \in \spec(A)} \vert q(\lambda) \vert
+\end{eqnarray*}
+Behauptung folgt aus (**)
+\item $A$ normal $\Rightarrow X$ orthonormal $\Rightarrow \cond_2(X) = 1$. 
+\item W"ahle $q(t) := (1-t)^k$. Dann $q \in \PP_k^*$.
+$$\vert q(A) \Vert_2 = \Vert (Id - A)^k \Vert_2 \leq  \Vert Id - A \Vert_2^k \leq \varrho^k$$
+$\Rightarrow \min\limits_{q \in \PP_k^*} \Vert q(A) \Vert_2 \leq \varrho^k$
+Behauptung folgt mit (**)
+\end{1aufz}
+\end{Bew}
+
+\paragraph*{Bemerkung} 
+Ist $\spec(A) \subset [a,b] \subset \RR$ f"ur $0<a<b$, so kann man die Absch"atzung aus 4.5 verwenden mit $\kappa = b/a$
+
+\subsubsection{Konstruktion des GMRES-Verfahrens}
+
+\paragraph*{Schritt 1:}
+Konstruiere eine euklidisch orthonormale Basis des Krylovraumes (Gram-Schmidt)
+
+\subparagraph*{Start:} $d_0 = \frac{r_0}{\vert r_0 \vert }$ (o.B.d.A $\vert r_0 \vert \neq 0$)
+\subparagraph*{Iteration:} f"ur $k \geq 0$:
+\begin{eqnarray*}
+\sigma_{kj} & = & A d_k \cdot d_j \quad j=0, \ldots, k \\
+v_{k+1} & = & Ad_k - \sum\limits_{j=0}^k \sigma_{kj} d_j \\
+\sigma_{k,k+1} & = & \vert v_{k+1} \vert\\
+d_{k+1} & = & \frac{v_{k+1} }{\vert v_{k+1} \vert}
+\end{eqnarray*}
+Aufwand im $k$-ten Schritt:
+\begin{tabular}{c | c | c}
+MV & VV & SV \\
+\hline
+$1$ & $k+3$ & $k+2$
+\end{tabular}
+Speicher: $(k+2)n + \O(k^2)$ insgesamt
+Der Aufwand "uber $K$ Schritte ist $\O (K^2) \sim \sum\limits_{k=1}^{K} \O (k)$. \\
+Speicher: $\O(K) n + \O(K^2)$
+\paragraph*{Schritt2: Minimierung des Residuums}
+\begin{eqnarray*}
+\vert r_k \vert & = & \min\limits_{v_k \in u_0 + V_k} \vert A v_k - b \vert \\
+& = & \min\limits_{z_k \in V_k} \vert \underbrace{Au_0 - b }_{=r_0} + A z_k \vert \\
+& = & \min\limits_{z_k \in V_k} \vert A z_k - \beta_0 d_0 \vert \quad \mathrm{mit \ } \beta_0 = - \vert r_0 \vert
+\end{eqnarray*}
+Es sei $P_k: V_k \rightarrow \RR^k$ die orthonormale Projektion mit $P_k d_{l-1} = \vec i_l$ \\
+Aus $A d_k = \sigma_{k,k+1} d_{k+1} + \sum\limits_{j=0}^k \sigma_{kj} d_j$ folgt $A \vert_{V_{k+1}} \rightarrow V_{k+2}$, d.h. in der Basis $\{ d_0, \ldots, d_k \}$ hat $A$ "`Hessenberggestalt:
+$$A \vert_{V_k} = \left[ 
+\begin{matrix}
+\sigma_{00} & \sigma_{10} \\
+\sigma_{01} & \sigma_{11} & & * \\
+& \ddots & \ddots \\
+& & \ddots & \sigma_{k+1,k+1} \\
+& & & \sigma_{k, k+1} 
+\end{matrix}
+\right]  \in \RR^{k+1}$$
+Mit $A_k := P_{k+1} A P_k$ folgt 
+$$ \vert r_k \vert = \min\limits_{z_k \in V_k} \vert P_{k+1} (A \underbrace{P_k^\top P_k}_{=Id_{v_k}} z_k - \beta d_0 ) \vert = \min\limits_{\omega_k \in \RR^k} \vert A_k \omega_k - \beta_0 \vec{i_1} \vert$$
+Trick: Mittels orthonormaler Matrizen $L_1, \ldots,  L_K \in \RR^{k+1,k+1}$ kann man erreichen, dass $L_k \cdot \ldots \cdot L_1 A_k = \left[ \begin{smallmatrix} & R_k \\ 0 & \cdots & 0 \end{smallmatrix} \right] \in \RR^{k+1,k}$ und $R_k$ ist r.o. Dreiecksmatrix. Dann 
+\begin{eqnarray*}
+\vert r_k \vert & = & \min\limits_{\omega_k \in \RR^k} \vert \underbrace{ L_k \cdot \ldots \cdot L_1}_\mathrm{orthonormal} (A_k \omega_k - \beta_0 \vec i_1 ) \vert \\
+& = & \min\limits_{\omega_k \in \RR^k} \left\vert \left[ \begin{matrix} R_k \omega_k \\ 0 \end{matrix} \right] - \left[ \begin{matrix} b_k \\ \varrho_k \end{matrix} \right] \right\vert \quad \mathrm{mit \ } b_k \in \RR^k, \varrho_k \in \RR
+\end{eqnarray*}
+$\Rightarrow \vert r_k \vert = \min\limits_{\omega_k \in \RR^k} ( \vert R_k \omega_k - b_k \vert^2 + \varrho_k^2)^{1/2}$ \\
+Das Minimum wird f"ur $\omega_k = R_k^{-1} b_k$ angenommen ($\Rang(R_k) = \Rang(A_k) = \Rang(A\vert v_k ) = k$, falls $\dim(V_k) = k$) und dann ist $\vert r_k \vert = \varrho_k$. \\
+Zwar ist $\omega_k$ billig berechenbar ($\O(k^2)$ Multiplikationen, da Dreiecksmatrix), aber $\varrho_k$ ist bekannt ohne $\omega_k$ zu kennen! Wir berechnen $\omega_k$ erst, wenn $\varrho_k$ klein genug ist oder $k = k_{max}$ erreicht ist.
+\subsubsection*{Bemerkung:}
+$$L_j = \left[ \begin{smallmatrix} 1 \\ & \ddots \\ & & 1 \\ & & & c & s \\ & & & -s & c \\ & & & & & 1 \\ & & & & & & \ddots \\ & & & & & & & 1 \end{smallmatrix} \right] \in \RR^{k+1,k+1}, \ j \leq k, \ c^2 + s^2=1$$
+Man kann $c$ bestimmmen aus der Bedingung, dass der $k+1,k$-te Eintrag von $L_k(L_{k-1} \cdot \ldots \cdot L_1 A_k)=0$ wird. \\
+Speicher und Anwendung der Matrizen $L_j$ sind $\O (k)$
+\paragraph*{Algorithmus:}
+Start: $u_0 \in \RR^n, \ r_0 = Au_0 - b \neq 0, \ d_0 := r_0 / \vert r_0 \vert, \ b_0 := - \vert r_0 \vert \vec i_1$
+\subparagraph*{Iteration f"ur $k \geq 0$} 
+\begin{itemize}
+\item Stopp, falls $\varrho_k = \vert b_{k+1,k+1} \vert < \mathrm{Tol}$, sonst $k \rightarrow k+1$ 
+\item Berechne $\sigma_{kj}$ f"ur $j=0,\ldots, k$, $d_{k+1}, \sigma_{k,k+1}$ 
+\item Berechne ${\left[  \widetilde{{{R}}_{k+1}}_j \right]}_{j=0, \ldots, k} = L_k \cdot \ldots \cdot L_1 [ \sigma_{kj} ]_{j=0, \ldots, k}$ \\
+($L_j \in \RR^{k,k} \rightarrow \left[ \begin{smallmatrix} L_j & 0 \\ 0 & 1 \end{smallmatrix} \right] \in \RR^{k+1,k+1}$)
+\item Berechne die Rotation $L_{k+1}$
+\item Berechne $[{R_{k+1}}_j]_{j=0,\ldots,k} = L_{k+1} [ \widetilde{{ R_{k+1}}}_j ]_{j=0,\ldots,k}$ 
+\item Berechne $\omega_k = R_{k+1}^{-1} b_{k+1}$ \\
+$u = u_0 + \sum\limits_{j=0}^k \omega_{k+1,j} \cdot d_j$ 
+$$ \left[ \begin{matrix} R_k \\ 0 \ldots 0 \end{matrix} \right]
+\rightarrow
+\left[ \begin{array}{c c c} R_k & \vline & \vdots \\ & \vline & \sigma_{kj} \\ & \vline & \vdots \end{array} \right] \stackrel{\genfrac{}{}{0pt}{}{L_k \cdot \ldots \cdot L_1}{\mathrm{auf \ letzte \ Spalte}}}{\longrightarrow} \left[ \begin{array}{c c c} R_k & \vline & \vdots \\ & \vline & \tilde \sigma_{kj} \\ & \vline & * \end{array} \right] \stackrel{L_{k+1}}{\rightarrow} \left[ \begin{matrix} R_{k+1} \\ \cdots \\ 0 \end{matrix} \right]$$
+Rechte Seite: $\left[ \genfrac{}{}{0pt}{}{b_k}{0} \right] \stackrel{L_{k+1}}{\longrightarrow} \left[ \genfrac{}{}{0pt}{}{\vdots}{(*)} \right]$
+\end{itemize}
+
+\begin{Satz}
+DAS GMRES-Verfahren (in exakter Arithmetik) ist f"ur invertierbare Matrizen durchf"uhrbar und erzeugt eine Folge abnehmender Residuen
+$$\vert r_{k+1} \vert \leq \vert r_k \vert$$
+(wobei ($r_k = Au_k - b $) und $r_n = 0$) \\
+Unter geeigneten Voraussetzungen f"allt $\vert r_k \vert$ streng monoton (siehe Theorem 5.1). \\
+Der Aufwand f"ur $k$ Schritte ist $\O (k^2 N)$ \\
+Speicher: $\O(kN) + \O(k^2)$
+\end{Satz}
+\begin{Bew}
+Fehlt: $\dim(V_k) = k$, bzw. $v_{k+1} \neq 0$ im 1. Schritt (GS). \
+Dann ist $A d_k \in \spann \{ d_0 , \ldots, d_k \}$ \\
+$\Rightarrow e_0 = A^{-1} r_0 \sim A^{-1} d_0 \stackrel{\mathrm{wie \ 4.4} }{\in} \spann \{ d_0, \ldots, d_k \} = V_{k+1}$\\
+$\Rightarrow e_{k+1} \in V_{k+1}, \ e_{k+1} \bot_{A^\top A} V_{k+1} \Rightarrow e_{k+1} = 0$ \\
+$0 \stackrel{!}{=} v_{k+1} = Ad_k + \sum\limits_{j=0}^k \sigma_{kj} \cdot d_j$
+\end{Bew}
+
+\subsubsection*{Bemerkung}
+\begin{1aufz} 
+\item In der Praxis darf $k$ nicht zu gro"s gwerden GMRES($k_\mathrm{max}$) bricht nach $k_\mathrm{max}$ Schritten ab und startet mit der bis dahin erhaltenen L"osung neu (Restart). Typisch: GMRES($5$) bzw. GMRES($25$)
+\item Es sei $A = \left[ \begin{smallmatrix} 0 & & & 1 \\ 1 & \ddots \\ & \ddots & \ddots \\ & & 1 &0 \end{smallmatrix} \right]$. Man kann $b, u_0 \in \RR^n$ w"ahlen mit $u_0 = u_1 = \ldots u_{n-1}, \ u_n = u$ ($u$ die exakte L"osung) \\
+Also $\vert r_0 \vert = \ldots = \vert r_{n-1} \vert \neq 0, \ r_n = 0$ \\
+$\spec(A) = \{ \lambda \in \CC: \lambda^n = 1 \}$ \\
+RESTART-GMRES konv. nicht.
+\end{1aufz}
+
+\section{Nichtlineare Gleichungen}
+Sei $D \subset \RR^N$ und $F: D \rightarrow \RR^N$ beliebig. Gesucht wird $U \in \RR^N$ mit 
+$$F(U) = 0$$
+Speziell: $F(U) = AU - b, \ A \in \RR^{N,N}, \ b \in \RR^N$ lineares Problem
+\subsection{Fixpunkte (Erg"anzung 5)}
+\subsubsection{Fixpunkte und Nullstellen}
+$U$ Fixpunkt von $G$: $U = G(U)$ \\
+$U$ Nullstelle von $F$: $F(U) = 0$ \\
+$U$ Fixpunkt von $G$ $\Leftrightarrow$ $U$ Nullstelle von $F(X) := X - G(X)$
+\subsubsection{Banachscher Fixpunktsatz}
+Sei $V$ ein Banach-Raum, $D \subseteq V$ abgeschlossen, $f: D \longrightarrow D$ eine Kontraktion, d.h. $\exists q \in (0,1)$ mit
+$$\Vert f(x) - f(y) \Vert \leq q \Vert x - y \Vert \quad (x,y \in D)$$
+Dann gilt:
+\begin{iaufz}
+\item $f$ besitzt genau einen Fixpunkt $x_*$ in $D$
+\item Zu jedem $x_0 \in D$ konvergiert die durch $x_{i+1} := f(x_i)$ definierte Folge gegen $x_*$ und es gelten die Absch"atzungen
+\begin{align}
+\Vert x_i - x_* \Vert &\leq q^i \Vert x_0 - u_* \Vert \tag{A priori Absch"atzung} \\
+\Vert x_i - x_* \Vert &\leq \frac{q}{1-q} \Vert x_i - x_{i-1} \Vert \tag{A posteriori Absch"atzung}
+\end{align}
+\end{iaufz}
+\subsubsection{Beispiele}
+\begin{1aufz}
+\item $f: [a,b] \subseteq \RR \rightarrow [a,b]$ differenzierbar mit $\vert f'(x) \vert \leq q < 1 \ \forall x \in [a,b]$ f"ur ein $q \in (0,1)$ \\
+$\Rightarrow \ \exists! x_* \in [a,b]: \ f(x_*) = x_*$ und die Fixpunktiteration $x_{i+1} := f(x_i)$ konvergiert f"ur die Startwerte $x_0 \in [a,b]$. 
+\item S"uche L"osung von $x = \cos(x)$: \\
+$x_0 \in \RR, \ x_{i+1} = \cos(x_i)$ \\
+Bildchen \\
+Wende (1) an
+$$\max\limits_{x \in \RR} \vert \cos'(x) \vert = \max\limits_{x \in \RR} \vert \sin(x) \vert = 1 $$
+So geht es noch nicht. \\
+Aber: $V = [0,1]$. Dann
+$$\max\limits_{x \in [0,1]} \vert \sin(x) \vert = \sin(1) < 1$$
+$\cos(V) \subset V$. Anwendung von (1) ist OK. \\
+$x_0 \in \RR \Rightarrow x_1 = \cos(x_0) \in [-1,1] \Rightarrow x_2 = \cos(x_1) \in [0,1]$ \\
+Jetzt weiter wie eben. Konvergenz f"ur alle $x_0 \in \RR$
+\end{1aufz}
+
+\begin{Satz}
+$V$ Banach-Raum, $D \subset V$ abgeschlossen, $f: D \rightarrow D$ eine Kontraktion mit Rate $q$ der Fixpunktiteration und Fixpunkt $v_x$. $g: D \rightarrow D$ sei eine St"orung von $f$ mit
+$$ \Vert f(v) - g(v) \Vert_V \leq \varepsilon \quad \forall v \in D$$
+Definiere $\{ v_i \}_i, \{ w_i \}$ durch $v_{i+1} := f(v_i), \ w_{i+1} := g(w_i)$ f"ur $v_0, w_0 \in D$ und $\Vert v_0 - w_0 \Vert_V \leq \varepsilon$. Dann gilt:
+\begin{eqnarray*}
+\Vert v_i - w_i \Vert_V & \leq & \frac{\varepsilon}{1-q} \\
+\Vert v_* - w_i \Vert_V & \leq & \frac{1}{1-q} ( \varepsilon (1 + 3 q^i) + q^i \Vert w_0 - g(w_0 ) \Vert_V)
+\end{eqnarray*}
+Bildchen \\
+\end{Satz}
+\begin{Bew}
+$v_0 \in D \Rightarrow v_1 \in D \Rightarrow \ldots$ \\
+$w_0 \in D \Rightarrow w_1 \in D \Rightarrow \ldots$ \\
+Folgen sind wohldefiniert
+\begin{eqnarray*}
+\Vert v_{i+1} - w_{i+1} \Vert_V & = & \Vert f(v_i) - g(w_i) \Vert_V \\
+& \leq & \Vert f(v_i) - f(w_i) \Vert_V + \Vert f(w_i) - g(w_i) \Vert_V \\
+& \leq & q \cdot \Vert v_i - w_i \Vert_V + \varepsilon \\
+& \leq & q^2 \cdot \Vert v_{i-1} - w_{i-1} \Vert_V + (1+q) \varepsilon \\
+& \leq & \ldots \leq q^{i+1} \underbrace{\Vert v_0 - w_0 \Vert}_{\leq \varepsilon} + \sum\limits_{j=0}^i q^j \varepsilon \\
+& \leq & \sum\limits_{j=0}^{i+1} q^j \varepsilon
+\leq \sum\limits_{j=0}^{\infty} q^j \varepsilon = \frac{1}{1-q} \varepsilon.
+\end{eqnarray*}
+Mit dem Fixpunktsatz von Banach:
+\begin{eqnarray*}
+\Vert v_* - w_i \Vert_V & \leq & \Vert v_* - v_i \Vert_V + \Vert v_i - w_i \Vert_V \\
+& = & \frac{q^i}{1-q} \Vert v_0 - f(v_0) \Vert_V + \frac{\varepsilon}{1-q} \\
+& \leq & \frac{q^i}{1-q} ({\underbrace{ \Vert v_0 - w_0 \Vert_V }_{\leq \varepsilon}} + \Vert w_0 - g(w_0) \Vert_V + \underbrace{ \Vert g(w_0) - f(v_0) \Vert_V}_{\genfrac{}{}{0pt}{}{= \Vert w_1 - v_1 \Vert_V}{\leq (1+q) \varepsilon \leq 2 \varepsilon}} + \frac{\varepsilon}{1-q}
+\end{eqnarray*}
+\end{Bew}´
+Problem: Wie schnell sind Fixpunktverfahren?
+
+\subsubsection{Konvergenzordnung} 
+$V$ Banach-Raum, $\{ v_i \}_i$ eine iterative erzeugte Folge mit $\lim\limits_{i \rightarrow \infty} v_i = v_*$. Die Iteration hat \emph{Konvergenzordnung} $p \geq 1$, falls f"ur den Fehler $e_i := v_i - v_*$ gilt:
+$$ \lim\limits_{i \rightarrow \infty} \frac{ \Vert e_i \Vert_V}{ \Vert e_{i-1} \Vert_V ^p} = c \in \RR$$
+Falls $c \neq 0$, so hei"st $p$ die \emph{genaue Konvergenzordnung} und $c$ hei"st \emph{asymptotischer Fehlerkoeffizient}. \\
+\paragraph*{Beispiele} \ \\
+$p=1$: Geometrische oder lineare Konvergenz \\
+$p=2$: Quadratische Konvergenz.
+
+\begin{Satz}
+$I \subseteq \RR$, $\Phi: I \longrightarrow \RR$ habe einen Fixpunkt $x_* \in I$ und sei $p$-mal stetig db. mit 
+$$\Phi'(x_*) = \ldots = \Phi^{(p-1)}(x_*) = 0 \mathrm{\ falls \ } p > 1$$ oder 
+$$\vert \Phi'(x_*) \vert < 1 \mathrm{\ falls \ } p=1 \mathrm{\  ist}$$
+Dann \emph{konvergiert das Iterationsverfahren} $$x_{i+1} = \Phi(x_i)$$ f"ur die Startwerte $x_0$ nahe $x_*$ und hat bzgl. $\vert . \vert$ die Konvergenzordnung $p$. \\
+Ist $\Phi^{(p)}(x_*) \neq 0$, so ist $p$ die genaue Konvergenzordnung.
+\end{Satz}
+\begin{Bew}
+Nach Voraussetzung gibt es f"ur alle $p \geq 1$ eine Umgebung von $x_*$, in der $\vert \Phi' \vert < 1$ gilt. Nach 1.3(1) konvergiert die Fixpunktiteration f"ur alle Startwerte dieser Umgebung gegen $x_*$. \\
+Mit Taylorentwicklung:
+$$x_{i+1} = \Phi(x_i) = \sum\limits_{l=0}^{p-1} \frac{1}{l!} \Phi^{(i)} (x_*) (x_i - x_*)^l + \frac{1}{p!} \Phi^{(p)} (\xi_i) (x_i - x_*) ^p$$
+($\xi_i$ zwischen $x_*$ und $x_i$). \\
+Einsetzen der Voraussetzung:
+$$x_{i+1} = x_* + \frac{1}{p!} \Phi^{(p)} (\xi_i) (x_i - x_*)^p$$
+und somit
+$$\lim\limits_{i \rightarrow \infty} \frac{ \vert x_{i+1} - x_* \vert}{ \vert x_i - x_* \vert^p} = \lim\limits_{i \rightarrow \infty} \frac{1}{p!} \, \vert \Phi^{(p)} (\xi_i) \vert = \frac{1}{p!} \, \vert \Phi^{(p)} (x_*) \vert$$
+\end{Bew}
+\paragraph*{Bemerkung:} Lineare vs. Quadratische Konvergenz. \\
+$e_0 = 10^{-1}$ \\
+Lineare Konvergenz: $q = 1/2$, $e_k = \left( \frac 1 \alpha \right)^{\kappa} e_0 \approx 10^{-0.3 \kappa} e_0$ \\
+1 Stelle $\leadsto$ 3 Iterationen \\
+8 Stellen $\leadsto$ 24 Iterationen \\
+Quadratische Konvergenz: $c=1$ \\
+$e_0 = \frac{1}{10}, e_1 = e_0^2 = 10^{-2}, e_2 = 10^{-4}, e_3 = 10^{-8}$
+
+\subsection{Berechnung von Nullstellen}
+
+\subsubsection{Extrema (Erg"anzung 7)}
+$x_*$ Extremum von $f$ und $f$ db
+$\Rightarrow f'(x_*) = 0$ \\
+$\leadsto$ Nullstellenproblem
+
+\subsubsection{Nullstellen reeller Funktionen}
+Im Folgenden sei $I = [a,b] \subset \RR, a < b$, $f$ mindestens stetig.
+
+\paragraph{Bisektionsverfahren} 
+Es gelte $f(a) f(b) < 0$  ("`=0"' $\Rightarrow f(a) = 0$ oder $f(b) = 0$). \\
+Wir konstruieren Intervalle $\{ I_k \}_k$ wie folgt: \\
+Start: \\
+$a_0 := a, b_0 := b, I_0 := [a_0, b_0]$ \\
+Iteration: $L \geq 0$
+\begin{1aufz}
+\item $\overline{x} := \frac{1}{2} (a_k + b_k)$ \\
+\item Stop: $f(\overline{x}) = 0$ \\
+\item $f(a_k) \cdot f(\overline{x}) \stackrel{?}{<} 0: \ a_{k+1} = a_k, b_{k+1} = \overline{x}$ \\
+sonst: $a_{k+1} = \overline{x}, b_{k+1} = b_k$
+\item $k \mapsto k+1, \ I_{k+1} = [a_{k+1}, b_{k+1} ]$
+\end{1aufz}
+Abbruch: $\mathrm{Tol}_X$, $\mathrm{Tol}_f \geq 0$ gegeben, $\mathrm{Tol}_x + \mathrm{Tol}_f > 0$ \\
+$k_\mathrm{max} \in \NN$. R"uckgabe $x$ und $f(x)$ mit \\
+$x$ Approximation der Nullstelle mit $\vert x - x* \vert \leq \mathrm{Tol}_x$ oder $\vert f(x) \vert \mathrm{Tol}_f$ \
+$f(x)$: Funktionswert in $x$
+\subparagraph*{Modifikation der Iteration:}
+\begin{tabbing}
+$\vert f(\overline{x})$ \= $\vert \leq \mathrm{Tol}_f:$  \\ 
+\> $\mathrm{return}(\overline{x}, f(\overline{x}));$ \\
+$\vert b_k - a_k \vert \leq \mathrm{Tol}_x:$ \\
+\> falls $ \vert f(a_k) \vert < \vert f(b_k) \vert$ return $(a_k, f(a_k))$, sonst return$(b_k, f(b_k))$
+\end{tabbing}
+
+\begin{Satz}
+$f: [a,b] \rightarrow \RR$ stetig mit $f(a) \cdot f(b) < 0$. $\mathrm{Tol}_x, \mathrm{Tol}_f, k_\mathrm{max}$ wie oben gegeben. \\
+Dann bricht das Bisektionsverfahren nach endich vielen Schritten ab, auch falls $k_\mathrm{max} = \infty$
+\end{Satz}
+\begin{Bew}
+Das Verfahren ist wohldefiniert aufgrund des Zwischenwertsatzes. \\
+Die Existenz einer Nullstelle in $I_k$ ist f"ur jedes $k$ gesichert. \\
+$\mathrm{Tol}_x > 0: \vert I_k \Vert = \left( \frac12 \right)^k \vert b - a \vert \stackrel{!}{\leq} \mathrm{Tol}_x \Rightarrow k \leq \left\lceil \frac{ \log_2 (b-a) }{\mathrm{Tol}_x } \right\rceil$ \\
+$\mathrm{Tol}_f > 0: b_k - a_k \rightarrow 0$ \\
+Da $f$ stetig ist und eine Nullstelle in $[a_k, b_k]$ hat, gilt $\lim\limits_{k \rightarrow \infty} f(a_k) = \lim\limits_{k \rightarrow \infty} f(b_k) = 0$
+$$ \Rightarrow \exists k_f \in \NN: \min \{ \vert f(a_{k_f}) \vert, \vert f(b_{k_f}) \vert \} \leq \mathrm{Tol}_f$$
+(Gilt $\vert f'(x) \vert \leq C \ \forall x \in [a,b]$, so gilt z.B.: 
+$\vert f(a_k) \vert = \vert f(a_k) - f(x_k) \vert \leq \vert I_k \vert \max\limits_{x \in [a,b]} \vert f'(x) \vert \leq C \left( \frac{1}{2} \right)^k \stackrel{!}{\leq} \mathrm{Tol}_f )$
+\end{Bew}
+\paragraph*{Probleme}
+\begin{itemize}
+\item $a,b$ zu finden mit $f(a) \cdot f(b) < 0$ kann sehr schwierig sein. 
+\item Die Konvergenz ist in der Praxis zu langsam. \\
+(Siehe 1.5: Konvergenzordnung ist 1 mit $c=\frac12$)
+\item Die Methode ist auf $\RR$ beschr"ankt
+\end{itemize}
+
+\paragraph{Regula Falsi}
+Wie in 2.2.1 aber mit $\overline x$ wie folgt: \\
+Bildchen \\
+$$ \overline x = a_k - \frac{ f(a_k) (b_k - a_k) }{ f(b_k) - f(a_k) }$$
+Keine Ausl"oschung im Nenner wegen $f(a_k) \cdot f(b_k) < 0$. \
+Weiteres Vorgehen wie in 2.2.1 \\
+Konvergenz: Konvergiert wie in 2.2.1 im Fall $\mathrm{Tol}_f > 0$. Die Konvergenz kann beliebig langsam sein. Im "`besten"' Fall ist die Konvergenz linear (unter noch allgemeinen Voraussetzungen)
+
+\paragraph{Das Sekantenverfahren}
+Bildchen \\
+$f: \RR \longrightarrow \RR$ stetig. \\
+$x_1, x_2$ gegeben, $x_1 \neq x_2$ und $f(x_1) \neq f(x_2)$ \\
+$x_3$ ist dann die Nullstelle der Sekante
+
+\subparagraph*{Initialisierung:}
+$x_1 \neq x_2, f(x_1) \neq f(x_2)$
+\subparagraph*{Iteration f"ur $k \geq 0$:} 
+\begin{1aufz}
+\item Falls $f(x_{k-1}) \neq f(x_k)$ 
+$$x_{k+1} = x_k - \frac{f(x_k) (x_k - x_{k-1})}{f(x_k) - f(x_{k-1})} $$
+\item $k \curvearrowright k+1$
+\end{1aufz}
+
+\subparagraph*{Abbruch:} $\mathrm{Tol}_x, \mathrm{Tol}_f, \mathrm{Tol}_{f'}, k_\mathrm{max}$ \\
+Wie in 2.2.1 aber mit 
+\begin{eqnarray*}
+\vert x_k - x_{k-1} \vert & \leq & \Tol_x ? \\
+\vert f(x_k) \vert & \leq & \Tol_f ? \\
+k & \leq & k_\mathrm{max} \\
+\mathrm{und \ }  \vert f(x_k) - f(x_{k-1}) \vert & \leq & \Tol_{f'} ?
+\end{eqnarray*}
+Die letzten beiden Bedingungen f"uhren zu einem erfolglosen Abbruch.
+
+\subsubsection*{Bemerkungen}
+\begin{itemize}
+\item Keine Erfolgsgarantie f"ur allgemeine Startwerte
+\item Kleine $f$-Differenzen erzeugen gro"se Fehler
+\end{itemize}
+Aber:
+\begin{itemize}
+\item G"unstiger Aufwand (1 $f$-Auswertung pro Schritt) bei schneller Konvegenz, falls es konvergiert. 
+\item Gewisse Verallgemeinerung auf $\RR^N$ m"oglich
+\end{itemize}
+
+\begin{Satz}
+$f \in C^2(\RR)$, $f(x_*) = 0$, $f'(x_*) \neq 0$, $f''(x_*) \neq 0$. \\
+Dann ex. eine Umgebung $U$ von $x_*$, sodass das Sekantenverfahren f"ur alle Startwerte aus $U$ konvergiert und die Konvergenzordnung ist genau $\frac12 (1 + \sqrt5) \approx 1.6$
+\end{Satz}
+
+\paragraph*{Newton-Verfahren}
+$f: \RR \longrightarrow \RR$ stetig db. \\
+Idee: Verwende Tangende statt Sekante \\
+Bildchen \\
+\subparagraph*{Initialisierung:} $x_1$ mit $f'(x_1) \neq 0$
+\subparagraph*{Iteration: f"ur $k \geq 0$}
+\begin{1aufz}
+\item Falls $f'(x_k) \neq 0$
+$$ x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}$$
+\item $k \curvearrowright k+1$
+\end{1aufz}
+\subparagraph*{Abbruch:}
+$\Tol_x, \Tol_f, k_\mathrm{max}, \Tol_{f'}$
+\begin{eqnarray*}
+\vert x_k - x_{k-1} \vert & \leq & \Tol_x \\
+\vert f(x_k) \vert & \leq & \Tol_f \\
+k & \leq & k_\mathrm{max} \\
+\vert f'(x_k) \vert & \leq & \Tol_{f'} 
+\end{eqnarray*}
+In den letzten beiden F"allen ist der Abbruch erfolglos
+
+\paragraph*{Bemerkungen}
+\begin{itemize}
+\item Keine Garantie eines erfolgreichen Abbruchs (im Allgemeinen)
+\item Kleine Werte von $f'$ f"uhren zu gro"sen Fehlern
+\end{itemize}
+Aber:
+\begin{itemize}
+\item sehr schnell, falls konvergent 
+\item Verallgemeinerung auf $\RR^N$ bzw. Banachr"aume m"oglich
+\end{itemize}
+
+\subsubsection*{Konvergenzordnung des Newton-Verfahrens}
+$f \in C^3$, $f(x_*)=0, f'(x_*) \neq 0$ \\
+Die Iterationsfunktion des Newton-Verfahrens ist
+$$\Phi(x) := x - \frac{f(x)}{f'(x)}$$
+Nach 1.5 bilden wir $\Phi'(x_*), \Phi''(x_*)$
+\begin{eqnarray*}
+\Phi'(x) & = & 1 - \left( 1 - \frac{ f(x) f''(x) }{f'(x)^2} \right) = \frac{f(x)f''(x)}{f'(x)^2} \stackrel{x=x^*}{=} 0 \\
+\Phi''(x) & = & \frac{f''(x)}{f'(x)} + f(x) ( \ldots ) \stackrel{x=x^*}{=} \frac{f''(x_*)}{f'(x_*)} + 0
+\end{eqnarray*}
+Die Konvergenz ist quadratisch und sie ist genau quadratisch, falls $f''(x_*) \neq 0$
+
+\subsubsection{Lokale Konvergenz des Newtonverfahrens}
+Es sei $(V, \Vert.\Vert_V)$ ein Banachraum, $\emptyset \neq U \subset V$, $f: U \longrightarrow V$ eine stetig db. Funktion mit $f'(v)^{-1} \in \LL(V,V)$ f"ur alle $v \in U$  sowie $$\sup\limits_{v \in U} \Vert f'(v)^{-1} \Vert_{\LL(V,V)} \leq K < \infty$$ und $$\Vert f'(v) - f'(w) \Vert_{\LL(V,V)} \rightarrow 0 \  (\Vert v - w \Vert_V \rightarrow 0) \ \mathrm{glm. \ f"ur \ } v,w \in U.$$
+Weiter sei $u_* \in U$ eine Nullstelle von $f$.
+Dann gibt es zu jedem $q \in (0,1)$ ein $\delta > 0$, so dass f"ur jeden Startwert $u_0 \in B_\delta(u_*)$ die Newton-Iteration $u_{i+1} = u_i - f'(u_i)^{-1}f(u_i)$ wohldefiniert ist und f"ur $i \geq 0$ gilt
+$$\Vert u_i - u_* \Vert_V \leq qî \Vert u_0 - u_* \Vert_V$$
+Ist $f$ zweimal stetig db, so ist die Konvergenz quadratisch:
+$$\Vert u_{i+1} - u_* \Vert_V \leq C \Vert u_i - u_* \Vert_V^2$$
+f"ur $i \geq 0$ und ein $C > 0$. $C$ h"angt von $f$ ab. \\
+Insbesondere bricht das Verfahren nach endlich vielen Schritten bzgl. der Kriterien 
+\begin{eqnarray*}
+\Vert u_i - u_{i-1} \Vert_V & \stackrel{!}{\leq} & \mathrm{Tol}_x \quad \mathrm{oder} \\
+\Vert f(u_i) \Vert_V & \leq & \Tol_f
+\end{eqnarray*}
+ f"ur $\Tol_x, \Tol_f \geq 0$, $\Tol_x + \Tol_f > 0$ ab
+
+\paragraph*{Bemerkung}
+$T: V \longrightarrow V$ linear, stetig ($:\Leftrightarrow T \in \LL(V,V)$),
+$$ \Vert T \Vert_{\LL(V,V)} := \sup\limits_{v \in V} \frac{ \Vert Tv \Vert_V}{\Vert v \Vert_V}$$
+
+\begin{Bew}
+Sei $r_0 > 0$ mit $\overline{B_{r_0} (u_*)} \subset U$. Dann gilt f"ur $u \in B_r(u_*) (0 < r < r_0)$ 
+$$ f(u) = f(u_*) + \int\limits_0^1 f'(u_* + t(u - u_*)) (u-u_*) \d t$$
+Die Iterationsfunktion des Newton-Verfahrens ist
+$$G(u) := u - f'(u)^{-1} \cdot f(u)$$
+$G$ ist auf $B_{r_0}(u_*)$ wohldefiniert und mit $u(t) := u_* + t(u-u_*)$ gilt
+\begin{eqnarray*}
+G(u) - u_* & = & u - u_* - f'(u)^{-1} \int\limits_0^1 f'(u(t)) (u-u_*) \d t \\
+& = & \int\limits_0^1 f'(u)^{-1} (f'(u) - f'(u(t))) (u - u_*) \d t
+\end{eqnarray*}
+Daher:
+$$ \Vert G(u) - u_* \Vert_V \leq \sup\limits_{v \in B_r(u_*)} \Vert f'(v)^{-1} \Vert_{\LL_(V,V)} \cdot \sup\limits_{t \in (0,1)} \Vert f'(u) - f'(u(t)) \Vert_{\LL(V,V)} \cdot \Vert u - u_* \Vert_V$$
+Zu $q \in (0,1)$ w"ahle also $\delta$, so dass
+$$\Vert G(u) - u_* \Vert_V \leq q \cdot \Vert u - u_* \Vert_V \ \mathrm{ f"ur \ alle \ } u \in B_\delta(u_*)$$
+F"ur $u_0 \in B_\delta(u_*)$ folgt also induktiv
+$$\Vert u_{i+1} - u_* \Vert_V = \Vert G(u_i) - u_* \Vert_V \leq q \cdot \Vert u_i - u_* \Vert_V \leq \delta$$
+d.h. $\{ u_i \}_i \in B_\delta(u_*)$ und $\lim\limits_{i \rightarrow \infty} u_i = u_*$. Insbesondere
+$$\Vert u_i - u_* \Vert _V \leq q^i \, \Vert u_0 - u_* \Vert_V$$
+Ist $f$ zweimal stetig db, so gilt:
+\begin{eqnarray*}
+\sup\limits_{t \in (0,1)} \Vert f'(u) - f'(u(t)) \Vert_{\LL(V,V)} & \leq & C' \Vert u - u(t) \Vert_V \\
+& \leq & C' \Vert u - u_* \Vert_V \quad \mathrm{mit \ } C' = C'(f'')
+\end{eqnarray*}
+Also 
+$$\Vert G(u) - u_* \Vert_V \leq KC' \Vert u - u_* \Vert_V^2 = C \Vert u - u_* \Vert_V^2$$
+$\Rightarrow \Vert u_{i+1} - u_* \Vert_V \leq C \Vert u_i - u_* \Vert_V^2$ \\
+Mit $\Vert u_{i+1} - u_i \Vert_V \leq \Vert u_{i+1} - u_* \Vert_V + \Vert u_i - u_* \Vert_V \leq 2 \cdot \Vert u_i - u_* \Vert_V$. \\
+Also $\Vert u_{i+1} - u_i \Vert_V \rightarrow 0$ und mit Stetigkeit $\Vert f(u_i) \Vert_V \rightarrow 0$ f"ur $i \rightarrow \infty$. Daraus folgt der Abbruch nach endlich vielen Schritten.
+\end{Bew}
+
+\paragraph*{Bemerkungen:}
+\begin{itemize}
+\item $f'$ invertierbar hei"st, dass $u_*$ eine einfache Nullstelle ist
+\item $u$ Nullstelle von $f$. Dann sei $\varepsilon(u)$ der Einzugsbereich von $u$, d.h. $u_0 \in \varepsilon(u) \Rightarrow$ das Newton-Verfahren ist wohldefiniert f"ur $u_0$ und die Folge $\{ u_i \}_{i \geq 0}$ konvergiert gegen $u$. \\
+Der vorherige Satz sagt: $B_\delta(u) \subseteq \varepsilon(u)$ f"ur $\delta$ klein (unter genannten Voraussetzungen)
+\end{itemize}
+
+\paragraph*{Beispiel} $V = \RR$, $f(x) = \arctan(x)$ \\
+Bildchen \\
+\begin{eqnarray*}
+& f(0) = 0 \\
+\vert x_0 \vert < X_0 & \Rightarrow & x_i \rightarrow 0 \\
+\vert x_0 \vert > X_0 & \Rightarrow & \vert x_i \vert  \rightarrow \infty \\
+x_0 = X_0& \Rightarrow & x_i = (-1)^i \cdot x_0
+\end{eqnarray*}
+F"ur $V=\RR^n, \ n \geq 2$ ist $\varepsilon(u)$ sehr kompliziert. \\
+Wir berechnen f"ur gro"se Raumdimension $n$ $f(u_i)^{-1}$ nicht explizit. Stattdessen l"osen wir
+\begin{eqnarray*}
+f'(u_i) d_i & = & -f(u_i) \\
+u_{i+1} &= & u_i + d_i
+\end{eqnarray*} 
+
+\paragraph{Newton-Kantorovich-Theorem}
+$F: D \subset V \longrightarrow V$, $V$ Banachraum, $D$ offen und konvex, $F$ stetig db, $x_0 \in D$ und $F'(x_0)$ invertierbar sowie
+\begin{eqnarray*}
+\Vert F'(x_0)^{-1} F(x_0) \Vert & \leq &  \alpha \\
+\Vert F'(x_0)^{-1} (F'(y) - F'(x)) \Vert_{\LL(V,V)} & \leq & \omega_0 \cdot \Vert x - y \Vert_V \quad \forall x,y \in D \\
+h_0 := \alpha \omega_0 & < & 1/2 \\
+B_\delta(x_0) & \subset & D, \ \delta := \frac{1}{\omega_0} ( 1- (1- 2 h_0)^{1/2})\\
+\end{eqnarray*}
+Dann ist die Folge $\{ x_k \}_k$ der Newton-Iteration wohldefiniert, sie bleibt in $B_\delta(x_0)$ und konvergiert gegen ein $x_*$ mit $F(x_*) = 0$. Die Konvergenz ist quadratisch.
+\paragraph*{Bemerkung}
+\begin{itemize}
+\item Die Existenz der Nullstelle wird garantiert. Daher sind solche Theoreme auch in der Analysis interessant.
+\item Man kann (wie bei Banach) a priori Schranken oder a posteriori Schranken betrachten 
+\item Beachte: $F(u) = 0 \Leftrightarrow AF(u) = 0$, falls $A$ invertierbar ist. Wie in 2.4.1, 2.4.2 h"angen die Konstanten von $A$ ab. Die Gr"o"se $F'^{-1}F$ ist invariant gegen"uber der Transformation $F \mapsto AF$
+\end{itemize}
+\subsubsection{Globale Konvergenz}
+Idee: Definiere eine "`Energie"', die in jedem Schritt verkleinert wird: \\
+f"ur ein $E: V = \RR^n \longrightarrow \RR$ gelte 
+$$\vert u_{i+1} \vert  = \vert u_i - f'(u_i)^{-1} f(u_i) \vert  = E(u_{i+1}) < E(u_i)$$
+Problem: $u_{i+1}$ sollte nicht zu weit weg sein von $u_i$. Ausweg (siehe Jakobi- oder SOR-Verfahren): D"ampfung. \\
+F"ur $\tau_i > 0$ ist $u_{i+1} = u_i - \tau_i f'(u_i)^{-1} f(u_i)$ das ged"ampfte Newton-Verfahren. \\
+"`$i$ klein"': $\tau_i \in (0,1)$ klein \\
+"`$i$ gro"s"': $\tau_i \rightarrow 1$ um von der quadratischen Konvergenz zu profitieren. ($\tau \neq 1$: ged"ampftes Newton-Verfahren konvergiert nur linear)
+
+\begin{Lemma}
+$\emptyset \neq D \subset \RR^n$ abgeschlossen und beschr"ankt. $f \in C^1(D, \RR^n)$ und $f'(u)^{-1}$ existiere f"ur alle $u \in D$. $\vert . \vert$ eine Vektornorm. \\ Definiere $E: D \longrightarrow \RR, \ u \mapsto E(u) = \vert f(u) \vert$ mit $d(u) := -f'(u)^{-1} \cdot f(u)$. Dann gilt: \\
+F"ur alle $\varepsilon > 0$ existiert ein $\delta > 0$ mit 
+$$E(u + \tau d(u)) \leq (1 - \tau + \varepsilon \tau) E(u) \quad \mathrm{f"ur \ alle \ } u \in D, \ \tau \in (0,\delta)$$
+\end{Lemma}
+\begin{Bew}
+F"ur $u \in D$: 
+\begin{eqnarray*}
+f(u + \tau d(u)) & = & f(u) + \int\limits_0^\tau f'(u + sd(u)) d(u) \d s \\
+& = & \left(Id - \int\limits_0^\tau f'(u + sd(u)) f'(u)^{-1} \d s \right) f(u) \\
+& = & \left( (1- \tau) Id - \int\limits_0^\tau \big(f'(u + s d(u)) - f'(u) \big) f'(u)^{-1} \d s \right)  f(u)
+\end{eqnarray*}
+$\tau$ gen"ugend klein:
+$$\vert f(u + \tau d(u)) \vert \leq (1 - \tau + \underbrace{\tau \sup\limits_{s \in (0,\tau)} \Vert f'(u + s d(u)) - f'(u) \Vert_2}_{\leq C^{-1} \cdot \varepsilon, \mathrm{\ falls\ } \tau \leq \delta} \cdot \underbrace{\Vert f'(u)^{-1} \Vert_2}_{\leq C} ) \cdot \vert f(u) \vert$$
+$\Rightarrow E(u + \tau d(u)) \leq (1 - \tau + \varepsilon \tau) E(u)$
+\end{Bew}
+\paragraph{Schrittweitensteuerung}
+$f$ wie in 2.3, $E$ wie oben. W"ahle ein $\sigma \in (0,1)$ und $u_0 \in D$. \\
+Newton-Verfahren mit Schrittweitensteuerung
+\subparagraph*{Initialisierung:} $u_0 \in D$ 
+\subparagraph*{Iteration: f"ur $k \geq 0$}
+\begin{1aufz}
+\item L"ose $f'(u_k) d_k = -f(u_k)$ f"ur $d_k$
+\item Bestimme $\tau_k = 2^{-q_k}$ und $q_k \in \NN$ minimal mit $B_{\tau \vert d_k \vert}(u_k) \subset D$ und $E(u_k + \tau_k d_k) \leq (1 - \sigma \tau_k) E(u_k)$
+\item $u_{k+1} = u_k + \tau_k d_k$, gehe zu (1)
+\end{1aufz}
+Wahl des Wertes $q_k$ \\
+$k=0$:  $q = 0,1, \ldots$ bist die Bedingung in (2) f"ur ein $q_0$ zum ersten Mal erf"ullt ist. \\
+$k>0$: Probiere $q = q_{k-1} - 1, q_{k-1}, \ldots$ bist (2) f"ur ein $q_K$ zum ersten Mal erf"ullt ist.
+
+\paragraph{Globale Konvergenz}
+
+\begin{Satz}
+$f$ wie im Lemma in 2.4.1 bzgl. eines $D_\alpha$.  \\
+Zu $\alpha > 0$ sei $D_\alpha := \{v \in D: \ \vert f(v) \vert \leq \alpha \}$ nichtleer und kompakt. ($f$ darf nur eine Nullstelle haben und muss glm konvergieren)\\
+Dann konvergiert das Verfahren aus 2.4.1 f"ur alle Startwerte $u_0 \in D_\alpha$ gegen eine Nullstelle von $f$ in $D_\alpha$. \\
+Insbesondere folgt der Abbruch nach endlich vielen Schritten bzgl. des Kriteriums $E(u_k) \leq \Tol_f$ f"ur ein $\Tol_f > 0$
+\end{Satz}
+\begin{Bew}
+Nach Konstruktion gilt:
+$$E(u_{[k+1}) \leq E(u_k) \leq \ldots \leq E(u_0) = \alpha$$
+und $\{ u_k \}_k \subseteq D_\alpha$. \\
+Die Folge konvergiert daher, weil $D_\alpha$ kompakt ist, etwa $u_k \rightarrow u_* (k \rightarrow \infty)$ f"ur eine Teilfolge. Nach dem Lemma gibt es zu jedem $\varepsilon > 0$ ein $\delta > 0$, so dass 
+$$\vert f(u_k ß+ \tau d(u_k)) \vert \leq (1 - (1- \varepsilon) \tau) \vert f(u_k) \vert$$
+f"ur $0 \leq \tau \leq \delta$, gleichm"a"sig in $D_\alpha$. \\
+Nun sei $\varepsilon := 1 - \sigma$, d.h. 
+$$\vert f(u_k + \tau d(u_k)) \vert \leq (1 - \sigma \tau) \vert f(u_k) \vert$$ 
+Diese Ungleichung gilt f"ur $\tau = \delta$, d.h. nach Konstruktion gilt $\tau_k \geq \delta/2$. \
+Insbesondere erhalten wir nach endl. vielen Schritten 
+$$\vert f(u_{k+1} ) \vert = \vert f(u_k + \tau_k d_k ) \vert \leq  (1 - \frac12 \delta \sigma) \vert f(u_k) \vert,$$
+also $E(u_{k+1}) \leq \kappa E(u_k)$ f"ur ein $\kappa \in (0,1)$, so dass $\lim\limits_{k \rightarrow \infty} E(u_k) = 0$. Insbesondere wird $E(u_k) = \vert f(u_k) \vert \stackrel{!}{\leq} \Tol_f$ nach endlich vielen Schritten erreicht.
+\end{Bew}
+\end{document}
+
+
