@@ -1,0 +1,189 @@
+\documentclass[a4paper,twoside,DIV15,BCOR12mm]{scrbook}
+
+\usepackage{mathe}
+\usepackage{saetze-veraart}
+\usepackage{faktor}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{german}
+
+\usepackage{remreset}
+\makeatletter
+\@removefromreset{section}{chapter}
+\makeatother
+
+\newcommand{\cX}{\mathcal X}
+\newcommand{\borel}{{\mathfrak B}}
+
+\author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
+\title{Finanzmathematik I}
+\makeindex
+
+\begin{document}
+\maketitle
+ 
+\newenvironment{enuma}{%
+\begin{enumerate}[\hspace{1em}a)]%
+}{%
+\end{enumerate}%
+}
+
+\newenvironment{enumi}{%
+\begin{enumerate}[\hspace{1em}i)]%
+}{%
+\end{enumerate}%
+}
+
+\setcounter{secnumdepth}{-1}
+%\renewcommand{\thechapter}{\arabic{chapter}}
+%\chapter{Inhaltsverzeichnis}
+%\stepcounter{chapter}
+%\renewcommand{\tocname}{bla}
+%\addcontentsline{toc}{chapter}{\protect\numberline {\thechapter}Inhaltsverzeichnis}
+\addcontentsline{toc}{chapter}{Inhaltsverzeichnis}
+\tableofcontents
+
+ % Vorwort
+
+\chapter{Vorwort}
+\setcounter{secnumdepth}{2}
+%\addcontentsline{toc}{chapter}{Vorwort}
+
+\section*{Über dieses Skriptum}
+Dies ist ein Mitschrieb der Vorlesung \glqq Finanzmathematik I\grqq\ von Dr. Veraart im
+Wintersemester 08/09 an der Universität Karlsruhe (TH).
+% Die Mitschriebe der Vorlesung werden mit ausdrücklicher Genehmigung von Dr. Veraart hier veröffentlicht,
+Dr. Veraart ist für  den Inhalt nicht verantwortlich.
+\section*{Wer}
+Gestartet wurde das Projekt von Joachim Breitner.
+%Weiter haben Felix Wellen und Michael Walter beim Mitschreiben geholfen.
+
+\section*{Wo}
+Alle Kapitel inklusive \LaTeX-Quellen können unter \url{http://mitschriebwiki.nomeata.de} abgerufen werden.
+Dort ist ein von Joachim Breitner programmiertes \emph{Wiki}, basierend auf \url{http://latexki.nomeata.de} installiert. 
+Das heißt, jeder kann Fehler nachbessern und sich an der Entwicklung
+beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
+
+%\setcounter{chapter}{0}
+%\renewcommand{\thesection}{{\rm\bfseries §}\arabic{section}}
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
+\renewcommand{\thechapter}{Kapitel \Roman{chapter}}
+
+\chapter{Einführung in die Theorie der Finanzmärkte}
+
+\section{Präferenzen}
+
+Modelle, die den Finanzmarkt beschreiben, müssen stochastisch sein, um \emph{Risiko} adäquat modellieren zu können.
+
+Ein \emph{Markt} ist ein Ort, an dem Güter und Dienstleistungen von \emph{Agenten} ausgetauscht werden, deren Handlungen durch ihre \emph{Präferenzen} bestimmt werden.
+
+Sei $\cX$ eine nichtleere Menge. $x\in\cX$ bezeichnet die Wahlmöglichkeit eines Agenten.
+
+\begin{definition}
+Eine binäre Relation $\succeq \subseteq \cX \times \cX$ heißt \emph{Präferenzenrelation}\index{Präferenzenrelation}, falls sie
+\begin{itemize}
+\item transitiv ist, also $\forall x,y,z \in\cX$: $x\succeq y$, $y\succeq z \implies x\succeq z$
+\item vollständig ist, also $\forall x,y\in \cX$: $x\succeq y$ oder $y\succeq x$
+\end{itemize}
+Falls $x\succeq y$ und $y\succeq x$ schreiben wir $x\sim y$ (\emph{Indifferenzrelation}\index{Indifferenzrelation}). Für $x\succeq y$ und $y\not\succeq x$, dann schreiben wir $x\succ y$.
+\end{definition}
+
+\begin{beispiel}
+$\cX=\MdR$, $x\succeq y \iff x\ge y$
+\end{beispiel}
+
+\begin{definition}
+Eine \emph{numerische Repräsentation}\index{numerische Repräsentation} einer Präferenzordnung $\succeq$ ist eine Funktion $U:\cX\to R$, so dass $x\succeq y \iff U(x) \ge U(y)$.
+\end{definition}
+
+\begin{bemerkung}
+Eine numerische Repräsentation ist nicht eindeutig: Sei $f$ eine streng monoton wachsende Funktion. Dann ist $\tilde U(x) \da f(U(x))$ auch eine numerische Repräsentation.
+\end{bemerkung}
+
+\begin{beispiel}
+Sei $\succeq$ die lexikographische Ordnung auf $\cX \da [0,1]\times[0,1]$, also\[(x_1,y_1)\succ (x_2,y_2) \iff x_1 > x_2 \text{ oder } x_1 = x_2 \text{ und } y_1 > y_2.\] Für $\succeq$ gibt es keine numerische Repräsentation.
+\end{beispiel}
+
+\begin{definition}
+Sei $\succeq$ Präferenzenrelation auf $\cX$. Eine Teilmenge $\mathcal Z\subseteq \mathcal X$ heißt \emph{dicht}\index{dicht} in $\cX$ (bezüglich $\succeq$), falls für alle $x,y\in\cX$ mit $x\succ y$ ein $z\in\mathcal Z$ gibt, so dass $x\succeq z \succeq y$.
+\end{definition}
+
+\begin{beispiel}
+$\cX = \MdR$, $\mathcal Z=\MdQ$, $\succeq = \ge$.
+\end{beispiel}
+
+\begin{satz}
+Für die Existenz einer numerischen Repräsentation einer Präferenzenrelation $\succeq$ ist es notwendig und hinreichend, dass $\cX$ eine abzählbare Teilmenge $\mathcal Z$ enthält, die dicht in $\cX$ liegt.
+
+Insbesondere hat für abzählbare $\cX$ jede Präferenzenrelation eine numerische Repräsentation.
+\end{satz}
+
+\begin{beweis}
+siehe Föllmer \& Schied, Beweis von Theorem 2.6
+\end{beweis}
+
+\subsection{Von Neumann-Morgenstern-Repräsentation}
+
+Im Folgenden betrachten wir das Konzept des erwarteten Nutzens.
+
+Es seien alle Wahlmöglichkeiten eines Agenten durch Wahrscheinlichkeitsverteilungen auf einer vorgegebenen Menge von Szenarien gegeben. Sei $(S,\mathfrak S)$ ein messbarer Raum und $M_1(S,\mathfrak S)$ die Menge aller Wahrscheinlichkeitsverteilungen auf $(S,\mathfrak S)$. Wir betrachten eine Teilmenge $M\subseteq M_1(S,\mathfrak S)$. Wir nehmen an, dass $M$ konvex ist, das heißt für alle $\mu, \nu\in M$ und alle $\alpha\in[0,1]$ ist $\alpha\mu + (1-\alpha)\nu \in M$. Die Elemente von $M$ werden auch \emph{Lotterien}\index{Lotterie} genannt.
+
+\begin{definition}
+\label{def.1.1.9}
+Eine numerische Repräsentation einer Präferenzordnung wird \emph{von-Neumann-Morgenstern-Re\-prä\-sen\-tat\-ion}\index{von-Neumann-Morgenstern-Repräsentation} genannt, falls sie sich darstellen lässt als:
+\[ U(\mu) = \int u(x)\mu(dx)\ \forall \mu\in M\]
+wobei $u$ eine reelle Funktion auf $S$ ist.
+\end{definition}
+
+Wir werden später die Funktion $u$, wenn sie gewisse Voraussetzungen erfüllt, Nutzenfunktion nennen.
+
+Wir betrachten beispielsweise eine Zufallsvariable $X$ auf einem Wahrscheinlichkeitsraum $(\Omega, \mathcal F, P)$, die die Auszahlung einer Anlagemöglichkeit angibt. 
+
+Ist etwa $S\subseteq \MdR$, $\mathfrak S = \borel\footnote{Borelsche $\sigma$-Algebra}$, dann bezeichnet das Integral in der Definition \ref{def.1.1.9} den Erwartungswert von $u(X)$, wobei $u$ messbar (später stetig) sei und $X$ die Verteilung 
+\[\mu(B) \da P_X(B)=P(X^{-1}(B)) \ \forall B\in\borel \]
+besitzt.
+
+Wann existiert eine von-Neumann-Morgenstern-Repräsentation?
+
+Sei $M$ die Menge aller Wahrscheinlichkeitsmaße $\mu$ auf $S$, die sich als Linearkombination $\mu=\sum_{i=1}^N \alpha_i\delta_{x_i}$ von $x_1,\ldots,x_N\in\S$ mit Koeffizienten $\alpha_1,\ldots,\alpha_N\in (0,1]$ darstellen lässt. Das Dirac-Maß ist dabei definiert als
+\[ \delta_x(A) = 
+\begin{cases}
+1,&x\in A\\
+0,&\text{sonst}
+\end{cases}\]
+
+Dann existiert eine von-Neumann-Morgenstern-Repräsentation, falls $\succeq$ die folgenden Eigenschaften hat:
+\begin{itemize}
+\item \emph{Unabhängigkeitseigenschaft}\index{Unabhängigkeitseigenschaft}: Für alle $\mu,\nu\in M$ mit $\mu\succ \nu$, alle $\alpha \in(0,1]$ und beliebige $\lambda\in M$ gilt:
+\[ \alpha \mu + (1-\alpha) \lambda \succ \alpha \nu + (1-\alpha)\lambda \]
+das heißt, dass die Präferenz $\mu\succ \nu$ in jeder Konvexkombination erhalten bleibt, unabhängig von der zusätzlichen Lotterie $\lambda$.
+
+\item \emph{Archimedeseigenschaft}\index{Archimedeseigenschaft}, Stetigkeitseigenschaft: Zu jedem Tripel $\mu\succ \lambda  \succ \nu$ existieren Konstanten $\alpha,\beta\in(0,1)$, so dass gilt:
+\[
+\alpha\mu + (1-\alpha)\nu \succ \lambda \succ \beta \mu + (1-\beta)\nu
+\]
+\end{itemize}
+
+Falls $S$ eine endliche Menge ist, haben alle Maße die obige Darstellung als Konvexkombination von Dirac-Maßen.
+
+Im allgemeinen Fall benötigt man für die Existenz einer von-Neumann-Morgenstern-Repräsentation neben der Unabhängigkeitseigenschaft und der Archimedeseigenschaft noch eine weitere Eigenschaft von $\succeq$ („sure thing principle“).
+
+Für $\mu,\nu \in M$ und $A$ mit $\mu(A)=1$ gilt:
+\begin{align*}
+(\forall x\in A:\delta_x\succ \nu) &\implies \mu \succ \nu \\
+(\forall x\in A:\nu \succ \delta_x) &\implies \nu \succ \mu
+\end{align*}
+
+Beweise siehe Föllmer und Schied, Kapitel 2.2.
+
+\setcounter{secnumdepth}{-1}
+\chapter{Satz um Satz (hüpft der Has)}
+\theoremlisttype{optname}
+\listtheorems{satz,beispiel}
+
+\renewcommand{\indexname}{Stichwortverzeichnis}
+%\addtocounter{chapter}{1}
+%\addcontentsline{toc}{chapter}{\protect\numberline {\thechapter}Stichwortverzeichnis}
+\addcontentsline{toc}{chapter}{Stichwortverzeichnis}
+\printindex
+\end{document}
