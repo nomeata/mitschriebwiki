@@ -13,7 +13,11 @@
 \makeatother
 
 \newcommand{\cX}{\mathcal X}
+\newcommand{\cM}{\mathcal M}
 \newcommand{\borel}{{\mathfrak B}}
+
+\DeclareMathOperator{\ARA}{ARA}
+\DeclareMathOperator{\RRA}{RRA}
 
 \author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
 \title{Finanzmathematik I}
@@ -145,7 +149,7 @@ besitzt.
 
 Wann existiert eine von-Neumann-Morgenstern-Repräsentation?
 
-Sei $M$ die Menge aller Wahrscheinlichkeitsmaße $\mu$ auf $S$, die sich als Linearkombination $\mu=\sum_{i=1}^N \alpha_i\delta_{x_i}$ von $x_1,\ldots,x_N\in\S$ mit Koeffizienten $\alpha_1,\ldots,\alpha_N\in (0,1]$ darstellen lässt. Das Dirac-Maß ist dabei definiert als
+Sei $M$ die Menge aller Wahrscheinlichkeitsmaße $\mu$ auf $S$, die sich als Linearkombination $\mu=\sum_{i=1}^N \alpha_i\delta_{x_i}$ von $x_1,\ldots,x_N\in S$ mit Koeffizienten $\alpha_1,\ldots,\alpha_N\in (0,1]$ darstellen lässt. Das Dirac-Maß ist dabei definiert als
 \[ \delta_x(A) = 
 \begin{cases}
 1,&x\in A\\
@@ -175,6 +179,139 @@ Für $\mu,\nu \in M$ und $A$ mit $\mu(A)=1$ gilt:
 \end{align*}
 
 Beweise siehe Föllmer und Schied, Kapitel 2.2.
+
+\subsection{Risikoaversion}
+
+Wir betrachten Anlagemöglichkeiten (z.B. Aktien), deren Verteilung der Auszahlung zu einem festen Zeitpunkt bekannt ist. Die Verteilung wird als Wahrscheinlichkeitsverteilung auf einem Intervall $S\subseteq \MdR$ angenommen. $\cM$ sei die Menge aller Borel-Wahrscheinlichkeitsmaße auf $S$. Wir nehmen an, dass $\cM$ konvex ist und alle Punktmaße $\delta_x$ für $x\in S$ enthält. Wir nehmen an, dass für alle $\mu\in\cM$ die Erwartung 
+\[
+m(\mu) \da \int x \mu (dx) \in \MdR
+\]
+wohldefiniert ist.
+
+\begin{definition}
+\begin{itemize}
+\item Eine Präferenzrelation $\succeq$ auf $\cM$ wird \emph{monoton}\index{monotone Präferenzrelation} genannt, wenn $x>y$ impliziert, dass $\delta_x \succ \delta_y$.
+\item Eine Präferenzrelation $\succeq$ wird \emph{risikoavers}\index{risikoaverse Präferenzrelation} genannt, falls für alle $\mu\in\cM$ mit $\mu \ne \delta_{m(\mu)}$ gilt, dass $\delta_{m(\mu)} \succ \mu$.
+\end{itemize}
+\end{definition}
+
+\begin{satz}
+Eine Präferenzrelation $\succeq$ ist 
+\begin{enumerate}
+\item monoton, genau dann wenn $u$ streng monoton wachsend ist.
+\item risikoavers, genau dann wenn $u$ streng konkav ist.
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+\begin{enumerate}
+\item Sei $x>y$. Monotonie ist äquivalent zu $u(x)=\int u(s) \delta_x(ds) = U(\delta_x) > U(\delta_y) = u(y)$.
+\item Sei $\succeq$ risikoavers. Dann gilt für verschiedene $x,y\in S$ und $\alpha \in (0,1)$
+\[
+\delta_{\alpha x + (1-\alpha) y} \succ \alpha \delta_x + (1-\alpha)\delta_y
+\implies
+u(\alpha x + (1-\alpha ) y) > \alpha u(x) + (1-\alpha) u(y)
+\]
+also ist $u$ streng konkav.
+
+Sei $u$ streng konkav. Risikoaversion folgt aus der Jensen-Ungleichung, da
+\begin{align*}
+U(\delta_{m(\mu)}) = u(m(\mu)) = u\Big(\int x \mu (dx)\Big) \ge \int u(x) \mu(dx) = U(\mu)
+\end{align*}
+Es gilt Gleichheit für $\mu = \delta_{m(\mu)}$.
+\end{enumerate}
+\end{beweis}
+
+\begin{definition}
+Eine Funktion $u:S\to\MdR$ heißt \emph{Nutzenfunktion}\index{Nutzenfunktion}, falls sie streng monoton wachsend, streng konkav und stetig\footnote{Wobei nur die Stetigkeit auf dem Rand von $S$ extra zu fordern wäre.} auf $S$ ist.
+\end{definition}
+
+Im Folgenden betrachten wir nur noch Präferenzrelationen $\succeq$ auf $\cM$, die eine von-Neumann-Morgenstern-Repräsentation $U(\mu) = \int u d \mu$ mit einer Nutzenfunktion $u:S\to\MdR$ haben. 
+
+Die Anwendung des Zwischenwertsatzes auf die streng monoton wachsende, stetige Funktion $u$ liefert für jedes $\mu\in\cM$ die Existenz einer eindeutigen reelen Zahl $c(\mu)\in S$ mit
+\[u(c(\mu)) = U(\mu) = \int ud\mu\]
+Dann gilt $\delta_{c(\mu)} \sim \mu$, das heißt der Agent ist indifferent zwischen der sicheren Auszahlung $c(\mu)$ und der Lotterie $\mu$. 
+
+\begin{definition}
+Das \emph{Sicherheitsäquivalent}\index{Sicherheitsäquivalent} einer Lotterie $\mu\in \cM$ ist die reele Zahl $c(\mu)\in S$, die 
+\begin{align*}
+u(c(\mu)) = U(\mu) = \int ud\mu
+\end{align*}
+löst.
+
+Die \emph{Risikoprämie}\index{Risikoprämie} von $\mu$ ist definiert als $\rho(\mu)\da m(\mu) - c(\mu)$.
+\end{definition}
+
+Risikoaversion impliziert über die Jensen-Ungleichung, dass $c(\mu) \le m(\mu)$ gilt, und dass Gleichheit genau dann gilt, wenn $\mu = \delta_{m(\mu)}$.
+
+\begin{beispiel}
+Siehe St. Petersburg-Paradox, Übungsblatt 1
+\end{beispiel}
+
+\begin{beispiel}[Beispiele für Nutzenfunktionen]
+\begin{itemize}
+\item $u(x) = - e^{-\gamma x}$, wobei $\gamma>0$ der Koeffizient der absoluten Risikoaversion ist. Diese Funktion wird CARA (“constant absolute risk aversion”) genannt.
+\item $u(x) = 
+\begin{cases}
+\frac{x^{1-R}}{1-R}, & x > 0 \\
+-\infty, & x \le 0
+\end{cases}$, wobei $R>0$, $R\ne 1$ der Koeffizient der relativen Risikoaversion ist. Diese Funktion wird CRRA (“constant relative risk aversion”) genannt.
+\item $u(x) = 
+\begin{cases}
+\log x, & x > 0 \\
+-\infty, & x \le 0
+\end{cases}$ ist CRRA-Nutzenfunktionen für $R=1$.
+\item Die Funktion $u(x) = x - \frac\varepsilon2x^2$, $\varepsilon>0$, ist konkav, aber nicht monoton wachsend. Sie wird trotzdem manchmal als „Nutzenfunktion“ verwendet, da sie einfach zu handhaben ist.
+\end{itemize}
+\end{beispiel}
+
+\begin{bemerkung}
+Für zweimal stetig differenzierbare $u\in C^2$ gilt: $u$ ist konkav genau dann, wenn $u''\le 0$ ist.
+\end{bemerkung}
+
+\subsection{Arrow-Pratt-Maß}
+
+Im Folgenden definieren wir zwei Maß für Risikoaversion eines Agenten: Das Arrow-Pratt-Maß (APM) der absoluten Risikoaversion und das APM der relativen Risikoaversion.
+
+Wir betrachten einen Agenten mit Vermögen $x$, dessen Präferenzen durch eine Nutzenfunktion $u\in C^2$ ausgedrückt werden. Wenn man ihn anbietet, einen Zahlungsanspruch (contingent claim) $Y$ (Zufallsvariable) zu bekommen, wird er ihn genau dann annehmen, wenn \[E[u(x+Y)] \ge E[u(x)] = u(x).\]
+Unter der Annahme, dass $Y$ „klein“ ist, machen wir eine Taylorentwicklung um $x$:
+\begin{align*}
+0\le E[u(x+Y) - u(x)] \approx E[u'(x)Y+ \frac12 u''(x)Y^2]
+\end{align*}
+das heißt, der Agent wird $Y$ haben wollen, falls 
+\begin{align*}
+\frac{2EY}{E[Y^2]} \ge \frac{-u''(x)}{u'(x)} \ad \ARA(x)
+\end{align*}
+wobei $\ARA(\cdot)$ den \emph{absoluten Risikoaversionskoeffizienten}\index{Risikoaversionskoeffizient!absoluter} bezeichnet.
+
+\begin{bemerkung}
+\begin{enumerate}
+\item Falls $\ARA(x)$ konstant ist, dann ist $u$ die CARA-Nutzenfunktion.
+\item Es gilt: $\ARA(x) \ge 0$.
+\item Der Agent will $Y$ lieber haben, falls $EY$ groß oder $E[Y^2]$ klein ist.
+\end{enumerate}
+\end{bemerkung}
+
+Alternativ können wir den Fallbetrachten, dass ein Agent in eine risikobehaftete Anlagemöglichkeit investieren kann, die zum Zeitpunkt 1 den Wert $x(1+Y)$ hat. Der Agent bevorzugt die Investition, falls $E[u(x(1+Y))] \ge u(x)]$. Nach Taylor ist dann
+\begin{align*}
+0 \le E[u(x(1+Y)) - u(x)] \approx E[u'(x)xY + \frac12 u''(x) x^2 Y^2]
+\end{align*}
+Der Agent zeiht diese Investition vor, genau dann wenn
+\[\frac{2EY}{E[Y^2]}\ge \frac {-xu''(x)}{u'(x)} \ad \RRA(x)\]
+ist, wobei $\RRA(\cdot)$ den \emph{relative} Risikoaversionskoeffizienten \index{Risikoaversionskoeffizient!relativer} bezeichnet.
+
+\begin{bemerkung}
+Falls $\RRA(x)$ konstant ist, dann ist $u$ die CRRA-Nutzenfunktion.
+\end{bemerkung}
+
+\begin{definition}
+Eine Nutzenfunktion $u:\MdR\to\MdR$ heißt HARA-Nutzenfunktion (“hyperbolic absolute risk aversion”), falls $u\in C^2(\MdR)$ und für Konstanten $\alpha, \beta$:
+\begin{align*}
+\ARA(x) = \frac{-u''(x)}{u'(x)} = \alpha x + \beta > 0
+\end{align*}
+Die CARA-, CRRA-Nutzenfunktionen sind HARA-Nutzenfunktionen.
+\end{definition}
+
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
