@@ -14,10 +14,13 @@
 
 \newcommand{\cX}{\mathcal X}
 \newcommand{\cM}{\mathcal M}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cV}{\mathcal V}
 \newcommand{\borel}{{\mathfrak B}}
 
 \DeclareMathOperator{\ARA}{ARA}
 \DeclareMathOperator{\RRA}{RRA}
+\DeclareMathOperator{\Cov}{Cov}
 
 \author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
 \title{Finanzmathematik I}
@@ -71,7 +74,7 @@ beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
 %\setcounter{chapter}{0}
 %\renewcommand{\thesection}{{\rm\bfseries §}\arabic{section}}
 \renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
-\renewcommand{\thechapter}{Kapitel \Roman{chapter}}
+\renewcommand{\thechapter}{\Roman{chapter}}
 
 \chapter{Einführung in die Theorie der Finanzmärkte}
 
@@ -312,6 +315,96 @@ Eine Nutzenfunktion $u:\MdR\to\MdR$ heißt HARA-Nutzenfunktion (“hyperbolic ab
 Die CARA-, CRRA-Nutzenfunktionen sind HARA-Nutzenfunktionen.
 \end{definition}
 
+\subsection{Reservationspreise}
+
+Sei $\cA$ die Menge, die das erreichbare Vermögen eines Agenten beschreibt. Der Agent wird versuchen, $\sup_{X\in\cA}E[u(X)]$ zu bekommen. Wir nehmen an, dass das Supremum angenommen wird, das heißt es gibt $X^*\in\cA$ mit $\sup_{X\in\cA}E[u(X)] = E[u(X^*)]$.
+
+Falls $\cA$ ein affiner Raum ist, das heißt für alle $X_1,X_2\in \cA$ und $t\in\MdR$ ist $tX_1 + (1-t)X_2 \in \cA$, könnne wir $\cA = X^* + \cV$ schreiben, wobei $\cV$ ein Vektorraum ist. Dann gilt für $\xi\in\cV$ und $t\in \MdR$, dass $E[u(X^* + t\cdot\xi)] \le E[u(X^*)]$. Ableiten nach $t$ liefert für alle $\xi\in\cV$: $E[u'(X^*)\xi]=0$.
+
+Im Folgenden werden wir das Konzept des erwarteten Nutzens verwenden, um zu entscheiden, ob man einen contingent claim $Y$ zu einem Preis $\pi$ kaufen sollte. (O.B.d.A. nehmen wir an, dass $Y\ge 0$).
+
+\begin{definition}
+Der \emph{Reservations-Bid-Preis}\index{Reservations-Bid-Preis} $\pi(Y)$ eines contingent claim $Y$ ist die größte reelle Zahl $\pi$, für die \[\sup_{X\in\cA} E[u(X+Y-\pi)] \ge E[u(X^*)]\] erfüllt ist.
+\end{definition}
+
+\begin{bemerkung}
+\begin{enumerate}
+\item Der Reservations-Bid-Preis ist der (maximale) Preis, zu dem der Agent bereit ist, den contingent claim zu kaufen.
+\item Die Abbildung $Y\mapsto\pi(Y)$ ist konkav.
+\begin{beweis}
+Seien $X_1,X_2\in\cA$, so dass
+\[E[u(X_1 + Y_1 - \pi(Y_1))] = E[u(X_2+Y_2-\pi(Y_2))] = E[u(X*)].\]
+Dann gilt für $p\in[0,1]$, dass
+\begin{align*}
+E[u(X*)] &= p\cdot E[u(X_1+Y_1-\pi(Y_1))] + (1-p)\cdot E[u(X_2+Y_2-\pi(Y_2))]\\
+&\le E[u(p\cdot(X_1+Y_1-\pi(Y_1)) + (1-p)\cdot(X_2+Y_2) + (1-p)\pi(Y_2))] \\
+&= E[u(\underbrace{p X_1 + (1-p) X_2}_{\in\cA} + \underbrace{p Y_1 + (1-p)Y_2}_{\ad \bar Y} - p \pi(Y_1) + (1-p) \pi(Y_2))] \\
+&\le \sup_{X\in\cA} E[u(X + \bar Y - (p\pi(Y_1) + (1-p) \pi(Y_2)))]
+\end{align*}
+Daher gilt
+\begin{align*}
+p\pi(Y_1)+ (1-p)\pi(Y2) &\le \pi(\bar Y) = p Y_1 + (1-p)Y_2
+\end{align*}
+\end{beweis}
+
+\item Reservationspreise sind nicht homogen, das heißt in der Regel gilt: $\pi(\lambda Y) \ne \lambda \pi(Y)$.
+\item Reservationspreise sind abhängig vom Agenten, also von $u$ und $\cA$. Veränderungen des Anfangsvermögens ändern in der Regel den Reservationspreis.
+\item Reservationspreise als Bewertungsmethode zu verwenden ist schwierig, da sie selten in geschlossener Form vorliegen.
+\item Wir verwenden nun den Reservations-Bid-Preis um Marginalpreise (Preise für unendlich kleine Mengen) zu bestimmen:
+
+Sei $\cA$ affin. Angenommen, ein Agent möchte $t$ Einheiten von $Y$ kaufen, wobei $t$ klein ist. Dann ist 
+\begin{align*}
+E[u(X^*)]T=E[u(X_t^* + tY - \pi(tY))]
+\end{align*}
+Duch Entwicklung als Tailerreihe ergibt das
+\begin{align*}
+0
+&= E[u(X_t^* + tY -\pi(tY)) - u(X^*)] \\
+&= E[u'(X^*) \cdot (tY - \pi(tY))] + o(t)
+\end{align*}
+da $X_t^* - X^*\in\cA$ und $E[u'(X^*)\xi]=0$ für alle $\xi\in\cV$ ist.
+
+Dann gilt
+\begin{align*}
+\lim_{t\to0} \frac{\pi(tY)}{t} = \frac{E[u'(X^*)Y]}{E[u'(X^*)]}
+\end{align*}
+Dieser Ausdruck ist linear in $Y$. Man kann diesen Preis als $\tilde E(Y)$ interpretieren:
+\begin{align*}
+\frac{E[u'(X^*)Y]}{E[u'(X^*)]} = \int_{\Omega} Y \underbrace{\frac{u'(X^*)}{E[u'(X^*)]} dP}_{\ad d\tilde P} = \int Y d\tilde P = \tilde EY.
+\end{align*}
+das heißt $\frac{d\tilde P}{dP} = \frac{u'(X^*)}{E[u'(X^*)]}$. Dieses Maß $\tilde P$ wird auch \emph{risikoneutrales Maß}\index{risikoneutrales Maß} genannt.
+
+\item Es gab viele Annahmen in dieser heuristischen Herleitung: Die Suprema werden angenommen, man kann unter dem Erwartungswert differenzieren. $\cA$ ist affin\dots
+
+\item Trotzdem haben wir hier schon einmal gesehen, dass Preise hier als Erwartungen unter einem speziellen Maß verstanden werden können.
+\end{enumerate}
+\end{bemerkung}
+
+
+\section{Optimale Portfolios}
+
+Notatoin und Annahmen:
+\begin{itemize}
+\item Es wird ein Einperiodenmodell mit Anfangszeitpunkt $t=0$ und Endzeitpunkt $t=T$ betrachtet. Das heißt, wir stellen heute ($t=0$) ein Portfolio zusammen und ändern dann nichts mehr an der Zusammensetzung bis zu $t=T$.
+\item Der Markt enthalte $d$ Anlagemöglichkeiten, deren Preise zum Zeitpunkt $t=0$ durch $S(0) = (S_1(0),\ldots,S_d(0))^\top \in \MdR^d$ gegeben sind. Die Preise zum Zeitpunkt $t=T$ sind durch den Zufallsvektor $S(T)=(S_1(T),\ldots,S_d(T))^\top\in\MdR^d$ gegeben.
+\item Es wird der zufällige Return (Ertrag)
+\[
+R_i(T) = \frac{S_i(T)}{S_i(0)},\ i=1,\ldots,d
+\]
+betrachtet und angenommen, dass dessen Erwartungswert 
+\[
+E[R_i(T)]\ad m_i\ i=1,\ldots,d
+\]
+und Kovaranzmatrix 
+\[
+\Cov(R_i(T),R_j(T))=\sigma_{ij},\ i,j=1,\ldots,d
+\]
+bekannt (oder geschätzt) sind.
+und Varianz bekannt sind.
+\item Die symmetrische Matrix $\Sigma = (\sigma_{ij})$ sei positiv definit (d.h. $\forall \pi\in\MdR^d\setminus\{0\}: \pi^\top \Sigma \pi > 0$). Insbesondere ist $\Sigma$ invertierbar und es wird garantiert, dass keine Anlagemöglichkeit überflüssig ist, in dem Sinne, dass sie als Linearkombination anderer Anlagemöglichkeiten dargestellt werden könnte.
+\item Wir bezeichnen mit $\varphi\in\MdR^d$ eine Handelsstrategie, wobei $\varphi_i$ die Stückzahl der $i$-ten Anlagemöglichkeit angibt.
+\item Manchmal wird $\varphi_i \ge 0$ für alle $i=1,\ldots,d$ vorausgesetzt. (“no short selling”, „keine Leerverkäufe“)
+\end{itemize}
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
