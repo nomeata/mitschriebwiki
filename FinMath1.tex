@@ -20,6 +20,7 @@
 
 \DeclareMathOperator{\ARA}{ARA}
 \DeclareMathOperator{\RRA}{RRA}
+\DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Cov}{Cov}
 
 \author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
@@ -405,6 +406,163 @@ und Varianz bekannt sind.
 \item Wir bezeichnen mit $\varphi\in\MdR^d$ eine Handelsstrategie, wobei $\varphi_i$ die Stückzahl der $i$-ten Anlagemöglichkeit angibt.
 \item Manchmal wird $\varphi_i \ge 0$ für alle $i=1,\ldots,d$ vorausgesetzt. (“no short selling”, „keine Leerverkäufe“)
 \end{itemize}
+
+\begin{definition}
+Gegeben sei ein Investor mit Anfangsvermögen $x>0$, der $\varphi_i>0$ Stück einer Anlagemöglichkeit $i=1,\ldots,d$ besitzt, wobei 
+\begin{align*}
+\sum_{i=1}^d \varphi_i S_i(0)= x \tag{Budgetgleichung}
+\end{align*}
+gilt. Dann bezeichnen wir mit $\pi=(\pi_1,\ldots,\pi_d)^\top\in\MdR^d$,
+\begin{align*}
+\pi_i = \frac{\varphi_iS_i(0)}x,\quad i=1,\dots,d
+\end{align*}
+den \emph{Portfoliovektor}\index{Portfoliovektor} und
+\begin{align*}
+R^\pi = \sum_{i=1}^d \pi_iR_i(T)
+\end{align*}
+den \emph{Portfolio-Return}.\index{Portfolio-Return}
+\end{definition}
+
+\begin{bemerkung}
+\begin{enumerate}
+\item Die Elemente des Portfoliovektors bezeichnen die Anteile des Vermögens, die in die jeweilige Anlagemöglichkeit investiert wurden:
+\begin{align*}
+\sum_{i=1}^d \pi_i = \frac1x \sum_{i=1}^d \varphi_iS_i(0) = \frac xx = 1
+\end{align*}
+\item Sei $V^\pi(T)$ das Endvermögen zum Anfangsvermögen $x$ und dem Portfoliovektors $\pi$, das heißt
+\begin{align*}
+V^\pi(T) = \sum_{i=1}^d\varphi_iS_i(T).
+\end{align*}
+Damit ist
+\begin{align*}
+R^\pi = \sum_{i=1}^d \pi_iR_i(T) = \sum_{i=1}^d \frac{\varphi_iS_i(0)}x \frac{S_i(T)}{S_i(0)} = \frac{V^\pi(T)}x
+\end{align*}
+\item Erwartungswert und Varianz des Portfolio-Returns sind 
+\begin{align*}
+E[R^\pi] &= \sum_{i=1}^d \pi_im_i = \pi^\top m \\
+\Var(R^\pi) &= \sum_{i=1}^d \pi_i\sigma_{ij}\pi_j = \pi^\top \Sigma \pi
+\end{align*}
+\end{enumerate}
+\end{bemerkung}
+
+\subsection{Portfolio-Optimierung nach Markowitz}
+Im Folgenden betrachten wir die Auswahl eines optimalen Portfolio. Harry M. Markowitz (Nobelpreisträger Wirtschaftswissenschaften 1990) schlug das Erwartungswert-Varianz-Kriterium also Optimierungskriterium vor, das heißt es wird nach einer Balance zwischen Risiko (Varianz) und Return (Erwartungswert) gesucht.
+
+\begin{definition}
+Ein Portfolio heißt \emph{Grenzportfolio},\index{Grenzportfolio} wenn es unter allen Portfolios mit gleichem Return die kleinste Varianz hat. Die Menge aller Grenzportfolios heißt \emph{Portfoliogrenze}.\index{Portfoliogrenze}
+\end{definition}
+
+\begin{satz}
+Ein Portfolio $p$ heißt Grenzportfolio, genau dann, wenn der Portfoliovektor $\pi_p$ Lösung des folgenden Optimierungsproblems ist:
+\begin{align*}
+\min_{\pi} \frac 12 \pi^\top \Sigma \pi &= \min_\pi \frac 12 \sum_{i=1}^d\sum_{j=1}^d \pi_i \sigma_{ij}\pi_j = \min_\pi \frac 12 \Var(R^\pi) \\
+\pi^\top m &= \sum_{i=1}^d \pi_im_i = E[R^\pi]\ad m_p \\
+\pi^\top \mathbf 1 &= \sum_{i=1}^d m_i = 1
+\end{align*}
+wobei $\mathbf 1=(1,\ldots,1)^\top\in\MdR^d$, $m=(m_1,\ldots,m_d)$ der erwartete Return der Anlagemöglichkeiten und $m_p$ der vorgegebene Portfolio-Return ist.
+\end{satz}
+
+Berechnung mit der Lagrange-Funktion
+\begin{align*}
+L(\pi) = \frac 12 \pi^\top \Sigma \pi - \lambda_1 (\pi^\top m - m_p) - \lambda_2 (\pi^\top \mathbf 1 - 1)
+\end{align*}
+ergibt den Gradienten (als Vektor in $\MdR^d$)
+\begin{align*}
+L'(\pi) = \sum\pi - \lambda_1 m - \lambda_2 1 \stackrel{!}=0.
+\end{align*}
+Dies gilt genau dann, wenn
+\begin{align*}
+\pi=\lambda_1\Sigma^{-1}m +\lambda_2 \Sigma^{-1}\mathbf 1.
+\end{align*}
+Die Lagrange-Multiplikatoren $\lambda_1$, $\lambda_2$ werden über die Nebenbedingungen bestimmt:
+\begin{align*}
+m^\top \pi &= \lambda_1 m^\top \Sigma^{-1}m + \lambda_2 m^\top \sigma^{-1}\mathbf 1 \\
+\mathbf 1^\top m &= \lambda_1 \mathbf 1^\top\Sigma^{-1} m + \lambda_2 \mathbf 1^\top \Sigma^{-1}\mathbf 1
+\end{align*}
+Durch Lösen diese lineraren Gleichungssystems liefert
+\begin{align*}
+\lambda_1 &= \frac{C m_p - A}{D} & \lambda_2 &= \frac{B-A m_p}D
+\end{align*}
+wobei
+\begin{align*}
+A &\da m^\top \Sigma^{-1} \mathbf 1 = \mathbf 1^{\top}\Sigma^{-1}m \\
+B &\da m^\top \Sigma^{-1} m\\
+C &\da \mathbf 1^\top \Sigma^{-1} 1 \\
+D &\da BC -A^2 > 0
+\end{align*}
+Dann ist das optimale Portfolio gegeben durch 
+\begin{align*}
+\pi_p &=\frac{Cm_p-A}{D} \Sigma^{-1}m + \frac{B-Am_p}D \Sigma^{-1} \mathbf 1
+\intertext{was man schreiben kann als}
+\pi_p &=g + h\cdot m_p
+\end{align*}
+wobei
+\begin{align*}
+g &\da \frac1D ( -A\cdot \Sigma^{-1}m + B \cdot \Sigma^{-1} \mathbf 1) \\
+h &\da \frac1D (C \cdot \Sigma^{-1} m - A \cdot \Sigma^{-1} \mathbf 1)
+\end{align*}
+
+Wir sehen, dass für $m_p=0$ das optimale Portfolio durch $g$ gegeben ist, für $m_p=1$ ist es durch $g+h$ gegeben. Für ein beliebiges $m_q$ gilt
+\begin{align*}
+\pi_q = g + hm_q = (1-m_q)g + m_q(g+h)
+\end{align*}
+Das heißt dass das optimale Portfolio eine Linearkombination aus zwei Portfolios $g$ und $g+h$ ist. Jedes Grenzportfolio kann also als Linearkombination dieser zwei Grenzportfolios ausgedrückt werden (“two-fund separation”).
+
+Beide Portfolios haben positive Varianz:
+\begin{align*}
+g^\top \Sigma g &= \frac 1 D B &
+(g+h)^\top \Sigma (g+h) &= \frac 1D (B- 2AD + C)
+\end{align*}
+
+Setzt man $\pi$ in die Varianzgleichung ein, erhält man 
+\begin{align*}
+\sigma^2_{\text{Markowitz}}(m_p) &\da \pi_p^\top \Sigma \pi_p \\
+&= \frac 1 D (2m_pA + m_p^2C) \\
+&= \frac C D \bigg(m_p - \frac AC\bigg)^2 + \frac 1C
+\end{align*}
+Diese Gleichung beschreibt eine Parabel im Varianz-Erwartungswert-Raum und eine Hyperbel im Standardabweichungs-Erwartungswert-Raum mit Koordinaten $(\sigma_{\text{Markowitz}},m_p)$.
+
+Die globale minimale Varianz $\frac 1C$ wird für $m_p=\frac AC$ erreicht.
+
+\begin{bemerkung}
+\begin{enumerate}
+\item Das Portfolio mit der kleinsten Varianz wird \emph{Minimum-Varianz-Portfolio}\index{Minimum-Varianz-Portfolio} (mvp) genannt ($m_p=\frac AC$ und minimale Varianz $\frac 1C$).
+\item Ein Grenzportfolio ist \emph{effizient},\index{effizientes Portfolio} genau dann, wenn es eine echt größere Rendite erwartete Rendite als das mvp hat.
+\item Ein Portfolio, dass weder das mvp noch effizient ist, heißt \emph{ineffizient}.\index{ineffizientes Portfolio}
+\item Die Effizienzgrenze ist der Teil der Kurve, der oberhalb der des globalen Minimums der Varianz liegt.
+\end{enumerate}
+\end{bemerkung}
+
+\begin{center}
+\begin{tikzpicture}
+\draw[->] (0,-0.2) -- (0,6)  node[right] {$m_p$};
+\draw[->] (-0.2,0) -- (8,0)  node[right] {$\sigma_{\text{Markowitz}}$};
+\begin{scope}[rotate=270,xshift=-3cm,yshift=3cm]
+\draw[-] (2,4) parabola bend (0,0) (-2,4);
+\end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{satz}
+Sei $\Sigma$ positiv definit. Dann ist $\pi_p$ ein Grenzportfolio genau dann, wenn zwischen der Varianz des Portfolio-Returns und dem vorgegebenen Portfolioreturn $m_p$ der folgende Zusammenhang bestelt:
+\begin{align*}
+\sigma^2_{\text{Markowitz}}(m_p) = \pi_p^\top\Sigma\pi_p = \frac CD\bigg(m_p-\frac AC\bigg)^2 + \frac 1C
+\end{align*}
+wobei
+\begin{align*}
+A &= m^\top \Sigma^{-1} \mathbf 1 & B&=m^\top \Sigma^{-1}m \\
+C &= \mathbf 1^\top\Sigma^{-1}\mathbf 1 & D &= BC-A^2.
+\end{align*}
+
+Diese Hyperbel in der $(\sigma_{\text{Markowitz}},m_p)$-Ebene ist die Portfoliogrenze. Effiziente Portfolios sind auf der Portfoliogrenze mit erwartetem Return $m_p>\frac AC$
+\end{satz}
+
+\subsection{Portfolio-Optimierung nach Tobin}
+Wir betrachten den Markt mit den Anlagemöglichkeiten wie bisher und fügen eine risikolose Anlagemöglichkeit $\S_0$ hinzu. Der Markt enthält dann $d+1$ Anlagemöglichkeiten: $S_0,S_1,\ldots,S_n$. Weiterhin sei $\Sigma$, die Kovaranzmatrix der $d$ risikobehafteten Anlagemöglichkeiten, regulär. Wir bezeichnen den erwarteten Return der Anlagemöglichkeiten mit $m$.
+
+
+Da $\Cov(S_0,S_i)=0$ für $i=1,\ldots,d$ können wir nicht wie zuvor vorgehen, da sonst die Kovaranzmatrix der $d+1$ Anlagemöglichkeiten singulär wäre.
+
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
