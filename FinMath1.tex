@@ -456,6 +456,7 @@ Ein Portfolio heißt \emph{Grenzportfolio},\index{Grenzportfolio} wenn es unter 
 Ein Portfolio $p$ heißt Grenzportfolio, genau dann, wenn der Portfoliovektor $\pi_p$ Lösung des folgenden Optimierungsproblems ist:
 \begin{align*}
 \min_{\pi} \frac 12 \pi^\top \Sigma \pi &= \min_\pi \frac 12 \sum_{i=1}^d\sum_{j=1}^d \pi_i \sigma_{ij}\pi_j = \min_\pi \frac 12 \Var(R^\pi) \\
+\intertext{unter den Nebenbedingungen}
 \pi^\top m &= \sum_{i=1}^d \pi_im_i = E[R^\pi]\ad m_p \\
 \pi^\top \mathbf 1 &= \sum_{i=1}^d m_i = 1
 \end{align*}
@@ -569,6 +570,181 @@ Wir betrachten den Markt mit den Anlagemöglichkeiten wie bisher und fügen eine
 
 
 Da $\Cov(S_0,S_i)=0$ für $i=1,\ldots,d$ können wir nicht wie zuvor vorgehen, da sonst die Kovaranzmatrix der $d+1$ Anlagemöglichkeiten singulär wäre.
+
+Wir setzen also $R_0(T)=\frac{S_0(t)}{S_0(0)} \ad R_0$ und $E[R_0(T)]=R_0$.
+
+Sei $\tilde\pi = (\pi_0,\ldots,\pi_d)\in\MdR^{d+1}$ der Portfoliovektor für das Investitionsproblem mit $d+1$ Anlagemöglichkeiten und deren Kovaranzmatrix $\tilde\Sigma\in\MdR^{d+1\times d+1}$, $\tilde\Sigma = \bigl(\begin{smallmatrix} 0 &  0\\ 0 & \Sigma  \end{smallmatrix}\bigr)$. Wir fordern weiterhin $\tilde\pi^\top \tilde{\mathbf 1}=\pi_0+ \sum_{i=1}^d \pi_i = \pi_0 + \mathbf 1^\top \pi = 1$, also $\pi_0 = 1- \mathbf 1^\top\pi$. Dann lässt sich der Return schreiben als
+\begin{align*}
+R^\pi = \sum_{i=0}^d \pi_i R_i(T) = \sum_{i=0}^d \pi_i R_i(T) + (1-\sum_{i=1}^d \pi_i)R_0(T)
+\end{align*}
+mit Erwartungswerts
+\begin{align*}
+E[R^\pi] = \pi^\top m + R_0(1-\pi^\top\mathbf 1) = \pi^\top (m-R_0\mathbf 1) + R_0
+\end{align*}
+und Varianz $\Var(R^\pi)=\pi^\top\Sigma\pi$. Das Optimierungsproblem ist dann 
+\begin{align*}
+&\min\frac12\pi^\top\Sigma\pi 
+\intertext{unter der Nebenbedingung}
+&\pi^\top(m-R_0\mathbf 1) + R_0 = m_p
+\end{align*}
+
+Wir verwenden die Lagrange-Methode:
+\begin{align*}
+L(\pi) &\da \frac12 \pi^\top \Sigma \pi - \lambda_1(\pi^\top(m-R_0\mathbf 1)+ R_0 - m_p) \\
+L'(\pi) &= \Sigma\pi - \lambda_1(m-R_0\mathbf 1) \stackrel!= 0\\
+&\iff \pi = \lambda_1\Sigma^{-1}(m-R_0\mathbf 1) \ad \lambda_1 b
+\end{align*}
+Über die Nebenbedingung kann $\lambda_1$ bestimmt werden:
+\begin{align*}
+(\lambda_1\Sigma^{-1}(m- R_0\mathbf 1))^\top(m-R_0\mathbf 1) + R_0 = m_p \iff \lambda_1=\frac{m_p-R_0}{b^\top m - R_0b^\top \mathbf 1}
+\end{align*}
+Dann ist das optimale Portfolio (für die Investition in die Aktien) gegeben durch
+\begin{align*}
+\pi&=\lambda_1b =\frac{m_p - R_0}{b^\top m - R_0b^\top\mathbf 1} b = \underbrace{\frac{m_p-R_0}{b^\top m - R_0b^\top \mathbf 1}\cdot\frac{b^\top\mathbf 1}1}_{\ad \alpha^*}\cdot\underbrace{\frac1{b^\top\mathbf 1}\cdot b}_{\ad \pi^*} = \alpha^* \pi^*
+\end{align*}
+Insbesondere gilt
+\begin{align*}
+\alpha^* = \frac{(m_p-R_0)b^\top \mathbf 1}{b^\top m - R_0 b^\top \mathbf 1} = 
+\frac{(m_p-R_0)b^\top \mathbf 1}{(\frac{b^\top m}{b^\top\mathbf 1} - R_0) b^\top \mathbf 1}
+= \frac{m_p-R_0}{\pi^* m - R_0}
+\end{align*}
+Die optimale Strategie für die risikolose Anlagemöglichkeit ist dann
+\begin{align*}
+\pi_0 = 1 - \mathbf 1^\top\pi = 1 - \alpha^* \frac{b^\top\mathbf 1}{b^\top\mathbf 1} = 1- \alpha^*.
+\end{align*}
+
+\begin{definition}
+Das obige $\pi^*$ heißt \emph{Tangentialportfolio}.\index{Tangentialportfolio}
+\end{definition}
+
+\begin{bemerkung}
+Das optimale $\pi^*$ hängt nicht von $m_p$ ab! Ein Investor wird unabhängig von seiner Zielrendite immer das Tangentialportfolio als Investition in die risikobehafteten Anlagemöglichkeiten wählen. Die Wahl eines effizienten Portfolios bedeutet also dass die Präferenzen des Investors nur durch seine Wahl des Anteils $(1-\alpha^*)$, den er risikolos investiert, ausgedrückt werden.
+\end{bemerkung}
+
+Die minimale Varianz ist dann gegeben durch
+\begin{align*}
+\sigma_{\text{Tobin}}^2(m_p) \da (\alpha^*)^2 \pi^*\top\Sigma\pi^* = \frac{(m_p-R_0)^2}{b^\top \Sigma b} = \frac {(m_p-R_0)^2}{D\sigma^2_{\text{Markowitz}}(R_0)}
+\end{align*}
+In der Varianz-Erwartungswert-Ebene wird dadurch eine Parabel beschrieben. In der Stan\-dard\-ab\-weich\-ungs-Erwartungswert-Ebene vereinfacht sich die Darstellung.
+
+\begin{satz}
+Im Markt mit zusätzlicher risikoloser Anlagemöglichkeit mit Return $R_0$ ist ein Portfolio ein Grenzportfolio genau dann, wenn der folgende Zusammenhang zwischen Standardabweichung der Portfoliorendite und erwarteter Rendite gilt:
+\begin{align*}
+\sigma_{\text{Tobin}} = |\alpha^*| \sqrt{ {\pi^*}^\top\Sigma\pi^*} = \left|
+\frac{m_p-R_0}{ {\pi^*}^\top m - R_0 }\right| \sqrt{ {\pi^*}^\top\Sigma\pi^*}
+\end{align*}
+Effizient sind alle Portfolios auf der so beschriebenen Portfoliogrenze deren erwartete Rendite echt größer als $R_0$ ist.
+\end{satz}
+
+\begin{definition}
+Die effizienten Portfolios liegen auf der sogenannten \emph{Kapitelmarktgeraden}:\index{Kapitelmarktgeraden}\index{Marktrisikoprämie}
+\begin{align*}
+m_p = R_0 + \sigma_{\text{Tobin}} \underbrace{\frac{ {\pi*}^\top m - R_0}{\sqrt{ {\pi^*}^\top \Sigma \pi^*}}}_{\text{\emph{Marktrisikoprämie}}}
+\end{align*}
+\end{definition}
+
+Das heißt, dass das Hinzufügen einer risikolosen Anlagemöglichkeit aus der Portfoliogrenze eine Gerade macht, die von $(0,R_0)$ tangential zur Portfoliogrenze der risikobehafteten Anlagemöglichkeiten geht. In dem Zusammenhang spricht man auch vom One-Fund-Theorem: Jedes effiziente Portfolio kann als Kombination aus dem Fund und der risikolosen Anlagemöglichkeit konstruiert werden.
+
+\begin{bemerkung}
+Für das optimale Markowitz-Portfolio gilt:
+\begin{align*}
+\pi_{\text{Markowitz}} (m_p) = \frac{C_{m_p}-A}D \Sigma^{-1}m + \frac{B-A_{m_p}}D \Sigma^{-1}\mathbf 1
+\end{align*}
+Für das Tangentialportfolio gilt:
+\begin{align*}
+\pi^* = \frac1{A-R_0C} \Sigma^{-1}m + \frac{-R_0}{A-R_0C}\Sigma^{-1}\mathbf 1
+\end{align*}
+Man kann nachrechnen, dass für
+\begin{align*}
+m^* \da {\pi^*}^\top m = \frac{B-R_0A}{A-R_0C}
+\end{align*}
+und $m^*>R_0$ gilt:
+\begin{align*}
+\pi_{\text{Markowitz}}(m^*) = \pi^*
+\end{align*}
+Insbesondere
+\begin{align*}
+\sigma_{\text{Markowitz}}(m^*) = \sigma_{\text{Tobin}}(m^*)
+\end{align*}
+und
+\begin{align*}
+\sigma'_{\text{Markowitz}}(m^*) = \sigma'_{\text{Tobin}}(m^*)
+\end{align*}
+Am Punkt $m^*$ berühren sich die Portfoliogrenze und die Kapitelmarktlinie tangential.
+\end{bemerkung}
+
+\begin{center}
+\begin{tikzpicture}
+\draw(3,3) node[draw,rectangle,fill=white] (b) {};
+\draw[->] (0,-0.2) -- (0,6)  node[right] {$m_p$};
+\draw[->] (-0.2,0) -- (10,0)  node[below] {$\displaystyle\sigma$};
+\draw[dotted] (3,0) -- (b);
+% \draw (b.east) node[right] {Minimum-Varianz-Portfolio};
+\draw[dotted] (0,3)-- (b);
+\draw (3.5,3.5) node [right=1cm] {Markowitz’ effiziente Portfoliogrenze};
+\begin{scope}[rotate around={270:(b)}]
+\draw[ultra thick,-] (b) parabola bend (b) (1,10);
+\draw (b) node[draw,rectangle,fill=white] {};
+\draw[-] (5,10) parabola bend (b) (1,10);
+\end{scope}
+\draw (0,2) node[left] {$R_0$} -- (9,6);
+\draw(3.5,3.73) node (x) {};
+\draw[dotted] (3.5,0) node[below] {$\displaystyle\sqrt{ {\pi^*}^\top\Sigma\pi^*}$} -- (3.5,3.56);
+\draw[dotted] (0,3.56) node[left] {$ {\pi^*}^\top m$} -- (3.5,3.56);
+\draw (7.5,5.5) node[left] {Kapitalmarktgerade};
+\end{tikzpicture}
+\end{center}
+
+\subsubsection*{Bestimmung von Kovarianzen}
+
+Sei $\pi_1$ ein Portfolio von der effizienten Portfoliogrenze und $\pi_2$ ein beliebiges Portfolio. Dann gilt
+\begin{align*}
+\Sigma\pi_1 = \lambda_1(m-R_0\mathbf 1).
+\end{align*}
+Durchmultiplizieren mit $\pi_1^\top, \pi_2^\top$ liefert
+\begin{align*}
+\Var(R^{\pi_1}) &= \pi_1^\top \Sigma \pi_1 = \lambda_1\pi_1^\top(m-R_0\mathbf 1) \\
+\Cov(R^{\pi_1},R^{\pi_2}) &= \pi_2^\top\Sigma \pi_1 = \lambda_1 \pi_2^\top (m-R_0\mathbf 1)
+\end{align*}
+Auflösen nach $\lambda_1$ und gleichsetzen liefert
+\begin{align*}
+& \frac{\Var(R^{\pi_1})}{\pi_1^\top m - R_0 \pi_1^\top \mathbf 1} = 
+\frac{\Cov(R^{\pi_1},R^{\pi_2})}{\pi_2^\top m - R_0 \pi_2 ^\top \mathbf 1} \\
+\iff & \beta_{\pi_1,\pi_2} \da 
+\frac{\Cov(R^{\pi_1},R^{\pi_2})}{\Var(R^{\pi_1})} =
+\frac{E[R^{\pi_1}]-R_0}{E[R^{\pi_2}]-R_0} \\
+\iff & E[R^{\pi_2}] = R_0 + \beta_{\pi_2,\pi_1}(E[R^{\pi_1}]-R_0)
+\end{align*}
+Das hießt, dass die erwartete Rendite eines beliebigen Portfolios linear von seiner Kovarianz mit einem Portfolio minimaler Varianz abhängt. $\beta_{\pi_1,\pi_2}$ bezeichnet das „Beta“ eines Portfolios $\pi_2$ in Bezug auf ein Portfolio $\pi_1$. Dabei ist $\beta_{\pi_2,\pi_1}$ der gewichtete Mittelwert des Betas der verschiedenen risikobehafteten Anlagemöglichkeiten:
+\begin{align*}
+\beta_{\pi_2,\pi_1} = \sum_{i=1}^d (\pi_2)_i\beta_{i,\pi_1}
+\end{align*}
+
+\subsection{Captial Asset Pricing Model (CAPM)}
+
+Bisher haben wir die Portfolioselektion aus der Perspektive eines einzelnen Investors betrachtet. Wir kommen nun zu einer Gleichgewichtsaussage über den gesamten Kapitalmarkt.
+
+Dazu machen wir folgende Annahmen:
+\begin{itemize}
+\item Alle Marktteilnehmer haben homogene Informationen und dadurch homogene Erwartungen (gleiche Kovaranzmatrix, gleiche Erwartungswerte), den selben Investitionshorizont, Numeraire etc.
+\item Es gibt eine risikolose Anlagemöglichkeit. Bei dieser kann man zu dem selben Zinssatz Kredite aufnehmen, zu dem auch Investitionen verzinst werden.
+\item Alle entscheiden sich nachm Erwartungswert-Varianz-Kriterium.
+\item Daher halten alle Marktteilnehmer das gleiche Portfolio der risikobehafteten Anlagemöglichkeiten, das Tangentialportfolio.
+\item Im Gleichgewicht muss die Gesamtnachfrage nach Aktien gleich der umlaufenden Aktien sein, da dass Tangentialportfolio in unterschiedlichen Mengen von den Investoren gehalten wird, muss es aus allen risikobehafteten Anlagemöglichkeiten proportional zu ihrer Marktkapitalisierung bestehen. Das so entstehende \emph{Marktportfolio}\index{Marktportfolio} ist mit dem indiviudellen Tangentialportfolio strukturell identisch.
+\end{itemize}
+
+\begin{satz}
+In einem Markt mit einer risikolosen Anlagemöglichkeit mit Rendite $R_0$ erfüllt die erwartete Rendite $m_p$ eines beliebigen Portfolios $p$ die Gleichung 
+\begin{align*}
+m_p = R_0 + \beta_{p,M}(m_M-R_0)
+\end{align*}
+wobei 
+\begin{align*}
+\beta_{p,M} \da \frac{\Cov(R^{\pi_p}, R^{\pi_M})}{\Var(R^{\pi_M})}
+\end{align*}
+und $m_M$ die erwartete Rendite des Marktportfolios ist.
+\end{satz}
+
 
 
 \setcounter{secnumdepth}{-1}
