@@ -7,6 +7,8 @@
 \usepackage{tikz}
 \usepackage{german}
 
+%\usepackage{lmodern}
+
 \usepackage{remreset}
 \makeatletter
 \@removefromreset{section}{chapter}
@@ -17,6 +19,7 @@
 \newcommand{\cA}{\mathcal A}
 \newcommand{\cV}{\mathcal V}
 \newcommand{\borel}{{\mathfrak B}}
+\newcommand{\unisucceq}{\succeq_{\text{uni}}}
 
 \DeclareMathOperator{\ARA}{ARA}
 \DeclareMathOperator{\RRA}{RRA}
@@ -745,6 +748,125 @@ wobei
 und $m_M$ die erwartete Rendite des Marktportfolios ist.
 \end{satz}
 
+Man kann auch einen Zusammenhang zwischen der erwarteten Rendite einer einzelnen Anlagemöglichkeit und der Rendite des Marktportfolios herstellen:
+\begin{align*}
+m_i = R_0 + \beta_i(m_M - R_0) \tag{$*$}
+\end{align*}
+wobei
+\[
+\beta_i \da \frac{\Cov(R_i,R^{\pi_M})}{\Var(R^{\pi_M}).}
+\]
+Hier bezeichnet $m_i$ die erwartete Rendite und $\beta_i$ den „Beta“-Faktor der Anlagemöglichkeit~$i$.  Die Gleichung $(*)$ wird als Wertpapiermarktlinie (“security market line”) bezeichnet. sie zeigt, dass die erwarte Rendite einer Anlagemöglichkeit als lineare Funktion der Kovarianz der Anlagemöglichkeit mit dem gesamten Markt ausgedrückt werden kann.
+
+\subsection{Kurze Diskussion der Annahmen des Erwartungswert-Varianz-Ansatzes}
+
+\begin{itemize}
+\item Statisches Problem: Investor investiert am Anfang und ändert sein Portfolio nicht mehr.
+\item Risiko wird nur durch die Varianz gemessen.
+\item Symmetrische Form der Varianz: Abweichungen nach oben werden genau so bestraft wie Abweichungen nach unten.
+\item Die Bevorzugung der erwarteten Rendite und die Aversion der Varianz wird durch die Monotonie und Konkavität der Nutzenfunktion impliziert. Aber für allgemeine Nutzenfunktionen kann erwarteter Nutzen nicht nur über erwartete Rendite und Varianz definiert werden. Sei $\mu\in\cM$ (Wahrscheinlichkeitsmaße mit endlichem Erwartungswert). Konvergenz der Tailorentwicklung und Vertauschung von Summation und Integration liefert 
+\[
+U(\mu) = \int u(x)\mu(dx) = \int \sum_{k=0}^\infty \frac 1k u^{(k)}(m)(x-m)^k\mu(dx) = u(m) + \frac12 u''(m)\Var(\mu) + R_3(\mu).
+\]
+Das Restglied $R_3(\mu)$ muss in der Regel auch berücksichtigt werden.
+
+\item Für quadratische Nutzenfunktionen $u(X)=x-\frac\varepsilon2x^2$, $\varepsilon>0$ gilt
+\[
+U(\mu) = m - \frac\varepsilon2(\Var(\mu) + m^2).
+\]
+Aber $u'(X) = 1-\varepsilon x \ge 0 \iff x\le \frac1\varepsilon$. 
+
+Und:
+\begin{align*}
+\ARA(x) = \frac{-u''(x)}{u'(X)} = \frac\varepsilon{1-\varepsilon x},&&
+\ARA'(x) = \frac{\varepsilon^2}{(1-\varepsilon x)^2} > 0
+\end{align*}
+also wachsende absolute Risikoaversion!
+\item Für multivariat-normalverteilte Anlagemöglichkeiten, also $R^{\pi}\sim N$, können Präferenzen über Erwartungswert und Varianz ansgedrückt werden.
+\end{itemize}
+
+\section{Stochastische Dominanz}
+In dem vorigen Kapitel wurden Präferenzrelationen über feste Nutzenfunktionen ausgedrückt. Wir wollen nun der Frage nachgehen, ob eine Verteilung (einer risikobehafteten Anlagemöglichkeit) einer anderen Verteilung unabhängig von der Wahl der Nutzenfunktion vorgezogen wird. Wir betrachten $S=\MdR$ als Menge aller möglichen Auszahlungen und betrachten $\cM$ als Menge aller $\mu\in\cM_1(\MdR)$ (Wahrscheinlichkeitsverteilungen) mit wohldefiniertert Erwartung \[m(\mu)=\int x\mu(dx).\]
+
+\begin{definition}
+Seien $\mu,\nu\in\cM$. Dann dominiert $\mu$ $\nu$ im Sinne der \emph{Stochastischen Dominanz zweiter Ordnung},\index{Stochastische Dominanz!zweiter Ordnung} falls 
+\[
+\int u d\mu \ge \int u d\nu
+\]
+für alle Nutzenfunktionen $u$. Wir schreiben dafür $\mu \unisucceq \nu$ (“uniform preference”).
+\end{definition}
+
+Das hießt, $\mu \unisucceq \nu$ gilt genau dann, wenn ein risikoaverser Agent $\mu$ $\nu$ vorzieht unabhängig davon welche Nutzenfunktion er verwendet. In diesem Sinne drückt $\mu\unisucceq \nu$ eine gleichmäßige Präferenz von $\mu\unisucceq\nu$ aus.
+
+\begin{satz}
+Für beliebige $\mu,\nu\in\cM$ sind die folgenden Aussagen äquivalent:
+\begin{enumerate}
+\item $\mu\unisucceq \nu$
+\item $\int fd\mu \ge \int f d\nu$ für alle wachsenden, konkaven Funktinen $f$.
+\item Für alle $c\in\MdR$ gilt:
+\[
+\int (c-x)^+\mu(dx) \le \int (c-x)^+\nu(dx)
+\]
+\item Für die Verteilungsfunktionen $F_\mu$ und $F_\nu$ und alle $c\in\MdR$ gilt:
+\[
+\int_{-\infty}^c F_{\mu}(x) dx \le \int_{-\infty}^c F_{\nu}(x) dx 
+\]
+\item Für die Quantilfunktionen $q_\mu$, $q_\nu$ und $0<t\le 1$ gilt:
+\[
+\int_0^t q_\mu(s)ds \ge \int_0^t q_\nu(s)ds
+\]
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+\begin{itemize}
+\item (4)$\iff$(5): Übungsaufgabe
+\item (3)$\iff$(4):
+\begin{align*}
+\int_{-\infty}^c F_{\mu(y)}dy &= \int_{-\infty}^c \int_{(-\infty,y]} \mu(dz)dy \\
+&=\int_\MdR \int_\MdR \mathbf 1_{z\le y\le c}dy \mu(dz) \\
+&=\int_\MdR (c-z)^+ \mu(dz)
+\end{align*}
+\item (2)$\implies$(3): Die Funktion $f(x) \da -(c-x)^+$ ist konkav und monoton wachsend.
+a\item (3)$\implies$(2): (Beweisidee) Sei $f$ eine monoton wachsende, konkav Funktion. Dann ist $h\da -f$ konvex und monoton fallend. Schreibe $h$ so um,dass die Voraussetzung (3) angewendet werden kann.
+
+Sei $h'_+$ die monoton wachsende rechtsseitige Ableitung von $h$. Man kann sie als „Verteilungsfunktions“ eines nicht-negativen Maßes $\gamma$ auf $\MdR$ verstehen: Für $y<b$ gilt $h'(b) = h'(y) + \gamma( (y,b])$.
+
+Dann gilt für $x<b$:
+\begin{align*}
+h(b) &= h(x) + \int_x^b h'(y) dy \\
+&=h(x) + h'(b)(b-x) -\int_x^b \int_{(y,b]} \gamma(dz)dy \\
+&=h(x) + h'(b)(b-x) - \int_{(-\infty,b]}\int_\MdR \mathbf 1_{y:x\le y \le z} dy \gamma(dz) \\
+&=h(x) + h'(b)(b-x) - \int_{(-\infty,b]} (z-x)^+ \gamma(dz) 
+\end{align*}
+Dann glit für alle $-\infty<x<b$:
+\begin{align*}
+h(x) &= h(b) - h'(b)(b-x)^+ + \int_{(-\infty,b]} (z-x)^+ \gamma(dz) \\
+\end{align*}
+Berechne nun
+\[
+\int_{(-\infty,b} h(x) \mu(dx)
+\]
+ mit obiger Darstellung von $h$, verwende (3) und lasse $b\to\infty$.
+\item (2)$\implies$(1): Klar
+\item (1)$\implies$(2): Sei $u_0$ eine Nutzenfunktion, für die $\int u_0d\mu$ und $\int u_0d\nu$ endlich sind, z.B.
+\[
+u_0(x) = 
+\begin{cases}
+x - e^{\frac x2} + 1, & x\le 0\\
+\sqrt{x + 1} -1, &g\ge 0
+\end{cases}
+\]
+Sei $f$ eine konkave und monoton wachsende Funktion, $\alpha \in [0,1)$. Dann ist $u_\alpha(x) \da \alpha f(x) + (1-\alpha)u_0(x)$ eine Nutzenfunktion und damit gilt 
+\[
+\int f d\mu = \lim_{\alpha\to 1} \int u_\alpha d\mu \ge \lim_{\alpha \to 1} \int u_{\alpha}d\nu = \int f d\nu
+\]
+\end{itemize}
+\end{beweis}
+
+\begin{bemerkung}
+Sei $\mu \unisucceq \nu$. Wähle $f(x) = x$ als monoton wachsende konkave Funktion. Dann gilt \mbox{$m(\mu) \ge m(\nu)$}.
+\end{bemerkung}
 
 
 \setcounter{secnumdepth}{-1}
