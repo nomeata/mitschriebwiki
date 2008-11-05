@@ -20,6 +20,8 @@
 \newcommand{\cV}{\mathcal V}
 \newcommand{\borel}{{\mathfrak B}}
 \newcommand{\unisucceq}{\succeq_{\text{uni}}}
+\newcommand{\mvsucceq}{\succeq_{\text{mv}}}
+\newcommand{\monsucceq}{\succeq_{\text{mon}}}
 
 \DeclareMathOperator{\ARA}{ARA}
 \DeclareMathOperator{\RRA}{RRA}
@@ -799,7 +801,7 @@ für alle Nutzenfunktionen $u$. Wir schreiben dafür $\mu \unisucceq \nu$ (“un
 Das hießt, $\mu \unisucceq \nu$ gilt genau dann, wenn ein risikoaverser Agent $\mu$ $\nu$ vorzieht unabhängig davon welche Nutzenfunktion er verwendet. In diesem Sinne drückt $\mu\unisucceq \nu$ eine gleichmäßige Präferenz von $\mu\unisucceq\nu$ aus.
 
 \begin{satz}
-Für beliebige $\mu,\nu\in\cM$ sind die folgenden Aussagen äquivalent:
+\label{satz:1.3.2}Für beliebige $\mu,\nu\in\cM$ sind die folgenden Aussagen äquivalent:
 \begin{enumerate}
 \item $\mu\unisucceq \nu$
 \item $\int fd\mu \ge \int f d\nu$ für alle wachsenden, konkaven Funktinen $f$.
@@ -868,6 +870,137 @@ Sei $f$ eine konkave und monoton wachsende Funktion, $\alpha \in [0,1)$. Dann is
 Sei $\mu \unisucceq \nu$. Wähle $f(x) = x$ als monoton wachsende konkave Funktion. Dann gilt \mbox{$m(\mu) \ge m(\nu)$}.
 \end{bemerkung}
 
+Im Folgenden betrachten wir die stochastische Dominanz zweiter Ordnung im Zusammenhang mit Normalverteilungen. Die Dichte einer $N(\mu,\sigma^2)$-verteilten Zufallsvariablen ($\sigma^2>0$) ist
+\[
+\tilde\varphi(x) = \frac1{\sqrt{2\pi\sigma^2}} \exp\Big(-\frac{(x-\mu)^2}{2\sigma^2}\Big)
+\]
+und die Verteilungsfunktion ist
+\[
+\tilde\Phi(x) = \int_{-\infty}^x \tilde\varphi(z) dz.
+\]
+
+\begin{satz}
+Für zwei Normalverteilungen gilt
+\[
+N(\mu,\sigma^2) \unisucceq N(\tilde\mu,\tilde\sigma^2) \iff \mu\ge \tilde\mu \text{ und } \sigma^2 \le \tilde\sigma^2
+\]
+\end{satz}
+
+\begin{beweis}
+Übungsblatt.
+\end{beweis}
+
+Wir haben in der klassischen Portfoliotheorie gesehen, dass zum Vergleich zweier Portfolios mit bekannter Verteilung der Auszahlung das Erwarungs-Varianz-Kriterium (MV, ”mean variance”) verwendet wird. Dieses basiert auf der Relation
+\[
+\mu \mvsucceq \nu \iff m(\mu) \ge m(\nu) \text{ und } \Var(\mu) \le \Var(\nu)
+\]
+wobei $m(\mu) = \int x \mu(dx)$ und $\Var(\mu) = \int (x-m(\mu))^2 \mu(dx)$.
+
+Wir haben gerade gesehen, dass $\mvsucceq$ und $\unisucceq$ äquivalent sind, falls $\mu$ und $\nu$ Normalverteilungen sind. Das gilt aber nicht im Allgemeinen.
+
+\begin{beispiel}
+Sei $\mu$ eine Gleichverteilung auf $[-1,1]$, also $m(\mu) = \int_{-1}^1 \frac x2 dx = 0$ und \mbox{$\Var(\mu) = \int_{-1}^{1} \frac{x^2}2 dx - 0^2 = \frac 13$}.
+Sei weiter $\nu = p \cdot \delta_{-0.5} + (1-p)\cdot \delta_{2}$ mit $p=\frac45$, also $m(\nu) = -\frac 12 \cdot \frac 45 + 2 \cdot \frac 1 5 = 0$ und $\Var(\nu) = (-\frac 12)^ \cdot \frac 45 + 2^2\cdot \frac 15 = 1$.
+
+Daher ist $m(\mu)=m(\nu)$ und $\Var(\mu) \le \Var(\nu)$, aber 
+\begin{align*}
+\int (-\frac 12 - x)^+\mu(dx) &= \frac 12 \int_{-1}^{-\frac12} (-\frac 12 - x)dx = \frac 1{16} \\
+\int (-\frac 12 - x)^+\nu(dx) &= 0.
+\end{align*}
+Daher gilt \emph{nicht} $\mu\unisucceq\nu$ (Siehe Theorem \ref{satz:1.3.2} Punkt 2).
+\end{beispiel}
+
+\begin{definition}
+Eine reellwertige Zufallsvariable $Y$ auf einem Wahrscheinlichkeitsraum $(\Omega, \mathcal F, P)$ heißt lognormalverteilt mit Parametern $\alpha\in R$, $\sigma \ge 0$, falls sie dargestellt werden kann als 
+\[
+Y = \exp(\alpha  + \sigma X)
+\]
+wobei $X \sim N(0,1)$.
+\end{definition}
+
+\begin{satz}
+Seien $\mu, \tilde\mu$ zwei Lognormalverteilungen mit Parametern $(\alpha,\sigma)$ und $(\tilde\alpha,\tilde\sigma)$. Dann gilt 
+\[
+\mu \unisucceq \tilde\mu \iff \sigma^2 \le \tilde\sigma^2 \text{ und } \alpha + \frac{\sigma^2}2 \ge \tilde\alpha + \frac{\tilde\sigma^2}2.
+\]
+\end{satz}
+
+\begin{definition}
+\label{def:1.3.8}Seien $\mu,\nu$ zwei beliebige Wahrscheinlichkeitsmaße auf $\MdR$. Dann dominiert $\mu \nu$ im Sinne der \emph{Stochastischen Dominanz erster Ordnung},\index{Stochastische Dominanz!erster Ordnung} falls 
+\[
+\int f d\mu \ge \int fd\nu
+\]
+für alle beschränkte, monoton wachsende Funktionen $f\in C(\MdR)$. Wir schreiben dafür $\mu\monsucceq \nu$ (“monotone preference”).
+\end{definition}
+
+\begin{satz}
+Für $\mu,\nu \in M_1(\MdR)$ sind die folgenden Aussagen äquivalent:
+\begin{enumerate}
+\item $\mu\monsucceq\nu$
+\item Die Verteilungsfunktionen von $\mu$ und $\nu$ erfüllen $F_\mu(x) \le F_\nu(x)$ für alle $x\in\MdR$.
+\item Jedes Paar von Quantilfunktionen von $\mu$ und $\nu$ erfüllt $q_\mu(t) \ge q_\nu(t)$ für fast alle $t\in(0,1)$.
+\item Es existiert ein Wahrscheinlichkeitsraum $(\Omega,\mathcal F, P)$ mit Zufallsvariablen $X_\mu, X_\nu$ mit Verteilungen $\mu, \nu$, so dass $P$-fast-sicher $X_\mu > X_\nu$ gilt.
+\end{enumerate}
+Insbesondere gilt \[
+\mu\monsucceq\nu \implies \mu\unisucceq\nu.
+\]
+Die Menge aller beschränkten, monoton wachsenden, stetigen Funktionen in Definition \ref{def:1.3.8} kann ersetzt werden durch die Menge aller monoton wachsenden Funktionen, für die beide Integrale wohldefiniert sind.
+\end{satz}
+
+\begin{beweis}
+Siehe Föllmer-Schied, Theorem 2.70
+\end{beweis}
+
+\begin{center}
+\begin{tikzpicture}
+\draw(-0.2,6) node [left] {$1$} -- (0.2,6);
+\draw[->] (0,-0.2) -- (0,6.5)  node[right] {$F(x)$};
+\draw[->] (-0.2,0) -- (10,0)  node[below] {$x$};
+\draw (-0.4,0.1) .. controls (8,1) and (2,5)  .. (10,5.5) node[above] {$F_\nu$};
+\draw (-0.4,0.08) .. controls (9,0.5) and (4,4.5)  .. (10,5.4) node[below] {$F_\mu$};
+\draw (8,3) node {$\mu\monsucceq \nu$};
+\end{tikzpicture}
+\end{center}
+
+
+\section{Risikomaße}
+\subsection{Kohärenz}
+
+Sei $\Omega$ eine gegebenene Menge, die verschiedene Szenarien beschreibt. Wir beschreiben eine Finanzposition durch eine Abbildung $X:\Omega\to \MdR$, wobei $X(\omega)$ der diskontinierte Nettowert einer Position am Ende einer Handelsperiode ist, wenn Szenario $\omega\in\Omega$ eingetreten ist. Unser Ziel ist es nun, das Risiko von $X$ durch eine zahl $\rho(x)$ zu quantifizieren, wobei $X$ zu einer Klasse von Finazpositionen $\cX$ gehört. $\cX$ sei ein linearer Raum von beschränkten Funktionen, der auch die Konstanten enthält.
+
+\begin{definition}
+Eine Abbildung $\rho:\cX\to\MdR$ wird \emph{monetäres Risikomaß}\index{Risikomaß!monetäres} genannt, falls es die folgenden zwei Bedingungen für alle $X,Y\in\cX$ erfüllt:
+\begin{itemize}
+\item Monotonie: Falls $X\le Y$, dann gilt $\rho(X)\ge \rho(Y)$.
+\item Translationsinvarianz, “cash invariance”: Für $m\in\MdR$ gilt $\rho(x + m) = \rho(x) - m$.
+\end{itemize}
+\end{definition}
+
+Diese Eigenschaften können folgende Bedeutungen im Finanz-Kontext zugewiesen werden:
+\begin{itemize}
+\item Montonie: Das Downside-Risiko einer Position ist reduziert, wenn das Auszahlungsprofil größer ist.
+\item Translationsinvarianz: $\rho(X)$ kann als Kapitalanforderung interpretiert werden, das heißt $\rho(X)$ ist der Wert, der zur Position $X$ hinzugefügt werden muss, um diese Position akzeptabel aus der Perspektive einer Aufsichtsinstanz zu machen. Das heißt, wenn die Menge $m$ zu der Position hinzugefügt wird und risikolos investiert wird, reduziert das die Kapitalanforderung um den gleichen Betrag.
+\end{itemize}
+
+Aus der Translationsinvarianz folgt sofort $\rho(X + \rho(X)) = \rho(X) - \rho(X) = 0$ und $\rho(m) = \rho(0+m) = \rho(0) - m$ für alle $m\in\MdR$. Manchmal fordert man die Normalisierung $\rho(0)=0$.
+
+\begin{satz}
+Jedes monetäre Risikomaß $\rho$ ist Lipschitz-stetig im Bezug auf die Supremumsnorm $\|\cdot\|$, das heißt $|\rho(X) -\rho(Y)|\le \|x-y\|$ wobei $\|X\| = \sup_{\omega\in\Omega}|X(\omega)|$. 
+\end{satz}
+
+\begin{beweis}
+Es gilt $X\le Y+\|X-Y\|$. Aus der Monotonie folgt $\rho(Y+\|X-Y\|) \le \rho(X)$ und aus der Translationsinvarianz $\rho(Y)-\|X-Y\| \le \rho(X)$. Vertausche nun $X$ und $Y$ und führe die selbe Argumentation durch, woraus die Behauptung folgt.
+\end{beweis}
+
+\begin{definition}
+Ein monetäres Risikomaß $\rho:\cX \to \MdR$ heißt \emph{konvexes Risikomaß},\index{Risikomaß!konvexes} falls 
+\[
+\rho(\lambda X + (1-\lambda)Y) \le \lambda \rho(X) + (1- \lambda)\rho(Y)
+\]
+für $0\le \lambda \le 1$, $X,Y\in\cX$.
+\end{definition}
+
+Die Bedeutung dieser Definitoin ist: Angenommen ein Investor kann zwischen zwei Investitionsstrategien wählen. Die eine liefert Auszahlung $X$, die andere $Y$. Wenn der Investor nun diversifiziert, das heißt nur einen Anteil $\lambda$ in der ersten Investitionsmöglichkeit investiert und den restlichen Anteil $(1-\lambda)$ in die zweite, erhält er $\lambda X + (1-\lambda)Y$. Die Annahme der Konvexität beduetet letztendlich, dass Diversifikation nicht das Risiko erhöhen sollte.
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
