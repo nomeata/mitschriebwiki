@@ -83,6 +83,7 @@
     \newtheorem{Bsp}[Def]{Beispiele}
     \newtheorem{DefProp}[Def]{Definition + Proposition}
     \newtheorem{anBew}[Def]{Beweis}
+    \newtheorem{Kor}[Def]{Korollar}
 \theoremstyle{nonumberbreak}
     \newtheorem{Bew}{Beweis}
     \newtheorem{nnBem}{Bemerkung}
@@ -111,6 +112,8 @@
 
 \DeclareMathOperator{\Kern}{Kern}
 \DeclareMathOperator{\Bild}{Bild}
+\DeclareMathOperator{\Rat}{Rat}
+\DeclareMathOperator{\id}{id}
 
 \newcommand{\FakRaum}[2]{
   \raisebox{0.7ex}{\ensuremath{#1}}
@@ -456,6 +459,7 @@ Andererseits:\\
 $\alpha(g)(x)=(g\circ f)(x)=g(f(x))=0\Leftrightarrow \alpha(g)\in m_x \Leftrightarrow g\in \alpha^{-1}(m_x)=m_y \Leftrightarrow g(y)=0$
 \end{proof}
 \begin{Satz}
+\label{satz:3}
 Sei $k$ ein algebraisch abgeschlossener Körper. Dann ist 
 $$\Phi:\underline{\operatorname{Aff}} \longrightarrow \underline{k-\operatorname{Alg}}^{\circ}$$
 $$V \longmapsto k[V]$$
@@ -634,7 +638,7 @@ Für $x \in V$ ist $f_\alpha(x)=(f_1(x),\dots,t_n(x))\defeql y$. Noch zu zeigen:
 \end{proof}
 \begin{Def}
   \label{def:6.7}
-  Sei $V\subseteq\mathbb A^n(k)$ eine affine Varietät und irreduziebel. Dann heißt $k(V)\defeqr\Quot(k[V])$ \begriff{Funktionenkörper} von $V$.
+  Sei $V\subseteq\mathbb A^n(k)$ eine affine Varietät und irreduzibel. Dann heißt $k(V)\defeqr\Quot(k[V])$ \begriff{Funktionenkörper} von $V$.
 \end{Def}
 \begin{Bsp}
   \begin{enumerate}
@@ -646,7 +650,7 @@ Für $x \in V$ ist $f_\alpha(x)=(f_1(x),\dots,t_n(x))\defeql y$. Noch zu zeigen:
 \end{Bsp}
 \begin{Prop}
   \label{prop:6.8}
-  Sei $f:V\longrightarrow W$ ein Morphismus von irreduzieblen affine Varietäten.
+  Sei $f:V\longrightarrow W$ ein Morphismus von irreduziblen affine Varietäten.
   \begin{enumerate}
   \item $f$ induziert genau dann einen Körperhomomorphismus $\varphi_f:k(W)\longrightarrow k(V)$ der den $k$-Algebrenhomomorhismus $f^\sharp:k[W]\longrightarrow k[V]$ fortsetzt, wenn $f^\sharp$ injektiv ist.
   \item $f^\sharp$ ist genau dann injektiv, wenn $f(V)$ dicht in $W$ ist (in diesem Fall heißt $f$ \begriff{dominant}).
@@ -670,14 +674,117 @@ Für $x \in V$ ist $f_\alpha(x)=(f_1(x),\dots,t_n(x))\defeql y$. Noch zu zeigen:
   \label{defbem:7.1}
   Sei $V\subseteq\mathbb A^n(k)$ eine affine Varietät.
   \begin{enumerate}
-  \item Eine rationale Funktion auf $V$ ist eine Äquivalenzklasse von Paaren $(U,f)$, wobei $U\subseteq V$ offen und dicht und $f\in\mathcal O(U)$ ist. Dabei sei $(U,f)\sim(U',f'):\Leftrightarrow f_{|U\cap U'}={f'}_{|U\cap U'}$
+  \item Eine rationale Funktion auf $V$ ist eine Äquivalenzklasse von Paaren $(U,f)$, 
+    wobei $U\subseteq V$ offen und dicht und $f\in\mathcal O(U)$ ist. 
+    Dabei sei $(U,f)\sim(U',f'):\Leftrightarrow f_{\vert U\cap U'}={f'}_{\vert U\cap U'}$
+  \item In jeder Äquivalenzklasse $[(U',f')]$ gibt es ein (bezüglich ''$\subseteq$'')
+    maximales Element $(U,f)$, dessen $U$ \begriff{Definitionsbereich} der rationalen Funktion heißt.
+    $V-U$ heißt \begriff{Pol(stellen)menge}.
+  \item Die rationalen Funktionen auf $V$ bilden eine $k$-Algebra $\Rat(V)$.
+  \item Ist $V$ irreduzibel, so ist $\Rat(V)\cong k(V)$.
   \end{enumerate}
 \end{DefBem}
 \begin{proof}
   \begin{enumerate}
-  \item $\sim$ ist transitiv: Seien $(U,f)\sim(U',f'),(U',f')\sim(U'',f'')$ dann folgt: $f_{|U\cap U'\cap U''}={f''}_{|U\cap U' \cap U''}$. Da $U\cap U' \cap U''$ dicht in $V$ ist , ist dann auch $f_{|U\cap U''}={f''}_{|U\cap U''}$.
+  \item $\sim$ ist transitiv: Seien $(U,f)\sim(U',f'),(U',f')\sim(U'',f'')$ dann folgt: 
+    $f_{\vert U\cap U'\cap U''}={f''}_{\vert U\cap U' \cap U''}$. Da $U\cap U' \cap U''$ dicht in $V$ ist, 
+    ist dann auch $f_{\vert U\cap U''}={f''}_{\vert U\cap U''}$.
+  \item Sei $(U,f)\sim(U',f')$ so definiere auf $U\cup U'$ eine Funktion $\tilde{f}$ durch 
+    $\tilde{f}(x)=
+    \begin{cases}
+      f(x)&x\in U \\
+      f'(x)&x\in U'
+    \end{cases}$
+    Dann ist $f\in\mathcal O(U\cup U')$
+  \item $f\pm g, f\cdot g$ sind reguläre Funktionen auf $U\cap U'$, wobei $(U,f)$ und $(U',g)$
+    Repräsentanten sind.
+  \item $\frac{g}{h}\in k(V)$ ist eine reguläre Funktion auf $D(h)$. $D(h)$ liegt dicht in $V$,
+    weil $V$ irreduzibel ist. 
+    Es folgt: $\frac{g}{h}\mapsto (D(h),\frac{g}{h})$ ist ein wohldefinierter $k$-Algebrenhomomorhismus
+    $\alpha:k\longrightarrow\Rat(V)$. \\
+    $\alpha$ ist surjektiv, denn: \\
+    Sei $(U,f)$ ein Repräsentant einer rationalen Funktion auf $V$. Dann gibt es
+    offenes $U'\subseteq U$ und $g,h\in k[V]$ mit $f(x)=\frac{g(x)}{h(x)}$ 
+    für alle $x\in U'$. Da $V$ irreduzibel ist, ist $U'$ dicht in $V$. Also ist $\alpha(\frac{g}{h})$
+    gleich der Klasse $(U',\frac{g}{h})$, was gleich der Klasse von $(U,f)$ ist.
   \end{enumerate}
 \end{proof}
+\begin{DefBem}
+  \label{defbem:7.2}
+  Seien $V\subseteq\mathbb A^n(k),W\subseteq\mathbb A^m(k)$ affine Varietäten.
+  \begin{enumerate}
+  \item Eine \begriff{rationale Abbildung} $f:V\dashrightarrow W$ ist eine Äquivalenzklasse von Paaren $(U,f_U)$,
+    wobei $U\subseteq V$ offen und dicht ist und $f_U:\longrightarrow U$ ein Morphismus ist;
+    dabei sei $(U,f_U)\sim (U',f_U):\Leftrightarrow {f_U}_{\vert U\cap U'}={f_{U'}}_{\vert U\cap U'}$
+  \item Rationale Funktion sind rationale Abbildungen $V\dashrightarrow \mathbb A^1(k)$.
+  \item jede rationale Abbildung hat einen maximalen Definitionsbereich.
+  \item Die Komposition von dominanten rationale Abbildungen ist wieder eine dominante rationale Abbildung,
+    wegen $\overline{f(U)}=\overline{f(\overline{U})}$.
+  \item Jede dominante rationale Abbildung $f:V\dashrightarrow W$ induziert einen $k$-Algebrenhomomorhismus
+    $\Rat(W)\longrightarrow \Rat(V)$.
+  \item Eine dominante rationale Abbildung $f:V\dashrightarrow W$ heißt \begriff{birational}, 
+    wenn es eine rationale Abbildung $g:W\dashrightarrow V$ gibt
+    mit $f\circ g\sim\id_W$ und $g\circ f\sim\id_V$.
+  \end{enumerate}
+\end{DefBem}
+\begin{nnBsp}
+  1) $f:\mathbb A^1(k)\dashrightarrow \mathbb A^2(k), x\mapsto(x,\frac{1}{x})$ ist eine rationale Abbildung.
+  2) $\sigma:\mathbb A^2(k)\dashrightarrow \mathbb A^2(k), (x,y)\mapsto(\frac{1}{x},\frac{1}{y})$ ist eine 
+  birationale Abbildung. Es gilt $\sigma\circ\sigma=\id$ auf $\mathbb A^2(k)-V(XY)$.
+\end{nnBsp}
+\begin{Prop}
+  \label{prop:7.3}
+  Seien $V,W$ irreduzible affine Varietäten. Dann gibt es zu jedem Körperhomomorphismus $\alpha :k(W)
+  \longrightarrow k(V)$ eine rationale Abbildung $f:V\dashrightarrow W$ mit $\alpha=\alpha_f$.
+\end{Prop}
+\begin{proof}
+  Wähle Erzeuger $g_1,\dots,g_m$ von $k(W)$ als $k$-Algebra. Für $\alpha(g_i)\in k(V)=\Rat(V)$ sei
+  $U_i\subseteq V$ der Definitionsbereich. Sei $\tilde{U}\defeqr\bigcap_{i=1}^m U_i$, $\tilde{U}$ ist offen und dicht in $V$.
+Sei $U\subseteq\tilde{U}$ affin und dicht (sowas gibt es!)
+\begin{align*}
+\Rightarrow&\alpha(g_i)\in\mathcal O(U)=k[U], i=1,\dots,m \\
+  \Rightarrow&\alpha(k[W]:k[W]\longrightarrow k[U] \text{ ist $k$-Algebrenhomomorhismus.} \\
+\Rightarrow&\text{es gibt einen Morphismus $f:U\longrightarrow W$ mit $f^\sharp=\alpha$.}
+\end{align*}
+$\alpha_f$ ist der von $f^\sharp$ induzierte Homomorphismus auf $\Quot(k[W])$.
+\end{proof}
+\begin{Prop}
+  \label{prop:7.4}
+Zu jeder endlich erzeugten Körpererweiterung $K/k$ gibt es eine irreduzible affine $k$-Varietät $V$ mit $k\cong k(V)$.
+\end{Prop}
+\begin{proof}
+  Seien $x_1,\dots,x_n\in K$ Erzeuger der Körpererweiterung $K/k$. Sei weiter $A\defeqr k[x_1,\dots,x_n]$ die von
+den $x_i$ erzeugte $k$-Algebra. $A$ ist nullteilerfrei, da $A\subseteq K$. Nach \ref{satz:3} gibt es eine 
+affine Varietät $V$ mit $A\cong k[V]$. $V$ ist irreduzibel, da $A$ nullteilerfrei. $k(V)=\Quot(k[V])\cong\Quot(A)=K$.
+\end{proof}
+\begin{Kor}
+  \label{kor:7.5}
+Die Kategorie der endlich erzeugten Körpererweiterungen $K/k$ (mit $k$-Algebrenhomomorhismen)
+ist äquivalent zur Kategorie der irreduziblen affine Varietäten über $k$ mit dominanten rationalen Abbildungen.
+\end{Kor}
+\chapter{Projektive Varietäten}
+\begin{Eri}
+  \begin{align*}
+  \mathbb P^n(k)=& \{ \text{ Geraden in $k^{n+1}$ durch $0$} \}     \\
+ =&\FakRaum{(k^{n+1}-{0})}{\sim}\text{ mit }(x_0,\dots,x_n)\sim(y_0,\dots,y_n):\Leftrightarrow\exists\lambda\in k^\times:\lambda x_i=y_i\text{ für } i=1,\dots,n
+  \end{align*}
+Schreibweise $(x_0:\dots:x_n);=[(x_0,\dots,x_n)]$ (``homogene Koordinate'')
+\begin{Bsp}
+  \begin{enumerate}
+  \item[$n=0$:] $\mathbb P^0(k)$ ist ein Punkt.
+  \item[$n=1$:]
+ $\mathbb P^1(k)\longrightarrow  k \cup \{ \infty \} \text{ ist bijektiv } \\
+(x_0:x_1) \mapsto  
+\begin{cases}
+  \frac{x_1}{x_0}:&x_0\neq 0 \\
+\infty:&x_0=0
+\end{cases} $
+Also: $\mathbb P^1(\mathbb R)=\FakRaum{S^1}{\{ \pm 1\} }$
+  \end{enumerate}
+\end{Bsp}
+\end{Eri}
+
+
 
 \appendix
 
@@ -685,3 +792,4 @@ Für $x \in V$ ist $f_\alpha(x)=(f_1(x),\dots,t_n(x))\defeql y$. Noch zu zeigen:
 \printindex[default][\phantomsection\addcontentsline{toc}{chapter}{Vokabeln}\vspace{-1.2em}]
 
 \end{document}
+		
