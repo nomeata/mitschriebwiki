@@ -28,6 +28,7 @@
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Cov}{Cov}
 \DeclareMathOperator{\VatR}{V@R}
+\DeclareMathOperator{\AVatR}{AV@R}
 
 \author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
 \title{Finanzmathematik I}
@@ -935,7 +936,7 @@ für alle beschränkte, monoton wachsende Funktionen $f\in C(\MdR)$. Wir schreib
 \end{definition}
 
 \begin{satz}
-Für $\mu,\nu \in M_1(\MdR)$ sind die folgenden Aussagen äquivalent:
+\label{satz:1.3.9}Für $\mu,\nu \in M_1(\MdR)$ sind die folgenden Aussagen äquivalent:
 \begin{enumerate}
 \item $\mu\monsucceq\nu$
 \item Die Verteilungsfunktionen von $\mu$ und $\nu$ erfüllen $F_\mu(x) \le F_\nu(x)$ für alle $x\in\MdR$.
@@ -1152,9 +1153,172 @@ Sei $\lambda\in[0,1]$. Wir definieren für eine Finanzposition $X$ den Value at 
 \begin{bemerkung}
 \begin{itemize}
 \item Im Finanzkontext ist $\VatR_\lambda(X)$ die kleinste Kapitalmenge, die, sobald sie zu $X$ hinzugefügt und risikolos investiert wird, die Wahrscheinlichkeit eines negativen Endvermögens unter dem Niveau $\lambda$ hält.
+\item $\VatR$ kontrolliert nur die Wahrscheinlichkeit eines Verlusts, aber nicht dessen Größe, falls er eintritt.
+\item $\VatR_\lambda$ ist ein monetäres Risikomaß auf $\cX=L^0$ (Menge aller $P$-fast-sicheren endlichen Zufallsvariablen) und ist positiv homogen.
+\begin{beweis}
+\begin{itemize}
+\item Monotonie: Sei $X\le Y$. Dann ist $F_X(x) = P(X\le x) \ge P(Y\le x) = F_Y(x)$ und $q_X^+(\lambda) \le q_Y^+(\lambda)$ (Siehe Satz \ref{satz:1.3.9}). Daher gilt $\VatR_\lambda(Y) = -q_Y^+(\lambda) \le -q_X^+(\lambda) = \VatR_\lambda(X)$.
+\item Translationsinvarianz: Sei $x\in\MdR$: 
+\begin{align*}
+\VatR_\lambda(X+x) &= \inf\{m: P(X + x + m < 0) \le \lambda \} \\
+&= \inf\{\tilde m - x : P(X + x + \tilde m -x < 0)\le \lambda \} \\
+&= \inf\{\tilde m - x : P(X+\tilde < 0 ) \le \lambda\} \\
+&= \VatR_\lambda(X) - x
+\end{align*}
+\item Positive Homogentiät: Sei $\alpha>0$.
+\begin{align*}
+\VatR_\lambda(X) &= \inf\{m:P(\alpha X+m<0)\le \lambda\} \\
+&= \inf\{\alpha\tilde m : P(\alpha X + \alpha\tilde m) \le \lambda\} \\
+&= \inf\{\alpha\tilde m : P(X+\tilde m < 0 ) \le \lambda\} \\
+&= \alpha\VatR_\lambda(X)
+\end{align*}
+\end{itemize}
+\end{beweis}
+
+\item $\VatR_\lambda$ ist in der Regel nicht konvex und damit kein konvexes Risikomaß. Das heißt, dass der Value at Ristk manchmal Diviersifikation bestraft.
 \end{itemize}
 \end{bemerkung}
 
+\begin{beispiel}
+Wir betrachten zwei Finanzpositionen $X_1$, $X_2$:
+\begin{align*}
+X_1 =
+\begin{cases}
+1& \text{mit Wahrscheinlichkeit } 0,99\\
+-1& \text{mit Wahrscheinlichkeit } 0,01\\
+\end{cases},
+&&
+X_2 =
+\begin{cases}
+1& \text{mit Wahrscheinlichkeit } 0,99\\
+-10^{10} & \text{mit Wahrscheinlichkeit } 0,01\\
+\end{cases}
+\end{align*}
+Dann ist $\VatR_{0,01}(X_1) = \inf\{m: P(m + X_1<0) \le 0.01\} = -1 = \VatR_{0,01}(X_2)$. Der Value at Risk unterscheidet nicht zwischen diesen beiden Positionen, obwohl $X_2$ im Falle eines Verlustes den viel höheren Verlust erleidet. Beide Positionen sind akzeptabel in dem Sinne, dass sie keinen positiven $\VatR$ haben.
+\end{beispiel}
+
+% \begin{center}
+% \begin{tikzpicture}
+% \draw[->] (0,-0.2) -- (0,6.5)  node[right] {$F(x)$};
+% \draw[->] (-0.2,0) -- (10,0)  node[below] {$x$};
+% \draw(2,-0.2) node [below] {$-1$} -- (2,0.2);
+% \draw(5,-0.2) node [below] {$0$} -- (5,0.2);
+% \draw(8,-0.2) node [below] {$1$} -- (8,0.2);
+% \draw (2,1) -- (8,1);
+% \draw (8,5) -- (10,5);
+% \end{tikzpicture}
+% \end{center}
+
+\begin{beispiel}
+Wir betrachten zwei unabhängige Finanzpositionen $X_1$ und $X_2$, wobei 
+\[
+X_i=
+\begin{cases}
+1,& \text{mit Wahrscheinlichkeit } p=0,5\\
+-1,& \text{mit Wahrscheinlichkeit} (1-p)=0,5.
+\end{cases}
+\]
+für $i=1,2$.
+Dann ist das diversifizierte Portfolio gegeben durch 
+\[
+\frac {X_1+X_2}2 = 
+\begin{cases}
+1,& \text{mit Wahrscheinlichkeit } p\cdot p=0,25\\
+0,& \text{mit Wahrscheinlichkeit } 2\cdot p(1-p) = 0,5\\
+-1,& \text{mit Wahrscheinlichkeit} (1-p)(1-p)=0,25.
+\end{cases}
+\]
+Dann ist $\VatR_{0.5}(X_i) = -1$ für $i=1,2$ und $\VatR_{0.5}(\frac12(X_1+X_2)=0$. Das heißt, nach dem Value at Risk ist diversifizierte Portfolio das riskantere Portfolio, verglichen zu den Einzelpositionen. Insbesondere gilt:
+\[
+\frac12\VatR_{0.5}(X_1) + \frac 12\VatR_{0.5}(X_2) = -1 \not\ge 
+\VatR_{0.5}(\frac 12 X_1 + \frac 12 X_2)
+\]
+\end{beispiel}
+
+\subsection{Average Value at Risk}
+Im Folgenden betrachten wir ein Risikomaß, das über den Value at Risk definiert wird, aber im Gegensatz dazu ein koherentes Risikomaß ist.
+\begin{definition}
+Der Average Value at Risk zum Niveau $\lambda\in(0,1)$ einer Position $x\in\cX$ ist 
+\[
+\AVatR_\lambda(X) = \frac1\lambda \int_0^\lambda \VatR_\gamma(X)d\gamma
+\]
+\end{definition}
+
+Daraus bekommt man sofot die Darstellung
+\[
+\AVatR_\lambda(X) = -\frac1\lambda \int_0^\lambda q_X^+(\gamma)d\gamma.
+\]
+
+\begin{bemerkung}
+Im Satz \ref{satz:1.3.2} haben wir gesehen, dass
+\[
+\mu\unisucceq \nu \iff \forall t\in(0,1]: \int_0^t q_\mu(s)ds \ge \int_0^t q_\nu(s)ds
+\]
+für Quantilfunktionen $q_\mu,q_\nu$ von $\mu,\nu$. Seien nun $X_\mu,X_\nu$ Zufallsvariablen mit Verteilung $\mu,\nu$.
+\[
+\mu\unisucceq \nu \iff \forall \lambda\in(0,1]: \AVatR_\lambda(X_\mu) \le \AVatR_\lambda(X_\nu)
+\]
+\end{bemerkung}
+
+\begin{lemma}
+\label{lemma:1.4.16}Sei $\lambda\in(0,1)$ und $q$ ein $\lambda$-Quantil von $X$. Dann gilt:
+\[
+\AVatR_\lambda(X) = \frac1\lambda E[(q-X)^+] - q = \frac1\lambda \inf_{r\in\MdR}(E[(r-X)^+]-\lambda r)
+\]
+\end{lemma}
+\begin{beweis}
+Übungsblatt.
+\end{beweis}
+
+\begin{satz}
+Für $\lambda\in(0,1)$ ist $\AVatR$ ein Koherentes Risikomaß.
+\end{satz}
+\begin{beweis}
+Monotonie, Translationsinvarianz und positive Homogentiät rechnet man leicht nach. Wir zeigen nur die Subadditivität, also $\AVatR_\lambda(X+Y) \le \AVatR_\lambda(X) + \AVatR_\lambda(Y)$.
+
+Aus Lemma \ref{lemma:1.4.16} folgt: 
+\begin{align*}
+\AVatR_\lambda(X) &= \frac1\lambda E[(q-X)^+] -q \\
+&= \frac1\lambda E[(q-X)1_{\{X<q}\}]-q \\
+&= \frac1\lambda (qP(X<q) + E[(-X)1_{\{X<q\}}])-q \\
+&= -\frac1\lambda E[X 1_{\{X<q\}} + q(\lambda - P(X<q))]
+\end{align*}
+Betrachte die Zufallsvariable \[1_{\{X<q\}}^{(\lambda)}\da \frac1\lambda (1_{\{X<q\}} + \kappa 1_{\{X=q\}}),\] wobei $q$ ein $\lambda$-Quantil von $X$ ist und
+\[
+\kappa = 
+\begin{cases}
+0, &\text{falls } P(X=q)=0 \\
+\frac{\lambda-P(X<q)}{P(X=q)}, & \text{sonst.}
+\end{cases}
+\]
+
+Dann ist 
+\begin{align*}
+E[-X\cdot 1_{\{X<q\}}^{(\lambda)}] &= \int (-X) \cdot \frac1\lambda (1_{\{X<q\}} + \kappa 1_{\{X=q}\}) dP \\
+&= -\frac1\lambda E[X1_{\{X<q\}}] - \frac\kappa\lambda E[X \cdot 1_{\{X=q\}}] \\
+&= -\frac1\lambda E[X1_{\{X<q\}}] - \frac\kappa\lambda qP(X=q) \\
+&= \AVatR_\lambda(X)
+\end{align*}
+
+Wir verwenden nun diese Darstellung um die Subadditivität zu zeigen. Seien $q_X$, $q_Y$ und $q_{X+Y}$ $\lambda$-Quantile von $X$, $Y$ und $X+Y$. Dann gilt:
+\begin{align*}
+&\AVatR_\lambda(X) + \AVatR_\lambda(Y) - \AVatR_\lambda(X+Y) \\
+=&E[-X 1_{\{X<q_X\}}^{(\lambda)}] + E[-Y 1_{\{Y<q_Y\}}^{(\lambda)}] - E[-(X+Y) 1_{\{(X+Y)<q_{(X+Y)}\}}^{(\lambda)}]\\
+=&E[X(1_{\{X+Y<q_{X+Y}\}}^{(\lambda)} - 1_{\{X<q_X\}}^{(\lambda)})]
++ E[Y(1_{\{X+Y<q_{X+Y}\}}^{(\lambda)} - 1_{\{Y<q_Y\}}^{(\lambda)})] \\
+\ge& q_X E[1_{\{X+Y<q_{X+Y}\}}^{(\lambda)} - 1_{\{X<q_X\}}^{(\lambda)}]
+- q_Y E[1_{\{X+Y<q_{X+Y}\}}^{(\lambda)} - 1_{\{Y<q_Y\}}^{(\lambda)}] \\
+=& q_X(1-1) + q_Y(1-1)\\
+=& 0
+\end{align*}
+Hierbei haben wir verwendet, dass
+\begin{itemize}
+\item $E[1_{\{X<q_>\}}^{(\lambda)}] = 1$ 
+\item $1_{\{X+Y<q_{X+Y}\}}^{(\lambda)} - 1_{\{X<q_X\}}^{(\lambda)} \ge 0$ für $X>q_X$
+\item $1_{\{X+Y<q_{X+Y}\}}^{(\lambda)} - 1_{\{X<q_X\}}^{(\lambda)} \le 0$ für $X\le q_X$
+\end{itemize}
+
+\end{beweis}
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
