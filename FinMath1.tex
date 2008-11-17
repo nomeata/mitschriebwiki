@@ -9,15 +9,16 @@
 
 %\usepackage{lmodern}
 
-\usepackage{remreset}
-\makeatletter
-\@removefromreset{section}{chapter}
-\makeatother
+% \usepackage{remreset}
+% \makeatletter
+% \@removefromreset{section}{chapter}
+% \makeatother
 
 \newcommand{\cX}{\mathcal X}
 \newcommand{\cM}{\mathcal M}
 \newcommand{\cA}{\mathcal A}
 \newcommand{\cV}{\mathcal V}
+\newcommand{\cF}{\mathcal F}
 \newcommand{\borel}{{\mathfrak B}}
 \newcommand{\unisucceq}{\succeq_{\text{uni}}}
 \newcommand{\mvsucceq}{\succeq_{\text{mv}}}
@@ -152,7 +153,7 @@ wobei $u$ eine reelle Funktion auf $S$ ist.
 
 Wir werden später die Funktion $u$, wenn sie gewisse Voraussetzungen erfüllt, Nutzenfunktion nennen.
 
-Wir betrachten beispielsweise eine Zufallsvariable $X$ auf einem Wahrscheinlichkeitsraum $(\Omega, \mathcal F, P)$, die die Auszahlung einer Anlagemöglichkeit angibt. 
+Wir betrachten beispielsweise eine Zufallsvariable $X$ auf einem Wahrscheinlichkeitsraum $(\Omega, \F, P)$, die die Auszahlung einer Anlagemöglichkeit angibt. 
 
 Ist etwa $S\subseteq \MdR$, $\mathfrak S = \borel\footnote{Borelsche $\sigma$-Algebra}$, dann bezeichnet das Integral in der Definition \ref{def.1.1.9} den Erwartungswert von $u(X)$, wobei $u$ messbar (später stetig) sei und $X$ die Verteilung 
 \[\mu(B) \da P_X(B)=P(X^{-1}(B)) \ \forall B\in\borel \]
@@ -913,7 +914,7 @@ Daher gilt \emph{nicht} $\mu\unisucceq\nu$ (Siehe Theorem \ref{satz:1.3.2} Punkt
 \end{beispiel}
 
 \begin{definition}
-Eine reellwertige Zufallsvariable $Y$ auf einem Wahrscheinlichkeitsraum $(\Omega, \mathcal F, P)$ heißt lognormalverteilt mit Parametern $\alpha\in R$, $\sigma \ge 0$, falls sie dargestellt werden kann als 
+Eine reellwertige Zufallsvariable $Y$ auf einem Wahrscheinlichkeitsraum $(\Omega, \F, P)$ heißt lognormalverteilt mit Parametern $\alpha\in R$, $\sigma \ge 0$, falls sie dargestellt werden kann als 
 \[
 Y = \exp(\alpha  + \sigma X)
 \]
@@ -941,7 +942,7 @@ für alle beschränkte, monoton wachsende Funktionen $f\in C(\MdR)$. Wir schreib
 \item $\mu\monsucceq\nu$
 \item Die Verteilungsfunktionen von $\mu$ und $\nu$ erfüllen $F_\mu(x) \le F_\nu(x)$ für alle $x\in\MdR$.
 \item Jedes Paar von Quantilfunktionen von $\mu$ und $\nu$ erfüllt $q_\mu(t) \ge q_\nu(t)$ für fast alle $t\in(0,1)$.
-\item Es existiert ein Wahrscheinlichkeitsraum $(\Omega,\mathcal F, P)$ mit Zufallsvariablen $X_\mu, X_\nu$ mit Verteilungen $\mu, \nu$, so dass $P$-fast-sicher $X_\mu > X_\nu$ gilt.
+\item Es existiert ein Wahrscheinlichkeitsraum $(\Omega,\F, P)$ mit Zufallsvariablen $X_\mu, X_\nu$ mit Verteilungen $\mu, \nu$, so dass $P$-fast-sicher $X_\mu > X_\nu$ gilt.
 \end{enumerate}
 Insbesondere gilt \[
 \mu\monsucceq\nu \implies \mu\unisucceq\nu.
@@ -1317,8 +1318,147 @@ Hierbei haben wir verwendet, dass
 \item $1_{\{X+Y<q_{X+Y}\}}^{(\lambda)} - 1_{\{X<q_X\}}^{(\lambda)} \ge 0$ für $X>q_X$
 \item $1_{\{X+Y<q_{X+Y}\}}^{(\lambda)} - 1_{\{X<q_X\}}^{(\lambda)} \le 0$ für $X\le q_X$
 \end{itemize}
-
 \end{beweis}
+
+\begin{bemerkung}
+\begin{enumerate}
+\item Seien $P$ und $Q$ zwei Wahrscheinlichkeitsmaße, die auf der gleichen $\sigma$-Algebra $\cF$ definiert sind. $Q$ ist \emph{absolut stetig}\index{absolut stetig} bezüglich $P$ (Notation: $Q\ll P$), falls für alle $A\in\cF$ mit $P(A)=0$ gilt $Q(A)=0$.
+\item Für $Q\ll P$ nennt man die $\cF$-messbare Funktion (Zufallsvariable) $X$ mit 
+\[
+\forall A\in\cF: Q(A) = \int_A X dP
+\]
+die \emph{Radon-Nikodym-Ableitung}.\index{Radon-Nikodym-Ableitung} Schreibweise:
+\[
+\frac{dQ}{dP} = X.
+\]
+\item Falls $Q\ll P$ und $P\ll Q$ gilt, nennt man $P$ und $Q$ \emph{äquivalente Maße}\index{äquivalente Maße} und schreibt $P\sim Q$.
+\end{enumerate}
+\end{bemerkung}
+
+\begin{satz}
+Für $\lambda\in(0,1)$ hat der $\AVatR_\lambda(X)$ die Form
+\[
+\AVatR_\lambda(X) = \max_{Q\in Q_\lambda}E_Q[-X],
+\]
+wobei $Q_\lambda$ die Menge aller Wahrscheinlichkeitsmaße ist, die absolut stetig bezüglich $P$ sind und deren Dichte durch $\frac1\lambda$ beschränkt ist. Das Maximum wird von dem Maß $\tilde Q$ angenommen mit
+\[
+\frac{d\tilde Q}{dP} = 1_{\{X<q\}}^{(\lambda)}.
+\]
+\end{satz}
+\begin{beweis}
+Follmer und Schied, Beweis von Theorem 4.47.
+\end{beweis}
+
+Man kann für geeignete Räume zeigen, dass ein Risikomaß $\rho$ genau dann koheränt ist, wenn es als $\rho(X) = \sup_{Q\in\mathcal Q}E_Q[-X]$ dargestellt werden kann. (Siehe Föllmer und Schied, Proposition 4.14)
+
+\chapter{Bewertung von Derivaten in diskreter Zeit}
+\section{Wahrscheinlichkeitstheoretische Grundlagen}
+\subsection{Bedingte Erwartungswerte}
+
+Sei $(\Omega, \cF, P$) ein Wahrscheinlichkeitsraum. Für $A,B\in\cF$ mit $P(B)>0$ ist die \emph{bedingte Wahrscheinlichkeit}\index{bedingte Wahrscheinlichkeit} von $A$ gegeben $B$ definiert durch
+\[
+P(A\mid B) = \frac{P(A\cap B)}{P(B)}.
+\]
+
+Sei $X:\Omega \to \MdR$ eine Zufallsvariable.
+\begin{definition}
+Der \emph{bedingte Erwartungswert}\index{bedingte Erwartungswert} von $X$ gegeben $B$ ist
+\[
+E[X\mid B] = \frac{E[X \cdot 1_B]}{P(B)} = \frac{1}{P(B)} \int_B X dP.
+\] 
+Falls $X$ diskret mit Werten $x_1,\ldots,x_n$ ist, gilt
+\[
+E[X\mid B] = \sum_{k=1}^n x_k \frac{P(\{X=x_k\}\cap B)}{P(B)}
+= \sum_{k=1}^{n} x_k P(\{X=x_k\}\mid B).
+\]
+Falls $X$ absolut stetig ist mit Dichte $f_X$ gilt 
+\[
+E[X\mid B] = \frac{1}{P(B)} \int_B XdP
+=\frac{1}{P(B)} \int_B x\cdot f_X(x) dx.
+\]
+\end{definition}
+
+\begin{beispiel}[Würfel]
+Seien $\Omega = \{1,\ldots,6\}$, $\cF = \mathcal P(\Omega)$ und $P(\{\omega\})=\frac 16$. Sei $X(\omega)=\omega$, $A\da \{1,2\}$, $A^c = \{3,4,5,6\}$. Dann gilt 
+\begin{align*}
+E[X\mid A] &= \frac1{P(A)} \int_A XdP = \frac1{\frac13} \big(1\cdot \frac 16 + 2\cdot\frac16\big) = \frac 32 \\
+E[X\mid B] &= \frac1{P(A)} \int_B XdP = \frac1{\frac23} \big(3\cdot \frac 16 + 4\cdot\frac16 + 5\cdot\frac16 + 6\cdot\frac16\big) = \frac 92
+\end{align*}
+\end{beispiel}
+
+Sei $Y:\Omega\to\MdR$ eine diskrete Zufallsvariable mit Werten $y_1,\ldots,y_n$ auf den Mengen $A_1,\ldots,A_n$, das heißt $A_i \da \{\omega\in\Omega: Y(\omega) = y_i\}$, $i=1,\ldots n$. Dann ist $(A_i)$ eine Zerlegung von $\Omega$, das heißt $A_i\cap A_j= \emptyset$ für $i\ne j$ und $\bigcup_{i=1}^n A_i=\Omega$. Über diese Zerlegung kann eine $\sigma$-Algebra definiert werden: $\sigma(Y)=\sigma(A_1,\ldots,A_n)=\{\text{alle möglichen Vereinigungen der $A_i$}\}$.
+
+\begin{definition}
+Sei $X:\Omega \to \MdR$ mit $E[|X|]<\infty$. Der bedingte Erwartungswert von $X$ gegeben $Y$ ist die (diskrete) Zufallsvariable 
+\[
+E[X\mid Y](\omega) = \sum_{i=1}^n E[X\mid A_i] \cdot 1_{A_i}(\omega).
+\]
+Man schreibt statt $E[X\mid Y]$ auch $E[X\mid \sigma(Y)]$.
+\end{definition}
+
+\begin{bemerkung}
+\begin{itemize}
+\item $E[X\mid Y]$ kann als Approximation von $X$ verstanden werden.
+\item Für konstante $Y$ („schlechteste“ Approximation) ist $E[X\mid Y] = E[X]$.
+\item $E[X\mid Y](\omega) = E[X\mid A_i]$ falls $\omega\in A_i$.
+\item $E[X\mid Y] = g(Y)$, wobei $g(Y) = \sum_{i=1}^n E[X\mid Y=y_i]1_{y_i}(y)$.
+\end{itemize}
+\end{bemerkung}
+
+Im Folgenden wird der bedingte Erwartungswert bezüglich einer beliebigen $\sigma$-Algebra definiert. Sei $(\Omega,\cF,P)$ ein Wahrscheinlichkeitsraum, $\mathcal S\subseteq \cF$ eine beliebige Teil-$\sigma$-Algebra von $\cF$. Außerdem sei $X:\Omega\to\MdR$ eine Zufallsvariable mit $E[|X|]<\infty$.
+
+\begin{definition}
+\label{def:2.1.5}Die Zufallsvariable $Z:\Omega\to\MdR$ heißt bedingter Erwartungswert von $X$ bezüglich der $\sigma$-Algebra $\mathcal S$, falls
+\begin{enumerate}
+\item $Z$ $(\mathcal S,\borel(\MdR))$-messbar ist
+\item für alle $A\in \mathcal S$ gilt: $\int_A XdP = \int_AZ dP$.
+\end{enumerate}
+Man schreibt: $E[X\mid \mathcal S] = Z$.
+\end{definition}
+
+
+\begin{bemerkung}
+\begin{itemize}
+\item Die Existenz von $Z$ wurde von Kolmogorov bewiesen (1933). (siehe Williams, Kapitel 9)
+\item $Z$ ist nur bis auf $P$-Nullmengen eindeutig. Man spricht deswegen manchmal auch von Versionen der bedingten Erwartung.
+\end{itemize}
+\end{bemerkung}
+
+\begin{lemma}
+Falls $\mathcal S=\sigma(Y)$ für eine diskrete Zufallsvariable $Y$, dann gilt $E[X\mid \mathcal S] = E[X\mid Y]$.
+\end{lemma}
+
+\begin{beweis}
+Sei $Z\da E[X\mid Y] = g(Y) = \sum_{i=1}^n E[X\mid Y = y_i] \cdot 1_{y_i}(Y)$. $Y$ ist $(\mathcal S,\borel(\MdR))$-messbar, also ist auch $Z$ $(\mathcal S,\borel(\MdR))$-messbar. Es genügt, die zweite Eigenschaft für die erzeugenden Ereignisse $A_i$ der $\sigma$-Algebra $\mathcal S$ zu zeigen.
+\begin{align*}
+\int_{A_j}Zd P &= \int_{A_j} \sum_{i=1}^n E[X\mid Y=y_i]\cdot 1_{y_i}(Y)dP \\
+&= \int_{A_j} E[X \mid Y=y_j] dP \\
+&= \int_{A_j} \frac{E[X\cdot 1_{Y=y_j}]}{P(Y=y_j)} dP \\
+&= \int_{A_j} X dP
+\end{align*}
+\end{beweis}
+
+\begin{bemerkung}
+Angenommen der Zufallsvektoren $(X,Y)$ hat die Dichte $f(x,y)$. Dann hat $X$ die Randdichte $f_X(x) = \int_{-\infty}^\infty f(x,y)dy$ und $Y$ die Randdichte $f_Y(y)=\int_{\infty}^\infty f(x,y)dx$.
+
+Die bedingte Dichte von $X$ gegeben $Y$ ist 
+\[
+f_{X\mid Y} (x\mid y) = \frac{f(x,y)}{f_Y(y)}.
+\]
+Es ist klar, dass wir die bedingte Erwartung nicht über $\frac{E[X\mid Y]}{P(Y=y)}$ definieren können, da wir dabei durch Null teilen müssten. Man könnte $\sigma(Y)$ als die kleinste $\sigma$-Algebra definieren, so dass alle Ereignisse $\{Y\le c\}\in\sigma(Y)$, $c\in\MdR$ und dann über $E[X\mid \sigma(Y)]$ aus Definition \ref{def:2.1.5} definieren.
+
+Man kann aber $E[X\mid Y]$ auch direkt konstruieren: Für $\int_{-\infty}^\infty f(x,y)dx > 0$ setzen wir 
+\[
+g(y) \da \frac{\int x f(x,y)dx}{\int f(x,y)dx} = 
+\frac{\int x f(x,y)dx}{f_Y(y)}
+\]
+und $g(y) = 0$ sonst. Dann ist $E[X\mid Y] = E[X\mid \sigma(Y)]$ gegeben durch $g(Y)$.
+
+Zur Integrierbarkeit: Sei $A\da \{Y\le c\}$.
+\begin{align*}
+E[g(Y)\cdot 1_A] = \int_{-\infty}^c g(y) f_Y(y)dy = \int_{-\infty}^c \frac{\int x f(x,y)dx)}{f_Y(y)} dy = \int_{\infty}^c \int x f(x,y)dxdy = E[X\cdot 1_A]
+\end{align*}
+\end{bemerkung}
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
