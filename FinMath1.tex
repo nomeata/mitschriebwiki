@@ -1460,6 +1460,121 @@ E[g(Y)\cdot 1_A] = \int_{-\infty}^c g(y) f_Y(y)dy = \int_{-\infty}^c \frac{\int 
 \end{align*}
 \end{bemerkung}
 
+\begin{beispiel}[Fortsetzung Würfelbeispiel]
+Sei $A\da \{1,2\}$, $A^c \da \{3,4,5,6\}$. $\sigma(A)\da \{\emptyset,A,A^c,\Omega\} \ad \cA$. Es ist also
+\begin{align*}
+Z \da E[X\mid \cA] = E[X\mid A] \cdot 1_A + E[X\mid A^c]\cdot 1_{A^c} =
+\begin{cases}
+\frac 32, & \text{falls $\omega\in A$} \\
+\frac 92, & \text{falls $\omega\in A^c$} 
+\end{cases}
+\end{align*}
+und damit
+\begin{align*}
+E[Z] = E[ E[X\mid \cA] ] = \frac32 \cdot \frac 26 + \frac 92 \cdot \frac 46 = \frac 72 = E[X].
+\end{align*}
+\end{beispiel}
+
+\begin{bemerkung}[Eigenschaften der bedingten Erwartung]
+Sei $E[|X|]<\infty$ und $\mathcal G, \mathcal H$ seien Teil-$\sigma$-Algebren von $\cF$.
+\begin{enumerate}
+\item Sei $Y$ eine Version der bedingten Erwartung $E[X\mid \mathcal G]$. Dann gilt $E[Y]=E[X]$.
+\item Falls $X$ $\mathcal G$-messbar ist, dann gilt: $E[X\mid \mathcal G]=X$ fast sicher.
+\item Linearität: $E[a_1 X_1 + a_2 X_2\mid \mathcal G] = a_1 E[X_1\mid \mathcal G] + a_2 E[X_2 \mid \mathcal G]$
+\item Positivität: Falls $X\ge 0$, dann gilt $E[X\mid \mathcal G] \ge 0$
+\item Bedingtes MON: Falls $0 \le X_n \uparrow X$, dann gilt $E[X_n \mid \mathcal G] \uparrow E[X \mid \mathcal G]$ fast sicher.
+\item Bedingtes FATOU: Falls $X_n\ge 0$, dann gilt $E[\liminf X_n \mid\mathcal G] \le \liminf E[X \mid \mathcal G]$ fast sicher.
+\item Bedingtes DOM: Falls für alle $n\in\MdN$ und $\omega\in\Omega$ gilt $|X_n(\omega) |\le V(\omega)$, $E[V]<\infty$ und $X_n\to X$ fast sicher, dann gilt $E[X_n\mid \mathcal G] \to E[X\mid\mathcal G]$ fast sicher.
+\item Bedingte Jensen-Ungleichung: Sei $c:\MdR\to\MdR$ konvex, $E[|c(X)|]<\infty$, dann ist $E[c(X)\mid\mathcal G] \ge c(E[X\mid \mathcal G])$ fast sicher.
+\item Turmeigenschaft: Sei $\mathcal H$ eine Teil-$\sigma$-Algebra von $\mathcal G$, dann gilt $E[E[X\mid\mathcal G]\mid\mathcal H] = E[X\mid\mathcal H]$ fast sicher.
+\item „Messbares Ausklammern“: Sei $Z$ eine $\mathcal G$-messbare Zufallsvariable und beschränkt. Dann gilt $E[Z\cdot X\mid \mathcal G] = Z\cdot E[X\mid \mathcal G]$.
+\item Falls $\mathcal H$ unabhängig von $\sigma( \sigma(X), \mathcal G)$ ist, dann gilt $E[\mid \sigma(\mathcal H, \mathcal G)] = E[X\mid \mathcal G]$ fast sicher. Insbesondere gilt, wenn $X$ unabhängig von $\mathcal H$ ist (also $X$ und $1_A$ sind für alle $A\in\mathcal H$ unabhängig), dann gilt $E[X\mid \mathcal H] = E[X]$.
+\end{enumerate}
+\end{bemerkung}
+
+Für Beweise und weitere Informationen siehe Williams, Kapitel 9.
+
+Aus diesen Eigenschaften folgt sofort für $\mathcal G = \{\emptyset, \Omega\}$: $E[X\mid\mathcal G] = E[X]$.
+
+
+\subsection{Martingale}
+
+Sei $(\Omega, \cF, P)$ ein Wahrscheinlichkeitsraum. Gegeben sei eine Indexmenge $I\ne \emptyset$. Wir verwenden in dieser Vorlesung $I=\{0,1,\ldots,t\}$ oder $I=\MdN_0$. In der Vorlesung „Finanzmathematik II“ wird $I=[0,\infty)$ sein. Die Menge $I$ kann als Zeitparameter interpretiert werden.
+
+\begin{definition}
+\begin{enumerate}
+\item Eine Familie von Zufallsvariablen $X=(X_t)_{t\in I}$, $X_t:\Omega \to \MdR$, heißt \emph{stochastischer Prozess}.\index{stochastischer Prozess}
+\item Eine Familie $(\cF_t)_{t\in I}$ von Teil-$\sigma$-Algebren $\cF_t \subseteq \cF$ heißt \emph{Filtration},\index{Filtration} falls für alle $s,t\in I$ mit $s<t$ gilt: $\cF_s \subseteq \cF_t$.
+\item Ein stochastischer Prozess $(X_t)_{t\in I}$ heißt \emph{adaptiert bezüglich der Filtration $(\cF_t)$}, \index{adaptierter Prozess} falls für alle $t\in I$ die Zufallsvariable $X_t$ $\cF_t$-messbar ist.
+\end{enumerate}
+\end{definition}
+
+\begin{bemerkung}
+\begin{itemize}
+\item Wir interessieren uns beispielsweise für stochastische Prozesse, die den Preisverlauf von Aktien über die Zeit beschreiben.
+\item Wir modellieren Informationen über die Filtration. Häufig ist $(\cF_t)$ die \emph{natürliche Filtration},\index{natürliche Filtration} das heißt die kleinste Filtration bezüglich der der Prozess $X$ adaptiert ist: $\cF_t = \sigma(X_0,\ldots,X_t) = \{(X_0,\ldots,X_t)^{-1}(B)\mid B\subseteq \MdR^{t+1} \text{ messbar}\}$.
+\item Man schreibt $(\Omega, \cF, (\cF_t), P)$ für einen Wahrscheinlichkeitsraum $(\Omega, \cF, P)$, der mit der Filtration $(F_t)$ versehen ist und nennnt diesen \emph{filtrierten Wahrscheinlichkeitsraum}.\index{filtrierter Wahrscheinlichkeitsraum}
+\end{itemize}
+\end{bemerkung}
+
+\begin{definition}
+Sei $(\Omega, \cF, (\cF_t), P$ ein filtrierter Wahrscheinlichkeitsraum und $(X_t)_{t\in I}$ ein stochastischer Prozess. $(X_t)$ heißt Martingal, falls 
+\begin{enumerate}
+\item $(X_t)$ adaptiert ist,
+\item $E[|X_t|] < \infty$ für alle $t\in I$,
+\item $E[X_t\mid \cF_s] = X_s$ gilt fast sicher für alle $s,t\in I$ mit $s\le t$.
+\end{enumerate}
+
+$(X_t)$ ist ein Submartingal, falls (1) und (2) gilt, und (3) ersetzt wird durch: $E[X_t\mid \cF_s] \ge X_s$ für alle $s,t\in I$ mit $s\le t$.
+
+$(X_t)$ ist ein Supermartingal, falls (1) und (2) gilt, und (3) ersetzt wird durch: $E[X_t\mid \cF_s] \le X_s$ für alle $s,t\in I$ mit $s\le t$.
+\end{definition}
+
+\begin{bemerkung}
+\begin{itemize}
+\item Merkregel: Su\rlap{\hspace{-1.1pt}\raisebox{5pt}{$\uparrow$}}bmartingal „wächst im Durchschnitt“, 
+Su\rlap{\hspace{-1.1pt}\raisebox{-5pt}{$\downarrow$}}permartingal „fällt im Durchschnitt“. 
+\item $(X_t)$ ist ein Supermartingal genau dann, wenn $(-X_t)$ ein Submartingal ist.
+\item $(X_t)$ ist ein Martingal genau dann, wenn $(X_t)$ ein Supermartingal und ein Submartingal ist.
+\item Sei $(X_t)$ ein stochastischer Prozess mit $X_0\in \borel^{-1}(\Omega, \cF_0, P$). Dann ist $(X_t)$ ein Martingal, genau dann wenn $(X_t-X_0)$ ein Martingal ist. Deshalb setzt man manchmal $X_0=0$.
+\item Falls $I$ diskret ist, genügt es (3) für alle $t, t+1\in I$ zu überprüfen: $E[X_{t+1}\mid \cF_t] = X_t$.
+
+\begin{beweis}
+Sei $m< n-1 < n$. Dann ist $\cF_m \subseteq \cF_{n-1} \subseteq \cF_n$. Wiederholtes Anwenden der Turmeigenschaft und der Martingaleigenschaft für $n, n+1$ liefert:
+\begin{align*}
+E[X_n\mid\cF_m] = E[ E[X_n\mid \cF_{n-1}] \mid \cF_m] = E[ X_{n-1} \mid \cF_m] = \cdots = E[X_m \mid \cF_m] = X_m
+\end{align*}
+\end{beweis}
+\item $E[X_{t+1} \mid \cF_t] = X_t \iff E[X_{t+1}-X_t \mid \cF_t] = 0$
+\item Sei $s\le t$ und $E[X_t \mid \cF_s] = X_s$. Dann gilt $E[X_s] = E[X_t] = \cdots = EX_0$.
+\end{itemize}
+\end{bemerkung}
+
+\begin{beispiel}
+Seien $S_n \da \sum_{i=1}^n X_i$, wobei $X_1$ unabhängige Zufallsvariablen mit $EX_i=0$, $E|X_i|<\infty$ und $S_0\da 0$ sind. Sei weiter $\cF_n\da \sigma(X_1,\ldots,X_n)$ und $\cF_0 \da \{\emptyset, \Omega\}$. Dann ist $(S_n)$ ein Martingal.
+\end{beispiel}
+\begin{beweis}
+Integrierbarkeit und Adaptiertheit klar. Martingaleigenschaft: Sei $n\in\MdN$:
+\begin{align*}
+E[S_{n+1}\mid \cF_n] &= E[S_n + X_{n+1}\mid \cF_n] \\
+&= E[X_n\mid \cF_n] + E[X_{n+1}\mid \cF_n] \\
+&= S_n + EX_{n+1} \\
+&= S_n
+\end{align*}
+\end{beweis}
+
+Sei 
+\[
+X_i = 
+\begin{cases}
+1, & \text{ mit Wahrscheinlichkeit $p=\frac 12$} \\
+-1,& \text{ mit Wahrscheinlichkeit $(1-p)=\frac 12$}
+\end{cases}
+\]
+Dann ist $EX_i = 0$. $X_i$ kann als Laufrichtung interpretiert werden: Man startet bei $S_0=0$ und wirft eine faire Münze um zu entscheiden, ob man eien Schritt nach links oder rechts läuft. $(S_n)$ beschreibt eine Irrfahrt (“random walk”) auf den ganzen Zahlen.
+
+Eine andere Interpretation ist ein Glücksspiel: $X_i$ beschreibt das Ergebnis des $i$-ten Münzwurfs und $S_n$ beschreibt den Gewinn nach $n$ Würfen.
+
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
 \theoremlisttype{optname}
