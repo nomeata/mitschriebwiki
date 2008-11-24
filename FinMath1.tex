@@ -23,6 +23,7 @@
 \newcommand{\unisucceq}{\succeq_{\text{uni}}}
 \newcommand{\mvsucceq}{\succeq_{\text{mv}}}
 \newcommand{\monsucceq}{\succeq_{\text{mon}}}
+\newcommand{\dickerkringel}{\bullet}
 
 \DeclareMathOperator{\ARA}{ARA}
 \DeclareMathOperator{\RRA}{RRA}
@@ -1568,12 +1569,159 @@ Sei
 X_i = 
 \begin{cases}
 1, & \text{ mit Wahrscheinlichkeit $p=\frac 12$} \\
--1,& \text{ mit Wahrscheinlichkeit $(1-p)=\frac 12$}
+-1,& \text{ mit Wahrscheinlichkeit $(1-p)=\frac 12$.}
 \end{cases}
 \]
 Dann ist $EX_i = 0$. $X_i$ kann als Laufrichtung interpretiert werden: Man startet bei $S_0=0$ und wirft eine faire Münze um zu entscheiden, ob man eien Schritt nach links oder rechts läuft. $(S_n)$ beschreibt eine Irrfahrt (“random walk”) auf den ganzen Zahlen.
 
 Eine andere Interpretation ist ein Glücksspiel: $X_i$ beschreibt das Ergebnis des $i$-ten Münzwurfs und $S_n$ beschreibt den Gewinn nach $n$ Würfen.
+
+\begin{satz}
+Sei $(M_t)_{t\in I}$ ein Martingal und $f:\MdR \to\MdR$ eine konvexe Funktion mit $E[|f(M_t)|]<\infty$ für alle $t\in I$. Dann ist $(f(M_t))_{t\in I}$ ein Supermartingal.
+\end{satz}
+
+\begin{beweis}
+Aus der Jensen-Ungleichung folgt sofort, dass für alle $s,t\in I$ mit $s\le t$ gilt:
+\[
+E[f(M_t)\mid \cF_s] \ge f(E[M_t\mid \cF_s]) = f(M_s)
+\]
+\end{beweis}
+
+\begin{definition}
+Ein Prozess $(X_n)_{n=1,2,\ldots}$ auf einem filtrierten Wahrscheinlichkeitsraum $(\Omega, \cF, (\cF_n), P)$ heißt \emph{vorhersagbar}, \index{vorhersagbarer Prozess} falls $X_n$ für alle $n\ge 1$ $\cF_{n-1}$-messbar ist.
+\end{definition}
+
+\begin{lemma}[Doobsche Zerlegung]
+Sei $(X_t)_{t=0,1,\ldots,T}$ ein Supermartingal bezüglich $(\cF_t)_{t=0,1,\ldots,T}$. Dann kann man $(X_t)$ schreiben als
+\[
+X_t = M_t + A_t,
+\]
+wobei $(M_t)$ ein Martingal bezüglich $(\cF_t)$ ist und $(A_t)$ mit $A_0=0$ ein fallender Prozess, das heißt $A_{t+1}\le A_t$ für $t=0,1,\ldots,T-1$.
+
+Außerdem ist $(A_t)$ vorhersehbar. Die Zerlegung ist $P$-fast-sicher eindeutig.
+\end{lemma}
+
+\begin{beweis}
+Übungsblatt
+\end{beweis}
+
+\subsubsection*{Martingal-Transformation}
+
+Wir betrachten ein Glücksspiel in diskreter Zeit. Die Indexmenge sei hier $I=\MdN_0$. Zum Zeitpunkt 0 findet kein spiel statt, zu den Zeitpunkten $n=1,2,\ldots$ wird gespielt und $\Delta Z_n \da Z_n-Z_{n-1}$ ist der Nettogewinn im $n$-ten Spiel.
+
+Falls $(Z_n)$ ein Martingal ist, ist das Spiel fair in dem Sinne, dass $E[\Delta Z_n \mid \cF_{n-1}]=0$. Falls $(Z_n)$ Supermartingal ist, ist das Spiel unvorteilhaft für den Spieler, da $E[\Delta Z_n\mid \cF_{n-1}]\le 0$.
+
+Beispielsweise ist der Münzwurf mit $Z_n=S_n$ ein Martingal und damit ein failes Spiel. Es ist $\Delta S_n\in\{-1,1\}$. Falls der Spieler zur Zeit $n-1$ (also vor dem $n$-ten Münzwurf) verdoppelt hätte, würde er $2\Delta S_n \in \{-2,2\}$ gewinnen oder verlieren. Das Spiel wäre weiterhin fair. Er hätte seinen Einsatz so auswählen können, dass er von allen Ereignissen bis zur Zeit $n-1$ abhängt – das Spiel bliebe fair.
+
+Sei $(C_n)$ ein vorhersehbarer Prozess und $n\in\MdN$ (ohne 0). $(C_n)$ repräsentiert den Spieleinsatz im $n$-ten Spiel. Der Spieler wählt $(C_n)$ unter der Verwendung der Information bis zur Zeit $n-1$. Dann ist der Gewinn im $n$-ten Spiel $C_n\Delta Z_n = C_n(Z_n - Z_{n-1})$ und der Gesamtgewinn bis zur Zeit $n$ ist $Y_n \da \sum_{i=1}^n C_i (Z_i - Z_{i-1}) \ad (C\dickerkringel Z)_n$. Hier ist $(C\dickerkringel Z)_0=0$ und $Y_n - Y_{n-1} = C_n(Z_n-Z_{n-1})$. $(C\dickerkringel Z)$ wird \emph{Martingal-Transformation}\index{Martingal-Transformation} von $Z$ (durch $C$) genannt.
+
+\begin{satz}
+\begin{enumerate}
+\item Sei $C$ ein nicht-negativer vorhersehbarer und beschränkter Prozess (das heißt, für ein $K\in[0,\infty)$ gelte für alle $n\in I$ und $\omega\in\Omega$: $|C_n(\omega)|\le K$). Sei $Z$ ein Supermartingal. Dann ist $(C\dickerkringel Z)$ ein Supermartingal und $(C\dickerkringel Z)_0=0$.
+\item Falls $C$ ein vorhersehbarer und beschränkter Prozess und $Z$ ein Martingal ist, dann ist $(C\dickerkringel Z)$ ein Martingal und $(C\dickerkringel Z)_0=0$.
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+$Y=C\dickerkringel Z$ ist integrierbar, da $C$ beschränkt und $Z$ integrierbar ist. Adaptiertheit ist auch klar, da $C$ vorhersehbar und $Z$ adaptiert ist.
+
+Zur (Super-)Martingaleigenschaft: Es gilt
+\[
+E[Y_n - Y_{n-1}\mid \cF_{n-1}] = E[C_n( Z_n - Z_{n-1})\mid \cF_{n-1}] = C_n E[Z_n - Z_{n-1}\mid \cF_{n-1}]
+\]
+da $C_n$ ein $\cF_{n-1}$-messbarer, beschränkter Prozess ist. Falls $C\ge 0$ und $Z$ ein Supermartingal ist, gilt $C_n E[Z_n - Z_{n-1}\mid \cF_{n-1}] \le 0$. Falls $Z$ ein Martingal ist, gilt $C_n E[Z_n - Z_{n-1}\mid \cF_{n-1}] = 0$.
+\end{beweis}
+
+Interpretation: “You can’t beat the system!” Da $C\bullet Z$ unter den obigen Voraussetzung ein Martingal ist, wird dadurch ein faires Spiel beschrieben. 
+
+\begin{bemerkung}
+Der Ausdruck $(C\bullet Z)$, die Martingal-Transformation von $Z$ durch $C$, ist das diskrete Äquivalent zum stochastischen Integral $\int C d Z$.
+\end{bemerkung}
+
+\subsection{Stoppzeiten}
+
+Sei $I$ weiterhin die Indexmenge.
+
+\begin{definition}
+Eine $(\cF_t)$-Stoppzeit ist eine $I$-wertige Zufallsvariable $\tau$, so dass für alle $t\in I$
+\[
+\{\omega\in\Omega: \tau(\omega)\le t\}\in\cF_t
+\]
+\end{definition}
+
+\begin{bemerkung}
+\begin{itemize}
+\item Zur Schreibweise: Man schreibt häufig für die Menge $\{\omega\in\Omega: \tau(\omega)\le t\}$ verkürzt $\{\tau \le t\}$ und ebenso $\{\tau = t\}$ für $\{\omega\in\Omega: \tau(\omega)= t\}$.
+\item Interpretation der Stoppzeit: Zum Zeitpunkt $t$ weiß man, ob $\tau$ eingetreten ist oder nicht. Beispielsweise ist $\tau$ der Zeitpunkt, an dem der Spieler aufhört, an einem Glücksspiel teilzunehmen. Die Entscheidung nahc der $n$-ten Spielrunde, das Spiel zu beenden, hängt nur von den Ergebnissen bis zum Zeitpunkt $t$, und nicht von von der Zukunft, ab.
+\end{itemize}
+\end{bemerkung}
+
+\begin{lemma}
+Falls $I$ diskret ist, gilt:
+\[
+\text{$\tau$ ist $(\cF_t)$-Stoppzeit} \iff \forall t\in I: \{\tau = t\}\in \cF_t
+\]
+\end{lemma}
+\begin{beweis}
+Sei $\tau$ eine $(\cF_t)$-Stoppzeit. Dann gilt $\{\tau \le t\} \in \cF_t$ und $\{\tau \le t-1\}\in \cF_{t-1}\subseteq \cF_t$.
+
+Sei nun für alle $t\in I$ $\{\tau = t\} \in \cF_t$. Dann gilt $\{\tau \le t\} = \bigcup_{k\le t} \{\tau = k\} \in \cF_t$.
+\end{beweis}
+
+\begin{beispiel}
+\begin{enumerate}
+\item $\tau = t_0 \in I$ ist eine Stoppzeit, da
+\[
+\{\omega\in\Omega : \tau (\omega) \le t\}
+= \{\omega\in\Omega: t_0\le t\}
+= 
+\left.
+\begin{cases}
+\Omega, \text{falls $t_0\le t$}\\
+\emptyset, \text{ sonst}
+\end{cases}
+\right\}
+\in \cF_t
+\]
+\item Sei $(S_t)_{t\in I}$, $I=\{0,1,2\ldots,T\}$ ein Aktienkursprozess  adaptiert bezüglich $(\cF_t)_{t\in I}$. Dann ist
+\[
+\tau \da \inf \{ t\ge 0: S_t \ge b \} \wedge T
+\]
+eine $(\cF_t)$-Stoppzeit:
+\begin{align*}
+\{\tau \le t\} = \bigcup_{k\le t} \{\tau = k\} = \bigcup_{k\le t} \{S_k \ge b\} \in \cF_t
+\end{align*}
+und $\tau = T$ falls der Aktienkurs in $I$ nie den Wert $b$ überschreitet.
+\item  Sei $S$ wie in 2. Definiere $\tau \da \operatorname{argmax}_{t=0,\ldots,T} S_t$ (Zeitpunkt, zu dem $S$ den maximalen Wert annimmt). Dann ist $\tau$ \emph{keine} Stoppzeit, da man zum Zeitpunkt $t<T$ nicht sagen kann, ob $\tau$ eingetreten ist.
+\end{enumerate}
+\end{beispiel}
+
+\begin{lemma}
+Sind $\tau,\sigma$ Stoppzeiten, so sind $\min\{\tau, \sigma\}$, $\max\{\tau, \sigma\}$ und $\tau + \omega$ wieder Stoppzeiten.
+\end{lemma}
+\begin{beweis}
+Übungsblatt
+\end{beweis}
+
+\begin{satz}[Doob’s Optional Stopping Theorem]
+Sei $\tau$ eine beschränkte Stoppzeit und $X=(X_n)_{n\in\MdN_0}$ ein Martingal. Dann ist $X_\tau$ integrierbar und $E[X_t] = E[X_0]$.
+\end{satz}
+
+\begin{beweis}
+Da $\tau$ beschränkt ist, existiert ein $K\in\MdN$, so dass $\tau(\omega)\le K$ für $P$-fast-alle $\omega$. Dann gilt:
+\begin{align*}
+X_{\tau(\omega)}(\omega) = \sum_{k=0}^\infty X_k(\omega) 1_{\{\tau(\omega) = k\}} = \sum_{k=0}^K X_k(\omega) 1_{\{\tau(\omega) = k\}} 
+\end{align*}
+daher gilt
+\begin{align*}
+E[X_\tau] &= E[\sum_{k=0}^\infty X_k(\omega) 1_{\{\tau(\omega) = k\}}] \\
+&= \sum_{k=0}^n E[X_k 1_{\{\tau(\omega) = k\}}] \\
+&= \sum_{k=0}^k E[ E[X_K\mid\cF_k]  1_{\{\tau(\omega) = k\}}] \\
+&= \sum_{k=0}^k E[ E[X_K 1_{\{\tau(\omega) = k\}}\mid\cF_k] ] \\
+&= \sum_{k=0}^k E[X_K 1_{\{\tau(\omega) = k\}} ] \\
+&= E[\sum_{k=0}^k X_K 1_{\{\tau(\omega) = k\}} ] = E[X_K] = E [X_0].
+\end{align*}
+\end{beweis}
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
