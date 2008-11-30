@@ -1723,6 +1723,114 @@ E[X_\tau] &= E[\sum_{k=0}^\infty X_k(\omega) 1_{\{\tau(\omega) = k\}}] \\
 \end{align*}
 \end{beweis}
 
+\begin{bemerkung}
+\begin{itemize}
+\item Den Satz kann man auch auf ein Supermartingal $X=(X_n)$ anwenden und erh\"alt dann $E[X_\tau]\leq E[X_0]$.
+\item Die Annahme, dass die Stoppzeit $\tau$ beschr\"ankt ist, kann durch eine der beiden folgenden Bedingungen ersetzt werde:
+\begin{enumerate}
+\item $X=(X_n)$ ist beschr\"ankt ($|X_n(\omega)| \leq L$ f\"ur ein $L$ und alle $n, \omega$) und $\tau$ ist fast sicher endlich ($P(\tau < \infty)=1$).
+\item $E[\tau]<\infty$ und f\"ur ein $L \in \MdR^+:|X_n(\omega)-X_{n-1}(\omega)|\leqL$ f\"ur alle $n,\omega$.
+\end{enumerate}
+\end{itemize}
+\end{bemerkung}
+
+\begin{satz}
+Sei $X=(X_n)$ ein $(\cF_z)$-adaptierter stochastischer Prozess mit $E[X_n]<\infty$ f\"ur alle $n$. F\"ur jede Stoppzeit $\tau$ gelte $E[X_\tau]=E[X_0]$. Dann ist $X$ ein Martingal.
+\end{satz}
+
+\begin{beweis}
+Sei $0\leq m<n<\infty$ und $A\in \cF_m$. Dann ist $\tau:=n 1_A+m 1_{A^C}$ eine beschr\"ankte Stoppzeit. Dann gilt
+\begin{align*}
+E[X_0]=E[X_\tau]=E[X_n 1_A+X_m 1_{A^C}]=E[X_n1_A]+E[X_m1_{A^C}]
+\end{align*}
+Da $\sigma:=m$ auch eine beschr\"ankte Stoppzeit ist, gilt
+\begin{align*}
+E[X_o]=E[X_m]=E[X_m 1_A+X_m 1_{A^C}]=E[X_m1_A]+E[X_m1_{A^C}]
+\end{align*}
+Daher gilt f\"ur alle $A\in \cF_m$: $E[X_m1_A]=E[X_n1_A]$ und damit $E[X_n|\cF_m]=X_m$ aus der Definition der bedingten Erwartung, d.h. $X$ ist ein Martingal. 
+\end{beweis}
+
+\begin{definition}
+Sei $\tau$ eine $(\cF_t)$-Stoppzeit. Die $\sigma$-Algebra der Ereignisse bis zur Zeit $\tau$ ist definiert durch 
+\[
+\cF_\tau:=\{A\in \cF: \mbox{ f\"ur alle } t\geq0 \mbox{ } A\cap\{\tau\leqt\}\in \cF\}
+\]
+
+\end{definition}
+
+\begin{lemma}
+F\"ur eine Stoppzeit $\tau$ ist $\cF_\tau$ eine $\sigma$-Algebra.
+\end{lemma}
+
+\begin{lemma}
+Seien $\sigma,\tau$ Stoppzeiten mit $\sigma \leq \tau$. Dann gilt $\cF_\sigma\subseteq\cf_\tau$.
+\end{lemma}
+
+\begin{lemma}
+Sei $X=(X_n)$ ein stochastischer Prozess adaptiert zu $(\cF_n)$ und $\tau$ eine $(\cF_n)$-Stoppzeit. Dann ist $X_\tau=\sum\limits_nX_n1_{\{\tau=n\}}$ $\cF_\tau$-messbar.
+\end{lemma}
+
+\begin{satz}[Doob's Optional Sampling Theorem]
+Sei $(X_n)_{n\in\MdN}$ ein Martingal und $\tau,\sigma$ beschr \"ankte Stoppzeiten mit $\sigma\leq\tau$. Dann gilt $E[X_\tau|\cF_\sigma]=X_\sigma$ und daher $E[X_\tau]=E[X_\sigma]$.
+\end{satz}
+\begin{beweis}
+Die Beweise von 2.1.30-2.1.33 sind \"Ubung.
+\end{beweis}
+
+\begin{bemerkung}
+H\"aufig betrachtet man gleichgradig integrierbare Martingale:\\
+Ein Martingal $(X_n)_{n\in I}$ heißt \textit{gleichgradig integrierbar}, falls $\lim\limits_{\lambda\to\infty}\sup\limits_n E[|X_n| 1_{\{|X_n|>\lambda\}}]=0$.\\
+Falls ein Martingal gleichgradig integrierbar ist gilt Optional Sampling f\"ur beliebige Stoppzeiten.
+\end{bemerkung}
+
+\begin{satz}
+Sei $(X_n)_{n\in\MdN_0}$ ein $(\cF_n)$-Martingal (Super-, Submartingal) und $\tau$ eine $(\cF_n)$-Stoppzeit. Dann ist der gestoppte Prozess $(X_{n\wedge\tau)_{n\in\MdN_0}$ auch ein $(\cF_n)$-Martingal (Super-, Submartingal).
+\end{satz}
+\begin{beweis}
+Sei $C_j:=1_{\{j\leq \tau\}}$. Dann ist
+\begin{align*}
+X_{\tau\wedge n}&=X_0+\sum\limits_{j=1}^n C_j (X_j-X_{j-1})=X_0+\sum\limits_{j=1}^n1_{\{j\leq\tau\}}(X_j-X_{j-1})\\
+&=X_0+\sum\limita_{j=1}^{\tau\wedge n}(X_j-X_{j-1})=X_0+X_1-X_0+\ldots+X_{\tau\wedge n}\\
+&= X_{\tau\wedge n}
+\end{align*}
+Da $\{j\leq\tau\}=\{\tau<j\}^C=\{\tau\leq j-1\}^C \in \cF_{j-1}$ ist $C_n$ vorhersagbar.\\
+Daher ist $X_{\tau\wedge n}$ adaptiert. Es gilt
+\begin{align*}
+X_{\tau\wedge n}&=X_0+\sum\limits_{j=1}^n C_j (X_j-X_{j-1})=X_0+\sum\limits_{j=1}^{n-1}C_j(X_j-X_{j-1})+C_n(X_n-X_{n-1})\\
+&= X_{\tau\wedge n-1}+C_n(X_n-X_{n-1})
+\end{align*}
+Dann folgt 
+\begin{align*}
+E[X_{\tau\wedge n}|\cF_{n-1}]=E[X_{\tau\wedge n-1}+C_n(X_n-X_{n-1})|\cF_{n-1}]=X_{\tau\wedge n-1}+C_n(E[X_n|\cF_{n-1}]-X_{n1})
+\end{align*}
+Aus der Martingal- (Super-, Submartingal)-Eigenschaft folgt die Behauptung.
+\end{beweis}
+Wir schließen dieses Kapitel mit einer Konvergenzaussage:
+\begin{satz}[Doob's Martingale Convergence Theorem]Sei $X=(X_n)$ ein $\mathcal{L}^1$-beschr\"anktes Supermartingal $(\sup\limits_n E[|X_n|<\infty)$. Dann existiert $X_\infty$ $\cF_\infty$-messbar, sodayy $X_n\to X_\infty$ $P$-f.s. und $X_\infty$ ist $P$-f.s. endlich.
+\end{satz}
+
+\begin{beweis}
+Siehe Williams Kapitel 11.
+\end{beweis}
+
+\section{Motivation und erste Begriffe}
+Wir werden nun Derivate bewerten. Ein Derivat ist ein Finanztitel, bei dem Zahlungen wesentlich von anderen Finanztiteln (Basistitel) abh\"angen (derivare=ableiten).\\
+Beispiele f\"ur Derivate:
+\begin{itemize}
+\item Termingesch\"afte: Vertr\"age, bei denen die erbringung von Leistung und Gegenleistung zu einem zuk\"unftigen Zeitpunkt heute vereinbart werden. Zu Termingesch\"aften ge\"oren:
+\begin{enumerate}
+\item Warentermingesch\"afte
+\item Devisentermingesch\"afte: z.B. kaufe zum Zeitpunkt $T$ $a$ US Dollar zu einem Wechselkurs von $b$.
+\item Finanztermingesch\"afte: Man unterscheidet hier Financial Forwards und Financial Futures. Futures werden an M\"arkten gehandelt, z.B. am CBOT (Chicago Board of Trade). 
+\end{enumerate}
+\item Optionen: Der K\"aufer der Option hat das Wahlrecht (aber nicht die Verpflichtung) ein bestimmtes Finanzgut (z.B. eine Aktie) (underlying, underlying asset) bis zu einem zuk\"unftigen Zeitpunkt $T$ (maturity, expiry) zu einem vereinbarten Preis $K$ (strike price, excerise price, Aus\"ubungspreis) zu kaufen oder zu verkaufen. Das Kaufrecht wird Call-Option genannt und dan Verkaufsrecht wird Put-Option genannt. Man unterscheidet:
+\begin{itemize}
+\item Europ\"aische Option: Aus\"ubung ist nur zum Zeitpunkt $T$ m\"oglich.
+\item Amerikanische Aption: Aus\"ubung jederzeit bis zum Zeitpunkt $T$ m\"oglich.
+\end{itemize}
+
+\end{itemize}
+
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
 \theoremlisttype{optname}
