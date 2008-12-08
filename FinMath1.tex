@@ -9,7 +9,7 @@
 \usepackage{wrapfig}
 \usepackage{ziffer}
 
-% get rid of fourer fontenc warnings
+% get rid of fourier fontenc warnings
 % from http://newsgroups.derkeiler.com/Archive/Comp/comp.text.tex/2006-01/msg00679.html
 \makeatletter
 \let\my@@font@warning\@font@warning
@@ -1974,7 +1974,7 @@ Sei $\varphi
 \beta_t = \beta_1 - \sum_{n=1}^t \Delta \alpha_t^\top \frac{S_{n-1}}{B_{n-1}} 
 = V_0^\varphi - \sum_{n=1}^t \Delta \alpha_n^\top \frac{S_{n-1}}{B_{n-1}}
 \end{align*}
-für $t=1,\ldots,T$, wobei $\Delta\alpha_1^k \da \alpha 1^k$ für $k=1,\ldots,d$.
+für $t=1,\ldots,T$, wobei $\Delta\alpha_1^k \da \alpha 1^k$ für $k=1,\ldots,d$.\label{lem:2.3.5}
 \end{lemma}
 
 \begin{beweis}
@@ -1986,7 +1986,9 @@ und daher
 \begin{align*}
 \beta_1 = V_0^\varphi - \alpha_1^\top \frac{S_0}{B_0} = V_0^\varphi - \Delta \alpha_1^\top \frac{S_0}{B_0}
 \end{align*}
-Sei $t\in\{2,3,\ldots,T\}$. Da $\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$ selbstfinanzierend ist, gilt
+Sei $t\in\{2,3,\ldots,T\}$. Da $
+\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$
+ selbstfinanzierend ist, gilt
 \begin{align*}
 \beta_{t-1}B_{t-1} + \alpha_{t-1}^\top S_{t-1} &=\beta_t B_{t-1} + \alpha_t^\top S_{t-1} \\
 \iff && (\beta_t - \beta_{t-1})B_{t-1} &=  -(\alpha_t^\top - \alpha_{t-1}^\top)S_{t-1} \\
@@ -2004,7 +2006,7 @@ Dann gilt
 
 Man kann sich oft ohne Beschänkung der Allgemeinheit auf den Fall $B_t=1$ beschränkten, da der folgende Zusammenhang gilt:
 \begin{lemma}
-Sei $\varphi
+\label{lem:2.3.6}Sei $\varphi
 =\left(\begin{smallmatrix}
 \beta \\ \alpha
 \end{smallmatrix}\right)$ eine selbstfinanzierende Strategie und $X_t^k \da \frac{S_t^k}{B_t^k}$ der diskontierte Preisprozess, $k=1,\ldots,d$ und $t=1,\ldots,T$. Dann gilt:
@@ -2019,14 +2021,14 @@ Für $n=1,\ldots,T$ gilt
 \frac{V_n}{B_n} - \frac{V_{n-1}}{B_{n-1}} 
 &= \frac 1 {B_n} (\beta_n B_n + \alpha_n^\top S_n) - \frac1{B_n}(\beta_{n-1}B_{n-1} + \alpha_{n-1}^\top S_n) \\
 &= \frac 1 {B_n} (\beta_n B_n + \alpha_n^\top S_n) - \frac1{B_n}(\beta_{n}B_{n-1} + \alpha_{n}^\top S_n) \\
-&= (\beta_n - \beta_n) + \alpha_n^\top (\frac{S_n}{B_n} - \frac{S_{n-1}}{B_{n-1}}) \\
+&= (\beta_n - \beta_n) + \alpha_n^\top \bigg(\frac{S_n}{B_n} - \frac{S_{n-1}}{B_{n-1}}\bigg) \\
 &= \alpha_n^\top \Delta X_n
 \end{align*}
 Daher gilt mit $B_0=1$:
 \begin{align*}
 \frac{V_t^\varphi}{B_t} 
 &= \frac{V_0^\varphi}{B_0} - \frac{V_0^\varphi}{B_0} + \cdots + \frac{V_{t-1}^\varphi}{B_{t-1}} - \frac{V_{t-1}^\varphi}{B_{t-1}} + \frac{V_t^\varphi}{B_0} \\
-&= \frac{V_0^\varphi}{B_0} + \sum_{n=1}^t (\frac{V_n^\varphi}{B_n} -  \frac{V_{n-1}^\varphi}{B_{n-1}}) \\
+&= \frac{V_0^\varphi}{B_0} + \sum_{n=1}^t \bigg(\frac{V_n^\varphi}{B_n} -  \frac{V_{n-1}^\varphi}{B_{n-1}}\bigg) \\
 &= V_0^\varphi + \sum_{n=1}^n \alpha_n^\top \Delta X_n
 \end{align*}
 \end{beweis}
@@ -2047,19 +2049,170 @@ Ein Zahlungsanspruch (“contingent claim”) ist eine $\cF$-messbare Zufallsvar
 \end{definition}
 
 \begin{bemerkung}
-Ist $\cF = \cF_T = \sigma(S_0,S_1,\ldots,S_T)$, so ist $H = h(S_0,\ldots,S_T)$
+Ist $\cF = \cF_T = \sigma(S_0,S_1,\ldots,S_T)$, so ist $H = h(S_0,S_1,\ldots,S_T)$ für eine Funktion $h:\MdR^{T+1} \to \MdR$.
 \end{bemerkung}
 
 \begin{beispiel}
 \begin{itemize}
-\item Eurpäische Call-Option: $H=(S_T-K)^+$
-\item Eurpäische Put-Option: $H=(K-S_T)^+$
+\item Europäische Call-Option: $H=(S_T-K)^+$
+\item Europäische Put-Option: $H=(K-S_T)^+$
 \item Termingeschäft (“short”): $H=K-S_T$
 \item Digital Call-Option: $H = 1_{\{S_T > K}\}$
-\item Down-and-out-call: $H = (S_T-K_1) 1_{\{\min_{t\in\{0,\ldots,T\}} S_t > K_2\}}$
+\item Down-and-out-call: $H = (S_T-K_1) \cdot 1_{\{\min_{t\in\{0,\ldots,T\}} S_t > K_2\}}$
 \item Asiatische Option: $H = (S_T - \frac1T \sum_{t=1}^T S_t)^+$
 \end{itemize}
 \end{beispiel}
+
+\begin{definition}
+\begin{enumerate}
+\item Ein Zahlungsanspruch $H$ heißt \emph{erreichbar},\index{erreichbar} wenn es eine selbstfinanzierende Strategie $\varphi$ gibt mit
+\[
+V_T^\varphi = H.
+\]
+Dann heißt $\pi(H) = V_0^\varphi$ ein Preis von $H$ und $\varphi$ eine \emph{Hedging-Strategie}.\index{Hedging-Strategie}
+\item Ein Markt heißt \emph{vollständig}, \index{vollständiger Markt} falls jeder Zahlungsanspruch erreichbar ist.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}
+Eine selbstfinanzierende Handelsstrategie heißt \emph{Arbitrage-Strategie}, \index{Arbitrage-Strategie} falls $P(V_0^\varphi = 0)=1$, $P(V_T^\varphi \ge 0) = 1$ und $P(V_T^\varphi>0) >0$.
+
+Wir sagen, dass eine Arbitragemöglichkeit existiert, falls eine Arbitrage-Strategie existiert.
+\end{definition}
+
+\begin{bemerkung}
+Von Lemma \ref{lem:2.3.6} gilt für eine selbstfinanzierende Strategie $\varphi = 
+\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$
+\[
+\frac{V_T^\varphi}{B_{T}} = V_0^\varphi + G_T^\alpha.
+\]
+Daher liegt eine Arbitragemöglichkeit genau dann vor, wenn eine selbstfinanzierende Strategie \mbox{$\varphi = 
+\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$} existiert mit $P(V_0^\varphi = 0) = 1$, $P(G_T^\alpha \ge 0) = 1$, $P(G_T^\alpha>0)>0$.
+\end{bemerkung}
+
+\begin{bemerkung}
+Wir schreiben (NA) (“no arbitrage”), wenn keine Arbitragemöglichkeit existiert.
+\end{bemerkung}
+
+\begin{lemma}
+Es gelte (NA). Dann ist der Preis $\pi(H)$ für einen erreichbaren Zahlungsanspruch eindeutig bestimmt und damit unabhängig von der Wahl der Hedging-Strategie.
+\end{lemma}
+
+\begin{beweis}
+Sei $H$ ein erreichbarer Zahlungsanspruch und $\varphi =
+\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$, $\tilde\varphi =
+\left(\begin{smallmatrix} \tilde\beta \\ \tilde\alpha \end{smallmatrix}\right)$ zwei Hedging-Strategien für $H$. Von Lemma \ref{lem:2.3.5} wissen wir, dass $\varphi, \tilde\varphi$ durch $(V_0^\varphi,\alpha)$ und $(V_0^{\tilde\varphi},\tilde\alpha)$ ausgedrückt werden können. Aus Lemma \ref{lem:2.3.6} folgt dann
+\[
+V_0^\varphi + G_T^\alpha = \frac H {B_T} = V_0^{\tilde\varphi} + G_T^{\tilde\alpha}
+\]
+Angenommen, $V_0^\varphi \ne V_0^{\tilde\varphi}$ und ohne Beschänkung der Allgemeinheit gelte $V_0^\varphi < V_0^{\tilde\varphi}$. Dann ist $d \da V_0^\varphi - V_0^{\tilde\varphi} > 0$. Damit gilt
+\begin{align*}
+0 &= V_0^\varphi - V_0^{\tilde\varphi} - G_T^{\tilde\alpha} + G_T^\alpha  \\
+&= -d + G_T^\alpha  - G_T^{\tilde\alpha}  \\
+&= -d + \sum_{n=1}^T (\alpha_n^\top - \tilde\alpha_n^\top) \Delta X_n \\
+&= -d + G_T^{\alpha-\tilde\alpha}
+\end{align*}
+Daher ist $G_T^{\alpha-\tilde\alpha}>0$. Also ist $\psi$ eine Arbitragemöglichkeit, wobei $\psi = 
+\left(\begin{smallmatrix} \hat\beta \\ \hat\alpha \end{smallmatrix}\right)$, $\hat\alpha = \alpha -\tilde\alpha$ und $\hat\beta$ ist definiert über Lemma \ref{lem:2.3.5}, wobei $V_0^\psi=0$, im Widerspruch zu (NA).
+\end{beweis}
+
+\section{Das Cox-Ross-Rubinstein-Modell}
+
+Wir betrachten nun ein einfaches  Finanzmarktmodell in diskreter Zeit. In diesem Modell werden wir viele wichtige Ergebnisse zur Bewertung von Derivaten herleiten, die auch in viel allgemeineren Zusammenhängen gelten (siehe spätere Kapitel). Wir betrachten das grundlegende Binomialmodell von Cox, Ross und Rubinstein (1979 veröffentlicht).
+
+Sei $d=1$, das heißt wir betrachten einen Markt mit einem Bond und einer Aktie.
+
+\subsection{Ein-Perioden-CRR-Modell}
+
+Wir beginnen mit einem Ein-Perioden-Modell, also $T=1$. Sei $\Omega=\{\omega_1,\omega_2\}$ und $\cF = \cF_1 = \mathcal P(\Omega)$. Die Werte des Bondes seien $B_0=1$ und $B_1= 1 + r$, $r>0$. Die Werte der Aktie seien $S_0=S_>0$ und 
+\[
+S_1(\omega) = 
+\begin{cases}
+u\cdot S_0,& \text{falls } \omega = \omega_1\\
+d\cdot S_0,& \text{falls } \omega = \omega_2
+\end{cases}
+\]
+für $0 < d < u$. Hier steht $u$ für den up-Faktor und $d$ für den down-Faktor. (Wäre $u=d$, wäre das Modell nicht wirklich stochastisch und damit nicht interessant.)
+
+\begin{lemma}
+Gegeben sei das Ein-Perioden-CRR-Modell. Dann gilt (NA) genau dann, wenn $d< 1+ r < u$.
+\end{lemma}
+\begin{beweis}
+\begin{align*}
+d < 1+r < u &\iff \frac d{1+r} < 1 < \frac u{1+r} \\
+&\iff \frac{S_0 d}{1+r} < S_0 < \frac{S_0 u}{1+r} \\
+&\iff \frac{S_0 d}{1+r} - S_0 < 0 < \frac{S_0 u}{1+r} - S_0 \\
+&\iff \frac{S_1(\omega_2)}{1+r} - S_0 < 0 < \frac{S_1(\omega_1)}{1+r} - S_0 \\
+&\iff (NA)
+\end{align*}
+
+Die Letzte Äquivalenz folgt aus den folgenden Überlegungen:
+\begin{itemize}
+\item[„$\Longrightarrow$“] Sei $V_0 = \beta + \alpha S_0 = 0$, daher $\beta = V_0- \alpha S_0 = -\alpha S_0$. Also ist 
+\[
+V_1=\beta(1+r) + \alpha S_1 = -\alpha S_0(1+r) + \alpha S_1 = \alpha (1+r)(\frac{S_1}{1+r} - S_0)
+\]
+Wir haben gerade gesehen, dass $V_1$ nicht mit positiver Wahrscheinlichkeit positiv sein kann, ohne dass as auch mit positiver Wahrscheinlichkeit negativ sein kann. Damit gilt (NA).
+\item[„$\Longleftarrow$“] Angenommen, $d\ge 1+ r$. Beginne ohne Anfangsvermögen. Leihe Geld für das Kaufen einer Aktie von der Bank und kaufe diese Aktie ($\alpha = 1$, $\beta = -S_0$, $V_0=0$). 
+
+Im ersten Szenario ist $S_1(\omega_1) = uS_0$ und damit
+\[V_1=\beta(1+r) + \alpha S_1 = -S_0(1+r) + u S_0 \ge - S_0d + uS_0 = S_0(u-d) > 0.\]
+
+Im zweiten Szenario ist $S_1(\omega_2) = dS_0$ und damit 
+\[V_1=\beta(1+r) + \alpha S_1 = -S_0(1+r) + d S_0 \ge - S_0d + dS_0 = 0.\]
+
+Dies ist ein Wiederspruch zu (NA). Analog kann man bei der Annahme von $u\le 1+r$ einen Leerverkauf der Aktie machen und das Geld auf dem Bankkonto investieren ($\alpha = -1$, $\beta = S_0$, $V_0=0$).
+\end{itemize}
+\end{beweis}
+
+\begin{lemma}\label{lem:2.4.2}
+Es gelte (NA). Dann ist das CRR-Modell vollständig, das heißt zu jedem Zahlungsanspruch $H$ gibt es eine selbstfinanzierende Strategie $\varphi = 
+\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$
+so dass $V_1^\varphi = H$.
+
+Insbesondere ist hier 
+\begin{align*}
+\alpha_1 = \frac{H(\omega_1) - H (\omega_2)}{(u-d)S_0} && 
+\beta_1 = \frac{u H(\omega_1) - d H(\omega_2)}{(u-d)(1+r)}
+\end{align*}
+und damit ist der eindeutige Preis $\pi(H)$ gegeben durch
+\begin{align*}
+\pi(H) = \beta_1 B_0 + \alpha_1 S_0 = \frac{H(\omega_1)}{1+r} \frac{1+r-d}{u-d} + \frac{H(\omega_2)}{1+r} \bigg(1 - \frac{1+r-d}{u-d}\bigg)
+\end{align*}
+\end{lemma}
+
+\begin{beweis}
+Der Ansatz $V_1^\varphi = \beta_1(1+r) + \alpha_1 S_1 = H$. Da $\Omega=\{\omega_1,\omega_2\}$ erhalten wir das lineare Gleichungssystem
+\begin{align*}
+\beta_1(1+r) + \alpha_1 S_1(\omega_1) &= H (\omega_1) \\
+\beta_1(1+r) + \alpha_1 S_1(\omega_2) &= H (\omega_2) 
+\end{align*}
+was sich schreiben lässt als
+\begin{align*}
+\beta_1(1+r) + \alpha_1 u S_0  &= H (\omega_1) \\
+\beta_1(1+r) + \alpha_1 d S_0  &= H (\omega_2).
+\end{align*}
+Diese lässt sich  nach $\beta_1, \alpha_1$ auflösen, so dass man durch Umsortieren die Behauptung erhält.
+\end{beweis}
+
+\begin{bemerkung}
+\begin{itemize}
+\item Wir setzten $q\da \frac{1+r-d}{u-d}$. Wegen (NA) gilt $0<q<1$.
+\item Aus Lemma \ref{lem:2.4.2} gilt dann für den Preis von $H$:
+\begin{align*}
+\pi(H) = \frac{H(\omega_1)}{1+r} q + \frac{H(\omega_2)}{1+r} (1-q)
+\end{align*}
+Wir definieren ein Wahrscheinlichkeitsmaß $Q$ durch $Q(\{\omega_1\}) = q$ und $Q(\{\omega\})=1-q$. Also gilt $\pi(H) = E_Q[\frac H {1+r}]$, wobei $E_Q$ den Erwartungswert bezüglich des Maßes $Q$ bezeichnet.
+\item Für den diskontierten Preis $X_1 = \frac{S_1}{B_1}$ gilt
+\begin{align*}
+E_Q[X_1] &= E_Q[\frac{S_1}{B_1}] \\
+&= \frac{S_1(\omega_1)}{B_1} \cdot q + \frac{S_1(\omega_2)}{B_1} \cdot (1-q) \\
+&= \frac{uS_0}{1+r} q + \frac{ d S_0}{1+r}(1-q) \\
+&= S_0 = \frac{S_0}{B_0} = X_0
+\end{align*}
+$Q$ ist das einzige Wahrscheinlichkeitsmaß mit $E_Q[X_1]=X_0$.
+\end{itemize}
+\end{bemerkung}
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
