@@ -2214,6 +2214,88 @@ $Q$ ist das einzige Wahrscheinlichkeitsmaß mit $E_Q[X_1]=X_0$.
 \end{itemize}
 \end{bemerkung}
 
+\subsection{Mehr-Perioden-CRR-Modell}
+Wir betrachten das $T$-Perioden-CRR-Modell, d.h. wir betrachten den Zeithorizont $T$ und $t \in \{0,1, \ldots,T\}$.\\
+Sei $r>0$ und $B_{t+1}=B_t(1+r)$, $B_0=1$. Dann ist $B_t=(1+r)^t$ für $t=0,1,\ldots ,T$.\\
+Für risikobehaftete Anlagemöglichkeit gelte\\
+$S_{t+1} = 
+\begin{cases}
+u S_t, & \mbox{ mit Wahrscheinlichkeit } p \\
+d S_t, & \mbox{ mit Wahrscheinlichkeit } 1-p
+\end{cases}$ für $0<d<u$, $p\in (0,1)$, $t=0,1, \ldots, T-1$ und $S_0>0$.\\
+Wir konstruieren nun ein Modell, indem wir den Prozess $(Y_t)=\left(\frac{S_t}{S_{t-1}}\right)$, $t=1, \ldots , T$ jeweils als Zufallsvariable auf dem Wahrscheinlichkeitsraum $(\tilde{\Omega_t}, \tilde{\cF_t},\tilde{P_t})$ betrachten, wobei\\
+$\tilde{\Omega_t} := \tilde{\Omega}= \{u,d\}$,\\
+ $\tilde{\cF_t} := \tilde{\cF}:= \mathcal{P}(\tilde{\Omega})=\{\emptyset, \{d\},\{u\},\tilde{\Omega}\}$\\
+$\tilde{P}_t:= \tilde{P}$ mit $\tilde{p}(\{u\})=p$, $\tilde{p}(\{d\})=1-p$, $p\in (0,1)$.\\
+ Auf diesem Wahrscheinlichkeitsraum sei $Y_t(u):=u$, $Y_t(d):=d$, $t=1,2,\ldots, T$\\
+ Unser Ziel ist es einen Wahrscheinlichkeitsraum zu definieren, auf dem wir die Preise der Anlagemöglichkeiten $B$ und $S$ beschreiben können. Da man den Aktienkurs $S$ schreiben kann als $S_t=S_0 \prod\limits_{k=1}^t Y_k$, $t=1,\ldots, T$ liegt es Nahe als zugrundeliegenden Wahrscheinlichkeitsraum den Produktram $(\Omega, \cF, P)$ zu betrachten:\\
+$\Omega:=\tilde{\Omega_1} \times \ldots \times \tilde{\Omega_T} = \tilde{\omega}^T=\{u,d\}^T$\\
+ $\cF := \mathcal{P}(\Omega)$, $P(\{\omega\})=\tilde{P}(\{y_1\})\cdot \ldots\cdot \tilde{P}(\{y_T\})$ wobei $\omega=(y_1, \ldots, y_T)$ und $y_t\in\tilde{\omega}=\{d,u\}$, $t\in\{1,\ldots,T\}$. Für weitere Infos zu Produkträumen siehe Williams Kapitel 8. Hier werden über den Produktraum unabhängige Widerholungen einen Zufallsexperiments beschrieben. Da $Y_t$ eine Zufallsvariable ist, die zwei Werte annehmen kann, kann man das durch $Y$ beschriebene Zufallsexperiment als Münzwurf (einer nicht notwendig fairen Münze) interpretieren.\\
+ Wir definieren nun die $Y_t$, $=1, \ldots T$ neu auf dem Wahrscheinlichkeitsraum $(\Omega, \cF , P)$:\\
+ $Y_t(\omega)=Y_t((y_1,\ldots,y_t)):=
+ \begin{cases}
+ u & \mbox{ falls } y_t=u\\
+ d & \mbox{ falls } y_t=d
+ \end{cases}$ $t=1, \ldots T$\\
+ Mit dieser Konstruktion gilt:\\
+ $P(Y_t=u)=p=1-P(Y_t=d)$; $Y_i$ sind unabhängig identisch verteilt.\\
+ Die Informationen im Markt werden durch die naheliegende Filtration modeliert:\\
+ $\cF_0:=\{\emptyset, \Omega\}$, $\cF_t:=\sigma(Y_1,\ldots,Y_t)=\sigma(S_1,\ldots, S_t)$ für $T\in\{1,\ldots, T-1\}$ und $\cF_T:=\cF=\mathcal{P}(\Omega)$.\\
+ Bisher haben wir nur das Reale-Weltmap $P$ definiert, Zur Optionsbewertung werden wir aber wir im Ein-Perioden-Modell ein risikoneutrales Maß $Q$ benötigen, dass wir analog zum obigen Vorgehen auf dem messbaren Raum $(\Omega, \cF )$ definieren:\\
+ $Q(\{\omega\})= Q(\{y_1,\ldots, y_T)\})=\tilde{Q}(\{y_1\}) \cdot\ldots\cdot \tilde{Q}(\{y_T\})=q_{y_1} \cdot\ldots\cdot q_{y_T}$\\
+ wobei: $Q(\{y_t\}):=q_{y_t}:= 
+ \begin{cases}
+ q & \mbox{ falls } y_t=u\\
+ 1-q \mbox{ falls } y_t=d
+ \end{cases}$; mit $q:=\frac{1+r-d}{u-d}$,\\
+ wobei wir fordern, dass $d<1+r<u$. Man rechnet leicht nach, dass $Q$ ein Wahrscheinlichkeitsmaß ist.
+ 
+ \begin{lemma}
+Im $T$-Perioden-CRR-Modell gilt:\\
+ \begin{align*}
+ (NA)\iff d<1+r<u
+ \end{align*}
+ \end{lemma}
+ 
+ \begin{beweis}
+ siehe Übungsblatt
+ \end{beweis}
+
+\begin{satz}
+Es gelte (NA). Dann ist das $T$-Perioden-CRR-Modell vollständig. Insbesondere gilt:\\
+Zu jedem Zahlungsanspruch $H$ gibt es eine selbstfinanzierende Hedging-Strategie
+$\varphi = 
+\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$ mit $V_T^\varphi=H$ und 
+\begin{align*}
+\pi(H)=\beta_1B_0+\alpha_1S_0= \sum\limits_{\omega=(y_1,\ldots,y_T)\in\Omega} q_{y_1} \cdot\ldots\cdot q_{y_T} \frac{h(\omega)}{B_T}= E_Q\left[\frac{H}{B_T}\right]
+\end{align*}
+ist der eindeutige Preis von $H$ und $Q$ ist das oben definierte Wahrscheinlichkeitsmaß.
+\end{satz}
+ 
+ \begin{beweis}
+ Der Preis und die Hedging-Strategie kann rekursiv im Binomialbaum ermittelt werden. Beginne mit $t=T$. Setze $V_T=H$. Da $Y_T$ zwei Werte annehmen kann wird aus der ersten Gleichung im folgenden Gleichungssystem zwei Gleichungen:\\
+ \begin{align*}
+ V_t=& \beta_t B_t+ \alpha_t S_t\\
+ V_{t-1}=& \beta_{t-1}B_{t-1}+\alpha_{t-1}S_{t-1}=\beta_tB_{t-1}+\alpha_tS_{t-1}
+ \end{align*}
+ Löse LGS in zwei UNbekannten $(\beta_T, \alpha_T)$ (eindeutig lösbar) in Abhängigkeit von $(y_1,\ldots,y_{T-1})$ (zur Erinnerung $\omega=(y_1,\ldots,y_T)$).\\
+ Aus der zweiten Gleichung kann nun $V_{T-1}$ berechnet werden (in Abhängigkeit von $(y_1,\ldots, y_{T-1})$).\\
+ Für $T=1$ folgt die Behauptung aus dem Ein-Perioden-CRR-Modell.\\
+ Für $T>1$ kann der Schritt für $t=T-1$, $t=T-2$ rekursiv wiederholt werden. \\
+ $Q$ berechnet man analog zum Ein-Perioden-CRR-Modell.
+ \end{beweis}
+ \begin{korollar}
+ Sei $H$ ein europäischer Zahlungsanspruch mit Laufzeit $T$ gegeben durch $H=f(S_T)$. Dann ist der Preis (zur Zeit 0) gegeben durch
+ \begin{align*}
+ \pi(H)=E_Q\left[\frac{f(S_T}{B_T}\right]=\frac{1}{B_T} \sum\limits_{k=0}^r {r\choose k} q^k (1-q)^{T-k} f(S_0u^kd^{T-k})
+ \end{align*}, wobei $q=\frac{1+r-d}{u-d}$
+
+ \end{korollar}
+ \begin{beweis}
+ Es gilt $S_T=S_O \prod\limits_{k=1}^T Y_k$ mit $Q(Y_k=u)=q=1-Q(Y_k=d)$. Daher folgt aus Satz 2.4.5 sofort die Behauptung.
+ \end{beweis}
+ 
+
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
 \theoremlisttype{optname}
