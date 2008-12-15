@@ -8,7 +8,6 @@
 \usepackage{german}
 \usepackage{wrapfig}
 \usepackage{ziffer}
-\usepackage{microtype}
 
 % get rid of fourier fontenc warnings
 % from http://newsgroups.derkeiler.com/Archive/Comp/comp.text.tex/2006-01/msg00679.html
@@ -33,11 +32,14 @@
 % \@removefromreset{section}{chapter}
 % \makeatother
 
+\usepackage{microtype}
+
 \newcommand{\cX}{\mathcal X}
 \newcommand{\cM}{\mathcal M}
 \newcommand{\cA}{\mathcal A}
 \newcommand{\cV}{\mathcal V}
 \newcommand{\cF}{\mathcal F}
+\newcommand{\cQ}{\mathcal Q}
 \newcommand{\borel}{{\mathfrak B}}
 \newcommand{\unisucceq}{\succeq_{\text{uni}}}
 \newcommand{\mvsucceq}{\succeq_{\text{mv}}}
@@ -2293,7 +2295,7 @@ wobei
 mit $q\da \frac{1+r-d}{u-d}$ und wir fordern, dass $d<1+r<u$. Man rechnet leicht nach, dass $Q$ ein Wahrscheinlichkeitsmaß ist.
  
  \begin{lemma}
-Im $T$-Perioden-CRR-Modell gilt:
+Im $T$-Perioden-CRR-Modell gilt:\label{lem:2.4.4}
 \[
 \text{(NA)}\iff d<1+r<u
 \]
@@ -2304,13 +2306,13 @@ Im $T$-Perioden-CRR-Modell gilt:
  \end{beweis}
 
 \begin{satz}
-Es gelte (NA). Dann ist das $T$-Perioden-CRR-Modell vollständig. Insbesondere gilt:
+Es gelte (NA). Dann ist das $T$\!-Perioden-CRR-Modell vollständig. Insbesondere gilt:
 
 Zu jedem Zahlungsanspruch $H$ gibt es eine selbstfinanzierende Hedging-Strategie
 $\varphi = 
 \left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$ mit $V_T^\varphi=H$ und 
 \begin{align*}
-\pi(H)=\beta_1B_0+\alpha_1S_0= \sum_{\mathclap{\omega=(y_1,\ldots,y_T)\in\Omega}} q_{y_1} \cdot\ldots\cdot q_{y_T} \frac{H(\omega)}{B_T}= E_Q\left[\frac{H}{B_T}\right]
+\pi(H)=\beta_1B_0+\alpha_1S_0= \sum_{\mathclap{\omega=(y_1,\ldots,y_T)\in\Omega}} q_{y_1} \cdot\cdots\cdot q_{y_T} \frac{H(\omega)}{B_T}= E_Q\left[\frac{H}{B_T}\right]
 \end{align*}
 ist der eindeutige Preis von $H$ und $Q$ ist das oben definierte Wahrscheinlichkeitsmaß.\label{satz:2.4.5}
 \end{satz}
@@ -2337,7 +2339,7 @@ das Gleichungssystem mit den zwei Gleichungen:
  \begin{korollar}
  Sei $H$ ein europäischer Zahlungsanspruch mit Laufzeit $T$ gegeben durch $H=f(S_T)$. Dann ist der Preis (zur Zeit 0) gegeben durch
  \begin{align*}
- \pi(H)=E_Q\left[\frac{f(S_T)}{B_T}\right]=\frac{1}{B_T} \sum\limits_{k=0}^r {r\choose k} q^k (1-q)^{T-k} f(S_0u^kd^{T-k}),
+ \pi(H)=E_Q\left[\frac{f(S_T)}{B_T}\right]=\frac{1}{B_T} \sum\limits_{k=0}^r \binom{r}{k} q^k (1-q)^{T-k} f(S_0u^kd^{T-k}),
  \end{align*}
 wobei $q=\frac{1+r-d}{u-d}$.
  \end{korollar}
@@ -2345,6 +2347,80 @@ wobei $q=\frac{1+r-d}{u-d}$.
  Es gilt $S_T=S_0 \prod\limits_{k=1}^T Y_k$ mit $Q(Y_k=u)=q=1-Q(Y_k=d)$. Daher folgt aus Satz \ref{satz:2.4.5} sofort die Behauptung.
  \end{beweis}
  
+\begin{bemerkung}[Hedging im Mehr-Perioden-CRR-Modell]
+Sei $H$ ein Zahlungsanspruch und $\pi_t(H,S_t)$ der Preis des Zahlungsanspruchs $H$ zum Zeitpunkt $t$ bei Kurs $S_t$. Sei 
+$\varphi=\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$ 
+eine selbstfinanzierende Hedging-Strategie für $H$, so gilt $\pi_t(H,S_t)=V_t^\varphi$ und außerdem $\pi(H) = \pi_0(H,S_0)$.
+
+Mit $\pi_t(H,S_t) = \beta_t B_t + \alpha_t S_t$ folgt:
+\begin{align*}
+\pi_t(H,u S_{t-1}) &= \beta_t B_t + \alpha_t u S_{t-1} \\
+\pi_t(H,d S_{t-1}) &= \beta_t B_t + \alpha_t d S_{t-1}
+\end{align*}
+und daher ist
+\[
+\alpha_t = \frac{\pi_t(H,uS_{t-1}) - \pi_t(H,dS_{t-1})}{(u-d) S_{t-1}}
+\]
+und
+\[
+\beta_t = \frac{u\pi_t(H,d S_{t-1}) - d\pi_t(H,uS_{t-1})}{(u-d)B_t}.
+\]
+\end{bemerkung}
+
+\begin{definition}
+\begin{itemize}
+\item Ein Wahrscheinlichkeitsmaß $Q$ auf $(\Omega, \cF)$, für das
+\[
+(X_t) = \left( \frac{S_t}{B_t}\right)_{t\in\{0,\ldots,T\}}
+\]
+ein Martingal ist (bezüglich der Filtration $\cF_t$), heißt \emph{Martingalmaß} oder \emph{risikoneutrales Maß}.\index{Martingalmaß}\index{risikoneutrales Maß} Zur Erinnerung: Für ein solches $Q$ gilt: $(X_t)$ ist adaptiert, $E|X_t|<\infty$ für $t=0,\ldots,t$ und $E_Q[X_{t+1}\mid \cF_t] = X_t$ für $t=0,\ldots,T-1$.
+\item $\cQ = \{Q \text{ Wahrscheinlichkeitsmaß auf } (\Omega, \cF) \mid Q \text{ ist ein Martingalmaß} \}$
+\item $\cQ^* = \{ Q \in \cQ\mid Q \text{ ist äquivalent zu }P\}$
+\end{itemize}
+\end{definition}
+
+\begin{bemerkung}
+\begin{itemize}
+\item Zur Erinnerung: Ein Wahrscheinlichkeitsmaß $Q$ ist äquivalent zu einem Wahrscheinlichkeitsmaß $P$ (kurz $Q\sim P$) genau dann, wenn $Q$ und $P$ die gleichen Nullmengen haben, das heißt für alle $A\in\cF$ gilt $P(A)=0 \iff Q(A)=0$.
+\item Wir haben bisher gefordert, dass $P(\{\omega\})>0$ für alle $\omega\in\Omega$. Daher ist in diesem Fall $\cQ^* = \{ Q\in \cQ\mid \forall \omega \in \Omega: Q(\{\omega\})>0\}$.
+\end{itemize}
+\end{bemerkung}
+
+\begin{satz}
+Gegeben sei das $T$\!-Perioden-CRR-Modell. Dann gilt
+\begin{enumerate}
+\item (NA) $\iff d < 1+r < u$
+\item $d < 1+r < u \iff$ Es existiert ein äquivalentes Martingalmaß $Q$. (EMM)
+\item Es gelte $d< 1+r < u$. Dann ist das Martingalmaß eindeutig und charakterisiert durch
+\[
+q= \frac{1+r-d}{u-d}.
+\]
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+\begin{enumerate}
+\item Lemma \ref{lem:2.4.4}, Übungsblatt
+\item Sei $Q$ ein Wahrscheinlichkeitsmaß. Dann gilt
+\begin{align*}
+E_Q[X_{t+1}\mid \cF_t]
+&= E_Q[\frac{S_{t+1}}{B_{t+1}} \mid\cF_t] \\
+&= E_Q[\frac{Y_{t+1}S_t}{B_{t+1}} \mid \cF_t] \\
+&= \frac{S_t}{B_{t+1}} E_Q[Y_{t+1} \mid \cF_t] \\
+&= \frac{S_t}{B_{t+1}} E_Q[Y_{t+1}] \\
+&= \frac{S_t}{B_t} \frac{1}{1+t} E_Q[Y_{t+1}] \\
+&= X_t \frac{1}{1+t} E_Q[Y_{t+1}] \\
+&\stackrel ! = X_t 
+\end{align*}
+Damit $Q$ ein Martingal ist, muss also $\frac{1}{1+r} E_Q[Y_{t+1}] = 1$ gelten, also $qu + (1-q)d = 1+r$ für ein $q\in[0, 1]$.
+
+Das ist ein gewichtetes Mittel von $1+r$ und daher $1+r\in [d,u]$. Falls $Q$ äquivalent zu $P$ ist, ist $q\in(0, 1)$ und damit $Q$ äquivalent zu $P$.
+\item Die Gleichgung $qu + (1-q)d = 1+r$  hat eine eindeutige Lösung und diese ist $q=\frac{1+r-d}{u-d}$.
+\end{enumerate}
+\end{beweis}
+
+
+
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
