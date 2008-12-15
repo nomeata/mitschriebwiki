@@ -9,20 +9,22 @@
 \usepackage{wrapfig}
 \usepackage{ziffer}
 
-% get rid of fourier fontenc warnings
-% from http://newsgroups.derkeiler.com/Archive/Comp/comp.text.tex/2006-01/msg00679.html
-\makeatletter
-\let\my@@font@warning\@font@warning
-\let\@font@warning\@font@info
-\makeatother
+% fourier tut auf etch noch nicht richtig
 %
-\usepackage{fourier}
-%\usepackage{pxfonts}
-%\usepackage{mathpazo}
-%
-\makeatletter
-\let\@font@warning\my@@font@warning
-\makeatother 
+% % get rid of fourier fontenc warnings
+% % from http://newsgroups.derkeiler.com/Archive/Comp/comp.text.tex/2006-01/msg00679.html
+% \makeatletter
+% \let\my@@font@warning\@font@warning
+% \let\@font@warning\@font@info
+% \makeatother
+% %
+% \usepackage{fourier}
+% %\usepackage{pxfonts}
+% %\usepackage{mathpazo}
+% %
+% \makeatletter
+% \let\@font@warning\my@@font@warning
+% \makeatother 
 
 %\usepackage{fourier}
 %\usepackage{lmodern}
@@ -1909,6 +1911,7 @@ Angenommen, es gelte $\pi(H)>1$: Wir verkaufen Option zum Preis $\pi(H)$ und rep
 \end{beispiel}
 
 \section{Endliche Finanzmärkte}
+\label{sec:2.3}
 
 Es werden nun endliche Finanzmärkte, die durch endlich viele Marktzustände und durch endlich viele Handelszeitpunkte charakterisiert sind, betrachtet. Es sei $I=\{0, 1,\ldots,T\}$. Wir betrachten einen filtrierten Wahrscheinlichkeitsraum $(\Omega,\cF,(\cF_t),P)$ mit endlichen $\Omega$ und $\cF=\mathcal P(\Omega)$. Weiter sei $P(\{\omega\})>0$ für alle $\omega\in\Omega$. Handelszeitpunkte seien die Zeitpunkte $t=0, 1,\ldots,T$.
 
@@ -2419,8 +2422,68 @@ Das ist ein gewichtetes Mittel von $1+r$ und daher $1+r\in [d,u]$. Falls $Q$ äq
 \end{enumerate}
 \end{beweis}
 
+\section{Hauptsatz der Optionspreistheorie}
 
+Wir betrachten wieder allgemeine endliche Finanzmärkte wie in Sektion \ref{sec:2.3}. Sei $(\Omega, \cF, P)$ der Wahrscheinlichkeitsraum mit natürlicher Filtration $(\cF_t)_{t\in I}$ und $I=\{0, 1,\ldots, T\}$. Wir betrachten wieder eien Bond $(B_t)_{t\in I}$ und $d$ Aktion $(S_t^k)_{t\in I}$, $k=1,\ldots,d$. Wir schreiben wieder
+\[
+(X_t)_{t\in I} =\left( \frac{S_t}{B_t}\right)_{t\in I}
+\]
+und wie zuvor $\cQ= \{Q \text{ Wahrscheinlichkeitsmaß auf } (\Omega,\cF)\mid Q \text{ ist Martingalmaß}\}$ und $\cQ^* = \{Q\in \cQ\mid Q \sim P\} = \{Q\in \cQ \mid \forall \omega\in \Omega: Q(\{\omega\}) > 0\}$.
 
+\begin{satz}
+Sei $Q\in \cQ^*$ und \label{satz:2.5.1}
+$\varphi=\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$ 
+eine selbstfinanzierende Strategie. Dann ist der diskontierte Vermögensprozess
+\[
+\left(\frac{V_t^\varphi}{B_t}\right)
+\]
+ein $Q$-Martingal.
+\end{satz}
+\begin{beweis}
+Da $\varphi$ selbstfinanzierend ist, gilt nach Lemma \ref{lem:2.3.6}:
+\begin{align*}
+\frac{V_t^\varphi}{B_t} = V_0^\varphi + G_t^\alpha = V_0^\varphi + \sum_{n=1}^t \alpha_n^\top \Delta X_n
+\end{align*}
+und daher
+\begin{align*}
+\frac{V_t^\varphi}{B_t} - \frac{V_{t-1}^\varphi}{B_{t-1}}
+= G_t^\alpha - G_{t-1}^\alpha = \alpha_t^\top \Delta X_t = \alpha_t^\top \bigg(\frac{S_t}{B_t} - \frac{S_{t-1}}{B_{t-1}}\bigg)
+\end{align*}
+und da $X_t = \frac{S_t}{B_t}$ ein $Q$-Martingal ist, gilt 
+\begin{align*}
+E_Q[\frac{V_t^\varphi}{B_t} - \frac{V_{t-1}^\varphi}{B_{t-1}}\mid \cF_{t-1}]
+= \alpha^\top_t E_Q[\frac{S_t}{B_t} - \frac{S_{t-1}}{B_{t-1}}\mid \cF_{t-1}] = 0.
+\end{align*}
+Der diskontierte Wertprozess ist also eine Martingal-Transformation des $Q$-Martingals $\frac{S_t}{B_t}$ durch $\varphi$ und daher selbst ein $Q$-Martingal.
+\end{beweis}
+
+\begin{satz}
+Sei $Q$ ein Wahrscheinlichkeitsmaß auf $(\Omega,\cF)$. Dann gilt
+\begin{enumerate}
+\item $Q\in \cQ\iff \forall \alpha: E_Q[G^\alpha_T]=0$
+\item $\cQ^*\ne \emptyset \implies$ (NA)
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+\begin{enumerate}
+\item „$\Longrightarrow$“: Sei $Q\in\cQ$. Für alle $\alpha$ ist $G_T^\alpha = \sum_{n=1}^T \alpha_n^\top \Delta X_n$. Im Beweis von Satz \ref{satz:2.5.1} wurde gezeigt, dass $E_Q[\alpha_n^\top \Delta X_n\mid \cF_{n-1}]=0$ für alle $n\in\{1,\ldots,T\}$. Da $E_Q[\alpha_n^\top \Delta X_n] = E_Q[E_Q[\alpha_n^\top \Delta X_n \mid \cF_{n-1}]]$ folgt die Behauptung.
+
+„$\Longleftarrow$“: Für $n\in\{1,\ldots,T\}$ und $B\in\cF_{n-1}$ definieren wir die folgende Stratgie $\alpha$:
+\begin{align*}
+\alpha_n^k\da 1_B && \alpha_t^j = 0 \text{ für } (j,t) \ne (k,n)
+\end{align*}
+Dann ist $\alpha$ vorhersehbar. Dann gilt $G_T^\alpha \da 1_B\Delta X_n^k$ und nach Voraussetzung
+\begin{align*}
+0 = E_Q[G_T^\alpha] = E_Q[1_B \Delta X_n]
+\end{align*}
+Da $1_B$ $\cF_{n-1}$-messbar ist, gilt dann 
+\begin{align*}
+0 = E_Q[E_Q[1_B \Delta X_n^k\mid \cF_{n-1}]] = E_Q[1_B E_Q[X_n^k\mid \cF_{n-1}]]
+\end{align*}
+Da $n,k,B$ beliebig sind, folgt für alle $n=1,\ldots,T$, $k=1,\ldots,d$: $E_Q[\Delta X_n^k\mid \cF_{n-1}]=0$, also $Q\in \cQ$.
+\end{enumerate}
+\end{beweis}
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
