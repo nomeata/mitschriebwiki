@@ -2107,7 +2107,7 @@ Wir schreiben (NA) (“no arbitrage”), wenn keine Arbitragemöglichkeit existi
 \end{bemerkung}
 
 \begin{lemma}
-Es gelte (NA). Dann ist der Preis $\pi(H)$ für einen erreichbaren Zahlungsanspruch eindeutig bestimmt und damit unabhängig von der Wahl der Hedging-Strategie.
+Es gelte (NA). Dann ist der Preis $\pi(H)$ für einen erreichbaren Zahlungsanspruch eindeutig bestimmt und damit unabhängig von der Wahl der Hedging-Strategie.\label{lem:2.3.15}
 \end{lemma}
 
 \begin{beweis}
@@ -2458,7 +2458,7 @@ Der diskontierte Wertprozess ist also eine Martingal-Transformation des $Q$-Mart
 \end{beweis}
 
 \begin{satz}
-Sei $Q$ ein Wahrscheinlichkeitsmaß auf $(\Omega,\cF)$. Dann gilt
+Sei $Q$ ein Wahrscheinlichkeitsmaß auf $(\Omega,\cF)$. Dann gilt\label{satz:2.5.2}
 \begin{enumerate}
 \item $Q\in \cQ\iff \forall \alpha: E_Q[G^\alpha_T]=0$
 \item $\cQ^*\ne \emptyset \implies$ (NA)
@@ -2482,7 +2482,124 @@ Da $1_B$ $\cF_{n-1}$-messbar ist, gilt dann
 0 = E_Q[E_Q[1_B \Delta X_n^k\mid \cF_{n-1}]] = E_Q[1_B E_Q[X_n^k\mid \cF_{n-1}]]
 \end{align*}
 Da $n,k,B$ beliebig sind, folgt für alle $n=1,\ldots,T$, $k=1,\ldots,d$: $E_Q[\Delta X_n^k\mid \cF_{n-1}]=0$, also $Q\in \cQ$.
+\item Sei $Q\in \cQ^*$. Die (NA)-Bedingung ist äquivalent zu der Aussage dass für alle selbstfinanzierenden Handelsstrategien
+$\varphi=\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$ 
+gilt
+\[
+G_T^\alpha \ge 0 \implies G_T^\alpha = 0 \quad (P-\text{f.s.})
+\]
+Aus (1) folgt, dass für alle $\alpha$ gilt $E_Q[G^\alpha_t] = 0$. Damit ist $G_T^\alpha \ge 0 \implies G_T^\alpha = 0$ ($Q$-f.s.). Da $Q$ äquivalent zu $P$ ist, gilt dies auch $P$-f.s.
 \end{enumerate}
+\end{beweis}
+
+
+\begin{lemma}[Trennungssatz]
+Sei $L\subseteq \MdR^n$ ein linearer Unterraum und $K\subseteq \MdR^n$ eine kompakte und konvexe Teilmenge mit $L\cap K=\emptyset$. Dann gibt es eine lineare Abbildung $f:\MdR^n \to \MdR$, so dass $\forall x\in L: f(x) = 0$ und $\forall x\in K: f(x) >0$.
+\label{lem:2.5.3}
+\end{lemma}
+
+\begin{satz}[1. Fundamentalsatz der Preistheorie]
+(Auch “first fundamental theorem of asset pricing”, FTAP1)\label{satz:2.5.4}
+\[
+\text{(NA)} \iff \cQ^* \ne\emptyset
+\]
+\end{satz}
+
+\begin{bemerkung}
+Ausformuliert sagt FTAP1: Der Finanzmarkt ist genau dann arbitragefrei, wenn ein zu $P$ äquivalentes Maß $Q$ existiert, so dass der diskontierte $d$-dimensionale Preisprozess
+\[
+(X_t)_{t\in I} =\left( \frac{S_t}{B_t}\right)_{t\in I}
+\]
+ein Martingal unter $Q$ ist.
+\end{bemerkung}
+
+\begin{beweis}
+„$\Longleftarrow$“ Siehe Satz \ref{satz:2.5.2} (2).
+
+„$\Longrightarrow$“ $\Omega$ ist endlich wir setzen $m\da |\Omega|<\infty$ und schreiben $\Omega = \{\omega_1,\ldots, \omega_n\}$. Wir werden im Folgenden eine Zufallsvariable $X$ auf $(\Omega,\cF, P)$ als Vektor im $\MdR^{|\Omega|} =\MdR^m$ interpretieren, in dem wir schreiben $(X(\omega_1),\ldots,X(\omega_m))^\top$. Sei $\Lambda$ die Menge aller Zufallsvariablen auf $(\Omega,\cF, P)$. Dann bezeichnen wir mit $\tilde\Lambda\subseteq \MdR^m$ den dazugehörigen $m$-dimensionalen Raum ($X\in\Omega\iff (X(\omega_1),\ldots,X(\omega_m))^\top\in \tilde\Lambda$). Wir schreiben für $X(\omega_i)$ auch $X_i$.
+
+Wir definieren zwei Unterräume des $\MdR^m$:
+\begin{align*}
+C &\da \{ Y\in \tilde\Lambda\mid \forall i\in\{1,\ldots,m\}: Y_i \ge 0 \text{ und } \exists i\in\{1,\ldots,m\}: Y_i > 0\} \\
+L &\da \{ Y\in \tilde\Lambda\mid \forall i\in\{1,\ldots,m\}: Y_i = G_T^\alpha(\omega_i) \text{ für eine selbstfinanzierende} \\
+&\hspace{24em}\text{Handelsstrategie } 
+\varphi=\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)\}
+\end{align*}
+Die Menge $C$ wird verwendet, um (NA) geeignet auszudrücken. Sei 
+$\varphi=\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$
+eine selbstfinanzierende Handelsstrategie mit Anfangsvermögen $V_0^\varphi = 0$, dann folgt aus (NA), dass $(V_T^\varphi(\omega_1),\ldots, V_T^\varphi(\omega_m))^\top\notin C$.
+
+Da $G_T^\alpha = \sum_{n=1}^T \alpha_n \Delta X_n$ linear ist, ist $L\subseteq\MdR^m$ ein linearer Unterraum. $L$ beschreibt die Menge aller Zahlungsansprüche, die erreichbar zum Preis 0 sind. Wegen (NA) gilt daher $C\cap L =\emptyset$.
+
+Wir definieren nun einen weiteren Unterraum des $\MdR^m$:
+\begin{align*}
+K &\da \{Y\in C \mid  \sum_{i=1}^m Y_i = 1\}.
+\end{align*}
+$K$ ist konvex und kompakt, und da $K\subseteq C$ ist, gilt wegen (NA) auch hier $K\cap L=\emptyset$.
+
+Aus dem Trennungssatz (Lemma \ref{lem:2.5.3}) folgt die Existenz einer linearen Abbildung $f:\MdR^m\to \MdR$ mit $\forall x\in L: f(x)=0$ und $\forall x\in K: f(x) >0$, die wir als $f(x) = q^\top x = \sum_{i=1}^m q_i x_i$ schreiben.
+
+Wir betrachten die Zufallsvariable $\xi^{(i)} \da 1_{\{\omega_i\}}$. Dann ist der zugehörige $m$-dimensionale Vektor $(\xi^{(i)}(\omega_i),\ldots,\xi^{(i)}(\omega_m))^\top$, wobei $\xi_j^{(i)} = \delta_{ij}$. Daher ist  $(\xi^{(i)}(\omega_i),\ldots,\xi^{(i)}(\omega_m))^\top\in K$ für $i=1,\ldots,m$. Dann gilt 
+\[
+f((\xi^{(i)}(\omega_i),\ldots,\xi^{(i)}(\omega_m))^\top) = \sum_{j=1}^m \xi^{(i)}(\omega_j)q_j = q_i.
+\]
+Der Trennungssatz liefert uns also $q_i>0$ für alle $i\in\{1,\ldots,m\}$.
+
+Wir definieren nur ein neues Wahrscheinlichkeitsmaß auf $(\Omega, \cF)$:
+\[
+Q(\{\omega_i\}) \da \frac{q_i}{\sum_{j=1}^m q_j}
+\]
+Da dieses $Q$ keine nichtleeren Nullmengen hat, ist $Q$ äquivalent zu $P$.
+
+Aus dem Trennungssatz folgt insbesondere, das $f(x)=q^\top x=0$ für alle $x\in L$. Sei 
+$\varphi=\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$
+eine selbstfinanzierende Handelsstrategie. Dann gilt 
+\begin{align*}
+E_Q[G_T^\alpha] = \sum_{i=1}^m \frac{q_i}{\sum_{j=1}^m q_j} G_T^\alpha(\omega_i) = \frac{1}{\sum_{j=1}^m q_j} \sum_{i=1}^m q_i G_T^\alpha(\omega_i) = 0,
+\end{align*}
+da $(G_T^\alpha(\omega_1),\ldots,G_T^\alpha(\omega_m))^\top\in L$. Mit Satz \ref{satz:2.5.2} (1) folgt damit, dass $Q\in \cQ$, und da $Q$ äquivalent zu $P$ ist, auch $Q\in \cQ^*$.
+\end{beweis}
+
+\subsection{Risikoneutrale Bewertung von Zahlungsansprüchen}
+
+Das folgende Lemma verallgemeinert Lemma \ref{lem:2.3.15}. 
+\begin{lemma}
+Es gelte (NA). Dann gilt für jeden erreichbaren Zahlungsanspruch $H$ und zwei selbstfinanzierende Stratgie $\varphi$, $\psi$ mit $V_T^\varphi = H = V_T^\psi$ zu jedem Zeitpunkt $t=0,\ldots,T$: \label{lem:2.5.6}
+\[
+V_t^\varphi = V_t^\psi
+\]
+\end{lemma}
+\begin{beweis}
+Übungsblatt
+\end{beweis}
+
+\begin{definition}
+Es gelte (NA) und $H$ sei ein erreichbarer Zahlungsanspruch mit Laufzeit $T$. Der \emph{Arbitragepreisprozess}\index{Arbitragepreisprozess}
+\[
+(\pi_t(H))_{t\in\{0,\ldots,T\}}
+\]
+ist der Wertprozess einer replizierenden Stratgie $\varphi$ von $H$.
+\end{definition}
+
+\begin{satz}
+Es gelte (NA). Sei $H$ ein erreichbarer Zahlungsanspruch. Dann gilt die risikoneutrale Bewertungsformel
+\[
+\pi_t(H) = B_t E_Q[\frac H{B_T}\mid \cF_t]
+\]
+wobei $Q\in \cQ^*$ beliebig.
+\end{satz}
+
+\begin{beweis}
+Da $H$ erreichbar ist, existiert eine selbstfinanzierende Handelsstrategie 
+$\varphi=\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$
+mit $H = V_T^\varphi$. Wegen (NA) existiert nach Satz \ref{satz:2.5.4} ein $Q\in\cQ^*$. Aus Satz \ref{satz:2.5.1} folgt, dass 
+\[
+\left(\frac{V_t^\varphi}{B_t}\right)
+\]
+ein $Q$-Martingal ist. Daher gilt
+\begin{align*}
+\pi_t(H) = V_t^\varphi = B_t \frac{V_t^\varphi}{B_t} = B_t E_Q [ \frac{V_T^\varphi}{B_T} \mid \cF_t] = B_t E_q[ \frac H {B_T} \mid \cF_t]
+\end{align*}
 \end{beweis}
 
 \setcounter{secnumdepth}{-1}
