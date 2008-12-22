@@ -2498,7 +2498,7 @@ Sei $L\subseteq \MdR^n$ ein linearer Unterraum und $K\subseteq \MdR^n$ eine komp
 \label{lem:2.5.3}
 \end{lemma}
 
-\begin{satz}[1. Fundamentalsatz der Preistheorie]
+\begin{satz}[Erster Fundamentalsatz der Preistheorie]
 (Auch “first fundamental theorem of asset pricing”, FTAP1)\label{satz:2.5.4}
 \[
 \text{(NA)} \iff \cQ^* \ne\emptyset
@@ -2582,7 +2582,7 @@ ist der Wertprozess einer replizierenden Stratgie $\varphi$ von $H$.
 \end{definition}
 
 \begin{satz}
-Es gelte (NA). Sei $H$ ein erreichbarer Zahlungsanspruch. Dann gilt die risikoneutrale Bewertungsformel
+Es gelte (NA). Sei $H$ ein erreichbarer Zahlungsanspruch. Dann gilt die risikoneutrale Bewertungsformel\label{satz:2.5.8}
 \[
 \pi_t(H) = B_t E_Q[\frac H{B_T}\mid \cF_t]
 \]
@@ -2598,9 +2598,116 @@ mit $H = V_T^\varphi$. Wegen (NA) existiert nach Satz \ref{satz:2.5.4} ein $Q\in
 \]
 ein $Q$-Martingal ist. Daher gilt
 \begin{align*}
-\pi_t(H) = V_t^\varphi = B_t \frac{V_t^\varphi}{B_t} = B_t E_Q [ \frac{V_T^\varphi}{B_T} \mid \cF_t] = B_t E_q[ \frac H {B_T} \mid \cF_t]
+\pi_t(H) = V_t^\varphi = B_t \frac{V_t^\varphi}{B_t} = B_t E_Q [ \frac{V_T^\varphi}{B_T} \mid \cF_t] = B_t E_q[ \frac H {B_T} \mid \cF_t].
 \end{align*}
 \end{beweis}
+
+Der folgende Satz gibt uns nun die Methode an, mit der wir faire Preise zum Zeitpunkt $t=0$ eines Zahlungsanspruchs bestimmen können. Ein solcher Preis ist ein Erwartungswert unter einem risikoneutralen Maß:
+
+\begin{korollar}
+es gelte (NA). Sei $H$ ein erreichbarer Zahlungssanspruch. Dann gilt für den Preis $\pi(H)$ von $H$ zur Zeit $t=0$:
+\[
+\pi(H) = E_Q[\frac{H}{B_T}]
+\]
+wobei $Q\in \cQ^*$ beliebig.
+\end{korollar}
+
+\begin{beweis}
+Die Behauptung folgt sofort aus Satz \ref{satz:2.5.8} mit $B_0=1$ und $\cF_0=\{\emptyset, \Omega\}$.
+\end{beweis}
+
+\section{Vollständigkeit und Martingalmaße}
+
+Wir haben gesehen, dass das Cox-Ross-Rubinsteinmodell vollständig ist. In allgemeinen endlichen Finanzmärkten liefert uns der zweite Fundamentalsatz den Zusammenhang zwischen Vollständigkeit und Eindeutigkeit des äquivalenten Martingalmaßes.
+
+\begin{satz}[Zweiter Fundamentalsatz der Preistheorie]
+(Auch “second fundamental theorem of asset pricing”, FTAP2)\label{satz:2.6.1}
+
+Es gelte (NA). Dann ist der Markt genau dann vollständig, wenn $|\cQ^*|=1$, also wenn es genau ein äquivalentes Martingalmaße existiert.
+\end{satz}
+
+\begin{beweis}
+„$\Longrightarrow$“: Der Markt sei vollständig. Wegen (NA) gilt nach Satz \ref{satz:2.5.4} (FTAP1), dass $\cQ^* \ne \emptyset$. Seien $Q_1,Q_2\in \cQ^*$.
+
+% Warum umständlich wenns auch direkt geht
+%Wir nehmen an, dass $Q_1 \ne Q_2$ und führen das zum Widerspruch.
+
+Sei $H$ ein Zahlungsanspruch und
+$\varphi=\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$
+die zugehörige Hedging-Strategie. Dann gilt
+$ \frac{H}{B_T} = V_0^\varphi + G_T^\alpha $
+Aus Satz \ref{satz:2.5.2} folgt: $E_{Q_1}[G_T^\alpha] = 0 = E_{Q_2}[G_T^\alpha]$ und daher $E_{Q_1}[H] = E_{Q_2}[H]$.
+
+Setzte nun $H=1_A$ für $A\in \cF$. Dann gilt $Q_1(A) = E_{Q_1}[1_A] = E_{Q_2}[1_A] = Q_2(A)$, und somit $Q_1 = Q_2$ und $|\cQ^*|=1$.
+
+„$\Longleftarrow$“: Der Markt sei nicht vollständig. Zu zeigen ist $|\cQ^*|>1$.
+
+Wir betrachten wieder die Menge aller Zufallsvariablen auf $(\Omega,\cF)$, bezeichnet mit $\Lambda$, und die dazugehörige $m$-dimensionale Darstellung $\tilde\Lambda$ wie im Beweis von Satz $\ref{satz:2.5.4}$, wobei $m=|\Omega|$, $\Omega = \{\omega_1,\ldots,\omega_m\}$
+
+Sei
+\begin{multline*}
+L \da \{ (c + G_T^\alpha(\omega_1), \ldots, c+ G_T^\alpha(\omega_m))^\top \in \tilde\Lambda \mid \\
+\varphi=\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)
+\text{ selbstfinanzierende Handelsstrategie, } c\in \MdR\}
+\end{multline*}
+Da $G_T^\alpha$ linear ist, ist $L$ ein linearer Untervektorraum von $\MdR^m$.
+
+Wegen (NA) gilt $\cQ^*\ne \emptyset$ (Satz \ref{satz:2.5.4}, FTAP1). Sei $Q\in\cQ^*$ und $Q(\{\omega_i\})\ad q_i$ für $i=1,\ldots,m$. Wir betrachten das Skalarprodukt $(Z,Y)\mapsto E_Q[ZY]$ für Zufallsvariablen $Z,Y\in\Omega$. In der $m$~dimensionalen Schreibweise bedeutet dies für $(Z(\omega_1),\ldots,Z(\omega_m))^\top, (Y(\omega_1),\ldots,Y(\omega_m))^\top\in \tilde\Lambda$:
+\[
+((Z(\omega_1),\ldots,Z(\omega_m))^\top, (Y(\omega_1),\ldots,Y(\omega_m))^\top) \mapsto \sum_{i=1}^m Z(\omega_i)Y(\omega_i)q_i
+\]
+Nach Voraussetzung existiert ein nicht erreichbarer Zahlungsanspruch $H$. Dann ist $(H(\omega_1),\ldots,H(\omega_m)) \in \tilde\Lambda$, aber $\notin L$. Damit ist $L$ ein echter Untervektorraum von $\MdR^m$ und das orthogonale Komplement von $L^\bot$ ist nicht trivial, das heißt  es gibt $(Z(\omega_1),\ldots,Z(\omega_m))^\top\in L^\bot\setminus\{0\}$ mit $\sum_{i=1}^m Z(\omega_i)Y(\omega_i)q_i= 0$ für alle $(Y(\omega_1),\ldots,(\omega_n))^\top\in L$. Da $(1,\ldots,1)^\top\in L$ gilt $\sum_{i=1}^mZ(\omega_i)q_i = 0$.
+
+Wir definieren nun ein weiteres Wahrscheinlichkeitsmaß 
+\[
+Q'(\{\omega\}) \da (1 + \frac{Z(\omega_i)}{2 \|Z\|_\infty}) Q(\{\omega_i\})
+\]
+wobei $\|Z\|_\infty = \sup \{|Z(\omega_i)|: \omega_i\in \Omega\}$. Durch die Konstruktion ist klar, dass $Q'\ne Q$. $Q'$ ist ein Wahrscheinlichkeitsmaß, da für alle $\omega_i\in \Omega: Q'(\{\omega_i\}) > 0$ gilt und
+\begin{align*}
+Q'(\Omega) &= \sum_{i=1}^m (1 + \frac{Z(\omega_i)}{2\|Z\|_\infty})Q(\{\omega_i\}) \\
+&= \sum_{i=1}^m Q(\{\omega_i\}) + \frac{1}{2\|Z\|_\infty} \sum_{i=1}^m Z(\omega_i)Q(\{\omega_i\}) = 1 + 0 = 1.
+\end{align*}
+Insbesondere hat $Q'$ keine nichtleeren Nullmengen und ist damit äquivalent zu $P$.
+
+
+Sei nun $(Y(\omega_1),\ldots,Y(\omega_m))^\top = (c + G_T^\alpha(\omega_1),\ldots,c + G_T^\alpha(\omega_m))^\top \in L$. Dann gilt
+\begin{align*}
+c + E_{Q'} [G_T^\alpha]  = E_{Q'}[Y]
+&= \sum_{i=1}^m Y(\omega_i)Q'(\{\omega_i\})\\
+&= \sum_{i=1}^m Y(\omega_i) (1 + \frac{Z(\omega_i)}{2\|Z\|_\infty})Q(\{\omega_i\}) \\
+&= \sum_{i=1}^m Y(\omega_i)q_i + \sum_{i=1}^m Y(\omega_i) \frac{Z(\omega)}{2\|Z\|_\infty} q_i \\
+&= E_Q[Y] + 0 \\
+&= E_Q[c + G_T^\alpha] = c
+\end{align*}
+da $(Y(\omega_1),\ldots,Y(\omega_m))\in L$, $Q\in \cQ^*$.
+
+Daher gilt $E_{Q'}[G_T^\alpha] = 0$ und deswegen folgt mit Satz \ref{satz:2.5.2}, dass $Q'\in \cQ$. Da $Q'$ äquivalent zu $P$ ist, gilt $Q\in \cQ^*$. Aus $Q\ne Q'$ folgt damit die Behauptung.
+\end{beweis}
+
+\subsection{Bestimmung des risikoneutralen Maßes $Q$}
+
+Im Cox-Ross-Rubinsteinmodell haben wir das Maß $Q$ explizit angegeben. Wie sieht dieses Maß in allgemeinen endlichen Finanzmärkten aus? Wir betrachten ein Maß auf $\Omega = \tilde\Omega^T$ mit $|\tilde\Omega|<\infty$, wobei $\tilde\Omega$ die Menge der Ein-Schritt-Bewegungen des Aktienkurses ist (zum Vergleich: Im CRR-Model ist $\tilde\Omega=\{u,d\}$). Wir schreiben $\omega=(y_1,\ldots,y_T)\in \Omega$ und $\omega_t = (y_1,\ldots,y_t)\in \tilde\Omega^t$.
+
+Wir definieren das Wahrscheinlichkeitsmaß 
+\[
+Q(\{\omega\}) = Q(\{(y_1,\ldots,y_n)\}) = q_1(y1) q_2(y_2\mid \omega_1) \cdots q_T(y_T\mid \omega_{T-1})
+\]
+Die einzelnen Wahrscheinlichkeiten pro Periode können im Gegensatz zum Cox-Ross-Rubinsteinmodell unterschiedlich sein. Deswegen müssen wir an angeben, wo im Baum wir uns befinden. Daher die Schreibweise $q_t(y_t\mid \omega_{t-1})$. 
+
+Ist $Q\in\cQ$, so gilt für alle $t=1,\ldots,T$, $k=1,\ldots,d$:
+\begin{align*}
+E_Q[\Delta X_t^k\mid \cF_{t-1}] &= 0 \\
+\iff \forall A \in \cF_{t-1} \int_A \Delta X_t^kdQ &= \int_A 0 dQ  \\
+\iff \int_{\{\omega \mid \omega_{t-1} = (y_1,\ldots,y_{t-1})\}}
+\Delta X_t^k dQ &= 0\\
+\iff \sum_{y\in\tilde\Omega} \Delta X_t^k(\omega_{t-1}, y) q_t(y\mid \omega_{t-1}) &= 0
+\end{align*}
+Daher kann man $Q\in \cQ^*$ bestimmen, in dem man für jede Aktie $k=1,\ldots,d$ und jeden Verzweigungspunkt $t=1,\ldots,T$ die bedingten Wahrscheinlichkeiten $q_t(y\mid \omega_{t-1})$ aus dem folgenden Gleichungssystem bestimmt.
+\begin{align*}
+\sum_{y\in\tilde\Omega} q_t(y\mid \omega_{t-1}) \Delta X_t^k (\omega_{t-1},y) &= 0 \\
+\sum_{y\in\tilde\Omega} q_t(y \mid \omega_{t-1}) &= 1
+\end{align*}
+für alle $\omega_{t-1}\in \tilde\Omega^{t-1}$, $t=1,\ldots,T$, $k=1,\ldots,d$.
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
