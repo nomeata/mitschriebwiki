@@ -79,6 +79,7 @@
     \newtheorem{Def}{Definition}[section]
     \newtheorem{DefBem}[Def]{Definition + Bemerkung}
     \newtheorem{ErinnDefBem}[Def]{Erinnerung / Definition + Bemerkung}
+    \newtheorem{ErinnDef}[Def]{Erinnerung / Definition}
     \newtheorem{DefSatz}[Def]{Definition + Satz}
     \newtheorem{Bem}[Def]{Bemerkung}
     \newtheorem{BemDef}[Def]{Bemerkung + Definition}
@@ -132,6 +133,7 @@
 \DeclareMathOperator{\Rat}{Rat}
 \DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\Rg}{Rg}
+\DeclareMathOperator{\height}{ht}
 
 \newcommand{\FakRaum}[2]{
   \raisebox{0.7ex}{\ensuremath{#1}}
@@ -140,6 +142,8 @@
 
 \renewcommand{\labelenumi}{\theenumi}    
 \renewcommand{\theenumi}{(\alph{enumi})}
+
+\newcommand{\ilim}{\mathop{\varprojlim}\limits}
 
 \renewcommand{\OE}{O\!\!E}
 
@@ -1427,6 +1431,127 @@ v_n
     \end{Bew}
   \end{Bew}
 \end{Beo}
+
+%7.1.2009
+\chapter{Lokale Eigenschaften}
+\setcounter{section}{13}
+\section{Lokale Ringe zu Punkten}
+\begin{ErinnDefBem}
+  \label{bem:14.1}
+  Sei $V$ eine Varietät (über einem algebraisch abgeschlossenen Körper $k$) und $x\in V$.
+  \begin{enumerate}
+  \item
+    \begin{align*}
+      \mathcal{O}_{V,x}\defeqr\{(U,f):U\subseteq V \text{ offen, } x\in U, f\in\mathcal{O}_V(U)\}
+    \end{align*}
+    heißt lokaler Ring von $V$ in $x$, dabei sei $(U,f)\sim (U',f')\Leftrightarrow f\vert U\cap U'=f'\vert U\cap U'$
+  \item $\mathcal{O}_{V,x}$ ist lokaler Ring mit maximalem Ideal
+    \begin{align*}
+      m_x=\{[(U,f)]\in\mathcal{O}_{V,x}:f(x)=0\}
+    \end{align*}
+  \item $\mathcal{O}_{V,x}=\ilim_{U\subseteq V \text{ offen },x\in U}\mathcal{O}_V(U)$ \\
+    \begin{align*}
+    \begin{xy}
+      \xymatrix{
+        & & \mathcal{O}_V(U)\ar[3,-2]^{\alpha_U}\ar[2,1]^{\rho_U}\ar[2,0]^{U'\subseteq U} & \\
+        & & & \\
+        & & \mathcal{O}_V(U')\ar[r]^{\rho_U'}\ar[1,-2]^{\alpha_U'} & \mathcal{O}_{V,x}\ar@{.>}[1,-3]^{\exists! \alpha} \\
+        A & & & \\
+      }
+    \end{xy}
+    \end{align*}
+  \end{enumerate}
+\end{ErinnDefBem}
+\begin{Bem}
+  \label{bem:14.2}
+  Seien $V,x\in V$ wie in \ref{bem:14.1}, sei weiter $V_0\subseteq V$ offen und affin mit $x\in V_0$. Dann gilt: 
+  \begin{enumerate}
+  \item $\mathcal{O}_{V,x}\cong \FakRaum{k[V_0]}{m_x^{V_0}}$, wobei $k[V_0]$ der affine Koordinatenring vin $V_0$
+    sei und $m_x^{V_0}$ das zu $x$ gehörige maximale Ideal in $k[V_0]$, das heißt $m_x^{V_0}=\{f\in k[V_0]:f(x)=0\}$
+  \item Ist $V$ irreduzibel, so ist $\mathcal{O}_{V,x}\cong \{f=\frac{g}{h}\in k(V):g,h\in k[V_0] h(x)\neq 0\}$
+  \end{enumerate}
+\end{Bem}
+\begin{Bew}
+  Übung.
+\end{Bew}
+\begin{Prop}
+  \label{prop:14.3}
+  Seien $V,W$ Varietäten, $x\in V, y\in W$. Ist $\mathcal{O}_{V,x}\cong\mathcal{O}_{V,x}$ (als $k$-Algebra), so gibt es (affine)
+  offene Umgebungen $U_1\subseteq V$ vin $x$ und $U_2\subseteq W$ vin $y$ mit $U_1\cong U_2$.
+\end{Prop}
+\begin{Bew}
+  Übungsblatt 7 Aufgabe 1.
+\end{Bew}
+\begin{Bem}
+  \label{bem:14.4}
+  Sei $\varphi :V\longrightarrow W$ ein Morphismus von Varietäten. Für jedes $x\in V$ induziert $\varphi$ einen
+  $k$-Algebrenhomomorphismus
+  \begin{align*}
+    \varphi_x^\sharp:\mathcal{O}_{W,\varphi(x)}\longrightarrow \mathcal{O}_{V,x} \text{ mit } \varphi_x^\sharp(m_{\varphi(x)})\subseteq m_x
+  \end{align*}
+\end{Bem}
+\begin{Bew}
+  \OE $V,W$ affin (geeignet einschränken!) \\ Dann induziert $\varphi$ einen $k$-Algebrenhomomorphismus
+  \begin{align*}
+    \Abb{\varphi^\sharp}{k[W]}{k[V]}{f}{f\circ\varphi}
+  \end{align*}
+  Dabei gilt für $f\in k[W]$
+  \begin{align*}
+    (*) \quad f\in m_{\varphi(x)}^{W}\Leftrightarrow f(\varphi(x))=0\Leftrightarrow (f\circ\varphi)(x)=0\Leftrightarrow\varphi^\sharp(f)\in m_x^V
+  \end{align*}
+  $\Rightarrow\varphi^\sharp$ induziert einen Homomorphismus
+  \begin{align*}
+    \varphi^\sharp:\underbrace{k[W]_{m_x^V}}_{\cong\mathcal{O}_{W,\varphi(x)}}\longrightarrow \underbrace{k[V]_{m_x^V}}_{\cong\mathcal{O}_{V,x}}
+  \end{align*}
+  Aus $(*)$ folgt weiter:
+  \begin{align*}
+    \underbrace{\varphi_x^\sharp\left(m_{\varphi(x)}^W\cdot k[W]_{m_{\varphi(x)}^W}\right)}_{m_{\varphi(x)}}\subseteq m_x^V k[V] m_x^V = m_x
+  \end{align*}
+\end{Bew}
+\section{Dimension einer Varietät}
+\begin{Def}
+  \label{def:15.1}
+  Sei $X$ ein topologischer Raum ($\neq\emptyset$). Dann heißt $\dim(X)\defeqr\sup\{n\in\mathbb{N}:\text{ es gibt irreduzible Teilmengen }
+  \emptyset\neq V_0\subsetneq \dots\subsetneq V_n\}$ \begriff{(Krull-)Dimension} von $X$. 
+\end{Def}
+\begin{ErinnDef}
+  \label{def:15.2}
+  Sei $R$ ein Ring (kommutativ mit Eins)
+  \begin{enumerate}
+  \item Für ein Primideal $p\subseteq R$ heißt $\height(p)\defeqr\sup\{n\in\mathbb{N}:\text{ es gibt Primideale } p_1\subsetneq\dots\subsetneq =p\}$
+    \begriff{Höhe} von $p$.
+  \item $\dim R\defeqr\sup\{\height(p):p\subset R \text{ Primideal }\}$ heißt (Krull-) Dimension von $R$.
+  \end{enumerate}
+\end{ErinnDef}
+\begin{Bem}
+  \label{bem:15.3}
+  Sei $V$ eine affine Varietät. Dann ist $\dim(V)=\dim(k[V])$.
+\end{Bem}
+\begin{Bew}
+  Nach Proposition \ref{prop:3.3} ist eine Teilmenge $Z$ von $V$ genau dann irreduzibel, wenn ihr Verschwindungsideal
+  $I(Z)$ ein Primideal ist. Nach \ref{HNS} ist das eine Bijektion.
+\end{Bew}
+\begin{Prop}
+  \label{prop:15.4}
+  \begin{enumerate}
+  \item $\dim(k[X_1,\dots,X_n])=n$
+  \item Ist $A$ eine nullteilerfreie $k$-Algebra so haben alle maximalen Primidealketten die gleiche Länge.
+  \end{enumerate}
+\end{Prop}
+\begin{Bew}
+  Algebra 2.
+\end{Bew}
+\begin{BemDef}
+  \label{bemdef:15.5}
+  Sei $V$ eine Varietät, $x\in V$, $V_0\subseteq V$ eine offene und affine Umgebung von $x$.
+  \begin{enumerate}
+  \item $\dim\mathcal{O}_{V,x}=\height(m_x^{V_0}) (=\height(m_x^{V_0}\cdot k[V_0]_{m_x^{V_0}}))$
+  \item Ist $V$ irreduzibel, so ist 
+    \begin{align*}
+      \dim\mathcal{O}_{V,x}=\dim\mathcal{O}_{V,y}=\dim V\text{ für alle } x,y \in V
+    \end{align*}
+  \end{enumerate}
+\end{BemDef}
 \appendix
 
 \def\indexspace{\par\medskip}
