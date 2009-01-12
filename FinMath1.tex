@@ -2684,23 +2684,23 @@ da $(Y(\omega_1),\ldots,Y(\omega_m))\in L$, $Q\in \cQ^*$.
 Daher gilt $E_{Q'}[G_T^\alpha] = 0$ und deswegen folgt mit Satz \ref{satz:2.5.2}, dass $Q'\in \cQ$. Da $Q'$ äquivalent zu $P$ ist, gilt $Q\in \cQ^*$. Aus $Q\ne Q'$ folgt damit die Behauptung.
 \end{beweis}
 
-\subsection{Bestimmung des risikoneutralen Maßes $Q$}
+\section{Bestimmung des risikoneutralen Maßes $Q$}
 
 Im Cox-Ross-Rubinsteinmodell haben wir das Maß $Q$ explizit angegeben. Wie sieht dieses Maß in allgemeinen endlichen Finanzmärkten aus? Wir betrachten ein Maß auf $\Omega = \tilde\Omega^T$ mit $|\tilde\Omega|<\infty$, wobei $\tilde\Omega$ die Menge der Ein-Schritt-Bewegungen des Aktienkurses ist (zum Vergleich: Im CRR-Model ist $\tilde\Omega=\{u,d\}$). Wir schreiben $\omega=(y_1,\ldots,y_T)\in \Omega$ und $\omega_t = (y_1,\ldots,y_t)\in \tilde\Omega^t$.
 
 Wir definieren das Wahrscheinlichkeitsmaß 
 \[
-Q(\{\omega\}) = Q(\{(y_1,\ldots,y_n)\}) = q_1(y1) q_2(y_2\mid \omega_1) \cdots q_T(y_T\mid \omega_{T-1})
+Q(\{\omega\}) = Q(\{(y_1,\ldots,y_n)\}) = q_1(y_1) q_2(y_2\mid \omega_1) \cdots q_T(y_T\mid \omega_{T-1})
 \]
 Die einzelnen Wahrscheinlichkeiten pro Periode können im Gegensatz zum Cox-Ross-Rubinsteinmodell unterschiedlich sein. Deswegen müssen wir an angeben, wo im Baum wir uns befinden. Daher die Schreibweise $q_t(y_t\mid \omega_{t-1})$. 
 
 Ist $Q\in\cQ$, so gilt für alle $t=1,\ldots,T$, $k=1,\ldots,d$:
 \begin{align*}
-E_Q[\Delta X_t^k\mid \cF_{t-1}] &= 0 \\
-\iff \forall A \in \cF_{t-1} \int_A \Delta X_t^kdQ &= \int_A 0 dQ  \\
-\iff \int_{\{\omega \mid \omega_{t-1} = (y_1,\ldots,y_{t-1})\}}
+&& E_Q[\Delta X_t^k\mid \cF_{t-1}] &= 0 \\
+\iff && \forall A \in \cF_{t-1} \int_A \Delta X_t^kdQ &= \int_A 0 dQ  && \\
+\iff && \int_{\{\omega \mid \omega_{t-1} = (y_1,\ldots,y_{t-1})\}}
 \Delta X_t^k dQ &= 0\\
-\iff \sum_{y\in\tilde\Omega} \Delta X_t^k(\omega_{t-1}, y) q_t(y\mid \omega_{t-1}) &= 0
+\iff && \sum_{y\in\tilde\Omega} \Delta X_t^k(\omega_{t-1}, y) q_t(y\mid \omega_{t-1}) &= 0
 \end{align*}
 Daher kann man $Q\in \cQ^*$ bestimmen, in dem man für jede Aktie $k=1,\ldots,d$ und jeden Verzweigungspunkt $t=1,\ldots,T$ die bedingten Wahrscheinlichkeiten $q_t(y\mid \omega_{t-1})$ aus dem folgenden Gleichungssystem bestimmt.
 \begin{align*}
@@ -2708,6 +2708,172 @@ Daher kann man $Q\in \cQ^*$ bestimmen, in dem man für jede Aktie $k=1,\ldots,d$
 \sum_{y\in\tilde\Omega} q_t(y \mid \omega_{t-1}) &= 1
 \end{align*}
 für alle $\omega_{t-1}\in \tilde\Omega^{t-1}$, $t=1,\ldots,T$, $k=1,\ldots,d$.
+
+\begin{beispiel}
+Gegeben sei ein Markt mit zwei Anlagemöglichkeiten: ein Bond, ein Stock. Wir betrachten den Zeithorizont $T=2$. Die Werte des Bonds seien $B_t=1$ für alle $t=0,1,2$. Die Werte der Aktie zeigt der folgende Baum:
+% TODO
+% 5 -> (8,4) -> (9,6,6,3)(\omega^1,\dots,\omega^4)
+\begin{center}
+\begin{tikzpicture}
+\draw(0,0) node (5) {5};
+\draw(1,0.5) node (8) {8};
+\draw(1,-0.5) node (4) {4};
+\draw(2,0.9) node (9) {9};
+\draw(2,0.3) node (6o) {6};
+\draw(2,-0.3) node (6u) {6};
+\draw(2,-0.9) node (3) {3};
+\draw(2.5,0.9) node {$\omega_1$};
+\draw(2.5,0.3) node {$\omega_2$};
+\draw(2.5,-0.3) node {$\omega_3$};
+\draw(2.5,-0.9) node {$\omega_4$};
+\draw[-] (5) -- (8);
+\draw[-] (5) -- (4);
+\draw[-] (8) -- (9);
+\draw[-] (8) -- (6o);
+\draw[-] (4) -- (6u);
+\draw[-] (4) -- (3);
+\draw(0,-1.5) node {t=1};
+\draw(1,-1.5) node {t=2};
+\draw(2,-1.5) node {t=2};
+\end{tikzpicture}
+\end{center}
+
+Dann ist $\cF_0=\{\Omega,\emptyset\}$, $\cF_1\{\emptyset,\{\omega_1,\omega_2\}, \{\omega_3,\omega_4\},\Omega\}$ und $\cF_2=\mathcal P(\Omega)=\cF$.
+
+Für $t=1$ gilt
+\begin{align*}
+q_1(u)(8-5) + q_1(d) (4-5) &= 0 \\
+q_1(u) + q_1(d) &= 1
+\end{align*}
+woraus man $q_1(u) = \frac14$ und $q_1(d)=\frac34$ berechnen kann.
+
+Für $t=2$ und $y_1=u$ gilt:
+\begin{align*}
+q_2(u\mid u) (9-8) + q_2(d\mid u)(6-8) &= 0  \\
+q_2(u\mid u)  + q_2(d\mid u) &= 1  \\
+\end{align*}
+woraus man $q_2(u\mid u) = \frac23$ und $q_2(d\mid u) = \frac 13$ berechnen kann.
+
+Für $t=2$ und $y_1=d$ gilt:
+\begin{align*}
+q_2(u\mid d) (6-4) + q_2(d\mid d)(3-5) &= 0  \\
+q_2(u\mid d)  + q_2(d\mid d) &= 1  \\
+\end{align*}
+woraus man $q_2(u\mid d) = \frac13$ und $q_2(d\mid d) = \frac 23$ berechnen kann.
+
+Insgesamt gilt also
+\begin{align*}
+Q(\{\omega_1\}) &= \frac 14 \cdot \frac 23 = \frac 16 & Q(\{\omega_2\}) &= \frac14\cdot\frac 13 = \frac 1{12} \\
+Q(\{\omega_3\}) &= \frac 14 & Q(\{\omega_4\}) &= \frac 1{2} 
+\end{align*}
+\end{beispiel}
+
+\begin{bemerkung}
+Das Gleichungssystem hat für jedes $t$ und jedes $\omega_t$ $d+1$ Gleichungen in $|\bar\Omega|$ Unbekannten $q_t(y\mid \omega_t),\omega\in \tilde\Omega$. Eine eindeutige Lösung liegt zum Beispiel dann vor, wenn für alle $\omega_t\in \tilde\Omega^+$, $t=1,\ldots,T$, die Vektoren $(\Delta_t^k(\omega_{t+1},y), y\in \tilde\Omega)\in \MdR^{|\tilde\Omega|}$ und $(1,\ldots,1)\in\MdR^{|\tilde\Omega|}$ linear unabhängig sind und $d+1=|\tilde\Omega|$ ist.
+
+Anders ausgedrückt: Besteht zwischen der Preisentwicklung der $d$ Aktien keine lineare Abhängigkeit, so existiert ein eindeutiges Martingalmaß im Allgemeinen nur, falls $|\tilde\Omega|=d+1$. Das heißt, wenn die Anzahl der Wertpapiere (Bond und Stock) gleich der Anzahl der möglichen Marktbewegungen ist.
+\end{bemerkung}
+
+\section{Konsistente Preissysteme}
+
+Wir betrachten im Folgenden sogenannte konsistente Preissysteme. Darüber kann auch $Q\in \mathcal Q^*$ interpretiert werden.
+
+\begin{definition}
+Ein Preissystem ist eine Abbildung $p:\MdR^{|\Omega|} \to \MdR$ mit
+\begin{enumerate}
+\item für $\alpha_1,\alpha_2\in \MdR$ und Zahlungsansprüche $H_1,H_2\in \MdR^{|\Omega|}$ gilt
+\begin{align*}
+p(\alpha_1H_1+\alpha_2H_2) = \alpha_1p(H_1) + \alpha_2p(H_2) \tag{„Linearität“}
+\end{align*}
+\item für $H\ge 0$ gilt $p(H) \ge 0$ und
+\begin{align*}
+p(H) = 0 \iff \forall \omega\in \Omega: H(\omega) = 0 \tag{„Positivität“}
+\end{align*}
+\end{enumerate}
+Ein Preissystem $p$ heißt konsistent, falls gilt: Ist $H$ ein durch eine selbstfinanzierende Strategie $\varphi$ erreichbarer Zahlungsanspruch, so ist $p(H) = V_0^\varphi$.
+\end{definition}
+
+\begin{bemerkung}
+Ist $p$ ein konsistentes Preissystem, so folgt $p(B_T)=1$, da 
+$\varphi=\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$
+mit $\alpha=0$, $\beta=1$ eine Hedging-Strategie für $B_T$ ist, mit $V_0^\varphi =1$.
+\end{bemerkung}
+
+\begin{satz}
+\begin{enumerate}
+\item Sei $p$ ein konsistentes Preissystem. Dann ist $Q$, definiert durch 
+\begin{align*}
+Q(A) = p(B_T1_A) \text{ für } A\in \cF,
+\end{align*}
+in $\cQ*$.
+\item Ist $Q\in \cQ^*$, so ist $p$, definiert durch
+\begin{align*}
+p(H) \da E_Q\bigg[\frac H {B_T}\bigg] = \sum_{\omega\in\Omega} \frac{H(\omega)}{B_T(\omega)} Q(\{\omega\}) \text{ für } H\in\MdR^{|\Omega|},
+\end{align*}
+ein konsistentes Preissystem.
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+\begin{enumerate}
+\item Da $p$ ein konsistentes Preissystem ist, ist $p$ linear und damit gibt es ein $Y\in\MdR^{|\Omega|}$, so dass
+\begin{align*}
+p(H) = \sum_{\omega\in\Omega} Y(\omega)H(\omega) \tag{$(*)$}
+\end{align*}
+Zu zeigen ist, dass $(X_t^k)_{t\in I}$ ein $Q$-Martingal für $k=1,\ldots,d$ ist.
+\begin{align*}
+E_Q\bigg[\frac H{B_T}\bigg] &= 
+\sum_{\omega\in \Omega} \frac{H(\omega)}{B_T} Q(\{\omega\}) \\
+&= \sum_{\omega\in \Omega} \frac{H(\omega)}{B_T} p(B_T 1_{\{\omega\}}) \\
+&= \sum_{\omega\in \Omega} \frac{H(\omega)}{B_T} (\sum_{\tilde\omega\in\Omega} Y(\tilde\omega)  B_T 1_{\{\omega\}}(\tilde\omega))\\
+&= \sum_{\omega\in \Omega} \frac{H(\omega)}{B_T}  Y(\omega) B_T \\
+&= \sum_{\omega\in \Omega} H(\omega)Y(\omega) \\
+&= p(H)
+\end{align*}
+Für alle $t=1,\ldots,T$, $k=1,\ldots,d$, $A\in \cF_{t-1}$ existiert eine selbstfinanzierende Handelsstrategie
+$\varphi=\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$
+für den Zahlungsanspruch $H=B_T 1_A\Delta X_t^k$. Dabei gilt: Falls zur Zeit $t-1$ das Ereignis $A$ eingetreten ist, so leihe $\frac{B_T}{B_t} S_{t-1}^k$ aus dem Bond und kaufe damit $\frac{B_T}{B_t}$ Anteile des Stocks $k$.
+
+Zum Zeitpunkt $t-1$ wähle $\beta_t = -\frac 1{B_{t-1}B_t} S_{t-1}^k B_T$ und $\alpha_t = \frac{B_T}{B_t}$. Das Vermögen nach der Zusammenstellung zum Zeitpunkt $t-1$ ist dann 
+\[\beta_tB_{t-1}+ \alpha_tS_{t-1}^k = -\frac1{B_{t-1}B_t} S_{t-1}^k B_T B_{t-1} + \frac{B_T}{B_t} S_{t-1}^k = 0\]
+und zum Zeitpunkt $t$
+\[
+\beta_t B_t + \alpha_t S_T = - \frac 1{B_{t-1} B_t} S_{t-1}^k B_T B_{t-1} + \frac{B_T}{B_t} S_t^k = B_T\bigg(\frac{S_t^k}{B_t} - \frac{S_{t-1}^k}{B_{t-1}}\bigg) = B_T\Delta X_t^k
+\]
+also repliziert $\varphi$ den Zahlungsanspruch $H$.
+
+Also gilt 
+\begin{align*}
+0=V_0^\varphi = p(H) = E_Q\bigg[\frac H{B_T}\bigg] =  E_Q[1_A \Delta X_t^k]
+\end{align*}
+und damit ist $(X_t^k)_{t\in I}$ ein $Q$-Martingal.
+
+Mit $(*)$  und der Positivität von $p$ folgt $Y\ge 0$. Damit gilt für alle $A\in \cF$
+\[
+Q(A) = p(B_T1_A)
+= \sum_{\omega\in\Omega} Y(\omega) B_T 1_A(\omega)
+=  B_T \sum_{\omega\in A} Y(\omega)
+\]
+und $Q(A) \ge 0$. Es ist $Q(\Omega)=p(B_T) = 1$, also ist $Q$ ein Wahrscheinlichkeitsmaß.
+
+Sei 
+\[
+H(\omega)=
+\begin{cases}
+1, & Y(\omega) =0\\
+0, & Y(\omega) >0\\
+\end{cases}.\]
+Dann gilt
+\begin{align*}
+p(H) &\implies  H= 0\\
+&\implies \forall \omega \in \Omega: Y(\omega) >0 \\
+&\implies \forall \omega \in \Omega: Q(\{\omega\}) = B_TY(\omega) >0 
+\end{align*}
+also ist $Q$ ein zu $P$ äquivalentes Martingalmaß.
+\item 
+\end{enumerate}
+
+\end{beweis}
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
