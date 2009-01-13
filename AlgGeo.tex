@@ -1546,6 +1546,7 @@ v_n
 \begin{Bew}
   Algebra 2.
 \end{Bew}
+
 \begin{BemDef}
   \label{bemdef:15.5}
   Sei $V$ eine Varietät, $x\in V$, $V_0\subseteq V$ eine offene und affine Umgebung von $x$.
@@ -1555,13 +1556,31 @@ v_n
     \begin{align*}
       \dim\mathcal{O}_{V,x}=\dim\mathcal{O}_{V,y}=\dim V\text{ für alle } x,y \in V
     \end{align*}
-  \end{enumerate}
-\end{BemDef}
+\item dim$_xV:=$dim$\mathcal{O}_{V,x}$ heißt \begriff{lokale Deimension} von $V$ in $x$.
+\item dim$_xV=$max$\{$dim$Z: Z$ irreduzible Komponente von $V,~x\in Z\}$
+\end{enumerate}
+\end{Bem}
 
-\section{Tangentialraum}
+\begin{Bew}
+b) Ist $V$ affin (also $V=V_0$), so folgt die Aussage aus a) und Proposition 15.4. b).\\
+Im allgemeinen Falle überdecke $V$ durch affine Varietäten $V_i=1,\cdots ,n$. Da $V$ irreduzibel ist, ist $V_i\cap V_j\neq \emptyset~~\forall i,j\Rightarrow $dim$\mathcal{O}_{V,x}$ ist unabhängig von $x$ also gleich dim$V_i~~\forall i$.\\
+\underline{noch zu zeigen:} dim$V_i=$dim$V$.\\
+Sei $Z_0\subsetneqq Z_1\subsetneqq\cdots\subsetneqq Z_d=V$ eine maximale Kette von irreduziblen Teilmengen. Dabei ist $Z_0=\{z_0\}$ einpunktig $\Rightarrow d=$dim$\mathcal{O}_{V,z_0}$.\\
+d) \OE Sei $V$ affin. Die irreduziblen Komponenten $Z_1,\cdots,Z_n$ von $V$ entsprechen den maximalen Primdealen in $k[V]$.\\
+$x\in Z_i\Leftrightarrow m_x^V\supseteq I(Z_i)=\mu_i$\\
+Weiter ist $k[Z_i]=k[V]/\mu_i$.
+Also: dim$\mathcal{O}_{V,x}=$ht$(m_x^V)=$\\
+max$_{i=1; \mu_i\subseteq m_x^V}^n\{\textrm{maximale~Länge~einer~Primidealkette~} \mu_i\subsetneqq \wp_1\subsetneqq\cdots\subsetneqq m_x^V\}$=\\
+max$_{i=1; \mu_i\subseteq m_x^V}\{\underbrace{$dim$k[Z_i]}_{= \operatorname{dim}Z_i}\}$.
+\end{Bew}
+\section{Der Tangentialraum}
+Zunächst einige einführende Beispiele:
+
 \begin{nnBsp}
   \begin{enumerate}
-  \item[1.)] $V=V(Y^2-X^3+X)$
+\item[1.)]
+$V=V(Y^2-X^3+X)$, $x=(0,0)$.\\
+Die Tangente in $x$ an $V$ ist die $y$-Achse, also $V(X)$. Der Tangentialraum in $x=(1,0)$ ist der selbe. D.h. der Tangentialraum ist nicht als affiner Raum sonder als Vektorraum zu verstehen.
     \begin{tikzpicture}
       \draw[->] (-2,0) -- (2,0);
       \draw[->] (0,-2) -- (0,2);
@@ -1570,9 +1589,54 @@ v_n
       \draw[very thick] (-0.5,0) circle (0.5);
       \draw[thick, parametric, domain=0:1,samples=10] plot[id=blablub] function{t,t*t};
     \end{tikzpicture}
-  \end{enumerate}
+\item[2.)] $V=V(Y^2-X^3+X^2)$ (Newton-Knoten), $x=(0,0)$.
+hier kann man an den Nullpunkt 2 Tangenten anlegen ($y=x$ und $y=-x$). Der Tangentialraum, wie wir ihn definieren werden, ist das davon aufgespannte $\mathbb{A}^2(k)$.
+\item[3.)] $V=V(Y^2-X^3)$, $x=(0,0)$. Ist jeder beliebige eindimensionale Unterraum im Tangentialraum enthalten?
+\item[4.)] $V=V(X^2+Y^2-Z^2)$ (doppelter Kegel), $x=(0,0,0)$, $y=(1,0,1)$
+\end{enumerate}
 \end{nnBsp}
 
+\begin{DefBem}
+\label{defbem:16.1}
+Sei $V\subseteq \mathbb{A}^n(k)$ eine affine Varietät, $x\in V$, $I=I(V)$.
+\begin{enumerate}
+\item Für $f\in I$ sei $f^{(1)}:= f^{(1)}_x := \sum_{i=1}^n \frac{\partial f}{\partial X_i}(x)\cdot X_i$. Weiter sei $I_x$ das von den $f^{(1)}$, $f\in I$, erzeugte erzeugte Ideal in $k[X_1,\cdots ,X_n]$ und $T_x:=T_{V,x}:=V(I_X)$\\
+$T_{V,x}$ heißt \begriff{Tangentialraum} an $V$ in $x$.
+\item $T_x$ ist ein linearer Unterraum von $\mathbb{A}^n(k)$.
+\item Sind $f_1,\cdots , f_r$ Erzeuger von $I$, so wird $I_x$ erzeugt von $f_1^{(1)},\cdots, f_r^{(1)}$.
+\end{enumerate}
+\end{DefBem}
+\underline{Beispiele von oben:}
+\begin{enumerate}
+\item $I_x=(X),~~~T_x=V(X)$
+\item $I_x=(0),~~~T_x=\mathbb{A}^2(k)$
+\item $I_x=(0),~~~T_x=\mathbb{A}^2(k)$
+\item $I_x=(0),~~T_x={A}^3(k);~~~I_y=(2X-2Z)=(X-Z),~~~T_y=V(X-Z)$
+\end{enumerate}
+
+\begin{Bem}
+\label{bem:16.2}
+Jeder Morphismus $\varphi:V\rightarrow W$ von affinen Varietäten induziert für jedes $x\in V$ eine $k$-lineare Abbildung $d_x\varphi:T_{V,x}\rightarrow T_{W,\varphi(x)}$.
+\end{Bem}
+\begin{Bew}
+\OE $x=0,~\varphi(x)=0$.\\
+Schreibe $\varphi=(\varphi_1,\cdots,\varphi_m)$. Brauche $k$-Algebrenhomomorphismus:
+$$(d_x\varphi)^{\sharp}:~~k[Y_1,\cdots,Y_m]/I_{\varphi(x)}\rightarrow k[X_1,\cdots,X_n]/I_x$$
+Für $j=1,\cdot, m$ ist $\varphi^{\sharp}(Y_j)=Y_j\circ\varphi=\varphi_j\Rightarrow(\varphi^{\sharp}(Y_j)^{(1)})=\sum_{i=1}^n\frac{\partial\varphi_j}{\partial X_i}(0)\cdot X_i=:(d_x\varphi)^{\sharp}(Y_j)$.\\
+Sei $f\in I_{\varphi}$, \OE $f=g^{(1)}$ für ein $g\in I(V)$.\\
+Schreibe $g^{(1)}=\sum_{j=1}^ma_jY_j,~~a_j\in k=(d_x\varphi)^{\sharp}(f)=\sum_{j=1}^ma_j\sum_{i=1}^n\frac{\partial\varphi_i}{\partial X_i}(0)\cdot X_i
+=\sum_{i=1}^n(\sum_{j=1}^ma_j\frac{\partial\varphi_i}{\partial X_i}(0))\cdot X_i=(g\circ\varphi)^{(1)}$\\
+da $\frac{\partial(g\circ\varphi)}{\partial X_i}(0)=
+\sum_{j=1}^m\underbrace{\frac{\partial g}{\partial Y_j}(\varphi(0))}_{=a_j}\frac{\partial\varphi_j}{\partial X_i}(0)$
+\end{Bew}
+
+\begin{PropDef}
+Sei $V\subseteq\mathbb{A}^n(k)$ eine affine Varietät, $x\in V$.
+Dann ist $T_x$ in natürlicher Weise isomorph zu $(m_x/m_x^2)^{\vee}$. (Dualraum)\\
+Der $k$-VR $(m_x/m_x^2)^{\vee}$ heißt \begriff{Zariski-Tangentialraum} an $V$ in $x$.\\
+$m_x/m_x^2$ ist $k$-VR: Zunächst ist $m_x/m_x^2$ $R$-Modul mit $R=\mathcal{O}_{V,x}$. Weiter ist $R/m_x=k$.\\
+Da $m_x\cdot(m_x/m_x^2)=0$ ist, hat $m_x/m_x^2$ eine Strukrur als $R/m$-Modul. 
+\end{PropDef}
 
 \appendix
 
