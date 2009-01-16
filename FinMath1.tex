@@ -2344,7 +2344,7 @@ das Gleichungssystem mit den zwei Gleichungen:
  \begin{align*}
  \pi(H)=E_Q\left[\frac{f(S_T)}{B_T}\right]=\frac{1}{B_T} \sum\limits_{k=0}^r \binom{r}{k} q^k (1-q)^{T-k} f(S_0u^kd^{T-k}),
  \end{align*}
-wobei $q=\frac{1+r-d}{u-d}$.
+wobei $q=\frac{1+r-d}{u-d}$.\label{kor:2.4.6}
  \end{korollar}
  \begin{beweis}
  Es gilt $S_T=S_0 \prod\limits_{k=1}^T Y_k$ mit $Q(Y_k=u)=q=1-Q(Y_k=d)$. Daher folgt aus Satz \ref{satz:2.4.5} sofort die Behauptung.
@@ -2779,7 +2779,7 @@ Anders ausgedrückt: Besteht zwischen der Preisentwicklung der $d$ Aktien keine 
 Wir betrachten im Folgenden sogenannte konsistente Preissysteme. Darüber kann auch $Q\in \mathcal Q^*$ interpretiert werden.
 
 \begin{definition}
-Ein Preissystem ist eine Abbildung $p:\MdR^{|\Omega|} \to \MdR$ mit
+Ein Preissystem\index{Preissystem} ist eine Abbildung $p:\MdR^{|\Omega|} \to \MdR$ mit
 \begin{enumerate}
 \item für $\alpha_1,\alpha_2\in \MdR$ und Zahlungsansprüche $H_1,H_2\in \MdR^{|\Omega|}$ gilt
 \begin{align*}
@@ -2794,7 +2794,7 @@ Ein Preissystem $p$ heißt konsistent, falls gilt: Ist $H$ ein durch eine selbst
 \end{definition}
 
 \begin{bemerkung}
-Ist $p$ ein konsistentes Preissystem, so folgt $p(B_T)=1$, da 
+Ist $p$ ein konsistentes Preissystem,\index{konsistentes Preissystem} so folgt $p(B_T)=1$, da 
 $\varphi=\left(\begin{smallmatrix} \beta \\ \alpha \end{smallmatrix}\right)$
 mit $\alpha=0$, $\beta=1$ eine Hedging-Strategie für $B_T$ ist, mit $V_0^\varphi =1$.
 \end{bemerkung}
@@ -2811,7 +2811,7 @@ in $\cQ*$.
 p(H) \da E_Q\bigg[\frac H {B_T}\bigg] = \sum_{\omega\in\Omega} \frac{H(\omega)}{B_T(\omega)} Q(\{\omega\}) \text{ für } H\in\MdR^{|\Omega|},
 \end{align*}
 ein konsistentes Preissystem.
-\end{enumerate}
+\end{enumerate}\label{satz:2.8.3}
 \end{satz}
 
 \begin{beweis}
@@ -2861,19 +2861,105 @@ Sei
 H(\omega)=
 \begin{cases}
 1, & Y(\omega) =0\\
-0, & Y(\omega) >0\\
-\end{cases}.\]
+0, & Y(\omega) >0.
+\end{cases}\]
 Dann gilt
 \begin{align*}
-p(H) &\implies  H= 0\\
+p(H) = 0 &\implies  H= 0\\
 &\implies \forall \omega \in \Omega: Y(\omega) >0 \\
 &\implies \forall \omega \in \Omega: Q(\{\omega\}) = B_TY(\omega) >0 
 \end{align*}
 also ist $Q$ ein zu $P$ äquivalentes Martingalmaß.
-\item 
+\item $p$ ist ein Erwartungswert und damit linear. $H\ge 0 \implies p(H)\ge 0$ und $H\ge 0, p(H) = E_Q[\frac{H}{B_T}] = 0 \implies H= 0$ $Q$-fast-sicher und damit, da $Q\in\cQ^*$, auch $P$-fast-sicher. Konsistenz von $p$ ist klar.
 \end{enumerate}
-
 \end{beweis}
+
+\begin{satz}
+Die folgenden Aussagen sind äquivalent
+\begin{enumerate}
+\item (NA)
+\item $\cQ^*\ne \emptyset$
+\item Es gibt ein konsistentes Preissystem (Arrow-Debreu-Preissystem).\index{Arrow-Debreu-Preissystem}
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+Die Aussagen folgen sofort aus den Sätzen \ref{satz:2.5.4} und \ref{satz:2.8.3}.
+\end{beweis}
+
+\section{Grenzübergang von Cox-Ross-Rubinstein zu Black-Scholes}
+
+Von Korollar \ref{kor:2.4.6} wissen wir, dass der Preis eines europäischen Zahlungsanspruchs mit Laufzeit $T$ der Form $H=f(S_T)$ im Mehrperioden-Cox-Ross-Rubinsteinmodells gegeben ist durch
+\[
+\pi(H) = E_Q\bigg[\frac{f(S_T)}{B_T}\bigg] = \frac1{B_T} \sum_{k=0}^T \binom T k q^k(1-q)^{T-k} f(S_0 u^k d^{T-k}),
+\]
+wobei $q=\frac{1+r-d}{u-d}$.
+
+Für den europäischen Call mit $H=f(S_T)=(S_T-K)^+$ gilt dann insbesondere mit
+\begin{align*}
+a &\da \min\{ k \in \MdN_0 \mid S_0 u^k d^{T-k} - K > 0 \} \\
+C_0 \da \pi(H) &= \frac1{B_T} \sum_{k=0}^T \binom Tk q^k (1-q)^{T-k} (S_0 u^k d^{T-k} - K)^+ \\
+&= \frac1{B_T} \sum_{k=a}^T \binom Tk q^k (1-q)^{T-k} (S_0 u^k d^{T-k} - K) \\
+&= S_0 \sum_{k=a}^T \binom Tk \Big(\frac{q u}{1+r}\Big)^k \Big(\frac{(1-q)d}{1+r}\Big)^{T-k} - \frac{K}{(1+r)^T} \sum_{k=a}^T \binom Tk q^k (1-q)^{T-k} \\
+&= S_0 \sum_{k=a}^T \binom Tk \Big(\frac{q u}{1+r}\Big)^k \Big(1- \frac{	qu}{1+r}\Big)^{T-k} - \frac{K}{(1+r)^T} \sum_{k=a}^T \binom Tk q^k (1-q)^{T-k}
+\end{align*}
+
+Wir betrachten nun die Konvergenz gegen ein zeitstetiges Modell. Dabei bleibt $T$ fest und wir zerlegen das Intervall $[0,T]$ in $n$ Teilintervalle der Länge $\Delta_n \da \frac Tn$.
+
+Sei $r>0$ eine Zinsrate im stetigen Modell und $(1+r_n)\da e^{r\Delta_n}$.
+
+Weiterhin sei  $u_n = \exp(\sigma \sqrt{\Delta_n})$ und $d_n \da \frac{1}{u_n} = \exp(-\sigma \sqrt{\Delta_n})$ für ein $\sigma>0$ (Volatilität).
+
+Wenn $n$ groß genug ist, ist die (NA)-Bedingung in jedem Fall erfüllt.
+
+Wir definieren $q_n\da \frac{1 + r_n - d_n}{u_n-d_n}$ und 
+\[
+C_0^{(n)} \da \frac 1{(1+r_n)^n} \sum_{k=0}^n \binom n k q_n^k(1-q_n)^{n-k} (S_0 u_n^k d_n^{n-k} - K)^+
+\]
+Dann gilt $\lim_{n\to\infty} q_n= \frac 12$ und
+\[
+C_0^{BS} \da \lim_{n\to\infty} C_0^{(n)} = S_0 \Phi(d) - Ke^{-rT}\Phi(d-\sigma\sqrt{T})
+\]
+mit
+\[
+d \da \frac{\log(\frac{S_0}K) + (r + \frac{\sigma^2}{2})T}{c \sqrt{T}}
+\]
+wobei $\Phi$ die Verteilungsfunktion der Standardnormalverteilung ist. Die Formel für $C_0^{BS}$ ist die Formel von Black und Scholes (1973, Preis für europäische Call-Optionen). Hier ist $r$ der Zinssatz im stetigen Fall, $\sigma$ die Volatilität des Aktien, $S_0$ der Aktienkurs zum Zeitpunkt $t=0$, $T$ der Fälligkeitstermin der Option und $K$ der Ausübungspreis.
+
+Der Black-Scholes-Preis der europäischen Call-Option zum Zeitpunkt $t$ ist gegeben durch
+\[
+C_t^{BS} = S_t\Phi(d_t) - Ke^{-r(T-t)}\Phi(d_t - \sigma\sqrt{T-t}),\quad d_t \da \frac{\log(\frac{S_t}K) + (r + \frac{\sigma^2}{2})(T-t)}{c \sqrt{T-t}}.
+\] 
+
+Für den Konvergenzbeweis setzen wir $a_n \da \{\min k \in\MdN_0: S_0 u_n^k d_n^{n-k} - K > 0\}$. Dann gilt
+\begin{align*}
+C_0^{(n)} &\da \frac 1{(1+r_n)^n} \sum_{k=0}^n \binom n k q_n^k(1-q_n)^{n-k} (S_0 u_n^k d_n^{n-k} - K)^+ \\
+&= \frac 1{(1+r_n)^n} \sum_{k=a}^n \binom n k q_n^k(1-q_n)^{n-k} (S_0 u_n^k d_n^{n-k} - K) \\
+&= S_0 \underbrace{\sum_{k=a}^n \binom n k \Big(\frac{q_nu_n}{1+r_n}\Big)^k \Big(\frac{(1-q_n)d_n}{1+r_n}\Big)^{n-k}}_{\ad \bar B_{n,\hat q_n}(a_n)} - \frac K{(1+r_n)^n} \underbrace{\sum_{k=a}^n \binom n k q_n^k (1-q_n)^{n-k}}_{\ad \bar B_{n,q_n}(a_n)}
+\end{align*}
+Man kann leicht nachrechnen, dass durch
+\[
+\hat q_n \da \frac{q_nu_n}{1+r_n}
+\]
+ein weiteres Wahrscheinlichkeitsmaß induziert wird.
+
+Achtung: Der Aktienkurs $S^{(n)}(t)$ hängt von $n$ ab, aber $S^{(n)}(0)=S_0$ für alle $n$.
+
+Es gilt $(1+r_n)^{-n} = \exp(-r \frac T n \cdot n) = e^{-rt}$. Wir zeigen $\lim_{n\to\infty} \bar B_{n,\hat q_n} (a_n) = \Phi(d)$. Sei $Z_n$ eine binomialverteilte Zufallsvariable mit Parametern $(n,\hat q_n)$. Dann ist 
+$\bar B{n,\hat q_n} (a_n) = P(a_n \le Z \le n)$. Unser Ziel ist es, den zentralen Grenzwertsatz anzuwenden. Wir normieren deswegen: 
+\[
+\tilde Z_n \da \frac{Z_n - EZ_n}{\sqrt{\Var(Z_n)}} = \frac{Z_n - n\hat q_n}{\sqrt{n \hat q_n (1-\hat q_n)}} = \frac{\sum_{j=1}^n I_j - n\hat q_n}{\sqrt{n \hat q_n (1-\hat q_n)}}
+\]
+wobei $I_j$ unhängig und identisch bionmialverteilt mit Parameter $(1,\hat q_n)$.
+
+Seien $\alpha_n \da \frac{a_n - n\hat q_n}{\sqrt{n \hat q_n (1-\hat q_n)}}$, $\beta_n \da \frac{n(1-\hat q_n)}{\sqrt{n \hat q_n (1-\hat q_n)}}$. Man kann zeigen, dass $\lim_{n\to\infty} q_n = \frac 12$ und $\lim_{n\to \infty} n(1-2\hat q_n)\sqrt{\Delta_n} = -T (\frac r\sigma + \frac \sigma 2)$ (siehe Übung). Außerdem ist 
+\begin{align*}
+S_0 u_n^k d_n^{n-k} - K > 0 &\iff \log(u_n^k d_n^{n-k}) > \log (\frac K {S_0}) \\
+&\iff k \log u_n + (n-k)\log d_n > \log (\frac K {S_0})\\
+&\iff k > \frac{\log(\frac K {S_0}) - n \log d_n}{\log(\frac{u_n}{d_n})} 
+\end{align*}
+und $\log (\frac{u_n}{d_n}) = \log(\frac{e^{\sigma{\Delta_n}}}{e^{-\sigma\sqrt{\Delta_n}}}) = 2 \sigma \sqrt{\Delta_n}$ und $\log d_n = - \sigma \sqrt{\Delta_n}$.
+
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
