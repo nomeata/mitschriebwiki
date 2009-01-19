@@ -1699,7 +1699,7 @@ Sei nun für alle $t\in I$ $\{\tau = t\} \in \cF_t$. Dann gilt $\{\tau \le t\} =
 
 \begin{beispiel}
 \begin{enumerate}
-\item $\tau = t_0 \in I$ ist eine Stoppzeit, da
+\label{bsp:2.1.24}\item $\tau = t_0 \in I$ ist eine Stoppzeit, da
 \[
 \{\omega\in\Omega : \tau (\omega) \le t\}
 = \{\omega\in\Omega: t_0\le t\}
@@ -2931,6 +2931,7 @@ Der Black-Scholes-Preis der europäischen Call-Option zum Zeitpunkt $t$ ist gege
 C_t^{BS} = S_t\Phi(d_t) - Ke^{-r(T-t)}\Phi(d_t - \sigma\sqrt{T-t}),\quad d_t \da \frac{\log(\frac{S_t}K) + (r + \frac{\sigma^2}{2})(T-t)}{c \sqrt{T-t}}.
 \] 
 
+\begin{beweis}
 Für den Konvergenzbeweis setzen wir $a_n \da \{\min k \in\MdN_0: S_0 u_n^k d_n^{n-k} - K > 0\}$. Dann gilt
 \begin{align*}
 C_0^{(n)} &\da \frac 1{(1+r_n)^n} \sum_{k=0}^n \binom n k q_n^k(1-q_n)^{n-k} (S_0 u_n^k d_n^{n-k} - K)^+ \\
@@ -2946,7 +2947,7 @@ ein weiteres Wahrscheinlichkeitsmaß induziert wird.
 Achtung: Der Aktienkurs $S^{(n)}(t)$ hängt von $n$ ab, aber $S^{(n)}(0)=S_0$ für alle $n$.
 
 Es gilt $(1+r_n)^{-n} = \exp(-r \frac T n \cdot n) = e^{-rt}$. Wir zeigen $\lim_{n\to\infty} \bar B_{n,\hat q_n} (a_n) = \Phi(d)$. Sei $Z_n$ eine binomialverteilte Zufallsvariable mit Parametern $(n,\hat q_n)$. Dann ist 
-$\bar B{n,\hat q_n} (a_n) = P(a_n \le Z \le n)$. Unser Ziel ist es, den zentralen Grenzwertsatz anzuwenden. Wir normieren deswegen: 
+$\bar B_{n,\hat q_n} (a_n) = P(a_n \le Z \le n)$. Unser Ziel ist es, den zentralen Grenzwertsatz anzuwenden. Wir normieren deswegen: 
 \[
 \tilde Z_n \da \frac{Z_n - EZ_n}{\sqrt{\Var(Z_n)}} = \frac{Z_n - n\hat q_n}{\sqrt{n \hat q_n (1-\hat q_n)}} = \frac{\sum_{j=1}^n I_j - n\hat q_n}{\sqrt{n \hat q_n (1-\hat q_n)}}
 \]
@@ -2959,6 +2960,96 @@ S_0 u_n^k d_n^{n-k} - K > 0 &\iff \log(u_n^k d_n^{n-k}) > \log (\frac K {S_0}) \
 &\iff k > \frac{\log(\frac K {S_0}) - n \log d_n}{\log(\frac{u_n}{d_n})} 
 \end{align*}
 und $\log (\frac{u_n}{d_n}) = \log(\frac{e^{\sigma{\Delta_n}}}{e^{-\sigma\sqrt{\Delta_n}}}) = 2 \sigma \sqrt{\Delta_n}$ und $\log d_n = - \sigma \sqrt{\Delta_n}$.
+
+Weiter ist
+\begin{align*}
+\lim_{n\to\infty} \alpha_n &= \lim_{n\to\infty} \frac{a_n - n\hat q_n}{\sqrt{n\hat q_n(1-\hat q_n)}} = \lim_{n\to\infty}\frac{\frac{\log(\frac K {S_0}) - n \log d_n }{\log(\frac{u_n}{d_n})} - n \hat q_n}{\sqrt{n \hat q_n (1-\hat q_n)}} \\
+&= \lim_{n\to\infty} \frac{ \log(\frac K {S_0}) - n \log d_n - n\hat q_n 2\sigma \sqrt{\Delta_n}}{\sqrt{n \hat q_n ( 1- \hat q_n)}2\sigma\sqrt{\Delta_n}} \\
+= \cdots &= \lim_{n\to\infty} \frac{\log (\frac K{S_0}) + \sigma n \sqrt{\Delta_n}(1-2\hat q_n)}{\sqrt{n \Delta_n \hat q_n (1-\hat q_n)}2\sigma} \\
+&= \frac{\log (\frac K {S_0}) - \sigma T (\frac r\sigma + \frac \sigma 2)}{\frac 12 \sqrt T 2\sigma} \\
+&= \frac{\log (\frac K {S_0}) - T (r+ \frac{\sigma^2}{2})}{\sigma\sqrt T} \\
+&= - \frac{\log(\frac {S_0}K) + T (r + \frac{\sigma^2}{2})}{\sigma\sqrt T} \\
+&= - d
+\end{align*}
+und analog ist
+$\lim_{n\to\infty}\beta_{n}= +\infty$. Mit dem zentralen Grenzwertsatz gilt dann
+\begin{align*}
+\lim_{n\to\infty} B_{n,\hat q_n}(a_n) = \Phi(\lim_{n\to\infty} \beta_n) - \Phi(\lim_{n\to\infty} \alpha_n) = \Phi(\infty) - \Phi(-d) = 1 - \Phi(-d) = \Phi(d)
+\end{align*}
+und ähnlich zeigt man 
+\begin{align*}
+\lim_{n\to\infty} \bar B_{n,q_n} = \Phi(d-\sigma\sqrt T).
+\end{align*}
+\end{beweis}
+
+\section{Amerikanische Optionen}
+
+Europäische Optionen können nur am Ende ihrer Laufzeit zur Zeit $T$ ausgeübt werden. Dagegen können amerikanische Optionen zu jeder Zeit bis zum Ende ihrer Laufzeit, also in $\{0,\ldots,T\}$, ausgeübt werden.
+\begin{itemize}
+\item Was ist der optimale Ausübungszeitpunkt einer amerikanischen Option?
+\item Was ist ein fairer Preis für eine amerikanische Option?
+\item Wie sieht eine Hedging-Strategie für eine amerikanische Option aus?
+\end{itemize}
+
+Sei $(H_t)_{t\in I}$, $I=\{0,\ldots,T\}$, ein $(\cF_t)$-adaptierter stochastischer Prozess und $\tau:\Omega \to\{0,\ldots,T\}$ eine $(\cF_t)$-Stoppzeit. Dann ist $H_\tau = \sum_{t=0}^T H_t 1_{\{\tau = t\}}$.
+
+\begin{beispiel}[Amerikanische Call-Option]
+Es ist $H_t=(S_t-K)^+$. Eine Ausübungsstategie könnte sein: $\tau = \min\{t\in \MdN: S_t\ge K\} \wedge T$. ($\tau$ ist eine Stoppzeit, vergleiche Beispiel \ref{bsp:2.1.24}.) Dann ist
+$H_\tau = \sum_{t=0}^T (S_t-K)^+ 1_{\{\tau = t\}}$.
+
+Für ein festes $\tau$ ist $H_\tau$ ein Zahlungsanspruch und damit ist sein Preis $\pi(H_\tau) = E_Q(\frac{H_\tau}{B_\tau})$.
+\end{beispiel}
+
+\begin{bemerkung}
+Wir gehen im Folgenden immer von einem vollständigen, arbitragefreien Markt aus. Damit ist das äquivalente Martingalmaß $Q$ eindeutig. Wir definieren den Preis einer amerikanischen Option durch 
+\[
+\pi^A(H) = \sup_{\tau}E_Q\left[\frac{H_\tau}{B_\tau}\right]
+\]
+wobei das Supremum über alle Stoppzeiten $\tau$ mit $\tau\le T$ genommen wird.
+
+Warum ist diese Definition sinnvoll? Angenommen, $\pi^A(H) < \sup_{\tau}E_Q\left[\frac{H_\tau}{B_\tau}\right]$. Dann gibt es eine Stoppzeit $\tilde\tau$, so dass $\pi^A(H) < E_Q\left[ \frac{H_{\tilde\tau}}{B_{\tilde\tau}}\right]$. Kaufe die amerikanische Option zum Preis $\pi^A(H)$ und übe sie mit $\tilde\tau$ aus und verkaufe eine Hedging-Strategie für $\frac{H_{\tilde\tau}}{B_{\tilde\tau}}$. Dann ergibt sich ein risikoloser Gewinn von $E_Q\left[ \frac{H_{\tilde\tau}}{B_{\tilde\tau}}\right] -\pi^A(H) > 0$, im Widerspruch zu (NA).
+
+Der Fall $\pi^A(H) > \sup_{\tau}E_Q\left[\frac{H_\tau}{B_\tau}\right]$ wird später besprochen.
+\end{bemerkung}
+
+Zur Bewertung einer amerikanischen Option muss ein optimales Stopp-Problem gelöst werden. Sei $(X_t)_{t\in I}$, $I=\{0,\ldots,T\}$ ein $(\cF_t)$-adaptierter stochastischer Prozess mit $E|X_t|<\infty$ für alle $t\in I$. Zu lösen ist $\sup_{\tau} EX_\tau$.
+
+\begin{definition}
+Ein stochastischer Prozess $(Z_t)_{t\in I}$ definiert durch
+$Z_T = X_T$ und $Z_t = \max\{X_t, E[Z_{t+1}\mid \cF_t]\}$ für $t=T-1,\ldots,0$ heißt Snell-Einhüllende\index{Snell-Einhüllende} (snell envelope) von $(X_t)$.
+\end{definition}
+
+\begin{satz}
+Die Snell-Einhüllende $(Z_t)$ von $(X_t)$ ist ein Supermartingal und das kleinste Supermartingal, dass $(X_t)$ dominiert (das heißt $Z_t\ge X_t$ fast sicher für alle $t\in I$).
+\end{satz}
+
+\begin{beweis}
+Nach Definition gilt $Z_t > E[Z_{t+1}\mid \cF_t]$ für $t=T-1,\ldots,0$ und $Z_t \ge X_t$.
+
+Sei $(Y_t)$ ein weiteres Supermartingal mit $Y_t \ge X_t$. Wir zeigen $Y_t \ge Z_t$.
+
+Induktion nach $t$ (rückwärts): Es gilt $Y_T \ge X_T = Z_T$. Weiter gilt $Y_{t-1} \ge E[Y_t\mid \cF_{t-1}] \ge E[Z_t\mid \cF_{t-1}]$ und $Y_{t-1} \ge X_{t-1}$. Daher ist $Y_{t-1} \ge \max\{X_{t-1}, E[Z_t\mid \cF_t]\} = Z_{t-1}$.
+\end{beweis}
+
+\begin{lemma}
+Sei $\tau^* \da \inf \{t\ge 0 : Z_t = X_t\}$. Dann ist $\tau^*$ eine Stoppzeit und der gestoppte Prozess $(Z_{t\wedge \tau^*})_{t\in I}$ ist ein Martingal.
+\end{lemma}
+
+\begin{beweis}
+Da $Z_T=X_T$ ist $\tau^*\in\{0,1,\ldots,T\}$ wohldefiniert. Für $t=0$ gilt $\{\tau^*=0\} = \{Z_0=X_0\} \in \cF_0$, da $X_0$ $\cF_0$-messbar ist. Für $t\ge 1$ ist $\{\tau^* = t\} = \{Z_0 > X_0\}\cap\cdots\cap \{Z_{t-1} > X_{t-1}\}\cap \{Z_t = X_t \} \in \cF_t$ da $\{Z_i > X_i\} \in \cF_i \subseteq \cF_t$ für alle $i=\{0,\ldots,t-1\}$ und $\{Z_t=X_t\} \in \cF_t$. Daher ist $\tau^*$ eine Stoppzeit.
+
+Für $t\le T-1$ gilt $Z_{(t+1)\wedge \tau^*} - Z_{t\wedge \tau^*} = 1_{\{t+1\le \tau^*\}}(Z_{t+1} - Z_t)$. Nach Definition von $\tau^*$ gilt auf der Menge $\{t+1\le \tau^*\}$: $Z_t > X_t$ und wegen der Definition von $Z_t$ gilt dann $Z_t = E[Z_{t+1} \mid \cF_t]$ auf $\{t+1 \le \tau^*\}$. Daher gilt $Z_{(t+1)\wedge \tau^*} - Z_{t\wedge \tau^*} = 1_{\{t+1\le \tau^*\}}(Z_{t+1} - E[Z_{t+1} \mid \cF_t])$, denn für $\tau^*\le t$ sind beide Seiten Null.
+
+Wir betrachten nun die bedingte Erwartung unter $\cF_T$ auf beiden Seiten. Da $\{t+1\le \tau^*\} = \{\tau^* \le t\}^c \in \cF_t$ gilt dann
+\begin{align*}
+E[Z_{(t+1)\wedge \tau^*} - Z_{t\wedge \tau^*}\mid \cF_t]
+&= E[1_{\{t+1\le \tau^*\}}(Z_{t+1} - E[Z_{t+1} \mid \cF_t])\mid \cF_t]\\
+&= 1_{\{t+1\le \tau^*\}}E[Z_{t+1} - E[Z_{t+1} \mid \cF_t]\mid \cF_t]\\
+&= 1_{\{t+1\le \tau^*\}}(E[Z_{t+1} - \mid \cF_t] -E[Z_{t+1} \mid \cF_t])\\
+&= 0.
+\end{align*}
+Daher ist $E[Z_{(t+1)\wedge \tau^*}\mid \cF_t] =  Z_{t\wedge \tau^*}$ und $Z_{t\wedge \tau^*}$ ist ein Martingal.
+\end{beweis}
 
 
 \setcounter{secnumdepth}{-1}
