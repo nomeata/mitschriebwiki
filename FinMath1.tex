@@ -1800,10 +1800,10 @@ Sei $X=(X_n)$ ein stochastischer Prozess adaptiert zu $(\cF_n)$ und $\tau$ eine 
 \end{lemma}
 
 \begin{satz}[Doob's Optional Sampling Theorem]
-Sei $(X_n)_{n\in\MdN}$ ein Martingal und $\tau,\sigma$ beschr änkte Stoppzeiten mit $\sigma\leq\tau$. Dann gilt $E[X_\tau|\cF_\sigma]=X_\sigma$ und daher $E[X_\tau]=E[X_\sigma]$.
+\label{satz:2.1.33}Sei $(X_n)_{n\in\MdN}$ ein Martingal und $\tau,\sigma$ beschränkte Stoppzeiten mit $\sigma\leq\tau$. Dann gilt $E[X_\tau|\cF_\sigma]=X_\sigma$ und daher $E[X_\tau]=E[X_\sigma]$.
 \end{satz}
 \begin{beweis}
-Die Beweise von 2.1.30-2.1.33 sind \"Ubung.
+Die Beweise von 2.1.30--2.1.33 sind \"Ubung.
 \end{beweis}
 
 \begin{bemerkung}
@@ -1813,7 +1813,7 @@ Falls ein Martingal gleichgradig integrierbar ist gilt Optional Sampling für be
 \end{bemerkung}
 
 \begin{satz}
-Sei $(X_n)_{n\in\MdN_0}$ ein $(\cF_n)$-Martingal (Super-, Submartingal) und $\tau$ eine $(\cF_n)$-Stoppzeit. Dann ist der gestoppte Prozess $(X_{n\wedge\tau})_{n\in\MdN_0}$ auch ein $(\cF_n)$-Martingal (Super-, Submartingal).
+\label{satz:2.1.35}Sei $(X_n)_{n\in\MdN_0}$ ein $(\cF_n)$-Martingal (Super-, Submartingal) und $\tau$ eine $(\cF_n)$-Stoppzeit. Dann ist der gestoppte Prozess $(X_{n\wedge\tau})_{n\in\MdN_0}$ auch ein $(\cF_n)$-Martingal (Super-, Submartingal).
 \end{satz}
 \begin{beweis}
 Sei $C_j\da 1_{\{j\leq \tau\}}$. Dann ist
@@ -3020,7 +3020,7 @@ $Z_T = X_T$ und $Z_t = \max\{X_t, E[Z_{t+1}\mid \cF_t]\}$ für $t=T-1,\ldots,0$ 
 \end{definition}
 
 \begin{satz}
-Die Snell-Einhüllende $(Z_t)$ von $(X_t)$ ist ein Supermartingal und das kleinste Supermartingal, dass $(X_t)$ dominiert (das heißt $Z_t\ge X_t$ fast sicher für alle $t\in I$).
+\label{satz:2.10.4}Die Snell-Einhüllende $(Z_t)$ von $(X_t)$ ist ein Supermartingal und das kleinste Supermartingal, dass $(X_t)$ dominiert (das heißt $Z_t\ge X_t$ fast sicher für alle $t\in I$).
 \end{satz}
 
 \begin{beweis}
@@ -3032,7 +3032,7 @@ Induktion nach $t$ (rückwärts): Es gilt $Y_T \ge X_T = Z_T$. Weiter gilt $Y_{t
 \end{beweis}
 
 \begin{lemma}
-Sei $\tau^* \da \inf \{t\ge 0 : Z_t = X_t\}$. Dann ist $\tau^*$ eine Stoppzeit und der gestoppte Prozess $(Z_{t\wedge \tau^*})_{t\in I}$ ist ein Martingal.
+Sei $\tau^* \da \inf \{t\ge 0 : Z_t = X_t\}$. Dann ist $\tau^*$ eine Stoppzeit und der gestoppte Prozess $(Z_{t\wedge \tau^*})_{t\in I}$ ist ein Martingal.\label{lem:2.10.5}
 \end{lemma}
 
 \begin{beweis}
@@ -3051,6 +3051,95 @@ E[Z_{(t+1)\wedge \tau^*} - Z_{t\wedge \tau^*}\mid \cF_t]
 Daher ist $E[Z_{(t+1)\wedge \tau^*}\mid \cF_t] =  Z_{t\wedge \tau^*}$ und $Z_{t\wedge \tau^*}$ ist ein Martingal.
 \end{beweis}
 
+\begin{satz} Die Stoppzeit
+\[
+\tau^* = \inf\{t \ge 0: Z_t = X_t\}
+\]
+löst das Stopp-Problem $\sup_{\tau}E[X_\tau]$ und es gilt $Z_0 = E[x_{\tau^*}] = \sup_\tau E[X_\tau]$.
+\end{satz}
+
+\begin{beweis}
+Da nach Lemma \ref{lem:2.10.5} der Prozess $(Z_{t\wedge \tau^*})$ ein Martingal ist, gilt $Z_0 = Z_{0\wedge \tau^*} = E[Z_{T\wedge \tau^*}] = E[Z_{\tau^*}]=E[X_{\tau^*}]$. Für eine beliebige Stoppzeit $\tau$ gilt dann wegen Satz \ref{satz:2.1.35}
+$Z_0 = Z_{0\wedge \tau} \ge E[Z_{T \wedge\tau}] = E[Z_\tau] \ge E[X_\tau]$.
+\end{beweis}
+
+Wir verwenden nun diese Ergebnisse, um den Preis einer amerikanischen Option zu bewerten. Hier ist $X_t = \frac{H_t}{B_t}$, $t=0,\ldots,T$, und gesucht ist die Lösung von $\sup_\tau E_Q[\frac{H_\tau}{B_\tau}]$.
+
+\begin{korollar}
+Sei $(Z_t)_{t\in I}$ die Snell-Einhüllende von $(\frac{H_t}{B_t})_{t\in I}$ bezüglich dem Wahrscheinlichkeitsmaß $Q$ und $\tau^* = \inf\{t\ge 0: Z_t= X_t\}$. Dann ist der Preis der amerikanischen Option gegeben durch
+\[
+\pi^A(H) = \sup_{\tau}E_Q\left[\frac{H_\tau}{B_\tau}\right] = E_Q\left[\frac{H_{\tau^*}}{B_{\tau^*}}\right] = Z_0
+\]
+und $\tau^*$ ist die optimale Ausübungsstategie.
+\end{korollar}
+
+\begin{beispiel}[Amerikanische Calloption]
+Hier ist $H_t = (S_t - K)^+$, $t\in I$. Dann ist 
+\begin{align*}
+\frac{H_t}{B_t} = \left(\frac{S_t}{B_t} - \frac{K}{B_t}\right)^+ = \left( X_t - \frac{K}{B_t}\right)^+.
+\end{align*}
+Die Funtion $g(x) = \left(x - \frac{K}{B_{t+1}}\right)^+$ ist konvex. Aus der Jensen-Ungleichung folgt dann
+\begin{align*}
+\frac{H_t}{B_t} \le g(X_t) = g(E_Q[X_{t+1}\mid \cF_t]) \le E_Q[g(X_{t+1}) \mid \cF_t] = E_Q[\frac{H_{t+1}}{B_{t+1}}\mit \cF_t].
+\end{align*}
+daher ist $\frac{H_t}{B_t}$ ein Submartingal unter $Q$.
+
+Für beliebige beschränkte Stoppzeiten $\sigma\le\tau$ gilt nach Satz \ref{satz:2.1.33}
+\begin{align*}
+\frac{H_\sigma}{B_\sigma} \le E_Q\left[\frac{H_\tau}{B_\tau}\mid \cF_\sigma\right] 
+\implies E_Q\left[\frac{H_\sigma}{B_\sigma}\right] \le E_Q\left[\frac{H_\tau}{B_{\tau}}\right].
+\end{align*}
+Da $\tau\le T$ für alle $\tau$ gilt:
+\[
+\sup_{\tau} E_Q\left[\frac{H_\tau}{B_\tau}\right] = E_Q\left[\frac{H_T}{B_T}\right].
+\]
+Das heißt die amerikanische Calloption wird erst am Ende der Laufzeit ausgeübt und hat den gleichen Preis wie eine europäische Calloption.
+\end{beispiel}
+
+\subsection{Amerikanische Optionen im Cox-Ross-Rubinsteinmodell}
+
+Sei $(H_t)_{t\in I}$ ein $(\cF_t)$-adaptierter stochastischer Prozess. Sei $\tilde X_t = \frac{H_t}{B_t}$ und $(Z_t)$ die Snell-Einhüllende von $(\tilde X_t)$. Wir betrachten den Spezialfall, dass $H_t$ nur von $S_t$ abhängt (und nicht wie im allgemeinen  $H_t = h(S_0,\ldots,s_t)$), das heißt $H_t = h(S_t)$. Zum Beispiel beim amerikanischen Put gilt $h(s) = (K-s)^+$.
+
+Im Cox-Ross-Rubinsteinmodell ist $S_t = S_0 \pi_{k=1}^t Y_k$ und $Q(Y=u) = q = \frac{1+r-d}{u-d}$ ist die risikoneutrale Wahrscheinlichkeit für eine Aufwärtsbewegung des Aktienkurses. Dann gilt:
+\begin{align*}
+Z_T &= \tilde X_T = \frac{h(S_t)}{B_t} = \frac{h(S_T)}{(1+r)^T} &&\ad V_T(S_T) \\
+Z_{T-1} &= \max\{\tilde X_{T-1}, E_Q[Z_T\mid \cF_{T-1}]\} \\
+&= \max \{\frac{h(S_{T-1})}{(1+r)^{T-1}} , E_Q[V_{T}(S_{T-1})Y_T \mid \cF_{T-1}]\} \\
+&= \max \{ \frac{h(S_{T-1})}{(1+r)^{T-1}}, q  V_T(S_{T-1} u) + (1-q) V_T(S_{T-1}d) \} &&\ad V_{T-1}(S_{T-1}) \\
+Z_t &= \max \{ \frac{h(S_t)}{(1+r)^t} , q V_{t+1}(S_t u) + (1-q) V_{t+1}(S_t d)\} &&\ad V_{t}(S_t) \\
+Z_0 &= \{h(S_0), q V_1(S_0u)+ (1-q)V_1(S_0d)\}
+\end{align*}
+
+\subsection{Preisvergleich zwischen amerikanischen und europäischen Optionen}
+
+\begin{bemerkung}
+\begin{enumerate}
+\item Sei $\varphi$ eine selbstfinanzierende Handelsstrategie. Dann ist $\frac{V_t^\varphi}{B_t}$ ein $Q$-Martingal (siehe Satz \ref{satz:2.5.1}).
+\item Sei $H$ ein Zahlungsanspruch und $\varphi$ seine selbstfinanzierende Hedging-Strategie für $H$. Dann ist der Preis für die zugehörende europäische Option zur Zeit $t$ gegeben durch $V_t^\varphi = B_t E_Q[\frac{V_T}{B_T} \mid \cF_t] = E_Q[ \frac{B_t}{B_T} H \mid \cF_t]$ (siehe Satz \ref{satz:2.5.8}).
+\end{enumerate}
+\end{bemerkung}
+
+Sei $(H_t)_{t\in I}$ gegeben. Der Preis der zugehörenden amerikanischen Option zur Zeit $t$ ist 
+\begin{align*}
+\sup_{t\le \tau \le T} E_Q [\frac{B_t}{B_\tau}H_\tau \mid \cF_t] = B_t Z_t \ad \tilde Z_t
+\end{align*}
+wobei $(Z_t)$ die Snell-Einhüllende von $\frac{H_t}{B_t}$ ist.
+
+\begin{satz}
+Der Preis der amerikanischen Option ist zu jedem Zeitpunkt größer oder gleich dem Preis der entsprechenden europäischen Option: also $\tilde Z_t \ge V_t$ für alle $t\in I$.
+
+Ist $\frac{H_t}{B_t}$ ein $Q$-Submartingal, dann sind die Preise gleich, also $\tilde Z_t = V_t$ für alle $t\in I$ und $\tau^*=T$ ist der optimale Ausübungszeitpunkt der amerikanischen Option.
+\end{satz}
+
+\begin{beweis}
+Da $\tau = T$ eine Stoppzeit ist, gilt $\tilde Z_t = B_t \sup_{t\le \tau\le T} E_Q[\frac{H_\tau}{B_\tau} \mid \cF_t] \ge B_t E_Q[\frac{H_T}{B_T}\mid \cF_T] = V_T$ für $t\in I$.
+
+Ist $\left(\frac{H_t}{B_t}\right)$ ein $Q$-Submartingal, so gilt für alle $t=0,1,\ldots,T$: 
+\[
+\frac{H_t}{B_t} \le E_Q\left[\frac{H_T}{B_T}\mid \cF_t\right] \iff H_t \le B_t E_Q\left[ \frac{H_T}{B_T}\mid \cF_t\right] = V_t
+\]
+also ist $H_t \le V_t$ für alle $t=0,\ldots,T$ und daher $\frac{V_t}{B_t} \ge \frac{H_t}{B_t}$. Da $\left(\frac{V_t}{B_t}\right)$ ein $Q$-Martingal ist (und damit auch ein $Q$-Supermartingal) folgt mit Satz \ref{satz:2.10.4} für alle $t=0,\ldots,T$: $Z_t \le \frac{V_t}{B_t}$ und daher $\tilde Z_t \le V_t$. Daher gilt dann also für alle $t=0,\ldots,T$: $\tilde Z_t = V_t$.
+\end{beweis}
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
