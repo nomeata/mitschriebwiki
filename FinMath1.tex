@@ -3252,6 +3252,126 @@ H_{\text{max}}^{\text{Put}} =  \max_{0\le t\le T} S_t - S_T
 \end{itemize}
 \end{beispiel}
 
+Wir betrachten später eine spezielle Form des $T$"~Perioden"~Cox"~Ross"~Rubinsteinmodells, das uns erlaubt eine explizite Preisformel für obige Beispiele zu bekommen. Dabei wird das \emph{Spiegelungsprinzip} eine zentrale Rolle spielen.
+
+Sei $\Omega \da \{-1,+1\}^T = \{\omega = (\gamma_1,\ldots,\gamma_T): \gamma_1\in\{-1,+1\}\}$. Für $\omega=(\gamma_1,\ldots,\gamma_T)$ sei 
+\[
+\Gamma_t(\omega) =\Gamma_t( (\gamma_1,\ldots,\gamma_T) ) = 
+\begin{cases}
++1, &\text{falls }\gamma_t = 1\\
+-1, &\text{falls }\gamma_t = -1
+\end{cases}
+\]
+die Projektion auf die $t$-te Komponente.
+
+Sei $Z$ gegeben duch $Z_0 \da 0$, $Z_t \da \sum_{i=1}^t \Gamma_i$, $t=1,\ldots,T$.
+
+Sei $P(\{\omega\}) = 2^{-T}$ für alle $\omega\in \Omega$.
+Unter dem Maß $P$ sind die Zufallsvariablen $\Gamma_t$ unabhängig mit Verteilung $P(\Gamma_t = 1)=\frac12$. Daher ist der Prozess $Z$ eine symmetrische Irrfahrt unter $P$.
+
+Daher gilt 
+\[
+P(Z_t=k) =
+\begin{cases}
+2^{-t} \binom{t}{\frac{t+k}2},& \text{falls $t+k$ gerade} \\
+0 ,&\text{sonst}
+\end{cases}
+\]
+
+\begin{bemerkung}
+Es führen $3 = \binom{3}{\frac{3-1}{2}}$ Wege zu $-1$. Man benötigt immer eine Aufwärtsbewegung und zwei Abwärtsbewegungen.
+\begin{center}
+\begin{tikzpicture}[x=2cm,y=.7cm]
+\draw (0,0) node (0) {0} ;
+\draw (1,1) node (1) {1};
+\draw (1,-1) node (-1) {1};
+\draw (2,2) node (2) {2};
+\draw (2,0) node (0') {0};
+\draw (2,-2) node (-2) {-2};
+\draw (3,3) node (3) {3};
+\draw (3,1) node (1') {1};
+\draw (3,-1) node (-1') {-1};
+\draw (3,-3) node (-3) {-3};
+
+\draw (0) -- (1) node[sloped,midway,above] {a};
+\draw (0) -- (-1) node[sloped,midway,above] {bc};
+\draw (1) -- (2);
+\draw (1) -- (0') node[sloped,midway,above] {a};
+\draw (-1) -- (0') node[sloped,midway,above] {b};
+\draw (-1) -- (-2) node [sloped,midway,above] {c};
+\draw (2) -- (3);
+\draw (2) -- (1');
+\draw (0') -- (1');
+\draw (0') -- (-1') node[sloped,midway,above] {ab};
+\draw (-2) -- (-1') node[sloped,midway,above] {c};
+\draw (-2) -- (-3);
+\end{tikzpicture}
+\end{center}
+Eine Irrfahrt $Z_t$ mit insgesamt $t$ Schritten besteht aus $n_u\ge 0$ Aufwärtsbewegungen und $n_d\ge 0$ Abwärtsbewegungen mit $n_u + n_d = t$. Dann ist der Wert der Irrfahrt $k = n_u \cdot 1 + n_d \cdot (-1)$, also $k = n_u - (t-n_u) = 2n_u - t$.
+Das heißt $k+t = 2n_u$ undd daher ist $k+t$ gerade.
+
+Angenommen die Irrfahrt besteht aus $\frac{t+k}2$ Aufwärtsbewegungen und $\frac{t+k}2$ Abwärtsbewegungen, dann ist der Wert der Irrfahrt $\frac{t+k}2\cdot 1 + \frac{t+k}2\cdot (-1) = k$. Es gibt $\binom{t}{\frac{t+k}2}$ Möglichkeiiten $\frac{t+k}2$ Aufwärtsschritte bei insgesamt $t$ Schritten zu machen. Alle diese Wege sind unter $P$ gleichwahrscheinlich.
+\end{bemerkung}
+
+Im Folgenden sei $M_t \da \max_{0\le s\le t} Z_s$ das laufende Maximum des Prozesses $Z$. Für den folgenden Satz nehmen wir an, dass der Prozess $Z$ bis zur Zeit $T+1$ definiert ist. Das kann durch geeignete Erweiterung des Wahrscheinlichkeitsraums erreicht werden.
+
+\begin{satz}[Spiegelungsprinzip]
+Für alle $k\in \MdN$, $l\in \MdN_0$ gilt 
+\[
+P(M_T\ge k, Z_T=k-l) = P(Z_T=k+l)
+\]
+und
+\[
+P(M_T = k , Z_T = k-l) = 2 \frac{k+l+1}{T+1} P (Z_{T+1} = 1 + k + l)
+\]
+\end{satz}
+
+\begin{center}
+\begin{tikzpicture}
+\draw (0,0) node[left] (0) {0};
+\draw (0,2) node[left] {k};
+\draw (0,5) node[left] {k+l};
+\draw (0,-1) node[left] {k-l};
+\draw (0,-1.5) -- (0,6);
+\draw (0,0) -- (1,1) -- (2,0) -- (3,1) -- (4,2) -- (5,3) -- (6,2) -- (7,1) -- (8,0) -- (9,1) -- (10,0) -- (11,-1);
+\draw[dashed] (4,2) -- (5,1) -- (6,2) -- (7,3) -- (8,4) -- (9,3) -- (10,4) -- (11,5);
+\draw[->] (0,0) -- (11.5,0);
+\draw (11,0) node[below] {T};
+\draw[dotted] (0,-1) -- (11.5,-1);
+\draw[dotted] (0,2) -- (11.5,2);
+\draw[dotted] (0,5) -- (11.5,5);
+\end{tikzpicture}
+\end{center}
+\begin{beweis}
+Sei $\tau(\omega) \da \{ t\ge 0: Z_t = k\} \wedge T$. Für $\omega=(\gamma_1,\ldots,\gamma_T)\in \Omega$ definieren wir $f(\omega) = \omega$, falls $\tau = T$ und $f(\omega) = (\gamma_1,\ldots,\gamma_{\tau(\omega)},-\gamma_{\tau(\omega)+1},\ldots,-\gamma_T)$ falls das Niveau $k$ vor dem Endzeitpunkt $T$ erreicht wird. Man sieht im Bild, dass die zwei Pfade $(Z_t(\omega))$ und $(Z_t(f(\omega)))$ bis zur Zeit $\tau(\omega)$ übereinstimmen. Ab $\tau(\omega)$ erhält man den neuen Pfad durch Spiegelung des ursprünglichen Pfades an der horizontalen Achse zum Niveau $k$.
+
+Sei $A_{k,l} \da \{\omega\in\Omega\mid M_T(\omega) \ge 0, Z_T(\omega) = k -l\}$. Dann ist $f$ eine Bijektion von $A_{k,l}$ in die Menge $\{\omega\in\Omega\mid M_T(\omega) \ge k, Z_T(\omega) = k + l\}$. Da $l\ge 0$ gilt $\{\omega\in\Omega\mid M_T\ge k, Z_T = k+l\} = \{\omega\in\Omega\mid Z_T = k+l\}$. Daher teilt die Gleichverteilung $P$ die beiden Mengen $A_{k,l}$, $\{\omega\in\Omega\mid Z_T(\omega) = k+l\}$ die gleiche Wahrscheinlichkeiten zu. Daher gilt die erste Gleichung.
+
+Die zweite Gleichung ist klar, falls $T + k + l$ ungerade ist, da dann $P(Z_{T+1} = 1 + k + l) = 0$ und auch $T+k-l$ ungerade ist, und damit die linke Seite auch $0$ ist.
+
+Sei $j \da\frac{T+k+l}2$.  Wir verwenden die Verteilung von $(Z_t)$ und den ersten Teil des Satzes.  Es gilt
+\begin{align*}
+P(M_T=k,Z_T = k-l) &= P(M_T\ge k, Z_T = k-l) - P(M_T\ge k+1 , Z_T = k-l) \\
+&= P(Z_T = k+l) - P(M_T \ge k+1, Z_T=(k+1)-(l+1)) \\
+&= P(Z_T = k+l) - P(Z_T = k+l+2) \\
+&= 2^{-T} \binom{T}{j} - 2^{-T} \binom{T}{j+1} \\
+&= 2^{-T} \binom{T+1}{j+1} \frac{2j+1-T}{T+1} \\
+\intertext{sowie}
+2 \frac{k+l+1}{T+1} \cdot P (Z_{T+1} = 1 + k +l) &= 2\frac{k+l+1}{T+1} 2^{-(T+1)} \binom{T+1}{\frac{T+k+l+2}2} \\
+&= 2^{-T} \binom{T+1}{j+1}\frac{T+k+l+1-T}{T+1}  \\
+&= 2^{-T} \binom{T+1}{j+1}\frac{2j+1-T}{T+1} 
+\end{align*}
+\end{beweis}
+
+Für die Bewertung von exotischen Optionen benötigen wir das Martingalmaß $Q$ und nicht $P$. Falls die Gleichverteilung $P$ durch das Martingalmaß $Q$ ersetzt wird, erhält man
+\begin{align*}
+Q(Z_t = k ) =
+\begin{cases}
+q^{\frac{t+k}2} (1-q)^{\frac{t-k}2} \binom{t}{\frac{t+k}2}, &\text{falls $t+k$ gerade}\\
+0 &\text{sonst.}
+\end{cases}
+\end{align*}
+
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
 \theoremlisttype{optname}
