@@ -3384,6 +3384,113 @@ q^{\frac{t+k}2} (1-q)^{\frac{t-k}2} \binom{t}{\frac{t+k}2}, &\text{falls $t+k$ g
 \end{cases}
 \end{align*}
 
+Wir formulieren das Spiegelungsprinzip unter $Q$:
+
+\begin{satz}[Spiegelungsprinzip unter $Q$]
+
+Für alle $k\in \MdN$, $l\in\MdN_0$ gilt
+\begin{align*}
+Q(M_T\ge k, Z_T=k-l)&=\left(\frac{1-q}{q}\right)^l Q(Z_T=k+l)=\left(\frac{q}{1-q}\right)^k Q(Z_T=-k-l)\\
+Q(M_T=k,Z_T=k-l)&=\frac{1}{q} \left(\frac{1-q}{q}\right)^l \frac{k+l+1}{T+1} Q(Z_{T+1}=1+k+l)\\
+&=\frac{1}{1-q} \left(\frac{q}{1-q}\right)^k \frac{k+l+1}{T+1} Q(Z_{T+1}=-1-k-l)
+\end{align*}
+\end{satz}
+\begin{beweis}
+Wir zeigen zuerst, dass die Dichte von $Q$ bezüglich $P$ gegeben ist durch 
+\begin{align*}
+\frac{dQ}{dP}=2^T q^{\frac{T+Z_T}{2}}(1-q)^{\frac{T-Z_T}{2}} \mbox{   } (\star)
+ \end{align*}
+Das Mass $Q$ ordnet jedem $\omega=(\gamma_1,\ldots,\gamma_T)$ $\in\Omega$, das genau $k$ Komponenten mit $\gamma_i=+1$ enthält, die Wahrscheinlichkeit $Q(\omega)=q^k(1-q)^{T-k}$ zu. Für solche $\omega$ gilt aber genau $Z_T(\omega)=k-(T-k)=2k-T$ und damit gilt die Gleichung für die Dichte.\\
+Daher folgt aus ($\star$) 
+\begin{align*}
+Q(M_T\ge k,Z_T=k-l)=2^T q^{\frac{T+k-l}{2}}(1-q)^{\frac{T-(k-l)}{2}}P(M_T\ge k,Z_T=k-l)
+\end{align*} 
+Aus dem Spiegelungsprinzip für $P$ (satz:2.11.3) zusammen mit ($\star$) folgt:
+\begin{align*}
+&2^T q^{\frac{T+k-l}{2}}(1-q)^{\frac{T-(k-l)}{2}}P(M_T\ge k,Z_T=k-l)\\
+=& 2^T q^{\frac{T+k-l}{2}}(1-q)^{\frac{T-(k-l)}{2}}P(Z_T=k+l)=\\
+=&2^T q^{\frac{T+k-l}{2}}(1-q)^{\frac{T-(k-l)}{2}}(2^T q^{\frac{T+k+l}{2}}(1-q)^{\frac{T-(k+l)}{2}})^{-1}Q(Z_T=k+l)=\\
+=&\left(\frac{1-q}{q}\right)^l Q(Z_T=k+l)
+\end{align*}
+Die zweite Aussage zeigt man analog.
+\end{beweis}
+Im Folgenden betrachten wir den Finanzmarkt, der einen Bond $B_t=(1+r)^t$, $t=0,\ldots,T$ und eine Aktie mit Prisprozess $S_t(\omega)=S_0u^{Z_T(\omega)}$ enthält. $Z$ ist die Irrfahrt, die oben definiert wurde. Dies ist ein spezieller Fall des CRR-Modells mit $u=\frac {1}{d}$.
+\begin{beispiel}[Up-and-In-Call]
+\begin{align*}
+H_{\text{u\&i}}^{\text{Call}} = 
+\begin{cases}
+(S_t-K)^+ & \text{falls }\max_{0\le t\le T}S_T \ge B \\
+0 & \text{sonst}
+\end{cases}
+\end{align*}
+Hier ist $K>0$ der Ausübungspreis und $B> \max\{S_0,K\}$ ist eine vorgegebene Schranke.\\
+Wir möchten den Preis $\pi(H_{\text{u\&i}}^{\text{Call}})=E_Q\left[\dfrac{H_{\text{u\&i}}^{\text{Call}}}{(1+r)^T}\right]$ berechnen. Man sieht sofort, dass
+
+\begin{align*}
+E_Q[H_{\text{u\&i}}^{\text{Call}}]&=E_Q[(S_T-K)^+ 1_{\{\max\limits_{0\le t\le T} S_t\ge B\}}]\\
+&=\underbrace{E_Q[(S_T-K)^+1_{\{S_T\ge B\}}]}_{=:I_1}+\underbrace{E_Q[(S_T-K)^+ 1_{\{\max\limits_{0\le t\le T} S_t\ge B,S_T<B\}}]}_{=:I_2}
+\end{align*}
+Wir nehmen an (OBdA), dass $B$ ein möglicher Aktienpreis ist, d.h. es existiert ein $k\in\MdN$ sodass $B=S_0u^k$. Dann ist $S_t=S_0u^{Z_t} \ge B=S_0u^k\iff Z_T\ge k$ (und damit $\max\limits_{0\le t\le T} S_t \ge B \iff M_T\ge k$).\\
+Der erste Erwartungswert $I_1$ kann direkt berechnet werden (vgl. Kor 2.4.6).\\
+Sei $f(s):=(s_K)^+1_{\{s\ge B\}}$.
+\begin{align*}
+I_1=\sum\limits_{n=0}^T {T\choose n} q^n (1-q)^{T-n} \underbrace{(S_0u^{2n-T}-K)^+}_{=f(S_0u^{2n-T})}
+\end{align*}
+Sei $b_k=\min\{n\in\MdN_0:S_0u^{2n-T}\ge S_0u^k\}=\min\{n\in\MdN_0:2n-T\ge k\}$. Dann gilt
+\begin{align*}
+I_1=\sum\limits_{n=b_k}^T {T\choose n} q^n (1-q)^{T-n} (S_0u^{2n-T}-K)^+
+\end{align*}
+Wir berechnen $I_2$: Anwendung des Spiegelungsprinzips für $Q$ (Satz 2.11.4) liefert dann:
+\begin{align*}
+I_2&=E_Q[(S_0u^{Z_T}-K)^+1_{\{M_T,Z_T<k\}}]\\
+&= \sum\limits_{l\ge 1}E_Q[(S_0u^{Z_T}-K)^+1_{\{M_T,Z_T=k-l\}}]\\
+&= \sum\limits_{l\ge 1}E_Q[(S_0u^{k-l}-K)^+1_{\{M_T,Z_T=k-l\}}]\\
+&= \sum\limits_{l\ge 1}(S_0u^{k-l}-K)^+Q(M_T,Z_T=k-l)\\
+&= \sum\limits_{l\ge 1}(S_0u^{k-l}-K)^+\left(\frac{q}{1-q}\right)^kQ(Z_T=-k-l)\\
+&=\left(\frac{q}{1-q}\right)^ku^{2k}\sum\limits_{l\ge 1}(S_0u^{-k-l}-\underbrace{Ku^{-2k}}_{=:\tilde{K}})^+Q(Z_T=-k-l)\\
+&= \left(\frac{q}{1-q}\right)^k\left(\frac{B}{S_0}\right)^{2k}\sum\limits_{l\ge 1}(S_0u^{-k-l}-\tilde{K})^+Q(Z_T=-k-l)\\
+&=\left(\frac{q}{1-q}\right)^k\left(\frac{B}{S_0}\right)^{2k} E_Q[(S_T-\tilde{K})^+1_{\{S_T<\tilde{B}\}}
+\end{align*}
+wobei $\tilde{B}:=\frac{S_0^2}{B}=S_0u^{-k}$.\\
+Im letzten Schritt haben wir verwendet, dass $Z_T=-k-l\iff S_T<\tilde{B}$.\\
+\underline{Nebenrechnung}: Sei $Z_T=-k-l$. Dann ist $S_T=S_0u^{-k-l}=\frac{S_0^2}{B}u^{-l}=\tilde{B}\frac{1}{u^l}<\tilde{B}$.\\
+Dann folgt wie bei der Berechnung von $I_1$ mit $\tilde{b_k}:=\max\{n\in\MdN_0:S_T=S_0u^{2n-T}<\tilde{B}\}=\max\{n\n\MdN_0:2n-T<-k\}$:
+\begin{align*}
+I_2=\left(\frac{q}{1-q}\right)^k\left(\frac{B}{S_0}\right)^2 \sum\limits_{n=0}^{\tilde{b_k}} {T\choose n} q^n(1-q)^{T-n} (S_0u^{2n-T}-\tilde{K})^+
+\end{align*}
+Dann ist $\pi(H_{\text{u\&i}}^{\text{Call}})=\frac{1}{(1+r)^T}(I_1+I_2)$.
+\end{beispiel}
+
+\begin{beispiel}[Up-an-Out-Call-Option]
+\begin{align*}
+H_{\text{u\&o}}^{\text{Call}} = 
+\begin{cases}
+0 & \text{falls }\max_{0\le t\le T}S_T \ge B \\
+(S_t-K)^+ & \text{sonst}
+\end{cases}
+\end{align*}
+Hier ist $K$ der Ausübungspreis, $B>\max\{S_0,K\}$ die Schranke.\\
+Wie im Beispiel zuvor sei $B=S_0u^k$ für ein $k\in\MdN$.\\
+Sei $H^{\text{Call}}:=(S_T-K)^+$ die gewöhnliche Call-Option mit Preis $\pi(H^{\text{Call}})=E_Q\left[\frac{(S_T-K)^+}{(1+r)^T}\right]$.
+\begin{align*}
+\pi(H_{\text{u\&o}}^{\text{Call}})&=\pi(H^{\text{Call}})-\pi(H_{\text{u\&i}}^{\text{Call}})\\
+&=\frac{1}{(1+r)^T}(E_Q[(S_T-K)^+1_{\{S_T<B\}}]-\left(\frac{q}{1-q}\right)^k\left(\frac{B}{S_0}\right)^2E_Q[(S_T-\tilde{K})^+1_{\{S_T<\tilde{B}\}}])
+\end{align*}
+mit der gleichen Notation wie zuvor.
+\end{beispiel}
+
+\begin{beispiel}[lookback-Put-Option]
+\begin{align*}
+H_{\text{max}}^{\text{Put}} =  \max_{0\le t\le T} S_t - S_T
+\end{align*}
+Bei lookback-Optionen handelt man die zugrundeliegende Aktie zum minimalen bzw. maximalen Preis.
+Der Preis der Option ist
+\begin{align*}
+\pi(H_{\text{max}}^{\text{Put}})=E_Q\left[\frac{\max S_t-S_T}{(1+r)^T}\right]=E_Q\left[\frac{\max S_t}{(1+r)^T}\right]-S_0
+\end{align*}
+\end{beispiel}
+
+
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
 \theoremlisttype{optname}
