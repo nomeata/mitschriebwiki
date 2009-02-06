@@ -3386,8 +3386,8 @@ q^{\frac{t+k}2} (1-q)^{\frac{t-k}2} \binom{t}{\frac{t+k}2}, &\text{falls $t+k$ g
 
 Wir formulieren das Spiegelungsprinzip unter $Q$:
 
-\begin{satz}[Spiegelungsprinzip unter $Q$]
-
+\begin{satz}[Spiegelungsprinzip unter \textit{Q}]
+\label{satz:2.11.4}
 Für alle $k\in \MdN$, $l\in\MdN_0$ gilt
 \begin{align*}
 Q(M_T\ge k, Z_T=k-l)&=\left(\frac{1-q}{q}\right)^l Q(Z_T=k+l)  \\
@@ -3421,7 +3421,7 @@ Im Folgenden betrachten wir den Finanzmarkt, der einen Bond $B_t=(1+r)^t$, $t=0,
 \begin{align*}
 H_{\text{u\&i}}^{\text{Call}} = 
 \begin{cases}
-(S_t-K)^+ & \text{falls }\max_{0\le t\le T}S_T \ge B \\
+(S_t-K)^+ & \text{falls }\max_{0\le t\le T}S_t \ge B \\
 0 & \text{sonst}
 \end{cases}
 \end{align*}
@@ -3453,7 +3453,7 @@ I_2&=E_Q[(S_0u^{Z_T}-K)^+1_{\{M_T,Z_T<k\}}]\\
 &= \sum\limits_{l\ge 1}(S_0u^{k-l}-K)^+\left(\frac{q}{1-q}\right)^kQ(Z_T=-k-l)\\
 &=\left(\frac{q}{1-q}\right)^ku^{2k}\sum\limits_{l\ge 1}(S_0u^{-k-l}-\underbrace{Ku^{-2k}}_{=:\tilde{K}})^+Q(Z_T=-k-l)\\
 &= \left(\frac{q}{1-q}\right)^k\left(\frac{B}{S_0}\right)^{2k}\sum\limits_{l\ge 1}(S_0u^{-k-l}-\tilde{K})^+Q(Z_T=-k-l)\\
-&=\left(\frac{q}{1-q}\right)^k\left(\frac{B}{S_0}\right)^{2k} E_Q[(S_T-\tilde{K})^+1_{\{S_T<\tilde{B}\}}
+&=\left(\frac{q}{1-q}\right)^k\left(\frac{B}{S_0}\right)^{2k} E_Q[(S_T-\tilde{K})^+1_{\{S_T<\tilde{B}\}}]
 \end{align*}
 wobei $\tilde{B}\da\frac{S_0^2}{B}=S_0u^{-k}$.
 
@@ -3466,11 +3466,11 @@ I_2=\left(\frac{q}{1-q}\right)^k\left(\frac{B}{S_0}\right)^2 \sum\limits_{n=0}^{
 Dann ist $\pi(H_{\text{u\&i}}^{\text{Call}})=\frac{1}{(1+r)^T}(I_1+I_2)$.
 \end{beispiel}
 
-\begin{beispiel}[Up-an-Out-Call-Option]
+\begin{beispiel}[Up-and-Out-Call-Option]
 \begin{align*}
 H_{\text{u\&o}}^{\text{Call}} = 
 \begin{cases}
-0 & \text{falls }\max_{0\le t\le T}S_T \ge B \\
+0 & \text{falls }\max_{0\le t\le T}S_t \ge B \\
 (S_t-K)^+ & \text{sonst}
 \end{cases}
 \end{align*}
@@ -3489,13 +3489,117 @@ mit der gleichen Notation wie zuvor.
 \begin{align*}
 H_{\text{max}}^{\text{Put}} =  \max_{0\le t\le T} S_t - S_T
 \end{align*}
-Bei lookback-Optionen handelt man die zugrundeliegende Aktie zum minimalen bzw. maximalen Preis.
+Bei Lookback-Optionen handelt man die zugrundeliegende Aktie zum minimalen bzw. maximalen Preis.
 Der Preis der Option ist
 \begin{align*}
-\pi(H_{\text{max}}^{\text{Put}})=E_Q\left[\frac{\max S_t-S_T}{(1+r)^T}\right]=E_Q\left[\frac{\max S_t}{(1+r)^T}\right]-S_0
+\pi(H_{\text{max}}^{\text{Put}})=E_Q\left[\frac{\max S_t-S_T}{(1+r)^T}\right]=E_Q\left[\frac{\max S_t}{(1+r)^T}\right]-S_0.
 \end{align*}
+Wir berechnen also den Erwartungswert
+\begin{align*}
+E_Q [\max_{0\le t\le T} S_t] 
+= E_Q [\max S_0 u^{Z_t}] 
+= E_Q[S_0 u^{M_T}] 
+= \sum_{n=0}^T S_0 u^n Q(M_T = n).
+\end{align*}
+
+Aus Satz \ref{satz:2.11.4} folgt
+\begin{align*}
+Q(M_T = n) &= \sum_{l\ge 0} Q(M_T=n,\, Z_T = n-l) \\
+&= \sum_{l\ge 0} \frac{1}{1-q} \bigg(\frac{q}{1-q}\bigg)^n \frac{n+l+1}{T+1} Q(Z_{T+1} = -1 - l -n) \\
+&= \frac{1}{1-q} \bigg(\frac{q}{1-q}\bigg)^n  \frac{1}{T+1} \sum_{l\ge0} (n+l+1) Q(-Z_{T+1} = 1 + n + l) \\
+&= \frac{1}{1-q} \bigg(\frac{q}{1-q}\bigg)^n  \frac{1}{T+1} E_Q[-Z_{T+1} 1_{\{Z_{T+1} \le -(1+n)\}}]
+\end{align*}
+Daher gilt für den Preis:
+\begin{multline*}
+\pi(H_{\text{max}}^{\text{Put}}) = \frac1{(1+r)^T} \sum_{n=0}^T S_0 u^n Q(M_T = n) - S_0
+\iff \\
+\pi(H_{\text{max}}^{\text{Put}}) + S_0 =
+\frac{S_0}{(1+r)^T(1-q)(T+1)} \sum_{n=0}^T u^n \bigg(\frac{q}{1-q}\bigg)^n E_Q[-Z_{T+1} 1_{\{Z_{T+1} \le -(1+n)\}}]
+\end{multline*}
+Der Erwartungswert kann explizit berechnet werden.
 \end{beispiel}
 
+\begin{bemerkung}
+\begin{itemize}
+\item Neben den hier betrachteten Barrier-Optionen und Lookback-Optionen gibt es noch eine Vielzahl anderer exotischer Optionen: asiatische Option, Chooser-Option, binäre Optionen, Basket-Option,\ldots
+\item Prinzipiell werden exotische Optionen nicht nur als europäische Option gehandelt.
+\end{itemize}
+\end{bemerkung}
+
+\chapter{Optimale Portfolioselektion}
+\addtocounter{section}{1}
+\setcounter{satz}{0}
+
+Schon bei der Bewertung amerikanischer Optionen haben wir gesehen, dass Optimierungsprobleme in der Finanzmathematik eine wichtige Rolle spielen. Ein weiteres Optimierungsproblem sind optimale Investitionsentscheidungen. Zur Lösung solcher Probleme werden wir die \emph{dynamische Programmierung}\index{dynamische Programmierung} verwenden.
+
+\begin{beispiel}[Apfelbäume]
+(Beispiel auf Folie.)
+\end{beispiel}
+
+\subsection{Problemstellung}
+Wir betrachten Optimierungsprobleme in diskreter Zeit mit endlichen Zeithorizont $T$. Sei $X$ ein Markov-Prozess, der Werte im Zustandsraum $\cX$ annimmt. Sei $\cA$ die Menge der zulässigen Handlungen. Falls der Prozess im Zustand $x\in\cX$ ist und man eine Handlung $a\in \cA$ wählt, bekommt man einen Gewinn von $r(x,a)$. Der Prozess springt zu einem neuen Zustand und hat dabei die Verteilung $P(x,a,\cdot)$. Das Ziel ist es, die Handlungen so zu wählen, dass man 
+\[
+\sup E\left[\sum_{t=0}^{T-1} \beta^t r(X_t,a_t) + \beta^T R(X_T)\right]
+\]
+erhält. Hier ist $\beta\in(0,1]$ der Diskontfaktor und $R(\cdot)$ beschreibt den Gewinn zum Endzeitpunkt~$T$. Die Handlung $a_t$ wird zur Zeit $t$ gewählt und darf nur von Informationen bis zur Zeit $t$ abhängen.
+
+\subsection{Lösung}
+Wir definieren die Wertfunktion
+\begin{align*}
+V_T(x) &= R(x) \\
+V_t(x) &= \sup E [\sum_{i=t}^T \beta^{i-t} r(X_i,a_i) + \beta^{T-t} R(X_T)\mid X_t = x]
+\end{align*}
+für $t=T-1,\ldots, 0$.
+
+Dann erfüllt die Wertfunktion die Bellman-Gleichung 
+\begin{align*}
+V_t(x) = \sup_{a\in \cA} \{ r(x,a) + \beta \int V_{t+1} (y) P(x,a,dy)\}.
+\end{align*}
+
+\section{Bestimmung optimaler Portfolios durch dynamische Programmierung}
+
+Sei $(\Omega,\cF,P)$ ein Wahrscheinlichkeitsraum. Seien $R_t^k$, $t=1,\ldots, T$, $k=1,\ldots,d$ Zufallsvariablen auf diesem Wahrscheinlichkeitsraum. Wir betrachten einen Finanzmarkt mit einem Bond und $d$ risikobehafteten Anlagemöglichkeiten (Aktien). Sei $r_t$ die Verzinsung der risikolosen Anlage im Interval $[t-1,t)$, $r_t\in \MdR_+$ und sei $R_t^k$ die zufällige Verzinsung der $k$-ten Aktie im Interval $[t-1,t)$. Wir nehmen an, dass die Zufallsvektoren $R_t=(R_t^1,\ldots,R_t^d)$ unabhängig sind mit gegebener Verteilung.
+
+Sei $a_t^k$ der Betrag, der zur Zeit $t$ in die $k$-te Aktie investiert wird und $X_t$ das Vermögen zur Zeit~$t$. Dann ist $X_t - \sum_{k=1}^d a_t^k$ der Betrag, der zur Zeit $t$ in die risikolose Anlagemöglichkeit investiert wird. Sei $X_0=x \in \MdR$ das Anfangsvermögen. Dann gilt für $t=0,1,\ldots, T-1$: $X_{t+1} = r_{t+1}(X_t - \sum_{k=1}^d a_t^k) + \sum_{k=1}^d a_t^k R_{t+1}^k = X_{t+1}^a$.
+Wir nehmen an, dass die Investitionsentscheidung zur Zeit $t$ nur vom Vermögen zur Zeit $t$ abhängt.
+
+\begin{definition}
+Ein Anlagepolitik $\pi = (f_0,f_1,\ldots,f_{T-1})$ ist eine Folge von Entscheidungsregeln $f_t:\MdR\to\MdR^d$, wobei $f_t(x) =(f_t^1(x),\ldots,f_t^d(x))$ ist. Dabei gibt $f_t^k(x)$ den Betrag an, der zur Zeit $t$ in die $k$-te Aktie investiert wird, in Abhängigkeit vom Vermögen $x$ zur Zeit $t$.
+
+Für eine gegebenene Anlagepolitik $\pi=(f_0,f_1,\ldots,f_{T-1})$ gilt $X_1 = X_1^{f_0(x)},\ldots, X_{t+1} =X_{t+1}^{f_t(x)}$.
+\end{definition}
+
+\begin{definition}
+Für $t=0,1,\ldots,T$ und $x\in\MdR$ sei $V_t(x) \da \sup_\pi E_\pi[U(X_t)\mid X_t=x]$, wobei $U:\MdR\to\MdR$ eine Nutzenfunktion ist. $V_t(x)$ ist der maximale erwartete Nutzen vom Endvermögen, wenn man zum Zeitpunkt $t$ mit Kapital $x$ startet. Falls
+\[
+E_{\pi^*}[U(X_T)\mid X_t=x] 
+= \sup_{\pi} E_\pi[U(X_T)\mid X_t=x],
+\]
+dann ist $\pi^*$ eine \emph{optimale Anlagepolitik} für das $(T-t)$-stufige Problem.
+\end{definition}
+
+Wir suchen $V_0(X)$ und $\pi^*$ für das $T$-stufige Problem.
+$V_t(x)$ kann rekursiv berechnet werden:
+
+\begin{satz}
+Es gilt für $x\in\MdR$: $V_T(x) = U(x)$ und für $t=T-1,\ldots, 0$:
+\begin{align*}
+V_t(x) &= \sup_{a=(a_1,\ldots,a_d)\in\MdR^d} E[V_{t+1}(X_{t+1}^a) \mid X_t =x] \\
+      &= \sup_{a=(a_1,\ldots,a_d)\in\MdR^d} E[V_{t+1}(r_{t+1}(x-\sum_{k=1}^d a_k) + \sum_{k=1}^d a_kR_{t+1}^k) \mid X_t =x] \ad UV_{t+1}(x)
+\end{align*}
+\end{satz}
+
+\begin{beweis}
+Sei $x\in\MdR$. Für $t=T$ gilt $V_T(x)=\sup_{\pi} E[U(X_T)\mid X_T=x] = U(x)$.
+
+Sei $t=T-1,\ldots, 0$. Wir zeigen zuerst $V_t(x) \le UV_{t+1}(x)$. Sei $\pi$ eine beliebige Anlagepolitik. Dann gilt
+\begin{align*}
+E_\pi[U(X_T) \mid X_t=x] &= E_\pi[ E_\pi[U(X_T)\mid X_{t+1}^{f_t(x)}] \mid X_t=x] \\
+&\le E_\pi[ V_{t+1}(X_{t+1}^{f_t(x)}) \mid X_t = x] \\
+&\le UV_{t+1}(x).
+\end{align*}
+Nun bilde das Supremum über alle Anlagepolitiken $\pi$. Dann gilt $V_t(x) \le UV_{t+1}(x)$. 
+\end{beweis}
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
