@@ -3599,7 +3599,122 @@ E_\pi[U(X_T) \mid X_t=x] &= E_\pi[ E_\pi[U(X_T)\mid X_{t+1}^{f_t(x)}] \mid X_t=x
 &\le UV_{t+1}(x).
 \end{align*}
 Nun bilde das Supremum über alle Anlagepolitiken $\pi$. Dann gilt $V_t(x) \le UV_{t+1}(x)$. 
+
+Wir zeigen nun $V_t(x) \ge UV_{t+1}(x)$ für $t=T-1,\ldots,0$ und $x\in\MdR$.
+
+Für $\varepsilon>0$ existiert eine Entscheidungsregel $f_t(x)$, so dass 
+\begin{align*}
+E[V_{t+1}(X_{t+1}^{f_t(x)}) \mid X_t = x] &= E[V_{t+1}(r_{t+1}(x-\sum_{k=1}^d f_t^k) + \sum_{k=1}^d f_t^k R_{t+1})] 
+\ge UV_{t+1}(x) - \varepsilon
+\end{align*}
+für alle $x\in\MdR$.
+
+Sei nun $t=T-1$ und $\pi$ die Anlagepolitik, die aus diesen Entscheidungsregeln besteht. Dann folgt
+\begin{align*}
+E_\pi[U(X_T) \mid X_{T-1} = x] \ge UV_T(x) - \varepsilon \ge V_{T-1} - \varepsilon.
+\end{align*}
+Bilde nun das Supremum über alle Anlagepolitiken $\pi$. Dann gilt $V_{T-1}(x) \ge UV_T(x) - \varepsilon$. Mit $\varepsilon \to 0$ folgt $V_{T-1}(x) \ge UV_T(x)$.
+
+Sei nun $t=T-2$:
+\begin{align*}
+E_\pi[U(X_T) \mid X_{T-2}=x] &= E_\pi[ E_\pi[ U(X_T) \mid X_{t-1}] \mid X_{T-2} = x] \\
+&\ge E_\pi[ V_{T-1}(X_{T-1}) \mid X_{T-2} = x] - \varepsilon \\
+&\ge UV_{T-1}(x) - 2\varepsilon  \\
+&\ge V_{T-2}(x) - 2\varepsilon
+\end{align*}
+Bilde das Supremum über alle Anlagepolitiken $\pi$. Dann folgt $V_{T-2}(x) \ge UV_{T-1}(x) - 2\varepsilon$.  Mit $\varepsilon \to 0$ folgt $V_{T-2}(x) \ge UV_{T-1}(x)$.
+
+Durch vollständige Induktion folgt die Behauptung.
 \end{beweis}
+
+\begin{bemerkung}
+\begin{itemize}
+\item Zur Erinnerung: Für HARA-Nutzenfunktionen gilt
+\[
+\frac{1}{\ARA(x)} = -\frac{u'(x)}{u''(x)} = Ax+B
+\]
+mit Konstanten $A$, $B$.
+\item Häufig wird diese Klasse von Nutzenfunktionen in der Portfoliooptimierung betrachtet. Unter gewissen Annahmen lassen sich hier teilweise explizite Lösungen ermitteln.
+\end{itemize}
+\end{bemerkung}
+
+\begin{beispiel}
+Exponentieller Nutzen: Wir beschränken uns auf den Fall $d=1$. Sei $U(x) = - \exp^{-\gamma(x)}$ für $\gamma>0$. Hier ist $\ARA(x) = -\frac{U''(x)}{U'(x)} = \gamma$ und daher $U''(x) = -\gamma U'(x)$. Die zufällige Verzinsung der Aktie sei normalverteilt, das heißt $R\sim N(\mu, \sigma^2)$. Wir berechnen die optimale Strategie und die Wertfunktion.
+
+Idee: Wir versuchen eine analytische Form der Wertfunktion zu ermitteln. Wir beginnen bei $T$ und arbeiten uns nach vorne durch:
+\begin{align*}
+V_T(x) = E[U(X_T)\mid X_T=x] = U(x).
+\end{align*}
+Anwendung der dynamischen Programmierung liefert
+\begin{align*}
+V_{T-1}(x) &= \sup_{a_{T-1}} E[V_T(X_T) \mid X_{T-1}=x]\\
+&= \sup_{a_{T-1}} E[V_T(r_T (x-a_{T-1}) + a_{T-1}R_T)] \\
+&= \sup_{a_{T-1}} E[U(r_T(x-a_{T-1}) + a_{T-1} R_T)] \\
+&= \sup_{a_{T-1}} E[-\exp(-\gamma (r_T(x-a_{T-1}) + a_{T-1} R_T))] \\
+&= \sup_{a_{T-1}} (-1) e^{-\gamma r_Tx} e^{\gamma r_T a_{T-1}} E[e^{-\gamma a_{T-1} R_T)}] \\
+&= \sup_{a_{T-1}} (-1) e^{-\gamma r_Tx} e^{\gamma r_T a_{T-1}} e^{\mu(-\gamma a_{T-1}) + \frac{\sigma^2}{2} \gamma^2 a_{T-1}^2} \\
+&= \sup_{a_{T-1}} (-1) e^{-\gamma r_Tx} \exp(a_{T-1} \gamma(r_T -\mu) + \frac12 a_{T-1}^2 \gamma^2  \sigma^2)
+\end{align*}
+Wir berechnen das Infimum von $h_{T-1}(a) \da a\gamma (r_T-\mu) + \frac12 a^2\gamma^2 \sigma^2$:
+\begin{align*}
+h'(a) = \gamma(r_T-\mu) + a\gamma^2 \sigma^2 = 0 \iff a= \frac{\mu-r_T}{\sigma^2} \frac 1 \gamma
+\end{align*}
+und $h''(a) >0$. Einsetzen liefert
+\begin{align*}
+V_{T-1}(x) &= U(xr_T) \exp (\frac{u-r_T}{\sigma^2} \frac1\gamma (r_T - \mu) \gamma + \frac{(u-r)^2}{\sigma^2\sigma^2} \frac1{\gamma^2} \gamma^2 \frac{\sigma^2}{2}) \\
+&= U(r_Tx) \exp(-\frac12 \frac{(u- r_T)^2}{\sigma^2})
+\end{align*}
+
+Dann für $t=T-2$:
+\begin{align*}
+V_{T-2}(x) &= \sup_a E[ U(r_T X_{T-1}) \exp(-\frac12 \frac{(u- r_T)^2}{\sigma^2}) \mid X_{T-2} = x] \\
+= \cdots &= \sup_a b_T (-1) e^{-\gamma r_T r_{T-1} x} \exp(a\gamma r_T (r_{T-1} - \mu) + \frac12 a^2\gamma^2 r_T^2 \sigma^2)
+\end{align*}
+Ähnlich wie zuvor ist $h_{T-2}(a) \da a \gamma r_T(r_{T-1} - \mu) + \frac12 a^2r_T^2\sigma^2$ und
+\[
+h'(a) = 0 \iff a = \frac{\mu-r_{T-1}}{\sigma^2} \frac1\gamma \frac1{r_T}. 
+\]
+Damit gilt
+\begin{align*}
+V_{T_2}(X) = U(r_T r_{T-1} x)\underbrace{b_T \exp(-\frac{(\mu - r_{T-1})^2}{2\sigma^2})}_{\ad b_{T-1}}
+\end{align*}
+
+Wir „raten“ jetzt die analytische Form der Wertfunktion und der optimalen Strategie und beweisen das durch Induktion.
+
+Es gilt für alle $t=T-2,\ldots,1, 0$
+\begin{align*}
+V_t(x) &= U(r_{t+1}\cdot \cdots\cdot r_T x) b_{t+1} \\
+f_t &= \frac{\mu-r_{t+1}}{\sigma^2} \frac1\gamma \frac1{r_{t+2}\cdot \cdots \cdot r_T}
+\end{align*}
+was für $t=T-1,T-2$ schon gezeigt ist. Wir zeigen den Schritt von $t+1$ nach $t$.
+\begin{align*}
+V_t(x) &= \sup_a E[V_{t+1} (X_{t+1}^a) \mid X_t = x] \\
+&= \sup_a E[V_{t+1} (r_{t+1} (x-a) + aR)] \\
+&= \sup_a E[U(\underbrace{r_{t+2}\cdot \cdots\cdot r_T}_{\ad \tilde r} (r_{t+1} (x-a) + aR))]\cdot b_{t+2} \\
+&= \sup_a (-1) b_{t+2} \exp(-\gamma \tilde r r_{t+1} (x-a)) E[\exp(-\gamma \tilde r a R)]\\
+&= \sup_a (-1) b_{t+2} \exp(-\gamma \tilde r r_{t+1} (x-a)) \exp(-\gamma \tilde r a \mu + \frac12 \sigma^2 \gamma ^2 \tilde r^2 a^2) \\
+&= \sup_a (-1) \exp(-\gamma\tilde r r_{t+1} x) \exp(-a\tilde \gamma(\mu-r_{t+1}) + \frac12 a^2 \gamma ^2 \tilde r^2 \sigma^2)
+\end{align*}
+Wie zuvor ist $h_t(a) \da -a\tilde r \gamma(\mu- r_{t+1}) + \frac12 a^2 \gamma^2 \tilde r^2 \sigma^2$ und
+\[
+h'_t(a) = 0 \iff
+a= \frac{\mu-r_{t+1}}{\sigma^2} \frac1\gamma \frac1{\tilde r}
+\]
+Dann gilt
+\begin{align*}
+V_t(x) = U(r_{t+1} \cdot \cdots \cdot r_T x) \underbrace{b_{t+2} \exp(-\frac{(\mu-r_{t+1})^2}{2\sigma^2})}_{\ad b_{t+1}}.
+\end{align*}
+Man sieht hier, dass 
+\begin{align*}
+-\frac{V'(x)}{V''(X)} &= - \frac{ b_{t+1} U'(r_{r+1}\cdot\cdots\cdot r_T x) r_{t+1}\cdot\cdots\cdot r_T}{b_{t+1} U''(r_{r+1}\cdot\cdots\cdot r_T x) (r_{t+1}\cdot\cdots\cdot r_T)^2} \\
+&= - \frac{U'(r_{t+1}\cdot\cdots\cdot r_T x)}{U''(r_{t+1}\cdot\cdots\cdot r_T)} \frac1{r_{t+1}\cdot\cdots\cdot r_T} \\
+&= \frac1{\ARA(r_{t+1}\cdot\cdots\cdot r_T)} \frac1{r_{t+1}\cdot\cdots\cdot r_T} \\
+&= \frac1{\gamma} \frac1{r_{t+1}\cdot\cdots\cdot r_T} \\ 
+\end{align*}
+Für die optimale Strategie gilt $f_t = -\frac{V_t'}{V_t''} \cdot h$, wobei $h$ nur von der Variable abhängt, die die Dynamik des Marktes beschreibt.
+\end{beispiel}
+
+
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
