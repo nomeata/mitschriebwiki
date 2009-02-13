@@ -1943,7 +1943,7 @@ $\beta \da (\beta_t)_{t\in I^+}$ und $\alpha \da (\alpha_t)_{t\in I^+}$.
 Der Investor beobachtet die Preise $Z_{t-1}$ und wählt basierend auf diesen Informationen sein neues Portfolio $\varphi_t$, was er dann hält bis direkt nach Bekanntwerden der Preise $Z_t$.
 
 \begin{definition}
-Der Wert des Portfolios zum Zeitpunkt $t\in\{1,\ldots,T\}$ ist gegeben durch 
+\label{def:2.3.2}Der Wert des Portfolios zum Zeitpunkt $t\in\{1,\ldots,T\}$ ist gegeben durch 
 \begin{align*}
 V_t^\varphi  = \varphi_t^\top Z_t = \beta_t B_t + \alpha_t^\top S_t = \beta_tB_t + \sum_{k=1}^d \alpha_t^kS_t^k
 \end{align*}
@@ -3706,15 +3706,109 @@ V_t(x) = U(r_{t+1} \cdot \cdots \cdot r_T x) \underbrace{b_{t+2} \exp(-\frac{(\m
 \end{align*}
 Man sieht hier, dass 
 \begin{align*}
--\frac{V'(x)}{V''(X)} &= - \frac{ b_{t+1} U'(r_{r+1}\cdot\cdots\cdot r_T x) r_{t+1}\cdot\cdots\cdot r_T}{b_{t+1} U''(r_{r+1}\cdot\cdots\cdot r_T x) (r_{t+1}\cdot\cdots\cdot r_T)^2} \\
-&= - \frac{U'(r_{t+1}\cdot\cdots\cdot r_T x)}{U''(r_{t+1}\cdot\cdots\cdot r_T)} \frac1{r_{t+1}\cdot\cdots\cdot r_T} \\
-&= \frac1{\ARA(r_{t+1}\cdot\cdots\cdot r_T)} \frac1{r_{t+1}\cdot\cdots\cdot r_T} \\
+-\frac{V'(x)}{V''(x)} &= - \frac{ b_{t+1} U'(r_{r+1}\cdot\cdots\cdot r_T x) r_{t+1}\cdot\cdots\cdot r_T}{b_{t+1} U''(r_{r+1}\cdot\cdots\cdot r_T x) (r_{t+1}\cdot\cdots\cdot r_T)^2} \\
+&= - \frac{U'(r_{t+1}\cdot\cdots\cdot r_T x)}{U''(r_{t+1}\cdot\cdots\cdot r_Tx)} \frac1{r_{t+1}\cdot\cdots\cdot r_T} \\
+&= \frac1{\ARA(r_{t+1}\cdot\cdots\cdot r_Tx)} \frac1{r_{t+1}\cdot\cdots\cdot r_T} \\
 &= \frac1{\gamma} \frac1{r_{t+1}\cdot\cdots\cdot r_T} \\ 
 \end{align*}
 Für die optimale Strategie gilt $f_t = -\frac{V_t'}{V_t''} \cdot h$, wobei $h$ nur von der Variable abhängt, die die Dynamik des Marktes beschreibt.
 \end{beispiel}
 
+\section{Optimale Portfolios in vollständigen Märkten}
 
+Wir betrachten einen arbitragefreien, vollständigen Markt, das heißt es existiert ein eindeutiges äquivalentes Martingalmaß $Q$. Sei $U:\MdR\to\MdR$ eine Nutzenfunktion mit
+\begin{align*}
+\lim_{x\to-\infty} = + \infty && \lim_{x\to+\infty} U'(x) = 0
+\end{align*}
+(beziehungsweise für $U:(0,\infty)\to\MdR$: $\lim_{x\to0}U'(x) = +\infty$).
+
+\subsection{Problemstellung}
+
+Wir bezeichnen wie im zweiten Kapitel (Definition \ref{def:2.3.2}) mit 
+$(V_t^\varphi)$ den Vermögensprozess und $(B_t)$ ist der Preisprozess des Bondes. Ziel ist nun die Bestimmung von
+\[
+\sup_{\varphi} E[U(V_T^\varphi)]
+\]
+unter der Nebenbedingung, dass $V_0^\varphi=v_0$, wobei $\varphi$ Handelsstrategien (insbesondere selbstfinanzierend) sind. Zuvor haben wir dieses Problem mit Hilfe der dynamischen Programmierung gelöst. Jetzt werden wir anders vorgehen und dabei die Vollständigkeit des Marktes ausnutzen.
+
+\subsection{Lösung}
+
+Fasse die Abbildung  $\varphi \mapsto EU(V_T^\varphi)$ als eine Verknüpfung zweier Abbildungen auf:
+\begin{enumerate}
+\item Die erste Abbildung ist $\varphi \mapsto V_T^\varphi$, das heißt der Handelsstrategie wird eine Zufallsvariable zugeordnet, die das Endvermögen beschreibt.
+\item Die zweite Abbildung ist $X\mapsto E(U(X))$, das heißt der Zufallsvariable wird der erwartete Nutzen, also eine reelle Zahl, zugeordnet.
+\end{enumerate}
+
+Die Vorgehensweise ist wie folgt:
+\begin{enumerate}
+\item Lösung des statischen Optimierungsproblems: Maximiere $E(U(X))$ für $X\in\cX \da \{X$ ist $\cF_T$-messbar, integrierbar bezüglich $P$ und $Q$ sowie $E_Q[\frac{X}{B_T}] = v_0\}$.
+\item Repräsentationsproblem: Sei $X^*$ eine Lösung von (1). Bestimme $\varphi$, so dass $V_0^\varphi = v_0$ und $V_T^\varphi = X^*$. Da der Markt vollständig ist, existiert eine solche Strategie. Dann ist $\varphi$ die gesuchte optimale Strategie für das ursprüngliche Problem.
+\end{enumerate}
+
+Im Folgenden ermitteln wir einen Kandidaten $X^*$ mit Hilfe des Lagrange-Ansatzes. Wir setzten $Z \da \frac{dQ}{dP}$. Dann ist $E_Q[\frac X{B_T}] = E[Z\cdot \frac{X}{B_T}]$.
+
+Sei
+\[
+L(X,c) \da E(U(X)) - c\cdot (E[\frac{ZX}{B_T}] - v_0)
+\]
+die Lagrange-Funktion. Dann gilt für die Ableitungen:
+\begin{align*}
+\frac\partial{\partial X} L(X,c) &= E(U'(X) - c \frac Z{B_T}) \stackrel!= 0 \\
+\frac\partial{\partial c} L(X,c) &= E[\frac{ZX}{B_T}] - v_0 \stackrel!= 0
+\end{align*}
+
+Sei $I$ die Umehrfunktion von $U'$. Dann erfüllt $X^*$ mit $U'(X^*) = c \frac{Z}{B_T}$, also $X^* = I(c \frac{Z}{B_T})$ die erste Nebenbedingung und $c$ wird so gewählt, dass 
+\[
+E_Q[\frac{I(c\frac{Z}{B_T})}{B_T}] = E[\frac{Z I(c\frac{Z}{B_T})}{B_T}] = v_0.
+\]
+
+\begin{bemerkung}
+\begin{itemize}
+\item Da die Menge aller bezüglich $P,Q$ integrierbarn Zufallsvariablen mit $E_Q[\frac{X}{B_T}] \le v_0$ konvex ist und $U$ streng konkav und streng wachsend ist, ist die Eindeutigkeit der Lösung klar, und es muss gelten $E_Q[\frac{X}{B_T}]$, da aus $E_Q[\frac{X^*}{B_T}] < v_0$ sofort folgen würde, dass $X^* + v_0 - E_Q[\frac{X^*}{B_T}]$ echt besser wäre.
+\item Da $\lim_{x\to-\infty}U'(x) = +\infty$, $\lim_{x\to +\infty}U'(x)=0$ und $U''(x) <0$ gilt, folgt, dass die Werte $(0,\infty)$ von $U'$ angenommen werden. Daher ist $I(c\frac{Z}{B_T})$ wohldefiniert für alle $c>0$.
+\item Wir zeigen die Optimalität von $X^* = I(c\frac{Z}{B_T})$. Aus der Konkavität von $U$ folgt für alle $X\in\cX$:
+\begin{align*}
+U(x) \le U(X^*) + U'(X^*)(X-X^*) = U(X^*) + c\frac{Z}{B_T}(X-X^*)
+\end{align*}
+die Bildung des Erwartungswertes bezüglich $P$ liefert
+\begin{align*}
+EU(x) \le EU(X^*) + \underbrace{c E_Q[\frac{1}{B_T}(X-X^*)].}_{\le 0}
+\end{align*}
+Daher ist $X^*$ optimal.
+\end{itemize}
+\end{bemerkung}
+
+\begin{beispiel}
+\label{bsp:3.3.2}
+Wir betrachten die exponentielle Nutzenfunktion $U(x) = -e^{-\gamma x}$ für ein $\gamma >0$. Dann gilt $U'(x) = \gamma e^{-\gamma x}$ und daher $I(y) = -\frac1\gamma \log(\frac y \gamma)$.
+
+Dann gilt für das optimale Endvermögen $X_T^* = I(c \frac{Z}{B_T}) = -\frac{1}{\gamma}\log(\frac1\gamma \cdot c \frac{Z}{B_T})$ und für die Konstante $c$ gilt $E_Q[\frac{X_T^*}{B_T}] = v_0$.
+Daraus folgt dann
+\begin{align*}
+v_0 &= E_Q[\frac{X_T^*}{B_T}]  \\
+&= - \frac1\gamma \int (\log(\frac c \gamma) + \log (\frac{Z}{B_T})) \frac1{B_T} dQ \\
+&= - \frac1\gamma \log(\frac c \gamma)E[\frac{Z}{B_T}] - \frac1\gamma \int \frac{Z}{B_T} \frac1{B} \frac{dQ}{dP} dP \\
+&= - \frac1\gamma \log(\frac c \gamma)E[\frac{Z}{B_T}] - \frac1\gamma E[\frac{Z}{B_T} \log \frac{Z}{B_T}] \\
+\iff \log(\frac c\gamma) &= (-\gamma v_0 - E[\frac{Z}{B_T} \log \frac{Z}{B_T}]) \frac{1}{E[\frac{Z}{B_T}]} \\
+\iff c &= \gamma \exp\left( \frac{-\gamma v_0 - E[\frac{Z}{B_T} \log \frac{Z}{B_T}]}{E[\frac{Z}{B_T}]} \right)
+\end{align*}
+Daher ist das optimale Endvermögen
+\begin{align*}
+X_T^*& = -\frac{1}\gamma \log (\frac c\gamma \frac{Z}{B_T}) \\
+&= \frac{1}\gamma \log \gamma - \frac1\gamma \log  \frac{Z}{B_T} - \frac1\gamma \log c \\
+&= \frac{1}\gamma \log \gamma - \frac1\gamma \log  \frac{Z}{B_T} - \frac1\gamma \left (\log \gamma + \frac{-\gamma v_0 - E[\frac{Z}{B_T} \log \frac{Z}{B_T}]}{E[\frac{Z}{B_T}]}\right) \\
+&= - \frac1\gamma \log  \frac{Z}{B_T} +  \frac{v_0 + \frac1\gamma E[\frac{Z}{B_T} \log \frac{Z}{B_T}]}{E[\frac{Z}{B_T}]}
+\end{align*}
+und der erwartete Nutzen ist
+\begin{align*}
+E[U(X_T^*)] &= E[-\exp(-\gamma (- \frac1\gamma \log  \frac{Z}{B_T} +  \frac{v_0 + \frac1\gamma E[\frac{Z}{B_T} \log \frac{Z}{B_T}]}{E[\frac{Z}{B_T}]}))] \\
+&= -\exp\left( -\gamma v_0 \frac1{E[\frac{Z}{B_T}]} - \frac{E[\frac{Z}{B_T} \log \frac{Z}{B_T}]}{E[\frac{Z}{B_T}]} \right) E[\frac{Z}{B_T}]
+\end{align*}
+\end{beispiel}
+
+\begin{bemerkung}
+Interessant am Beispiel \ref{bsp:3.3.2} ist, dass die Formeln für das optimale Vermögen, den optimalen erwarteten Endnutzen etc. nur über $\frac{Z}{B_T}$ vom zugrundeliegenden Marktmodell abhängen.
+\end{bemerkung}
 
 \setcounter{secnumdepth}{-1}
 \chapter{Satz um Satz (hüpft der Has)}
