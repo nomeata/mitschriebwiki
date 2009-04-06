@@ -342,7 +342,7 @@ Falls $\RRA(x)$ konstant ist, dann ist $u$ die CRRA-Nutzenfunktion.
 \begin{definition}
 Eine Nutzenfunktion $u:\MdR\to\MdR$ heißt HARA-Nutzenfunktion (“hyperbolic absolute risk aversion”), falls $u\in C^2(\MdR)$ und für Konstanten $\alpha, \beta$:
 \begin{align*}
-\ARA(x) = \frac{-u''(x)}{u'(x)} = \alpha x + \beta > 0
+\ARA(x) = \frac{-u''(x)}{u'(x)} = \frac{1}{\alpha x + \beta} > 0
 \end{align*}
 Die CARA-, CRRA-Nutzenfunktionen sind HARA-Nutzenfunktionen.
 \end{definition}
@@ -3021,11 +3021,11 @@ $Z_T = X_T$ und $Z_t = \max\{X_t, E[Z_{t+1}\mid \cF_t]\}$ für $t=T-1,\ldots,0$ 
 \end{definition}
 
 \begin{satz}
-\label{satz:2.10.4}Die Snell-Einhüllende $(Z_t)$ von $(X_t)$ ist ein Supermartingal und das kleinste Supermartingal, dass $(X_t)$ dominiert (das heißt $Z_t\ge X_t$ fast sicher für alle $t\in I$).
+\label{satz:2.10.4}Die Snell-Einhüllende $(Z_t)$ von $(X_t)$ ist ein Supermartingal und das kleinste Supermartingal, das $(X_t)$ dominiert (das heißt $Z_t\ge X_t$ fast sicher für alle $t\in I$).
 \end{satz}
 
 \begin{beweis}
-Nach Definition gilt $Z_t > E[Z_{t+1}\mid \cF_t]$ für $t=T-1,\ldots,0$ und $Z_t \ge X_t$.
+Nach Definition gilt $Z_t \geq E[Z_{t+1}\mid \cF_t]$ für $t=T-1,\ldots,0$ und $Z_t \ge X_t$.
 
 Sei $(Y_t)$ ein weiteres Supermartingal mit $Y_t \ge X_t$. Wir zeigen $Y_t \ge Z_t$.
 
@@ -3046,7 +3046,7 @@ Wir betrachten nun die bedingte Erwartung unter $\cF_t$ auf beiden Seiten. Da $\
 E[Z_{(t+1)\wedge \tau^*} - Z_{t\wedge \tau^*}\mid \cF_t]
 &= E[1_{\{t+1\le \tau^*\}}(Z_{t+1} - E[Z_{t+1} \mid \cF_t])\mid \cF_t]\\
 &= 1_{\{t+1\le \tau^*\}}E[Z_{t+1} - E[Z_{t+1} \mid \cF_t]\mid \cF_t]\\
-&= 1_{\{t+1\le \tau^*\}}(E[Z_{t+1} - \mid \cF_t] -E[Z_{t+1} \mid \cF_t])\\
+&= 1_{\{t+1\le \tau^*\}}(E[Z_{t+1} \mid \cF_t] -E[Z_{t+1} \mid \cF_t])\\
 &= 0.
 \end{align*}
 Daher ist $E[Z_{(t+1)\wedge \tau^*}\mid \cF_t] =  Z_{t\wedge \tau^*}$ und $Z_{t\wedge \tau^*}$ ist ein Martingal.
@@ -3056,7 +3056,7 @@ Daher ist $E[Z_{(t+1)\wedge \tau^*}\mid \cF_t] =  Z_{t\wedge \tau^*}$ und $Z_{t\
 \[
 \tau^* = \inf\{t \ge 0: Z_t = X_t\}
 \]
-löst das Stopp-Problem $\sup_{\tau}E[X_\tau]$ und es gilt $Z_0 = E[x_{\tau^*}] = \sup_\tau E[X_\tau]$.
+löst das Stopp-Problem $\sup_{\tau}E[X_\tau]$ und es gilt $Z_0 = E[X_{\tau^*}] = \sup_\tau E[X_\tau]$.
 \end{satz}
 
 \begin{beweis}
@@ -3081,7 +3081,7 @@ Hier ist $H_t = (S_t - K)^+$, $t\in I$. Dann ist
 \end{align*}
 Die Funtion $g(x) = \left(x - \frac{K}{B_{t+1}}\right)^+$ ist konvex. Aus der Jensen-Ungleichung folgt dann
 \begin{align*}
-\frac{H_t}{B_t} \le g(X_t) = g(E_Q[X_{t+1}\mid \cF_t]) \le E_Q[g(X_{t+1}) \mid \cF_t] = E_Q[\frac{H_{t+1}}{B_{t+1}}\mit \cF_t].
+\frac{H_t}{B_t} \le g(X_t) = g(E_Q[X_{t+1}\mid \cF_t]) \le E_Q[g(X_{t+1}) \mid \cF_t] = E_Q[\frac{H_{t+1}}{B_{t+1}}\mid \cF_t].
 \end{align*}
 daher ist $\frac{H_t}{B_t}$ ein Submartingal unter $Q$.
 
@@ -3099,13 +3099,13 @@ Das heißt die amerikanische Calloption wird erst am Ende der Laufzeit ausgeübt
 
 \subsection{Amerikanische Optionen im Cox-Ross-Rubinsteinmodell}
 
-Sei $(H_t)_{t\in I}$ ein $(\cF_t)$-adaptierter stochastischer Prozess. Sei $\tilde X_t = \frac{H_t}{B_t}$ und $(Z_t)$ die Snell-Einhüllende von $(\tilde X_t)$. Wir betrachten den Spezialfall, dass $H_t$ nur von $S_t$ abhängt (und nicht wie im allgemeinen  $H_t = h(S_0,\ldots,s_t)$), das heißt $H_t = h(S_t)$. Zum Beispiel beim amerikanischen Put gilt $h(s) = (K-s)^+$.
+Sei $(H_t)_{t\in I}$ ein $(\cF_t)$-adaptierter stochastischer Prozess. Sei $\tilde X_t = \frac{H_t}{B_t}$ und $(Z_t)$ die Snell-Einhüllende von $(\tilde X_t)$. Wir betrachten den Spezialfall, dass $H_t$ nur von $S_t$ abhängt (und nicht wie im Allgemeinen  $H_t = h(S_0,\ldots,S_t)$), das heißt $H_t = h(S_t)$. Zum Beispiel beim amerikanischen Put gilt $h(s) = (K-s)^+$.
 
-Im Cox-Ross-Rubinsteinmodell ist $S_t = S_0 \pi_{k=1}^t Y_k$ und $Q(Y=u) = q = \frac{1+r-d}{u-d}$ ist die risikoneutrale Wahrscheinlichkeit für eine Aufwärtsbewegung des Aktienkurses. Dann gilt:
+Im Cox-Ross-Rubinsteinmodell ist $S_t = S_0 \Pi_{k=1}^t Y_k$ und $Q(Y=u) = q = \frac{1+r-d}{u-d}$ ist die risikoneutrale Wahrscheinlichkeit für eine Aufwärtsbewegung des Aktienkurses. Dann gilt:
 \begin{align*}
-Z_T &= \tilde X_T = \frac{h(S_t)}{B_t} = \frac{h(S_T)}{(1+r)^T} &&\ad V_T(S_T) \\
+Z_T &= \tilde X_T = \frac{h(S_T)}{B_T} = \frac{h(S_T)}{(1+r)^T} &&\ad V_T(S_T) \\
 Z_{T-1} &= \max\{\tilde X_{T-1}, E_Q[Z_T\mid \cF_{T-1}]\} \\
-&= \max \{\frac{h(S_{T-1})}{(1+r)^{T-1}} , E_Q[V_{T}(S_{T-1})Y_T \mid \cF_{T-1}]\} \\
+&= \max \{\frac{h(S_{T-1})}{(1+r)^{T-1}} , E_Q[V_{T}(S_{T-1}Y_T) \mid \cF_{T-1}]\} \\
 &= \max \{ \frac{h(S_{T-1})}{(1+r)^{T-1}}, q  V_T(S_{T-1} u) + (1-q) V_T(S_{T-1}d) \} &&\ad V_{T-1}(S_{T-1}) \\
 Z_t &= \max \{ \frac{h(S_t)}{(1+r)^t} , q V_{t+1}(S_t u) + (1-q) V_{t+1}(S_t d)\} &&\ad V_{t}(S_t) \\
 Z_0 &= \{h(S_0), q V_1(S_0u)+ (1-q)V_1(S_0d)\}
@@ -3181,14 +3181,14 @@ Y = \frac{(S_T-K)^+}{B_T} + \frac K {B_t} = \frac{\max\{S_t,K\}-K}{B_T} + \frac 
 \]
 Sei $\tau$ eine beliebige Stoppzeit $t\le \tau \le T$. Dann gilt
 \begin{align*}
-E_Q[Y\mid \cF_\tau] &\ge E_Q[\frac{K}{B_T} \mid \cF_\tau] = \frac{K}{B_t} \ge \frac{K}{B_\tau}\\
+E_Q[Y\mid \cF_\tau] &\ge E_Q[\frac{K}{B_t} \mid \cF_\tau] = \frac{K}{B_t} \ge \frac{K}{B_\tau}\\
 E_Q[Y\mid \cF_\tau] &\ge E_Q[\frac{S_T}{B_T} \mid \cF_\tau] = \frac{S_\tau}{B_\tau} \\
 \implies E_Q[Y\mid \cF_\tau] & \ge \max\{\frac{K}{B_\tau}, \frac{S_\tau}{B_\tau}\} = \frac{\max\{K,S_\tau\}}{B_\tau}
 \end{align*}
 Daher gilt 
 \begin{align*}
-C_t^A + K &= C_t^E + K = B_t E_Q[Y\mid \cF_t] = B_t E_Q[Y\mid \cF_\tau] \\
-&\ge B_t E_Q[ E_Q[Y\mid \cF_\tau ] \mid \cF_t] \\
+C_t^A + K &= C_t^E + K = B_t E_Q[Y\mid \cF_t]\\
+= B_t E_Q[ E_Q[Y\mid \cF_\tau ] \mid \cF_t] \\
 &\ge B_t E_Q[ \frac{\max\{K,S_\tau\}}{B_\tau} \mid \cF_t] \\
 &= B_t E_Q[\frac{( (K-S_\tau)^+ + S_\tau)}{B_\tau}  \mid \cF_t] \\
 &= B_t E_Q[ \frac{(K-S_\tau)^+}{B_\tau} \mid \cF_t ] + B_t E_Q[\frac{S_\tau}{B_\tau}\mid \cF_t] \\
@@ -3210,15 +3210,15 @@ wobei $(Z_t)$ die Snell-Einüllende von $(\frac{H_t}{B_t})$ ist.
 
 Nach Satz \ref{satz:2.10.4} ist $(Z_t)$ ein Supermartingal. Aus Lemma \ref{lem:2.1.18} folgt $Z_t = M_t + A_T$ wobei $(M_t)$ ein Martingal ist und $(A_t)$ mit $A_0=0$ ein fallender, vorhersehbarer Prozess. Insbesondere ist $A_{t+1} \le A_t \le \cdots \le A_1 \le A_0 = 0$.
 
-Da der Markt vollständig ist, gibt es eine Hedging-Strategie $\varphi$ für den Zahlungsanspruch $B_TM_T$. Wir zeigen, dass $\varphi$ eine Hedging-Strategie für die amerikanische Option ist. Wir zeigen $V_T^\varphi \ge H_t$ für $t=0,\ldots,T$.
+Da der Markt vollständig ist, gibt es eine Hedging-Strategie $\varphi$ für den Zahlungsanspruch $B_TM_T$. Wir zeigen, dass $\varphi$ eine Hedging-Strategie für die amerikanische Option ist. Wir zeigen $V_t^\varphi \ge H_t$ für $t=0,\ldots,T$.
 
-Für $t=T$ gilt $V_T^\varphi = B_TH_T \ge B_TZ_T = B_T \frac{H_T}{B_T} = H_T$, da nach Definition der Snell-Einhüllenden $Z_T = \frac{H_T}{B_T}$ gilt. Wegen $A_T \le A_0=0$ und $Z_T = M_T + A_T$ gilt auch $M_T \ge Z_T$.
+Für $t=T$ gilt $V_T^\varphi = B_T M_T \ge B_TZ_T = B_T \frac{H_T}{B_T} = H_T$, da nach Definition der Snell-Einhüllenden $Z_T = \frac{H_T}{B_T}$ gilt. Wegen $A_T \le A_0=0$ und $Z_T = M_T + A_T$ gilt auch $M_T \ge Z_T$.
 
 Für $t<T$ gilt $V_t^\varphi = B_t E_Q[\frac{B_TM_T}{B_T}\mid \cF_t] = B_tE_Q[M_T\mid \cF_t] = B_t M_t \ge B_tZ_t \ge B_t \frac{H_t}{B_t} = H_t$.
 
-Dan ist der Preis für die Hedging-Strategie $\varphi$
+Dann ist der Preis für die Hedging-Strategie $\varphi$
 \begin{align*}
-V_t^\varphi = E_Q[\frac{B_TM_T}{B_T}] = E_Q[M_T] = M_0 = M_0 + A_0 = Z_0.
+V_0^\varphi = E_Q[\frac{B_TM_T}{B_T}] = E_Q[M_T] = M_0 = M_0 + A_0 = Z_0.
 \end{align*}
 Also gilt auch $\pi^A(H) = \inf\{V_0^\varphi \mid \varphi\text{ ist eine selbstfinanzierende Hedging-Strategie für $(H_t)$}\}$. Mit der so konstruierten Hedging-Strategie können wir die Begründung vom „fairen“ Preis für eine amerikanische Option abschließen:
 
@@ -3234,7 +3234,7 @@ Wir betrachten nun Optionen, deren Auszahlung vom Maximum des Aktienkurses abhä
 \[
 H_{\text{u\&i}}^{\text{Call}} = 
 \begin{cases}
-(S_t-K)^+ & \text{falls }\max_{0\le t\le T}S_T \ge B \\
+(S_T-K)^+ & \text{falls }\max_{0\le t\le T}S_t \ge B \\
 0 & \text{sonst}
 \end{cases}
 \]
@@ -3242,8 +3242,8 @@ H_{\text{u\&i}}^{\text{Call}} =
 \[
 H_{\text{u\&o}}^{\text{Call}} = 
 \begin{cases}
-0 & \text{falls }\max_{0\le t\le T}S_T \ge B \\
-(S_t-K)^+ & \text{sonst}
+0 & \text{falls }\max_{0\le t\le T}S_t \ge B \\
+(S_T-K)^+ & \text{sonst}
 \end{cases}
 \]
 \item Lookback-Put-Option
@@ -3253,9 +3253,9 @@ H_{\text{max}}^{\text{Put}} =  \max_{0\le t\le T} S_t - S_T
 \end{itemize}
 \end{beispiel}
 
-Wir betrachten später eine spezielle Form des $T$"~Perioden"~Cox"~Ross"~Rubinsteinmodells, das uns erlaubt eine explizite Preisformel für obige Beispiele zu bekommen. Dabei wird das \emph{Spiegelungsprinzip} eine zentrale Rolle spielen.
+Wir betrachten später eine spezielle Form des $T$"~Perioden"~Cox"~Ross"~Rubinsteinmodells, das uns erlaubt, eine explizite Preisformel für obige Beispiele zu bekommen. Dabei wird das \emph{Spiegelungsprinzip} eine zentrale Rolle spielen.
 
-Sei $\Omega \da \{-1,+1\}^T = \{\omega = (\gamma_1,\ldots,\gamma_T): \gamma_1\in\{-1,+1\}\}$. Für $\omega=(\gamma_1,\ldots,\gamma_T)$ sei 
+Sei $\Omega \da \{-1,+1\}^T = \{\omega = (\gamma_1,\ldots,\gamma_T): \gamma_i\in\{-1,+1\}\}$. Für $\omega=(\gamma_1,\ldots,\gamma_T)$ sei 
 \[
 \Gamma_t(\omega) =\Gamma_t( (\gamma_1,\ldots,\gamma_T) ) = 
 \begin{cases}
@@ -3317,7 +3317,7 @@ Es führen $3 = \binom{3}{\frac{3-1}{2}}$ Wege zu $-1$. Man benötigt immer eine
 Eine Irrfahrt $Z_t$ mit insgesamt $t$ Schritten besteht aus $n_u\ge 0$ Aufwärtsbewegungen und $n_d\ge 0$ Abwärtsbewegungen mit $n_u + n_d = t$. Dann ist der Wert der Irrfahrt $k = n_u \cdot 1 + n_d \cdot (-1)$, also $k = n_u - (t-n_u) = 2n_u - t$.
 Das heißt $k+t = 2n_u$ undd daher ist $k+t$ gerade.
 
-Angenommen die Irrfahrt besteht aus $\frac{t+k}2$ Aufwärtsbewegungen und $\frac{t+k}2$ Abwärtsbewegungen, dann ist der Wert der Irrfahrt $\frac{t+k}2\cdot 1 + \frac{t+k}2\cdot (-1) = k$. Es gibt $\binom{t}{\frac{t+k}2}$ Möglichkeiiten $\frac{t+k}2$ Aufwärtsschritte bei insgesamt $t$ Schritten zu machen. Alle diese Wege sind unter $P$ gleichwahrscheinlich.
+Angenommen, die Irrfahrt besteht aus $\frac{t+k}2$ Aufwärtsbewegungen und $\frac{t-k}2$ Abwärtsbewegungen, dann ist der Wert der Irrfahrt $\frac{t+k}2\cdot 1 + \frac{t-k}2\cdot (-1) = k$. Es gibt $\binom{t}{\frac{t+k}2}$ Möglichkeiten $\frac{t+k}2$ Aufwärtsschritte bei insgesamt $t$ Schritten zu machen. Alle diese Wege sind unter $P$ gleichwahrscheinlich.
 \end{bemerkung}
 
 Im Folgenden sei $M_t \da \max_{0\le s\le t} Z_s$ das laufende Maximum des Prozesses $Z$. Für den folgenden Satz nehmen wir an, dass der Prozess $Z$ bis zur Zeit $T+1$ definiert ist. Das kann durch geeignete Erweiterung des Wahrscheinlichkeitsraums erreicht werden.
@@ -3350,9 +3350,9 @@ P(M_T = k , Z_T = k-l) = 2 \frac{k+l+1}{T+1} P (Z_{T+1} = 1 + k + l)
 \end{tikzpicture}
 \end{center}
 \begin{beweis}
-Sei $\tau(\omega) \da \{ t\ge 0: Z_t = k\} \wedge T$. Für $\omega=(\gamma_1,\ldots,\gamma_T)\in \Omega$ definieren wir $f(\omega) = \omega$, falls $\tau = T$ und $f(\omega) = (\gamma_1,\ldots,\gamma_{\tau(\omega)},-\gamma_{\tau(\omega)+1},\ldots,-\gamma_T)$ falls das Niveau $k$ vor dem Endzeitpunkt $T$ erreicht wird. Man sieht im Bild, dass die zwei Pfade $(Z_t(\omega))$ und $(Z_t(f(\omega)))$ bis zur Zeit $\tau(\omega)$ übereinstimmen. Ab $\tau(\omega)$ erhält man den neuen Pfad durch Spiegelung des ursprünglichen Pfades an der horizontalen Achse zum Niveau $k$.
+Sei $\tau(\omega) \da \{ t\ge 0: Z_t = k\} \wedge T$. Für $\omega=(\gamma_1,\ldots,\gamma_T)\in \Omega$ definieren wir $f(\omega) = \omega$, falls $\tau = T$ und $f(\omega) = (\gamma_1,\ldots,\gamma_{\tau(\omega)},-\gamma_{\tau(\omega)+1},\ldots,-\gamma_T)$, falls das Niveau $k$ vor dem Endzeitpunkt $T$ erreicht wird. Man sieht im Bild, dass die zwei Pfade $(Z_t(\omega))$ und $(Z_t(f(\omega)))$ bis zur Zeit $\tau(\omega)$ übereinstimmen. Ab $\tau(\omega)$ erhält man den neuen Pfad durch Spiegelung des ursprünglichen Pfades an der horizontalen Achse zum Niveau $k$.
 
-Sei $A_{k,l} \da \{\omega\in\Omega\mid M_T(\omega) \ge 0, Z_T(\omega) = k -l\}$. Dann ist $f$ eine Bijektion von $A_{k,l}$ in die Menge $\{\omega\in\Omega\mid M_T(\omega) \ge k, Z_T(\omega) = k + l\}$. Da $l\ge 0$ gilt $\{\omega\in\Omega\mid M_T\ge k, Z_T = k+l\} = \{\omega\in\Omega\mid Z_T = k+l\}$. Daher teilt die Gleichverteilung $P$ die beiden Mengen $A_{k,l}$, $\{\omega\in\Omega\mid Z_T(\omega) = k+l\}$ die gleiche Wahrscheinlichkeiten zu. Daher gilt die erste Gleichung.
+Sei $A_{k,l} \da \{\omega\in\Omega\mid M_T(\omega) \ge k, Z_T(\omega) = k -l\}$. Dann ist $f$ eine Bijektion von $A_{k,l}$ in die Menge $\{\omega\in\Omega\mid M_T(\omega) \ge k, Z_T(\omega) = k + l\}$. Da $l\ge 0$ gilt $\{\omega\in\Omega\mid M_T\ge k, Z_T = k+l\} = \{\omega\in\Omega\mid Z_T = k+l\}$. Daher teilt die Gleichverteilung $P$ die beiden Mengen $A_{k,l}$, $\{\omega\in\Omega\mid Z_T(\omega) = k+l\}$ die gleiche Wahrscheinlichkeiten zu. Daher gilt die erste Gleichung.
 
 Die zweite Gleichung ist klar, falls $T + k + l$ ungerade ist, da dann $P(Z_{T+1} = 1 + k + l) = 0$ und auch $T+k-l$ ungerade ist, und damit die linke Seite auch $0$ ist.
 
@@ -3402,7 +3402,7 @@ Daher folgt aus ($\star$)
 \begin{align*}
 Q(M_T\ge k,Z_T=k-l)=2^T q^{\frac{T+k-l}{2}}(1-q)^{\frac{T-(k-l)}{2}}P(M_T\ge k,Z_T=k-l)
 \end{align*} 
-Aus dem Spiegelungsprinzip für $P$ (satz:2.11.3) zusammen mit ($\star$) folgt:
+Aus dem Spiegelungsprinzip für $P$ (\ref{satz:2.11.3}) zusammen mit ($\star$) folgt:
 \begin{align*}
 &2^T q^{\frac{T+k-l}{2}}(1-q)^{\frac{T-(k-l)}{2}}P(M_T\ge k,Z_T=k-l)\\
 =& 2^T q^{\frac{T+k-l}{2}}(1-q)^{\frac{T-(k-l)}{2}}P(Z_T=k+l)=\\
@@ -3411,12 +3411,12 @@ Aus dem Spiegelungsprinzip für $P$ (satz:2.11.3) zusammen mit ($\star$) folgt:
 \end{align*}
 Die zweite Aussage zeigt man analog.
 \end{beweis}
-Im Folgenden betrachten wir den Finanzmarkt, der einen Bond $B_t=(1+r)^t$, $t=0,\ldots,T$ und eine Aktie mit Prisprozess $S_t(\omega)=S_0u^{Z_T(\omega)}$ enthält. $Z$ ist die Irrfahrt, die oben definiert wurde. Dies ist ein spezieller Fall des CRR-Modells mit $u=\frac {1}{d}$.
+Im Folgenden betrachten wir den Finanzmarkt, der einen Bond $B_t=(1+r)^t$, $t=0,\ldots,T$ und eine Aktie mit Preisprozess $S_t(\omega)=S_0u^{Z_t(\omega)}$ enthält. $Z$ ist die Irrfahrt, die oben definiert wurde. Dies ist ein spezieller Fall des CRR-Modells mit $u=\frac {1}{d}$.
 \begin{beispiel}[Up-and-In-Call]
 \begin{align*}
 H_{\text{u\&i}}^{\text{Call}} = 
 \begin{cases}
-(S_t-K)^+ & \text{falls }\max_{0\le t\le T}S_t \ge B \\
+(S_T-K)^+ & \text{falls }\max_{0\le t\le T}S_t \ge B \\
 0 & \text{sonst}
 \end{cases}
 \end{align*}
@@ -3427,12 +3427,12 @@ Wir möchten den Preis $\pi(H_{\text{u\&i}}^{\text{Call}})=E_Q\left[\dfrac{H_{\t
 E_Q[H_{\text{u\&i}}^{\text{Call}}]&=E_Q[(S_T-K)^+ 1_{\{\max\limits_{0\le t\le T} S_t\ge B\}}]\\
 &=\underbrace{E_Q[(S_T-K)^+1_{\{S_T\ge B\}}]}_{=:I_1}+\underbrace{E_Q[(S_T-K)^+ 1_{\{\max\limits_{0\le t\le T} S_t\ge B,S_T<B\}}]}_{=:I_2}
 \end{align*}
-Wir nehmen an (OBdA), dass $B$ ein möglicher Aktienpreis ist, d.h. es existiert ein $k\in\MdN$ sodass $B=S_0u^k$. Dann ist $S_t=S_0u^{Z_t} \ge B=S_0u^k\iff Z_T\ge k$ (und damit $\max\limits_{0\le t\le T} S_t \ge B \iff M_T\ge k$).
+Wir nehmen an (OBdA), dass $B$ ein möglicher Aktienpreis ist, d.h. es existiert ein $k\in\MdN$ sodass $B=S_0u^k$. Dann ist $S_t=S_0u^{Z_t} \ge B=S_0u^k\iff Z_t\ge k$ (und damit $\max\limits_{0\le t\le T} S_t \ge B \iff M_T\ge k$).
 Der erste Erwartungswert $I_1$ kann direkt berechnet werden (vgl. Kor 2.4.6).
 
-Sei $f(s)\da(s_K)^+1_{\{s\ge B\}}$.
+Sei $f(s)\da(s-K)^+1_{\{s\ge B\}}$.
 \begin{align*}
-I_1=\sum\limits_{n=0}^T {T\choose n} q^n (1-q)^{T-n} \underbrace{(S_0u^{2n-T}-K)^+}_{=f(S_0u^{2n-T})}
+I_1=\sum\limits_{n=0}^T {T\choose n} q^n (1-q)^{T-n} \underbrace{(S_0u^{2n-T}-K)^+ \mathbf{1}_{\{S_0u^{2n-T}\geq B\}} }_{=f(S_0u^{2n-T})}
 \end{align*}
 Sei $b_k=\min\{n\in\MdN_0:S_0u^{2n-T}\ge S_0u^k\}=\min\{n\in\MdN_0:2n-T\ge k\}$. Dann gilt
 \begin{align*}
@@ -3441,14 +3441,14 @@ I_1=\sum\limits_{n=b_k}^T {T\choose n} q^n (1-q)^{T-n} (S_0u^{2n-T}-K)^+
 
 Wir berechnen $I_2$, und wenden dazu das Spiegelungsprinzips für $Q$ (Satz 2.11.4) an:
 \begin{align*}
-I_2&=E_Q[(S_0u^{Z_T}-K)^+1_{\{M_T,Z_T<k\}}]\\
-&= \sum\limits_{l\ge 1}E_Q[(S_0u^{Z_T}-K)^+1_{\{M_T,Z_T=k-l\}}]\\
-&= \sum\limits_{l\ge 1}E_Q[(S_0u^{k-l}-K)^+1_{\{M_T,Z_T=k-l\}}]\\
-&= \sum\limits_{l\ge 1}(S_0u^{k-l}-K)^+Q(M_T,Z_T=k-l)\\
+I_2&=E_Q[(S_0u^{Z_T}-K)^+1_{\{M_T\geq k,Z_T<k\}}]\\
+&= \sum\limits_{l\ge 1}E_Q[(S_0u^{Z_T}-K)^+1_{\{M_T\geq k,Z_T=k-l\}}]\\
+&= \sum\limits_{l\ge 1}E_Q[(S_0u^{k-l}-K)^+1_{\{M_T\geq k,Z_T=k-l\}}]\\
+&= \sum\limits_{l\ge 1}(S_0u^{k-l}-K)^+Q(M_T\geq k,Z_T=k-l)\\
 &= \sum\limits_{l\ge 1}(S_0u^{k-l}-K)^+\left(\frac{q}{1-q}\right)^kQ(Z_T=-k-l)\\
 &=\left(\frac{q}{1-q}\right)^ku^{2k}\sum\limits_{l\ge 1}(S_0u^{-k-l}-\underbrace{Ku^{-2k}}_{=:\tilde{K}})^+Q(Z_T=-k-l)\\
-&= \left(\frac{q}{1-q}\right)^k\left(\frac{B}{S_0}\right)^{2k}\sum\limits_{l\ge 1}(S_0u^{-k-l}-\tilde{K})^+Q(Z_T=-k-l)\\
-&=\left(\frac{q}{1-q}\right)^k\left(\frac{B}{S_0}\right)^{2k} E_Q[(S_T-\tilde{K})^+1_{\{S_T<\tilde{B}\}}]
+&= \left(\frac{q}{1-q}\right)^k\left(\frac{B}{S_0}\right)^{2}\sum\limits_{l\ge 1}(S_0u^{-k-l}-\tilde{K})^+Q(Z_T=-k-l)\\
+&=\left(\frac{q}{1-q}\right)^k\left(\frac{B}{S_0}\right)^{2} E_Q[(S_T-\tilde{K})^+1_{\{S_T<\tilde{B}\}}]
 \end{align*}
 wobei $\tilde{B}\da\frac{S_0^2}{B}=S_0u^{-k}$.
 
@@ -3466,7 +3466,7 @@ Dann ist $\pi(H_{\text{u\&i}}^{\text{Call}})=\frac{1}{(1+r)^T}(I_1+I_2)$.
 H_{\text{u\&o}}^{\text{Call}} = 
 \begin{cases}
 0 & \text{falls }\max_{0\le t\le T}S_t \ge B \\
-(S_t-K)^+ & \text{sonst}
+(S_T-K)^+ & \text{sonst}
 \end{cases}
 \end{align*}
 Hier ist $K$ der Ausübungspreis, $B>\max\{S_0,K\}$ die Schranke.
@@ -3553,7 +3553,7 @@ V_t(x) = \sup_{a\in \cA} \{ r(x,a) + \beta \int V_{t+1} (y) P(x,a,dy)\}.
 
 \section{Bestimmung optimaler Portfolios durch dynamische Programmierung}
 
-Sei $(\Omega,\cF,P)$ ein Wahrscheinlichkeitsraum. Seien $R_t^k$, $t=1,\ldots, T$, $k=1,\ldots,d$ Zufallsvariablen auf diesem Wahrscheinlichkeitsraum. Wir betrachten einen Finanzmarkt mit einem Bond und $d$ risikobehafteten Anlagemöglichkeiten (Aktien). Sei $r_t$ die Verzinsung der risikolosen Anlage im Interval $[t-1,t)$, $r_t\in \MdR_+$ und sei $R_t^k$ die zufällige Verzinsung der $k$-ten Aktie im Interval $[t-1,t)$. Wir nehmen an, dass die Zufallsvektoren $R_t=(R_t^1,\ldots,R_t^d)$ unabhängig sind mit gegebener Verteilung.
+Sei $(\Omega,\cF,P)$ ein Wahrscheinlichkeitsraum. Seien $R_t^k$, $t=1,\ldots, T$, $k=1,\ldots,d$ Zufallsvariablen auf diesem Wahrscheinlichkeitsraum. Wir betrachten einen Finanzmarkt mit einem Bond und $d$ risikobehafteten Anlagemöglichkeiten (Aktien). Sei $r_t$ die Verzinsung der risikolosen Anlage im Intervall $[t-1,t)$, $r_t\in \MdR_+$ und sei $R_t^k$ die zufällige Verzinsung der $k$-ten Aktie im Intervall $[t-1,t)$. Wir nehmen an, dass die Zufallsvektoren $R_t=(R_t^1,\ldots,R_t^d)$ unabhängig sind mit gegebener Verteilung.
 
 Sei $a_t^k$ der Betrag, der zur Zeit $t$ in die $k$-te Aktie investiert wird und $X_t$ das Vermögen zur Zeit~$t$. Dann ist $X_t - \sum_{k=1}^d a_t^k$ der Betrag, der zur Zeit $t$ in die risikolose Anlagemöglichkeit investiert wird. Sei $X_0=x \in \MdR$ das Anfangsvermögen. Dann gilt für $t=0,1,\ldots, T-1$: $X_{t+1} = r_{t+1}(X_t - \sum_{k=1}^d a_t^k) + \sum_{k=1}^d a_t^k R_{t+1}^k = X_{t+1}^a$.
 Wir nehmen an, dass die Investitionsentscheidung zur Zeit $t$ nur vom Vermögen zur Zeit $t$ abhängt.
@@ -3612,7 +3612,7 @@ Bilde nun das Supremum über alle Anlagepolitiken $\pi$. Dann gilt $V_{T-1}(x) \
 
 Sei nun $t=T-2$:
 \begin{align*}
-E_\pi[U(X_T) \mid X_{T-2}=x] &= E_\pi[ E_\pi[ U(X_T) \mid X_{t-1}] \mid X_{T-2} = x] \\
+E_\pi[U(X_T) \mid X_{T-2}=x] &= E_\pi[ E_\pi[ U(X_T) \mid X_{T-1}] \mid X_{T-2} = x] \\
 &\ge E_\pi[ V_{T-1}(X_{T-1}) \mid X_{T-2} = x] - \varepsilon \\
 &\ge UV_{T-1}(x) - 2\varepsilon  \\
 &\ge V_{T-2}(x) - 2\varepsilon
@@ -3634,7 +3634,7 @@ mit Konstanten $A$, $B$.
 \end{bemerkung}
 
 \begin{beispiel}
-Exponentieller Nutzen: Wir beschränken uns auf den Fall $d=1$. Sei $U(x) = - \exp^{-\gamma(x)}$ für $\gamma>0$. Hier ist $\ARA(x) = -\frac{U''(x)}{U'(x)} = \gamma$ und daher $U''(x) = -\gamma U'(x)$. Die zufällige Verzinsung der Aktie sei normalverteilt, das heißt $R\sim N(\mu, \sigma^2)$. Wir berechnen die optimale Strategie und die Wertfunktion.
+Exponentieller Nutzen: Wir beschränken uns auf den Fall $d=1$. Sei $U(x) = - e^{-\gamma(x)}$ für $\gamma>0$. Hier ist $\ARA(x) = -\frac{U''(x)}{U'(x)} = \gamma$ und daher $U''(x) = -\gamma U'(x)$. Die zufällige Verzinsung der Aktie sei normalverteilt, das heißt $R\sim N(\mu, \sigma^2)$. Wir berechnen die optimale Strategie und die Wertfunktion.
 
 Idee: Wir versuchen eine analytische Form der Wertfunktion zu ermitteln. Wir beginnen bei $T$ und arbeiten uns nach vorne durch:
 \begin{align*}
@@ -3656,13 +3656,13 @@ h'(a) = \gamma(r_T-\mu) + a\gamma^2 \sigma^2 = 0 \iff a= \frac{\mu-r_T}{\sigma^2
 \end{align*}
 und $h''(a) >0$. Einsetzen liefert
 \begin{align*}
-V_{T-1}(x) &= U(xr_T) \exp (\frac{u-r_T}{\sigma^2} \frac1\gamma (r_T - \mu) \gamma + \frac{(u-r)^2}{\sigma^2\sigma^2} \frac1{\gamma^2} \gamma^2 \frac{\sigma^2}{2}) \\
-&= U(r_Tx) \exp(-\frac12 \frac{(u- r_T)^2}{\sigma^2})
+V_{T-1}(x) &= U(xr_T) \exp (\frac{\mu-r_T}{\sigma^2} \frac1\gamma (r_T - \mu) \gamma + \frac{(\mu-r_T)^2}{\sigma^2\sigma^2} \frac1{\gamma^2} \gamma^2 \frac{\sigma^2}{2}) \\
+&= U(r_Tx) \underbrace{\exp(-\frac12 \frac{(\mu- r_T)^2}{\sigma^2})}_{\ad b_T}
 \end{align*}
 
 Dann für $t=T-2$:
 \begin{align*}
-V_{T-2}(x) &= \sup_a E[ U(r_T X_{T-1}) \exp(-\frac12 \frac{(u- r_T)^2}{\sigma^2}) \mid X_{T-2} = x] \\
+V_{T-2}(x) &= \sup_a E[ U(r_T X_{T-1}) \exp(-\frac12 \frac{(\mu- r_T)^2}{\sigma^2}) \mid X_{T-2} = x] \\
 = \cdots &= \sup_a b_T (-1) e^{-\gamma r_T r_{T-1} x} \exp(a\gamma r_T (r_{T-1} - \mu) + \frac12 a^2\gamma^2 r_T^2 \sigma^2)
 \end{align*}
 Ähnlich wie zuvor ist $h_{T-2}(a) \da a \gamma r_T(r_{T-1} - \mu) + \frac12 a^2r_T^2\sigma^2$ und
@@ -3671,7 +3671,7 @@ h'(a) = 0 \iff a = \frac{\mu-r_{T-1}}{\sigma^2} \frac1\gamma \frac1{r_T}.
 \]
 Damit gilt
 \begin{align*}
-V_{T_2}(X) = U(r_T r_{T-1} x)\underbrace{b_T \exp(-\frac{(\mu - r_{T-1})^2}{2\sigma^2})}_{\ad b_{T-1}}
+V_{T-2}(X) = U(r_T r_{T-1} x)\underbrace{b_T \exp(-\frac{(\mu - r_{T-1})^2}{2\sigma^2})}_{\ad b_{T-1}}
 \end{align*}
 
 Wir „raten“ jetzt die analytische Form der Wertfunktion und der optimalen Strategie und beweisen das durch Induktion.
@@ -3688,7 +3688,7 @@ V_t(x) &= \sup_a E[V_{t+1} (X_{t+1}^a) \mid X_t = x] \\
 &= \sup_a E[U(\underbrace{r_{t+2}\cdot \cdots\cdot r_T}_{\ad \tilde r} (r_{t+1} (x-a) + aR))]\cdot b_{t+2} \\
 &= \sup_a (-1) b_{t+2} \exp(-\gamma \tilde r r_{t+1} (x-a)) E[\exp(-\gamma \tilde r a R)]\\
 &= \sup_a (-1) b_{t+2} \exp(-\gamma \tilde r r_{t+1} (x-a)) \exp(-\gamma \tilde r a \mu + \frac12 \sigma^2 \gamma ^2 \tilde r^2 a^2) \\
-&= \sup_a (-1) \exp(-\gamma\tilde r r_{t+1} x) \exp(-a\tilde \gamma(\mu-r_{t+1}) + \frac12 a^2 \gamma ^2 \tilde r^2 \sigma^2)
+&= \sup_a (-1) \exp(-\gamma\tilde r r_{t+1} x) \exp(-a\tilde{r} \gamma(\mu-r_{t+1}) + \frac12 a^2 \gamma ^2 \tilde r^2 \sigma^2)
 \end{align*}
 Wie zuvor ist $h_t(a) \da -a\tilde r \gamma(\mu- r_{t+1}) + \frac12 a^2 \gamma^2 \tilde r^2 \sigma^2$ und
 \[
@@ -3706,14 +3706,14 @@ Man sieht hier, dass
 &= \frac1{\ARA(r_{t+1}\cdot\cdots\cdot r_Tx)} \frac1{r_{t+1}\cdot\cdots\cdot r_T} \\
 &= \frac1{\gamma} \frac1{r_{t+1}\cdot\cdots\cdot r_T} \\ 
 \end{align*}
-Für die optimale Strategie gilt $f_t = -\frac{V_t'}{V_t''} \cdot h$, wobei $h$ nur von der Variable abhängt, die die Dynamik des Marktes beschreibt.
+Für die optimale Strategie gilt $f_t = -\frac{V_t'}{V_t''} \cdot h$, wobei $h$ nur von den Variablen abhängt, die die Dynamik des Marktes beschreiben.
 \end{beispiel}
 
 \section{Optimale Portfolios in vollständigen Märkten}
 
 Wir betrachten einen arbitragefreien, vollständigen Markt, das heißt es existiert ein eindeutiges äquivalentes Martingalmaß $Q$. Sei $U:\MdR\to\MdR$ eine Nutzenfunktion mit
 \begin{align*}
-\lim_{x\to-\infty} = + \infty && \lim_{x\to+\infty} U'(x) = 0
+\lim_{x\to-\infty} U'(x) = + \infty && \lim_{x\to+\infty} U'(x) = 0
 \end{align*}
 (beziehungsweise für $U:(0,\infty)\to\MdR$: $\lim_{x\to0}U'(x) = +\infty$).
 
@@ -3731,43 +3731,43 @@ unter der Nebenbedingung, dass $V_0^\varphi=v_0$, wobei $\varphi$ Handelsstrateg
 Fasse die Abbildung  $\varphi \mapsto EU(V_T^\varphi)$ als eine Verknüpfung zweier Abbildungen auf:
 \begin{enumerate}
 \item Die erste Abbildung ist $\varphi \mapsto V_T^\varphi$, das heißt der Handelsstrategie wird eine Zufallsvariable zugeordnet, die das Endvermögen beschreibt.
-\item Die zweite Abbildung ist $X\mapsto E(U(X))$, das heißt der Zufallsvariable wird der erwartete Nutzen, also eine reelle Zahl, zugeordnet.
+\item Die zweite Abbildung ist $X\mapsto E[U(X)]$, das heißt der Zufallsvariable wird der erwartete Nutzen, also eine reelle Zahl, zugeordnet.
 \end{enumerate}
 
 Die Vorgehensweise ist wie folgt:
 \begin{enumerate}
-\item Lösung des statischen Optimierungsproblems: Maximiere $E(U(X))$ für $X\in\cX \da \{X$ ist $\cF_T$-messbar, integrierbar bezüglich $P$ und $Q$ sowie $E_Q[\frac{X}{B_T}] = v_0\}$.
+\item Lösung des statischen Optimierungsproblems: Maximiere $E[U(X)]$ für $X\in\cX \da \{X$ ist $\cF_T$-messbar, integrierbar bezüglich $P$ und $Q$ sowie $E_Q[\frac{X}{B_T}] = v_0\}$.
 \item Repräsentationsproblem: Sei $X^*$ eine Lösung von (1). Bestimme $\varphi$, so dass $V_0^\varphi = v_0$ und $V_T^\varphi = X^*$. Da der Markt vollständig ist, existiert eine solche Strategie. Dann ist $\varphi$ die gesuchte optimale Strategie für das ursprüngliche Problem.
 \end{enumerate}
 
-Im Folgenden ermitteln wir einen Kandidaten $X^*$ mit Hilfe des Lagrange-Ansatzes. Wir setzten $Z \da \frac{dQ}{dP}$. Dann ist $E_Q[\frac X{B_T}] = E[Z\cdot \frac{X}{B_T}]$.
+Im Folgenden ermitteln wir einen Kandidaten $X^*$ mit Hilfe des Lagrange-Ansatzes. Wir setzen $Z \da \frac{dQ}{dP}$. Dann ist $E_Q[\frac X{B_T}] = E[Z\cdot \frac{X}{B_T}]$.
 
 Sei
 \[
-L(X,c) \da E(U(X)) - c\cdot (E[\frac{ZX}{B_T}] - v_0)
+L(X,c) \da E[U(X)] - c\cdot (E[\frac{ZX}{B_T}] - v_0)
 \]
 die Lagrange-Funktion. Dann gilt für die Ableitungen:
 \begin{align*}
-\frac\partial{\partial X} L(X,c) &= E(U'(X) - c \frac Z{B_T}) \stackrel!= 0 \\
+\frac\partial{\partial X} L(X,c) &= E[U'(X) - c \frac Z{B_T}] \stackrel!= 0 \\
 \frac\partial{\partial c} L(X,c) &= E[\frac{ZX}{B_T}] - v_0 \stackrel!= 0
 \end{align*}
 
-Sei $I$ die Umehrfunktion von $U'$. Dann erfüllt $X^*$ mit $U'(X^*) = c \frac{Z}{B_T}$, also $X^* = I(c \frac{Z}{B_T})$ die erste Nebenbedingung und $c$ wird so gewählt, dass 
+Sei $I$ die Umkehrfunktion von $U'$. Dann erfüllt $X^*$ mit $U'(X^*) = c \frac{Z}{B_T}$, also $X^* = I(c \frac{Z}{B_T})$ die erste Nebenbedingung und $c$ wird so gewählt, dass 
 \[
 E_Q[\frac{I(c\frac{Z}{B_T})}{B_T}] = E[\frac{Z I(c\frac{Z}{B_T})}{B_T}] = v_0.
 \]
 
 \begin{bemerkung}
 \begin{itemize}
-\item Da die Menge aller bezüglich $P,Q$ integrierbarn Zufallsvariablen mit $E_Q[\frac{X}{B_T}] \le v_0$ konvex ist und $U$ streng konkav und streng wachsend ist, ist die Eindeutigkeit der Lösung klar, und es muss gelten $E_Q[\frac{X}{B_T}]$, da aus $E_Q[\frac{X^*}{B_T}] < v_0$ sofort folgen würde, dass $X^* + v_0 - E_Q[\frac{X^*}{B_T}]$ echt besser wäre.
+\item Da die Menge aller bezüglich $P,Q$ integrierbaren Zufallsvariablen mit $E_Q[\frac{X}{B_T}] \le v_0$ konvex ist und $U$ streng konkav und streng wachsend ist, ist die Eindeutigkeit der Lösung klar, und es muss gelten $E_Q[\frac{X^*}{B_T}]=v_0$, da aus $E_Q[\frac{X^*}{B_T}] < v_0$ sofort folgen würde, dass $X^* + v_0 - E_Q[\frac{X^*}{B_T}]$ echt besser wäre.
 \item Da $\lim_{x\to-\infty}U'(x) = +\infty$, $\lim_{x\to +\infty}U'(x)=0$ und $U''(x) <0$ gilt, folgt, dass die Werte $(0,\infty)$ von $U'$ angenommen werden. Daher ist $I(c\frac{Z}{B_T})$ wohldefiniert für alle $c>0$.
 \item Wir zeigen die Optimalität von $X^* = I(c\frac{Z}{B_T})$. Aus der Konkavität von $U$ folgt für alle $X\in\cX$:
 \begin{align*}
-U(x) \le U(X^*) + U'(X^*)(X-X^*) = U(X^*) + c\frac{Z}{B_T}(X-X^*)
+U(X) \le U(X^*) + U'(X^*)(X-X^*) = U(X^*) + c\frac{Z}{B_T}(X-X^*)
 \end{align*}
 die Bildung des Erwartungswertes bezüglich $P$ liefert
 \begin{align*}
-EU(x) \le EU(X^*) + \underbrace{c E_Q[\frac{1}{B_T}(X-X^*)].}_{\le 0}
+EU(X) \le EU(X^*) + \underbrace{c E_Q[\frac{1}{B_T}(X-X^*)].}_{\le 0}
 \end{align*}
 Daher ist $X^*$ optimal.
 \end{itemize}
@@ -3782,7 +3782,7 @@ Daraus folgt dann
 \begin{align*}
 v_0 &= E_Q[\frac{X_T^*}{B_T}]  \\
 &= - \frac1\gamma \int (\log(\frac c \gamma) + \log (\frac{Z}{B_T})) \frac1{B_T} dQ \\
-&= - \frac1\gamma \log(\frac c \gamma)E[\frac{Z}{B_T}] - \frac1\gamma \int \frac{Z}{B_T} \frac1{B} \frac{dQ}{dP} dP \\
+&= - \frac1\gamma \log(\frac c \gamma)E[\frac{Z}{B_T}] - \frac1\gamma \int \log( \frac{Z}{B_T}) \frac1{B_T} \frac{dQ}{dP} dP \\
 &= - \frac1\gamma \log(\frac c \gamma)E[\frac{Z}{B_T}] - \frac1\gamma E[\frac{Z}{B_T} \log \frac{Z}{B_T}] \\
 \iff \log(\frac c\gamma) &= (-\gamma v_0 - E[\frac{Z}{B_T} \log \frac{Z}{B_T}]) \frac{1}{E[\frac{Z}{B_T}]} \\
 \iff c &= \gamma \exp\left( \frac{-\gamma v_0 - E[\frac{Z}{B_T} \log \frac{Z}{B_T}]}{E[\frac{Z}{B_T}]} \right)
