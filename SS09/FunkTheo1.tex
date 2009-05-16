@@ -30,7 +30,7 @@
 \section*{Über dieses Skriptum}
 Dies ist ein Mitschrieb der Vorlesung \glqq Funktionentheorie I\grqq\
 von Herrn Prof. Dr. Schnaubelt im Sommersemester 2009 an der Universität Karlsruhe (TH).
-%Die Mitschriebe der Vorlesung werden mit ausdrücklicher Genehmigung von Herrn Schnaubelt hier veröffentlicht,
+Die Mitschriebe der Vorlesung werden mit ausdrücklicher Genehmigung von Herrn Schnaubelt hier veröffentlicht,
 Herr Schnaubelt ist für den Inhalt nicht verantwortlich.
 
 \section*{Wer}
@@ -774,11 +774,11 @@ Für $\alpha = \gamma + \i\delta$, $g=0$, $u=\Re{f}$, $v=\Im{f}$ folgt
 \end{enumerate}
 
 \noindent Eine Funktion $f\colon[a,b]\to\C$ heißt \emph{differenzierbar} in $t_0\in[a,b]$, wenn der Grenzwert \[\lim_{t\to t_0}{\frac{f(t)-f(t_0)}{t-t_0}} \ad f^\prime(t_0)\] existiert. Dies ist genau dann der Fall, wenn $u=\Re{f}$ und $v=\Im{f}$ bei $t_0$ differenzierbar sind. Dann gilt $f^\prime(t_0) = u^\prime(t_0) + \i v^\prime(t_0)$. Wenn $f$ bei allen $t\in[a,b]$ differenzierbar ist und die Ableitung $f^\prime\colon[a,b]\to\C$ stetig ist, so schreiben wir $f\in C^1([a,b],\C)$. In diesem Fall gilt
-\begin{equation}
+\begin{equation}\label{2.1}
 \integral{a}{b}{f^\prime(t)}{t} = \integral{a}{b}{u^\prime(t)}{t} + \i\integral{a}{b}{v^\prime(t)}{t} = u(t)\vert_a^b + \i v(t)\vert_a^b = f(b) - f(a).
 \end{equation}
 Genauso zeigt man: Falls $g\colon[a,b]\to\C$ stetig ist, so existiert
-\begin{equation}
+\begin{equation}\label{2.2}
 \frac{\mathrm{d}}{\mathrm{d}t} \integral{a}{t}{g(s)}{s} = g(t)
 \end{equation}
 für jedes $t\in[a,b]$.\\
@@ -827,8 +827,89 @@ Aus den Eigenschaften des komplexen Integrals folgt sofort für $f,g\in C(\Gamma
 &= -\integral{a}{b}{f(\gamma(s))\gamma^\prime(s)}{s}\\
 &= - \integral{\Gamma}{}{f(z)}{z}.
 \end{align*}
+
+\item Das Kurvenintegral ist invariant unter orientierungserhaltenden Transformationen $\phi$ von $\Gamma$. Das heißt: Wenn $\phi\in C([a,b])$ strikt wachsend und auf jedem der Teilintervalle $[t_{k-1},t_k]$ aus Definition \ref{dfn2.2} stetig differenzierbar ist, dann ist $\tilde{\gamma}\da \gamma\circ\phi^{-1}$ auf $[\alpha,\beta]\da\phi([a,b])$ stückweise $C^1$, $\tilde{\gamma}([a,b]) = \gamma([a,b]) = \Gamma$ und es gilt:
+\begin{align*}
+\integral{\Gamma}{}{f}{z}=&\integral{\alpha}{\beta}{f(\tilde{\gamma}(s))\tilde{\gamma}^\prime(s)}{s} = \sum_{k=1}^m\integral{\phi(t_{k-1})}{\phi(t_k)}{f(\gamma(\phi^{-1}(s)))\gamma^\prime(\phi^{-1}(s))}{(\phi^{-1}(s))}\\
+\underset{t=\phi^{-1}(s)}{\overset{\eqref{2.2}}{=}}& \sum^m_{k=1}\integral{t_{k-1}}{t_k}{f(\gamma(t))\gamma^\prime(t)}{t} = \integral{a}{b}{f(\gamma(t))\gamma^\prime(t)}{t} = \integral{\Gamma}{}{f(z)}{z}.
+\end{align*}
+
+\item Seien $\gamma = \alpha +\i\beta$, $f=u+\i v$, $\reell{\alpha,\beta,u,v}$. Dann gilt:
+\begin{align*}
+\integral{\Gamma}{}{f}{z}&=\integral{a}{b}{f(\gamma(t))\gamma^\prime(t)}{t} = \integral{a}{b}{(u(\gamma(t))+\i v(\gamma(t)))(\alpha^\prime(t)+\i\beta^\prime(t))}{t}\\
+&=\integral{a}{b}{u(\gamma(t))\alpha^\prime(t)-v(\gamma(t))\beta^\prime(t)}{t} + \i\integral{a}{b}{u(\gamma(t))\beta^\prime(t)+v(\gamma(t))\alpha^\prime(t)}{t}\\
+&=\integral{\Gamma}{}{\cmplx{u}{-v}\cdot}{(x,y)}+\i\integral{\Gamma}{}{\cmplx{v}{u}\cdot}{(x,y)}.
+\end{align*}
 \end{enumerate}
 \end{bem}
 
+\begin{bsp}\label{bsp2.6}\begin{enumerate}
+\item Sei $\Gamma = \partial B(c,r)$ $m$-fach durchlaufen, $\kmplx{c}$, $r>0$. Für $k\in\set{Z}\setminus\{-1\}$ gilt mit $\gamma(t) = c + r\e^{\i t}$, $t\in[0,2\pi m]$:
+\[\integral{\Gamma}{}{(z-c)^k}{z} = \integral{0}{2\pi m}{(c+r\e^{\i t}-c)^k(c+r\e^{\i t})^\prime}{t}=\i r^{k+1}\integral{0}{2\pi m}{\e^{(k+1)\i t}}{t}.\]
+Mit Beispiel \ref{bsp2.1} erhalten wir:
+\[\integral{\Gamma}{}{(z-c)^k}{z} = \frac{r^{k+1}}{k+1}(\e^{2\pi m(k+1)\i}-1) = 0.\]
+Nun sei $k=-1$. Dann gilt:
+\[\int_\Gamma\!\!\frac{\mathrm{d}z}{z-c}=\integral{0}{2\pi m}{\frac{1}{r\e^{\i t}}r\i\e^{\i t}}{t}=\integral{0}{2\pi m}{\i}{t} = 2\pi\i m.\]
 
+\item Seien $\Gamma = \overrightarrow{0w}$ und $w\in\Sigma_\pi$. Mit $\gamma(t)=tw$, $t\in[0,1]$, gilt:
+\[\integral{\Gamma}{}{z^\frac{1}{2}}{z} = \integral{0}{1}{\sqrt{t}w^\frac{1}{2}w}{t} = w^\frac{3}{2}\integral{0}{1}{\sqrt{t}}{t} = \frac{2}{3}w^\frac{3}{2}.\]
+\end{enumerate}
+\end{bsp}
+
+\begin{satz}\label{satz2.7}
+Seien $\Gamma$ stückweise $C^1$, $f_n\in C(\Gamma,\C)$, $\nat{n}$, $D\subseteq\C$ offen.
+\begin{enumerate}
+\item Wenn $f_n\ra f$ gleichmäßig für $n\ra+\infty$, dann folgt
+\[\left|\integral{\Gamma}{}{f_n(z)}{z}-\integral{\Gamma}{}{f(z)}{z}\right| \leq l(\gamma) \|f_n-f\|_\infty\ra 0\]
+für $n\ra+\infty$.
+
+\item Sei $h\in C(D\times\Gamma,\C)$. Dann ist die Abbildung
+\[z\mapsto\integral{\Gamma}{}{h(z,w)}{w}\]
+von $D$ nach $\C$ stetig.
+
+\item Wenn $\displaystyle\sum_{n\geq1}f_n(z)$ gleichmäßig in $z\in\Gamma$ konvergiert, dann gilt:
+\[\integral{\Gamma}{}{\sum_{n=1}^\infty f_n(z)}{z} = \sum_{n=1}^\infty\integral{\Gamma}{}{f_n(z)}{z}.\]
+
+\item Sei $h\in C(D\times\Gamma,\C)$, sodass für jedes $w\in\Gamma$ die Abbildung $z\mapsto h(z,w)$ von $D$ nach $\C$ differenzierbar ist und $\frac{\partial}{\partial z}h\in C(D\times\Gamma,\C)$. Dann existiert
+\[\frac{\mathrm{d}}{\mathrm{d}z}\integral{\Gamma}{}{h(z,w)}{w} = \integral{\Gamma}{}{\frac{\partial}{\partial z}h(z,w)}{w}.\]
+\end{enumerate}
+\end{satz}
+
+\begin{proof}\begin{enumerate}
+\item $\displaystyle\left|\integral{\Gamma}{}{f_n(z)}{z}-\integral{\Gamma}{}{f(z)}{z}\right| = \left|\integral{a}{b}{(f_n(\gamma(t))-f(\gamma(t)))\gamma^\prime(t)}{t}\right|$
+\[\leq\integral{a}{b}{|f_n(\gamma(t))-f(\gamma(t))|\cdot|\gamma^\prime(t)|}{t}\leq\|f-f_n\|_\infty\integral{a}{b}{|\gamma^\prime(t)|}{t} = \|f-f_n\|_\infty l(\gamma)\ra 0\]
+für $n\ra+\infty$.
+
+\item Seien $z_n,z_0\in D$ mit $z_n\ra z_0$. Sei $r>0$, so dass $B=\bar{B}(z_0,r)\subseteq D$. Für alle genügend großen $\nat{n}$ gilt dann $z_n\in B$. Da $(z,w)\mapsto h(z,w)$ auf der kompakten Menge $B\times\Gamma$ gleichmäßig stetig ist, konvergiert $f_n(w) = h(z_n,w)$ gleichmäßig in $w\in\Gamma$ gegen $f(w)\da h(z_0,w)$ für $n\ra+\infty$. Mit (a) folgt die Behauptung.
+
+\item Folgt aus (a) mit $\displaystyle\sum_{k=1}^\infty f_k$ statt $f_n$.
+
+\item Seien $z_0\in D$, $r>0$, $z_n\in B\da \bar{B}(z_0,r)\subseteq D$ mit $z_n\neq z_0$ für alle $\nat{n}$ und $z_n\ra z_0$ für $n\ra+\infty$. Sei $w\in\Gamma$. Dann gilt:
+\begin{gather*}
+\left|\frac{h(z_n,w)-h(z_0,w)}{z_n-z_0}\right| \overset{\eqref{2.1}}{=}\left|\frac{1}{z_n-z_0}\integral{0}{1}{\frac{\mathrm{d}}{\mathrm{d}t}h(z_0+t(z_n-z_0),w)}{t}\right|\\
+\begin{split}
+\overset{\text{KR}}{=}&\left|\frac{1}{z_n-z_0}\integral{0}{1}{\left(\frac{\partial h}{\partial z}\right)(z_0+t(z_n-z_0),w)\cdot(z_n-z_0)}{t}\right|\\ 
+\leq& \frac{1}{|z_n-z_0|}\integral{0}{1}{|\left(\frac{\partial h}{\partial z}\right)(z_0+t(z_n-z_0),w)|\cdot|z_n-z_0|}{t}\\
+\leq&\integral{0}{1}{|\left(\frac{\partial h}{\partial z}\right)(z_0+t(z_n-z_0),w)|}{t} \leq \max_{z\in B,w\in\Gamma} |\frac{\partial h}{\partial z}(z,w)| \ad c_1 < \infty.
+\end{split}\end{gather*}
+Weiter ist für eine Parametrisierung $\gamma\colon[0,1]\ra\C$ von $\Gamma$:
+\[\frac{1}{z_n-z_0}\left(\integral{\Gamma}{}{h(z_n,w)}{w}-\integral{\Gamma}{}{h(z_0,w)}{w}\right) = \integral{\Gamma}{}{\frac{h(z_n,w)-h(z_0,w)}{z_n-z_0}}{w}\]
+\[=\integral{0}{1}{\frac{h(z_n,\gamma(t))-h(z_0,\gamma(t))}{z_n-z_0}\gamma^\prime(t)}{t}.\]
+Es gilt für $t\in[0,1]$:
+\[\left|\frac{h(z_n,\gamma(t))-h(z_0,\gamma(t))}{z_n-z_0}\cdot\gamma^\prime(t)\right| \leq c_1\cdot\|\gamma^\prime\|_\infty\cdot\charfnkt{[0,1]}(t)\]
+und die Funktion $c_1\|\gamma^\prime\|\charfnkt{[0,1]}$ ist auf $[0,1]$ integrierbar. Außerdem gilt:
+\[\frac{h(z_n,\gamma(t))-h(z_0,\gamma(t))}{z_n-z_0}\ra\frac{\partial h}{\partial z}(z_0,\gamma(t))\]
+für $n\ra+\infty$.
+
+Majorisierte Konvergenz liefert die Existenz von
+\[\limf{n}\frac{1}{z_n-z}\left(\integral{\Gamma}{}{h(z_n,w)}{w}-\integral{\Gamma}{}{h(z_0,w)}{w}\right) = \frac{\partial}{\partial z}\left(\integral{\Gamma}{}{h(\cdot,w)}{w}\right)(z_0)\]
+und es gilt
+\begin{align*}
+\frac{\partial}{\partial z}\left(\integral{\Gamma}{}{h(\cdot,w)}{w}\right)(z_0) &=\integral{0}{1}{\limf{n}\frac{h(z_n,\gamma(t))-h(z_0,\gamma(t))}{z-z_0}\gamma^\prime(t)}{t}\\
+&=\integral{0}{1}{\frac{\partial h}{\partial z}(z_0,\gamma(t))\gamma^\prime(t)}{t}\\
+&=\left(\integral{\Gamma}{}{\frac{\partial h}{\partial z}(\cdot,w)}{w}\right)(z_0).\tag*{\qedhere}%klappt irgendwie sonst nicht ....
+\end{align*}
+\end{enumerate}\end{proof}
+
+\paragraph{Erinnerung:} Sei $X$ ein Vektorraum. Eine Teilmenge $M\subseteq X$ heißt zusammenhängend, wenn aus $M\subseteq O_1\subseteq O_2$, $M\cap O_1\neq \leer$, $M\cap O_2\neq\leer$ und $O_1,O_2\subseteq X$ offen $M\cap O_1 \cap O_2 \neq \leer$ folgt. Eine offene und zusammenhängende Menge heißt Gebiet.
 \end{document}
