@@ -893,7 +893,7 @@ biholomorph. Mit Verschiebung: $\sin\colon S_r(-\frac{\pi}{2},\frac{\pi}{2})\ra 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Der Integralsatz von Cauchy}
-\section{Komplexe Kurvenintegrale}
+\section{Das komplexe Kurvenintegral}
 
 Sei $f\colon [a,b]\ra \C$ stückweise stetig (d.h. für alle $t\in[a,b]$ existieren die rechts- und linksseitigen Grenzwerte und diese sind bis auf endlich viele $t_k\in[a,b]$ $(k=1,\dotsc,m)$ gleich.
 
@@ -1154,12 +1154,97 @@ folgt. Eine offene und zusammenhängende Menge heißt \emph{Gebiet}.
 \begin{satz} \label{satz2.10}
   Sei $D\subseteq\C$ ein Gebiet und $f\in H(D)$ mit $f^\prime=0$. Dann ist $f$ konstant.
 \end{satz}
+\begin{proof}
+  Wähle $z_0\in D$ fest.
+  \begin{enumerate}
+  \item \label{satz2.10_1} Sei $z\in D$ mit $\overrightarrow{z_0z}\subseteq D$ und $z\neq z_0$. Dann:
+    \[ 0=\Integral{\overrightarrow{z_0z}}{}{f^\prime(w)}{w} =
+    \integral{0}{1}{f^\prime(\underbrace{z_0+t(z-z_0)}_{=\gamma(t)})(z-z_0)}{t} = (f(z)-f(z_0))(z-z_0), \]
+    also ist $f(z)=f(z_0)$.
+  \item Sei nun $w\in D$ beliebig. Nach Satz~\ref{satz2.8} gibt es einen Streckenzug $\Gamma\subseteq D$ von $z_0$ nach $w$. Aus
+    endlicher Anwendung von \ref{satz2.10_1} folgt $f(w)=f(z_0)$. \qedhere 
+  \end{enumerate}
+\end{proof}
 \begin{bem*}
   Dieser Satz ist falsch für unzusammenhängendes $D$.
 \end{bem*}
+
+\begin{dfn}
+  Sei $D\subseteq\C$ ein Gebiet und $f\in C(D,\C)$. Eine Funktion $F\in H(D)$ mit $F^\prime=f$ heißt \emph{Stammfunktion} von
+  $f$ auf $D$.
+\end{dfn}
+
+\begin{bsp*}
+  Polynome, $\exp$, $\sin$, $\cos$ haben Stammfunktionen auf $\C$. $f(z)=\frac1z$ hat die Stammfunktion $\log$ auf
+  $\Sigma_\pi$.
+\end{bsp*}
+
+\begin{bem} \label{bem2.12}
+  Sei $F$ eine Stammfunktion von $f$ auf einem Gebiet $D$. Dann sind alle anderen Stammfunktionen von $f$ auf $D$ von der Form
+  $F+c$ für eine Konstante $c\in\C$, denn: Sei $F_1\in H(D)$ eine weitere Stammfunktion. Dann: $(F-F_1)^\prime = f-f = 0$. Also
+  ist $F-F_1$ konstant nach Satz~\ref{satz2.8}. \folgt es gibt ein \kmplx{c} mit $F_1=F+c$.
+\end{bem}
+
+\begin{satz}[vgl. Satz 3.12 Analysis 2] \label{satz2.13}
+  Seien $D\subseteq\C$ ein Gebiet und $f\in C(D,\C)$. Dann sind die folgenden Aussagen äquivalent:
+  \begin{enumerate}
+  \item $f$ besitzt eine Stammfunktion $F$.
+  \item Für alle Kurven $\Gamma_1, \Gamma_2 \subseteq D$, die beide von einem beliebigen $z\in D$ zu einem beliebigen $w\in D$
+    laufen, gilt \[\integral{\Gamma_1}{}{f(z)}{z} = \integral{\Gamma_2}{}{f(z)}{z}.\]
+  \item Für alle geschlossenen Kurven $\Gamma\subseteq D$ gilt \[\integral{\Gamma}{}{f(z)}{z} = 0.\]
+  \end{enumerate}
+  In diesem Fall folgt für jede Kurve $\Gamma\subseteq D$ von $\gamma(a)$ nach $\gamma(b)$, dass
+  \[\integral{\Gamma}{}{f(z)}{z} = F(\gamma(b)) - F(\gamma(a)).\]
+\end{satz}
 \begin{proof}
-  Wähle $z_0\in D$ fest. % CMAF
+  \begin{enumerate}
+  \item[a)]$\!\Rightarrow$ c): Sei $\Gamma\subseteq D$ eine Kurve von $\gamma(a)$ nach $\gamma(b)$. Dann:
+    \begin{multline*}
+      \integral{\Gamma}{}{f(z)}{z} \nach{=}{Def.} \sum_{k=1}^{m}{\,\Integral{t_{k-1}}{t_k}{f(\gamma_k(t))\gamma_k^\prime(t)}{t}}
+      \nach{=}{\eqref{2.1}} \\ \sum_{k=1}^{m}{\bigl(F(\gamma_k(t_k))-F(\gamma_k(t_{k+1}))\bigr)} = F(\gamma(b)) - F(\gamma(a)).
+    \end{multline*}
+    Also gilt die letzte Behauptung im Falle der Existenz einer Stammfunktion. Wenn $\gamma(a)=\gamma(b)$, folgt hiermit c)
+    aus a).
+  \item[c)]$\!\Rightarrow$ b): Seien $\Gamma_1, \Gamma_2 \subseteq D$ wie in b). Dann ist $\Gamma\da\Gamma_1+(-\Gamma_2)$ eine
+    geschlossene Kurve von $\gamma_1(a)$ nach $\gamma_1(a)$ (über $\gamma_1(b)=\gamma_2(b)$) und es gilt
+    \[ 0 \nach{=}{c)} \integral{\Gamma}{}{f}{z} \nach{=}{Bem.~\ref{bem2.5}} \integral{\Gamma_1}{}{f}{z} -
+    \integral{\Gamma_2}{}{f}{z}.\]
+    Daraus folgt b).
+  \item[b)]$\!\Rightarrow$ a): Sei $z_0\in D$ fest, $z\in D$ beliebig. Nach Satz~\ref{satz2.8} gibt es einen Streckenzug
+    $\Gamma(z)\subseteq D$ von $z_0$ nach $z$. Setze \[F(z) = \Integral{\Gamma(z)}{}{f(w)}{w}.\] Wähle $r>0$ mit
+    $B(z,r)\subseteq D$. Sei $0<\abs{h}<r$. Dann sind $-\Gamma(z)+\Gamma(z+h)$ und $\overrightarrow{z(z+h)}$ Kurven in $D$ von
+    $z$ nach $z+h$. Damit: %TODO Bild
+    \begin{multline*}
+      \frac1h \bigl(F(z+h)-F(z)\bigr) \nach{=}{Bem.~\ref{bem2.5}} \frac1h\!\!\!\!\!\!\!
+      \Integral{-\Gamma(z)+\Gamma(z+h)}{}{\!\!\!\!\!\!\!\!f(w)}{w}
+      \\ \nach{=}{b)} \frac1h\!\!\! \Integral{\overrightarrow{z(z+h)}}{}{\!\!\!f(w)}{w} \nach{=}{Def.} \frac1h
+      \integral{0}{1}{f(z+th)h}{t} 
+      \\ = \integral{0}{1}{f(z+th)}{t} \to \integral{0}{1}{f(z)}{t} = f(z) \quad (h\to0) \quad \text{(nach
+        Satz~\ref{satz2.7}).} \qedhere
+    \end{multline*}
+  \end{enumerate}
 \end{proof}
+
+\begin{bsp}
+  \begin{enumerate}
+  \item Sei $\Gamma$ ein Weg von $z_1$ nach $z_2$. Dann gilt
+    \[\integral{\Gamma}{}{\cos{z}}{z} = \sin{z_2}-\sin{z_1}.\]
+  \item Sei $\ep\in(0,\pi)$ und $\Gamma_\ep$ eine Kurve in $\Sigma_\pi$ von $\e^{\i(-\pi+\ep)}$ nach $\e^{\i(\pi-\ep)}$. Dann
+    gilt
+    \[\int_{\Gamma_\ep}{\frac{\mathrm{d}z}{z}} = \log{\e^{\i(\pi-\ep)}} - \log{\e^{\i(-\pi+\ep)}} = \i(\pi-\ep) - \i(-\pi+\ep)
+    = 2\i(\pi-\ep).\]
+    Ferner gilt
+    \[\int_{\mathbb{D}}{\frac{\mathrm{d}z}{z}} = \integral{0}{2\pi}{\frac{\i\e^{\i t}}{\e^{\i t}}}{t} = 2\pi\i \neq 0,\]
+    obwohl $\mathbb{D}$ eine geschlossene Kurve ist. Also besitzt die Funktion $f(z)=\frac1z$ keine Stammfunktion auf dem Gebiet
+    $\C\setminus\{0\}$.
+  \end{enumerate}
+\end{bsp}
+
+\begin{dfn}
+  Sei $\Gamma\subseteq\C$ eine geschlossene Kurve und $z\in\C\setminus\Gamma$. Dann heißt
+  \[ n(\Gamma,z) = \frac{1}{2\pi\i} \int_\Gamma{\frac{\mathrm{d}w}{w-z}} \]
+  \emph{Windungszahl} (oder \emph{Index}) von $\Gamma$ bei $z$.
+\end{dfn}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Vorlesung vom 25.5
@@ -1301,7 +1386,7 @@ Dabei gilt für den Imaginärteil:
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Integralsatz und -formel von Cauchy für sternförmige Gebiete}
+\section{Integralsatz und -formel von Cauchy für sternförmige Gebiete}
 
 \begin{satz}[Lemma von Goursat]\label{satz2.19} Seien $D\subseteq\C$ offen, $\kmplx{w_0}$, $f\in C(D,\C)\cap H(D\setminus\{w_0\})$. Sei $\Delta\subseteq D$ eine abgeschlossene Dreiecksfläche. Dann:
 \[\Integral{\partial\Delta}{}{f(z)}{z}=0.\]
