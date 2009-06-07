@@ -1400,4 +1400,102 @@ Daraus folgt $J=0$, also die Behauptung im Fall $w_0\notin\Delta$.
 \end{proof}
 \renewcommand{\labelenumi}{\alph{enumi})}
 
+%%%%%%%%%%%%%%%%%%%
+%% Vorlesung vom 4.6.
+
+% zu 2.25
+\begin{proof}
+Seien $z_0\in D$, $r > 0$ mit $\abg{B}(z_0,r)\subseteq D$. Seien $w\in\Gamma\da \partial B(z_0,r)$, $\nat{n}$, $z\in B(z_0,r)$. Dann existiert
+\[\frac{\partial^n}{\partial z^n}\frac{f(w)}{w-z} = n!\frac{f(w)}{(w-z)^{n+1}}\]
+und
+\[(w,z)\mapsto \frac{\partial^n}{\partial z^n}\frac{f(w)}{w-z}\]
+ist stetig für $w\in T$, $z\in B(z_0,r)$. Somit folgt aus der (CIF) und Satz~\ref{satz2.7}d) (mit ``$D=B(z_0,r)$''), dass $f$ auf $D$ beliebig oft differenzierbar ist und \eqref{2.6} gilt. Da $l(\Gamma) = 2\pi r$ und $(w-z_0)^{-n-1}=r^{-n-1}$, folgt \eqref{2.7} aus \eqref{2.6} (mit $z=z_0$).
+
+Seien nun $0<r'<r$ $z\in\abg{B}(z_0,r')$. Dann gilt:
+\[\frac{\abs{z-z_0}}{\abs{w-z_0}}\leq\frac{r'}{r}\ad q < 1.\]
+Damit:
+\[\frac{f(w)}{w-z}=\frac{f(w)}{w-z_0}\frac{1}{1-\frac{z-z_0}{w-z_0}} = \frac{f(w)}{w-z_0}\sum_{n=0}^\infty\left(\frac{z-z_0}{w-z_0}\right)^n.\tag{$*$}\]
+
+Diese reihe konvergiert absolut und gleichmäßig für $w\in\Gamma$ und $z\in\abg{B}(z_0,r')$. Dann gilt:
+\[f(z)\!\!\nach{=}{(CIF)}\!\! \frac{1}{2\pi\i}\integral{\Gamma}{}{\frac{f(w)}{w-z}}{w} \underset{\text{Satz~\ref{satz2.7}c)}}{\overset{*}{=}} \sum_{n=0}^\infty (z-z_0)^n\underbrace{\frac{1}{2\pi\i}\integral{\Gamma}{}{\frac{f(w)}{(w-z_0)^{n+1}}}{w}}_{\overset{\eqref{2.6}}{=}\frac{1}{n!}f^{(n)}(z_0)}.\]
+Damit folgt \eqref{2.8}. Wenn $D=\C$, wähle $z =0$, $r$ beliebig groß und erhalte so letzte Bedingung.
+\end{proof}
+
+\begin{bsp}\label{bsp2.26}\begin{enumerate}
+\item Das Theorem ist falsch im Reellen, Beispiel aus Ana 1:
+\begin{enumerate}
+\item $\displaystyle f(x)=\begin{cases}x^{\frac{3}{2}}\sin\frac{1}{x},&x>0,\\0,&x\leq 0.\end{cases}\folgt$ $f$ ist differenzierbar auf $\R$ (mit $f^\prime(0) = 0$) \textit{aber} $f^\prime$ ist unbeschränkt für $x\ra 0_+$, also unsetetig und $\nexists f^{\prime\prime}$.
+
+\item $\displaystyle f(x)=\begin{cases}\e^{-\frac{1}{x^2}},&x>0,\\0,&x\leq0.\end{cases}\leadsto f\in C^\infty(\R)$ aber $f^{(n)}(0)=0$ $(\forall\nat{n})$, als Taylorreihe von $f$ in $0$ ist konstant 0, also ungleich $f$.
+\end{enumerate}
+\item Sei $f(z)=(1+z)^\alpha$ (wobei $\reell{\alpha}$ fest, $z\in D = \C\setminus(-\infty,-1]$) $\leadsto f$ ist holomorph auf $D$. Aus Theorem~\ref{thm2.25} folgt: $f$ hat Potenzreihe in $z_0=0$. Diese ist gleich der Binomialreihe aus Ana 1. Nach Theorem~\ref{thm2.25} ist der Konvergenzradius $\rho\geq 1$. \textit{Falls} $\rho <1$ hätten alle Ableitungen von $f$ eine stetige Fortsetzung auf $\partial B(0,1)$. Das widerspricht der Definition von $f\folgt\rho=1$.
+\end{enumerate}
+\end{bsp}
+
+\begin{kor}\label{kor2.27}
+Gegeben sei eine Borelmenge $X\subseteq\R^d$ und eine Funktion $h\colon D\times X\to\C$, wobei $D\subseteq\C$ offen, mit:
+\begin{enumerate}
+\item $\forall z\in D$ ist $x\mapsto h(z,x)$ integrierbar auf $X$.
+\item $\forall x\in X$ ist $z\mapsto h(z,x)$ holomorph auf $D$.
+\item Es existiert ein integrierbares $g\colon X\to\R_+$ mit $\abs{h(z,x)}\leq g(x)$ $(\forall z\in D,\ x\in X)$. Dann ist
+\[z\mapsto H(z)\da \integral{X}{}{h(z,x)}{x}\]
+holomorph auf $D$ und es gilt:
+\[H^{(k)}(z)=\integral{X}{}{\frac{\partial^k}{\partial z^k}h(z,x)}{x}\quad(\forall\nat{k}).\]
+\end{enumerate}
+\end{kor}
+
+\begin{proof} Sei $z_0\in D$, $r>0$ fest (aber beliebig) mit $B(z_0,r)\subseteq D$. Sei $z\in B(z_0,r)\!\!\!\folgt\!\!\!\abg{B}(z_0,r)\subseteq D$. \eqref{2.7} für $z$ und $\nat{k}$ liefert
+\[\abs{\frac{\partial^k}{\partial z^k}h(z,x)}\leq \frac{k!}{r^k}\max_{\abs{w-z}=r}\abs{h(w,x)}\overset{\text{n.V.}}{\leq}\frac{h!}{r^k}g(x)\quad\text{(für jedes feste $x\in X$.)}\tag{$*$}\]
+
+Seien nun $z_n\ra z_0$, mit $z_n\in B(z_0,r)\setminus\{z_0\}$ $(\forall\nat{n})$. Dann:
+\begin{gather*}
+D_n\da \frac{1}{z_n-z_0}\Bigl(H(z_n)-H(z_0)\Bigr) = \integral{X}{}{\frac{1}{z_n-z_0}\Bigl(h(z_n,x)-h(z_0,x)\Bigr)}{x}\\
+\overset{\eqref{2.1}}{=}\integral{X}{}{\frac{1}{z_n-z_0}\integral{0}{1}{\underbrace{\left(\frac{\partial}{\partial z}h\right)\Bigl(z_0+t(z_n-z_0),x\Bigr)}_{\ad\varphi_n(t,x)}\cdot\,(z_n-z_0)}{t}}{x}
+\end{gather*}
+(Vergleiche hierzu das Vorgehen im Beweis zu Satz~\ref{satz2.7}d)).
+
+{Es gilt:} $\varphi_n(t,x)\ra\frac{\partial}{\partial z}h(z_0,x)$ $(n\ra+\infty)$ gleichmäßig in $t\in[0,1]$, für jedes feste $x\in X$, da
+\[z\mapsto\frac{\partial}{\partial z}h(z,x)\]
+stetig ist nach Theorem~\ref{thm2.25}. Also:
+\[\integral{0}{1}{\varphi_n(t,x)}{t}=\frac{\partial}{\partial z}h(z_0,x)\quad(n\ra+\infty,\ x\in X).\]
+Ferner:
+\[\abs{\integral{0}{1}{\varphi_n(t,x)}{t}}\overset{*}{\underset{(k=1)}{\leq}}\frac{1}{r}g(x)\quad(\forall\nat{n},\ x\in X),\]
+wobei $g(x)$ integrierbar ist.
+Majorisierte Konvergenz liefert:
+\[D_n\longrightarrow\integral{X}{}{\frac{\partial}{\partial z}h(z_0,x)}{x}\quad(n\ra\infty).\]
+$\folgt H$ ist bei $z_0$ differenzierbar $\folgt H\in H(D)$. Ferner:
+\[H^\prime(z) = \integral{X}{}{\frac{\partial}{\partial z}h(z,x)}{x}\quad(\forall z\in D).\]
+Beachte: $\frac{\partial}{\partial z}h(z,x)$ ist in $x$ messbar, also liefern Theorem~\ref{thm2.25} und $(*)$ eine iterative Formel für $H^{(k)}$.
+\end{proof}
+
+\begin{bsp}[Laplacetransformation]\label{bsp2.28}
+Sei $f\colon\R_+\ra\C$ messbar, so dass für gewisse $w\in\R$, $c>0$ gilt:
+\[\abs{f(t)}\leq c\e^{wt}\quad(\forall t\geq 0).\]
+Dann:
+\[\exists\hat{f}(\lambda)=\integral{0}{\infty}{\e^{-\lambda t}f(t)}{t}\]
+für $\lambda\in\C$ mit $\Re{\lambda}>w$ und ist dort holomorph mit
+\[\hat{f}(\lambda)^{(n)}=(-1)^n\integral{0}{\infty}{\e^{-\lambda t}t^n f(t)}{t}\quad(\forall\lambda\text{ mit }\Re{\lambda}>w,\ \nat{n}).\]
+
+\begin{proof} Setze
+\[h(\lambda, t)=\e^{-\lambda t}f(t)\quad\text{für }t\geq 0,\ \Re{\lambda}>w.\]
+Klar: $h$ ist in $\lambda$ holomorph $(\forall t\geq 0)$.
+
+Sei $\ep >0$ fest aber beliebig, $\Re{\lambda}\geq w+\ep > w$. Dann:
+\[\abs{h(\lambda,t)}=\e^{-\Re{\lambda}t}\abs{f(t)}\leq\e^{-wt}\e^{-\ep t}\abs{f(t)}\overset{\text{n.V.}}{\leq}c\e^{-\ep t}\ad g(t),\]
+wobei $g(t)$ integrierbar und unabhängig von $\lambda$ ist.
+
+Korollar~\ref{kor2.27} liefert Holomorphie von $\hat{f}(\lambda)$ für $\Re{\lambda}\geq w+\ep$, folglich die Holomorphie für $\Re{\lambda}>w$, da $\ep>0$ beliebig. Weiter gilt:
+\[\hat{f}(\lambda)^{(n)}=\integral{0}{\infty}{\left(\frac{\d}{\d\lambda}\right)^n\e^{-\lambda t}f(t)}{t}=(-1)^n\integral{0}{\infty}{t^n\e^{-\lambda t}f(t)}{t}\quad(\Re{\lambda}>w).\qedhere\]
+\end{proof}
+\end{bsp}
+
+\begin{kor}[Morera]\label{kor2.29}
+Sei $f\in C(D,\C)$ so dass
+\[\integral{\partial\Delta}{}{f}{z}=0\]
+für alle Dreiecke $\Delta\subseteq D$. Dann: $f\in H(D)$.
+\end{kor}
+
+\begin{proof} Sei $z\in D$. Wähle $r>0$ mit $B(z,r)\subseteq D$. Nach dem Beweis von Theorem~\ref{thm2.21} impliziert die Vorraussetzung, dass $f$ auf $B(z,r)$ (sternförmig) eine Stammfunktion $F\in H(B(z,r))$ besitzt. Nach Theorem~\ref{thm2.25} ist $F\in C^2$ und somit ist $f=F^\prime$ differenzierbar auf $B(z,r)$. Daraus folgt die Behauptung.
+\end{proof}
+
 \end{document}
