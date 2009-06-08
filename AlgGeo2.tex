@@ -1736,6 +1736,106 @@ Sei $S$ ein Schema und $X,Y$ $S$-Schemata. Dann heißt das Produkt über X und Y
   (die ``reduzierte induzierte Struktur'')
 \end{Folg}
 
+\section{Separierte Morphismen}
+\begin{Def}
+  \label{def:7.1}
+  \begin{enumerate}
+  \item Ein Morphismus $f:X\to S$ von Schemata heißt \emph{separiert},  wenn der ``Diagonalmorphismus'' $\Delta_f:X\to X\times_S X$ 
+    eine abgeschlossene Einbettung ist.
+    \begin{center}
+      \begin{tikzpicture}
+        \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+        { 
+          & X & \\
+          &	X \times_S X	&	\\
+          X & & X \\
+          & S & \\
+        };
+        \path[->,font=\scriptsize]
+        (m-1-2) edge[densely dotted] node[auto] {$ \Delta_f $}	(m-2-2)	
+        edge[bend right=30] node[auto,swap] {$ \id $}		(m-3-1)
+        edge[bend left=30] node[auto] {$ \id $}		(m-3-3)
+        (m-2-2) edge node[auto,swap] {} (m-3-1)
+        edge node[auto] {} (m-3-3)
+        (m-3-1) edge node[auto,swap] {$f$} (m-4-2)
+        (m-3-3) edge node[auto,swap] {$f$} (m-4-2);
+        
+      \end{tikzpicture}
+    \end{center}
+  \item $X$ heißt \emph{separiert}, wenn $X\to \Spec \mathbb Z$ separiert ist.
+  \end{enumerate}
+\end{Def}
+
+\begin{nnBsp}
+  Sei $X$ die affine Gerade mit doppeltem Nullpunkt, dann ist $X$ nicht separiert (über $k$): \\
+  Seien also $S=\Spec k, U=\mathbb A_k^1\backslash\{(0,0)\}=\Spec(k[X]_X)$ und $X$ die Verklebung von $\mathbb A_k^1$ mit sich selbst längs $U$. 
+  Es ist
+  \begin{align*}
+    & U\times_S U=\mathbb A_k^2-\text{``Achsenkreuz''} \\
+    & \Delta=\Delta_f(X)=\{(u,u):u\in U\}\cup\{(0_1,0_1),(0_2,0_2)\}
+  \end{align*}
+  Es gilt
+  \begin{align*}
+    \bar{\Delta}=\Delta\cup\{(0_1,0_2),(0_2,0_1)\}
+  \end{align*}
+  denn: jede Umgebung von $(0_1,0_2)$ enthält Punkte von $\Delta$!
+\end{nnBsp}
+
+\begin{Bem}
+  \label{bem:7.2}
+  Jeder Morphismus von affinen Schemata ist separiert.
+\end{Bem}
+
+\begin{Bew}
+  Sei $X=\Spec B, Y=\Spec A, f:X\to Y, \alpha:A\to B$, $\alpha$ der Ringhomomorphismus zu $f$.
+  Dann ist $X\times_YX=\Spec(B\otimes_A B)$. $\Delta$ wird induziert von
+  \begin{align*}
+    \Abb{\mu}{B\otimes_A B}{B}{b_1\otimes b_2}{b_1\cdot b_2}
+  \end{align*}
+  $\mu$ ist surjektiv, also ist $\Delta$ abgeschlossen. (Das ist so, weil ein surjektiver Ringhomomorphismus
+  Primideale auf Primideale abbildet und deswegen alle Primideale, die
+  \begin{align*}
+    \bigcap_{\mathfrak p\text{ Primideal }}\mu^{-1}(\mathfrak p)
+  \end{align*}
+  enthalten, schon Urbilder von Primidealen waren.)
+\end{Bew}
+
+\begin{Bem}
+  \label{bem:7.3}
+  Seien $f,g:X\to Y$ Morphismen von $S$-Schemata. Ist $Y$ über $S$ separiert, so ist
+  \begin{align*}
+    E(f,g)\defeqr\{x\in X:f(x)=g(x)\}
+  \end{align*}
+  abgeschlossen in $X$.
+\end{Bem}
+
+\begin{Bew}
+  Sei $h:X\to Y\times_S Y$ der von $f$ und $g$ induzierte Morphismus.
+  \begin{center}
+    \begin{tikzpicture}
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+      { 
+        & X & \\
+        &	Y \times_S Y	&	\\
+        Y & & Y \\
+        & S & \\
+      };
+      \path[->,font=\scriptsize]
+      (m-1-2) edge[densely dotted] node[auto] {$h$}	(m-2-2)	
+      edge[bend right=30] node[auto,swap] {$f$}		(m-3-1)
+      edge[bend left=30] node[auto] {$g$}		(m-3-3)
+      (m-2-2) edge node[auto,swap] {} (m-3-1)
+      edge node[auto] {} (m-3-3)
+      (m-3-1) edge node[auto,swap] {$p$} (m-4-2)
+      (m-3-3) edge node[auto,swap] {} (m-4-2);
+      
+    \end{tikzpicture}
+  \end{center}
+  Dann ist $E(f,g)=h^{-1}(\Delta)$.
+\end{Bew}
+
+
+
 \appendix
 
 \def\indexspace{\par\medskip}
