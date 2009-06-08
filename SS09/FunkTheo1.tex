@@ -1225,7 +1225,7 @@ folgt. Eine offene und zusammenhängende Menge heißt \emph{Gebiet}.
   \end{enumerate}
 \end{proof}
 
-\begin{bsp}
+\begin{bsp} \label{bsp2.14}
   \begin{enumerate}
   \item Sei $\Gamma$ ein Weg von $z_1$ nach $z_2$. Dann gilt
     \[\integral{\Gamma}{}{\cos{z}}{z} = \sin{z_2}-\sin{z_1}.\]
@@ -1234,9 +1234,9 @@ folgt. Eine offene und zusammenhängende Menge heißt \emph{Gebiet}.
     \[\int_{\Gamma_\ep}{\frac{\mathrm{d}z}{z}} = \log{\e^{\i(\pi-\ep)}} - \log{\e^{\i(-\pi+\ep)}} = \i(\pi-\ep) - \i(-\pi+\ep)
     = 2\i(\pi-\ep).\]
     Ferner gilt
-    \[\int_{\mathbb{D}}{\frac{\mathrm{d}z}{z}} = \integral{0}{2\pi}{\frac{\i\e^{\i t}}{\e^{\i t}}}{t} = 2\pi\i \neq 0,\]
-    obwohl $\mathbb{D}$ eine geschlossene Kurve ist. Also besitzt die Funktion $f(z)=\frac1z$ keine Stammfunktion auf dem Gebiet
-    $\C\setminus\{0\}$.
+    \[\int_{\partial\mathbb{D}}{\frac{\mathrm{d}z}{z}} = \integral{0}{2\pi}{\frac{\i\e^{\i t}}{\e^{\i t}}}{t} = 2\pi\i \neq 0,\]
+    obwohl $\partial\mathbb{D}$ eine geschlossene Kurve ist. Also besitzt die Funktion $f(z)=\frac1z$ keine Stammfunktion auf
+    dem Gebiet $\C\setminus\{0\}$.
   \end{enumerate}
 \end{bsp}
 
@@ -1474,83 +1474,88 @@ Ferner: $f(z)=f(z_0) + f^\prime(z_0)(z-z_0) + g(z)(z-z_0)$. Mit $\integral{\part
 Daraus folgt $J=0$, also die Behauptung im Fall $w_0\notin\Delta$.
 \item Sei $w_0\in\Delta$.
   \begin{enumerate}
-  \item Sei $w_0$ eine Ecke von $\Delta$. Sei $\ep>0$. Zerlege $\Delta$ wie in 1) per Seitenhalbierung. Wähle dabei stets
-    Teildreieck mich Ecke $w_0$. Erhalte Dreiecke $\Delta_1^*,\dotsc,\Delta_m^*$ mit disjunktem Inneren, sodass
-    $w_0\in\Delta_1^*$, $l(\partial\Delta_1^*)\le\ep$, $w_0\notin\Delta_k^*$ für $k\ge2$. Wie in 1) erhalten wir
-    \[\abs{\Integral{\partial\Delta}{}{f}{z}} = \abs{\sum_{k=1}^m{\Integral{\partial\Delta_k^*}{}{f}{z}}} =
+  \item \label{2a} Sei $w_0$ eine Ecke von $\Delta$. Sei $\ep>0$. Zerlege $\Delta$ wie in 1) per Seitenhalbierung. Wähle dabei
+    stets Teildreieck mich Ecke $w_0$. Erhalte Dreiecke $\Delta_1^*,\dotsc,\Delta_m^*$ mit disjunktem Inneren, sodass
+    $w_0\in\Delta_1^*$, $l(\partial\Delta_1^*)\le\ep$, $w_0\notin\Delta_k^*$ für $k\ge2$. Wie in 1) erhalten
+    wir \[\abs{\Integral{\partial\Delta}{}{f}{z}} = \abs{\sum_{k=1}^m{\Integral{\partial\Delta_k^*}{}{f}{z}}} =
     \abs{\Integral{\partial\Delta_1^*}{}{f}{z}} \le \ep \underbrace{\sup_{z\in\Delta}{\abs{f(z)}}}_{<\infty}. \]
     Da $\ep>0$ beliebig war, folgt $\integral{\partial\Delta}{}{f}{z} = 0$.
+  \item \label{2b} Sei $w_0\in\Delta\setminus\partial\Delta$. Zerlege $\Delta$ in $\Delta_1=\Delta(a,b,w_0)$,
+    $\Delta_2=\Delta(b,c,w_o)$
+    und $\Delta_3=\Delta(c,a,w_0)$. Damit erhalten wir nach \ref{2a}
+    \[ \integral{\partial\Delta}{}{f}{z} = \sum_{k=1}^{3}{\integral{\partial\Delta_k}{}{f}{z}} = 0. \]
+    % Bild zu b)
+    \begin{center}
+      \begin{tikzpicture}[scale=2]
+        \coordinate [label=left:{$a$}] (A) at (0,0);
+        \coordinate [label=right:{$b$}] (B) at (2,0.25);
+        \coordinate [label=above:{$c$}] (C) at (1.25,1.5);
+        \begin{scope}[red,label distance=2pt]
+          \coordinate [label=below:{$w_0$}] (w) at (1.25,0.7);
+        \end{scope}
+        
+        \draw (A) -- (B) -- (C) -- cycle;
+        \draw (A) -- (w) -- (C) (w) -- (B);
+        
+        \begin{scope}[thick,decoration={markings,mark=at position 0.4 with {\arrow{>};}}]
+          \path [blue,postaction=decorate] (A) -- (w);
+          \path [blue,postaction=decorate] (w) -- (C);
+          \path [green,postaction=decorate] (w) -- (A);
+          \path [green,postaction=decorate] (B) -- (w);
+          \path [orange,postaction=decorate] (w) -- (B);
+          \path [orange,postaction=decorate] (C) -- (w);
+        \end{scope}
+        
+        \begin{scope}[thick,decoration={markings,mark=at position 0.5 with {\arrow{>};}}]
+          \path [blue,postaction=decorate] (C) -- (A);
+          \path [green,postaction=decorate] (A) -- (B);
+          \path [orange,postaction=decorate] (B) -- (C);
+        \end{scope}
+        
+        \draw (2.5,1) node [right,text width=2.5cm] {
+          {\color{green}$\Delta_1$}\\
+          {\color{orange}$\Delta_2$}\\
+          {\color{blue}$\Delta_3$}};
+        
+        \filldraw[red] (w) circle (0.7pt);
+      \end{tikzpicture}
+    \end{center}
+  \item Sei $w_0\in\partial\Delta$, $w_0$ keine Ecke. Wie in \ref{2b} zerlegen wir $\Delta$ in zwei Teildreiecke:
+    %% Bild zu (c):
+    \begin{center}
+      \begin{tikzpicture}[scale=2]
+        \coordinate [label=left:{$a$}] (A) at (0,0);
+        \coordinate [label=right:{$b$}] (B) at (2,0.25);
+        \coordinate [label=above:{$c$}] (C) at (1.25,1.5);
+        \coordinate [label={[red]left:{$w_0$}}] (w) at ($(A)!.5!(C)$);
+        
+        \draw (A)--(B)--(C)--cycle;
+        \draw[blue] (B) -- (w);
+        \filldraw[red] (w) circle (0.7pt);
+        
+        \begin{scope}[thick,decoration={markings,mark=at position 0.5 with {\arrow{>};}}]
+          \path [green,postaction=decorate] (A) -- (B);
+          \path [orange,postaction=decorate] (B) -- (C);
+          \path [green,postaction=decorate] (w) -- (A);
+          \path [orange,postaction=decorate] (C) -- (w);
+        \end{scope}
+        
+        \begin{scope}[thick,decoration={markings,mark=at position 0.4 with {\arrow{>};}}]
+          \path [orange,postaction=decorate] (w) -- (B);
+          \path [green,postaction=decorate] (B) -- (w);
+        \end{scope}
+        
+      \end{tikzpicture}
+    \end{center}
+    Daraus erhalten wir wieder $\displaystyle\integral{\partial\Delta}{}{f}{z} = 0$. \qedhere
   \end{enumerate}
 \end{enumerate}
 \end{proof}
-\renewcommand{\labelenumi}{\alph{enumi})}
 
-%%%%%%% Bilder zum Beweis: (2.19)
-%%% (2)(b)
-\begin{center}
-\begin{tikzpicture}[scale=2]
-\coordinate [label=left:{$a$}] (A) at (0,0);
-\coordinate [label=right:{$b$}] (B) at (2,0.25);
-\coordinate [label=above:{$c$}] (C) at (1.25,1.5);
-\begin{scope}[red,label distance=2pt]
-\coordinate [label=below:{$w_0$}] (w) at (1.25,0.7);
-\end{scope}
-
-\draw (A) -- (B) -- (C) -- cycle;
-\draw (A) -- (w) -- (C) (w) -- (B);
-
-\begin{scope}[thick,decoration={markings,mark=at position 0.4 with {\arrow{>};}}]
-\path [blue,postaction=decorate] (A) -- (w);
-\path [blue,postaction=decorate] (w) -- (C);
-\path [green,postaction=decorate] (w) -- (A);
-\path [green,postaction=decorate] (B) -- (w);
-\path [orange,postaction=decorate] (w) -- (B);
-\path [orange,postaction=decorate] (C) -- (w);
-\end{scope}
-
-\begin{scope}[thick,decoration={markings,mark=at position 0.5 with {\arrow{>};}}]
-\path [blue,postaction=decorate] (C) -- (A);
-\path [green,postaction=decorate] (A) -- (B);
-\path [orange,postaction=decorate] (B) -- (C);
-\end{scope}
-
-\draw (2.5,1) node [right,text width=2.5cm] {
-{\color{green}$\Delta_1$}\\
-{\color{orange}$\Delta_2$}\\
-{\color{blue}$\Delta_3$}};
-
-\filldraw[red] (w) circle (0.7pt);
-
-\end{tikzpicture}
-\end{center}
-
-%% zu (c):
-\begin{center}
-\begin{tikzpicture}[scale=2]
-\coordinate [label=left:{$a$}] (A) at (0,0);
-\coordinate [label=right:{$b$}] (B) at (2,0.25);
-\coordinate [label=above:{$c$}] (C) at (1.25,1.5);
-\coordinate [label={[red]left:{$w_0$}}] (w) at ($(A)!.5!(C)$);
-
-\draw (A)--(B)--(C)--cycle;
-\draw[blue] (B) -- (w);
-\filldraw[red] (w) circle (0.7pt);
-
-\begin{scope}[thick,decoration={markings,mark=at position 0.5 with {\arrow{>};}}]
-\path [green,postaction=decorate] (A) -- (B);
-\path [orange,postaction=decorate] (B) -- (C);
-\path [green,postaction=decorate] (w) -- (A);
-\path [orange,postaction=decorate] (C) -- (w);
-\end{scope}
-
-\begin{scope}[thick,decoration={markings,mark=at position 0.4 with {\arrow{>};}}]
-\path [orange,postaction=decorate] (w) -- (B);
-\path [green,postaction=decorate] (B) -- (w);
-\end{scope}
-
-\end{tikzpicture}
-\end{center}
-
+\begin{dfn}
+  Sei $M\subseteq\C$. Die Menge $M$ heißt \emph{konvex}, wenn für alle $w, z\in M$ auch $\overrightarrow{wz}$ in $M$ liegt. Die
+  Menge $M$ heißt \emph{sternförmig} mit Zentrum $z_0\in M$, wenn für alle $w\in M$ auch $\overrightarrow{z_0w}$ in $M$ liegt.
+\end{dfn}
 %%% zu Def. 2.20:
 \begin{center}
 \begin{tikzpicture}
@@ -1572,11 +1577,13 @@ Daraus folgt $J=0$, also die Behauptung im Fall $w_0\notin\Delta$.
 \draw [red] (0,0.75) -- (0,-0.75);
 \draw (1,0) node [right,text width=2.7cm] {zusammenhängend,\\ nicht sternförmig};
 \end{scope}
-
 \end{tikzpicture}
+\end{center}
 
+Klar ist: $M$ konvex \folgt $M$ sternförmig und $M$ sternförmig \folgt $M$ zusammenhängend (nach Satz~\ref{satz2.8}).
+
+\begin{center}
 \begin{tikzpicture}
-
 \begin{scope}
 \clip (-1,-1) rectangle (1,1);
 \fill [red,pattern color=red,pattern=north east lines] (0,0) -- (130:1.5) -- (1,1) -- (1,-1) -- (-130:1.5) -- cycle;
@@ -1587,12 +1594,58 @@ Daraus folgt $J=0$, also die Behauptung im Fall $w_0\notin\Delta$.
 \draw (50:0.3) node [right] {$\varphi$};
 
 \draw (1,0) node [right=5pt,text width=7cm] {
-Sektoren $\Sigma_\pi$ sind sternförmig (mit Zentrum 1) und $d$ ist konvex $\gdw \varphi<\frac{\pi}{2}$.};
+Sektoren $\Sigma_\pi$ sind sternförmig (mit Zentrum 1) und $d$ ist konvex $\gdw \varphi\leq\frac{\pi}{2}$.};
 
 \draw [->] (-1,0) -- (1.1,0);
 \draw [->] (0,-1) -- (0,1.1);
 \end{tikzpicture}
 \end{center}
+
+\begin{thm}[Cauchys Integralsatz für sternförmige Gebiete] \label{thm2.21}
+  Seien $D\subseteq\C$ ein sternförmiges Gebiet, $f\in H(D)$ und $\Gamma\subseteq D$ eine geschlossene Kurve. Dann gilt
+  \[\integral{\Gamma}{}{f}{z} = 0.\]
+\end{thm}
+\begin{bem*}
+  Nach Satz~\ref{satz2.13} ist die Aussage von Thm.~\ref{thm2.21} äquivalent zu: Jedes $f\in H(D)$ besitzt auf $D$ eine
+  Stammfunktion, wenn $D$ sternförmig ist.
+\end{bem*}
+\begin{proof}
+  Sei $z_0$ das Zentrum von $D$. Setze für alle $z\in D$
+  \[F(z) = \Integral{\overrightarrow{z_0z}}{}{f(w)}{w} = -\Integral{\overrightarrow{zz_0}}{}{f(w)}{w}.\]
+  Sei $r>0$ mit $B(z,r)\subseteq D$, $z\in D$ fest, sowie $0<\abs{h}<r$. Dann:
+  \begin{multline*} %TODO sieht furchtbar aus...
+    \frac1h \bigl(F(z+h)-F(h)\bigr) = \frac1h \left( \Integral{\overrightarrow{z_0(z+h)}}{}{f}{w} +
+      \Integral{\overrightarrow{zz_0}}{}{f}{w} + \Integral{\overrightarrow{(z+h)z}}{}{f}{w} \right) + \frac1h
+    \Integral{\overrightarrow{z(z+h)}}{}{f}{w}  \\
+    = \frac1h \underbrace{\Integral{\partial\Delta(z_0,z+h,z)}{}{f}{w}}_{=0 \text{ (Satz~\ref{satz2.19})}} + \underbrace{\frac1h
+      \integral{0}{1}{f(z+th)h}{t}}_{\to f(z),\ h\to0 \text { nach \eqref{2.7}}}.
+  \end{multline*}
+  Also ist $F^\prime(z)=f(z)$.
+\end{proof}
+
+\begin{bsp}
+  \begin{enumerate}
+  \item $\displaystyle\int_{\partial\mathbb{D}}{\frac{\mathrm{d}z}{z+2}}=0$, denn $f(z)=\frac{1}{z+2}$ liegt in $H(D)$ für
+    \[D=\{\kmplx{C} \mid \Re z > -\frac32\}.\] Beachte: $D$ ist sternförmig und offen, $\partial\mathbb{D}\subseteq D$.
+  \item Cauchy ist im Allgemeinen falsch für Gebiete mit Löchern, z.B. $\C\setminus\{0\}\ad D$. Siehe Bsp.~\ref{bsp2.14}:
+    $f(z)=\frac1z$, $f\in H(D)$, $\Gamma=\partial\mathbb{D}$. Dann \[\int_{\partial\mathbb{D}}{\frac{\mathrm{d}z}{z}} = 2\pi\i
+    \neq 0.\]
+  \end{enumerate}
+\end{bsp}
+
+\begin{bem*}
+  Thm.~\ref{thm2.21} gilt auch, wenn $f\in C(D,\C) \cap H(D\setminus\{w_0\})$ für ein $w_0\in D$. Denn Satz~\ref{satz2.19} wurde
+  für solche $f$ bewiesen.
+\end{bem*}
+
+\begin{thm}[Cauchys Integralformel für sternförmige Gebiete]
+  Seien $D\subseteq\C$ ein sternförmiges Gebiet, $f\in H(D)$, $\Gamma\subseteq D$ eine geschlossene Kurve. Dann gilt
+  \begin{equation} \label{CIF}
+    n(\Gamma,z) f(z) = \frac{1}{2\pi\i} \integral{\Gamma}{}{\frac{f(z)}{w-z}}{w}, \quad \forall z\in D\setminus\Gamma.
+    \tag{CIF}
+  \end{equation}
+  Speziell mit $\Gamma=\partial B(c,r)\subseteq D$ für $B(c,r)\subseteq D$ und $z\in B(c,r)\subseteq D$:
+\end{thm}
 
 %%%%%%%%%%%%%%%%%%%
 %% Vorlesung vom 4.6.
