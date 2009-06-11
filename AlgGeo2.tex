@@ -1859,9 +1859,185 @@ Sei $S$ ein Schema und $X,Y$ $S$-Schemata. Dann heißt das Produkt über X und Y
     \Hom(T,X)\longrightarrow \{ & (x_0,x_1,i):x_0,x_1\in X\text{ mit } x_0\in\overline{\{x_1\}}, i:\kappa(x_1)\to K\text{ Körperhomomorphismus} \\
     & \text{ mit } i(\mathcal O_{Z,x_0})\subseteq R\text{ und } i(m_{Z,x_0})=m_R\cap i(\mathcal O_{Z,x_0})\}
   \end{align*}
-  Wobei $Z=\overline{\{x_1\}}_{red}$ sei. Dann ist $\mathcal O_{Z,x_1}=\kappa(x_1)=\FakRaum{\mathcal O_{X,x_1}}{m_{x_1}}$
+  Wobei $Z=\overline{\{x_1\}}_{red}$ sei. Dann ist $\mathcal O_{Z,x_1}=\kappa(x_1)=\FakRaum{\mathcal O_{X,x_1}}{m_{x_1}}$.
 \end{Prop}
 
+\begin{Bew}
+  Für $f:T\to X$ sei $x_0\defeqr f(m_R), x_1=f(0), i=f_{x_1}^\sharp$. Da $T$ reduziert ist, ``ist'' $f$ ein Morphismus nach $Z$:
+  \begin{center}
+    \begin{tikzpicture}
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+      { 
+        T & X \\
+        & Z\\
+      };
+      \path[->,font=\scriptsize]
+      (m-1-1) edge node[auto] {$f$}	(m-1-2)	
+      edge node[auto,swap] {$f$}	(m-2-2);
+      \path[right hook->,font=\scriptsize]
+      (m-2-2) edge node[auto,swap] {} (m-1-2);
+    \end{tikzpicture}
+  \end{center}
+  $f^\sharp$ induziert also einen Morphismus
+  \begin{align*}
+    \mathcal O_{Z,x_0}\longrightarrow\mathcal O_{T,m}=R
+  \end{align*}
+  mit $f^\sharp(m_{Z,x_0})\subseteq m$. \\
+  Umgekehrt induziert jedes $i:\mathcal O_{Z,x_0}\hookrightarrow R$ einen Morphismus
+  \begin{align*}
+    \Spec R=T\to\Spec(\mathcal O_{Z,x_0})\to Z\to X
+  \end{align*}
+\end{Bew}
+
+\begin{Satz}
+  \label{satz:2}
+  Sei $f:X\to Y$ ein Morphismus noetherscher Schemata. $f$ ist genau dann separiert, wenn es zu jedem ``Bewertungsdiagramm'':
+
+   \begin{center}
+    \begin{tikzpicture}
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+      { 
+        U & X\\
+        T & Y\\
+      };
+      \path[->,font=\scriptsize]
+      (m-1-1) edge node[auto] {}	(m-1-2)	
+      edge node[auto,swap] {}	(m-2-1)
+      (m-1-2) edge node[auto] {$f$} (m-2-2)
+      (m-2-1) edge node[auto,swap] {} (m-2-2)
+      (m-2-1) edge[densely dotted] node[auto,swap] {$h$} (m-1-2);
+    \end{tikzpicture}
+  \end{center}
+  ($T=\Spec R$, $R$ diskreter Bewertungsring, $U=\Spec K$, $K=\Quot R$) \\
+  höchstens einen Morphismus $h:T\to X$ gibt, der das Diagramm kommutativ macht. 
+\end{Satz}
+
+\begin{Bsp}
+  Seien $X$ die affine Gerade mit doppeltem Nullpunkt, $Y=\Spec k$ für einen Körper $k$, $R=k[X]_{(X)}$, $K=k(X)$.
+  Sei weiter $X^\prime=\Spec k[X]$, dann existiert ein Morphismus, der das Bewertungsdiagramm kommutativ macht:
+   \begin{center}
+    \begin{tikzpicture}
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+      { 
+        K & k[X]\\
+        k[X]_{(X)} & k\\
+      };
+      \path[->,font=\scriptsize]
+      (m-2-2) edge node[auto] {}	(m-2-1)	
+      edge node[auto,swap] {}	(m-1-2)
+      (m-1-2) edge node[auto] {} (m-1-1)
+      (m-2-1) edge node[auto,swap] {} (m-1-1)
+      (m-1-2) edge[densely dotted] node[auto,swap] {$h^\sharp$} (m-2-1);
+    \end{tikzpicture}
+  \end{center}
+  Also gibt es für beide offenen Teile von $X$, die gleich $\mathbb A_k^1$ sind, je eine Fortsetzung.
+\end{Bsp}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item[``$\Rightarrow$'']
+    Sei ein Bewertungsdiagramm (mit den üblichen Bezeichnungen) gegeben. Zwei $h_1,h_2:T\to X$ Fortsetzungen von
+    $h_0:U\to X$, induzieren einen Morphismus $h$:
+    \begin{center}
+      \begin{tikzpicture}
+        \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+        { 
+          & T & \\
+          &	X \times_Y X	&	\\
+          X & & X \\
+          & Y & \\
+        };
+        \path[->,font=\scriptsize]
+        (m-1-2) edge[densely dotted] node[auto] {$h$}	(m-2-2)	
+        edge[bend right=30] node[auto,swap] {$h_1$}		(m-3-1)
+        edge[bend left=30] node[auto] {$h_2$}		(m-3-3)
+        (m-2-2) edge node[auto,swap] {} (m-3-1)
+        edge node[auto] {} (m-3-3)
+        (m-3-1) edge node[auto,swap] {$f$} (m-4-2)
+        (m-3-3) edge node[auto] {$f$} (m-4-2);
+      \end{tikzpicture}
+    \end{center}
+    Es ist $h_1(0)=h_0(0)=h_2(0)$
+    \begin{align*}
+      \Rightarrow & h(0)\in\Delta=\Delta_f(X) \Rightarrow h(m)\in\overline{\{h(0)\}}\subseteq\Delta \\
+      \Rightarrow & h_1(m)=h_2(m)
+    \end{align*}
+  \item[``$\Leftarrow$''] Nach Übungsblatt 6, Aufgabe 1 genügt es zu zeigen: $\Delta$ ist abgeschlossen in $X\times_Y X$.
+    \begin{Beh}[1]
+      Ist für jedes $x_1\in\Delta$ auch $\overline{\{x_1\}}\subseteq\Delta$, so ist $\Delta$ abgeschlossen.
+    \end{Beh}
+    Seien also $x_1\in\Delta, x_0\in\overline{\{x_1\}}, Z\defeqr\overline{\{x_1\}}_{red}, \mathcal O\defeqr\mathcal O_{Z,x_0}, K=\mathcal O_{Z,y_1}=\kappa(x_1)$
+    \begin{Beh}[2]
+      Es gibt einen diskreten Bewertungsring $R\subseteq K$, der $\mathcal O$ dominiert, das heißt $\mathcal O\subseteq R$ 
+      und $m_{\mathcal O}=m_R\cap\mathcal O$.
+    \end{Beh}
+    Dann gibt es nach Proposition \ref{prop:7.4} einen Morphismus $h:T=\Spec R\to X\times_Y X$ mit $h(0)=x_1$ und $h(m)=x_0$.
+    Für $h_i=pr_i\circ h$, $i=1,2$, ist $f\circ h_1=f\circ h_2$, $h_i:T\to X$. \\
+    Da $x_1\in \Delta$, ist $h_1(0)=h_2(0)$. Mit $h_0\defeqr h\vert U$ folgt: $h_1=h_2\Rightarrow h(m)\in\Delta$.
+  \end{enumerate}
+\end{Bew}
+
+\begin{Bew}[2]
+  $m=m_{\mathcal O}$ ist endlich erzeugt, etwa $m=(x_1,\dots,x_n)$. Sei $\mathcal O^\prime=\mathcal O[\frac{X_2}{X_1},\dots,\frac{X_n}{X_1}]$
+  und $I=X_1\cdot\mathcal O^\prime$. (\OE $I\neq\mathcal O^\prime$) \\
+  Krullscherr Hauptidealsatz: es gibt ein Primideal $\mathfrak p\subseteq\mathcal O^\prime$ der Höhe 1 mit $I\subseteq\mathfrak p$
+  (Eisenbud Theorem 10.1) \\
+  $\mathcal O^\prime_{\mathfrak p}$ ist ein noetherscher lokaler Ring der Dimension 1. Sei $\tilde{\mathcal O}$ der ganze Abschluss von
+  $\mathcal O^\prime_{\mathfrak p}$ in $K$. \\
+  $\Rightarrow\tilde{\mathcal O}$ ist normal, $\dim\tilde{\mathcal O}=1$, \OE$\tilde{\mathcal O}$ lokal, $\tilde{\mathcal O}$ ist noethersch
+  (Satz von Krull-Akizuki, Eisenbud Theorem 11.13) \\
+  $\Rightarrow\tilde{\mathcal O}$ ist diskreter Bewertungsring. Es gilt: \\
+  $m_{\tilde{\mathcal O}}\cap\mathcal O\subseteq m_{\mathcal O}$: Klar. \\
+  $m_{\tilde{\mathcal O}}\cap\mathcal O\supseteq m_{\mathcal O}$, weil $X_1,\dots,X_n\in I$.
+\end{Bew}
+Behauptung 1 ist (für $f=\Delta$) ein Spezialfall von 
+\begin{Prop}
+  \label{prop:7.5}
+  Sei $f:W\to X$ Morphismus noetherscher Schemata. Dann gilt: 
+  \begin{align*}
+     & f(W) \text{ ist abgeschlossen }  \\
+     \Leftrightarrow & f(W) \text{ ist abgeschlossen unter Spezialisierung: für } x_1\in f(W)\text{ und } x_0\in\overline{\{x_1\}}\text{ ist } x_0\in f(W)
+  \end{align*}
+\end{Prop}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item[``$\Rightarrow$''] Klar.
+  \item[``$\Leftarrow$''] Sei $Y=\overline{f(W)}$ (als abgeschlossenes Unterschema mit reduzierter Struktur) \\
+    Sei $y\in Y$; zu zeigen: $y\in f(W)$. \\
+    \OE $Y=\Spec A$ affin, sei $B=\mathcal O_W(W)$. $f$ wird also induziert von $\alpha:A\to B$ und $\alpha$ ist injektiv, weil $f$ dominant ist
+    (AG I, Proposition 6.8 (b) ). Sei $y^\prime\subseteq y$ ein minimales Primideal, dann gilt $y\in\overline{\{y^\prime\}}$.
+    Also genügt es zu zeigen: $y^\prime\in f(W)$ (das ist die Voraussetzung) \\
+    Es gilt $f^{-1}(y^\prime)=\Spec(\underbrace{B\otimes_A\kappa(y^\prime)}_{\defeql R})$.  Zu zeigen: $R\neq\{0\}$ \\
+    Es ist $\kappa(y^\prime)=\FakRaum{A_{y^\prime}}{y^\prime A_{y^\prime}}$ und $A_{y^\prime}$ ist ein Körper, weil $A$ reduziert ist. ?
+    Damit gilt: $R=B\otimes_A A_{y^\prime}$. Weiter gilt: $A\subseteq B\Rightarrow A\otimes_A A_{y^\prime}\subseteq B\otimes_A A_{y^\prime}=R$.
+    Und $A_{y^\prime}$ ist ein flacher $A$-Modul, weil er eine Lokalisierung ist.
+  \end{enumerate}
+\end{Bew}
+
+\begin{Bsp}
+  $A=\FakRaum{k[X,Y]}{(X\cdot Y)}$, $y^\prime=(X)\Rightarrow A_{y^\prime}=k(Y)$.
+\end{Bsp}
+
+\begin{Folg}
+  \label{folg:7.6}
+  Für noethersche Schemata gilt:
+  \begin{enumerate}
+  \item Affine und abgeschlossene Einbettungen sind separiert.
+  \item Die Komposition separierter Morphismen ist separiert.
+  \item ``separiert'' ist stabil unter Basiswechsel.
+  \item $g\circ f$ separiert $\Rightarrow$ $f$ separiert.
+  \item ``separiert'' ist lokal bezüglich der Basis, das heißt: \\ $f:X\to Y$ separiert $\Leftrightarrow$ es existiert 
+    eine offene Überdeckung $(U_i)$ von $Y$, sodass 
+    \begin{align*}
+      f\vert f^{-1}(U_i):f^{-1}(U_i)\to U_i \text{ separiert }
+    \end{align*}
+  \end{enumerate}
+\end{Folg}
+
+\begin{Bew}
+  Übung!
+\end{Bew}
 
 \appendix
 
