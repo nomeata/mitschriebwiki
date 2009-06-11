@@ -1861,7 +1861,64 @@ für alle Dreiecke $\Delta\subseteq D$. Dann: $f\in H(D)$.
   konvergiert kompakt gegen $f^{(j)}$ für \ninf und jedes \nat{j}.
 \end{thm}
 \begin{proof}
-  Sei $\Delta\subseteq D$ ein abgeschlossenes Dreieck.
+  Sei $\Delta\subseteq D$ ein abgeschlossenes Dreieck. Dann gilt $f_n\to f$ (gleichmäßig) auf $\partial\Delta\subseteq D$
+  (\ninf). Damit:
+  \[ 0 \nach{=}{\ref{satz2.19}} \Integral{\partial\Delta}{}{f_n}{z} \nach{\longrightarrow}{\ref{satz2.7}}
+  \Integral{\partial\Delta}{}{f}{z} \ (\ninf)
+  \quad \folgt \quad \Integral{\partial\Delta}{}{f}{z} = 0. \]
+  Nach Morera (Kor.~\ref{kor2.29}) gilt dann $f\in H(D)$.
+
+  Sei $r>0$, $z_0\in D$ mit $\bar{B}(z_0,2r)\subseteq D$. Sei $z\in\bar{B}(z_0,r)$. Dann gilt
+  $\bar{B}(z,r)\subseteq\bar{B}(z_0,2r)$. Da $f-f_n\in H(D)$, folgt mit \eqref{2.7}, dass
+  \begin{align*} \label{thm2.34_stern}
+    \max_{z\in\bar{B}(z_0,r)}{\abs{f^{(j)}(z)-f_n^{(j)}(z)}} & \le
+    \max_{z\in\bar{B}(z_0,r)}{\max_{\abs{w-z}=r}{\frac{j!}{r^j}\abs{f(w)-f_n(w)}}} \\ & \le
+    \frac{j!}{r^j} \max_{\abs{w-z}\le2r}{\abs{f(w)-f_n(w)}} \\ & \longrightarrow 0\ (\ninf) \text{ nach Voraussetzung,} \tag{$*$}
+  \end{align*}
+  also $f_n^{(j)} \to f^{(j)}$ auf $\bar{B}(z_0,r)$ (\ninf, \nat{j}).
+
+  Sei $K\subseteq D$ kompakt. Dann gibt es für jedes $z_0\in K$ ein $r(z_0)>0$ mit $B(z_0,2r(z_0))\subseteq D$, da $D$ offen. Klar:
+  \[ K \subseteq \bigcup_{z_0\in K}{B(z_0,r(z_0))}. \] Da $K$ kompakt ist, existieren endlich viele $z_1,\dotsc,z_m\in K$ und
+  $r_1,\dotsc,r_m>0$ mit $B(z_k,2r_k)\subseteq D$ ($k=1,\dotsc,m$) und $K\subseteq B(z_1,r_1)\cup\dotsb\cup
+  B(z_m,r_m)$. \eqref{thm2.34_stern} angewandt auf $\bar{B}(z_k,r_k)$ liefert die Behauptung.
+\end{proof}
+
+
+
+\section{Weitere Hauptsätze über holomorphe Funktionen}
+
+\begin{thm}[Identitätssatz]
+  Sei $D\subseteq\C$ ein Gebiet und $f\in H(D)$. Dann sind äquivalent:
+  \begin{enumerate}
+  \item $f=0$ auf $D$.
+  \item Es gibt ein $z_0\in D$ mit $f^{(m)}(z_0)=0$ für alle \nat{m}.
+  \item $N=\{ z\in D \mid f(z)=0 \}$ hat einen Häufungspunkt $z_0\in N$, d.h. es gibt eine Folge $z_n\in D\setminus\{z_0\}$
+    (\nat{n}) mit $z_n\to z_0$ und $z_n\in N$.
+  \end{enumerate}
+  Somit sind zwei Funktionen $g,h\in H(D)$ schon gleich, sobald $g(z_n)=h(z_n)$ auf einer Folge $z_n\to z_0$ mit $z_n,z_0\in D$
+  und $z_n\neq z_0$ (\nat{n}) oder sobald für ein $z_0\in D$ gilt: $g^{(m)}(z_0)=h^{(m)}(z_0)$ für alle
+  $m\in\mathbb{N}_0$. Insbesondere sind die Koeffizienten einer Potenzreihe eindeutig bestimmt.
+\end{thm}
+\begin{bem*}
+  Der Satz ist falsch, wenn $D$ nicht zusammenhängend ist.
+\end{bem*}
+\begin{proof}
+  Die letzte Behauptung folgt mit $f=g-h$ aus "`(c)$\Rightarrow$(a)"' bzw. "`(b)$\Rightarrow$(a)"'.
+  \begin{enumerate}
+  \item[a)]$\!\Rightarrow$ c): klar.
+  \item[c)]$\!\Rightarrow$ b): Seien $z_n,z_0\in D$, $z_n\neq z_0$, $f(z_n)=0$ ($\forall\nat{n}$), $z_n\to z_0$ (\ninf). Dann
+    ist $f(z_0) = 0$.
+
+    Annahme: Es gibt ein \nat{m} mit $f(z_0)=f^\prime(z_0)=\dotsb=f^{(m-1)}(z_0)=0$ und $f^{(m)}(z_0)\neq0$. Thm.~\ref{thm2.25}
+    liefert ein $r>0$ mit
+    \[ f(z)=\sum_{k=m}^\infty{\underbrace{\frac{f^{(k)}(z_0)}{k!}}_{\ad a_n}(z-z_0)^k}\qquad(\forall z\in B(z_0,r)\subseteq D),\]
+    wobei $a_m\neq0$. Damit:
+    \[ g(z) \da (z-z_0)^{-m}f(z) = \sum_{k=m}^\infty{a_k(z-z_0)^{k-m}} \wegen{=}{l=k-m} \sum_{l=0}^\infty{a_{l+m}(z-z_0)^l}
+    \quad (z\in B(z_0,r)).\]
+    Also ist $g\in H(B(z_0,r))$ und $g(z_0)=a_m\neq0$. Aber $g(z_n)=(z_n-z_0)^{-m}f(z_0)=0$, wobei $z_n\neq z_0$, $z_n,z_0\in
+    B(z_0,r)$ und $z_n\to z_0$ (\ninf). $\blitz$ zu c). \folgt b) gilt.
+  \item[b)]$\!\Rightarrow$ a): \qedhere
+  \end{enumerate}
 \end{proof}
 
 \end{document}
