@@ -2225,6 +2225,9 @@ für $(z\neq 0)$. Also ist 0 Pol mit $m=4$.
 Also ist 0 Pol 1. Ordnung.
 \end{enumerate}\end{bsp}
 
+%<<<<<<< .mine
+
+%=======
 
 \section{Der Residuensatz und reelle Integrale}
 
@@ -2265,6 +2268,201 @@ Also ist 0 Pol 1. Ordnung.
   \[ \integral{\Gamma}{}{f}{z} = \sum_{j=1}^l{\integral{\Gamma}{}{g_j}{z}} \nach{=}{\eqref{3.10stern},\eqref{2.7}}
   \sum_{j=1}^l{\Biggl(a_{-1}(z_j) \underbrack{\int_\Gamma{\frac{\d z}{z-z_j}}}_{=2\pi\i\cdot n(\Gamma,z_j)} +
       \sum_{n=2}^\infty{a_{-n}(z_j) \underbrack{\int_\Gamma{\frac{\d z}{(z-z_j)^n}}}_{=0\text{ (Bsp.~\ref{bsp2.6})}}} \Biggr)}. \qedhere \]
+\end{proof}
+
+%>>>>>>> .r6116
+
+% VL vom 2.7.09
+
+\begin{bsp}\label{bsp3.15}
+\[J=\integral{-\infty}{+\infty}{\frac{x^2}{1+x^4}}{x} = \frac{\pi}{\sqrt{2}}.\]
+\begin{proof}
+\textit{Existenz:} für
+\[\abs{x}\geq 1: x^2+x^4\leq 2+2x^4 \gdw \frac{x^2}{1+x^4}\leq\frac{2}{1+x^2},\]
+was integrierbar ist.
+
+Setze
+\[f(z)=\frac{z^2}{1+z^4}\ad\frac{g(z)}{h(z)}.\]
+Dabei hat $h(z)=1+z^4$ die 4 Nullstellen
+\[w_k = \e^{\i\frac{\pi}{4}}\e^{\i k\frac{\pi}{2}},\quad k=0,1,2,3.\]
+Dann ist $f$ holomorph auf
+\[D=\{z\in\C\colon\Im{z}>-\frac{1}{2},\ z\neq w_1,w_2\}.\]
+Weiterhin gilt nach Übungsaufgabe 22b (da $g(w_k)\neq 0$, $h^\prime(w_k)\neq 0$):
+\[\Res{f}{w_1} = \frac{g(w_1)}{h^\prime(w_1)} = \frac{w_1^2}{4w_1^3} = \frac{1}{4\e^{\i\frac{\pi}{4}}}.\]
+Genauso: $\Res{f}{w_2} = \frac{1}{4\e^{\i\frac{\pi}{4}}}\e^{\i\frac{\pi}{2}}$. Damit gilt:
+\[\Res{f}{w_1} = \frac{\sqrt{2}}{4(1+\i)},\quad\Res{f}{w_2} = \frac{\sqrt{2}}{4(\i-1)}\]
+
+\begin{center}
+\mbox{
+\begin{minipage}[c]{8cm}
+\begin{tikzpicture}[scale=2]
+\draw [->] (-1.9,0)--(1.9,0);
+\draw [->] (0,-0.2)--(0,1.9);
+
+\begin{scope}[red, thick,decoration={markings,mark=at position 0.5 with {\arrow{>};}}]%pfeile ....
+\draw[postaction=decorate] (-1.7,0) -- (0,0);
+\draw[postaction=decorate] (0,0) -- (1.7,0);
+\draw[postaction=decorate] (1.7,0) arc (0:90:1.7);
+\draw[postaction=decorate] (0,1.7) arc (90:180:1.7);
+\end{scope}
+
+\draw (1,2pt) -- (1,-2pt) (-1,2pt) -- (-1,-2pt) (1.7,2pt) -- (1.7,-2pt) (-1.7,2pt) -- (-1.7,-2pt) (2pt,1) -- (-2pt,1);
+\draw (1,0) node [below right] {$1$} (-1,0) node [below] {$-1$} (0,1) node [right] {$\i$} (1.7,0) node [below right] {$r$} (-1.7,0) node [below] {$-r$};
+
+\filldraw (30:1) circle (0.5pt) (120:1) circle (0.5pt);
+\draw (30:1) node [below] {$w_1$} (120:1) node [below] {$w_2$};
+
+\end{tikzpicture}
+\end{minipage}
+\begin{minipage}[c]{3cm}
+Für $r>1$:
+
+\begin{tabular}{r l}
+$K_r$:&$z=r\e^{\i t}$,\\
+&$0\leq t\leq\pi$
+\end{tabular}
+\end{minipage}
+}
+\end{center}
+
+Setze $\Gamma_r = [-r,r]+K_r$. Damit:
+\begin{gather*}
+\integral{-r}{r}{\frac{x^2}{1+x^4}}{x} + \integral{K_r}{}{\frac{z^2}{1+z^4}}{z} = \integral{\Gamma_r}{}{\frac{z^2}{1+z^4}}{z} = \integral{\Gamma_r}{}{\frac{z^2}{1+z^4}}{z} \overset{\ref{satz3.10}}{=}2\pi\i(\Res{f}{w_1}+\Res{f}{w_2})\\
+=\frac{\i\pi}{\sqrt{2}}\left(\frac{1}{\i+1}+\frac{1}{\i-1}\right) = \frac{\i\pi}{\sqrt{2}}\frac{\i-1+\i+1}{i^2-1}=\frac{\pi}{\sqrt{2}}.
+\end{gather*}
+Ferner:
+\[\abs{\integral{K_r}{}{f}{z}}\leq\pi r\max_{z\in K_r}\abs{\frac{z^2}{1+z^4}}\leq\pi r\max_{\abs{z}=r}\frac{\abs{z}^2}{\abs{z}^4-1}\leq\frac{\pi r^3}{r^4}\lra 0\]
+für $r\to+\infty$. Damit folgt die Behauptung.
+\end{proof}
+\end{bsp}
+
+\begin{bsp*} Für $t\in\R$ gilt:
+\[\lim_{R\to\infty}\integral{-R}{R}{\frac{\sin x}{x}\e^{\i tx}}{x} = \begin{cases}\pi,&t\in(-1,1),\\\frac{\pi}{2},&t=\pm 1,\\0,&\abs{t}>1.\end{cases}\]
+\begin{proof}
+Sei $t\in\R$ fest. Die Funktion
+\[f(z) = \begin{cases}\frac{\sin z}{z}\e^{\i tz},&z\in\C\setminus\{0\}\\1,&z=0.\end{cases}\] ist ganz.
+
+Betrachte $S_R = [-R,-1]+\{\e^{\i\theta}\colon -\pi\leq\theta\leq 0\} + [1,R]$ (für $R>1$). Der Cauchy-Integralsatz (Theorem~\ref{thm2.21}) liefert mit $D=\C$:
+\[\Integral{-S_R+[-R,R]}{}{\!\!\!\!\!\!\!\!\!\!f}{z} = 0.\]
+Setze:
+\[I(R) = \integral{-R}{R}{\frac{\sin x}{x}\e^{\i tx}}{x}\folgt I(R) = \integral{S_R}{}{f}{z}\]
+Setze ferner
+\[\label{3.15+}\varphi_R(s) = \frac{1}{2\i}\integral{S_R}{}{\frac{\e^{\i sz}}{z}}{z},\qquad s\in\R.\tag{+}\]
+Mit $\sin z = \frac{1}{2\i}(e^{\i z}-\e^{-\i z})$ folgt $I(R) = \varphi_R(t+1) - \varphi_R(t-1)$. Sei
+\begin{gather*}
+K_R^+ = \{R\e^{\i\theta}\colon 0 \leq\theta\leq\pi\},\quad K_R^- = \{R\e^{\i\theta}\colon -\pi\leq\theta\leq 0\},\\
+\Gamma_R^+ = S_R + K_R^+,\quad \Gamma_R^- = S_R + (-K_R^-).
+\end{gather*}
+Die \eqref{CIF} mit $D=\C$ liefert:
+\begin{gather*}
+\pi = \pi\e^{\i s0} = \frac{1}{2\i}\integral{\Gamma_R^+}{}{\frac{\e^{\i sz}}{z-0}}{z},\label{3.15*}\tag{$*$}\\
+0=\frac{1}{2\i}\integral{\Gamma_R^-}{}{\frac{\e^{\i sz}}{z}}{z},\quad\text{da }n(\Gamma_R^-,0) = 0\label{3.15**}\tag{$**$}\\
+\folgt\varphi_R(s) \overset{\eqref{3.15**}}{=} \frac{1}{2\i}\integral{K_R^-}{}{\frac{\e^{\i sz}}{z}}{z} = \frac{1}{2\i}\integral{-\pi}{0}{R\i\e^{\theta}\frac{\e^{\i sR\e^{\i\theta}}}{R\e^{\i\theta}}}{\theta} = \frac{1}{2}\integral{-\pi}{0}{\exp(\i sR\e^{\i\theta})}{\theta},\label{3.15++}\tag{++}\\
+\varphi_R(s) \overset{\eqref{3.15*}}{=}\pi - \frac{1}{2\i}\integral{K_R^+}{}{\frac{\e^{\i sz}}{z}}{z} = \pi-\frac{1}{2}\integral{0}{\pi}{\underbrack{\exp(\i s\e^{\i\theta})}_{\ad\alpha(R)}}{\theta}\label{3.15+++}\tag{+++}
+\end{gather*}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.6]
+\draw [->] (-3.5,0) -- (3.5,0);
+\draw [->] (0,-3.5) -- (0,3.5);
+
+\filldraw (0,0) circle (2pt);
+
+\begin{scope}[thick,red,decoration={markings,mark=at position 0.5 with {\arrow{>};}}]
+\draw[postaction=decorate] (-3,0) -- (-1,0);
+\draw[postaction=decorate] (1,0) -- (3,0);
+\draw (-1,0) arc (180:360:1);
+\draw (1,-1) node [right] {$S_R$};
+\end{scope}
+
+\begin{scope}[thick,blue,decoration={markings,mark=at position 0.5 with {\arrow{>};}}]
+\draw[postaction=decorate] (3,0) arc (0:-90:3);
+\draw[postaction=decorate] (0,-3) arc (-90:-180:3);
+\draw (-35:3) node [right] {$-K_R^-$};
+\end{scope}
+
+\begin{scope}[thick,green,decoration={markings,mark=at position 0.5 with {\arrow{>};}}]
+\draw[postaction=decorate] (3,0) arc (0:90:3);
+\draw[postaction=decorate] (0,3) arc (90:180:3);
+\draw (34:3.2) node [right] {$K_R^+$};
+\end{scope}
+
+\draw (0,0) node [above right] {0} (3,0) node [below right] {$R$} (-3,0) node [below left] {$-R$} (1,0) node [above right] {1} (-1,0) node [above left] {$-1$} (0,-1) node [below left] {$\i$};
+\draw[thick] (1,4pt) -- (1,-4pt) (-1,4pt) -- (-1,-4pt) (4pt,-1) -- (-4pt,-1) (3,4pt) -- (3,-4pt) (-3,4pt) -- (-3,-4pt);
+
+\end{tikzpicture}
+\end{center}
+
+Beachte: $\abs{\alpha(R)} = \exp(sR\cdot\Re{(\i\cos\theta+\i^2\sin\theta)}) = \e^{-sR\sin\theta}$.
+
+\textit{Falls} $s\cdot\sin\theta > 0$, ist $\abs{\alpha(R)}\leq 1$ und es gilt $\alpha(R)\lra 0$ für alle $R>1$ mit $R\to+\infty$.
+
+Majorisierte Konvergenz folgt aus \eqref{3.15++}, da $\varphi_R(s)\lra 0$ ($R\to+\infty$), wenn $s<0$ und aus \eqref{3.15+++}, also $\varphi_R(s)\lra\pi$, wenn $s>0$. Mit \eqref{3.15**} folgt 
+\[\varphi_R(0) = \frac{\pi}{2},\quad(\forall R>1).\]
+Setze in \eqref{3.15+} $s = t+1$, bzw. $s=t-1$. Dann:
+\[\lim_{R\to+\infty}I(R) = \begin{cases}\pi-\pi = 0,&t>1,\\\pi-\frac{\pi}{2} = \frac{\pi}{2},&t=1,\\\pi-0=\pi,&-1<t<1,\\\frac{\pi}{2}-0=\frac{\pi}{2},&t=-1,\\0-0 = 0,&t<-1,\end{cases}\]
+wie gewünscht.
+\end{proof}
+\end{bsp*}
+
+\section{Argumentprinzip}
+
+Für $f\in H(D)$ sei $N(f)$ die Menge der Nullstellen von $f$ in $D$ und $m(z) = m_f(z)$ die Vielfachheit von $z\in N(f)$. \textit{Ziel:} Bestimme $N(f)$ und $m(z)$ mit einem Kurvenintegral.
+
+\begin{thm}[Argumentprinzip]\label{thm3.16}
+Sei $D\subseteq\C$ ein sternförmiges Gebiet, $f\in H(D)$ und $\Gamma\subseteq D$ geschlossene Kurve mit $\Gamma\cap N(f) = \leer$. Dann:
+\begin{equation}\label{3.4}
+\sum_{z_j\in N(f)}\!\!\! m(z_j)n(\Gamma,z_j) = \frac{1}{2\pi\i}\integral{\Gamma}{}{\frac{f^\prime(z)}{f(z)}}{z} = n(\Gamma_f,0),
+\end{equation}
+wobei $\Gamma_f$ die Parametrisierung $f\circ\gamma$ hat und $\gamma$ die Parametrisierung von $\Gamma$ ist. Die Summe in \eqref{3.4} hat nur endlich viele Summanden, die nicht 0 sind.
+\end{thm}
+
+\begin{proof}
+Zur letzten Behauptung: Sei $z\notin D$. Dann ist 
+\[w\mapsto\frac{1}{w-z}\]
+auf $D$ holomorph und somit nach Theorem~\ref{thm2.21}
+\[\label{3.16*}n(\Gamma,z) = \frac{1}{2\pi\i}\integral{\Gamma}{}{\frac{1}{w-z}}{w} = 0,\tag{$*$}\]
+da $D$ sternförmig ist.
+
+\textit{Annahme:} Es gibt $z_n\in N(f)$ mit $z_n\neq z_m$ und $n(\Gamma,z_n)\neq 0$ für alle $n\neq m$ in $\N$. Da $n(\Gamma,z_n) = 0$ in unbeschränkten Zusammenhangskomponenten von $\C\setminus\Gamma$ (nach Satz~\ref{satz2.16}), ist $(z_n)$ beschränkt. Also gibt es Teilfolgen $z_{n_j}\lra z(j\to+\infty)$.
+
+Da $f\neq 0$ (da $N(f)\cap\Gamma = \leer$), liefert der Nullstellensatz (Korollar~\ref{kor2.36}), dass
+\[z\in\partial D \overset{\eqref{3.16*}}{\folgt} n(\Gamma,z) = 0,\]
+aber
+\[n(\Gamma,z) = \lim_{n\to\infty} \underbrack{n(\Gamma,z_n)}_{\in\Z\setminus\{0\}} \neq 0\quad\blitz.\]
+
+Sei $z_0\in N(f)$ und $m=m(z)$. Nach Korollar~\ref{kor2.36} existieren $r>0$ und $g\in H(B(z_0,r))$, mit $B(z_0,r)\subseteq D$, $g(z)\neq 0$ und 
+\[f(z) = (z-z_0)^mg(z)\quad(\forall z\in B(z_0,r)).\]
+Damit:
+\begin{gather*}
+f^\prime(z) = m(z-z_0)^{m-1}g(z)+(z-z_0)^mg^\prime(z)\\
+\folgt\frac{f^\prime(z)}{f(z)} = \frac{m}{z-z_0} + \frac{g^\prime(z)}{g(z)}\quad(\forall z\in B(z_0,r)).
+\end{gather*}
+Da $\frac{g^\prime}{g}$ holomorph auf $B(z_0,r)$ ist, folgt
+\[\Res{\frac{f^\prime}{f}}{z_0} = m.\]
+Theorem~\ref{thm3.10} liefert also die erste Gleichung. Weiter:
+\begin{gather*}
+\frac{1}{2\pi\i}\integral{\Gamma}{}{\frac{f^\prime}{f}}{z} = \frac{1}{2\pi\i}\integral{a}{b}{\frac{f^\prime(\gamma(t))}{f(\gamma(t))}\gamma^\prime(t)}{t} = \frac{1}{2\pi\i}\integral{a}{b}{\frac{1}{\bigl(f\circ\gamma\bigr)(t)}\bigl(f\circ\gamma\bigr)^\prime(t)}{t}\\
+ = \frac{1}{2\pi\i}\integral{\Gamma_f}{}{\frac{1}{w}}{w} = n(\Gamma_f,0).\tag*{\qedhere}\end{gather*}
+\end{proof}
+
+\begin{kor}[Rouch\'e]\label{kor3.17}
+Sei $D\subseteq\C$ ein sternförmiges Gebiet, $f,g\in H(D)$, $\Gamma\subseteq D$ eine geschlossene Kurve. Es gelte zusätzlich
+\begin{equation}\label{3.5}
+\abs{f(z)-g(z)}<\abs{f(z)}+\abs{g(z)},\quad\forall z\in\Gamma.
+\end{equation}
+Dann gilt:
+\[\sum_{z_j\in N(f)}\!\!\!\!\! n(\Gamma,z_j)m_f(z_j) =\!\!\!\!\!\!\sum_{w_k\in N(y)}\!\!\!\!\!n(\Gamma,w_k)m_g(w_k).\]
+\end{kor}
+\begin{proof} Da $f,g$ stetig sind und $\Gamma$ kompakt ist, gibt es ein offenes $U\subseteq D$ mit $\Gamma\subseteq U$, so dass \eqref{3.5} für $U$ gilt. Damit: $f(z)\neq 0$, $g(z)\neq 0$ für alle $z\in U$ und
+\[\label{3.17*}\abs{1-\frac{f(z)}{g(z)}} < 1 + \abs{\frac{f(z)}{g(z)}},\quad\forall z\in U.\tag{$*$}\]
+\textit{Annahme:} $\frac{f(z)}{g(z)} \ad t \in \R_-$ für ein $z\in U$. Dann folgt:
+\[1+\abs{t} = 1-t \leq \abs{1-t} \overset{\eqref{3.17*}}{<} 1 + \abs{t}\quad\blitz\]
+Also gilt: $\displaystyle\frac{f(z)}{g(z)}\in\Sigma_\pi\quad(\forall z\in U)\folgt h\da\log\frac{f}{g}\in H(U)\folgt h^\prime = \frac{1}{\frac{f}{g}}\frac{f^\prime g - fg^\prime}{g^2} = \frac{f^\prime}{f}-\frac{g^\prime}{g}.$
+
+Da $h^\prime$ eine Stammfunktion hat, gilt
+\[0 = \integral{\Gamma}{}{h^\prime}{z} = \integral{\Gamma}{}{\frac{f^\prime}{f}}{z}-\integral{\Gamma}{}{\frac{g^\prime}{g}}{z}.\]
+Die Behauptung folgt dann aus \eqref{3.4}.
 \end{proof}
 
 \end{document}
