@@ -6,6 +6,7 @@
 \usepackage{microtype}
 \usepackage{tikz}
 \usepackage{schnaubelt}
+%\usepackage{uniinput}
 \usepackage{analysis}
 
 \pdfinfo{
@@ -51,10 +52,134 @@ beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
 
 \chapter{Komplexe Differenzierbarkeit}
 
-\section{Vorbemerkungen zu \C}
+\section{Vorbemerkungen zu $\C$}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Funkiger NEO-Teil von Alex
+
+%Wir fassen ℝ² $\R^2$ als Körper ℂ auf, indem wir $z=(x,y)$, $w=(u,v)∈ℝ²$ wie folgt verknüpft:%$z+w = (…), z·w = zw = (…)$. Wir fassen ℝ als Teilmenge von ℂ auf, indem wir $x∈ℝ$ mit%$(x,0)∈ℝ² \cong ℂ$ identifizieren. Beachte, dass $(0,1)·(0,1) = (-1,0)$. Mit $\i=(-1,1)$ folgt %also $\i²=-1$. Schreibe also $z=(…) … = x+\i y$ (Hierbei sei stets $x,y∈ℝ$). Sei weiter %$w=u+\i v$ $(u,v∈ℝ)$, dann: $zw = (x+\i y)(u+\i v) = xu + \i²yv + \i xy + \i yu = (xu - yv) + \i(yu + xv)$.%Setze $ℜz ≔ x$ (Realteil), $ℑz ≔ y$ (Imaginärteil), wenn $z=x+\i y$ mit $x,y∈ℝ$ ($ℜz$,%$ℑz$ sind eindeutig bestimmt). Konjungiert komplex: $\bar{z} ≔ x - \i y$.%Damit: $ℜz = \frac{1}{2}(z+\bar{z})$, $ℑz = \frac{1}{2}(z - \bar{z})$, $\bar{z+w} = \bar{z} +%\bar{w}$, $\bar{zw} = \bar{z}·\bar{w}$. Der Betrag ist $\abs{z} = √{x² + y²} = …$, $\abs{z}² = x² + y²%= z·\bar{z}$.%Es gelten:%\begin{itemize}%\item \(\abs{ℜz}, \abs{ℑz} ≤ \abs{z} ≤ √{2}\max{\{\abs{ℜz}, \abs{ℑz}\}}\)%\item \(\abs{z} = 0 ⇔ z = 0, \abs{wz} = \abs{w}\abs{z}, \abs{w+z} ≤ \abs{w} + \abs{z}. (∀w, z∈ℂ)\)%\end{itemize}%Polarkoordinaten: Für $ϕ, ψ∈ℝ$ setze $\e^{\iϕ} ≔ (…) = \cos{ϕ} + \i\sin{ϕ}$. Es gelten (Ana1): %$\e^{\iϕ}\e^{\iψ} = \e^{\i(ϕ+ψ)}, \e^{\i 0} = 1, \abs{\e^{\iϕ}}=1, \e^{\i(ϕ+2kπ)}=\e^{\iϕ} (∀k∈ℤ)$.%Sei $z∈ℂ$. Dann gilt (für $z ≠ 0$): $z=r(…)=r\e^{\iϕ}$ ($=x+\i y$), wobei: $r$ = Abstand von 0 = $√{x²+y²}=\abs{z}$.%$ϕ = \arg{z} = \sphericalangle (…)∈(-π, π] = \begin{cases} \sign{y}\arccos{\frac{x}{r}}, & z ∈ ℂ\setminusℝ\\π, &z∈(-∞, 0)\end{cases}$%Sei weiter $w=s\e^{\iψ}$ ($s≥0$). Dann $wz=s\e^{\iψ}r\e^{\iϕ} = rs\e^{\i(ϕ+ψ)}$. Die Komplexe Multiplikation entspricht%also der Multiplikation der Beträge und der Addition der Winkel (mod $2π$), somit: für festes $w$ ist $z \mapsto wz$ ist eine \emph{Drehstreckung}. %\emph{Einheitswurzeln.} Sei $n∈ℕ$ fest. Sei $zⁿ=1$ für $z=r\e^{\iϕ} ∈ℂ$. Dann gilt: $1=\abs{1} = \abs{z}ⁿ = rⁿ ⇒ r=1$.%Also: $1=(\e^{\iϕ})ⁿ = \e^{\i nϕ} = \cos{nϕ} + \i\sin{n ϕ}$. Vergleich von Real- und Imaginärteil ergibt:%$nϕ = 2πk$ für ein $k∈ℤ$. Es gilt also: …%\begin{bem} % 1.2%\begin{enumerate}%% a, b%\item Polynome $p$ sind auf ℂ und rationale Funktionen $f = \frac{p}{q}$ sind auf %$\{z ∈ ℂ: q(z) ≠ 0\}$ holomorph mit den reellen Formeln für $p^\prime$, $f^\prime$% (wobei $q≠0$ ein Polynom ist).%\end{enumerate}%\end{bem}%Erinnerung Ana1: Gegeben seien $a_n ∈ ℂ$ ($n∈ℕ₀$) und ein $c∈ℂ$. Die Potenzreihe%\[ f(z) = ∑^∞_{n=0} a_n (z - c)ⁿ\]%konvergiert absolut für alle $z$ mit $\abs{z-c} < ϱ ≔ \left(\ls_{n→+∞} √[n]{\abs{a_n}}\right)^{-1} ∈ [0, +∞]$%und divergiert, falls $z \notin \abg{B}(c, ϱ)$. Reduktion auf $c=0$: Betrachte %$h(w) ≔ f(c+w) = ∑^∞_{n=0} a_nw^n$ wobei $w=z-c ∈ B(0, ϱ), z = c + w$.%\begin{satz} (Vgl. Ana 1, Thm 4.12) Sei $f(z) = ∑^∞_{n=0} a_n(z-c)ⁿ, z∈B(c, ϱ)$ eine Potenzreihe%mit Konvergenzradius $ϱ > 0$. Dann ist $f∈H(B(c, ϱ))$ und $f^\prime(z) = ∑^∞_{n=1} na_n(z-c)^{n-1} ≕ g(z)$%$(∀z∈B(c, ϱ))$, wobei die Potenzreihe $g$ den gleichen Konvergenzradius $ϱ$ hat. Sei $m∈ℕ$. Iterativ%folgt:%\[∃f^{(m)}(z) = ∑^∞_{n=m} n·…·(n-m+1)a_n(z-c)^{n-m}, ∀z∈B(c, ϱ).\]%\end{satz}%\begin{proof}%Wie in Ana1. $g$ hat Konvergenzradius $ϱ$. Sei o.B.d.A. $c=0$. Seien $z∈B(0, ϱ)$, %$ε>0, r>0$ mit $\abs{z} < r < ϱ$. Sei $w∈\abg{B}(0, r)$ mit $w≠z$. Da $∑^∞_{n=1} na_nr^{n-1}$ absolut%konvergiert, $∃N = N_ε ∈ ℕ$ mit %\begin{equation}%0 ≤  ∑^∞_{n=N+1} n\abs{a_n}r^{n-1} ≤ ε \tag{*}%\end{equation}%Ferner: %$0 ≤ d(w) ≔ \abs{\frac{f(w)-f(z)}{w-z} - g(z)} = \abs{∑^∞_{n=1} a_n \left(\frac{w^n-z^n}{w-z} - nz^{n-1}\right)}%= p_n(w) = w^{n-1} + w^{n-2} + … + z^{n-1} - nz^n-1$%Dabei%\begin{itemize}%\item …%\item …%\end{itemize}%Damit:%$0≤d(w)≤∑^∞_{n=1} \abs{a_n}\abs{p_n(w)} ≤ ∑^N_{n=1} \abs{a_n}\abs{p_n(w)} + ∑^∞_{n=N+1} 2n\abs{a_n}r^{n-1}%≤ N\max{\{\abs{a₁}\abs{p₁(w)}, …, \abs{a_N}\abs{p_N(w)}\}} + 2ε$%$⇒ \ls_{w→z} d(w) ≤ 2ε ⇒ \lim_{w→z}d(w) = 0$%\end{proof}%\begin{bsp} (mit $ϱ = ∞$)%\begin{enumerate}%\item $\exp(z)≔∑^∞_{n=0} \frac{zⁿ}{n!}, \exp^\prime(z)≔∑^∞_{n=1} \frac{z^{n-1}}{(n-1)!}=\exp(z)$%\item sin(z)%\item …%\end{enumerate}
+%\end{bsp}%Seien $f: D → ℂ, z₀ ∈ D$. Setze wieder $n=ℜ{z₀}, v = ℑf, x₀ = ℜ{z₀}, y₀ =ℑ{z₀}$, also $f(x, y)%= u(x,y) + iv(x, y) = ….$ Sei $z ≠ z₀$ und $f$ bei $z₀$ komplex diffbar. Dann gilt:%\[\frac{1}{\abs{z-z₀}}\abs{f(z)-f(z₀) - f^\prime(z₀)(z-z₀)} = \abs{\frac{f(z)-f(z₀)}{z-z₀} - f^\prime(z₀)}→ 0, z→z₀\]%Die Zahl $f^\prime(z₀) ∈ℂ$ kann als ℂ-lineare Abbildung $w \mapsto f^\prime(z₀)w$ aufgefasst werden. Diese%ist dann auch ℝ-linear auf $ℝ²$ kann also durch eine relle 2×2 Matrix dargestellt werden.
 
 %TODO Anfang
+
+Wir fassen $\R^2$ als Körper $\C$ auf, indem wir $z = (x,y)$, $w=(u,v)\in\R^2$ wie folgt verknüpfen:
+\[z+w = \cmplx{x+u}{y+v},\qquad z\cdot w = zw = \cmplx{xu-yv}{yu-xv}.\]
+Wir fassen $\R$ als Teilmenge von $\C$ auf, indem wir $\reell{x}$ mit $(x,0)\in\R^2\cong\C$ identifizieren.
+
+Beachte: $(0,1)\cdot(0,1) = (-1,0)$. Mit $\i \da (0,1)$ folgt also
+\[\i^2 = -1.\]
+Schreibe also
+\[z = \cmplx{x}{y} = x\cmplx{1}{0} + y\cmplx{0}{1} = x+\i y\]
+(Hierbei sei stets $x,y\in\R$).
+
+Sei weiter $w = u+\i v$ ($u,v\in\R$). Dann:
+\[zw = (x+\i y)(u+\i v) = xu + \i^2 yv + \i xy + \i yu = (xu-yv) + \i(yu+xv).\]
+
+Setze $\Re{z}\da x$ (Realteil), $\Im{z} \da y$ (Imaginärteil), wenn $z=x+\i y$ mit $x,y\in\R$. Real- und Imaginärteil sind eindeutig bestimmt. Das konjugiert komplexe ist: $\bar{z}\da x-\i y$. Damit:
+\[\Re{z} = \frac{1}{2}(z+\bar{z}),\quad\Im{z} = \frac{1}{2}(z-\bar{z}),\quad\bar{z+w} = \bar{z}+\bar{w},\quad\bar{zw}=\bar{z}\cdot\bar{w}.\]
+
+Der komplexe Betrag ist
+\[\displaystyle\abs{z}\da\sqrt{x^2+y^2} = \abs{\cmplx{x}{y}}_2,\]
+also gilt: $\abs{z}^2 = x^2+y^2 = z\cdot\bar{z}$.
+
+% Bild1
+
+Es gelten:
+\begin{equation}\label{1.1}
+\abs{\Re{z}},\abs{\Im{z}}\leq\abs{z}\leq\sqrt{2}\max\{\abs{\Re{z}},\abs{\Im{z}}\}
+\end{equation}
+sowie:
+\[\abs{z}=0\gdw z = 0,\quad\abs{wz} = \abs{w}\abs{z},\quad\abs{w+z}\leq\abs{w}+\abs{z}\quad(\forall w,z\in\C).\]
+
+\paragraph{Polarkoordinaten:} Für $\phi,\psi\in\R$ setze
+\[\e^{\i\phi}\da\cmplx{\cos\phi}{\sin\phi} = \cos\phi + \sin\phi.\]
+Es gelten nach Ana 1:
+\[\e^{\i\phi}\e^{\i\psi} = \e^{\i(\phi+\psi)},\quad\e^{\i0} = 1,\quad\bigl|\e^{\i\phi}\bigr| = 1,\quad\e^{\i(\phi+2k\pi)} = \e^{\i\phi}\quad(\forall k\in\Z).\]
+Sei $z\in\C$. Dann gilt (für $z\neq 0$):
+\[z = r\cmplx{\cos\phi}{\sin\phi} = r\e^{\i\phi}\quad(=x+\i y),\]
+wobei $r$ der Abstand von $z$ zum Nullpunkt, also $\abs{z}$ ist und
+\[\phi = \arg{z} = \sphericalangle\left(\cmplx{1}{0},\cmplx{x}{y}\right)\in(-\pi,\pi],\quad\phi = \begin{cases}\sign(y)\arccos\frac{x}{r},&z\in\C\setminus\R_-\\\pi,&z\in(-\infty,0).\end{cases}\]
+
+Sei weiter $w = s\e^{\i\psi}$ $(s\geq 0)$. Dann
+\[wz = s\e^{\i\psi}r\e^{\i\phi} = rs\e^{\i(\phi+\psi)}.\]
+Also entspricht die komplexe Multiplikation der Multiplikation der Beträge und Addition der Winkel (mod $2\pi$). Somit ist $z\mapsto wz$ für jedes feste $w$ eine \textit{Drehstreckung}.
+
+\begin{center}
+\begin{tikzpicture}[scale=3]
+
+\draw[->] (-1,0) -- (1.5,0);
+\draw[->] (0,-1) -- (0,1.5);
+\draw (1.5,0) node[anchor=north] {$\R$};
+\draw (0,1.5) node[anchor=west] {$\i\R$};
+\draw (1,-1pt) -- (1,1pt) (-1pt,1) -- (1pt,1);
+\draw (1,0) node [below] {1} (0,1) node [right] {$\i$};
+
+\draw (0,0) -- (35:1.2);
+\filldraw (35:1.2) circle (0.5pt);
+\draw (35:1.2) node[anchor=west] {$z$};
+\draw[red] (3mm,0mm) arc (0:35:3mm);
+\draw[red] (20:3mm) node[anchor=west] {$\phi$};
+
+\draw[dashed] (0,0) -- (-35:1.2);
+\filldraw (-35:1.2) circle (0.5pt);
+\draw (-35:1.2) node[anchor=west] {$\bar{z}$};
+
+\draw (0,0) -- (75:1);
+\filldraw (75:1) circle (0.5pt);
+\draw (75:1) node[anchor=west] {$w$};
+\draw[green] (2.75mm,0mm) arc (0:75:2.75mm);
+\draw[green] (57:2.75mm) node[anchor=south west] {$\psi$};
+
+\begin{scope}[rotate=110,yshift=0.5mm]
+\draw[<->] (0,0) -- node[fill=white,rotate=110] {$|w\cdot z|$} (1.2,0);
+\draw (0mm,0.5mm) -- (0mm,-0.5mm);
+\draw (1.2cm,0.5mm) -- (1.2cm,-0.5mm);
+\end{scope}
+
+\draw (0,0) -- (110:1.2);
+\filldraw (110:1.2) circle (0.5pt);
+\draw (110:1.2) node[anchor=west] {$w\cdot z$};
+\draw[blue] (2.5mm,0mm) arc (0:110:2.5mm);
+\draw[blue] (120:2.5mm) node[anchor=east] {$\phi + \psi$};
+
+\end{tikzpicture}
+\end{center}
+
+\paragraph{Einheitswurzeln:} Sei $\nat{n}$ fest. Sei $z^n = 1$ für $z=r\e^{\i\phi}\in\C$. Dann gilt: $1 = \abs{1} = \abs{z}^n = r^n$, also $r = 1$. Folglich:
+\[1 = \left(\e^{\i\phi}\right)^n = \e^{\i n\phi} = \cos(n\phi)+\i\sin(n\phi).\]
+Der Vergleich von Real- und Imaginärteil liefert $n\phi = 2\pi k$ für ein $k\in\Z$. Es gilt also:
+\[z^n = 1\gdw z = \e^{\i\frac{2\pi k}{n}},\quad k=0,1,\dotsc,n-1.\]
+
+\begin{center}
+\begin{tikzpicture}
+\draw[->] (-1,0) -- (1.2,0);
+\draw[->] (0,-1) -- (0,1.2);
+\draw (1,-2pt) -- (1,2pt) (-2pt,1) -- (2pt,1);
+\draw (1,0) node [below right] {1} (0,1) node [right] {$\i$};
+
+\draw (-1,1) node [left] {$n=6:$};
+
+\filldraw[gray] (1,0) circle (1pt) (60:1) circle (1pt) (120:1) circle (1pt) (-1,0) circle (1pt) (-120:1) circle (1pt) (-60:1) circle (1pt);
+\end{tikzpicture}
+\end{center}
+
+Ferner: Für $z_n,z\in\C$ sagen wir, dass $z_n\lra z$ ($n\to+\infty$), wenn
+\[\abs{z-z_0}\lra 0\overset{\eqref{1.1}}{\gdw} \Re{z_n}\lra\Re{z}\text{ und }\Im{z_n}\lra\Im{z}\quad(n\to+\infty).\]
+Somit haben $\R^2$ und $\C$ den gleichen Konvergenzbegriff und außerdem die gleichen offenen und abgeschlossenen Kugeln:
+\begin{align*}
+B(z_0,r)\da&\{z\in\C: \abs{z_0-z} < r\},\\
+\abg{B(z_0,r)}\da&\{z\in\C: \abs{z_0-z} \leq r\},\quad(\forall z_0\in\C,\ r>0).
+\end{align*}
+Sei $M\subseteq\C$. Betrachte $z=x+\i y\in M$ als $z = \cmplx{x}{y}$ mit $x = \Re{z}$, $y = \Im{z}$. Sei $f\colon M\to\C$. Setze
+\[u(x,y) = \Re{f(x,y)},\qquad v(x,y) = \Im{f(x,y)}.\]
+Also:
+\[f(x,y) = u(x,y) + \i v(x,y) = \cmplx{u(x,y)}{v(x,y)}.\]
+Somit ist $f\colon M\to\C$ genau dann stetig (d.h. $z_n\to z$ (in M) $\folgt f(z_n)\to f(z)$), wenn $u,v\colon M\to\R$ stetig sind.
+
+\paragraph{Fazit:} Konvergenz, Offenheit, Abgeschlossenheit, Kompaktheit, Stetigkeit, etc. sind in $\R^2$ und $\C$ gleich.
+
+Stets sei $D\subseteq\C$ offen und nicht leer, das heißt:
+\[\forall z\in D\exists\: r = r(z)>0\text{ mit }B(z,r)\subseteq D\folgt\abg{B(z,\tfrac{r}{2})}\subseteq D.\]
 
 \begin{dfn} \label{dfn1.1}
   Eine Funktion $f\colon D \to \C$ heißt \emph{(komplex) differenzierbar} in $z_0 \in D$, wenn
