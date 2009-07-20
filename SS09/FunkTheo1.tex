@@ -2447,8 +2447,47 @@ Also ist 0 Pol 1. Ordnung.
   \end{enumerate}
 \end{bsp}
 
+\subsection*{Reelle Integrale}
+
+\begin{bsp}\label{bsp3.13}
+  Sei $a>1$. Dann ist \[ J \da \int_{-\pi}^\pi{\frac{\d x}{a+\cos{x}}} = \frac{2\pi}{\sqrt{a^2-1}}. \]
+\end{bsp}
+\begin{proof}
+  \begin{multline*}
+    J \nach{=}{\eqref{1.13}} \int_{-\pi}^\pi{\frac{\d x}{a+\frac12\left(\e^{\i x}+\e^{-\i x}\right)}} =
+    \frac2\i \integral{-\pi}{\pi}{\frac{\i\e^{\i x}}{2a\e^{\i x}+\left(\e^{\i x}\right)^2+1}}{x} \\
+    \wegen{=}{z=\e^{\i x}} \int_{\partial\mathbb{D}}{\frac{\d z}{z^2+2az+1}}
+    = \frac{4\pi}{2\pi\i} \integral{\partial\mathbb{D}}{}{\frac{\frac{1}{z-z_2}}{z-z_1}}{z},
+  \end{multline*}
+  wobei $\displaystyle z_{1,2} = -a \pm \sqrt{a^2-1} \in \R$, $z_1\in(-1,1)$, $z_2<-1$. Damit und mit \eqref{CIF} folgt
+  \[ J = 4\pi \frac{1}{z_1-z_1} =  \frac{2\pi}{\sqrt{a^2-1}}. \qedhere \]
+\end{proof}
+
+\begin{bsp}\label{bsp3.14}
+  Sei $t\in\R$. Dann $\displaystyle J=\integral{\R}{}{\e^{\i tx} \frac{1}{1+x^2}}{x} = \pi\e^{-\abs{t}}$.
+\end{bsp}
+\begin{proof}
+  Sei $t>0$ (falls $t<0$: substituiere $y=-x$, setze $s=-t>0$ in $J$). Das Integral existiert, da
+  \[ \abs{\frac{\e^{\i tx}}{1+x^2}} = \frac{1}{1+x^2}, \]
+  was integrierbar ist. Setze $f(z) = \frac{\e^{\i tz}}{(z-\i)(z+\i)}$. Dann ist $f\in H(\C\setminus\{\pm\i\})$ und $\pm\i$ sind
+  einfache Pole. Es gilt
+  \[ J = \lim_{r\to\infty}{\integral{-r}{r}{f(x)}{x}} = \lim_{r\to\infty}{\biggl(\underbrace{\integral{\Gamma_r}{}{f}{z}}_{\ad J_1} -
+      \underbrace{\integral{K_r}{}{f}{z}}_{\ad J_2}\biggr)}. \]
+  %TODO Bild
+  \[ \Gamma_r = [-r,r] + K_r, \qquad K_r : z = r\e^{\i\theta}, 0\leq\theta\leq\pi, r>1 \]
+  Es gilt $\displaystyle \qquad
+  J_1 \nach{=}{Thm.~\ref{thm3.10}} 2\pi\i\Res{f}{i} \nach{=}{Lem.~\ref{lem3.11}} 2\pi\i \lim_{z\to\i}{(z-i)f(z)} = 2\pi\i
+  \frac{\e^{\i^2t}}{\i+\i} = \pi\e^{-t}$
+  \begin{multline*}
+    \!\!\!\!\!\!\text{und } \quad
+    \abs{J_2} \leq \pi r \max_{z\in K_r}{\abs{\frac{\e^{\i zt}}{1+z^2}}} \leq \pi r \max_{z\in K_r}{\frac{\e^{t\Re{\i
+            z}}}{\abs{z}^2-1}} \wegen{=}{\substack{\i z =\\r(\i\cos{\theta}-\sin{\theta})}} \\
+    \pi r \max_{0\le\theta\le\pi}{\frac{\e^{-tr\sin{\theta}}}{r^2-1}} \leq \frac{\pi r}{r^2-1} \to 0, \quad r\to\infty. \qedhere
+  \end{multline*}
+\end{proof}
+
 \begin{bsp}\label{bsp3.15}
-\[J=\integral{-\infty}{+\infty}{\frac{x^2}{1+x^4}}{x} = \frac{\pi}{\sqrt{2}}.\]
+\[J=\Integral{-\infty}{+\infty}{\frac{x^2}{1+x^4}}{x} = \frac{\pi}{\sqrt{2}}.\]
 \begin{proof}
 \textit{Existenz:} für
 \[\abs{x}\geq 1: x^2+x^4\leq 2+2x^4 \gdw \frac{x^2}{1+x^4}\leq\frac{2}{1+x^2},\]
@@ -2636,6 +2675,32 @@ Also gilt: $\displaystyle\frac{f(z)}{g(z)}\in\Sigma_\pi\quad(\forall z\in U)\fol
 Da $h^\prime$ eine Stammfunktion hat, gilt
 \[0 = \integral{\Gamma}{}{h^\prime}{z} = \integral{\Gamma}{}{\frac{f^\prime}{f}}{z}-\integral{\Gamma}{}{\frac{g^\prime}{g}}{z}.\]
 Die Behauptung folgt dann aus \eqref{3.4}.
+\end{proof}
+
+%%% 6.7.
+\begin{bsp}\label{bsp3.18}
+  Für festes $\lambda>1$ hat die Gleichung $\lambda=z+\e^{-z}$ genau eine Lösung $z\in\C_+$.
+\end{bsp}
+\begin{proof}
+  Betrachte $f(z)=\lambda-z-\e^{-z}$, $g(z)=\lambda-z$ für $z\in D\da\C_+$. Dann ist $N(g)=\{\lambda\}$, $m_g(\lambda)=1$. Wähle
+  $r>\lambda$ und $\ep\in(0,\lambda-1)$. Setze $\Gamma=\partial B(r,r-\ep)\subseteq D$. Dann $\lambda\in B(r,r-\ep)$. Damit folgt:
+  \[ \abs{f(z)-g(z)} = \abs{\e^{-z}} = \e^{-\Re{z}} \wegen{<}{z\in\C_+} \lambda-\ep \leq \abs{\lambda-z} = \abs{g(z)} \leq
+  \abs{f(z)} + \abs{g(z)} \quad (\forall z\in\Gamma). \]
+  Rouch\'e (Thm.~\ref{kor3.17}) liefert dann
+  \[ m_g(\lambda)n(\Gamma,\lambda) = 1 = \sum_{z_j\in N(f)}{\underbrack{m_f(z_j)}_{\ge1}n(\Gamma,z_j)} \]
+  und $n(\Gamma,z_j)$ ist $1$, wenn $z_j\in B(r,r-\ep)$, und $0$ sonst. Also existiert genau eine einfache Nullstelle von $f$ in
+  $B(r,r-\ep)$. Das gilt für alle $r>\lambda$, $\ep\in(0,\lambda-1)$. Mit $r\to\infty$, $\ep\to0$ folgt die Behauptung.
+\end{proof}
+
+\begin{bsp}\label{bsp3.19}
+  Sei $D$ sternförmig mit $\bar{\mathbb{D}}\subseteq D$. Weiter sei $f\in H(D)$ mit $\abs{f(z)}<1$ für alle
+  $z\in \partial\mathbb{D}$. Sei \nat{n}. Dann gibt es genau $n$ (eventuell mehrfach gezählte) Lösungen von $f(z)=z^n$ mit $z\in D$.
+\end{bsp}
+\begin{proof}
+  Betrachte $g(z)=f(z)-z^n$, $h(z)=-z^n$ für $z\in D$. Dann sind $g, h\in H(D)$. Ferner ist $N(h)=\{0\}$ und $m_h(0)=n$. Wähle
+  $\Gamma=\partial\mathbb{D}$. Dann gilt $\abs{g(z)-h(z)} = \abs{f(z)} < 1 = \abs{h(z)} \leq \abs{g(z)} + \abs{h(z)}$ für alle
+  $z\in\partial\mathbb{D}$. Rouch\'e liefert dann \[ n = \sum_{z_j\in N(g)}{m_g(z_j) n(\partial\mathbb{D}, z_j)} = \sum_{z\j\in
+    N(g)\cap\mathbb{D}}{m_g(z_j)}, \] da $n(\partial\mathbb{D}, z_j) = 1$ für $z_j\in\mathbb{D}$ und $0$ sonst.
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%
