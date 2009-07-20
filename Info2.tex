@@ -21,9 +21,3332 @@
 %\renewcommand{\thechapter}{\arabic{chapter}}
 %\renewcommand{\chaptername}{§}
 %\setcounter{chapter}{0}
-\include{Info2Kap1}
-\include{Info2Kap2}
-\include{Info2Kap3}
+
+\chapter{Prädikatenlogik}
+%\author{Joachim Breitner, Felix Brandt, Lars Volker}
+
+\section{Syntax prädikatenlogischer Formeln}
+
+\subsection{Grundsymbole}
+
+\lectureof{11.04.2005}Die Syntax definiert eine Menge von Grundsymbolen. Diese lassen sich weiter aufteilen:
+
+\subsubsection{logische Symbole}
+\begin{tabular}{lll}
+$\vee$ & Disjunktion & (\glqq oder\grqq) \\
+$\wedge$ & Konjunktion & (\glqq und\grqq) \\
+$\neg$ & Negation & (\glqq nicht\grqq)  \\
+$\exists$ & Existenz & (\glqq es existiert\grqq) \\
+$\forall$ & Allquantor & (\glqq für all\grqq) \\
+$\dann$ & Implikation & (\glqq dann\grqq) \\
+$\wenn$ & (umgekehrte) Implikation & (\glqq wenn\grqq) \\
+$\equi$ & Äquivalenz & (\glqq genau dann wenn \grqq) \\
+$( )$ & Hilfssymbol
+\end{tabular}
+
+\subsubsection{frei wählbare, nicht-logische Symbole}
+\begin{itemize}
+\item Symbole, die für ein Individuum (Objekt) stehen
+  \begin{itemize}
+  \item Konstanten, z. B. $a, b, c,$ John, 0,1,2, \ldots
+  \item Variablen, z. B. $x, y, z,$ Name, Organisation, \ldots
+ \end{itemize}
+\item Funktionssymbole, z. B. $f, g, h,$ mother\_of, $\sin$, +, -, \ldots
+\item Prädikatensymbole, z. B. $p, q, r,$ father, $=, <, \le$, \ldots
+\end{itemize}
+
+Die freie Wählbarkeit wird durch Konventionen eingeschränkt, zum Beispiel in \produkt{Prolog}: Variablen beginnen mit Großbuchstaben, Konstanten sowie Funktions- und Prädikatensymbole mit Kleinbuchstaben.
+
+\subsection{Terme}
+\begin{itemize}
+\item Konstanten
+\item Variablen
+\item strukturierte Terme der Form $\varphi(\tau_1,\tau_2,\ldots,\tau_n)$, wobei $\varphi$ ein $n$-stelliges Funktionssymbol und $\tau_1,\tau_2,\ldots,\tau_n$ Terme sind.
+\end{itemize}
+
+Konvention nach Schöning: $f$ ist ein Funktionssymbol mit Stelligkeit $k$ und $\tau_i$ ($i=1\ldots k$) sind Terme, dann ist auch $f^k(\tau_1,\tau_2,\ldots,\tau_k)$ ein Term.
+
+\subsection{Atome}
+Auch atomare Formeln oder Primformeln genannt. Atome stehen für die Beziehung zwischen Individuen. Sie haben die Form $\pi(\tau_1,\tau_2,\ldots,\tau_n)$ wobei $\pi$ ein $n$-stelliges Prädikatensymbol ist und $\tau_i$ Terme sind.
+
+\subsection{Formeln}
+Formeln erlauben eine logische Verknüpfung von Atomen und Termen. Im folgenden sind $\Phi$ und $\Psi$ Formeln und $x$ eine Variable.
+
+\begin{itemize}
+\item Atome
+\item $(\Phi \vee \Psi)$
+\item $(\Phi \wedge \Psi)$
+\item $(\neg \Phi)$
+\item $(\exists x \Phi)$ (\glqq Es gibt ein $x$, so dass $\Phi$ gilt\grqq)
+\item $(\forall x \Phi)$ (\glqq Für alle $x$ gilt $\Phi$\grqq)
+\end{itemize}
+
+Die folgenden Formeln sind nur Abkürzungen:
+\begin{itemize}
+\item $(\Phi \dann \Psi)$ Abkürzung für $(\neg \Phi \vee \Psi)$.
+ (\glqq $\Phi$ impliziert $\Psi$\grqq), (\glqq wenn $\Phi$, dann $\Psi$\grqq).
+\item $(\Phi \wenn \Psi)$ Abkürzung für $(\Phi \vee \neg \Psi)$. (\glqq $\Phi$ wenn $\Psi$\grqq), (\glqq $\Phi$ falls $\Psi$\grqq) 
+\item $(\Phi \equi \Psi)$ Abkürzung für $((\Phi \wenn \Psi)\wedge(\Phi\dann\Psi))$. (\glqq $\Phi$ genau, dann wenn $\Psi$\grqq)
+\end{itemize}
+
+Ferner gelten folgende Konventionen:
+\begin{itemize}
+\item $\exists$ und $\forall$ binden stärker als $\neg$
+\item $\neg$ bindet stärker als $\wedge$
+\item $\wedge$ bindet stärker als $\vee$
+\item $\vee$ bindet stärker als $\wenn$, $\dann$, $\equi$
+\item \glqq unnötige\grqq Klammern werden weggelassen
+\end{itemize}
+
+Dies ist die Syntax der Prädikatenlogik \emph{erster Stufe} (First Level Order). Erste Stufe bedeutet, dass Variablen nur für Individuen stehen können, nicht aber für Funktionen oder Prädikate.
+
+\paragraph{Beispiele} für Formeln
+\begin{enumerate}
+\item  loves(romeo,juliet)
+\item $\forall x$ ancestor(adam,$x$)
+\item $\forall x$ (person($x$) $\dann$ ancestor(adam,$x$))
+\item $\forall x$ (is\_mother($x$) $\dann$ $\exists y$ (is\_child($y$) $\wedge$ mother($x$,$y$)))
+\item $\forall$ sub $\forall$ super (subset(sub,super) $\wenn$ $\forall x$(member($x$,sub) $\dann$ member($x$,super)))
+\end{enumerate}
+
+\paragraph{Definition} einige weitere Begriffe.
+\begin{itemize}
+\item Die Menge der Variablen eines Terms $\tau$, vars($\tau$) kann induktiv wie folgt definiert werden:
+ \begin{itemize}
+ \item Für eine Konstante $c$ gilt: vars($c$):=$\{\}$
+ \item Für eine Variable $x$ gilt: vars($x$):=$\{x\}$
+ \item Für einen Term $\varphi(\tau_1, \tau_2, \ldots, \tau_n)$ gilt: \\vars($\varphi(\tau_1, \tau_2, \ldots, \tau_n)$) := vars($\tau_1$) $\cup$ vars($\tau_2$) $\cup \ldots \cup$ vars($\tau_n$)
+ \end{itemize}
+\item Eine Variable, die nicht durch einen Quantor gebunden ist, heißt \begriff{frei} (free). Die Menge der freien Variablen einer Formel $\Phi$, free($\Phi$), ist induktiv wie folgt definiert:
+ \begin{itemize}
+ \item Für ein Atom $\pi(\tau_1,\tau_2,\ldots,\tau_n)$ gilt: \\
+free($\pi(\tau_1,\tau_2,\ldots,\tau_n)$) := vars($\tau_1$) $\cup$ vars($\tau_2$) $\cup \ldots \cup$ vars($\tau_n$)
+ \item free($\neg\Phi$) := free($\Phi$)
+ \item free($\Phi\vee\Psi$) := free($\Phi\wedge\Psi$) := free($\Phi$) $\cup$ free($\Psi$)
+ \item free($\exists x\Phi$) := free($\forall x\Phi$) := free($\Phi$)$\backslash \{x\}$
+ \end{itemize}
+\item In $\forall x \Phi$ bzw. $\exists x\Phi$ heißt die Variable $x$ durch den jeweiligen Quantor gebunden (bound).
+\item Eine Formel mit freien Variablen heißt offen (open).
+\item Eine Formel ohne freie Variablen heißt geschlossen (closed).
+\end{itemize}
+
+
+\section{Semantik prädikatenlogischer Formeln }
+
+\subsection{Definition}
+(exzerpt aus ``Logik für Informatiker'', Seite 52 ff)
+Eine Struktur ist ein Paar $A(U_A,I_A)$, wobei $U_A$ eine beliebige nicht-leere Menge ist, das \begriff{Universum} (auch Grundmenge oder Grundbereich) genannt wird. Ferner ist $I_A$ eine Abbildung, die
+\begin{itemize}
+\item jedem $k$-stelligen Prädikatensymbol $P$ ein $k$-stelliges Prädikat über $U_A$ zuordnet,
+\item jedem $k$-stelligen Funktionssymbol $F$ eine $k$-stellige Funktion über $U_A$ zuordnet sowie
+\item jeder Variablen $x$ ein Element der Grundmenge $U_A$ zuordnet.
+\end{itemize}
+Wir schreiben abkürzend $P^A$ statt $I_A(P)$, $F_A$ statt $I_A(F)$ und $x^A$ statt $I_A(x)$.
+
+\paragraph{Das Herbrand-Universum} ist die Menge aller aus den Objekt- und Funktionssymbolen einer Formelmenge $\Delta$ konstruierbaren Objekte.
+
+Sei $F$ eine Formel und $A=(U_A,I_A)$ eine Struktur. $A$ heißt zu $F$ passend, falls $I_A$ für alle in $F$ vorkommenden Symbole und freien Variablen definiert ist.
+
+
+\paragraph{Beispiel:} $$F = \forall x P(x,f(x)) \wedge Q(g(a,z))$$ ist eine Formel. Eine zu $F$ passende Struktur ist dann Beispielsweise:
+\begin{eqnarray*}
+U_A &=& \{1,2,3,\ldots\} \\
+I_A(P) &=& \{ (m,n)\ |\ m,n \in U_A \text{ und } m<n\} \\
+I_A(Q) &=& \{ n\in U_A\ |\ n \text{ ist Primzahl }\} \\
+I_A(f) &=& f^A(n) = n+1 \\
+I_A(g) &=& g^A(m,n) = m+n \\
+I_A(a) &=& 2 \\
+I_A(z) &=& 3
+\end{eqnarray*}
+
+Beachte: $x$ kommt gebunden vor.
+
+\subsection{Interpretation}
+
+\lectureof{13.04.2005}Die Interpretation einer prädikatenlogischen Formel ergibt sich, wenn man jeder verwendeten Konstanten 
+ein bekanntes Objekt eines Diskursbereichs $D$ zuordnet und jedes verwendete Prädikatensymbol als Beziehungstyp zwischen 
+zwei oder mehreren Objekten ansieht. Die Abbildung der Formel auf $D$ wird als beabsichtigte Interpretation 
+(\begriff{intended interpretation}) bezeichnet.
+
+\def\J{\mathbb{J}}
+\def\R{\mathbb{R}}
+
+\paragraph{Beispiel:} Einfacher Diskursbereich
+$$D := \{\J,\R\}$$
+
+Eine Interpretation $I$ einer prädikatenlogischen Sprache ist ein Paar $\langle D,I\rangle$ wobei $I$ eine Abbildung der
+nicht-logischen Symbole auf (nicht-leeres) $D$ ist, wobei $I$
+
+\begin{itemize}
+\item jeder Konstanten der Sprache ein Element von $D$ zuordnet
+\item jedem $n$-stelligen Funktionssymbol eine Abbildung $D^n \mapsto D$ zuordnet
+\item jedem $n$-stelligen Prädikatensymbol eine Abbildung $D^n \mapsto \{F,T\}$ zuordnet
+\end{itemize}
+
+Für Grundterme der Form $\varphi (\tau_1, \ldots, \tau_n)$ wird die Interpretation wie folgt berechnet:
+$$I (\varphi (\tau_1, \ldots, \tau_n) := I(\varphi)(I(\tau_1) \ldots I(\tau_n))$$
+Jeder Term $\tau_i$ wird demzufolge durch Anwendung der Abbildung $I$ auf ein Element $I(\tau_i) \in D$ abgebildet.
+Auch $\varphi$ wird durch $I$ abgebildet auf $I(\varphi)$.
+
+Für Grundatome $\pi(\tau_1, \ldots, \tau_n)$ wird $I$ wie folgt berechnet:
+$$I(\pi(\tau_1, \ldots, \tau_n)) := I(\pi)(I(\tau_1, \ldots, \tau_n))$$
+
+\paragraph{Beispiel:} Interpretation von Elementen der Prädikatenlogik
+
+\begin{tabular}{@{}ll}
+Konstanten: & $I(\text{juliet}) = \J$                            \\
+            & $I(\text{romeo}) = \R$                             \\
+Funktionen: & $I(\text{girlfriend\_of}) = \{\R \mapsto \J\}$       \\
+Prädikate:  & $I(\text{woman}) = \{ \J \mapsto T, \R \mapsto F\}$ \\
+            & $I(\text{loves}) = \{\langle\J, \J\rangle \mapsto F, \langle\J,\R\rangle \mapsto T, \langle\R,\J\rangle \mapsto T, \langle\R,\R\rangle \mapsto F \}$ \\\\
+Grundterme:&
+$I(\text{girlfriend\_of}(\text{romeo})) = \{\R \mapsto \J\} (\R)=\J$
+\\
+Grundatome:&
+$I(\text{woman}(\text{juliet})) = \{\J \mapsto T, \R \mapsto F\} (\J) = T$\\
+&$I(\text{woman}(\text{romeo})) = \{\J \mapsto T, \R \mapsto F\} (\R) = F$
+\end{tabular}%\bigskip
+
+\subsection{Definition (Fortsetzung)}
+(Exzerpt aus "`Logik für Informatiker"', Schöning , Seite 53 ff.)\\
+Sei $F$ eine Formel und $A$ eine zu $F$ passende Struktur. Für jeden Term $t$, den man aus den Bestandteilen von $F$ bilden kann, definieren wir nun den Wert von $t$ in der Struktur $A$, den wir mit $A(t)$ bezeichnen.
+
+\begin{enumerate}
+\item Falls $t$ eine Variable ist (also $t=x$), so ist $A(t)=x^A$ .
+\item Falls $t$ die Form $t=f(t_1, \ldots, t_k)$ hat, wobei $t_1, \ldots, t_k$ Terme sind und $f$ ein k-stelliges Funktionssymbol ist, so ist $A(t)=f^A(A(t_1), \ldots, A(t_k))$
+\end{enumerate}
+
+Auf analoge Weise definieren wir den (Wahrheits-) Wert der Formel $F$ wobei wir ebenfalls die Bezeichnung $A(F)$ verwenden.
+
+\begin{enumerate}
+\item Falls $F$ die Form $F=P(t_1, \ldots, t_k)$ mit Termen $t_1, \ldots, t_k$, so ist \[A(F)=
+	\begin{cases}
+	1, & \text{falls } ((A(t_1), \ldots, A(t_k)) \in P^A) \\
+	0, & \text{sonst }
+	\end{cases}\]
+\item Falls "`$F = \neg G$"' hat, so ist \[ A(F)=
+	\begin{cases}
+	1, & \text{falls $A(G)=0$} \\
+	0, & \text{sonst}
+	\end{cases}\]
+\item Falls "`$F=(G \wedge H)$"' so ist \[ A(F)=
+	\begin{cases}
+	1, & \text{falls $A(G)=1$ und $A(H)=1$} \\
+	0, & \text{sonst}
+	\end{cases}\]
+\item Falls "`$F=(G \vee H)$"' so ist \[ A(F)=
+	\begin{cases}
+	1, & \text{falls $A(G)=1$ oder $A(H)=1$} \\
+	0, & \text{sonst}
+	\end{cases}\]
+\item Falls "`$F=\forall xG$"' so ist \[ A(F)=
+	\begin{cases}
+	1, & \text{falls für alle $d \in U_A$ gilt $A_{[x/d]}(G)=1$} \\
+	0, & \text{sonst}
+	\end{cases}\]
+\item Falls "`$F=\exists xG$"' so ist \[ A(F)=
+	\begin{cases}
+	1, & \text{falls es ein $d \in U_A$ gibt, mit $A_{[x/d]}(G)=1$}\\
+	0, & \text{sonst}
+	\end{cases}\]
+\end{enumerate}
+
+Hierbei bedeute $A_{[x/d]}$ diejenige Struktur A', die überall mit A identisch ist, bis auf die Definition von $x^A$. Hier ist $x^{A'}=d$ wobei $d \in U_A = U_{A'}$
+
+\paragraph{Bemerkungen}
+\begin{enumerate}
+\item $F$ ist gültig $\Gdw$ $\neg F$ unerfüllbar ist.\\ \textbf{Beweis:} es gilt $F$ ist gültig 
+	\\$\Gdw$ jede zu $F$ passende Belegung ist ein Modell für $F$ 
+	\\$\Gdw$ jede zu $F$ und damit auch zu $\neg F$ passende Belegung ist kein Modell für $\neg F$ 
+	\\$\Gdw$ $\neg F$ besitzt kein Modell 
+	\\$\Gdw$ $\neg F$ ist unerfüllbar.
+\item Nicht jede mathematische Aussage kann im Rahmen der Prädikatenlogik formuliert werden. Erst wenn auch Quantoren über Prädikaten und Funktionssymbolen erlaubt werden ist dies möglich. Dies ist dann die Prädikatenlogik der zweiten Stufe. Die obige ist die Prädikatenlogik der ersten Stufe.
+\end{enumerate}
+
+\paragraph{Beispiel} Interpretation eines Atoms mit einer Variablen 
+
+Die Notation für eine Variablenbelegung (\begriff{valuation}) ist $[x \mapsto c] \ (c \in D)$.
+
+Atom mit Variable
+	$$\text{Für die Variablenbelegung $\mu=[x \mapsto \J] \text{ ist } I_\mu(\text{woman}(x))=T$ }$$
+	$$\text{Für die Variablenbelegung $\nu=[x \mapsto \R] \text{ ist } I_\mu(\text{woman}(x))=F$ }$$
+
+Seien $\Phi$ und $\Psi$ Formeln, deren Interpretationen $I_\mu(\Phi)$ und $I_\mu(\Psi)$ unter der Variablenbelegung $\mu$ bekannt sind, dann folgt daraus, dass eine Interpretation für "`komplexe"' Formeln exisitiert und induktiv wie folgt bestimmt werden kann:
+\begin{eqnarray*}
+I_\mu(\Phi \vee \Psi) := T & \Gdw & I_\mu(\Phi)=T \vee I_\mu(\Psi)=T \\
+I_\mu(\Phi \wedge \Psi) := T & \Gdw & I_\mu(\Phi)=T \wedge I_\mu(\Psi)=T \\
+I_\mu(\neg \Phi) := T & \Gdw & I_\mu(\Phi)=F \\
+I_\mu(\Phi \rightarrow \Psi) := T & \Gdw & I_\mu(\Phi)=F \vee I_\mu(\Psi)=T \\
+I_\mu(\Phi \leftarrow \Psi) := T & \Gdw & I_\mu(\Phi)=T \vee I_\mu(\Psi)=F \\
+I_\mu(\Phi \leftrightarrow \Psi) := T & \Gdw & (I_\mu(\Phi)=T \vee I_\mu(\Psi)=T) \wedge (I_\mu(\Phi)=F \vee I_\mu(\Psi)=F) \\
+I_\mu(\exists x \Phi) := T & \Gdw & \text{ein $c \in D$ existiert, so dass $I_{\mu[x \dann c]}(\Phi) = T$} \\
+I_\mu(\forall x \Phi) := T & \Gdw & \text{für alle $c \in D$ gilt $I_{\mu[x \dann c]}(\Phi) = T$}
+\end{eqnarray*}
+
+\paragraph{Bemerkung:} Eine Formel kann auf verschiedene Arten interpretiert werden.
+
+\paragraph{Beispiel:} verschiedene Interpretationen einer Formel
+
+$$\text{Sei }\Phi = \forall x(g(x,f,t) \dann l(t,x))$$
+
+Die Interpretation $I$ sei wie folgt defininiert:
+
+\begin{itemize}
+\item $I(f)$ := "`(Katzen-)Futter"'
+\item $I(t)$ := "`Katze namens Tom"'
+\item $I(g)$ := "`Die Abbildung, die einem Tripel $\langle X,Y,Z\rangle$ $T$ zuordnet, falls Objekt $X$ dem Objekt $Z$ das Objekt $Y$ gibt und $F$ sonst"'
+\item $I(l)$ := "`Die Abbildung, die einem Paar $\langle X,Y \rangle$ T zuordnet, falls das Objekt $X$ das Objekt $Y$ liebt und $F$ sonst"'
+\end{itemize}
+
+Die Aussage "`Falls $X$ der Katze namens Tom Katzenfutter gibt, dann liebt Tom dieses $X$"' kann sehr wohl für jede Variablenbelegung von $X$ aus einem bestimmten Diskursbereich als wahr betrachtet werden. Damit wäre die Formel $\Phi$ bezüglich der Interpretation $I$ erfüllt, das heißt $I(\Phi) = T$.
+
+\begin{figure}[htb]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		$A$	&	$B$	&	$A \vee B$ & $A \wedge B$ & $A \dann B$ ($\equiv\neg A \vee B$) &
+		$A \equi B$ ($\equiv (A\wedge B) \vee (\neg A \wedge \neg B)$) \\
+		\hline
+		W	&W	&W	&W	&W	&W	\\
+		W	&F	&W	&F	&F	&F	\\
+		F	&W	&W	&F	&W	&F	\\
+		F	&F	&F	&F	&W	&W	\\
+		\hline
+	\end{tabular}
+	\caption{Wahrheitswerte der Aussagen}
+\end{figure}
+
+%begin 18. April 2005 (Lars)
+
+\section{Normalformen}
+
+\lectureof{18.04.2005}
+\subsection{Definition (Äquivalenzbegriff)}
+
+Zwei prädikatenlogische Formeln $F$ und $G$ sind äquivalent, falls für alle sowohl zu $F$ als auch zu $G$ passenden Strukturen $A$ gilt: $$A(F) = A(G)$$
+
+\paragraph{Beispiel (de Morgansches Gesetz)} \[\neg (F \wedge G) \equiv \neg F \vee \neg G\]
+
+\subsection{Satz}
+
+Seien $F$ und $G$ beliebige Formeln. Dann gilt:
+\begin{enumerate}
+\item
+\begin{eqnarray*}
+	\neg \forall xF & \equiv & \exists x\neg F \\
+	\neg \exists xF & \equiv & \forall x\neg F
+\end{eqnarray*}
+\item Falls $x$ in $G$ nicht frei vorkommt, gilt:
+\begin{eqnarray*}
+	(\forall xF\wedge G) & \equiv & \forall x(F\wedge G) \hfill ~(*) \\
+	(\forall xF\vee G) & \equiv & \forall x(F\vee G) \\
+	(\exists xF\wedge G) & \equiv & \exists x(F \wedge G) \\
+	(\exists xF\vee G) & \equiv & \exists x(F \vee G)
+\end{eqnarray*}
+\item
+\begin{eqnarray*}
+	(\forall xF \wedge \forall xG) & \equiv & \forall x(F \wedge G) \\
+	(\exists xF \vee \exists xG) & \equiv & \exists x(F \vee G)
+\end{eqnarray*}
+\item
+\begin{eqnarray*}
+	\forall x\forall yF & \equiv & \forall y\forall xF \\
+	\exists x\exists yF & \equiv & \exists y\exists xF
+\end{eqnarray*}
+\end{enumerate}
+
+\paragraph{Beweis} (*) (exemplarisch)
+
+Sei $A=(U_A,I_A)$ eine zu den beiden Seiten der zu beweisenden Äquivalenz passende Struktur. Es gilt:
+\begin{eqnarray*}
+	& &A(\forall xF \wedge G) = 1 \\
+	\Gdw & & A(\forall xF) = 1 \text{ und } A(G) = 1 \\
+	\Gdw & & \text{ für alle } d\in U_A \text{ gilt: } \\
+	& & A_{[x/d]}(F) = 1 \text{ und } A(G) = 1 \\
+	\Gdw & & \text{ für alle } d\in U_A \text{ gilt: } \\
+	& & A_{[x/d]}(F) = 1 \text{ und } A_{[x/d]}(G) = 1\\
+	& & \text{\ (\textbf{Bem.:} da $x$ in $G$ nicht frei vorkommt, ist nämlich $A(G)=A_{[x/d]}(G)$)} \\
+	\Gdw & & \text{ für alle } d\in U_A \text{ gilt: } \\
+	& & A_{[x/d]}(F\wedge G) = 1 \\
+	\Gdw & & A(\forall x(F\wedge G)) = 1
+\end{eqnarray*}
+
+\subsection{Definition (NNF, KNF, DNF)}
+
+\begin{itemize}
+\item Eine Formel ist in \emph{Negationsnormalform}, wenn sie außer $\neg$, $\wedge$, $\vee$ keine Junktoren enthält und wenn in ihr $\neg$ nur vor atomaren Teilformen auftritt (NNF).
+\item Eine Formel ist in \emph{konjunktiver} (bzw. \emph{disjunktiver}) \emph{Normalform}, wenn sie eine Konjunktion (bzw. Disjunktion) von Disjunktionen (bzw. von Konjunktionen) von Literalen ist.
+\end{itemize}
+
+\subsection{Definition (Substitution in Formeln)}
+
+Sei $F$ eine Formel, $x$ eine Variable und $t$ ein Term. Dann bezeichnet $F_{[x/t]}$ diejenige Formel, die man aus $F$ erhält, indem man jedes freie Vorkommen der Variablen $x$ in $F$ durch den Term $t$ ersetzt. $[x/t]$ beschreibt eine \emph{Substitution}. Substitutionen (oder Folgen von Substitutionen) behandeln wir auch als selbstständige Objekte, z. B. $sub=[x/t_1][y/t_2]$ (wobei $t_1$ auch $y$ enthalten darf).
+
+\subsection{Lemma (gebundene Umbenennung)}
+
+Sei $F = QxG$ eine Formel mit $Q\in \{\exists, \forall\}$. Es sei $y$ eine Variable, die in $G$ nicht vorkommt. Dann gilt:
+$$F\equiv QyG_{[x/y]}$$
+
+\subsection{Lemma}
+
+Zu jeder Formel $F$ gibt es eine äquivalente Formel $G$ in \emph{bereinigter} Form.\\ Hierbei heißt die Formel bereinigt, sofern es keine Variable gibt, die in der Formel sowohl gebunden als auch frei vorkommt, und sofern hinter allen vorkommenden Quantoren verschiedene Variablen stehen.
+
+\paragraph{Beispiel}
+
+$$F:=\forall x\exists y(P(x,y)\wedge Q(x,a))$$
+$$G:=\exists u(\forall vP(u,v)\vee Q(v,v))$$
+$F$: $x$, $y$ sind gebunden, $a$ ist frei $\rightarrow$ $F$ ist bereinigt. \\
+$G$: alle Vorkommen der Variablen $u$ sind gebunden, allerdings tritt $v$ sowohl gebunden als auch frei auf $\rightarrow$ $G$ ist nicht in bereinigter Form.
+
+\subsection{Definition (Pränexform)}
+
+Eine Formel heißt pränex oder in Pränexform, falls sie die Form $$Q_1y_1Q_2y_2\ldots Q_ny_nF$$ hat, wobei $Q_i\in\{\exists, \forall\}$, $n\geq0$, $y_i$ Variablen sind. Es kommt ferner kein Quantor in $F$ vor.
+
+\subsection{Satz}
+
+Für jede Formel $F$ gibt es eine äquivalente (und bereinigte) Formel $G$ in Pränex"-form.
+
+\paragraph{Beweis} (Induktion über den Formelaufbau)
+
+\begin{description}
+\item[Induktionsanfang:] $F$ ist atomare Formel. Dann liegt $F$ bereits in der ge"-wünsch"-ten Form vor. Wähle also $G=F$.
+\item[Induktionsschritt:] Wir betrachten wieder die verschiedenen Fälle.
+	\begin{enumerate}
+		\item $F$ hat die Form $\neg F_1$ und $G_1=Q_1y_1Q_2y_2\ldots Q_ny_nG'$ sei die nach Induktionsvoraussetzung existierende
+					zu $F_1$ äquivalente Formel. Dann gilt:
+					$$F\equiv \quer{Q}_1 y_1 \quer{Q}_2 y_2 \ldots \quer{Q}_n y_n \neg G'$$
+					wobei $\quer{Q}_i=\exists$, falls $Q_i=\forall$ und $\quer{Q}_i=\forall$ falls $Q_i=\exists$. Diese Formel hat die gewünschte Form.
+		\item $F$ hat die Form $(F_1 \circ F_2)$ mit $\circ\in\{\wedge,\vee\}$. Dann gibt es zu $F_1$ und $F_2$ äquivalente Formeln 
+					$G_1$ und $G_2$ in 	bereinigter Pränexform. Durch gebundenes Umbenennen können wir die gebundenen Variablen von $G_1$ 
+					und $G_2$ disjunkt machen. Dann hat:
+					\begin{itemize}
+						\item $G_1$ die Form $Q_1y_1Q_2y_2\ldots Q_ky_kG_1'$
+						\item $G_2$ die Form $Q_1'z_1Q_2'z_2\ldots Q_l'z_lG_2'$
+					\end{itemize}
+					mit $Q_i,Q_j'\in\{\exists,\forall\}$. Daraus folgt, dass $F$ zu 
+						$$Q_1y_1Q_2y_2\ldots Q_ky_kQ_1'z_1\ldots Q_l'z_l(G_1'\circ G_2')$$
+					äquivalent ist.
+		\item $F$ hat die Form $QxF_1$, $Q\in\{\exists,\forall\}$. Die nach Induktionsvorraussetzung existierende bereinigte Pränexform habe die
+					Bauart $Q_1y_1Q_2y_2\ldots Q_ky_kF_1'$. Durch gebundenes Umbenennen kann die Variable $x$ verschieden gemacht werden von 
+					$y_1,\ldots ,y_k$. Dann ist $F$ zu $QxQ_1y_1Q_2y_2\ldots Q_ky_kF_1'$ äquivalent.
+	\end{enumerate}
+\end{description}
+
+\subsection{Definition (Skolemform)}
+
+Für jede Formel $F$ in BPF (bereinigte Pränexform) definieren wir ihre \emph{Skolem"-form(-el)} als das Resultat der Anwendung folgenden Algorithmus' auf $F$: 
+ 
+\begin{codebox}
+\Procname{\proc{Skolemform-Algorithmus}}
+\li \While $F$ enthält einen Existenzquantor
+\li     \Do
+            $F$ habe die Form $F=\forall y_1\forall y_2\ldots\forall y_n\exists zG$ für eine Formel $G$ in BPF
+\zi         und $n\geq 0$ (der Allquantorblock kann auch leer sein);
+\li         Sei $f$ ein neues, bisher in $F$ nicht vorkommendes $n$-stelliges
+\zi         Funktionssymbol;
+\li         $F:=\forall y_1\forall y_2\ldots\forall y_nG_{[z/f(y_1,y_2,\ldots ,y_n)]}$; (d.h. der Existenzquantor in $F$ wird
+\zi         gestrichen und jedes Vorkommen der Variable $z$ in $G$ durch 
+\zi         $f(y_1,y_2,\ldots ,y_n)$ ersetzt.
+    \End
+\end{codebox}
+
+\subsection{Satz}
+
+Für jede Formel $F$ in BPF gilt: $F$ ist erfüllbar $\Gdw$ die Skolemform ist erfüllbar.
+\paragraph{Beweis} siehe Schöning, U.: "`Logik für Informatiker"'  
+
+\subsection{Definition (Herbrand-Universum)}
+
+Das Herbrand-Universum $D(F)$ einer geschlossenen Formel $F$ in Skolemform ist die Menge aller variablenfreien Terme, die aus den Bestandteilen von $F$ gebildet werden können. Falls keine Konstante vorkommt, wählen wir eine beliebige Konstante, z. B. $a$ und bilden dann die variablenfreien Terme.\\
+$D(F)$ wird wie folgt induktiv definiert:
+\begin{enumerate}
+\item Alle in $F$ vorkommenden Konstanten sind in $D(F)$.\\
+Falls $F$ keine Konstanten enthält, so ist $a$ in $D(F)$.
+\item Für jedes in $F$ vorkommene $n$-stellige Funktionssymbol $f$ und Terme $t_1,t_2,\ldots ,t_n$ in $D(F)$ ist der Term $f(t_1,t_2,\ldots ,t_n)$ in $D(F)$.
+\end{enumerate}
+
+\paragraph{Beispiel}
+
+\begin{eqnarray*}
+	F & = &\forall x\forall y\forall zR(x,f(y),g(z,x)) \\
+	G & = & \forall x\forall yQ(c,f(x),h(y,b))
+\end{eqnarray*}
+Für F liegt der Spezialfall aus 1. vor (kein Vorkommen einer Konstanten).
+\begin{eqnarray*}
+D(F) & = & \{a,f(a),g(a,a),f(g(a,a)),f(f(a)),\\
+& & g(a,f(a)),g(f(a),a),g(f(a)),\ldots\}\\
+D(G) & = & \{c,b,f(c),f(b),h(c,c),h(c,b),h(b,c),\\
+& & h(b,b),f(f(c)),f(f(b)),f(h(c,c)),f(h(c,b)),\ldots\}
+\end{eqnarray*}
+
+
+\subsection{Definition (Herbrand-Expansion)}
+\lectureof{20.04.2005} Sei $F=\forall y_1 \forall y_2 \ldots \forall y_n F^*$ eine Aussage in Skolemform,
+dann ist $E(F)$ die Herbrand-Expansion von $F$ definiert als
+$$E(F)=\{F^*_{[y_1/t_1][y_2/t_2]\ldots[y_n/t_n]} | t_1,t_2, \ldots, t_n \in D(F) \}$$
+
+Anmerkung, nicht im Skript: Es werden also alle gebundenen Variablen von $F$ in der Matrix $F*$ von $F$ durch beliebige Terme aus dem Herbrand-Universum $D(F)$ ersetzt.
+
+\subsection{Satz (Gödel-Herbrand-Skolem)}
+Für jede Aussage $F$ in Skolemform gilt:
+$F$ ist erfüllbar genau dann, wenn die Formelmenge $E(F)$ (im aussagenlogischen Sinn) erfüllt ist.
+
+\paragraph{Beispiel}
+$$F=\forall x \forall y \forall z P(x,f(y,y), g(z,x))$$
+Die einfachsten Formeln in $E(F)$ sind die folgenden:
+\begin{eqnarray*}
+	P(a,f(a,a), g(a,a)) & \text{ mit } & [x/a], \ldots, [z/a]\\
+	P(f(a), f(a,a), g(a,f(a)))& \text{ mit } &[x/f(a)], [y/a], [z/a]
+\end{eqnarray*}
+
+\section{Prolog und Prädikatenlogik}
+
+\subsection{Logikprogrammierung}
+Prolog wurde um 1970 von Alain Colmerauer und seinen Mitarbeitern mit dem Ziel entwickelt, die Programmierung von Computern mit den Mitteln "`der Logik"' zu ermöglichen.
+
+\subsection{Pure Prolog}
+Das sogenannte Pure Prolog oder Database-Prolog entspricht einer Teilmenge der Sprachdefinition eines praktischen Prolog-Entwicklungssystems und enthält keine extra- oder metalogischen Komponenten wie:
+\begin{itemize}
+\item Cut, Type-Checking
+\item Arithmetische Operationen
+\item Datenbasismanipulation zur Laufzeit
+\end{itemize}
+
+\subsection{Prolog und Logik}
+Pure Prolog-Programme entsprechen den Ausdrücken der Hornklausellogik, die eine Teilmenge der Prädikatenlogik 1. Stufe ist.
+Das Beweisverfahren Resolution ermöglicht Inferenzen aufgrund von Prologprogrammen oder Hornklauseln.
+
+\paragraph{Bemerkung}Zur Transformation von prädikatenlogischen Sachverhalten nach Prolog wird der Weg über die Hornklauseln genutzt.
+
+$$\text{Prädikatenlogik 1. Stufe} \stackrel{\text{KNF}}{\Longrightarrow} \text{Hornklauseln} \Longrightarrow \text{Prolog}$$
+
+\subsection{Prädikatenlogik 1. Stufe}
+\paragraph{Inventar der Syntax:}
+\begin{itemize}
+\item Individuenkonstanten $a$, $b$, $c$, $\ldots$
+\item Individuenvariablen $x$, $y$, $z$, $\ldots$
+\item Prädikate $P(t_1, \ldots, t_n),\ t_i \in$ TERM
+\item Quantoren $\forall$, $\exists$
+\item Junktoren $\neg, \vee, \wedge, \dann, \gdw$
+\end{itemize}
+
+\subsection{Formeln der Prädikatenlogik}
+\begin{itemize}
+\item Wenn $P$ ein $n$-stelliges Prädikat ist und $t_1, \ldots, t_n$ Terme sind, dann ist $P(t_1, \ldots, t_n)$ ein Literal.
+\item Literale sind Formeln.
+\item Wenn $\Phi$ und $\Psi$ Formeln sind, dann sind auch $\neg\Phi$, $\Phi\vee\Psi$, $\Phi\wedge\Psi$, $\Phi\dann\Psi$, $\Phi\gdw\Psi$ Formeln.
+\item Wenn $\Phi$ eine Formel ist und $x$ eine Variable, dann sind auch $\forall x\Phi$, $\exists x\Phi$ Formeln.
+\end{itemize}
+
+\subsection{Klauseln}
+\begin{itemize}
+\item Wenn $P$ ein $n$-stelliges Prädikat ist und $t_1, \ldots, t_n$ Terme sind, dann ist $P(t_1, \ldots, t_n)$ ein Literal.
+\item Literale sind Klauseln.
+\item Wenn $\Phi$ ein Literal ist, dann sind auch $\neg\Phi$, eine Klausel.
+\item Wenn $\Phi$ und $\Psi$ Klauseln sind, dann ist auch $\Phi \vee \Psi$ eine Klausel.
+\end{itemize}
+
+\subsection{Hornklauseln}
+
+Hornklauseln sind Klauseln, die genau ein nicht-negiertes Literal und beliebig viele negierte Literale enthalten.
+
+\paragraph{Beispiele}
+\begin{itemize}
+\item $\text{vater}(x,y) \vee \neg\text{elternteil}(x,y) \vee \neg\text{männlich}(x)$ 
+\item $\text{sterblich}(sokrates)$
+\end{itemize}
+
+Anmerkung, nicht in der Vorlesung: Hornklauseln lassen sich als Implikationen darstellen. Die beiden Beispielen sind zu den folgenden äquivalent:
+
+\begin{itemize}
+\item $(\text{elternteil}(x,y) \wedge \text{Männlich}(x)) \Rightarrow \text{vater}(x,y)$
+\item $wahr \Rightarrow \text{sterblich}(sokrates)$
+\end{itemize}
+
+\subsection{Konjunktive Normalform}
+Eine Formel ist in konjunktiver Normalform, wenn sie eine Konjunktion von Klauseln repräsentiert.
+$$K_1 \wedge \ldots \wedge K_n,\ K_i \in \text{KLAUSEL}$$
+Formeln der Prädikatenlogik können durch Anwendung logischer Äquivalenzregeln in die konjunktive Normalform gebracht werden.
+
+\subsection{Logische Äquivalenzregeln}
+\subsubsection{Kommutativität}
+\begin{eqnarray*}
+ P \wedge Q & \Gdw & Q \wedge P \\
+ P \vee Q & \Gdw & Q \vee P 
+\end{eqnarray*}
+
+\subsubsection{Assoziativität}
+\begin{eqnarray*}
+	(P \wedge Q) \wedge R & \Gdw & P \wedge (Q \wedge R) \\
+	(P \vee Q) \vee R & \Gdw & P \vee (Q \vee R)
+\end{eqnarray*}
+
+\subsubsection{De Morgan}
+\begin{eqnarray*}
+	\neg(P \vee Q)   & \Gdw & \neg P \wedge \neg Q \\
+	\neg(P \wedge Q) & \Gdw & \neg P \vee \neg Q 
+\end{eqnarray*}
+
+\subsubsection{Konditional- \& Bikonditionalgesetz}
+\begin{eqnarray*}
+	P \dann Q & \Gdw & \neg P \vee Q\\
+	P \gdw Q  & \Gdw & (P \dann Q) \wedge (Q \dann P)
+\end{eqnarray*}
+
+\subsubsection{Idempotenz}
+\begin{eqnarray*}
+	P \vee P   & \Gdw & P \\
+	P \wedge P & \Gdw & P
+\end{eqnarray*}
+
+\subsubsection{Identität}
+\begin{eqnarray*}
+	P \vee 0   & \Gdw & P \\
+	P \vee 1   & \Gdw & 1 \\
+	P \wedge 0 & \Gdw & 0 \\
+	P \wedge 1 & \Gdw & P
+\end{eqnarray*}
+
+\subsubsection{Komplementarität}
+\begin{eqnarray*}
+	P \vee \neg P   & \Gdw & 1\ \text{(Tautologie, allgemeingültig)} \\
+	P \wedge \neg P & \Gdw & 0\ \text{(Kontradiktion, Inkonsistenz)} \\
+	\neg\neg P      & \Gdw & P\ \text{(Doppelte Negation)} 
+\end{eqnarray*}
+
+\subsection{Quantorengesetze}
+\subsubsection{Quantoren-Negation}
+\begin{eqnarray*}
+	\neg \forall x \Phi      & \Gdw & \exists x \neg \Phi \\
+	\forall x \Phi           & \Gdw & \neg \exists x \neg \Phi \\
+	\neg \forall x \neg \Phi & \Gdw & \exists x \Phi \\
+	\forall x \neg \Phi      & \Gdw & \neg \exists x \Phi
+\end{eqnarray*}
+
+\subsubsection{Quantoren-Distribution}
+\begin{eqnarray*}
+	\forall x (\Phi \wedge \Psi)       & \Gdw   & \forall x \Phi \wedge \forall x \Psi \\
+	\exists x (\Phi \vee \Psi)         & \Gdw   & \exists x \Phi \vee \exists x \Psi \\
+	\forall x \Phi \vee \forall x \Psi & \folgt & \forall x (\Phi \vee \Psi) \\
+	\exists x (\Phi \wedge \Psi)       & \folgt & \exists x \Phi \wedge \exists x \Psi
+\end{eqnarray*}
+
+\subsubsection{Quantoren-Dependenz}
+\begin{eqnarray*}
+	\forall x \forall y \Phi & \Gdw   & \forall y \forall x \Phi \\
+	\exists x \exists y \Phi & \Gdw   & \exists y \exists x \Phi \\
+	\exists x \forall y \Phi & \folgt & \forall y \exists x \Phi 
+\end{eqnarray*}
+
+\subsubsection{Quantoren-Bewegung}
+\begin{eqnarray*}
+	\Phi \dann \forall x \Psi & \Gdw & \forall x (\Phi \dann \Psi) \\
+	\Phi \dann \exists x \Psi & \Gdw & \exists x (\Phi \dann \Psi) \\
+	(\forall x \Phi) \dann \Psi & \Gdw & \exists x (\Phi \dann \Psi) \\
+	(\exists x \Phi) \dann \Psi & \Gdw & \forall x (\Phi \dann \Psi) 
+\end{eqnarray*}
+
+\subsection{Pränex-Normalform}
+Eine prädikatenlogische Formel befindet sich in PNF, wenn alle Quantoren am Anfang der Formel stehen.
+$$\begin{array}{c}
+	(\exists x F(x)) \dann (\forall y G(y)) \\
+	\Downarrow\\
+	\forall y \forall x (F(x) \dann G(y))
+\end{array}$$
+
+\subsection{Skolemisierung}
+Existenzquantoren können eleminiert werden, indem existenzquantifizierte Variablen durch Skolemkonstanten substituiert werden.
+Liegt ein Existenzquantor im Skopus von Allquantoren, werden die Skolemkonstanten mit den jeweiligen allquantifizierten Variablen durch Parametrisierung in Abhängigkeit gebracht.
+
+\paragraph{Beispiele}
+\begin{itemize}
+\item $\exists y \forall x ((\text{man}(x) \wedge (\text{woman}(y)) \dann \text{loves}(x,y))
+		\\\Longrightarrow\ \forall x ((\text{man}(x) \wedge \text{woman}(G)) \dann \text{loves}(x, G))$\\
+\item $\forall x (\text{man}(x) \dann \exists y (\text{woman}(y) \wedge \text{loves}(x,y)))\\
+		\Longrightarrow\ \forall x (\text{man}(x) \dann (\text{woman} (G(x)) \wedge \text{loves}(x,G(x))))$
+\end{itemize}
+
+\section{Aussagenlogische Resolution}
+Sie dient zum Nachweis der Unerfüllbarkeit einer Formel. Viele Aufgaben können auf einen Test auf Unerfüllbarkeit reduziert werden:
+\begin{itemize}
+\item $F$ ist Tautologie gdw. $\neg F$ ist unerfüllbar
+\item Folgt $G$ aus $F_1,F_2,\dots, F_n$ ? \\
+      d.h.: Ist $F_1 \wedge F_2 \wedge \dots \wedge F_n \dann G$ eine Tautologie? \\
+      d.h.: Ist $F_1 \wedge F_2 \wedge \dots \wedge F_n \wedge \neg G$ unerfüllbar? 
+\end{itemize}
+
+Die aussagenlogische Resolution ist eine Umformungsregel und geht von der \begriff{Klauselschreibweise} der KNF Formel aus. 
+Die Formel $F$ liegt in KNF vor, wenn gilt:
+	$$F=(L_{1,1}\vee\dots\vee L_{1,n})\wedge\dots\wedge(L_{m,1} \vee\dots\vee L_{m,n})$$
+wobei $L_{i,j}$ Literale sind, also 
+	$$L_{i,j}\in \{A_1,A_2,\dots\}\cup\{\neg A_1,\neg A_2,\dots\}$$
+Die Klauselschreibweise von $F$ ist dann: 
+	$$F=\{\{L_{1,1},\dots ,L_{1,n})\},\dots,\{(L_{m,1},\dots , L_{m,n}\}\}$$
+
+
+\subsection{Definition (Resolvent)}
+\begin{itemize}
+\item Es seien $K_1$ und $K_2$ Klauseln mit $A\in K_1$ und $\neg A \in K_2$, 
+    wobei $A$ eine atomare Formel ist. Dann heißt 
+    $$ R=(K_1 \setminus \{A\}) \cup (K_2 \setminus \{\neg A\}) $$ der \begriff{Resolvent} von 
+    $K_1$ und $K_2$ (bezüglich $A$).
+\item Diagramm: \\
+    \xymatrix{
+        K_1 \ar@{-}[dr] &   & K_2 \ar@{-}[dl] \\
+            & R &
+    }
+
+\item Falls $K_1 =\{A\}$ und $K_2=\{\neg A\}$, dann ist $R= \emptyset$
+\item Eine Klauselmenge, die $\emptyset$ enthält, ist unerfüllbar. 
+\item Beispiel:\\
+    \xymatrix {
+        \{A_3, \neg A_1, A_2\} \ar@{-}[dr] &                        & \{A_1, A_2, \neg A_3\} \ar@{-}[dl] \\
+                                           & \{A_3, A_2, \neg A_3\} &
+    }
+\end{itemize}
+
+
+\subsection{Definition (Res($F$))}
+Für eine Klauselmenge $F$ sei
+	$$ \mbox{Res}(F) = F\cup\{R\ |\ R \mbox{ ist Resolvent zweier Klauseln in $F$}\}.$$
+Weiter sei
+\begin{itemize}
+\item $\mbox{Res}^0(F) = F$
+\item $\mbox{Res}^{n+1}(F) = \mbox{Res}(\mbox{Res}^n(F))$
+\item $\mbox{Res}^{\ast}(F) = \bigcup_{n\geq 0} \mbox{Res}^n$
+\end{itemize} 
+
+\paragraph{Resolutionssatz der Aussagenlogik:} Eine Klauselmenge $F$ ist genau dann
+unerfüllbar, wenn $\emptyset \in \mbox{Res}^\ast (F)$
+
+
+\paragraph{Beispiel}
+%    \begin{xy}
+    % In der folgenden XYPic Matrix sind die Abstände zwischen Zeilen auf .5pc
+    % und zwischen Spalen auf .2pc gesetzt. 
+    \xymatrix@C=.2pc@R=.5pc{
+        \{\{A_1, A_2\}, \ar@{-}[dr] &         & \ar@{-}[dl] \{\neg A_1, A_2\}, &           & \{A_1, \neg A_2\},  \ar@{-}[dr] &              & \ar@{-}[dl] \{\neg A_1, \neg A_2\}\} \\
+                            & \{A_2\} \ar@{-}[drr] &                           &           &                          & \ar@{-}[dll] \{\neg A_2\} & \\
+                                    &         &                    & \emptyset &                    &              &
+    }
+%    \end{xy}
+	Die Formel ist unerfüllbar!
+                        
+\subsection{Resolution in der Prädikatenlogik}
+Es gibt zwei Varianten
+\begin{enumerate}
+\item Zurückführen auf die aussagenlogische Resolution (Grundresolution)
+\item Direkte Resolution (Unifikation)
+\end{enumerate} 
+
+\paragraph{Grundresolution} 
+\begin{itemize}
+\item Stelle die Matrix der Formel $F$ in KNF dar. Dann sind die Formeln in $E(F)$ ebenfalls in KNF. 
+\item Da die Formeln in $E(F)$ variablenfrei sind kann die Resolution der Aussagenlogik verwendet werden.
+\end{itemize}
+
+\paragraph{Bemerkung} Dieser Algorithmus kann nicht terminieren, falls die Formel erfüllbar ist!
+
+\paragraph{Beispiel}
+	$$F = \forall x (P(x) \wedge \neg P(f(x))) $$
+Matrix von $F$ ist schon in KNF:
+	$$F^\ast = P(x) \wedge P(f(x))$$
+als Klauselmenge: 
+\begin{eqnarray*}
+	F^\ast & = & \{\{P(x)\},\{\neg P(f(x))\}\} \\
+	D(F)   & = & \{a,f(a),f(f(a)),\dots\}      \\
+	E(F)   & = & \{P(a)\wedge P(f(a)),P(f(a))\wedge P(f(f(a))),\dots\} 
+\end{eqnarray*}
+als Klauselmenge
+	$$E(F) = \{\{P(a)\},\{\neg P(f(a))\},\{P(f(a))\},\{\neg P(f(f(a))),\dots\}\}$$
+wegen
+
+ \xymatrix@C=.2pc@R=.5pc{
+    \{\{\neg P(f(a))\},  \ar@{-}[dr] &           & \ar@{-}[dl] \{P(f(a))\}\} \\
+                                     & \emptyset &
+ }
+
+ist F unerfüllbar.
+
+\paragraph{Verbesserung}
+Bei diesem Verfahren werden i. A. zu viele Klauseln generiert, die für die Herleitung von $\emptyset$ nicht gebraucht werden, da die gleiche Substitution auf die ganze Klauselmenge $F^\ast$ angewendet wird.
+
+Im vorherigen Beispiel genügt es aber für die Klausel $\{P(f(x))\}$ die Substitution $[x/f(a)]$ und für die Klausel $\{\neg P(f(x))\}$ die Substitution $[x/a]$ durchzuführen um $\emptyset$ herleiten zu können. 
+
+\subsection{Allgemeinster Unifikator}
+\begin{itemize}
+\item Es sei $L=\{L_1,L_2,\dots,L_k\}$ eine Menge von prädikatenlogischen Literalen und sub eine Substitution. Wir schreiben 
+  $L\mbox{sub}$ für die Menge $\{L_1\mbox{sub},\dots, L_k\mbox{sub}\}$.
+\item sub ist ein \emph{Unifikator} für $L$, falls $|L\mbox{sub}| = 1$, dann heißt $L$ \emph{unifizierbar} 
+\item Ein Unifikator sub von $L$ heißt \emph{allgemeinster Unifikator} von $L$, wenn es für jeden Unifikator sub' von $L$ eine 
+  Substitution $s$ gibt mit sub' $= \mbox{sub}s$
+\end{itemize}
+
+
+\section{Prädikatenlogische Resolution}
+Es seien $K_1$,$K_2$ prädikatenlogische Klauseln mit 
+\begin{enumerate}
+\item Es gibt Substitutionen $s_1$ und $s_2$, so dass $K_1s_1$ und $K_2s_2$ keine gemeinsamen Variablen enthalten.
+\item Es gibt Literale $L_1,\dots,L_m \in K_1s_1 \ (m\geq 1)$ und $L_1^\prime,\dots,L_n^\prime \in K_2s_2 \ (n\geq 1)$, so dass
+  $L = \{\neg L_1,\dots,\neg L_m,L_1^\prime,\dots,L_n^\prime\}$ unifizierbar ist. Es sei sub ein allgemeinster Unifikator von $L$. 
+\end{enumerate}
+
+Dann heißt die Klausel
+$$ R:= ((K_1 s_1 \setminus \{L_1,\dots,L_m\})\cup
+        (K_2 s_2 \setminus \{L_1^\prime,\dots,L_n^\prime\} ))sub $$
+ein \begriff{prädikatenlogischer Resolvent} von $K_1$ und $K_2$. 
+
+\chapter{Algorithmen}
+%\author{Mathias Ziebarth, Sebastian Frehmel, Daniel Dreke, Felix Brandt,\\ Lars Volker, Manuel Holtgrewe, Florian Mickler}
+% Wer nennenswerte Änderungen macht, schreibt sich bei \author dazu
+\lectureof{25.04.2005}
+
+\subsection*{Literatur}
+\begin{itemize}
+\item \textsc{Thomas H. Cormen, Charles. E. Leiserson,
+Ronald Rivest, Clifford Stein:} \emph{Algorithmen -- Eine Einführung.}
+\item \textsc{Donald E. Knuth:} \emph{The Art of Computer Programming.} % Prof. Calmet hatte "Computer" vergessen.
+\end {itemize}
+
+\subsection* {Konventionen Pseudocode}
+\begin{itemize}
+\item Blockstruktur wird nur durch Einrücken gekennzeichnet (keine Klammern).
+\item Schleifenkonstrukte \textbf{while} und \textbf{repeat} wie üblich.
+\item Bei \textbf{for} bleibt der Wert nach Verlassen der Schleife erhalten.
+\item Alles nach "`//"' ist Kommentar. (Buch: $\rhd [, \%] \dots$)
+\item Mehrfachzuweisungen $x \leftarrow y \leftarrow z$ bedeutet $y \leftarrow z; x \leftarrow y$.
+\item Variablen sind lokal (local).
+\item Zugriff auf die Feldelemente: $A[i]$ das $i$-te Element.
+\item Datenattribute z. B. $\text{länge}(A)$.
+\item Parameter einer Prozedur: \textbf{call by value}.
+\item "`und"' und "`oder"' sind träge (lazy) Operatoren.
+\end{itemize}
+
+
+\subsubsection*{Rundungsfunktion / Gaußklammer}
+
+$\llc p / q \rrc$ "`ceiling function"' \\
+$\llf p / q \rrf$ "`floor function"' \\ 
+\\
+$p = 7, q = 3$ \\
+$p/q = 7/3 = 2,3...$ \\
+\\
+$\llc p / q \rrc = \llc 7 / 3 \rrc = 3$ \\
+$\llf p / q \rrf = \llf 7 / 3 \rrf = 2$
+
+% Teil 1 - Mathias
+
+\section{Definition}
+(mehrere Definitionen, Anzahl Bücher $\gg 100$)
+\begin{itemize}
+\item Algorithmus $\equiv$ Berechnungsprozedur
+(allgemeine $\rightarrow$ sehr spezialisierte)
+\item Prozedur ist deterministisch oder nicht
+\item deterministisch $\equiv \{$endlich, definiert, eindeutig$\}$ 
+\end{itemize}
+Algorithmus $\equiv$ Analyse, Komplexität, effiziente Berechnungsmethoden
+
+\section{Analyse von Algorithmen}
+
+\subsection{Das Sortierproblem}
+\begin{itemize}
+\item Eingabe: Eine Folge von $n$ Zahlen $(a_1, a_2, \dots, a_n)$.
+\item Ausgabe: Eine Permutation $(b_1, b_2, \dots, b_n)$ der Eingabefolge mit
+$b_1 \leqslant b_2 \leqslant \dots \leqslant b_n$.
+\end{itemize}
+
+\subsection{Implementierung: Insertion-Sort}
+\begin{codebox}
+\Procname{$\proc{Insertion-Sort}(A)$}
+\li    \For $j \gets 2$ \To $\id{laenge} [A]$
+\li        \Do 
+               $\id{schluessel} \gets A[j]$
+\li            \Comment Füge $A[j]$ in die sortierte Sequenz $A[1..j-1]$ ein.
+\li            $i \gets j-1$
+\li            \While $i>0$ und $A[i] > \id{schluessel}$
+\li                \Do
+                   $A[i+1]$ $\gets$ $A[i]$
+\li						     $i$ $\gets$ $i-1$
+					         \End
+\li			       $A[i+1] \gets \id{schluessel}$
+			     \End
+\end{codebox}
+
+\paragraph{Beispiel:}\hspace{0.1mm}
+
+\begin{enumerate}\renewcommand\labelenumi{(\alph{enumi})}
+\item
+\begin{tabular}{|r|r|r|r|r|r|}
+\hline
+5 & \textbf{2} & 4 & 6 & 1 & 3 \\
+\hline
+\end{tabular} 
+\item
+\begin{tabular}{|r|r|r|r|r|r|}
+\hline
+2 & 5 & \textbf{4} & 6 & 1 & 3 \\
+\hline
+\end{tabular} 
+\item
+\begin{tabular}{|r|r|r|r|r|r|}
+\hline
+2 & 4 & 5 & \textbf{6} & 1 & 3 \\
+\hline
+\end{tabular} 
+\item
+\begin{tabular}{|r|r|r|r|r|r|}
+\hline
+2 & 4 & 5 & 6 & \textbf{1} & 3 \\
+\hline
+\end{tabular} 
+\item
+\begin{tabular}{|r|r|r|r|r|r|}
+\hline
+1 & 2 & 4 & 5 & 6 & \textbf{3} \\
+\hline
+\end{tabular} 
+\item
+\begin{tabular}{|r|r|r|r|r|r|}
+\hline
+1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+\end{tabular}
+\end{enumerate}
+
+
+\subsection {Aufwandsklassen}
+\begin{itemize}
+\item Obere asymptotische Schranke
+$$ O(g(n))=\{f(n)| \textnormal{ es gibt } c,n_0>0 \textnormal{ mit } 0 \leq f(n) \leq cg(n) \textnormal{ für alle } n>n_0 \} $$
+\item Untere asymptotische Schranke
+$$ \Omega(g(n))=\{f(n)| \textnormal{ es gibt } c,n_0>0 \textnormal{ mit } 0 \leq cg(n)\leq f(n) \textnormal{ für alle } n \geq n_0 \} $$
+\item Asymptotisch scharfe Schranke
+$$ \Theta(g(n))=\{f(n)| \textnormal{ es gibt } c_1,c_2,n_0>0 \textnormal{ mit } 0\leq c_1 g(n) \leq f(n) \leq c_2 g(n) \textnormal{ für alle } n \geq n_0\} $$ 
+\end{itemize}
+
+% Teil 2 - Sebastian
+
+\subsection{Analyse von Insertion Sort}
+\ttfamily\begin{tabular}{llll}
+	0 & INSERTION-SORT(A)                                   & Kosten  & Zeit \\
+	1 & \keyword{for} j <- 2 \keyword{to} länge[A]          & c$_1$   & n \\
+	2 & \idt\keyword{do} schlüssel <- A[j]                  & c$_2$   & n-1 \\
+	3 & \idt//setze A[j] ein ...                            & 0       & n-1 \\
+	4 & \idt i  <- j - 1                                    & c$_4$   & n-1 \\
+	5 & \idt\keyword{while} i > 0 und A[i] > schlüssel      & c$_5$   & $\sum^{n}_{j=2}t_j$ \\
+	6 & \idt\idt\keyword{do} A[i + 1] <- A[i]               & c$_6$   & $\sum^{n}_{j=2}(t_j-1)$ \\
+	7 & \idt\idt i <- i - 1                                 & c$_7$   & $\sum^{n}_{j=2}(t_j-1)$ \\
+	8 & \idt A[i + 1] <- schlüssel                          & c$_8$   & n-1 \\
+\end{tabular}\normalfont
+
+\section{Aufwandsanalyse}
+Durch Summieren der Produkte aus Kosten und Zeit: 
+$$ T(n) = c_1n + c_2(n-1) + c_4(n-1) +c_5 \sum_{j=2}^n t_j + c_6 \sum_{j=2}^n (t_j-1) + c_7\sum_{j=2}^n (t_j-1) + c_8(n-1) $$
+Günstigster Fall: Das Feld ist schon sortiert
+\begin{eqnarray*}
+ T(n) & = & c_1n +c_2(n-1) + c_4(n-1) + c_5(n-1) +c_8(n-1) \\
+      & = & (c_1 +c_2 + c_4 + c_5 +c_8)n - ( c_2 + c_4 + c_5 + c_6) \\
+      & \folgt & \text{lineare Laufzeit}
+\end{eqnarray*}
+
+%\subsection{Aufwandsanalyse "`worst case"'}
+Schlechtester Fall: Das Feld ist in umgekehrter Reihenfolge sortiert
+\begin{eqnarray*}
+ T(n) & = & c_1n + c_2(n-1) + c_4(n-1) + c_5\left (\frac{n(n+1)}{2}-1 \right) \\
+      &   & + c_6  \left (\frac{n(n+1)}{2}-1 \right) + c_7 \left (\frac{n(n+1)}{2}-1 \right) +c_8(n-1) \\
+      & = & \left(\frac{c_5}{2} + \frac{c_6}{2} + \frac{c_7}{2}\right ) n^2 + \left( c_1+c_2+c_4+
+            \frac{c_5}{2}- \frac{c_6}{2} -\frac{c_7}{2} +c_8 \right) -(c_2+c_4+c_5+c_8) \\
+      & \folgt & \text{quadratische Laufzeit}
+\end{eqnarray*}
+
+% \subsection{Analyse II}
+Im Folgenden werden wir meistens nur die Laufzeit im schlechtesten Fall analysieren, denn
+\begin{itemize}
+	\item der schlechteste Fall bietet eine obere Schranke für die maximale Laufzeit,
+	\item für einige Algorithmen tritt der schlechteste Fall häufig auf: z. B. Suche in einer Datenbank,
+	\item der "`mittlere Fall"' ist oft annähernd genauso schlecht wie der schlechteste Fall.
+\end{itemize}
+
+\subsection{Methode: Teile und Beherrsche}
+\begin{itemize}
+	\item Teile das Problem in eine Anzahl von Teilproblemen auf
+	\item Beherrsche die Teilprobleme durch rekursives Lösen bis sie so klein sind, dass sie direkt gelöst werden können.
+	\item Verbinde die Lösungen der Teilprobleme zur Lösung des Ausgangsproblems.
+\end{itemize}
+
+\subsection{Laufzeiten}
+\begin{itemize}
+	\item $\lg n$
+	\item $\sqrt{n}$
+	\item $n$
+	\item $n\cdot\lg n$
+	\item $n^2$
+	\item $n^3$
+	\item $2^n$
+	\item $n!$
+\end{itemize}
+
+% Teil 3 - Daniel
+
+\subsection{Implementierung: \proc{Merge-Sort}}
+
+\begin{itemize}
+	\item \textbf{Teile} die zu sortierende Sequenz der Länge $n$ in zwei Teilsequenzen der Länge $\frac{n}{2}$
+	\item \textbf{Beherrsche} durch rekursives Anwenden von \proc{Merge-Sort} auf die zwei Teilsequenzen
+	\item \textbf{Verbinde} die zwei Teilsequenzen durch Mischen (merge)	
+\end{itemize}
+
+\subsubsection*{Pseudocode}
+
+\begin{codebox} 
+\Procname{$\proc{Merge-Sort}(A, p, r)$} 
+\li \If $p < r$ 
+\li \Then 
+        $q \gets \lfloor(p + r) / 2\rfloor$ 
+\li     $\proc{Merge-Sort}(A, p, q)$ 
+\li     $\proc{Merge-Sort}(A, q+1, r)$ 
+\li     $\proc{Merge}(A, p, q, r)$ 
+    \End 
+\end{codebox} 
+
+\begin{codebox}
+\Procname{$\proc{Merge}(A, p, q, r)$}
+\li $n_1 \gets q - p + 1$
+\li $n_2 \gets r - q$
+\li Erzeuge die Felder $L[1..(4_1 + 1)]$ und $R[1..(n_2 + 1)]$
+\li \For $i \gets 1$ \To $n_1$ 
+\li     \Do
+            $L[i] \gets A[p + i - 1]$
+        \End
+\li \For $j \gets 1$ \To $n_2$ 
+\li     \Do
+            $R[j] \gets A[q + j]$
+        \End
+\li $L[n_1 + 1] \gets R[n_2 + 1] \gets \infty$ \Comment Wächter
+\li $i \gets j \gets 1$
+\li \For $k \gets p$ \To $r$
+\li     \Do \If $L[i] \gets R[i]$
+\li         \Then
+                $A[k] \gets L[i]$
+\li             $i \gets i + 1$
+\li         \Else
+                $A[k] \gets R[j]$
+\li             $j \gets j + 1$
+\end{codebox}
+% \section{Beispiel}
+
+% \begin{center}
+% 	\includegraphics[width=0.80\textwidth]{E:/Uni Karlsruhe/LaTeX/Info VL 25.04.2005/beispiel.pdf}
+% \end{center}
+
+\subsection{Laufzeitanalyse}
+
+\begin{itemize}
+	\item Im allgemeinen Teile- und Beherrsche-Fall gilt: Sei $T(N)$ die Laufzeit für ein Problem der Größe $n$. Ist $n$ hinreichend klein $n \leq c$, dann benötigt die direkte Lösung eine konstante Zeit $\Theta(1)$. Führt die Aufteilung des Problems zu $a$ Teilproblemen der Größe $1/b$ und braucht die Aufteilung $D(n)$ Zeit und das Verbinden zum ursprünglichen Problem die Zeit $C(n)$ so gilt:
+	$$T(n)=
+	\begin{cases}
+		\Theta(1) & \text{falls } n \leq c \\
+		a(T(n/b)) + D(n) + C(n) & \text{sonst }
+	\end{cases}$$
+	\item Im Fall von Merge-Sort ist $a=b=2$ und $c=1$, also	
+	$$T(n)=
+	\begin{cases}
+	\Theta(1) & \text{falls } n=1 \\
+	2(T(n/2)) + dn & \text{sonst }
+	\end{cases}$$
+\end{itemize}
+
+% \section{Laufzeitanalyse 2}
+
+\begin{itemize}
+	\item Man kann die Problemgröße nur $\log_2(n)$ oft aufteilen.
+	\item Beim $i$-ten Aufteilen hat man $2^i$ Teillisten der Größe $n/2^i$ zu lösen und benötigt dafür $dn$ Zeit
+	\item Somit braucht man insgesamt $dn\log_2n+dn$ Zeit.
+\end{itemize}
+
+\section{Wachstum von Funktionen}
+\lectureof{27.04.2005}
+
+Zeitaufwand eines Algorithmus:
+$$T(n),\quad n\in\MdN_0$$
+
+
+\subsection{Asymptotische Notation - $\Theta$-Notation}
+
+Asymptotisch scharfe Schranke: 
+$$ \Theta(g(n))=\{f(n)| \textnormal{ es gibt } c_1,c_2,n_0>0 \textnormal{ mit } 0\leq c_1 g(n) \leq f(n) \leq c_2 g(n) \textnormal{ für alle } n \geq n_0\} $$ 
+
+\paragraph{Bemerkung:} $f\in\Theta(g)$ folgt $f$ ist asymptotisch nicht negativ, d.h. es gibt ein $n_0$ mit $f(n)\ge0$ für alle $n\ge n_0$
+
+\paragraph{Beispiele:}
+\begin{itemize}
+\item Konstanten: $\Theta(c), c\ge 0$: $\Theta(c) = \Theta(1)$ $(c_1=c_2=c,n_0=0)$
+\item Monome:  $f(x) = ax^n$. zu zeigen: $f\in\Theta(x^n)$. Wegen der Bemerkung gilt: $a>0$. Somit $c_1 = a, c_2=a, n_0=0$. Aber: $ax^n \notin \Theta(x^{n+1})$, denn für alle $c>0$ gilt: für alle $x>\frac{a}{c_2}$ ist $ax^n < c_2x^{n+1}$
+\item Polynome: $f(x) = \sum_{i=0}^na_ix^i$, $a_n\ne0$. zu zeigen: $f(x) \in \Theta(x^n)$. Auch hier: $a_n>0$ wegen Bemerkung und Monomen. Wähle $c_1=\min_{c=0}^n|a_i|$, $c_2=\sum_{i=0}^n|a_i|$, $n_0>c_2$. $c_1x^n\le \sum_{i=0}^{n}a_ix^i\le c_2x^n$
+\end{itemize}
+
+\subsection{Obere Asymptotische Schranke - O-Notation}
+
+$$ O(g(n))=\{f(n)| \textnormal{ es gibt } c,n_0>0 \textnormal{ mit } 0 \leq f(n) \leq cg(n) \textnormal{ für alle } n>n_0 \} $$
+
+Klar: $ax^k\in O(x^m) $ für $k\le m$.
+
+$a>0$, Die Bemerkung gilt auch hier! $(c=a,n_0=0)$. Ebenso: $\sum_{i=0}^ka_ix^i\in O(x^m)$ für $k\le m$.
+
+\subsection{Untere Asymptotische Schranke: $\Omega$-Notation}
+
+$$ \Omega(g(n))=\{f(n)| \textnormal{ es gibt } c,n_0>0 \textnormal{ mit } 0 \leq cg(n)\leq f(n) \textnormal{ für alle } n \geq n_0 \} $$
+
+Klar: $a^k\in\Omega(x^m)$ für $m\le k$. Wähle $c=a$, $n_0=0$.
+
+ebenso: $\sum_{i=0}^ka_ix^i\in\Omega(x^m)$ für $m\le k$.
+
+\subsection{Verhältnis der Mengen}
+
+für beliebige $f(n)$ und $g(n)$ gilt:
+
+$$ f(n)\in\Theta(g) \text{ genau dann, wenn } f(n)\in O(g) \text{ und } f(n)\in\Omega(g) $$
+
+Anmerkung: $\Theta$ ist eine Äquivalenzklasse, $\Omega$, O sind keine Äquivalenzklassen, da die Symmetriebedingung nicht erfüllt ist. \footnote{War wohl zunächst in der Übung falsch, wurde aber gleich korrigiert.}
+
+\section{Rekurrenzen - Rekursionsgleichungen}
+
+\paragraph{Problem:} Gegeben ist eine Rekurrenz $F_n$. \\ Gesucht: $f(X)$ in geschlossener Form mit $F_n\in \Theta(f)$.
+
+\subsection{1. Methode: \glqq Raten und Induktion\grqq}
+
+\paragraph{Beispiel:}
+
+$F_0  = 1$, $F_1 = 1$, $F_{n+1}  = F_n + F_{n-1}$
+
+\begin{tabular}{llll}
+$n$ & $F_n$ \\
+\hline
+1 & 1 & +0  & +1 \\
+2 & 1 & +1 & +0\\
+3 & 2 & +1 & +1\\
+4 & 3 &+2 & +1 \\
+5 & 5 & +3 & +2\\
+6 & 8 &+5 &+3 \\
+7 & 13  
+\end{tabular}
+
+Vermutung: $f(x) = ae^{bx}+c$
+
+\paragraph{Weiteres Beispiel:}\hspace{0.1mm}
+
+\begin{tabular}{llll}
+$n$ & $F_n$ \\
+\hline
+0 & -4 & +1  & $\cdot2$ \\
+1 & -3 & +2 & $\cdot2$\\
+2 & -1 & +4 & $\cdot2$\\
+3 & 3 &+8 & $\cdot2$ \\
+4 & 11 & +16 & $\cdot2$\\
+5 & 27 & 
+\end{tabular}
+
+Ansatz: $F(n) = a2^n+c$
+
+\subsection{Rekursionsbaummethode}
+
+$$T(n) = 3 T \left(\frac{n}{4}\right) + cn^2 $$
+
+Komischesschaubildwomaneigentlichnichtserkenntundworausmanwasfolgernkann.
+
+\subsection{Weitere Methoden}
+\begin{itemize}
+\item Jordan-Normalform: $$\begin{pmatrix}F_{n+1} \\ F_{n}\end{pmatrix} = A\begin{pmatrix}F_n\\F_{n-1}\end{pmatrix}$$
+\item Z-Transformierte.
+\end{itemize}
+
+% Vorlesung vom Mo. 02.05.2005 (Felix Brandt)
+
+\section{Die $o$-Notation}
+\lectureof{02.05.2005}
+
+$$o(g(n)) = \left\{ 
+\begin{array}{l}
+	f(n) : \text{ für jede positive Konstante }c>0  \\
+	\text{existiert eine Konstante $n_0>0$, sodass }\\
+	0\leq f(n) < c \cdot g(n) \text{ für alle } n \geq n_0
+\end{array} \right\}$$
+
+Die Definition der $O$-Notation und der $o$-Notation sind einander ähnlich. Der Unterschied besteht darin, dass in $f(n)=O(g(n))$ die
+Schranke $0 \leq f(n) \leq cg(n)$ für eine Konstante $c>0$ gilt, während sie in $f(n) = o(g(n))$ für alle Konstanten gilt.
+
+Die Funktion $f(n)$ (in der $o$-Notation) is unbedeutend gegenüber $g(n)$, wenn
+$$n \rightarrow \oo \folgt\ \lim_{n \rightarrow \oo} \frac{f(n)}{g(n)}=0$$
+
+\section{Die $\omega$-Notation}
+$$\omega(g(n)) = \left\{ 
+\begin{array}{l}
+	f(n) : \text{ für jede positive Konstante }c>0  \\
+	\text{existiert eine Konstante $n_0>0$, sodass }\\
+	0\leq c \cdot g(n) < f(n) \text{ für alle } n \geq n_0
+\end{array} \right\}$$
+$\folgt \lim_{n \rightarrow \oo} \frac{f(n)}{g(n)}=\oo$\\
+$\left[ n^2/2 = \omega(n); n^2/2 \neq \omega(n^2) \right]$
+
+\section{Lösen von Rekurrenzen mit der Generierenden-Funktion}
+(\begriff{generating function})
+\begin{description}
+	\item{Gegeben} sei eine Folge $<g_n>$
+	\item{Gesucht} ist eine geschlossene Form für $g_n$. Die folgenden 4 Schritte berechnen diese (\begriff{closed form})
+\end{description}
+\begin{enumerate}
+\item Finde eine einzige Gleichung, die $g_n$ anhand anderer Elemente der Folge ausdrückt. Die Gleichung sollte unter der Annahme
+      $g_{-1}=g_{-2}= \ldots = 0$ für alle ganzen Zahlen (\MdZ) gelten.
+\item Multipliziere beide Seiten mit $z^n$ und summiere über alle $n$. Auf der linken Seite steht nun
+      $$\sum_{n}g_nz^n = G(z) \text{ die generierende Funktion}$$
+      Die rechte Seite der Gleichung sollte nun so manipuliert werden, dass sie andere Ausdrücke in $G(z)$ enthält.
+\item Löse die resultierende Gleichung und erhalte damit eine geschlossene Form für $G(z)$.
+\item Expandiere diese Form von $G(z)$ in eine Potenzreihe und betrachte die Koeffizienten von $z^n$. Das ist eine geschlossene
+      Form für $g_n$.
+\end{enumerate}
+
+\paragraph{Beispiel} Die Fibonacci-Zahlen
+$$g_0=0;\ g_1=1;\ g_n=g_{n-1}+g_{n-2}\ (n \geq 2)$$
+
+\begin{labeling}[:]{Schritt 9}
+\item[Schritt 1] Die Gleichung $g_n=g_{n-1}+g_{n-2}$ ist nur für $n \geq 2$ zulässig, denn unter der Annahme $g_{-1}=0,\ g_{-2}=0$ ist
+      $g_0=0,\ g_1=0,\ \ldots$
+      \[
+      	g_n \stackrel{?}{=} \begin{cases}
+      	0,& \text{falls $n=1$} \\
+      	1,& \text{falls $n=2$} \\
+      	g_{n-1}+g_{n-2},& \text{sonst}
+      \end{cases}\]
+      $\folgt \text{ Nein}$
+      \[ \left[ n=1 \right] =
+      \begin{cases}
+      	1,& \text{falls $n=1$} \\
+      	0,& \text{sonst}
+      \end{cases}\]
+      $\folgt g_n=g_{n-1}+g_{n-2} + \left[ n=1 \right]$
+\item[Schritt 2]
+	\begin{eqnarray*}
+			G(z) & = & \sum_ng_nz^n = \sum_ng_{n-1}z^n + \sum_ng_{n-2}z^n + \sum [n=1]z^n \\
+			     & = & \sum_ng_nz^{n+1} + \sum_ng_nz^{n+2} + z \\
+			     & = & z\sum_ng_nz^n + z^2\sum_ng_nz^n + z \\
+			     & = & zG(z) + z^2G(z) + z \\
+	\end{eqnarray*}
+\item[Schritt 3] ist hier einfach
+      $$G(z) = \frac{z}{1-z-z^2}$$
+\item[Schritt 4] Gesucht ist eine Darstellung von      
+      $$\frac{z}{1-z-z^2}=\frac{z}{(1-\Phi z)(1-\dach{\Phi}z)}\ (\Phi: \text{ "`\begriff{Goldener Schnitt (engl.: golden ratio}"'})$$
+			$$\text{mit }\Phi = \frac{1+\sqrt{5}}{2};\ \dach{\Phi} = \frac{1-\sqrt{5}}{2}$$
+			als formale Potenzreihe. Eine Partialbruchzerlegung ergibt			
+			$$\frac{1/\sqrt{5}}{1-\Phi z} - \frac{1/\sqrt{5}}{1-\dach{\Phi}z}$$
+			Es existiert folgende Regel
+			$$\frac{a}{(1-pz)^{m+1}} = \sum_{n \geq 0} \left(\begin{array}{c}m+n\\m\end{array}\right)ap^nz^n$$
+			Somit ist 
+			$$\frac{1/\sqrt{5}}{1-\Phi z} - \frac{1/\sqrt{5}}{1-\dach{\Phi}z} = 
+			\sum_{n \geq 0}\frac{1}{\sqrt{5}}\Phi^nz^n + \sum_{n \geq 0}\frac{1}{\sqrt{5}}\dach{\Phi}^nz^n$$
+			und für den $n$-ten Koeffizienten gilt
+			$F_n = \frac{\Phi^n - \dach{\Phi}^n}{\sqrt{5}}$
+\end{labeling}
+
+\section{Notationen}
+  Die \begriff{floor} und die \begriff{ceiling} Funktion:
+  $$\begin{array}{cl}
+  	\llc z \rrc &\text{ kleinste obere Ganzzahl}\\
+  	            &\text{ the least integer greater than or equal to z}\\
+  	\llf z \rrf &\text{ größte untere Ganzzahl}\\
+  	            &\text{ the greatest integer less than or equal to z}
+  \end{array}$$
+  
+\section{Die Mastermethode}
+  "`Rezept"': Methode zur Lösung von Rekurrenzgleichungen der Form
+  $$T(n)= aT(n/b)+f(n)$$
+  wobei $a \geq 1$, $b>1$ und $f(n)$ eine asymptotisch positive Funktion.
+  
+\paragraph{Beispiel} Merge-Sort
+	$$a=2,\ b=2,\ f(n)=\Theta(n)$$
+
+\section{Mastertheorem}
+	Seien $a \geq 1$ und $b>1$ Konstanten. Sei $f(n)$ eine Funktion und sei $T(n)$ über die nichtnegativen
+	ganzen Zahlen durch die Rekursionsgleichung $T(n)= aT(n/b)+f(n)$ definiert, wobei wir $n/b$ so interpretieren,
+	dass damit entweder $\llf n/b \rrf$ oder $\llc n/b \rrc$ gemeint ist. Dann kann $T(n)$ folgendermaßen asymptotisch
+	beschränkt werden.
+\begin{enumerate}
+\item Wenn $f(n)=O(n^{\log_ba-\epsilon})$ für eine Konstante $\epsilon > 0$ erfüllt ist, dann gilt $T(n)=\Theta(n^{\log_ba})$
+\item Wenn $f(n)=\Theta(n^{\log_ba})$ erfüllt ist, dann gilt $T(n) = \Theta(n^{\log_ba}\cdot \lg n)$
+\item Wenn $f(n)=\Omega(n^{\log_ba+\epsilon})$ für $\epsilon > 0$ erfüllt ist und wenn $a\cdot f(n/b) \leq c \cdot f(n)$ für eine Konstante
+			$c < 1$ und hinreichend große $n$ gilt, dann ist $T(n)=\Theta(f(n))$.
+\end{enumerate}
+
+$\Longrightarrow$ Im ersten Fall muss $f(n)$ nicht nur kleiner als $n^{\log_ba}$ sein, sondern sogar polynomial kleiner. Das heißt $f(n)$
+      muss für $t>0$ und den Faktor $n^2$ asymptotisch kleiner sein, als $n^{\log_ba}$.
+      
+$\Longrightarrow$ Im dritten Fall muss $f(n)$ nicht nur größer sein als $n^{\log_ba}$, sondern polynomial größer und zusätzlich die
+      "`Regularitätsbedingung"' $a \cdot f(n/b) \leq c \cdot f(n)$ erfüllen.
+      
+\paragraph{Beispiel 1} $T(n) = 9T(n/3)+n$\\
+	$a=9,\ b=3,\ f(n)=n$ und somit $n^{\log_ba}=n^{\log_39}=\Theta(n^2)$. Da $f(n)=O(n^{\log_39-\epsilon})$ mit $\epsilon = 1$ gilt, können wir
+	Fall 1 anwenden und schlussfolgern, dass $T(n)=\Theta(n^2)$ gilt.
+	
+\paragraph{Beispiel 2} $T(n) = T(2n/3)+1$\\
+	$a=1,\ b=3/2,\ f(n)=1$ also $n^{\log_ba}=n^{\log_{3/2}1}=n^0=1$ da $f(n) = \Theta(n^{\log_ba}) = \Theta(1) \folgt$ Lösung: $T(n)=\Theta(\lg n)$
+
+\paragraph{Beispiel 3} $T(n) = 3T(n/4)+n \lg n$\\
+	$a=3,\ b=4,\ f(n)=n \lg n$ also $n^{\log_ba}=n^{\log_43}=O(n^{0,793})$ Da $f(n)=\Omega(n^{\log_43+\epsilon})$ mit $\epsilon \approx 0,2$ 
+	gilt, kommt Fall 3 zur Anwendung $\Rightarrow$ $T(n) = \Theta(n \lg n)$
+
+\bigskip Die Mastermethode ist auf $T(n)=2T(n/2) + n \lg n$ nicht anwendbar auch wenn sie die korrekte Form hat: $a=2,\ b=2,\ f(n)=n \lg n$.
+Das Problem besteht darin, dass $f(n)$ nicht polynomial größer ist als $n^{\log_b a}$.
+Das Verhältnis $f(n)/(n^{\log_b a}) = (n \lg n)/n = \lg n$ ist asymptotisch kleiner als $n^\epsilon$ für jede Konstante $\epsilon > 0$.
+
+% Anfang VL Mi. 04.05.2005 (Mathias Ziebarth, Daniel Dreke, Sebastian Frehmel)
+
+% Teil 1 - Mathias
+
+\section{Probabilistische Algorithmen (zufallsgesteuerte Algorithmen)}
+\lectureof{04.05.2005}
+
+\paragraph{Numerische Algorithmen} $\approx 1950 \rightarrow $ Integration.\\
+$$ \int_0^1 \cdots \int_0^1 f(\alpha_1, \dots, \alpha_n) \ d \alpha_1, \dots, d \alpha_n $$
+
+\begin{itemize}
+\item Monte-Carlo Methode $n=2$
+>> komische Graphiken <<
+\end{itemize}
+
+Das Konzept wurde 1976 von Rabin effektiver formuliert.
+
+\subsection{Einführung}
+Wir beginnen mit der Definition eines deterministischen Algorithmus nach Knuth.
+
+\begin{enumerate}
+\item Eine Berechnungsmethode ist ein Quadrupel $( Q,I,O,F )$ mit $ I \subset Q, O \subset Q, f: Q \rightarrow Q$
+und $f(p) = p' , \forall p \in J$. $Q$ ist der Zustand der Berechnung, $I$: Eingabe, $O$: Ausgabe und $f$:
+Berechnungsregeln.
+\begin{itemize}
+\item Jedes $x \in J$ ergibt eine Folge $x_0, x_1, \dots$ die durch $x_{k+1} = f(x_k), k \geq 0, x_0 = x$ definiert ist.
+\item Die Folge terminiert nach $k$ Schritten ($K$: kleiner als die k's, sodass gilt: $x_k \in O$
+\end{itemize}
+\item Eine Algorithmus ist eine Berechnungsmethode, die in endlich vielen Schritten für alle $x \in I$ terminiert.
+\item Ein deterministischer Algorithmus ist eine formale Beschreibung für eine \emph{endliche}, \emph{definite} Prozedur, deren Ausgaben zu beliebigen Eingaben \emph{eindeutig} sind.
+\end{enumerate}
+
+Hauptmotivation zur Einführung von probalistischen Algorithmen stammt aus der Komplexitätsanalyse. Man unterscheidet zwischen dem 
+\emph{Verhalten im schlechtesten Fall} und dem \emph{Verhalten im mittleren Fall} eines Algorithmus. Diese Fälle sind festgelegt, sobald das Problem und die Daten bestimmt sind.\\
+Die hervorgehobenen Wörter in den Definitionen eines deterministischen Algorithmus sind die Schlüssel zur Definition von drei Arten von probalistischen Algorithmen:
+
+% Teil 2 - Daniel
+
+\begin{enumerate}
+\item{Macao-Algorithmus (1. Art)} (auch Sherwood Algorithmus)
+
+\begin{itemize}
+	\item mindestens bei einem Schritt der Prozedur werden einige Zahlen zufällig ausgewählt (nicht definit)
+	\item sonst: deterministisch
+\end{itemize}
+$\folgt$ immer eine korrekte Antwort\\ \\
+Wird benutzt, wenn irgendein bekannter Algorithmus (zur Lösung eines bestimmten Problems) im mittleren Fall viel schneller als im schlechtesten Fall läuft.
+
+\item{Monte-Carlo-Algorithmus (2. Art)}
+
+\begin{itemize}
+	\item gleich wie Algorithmus 1. Art (nicht definit)
+	\item mit einer Wahrscheinlichkeit von $1-\epsilon$, wobei $\epsilon$ sehr klein ist (nicht eindeutig)
+\end{itemize}
+$\folgt$ immer eine Antwort, wobei die Antwort nicht unbedingt richtig ist\\
+($\epsilon \dann 0$ falls $t \dann \infty$)
+
+\item{Las-Vegas-Algorithmus (3. Art)}
+\begin{itemize}
+	\item Gleich wie Macao-Algorithmus (nicht definit).
+	\item Eine Folge von zufälligen Wahlen kann unendlich sein (mit einer Wahrscheinlichkeit $\epsilon \dann 0$) (nicht endlich).
+\end{itemize}
+\end{enumerate}
+
+\subsection{Macao-Algorithmen ("`Nähestes-Paar"'-Algorithmus)}
+
+Problem: $x_1,...,x_n$ seien $n$ Punkte in einem $k$-dimensionalen Raum $R^k$.
+Wir möchten das näheste Paar $x_i, x_j$ finden, sodass gilt:
+$$d(x_i, x_j) = \text{min} \{d(x_p, x_q)\} \qquad (1 \leq p < q \leq n),$$
+wobei $d$ die gewöhnliche Abstandsfunktion aus $R^k$ ist.
+
+\subsection{Brute-Force-Methode ("`Brutaler Zwang"'-Methode)}
+Evaluiert alle $\frac{n(n-1)}{2}$ relevanten gegenseitigen Abstände.\\
+$\folgt$ minimaler Abstand\\
+$\folgt O(n^2)$\\
+
+\subsection{Deterministische Algorithmen (Yuval)}
+$\folgt O(n \log n)$\\
+
+Idee: man wählt eine Hülle $S=\{x_1, \ldots, x_n\}$ und sucht das näheste Paar innerhalb dieser Hülle.\\
+
+Schlüsselidee: eine Teilmenge von Punkten wird zufällig ausgewählt
+$\folgt$ Parl. (???) Alg. (Macaos) mit $O(n)$ und mit sehr günstiger Konstante.
+
+\begin{enumerate}
+	\item Wähle zufällig $S_1 = \{x_{i_1}, \ldots, x_{i_m}\}$\\
+				$m = n^{2/3}$\\ $m =$ Kardinalität $S_1$ (= Anzahl von Elementen in $S_1$)
+	\item Berechne $\delta(S_1) = \text{min} \{(x_p, x_q)\}$\\
+				für $x_p, x_q \in S_1 \folgt O(n)$\\
+				Wir iterieren einmal den gleichen Algorithmus für $S_1$, indem man $S_2 \subset S_1$ mit 
+				$c(S_2)=m^{2/3}=n^{4/9}$ zufällig auswählt.\\ $\ldots O(n)$
+	\item Konstruieren eines quadratischen Verbandes $\Gamma$ mit der Netzgröße (\begriff{mesh size}) $\delta=\delta(S_1)$.
+	
+% Teil 3 - Sebastian
+
+	\item Finde für jedes $\Gamma_i$ die Dekomposition $S = S^{(i)}_1 \cup \ldots \cup S^{(i)}_k, 1 \leq i \leq 4$
+				(anders als Hashing-Techniken)
+	\item $\forall x_p, x_q \in S^{(i)}_j$ berechne $d(x_p, x_q) \folgt$ Das nächste Paar ist unter 
+				diesen Paaren zu finden.
+
+				Leite ab aus $\Gamma$ durch Verdopplung der Netzgröße auf $2\delta$
+\end{enumerate}
+
+\paragraph{Lemma zu 3.:} Gilt $\delta(S) \leq \delta$ ($\delta$ ist Netzgröße von $\Gamma$), so existiert ein Verbandpunkt $y$ auf $\Gamma$, so dass das nächste Paar im Quadrupel von Quadraten aus $\Gamma$ direkt und rechts von $y$ liegt. \\
+$\folgt$ es ist garantiert, dass das nächste Paar $x_i, x_j$ aus $S$ innerhalb eines gleichen Quadrats aus $\Gamma_i$ liegt 
+$(1\leq i \leq 4)$
+
+\subsection{Monte-Carlo-Algorithmus}
+$\dann$ Miller-Rabin Primzahl Algorithmus \\
+Ganze Zahlen: 2 Probleme
+\begin{itemize}
+	\item Primzahltest
+	\item Faktorisierung
+\end{itemize}
+
+Algorithmus stellt fest, ob eine Zahl $n$ prim ist (pseudo-prim). In diesem Algorithmus werden $m$ Zahlen $1\leq b_1,\ \ldots,\ b_m<n$ zufällig ausgewählt. Falls für eine gegebene Zahl $n$ und irgendein $\epsilon>0$ $\log_2\frac{1}{\epsilon}\leq m$ gilt, dann wird der Algorithmus die korrekte Antwort mit Wahrscheinlichkeit größer als (1-$\epsilon$) liefern.\\
+Grundidee: Ergebnisse aus Zahlentheorie (\begriff{Millers Bedingung}) für eine ganze Zahl $b$.\\
+
+% Ende VL Mi. 04.05.2005 (Mathias Ziebarth, Daniel Dreke, Sebastian Frehmel)
+
+% Vorlesung vom Mo. 09. Mai 2005 (Lars Volker)
+
+\def\ggT{\text{ ggT}}
+
+\lectureof{09.05.2005}
+\subsubsection{Einschub Modular-Arithmetik (Gauß (1801))}
+\paragraph{Definition}
+Seien $a,b,N\in \MdZ$. Dann schreibt man:
+$$a \equiv b\ (mod\ N) \Gdw N\ |\ (a-b)$$
+$$\text{"`$|$"' bedeutet "`teilt"'}$$
+
+\paragraph{Beispiele}
+\begin{itemize}
+	\item $7 \mod 5 = 2$
+	\item "`mod $5$"' bedeutet Rechnen mit $0,1,2,3,4$
+	\item $a \equiv b \mod N \wedge c \equiv d \mod N \folgt a+c \equiv (b+d) \mod N$
+	\item $a \mod N + b \mod N = (a+b) \mod N$
+\end{itemize}
+
+\subsubsection{Witnessfunktion}
+Für eine ganze Zahl $b$ erfülle $W_n(b)$ folgende Bedingungen:
+\begin{enumerate}
+	\item $1 \le b < n$
+	\item 
+		\begin{enumerate}
+			\item $b^{n-1} \neq 1 \mod n$ oder
+			\item $\exists i:2^i|(n-1)$ und $1<\ggT(b^{\frac{n-1}{2^i}}-1,n)<n$ $\left[\frac{n-1}{2^i}\equiv m\right]$
+		\end{enumerate}
+	\end{enumerate}
+Eine ganze Zahl, die diese Bedingung erfüllt, wird \begriff{Zeuge (witness)} für die Teilbarkeit von $m$ genannt.\\
+$\stackrel{\text{2a}}{\folgt}$ Die \begriff{Fermat'sche Relation} ist verletzt. (Fermat: $b^{n-1}\equiv1\ mod\ n$)
+$\stackrel{\text{2b}}{\folgt}$ $n$ hat einen echten Teiler 
+$\folgt$ ist $n$ teilbar, so gilt $W_n(b)$ (\fixme{Stimmt das so?})
+$\folgt$ $n$ ist keine Primzahl.\\
+Ist $n$ teilbar, so gibt es viele Zeugen.
+
+\paragraph{Theorem (Anzahl der Zeugen)}
+Wenn $n \ge 4$ teilbar ist, dann gilt
+$${3(n-1)}/4 \le c(\{b|1\le b<n, W_n(b) \text{ gilt }\})$$
+$\folgt$ nicht mehr als $1/4$ der Zahlen $1 \le b <n$ sind keine Zeugen.\\
+
+\subsubsection{Algorithmus: Rabins Algorithmus}
+\begin{tabular}{ll}
+	\emph{Eingabe:} & $n$ ungerade, ganze Zahl mit $n>1$ \\
+	\emph{Ausgabe:} & $b=\pm 1$, falls entschieden ist, dass $n$ prim ist\\
+	                & $b=0$, falls $n$ teilbar ist\\
+\end{tabular}\bigskip
+
+\begin{codebox}
+\Procname{$\proc{Rabin}(n)$}
+\li Wähle zufällig $a$ aus $1 \leq a < n$
+\li Faktorisiere $(n-1)$ zu $2^l m$ so, dass $n-1$ = $2^l m$, $m$ ungerade
+\li (Teste) $b = a^m \mod n$, $i = 1$ 
+\li \While $b \neq -1$ und $b \neq 1$ und $i < l$
+\li     \Do 
+            $b \gets b^2 \mod n$
+\li         $i \gets i + 1$
+        \End
+\li \If $b = 1$ oder $b = -1$
+\li     \Then
+                n ist Primzahl (prime)
+\li     \Else
+                n ist \em{keine} Primzahl (composite), ($b = 0$)
+\end{codebox}
+
+\paragraph{Bemerkung:} Der Algorithmus braucht $m(2+l)\log_2(n)$ Schritte $\folgt$ sehr effizient.
+
+\subsection{Las-Vegas-Algorithmen}
+
+\paragraph{Beispiel 1:} $M$ sei eine $n$-elementige Menge, $S_0, \dots, S_{k-1} \subseteq S$ mit $|S_i|=r>0$ seien paarweise verschiedene Teilmengen von $S$, $k \le 2^{r-2}$\\
+Wir wollen die Elemente von $M$ so mit den Farben \emph{rot} und \emph{schwarz} färben, dass $S_i$ wenigstens \emph{ein} rotes und \emph{ein} schwarzes Element enthält.
+
+\paragraph{Beispiel 2:} Rabin (1980)\\
+Problem: irreduzible Polynome in endlichen Körpern zu finden.\\
+\begriff{irreduzibel}: $\exists$ kein Teiler, d.h. $$n \text{ ist irreduzibel} \Gdw \forall b: \text{ nicht } b|n$$
+d.h. $Q(x)$ ist irreduzibel $\Gdw$ $\exists$ kein Polynom $q(x)$ so dass $q(x)|Q(x)$
+
+\subsubsection{Algorithmus: Irreduzibles Polynom}
+\begin{tabular}{ll}
+	\emph{Eingabe:} & Primzahl $p$ und ganze Zahl $n$\\
+	\emph{Ausgabe:} & irreduzibles Polynom
+\end{tabular}\bigskip
+
+\paragraph{Algorithmus}\ \\
+\ttfamily\begin{tabular}{rl}
+	0 & \keyword{repeat}\\
+	1 & \idt Generiere ein zufälliges Polynom g $\in$ GF(p)[n] (\fixme{Stimmt das so?})\\
+	2 & \idt Teste die Irreduzibilität \\
+	3 & \keyword{until} Erfolg
+\end{tabular}\normalfont
+
+\paragraph{Bemerkung:} Die Irreduzibilität wird durch 2 Theoreme geprüft:
+
+\paragraph{Theorem (Prüfung auf Irreduzibilität)} Seien $l_1,\dots ,l_n$ alle Primteiler von $n$ und bezeichne $n/l_i=m_i$.
+Ein Polynom $g(x)\in GF(\phi)[x]$ vom Grad $n$ ist irreduzibel in $GF(\phi) :\Gdw$
+\begin{enumerate}
+	\item $g(x)|(x^{p^n}-x)$
+	\item $\ggT(g(x),x^{p^mi}-n)=i$ für $1 \le i \le k$
+\end{enumerate}
+
+\section{Gierige Algorithmen}
+auch: \begriff{greedy algorithms} bzw. \begriff{Raffke-Algorithmen}
+\begin{itemize}
+\item normalerweise sehr einfach
+\item zum Lösen von Optimierungsproblemen
+\end{itemize}
+\paragraph{Typische Situation:} Wir haben
+\begin{itemize}
+	\item eine Menge von Kandidaten (Jobs, Knoten eines Graphen)
+	\item eine Menge von Kandidaten, die schon benutzt worden sind
+	\item eine Funktion, die feststellt, ob eine bestimmte Menge von Kandidaten eine Lösung zu diesem Problem ist
+	\item eine Funktion, die feststellt, ob eine Menge von Kandidaten eine zulässige Menge ist, um die bisherige Menge so zu vervollständigen,
+	      dass mindestens eine Lösung gefunden wird
+	\item eine Wahlfunktion (\begriff{selection function}), die in beliebiger Zeit den geeignetsten Kandidaten aus den unbenutzten Kandidaten bestimmt.
+	\item eine Zielfunktion (\begriff{target function}), die den Wert einer Lösung ergibt (die Funktion, die zu optimieren ist)
+\end{itemize}
+
+\subsection{Beispiel:} Wechselgeldausgabe an einen Kunden
+\begin{description}
+	\item{\textbf{Kandidaten:}} Menge von Geldstücken ($1, 5, 10, \dots$), wobei jede Sorte aus mindestens einem Geldstück besteht
+	\item{\textbf{Lösung:}} Gesamtbetrag
+	\item{\textbf{Zulässige Menge:}} die Menge, deren Gesamtbetrag die Lösung nicht überschreitet
+	\item{\textbf{Wahlfunktion:}} Wähle das am höchsten bewertete Geldstück, das noch in der Menge der Kandidaten übrig ist
+	\item{\textbf{Zielfunktion:}} Die Anzahl der in der Lösung benutzten Geldstücke
+\end{description}
+
+\paragraph{Bemerkung:} Gierige Algorithmen arbeiten schrittweise:
+\begin{enumerate}
+\item Zu Beginn ist die Liste der Kandidaten leer.
+\item Bei jedem Schritt versucht man, mit Hilfe der Wahlfunktion den besten Kandidaten hinzuzufügen.
+\item Falls die erwartete Menge nicht mehr zulässig ist, entfernen wir den gerade hinzugefügten Kandidaten. Er wird später nicht mehr berücksichtigt.
+\item Falls die gewählte Menge noch zulässig ist, gehört der gerade Kandidat dieser Menge für immer an
+\item Nachdem wir die Menge erweitert haben, überprüfen wir, ob die Menge eine Lösung des gegebenen Problems ist.
+\end{enumerate}
+
+\subsection{Gierige Algorithmen abstrakt:}
+$C=\{\text{Menge aller Kandidaten}\}$\\
+$S \la \emptyset\ \{\text{Lösungsmenge}\}$\\
+
+\begin{codebox}
+\Procname{$\proc{Greedy-Algorithm}$}
+\li \While nicht \id{L"osung}$(S)$ und $C \neq \emptyset$
+\li     \Do 
+            $x \gets$ ein Element aus $C$, das $\id{Wahl}(X)$ maximiert
+\li         $C \gets C \setminus {x}$
+        \End
+\li     \If \id{L"osung}$(S)$
+\li     \Then
+            \id{return} $S$
+\li     \Else
+            \id{return} "`keine L"osung"'
+\end{codebox}
+
+\subsection{Beispiel} Minimale, zusammenhängende Bäume
+\paragraph{Einführung}
+Sei $G=<N,A>$ ein zusammenhängender, ungerichteter Graph
+\begin{itemize}
+	\item $N$: Menge von Knoten
+	\item $A$: Menge von Kanten (Wobei jeder Kante eine nichtnegative Länge zugeordnet wird)
+\end{itemize}
+
+%Ende Vorlesung 09. Mai 2005, (Lars Volker)
+
+% Anfang VL Mi. 11.05.2005 (Mathias Ziebarth, Sebastian Frehmel, Daniel Dreke)
+
+% Teil 1 - Mathias
+
+\lectureof{11.05.2005}
+
+\paragraph{Problem}
+Finde eine Teilmenge $T$ von $A$, so dass alle Knoten zusammenhängend bleiben,
+wenn man nur die Kanten aus $T$ benutzt. Dabei soll die Kantenlänge aus $T$ so
+klein wie möglich gehalten werden. \\
+
+\fixme{Bild vom Baum}
+
+\paragraph{Terminologie}
+\begin{enumerate}
+\item Eine Menge von Kanten ist eine \keyword{Lösung}, wenn sie einen zusammenhängenden
+Baum bildet.
+\item Sie ist \keyword{zulässig}, wenn sie keinen Zyklus enthätlt.
+\item Eine zulässige Menge von Kanten heißt \keyword{günstig} $\folgt$ optimale Lösung.
+\item Eine Kante \keyword{berührt} eine gegebene Menge von Kanten, wenn genau ein Ende der
+Kante ein Element aus dieser Menge ist.
+\end{enumerate}
+
+\subsection{Kruskalscher Algorithmus}
+\paragraph{Beispiel}
+Die aufsteigende Reihenfolge der Kantenlänge ist: \\
+$\{1,2\},\{2,3\},\{4,5\},\{6,7\},\{1,4\},\{2,5\}$,
+$\{4,7\},\{3,5\},\{2,4\},\{3,6\},\{5,7\},\{5,6\}$ \\ \\
+
+\begin{tabular}{ccc}
+	Schritte	&	Berücksichtigte Kanten	&	Zusammengebundene Komponenten	\\
+	\hline
+	Initialisierung			&	$-$												&	$\{1\} \{2\} \{3\} \dots \{7\}$ \\
+	1										&	$\{1,2\}$									&	$\{1,2\} \{3\} \{4\} \dots \{7\}$ \\
+	2										& $\{2,3\}$									&	$\{1,2,3\} \{4\} \{5\} \dots \{7\}$ \\
+	3										&	$\{4,5\}$									&	$\{1,2,3\} \{4,5\} \{6\} \{7\}$ \\
+	4										&	$\{6,7\}$									&	$\{1,2,3\} \{4,5\} \{6,7\}$ \\
+	5										& $\{1,4\}$									&	$\{1,2,3,4,5\} \{6,7\}$ \\
+	6										&	$\{2,5\}$									&	nicht angenommen \\
+	7										&	$\{4,7\}$									&	$\{1,2,3,4,5,6,7\}$ \\
+\end{tabular} \\
+	
+T enthält die Kanten $\{1,2\},\{2,3\},\{4,5\},\{6,7\},\{1,4\}$ und $\{4,7\}$ \\
+
+\begin{tabular}[t]{ccc}
+    \begin{xy}
+        \entrymodifiers={++[o][F-]}
+        \xymatrix {
+            1 \ar@{-}[r] \ar@{-}[d] & 2 \ar@{-}[r] \ar@{-}[d] \ar@{-}[dl] & 3 \ar@{-}[d] \ar@{-}[dl] \\
+            4 \ar@{-}[r] \ar@{-}[dr] & 5 \ar@{-}[r] \ar@{-}[d] & 6 \ar@{-}[dl] \\
+            *{} & 7 &  *{} \\ % *{} hides the nodes not there
+            *{} & *{\txt{Initialisierung}} & *{} 
+        }
+    \end{xy} &        
+    \begin{xy}
+        \entrymodifiers={++[o][F-]}
+        \xymatrix {
+            1 \ar@{=}[r] \ar@{=}[d] & 2 \ar@{=}[r] \ar@{-}[d] \ar@{-}[dl] & 3 \ar@{-}[d] \ar@{-}[dl] \\
+            4 \ar@{=}[r] \ar@{=}[dr] & 5 \ar@{-}[r] \ar@{-}[d] & 6 \ar@{=}[dl] \\
+            *{} & 7 &  *{} \\ % *{} hides the nodes not there
+            *{} & *{\txt{Schritt 7}} & *{} 
+        }
+    \end{xy} \\
+	\end{tabular}
+
+\paragraph{Algorithmus Kruskal}
+\begin{itemize}
+\item $find(x)$, der feststellt in welcher Komponente der Knoten $x$ zu finden ist.
+\item $merge(A,B)$: Mischen von zwei disjunkten Mengen
+\end{itemize}
+
+\begin{codebox}
+\Procname{$\proc{Algorithmus Kruskal}(G=<N,A>)$}
+\zi \textbf{Input}: $N,A$ (mit Längenangabe)
+\zi \textbf{Output}: Menge von Kanten
+\zi
+\zi \textbf{Initialisierung}
+\li Sortiere $A$ nach aufsteigender Länge
+\li $n=\sharp N$ \Comment $\sharp$ Anzahl Knoten
+\li $T \gets \emptyset$ \Comment Lösungsmenge
+\li Initialisiere $n$ disjunkte Mengen, wobei jede Menge ein Element aus $N$ enthält.
+
+% Teil 2 - Sebastian
+
+\li \Repeat
+\li	  $\left\{u,v\right\} \gets$ noch nicht berücksichtigte, kürzeste Kanten
+\li	  \func{ucomp} $\gets$ \func{find(u)} \Comment In der Menge der bereits verbundenen Kanten
+\li   \func{vcomp} $\gets$ \func{find(v)}
+\li	  \If 
+          \func{ucomp} $\neq$ \func{vcomp}
+\li   \Then
+			    \func{merge}(\func{ucomp}, \func{vcomp})
+      \End
+\li   $T \gets T \cup \left\{ \left\{u,v\right\} \right\}$
+\li \Until $T = n-1$
+\li \Return $T$
+\end{codebox}
+
+Analyse: n Knoten, a Kanten
+
+\begin{itemize}
+\item $O(a \log{a})$: Kanten zu sortieren $\left[n-1 \leq a \leq \frac{n(n-1)}{2} \ra \approx O(n \log{n})\right]$
+\item $O(n)$: $n$ disjunkte Mengen zu initialisieren 
+\item "`find"' and "`merge"'. Höchstens $2a$ Operationen (find), $n-1$ Operationen (merge) $\ra$ "`worst case"' $O((2a+n-1) \log^{\ast}n)$\\
+\end{itemize}
+
+Def: $\log^{(0)}n = n$\\
+$\log^{(k)}n = \log{(\log^{k-1}n)}$ $k \geq 1$ $\Ra \log^{\ast}n = min\left\{i|\log^{(i)}(n)\leq 1\right\}$\\
+
+Man erhält:\\
+
+\begin{tabular}{ll}
+n								& $\log^{\ast}n$\\
+1								& 0\\
+2								& 1\\
+3,4							& 2\\
+5 $\ra$ 16			& 3\\
+17 $\ra$ 65536 &	 4\\
+\end{tabular}\\
+
+$\Ra \log^{\ast}$ wächst sehr langsam. Höchstens $O(a)$ für die restlichen Operationen.\\ \\
+
+\subsection{Primscher Algorithmus}
+\begin{codebox}
+\Procname{$\proc{Algorithmus Prim}(G = <N,A>)$}
+\zi \textbf{Initialisierung}
+\li $T \gets \emptyset$
+\li $B \gets \{$ein willkürliches Element aus N$\}$
+\zi \textbf{Greedy-Schleife}
+\li \While $B \neq N$
+\li     \Do
+            Finde $\{u,v\}$ von minimaler Länge, so dass $u\in N\backslash B$ und $v \in B$
+\li         $T \gets T \cup \left\{\left\{u,v\right\} \right\}$
+\li         $B \gets B \cup \left\{u\right\}$
+        \End
+\li \Return $T$
+\end{codebox}
+
+
+\begin{tabular}{lll}
+Schritt 				& $\{u,v\}$ & $B$ \\
+Initialisierung & - 				& $\{1\}$ \\
+1 							& $\{2,1\}$ & $\{1,2\}$ \\
+2 							& $\{3,2\}$ & $\{1,2,3\}$ \\
+3 							& $\{4,1\}$ & $\{1,2,3,4\}$ \\
+4 							& $\{5,4\}$ & $\{1,2,3,4,5\}$ \\
+5 							& $\{7,4\}$ & $\{1,2,3,4,5,7\}$ \\
+6 							& $\{6,7\}$ & $\{1,2,3,4,5,6,7\}$ \\
+\end{tabular} \\ \\
+
+Analyse und Vergleich:\\
+Hauptschleife (Prim) $(n-1)$mal ausgeführt.\\
+Bei jeder Iteration benötigen die for-Schleifen eine Zeit von $O(n) \Ra O(n2)$ für Prim.\\
+Kruskal $O(a \log{n})$
+
+% Teil 3 - Daniel
+
+
+\begin{itemize}
+	\item Für dicht besetzte Graphen:
+	$$a \approx \frac{n(n-1)}{2} \Ra O(n^2 \log n)$$
+	$\Ra$ Prim ist "`besser"'.
+	\item Für dünn besetzte Graphen:
+	$$a \approx n \Ra O(n \log n) $$
+	$\Ra$ Prim ist "`weniger effizient"'.
+\end{itemize}
+Kürzeste Pfade (im "`Skript"') \\
+(Dijkstra-Algorithmus)
+
+\subsection{Zeitplanerstellung (Scheduling)}
+\textbf{Komplexitätsklassen:} P, NP
+$$P =^? NP$$
+\begin{quotation}
+Das P/NP-Problem ist ein offenes Problem der theoretischen Informatik, speziell der Komplexitätstheorie. \\
+\\
+Es ist die Frage, ob die Klasse NP, der von nichtdeterministischen Turingmaschinen in Polynomialzeit entscheidbaren Probleme, mit der Klasse P, der von deterministischen Turingmaschinen in Polynomialzeit entscheidbaren Probleme, übereinstimmt. \\
+\\
+Es ist also lediglich zu zeigen, dass das Finden einer Lösung für ein Problem wesentlich schwieriger ist, als nur zu verifizieren, ob eine gegebene Lösung korrekt ist. Dies ist allerdings bisher noch nicht gelungen. [...] \\
+\\
+Das P/NP-Problem gilt derzeit als die wichtigste Fragestellung der Informatik überhaupt und wurde vom Clay Mathematics Institute in seine Liste der Millennium-Probleme aufgenommen. (Wikipedia)
+\end{quotation}
+
+\textbf{Problem:} Ein Server (Prozessor, Kassiererin einer Bank, ...) habe $n$ Kunden in einem gegebenem System zu bedienen. \\
+Bedienzeit für jeden Kunden ist bekannt: Bedienzeit $t_i$ für Kunde i ($1 \leq i \leq n$)
+$$T = \sum_{i=1}^n (\text{Gesamtzeit für Kunde } i)$$
+Wir möchten T minimieren. \\
+\\
+Beispiel: $n=3,\ t_1=5,\ t_2=10,\ t_3=3$ $\Ra$ 3! = 6 Reihenfolgen möglich \\
+\\
+Reihenfolge 123 bedeutet Kunde 1 wird bedient und Kunde 2 und 3 warten. \\
+\\
+\begin{tabular}{crl}
+Reihenfolge & T \\
+123 & 5+(5+10)+(5+10+3)	= 38 \\
+132 & 5+(5+3)+(5+3+10) = 31 \\
+213 & 10+(10+5)+(10+5+3) = 43 \\
+231 & 10+(10+3)+(10+3+5) = 43 \\
+312 & 3+(3+5)+(3+5+10) = 29 & $\la$ Optimum\\
+321 & 3+(3+10)+(3+10+5) = 34 \\
+\end{tabular}
+
+\subsection{Greedy-Algorithmus}
+Füge ans Ende des Zeitplans $t_{i_1}+\ldots+t_{i_m}$ den Kunden ein, der am meisten Zeit benötigt. \\
+Dieser triviale Algorithmus liefert die korrekte Anwort für \{3,1,2\}. \\
+\\
+\textbf{Theorem:} Dieser Algorithmus ist immer optimal.
+\subsection{Zeitplanerstellung mit Schlußterminen (deadline)}
+Beispiel: $n=4$ \\
+
+\begin{tabular}{ccc}
+i	& $g_i$	& $d_i$ \\
+1	& 50	& 2 \\
+2	& 10	& 1 \\
+3	& 15	& 2 \\
+4	& 30	& 1 \\
+\end{tabular} \\
+\\
+$\ra$ Reihenfolge (3,2) wird nicht berücksichtigt, da dann Auftrag 2 zum Zeitpunkt $t=2$ nach Schlußtermin $t=1$ verarbeitet wird. \\
+\\
+\begin{tabular}{ccl}
+Reihenfolge & Gewinn \\
+1		& 50 \\
+2		& 10 \\
+3		& 15 \\
+4		& 30 \\
+(1,3)	& 65 \\
+(2,1)	& 60 \\
+(2,3)	& 25 \\
+(3,1)	& 65 \\
+(4,1)	& 80 & $\la$\\
+(4,3)	& 45 \\
+\end{tabular} \\
+\\
+$\Ra$ es ist nicht notwendig alle $n!$ Auftragsfolgen zu untersuchen. Es genügt eine Auftragsfolge in der Reihenfolge aufsteigender Schlußtermine zu untersuchen ($\ra$ (4,1), aber nicht (1,4)).
+
+% Ende VL Mi. 11.05.2005 (Mathias Ziebarth, Sebastian Frehmel, Daniel Dreke)
+
+\section{Teile und Herrsche}\lectureof{18.05.2005}
+
+Die Effizenz der Teile und Herrsche-Methode liegt darin, dass Teilinstanzen schneller gelöst werden
+können als das Gesamtproblem.
+
+\begin{codebox}
+\Procname{$\proc{Algorithmus Teile \& Herrsche } DQ(x)$}
+\li	\If ($x$ ist klein genug oder einfach)
+\li		\Then \Return ADHOC($x$)
+		\End
+\li Teile $x$ in kleinste Teilinstanzen, $x_1, x_2, \ldots, x_k$
+\li \For $i \la 1$ \To $k$
+\li		\Do
+					$y_i \la DQ(z_i)$
+		\End
+\li Kombiniere die $y_i$s um eine Lösung $y$ für $x$ zu erhalten.
+\zi	ADHOC: Grundalgorithmus zur Lösung der Teilinstanzen
+\zi	Spezialfall: Wenn $k=1$ $\Ra$ Vereinfachung statt Teile und Herrsche
+\end{codebox}
+
+\paragraph{Bedingungen}
+\begin{itemize}
+	\item Es ist möglich eine Instanz in Teilinstanzen zu teilen
+	\item Es ist möglich die Teilergebnisse effizient zu kombinieren
+	\item Die Größe der Teilinstanzen soll möglichst gleich sein
+	\item Problem: Grundalgorithmus anstatt weiter rekursiv zu arbeiten
+	\item Es muss gut überlegt werden, wie man den Grenzwert wählt
+\end{itemize}
+
+\paragraph{Beispiele}
+\begin{itemize}
+	\item Binäres Suchen
+	\item Mergesort
+	\item Quicksort
+\end{itemize}
+
+\subsection{Quicksort (C.A.R. Hoare, 1960)}
+Die Funktionsweise und Analyse von Quicksort steht in nahezu allen Algorithmenbüchern.
+
+\begin{codebox}
+\Procname{$\proc{Quicksort(A,p,r)}$}
+\li	\If $p<r$
+\li		\Then 
+				$q$ $\la$ $\proc{Partition} (A,p,r)$
+\li			$\proc{Quicksort}(A,p,q-1)$
+\li			$\proc{Quicksort}(A,q+1,r)$
+		\End
+\end{codebox}
+
+\begin{codebox}
+\Procname{$\proc{Partition}(A,p,r) \Ra A[p,\ldots,r]$ neu geordnet.}
+\li $x \la A[r]$
+\li $i \la p-1$
+\li \For $j \la p$ \To $r-1$
+\li		\Do
+				\If $A[j] \leq x$
+\li				\Then 
+						$i \la i+1$
+\li					exchange $A[i] \gdw A[j]$
+				\End
+		\End
+\li	exchange $A[i+1] \gdw A[r]$
+\li	\Return i+1
+\end{codebox}
+
+\begin{codebox}
+\Procname{$\proc{Zeilen 3-6}$}
+\li \If $p \leq k \leq i$
+\li		\Then $A[k] \leq x$
+		\End
+\li \If $i+1 \leq k \leq j-1$
+\li		\Then $A[k] > x$
+		\End
+\li \If $k=r$
+\li		\Then $A[k]=x$
+		\End
+\end{codebox}
+
+%ASORTINGEXAMPLE Quicksort 9.1 - Sedgewick
+
+\subsection{Selektion und Median}
+Sei $T[1, \ldots, n]$ eine Reihung der ganzen Zahlen. $m$ ist der Median von $T \Gdw$
+
+\begin{enumerate}
+	\item $m \in T$
+	\item $\sharp\{i \in [1, \ldots, n] \mid T[i] < m \} < n/2$ und \\
+				$\sharp\{i \in [1, \ldots, n] \mid T[i] \leq m\} \leq n/2$
+\end{enumerate}
+So sind auch die Möglichkeiten berücksichtigt, bei denen  $m$ ungerade ist oder nicht alle Elemente von $T$ verschieden sind.
+
+\subsubsection{Naiver Algorithmus}
+Die Reihung ist in aufsteigender Ordnung zu sortieren und man erhält das $\llc\frac{n}{2}\rrc$-te Element.
+Mit \proc{Mergesort} benötigt man dafür eine Zeit von $O(n \log n)$.
+
+\subsubsection{Selektion-Problem}
+$T$ ist Reihung der Größe $n$, sowie $k \in \MdZ, 1 \leq k \leq n$. Das $k$-te kleinste Element von $T$ ist $m$, so dass
+$$\begin{array}{l}
+	\sharp\{i \in [1, \ldots, n] \mid T[i] < m \} < k \text{ während} \\
+	\sharp\{i \in [1, \ldots, n] \mid T[i] \leq m\} \geq k
+\end{array}$$
+
+Es ist also das $k$-te Element aus T, wenn die Reihung in aufsteigender Ordnung sortiert ist.
+Analog zum Quicksort ist es möglich folgenden Algorithmus zu entwerfen, um dieses Element zu finden:
+
+\begin{codebox}
+\Procname{$\proc{selektion}(T[1, \ldots, n],k)$}
+\li \If $n$ ist klein
+\li		\Then $\proc{sort}(T)$
+\li 				return T[k]
+		\End
+\li $p \la$ irgendein Element aus $T[1, \ldots, n]$
+\zi \{$p$ ist unser "`Pivot"'-Element\}
+\li	$u \la \sharp\{i \in [1, \ldots, n] \mid T[i] < p \}$
+\li	$v \la \sharp\{i \in [1, \ldots, n] \mid T[i] \leq p \}$
+\li \If $k \leq u$
+\li 	\Then array $U[1, \ldots, n]$
+\li 	$U \la$ die Elemente aus $T$ kleiner als $p$
+\zi 	\{das kleinste Element aus $T$ ist auch das kleinste Element aus $U$\}
+\li		return $\proc{selection}(U,k)$
+		\End
+\li \If $k \leq v$
+\li 	\Then \Return $p$ \{Die Lösung\}
+\li 	\Else array $V[1, \ldots, n-v]$
+\li 				$V \la$ die Elemente aus $T$ größer als $p$
+\zi 				\{das k-te kleinste Element aus $T$, ist auch das ($k-v$)-te kleinste Element aus $V$\}
+\li 				return $\proc{selection}(V, k-v)$
+		\End
+\end{codebox}
+
+Welches Element aus $T$ sollen wir als Pivotelement $p$ benutzen? Die beste Wahl ist sicherlich der 
+Median von $T$, so dass die Größen von $U$ und $V$ möglichst gleich sind.
+
+\subsection{Langzahlarithmetik}
+Multiplikationen zweier ganzen Zahlen von $n$ Dezimalziffern wobei $n$ sehr groß sein kann.
+
+\begin{tabular}[t]{cll}
+	\begin{xy}
+			\entrymodifiers={}
+			\xymatrix @R=1pc {
+			&  \ar@{<->}[rrrr]^{n} & & & & \\
+			&\ar@{-}[rr]& &\ar@{-}[rr]& & \\
+			u & & w & & x & \\
+			&\ar@{-}[uu]\ar@{-}[rr]& &\ar@{-}[uu]\ar@{-}[rr]& &\ar@{-}[uu]\\
+			&\ar@{-}[rr]& &\ar@{-}[rr]& & \\
+			v & & y & & z & \\
+			&\ar@{-}[uu]\ar@{-}[rr]& &\ar@{-}[uu]\ar@{-}[rr]& &\ar@{-}[uu]\\
+			& & &\ar@{<->}[ll]^{\frac{n}{2}}& &\ar@{<->}[ll]^{\frac{n}{2}}
+			}
+	\end{xy} \\
+\end{tabular}
+$$\begin{array}{cclcccccc}
+	u & = & 10^sw+x & & 0 & \leq & x & \leq & 10^s \\
+	v & = & 10^sy+z & & 0 & \leq & z & \leq & 10^s \\
+\end{array}$$
+Wir suchen das Produkt
+	$$uv = 10^{2s}wy + 10^s(wz+xy)+xz$$
+
+Das führt zum Algorithmus
+
+\begin{codebox}
+\Procname{$\proc{mult}(u,v)$}
+\li $n$ $\la$ die kleinste ganze Zahl so dass $u$ und $v$ von Größe $n$ sind
+\li \If $n$ klein
+\li		\Then \Return $\proc{classic-product}(u,v)$
+		\End
+\li $s \la n \func{div} 2$
+\li $w \la u \func{div} 10^s;\ x \la u \mod 10^s$
+\li $y \la v \func{div} 10^s;\ z \la v \mod 10^s$
+\li \Return
+\li		$\proc{mult}(w,y) \cdot 10^{2s} + (\proc{mult}(w,z) + \proc{mult}(x,y)) \cdot 10^s + \proc{mult}(x,z)$
+\end{codebox}
+
+Eine triviale Verbessung wird dadurch erreicht, dass man den letzten Schritt durch folgendes ersetzt:
+\begin{codebox}
+\li	$r \la \proc{mult}(w+x,y+z)$
+\li $p \la \proc{mult}(w,y)$
+\li $q \la \proc{mult}(x,z)$
+\li \Return $p\cdot 10^{2s} +(r-p-q)\cdot10^s +q$
+\end{codebox}
+
+\paragraph{Bemerkungen}
+\begin{itemize}
+	\item Die Komplexitätsanalyse zeigt, dass der Algorithmus eine Zeit von $O(n^{\log_23})=O(n^{1,59})$ benötigt
+	\item mittels "`Schneller Fourier-Transformation"' und Teile \& Herrsche kann die Komplexität auf 
+				$O(n \cdot \log n \cdot \log \log n)$ reduziert werden.
+	\item Eine spezielle Version dieses Algorithmus ist als "`Karatsuba-Algorithmus"' bekannt.
+				Sei $n$ gerade mit $n=2m$ und u,v ganze Zahlen der Länge $n$ (in Bits):
+				\begin{eqnarray*}
+					u   & = & a2^m+b \\
+					v   & = & c2^m+d \\
+					w   & = & uv = y2^{2m}+(x-y-z)2^n+z \\
+					\text{wobei } & & \\
+					x & = & (a+b)(c+d) \\
+					y & = & ac \\
+					z & = & bd \\
+				\end{eqnarray*}
+\end{itemize}
+
+\subsection{Matrixmultiplikation}
+$A$, $B$: 2 $n \times n$-Matrizen; $C = A \cdot B$
+$$A=\left(\begin{array}{ll}
+	a_{11} & a_{12} \\
+	a_{21} & a_{22} \\
+\end{array}\right);\ B=
+\left(\begin{array}{ll}
+	b_{11} & b_{12} \\
+	b_{21} & b_{22} \\
+\end{array}\right)$$
+
+\begin{eqnarray*}
+	m_1 & = & (a_{21} + a_{22} - a_{11})(b_{22}-b_{12}+b_{11}) \\
+	m_2 & = & a_{11}b_{11} \\
+	m_3 & = & a_{12}b_{21} \\
+	m_4 & = & (a_{11}-a_{21})(b_{22}-b_{12}) \\
+	m_5 & = & (a_{21}-a_{22})(b_{12}-b_{11}) \\
+	m_6 & = & (a_{12}-a_{21}+a_{11}-a_{22})b_{22} \\
+	m_7 & = & a_{22}(b_{11}+b_{22}-b_{12}-b_{21}) \\
+\end{eqnarray*}
+
+$$\Ra AB = 
+\left(\begin{array}{ll}
+ m_1 + m_3 & m_1 + m_2 + m_5 + m_6 \\
+ m_1 + m_2 + m_4 + m_7 & m_1 + m_2 + m_4 + m_5 \\
+\end{array}\right)$$
+
+Normalerweise hat der Algorithmus eine Komplexität von $\Theta(n^2)$. Hier jedoch nur $\Theta(n)$.
+
+
+\section{Abstrakte Datentypen (ADT)}\lectureof{23.05.2005}
+
+\subsection{Bool}
+
+\subsubsection*{Signaturen}
+\begin{itemize}
+	\item Konstruktoren:\\
+Wahr: Bool 	\\
+Falsch: Bool\\
+	\item Destruktoren:\\
+$\wedge$,$\vee$ : Bool $\times$ Bool $\ra$ Bool\\
+$\neg$ : Bool $\ra$ Bool\\
+\end{itemize}
+
+\subsubsection*{Axiome}
+
+$x$ $\wedge$ Wahr 	= $x$\\
+$x$ $\wedge$ Falsch = Falsch\\
+$x$ $\vee$ Wahr 	= Wahr\\
+$x$ $\vee$ Falsch	= $x$\\
+$\neg$Wahr = Falsch\\
+$\neg x$ = Wahr\\
+(von oben nach unten die erste passende Regel anwenden)
+\subsection{Schlange (queue, fifo)}
+
+%%\ra[ ][ ][ ][ ][ ][ ]\ra
+
+\subsubsection*{Signaturen}
+\begin{itemize}
+	\item Konstruktoren:\\
+$\bot$ : Schlange $a$\\
+Einf: $a$ $\times$ Schlange $a$ $\ra$ Schlange $a$
+
+	\item Destruktoren:\\
+kopf: Schlange $a$ $\ra$ $a$\\
+schwanz: Schlange $a$ $\ra$ Schlange $a$
+	
+	\item Verhalten:\\
+l"ange: Schlange $a$ $\ra$ Int\\
+\end{itemize}
+\subsubsection*{Axiome}
+Seien $S$: Schlange $a$, $x$: $a$\\
+kopf(Einf($x$,$\bot$))=$x$\\
+kopf(Einf($x$,$S$))=kopf($S$)\\
+schwanz(Einf($x$,$\bot$)) = $\bot$\\
+schwanz(Einf($x$,$S$))=Einf($x$,schwanz($S$))\\
+l"ange($\bot$)=$0$\\
+l"ange(Einf($x$,$S$))=$1+$l"ange($S$)\\
+
+Eine konkrete Implementierung muss nat"urlich nicht $\Theta(n)$ f"ur Kopf haben.\\
+
+Bewusst ausgelassen wurde schwanz($\bot$) da die Behandlung dieses Falles den Umfang der Axiome erh"ohen w"urde da, w"urde man einen Fehler einf"uhren, dieser sich durch alle Axiome durchschl"angeln m"usste. (Was 6 zus"atzliche Axiome bedeuten w"urde)
+%%thats my guess
+
+\subsection{First In Last Out -- Keller, Stack}
+
+\subsubsection*{Signaturen}
+Stack $a$
+\begin{itemize}
+	\item Konstruktoren:\\
+$\bot$: Keller $a$\\
+push: ($a$ $\times$ Keller $a$) $\ra$ Keller $a$\\
+	\item Destruktoren:\\
+top: Keller $a$ $\ra$ $a$\\
+pop: Keller $a$ $\ra$ Keller $a$\\
+	\item Verhalten:\\
+laenge: Keller $a$ $\ra$ Int\\
+\end{itemize}
+\subsubsection*{Axiome}
+Seien $K$:Keller $a$, $x$:$a$\\
+top(push($x$,$K$)) = $x$\\
+pop(push($x$,$K$)) = $K$\\
+laenge($\bot$)   = $0$\\
+laenge(push($x$,$K$))=$1+$laenge($K$)\\
+
+%%einschub? vielleicht woanders hin? als section nach liste?...
+\subsubsection*{Normalformen}
+Kann man auf einen Ausdruck A kein Axiom mehr anwenden, so ist eine Normalform erreicht.
+	\paragraph{Beispiel}
+	\begin{itemize}
+		\item 
+A = push(3,pop(push(2,$\bot$))\\
+%%		\ ----- v ----- /
+%%			 $\bot$
+ = push (3,$\bot$) Normalform!!
+		\item	top($\bot$)
+	\end{itemize}
+\subsection{Liste}
+
+\subsubsection*{Signaturen}
+list $a$\\
+\begin{itemize}
+	\item Konstruktoren:\\
+$\bot$ : list $a$\\
+Cons: $a$ $\times$ list $a$ $\ra$ list $a$\\
+	\item Destruktoren:\\
+head: list $a$ $\ra$ $a$\\
+tail: list $a$ $\ra$ list $a$\\
+\end{itemize}
+
+\subsubsection*{Axiome}
+head(cons($x$,$L$))=$x$\\
+tail(cons($x$,$L$))=$L$\\
+
+
+
+\subsection{Konkrete Implementierung}
+\subsubsection*{Verkettete Liste}
+$\ra$[Element][Zeiger]$\ra$\\
+Die Liste ist dann ein Verweis (Zeiger) auf ein Listenelement.
+\fixme{skizze von listenelement}
+\begin{itemize}
+
+%%	[Element][pointer]\ra
+%%		^			   ^
+%%	 Inhalt		Verweis auf das n"achste Listenelement
+%%
+%%	\-----v--------------/
+%%    Listenelement
+\item 
+	type Listenelement a\\
+	Element:a\\
+	next: $\uparrow$Listenelement a\\
+\item
+	type Liste a\\
+	kopf: $\uparrow$Listenelement a\\
+\end{itemize}
+	Wie geht man mit einer leeren Liste um?
+	\begin{enumerate}
+		\item M"oglichkeit: \\
+			spezieller Speicherbereich (Nil,Null,NULL,...) 
+		\item M"oglichkeit:  Selbstverweis 	
+\fixme{skizze}			
+%%[E][P]-|
+%%^      |
+%%\-----/
+	\end{enumerate}
+	(Wir entscheiden uns f"ur erste M"oglichkeit)
+\begin{itemize}
+\item
+	tail(L: Liste a) : Liste a\\
+		if L.kopf = Nil	then error "..."\\
+		else \\
+			L.kopf = L.Kopf.next\\
+	return L\\
+\item	
+	head(L:Liste a):a\\
+		if L.kopf = Nil then error "..."\\
+		else \\
+		return L.kopf.Element\\
+		
+\item
+	cons (x:a, l:Liste a):Liste a\\
+	ne = new(Listenelement a)\\
+	ne.element = x\\
+	ne.next = l.Kopf\\
+	L.Kopf=$\uparrow$ne\\
+	return l\\
+	
+\end{itemize}
+
+
+\section{Hash-Funktionen}
+
+\subsection*{Problem:}
+	\paragraph{Gegeben:} $D_1,..,D_n$ Datens"atze, $n \in \{1,..,N\}$ mit zugeh"origen Schl"usseln: $k_i, i\in\{1,..,n\}$\\
+	\{Schl"ussel: Indexierbarer Datentyp, d.h. $k_i$ sind geordnet und $D_i \ne D_j \Ra k_i \ne k_j$ \}
+
+\subsection*{Gesucht:} 
+		Ist Datensatz $D$ in $D_1,..,D_n$ enthalten?
+	
+\subsection*{L"osung:}
+\begin{itemize}
+\item 
+	Speichere $D_1,..,D_n$ in Liste 
+\item 
+	Suchaufwand im worst case $\Theta(n)$
+\end{itemize}
+\paragraph{Vereinfachung:} $N$ ist zwar gross aber nicht riesig gro"s\dots
+\begin{itemize}
+\item	$A$: Reihung (Array) [1,..,N]
+\item	Speichere in $A$ an alle Pl"atze ``leer"
+\item	F"uge alle $D_1,\dots,D_n$ in Stelle $k_i$ ein $i=1,\dots,n$
+\end{itemize}
+$\Ra$ Suchaufwand $\Theta(1)$
+		
+\subsubsection*{Problem:}
+		Meist ist $N$ zu gro"s!
+			z.b. $2^{64}$ m"ogliche Schl"ussel, aber "`nur"' bla $2^{20}$ Datens"atze\dots
+
+		\subsubsection*{Deshalb: Hash-Funktion}		
+		Suche eine Funktion n mit $h:N\ra\{1,\dots,m\}$ mit $m>n$ aber $m<<N$\\
+		Dann initialisiere die Reihung $A[1,\dots,m]$ wieder mit "`leer"' und f"uge $D_i$ an Stelle $h(k_i)$ ein \\
+		$D_i$=A[$h(k_i)$]
+		
+		\subsubsection*{Problem:} 
+		h kann nicht injektiv sein. d. h.:\\
+		Es gibt $y$ und $z$ mit $h(x) = h(y)$ aber $x \ne y$ $\Ra$ Kollision ($h$: Hashfunktion)\\
+		\subsubsection*{L"osung:}
+		verkettetes Hashen
+		statt $D_i$ speichere Liste $D_i$\\
+\fixme{skizze}
+		[ ][$h(k_i)$][ ][ ][ ][ ][ ]
+			|
+			-$\ra$ [$D_i,D_j$]\\
+	$h(k_i)=h(k_j), i \ne j$
+
+	$h$ muss gut gew"ahlt werden, sonst verkettete Liste, also $\Theta(n)$!
+
+
+\lectureof{25.05.2005} %% Lars
+	\subsubsection*{2. Lösung (Sondierung):}
+	\paragraph{Idee: } Im Fall einer Kollision suche deterministisch den nächsten freien Platz.
+	\paragraph{Konkret: } Sondierungsfunktion $S: \{0,..,m\}\ra \MdN$ \\
+	Ist der Platz $h(k_i)$ schon belegt, dann teste für $j=1,2,3\ldots$ $$h'(k_i,j)=(h(k_i)+S(J))\ mod\ m$$
+	Sobald eine Stelle frei ist, speichere den Datensatz $D_i$ dort. Es ist dann $h'(k_i,j)\ne h(k_i)$, d.h. der Datensatz steht auch später nachvollziehbar an der falschen Stelle.\
+	Ist $j=m$ und $S$ ist injektiv, dann ist die Tabelle voll.\
+	Folgende Situationen können auftreten:
+	\begin{enumerate}
+		\item Beim Versuch $D_i$ an der Position $h(k_i)$ zu speichern, ist die Position mit einem Datensatz $D_j$ belegt und $h(k_i)=h(k_j)$: \begriff{Kollision erster Ordnung}
+		\item Ist $h(k_i)\ne h(k_j)$: \begriff{Kollision zweiter Ordnung}
+	\end{enumerate}
+	\paragraph{Wie suche ich? } Tritt eine Kollision auf, d. h. $h(k_i)$ ist belegt, suche weiter bei $h'(k_i,j)$ für $j=1,2,3\ldots$ bis entweder
+	\begin{itemize}
+		\item $D_i$ gefunden,
+		\item die aktuelle Position leer ist $\folgt$ $D_i$ ist nicht in der Tabelle,
+		\item $j=m$ $\folgt$ Tabelle ist voll
+	\end{itemize}
+	\paragraph{Beispiele: }
+	\begin{itemize}
+		\item	Lineares Sondieren: $h'(k_i,j) = (h(k_i)+j)\ mod\ m$
+		\item Quadratisches Sondieren: $h'(k_i,j) = (h(k_i)+c_1j^2 +c_2j)\ mod\ m$
+		\item Doppeltes Hashen: $h'(k_i,j) = (h(k_i)+jh_1(k_i))\ mod\ m$, $h_1$ eine weitere Hashfunktion
+	\end{itemize}
+	\paragraph{Problem: } Wie lösche ich ein Element?\
+	Wenn einfach \glqq leer\grqq{} in die tabelle eingetragen wird, dann werden Elemente unter Umständen nicht mehr gefunden. Die Suche kann fehlschlagen.
+	\paragraph{Lösung: } Trage \glqq gelöscht\grqq{} ein.
+	\paragraph{Beispiel: } $0,\ldots ,D_i,D_j,\ldots ,m$, $h(k_i)=h(k_j)$ (Lineares Sondieren)\
+	Nach Löschen von $D_i$ kann $D_j$ nicht mehr gefunden werden, falls nicht \glqq gelöscht\grqq{}  eingetragen wurde.
+	
+\section{Graphenalgorithmen und Datenstrukturen für Graphen}
+\paragraph{Frage: } Wie speichere ich einen Graphen im Rechner?
+\begin{center}
+\begin{xy}
+        \entrymodifiers={++[o][F-]}
+        \xymatrix {
+            1 \ar@{-}[r] \ar@{-}[d] & 2 \ar@{-}[l] \ar@{-}[ld] \ar@{-}[d] \ar@{-}[r] & 3  \ar@{-}[ld]\\
+            5 \ar@{-}[r] & 4 & *{} \\
+%            *{} & *{} &  *{} \\ % *{} hides the nodes not there
+            *{} & *{\txt{Beispielgraph}} & *{} 
+        }
+    \end{xy}\end{center}
+\subsection{1. Möglichkeit: Adjazenzliste}
+\begin{tabular}{ccl}
+1 & $\ra$ & [2,5] \\
+2 & $\ra$ & [1,5,4,3] \\
+3 & $\ra$ & [2,4] \\
+4 & $\ra$ & [5,2,3] \\
+5 & $\ra$ & [1,2,4]
+\end{tabular}
+
+\subsection{2. Möglichkeit: Adjazenzmatrix}
+\begin{tabular}{c|ccccc}
+  & 1 & 2 & 3 & 4 & 5 \\ \hline
+1 & 0 & 1 & 0 & 0 & 1 \\
+2 & 1 & 0 & 1 & 1 & 1 \\
+3 & 0 & 1 & 0 & 1 & 0 \\
+4 & 0 & 1 & 1 & 0 & 1 \\
+5 & 1 & 1 & 0 & 1 & 0
+\end{tabular} 
+
+\subsection{Speicherbedarf: }
+\begin{itemize}
+	\item Worst-Case
+	\begin{itemize}
+		\item Adjazenzliste: $\Theta(n^2)$ Knoten
+		\item Adjazenzmatrix: $\Theta(n^2)$ Bits
+	\end{itemize}
+	\item Best-Case
+	\begin{itemize}
+		\item Adjazenzliste: $\Theta(n)$
+		\item Adjazenzmatrix: $\Theta(n^2)$
+	\end{itemize}
+\end{itemize}
+
+\subsection{Zugriff auf eine Kante: }
+\begin{itemize}
+	\item Worst-Case
+	\begin{itemize}
+		\item Adjazenzliste: $\Theta(n)$
+		\item Adjazenzmatrix: $\Theta(1)$
+	\end{itemize}
+	\item Best-Case
+	\begin{itemize}
+		\item Adjazenzliste: $\Theta(1)$
+		\item Adjazenzmatrix: $\Theta(1)$
+	\end{itemize}
+\end{itemize}
+
+\subsection{Einfache Graphenalgorithmen: }
+\paragraph{Suche im Graphen: } z.B. gibt es einen Ausweg aus dem Labyrinth?\\
+Einfacher: Gibts es einen Weg von Knoten $A$ nach Knoten $B$?
+\subsection{Einfache Strategien: }
+\subsubsection{Tiefensuche: }
+\paragraph{Idee: } Im Knoten $k$ mit Kanten $E_1,\ldots,E_j$:\\
+Nimm Kante $E_1$ und suche dort weiter.\\
+Stoße ich auf eine Sackgasse, gehe eins zurück und nimm dort $E_2$ usw.
+\paragraph{Konkret: } Benutze einen Keller $K$ (Knoten)\\
+Am Anfang enthält der Keller den Startknoten.\\
+Wiederhole:\\
+Ist $K_j$=top$(K)$ das Ziel $\folgt$ fertig\\
+Sonst: pop$(K)$, push$(K_{j1},\ldots,K_{jl},K)$, wobei $K_{j1},\ldots,K_{jl}$ die Folgeknoten von $K_j$ sind.
+
+\subsubsection{Breitensuche: }
+\paragraph{Idee: } Gehe erst einmal einen Schritt bei allen Nachfolgeknoten. Ist das Ziel dann noch nicht gefunden, gehe zwei Schritte usw.
+\paragraph{Konkret: } Benutze eine Schlange $Schl$\\
+Am Anfang enthält $Schl$ nur den Startknoten.\\
+Wiederhole:\\
+$K_i=Kopf(Schl)$\\
+ist $K_i$ das Ziel $\folgt$ Heureka!\\
+sonst $Einf"ugen(K_{i1},\ldots,K_{ij},tail(S))$, wobei $K_{i1},\ldots,K_{ij}$ die Folgeknoten von $K_i$ sind.
+
+\subsubsection{Beispiele: }
+\begin{xy}
+        \entrymodifiers={++[o][F-]}
+        \xymatrix {
+            *{} & 1 \ar@{-}[r] & 3 \ar@{-}[rd] & *{} & *{}\\
+            S \ar@{-}[ru] \ar@{-}[rd] & *{} & *{} & 6 \ar@{-}[r] & Z\\
+            *{} & 2 \ar@{-}[r] & 4 \ar@{-}[ru] & *{} & *{}\\
+            *{} & *{\txt{Beispielgraph}} & *{} & *{} & *{}
+        }
+    \end{xy}
+\paragraph{Tiefensuche: }
+Zu Beginn: [S] $\la$ Keller $\folgt$ $push(1,2,K)$ $\folgt$ $K=[2,1,S]$ $\folgt$ $push(4,S,pop(K))$ $\folgt$ $K=[1,4,S]$ $\folgt$ Der nächste Schritt beginnt wieder bei $S$. Ausweg: Zufällige Reihenfolge beim $push$
+\paragraph{Breitensuche: }
+Zu Beginn: [S] $\la$ Schlange \\
+	$\folgt$ $einf"ugen(1,2,Schl)$ $\folgt$ $Schl=[2,1]$ \\
+	$\folgt$ $einf"ugen(3,S,tail(Schl))$ $\folgt$ $Schl=[S,3,2]$ \\
+	$\folgt$ $einf"ugen(S,4,tail(Schl))$ $\folgt$ $Schl=[4,S,S,3]$ $\ldots$
+
+% Vorlesung vom 30.05.2005 Felix Brandt
+\section{Binäre Suchbäume}
+\lectureof{30.05.2005}
+(nach Cormen) Suchbäume sind Datenstrukturen. Sie sind nützlich für Operationen auf dynamischen Mengen
+(Größe und Elemente sind nicht fest!) wie z.B. \proc{Search}, \proc{Minimum}, \proc{Maximum},
+\proc{Predecessor}, \proc{Successor}, \proc{Insert} oder \proc{Delete}.
+
+\subsection{Definition/Einführung}
+Ein binärer Suchbaum(B.S.) ist als binärer Baum (siehe Abbildung \ref{tree3}) organisiert. Außer dem 
+Attribut \id{Schl"ussel} sind für jeden Knoten noch die Attribute \id{links} (linker Sohn), \id{rechts}
+(rechter Sohn) und \id{p}(Vater) gegeben. Wenn ein Sohn oder der Vater fehlt, erhält dieses Attribut 
+den Wert \id{NIL}\footnote{Not In List}. Der Wurzelknoten ist der einzige Knoten dessen Vater \id{NIL} ist.
+
+Die Schlüssel werden immer so gespeichert dass die folgende Binäre-Suchbaum-Eigenschaft (B.S.E.) immer
+erhalten bleibt:
+\begin{itemize}
+\item Sei $x$ Knoten in einem binären Suchbaum. Wenn $y$ ein Knoten im linken Teilbaum von $x$ ist, 
+			dann gilt $$ schl"ussel[y] \leq schl"ussel[x] $$
+\item Wenn $y$ ein Knoten im rechten Teilbaum von $x$ ist, dann gilt
+			$$ schl"ussel[x] < schl"ussel[y] $$
+\end{itemize}
+
+\subsection{Traversierung}
+Die B.S.E. erlaubt mittels einem einfachen rekursiven Algorithmus alle Schlüssel eines B.S. in sortierter 
+Reihenfolge auszugeben.
+\begin{description}
+\item{$\folgt$} In-Order-Traversierung (es wird zuerst der linke Teilbaum, dann die Wurzel und danach der 
+								rechte Teilbaum ausgegeben $(a,t,b)$)
+\end{description}
+Es gibt auch noch zwei andere Arten der Traversierung (auf diese wird hier aber nicht näher eingegangen):
+\begin{itemize}
+\item Pre-Order-Traversierung (die Wurzel wird vor den beiden Teilbäumen ausgegeben $(t,a,b)$)
+\item Post-Order-Traversierung (die Wurzel wird nach den beiden Teilbäumen ausgegeben $(a,b,t)$)
+\end{itemize}
+
+\begin{figure}[htb]
+	\centering
+	$\begin{xy}
+		\entrymodifiers={++[o][F-]}
+		\xymatrix {
+	  	*{} & t \ar@{-}[rd]\ar@{-}[ld] & *{} \\
+	  	a & *{} & b\\
+		}
+	\end{xy}$
+	\label{tree1}
+\end{figure}
+
+\begin{codebox}
+\Procname{$\proc{InOrderTreeWalk}(x)$}
+\li \If $x \neq NIL$
+\li		\Then $\proc{InOrderTreeWalk}(links[x])$
+		\End
+\li	print schl"ussel[x]
+\li $\proc{InOrderTreeWalk}(rechts[x])$
+\end{codebox}
+
+\paragraph{Beispiel}
+Die InOrder-Traversierung des Baumes in Abbildung \ref{tree3} ergibt: $2,3,5,5,7,8$
+\begin{figure}[htb]
+	\centering
+	$\begin{xy}
+		\entrymodifiers={++[o][F-]}
+		\xymatrix {
+	  	*{} & *{}  & 5 \ar@{-}[rd]\ar@{-}[ld] & *{} & *{} \\
+	  	*{} & 3 \ar@{-}[rd]\ar@{-}[ld]& *{} & 7 \ar@{-}[rd] & *{} \\
+	  	2 & *{} & 5 & *{} & 8 \\
+		}
+	\end{xy}$
+	\caption{Beispiel InOrder-Traversierung}
+	\label{tree3}
+\end{figure}
+
+\paragraph{Theorem}
+
+Wenn $x$ die Wurzel eines Teilbaums mit $n$ Knoten ist, dann benötigt 
+\proc{InOrderTreeWalk} die Zeit $O(n)$.
+
+\subsection{Suchen}
+Abfragen in einem B.S. machen sich ebenfalls die B.S.E. zu nutze um schneller zum Ziel zu gelangen.
+\begin{codebox}
+\Procname{$\proc{TreeSearch}(x,k)$}
+\li \If $x = NIL$ oder $k=schl"ussel[x]$
+\li 	\Then \Return $x$
+		\End
+\li	\If $k < schl"ussel[x]$
+\li 	\Then \Return $\proc{TreeSearch}(links[x], k)$
+\li		\Else \Return $\proc{TreeSearch}(rechts[x], k)$
+		\End
+\end{codebox}
+
+\paragraph{Beispiel}
+Die Abfragen nach 13 und 8 liefern für den Baum $x$ aus Abbildung \ref{tree4} folgende Ergebnisse:
+\begin{itemize}
+\item $\proc{TreeSearch}(x,13)$: $15 \stackrel{\text{L}}{\dann} 6 \stackrel{\text{R}}{\dann} 7 
+			\stackrel{\text{R}}{\dann} 13 \folgt 13$
+\item $\proc{TreeSearch}(x,8)$:  $15 \stackrel{\text{L}}{\dann} 6 \stackrel{\text{R}}{\dann} 7 
+			\stackrel{\text{R}}{\dann} 13	\stackrel{\text{L}}{\dann} NIL \folgt NIL$
+\end{itemize}
+\begin{figure}[htb]
+	\centering
+	$\begin{xy}
+		\entrymodifiers={++[o][F-]}
+		\xymatrix {
+	  	*{} & *{} & *{} & *{} &  15 \ar@{-}[rrd]\ar@{-}[lld]& *{} & *{} & *{} \\
+	  	*{} & *{} &   6 \ar@{-}[rd]\ar@{-}[ld]& *{} & *{} & *{} &  18 \ar@{-}[rd]\ar@{-}[ld]& *{} \\
+	  	*{} &   3 \ar@{-}[rd]\ar@{-}[ld]& *{} &   7\ar@{-}[rd] & *{} &  17 & *{} &  20 \\
+	  	  2 & *{} &   4 & *{} &  13 \ar@{-}[ld] & *{} & *{} & *{} \\
+	  	*{} & *{} & *{} &   9 & *{} & *{} & *{} & *{} \\
+		}
+	\end{xy}$
+	\caption{Beispiel-Baum $x$}
+	\label{tree4}
+\end{figure}
+Das Finden des Elementes dauert dabei $O(h)$, wobei $h$ für die Höhe des Baumes steht.
+
+Die gleiche Prozedur kann auch iterativ geschrieben werden (d.h. in Form einer \While-Schleife)
+\begin{codebox}
+\Procname{$\proc{IterativeTreeSearch}(x,k)$}
+\li \While $x \neq NIL$ und $k \neq schl"ussel[x]$
+\li		\Do \If $k < schl"ussel[x]$
+\li					\Then $x \gets links[x]$
+\li					\Else $x \gets rechts[x]$
+					\End
+			\End
+\li	\Return x
+\end{codebox}
+
+\subsection{Minimum und Maximum}
+\begin{codebox}
+\Procname{$\proc{TreeMinimum}(x)$}
+\li \While $links[x] \neq NIL$
+\li 	\Do $x \gets links[x]$
+		\End
+\li	\Return x
+\end{codebox}
+
+\begin{codebox}
+\Procname{$\proc{TreeMaximum}(x)$}
+\li \While $rechts[x] \neq NIL$
+\li 	\Do $x \gets rechts[x]$
+		\End
+\li	\Return x
+\end{codebox}
+
+\subsection{Vorgänger und Nachfolger}
+\begin{codebox}
+\Procname{$\proc{TreeSuccessor}(x)$}
+\li	\If $rechts[x] \neq NIL$
+\li		\Then \Return $\proc{TreeMinimum}(rechts[x])$
+		\End
+\li $y \gets p[x]$
+\li \While $y \neq NIL$ und $x=rechts[y]$
+\li		\Do $x \gets y$
+\li				$y \gets p[y]$
+		\End
+\li \Return $y$
+\end{codebox}
+
+\begin{codebox}
+\Procname{$\proc{TreePredecessor}(x)$}
+\li	\If $links[x] \neq NIL$
+\li		\Then \Return $\proc{TreeMaximum}(links[x])$
+		\End
+\li $y \gets p[x]$
+\li \While $y \neq NIL$ und $x=links[y]$
+\li		\Do $x \gets y$
+\li				$y \gets p[y]$
+		\End
+\li \Return $y$
+\end{codebox}
+
+\subsection{Theorem}
+Die Operationen \proc{Search}, \proc{Minimum}, \proc{Maximum}, \proc{Predecessor} und 
+\proc{Successor} für dynamische Mengen, können auf einem B.S. der Höhe $h$
+in der Zeit $O(h)$ ausgeführt werden.
+
+\subsection{Einfügen und Löschen}
+WICHTIG: Beim Einfügen und Löschen soll die B.S.E. beibehalten werden.
+\begin{description}
+\item{$\folgt$} "`Einfügen"': relativ unkompliziert
+\item{$\folgt$} "`Löschen"': etwas kniffelig
+\end{description}
+
+\paragraph{Einfügen}
+
+Mit der Prozedur \proc{TreeInsert} soll ein Wert $v$ in den B.S.\ $T$ eingefügt werden. Als Parameter bekommt sie
+den Knoten $z$, für den $schl"ussel[z] = v$, $links[z]=NIL$ und $rechts[z]=NIL$ gilt.
+
+\begin{codebox}
+\Procname{$\proc{TreeInstert}(T, z)$}
+\li $y \gets NIL$
+\li	$x \gets Wurzel[T]$
+\li	\While $x \neq NIL$
+\li		\Do $y \gets x$
+\li			\If $schl"ussel[z] < schl"ussel[x]$
+\li				\Then $x \gets links[x]$
+\li				\Else $x \gets rechts[x]$
+				\End
+			\End
+\li	$p[z] \gets y$
+\li	\If $y = NIL$
+\li		\Then $Wurzel[T] \gets z$
+\zi			\{T war also leer\}
+			\End
+\li	\If $schl"ussel[z] < schl"ussel[y]$
+\li		\Then $links[y] \gets z$
+\li		\Else $rechts[y] \gets z$
+\end{codebox}
+
+Der Algorithmus beginnt an der Wurzel des Baum und arbeitet sich an einem Pfad nach unten. Der Zeiger $x$ verfolgt den Pfad und $y$ wird als Vater von $x$ gehalten. 
+
+Nach der Initialisierung bewirkt die \While-Schleife (Zeilen 3-7) dass diese beiden Zeiger im Baum abwärts laufen und dabei nach links oder rechts gehen (durch Vergleich der Schlüssel).
+
+Dies geschiet so lange bis $x$ gleich $NIL$ gesetzt wird. Dieses $NIL$ belegt den Platz an dem wir das Eingabeelement $z$ einfügen wollen. Die Zeilen 8-13 setzen die Zeiger so, dass das Element $x$ gerade an der Stelle eingeführt wird $\folgt$ Zeitaufwand $O(h)$.
+
+% ----------------------------------------
+% Vorlesung vom 01.06.05, Mathias Ziebarth
+% ----------------------------------------
+
+\lectureof{01.06.05}
+
+\paragraph{Löschen}
+
+Argument: Zeiger auf $z$ \\
+Die Prozedur unterscheidet die drei (in 12.4) gezeigten Fälle.
+\begin{itemize}
+\item Falls $z$ keine Kinder hat, modifizieren wir seinen Vater $p[z]$ so, dass sein Kind durch $NIL$ ersetzt wird.
+\item Falls z nur ein Kind hat, schneiden wir $z$ aus, indem wir eine Verbindung zwischen seinem Kind und seinem Vater einfügen.
+\item Falls $z$ zwei Kinder hat, nehmen wir $z$'s Nachfolger $y$ heraus, der kein linkes Kind hat und ersetzen den Schlüssel und
+die Satellitendaten von $z$ durch Schlüssel und Satellit von $y$.
+\end{itemize}
+
+\subsection{Theorem}
+
+Die Operationen \proc{Insert} und \proc{Delete} können so implementiert werden, dass sie auf einem binären Suchbaum der Höhe $h$
+in der Zeit $O(h)$ laufen.
+
+\section{Rot.Schwarz-Bäume}
+
+Binäre Suchbäume $\folgt$ \proc{Search}, \proc{Successor}, \proc{Predecessor}, \proc{Minimum}, \proc{Maximum}, \proc{Insert} und 
+\proc{Delete} $\folgt$ $O(n)$ \\
+Verbesserung ist möglich $\folgt$ $O(lgn)$
+
+\subsection{Eigenschaften von R.S.Bäumen}
+
+Ein R.S-Baum ist ein binärer Suchbaum, der ein zusätzliches Bit Speicherplatz zur Verfügung stellt. Diese Bit dient seiner
+Farbe: rot oder schwarz.
+
+\fixme{Bild: R.S-Baum}
+
+\paragraph{Attribute:}
+
+farbe, schlüssel, links, rechts und p \\
+Wenn ein Kind oder der Vater eines Knotens nicht existiert, dann erhält das entsprechende Zeigerattribut den Wert $NIL$.
+
+\paragraph{Eigenschaften}
+
+Ein binärer Suchbaum ist ein R.S-Baum, falls er die folgenden Eigenschaften, die als R.S-Eigenschaften bezeichnet werden,
+erfüllt.
+\begin{enumerate}
+\item Jeder Knoten ist entweder rot oder schwarz.
+\item Die Wurzel ist schwarz.
+\item Jedes Blatt $(NIL)$ ist schwarz.
+\item Wenn ein Knoten rot ist, dann sind seine beiden Kinder schwarz.
+\item Für jeden Knoten enthalten alle Pfade, die an diesem Knoten starten und in einem Blatt des Teilbaums dieses Knotens enden,
+die gleiche Anzahl schwarzer Knoten.
+\end{enumerate}
+
+\subsection*{Lemma}
+
+Ein R.S-Baum mit $n$ inneren Knoten hat höchstens die Höhe $2lg(n+1)$
+
+\paragraph{Beweis:}
+
+Der Teilbaum zu einem beliebigen Knoten x hat mindestens $2^{bh(x)}-1$ innere Knoten.
+\begin{description}
+\item{IA} Höhe von $x=0$: \\
+$2^0-1=0$
+\item{IV} es ist wahr für n: \\
+$2^{bh(x)}-1$ innere Knoten
+\item{IS} nächster Schritt: \\
+$(2^{bh(x)-1}-1)+(2^{bh(x)-1}-1)+1=2^{bh(x)}-1$
+\end{description}
+
+$\folgt$ Operationen \proc{Search}, \proc{Successor}, \proc{Predecessor}, \\
+\proc{Minimum}, \proc{Maximum} für dynamische Mengen auf R.S-Bäumen können in der Zeit $O(lgn)$ implementiert werden, 
+da sie auf einem Suchbaum der Höhe $h$ in der Zeit $O(h)$ laufen.
+
+\subsection{Rotationen}
+
+Um die Zeigerstruktur zu verändern, benutzen wir eine Rotation.
+
+\fixme{Beispiel}
+
+\lectureof{06.06.2005}
+\subsection{Einfuegen}
+``Introduction to Algorithms, Chapter 13.3, Second Edition"
+\begin{itemize}
+\item Rot-Schwarz-Baum mit n Knoten $\Ra$ $O(lg n)$ 
+\item eine leicht modifizierte Version der Tree-Insertion
+\item Anschliessend f"arben wir den Knoten rot. Um sicherzustellen, dass die Rot-Schwarz-Eigenschaften erhalten bleiben rufen wir $RB_Insert_Fixup(T,z)$ um die Knoten neu zu f"arben. $\Ra$ um die Knoten neu zu f"arben Rotation auszufuehren.
+\end{itemize}
+\begin{codebox}
+\Procname{$\proc{RB-Insert}(T,z)$}
+\li $y \la nil[T]$
+\li $x \la wurzel[T]$
+\li \While $x \ne nil[T]$
+\li 	\Do $y \la x$
+\li 		\If $schl"ussel[z] < schl"ussel[x]$
+\li 			\Then $x \la links[x]$
+\li 			\Else $x \la rechts[x]$
+				\End
+			\End
+		\End
+	\End
+\li $p[z] \la y$
+\li \If $y = nul[T]$
+\li 	\Then $wurzel[T] \la z$
+\li 	\ElseIf $schl"ussel[z] < schl"ussel[y]$
+\li 		\Then $links[y] \la z$
+\li 		\Else $rechts[y] \la z$
+			\End
+		\End
+	\End
+\li $links[z] \la nil[T]$
+\li $rechts[z] \la nil[T]$
+\li $farbe[z] \la ROT$
+\li $\proc{RB-Insert-Fixup}(T,z)$
+\end{codebox}
+Es gibt vier Unterschiede zwischen $\proc{Tree-Insert}$ und $\proc{RB-Insert}$
+\begin{enumerate}
+\item alle Instanzen von NIL in $\proc{Tree-Insert}$ werden durch $nil[T]$ ersetzt
+\item wir setzen $links[z]$ und $rechts[z]$ (Zeilen 14,15 $\proc{RB-Insert}$) auf $nil[T]$ um die korrekte Baumstruktur aufrecht zu erhalten.
+\item wir f"arben z rot (in Zeile 16 von $\proc{RB-Insert}$) 
+\item wegen einer m"ogliche Verletzung der Rot-Schwarz-Eigenschaft durch Schritt 3 rufen wir $\proc{Rb-Insert-Fixup}(T,z)$ auf, um die RS-Eigenschaften wieder herzustellen.
+\end{enumerate}
+\begin{codebox}
+\Procname{$\proc{RB-Insert-Fixup}(T,z)$}
+\li \While $farbe[p[z]] = \const{rot}$
+\li 	\Do \If $p[z]=links[p[p[z]]]$
+\li 		\Then $y \la rechts[p[p[z]]$
+\li 			\If $farbe[y] = \const{rot}$
+\li 				\Then $farbe[p[z]] \la \const{schwarz}$ \RComment FALL1
+\li 				$farbe[y] \la \const{schwarz}$ \RComment FALL1
+\li 				$farbe[p[p[z]]] \la \const{rot}$ \RComment FALL1
+\li 				$z \la p[p[z]]$ \RComment FALL1
+\li 			\ElseIf $z = recht[p[z]]$
+\li 				\Then $z \la p[z]$ \RComment FALL2
+\li 					$\proc{Left-Rotate}(T,z)$ \RComment FALL2
+						\End
+\li 				$farbe[p[z]] \la \const{schwarz}$ \RComment FALL3
+\li 				$farbe[p[p[z]]]\la \const{rot}$ \RComment FALL3
+\li 				$\proc{Right-Rotate}(T,p[p[z]])$ \RComment FALL3
+					\End
+				\End
+			\End
+\li \Else (wie then-Zweig mit ``rechts"\  und ``links"\ vertauscht)
+		\End
+	\End
+\li $farbe[wurzel[T]]\la \const{schwarz}$
+\end{codebox}
+%% muss man irgendwie noch gruppieren
+\begin{figure}[htb]
+	\centering
+	$\begin{xy}
+		\entrymodifiers={}
+		\input xy
+		\xymatrixcolsep{1pc}
+		\xymatrixrowsep{1pc}
+\text{(a)}
+		\xymatrix {
+& & & & & & & &*++[o][F-]{11}\ar@{-}[rrrrrd]\ar@{-}[llllld]& & & \\
+& & &*++[o][F=]{2} \ar@{-}[rrrd]\ar@{-}[llld]& & & & & & & & & &*++[o][F-]{14} \ar@{-}[rd]& \\
+*++[o][F-]{1}& & & & & &*++[o][F-]{7} \ar@{-}[rd] \ar@{-}[ld]& & & & & & & & *++[o][F=]{15} \\
+& & & & &*++[o][F=]{5}\ar@{-}[ld]& &*++[o][F=]{8}& \ar@{.>}[l]^{y} & & & & & & \\
+& & & \ar@{.>}[r]^{z}&*++[o][F=]{4}& & & & & & & & & &\\
+		}
+	\end{xy}$
+		\caption{13.4 (a)}
+	\label{Abbildung 13.4 (a)}
+
+\end{figure}
+\begin{figure}[htb]
+	\centering
+	$\begin{xy}
+		\entrymodifiers={}
+		\input xy
+		\xymatrixcolsep{1pc}
+		\xymatrixrowsep{1pc}
+	\text{(b)}
+		\xymatrix {
+& & & & & & & &*++[o][F-]{11}\ar@{-}[rrrrrd]\ar@{-}[llllld]& & & \\
+& & &*++[o][F=]{ 2 } \ar@{-}[rrrd]\ar@{-}[llld]& & & & & & & & & &*++[o][F-]{14} \ar@{-}[rd]&\ar@{.>}[l]^{y}\\
+*++[o][F-]{1}& & & & & & *++[o][F=]{7} \ar@{-}[rd] \ar@{-}[ld]& \ar@{.>}[l]^{z} & & & & & & & *++[o][F=]{15} \\
+& & & & &*++[o][F-]{5} \ar@{-}[ld]& &*++[o][F-]{8}& & & & \\
+& & & &*++[o][F=]{4}& & & & & & &\\
+		}
+	\end{xy}$
+		\caption{13.4 (b)}
+	\label{Abbildung 13.4 (b)}
+
+\end{figure}
+\begin{figure}[htb]
+	\centering
+	$\begin{xy}
+		\entrymodifiers={}
+		\input xy
+		\xymatrixcolsep{1pc}
+		\xymatrixrowsep{1pc}
+		\text{(c)}
+		\xymatrix {
+& & & & & & & &*++[o][F-:red]{11}\ar@{-}[rrrrrd]\ar@{-}[llllld]& & & \\
+& & &*++[o][F=]{7} \ar@{-}[rrrd]\ar@{-}[lld]& & & & & & & & & &*++[o][F-]{14} \ar@{-}[rd]&\ar@{.>}[l]^{y} \\
+ \ar@{.>}[r]^{z}&*++[o][F=]{2} \ar@{-}[ld]\ar@{-}[rrd]& & & & &*++[o][F-]{8}& & & & & & & & *++[o][F=]{15} \\
+*++[o][F-]{1}& & &*++[o][F-]{5}\ar@{-}[ld]& & & & & & & & & & & \\
+& &*++[o][F=]{4}\\
+		}
+	\end{xy}$
+		\caption{13.4 (c)}
+	\label{Abbildung 13.4 (c)}
+
+\end{figure}
+\begin{figure}[htb]
+	\centering
+	$\begin{xy}
+		\entrymodifiers={}
+		\input xy
+		\xymatrixcolsep{1pc}
+		\xymatrixrowsep{1pc}
+		\text{(d)}
+		\xymatrix {
+& & & &*++[o][F-]{7}\ar@{-}[rrrd]\ar@{-}[llld]\\
+ \ar@{.>}[r]^{z}&*++[o][F=]{2} \ar@{-}[rrd]\ar@{-}[ld]& & & & & & *++[o][F=]{11} \ar@{-}[rd]\ar@{-}[ld]& \\
+*++[o][F-]{1}& & & *++[o][F-]{5}\ar@{-}[ld]  && &*++[o][F-]{8}&  & *++[o][F-]{14}\ar@{-}[rd] \\
+& &*++[o][F=]{4} & & & & && & *++[o][F=]{15} \\
+		}
+	\end{xy}$
+		\caption{13.4 (d)}
+	\label{Abbildung 13.4 (d)}
+
+\end{figure}
+
+
+\begin{itemize}
+\item[(a)] da z und sein Vater p[z] beide rot sind erfolgt eine Verletzung der Eigenschaft 4. Da der Onkel y von Z rot ist, kann Fall 1 des Codes angewendet werden. Die Knoten werden neu gef"arbt und der Zeiger z wird im Baum nach oben bewegt, wodurch der in (b) gezeigte Baum entsteht.
+\item[(b)] wieder sind z sein Vater p[z] beide rot, aber z's Onkel y ist schwarz. Da z das rechte Kind von p[z] ist kann Fall 2 angewendet werden.
+Eine LinksRotation wird durchgefuehrt und der dadurch entstandene Baum wird in (c) gezeigt.
+\item[(c)] Nun ist z das linke Kind seines Vaters und Fall 3 kann angewendet werden. 
+\item[(d)] Eine Rechtsrotation fuehrt zu dem Baum gezeigt in (d), welches ein korrekter Baum ist.
+\end{itemize}
+Welche rot-schwarz Eigenschaften koennen durch den Aufruf von $\proc{RB-Insert-Fixup}$ verletzt sein?
+
+Eigentschaft 1 und 3 gelten mit Sicherheit weiterhin, denn beide Kinder des neu eingefaerbten roten Knotens sind der Waechter nil[T].
+Eigenschaft 5 ist erfuellt, weil der Knoten z den (schwarzen) Waechter ersetzt und Knoten z rot ist mit Waechter-Kindern. \\
+Also koennen nur die Eigenschaften 2 (Wurzel ist schwarz $\ra$ falls z die Wurzel ist) ) und 4 (keine roten Kinder fuer rot Vater $\ra$ falls der Vater von z rot ist) verletzt sein.
+Eigenschaft 2 ist Verletzt, wenn z die Wurzel ist, Eigenschaft 4 wenn z's Vater rot ist.\\
+
+Die while-Schleife (Zeilen 1 - 15) enth"alt die folgende dreiteilige Schleifeninvariante:\\
+Zu Beginn jeder Iteration der Schleife gilt:
+\begin{itemize}
+\item[a.] Knoten z ist rot.
+\item[b.] falls p[z] die wurzel ist, dann ist p[z] schwarz.
+\item[c.] falls es eine Verletzung der rot-schwarz Eigenschaften gibt, so gibt es hoechstens eine solche Verletzung. Entweder von Eig. 2 oder von Eig. 4. Wenn Eig. 2 verletzt wird, dann weil z die Wurzel ist und weil z rot ist. Eine Verletztung der Eigenschaft 4 tritt auf, wenn z und p[z] beide rot sind. 
+\end{itemize}
+
+
+\subsubsection*{Initialisierung: }
+rot-schwarz-Baum ohne Verletzungen und roter Knoten z hinzugefuegt. 
+Wir zeigen, dass zu dem Zeitpunkt zu dem $\proc{RB-Insert-Fixup}$ angerufen wird, jeder Teil der Schleifeninvariante gilt:
+\begin{itemize}
+\item[a)] Wenn $\proc{RB-Insert-Fixup}$ aufgerufen wird ist z der rote Knoten der hinzugefuegt wurde.
+\item[b)] wenn p[z] die Wurzel ist war p[z] anfangs schwarz und seine Farbe hat sich vor dem Aufruf von $\proc{RB-Insert-Fixup}$ nicht geaendert.
+\item[c)] Wir haben schon gesehen, dass die Eigenschaften 1,3 und 5 gelten.\\
+	Wenn es eine Verletzung der Eig. 2 gibt, dann muss die rote Wurzel der neu hinzugef"ugte Knoten z sein, welches der einzige innere Knoten des Baumes ist. Da der Vater und beide Kinder von z der (schwarze) Waechter sind gibt es nicht auch noch eine Verletzung der Eigenschaft 4. \\ $\Ra$ die Verletzung der Eigenschaft 2 ist die einzige Verletzung der rot-schwarz Eigenschaften. \\
+Wenn es eine Verletzung der Eigenschaft 4 gibt, dann weil  die Kinder des Knoten der schwarze Waechter sind und der Baum vor dem hinzuf"ugen von z, keine andere Verletzungen hatte. Die Verletzung muss daher ruehren, dass z und p[z] rot sind. Weiterhin gibt es keine Verletzungen der rot-schwarz Eigenschaften.
+\end{itemize}
+\subsection*{Terminierung: }
+%%LOL das lass ich mal so im original... :) calmet rulez
+keine moegliche Verletzung der 4. (weil p[z] schwarz ist )\\
+Die einzige Verletzung ist fuer 2.\\
+aber zeilen 16 $\Ra$ alles ist gut.\\
+%%LOL
+\subsection*{Fortsetzung: }
+Es existieren 6 Faelle die zu beachten sind. 
+3 davon sind zu den anderen symmetrisch. (links rechtsch)
+
+je nachdem, ob z's Vater p[z] ein linkes oder rechtes Kind von z's Grossvater p[p[z]] ist.
+Fall 1 unterscheidet sich von Faellen 2 und 3 durch die Farbe, die der Bruder von z's Vater ( Onkel) hat. Zeile 3 sorgt dafuer, dass y auf z's Onkel rechts[p[p[z]]] zeigt. in zeile 4 wird die Farbe getestet. Falls y rot ist wird Fall 1 ausgefuehrt.
+Anderenfalls sind die Faelle 2 und 3 auszufueheren. In allen drei Faellen ist der Grossvater p[p[z]] von z schwarz da p[z] rot ist. und eigenschaft 4 nur zwischen z und p[z] verletzt ist. 
+
+
+\fixme{Beispiel page 285 fig 13.5}
+Fall 1: z's Onkel ist rot.
+Fall 2: z ist ein rechtes Kind
+Fall 3: z's Onkel ist schwarz und z ist ein linkes Kind.
+
+\fixme{3. bild (Fa"lle 2 und 3 der RB-Insert) page 286 fig 13.6}
+
+% Vorlesung vom Mo. 08. Juni 2005 (Lars Volker)
+
+\lectureof{08.06.2005}
+
+\section{Dynamisches Programmieren}
+\subsection{Optimierungsproblem:} Zu einem Problem gibt es viele Lösungen, gesucht ist eine optimale (maximal, minimal) Lösung.
+\paragraph{Beispiel:} Labyrinth\\
+Es gibt viele mögliche Wege zum Ausgang, gesucht ist der kürzeste.
+\paragraph{Lösung:} Vollständige Suche (Tiefensuche, Breitensuche).\\
+Oft kann man Optimierungsprobleme mit der Methode der dynamischen Programmierung effizienter lösen. Entwicklung eines dynamischen Programms in vier Schritten (nach Cormen):
+\begin{enumerate}
+\item Charakterisiere die Struktur einer optimalen Lösung.
+\item Definiere den Wert einer optimalen Lösung rekursiv.
+\item Berechne den Wert \glqq bottom-up\grqq .
+\item Verwendung von Zwischenergebnissen.
+\end{enumerate}
+\subsection{Beispiel:}\ \\
+Gegeben: Matrizen $A_1,\ldots,A_n$ passend\\
+Gesucht: $A_{1\ldots n} := A_1 \ast \ldots \ast A_n$
+Optimierung: Möglichst wenig skalare Multiplikationen
+Beispiel: $A_1$ mit Format $10\times 100$, $A_2$ mit Format $100\times 5$ und $A_3$ mit Format $5\times 50$.
+$(A_1 \ast A_2)\ast A_3$ benötigt 7500 Multiplikationen
+$A_1 \ast (A_2 \ast A_3)$ benötigt 75000 Multiplikationen
+\subsubsection{Aufstellen eines Baumes:}
+Idee: Nummeriere die Operatoren, bilde Mengen, z.B. bedeutet $\{i_1, i_2\}$, dass die Operationen $i_1$ und $i_2$ ausgeführt werden.
+Beispiel: $A_1\ldots A_4$
+\begin{center}
+$\begin{xy}
+		%\entrymodifiers={++[o][F-]}
+		\xymatrix @R=10pt @C=50pt {
+	  	*{} & *{} & \{1,2\} \ar@{-}[rdddd]& *{}\\ 
+	  	*{} & \{1\} \ar@{-}[ru]\ar@{-}[rd]& *{} & *{} \\ 
+	  	*{} & *{} & \{1,3\} \ar@{-}[rdd]& *{} \\
+	  	*{} & *{} & \{1,2\} \ar@{-}[rd]& *{} \\
+	  	\{\} \ar@{-}[ruuu]\ar@{-}[r]\ar@{-}[rddd]& \{2\} \ar@{-}[ru]\ar@{-}[rd]& *{} & \{1,2,3\} \\
+	  	*{} & *{} & \{2,3\} \ar@{-}[ru]& *{} \\
+	  	*{} & *{} & \{1,3\} \ar@{-}[ruu]& *{} \\
+	  	*{} & \{3\} \ar@{-}[ru]\ar@{-}[rd]& *{} & *{} \\	  	
+	  	*{} & *{} & \{2,3\} \ar@{-}[ruuuu]& *{} \\	  	
+		}
+\end{xy}$
+\end{center}
+
+Dieser Baum wird in einen sog. \emph{Trellis (Tree-like-structure)} überführt:\\
+(trellis: englisch fuer Gitter, Rankgitter)\\
+%\begin{figure}
+%\centering
+$\begin{xy}
+		%\entrymodifiers={++[o][F-]}
+		\xymatrix @R=10pt @C=50pt {
+	  	*{} & \{1\} \ar@{-}[r]\ar@{-}[rdd]& \{1,2\}\ar@{-}[rd] & *{} \\ 
+	  	\{\} \ar@{-}[ru]\ar@{-}[r]\ar@{-}[rd]& \{2\} \ar@{-}[ru]\ar@{-}[r]& \{2,3\}\ar@{-}[r] & \{1,2,3\} \\
+	  	*{} & \{3\} \ar@{-}[r]\ar@{-}[ru]& \{1,3\}\ar@{-}[ru] & *{} \\	  	
+		}
+\end{xy}$
+%\end{figure}
+
+Es gibt hier zwei Möglichkeiten, um z.B. zum Knoten $\{1,2\}$ zu kommen:
+\begin{enumerate}
+\item Mit Kosten von $\{1\}$
+\item Mit Kosten von $\{2\}$
+\end{enumerate}
+Wähle die bessere!
+\paragraph{Situation} \fixme{Hier war ein Bild, aber ich kanns nicht entziffern!}\\
+Für die optimale Lösung ist nur der Pfad mit den geringsten Kosten interessant. Die anderen Pfade werden verworfen. Eine optimale Lösung muss einen optimalen Anfang haben.
+\subsubsection{Algorithmus:}
+Es ist nicht nötig, den Trellis aufzustellen. Es genügt jeweils eine Ebene, falls zu jedem Knoten alle Vorgänger und alle Nachfolger berechnet werden können.
+\paragraph{Konkret:}
+\begin{itemize}
+\item Vorgänger von $\{i_1,\ldots ,i_k\}$\\
+Alle Teilmengen mit $1$ Element weniger
+\item Nachfolger von $\{i_1,\ldots ,i_k\}$\\
+Alle Teilmengen $N$ von $\{1,\ldots ,n\}$ mit $i_1,\ldots ,i_k\in N$ und $|N|=k+1$
+\end{itemize}
+
+\subsection{Beispiel 2:} 
+Fehlerkorrigierende Codes:
+\paragraph{Begriffe:}
+\begin{itemize}
+\item \em{Informationswort}\\
+$(i_0,\ldots,i_k)\in \mathbb{F}_2^k$
+\item \em{Darstellung als Polynom}\\
+$i(x)=\sum_{j=0}^k i_k x^j$
+\item \em{Generatorpolynom}\\
+$g(x)=\sum_{j=0}^{n-k} g_j x^j$
+\item \em{Codewort als Polynom}\\
+$c(x)=i(x) g(x) := \sum_{j=0}^n c_j x^j$\\
+$c=(c_1,\ldots,c_n) \in \mathbb{F}_2^n$
+\end{itemize}
+
+\subsubsection{Kanalmodell: }
+Codewort $c\in \mathbb{F}_2^n$ $\rightarrow$ moduliertes Codewort $m\in \MdR^n$ $\rightarrow$ Empfangswort $y\in \MdR^n$ mit $y = e + m$, Fehler $e \in \MdR^n$\\
+\paragraph{Fragen:} Wie komme ich zurück zu $0,1$? Welches Codewort passt am besten zu $y$?\\
+$c\rightarrow m$, $0 \mapsto 1 \in \MdR$, $1 \mapsto -1 \in \MdR$\\
+Wie suche ich ein passendes Codewort?
+\subsubsection{Beispiel:} 
+$i=(0,1)$, $i(x)=x$, $g(x)=x+1$, $c(x)=g(x) i(x) = x^2 + x$ $\folgt$ $c=(0,1,1)$, $m=(1,-1,-1)$\\
+$00 \mapsto (0,0,0)$\\
+$01 \mapsto (0,1,1)$\\
+$10 \mapsto (1,1,0)$\\
+$11 \mapsto (1,0,1)$\\
+Trellis:
+\begin{center}
+$\begin{xy}
+		\entrymodifiers={++[o][F-]}
+		\xymatrix @R=30pt @C=50pt {
+	  	*{} & {}\ar@{-}[r]^0\ar@{-}[rd]_1& {}\ar@{-}[rd]^1 & *{} \\ 
+	  	{}\ar@{-}[ru]^1\ar@{-}[r]_0 & {}\ar@{-}[ru]^1\ar@{-}[r]_0& {}\ar@{-}[r]_0 & {}	  	
+		}
+\end{xy}$
+\end{center}
+\subsubsection{Aufwandsanalyse:}
+Paritätscode: $k+1$-Bits\\
+Es gibt $2^{k+1}$ Codeworte, $n=k+1$. Der Aufwand für das Durchsuchen ist im Trellis $(n+2)2)$.
+\fixme{Hat jemand das mit dem Reed Solomon Code verstanden??}
+
+%ende Lars
+
+\lectureof{13.06.05}
+\section{Vorbestimmung und Vorberechnung}
+(vergleiche: AlgotechSkript Calmet 99/00, Kapitel 5)
+\subsection{Vorbestimmung}
+\subsubsection*{Einfuehrung}
+Sei $I$:Menge von Instanzen eines gegebenen Problems. Angenommmen $i \in I$ kann in zwei Komponenten $j \in J$ und $k \in K$ aufgeteilt werden, d.h.: $I \subseteq J \times K$.\\
+Ein ``Vorbestimmungsalgorithmus"\ (fuer dieses Problem) ist ein Algorithmus $\proc{A}$ der irgendein Element $j\in J$ als Eingabe akzeptiert und einen neuen Algorithmus $\proc{B}_j$ als Ausgabe liefert. \\
+
+$\proc{B}_j$ gen"ugt also folgender Bedingung:\\ 
+$k\in K$ und $<j,k>\in I$ $\Ra$ Anwendung von $B_j$ auf k liefert die L"osung zu $<j,k>$ (Originalproblem)\\
+
+\subsubsection*{Beispiel:}
+
+J: Menge von Grammatiken f"ur eine Familie von Programmiersprachen. (z.B.: Grammatiken in Backus-Naur-Form fuer Sprachen wie Algol, Pascal, Simula,\dots) \\
+K: Menge von Programmen \\
+
+Algemeines Problem: Ist ein gegebenes Programm bez"uglich einer Sprache syntaktisch korrekt? In diesem Fall ist I die Menge von Instanzen des Typs\\
+\begin{center}
+	 ``Ist $k \in K$ ein g"ultiges Programm in der Sprache, die durch die Grammatik $j \in J$ definiert ist?"\\
+\end{center}
+Ein M"oglicher Vorbestimmungsalgorithmus ist ein Compiler-Generator:\\
+Angewendet auf die Grammatik $j \in J$ generiert er einen Compiler $\proc{B}_j$. Danach um festzustellen, ob $k\in K$ ein Programm in der Sprache $J$ ist, wenden wir einfach den Compiler $\proc{B}_j$ auf $k$ an.\\
+Es seien 
+\begin{eqnarray*}
+  a(j)   & = & \text{Zeit, um }\proc{B}_j\text{ zu produzieren.}\\
+  b_j(k)   & = & \text{Zeit, um }\proc{B}_j\text{ auf k anzuwenden.}\\
+  t(j,k) & = & \text{Zeit, um }<j,k>\text{ direkt zu loesen.}
+\end{eqnarray*}
+Normalerweise gilt:
+	$$b_j(k)\le t(j,k) \le a(j)+b_j(k).$$
+Vorbestimmung ist Zeitverschwendung wenn $$b_j(k) > t(j,k).$$
+
+Vorbestimmung kann in zwei Situationen sinnvoll sein:
+\begin{itemize}
+\item[(a)] Man muss $i\in I$ sehr schnell l"osen. (schnelle Antwort in Echtzeitanwendungen, wo es manchmal unpraktisch alle $\#I$ L"osungen zu den relevanten Instanzen im voraus zu berechnen und zu speichern. $\#J$ Algorithmen vorzubestimmen koennte jedoch von Vorteil sein. Z.B.: 
+	\begin{itemize}
+		\item[(i)] Einen laufenden Kern-Reaktor zu stoppen.
+		\item[(ii)] Die von einem Studenten verbrauchte Zeit zur Vorbereitung einer Pr"ufung.	
+	\end{itemize}
+\item[(b)] Wir m"ussen eine Reihe von Instanzen $<j,k_1>,<j,k_2>,\dots,<j,k_n>$ mit gleichem $j$ l"osen.\\
+	Ohne Vorbestimmung: $t_1=\sum_{i=1}^{n}t(j,k_i)$. \\
+	Mit Vorbestimmung: $t_2=a(j)+\sum_{i=1}^{n}b_j(k_i)$ \\
+	Wenn $n$ gross genug ist, dann ist $t_2$ oft viel kleiner als $t_1$.
+\end{itemize}
+\subsubsection*{Beispiel:}
+ $J$: Menge von Schl"usselw"ortermengen\\
+ $J=\{\{if,then,else,endif\},\{for,to,by\},\dots,\}$\\
+ $K$: Menge von Schl"usselw"ortern\\
+ $K=\{begin,function,\dots\}$
+Wir m"ussen eine grosse Anzahl von Instanzen des folgenden Typs l"osen:
+\begin{center}
+	``Geh"ort das Schl"usselwort $k\in K$ der Menge $j\in J$ an?"
+\end{center}
+
+Wenn wir jede Instanz direkt l"osen, kommen wir auf $t(j,k)\in \Theta(n_j)$, wobei $n_j$ die Anzahl der Elemente in der Menge $j$ ist.
+
+Idee: zuna"chst $j$ Sortieren ($\Theta(n_jlog(n_j)$) (Vorbestimmung) dann koennen bin"aren Suchalgorithmus benutzen. $\Ra$
+\begin{eqnarray*}
+	 a(j)  &\in& \Theta(n_j log(n_j))  \text(Sortieren)\\
+	 b_j(k)&\in& \Theta(log(n_j))      \text(Suchen) \\
+\end{eqnarray*}
+Muss oft in der gleichen Menge(Instanz) gesucht werden, so ist das vorherige Sortieren gar nicht so dumm.
+
+\subsubsection*{Vorg"anger in einem Wurzelbaum}	
+
+$J$: Menge aller B"aume\\
+$K$: Menge von Knotenpaaren (Kanten) $<v,w>$\\
+
+F"ur ein gegebenes Paar $k=<v,w>$ und einm gegebenen Baum $j$ m"ochten wir feststellen, ob Knoten $v$ der Vorg"anger von $w$ im Baum $j$ ist. (Per def.: Jeder Knoten ist sein eigener Vorg"anger)\\
+Direkte L"osung dieser Instanz (schlimmster Fall): $\Omega(n)$. ($j$ besteht aus n Knoten)\\ 
+
+Es ist immer m"oglich, Vorbestimmung f"ur $j$ in Zeit $\Theta(n)$ durchzuf"uhren, so dass wir eine bestimmte Instanz des Problems bez"uglich $j$ in $\Theta(1)$ l"osen k"onnen.\\
+
+\fixme{Beispielbaum mit 13 Knoten mit preorder(links) und postorder(rechts) nummerierung...}\\
+
+Vorbestimmung: \\
+ Pre-Order-Traversierung und Post-Order-Traversierung. Dabei nummerieren wir die Knoten wie sie durchlaufen werden. F"ur Knoten $v$ sei $prenum[v]$ und $postnum[v]$ die ihm zugeordneten Nummern. 
+\begin{itemize}
+	\item Bei der Pre-Order-Traversierung nummerieren wir zun"achst einen Knoten und dann die Teilb"aume von links nach rechts. 
+	\item Bei der Post-Order-Traversierung nummerieren wir die Teilb"aume eines Knotens von links nach rechts und danach den Knoten.
+\end{itemize}
+ Es gilt: 
+ $$prenum[v]\le prenum[w] \Gdw v \text{ ist ein Vorg"anger von } w \textbf{ oder } v \text{ ist links von } w$$
+ $$postnum[v]\ge postnum[w] \Gdw v \text{ ist ein Vorg"anger von } w \textbf{ oder } v \text{ ist rechts von } w$$
+ Und somit:
+ $$prenum[v]\le prenum[w] \textbf{ und } postnum[v]\ge postnum[w] \Gdw v \text{ ist ein Vorg"anger von } w.$$
+ Wurde der Baum so in $\Theta(n)$ vorbereitet, so kann die Bedingung in $\Theta(1)$ gepru"ft  werden.
+ 
+\subsubsection*{Wiederholte Auswertung eines Polynoms}
+
+$J$: Menge der Polynome (in einer Variablen $x$)\\
+$K$: Wertemenge von $x$\\
+
+Problem: Auswertung\\
+
+Bedingungen: 
+\begin{itemize}
+\item[1)] ganzzahliger Koeffizient
+\item[2)] normierte Polynome (f"uhrender Koeffizient = 1; ``monic")
+\item[3)] Grad $n=2^k-1, k \in \MdN$
+\end{itemize}
+
+Wir messen die Effizienz der verschiedenen Methoden an der Anzahl von Multiplikationen (Anzahl der Additionen nur zweitrangig)\\
+
+\textbf{Beispiel:} $p(x)=x^7-5x^6+4x^5-13x^4+3x^3-10x^2+5x-17$
+
+Naive Methode: Berechne zunaechst die Reihe von Werten $x^2,x^3,\dots,x^7$, damit $5x,-10x^2,\dots$, und dann $p(x)$.
+
+$\Ra$ 12 Multiplikationen und 7 Additionen.
+
+leichte Verbesserung: $$p(x)=((((((x-5)x+4)x-13)x+3)x-10)x+5)x-17$$	
+
+$\Ra$ 6 Multiplikationen und 7 Additionen.\\
+
+Noch besser: 
+$$p(x)=(x^4+2)[(x^2+3)(x-5)+(x+2)]+[(x^2-4)x+(x+9))]$$
+$\Ra$ 5 Multiplikationen (2 zur Berechnung von $x^2$ und $x^4$) und 9 Additionen.\\
+
+Wie:\\
+$p(x)$ ist nach Vorrausetzung ein normiertes Polynom vom Grad $n=2^k-1$. Also koennen wir $p(x)$ so ausdr"ucken:
+	$$p(x)=(x^{\frac{n+1}{2}}+a)q(x)+r(x)$$
+wobei $a$:konst.; $q(x)$ und $r(x)$ normierte Polyome vom Grad $2^{k-1}-1$\\
+Nun wird $p(x)$ als Polynom der Form ($x^i+c$), wobei $i$ eine 2-er Potenz ist, ausgedr"uckt:
+$$p(x)=(x^4+a)(x^3+q_2\cdot x^2+q_1\cdot x+q_0)+(x^3+r_2\cdot x^2+r_1\cdot x+r_0)$$
+Koeffizientenvergleich:
+$$q_2=-5, q_1=4,q_0=-13,a=2,r_2=0,r_1=-3,r_0=9$$\\
+$$\Ra p(x)=(x^4+2)(x^3-5x^2+4x-13)+(x^3-3x+9)$$
+"Ahnlich: $x^3-5x^2+4\cdot x-13=(x^2+3)(x-5)+(x-2)$. Daraus erh"alt man das im Beispiel gegebene Ergebnis.
+(Diese Methode wurde von Belaga (im ``Problemi Kibernitiki", vol 5, pp 7 -- 15, 1961) vorgeschlagen.
+
+\subsection{Vorberechnung f"ur Zeichenreihe-Suchprobleme}
+\subsubsection*{Problem:}	
+ $S=s_1 s_2 \dots s_n$ Zeichenreihe aus $n$ Zeichen. (haystack, text)
+ $P=p_1 p_2 \dots p_m$ Zeichenreihe aus $m$ Zeichen. (needle, pattern)
+ ``Ist P eine Teilzeichenreihe von S?"\ und ``Wo in S kommt P vor?"\\
+ OBdA: $n \ge m$\\
+ \subsubsection*{Naiver Algorithmus:}
+ Liefert r, falls das erste Vorkommen von P in S in der Position r beginnt. (r ist die kleinste ganze Zahl, so dass $s_{r+i-1}=p_i, i=1,2,\dots,m$ gilt) Und 0 falls P keine Teilzeichenreihe von S ist.
+ 
+ \begin{codebox}
+ \Procname{$\proc{..}$}
+ \li \For $i \la 0$ \To $n-m$ 
+ \li \Do
+ \li $ok \la \const{true}$
+ \li $j \la 1$
+ \li \While $ok \And j \le m$ 
+ \li 	\Do \If $p[j] \ne s[i+j]$ 
+ \li 		$ok \la \const{false}$
+ \li	\Else $j\la j+1$
+ 		\End
+ 	\End
+ \li \If $ok$ \Return $i+1$
+ \End
+ \li \Return $0$
+ \end{codebox}
+ %% ARGH ich hasse Cormen-Pseudocode!
+ Jede Position in S wird gepr"uft. Worst-Case: $\Omega(m(n-m))\Ra\Omega(nm)$, falls n viel gr"osser als m ist.\\
+ Es ist eine bessere Ausf"uhrung m"oglich, indem man verschiedene Methoden anwendet.
+ \subsubsection*{Signaturen}
+ Sei $S=S_1,S_2,\dots,S_n$ in  Teilzeichenreihen zerlegt und falls $P$ in $S$ vorkommt muss $P$ vollstaendig in einer der Teilzeichenreihen $S_l, 1 \le l \le n$ vorkommen. (z.b.: Zerlegung einer Textdatei in Zeilen)
+ Grundidee: eine Boolesche Funktion T(P,S) benutzen. (sehr schnell berechnet)
+ $T(P,S_i)=false \Ra P \not\in S_i.$
+ Sonst: $P \in S_i$ m"oglich. (dann naiver Algorithmus...)
+ 
+ Mit Signaturen findet man ein einfaches Verfahren zur Implementation eines solchen Algorithmus.\\
+ Angenommen:
+ \begin{itemize}
+ \item[1)] P ist {a,b,c,..,y,z,other} (``other" : nicht-alphabetische Zeichen).
+ \item[2)] 32 Bit Rechner.
+ \end{itemize}
+ Eine m"ogliche Definition einer Signatur:
+ \subsubsection*{Definiton ``Signatur":} 
+ \begin{itemize}
+ 	\item[(i)] Definiere val(``a")=0, val(``b")=1,\dots, val(``z")=25, val(``other")=26
+ 	\item[(ii)] Falls $c_1$ und $c_2$ Zeichen sind, definiere: 
+ 			$$B(c1,c2)=(27\text{val}(c1)+\text{val}(c2)) \mod 32$$
+    \item[(iii)] Definiere die Signaturen sig($C$) einer Zeichenreihe  $C=c_1 c_2 \dots c_r$ als ein 32-Bit-Wort, wobeit die Bits mit den Nummern $B(c_1,c_2),B(c_2,c_3),\dots,B(c_{r-1},c_r)$ auf 1 und sonst auf 0 gesetzt sind.
+ \end{itemize}
+\subsubsection*{Beispiel:}
+ $C=``computers"$\\
+        $$B(``c",``o")=(27\times 2 + 14) mod 32 = 4$$
+        $$B(``o",``m")=(27\times 14+ 12) mod 32 = 6$$
+        \dots
+        $$B(``r",``s")=(27\times 17+ 18) mod 32 = 29$$
+        
+        Wenn die Bit des Wortes von links nach rechts mit 0 bis 31 nummeriert werden, ist die Signatur dieser Zeichenreihe
+        \begin{center} $sig(C) =$ 0000 1110 0100 0001 0001 0000 0000 0100 \end{center}
+ 		Nur 7 Bits sind auf 1 gesetzt, da $B(``e",``r")=B(``r",``s")=29$ ist.\\
+ 		Wir berechnen jedes $sig(S_i)$, sowie $sig(P)$. Wenn $P\in S_i$ dann sind alle Bit die in der Signatur von P 1 sind, auch in der Signatur $S_i$ auf 1 gesetzt.\\
+ 		$$T(P,S_i)=[sig(P)\textbf{ and }sig(S_i)=sig(P)]$$
+ 		(and:  bitweise Konjunktion von zwei ganzen W"ortern.)\\
+ 		Berechnung der Signaturen in $O(n)$. F"ur Muster P brauchen wir $O(m)$. T(P,S) geht fix.
+
+%Vorlesung vom 20.06.2005 Felix Brandt
+\section{Vorberechnung für Zeichenreihen-Suchprobleme}
+\lectureof{20.06.2005}
+
+\subsection{Algorithmus von Knuth-Morris-Pratt}
+\paragraph{Gegeben:}
+\begin{itemize}
+	\item lange Zeichenkette $S$ (Text), Zeichen $1,\ldots,n$
+	\item kurze Zeichenkette $P$ (Suchwort), Zeichen $1,\ldots,m$
+\end{itemize}
+\paragraph{Gesucht:}
+\begin{itemize}
+	\item Finde die erste Position $i$, so dass
+		$$S[i+j] = P[j],\ j=1,\ldots,m$$
+		Also das erste Vorkommen von $P$ in $S$.
+\end{itemize}
+
+\paragraph{Naive Methode}
+
+\begin{codebox}
+\Procname{$\proc{NaiveAlgorithm}(S,P)$}
+\li $n \gets length(S)$
+\li $m \gets length(P)$
+\li $i \gets 0$
+\li	$j \gets 1$
+\li	\While $j \leq m$ und $i \leq n-m$
+\li	\Do \If $P[j]=S[i+j]$
+\li			\Then $j \gets j+1$
+\li			\Else $j \gets 1$
+\li						$i \gets i + 1$
+				\End
+		\End
+\zi \{ $j$ Zeichen stimmten überein \}
+\li	\If $j > m$
+\li			\Then \Return $i + 1$
+		\End
+\zi \{ Suchwort nicht gefunden \}
+\li	\Return -1
+\end{codebox}
+
+Der Algorithmus vergleicht $P$ also zeichenweise mit $S$ und verschiebt $P$ um eins nach hinten, sobald ein Fehler auftritt.
+Kann auf diese Weise $P$ komplett in $S$ gefunden werden bricht der Algorithmus mit Erfolg ab (Startposition $i$ von $P$ in $S$,
+$i \geq 1$). Ansonsten läuft er $S$ komplett durch und endet mit einem Fehler ($-1$).
+
+$$\begin{array}{ccccccccccccc}
+	S & = & A & B & R & A & K & A & D & A & B & R & A \\
+  P & = & \textbf{A} & K & A \\
+	  &   &   & A & K & A \\
+	  &   &	  &   & A & K & A \\
+	  &	  &   &	  &   & \textbf{A} & \textbf{K} & \textbf{A} \\
+\end{array}$$
+
+\paragraph{Aufwand im Worst-Case}
+
+Das Wort $P$ steht nicht in $S$ und passt (fast) immer bis auf das letzte Zeichen $\folgt \Theta(n \cdot m)$.\\
+$\folgt$ Versuche den Aufwand durch Vorberechnung zu reduzieren\\
+$\folgt$ KMP-Algorithmus
+
+\paragraph{Idee:} Optimiere das "`Schieben"' und "`Vergleichen"' indem man sich zuerst $P$ genauer anschaut.
+Dazu wird eine Verschiebeliste ($next[j]$) auf Basis von $P$ aufgebaut, aus der abgelesen werden kann, ob im 
+Falle der Ungleichheit ab einem bestimmten Zeichen in $P$ (Zeile) anschließend eventuell um mehr als $1$ 
+verschoben werden kann (vgl. Zeile).
+
+$$\begin{array}{ccccccccccccccc}
+    j  & = & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+	P[j] & = & a & b & c & a & b & c & a & c & a & b \\
+       &   &   & a & b & c & a & b & c & a & c & a & b \\
+       &   &   &   & a & b & c & a & b & c & a & c & a & b \\
+       &   &   &   &   & \textbf{a} & \textbf{b} & \textbf{c} & \textbf{a} & b & c & a & c & a & b \\
+  next[j]& = & 0 & 1 & 1 & 0 & 1 & 1 & 0 & 5 & 0 & 1 \\
+\end{array}$$
+
+\paragraph{Um wie viel wird nun verschoben?} Antwort $j - next[j]$
+
+\paragraph{Aufwand:}
+	Im schlimmsten Foll kommt das erste Zeichen von $P$ in $S$ nicht vor $\folgt$ es wird immer nur um $1$ verschoben
+	$\folgt$ $\Theta(n)$.\\
+	Für das Erstellen der Verschiebungstabelle fällt ein Zusatzaufwand an. Dieser kann aber vernachlässigt werden, da
+	üblicherweise $m \ll n$ ist.
+	
+\subsection{Algorithmus von Boyer-Moore}
+
+\paragraph{Idee} Betrachte das Wort von hinten nach vorn, \\
+	DENN: wenn das aktuell betrachtete Zeichen (aus $S$) in $P$ nicht vorkommt kann ich gleich um $m$ schieben.
+	
+$$\begin{array}{cccccccccccccccccccccccc}
+	T & H & I & S &   & I & S &   & A &  & D & E & L & I & C & A & T & E &  & T & O & P & I & C \\
+  C & A & T \\
+    &   &   & C & A & T \\
+    &   &   &   &   &   &   & C & \textbf{A} & T \\
+    &   &   &   &   &   &   &   & C & A & T \\
+    &   &   &   &   &   &   &   &   &   &   & C & A & T \\
+    &   &   &   &   &   &   &   &   &   &   &   &   &   & \textbf{C} & \textbf{A} & \textbf{T} \\
+\end{array}$$
+
+\paragraph{Aufwandsabschätzung}
+	$$O\left(m+\tfrac{n}{m}\right) \text{ im best-case}$$
+	wenn das letzte Zeichen von $P$ nicht in $S$ vorkommt (falls $P \notin S$).
+	$$O(n) \text{ im worst-case}$$
+	wenn das letzte Zeichen von $P$ auf (fast) jedes Zeichen von $S$ passt (falls $P \notin S$).
+
+\chapter{Objektorientierte Programmierung}
+%\author{Felix Brandt, Lars Volker}
+
+Ein Wert kann erst übergeben werden, wenn eine konkrete Instanz vorliegt.
+
+\paragraph{Wie kommt man an den Verkaufspreis?}
+Die Klasse sendet ein Botschaft an die konkrete Instanz.
+
+    \begin{xy}
+    		\centering
+        \entrymodifiers={++<20pt>[-][F-]}
+        \xymatrix {
+            \txt{Klasse} \ar@/^5ex/[rr]^{\txt{Anfrage Preis}}&
+            *{}&
+            \txt{Instanz}\ar@/^5ex/[ll]^{\txt{Antwort 2 Mio.}} \\
+        }
+		\end{xy}
+
+
+\paragraph{Was ist ein Objekt?}
+Ein Objekt (\begriff{Object}) ist ein Gegenstand des Interesses einer Beobachtung, Untersuchung oder Messung.
+Jedes Objekt hat eine eindeutige Objekt-Identität.
+
+Der Zustand (\begriff{state}) eines Objektes wird durch seine Attribute bzw. Daten und Verbindung zu anderen
+Objekten bestimmt.
+
+Das Verhalten (\begriff{behavior}) eines Objektes wird durch eine Menge von Operationen beschrieben.
+
+Synonyme für den Begriff des Objekts sind Instanz oder Exemplar.
+
+\lectureof{22.06.2005}
+% Lars
+\section{Klassen}
+\subsection{Definition} Eine \begriff{Klasse} ist eine Gemeinsamkeit von Objekten mit den selben Eigenschaften (Attributen), dem selben Verhalten (Operationen bzw. Methoden) und den selben Beziehungen zu anderen Objekten (Vererbung).
+\subsection{Gleichheit und Identität von Objekten} Zwei Objekte sind \emph{gleich}, wenn sie die gleichen Attributswerte besitzen aber unterschiedliche Objektidentitäten.\\
+\paragraph{Beispiel: } Zwei Firmen haben eine gemeinsame Tochterfirma.
+\paragraph{Analog für Gleichheit: } Zwei Firmen besitzen jeweils eine Tochterfirma gleichen Namens. Die Objekte sind somit gleich, aber nicht identisch.
+\section{Objektdiagramm}
+\begin{xy}
+	\centering
+	\entrymodifiers={++<20pt>[-][F-]}
+	\xymatrix {
+		\txt{:Klasse1} \ar@{-}[d]^{\txt{Verbindung}}\\
+		\txt{:Klasse2} \ar@{-}[d]^{\txt{Verbindung}}\\
+		\txt{:Klasse3} \\ 
+	}
+\end{xy}
+\paragraph{Bemerkung: } Was die Verbindung bedeutet bleibt offen.
+\section{Verwendung von Klassen}
+$\ra$ Schablone \\
+Ein Objekt kennt seine Klasse, aber die Klasse \grqq weiß \glqq nicht welche Objekt von ihr abgeleitet werden.
+
 
 \appendix
 %\chapter{Satz um Satz (hüpft der Has)}
