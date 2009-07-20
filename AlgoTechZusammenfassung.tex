@@ -1,0 +1,1824 @@
+\documentclass[a4paper,10pt]{scrartcl}
+
+% own commands
+\newcommand{\tbf}{\textbf}
+\newcommand{\tsc}{\textsc}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\La}{\Leftarrow}
+\newcommand{\agn}{\leftarrow}
+\newcommand{\nat}{\mathbb{N}}
+\newcommand{\natn}{\mathbb{N}_0}
+\newcommand{\Ree}{\mathbb{R}}
+\newcommand{\Rn}{\mathbb{R}^n}
+\newcommand{\Rm}{\mathbb{R}^m}
+\newcommand{\Rmn}{\mathbb{R}^{m \times n}}
+\newcommand{\Gr}{$G = (V,E)$ }
+\newcommand{\gGr}{$D = (V,E)$ }
+\newcommand{\Gwfkt}{$c: E \rightarrow \mathbb{R}$ }
+\newcommand{\Gwfktp}{$c: E \rightarrow \mathbb{R}_0^+$ }
+\newcommand{\Gwfktg}{$c: E \rightarrow \mathbb{N}_0$ }
+\newcommand{\Gwfktn}{$c: E \rightarrow \mathbb{N}$ }
+\newcommand{\Cut}{$(S,V \setminus S)$ }
+\newcommand{\Lra}{\Leftrightarrow}
+\newcommand{\Nw}{$(D;s,t;c)$ }
+\newcommand{\Flu}{$f: E \rightarrow \mathbb{R}_0^+$ }
+\newcommand{\Flue}{$f: E' \rightarrow \mathbb{R}$ }
+\newcommand{\NP}{\mathcal{NP}}
+\newcommand{\NPC}{\mathcal{NPC}}
+\newcommand{\RP}{\mathcal{RP}}
+\newcommand{\PP}{\mathcal{PP}}
+\newcommand{\BPP}{\mathcal{BPP}}
+\renewcommand{\Pr}{\text{Pr}}
+\newcommand{\NC}{\mathcal{NC}}
+\newcommand{\SC}{\mathcal{SC}}
+
+
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\calK}{\mathcal{K}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calU}{\mathcal{U}}
+
+
+\usepackage{german}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{color}
+%\usepackage{nicefrac}
+%\usepackage{tikz}
+%\usetikzlibrary[automata]
+%\usetikzlibrary{shapes}
+\usepackage{geometry}
+\usepackage{enumerate}
+\geometry{a4paper,left=3cm,right=3cm, top=3cm, bottom=3cm} 
+\usepackage{algorithm}
+\usepackage[noend]{algorithmic}
+\floatname{algorithm}{Algorithmus}
+\renewcommand{\listalgorithmname}{Liste der Algorithmen}
+\newcommand{\Eingabe}[1]{\STATE \tbf{Eingabe}: #1 \\}
+\newcommand{\Ausgabe}[1]{\STATE \tbf{Ausgabe}: #1 \\}
+\newcommand{\Seffekte}[1]{\STATE \tbf{Seiteneffekte}: #1 \\}
+\newcommand{\Vorb}[1]{\STATE \tbf{Vorbedingungen}: #1 \\}
+\renewcommand{\algorithmicif}{\textbf{Falls}}
+\renewcommand{\algorithmicthen}{}
+\renewcommand{\algorithmicelse}{\textbf{Sonst}}
+\renewcommand{\algorithmicwhile}{\textbf{Solange}}
+\renewcommand{\algorithmicdo}{}
+\renewcommand{\algorithmicfor}{\textbf{Für}}
+\renewcommand{\algorithmicforall}{\textbf{Für alle}}
+\definecolor{mygray}{gray}{.20}
+\renewcommand{\algorithmiccomment}[1]{\textcolor{mygray}{ // #1}}
+
+
+
+
+\setlength{\parindent}{0pt}
+
+%\setcounter{topnumber}{0}
+
+
+%\theoremstyle{default}
+\newtheorem{satz}{Satz}
+\newtheorem{bew}[satz]{Beweis}
+\newtheorem{lemma}{Lemma}
+
+\usepackage{setspace}
+\onehalfspacing
+
+%opening
+\title{Zusammenfassung des Stoffes zur Vorlesung Algorithmentechnik}
+\date{30. März 2009} 
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Diese Zusammenfassung ENTSTEHT MOMENTAN als persönliche Vorbereitung auf die Klausur zur Vorlesung ``Algorithmentechnik'' von Prof. Dr. Dorothea Wagner im Wintersemester 08/09 an der Universität Karlsruhe (TH). Sie ist sicherlich nicht vollständig, sondern strafft bewusst ganze Kapitel und Themen wie Amortisierte Analyse, Parallele Algorithmen und viele mehr. Für Verbesserungen, Kritik und Hinweise auf Fehler oder Unstimmigkeiten an third äht web.de bin ich dankbar.
+\end{abstract}
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+
+\newpage
+\listofalgorithms
+
+
+\newpage
+\setcounter{section}{-1}
+\section{Grundlagen}
+\subsection{Amortisierte Analyse}
+\begin{itemize}
+ \item \tbf{Ganzheitsmethode}: Bestimme obere Schranke $T(n)$ für $n$ Operationen $\Ra$ $\frac{T(n)}{n}$ amortisierte Kosten je Operation
+ \item \tbf{Buchungsmethode}: Weise Operationen ``Gebühren'' zu und nutze überschüssigen ``Kredit'' der Objekte für spätere Operationen an den Objekten.
+ \item \tbf{Potentialmethode}: Definiere ``Kredit'' als Potential $\mathbb{C}(D_i)$ aller Objekte nach der $i$-ten Operation. \\
+	Definiere die amortisierten Kosten: $\hat{c_i} := c_i + \mathbb{C}(D_i) - \mathbb{C}(D_{i-1})$ \\
+	Falls $\forall \ n \in \nat$ gilt $\mathbb{C}(D_n) \geq \mathbb{C}(D_0)$ $\Ra$ amortisierte Kosten obere Schranken für Gesamtkosten
+\end{itemize}
+
+\subsection{Rekursionsabschätzung}
+\begin{itemize}
+ \item \tbf{Substitutionsmethode}: vermute Lösung und beweise induktiv (Tricks: späterer Induktionsanfang, Vermutungen verschärfen, Variablen ersetzen)
+ \item \tbf{Iterationsmethode}: schreibe Laufzeit durch iteratives Einsetzen als Summe und schätze diese ab
+ \item \tbf{Master Theorem}: \\
+	$T(n) = a \cdot T(\frac{n}{b}) + f(n), a \geq 1, b > 1$
+	\begin{itemize}
+	 \item $f(n) \in \Omega(n^{\text{log }_b a+\varepsilon}), a f(\frac{n}{b}) \leq c f(n)$ für $c < 1$ und $n \geq n_0$ $\ \Ra \ $ $T(n) \in \Theta(f(n))$
+	\item $f(n) \in \Theta(n^{\text{log }_b a})$ $\ \Ra \ $ $T(n) \in \Theta(n^{\text{log }_b a} \cdot \text{log } n)$
+	\item $f(n) \in O(n^{\text{log }_b a-\varepsilon})$ $\ \Ra \ $ $T(n) \in \Theta(n^{\text{log }_b a})$
+	\end{itemize}
+\end{itemize}
+
+
+\newpage
+\section{Grundlegende Datenstrukturen für Operationen auf Mengen}
+\subsection{Union-Find-Problem}
+Stelle eine Datenstruktur und Operationen darauf zur Verfügung die eine Folge disjunkter Mengen möglichst effizient verwalten:
+\begin{itemize}
+ \item $\tsc{Makeset}(x)$: Führe neue Menge $\{x\}$ ein.
+ \item $\tsc{Union}(S_i,S_j,S_k)$: Vereinige $S_i$ und $S_j$ zu $S_k$ und entferne $S_i$ und $S_j$.
+ \item $\tsc{Find}(x)$: Gebe die Menge $M$ an, welche $x$ enthält.
+\end{itemize}
+
+Repräsentiere Mengen durch Bäume indem zu jedem Element $x$ sein Vorgänger $\tsc{Vor}[x]$ in einem Array gespeichert wird. Für Wurzeln $w$ ist $\tsc{Vor}[w] = - \# ($Knoten im Baum w$)$.
+
+\begin{algorithm}
+\caption{$\tsc{Makeset}(x)$}
+\begin{algorithmic}
+\Eingabe{Element x}
+\Seffekte{Neuer Index in $\tsc{Vor}[]$}
+\STATE $\tsc{Vor}[x] \agn - 1$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{weighted $\tsc{Union}(i,j)$}
+\begin{algorithmic}
+\Eingabe{Mengen $S_i, S_j$}
+\Seffekte{Die Elemente des Baumes mit weniger Elementen werden dem anderen Baum hinzugefügt}
+\STATE $z \agn \tsc{Vor}[i] + \tsc{Vor}[j]$
+\IF{|\tsc{Vor}[i]| < |\tsc{Vor}[j]|}
+	\STATE $\tsc{Vor}[i] \agn j$
+	\STATE $\tsc{Vor}[j] \agn z$
+\ELSE 
+	\STATE $\tsc{Vor}[j] \agn i$
+	\STATE $\tsc{Vor}[i] \agn z$
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
+
+\begin{lemma}[\tbf{Baumhöhe}]
+ Für die Höhe eines durch $\tsc{Makeset}$ und weighted $\tsc{Union}$ entstandenen Baumes $T$ gilt: $h(T) \leq \text{log }_2 |T|$
+\end{lemma}
+
+\begin{algorithm}
+\caption{$\tsc{Find}(x)$ (mit Pfadkompression)}
+\begin{algorithmic}
+\Eingabe{Element $x$}
+\Ausgabe{Menge in der $x$ enthalten ist}
+\STATE $w \agn x$
+\WHILE{$\tsc{Vor}[w] > 0$}
+	\STATE $w \agn \tsc{Vor}[w]$
+\ENDWHILE
+\STATE $i \agn x$
+\WHILE{$\tsc{Vor}[i] > 0$}
+	\STATE $temp \agn i$
+	\STATE $i \agn \tsc{Vor}[i]$
+	\STATE $\tsc{Vor}[temp] \agn w$
+\ENDWHILE
+\STATE Gib $w$ aus
+\end{algorithmic}
+\end{algorithm}
+
+\begin{satz}[\tbf{Hopcroft \& Ullman}] 
+ Die Gesamtlaufzeit von $n$ Operationen vom Typ \tsc{Makeset}, \tsc{Union} und \tsc{Find} mit Pfadkompression ist in $O(n \cdot G(n))$.
+\end{satz}
+
+Dabei ist $G(n) := min\{y \ | \ F(y) \geq n\}$ mit $F(0) := 1$ und $F(y) := 2^F(y-1)$ für $y > 0$. Daher ist $G(n) \leq 5$ für alle ``praktisch'' relevanten Werte. \\
+
+\tbf{Rang} $r(v)$ $:=$ Höhe des Unterbaumes mit Wurzel v (ohne Pfadkompression) \\
+
+\tbf{Ranggruppe} $\gamma_j$ $:=$ $\{ v \ | \ \text{log }^{(j+1)} \cdot n < r(v) \leq \text{log }^j \cdot n \}$ \\
+
+Eine genauere Analyse zeigt, dass $m$ Operationen vom Typ \tsc{Makeset}, \tsc{Union} und \tsc{Find} auf $n$ Elementen $O(m \cdot \alpha(m,n))$ ($\alpha =$ Ackermannfunktion) Zeit benötigen.
+
+\subsection{Anwendungen für Union-Find-Datenstrukturen}
+\subsubsection{Algorithmus von \textsf{Kruskal}}
+\begin{algorithm}
+\caption{Algorithmus von \textsf{Kruskal}}
+\begin{algorithmic}
+\Eingabe{Graph $G = (V, E)$ mit Kantengewichten}
+\Ausgabe{MST in Form von grünen Kanten}
+\STATE $\tsc{Grün} \agn \emptyset$
+\STATE $\tsc{Sort}(E) \agn E$ aufsteigend sortiert
+\FOR{$v \in V$}
+	\STATE $\tsc{Makeset}(v)$
+\ENDFOR
+\FOR{$\{v,w\} \in \tsc{Sort}(E)$}
+	\IF{$\tsc{Find}(v) \not = \tsc{Find}(w)$}
+		\STATE $\tsc{Union}(\tsc{Find}(v),\tsc{Find}(w))$
+		\STATE $\tsc{Grün} \agn \tsc{Grün} \cup \{\{v,w\}\}$
+	\ENDIF
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{\tsc{Offline-Min}-Problem}
+\tbf{\tsc{Offline-Min}-Problem}: Gebe zu einer Folge $Q$ von $n$ $\tsc{Insert}(i)$ und \tsc{Extract-Min}-Operationen alle $i$, die entfernt wurden, und jeweils die Operation bei der sie entfernt wurden an. (Dabei sei $i \in \{1, \ldots, n\}$) \\
+
+\begin{algorithm}
+\caption{\tsc{Offline-Min}-Initialisierung}
+\begin{algorithmic}
+\Eingabe{Operationenfolge $Q_1, Q_2, \ldots, Q_n$}
+\Ausgabe{Mengen $M_j := \{ i \ | \ \tsc{Insert}(i)$ erfolgt zwischen $j - 1$-tem und $j$-tem \tsc{Extract-Min} $\}$}
+\STATE $j \agn 1$
+\FOR{$i = 1$ bis $n$} 
+	\IF{$Q_i \not = \tsc{Extract-Min}$}
+		\STATE $\tsc{Makeset}(i)$
+		\STATE $\tsc{Union}(j,\tsc{Find}(i))$
+	\ELSE
+		\STATE $j \agn j + 1$
+	\ENDIF
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+Sei $k$ nun die Anzahl der \tsc{Extract-Min}-Operationen und die Mengen $M_1, \ldots, M_{k+1}$ durch \tsc{Pred} und \tsc{Succ} doppelt verlinkt. \\
+
+\begin{algorithm}
+\caption{\tsc{Offline-Min} $\in \Theta(n)$}
+\begin{algorithmic}
+\FOR{$i = 1$ bis $n$} 
+	\STATE $j \agn \tsc{Find}(i)$
+	\IF{$j \leq k$}
+		\STATE Gebe ``$i$ ist durch die $j$-te \tsc{Extract-Min}-Operation entfernt worden'' aus
+		\STATE $\tsc{Union}(j,\tsc{Succ}[j],\tsc{Succ}[j])$ \COMMENT{$M_{\tsc{Succ}[j]} = M_j \cup M_{\tsc{Succ}[j]}$}
+		\STATE $\tsc{Succ}[\tsc{Pred}[j]] \agn \tsc{Succ}[j]$ \COMMENT{überspringe $M_j$}
+		\STATE $\tsc{Pred}[\tsc{Succ}[j]] \agn \tsc{Pred}[j]$
+	\ENDIF
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{\tsc{Priority Queues} und \tsc{Heaps}}
+\tbf{\tsc{Priority Queue}} nennt man eine Datenstruktur $H$ welche die Operationen $\tsc{Findmax}()$, $\tsc{Delete}(H,i)$, $\tsc{Insert}(H,x)$ und $\tsc{Makeheap}(M)$ unterstützt. \\
+
+Ein \tbf{\tsc{Heap}} ist ein als Array $A$ realisierter voller binärer Baum, der die \tsc{Heap}-Eigenschaft erfüllt: \\
+$\forall \ i$ gilt $A[i] \geq A[2i]$ und $A[i] \geq A[2i + 1]$ \\
+
+\begin{algorithm}
+\caption{$\tsc{Heapify}(A,i)$ $\in O(\text{log } n)$}
+\begin{algorithmic}
+\Eingabe{Vollst. binärer Baum als Array $A$, Index $i$}
+\Ausgabe{Array $A$ mit Unterbaum von $i$ als \tsc{Heap}}
+\Vorb{Unterbäume von $A[2i]$ und $A[2i + 1]$ sind bereits \tsc{Heaps}}
+\IF{$2i \leq |A|$ und $A[2i] > A[i]$}
+	\STATE $m \agn 2i$
+\ELSE
+	\STATE $m \agn i$
+\ENDIF
+\IF{$2i + 1 \leq |A|$ und $A[2i + 1] > A[m]$}
+	\STATE $m \agn 2i + 1$
+\ENDIF
+\IF{$m \not = i$}
+	\STATE Vertausche $A[i]$ und $A[m]$
+	\STATE $\tsc{Heapify}(A,m)$
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{$\tsc{Makeheap}(A)$ $\in \Theta(n)$}
+\begin{algorithmic}
+\Eingabe{Vollst. binärer Baum als Array $A$}
+\Ausgabe{Array $A$ als \tsc{Heap}}
+\FOR{$i = \lfloor \frac{|A|}{2} \rfloor, \ldots, 1$}
+	\STATE $\tsc{Heapify}(A,i)$
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{$\tsc{Sift-Up}(A,i)$ $\in O(\text{log } n)$}
+\begin{algorithmic}
+\Eingabe{Array $A$, bis evtl. auf $A[i]$ \tsc{Heap}}
+\Ausgabe{Array $A$ als \tsc{Heap}}
+\STATE $l \agn i$
+\WHILE{$\lfloor \frac{l}{2} \rfloor > 0$ und $A[l] > A[\lfloor \frac{l}{2} \rfloor]$}
+	\STATE Vertausche $A[l]$ und $A[\lfloor \frac{l}{2} \rfloor]$
+	\STATE $l \agn \lfloor \frac{l}{2} \rfloor$
+\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{$\tsc{Delete}(A,i)$ $\in O(\text{log } n)$}
+\begin{algorithmic}
+\Eingabe{\tsc{Heap} $A$, Index $i$ des zu löschenden Elements}
+\Ausgabe{\tsc{Heap} $A \setminus A[i]$}
+\STATE $A[i] \agn A[|A|]$
+\STATE $|A| \agn |A| - 1$
+\IF{$A[i] \leq A[\lfloor \frac{i}{2} \rfloor]$}
+	\STATE $\tsc{Heapify}(A,i)$
+\ELSE 
+	\STATE $\tsc{Sift-Up}(A,i)$
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{$\tsc{Insert}(A,x)$ $\in \Theta(\text{log } n)$}
+\begin{algorithmic}
+\Eingabe{\tsc{Heap} $A$, einzufügendes Element $x$}
+\Ausgabe{\tsc{Heap} $A \cup \{x\}$}
+\STATE $|A| \agn |A| + 1$
+\STATE $A[|A|] \agn x$
+\STATE $\tsc{Sift-Up}(A,|A|)$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{$\tsc{Heapsort}(A)$ $\in O(n \text{ log } n)$}
+\begin{algorithmic}
+\Eingabe{Array $A$}
+\Ausgabe{Array $A$ aufsteigend sortiert}
+\STATE $\tsc{Makeheap}(A)$
+\STATE $n \agn |A|$
+\FOR{$i = n, \ldots, 2$}
+	\STATE Vertausche $A[1]$ und $A[i]$
+	\STATE $|A| \agn |A| - 1$
+	\STATE $\tsc{Heapify}(A,1)$
+\ENDFOR
+\STATE $|A| \agn n$
+\end{algorithmic}
+\end{algorithm}
+
+Um \tsc{Heapsort} zu beschleunigen kann man eine Operation $\tsc{Bottom-Up-Heapify}(A,1)$ implementieren, die mit $\text{log } n + \varepsilon$ (im Mittel $\varepsilon \leq 2$) statt $2 \cdot \text{log } n$ Vergleichen auskommt, und daher schneller ist, falls das ``Hochtauschen zur Wurzel'' schnell implementiert wird.
+
+\begin{algorithm}
+\caption{$\tsc{Bottom-Up-Heapify}(A,1)$ $\in O(\text{log } n)$}
+\begin{algorithmic}
+\Eingabe{Array $A$, bis auf $A[1]$ \tsc{Heap}}
+\Ausgabe{\tsc{Heap} $A$}
+\STATE $j \agn 1$ \\
+\COMMENT{Sinke entlang größerer Nachfolger bis zu einem Blatt ab}
+\WHILE{$2j > |A|$} 
+	\IF{$A[2j] \geq A[2j + 1]$}
+		\STATE $j \agn 2j$
+	\ELSE
+		\STATE $j \agn 2j + 1$
+	\ENDIF
+\ENDWHILE
+\COMMENT{Steige bis zur korrekten Position auf}
+\WHILE{$A[1] \geq A[j]$} 
+	\STATE $j \agn \lfloor \frac{j}{2} \rfloor$
+\ENDWHILE
+\STATE $temp \agn A[j]$
+\STATE $A[j] \agn A[1]$
+\STATE $j \agn \lfloor \frac{j}{2} \rfloor$
+\WHILE{$j > 0$}
+	\STATE vertausche $temp$ und $A[j]$
+	\STATE $j \agn \lfloor \frac{j}{2} \rfloor$
+\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+
+
+\newpage
+\section{Aufspannende Bäume minimalen Gewichts}
+\subsection{Grundbegriffe der Graphentheorie}
+
+Ein \tbf{Weg} der Länge $l$ in einem Graphen \Gr ist eine Folge von Knoten $v_1, \ldots, v_{l-1}$, in der aufeinanderfolgende Knoten durch Kanten verbunden sind. \\
+
+Ein \tbf{Pfad} ist ein Weg in dem jeder Knoten nur einmal vorkommt. \\
+
+Ein \tbf{Baum} ist ein Graph \Gr, in dem es zwischen je 2 Knoten genau einen Pfad gibt. \\
+
+Ein Teilgraph $G' = (V',E')$ von \Gr mit $E' \subseteq E$ heißt \tbf{aufspannend}, wenn $V' = V$. \\
+
+\subsection{Das MST-Problem}
+Finde zu einem zusammenhängenden Graphen \Gr mit der Gewichtsfunktion \Gwfkt einen aufspannenden Teilbaum $B = (V,E')$ mit minimalem Gewicht $c(B) = \sum_{\{u,v\} \in E'} \limits c(\{u,v\})$ \\
+
+\subsection{Die Färbungsmethode von \textsf{Tarjan}}
+Ein \tbf{Schnitt} in einem Graphen \Gr ist eine Partition \Cut von $V$. \\
+
+Eine Kante $\{u,v\}$ \tbf{kreuzt} den Schnitt falls $u \in S$ und $v \in V \setminus S$. (Ein Schnitt wird oft mit der Menge der kreuzenden Kanten identifiziert.) \\
+
+Ein \tbf{Kreis} in einem Graphen \Gr ist eine Folge $v_1, \ldots, v_k = v_1$ mit $k > 3$, in der aufeinanderfolgende Knoten durch Kanten verbunden sind und außer $v_1$ kein Knoten zweimal vorkommt. \\
+
+\tbf{Grüne Regel}: Färbe die farblose Kante \textit{minimalen} Gewichts eines \textit{Schnittes} ohne grüne Kanten grün. \\
+
+\tbf{Rote Regel}: Färbe die farblose Kante \textit{maximalen} Gewichts eines \textit{Kreises} ohne rote Kanten rot. \\
+
+\begin{algorithm}
+\caption{Färbungsmethode von \textsf{Tarjan}}
+\begin{algorithmic}
+\Eingabe{gewichteter Graph}
+\Ausgabe{MST in Form von grünen Kanten}
+\WHILE{eine der beiden Regeln anwendbar}
+	\STATE Wende eine der beiden Regeln an
+\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+
+\begin{satz}[\tbf{Färbungsinvariante}]
+ Die Färbungsmethode erhält die Invariante, dass es einen MST gibt, der alle grünen Kanten und keine rote Kante enthält.
+\end{satz}
+
+Der Satz kann mit Hilfe einer Fallunterscheidung induktiv bewiesen werden:
+\begin{itemize}
+ \item Grüne Regel auf $e \in E_B$ angewendet \checkmark
+ \item Grüne Regel auf $e = \{u,v\} \not \in E_B$ angwendet. $B$ aufspannend $\Ra$ $\exists$ kreuzende Kante $e' \in E_B$ auf dem Weg von $u$ nach $v$. $e' \in E_B$, grüne Regel $\Ra$ $e'$ ungefärbt und $c(e') \geq c(e)$ $\Ra$ $E_B' = E_B \setminus e' \cup e$ MST \checkmark
+ \item Rote Regel auf $e \not \in E_B$ angewendet \checkmark
+ \item Rote Regel auf $e \in E_B$ angewendet. $B \setminus e$ zerfällt in 2 Teilbäume die einen Schnitt induzieren. Auf dem Kreis der roten Regel liegt eine kreuzende, nicht-rote Kante $e' \not = e$ mit $c(e) \geq c(e')$. $B$ Baum $\Ra$ $e'$ nicht grün $\Ra$ $E_B' = E_B \setminus e \cup e'$ MST \checkmark
+\end{itemize}
+ 
+
+\subsection{Der Algorithmus von \textsf{Kruskal}}
+\begin{algorithm}
+\caption{Algorithmus von \textsf{Kruskal} (verbal) $\in O(|E| \text{ log } |V|)$}
+\begin{algorithmic}
+\Eingabe{Graph mit Kantengewichten}
+\Ausgabe{MST in Form von grünen Kanten}
+\STATE Sortiere Kanten nicht-absteigend
+\FORALL{Kanten}
+	\IF{beide Endknoten liegen in demselben grünen Baum}
+		\STATE{Färbe Kante rot}
+	\ELSE
+		\STATE{Färbe Kante grün}
+	\ENDIF
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+Der Algorithmus von \textsf{Kruskal} ist eine Spezialisierung der Färbungsmethode die durch \tsc{Union-Find} implementiert werden kann und deren Laufzeit durch das Sortieren bestimmt wird.
+
+\subsection{Der Algorithmus von \textsf{Prim}}
+
+Der Algorithmus von \textsf{Prim} ist eine weitere Spezialisierung der Färbungsmethode und besonders für dichte Graphen geeignet. Falls die Kanten bereits sortiert sind ist er dem Algorithmus von \textsf{Kruskal} unterlegen.
+
+\begin{algorithm}
+\caption{Algorithmus von \textsf{Prim} (verbal)}
+\begin{algorithmic}
+\Eingabe{Graph $G = (V, E)$ mit Kantengewichten}
+\Ausgabe{MST in Form von grünen Kanten}
+\STATE Färbe einen beliebigen Knoten grün.
+\FOR{$i = 1, \ldots, |V| - 1$}
+	\STATE Wähle eine farblos Kante minimalen Gewichts mit genau einem grünen Endknoten und färbe sie und den anderen Endknoten grün.
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Algorithmus von \textsf{Prim} $\in O(|E| \text{ log}_{2 + |E| / |V|}  |V|)$}
+\begin{algorithmic}
+\Eingabe{Graph $G = (V, E)$ mit Kantengewichten, Startknoten $s \in V$}
+\Ausgabe{MST in Form von grünen Kanten}
+\FORALL{$v \in V$}
+	\STATE $\tsc{key}[v] \agn \infty$
+\ENDFOR
+\STATE $v \agn s$
+\WHILE{v definiert}
+	\STATE $\tsc{key}[v] \agn - \infty$
+	\FORALL{$\{v,w\} \in E$}
+		\IF{$\tsc{key}[w] = \infty$}
+			\STATE $\tsc{key}[w] \agn c(\{v,w\})$
+			\STATE $\tsc{grün}[w] \agn \{v,w\}$
+			\STATE $\tsc{Insert}(H,w)$
+		\ELSE
+			\IF{$c(\{v,w\} < \tsc{key}[w]$}
+				\STATE $\tsc{key}[w] \agn c(\{v,w\})$
+				\STATE $\tsc{grün}[w] \agn \{v,w\}$
+				\STATE $\tsc{Decreasekey}(H,w,c(\{v,w\}))$
+			\ENDIF
+		\ENDIF
+	\ENDFOR
+\ENDWHILE		
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Greedy-Verfahren und Matroide}
+Ein \tbf{Unabhängigkeitsystem} ist ein Tupel $(M,\calU)$ mit $\calU \subset 2^M$, $M$ endlich für das gilt:
+\begin{itemize}
+ \item $\emptyset \in \calU$ und
+ \item $\forall \ I_1 \in \calU$: $I_2 \subseteq I_1$ $\Ra$ $I_2 \in \calU$
+\end{itemize}
+
+$I \in \calU$ heißen \tbf{unabhängig}, alle anderen $I \subseteq M$ mit $I \not \in \calU$ \tbf{abhängig}. \\
+
+$B \in \calU$ mit $B \subseteq F$ \tbf{Basis} von $F \subseteq M$ $\ \Lra \ $ $\forall \ B' \in \calU: B \subseteq B' \subseteq F$ $\Ra$ $B = B'$ (maximal bzgl. $\subseteq$)\\
+
+Eine \tbf{Basis eines Unabhängigkeitsystem} $(M,\calU)$ ist eine Basis von $M$. \\
+
+Die Menge aller Basen von $(M,\calU)$ heißt \tbf{Basissystem} von $(M,\calU)$. \\
+
+\tbf{Rang} von $F \subseteq M$ $r(F) := max \{ |B| \ | \ B \text{ Basis von } F\}$ ($r((M,\calU)) = r(M)$) \\
+
+Ein \tbf{Kreis} in $(M,\calU)$ ist eine bzgl. $\subseteq$ minimale, abhängige Menge. \\
+
+\tbf{Optimierungsproblem über dem Unabhängigkeitssystem} $(M,\calU)$ mit der Gewichtsfunktion $w$: Finde ein $U \in \calU$ mit minimalem $w(U)$. \\
+
+\tbf{Optimierungsproblem über dem Basisssystem} $\calB$: Finde ein $B \in \calB$ mit minimalem $w(B)$. \\
+
+MST = Optimierungsproblem über dem Basissystem der aufspannenden Bäume. \\
+
+\begin{algorithm}
+\caption{Greedy-Algorithmus für Optimierungsproblem über $(M,\calU)$}
+\begin{algorithmic}
+\STATE sortiere $M$ auf- bzw. absteigend (Mini- bzw. Maximierung) zu $M = l_1, \ldots, l_n$
+\STATE $I \agn \emptyset$
+\FOR{$i = 1, \ldots, n$}
+	\IF{$I \cup \{l_i\} \in \calU$}
+		\STATE $I \agn I \cup \{l_i\}$
+	\ENDIF
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+Ein \tbf{Matroid} ist ein Unabhängigkeitssystem $(M,\calU)$ für das gilt: \\
+$\forall \ I, J \in \calU$ mit $|I| < |J|$ $\exists \ e \in J \setminus I$ mit $I \cup \{e\} \in \calU$ \\
+
+\begin{satz}[\tbf{Matroid-Äquivalenz}]
+ Für ein Unabhängigkeitssystem $(M,\calU)$ sind folgende Aussagen äquivalent:
+\begin{enumerate}[$(a)$]
+ \item Ein Greedy-Algorithmus liefert bei bel. Gewichtsfkt. $w$ eine Optimallösung $max \{ w(U) \ | \ U \in \calU \}$
+ \item $(M,\calU)$ ist ein Matroid
+ \item Für bel. $F \subseteq M$ und bel. inklusionsmaximale, unabhängige $I_1, I_2 \subseteq F$ gilt $|I_1| = |I_2|$
+\end{enumerate}
+\end{satz}
+
+Beweis: \\
+$(a) \Ra (b)$: \\
+Annahme $(a) \land \neg (b)$ $\Ra$ $\exists \ U,W \in \calU$ mit $|U| = |W| + 1$ und $\forall \ e \in U \setminus W$ gilt $W \cup \{e\} \not \in \calU$. $w(m) := \begin{cases} |W| + 2 & \text{falls } e \in W \\ |W| + 1 & \text{falls } e \in U \setminus W \\ -1 & \text{falls } e \not \in U \setminus W \end{cases}$ $\ \Ra \ $ $w(U) \geq |U|(|W| + 1) = \overset{\text{2x Binomi}}{\ldots} > w(W)$ \\
+$\Ra$ Greedy-Algorithmus wählt alle $w \in W$ und kann dann nichts mehr hinzunehmen. Widerspruch zur Optimalität. \\
+
+$(b) \Ra (c)$: \\
+Annahme $(a) \land \neq (c)$ $\Ra$ $\exists I_1, I_2 \subseteq F \subseteq M$ mit $I_1, I_2$ maximal unabhängig in $F$ und o.B.d.A. $|I_1| < |I_2|$ \\
+Konstruiere $I' \subseteq I_2$ mit $|I'| = |I_1| + 1$ durch streichen von $|I_2| - |I_1| - 1$ Elementen aus $I_2$. \\
+$\calU$ bzgl. $\subseteq$ n.u. abgeschl. $\Rightarrow$ $I' \in \calU$ $\overset{(M,\calU)  \text{ Matroid}}{\Longrightarrow}$ $\exists \ e \in I' \setminus I_1$ mit $\calU \ni I_1 \cup \{e\} \subseteq F$. Widerspruch zu $I_1$ maximal unabhängig. \\
+
+$(c) \Ra (a)$: \\
+Sei $I \in \calU$ Lösung des Greedy-Algorithmus und $J \in \calU$ Optimallösung. \\
+$I, J$ maximal unabhängig in $F = \{e \in M \ | \ w(e) > 0\}$ $\overset{(c)}{\Ra}$ $|I| = |J|$ \\
+Ordne $I$ und $J$ absteigend nach Gewicht zu $i_1, \ldots, i_n$ und $j_1, \ldots, j_n$ \\
+Zeige induktiv $\forall k = 1, \ldots, n$ gilt $w(i_k) \geq w(j_k)$: IA: Greedy \checkmark \\
+IS: Annahme: $w(i_k) < w(j_k)$ $\Ra$ $\{i_1, \ldots, i_{k-1}\}$ maximal unabhängig in $F' = \{e \in M \ | \ w(e) \geq w(j_k)\}$ da die Greedy-Methode sonst $e$ mit $\{i_1, \ldots, i_{k-1}, e\} \in \calU$ gewählt hätte. Widerspruch zu $(c)$ da unabhängige $\{j_1, \ldots, j_k-\} \subseteq F'$ mit größerer Kardinalität. \\
+$\Ra$ $w(I) \geq w(J)$ also $I$ optimal. \\
+
+\newpage
+\section{Schnitte in Graphen und Zusammenhang}
+\subsection{Schnitte minimalen Gewichts}
+Die \tbf{Kapazität eines Schnittes} \Cut ist $c(S,V \setminus S) := \sum_{\{u,v\} \in E \cap S \times V \setminus S} \limits c(\{u,v\})$. \\
+
+Ein \tbf{Schnitt} \Cut kann kürzer durch eine Menge $S \subset V$, welche den Schnitt \tbf{induziert}, angegeben werden. \\
+
+Ein \tbf{minimaler Schnitt} ist ein Schnitt \Cut für den $c(S,V \setminus S) \leq c(S',V \setminus S')$ für alle nichttrivialen $S' \subsetneq V$ ist. \\
+
+\tbf{\tsc{Min-Cut}-Problem}: Finde zu einem Graphen \Gr mit Gewichtsfkt. \Gwfktp einen minimalen Schnitt. \\
+
+Zu $S \subseteq V$ nennen wir den \tbf{am stärksten mit $S$ verbundenen} Knoten, denjenigen Knoten $v \in V \setminus S$ für den $c(S,v) := \sum_{\{u,v\} \in E \cap S \times V} \limits c(\{u,v\})$ maximal wird. \\
+
+Wir \tbf{verschmelzen 2 Knoten} $s,t \in V$ indem wir sie durch einen neuen Knoten $x_{s,t}$ ersetzen und ihre Kanten durch Kantenmit $x_{s,t}$ ersetzen und dabei gegebenenfalls Gewichte addieren. \\
+
+\subsection{Der Algorithmus von Stoer \& Wagner}
+\begin{algorithm}
+\caption{$\tsc{Min-Schnitt-Phase}(G,c,a) \in O(|V| \text{ log } |V| + |E|)$}
+\begin{algorithmic}
+\Eingabe{Graph $G_i = (V_i, E_i)$, Gewichtsfkt. $c$, Startknoten $a \in V$}
+\Ausgabe{Graph $G_{i+1}$ und Schnitt der Phase $(V_i \setminus \{t\},\{t\})$}
+\STATE $S \agn \{a\}$
+\STATE $t \agn a$
+\WHILE{$S \not = V_i$}
+	\STATE Bestimme am stärksten verbundenen $v \in V_i \setminus S$ \COMMENT{$c(S,v)$ maximal}
+	\STATE $S \agn S \cup \{v\}$
+	\STATE $s \agn t$
+	\STATE $t \agn v$
+\ENDWHILE
+\STATE Speichere $(V_i \setminus \{t\},\{t\})$ als Schnitt der Phase 
+\STATE $G_{i+1} \agn G_i$ mit verschmolzenem $s,t$	
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{$\tsc{Min-Schnitt}(G,c,a) \in O(|V|^2 \text{ log } |V| + |V||E|)$}
+\begin{algorithmic}
+\Eingabe{Graph $G = (V, E)$, Gewichtsfkt. $c$, Startknoten $a \in V$}
+\Ausgabe{Minimaler Schnitt}
+\STATE $G_1 \agn G$
+\FOR{$i = 1, \ldots, |V| - 1$}
+	\STATE $\tsc{Min-Schnitt-Phase}(G_i,c,a)$
+	\IF{Schnitt der Phase $i$ < \tsc{Min-Schnitt}}
+		\STATE \tsc{Min-Schnitt} $\agn$ Schnitt der Phase $i$
+	\ENDIF
+\ENDFOR
+\STATE Gebe \tsc{Min-Schnitt} aus
+\end{algorithmic}
+\end{algorithm}
+
+Implementiere \tsc{Min-Schnitt-Phase} mit Hilfe eines \tsc{Fibonacci-Heaps} dessen Schlüssel immer die aktuellen Werte $c(S,v)$ zur aktuellen Menge $S$ sind. Damit gelingt die Knotenbestimmung in $O(\text{log } |V|)$ und die Verschmelzung in $O(|E|)$ (da \tsc{Increase-Key} $\in O(1)$). Somit ist der Algorithmus von Stoer \& Wagner etwas effizienter als $|V| - 1$-maliges Anwenden des effizientesten Flussalgorithmus. \\
+
+Korrektheitsbeweis: FOLGT NOCH \ldots. \\
+
+\newpage
+\section{Flussprobleme und Dualität}
+\subsection{Grundlagen}
+Ein \tbf{Netzwerk} ist ein Tupel \Nw, wobei \gGr ein gerichteter Graph mit Kantenkapazitäten \Gwfktp und einer Quelle $s \in V$ und einer Senke $t \in V$ ist. \\
+
+\Flu heißt \tbf{Fluss} falls $\forall \ (v,w) \in E$ die Kapazitätsbedingung $0 \leq f(v,w) \leq c(v,w)$ und $\forall \ v \in V \setminus \{s,t\}$ die Flusserhaltungsbedingung $\sum_{\{w | (v,w) \in E\}} \limits f(v,w) \ - \sum_{\{w | (w,v) \in E\}} \limits f(w,v) = 0$ gilt. \\
+
+\begin{lemma}[\tbf{Quellen-Senken-Fluss}]
+ Für einen Fluss $f$ in einem Netwerk \Nw gilt: \\
+ $\sum_{(s,i) \in E} \limits f(s,i) - \sum_{(i,s) \in E} \limits f(i,s) = \sum_{(i,t) \in E} \limits f(i,t) - \sum_{(t,i) \in E} \limits f(t,i)$
+\end{lemma}
+
+Der \tbf{Wert} eines Flusses $f$ ist $w(f) := \sum_{(s,i) \in E} \limits f(s,i) - \sum_{(i,s) \in E} \limits f(i,s)$ \\
+
+Ein \tbf{Maximalfluss} in \Nw ist ein Fluss $f$ für den $w(f) \geq w(f')$ für alle Flüsse $f'$ in \Nw ist. \\
+
+\tbf{\tsc{Max-Flow}-Problem}: Finde in einem Netzwerk \Nw einen Maximalfluss. \\
+
+Ein Schnitt \Cut heißt \tbf{s-t-Schnitt} falls $s \in S$ und $t \in V \setminus S$. \\
+
+\begin{lemma}[\tbf{Schnitt-Lemma}]
+ $\forall$ s-t-Schnitte \Cut in einem Netzwerk \Nw gilt für jeden Fluss $f$: 
+ $w(f) = \sum_{(i,j) \in E \cap S \times V \setminus S} \limits f(i,j) - \sum_{(i,j) \in E \cap V \setminus S \times S} \limits f(i,j) \leq c(S,V \setminus S)$
+\end{lemma}
+
+Beweis durch Addition aller Flussdifferenzen $=0$ (Flusserhaltung) und Abschätzung durch Kapazitätsbedingung. \\
+
+Zu einem Fluss $f$ in einem Netzwerk \Nw heißen alle von $s$ nach $t$ gerichteten Kanten eines Weges von $s$ nach $t$ \tbf{Vorwärtskanten} und alle anderen Kanten des Weges \tbf{Rückwärtskanten}. \\
+
+Ein \tbf{erhöhender Weg} ist ein Weg von $s$ nach $t$ für den für jede Vorwärtskante $f(i,j) < c(i,j)$ und für jede Rückwärtskante $f(i,j) > 0$ gilt. \\
+
+\begin{satz}[\tbf{vom erhöhenden Weg}]
+ Ein Fluss $f$ in einem Netzwerk \Nw ist genau dann ein Maximalfluss, wenn es keinen erhöhenden Weg gibt.
+\end{satz}
+
+\begin{description}
+ \item[$\Ra$] : \ Annahme: $\exists \ $ erhöhender Weg $W$, erhöhe $f$ um kleinste Kapazität auf $W$. Widerspruch zur Maximalität.
+ \item[$\La$] : \ $\nexists$ erhöhender Weg $\Ra$ Menge aller Knoten, zu denen erhöhende Wege existieren, induziert Schnitt, dessen kreuzende Vorwärtskanten saturiert, und dessen kreuzende Rückwärtskanten leer sind $\overset{Schnitt-Lemma}{\Longrightarrow}$ $w(f) = c(S,V \setminus S)$ also maximal.
+\end{description}
+
+\begin{satz}[\tbf{Max-Flow Min-Cut Theorem}]
+ In einem Netzwerk \Nw ist der Wert eines Maximalflusses gleich der Kapazität eines minimalen s-t-Schnittes.
+\end{satz}
+
+Beweis: Für einen Maximalfluss $f$ und die Menge $S$ aller Knoten, zu denen erhöhende Wege existieren, und alle Flüsse $f'$ und alle $S' \subset V$ gilt: $$w(f') \overset{f \text{ min.}}{\leq} w(f) \overset{\text{Satz 4}}{=} c(S,V \setminus S) \overset{\text{Schnitt-Lemma}}{\leq} c(S',V \setminus S')$$ \\
+
+\begin{satz}[\tbf{Ganzzahligkeitssatz}]
+ In jedem Netzwerk \Nw mit ganzzahligen Kantenkapazitäten \Gwfktg gibt es einen ganzzahligen Maximalfluss ($\forall \ (i,j) \in E : f(i,j) \in \natn \Ra w(f) \in \natn$
+\end{satz}
+
+Beweis durch Iteration über erweiternde Pfade, da jeder erweiternde Pfad ganzzahlig ist. \\
+
+\subsection{Bestimmung maximaler Flüsse}
+\begin{algorithm}
+\caption{$\tsc{Max-Flow}$\Nw}
+\begin{algorithmic}
+\Eingabe{Netzwerk \Nw}
+\Ausgabe{Maximalfluss $f$ von $s$ nach $t$}
+\FORALL{$(i,j) \in E$}
+	\STATE $f(i,j) \agn 0$
+\ENDFOR
+\WHILE{erhöhender Weg $W = e_1, \ldots, e_k$ existiert}
+	\STATE $\Delta \agn min(\{c(e_i) - f(e_i) \ | \ e_i \text{ VwK in } W \} \cup \{f(e_i) \ | \ e_i \text{ RwK in } W \})$
+	\FORALL{$e_i \in W$}
+		\IF{$e_i$ VwK}
+			\STATE $f(e_i) \agn f(e_i) + \Delta$
+		\ELSE
+			\STATE $f(e_i) \agn f(e_i) - \Delta$	
+		\ENDIF
+	\ENDFOR
+\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Algorithmus von \textsf{Ford-Fulkerson}}
+\begin{algorithm}
+\caption{Algorithmus von \textsf{Ford-Fulkerson}}
+\begin{algorithmic}
+\Eingabe{Netzwerk \Nw}
+\Ausgabe{Maximalfluss $f$ von $s$ nach $t$ und minimaler s-t-Schnitt \Cut}
+\FORALL{$(i,j) \in E$}
+	\STATE $f(i,j) \agn 0$
+\ENDFOR
+\STATE $S \agn \{s\}$
+\FORALL{$v \in V$}
+	\STATE $\Delta[v] \agn \infty$
+	\STATE $\tsc{besucht}[v] \agn false$
+\ENDFOR
+\WHILE{$\exists \ v \in S$ mit $\tsc{besucht}[v] = false$}
+	\STATE \COMMENT{Bestimme erhöhenden Pfad}
+	\FORALL{$(v,w) \in E$ mit $w \not \in S$}
+		\IF{$f(v,w) < c(v,w)$}
+			\STATE $\tsc{vor}[w] \agn +v$ \COMMENT{VwK-Vorgänger}
+			\STATE $\Delta[w] \agn min\{c(v,w) - f(v,w), \Delta[v]\}$
+			\STATE $S \agn S \cup \{w\}$	
+		\ENDIF
+	\ENDFOR
+	\FORALL{$(w,v) \in E$ mit $w \not \in S$}
+		\IF{$f(w,v) > 0$}
+			\STATE $\tsc{vor}[w] \agn -v$ \COMMENT{RwK-Vorgänger}
+			\STATE $\Delta[w] \agn min\{f(w,v), \Delta[v]\}$
+			\STATE $S \agn S \cup \{w\}$	
+		\ENDIF
+	\ENDFOR
+	\STATE $\tsc{besucht}[v] = true$
+	\IF{$t \in S$}
+		\STATE \COMMENT{Erhöhe Fluss entlang Pfad}
+		\STATE $w \agn t$
+		\WHILE{$w \not = s$}
+			\IF{$\tsc{vor}[w] > 0$}
+				\STATE $f(\tsc{vor}[w],w) \agn f(\tsc{vor}[w],w) + \Delta[t]$
+			\ELSE
+				\STATE $f(w,-\tsc{vor}[w]) \agn f(w,-\tsc{vor}[w]) - \Delta[t]$
+			\ENDIF
+		\ENDWHILE
+		\STATE $S \agn \{s\}$
+		\FORALL{$v \in V$}
+			\STATE $\Delta[v] \agn \infty$
+			\STATE $\tsc{besucht}[v] \agn false$
+		\ENDFOR
+	\ENDIF
+\ENDWHILE
+\STATE Gebe $f$ und \Cut aus
+\end{algorithmic}
+\end{algorithm}
+
+Die Laufzeit des Algorithmus von Ford Fulkerson hängt von der Wahl von $v$ und dem maximalen Kantengewicht ab. Bei nicht-rationalen Kantengewichten ist es möglich, dass er nicht terminiert.
+
+
+\subsubsection{Der Algorithmus von Edmonds und Karp}
+Der Algorithmus von Edmonds und Karp ist eine Optimierung des Algorithmus von Ford Fulkerson: Er wählt unter allen unbesuchten $v \in S$ den Knoten, welcher am längsten in $S$ ist (Breitensuche) und kann daher in $O(|V||E|^2)$ implementiert werden.
+
+
+\subsubsection{Der Algorithmus von \textsf{Goldberg} und \textsf{Tarjan}}
+Der Algorithmus von \textsf{Goldberg} und \textsf{Tarjan} ist der effizienteste bekannte Algorithmus zur Maximalfluss-Bestimmung. \\
+
+Vereinfache das Netzwerk durch die Antisymmetrie-Forderung $\forall (v,w) \in V\times V: f(v,w) = - f(w,v)$ und führe dazu vorhandene Rückwärtskanten mit ihren Vorwärtskanten zusammen und vervollständige $E$ zu $E'$ um bisher nicht vorhandene Rückwärtskanten mit Kantengewicht $0$. \\
+
+\Flue heißt dadurch nun \tbf{Fluss} falls es die Antisymmetrie-Bedingung erfüllt, und falls $\forall \ (v,w) \in E'$ die Kapazitätsbedingung $f(v,w) \leq c(v,w)$ und $\forall \ v \in V \setminus \{s,t\}$ die Flusserhaltungsbedingung $\sum_{u \in V} \limits f(u,v) = 0$ gilt. \\
+
+Der \tbf{Wert} eines Flusses $f$ ist nun $w(f) := \sum_{v \in V} \limits f(s,v) = \sum_{v \in V} \limits f(v,t)$ \\
+
+\Flue heißt ein \tbf{Präfluss} wenn es die Kapazitäts- und Antisymmetriebedingung erfüllt und $\forall \ v \in V \setminus \{s\}$ gilt $\sum_{u \in V} \limits f(u,v) \geq 0$ (es fließt mindestens soviel in $v$ hinein wie heraus). \\
+
+(Alle folgenden Definitionen sind immer bzgl. eines Präflusses $f$ zu verstehen.) \\
+
+Der \tbf{Flussüberschuss} eines Knoten $v \in V \setminus \{t\}$ ist $e(v) := \sum_{u \in V} \limits f(u,v)$. \\
+
+Als \tbf{Restkapazität} definieren wir $r_f : E' \rightarrow \mathbb{R}$ mit $\forall (v,w) \in E': r_f(v,w) := c(v,w) - f(v,w)$ \\
+
+Die \tbf{Residualkanten} sind $E_f := \{ (v,w) \in E' \ | \ r_f(v,w) > 0 \}$ \\
+
+Als \tbf{Residualgraph} bezeichnen wir $D_f(V,E_f)$ \\
+
+$d: V \rightarrow \natn \cup \{\infty\}$ heißt \tbf{zulässige Markierung} falls $d(s) = |V|, d(t) = 0$ und $\forall v \in V \setminus \{t\}, (v,w) \in E_f$ gilt $d(v) \leq d(w) + 1$ \\
+
+$v \in V \setminus \{t\}$ heißt \tbf{aktiv} wenn $e(v) > 0$ und $d(v) < \infty$ \\
+
+$\tbf{\tsc{Push}}(v,w)$ ist zulässig falls $v$ aktiv ist, $r_f(v,w) > 0$ und $d(v) = d(w) + 1$.
+
+\begin{algorithm}
+\caption{$\tsc{Push}(v,w)$}
+\begin{algorithmic}
+\Eingabe{$v, w \in V$ mit $v$ aktiv, $r_f(v,w) > 0$ und $d(v) = d(w) + 1$}
+\Seffekte{Flussüberschuss von $v$ wird über $(v,w)$ zu $w$ geleitet}
+\STATE $\Delta \agn min\{e(v), r_f(v,w)\}$
+\STATE $f(v,w) \agn f(v,w) + \Delta$
+\STATE $f(w,v) \agn f(w,v) - \Delta$
+\STATE (Berechne Restkapazitäten und Überschuss neu)
+\end{algorithmic}
+\end{algorithm}
+
+$\tbf{\tsc{Relabel}}(v)$ ist zulässig falls $v$ aktiv ist und falls \textit{kein} $w \in V$ mit $r_f(v,w) > 0$ und $d(v) = d(w) + 1$ \textit{existiert}.
+
+\begin{algorithm}
+\caption{$\tsc{Relabel}(v)$}
+\begin{algorithmic}
+\Eingabe{$v \in V$ mit $v$ aktiv und $\forall w \in V$ mit $r_f(v,w) > 0$ gilt $d(v) \leq d(w)$}
+\Seffekte{$d(v)$ wird erhöht}
+\STATE $d(v) := \begin{cases} \infty & \text{falls } \{w \ | \ r_f(v,w) > 0 \} = \emptyset \\ min\{d(w) + 1 \ | \ r_f(v,w) > 0 \} & \text{sonst} \end{cases}$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Algorithmus von \textsf{Goldberg} und \textsf{Tarjan}}
+\begin{algorithmic}
+\Eingabe{Netzwerk \Nw}
+\Ausgabe{Maximalfluss $f$ von $s$ nach $t$}
+\FORALL{$(v,w) \in E'$}
+	\STATE $f(v,w) \agn 0$
+	\STATE $r_f(v,w) \agn c(v,w)$
+\ENDFOR
+\STATE $d(v) \agn |V|$
+\FORALL{$v \in V \setminus \{s\}$}
+	\STATE $f(s,v) \agn c(s,v), r_f(s,v) \agn 0$
+	\STATE $f(v,s) \agn -c(s,v), r_f(v,s) \agn c(v,s) - f(v,s)$
+	\STATE $d(v) \agn 0$
+	\STATE $e(v) \agn c(s,v)$
+\ENDFOR
+\WHILE{aktiver Knoten $v \in V$ existiert}
+	\STATE Führe zulässiges \tsc{Push}(v,w) oder \tsc{Relabel}(v) aus
+\ENDWHILE
+\STATE Gebe $f$ aus
+\end{algorithmic}
+\end{algorithm}
+
+Für den Algorithmus von \textsf{Goldberg} und \textsf{Tarjan} gilt, dass falls für $v \in V$ $d(v) < |V|$ ist, $d(v)$ eine untere Schranke für den Abstand von $v$ zu $t$ in $D_f$ ist. Analog ist für $d(v) > |V|$ $t$ in $D_f$ von $v$ aus unerreichbar und $d(v) - |V|$ eine untere Schranke für den Abstand von $v$ zu $s$ in $D_f$. \\
+
+\begin{lemma}\label{PushXORRelabel} 
+ Für einen aktiven Knoten $v \in V$ zu einem Präfluss $f$ und einer zulässigen Markierung $d$ ist entweder \tsc{Push} oder \tsc{Relabel} zulässig.
+\end{lemma}
+
+Beweis: Die Zulässigkeits-Bedingung von \tsc{Relabel} ist das Negat der Zulässigkeits-Bedingung von \tsc{Push}.
+
+\begin{lemma}
+ Während des Algorithmus von \textsf{Goldberg} und \textsf{Tarjan} ist $f$ stets ein Präfluss und $d$ stehts eine zulässige Markierung.
+\end{lemma}
+
+Beweis: Das Lemma folgt durch Induktion über die Anzahl der Operationen und Fallunterscheidung zwischen den Operationen unmittelbar wegen der Forderungen für zulässige Operationen. \\
+
+\begin{lemma}\label{keinSTWeg}
+ In einem Residualgraph $D_f$ zu einem Präfluss $f$ und zulässigem $d$ ist $t$ von $s$ aus unerreichbar.
+\end{lemma}
+
+Beweis: Jeder Weg von $s$ nach $t$ würde wegen $d(v) \leq d(w)$ für Kanten $(v,w)$ auf dem Weg und $d(t) = 0$ zu einem Widerspruch zu $d(s) = |V|$ führen.
+
+\begin{satz}[\tbf{Maximalität des Algorithmus von \textsf{Goldberg} und \textsf{Tarjan}}]
+ Falls der Algorithmus von \textsf{Goldberg} und \textsf{Tarjan} mit endlichen Markierungen terminiert ist der konstruierte Präfluss ein Maximalfluss.
+\end{satz}
+
+Beweis: Algorithmus terminiert $\overset{\text{Lemma \ref{PushXORRelabel}}}{\Longrightarrow}$ keine Knoten mehr aktiv. Alle Markierungen endlich $\Ra$ alle Überschüsse $0$ $\Ra$ $f$ Fluss. Lemma \ref{keinSTWeg} $\Ra$ kein erhöhender s-t-Weg. \\
+
+\begin{lemma}\label{sErreichbar}
+ Falls für einen Präfluss $f$ und ein $v \in V$ $e(v) > 0$ gilt ist $s$ in $D_f$ von $v$ aus erreichbar.
+\end{lemma}
+
+Beweis: Sei $S_v$ die Menge aller von $v$ in $D_f$ erreichbaren Knoten. Von unerreichbaren $u \in V \setminus S_v$ zu erreichbaren $w \in S_v$ fließt nichts positives: $0 = r_f(w,u) = c(w,u) - f(w,u) \geq 0 + f(u,w) \ (*)$\\
+$\sum_{w \in S_v} \limits e(w) = \sum_{w \in S_v, u \in V} \limits f(u,w) = \sum_{w \in S_v, u \in V \setminus S_v} \limits f(u,w) + \underbrace{\sum_{u,w \in S_v} \limits f(u,w)}_{= 0} \overset{(*)}{\leq} 0$ \\
+$f$ Präfluss $\Ra$ $\sum_{w \in S_v \setminus \{s\}} \limits e(w) \geq 0$ $\overset{e(v) > 0}{\Longrightarrow}$ $s \in S_v$
+
+\begin{lemma}\label{dSchranke}
+ Während des Algorithmus gilt $\forall \ v \in V$ $d(v) \leq 2|V| - 1$.
+\end{lemma}
+
+Beweis: Induktion über \tsc{Relabel}-Operationen: IA: \checkmark \\ IS: $\tsc{Relabel}(v)$ zulässig $\Ra$ $e(v) > 0$ $\overset{\text{Lemma \ref{sErreichbar}}}{\Longrightarrow}$ $\exists$ v-s-Weg der Länge $l \leq |V| - 1$ $\overset{\text{d zulässig}}{\Longrightarrow}$ $d(v) \leq d(s) + l \leq 2|V| - 1$
+
+\begin{lemma}\label{RelabelSchranke}
+ Es werden je $v \in V$ höchstens $2|V| - 1$ $\tsc{Relabel}(v)$ also insgesamt höchstens $2|V|^2$ \tsc{Relabel} ausgeführt.
+\end{lemma}
+
+Beweis: \tsc{Relabel} erhöht $d(v)$ $\overset{\text{Lemma \ref{dSchranke}}}{\Longrightarrow}$ Behauptung \\
+
+Ein $\tsc{Push}(v,w)$ heißt \tbf{saturierend} falls danach $r_f(v,w) = 0$ gilt. \\
+
+\begin{lemma}\label{satPushSchranke}
+ Es werden höchstens $2|V||E|$ saturierende \tsc{Push} ausgeführt. 
+\end{lemma}
+
+Beweis: Zulässigkeit $\Ra$ zwischen einem saturierendem und dem nächsten $\tsc{Push}(v,w)$ muss $d(w)$ um mindestens $2$ erhöht werden. Nach dem letzten $\tsc{Push}(v,w)$ gilt nach Lemma \ref{dSchranke} $d(v) + d(w) \leq 4|V| - 2$. Also können höchstens $2|V|$ saturierende $\tsc{Push}(v,w)$ stattgefunden haben. Also insgesamt höchstens $2|V||E|$ saturierende \tsc{Push}. \\
+
+\begin{lemma}
+ Es werden höchstens $4|V|^2|E|$ nicht saturierende \tsc{Push} ausgeführt. 
+\end{lemma}
+
+Beweis: Da für jedes nicht-saturierende $\tsc{Push}(v,w)$ $v$ inaktiv und evtl. $w$ mit $d(w) = d(v) - 1$ aktiv wird erniedrigt es $D := \sum_{v \in V \setminus \{s,t\} \text{aktiv}} \limits d(v)$ um mindestens 1. Da das aktivierte $w$ Lemma \ref{dSchranke} erfüllt erhöht jedes saturierende $\tsc{Push}(v,w)$ $D$ um höchstens $2|V| - 1$ $\overset{\text{Lemma \ref{satPushSchranke}}}{\Longrightarrow}$ saturierenden \tsc{Push} erhöhen $D$ um höchstens $(2|V|-1)(2|V||E|)$. Lemma \ref{RelabelSchranke} $\Ra$ $D$ kann durch \tsc{Relabel} um höchstens $(2|V|-1)|V|$ erhöht werden. Da $D$ nur so stark verringert wie erhöht werden kann ergeben sich insgesamt höchstens $4|V|^2|E|$ nicht-saturierende \tsc{Push}. \\
+
+\begin{satz}[\tbf{Termination des Algorithmus von \textsf{Goldberg} und \textsf{Tarjan}}]
+  Der Algorithmus von \textsf{Goldberg} und \textsf{Tarjan} terminiert nach höchstens $O(|V|^2|E|)$ zulässigen \tsc{Push} oder \tsc{Relabel}-Operationen.
+\end{satz}
+
+Beweis: Vorangehende Lemmata. \\
+
+Die tatsächliche Laufzeit des Algorithmus von \textsf{Goldberg} und \textsf{Tarjan} ist stark von der Wahl der aktiven Knoten und der ``zu pushenden'' Kanten abhängig:
+
+\begin{description}
+ \item[FIFO-Implementation] $\in O(|V|^3)$ (mit dynam. Bäumen $O(|V||E| \text{ log } \frac{|V|^2}{|E|})$)
+ \item[Highest-Label-Implementation] $\in O(|V|^2|E|^{1/2})$
+ \item[Excess-Scaling-Implementation] $\in O(|E| + |V|^2 \text{ log } C)$ (mit $C$ maximales Kantengewicht und für $\tsc{Push}(v,w)$ $e(v)$ ``groß'' und $e(w)$ klein)
+\end{description}
+
+
+\newpage
+\section{Kreisbasen minimalen Gewichts}
+\subsection{Kreisbasen}
+Ein \tbf{Kreis} ist ein Teilgraph $C = (V_C, E_C)$ von \Gr in dem alle Knoten geraden Grad haben. \\
+
+Ein \tbf{einfacher Kreis} ist ein zusammenhängender Teilgraph $C = (V_C, E_C)$ von \Gr in dem alle Knoten Grad $2$ haben. \\
+
+Wir identifizieren einen Kreis mit seiner Kantenmenge und schreiben ihn als $|E|$-dimensionalen \tbf{Vektor} über $\{0,1\}$. \\
+
+Die Menge aller Kreise induziert einen \tbf{Kreisraum} genannten Vektorraum $\calC$ dessen Addition die \tbf{symmetrische Differenz} $\oplus$ der Kantenmengen ist. \\
+
+Die Begriffe \tbf{Dimension, linear (un)abhängig} und \tbf{Basis} ergeben sich vollkommen kanonisch. \\
+
+Eine \tbf{Fundamentalbasis} eines zusammenhängenden Graphen kann aus einem aufspannenden Baum $T$ konstruiert werden indem jede Nichtbaumkante $\{v,w\}$ um den eindeutigen Weg in $T$ von $v$ nach $w$ zu einem \tbf{Fundamentalkreis} ergänzt wird. \\
+
+dim$(\calC) = |E| - |V| + \calK(G)$ mit $\calK(G) =$ Anzahl der Zusammenhangskomponenten von $G$ \\
+
+\tbf{Gewicht einer Kreisbasis} $\calB$ ist $w(\calB) := \sum_{C \in \calB} \limits w(C) = \sum_{C \in \calB} \limits \sum_{e \in C} \limits w(w)$ \\
+
+\tbf{\tsc{Minimum Cycle Basis}-Problem}: Finde zu einem Graphen \Gr und einer Gewichtsfunktion \Gwfktp eine Kreisbasis von $G$ minimalen Gewichts. \\
+
+Jede $MCB$ von $G$ enthält zu jeder Kante einen Kreis minimalen Gewichts, der diese Kante enthält. \\
+
+\subsection{Das Kreismatroid}
+$(\calC,\calU)$ mit $\calU := \{ U \subseteq C \ | \ U \text{ linear unabhängig} \}$ ist ein Unabhängigkeitssystem.
+
+\begin{satz}[\tbf{Austauschsatz von Steinitz}]
+ Eine Basis $B$ eines endlichen Vektorraums $V$ ist nach dem Austausch von beliebig vielen ihrer Vektoren mit geeignet gewählten Vektoren einer linearen unabhängigen Teilmenge von $V$ immer noch eine Basis.
+\end{satz}
+
+Kein Beweis im Skript angegeben. \\
+
+\begin{satz}[\tbf{Kreismatroid}]
+ $(\calC,\calU)$ ist ein Kreismatroid von $G$ genannter Matroid.
+\end{satz}
+
+Beweis: Der Austauschsatz von Steinitz liefert direkt die nötige Austauscheigenschaft. \\
+
+\begin{algorithm}
+\caption{$\tsc{MCB-Greedy-Algorithmus}(\calC)$}
+\begin{algorithmic}
+\Eingabe{Menge $\calC$ aller Kreise in \Gr}
+\Ausgabe{MCB von $G$}
+\STATE Sortiere $\calC$ aufsteigend nach Gewicht
+\STATE $\calB \agn \emptyset$
+\FOR{$i = 1, \ldots, |C|$}
+	\IF{$\calB \cup \{C_i\}$ linear unabhängig}
+		\STATE $\calB \agn \calB \cup \{C_i\}$
+	\ENDIF
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+Da die Anzahl der Kreise in einem Graphen exponentiell in $|V| + |E|$ sein kann ist dieser Greedy-Algorithmus nicht polynomiell. \\
+
+\subsection{Der Algorithmus von \textsf{Horton}}
+\begin{lemma}\label{Kreisbasiszerlegung}
+ Falls $C = C_1 \oplus C_2 \in \calB$ und $\calB$ eine Kreisbasis ist, dann ist entweder $\calB \setminus \{C\} \cup \{C_1\}$ oder $\calB \setminus \{C\} \cup \{C_2\}$ auch eine Kreisbasis.
+\end{lemma}
+
+Beweis: Falls $C_1$ durch $\calB \setminus \{C\}$ darstellbar ist, ist $\calB \setminus \{C\} \cup \{C_2\}$ eine Basis. Andernfalls ist $C_2$ durch $\calB \setminus \{C\}$ darstellbar und damit $\calB \setminus \{C\} \cup \{C_1\}$ eine Basis. \\
+
+\begin{lemma}\label{Kreisbasiswegersetzung}
+ Für $x,y \in V$ und einen Weg $P$ von $x$ nach $y$ kann jeder Kreis $C$ einer Kreisbasis $\calB$ von $G$, der $x$ und $y$ enthält, durch einen Kreis $C'$, der $P$ enthält, ersetzt werden.
+\end{lemma}
+
+Beweis: Folgt direkt aus dem vorherigen Lemma \ref{Kreisbasiszerlegung} und der Tatsache, dass $C_1 = C_2 - C = C_2 \oplus C$.
+
+\begin{lemma}\label{KreisbasisSP}
+  Jeder Kreis $C$ einer MCB $\calB$, der zwei Knoten $x,y \in V$ enthält, enthält auch einen kürzesten Weg zwischen $x$ und $y$.
+\end{lemma}
+
+Beweis: Annahme: Beide Wege zwischen $x$ und $y$ in $C$ sind keine kürzesten Wege sondern $P$. Lemma \ref{Kreisbasiswegersetzung} $\Ra$ Erzeugung einer Basis geringeren Gewichts durch einen Kreis $C'$ der $P$ enthält möglich. Widerspruch zur Minimalität von $\calB$.
+
+\begin{satz}[\tbf{Satz von \textsf{Horton}}]
+ Für jeden Kreis $C$ einer MCB und jeden Knoten $v$ auf $C$ existiert eine Kante $\{u,w\} \in C$ so dass $C = SP(u,v) + SP(w,v) + \{u,w\}$.
+\end{satz}
+
+Beweis: Indiziere die Knoten eines beliebigen Kreises $C$ entlang ihrer Kanten zu $v, v_2, \ldots, v_n, v$. Sei $Q_i$ jeweils der Weg auf $C$ von $v$ über $v_2$ usw. nach $vi$ und $P_i$ jeweils der Weg auf $C$ von $v_i$ über $v_{i+1}$ usw. nach $v$. Lemma \ref{KreisbasisSP} $\Ra$ $Q_i$ oder $P_i$ kürzester Weg. Sei nun $k$ der größte Index für den $Q_k$ kürzester Weg von $v$ nach $v_k$ ist $\Ra$ $C = Q_k \oplus \{v_k, v_{k+1}\} \oplus P_{k+1}$ \\
+
+\begin{algorithm}
+\caption{Algorithmus von \textsf{Horton} $\in O(|V||E|^3)$}
+\begin{algorithmic}
+\Eingabe{\Gr}
+\Ausgabe{MCB von $G$}
+\STATE $\calH \agn \emptyset$
+\FORALL{$v \in V$ und $\{u,w\} \in E$}
+	\STATE Berechne $C_v^{uw} = SP(u,v) + SP(w,v) + \{u,w\}$
+	\IF{$C_v^{uw}$ einfacher Kreis}
+		\STATE $\calH \agn \calH \cup \{C_v^{uw}\}$
+	\ENDIF
+\ENDFOR
+\STATE Gebe das Ergebnis von $\tsc{MCB-Greedy-Algorithmus}(\calH)$ zurück
+\end{algorithmic}
+\end{algorithm}
+
+Durch schnelle Matirzen-Multiplikation kann die Laufzeit des Algorithmus von \textsf{Horton} auf $O(|V| |E|^\omega)$ mit $\omega < 2,376$ reduziert werden. \\
+
+\subsection{Der Algorithmus von \textsf{de Pina}}
+\begin{algorithm}
+\caption{Algorithmus von \textsf{de Pina} $\in O(|E|^3 + |E||V|^2 \text{ log } |V|)$}
+\begin{algorithmic}
+\Eingabe{\Gr, Nichtbaumkanten $e_1, \ldots, e_N$}
+\Ausgabe{MCB von $G$}
+\FOR{$j = 1, \ldots, N$}
+	\STATE $S_{1,j} \agn \{e_j\}$
+\ENDFOR
+\FOR{$k = 1, \ldots, N$}
+	\STATE $C_k \agn$ kürzester Kreis, der eine ungerade Anzahl von Kanten aus $S_{k,k}$ enthält
+	\FOR{$j = k + 1, \ldots, N$}
+		\STATE $S_{k+1,j} \agn \begin{cases} S_{k,j} & \text{falls } C_k \text{ eine gerade Anzahl Kanten aus } S_{k,j} \text{ enthält} \\ S_{k,j} \oplus S_{k,k} & \text{sonst} \end{cases}$
+	\ENDFOR
+\ENDFOR
+\STATE Gebe $\{C_1, \ldots, C_N\}$ aus
+\end{algorithmic}
+\end{algorithm}
+
+Wir formulieren eine algebraische Version des Algorithmus um ihn schneller auszuführen und seine Korrektheit zu beweisen. \\
+
+Dazu stellen wir Kreise nun durch ihre Nichtbaumkanten, also als $|E| - |V| + \calK(G)$-dimensionale Vektoren über $\{0,1\}$ dar. \\
+
+Auch die ``Zeugen'' $S_{k,k}$ stellen wir also solche Vektoren dar, was uns die Verwendung der Biliniearform $\langle C,S \rangle = \bigoplus_{i=1}^N \limits (c_i \odot s_i)$ erlaubt. \\
+
+Da diese Bilinearform nicht postitiv definit $(\langle x,x \langle \not \Ra x = 0)$ ist sie kein Skalarprodukt. Da wir das gar nicht benötigen sprechen wir dennoch von Orthogonalität. \\
+
+$\langle C,S \rangle = \begin{cases} 0 & \Lra C \text{ und } S \text{ orthogonal} \\ 1 & \Lra C \text{ hat eine ungerade Anzahl Einträge mit } S \text{ gemeinsam} \end{cases}$ 
+
+\begin{algorithm}
+\caption{Algorithmus von \textsf{de Pina} algebraisch}
+\begin{algorithmic}
+\Eingabe{\Gr, Nichtbaumkanten $e_1, \ldots, e_N$}
+\Ausgabe{MCB von $G$}
+\FOR{$j = 1, \ldots, N$}
+	\STATE $S_j \agn \{e_j\}$
+\ENDFOR
+\FOR{$k = 1, \ldots, N$}
+	\STATE $C_k \agn$ kürzester Kreis mit $\langle C_k, S_k \rangle = 1$
+	\FOR{$j = k + 1, \ldots, N$}
+		\IF{$\langle C_k, S_j \rangle = 1$}
+			\STATE $S_j \agn S_j \oplus S_k$
+		\ENDIF
+	\ENDFOR
+\ENDFOR
+\STATE Gebe $\{C_1, \ldots, C_N\}$ aus
+\end{algorithmic}
+\end{algorithm}
+
+\begin{lemma}\label{PinaInvariante}
+ Der Algorithmus von \textsf{de Pina} erhält die Invariante $\forall \ 1 \leq i \leq j \leq N:$ $\langle C_i,S_{j+1} \rangle = 0$.
+\end{lemma}
+
+Beweis: Induktive Fallunterscheidung unter Ausnutzung der Bilinearität. \\
+
+Das vorangegange Lemma erlaubt es uns den Algorithmus von \textsf{de Pina} weiter zu vereinfachen zum \tsc{Simple MCB}-Algorithmus. \\
+
+\begin{algorithm}
+\caption{\tsc{Simple MCB}}
+\begin{algorithmic}
+\Eingabe{\Gr, Nichtbaumkanten $e_1, \ldots, e_N$}
+\Ausgabe{MCB von $G$}
+\STATE $S_1 \agn \{e_1\}$
+\STATE $C_1 \agn$ kürzester Kreis mit $\langle C_1, S_1 \rangle = 1$
+\FOR{$k = 2, \ldots, N$}
+	\STATE $S_k \agn$ beliebige, nichttriviale Lsg. des Systems $\langle C_i, X \rangle_{i=1,\ldots,k-1} = 0$
+	\STATE $C_k \agn$ kürzester Kreis mit $\langle C_k, S_k \rangle = 1$
+\ENDFOR
+\STATE Gebe $\{C_1, \ldots, C_N\}$ aus
+\end{algorithmic}
+\end{algorithm}
+
+\begin{satz}[\tbf{Korrektheit des Algorithmus von \textsf{de Pina}}]
+ Der \tsc{Simple MCB}-Algorithmus, und damit auch der Algorithmus von \textsf{de Pina}, berechnen eine MCB.
+\end{satz}
+
+Beweis: Lemma \ref{PinaInvariante} $\Ra$ $\{C_1, \ldots, C_N\}$ linear unabhängig und damit Basis. \\
+Angenommen $\{C_1, \ldots, C_N\}$ sei keine MCB, aber $\calB$. Sei $i$ minimaler Index mit $\{C_1, \ldots, C_i\} \subseteq \calB$ und für alle MCB $\calB'$ $\{C_1, \ldots, C_i, C_{i+1}\} \nsubseteq \calB'$. $\calB$ Basis $\Ra$ $\exists \ D_1, \ldots, D_l \in \calB$ mit $C_{i+1} = D_1 \oplus \ldots \oplus D_l$. $\langle C_{i+1}, S_{i+1} \rangle = 1$ $\Ra$ $\exists \ D_j \in \{D_1, \ldots, D_l\}$ mit $\langle D_j, S_i \rangle = 1$. $C_i+1$ kürzester Kreis mit $\langle C_{i+1}, S_{i+1} \rangle = 1$ $\Ra$ $w(C_{i+1}) \leq w(D_j)$. $\calB^* := \calB \setminus \{D_j\} \cup \{D_{i+1}\}$ MCB da $w(\calB^*) \leq w(\calB)$. Invariante aus Lemma \ref{PinaInvariante} $\Ra$ $D_j \not \in \{C_1, \ldots, C_i\}$ $\Ra$ $\{C_1, \ldots, C_i, C_{i+1}\} \subseteq \calB^*$ im Widerspruch zur Wahl von $i$. \\
+
+Die Laufzeit des Algorithmus von \textsf{de Pina} kann u.A. durch eine verzögerte Aktualisierung der $S_j$ auf $O(|E|^2 |V| + |E||V|^2 \text{ log } |V|)$ reduziert werden. \\
+
+Die Laufzeit kann durch eine Beschränkung der Wahl von $C_k$ auf $\calH$ aus dem Algorithmus von \textsf{Horton} empirisch weiter reduziert werden. \\
+
+\subsection{Ein MCB-Zertifikat}
+\begin{algorithm}
+\caption{\tsc{MCB-Checker}}
+\begin{algorithmic}
+\Eingabe{\Gr, Kreise $C_1, \ldots, C_N$}
+\Ausgabe{Zertifikat zur Prüfung ob $\{C_1, \ldots, C_N\}$ eine MCB von $G$ ist}
+\STATE $\{e_1, \ldots, e_N\} \agn$ Nichtbaumkanten eines aufspannenden Waldes
+\STATE $C \agn (\tilde{C_1} \ldots \tilde{C_N})$ wobei $\tilde{C_i}$ der Inzidenzvektor von $C_i$ mit $\{e_1, \ldots, e_N\}$ ist
+\STATE Gebe $C^{-1}$ aus
+\end{algorithmic}
+\end{algorithm}
+
+$C$ invertierbar $\Lra$ $\{C_1, \ldots, C_N\}$ linear unabhängig, also Basis. \\
+
+\begin{lemma}\label{OrthogonaleKreisraumDimension}
+ Für den Unterraum $S = (S_1 \ldots S_k)$ mit $S_1, \ldots, S_k \in \{0,1\}^N$ linear unabhängig gilt $S^\bot = \calL(\langle S_i, X \rangle_{i=1,\ldots,k} = 0)$ mit dim$(S^\bot) = N - k$.
+\end{lemma}
+
+\begin{lemma}
+ Für linear unabhängige $S_1, \ldots, S_n$ und $C_1, \ldots, C_N$ mit $C_i$ jeweils kürzester Kreis mit $\langle S_i, C_i \rangle = 1$ ist $\{C_1, \ldots, C_N\}$ eine MCB.
+\end{lemma}
+
+
+\begin{lemma}
+ Für ein $A = (A_1 \ldots A_N)$ mit $A_1, \ldots, A_N \in \{0,1\}^N, \begin{pmatrix} S_1 \\ \vdots \\ S_N \end{pmatrix} = A^{-1}$ und $A_i$ jeweils kürzester Kreis mit $\langle S_i, A_i \rangle = 1$ gilt für jede Kreisbasis $\calB$ $\sum_{i=1}^{N} \limits w(A_i) \leq w(\calB)$.
+\end{lemma}
+
+
+\newpage
+\section{Lineare Programmierung}
+\tbf{Standardform-Bestimmung eines LP}: Bestimme zu gegebenen $A \in \Rmn, b \in \Rm, c \in \Rn$ ein $x \in \Rn$, so dass $\sum_{i=1}^{n} \limits c_i \cdot x_i = c^T x$ minimiert (bzw. maximiert) wird unter den Nebenbedingungen $Ax \geq b$ (bzw. $Ax \leq b$) und $x \geq 0$. \\
+
+Überführung in Standardform: $= \ \rightsquigarrow \ \leq$ und $\geq$. $\ \geq \ \rightsquigarrow \ - \leq -$. $\ x_i < 0$ kann durch $x_i' - x_i''$ mit $x_i' \geq 0$ und $x_i'' \geq 0$ erreicht werden. \\
+
+Zu einem \tbf{primalen Programm} $P:$ min$(c^T x)$ unter $Ax \geq b$ und $x \geq 0$ mit $A \in \Rmn, b \in \Rm, c \in \Rn$ heißt $D:$ max$(y^T b)$ unter $y^T A \leq c^T$ und $y \geq 0$ mit $y \in \Rm$ das \tbf{duale Programm}. \\
+
+\begin{satz}[\tbf{Schwacher Dualitätssatz}]
+ Für alle $x_0 \in \Rn, y_0 \in \Rm$ welche die Nebenbedingungen des primalen Programms $P$ und des zugehörigen dualen Programms $D$ erfüllen gilt: $y_0^T b \leq c^T x_0$.
+\end{satz}
+
+Beweis: $y_0^T b \leq y_0^T (A x_0) = (y_0^T A) x_0 \leq c^T x_0$ \\
+
+\subsection{Geometrische Repräsentation von LPs}
+$P \subseteq \Rn$ \tbf{konvex} falls $\forall \ s,t \in P, 0 < \lambda < 1$ auch die \tbf{Konvexkombination} $\lambda s + (1 - \lambda) t$ in $P$ ist. \\
+
+Ein $p \in P$ mit  $P$ konvex heißt \tbf{Extrempunkt} falls es keine Konvexkombination zweier Punkte in $P$ gibt die gleich $p$ ist. \\
+
+Die \tbf{konvexe Hülle} von $P \subseteq \Rn$ ist die kleinste konvexe Menge $P' \subseteq \Rn$ mit $P \subseteq P'$. \\
+
+Ein \tbf{Halbraum} ist eine Menge $S := \{ s \in \Rn \ | \ a^T s \leq \lambda \}$ mit $a \in \Rn, \lambda \in \Ree$. \\
+
+Ein \tbf{konvexes Polyeder} ist eine Menge $P \subseteq \Rn$, welche der Schnitt endlich vieler Halbräume ist. \\
+
+Eine \tbf{Ecke} ist eine Extrempunkt eines konvexen Polyeders. \\
+
+Ein \tbf{konvexes Polytop} ist ein beschränkter konvexer Polyeder. \\
+
+Jede Nebenbedingung, also jede $i$-te Zeile der Gleichung $Ax \geq b$ bzw. $Ax \leq b$, eines LPs definiert einen Halbraum $a_i^T \geq b_i$ bzw $a_i^T \leq b_i$, dessen Grenze die Hyperebene $a_i^T = b_i$ ist. \\
+
+Die \tbf{zulässigen Lösungen} eines LPs bilden daher ein konvexes Polyeder. \\
+
+Die Zielfunktion $c^T x$ gibt die Richtung des \tbf{Zielvektors} $c$ an. \\
+
+Ein \tbf{beschränktes LP} ist ein LP, dass in Richtung seines Zielvektors beschränkt ist. \\
+
+\begin{satz}[\tbf{Optimale Ecken eines LP}]
+  Ein beschränktes LP besitzt eine Optimallösung, deren Wert einer Ecke des Lösungspolyeders entspricht. Eine Ecke ist genau dann optimal, wenn sie keine verbessernde Kante besitzt.
+\end{satz}
+
+\subsection{Algorithmen zur Lösung von LPs}
+Die \tbf{Simplexmethode} tauscht Ecken des Lösungspolyeders entlang verbessender Kanten. Da dabei alle Ecken getauscht werden können (``schiefer Würfel'') ist die worst-case-Laufzeit exponentiell. \\
+
+Die \tbf{Ellipsoidmethode} ist der erste theoretisch polynomielle Algorithmus. Er unterliegt in der Praxis dennoch der Simplexmethode, welche schnelle ``Warmstarts'' erlaubt. \\
+
+Die \tbf{Innere-Punkte-Methode} ist ebenfalls polynomiell, aber nur in einzelnen Fällen praktikabler als die Simplexmethode. \\
+
+Ganzzahlige LPs sind im Allgemeinen $\NP$-schwer und können durch einen Verzicht auf die Ganzzahligkeit (Relaxion) und anschließendes heuristisches ``runden'' approximativ gelöst werden. \\
+
+
+\newpage
+\section{Approximationsalgorithmen}
+Sei nun $\calA$ ein \tbf{Approximationsalgorithmus} für ein \tbf{Optimierungsproblem} $\Pi$, der zu jeder \tbf{Instanz} $I \in D_\Pi$ jeweils eine zulässige, aber nicht notwendigerweise optimale Lösung mit dem Wert $\calA(I)$ berechnet. \\
+
+Mit $OPT(I)$ bezeichnen wir den Wert einer optimalen Lösung für $I$. \\
+
+$\calA$ heißt \tbf{absoluter Approximationsalgorithmus} (AAA) falls ein $K \in \natn$ existiert, so dass $\forall \ I \in D_\Pi$ gilt: $|A(I) - OPT(I) \leq K$. \\
+
+\tbf{\tsc{Knapsack}-Problem} $\in \NPC$: Finde zu einer Menge $M$, Funktionen $\omega: M \rightarrow \nat$, $c: M \rightarrow \natn$ und $W \in \natn$ ein $M' \subseteq M$ mit $\sum_{a \in M'} \limits \omega(a) \leq W$, das $\sum_{a \in M'} \limits c(a)$ maximiert. \\
+
+\begin{satz}[\tbf{Kein AAA für \tsc{Knapsack}}]
+ $\calP \not = \NP$ $\Ra$ $\nexists$ absoluter Approximationsalgorithmus für \tsc{Knapsack}.
+\end{satz}
+
+Beweis: Annahme $\exists$ AAA für \tsc{Knapsack}. Definiere zu einer bel. Instanz $I$ mit $M, \omega, c, W$ eine Instanz $I'$ mit $M, \omega, W$ und $c'(m) := (K + 1) \cdot c(m)$ $\forall \ m \in M$. \\ 
+$\calA(I')$ induziert eine Lösung $M^*$ für $I$ mit $|(K + 1) \cdot c(M^*) - (K + 1) \cdot OPT(I)| \overset{\calA \text{ AAA}}{\leq} K$ \\ $\Ra$ $|c(M^*) - OPT(I)| \leq \frac{K}{K + 1} < 1$ $\overset{OPT(I) \in \nat}{\Longrightarrow}$ \tsc{Knapsack} $\in P$ im Widerspruch zu $\calP \not = \NP$. \\
+
+\subsection{Relative Approximationsalgorithmen}
+Ein \tbf{relativer Approximationsalgorithmus} ist ein polynomialer Algorithmus $\calA$ für ein Optimierungsproblem $\Pi$ für den gilt 
+$$\forall \ I \in D_\Pi \text{ ist } \calR_\calA(I) := \begin{cases} \frac{\calA(I)}{OPT(I)} & \text{falls } \Pi \text{ Minimierungsproblem} \\ \frac{OPT(I)}{\calA(I)} & \text{falls } \Pi \text{ Maximierungsproblem} \end{cases} \leq K \text{ mit } K \geq 1$$ \\
+
+Ein \tbf{$\varepsilon$-approximierender Algorithmus} ist ein relativer Approximationsalgorithmus für den gilt $\calR_\calA := \text{inf}\{ r \geq 1 \ | \ \forall I \in D_\Pi: \calR_\calA(I) \leq r \} \leq 1 + \varepsilon$ \\
+
+Die \tbf{asymptotische Gütegarantie} eines Approximationsalgorithmus $\calA$ ist \\ 
+$\calR_\calA^\infty := \text{inf}\{ r \geq 1 \ | \ \exists \ N > 0 \text{ , so dass } \forall \ I \text{ mit } OPT(I) \geq N \text{ gilt } R_\calA \leq r \}$. \\
+
+\tbf{Allgemeines \tsc{Knapsack}-Problem} $\in \NPC$: Gibt es zu einer Menge $M$ mit $|M| = n$, $\omega_1, \ldots, \omega_n \in \nat$ und $c_1, \ldots c_n, W, C \in \natn$ geeignete $x_1, \ldots, x_n \in \natn$, so dass $\sum_{i = 1}^n \limits x_i \omega_i \leq W$ und $\sum_{i = 1}^n \limits x_i c_i \geq C$ ? \\
+
+\begin{algorithm}
+\caption{\tsc{Greedy-Knapsack} $\in O(n \text{ log } n)$}
+\begin{algorithmic}
+\Eingabe{$\omega_1, \ldots, \omega_n \in \nat, c_1, \ldots c_n, W \in \natn$}
+\Ausgabe{$1$-approximative Lösung $x_1, \ldots, x_n$}
+\STATE Sortiere ``Kostendichten'' $p_i := \frac{c_i}{w_i}$ absteigend und indiziere neu
+\FOR{$i = 1, \ldots, n$}
+	\STATE $x_i \agn \lfloor \frac{W}{w_i} \rfloor$
+	\STATE $W \agn W - x_i \cdot w_i$
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\begin{satz}
+ Der \tsc{Greedy-Knapsack}-Algorithmus $\calA$ erfüllt $\calR_\calA = 2$
+\end{satz}
+
+Beweis: FOLGT NOCH \\
+
+\tbf{\tsc{Bin-Packing}-Problem} $\in \NPC$: Zerlege eine endliche Menge $M = \{a_1, \ldots, a_n\}$ mit einer Gewichtsfunktion $s: M \rightarrow (0,1]$ in möglichst wenige Teilmengen $B_1, \ldots, B_m$, so dass $\forall \ j = 1, \ldots, m$ gilt  $\sum_{a_i \in B_j} \limits s(a_i) \leq 1$. \\
+
+\begin{algorithm}
+\caption{\tsc{Next Fit} $\in O(n)$}
+\begin{algorithmic}
+\Eingabe{Menge $M$, Gewichtsfunktion $s: M \rightarrow (0,1]$}
+\Ausgabe{$1$-approximative Lösung $m$ für \tsc{Bin Packing}}
+\STATE $m \agn 1$
+\FORALL{$a_i \in \{a_1, \ldots a_n\}$}
+	\IF{$s(a_i) > 1 - \sum_{a_j \in B_m} s(a_j)$}
+		\STATE $m \agn m + 1$	
+	\ENDIF
+	\STATE $B_m \agn B_m \cup \{a_i\}$
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\begin{satz}
+ Der \tsc{Next Fit}-Algorithmus $NF$ erfüllt $\calR_{NF} = 2$
+\end{satz}
+
+Beweis: \\
+Seien $B_1, \ldots, B_k$ die zu einer Instanz $I$ von $NF$ benutzten Mengen und jeweils $s(B_i) := \sum_{a_j \in B_i} \limits s(a_j)$. \\
+$\forall \ i = 1, \ldots, k - 1$ gilt $s(B_i) + s(B_{i+1} > 1$ $\Ra$ $\sum_{i=1}^k \limits s(B_i) > \frac{k}{2}$ falls $k$ gerade, bzw. $\sum_{i=1}^{k-1} \limits s(B_i) > \frac{k - 1}{2}$ falls $k$ ungerade \\
+$\Ra$ $\frac{k-1}{2} < OPT(I)$ $\Ra$ $k = NF(I) < 2 \cdot OPT(I) + 1$ $\overset{NF(I) \in \nat}{\Longrightarrow}$ $NF(I) \leq 2 \cdot OPT(I)$ \\
+
+\begin{algorithm}
+\caption{\tsc{First Fit} $\in O(n^2)$}
+\begin{algorithmic}
+\Eingabe{Menge $M$, Gewichtsfunktion $s: M \rightarrow (0,1]$}
+\Ausgabe{Approximative Lösung $m$ für \tsc{Bin Packing}}
+\STATE $m \agn 1$
+\FORALL{$a_i \in \{a_1, \ldots a_n\}$}
+	\STATE $r \agn \text{min}\{ t \leq m + 1 \ | \ s(a_i) \leq 1 - \sum_{a_j \in B_t} s(a_j) \}$
+	\IF{$r = m + 1$}
+		\STATE $m \agn m + 1$	
+	\ENDIF
+	\STATE $B_r \agn B_r \cup \{a_i\}$
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\begin{satz}
+ Der \tsc{First Fit}-Algorithmus $FF$ erfüllt $\calR_{FF}^\infty = \frac{17}{10}$
+\end{satz}
+
+Beweis: ``Zu aufwändig'' ;-) \\
+
+\subsection{Approximationsschemata}
+Ein \tbf{polynomiales Approximationsschema (PAS)} ist eine Familie von Algorithmen $\{ \calA_\varepsilon \ | \ \varepsilon > 0 \}$, so dass $\calA_\varepsilon$ ein $\varepsilon$-approximierender Algorithmus ist. \\
+
+Ein \tbf{vollpolynomiales Approximationsschema (FPAS)} ist eine PAS, dessen Laufzeit polynomial in $\frac{1}{\varepsilon}$ ist. \\
+
+\begin{satz}
+  $\calP \not = \NP$ $\Ra$ $\nexists$ PAS für $\NP$-schwere Optimierungsprobleme das polynomial in $\text{log } \frac{1}{\varepsilon}$ ist.
+\end{satz}
+
+Kein Beweis im Skript angegeben. \\
+
+\tbf{\tsc{Multiprocessor Scheduling}-Problem} $\in \NPC$: Finde zu $n$ Jobs $J_1, \ldots, J_n$ mit Bearbeitungsdauer $p_1, \ldots, p_n$ eine Zuordnung auf $m < n$ Maschinen, die keiner Maschine zwei Jobs gleichzeitig zuordnet und die Gesamtdauer $\tsc{Makespan} := \underset{1 \leq j \leq m}{\text{max}}( \sum_{J_i \text{ auf } M_j} \limits p_i)$ minimiert. \\
+
+Die Entscheidungsvariante von \tsc{Bin-Packing} ist äquivalent zu \tsc{Multiprocessor Scheduling}. \\
+
+\begin{algorithm}
+\caption{\tsc{List Scheduling} $\in O(n)$}
+\begin{algorithmic}
+\Eingabe{Jobs $J_1, \ldots, J_n$, $m$ Maschinen}
+\Ausgabe{Zuweisung der Jobs auf Maschinen}
+\STATE Lege die ersten $m$ Jobs auf die $m$ Maschinen
+\STATE Sobald eine Maschine fertig ist, ordne ihr den nächsten Job zu
+\end{algorithmic}
+\end{algorithm}
+
+\begin{satz}
+ Der \tsc{List Scheduling}-Algorithmus $LS$ erfüllt $\calR_{LS} = 2 - \frac{1}{m}$
+\end{satz}
+
+Beweis: Sei $S_i$ die Startzeit und $T_i$ die Abschlusszeit von $J_i$ im List-Schedule. \\
+Sei $J_k$ der zuletzt beendete Job $\Ra$ $T_k = \tsc{Makespan}_{LS}$. \\
+Vor $S_k$ war keine Maschine untätig: $S_k \leq \frac{1}{m} \cdot \sum_{j \not = k} \limits p_j$ \\
+$T_k = S_k + p_k \leq \frac{1}{m} \cdot \sum_{j \not = k} \limits p_j + p_k = \frac{1}{m} \cdot \sum_{j = 1}^m \limits p_j + (1 - \frac{1}{m}) \cdot p_k \leq T_{OPT} + (1 - \frac{1}{m}) \cdot T_{OPT} = (2 - \frac{1}{m}) \cdot T_{OPT}$
+
+\tsc{List Scheduling} kann zu einem PAS abgewandelt werden: \\
+
+\begin{algorithm}
+\caption{$\calA_l$ für \tsc{Multiprocessor Scheduling} $\in O(m^l + n)$}
+\begin{algorithmic}
+\Eingabe{Jobs $J_1, \ldots, J_n$, $m$ Maschinen, Konstante $1 \leq l \leq n$}
+\Ausgabe{Zuweisung der Jobs auf Maschinen}
+\STATE Ordne die $l$ längsten Jobs den Maschinen nach einem optimalem Schedule zu
+\STATE Ordne die restlichen $n-l$ Jobs mittels \tsc{List Scheduling} zu
+\end{algorithmic}
+\end{algorithm}
+
+\begin{satz}
+ Für das \tsc{List-Scheduling}-PAS $\{ \calA_l \ | \ 1 \leq l \leq n \}$ gilt $$\calR_{\calA_l} \leq 1 + \frac{1 - \frac{1}{m}}{1 + \lfloor \frac{l}{m} \rfloor}$$
+\end{satz}
+
+Beweis: Analog zum vorherigen Beweis sei $J_i$ der zuletzt beendete Job $\ \Ra \ $ $T_i = \tsc{Makespan}_{\calA_l}$. \\
+$\sum_{j=1}^n \limits p_j \geq m \cdot (T_i - p_i) + p_i = m \cdot T_i - (m - 1) \cdot p_i \overset{l \text{ längsten}}{\geq} m \cdot T_i - (m - 1) \cdot p_{l+1}$ \\
+$T_{OPT} \geq \frac{1}{m} \cdot \sum_{j=1}^n \limits p_j$ $\ \Ra \ $ $T_{OPT} + \frac{m - 1}{m} \cdot p_{l+1} \geq T_i \ \ \ \ (1)$ \\
+Mind. eine Maschine muss $1 + \lfloor \frac{l}{m} \rfloor$ Jobs bearbeiten $\ \Ra \ $ $T_{OPT} \geq p_{l+1} \cdot (1 + \lfloor \frac{l}{m} \rfloor) \ \ \ \ (2)$
+$$\Ra \ \calR_{\calA_l} = \frac{T_i}{T_{OPT}} \overset{(1)}{\leq} 1 + \frac{1}{T_{OPT}} \cdot \frac{m - 1}{m} \cdot p_{l+1} \overset{(2)}{\leq} 1 + \frac{m - 1}{m} \cdot \frac{1}{1 + \lfloor \frac{l}{m} \rfloor} = 1 + \frac{1 - \frac{1}{m}}{1 + \lfloor \frac{l}{m} \rfloor}$$
+
+\subsection{Asymptotische PAS für \tsc{Bin Packing}}
+Ein \tbf{asymptotisches PAS (APAS)} ist eine Familie von Algorithmen $\{ \calA_\varepsilon \ | \ \varepsilon > 0 \}$, so dass $\calA_\varepsilon$ ein asymptotisch $\varepsilon$-approximierender Algorithmus ist, d.h. $\calR_{\calA_\varepsilon}^\infty \leq 1 + \varepsilon$ \\
+
+\subsubsection{Ein APAS für \tsc{Bin Packing}}
+Wir konstruieren ein APAS für \tsc{Bin Packing} indem wir zunächst unsere Problemstellung einschränken, dann 2 linear gruppierte Teilinstanzen lösen und am Ende die, bei der Einschränkung unberücksichtigen, ``kleinen Elemente'' durch \tsc{First Fit} hinzufügen. \\
+
+\tbf{\tsc{Restricted-Bin-Packing}$[\delta,m]$-Problem} $\in O(n + c(\delta,m))$: Zerlege eine endliche Menge $M = \{a_1, \ldots, a_n\}$ mit einer Gewichtsfunktion $s: M \rightarrow \{v_1, \ldots, v_m\}$ mit $1 \geq v_1 > \ldots > v_m \geq \delta > 0$ in möglichst wenige Teilmengen $B_1, \ldots, B_m$, so dass $\forall \ j = 1, \ldots, m$ gilt  $\sum_{a_i \in B_j} \limits s(a_i) \leq 1$. \\
+
+Sei nun $n_j$ die Anzahl der Elemente der Größe $v_j$, dann ist ein \tbf{BIN} ein $m$-Tupel $(b_1, \ldots, b_m)$ mit $0 \leq b_j \leq n_j$. \\
+
+Ein \tbf{BIN-TYP} ist ein BIN $T_t = (T_{t1}, \ldots, T_{tm})$ mit $\sum_{j=1}^m \limits T_{tj} \cdot v_j \leq 1$. \\
+
+\begin{lemma}
+ Für festes $m$ und $\delta$ ist die Anzahl möglicher Unterschiedlicher BIN-TYPEN \\
+$q := q(\delta,m) \leq \binom{m + k}{k}$ mit $k = \lfloor \frac{1}{\delta} \rfloor$.
+\end{lemma}
+
+Beweis: Für einen BIN-TYP $T_t = (T_{t1}, \ldots, T_{tm})$ gilt $\sum_{j=1}^m \limits T_{tj} \cdot v_j \leq 1$ \\
+$\forall \ j = 1, \ldots, m$ gilt $v_j \geq \delta$ $\ \Ra \ $ $\sum_{j=1}^m \limits T_{tj} \leq \lfloor \frac{1}{\delta} \rfloor = k$ \\
+Die Wahl der $m$ Stellen des Tupels aus $\natn$, welche höchstens zu $k$ aufsummieren, entspricht der Wahl von $m+1$ Stellen aus $\natn$, die genau zu $k$ aufzsummieren. Das kann man auch als Aufteilen von $k$ Einsen auf $m+1$ Stellen durch $m$ ``Trennwände'' auffassen, was insgesamt einer Belegung von $m + k$ ``Plätzen'' mit $k$ Einsen entspricht $\Ra$ $\binom{m + k}{k}$ Möglichkeiten. \\
+
+Wir können nun eine Lösung einer Instanz von $\tsc{Restricted-Bin-Packing}[\delta,m]$ durch einen $q$-dimensionalen Vektor über $\natn$, der angibt wieviele BINs von jedem BIN-TYP verwendet werden, darstellen. \\
+
+\tbf{ILP zu $\tsc{Restricted-Bin-Packing}[\delta,m]$}: Sei $A := \begin{pmatrix} T_1 \\ \vdots \\ T_q \end{pmatrix} \in \natn^{q \times m}$ und $N := ( n_1, \ldots, n_m)$. Minimiere für $X \in \natn^{1 \times q}$ die Anzahl der BINs $1^T \cdot X^T$ unter der Nebenbedingung $X \cdot A = N$. \\
+
+\begin{lemma}
+ Eine Teillösung einer Instanz $I$ für \tsc{Bin Packing}, bei der für ein $0 < \delta \leq \frac{1}{2}$ alle Elemente größer $\delta$ in $\beta$ BINs gepackt werden, kann zu einer Lösung von $I$ mit höchstens $\beta' \leq \text{max}\{\beta, (1 + 2 \delta) \cdot OPT(I)+1\}$ BINs erweitert werden.
+\end{lemma}
+
+Beweis: Alle bis auf höchstens ein BIN sind mindestens zu $1 - \delta$ gefüllt $\Ra$ $\sum_{i=1}^n \limits s_i \geq (1 - \delta) \cdot (\beta' - 1)$ \\
+$OPT(I) \geq \sum_{i=1}^n \limits s_i$ $\ \Ra \ $ $\beta' \leq \frac{1}{1 - \delta} \cdot OPT(I) + 1 \overset{0 < \delta \leq \frac{1}{2}}{\leq} \frac{1 + \delta - 2 \delta^2}{1 - \delta} \cdot OPT(I) + 1 = (1 + 2 \delta) \cdot OPT(I) + 1$ \\
+
+Übersprungen: Details des Lineares Gruppierens. \\
+
+\begin{algorithm}
+\caption{APAS für \tsc{Bin Packing} $\in O(c_\varepsilon + n \text{ log } n)$}
+\begin{algorithmic}
+\Eingabe{Instanz $I$ mit $n$ Elementen der Größen $s_1 \geq \ldots \geq s_n$ und $\varepsilon$}
+\Ausgabe{Approximationslösung für \tsc{Bin Packing}}
+\STATE $\delta \agn \frac{\varepsilon}{2}$
+\STATE $J \agn$ Instanz von $RBP[\delta, n']$ mit allen Elementen aus $I$ größer $\delta$
+\STATE $k \agn \lceil \frac{\varepsilon^2}{2} \cdot n' \rceil$
+\STATE $m \agn \lfloor \frac{n'}{k} \rfloor$
+\STATE $J_{LO} \agn \bigcup_{j=2}^{m} \limits \{ k$ mal $(j - 1)k + 1$-größte Element$\} \cup \{$ |Rest| mal $(m - 1)k + 1$-größte Element$\}$
+\STATE $J_{HI} \agn J_{LO} \cup \{ k$ mal das größte Element$\}$
+\STATE Löse $J_{LO}$ durch das ILP optimal
+\STATE Füge die $k$ größten Elemente in maximal $k$ zusätzliche BINs
+\STATE Verwende diese BINs für $J_{HI}$ als Lösung auf $J$ 
+\STATE Erweitere diese Lösung mittels \tsc{First Fit} zu einer Lösung von $I$
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Ein AFPAS für \tsc{Bin Packing}}
+
+TODO !!! \\
+
+\newpage
+\section{Randomisierte Algorithmen}
+Ein \tbf{Las Vegas Algorithmus} liefert immer das korrekte Ergebnis, bei zufälliger Laufzeit. \\
+
+Ein \tbf{Monte Carlo Algorithmus mit beidseitigem Fehler} kann sowohl fälschlicherweise Ja, als auch fälschlicherweise Nein antworten. \\
+
+Ein \tbf{Monte Carlo Algorithmus mit einseitigem Fehler} antwortet entweder nie fälschlicherweise Ja, oder er antwortet nie fälschlicherweise Nein. \\
+
+\tbf{$\RP$} ist die Klasse der Entscheidungsprobleme $\Pi$, für die es einen polynomialen Algorithmus $A$ gibt, so dass $\forall \ I \in D_\Pi$ gilt: $\ \Pr[A(I) = ``Ja''] \begin{cases} \geq \frac{1}{2} & I \in Y_\Pi \\ = 0 & I \not \in Y_\Pi \end{cases}$ \\
+
+\tbf{$\PP$} ist die Klasse der Entscheidungsprobleme $\Pi$, für die es einen polynomialen Algorithmus $A$ gibt, so dass $\forall \ I \in D_\Pi$ gilt: $\ \Pr[A(I) = ``Ja''] \begin{cases} > \frac{1}{2} & I \in Y_\Pi \\ < \frac{1}{2} & I \not \in Y_\Pi \end{cases}$ \\
+
+\tbf{$\BPP$} ist die Klasse der Entscheidungsprobleme $\Pi$, für die es einen polynomialen Algorithmus $A$ gibt, so dass $\forall \ I \in D_\Pi$ gilt: $\ \Pr[A(I) = ``Ja''] \begin{cases} \geq \frac{3}{4} & I \in Y_\Pi \\ \leq \frac{1}{4} & I \not \in Y_\Pi \end{cases}$ \\
+
+\subsection{Grundlagen der Wahrscheinlichkeitstheorie I}
+Können an anderen Stellen nachgelesen werden. \\
+
+\subsection{Randomisierte \tsc{MinCut}-Algorithmen}
+\subsubsection{Ein einfacher Monte Carlo Algorithmus für \tsc{MinCut}}
+Fasse einen Graphen \Gr mit Kantengewichten \Gwfktn als Multigraph mit jeweils $c({u,v})$ Kanten zwischen $u$ und $v$ auf. \\
+
+\begin{algorithm}
+\caption{\tsc{Random MinCut} $\in O(|V|^2)$}
+\begin{algorithmic}
+\Eingabe{Multigraph \Gr}
+\Ausgabe{Schnitt in Form zweier Superknoten}
+\WHILE{$|V| > 2$}
+	\STATE $\{u,v\} \agn $ zufällige Kante aus $E$
+	\STATE $G \agn G$ mit verschmolzenem $u,v$ 
+\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+
+\begin{satz}
+ Die Wahrscheinlichkeit, dass \tsc{Random MinCut} einen minimalen Schnitt findet ist größer als $\frac{2}{|V|^s}$ falls die Kanten gleichverteilt gewählt werden.
+\end{satz}
+
+Beweis: Sei $k$ die Größe eines minimalen Schnittes und $n := |V|$ $\Ra$ Jeder Knoten hat mindestens Grad $k$ $\Ra$ $|E| \geq k \cdot \frac{n}{2}$ \\
+$A_i :=$ im $i$-ten Schritt wird keine Kante des minimalen Schnittes gewählt \\
+$\Pr[A_1] \geq 1 - \frac{k}{\frac{k \cdot n}{2}} = 1 - \frac{2}{n}$ \\
+$\Pr[\bigcap_{i=1}^{n-2} \limits A_i] \geq  1 - \frac{k}{\frac{k \cdot (n - i + 1)}{2}} = \prod_{i=1}^{n-2} \limits  (1 - \frac{2}{n - i + 1}) = \frac{2}{n \cdot (n - 1)}$ \\
+
+Wendet man \tsc{Random MinCut} $\frac{n^2}{2}$ mal unabhängig voneinander an $(O(|V|^4))$, dann ist die Wahrscheinlichkeit, dass ein bestimmter Schnitt nicht gefunden wurde höchstens $(1 - \frac{2}{n^2})^\frac{n^2}{2} < \frac{1}{e}$. \\
+
+\subsubsection{Ein effizienterer randomisierter \tsc{MinCut}-Algorithmus}
+\begin{algorithm}
+\caption{\tsc{Fast Random MinCut} $\in O(|V|^2 \text{ log } |V|)$}
+\begin{algorithmic}
+\Eingabe{Multigraph \Gr}
+\Ausgabe{Schnitt}
+\IF{$|V| \leq 6$}
+	\STATE Berechne \tsc{MinCut} deterministisch
+\ELSE
+	\STATE $l \agn \lceil \frac{n}{\sqrt{2}} \rceil$
+	\STATE $G_1 \agn$ \tsc{Random MinCut} bis $l$ Knoten übrig
+	\STATE $G_2 \agn$ \tsc{Random MinCut} bis $l$ Knoten übrig
+	\STATE $C_1 \agn \tsc{Fast Random MinCut}(G_1)$ (rekursiv)
+	\STATE $C_2 \agn \tsc{Fast Random MinCut}(G_2)$ (rekursiv)
+	\STATE Gebe den kleineren der beiden Schnitte $C_1, C_2$ aus
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
+
+\begin{satz}
+ Die Wahrscheinlichkeit, dass \tsc{Fast Random MinCut} einen minimalen Schnitt findet, ist in $\Omega(\frac{1}{\text{log } |V|})$.
+\end{satz}
+
+Der Beweis ist laut Skript ``lang und schwierig'' und es wird lediglich eine Beweis-Idee angegeben. \\
+
+\subsection{Grundlagen der Wahrscheinlichkeitstheorie II}
+Werden wieder nur erwähnt um die Nummerierung konsistent zum Skript zu halten. \\
+
+\subsection{Das \tsc{Maximum Satisfiability Problem}}
+\tbf{\tsc{Maximum Satisfiability Problem}}: Finde zu $m$ Klauseln über $n$ Variablen $V$ eine Wahrheitsbelegung die eine maximale Anzahl von Klauseln erfüllt. \\
+
+Bereits \tsc{Max-2-SAT} ist $\NP$-schwer, aber nicht in $\NP$. \\
+
+\subsubsection{Der Algorithmus \tsc{Random Sat}}
+\begin{algorithm}
+\caption{\tsc{Random Sat} $\in O(n)$}
+\begin{algorithmic}
+\Eingabe{$m$ Klauseln über $n$ Variablen $V$}
+\Ausgabe{Wahrheitsbelegung $\omega \rightarrow \{wahr, falsch\}$}
+\FORALL{$x \in V$}
+	\STATE $\omega(x) := wahr$ mit Wahrscheinlichkeit $\frac{1}{2}$
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\begin{satz}
+ Der Erwartungswert der Lösung von \tsc{Random Sat} zu einer Instanz mit $m$ Klauseln, die jeweils mindestens $k$ Literale enthalten, ist mindestens $(1 - \frac{1}{2^k}) \cdot m$
+\end{satz}
+
+Beweis: Je Klausel wird mit einer  Wahrscheinlichkeit von $\frac{1}{2^k}$ die eine nicht erfüllende der $2^k$ Belegung gewählt. \\
+
+\subsection{Das \tsc{MaxCut}-Problem}
+\tbf{\tsc{MaxCut}-Problem} $\in \NPC$: Finde zu einem Graphen \Gr mit Gewichtsfunktion \Gwfktn einen Schnitt \Cut von $G$ der $c(S,V \setminus S)$ maximiert. \\
+
+\subsubsection{Ein Randomisierter Algorithmus für \tsc{MaxCut} basierend auf semidefiniter Programmierung}
+Definiere zu einer Instanz $I$ von \tsc{MaxCut} ein \tbf{ganzzahliges quadratisches Programm} $IQP(I)$ mit Hilfe eine Gewichtsmatrix $C = (c_{ij})$ mit $c_{ij} := \begin{cases} c(\{i,j\}) & \text{falls } \{i,j\} \in E \\ 0 & \text{sonst}\end{cases}$ für $i,j = 1, \ldots |V|$. \\
+
+$IQP(I)$: Maximiere $\frac{1}{2} \sum_{j=1}^n \limits \sum_{i=1}^{j-1} \limits c_{ij} \cdot (1 - x_i \cdot x_j)$ unter den Nebenbedingungen $x_i,x_j \in \{-1,1\}$ für $1 \leq i,j \leq n$. \\
+
+Mit $x_i = 1$ falls $i \in S$ und $x_i = -1$ falls $i \in V \setminus S$ induziert eine optimale Belegung der $x_i$ einen maximalen Schnitt. \\
+
+\subsubsection{Relaxierung von IQP(I)}
+$QP^2(I)$: Maximiere $\frac{1}{2} \sum_{j=1}^n \limits \sum_{i=1}^{j-1} \limits c_{ij} \cdot (1 - x^i \cdot x^j)$ unter den Nebenbedingungen $x^i,x^j \in \Ree^2$ mit $\lVert x^i \rVert = \lVert x^j \rVert = 1$ für $1 \leq i,j \leq n$. \\
+
+Jede Lösung $x_1, \ldots, x_n$ von $IQP(I)$ induziert eine Lösung $\begin{pmatrix} x_1 \\ 0 \end{pmatrix}, \ldots, \begin{pmatrix} x_n \\ 0 \end{pmatrix}$ von $QP^2(I)$ $\ \Ra \ $ $QP^2(I)$ ist Relaxierung von $IQP(I)$ \\
+
+\begin{algorithm}
+\caption{\tsc{Random MaxCut}}
+\begin{algorithmic}
+\Eingabe{Graph \Gr, \Gwfktn}
+\Ausgabe{Schnitt \Cut}
+\STATE Berechne eine optimale Lösung $(x^1, \ldots, x^n)$ von $QP^2$
+\STATE $r \agn$ zufälliger $2$-dimensionaler, normierter Vektor
+\STATE $S \agn \{ i \in V \ | \ x^i \cdot r \geq 0 \}$ \COMMENT{$x^i$ oberhalb der Senkrechten $l$ zu $r$ durch $0$}
+\end{algorithmic}
+\end{algorithm}
+
+\begin{satz}
+ Der Erwartungswert der Kapazität des von \tsc{Random MaxCut} berechneten Schnittes ist $\frac{1}{\pi} \sum_{j=1}^n \limits \sum_{i=1}^{j-1} \limits c_{ij} \cdot \text{\upshape{arccos}}(x^i \cdot x^j)$, falls $r$ gleichverteilt gewählt wird.
+\end{satz}
+
+Beweis: $\Pr[\text{sgn}(x^i \cdot r) \not = \text{sgn}(x^j \cdot r)]$ $=$ $\Pr[x^i$ und $x^j$ werden von $l$ getrennt$]$ $=$ \\
+$=$ $\Pr[s$ oder $t$ liegen auf dem kürzeren Kreisbogen der Länge $\text{arccos}(x^i \cdot x^j)$ zwischen $x^i$ und $x^j]$ $=$ \\
+$=$ $\frac{\text{arccos}(x^i \cdot x^j)}{2\pi} + \frac{\text{arccos}(x^i \cdot x^j)}{2\pi} = \frac{\text{arccos}(x^i \cdot x^j)}{\pi}$
+
+\begin{satz}
+ Zu einer Instanz $I$ von \tsc{MaxCut} berechnet \tsc{Random MaxCut} einen Schnitt mit Kapazität $C_{RMC}(I)$ für den gilt: $\frac{\text{\upshape{E}}(C_{RMC}(I))}{OPT(I} \geq 0,8785$.
+\end{satz}
+
+Der Beweis ist sehr ``technisch'' und unvollständig. \\
+
+Da derzeit nicht bekannt ist ob $QP^2$ in polynomialer Laufzeit gelöst werden kann, modifiziert man \tsc{Random MaxCut} in dem man ein $QP^n$ mit $x^j, x^j \in \Ree^n$ verwendet, dass mit Hilfe positiv semidefiniter Matrizen ($x^T \cdot M \cdot x \geq 0$) in polynomialer Zeit gelöst werden kann. \\
+
+Für jedes $\varepsilon > 0$ gilt für diesen \tsc{Semi-Definit-Cut} genannten Algorithmus $\calA_\varepsilon$, dass $\frac{OPT(I)}{\calA_\varepsilon(I)} \leq 1 + \varepsilon$.
+
+\newpage
+\section{Parallele Algorithmen}
+\subsection{Das PRAM Modell}
+Das \tbf{PRAM Modell} unterscheidet sich vom RAM Modell durch eine unbegrenzte Anzahl Prozessoren, die sowohl auf ihren lokalen, unbegrenzten, als auch auf einen globalen, unbegrenzten Speicher zugreifen können. \\
+
+Beim gleichzeitigen Zugriff auf den globalen Speicher unterscheidet man 4 Modelle: \tbf{C}oncurrent \tbf{R}ead, \tbf{C}oncurrent \tbf{W}rite, \tbf{E}xclusive \tbf{R}ead und \tbf{E}xclusive \tbf{W}rite. Wir beschränken uns auf CREW-PRAM. \\
+
+\subsection{Komplexität paralleler Algorithmen}
+Die \tbf{Laufzeit} eines parallelen Algorithmus $\calA$ ist \\
+$T_\calA(n) := \underset{|I| = n}{\text{max}}\{ \# \text{ Berechnungsschritte von } \calA \text{ bei Eingabe } I \}$ \\
+
+Die \tbf{Prozessorenzahl} eines parallelen Algorithmus $\calA$ ist \\
+$P_\calA(n) := \underset{|I| = n}{\text{max}}\{ \# \text{ Prozessoren, die während des Ablauf von } \calA \text{ bei Eingabe } I \text{ gleichzeitig aktiv sind} \}$ \\
+
+Der \tbf{Speed Up} eines parallelen Algorithmus $\calA$ ist $\text{speed-up}(\calA) := \frac{\text{worst-case Laufzeit des besten sequentiellen Algorithmus}}{\text{worst-case Laufzeit von } \calA}$ \\
+
+Die \tbf{Kosten} eines parallelen Algorithmus $\calA$ sind $C_\calA(n) := T_\calA(n) \cdot P_\calA(n)$ \\
+
+Ein paralleler Algorithmus $\calA$ ist \tbf{kostenoptimal} falls die schärfste untere Schranke für die Laufzeit eines sequentiellen Algorithmus gleich dem asymptotischen Wachstum von $C_\calA(n)$ ist. \\
+
+Die \tbf{Effizienz} eines parallelen Algorithmus $\calA$ ist $E_\calA(n) := \frac{worst-case Laufzeit des besten sequentiellen Algorithmus}{C_\calA(n)}$ \\
+
+\subsection{Komplexitätsklassen}
+\tbf{Nick's Class} $\NC$ ist die Klasse der Probleme, die durch einen parallelen Algorithmus in polylogarithmischer Laufzeit mit polynomialer Prozessorenzahl gelöst werden können. \\
+
+\tbf{Steve's Class} $\SC$ ist die Klasse der Probleme, die durch einen sequentiellen Algorithmus in polynomialer Laufzeit mit polylogarithmischem Speicherbedarf gelöst werden können. \\
+
+Sowohl die Frage $\calP = \NC$? als auch $\NC = \SC$? sind ungeklärt. \\
+
+\subsection{Parallele Basisalgorithmen}
+\subsubsection{Broadcast}
+Übertrage im EREW-PRAM Modell einen gegebenen Wert an alle $N$ Prozessoren mit Hilfe des Algorithmus \tsc{Broadcast}: 
+
+\begin{algorithm}
+\caption{\tsc{Broadcast} $\in O(log N)$}
+\begin{algorithmic}
+\Eingabe{Wert $m$}
+\Seffekte{Array $A$ der Länge $N$ im globalen Speicher}
+\STATE $P_1$ kopiert $m$ in den eigenen Speicher
+\STATE $P_1$ schreibt $m$ in $A[1]$
+\FOR{$i = 0, \ldots, \lceil \text{log } N \rceil - 1$}
+	\FORALL{$j = 2^i + 1, \ldots, 2^{i+1}$ \tbf{führe parallel aus}}
+		\STATE $P_j$ kopiert $m$ aus $A[j - 2^i]$ in den eigenen Speicher
+		\STATE $P_j$ schreibt $m$ in $A[j]$
+	\ENDFOR
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+$P_\tsc{Broadcast}(N) = \frac{N}{2}$ und  $C_\tsc{Broadcast}(N) \in O(N \text{ log } N)$. \\
+
+\subsubsection{Berechnung von Summen}
+
+\begin{algorithm}
+\caption{$\tsc{Summe}(a_1, \ldots, a_n) \in O(log n)$}
+\begin{algorithmic}
+\Eingabe{Werte $a_1, \ldots, a_n$, o.B.d.A sei $n = 2^m, m \in \nat$}
+\Ausgabe{$\sum_{i=1}^n a_i$}
+\FOR{$i = 1, \ldots, m$}
+	\FORALL{$j = 1, \ldots, \frac{n}{2^i}$ \tbf{führe parallel aus}}
+		\STATE $P_j$ berechnet $a_j \agn a_{2j-1} + a_{2j}$
+	\ENDFOR
+\ENDFOR
+\STATE Gebe $a_1$ aus.
+\end{algorithmic}
+\end{algorithm}
+
+$P_\tsc{Summe}(n) = \frac{n}{2}$ und  $C_\tsc{Summe}(n) \in O(n \text{ log } n)$ $\ \Ra \ $ \tsc{Summe} nicht kostenoptimal. \\
+
+Wenn \tsc{Summe} durch Rescheduling so abgewandelt wird, dass nur noch $\lceil \frac{n}{\text{log } n} \rceil$ Prozessoren verwendet werden ist \tsc{Summe} kostenoptimal: $T_\tsc{Summe} \leq c \cdot \sum_{i=1}^{\text{log } n} \limits \frac{\text{log } n}{2^i} = c \cdot \text{ log } n \cdot \underbrace{\sum_{i=1}^{\text{log } n} \limits \frac{1}{2^i}}_{\leq 1} \in O(\text{log } n)$ \\
+
+$\tsc{Summe}(a_1, \ldots, a_n)$ kann leicht zu jeder $n$-fachen binären Operation abgewandelt werden. \\
+
+$\tsc{Oder}(x_1, \ldots x_n)$ kann auf einer CRCW-PRAM sogar in $O(1)$ bestimmt werden, wenn mehrere Prozessoren genau dann dieselbe globale Speicherzelle beschreiben dürfen wenn sie denselben Wert schreiben. \\
+
+\begin{algorithm}
+\caption{$\tsc{CRCW-Oder}(x_1, \ldots, x_n) \in O(1)$}
+\begin{algorithmic}
+\Eingabe{Werte $x_1, \ldots, x_n \in \{0,1\}$}
+\Ausgabe{$x_1 \lor \ldots \lor x_n$}
+\FORALL{$i = 1, \ldots, n$ \tbf{führe parallel aus}}
+	\STATE $P_n$ liest $x_i$
+	\IF{$x_i = 1$}
+		\STATE $P_i$ schreibt $1$ in den globalen Speicher
+	\ENDIF
+\ENDFOR
+\STATE Gebe Wert aus dem globalen Speicher aus.
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Berechnung von Präfixsummen}
+Wir berechnen alle Präfixsummen $A_k := \sum_{i=1}^k \limits a_i$ mit $1 \leq k \leq n$ aus $n$ Eingabewerten $a_n, \ldots, a_{2n -a}$ (technische Benennung) aus Differenzen der Zwischenergebnisse von $\tsc{Summe}(a_n, \ldots, a_{2n -a})$. \\
+
+\begin{algorithm}
+\caption{$\tsc{Präfixsummen}(a_n, \ldots, a_{2n -a}) \in O(log n)$}
+\begin{algorithmic}
+\Eingabe{Werte $a_n, \ldots, a_{2n -a}$, o.B.d.A sei $n = 2^m, m \in \nat$}
+\Ausgabe{Präfixsummen $\sum_{i=1}^k \limits a_i$ für $1 \leq k \leq n$}
+\FOR{$i = m - 1, \ldots, 0$}
+	\FORALL{$j = 2^i, \ldots, 2^{i+1} - 1$ \tbf{führe parallel aus}}
+		\STATE $P_j$ berechnet $a_j \agn a_{2j} + a_{2j + 1}$
+	\ENDFOR
+\ENDFOR
+\STATE $b_1 \agn a_1$
+\FOR{$i = 1, \ldots m$}
+	\FORALL{$j = 2^i, \ldots, 2^{i+1} - 1$ \tbf{führe parallel aus}}
+		\IF{$j$ ungerade}
+			\STATE $b_j \agn b_{\frac{j-1}{2}}$
+		\ELSE
+			\STATE $b_j \agn b_{\frac{j}{2}} - a_{j+1}$	
+		\ENDIF	
+	\ENDFOR	
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+Durch Rescheduling kann die Prozessorenzahl wieder auf $\lceil \frac{n}{\text{log } n} \rceil$ reduziert und \tsc{Präfixsummen} dadurch kostenoptimiert werden. \\ 
+
+\subsubsection{Die Prozedur \tsc{List Ranking} oder \tsc{Short Cutting}}
+Teile jedem Element eines Wurzelbaums, das nur seinen direkten Vorgänger kennt, die Wurzel mit. \\
+
+\begin{algorithm}
+\caption{$\tsc{List Ranking}(n,h) \in O(log n)$}
+\begin{algorithmic}
+\Eingabe{Wurzelbaum der Höhe $h$ mit $n$ Elementen}
+\Ausgabe{$\forall \ i = 1, \ldots, n \ \tsc{Vor}[i]$}
+\FOR{$i = 1, \ldots, \lceil \text{log } h \rceil$}
+	\FORALL{$j = 1, \ldots, n$ \tbf{führe parallel aus}}
+		\STATE $P_j$ berechnet $\tsc{Vor}[j] \agn \tsc{Vor}[\tsc{Vor}[j]]$
+	\ENDFOR
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Binäroperationen einer partitionierten Menge}
+\tbf{\tsc{Binäre Partitions-Operation}-Problem}: Berechne die $p$ Ergebnisse einer binären Operation auf $p$ Gruppen (variabler Größe) von insgesamt $n$ Werten mit $K$ Prozessoren. \\
+
+\tbf{1. Fall}: $K \geq n$: Berechne Gruppenergebnisse analaog \tsc{Präfixsummen} in $O(log n)$. \\
+\tbf{2. Fall}: $K < n$: Teile in $K$ Abschnitte der Größe $\lceil \frac{n}{K} \rceil$ auf und berechne mit jedem Prozessor sequentiell die Teilergebnisse eines Abschnittes. \\ 
+Je Abschnitt können noch höchstens $2$ Operationen mit Teilergebnissen der benachbarten Abschnitte (in den beiden Grenzfällen höchstens $1$ Operation) nötig sein um die Ergebnisse von abschnittsüberschreitenden Gruppen zu berechnen. \\ 
+Ordne jeder Gruppe $G_i$, deren Ergebnis noch aus $n_i$ Teilergebnissen berechnet werden muss, $\lfloor \frac{n_i}{2} \rfloor$ Prozessoren zu, welche in $\text{log } K$ die Gruppenergebnisse berechnen. Insgesamt ergibt sich eine Laufzeit von $\lceil \frac{n}{K} \rceil - 1 + \text{log } K$. \\
+
+\subsection{Ein paralleler Algorithmus für die Berechnung der Zusammenhangskomponenten}
+\begin{algorithm}
+\caption{$\tsc{Zusammenhang}(G) \in O(log^2 |V|)$}
+\begin{algorithmic}
+\Eingabe{\Gr}
+\Ausgabe{$\forall \ i \in V$ ist $K[i]$ der kleinste Knoten der Zusammenhangskomponente von $i$}
+\Seffekte{\\ $K[]$ enthält zu jedem Knoten die Nummer seiner Zusammenhangskomp. \\
+	  $N[]$ enthält zu jedem Knoten die Nummer der kleinsten benachbarten Zusammenhangskomp.}
+\FORALL{$i = 1, \ldots, |V|$ \tbf{führe parallel aus}}
+	\STATE $K[i] \agn i$
+\ENDFOR 
+\FOR{$l = 1, \ldots, \lceil \text{log } |V| \rceil$} 
+	\FORALL{$i = 1, \ldots, |V|$ \tbf{führe parallel aus}}
+		\IF{$\exists \ \{i,j\} \in E$ mit $K[i] \not = K[j]$}
+			\STATE $N[i] \agn \text{min}\{K[j] \ | \ \{i,j\} \in E, K[i] \not = K[j] \}$ \COMMENT{finde kleinste verbundene Komp.}
+		\ELSE
+			\STATE $N[i] \agn K[i]$
+		\ENDIF
+	\ENDFOR
+	\FORALL{$i = 1, \ldots, |V|$ \tbf{führe parallel aus}}
+		\STATE \COMMENT{finde kleinste benachbarte Komp. von Knoten der gleichen Komp.}
+		\STATE $N[i] \agn \text{min}\{N[j] \ | \ K[i] = K[j], N[j] \not = K[j] \}$
+	\ENDFOR
+	\FORALL{$i = 1, \ldots, |V|$ \tbf{führe parallel aus}}
+		\STATE $N[i] \agn \text{min}\{N[i], K[i]\}$ \COMMENT{benachbarte Komponente = gleiche o. benachbarte Komp.}
+	\ENDFOR
+	\FORALL{$i = 1, \ldots, |V|$ \tbf{führe parallel aus}}
+		\STATE $K[i] \agn N[i]$ \COMMENT{gleiche Komp. = benachbarte Komp.}
+	\ENDFOR
+	\FOR{$m = 1, \ldots, \lceil \text{log } n \rceil$}
+		\FORALL{$i = 1, \ldots, |V|$ \tbf{führe parallel aus}}
+			\STATE $K[i] \agn K[K[i]]$ \COMMENT{Komp. = Nachbarkomp.}
+		\ENDFOR
+	\ENDFOR
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+Durch Rescheduling kann die Prozessorenzahl von \tsc{Zusammenhang} zwar von $|V|^2$ auf $\lceil \frac{|V|^2}{\text{log } |V|} \rceil$ gesenkt werden, was mit $O(|V|^2 \text{ log } |V|)$ dennoch nicht kostenoptimal ist. \\
+
+\subsection{Modifikation zur Bestimmung eines MST}
+\begin{algorithm}
+\caption{$\tsc{MSTg}(G)$}
+\begin{algorithmic}
+\Eingabe{\Gr, $c: V \times V \rightarrow \Ree \cup \{\infty\}$}
+\Ausgabe{MST von $G$ in Form von Kanten $T$}
+\Seffekte{\\
+$S[]$ enthält zu jedem Knoten die Nummer des Knoten der gleichen Komp., der eine min. Kante zu einer anderen Komp. hat \\
+$K[]$ enthält zu jedem Knoten die Nummer des Knoten der gleichen Komp. mit einer min. Kante \\
+$N[]$ enthält zu jedem Knoten die Nummer des Knoten einer anderen Komp., der durch eine min. Kante benachbart ist} 
+\FORALL{$i = 1, \ldots, |V|$ \tbf{führe parallel aus}}
+	\STATE $K[i] \agn i$
+\ENDFOR 
+\FOR{$l = 1, \ldots, \lceil \text{log } |V| \rceil$} 
+	\FORALL{$i = 1, \ldots, |V|$ \tbf{führe parallel aus}}
+		\STATE \COMMENT{finde Knoten einer anderen Komp., der durch eine min. Kante benachbart ist}
+		\STATE $N[i] \agn k$ mit $c_{ik} = \underset{1 \leq j \leq |V|}{\text{min}}\{c_{ij} \ | \ K[i] \not = K[j]$
+	\ENDFOR
+	\FORALL{$i = 1, \ldots, |V|$ \tbf{führe parallel aus}}
+		\STATE \COMMENT{finde Knoten der gleichen Komp., der eine min. Kante zu einer anderen Komp. hat}
+		\STATE $S[i] \agn t$ mit $c_{tN[t]} = \underset{1 \leq j \leq |V|}{\text{min}}\{c_{jN[j]} \ | \ K[i] = K[j]$ 
+		\STATE $N[i] \agn N[t]$
+	\ENDFOR
+	\FORALL{$i = 1, \ldots, |V|$ \tbf{führe parallel aus}}
+		\IF{$N[N[i]] = S[i]$ und $K[i] < K[N[i]]$}
+			\STATE $S[i] \agn 0$ \COMMENT{$i$ kann über $\{S[i],N[i]\}$ günstiger als über $\{i,N[i]\}$ angebunden werden}
+		\ENDIF
+	\ENDFOR
+	\FORALL{$i = 1, \ldots, |V|$ \tbf{führe parallel aus}}
+		\IF{$S[i] \not = 0$ und $K[i] = i$ und $c_{N[i],S[i] \not = \infty}$}
+			\STATE $T \agn T \cup \{N[i],S[i]\}$ \COMMENT{Füge min. Kante zu einer anderen Komp. zum MST hinzu}
+		\ENDIF
+		\IF{$S[i] \not = 0$}
+			\STATE $K[i] = K[N[i]]$ \COMMENT{Knoten mit min. Kante = benachbarter Knoten mit min. Kante}
+		\ENDIF
+	\ENDFOR
+	\FOR{$m = 1, \ldots, \lceil \text{log } n \rceil$}
+		\FORALL{$i = 1, \ldots, |V|$ \tbf{führe parallel aus}}
+			\STATE $K[i] \agn K[K[i]]$ \COMMENT{Komp. = Nachbarkomp.}
+		\ENDFOR
+	\ENDFOR
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+Führe die Schritte innerhalb der $l$-Schleife bis zur Erweiterung von $T$ nur für die Repräsentanten der Komponenten aus. Berechne nach jedem Durchlauf der $l$-Schleife die Adjanzenzmatrix mit auf die Repräsentanten übertragenene Kanten neu. Dadurch kommt \tsc{MST} mit $\lceil \frac{n^2}{\text{log }^2 n} \rceil$ Prozessoren aus. \\
+
+\subsection{Parallelisierung von \tsc{Select} zur Bestimmung des $k$-ten Elements aus $n$ Elementen}
+
+\subsection{Ein paralleler Algorithmus für das Scheduling-Problem für Jobs mit festen Start- und Endzeiten}
+
+\newpage
+\section{Parametrisierte Algorithmen}
+\tbf{\tsc{Independet Set}-Problem}: Finde zu einem Graphen \Gr und $k \in N$ eine Menge $V' \subseteq V$ mit $|V'| \geq k$, so dass $\forall \ v,w \in V'$ gilt $\{v,w\} \not \in E$. \\
+
+\tbf{\tsc{Vertex Cover}-Problem}: Finde zu einem Graphen \Gr und $k \in N$ eine Menge $V' \subseteq V$ mit $|V'| \leq k$, so dass $\forall \ \{v,w\} \in E$ gilt $u \in V'$ oder $v \in V'$. \\
+
+\tbf{\tsc{Dominating Set}-Problem}: Finde zu einem Graphen \Gr und $k \in N$ eine Menge $V' \subseteq V$ mit $|V'| \leq k$, so dass $\forall \ v \in V$ gilt entweder ist $v \in V'$ oder ein Nachbar von $v$ ist in $V'$ enthalten. \\
+
+Alle drei Probleme sind $\NP$-schwer und können durch Aufzählen aller $\binom{|V|}{k}$ Teilmengen $V' \subseteq V$ mit $|V'| = k$ in $O(|V|^k \cdot (|V| + |E|))$ entschieden werden. \\
+
+Ein parametrisiertes Problem $\Pi$ heißt \tbf{fixed parameter tractable}, wenn es einen Algorithmus gibt, der $\Pi$ in $O(\calC(k) \cdot p(n))$ löst, wobei $\calC$ eine berechenbare Funktion die nur von dem Parameter $k$ abhängig ist, $p$ ein Polynom und $n$ die Eingabegröße ist. \\
+
+\tbf{FPT} ist die Klasse aller Probleme, die fixed parameter tractable sind. \\
+
+\tsc{Vertex Cover} $\in$ FPT. Es wird vermutet, dass \tsc{Independet Set} und \tsc{Dominating Set} nicht in FPT sind. \\
+
+\subsection{Parametrisierte Komplexitätstheorie}
+Exkurs. \\
+
+\subsection{Grundtechniken zur Entwicklung parametrisierter Algorithmen}
+\tbf{Kernbildung}: Reduziere eine Instanz $(I,k)$ in $O(p(|I|))$ auf eine äquivalente Instanz $I'$ deren Größe $|I'|$ nur von $k$ abhängt. \\
+
+\tbf{Tiefenbeschränkte Suchbäume}: Führe eine erschöpfende Suche in einem geeigneten Suchbaum beschränkter Tiefe aus. \\
+
+Für eine Instanz $((V,E),k)$ von \tsc{Vertex Cover} gilt: 
+\begin{itemize}
+ \item $\forall \ v \in V$ ist entweder $v$ oder alle Nachbarn $N(v)$ in $V'$
+ \item $\{ v \in V \ | \ |N(v)| > k \} \subseteq V'$
+ \item Falls $\text{Maximalgrad}(G) \leq k$ und $|E| > k^2$ hat G kein Vertex Cover mit $k$ oder weniger Knoten.
+\end{itemize}
+
+\begin{algorithm}
+\caption{$\tsc{Vertex-Cover}(G,k) \in O(nk + 2^k \cdot k^2)$}
+\begin{algorithmic}
+\Eingabe{Graph \Gr, Parameter $k \in \nat$}
+\STATE $H \agn \{ v \in V \ | \ |N(v)| > k \}$
+\IF{$|H| > k$}
+	\STATE Gebe ``G hat kein Vertex Cover der Größe $\leq k$'' aus.
+\ELSE
+	\STATE $k' \agn k - |H|$
+	\STATE $G' \agn G - H$ \COMMENT{Entferne alle $v \in H$ und damit verbundene Kanten}
+	\IF{$|E'| > k \cdot k'$}
+		\STATE Gebe ``G hat kein Vertex Cover der Größe $\leq k$'' aus.
+	\ELSE
+		\STATE Entferne isolierte Knoten aus $G'$
+		\STATE Berechne $\tsc{Vertex-Cover}(G',k')$
+	\ENDIF
+\ENDIF
+
+\end{algorithmic}
+\end{algorithm}
+
+Falls die Laufzeit einer Suche in einem tiefenbeschränkten Suchbaum durch $T(k) \leq T(k - t_1) + \ldots + T(k - t_s) + c$ abgeschätzt werden kann heißt $(t_1, \ldots, t_s)$ \tbf{Verzweigungsvektor}. \\
+
+Konstruiere einen tiefenbeschränkten Suchbaum für \tsc{Vertex-Cover} durch wiederholte Anwendung der anwendbaren Regel mit kleinster Nummer von folgenden Regeln:
+\begin{enumerate}
+ \item $\exists \ v \in V$ mit $|N(v)| = 1$ $\ \Ra \ $ $C \agn C \cup N(v)$ 
+ \item $\exists \ v \in V$ mit $|N(v)| \geq 5$ $\ \Ra \ $ $C \agn C \cup N(v)$ o. $C \agn C \cup \{v\}$
+ \item $\exists \ v \in V$ mit $N(v) = \{a,b\}$\\
+Falls $a,b$ adjazent $\ \Ra \ $ $C \agn C \cup \{a,b\}$ \\
+Falls $a,b$ nicht adjazent und $N(a) = \{v,w\} = N(b)$ $\ \Ra \ $ $C \agn C \cup \{v,w\}$ \\
+Ansonsten $C \agn C \cup N(v)$ o. $C \agn C \cup N(a) \cup N(b)$
+ \item $\exists \ v \in V$ mit $N(v) = \{a,b,c\}$\\
+Falls $a,b$ adjazent $\ \Ra \ $ $C \agn C \cup N(v)$ o. $C \agn C \cup N(c)$ \\
+Falls $a,b$ nicht adjazent und $N(a) = \{v,w\} = N(b)$ $\ \Ra \ $ $C \agn C \cup \{v,w\}$ o. $C \agn C \cup N(v)$ \\
+Falls $a,b,c$ nicht adjazent $\ \Ra \ $ $C \agn C \cup N(v)$ o. $C \agn C \cup N(a)$ o. $C \agn C \cup \{a\} \cup N(b) \cup N(c)$ \\
+Falls $a,b,c$ nicht adjazent und $|N(a)|=|N(b)|=|N(c)|=3$ mit $N(a) = \{v,d,e\}$ \\ 
+$\ \Ra \ $ $C \agn C \cup N(v)$ o. $C \agn C \cup N(a)$ o. $C \agn C \cup N(b) \cup N(c) \cup N(d) \cup N(e)$
+ \item $\forall \ v \in V$ gilt $|N(v)| = 4$ $\ \Ra \ $ $C \agn C \cup \{v\}$ o. $C \agn N(v)$ für ein beliebiges $v \in V$
+\end{enumerate}
+
+
+
+
+
+\end{document}

@@ -1,0 +1,417 @@
+\documentclass[a4paper,11pt]{scrartcl}
+
+% own commands
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calK}{\mathcal{K}}
+\newcommand{\calR}{\mathcal{R}}
+
+\newcommand{\tbf}{\textbf}
+\newcommand{\Lra}{\Leftrightarrow}
+\newcommand{\Forn}{For0_\Sigma}
+\newcommand{\fol}{\vDash}
+\newcommand{\nfol}{\nvDash}
+\newcommand{\folk}{\vdash}
+\newcommand{\Funk}{F_\Sigma}
+\newcommand{\Prad}{P_\Sigma}
+\newcommand{\stell}{\alpha_\Sigma}
+\newcommand{\Term}{Term_\Sigma}
+\newcommand{\At}{At_\Sigma}
+\newcommand{\For}{For_\Sigma}
+\newcommand{\val}{val_{D,I,\beta}}
+\newcommand{\mForn}{mFor0_\Sigma}
+\newcommand{\Kripke}{\calK = (S, R, I)}
+\newcommand{\KS}{\calK}
+\newcommand{\KripkeR}{\calR = (S, R)}
+\newcommand{\KR}{\calR}
+\newcommand{\valK}{val_{\calK,s}}
+\newcommand{\LTLF}{LTLFor_\Sigma}
+\newcommand{\until}{\ \mathbf{U} \ }
+\newcommand{\neXt}{\ \mathbf{X} \ }
+\newcommand{\nat}{\mathbb{N}}
+\newcommand{\omegaS}{\calR = (\nat, <, \xi)}
+\newcommand{\gilt}{\vDash}
+\newcommand{\Vo}{V^\omega}
+
+
+
+\usepackage{german}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{nicefrac}
+\usepackage{tikz}
+
+\setlength{\parindent}{0pt}
+
+\setcounter{topnumber}{1}
+
+\theoremstyle{default}
+\newtheorem{satz}{Satz}
+%\newtheorem{bew}[satz]{Beweis}
+
+\usepackage{setspace}
+\onehalfspacing
+
+\parindent0pt
+
+
+%opening
+\title{Zusammenfassung des Stoffes zur Vorlesung Formale Systeme}
+%\author{Max Kramer}
+\date{13. Februar 2009} 
+
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+Diese Zusammenfassung entstand als persönliche Vorbereitung auf die Klausur zur Vorlesung ``Formale Systeme'' von Prof. Dr. Bernhard Beckert im Wintersemester 08/09 an der Universität Karlsruhe (TH). Sie ist sicherlich nicht vollständig, sondern verzichtet bewusst auf ganze Kapitel und Themen wie Tableaukalkül, Resolutionskalkül, OCL und viele mehr. Für Verbesserungen, Kritik und Hinweise auf Fehler oder Unstimmigkeiten an third äht web.de bin ich dankbar.
+\end{abstract}
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+
+\newpage
+\section{Voraussetzungen}
+\subsection{Relationen}
+Sei $R \subset D \times D$. \\
+\ \\ $R$ \tbf{irreflexiv} $:\Lra$ \\
+$\forall x \in D$ gilt $xRx \text{ nicht}$ \\
+\ \\ $R$ \tbf{antisymmetrisch} $:\Lra$ \\
+$\forall x,y \in D$ gilt $xRy \land yRx \Rightarrow x = y$ \\
+\ \\ $R$ \tbf{asymmetrisch} $:\Lra$ \\
+$\forall x,y \in D$ gilt $xRy \Rightarrow \neg yRx$ \\
+\ \\ $R$ \tbf{Ordnung} $:\Lra$ \\
+R reflexiv, transitiv und antisymmetrisch \\
+\ \\ $R$ \tbf{strikte Ordnung} $:\Lra$ \\
+R irreflexiv, transitiv und asymmetrisch \\
+\ \\ $R$ \tbf{totale Ordnung} $:\Lra$ \\
+R Ordnung und $\forall x,y \in D$ mit $x \not = y$ gilt entweder $xRy$ oder $yRx$ \\
+\ \\ $R$ \tbf{Kongruenzrelation} bzgl. $\Sigma$ $:\Lra$ \\
+R Äquivalenzrelation und $\forall f \in \Sigma$ mit Stelligkeit $n$ und $\forall x_1, ..., x_n, y_1, ..., y_n \in D$ gilt $x_{1}Ry_{1}, ..., x_{n}Ry_{n} \Rightarrow f(x_1, ..., x_n)Rf(y_1, ..., y_n)$ \\
+
+
+\newpage
+\section{Aussagenlogik}
+\subsection{Syntax der Aussagenlogik}
+$\Sigma$ \tbf{Signatur} $:\Lra$ \\
+$\Sigma$ abzählbare Menge von Symbolen (auch Atome oder Aussagenvariablen genannt)\\
+\ \\ \tbf{Aussagenlogische Formeln} über einer Signatur $\Sigma$:
+\begin{itemize}
+ \item $\{1,0\} \cup \Sigma \subset \Forn$ 
+ \item $\forall A,B \in \Forn$ und $\circ \in \{\land, \lor, \rightarrow, \leftrightarrow \}$ ist auch $A \circ B, \neg A \in \Forn$
+\end{itemize}
+
+\subsection{Semantik der Aussagenlogik}
+$I$ \tbf{Interpretation} über einer Signatur $\Sigma$ $:\Lra$ \\
+$I: \Sigma \ \rightarrow \ \{W, F\}$ \\
+\ \\ Zu einer Interpretation $I$ zugehörige \tbf{Auswertung} $val_I$: \\
+$val_I: \Forn \ \rightarrow \ \{W, F\}$ \\
+\ \\ $I$ \tbf{Modell} von $A \in \Forn$ $:\Lra$ \\
+$I$ Interpretation über $\Sigma$ mit $val_I(A) = W$ \\
+\ \\ $I$ \tbf{Modell} von $M \subseteq \Forn$ $:\Lra$ \\
+$\forall A \in M$ gilt $I$ Modell von $A$ \\
+\ \\ Aus $M \subseteq \Forn$ \tbf{folgt} $A \in \Forn$ $:\Lra$ \\
+$M \fol A$ $\ :\Lra \ $ Jedes Modell von $M$ ist auch Modell von $A$ \\
+\ \\ $A \in \Forn$ \tbf{allgemeingültig} $:\Lra$ \\
+$\forall$ Interpretationen $I$ gilt $val_I(A) = W$ $\ \Lra \ $ Jede Interpretation ist Modell von $A$ $\ \Lra \ $ $\fol A$ \\
+\ \\ $A \in \Forn$ \tbf{erfüllbar} $:\Lra$ \\
+$\exists$ Interpretation $I$ mit $val_I(A) = W$ $\ \Lra \ $ $\exists$ ein Modell von $A$ $\ \Lra \ $ $\nfol \neg A$ \\
+\ \\ $A, B \in \Forn$ \tbf{logisch äquivalent} $:\Lra$ \\
+$A \equiv B$ $\ :\Lra \ $ $A \fol B \ \land \ B \fol A$ $\ \Lra \ $ $\fol A \leftrightarrow B$ \\
+
+\subsection{Normalformen}
+$l$ \tbf{Literal} $:\Lra$ \\
+$l \in \Sigma$ oder $\neg l \in \Sigma$ \\
+\ \\ $F \in \Forn$ in \tbf{disjunktiver Normalform} (DNF) $:\Lra$ \\
+$F$ Disjunktion von Konjunktionen \\
+\ \\ $F \in \Forn$ in \tbf{konjunktiver Normalform} (KNF) $:\Lra$ \\
+$F$ Konjunktion von Disjunktionen \\
+\ \\ \tbf{Shannon-Operator}: \\
+$\forall A_1, A_2, A_3 \in \Forn$ gilt $val_I(sh(A_1,A_2,A_3)) = 
+\begin{cases} val_I(A_2) & \text{ falls } val_I(A_1)=F \\ 
+val_I(A_3) & \text { sonst} \end{cases}$ \\
+\ \\ \tbf{normierte $sh$-Formeln}:
+\begin{itemize}
+ \item $0, 1$ sind normierte $sh$-Formeln
+ \item $A, B$ normierte $sh$-Formeln und für $P_i \in \Sigma$ kommen in $A$ und $B$ nur $P_j \in \Sigma$ mit $j > i$  vor $\Rightarrow$ $sh(P_i,A,B)$ normierte $sh$-Formel
+\end{itemize}
+\ \\ \tbf{$sh$-Graph $\leadsto$ DNF}: \\
+Disjunktion aller Pfade zur $1$ \\
+\ \\ \tbf{$sh$-Graph $\leadsto$ KNF}: \\
+Konjunktion aller negierten Pfade zur $0$ \\
+\ \\ $F \in \Forn$ \tbf{Horn-Formel} $:\Lra$ \\
+$F$ in KNF und jede Disjunktion enthält höchstens ein positives Literal $\ \Leftrightarrow \ $ $F \cong (A_1 \land ... \land A_n \rightarrow B) \land ...$ \\
+\ \\ \tbf{Erfüllbarkeit von Horn-Formeln} (O($n^2$)):
+\begin{enumerate}
+ \item Markiere alle Fakten (Mengen die nur aus einem positiven Literal bestehen)
+ \item Falls nichts markiert: \textit{erfüllbar}
+ \item Falls $A_1 \land ... \land A_n \rightarrow B$ existiert mit $A_1, ..., A_n$ markiert aber $B$ nicht, dann markiere alle Vorkommen von $B$. Ansonsten: \textit{erfüllbar}
+ \item Falls $B = 0$: \textit{unerfüllbar}. Ansonsten: Wiederhole Schritt 3.
+\end{enumerate}
+\ \\ \tbf{Äquivalenzformel}-Tautologien: \\
+Falls $A \in \Forn$ nur aus Aussagenvariablen $v \in \Sigma, \leftrightarrow, 1$ und $0$ besteht gilt:\\
+$A$ Tautologie $\ \Lra \ $ Jede Variable $v \in \Sigma$ und $0$ haben eine gerade Anzahl Vorkommen\\
+
+\subsection{Beweistheorie der Aussagenlogik}
+\tbf{Kalkül korrekt} $:\Lra$ \\
+$\forall M \subseteq \Forn$ gilt $M \folk_{Kal} A \ \Rightarrow \ M \fol A$ \\
+\ \\ \tbf{Kalkül vollständig} $:\Lra$ \\
+$\forall M \subseteq \Forn$ gilt $M \fol A \ \Rightarrow \ M \folk_{Kal} A$ \\
+\ \\ \tbf{Endlichkeitssatz} $:\Lra$ \\
+$\forall M \subseteq \Forn$ gilt $M$ hat ein Modell $\ \Lra \ $ Jede endliche Teilmenge von $M$ hat ein Modell \\
+\ \\ \tbf{Klauselmengen}:\\
+Identifiziere disjunktive Klauseln mit der Menge ihrer Literale und deren Konjunktion mit der Vereinigung ihrer Mengen. \\
+\ \\ \tbf{Davis-Putnam-Loveland}-Verfahren zur Wiederlegung einer Klauselmenge $M$:
+\begin{enumerate}
+ \item Falls $M = \emptyset$: \textit{erfüllbar}
+ \item Falls $M$ keine Einerklausel $K$ enthält wähle beliebige Variable $A$ und wiederlege $M_{A=1}$ und $M_{A=1}$
+ \item Ansonsten streiche alle Klauseln die $K$ enthalten und alle Literale $\neg K$
+ \item Falls $\{\} \in M$: \textit{unerfüllbar}
+ \item Ansonsten gehe zu 1.
+\end{enumerate}
+
+
+\newpage
+\section{Prädikatenlogik erster Stufe}
+\subsection{Syntax der Prädikatenlogik}
+\tbf{Individuenvariablen}: \\
+kurz Variablen $Var := \{ v_i \in \Prad \ | \ i \in \nat \} \subset$ Sondersymbole \\
+\ \\ $\Sigma = (\Funk, \Prad, \stell)$ \tbf{Signatur} $:\Lra$ \\
+$\Funk, \Prad$ abzählbar, enthalten keine reservierten Sondersymbole und $\stell: \Funk \cup \Prad \ \rightarrow \ \nat$ \\
+\ \\ $\Funk$ \tbf{Funktionssymbole}: \\
+nullstellige Funktionssymbole heißen auch \tbf{Konstanten} \\
+\ \\ $\Prad$ \tbf{Prädikatssymbole}: \\
+nullstellige Prädikatssymbole heißen auch \tbf{aussagenlogische Atome} \\
+\ \\ \tbf{Terme} über einer Signatur $\Sigma$ $:\Lra$
+\begin{itemize}
+ \item $Var \subseteq \Term$
+ \item $\forall f \in \Funk$ mit $n := \stell(f), t_1, ..., t_n \in \Term$ ist auch $f(t_1, ..., t_n) \in \Term$
+\end{itemize}
+\ \\ \tbf{Grundterme} $:\Lra$ \\
+$\Term^0 := \{ t \in \Term \ | \ $ t enthält keine Variablen$\}$\\
+\ \\ \tbf{Atomare Formeln}: \\
+$\At := \{ t \doteq u \ | \ t,u \in \Term \} \cup \{ p(t_1, ..., t_n) \ | \ p \in \Prad, n=\stell(p), t_1, ..., t_n \in \Term \}$ \\
+\ \\ \tbf{Formeln} $\For$:
+\begin{itemize}
+ \item $\{1, 0\} \cup \At \subseteq \For$
+ \item $\forall x \in Var, A,B \in \For$ sind mit $\circ \in \{\land, \lor, \rightarrow, \leftrightarrow \}$ auch $\neg A, A \circ B, \forall x A, \exists x A \in \For$
+\end{itemize}
+\ \\ \tbf{Wirkungsbereich}: \\
+Für die Formeln $\forall x A, \exists x A$ heißt $A \in \For$ der Wirkungsbereich von $\forall x$ bzw. $\exists x$ \\
+\ \\ \tbf {Auftreten} von $x \in Var$ \tbf{gebunden} $:\Lra$ \\
+$x$ im Wirkungsbereich eines Quantors $\forall x$ oder $\exists x$ \\
+\ \\ \tbf{Gebundenen Variablen} von $A \in \For$: \\
+$Bd(A) := \{ x \in Var \ | \ x$ kommt in $A$ mindestens einmal gebunden vor $\}$ \\
+\ \\ \tbf {Auftreten} von $x \in Var$ \tbf{frei} $:\Lra$ \\
+Auftreten nicht gebunden \\
+\ \\ \tbf{Freien Variablen} von $A \in \For$: \\
+$Frei(A) := \{ x \in Var \ | \ x$ kommt in $A$ mindestens einmal frei vor $\}$ \\
+\ \\ $A \in \For$ \tbf{geschlossen} $:\Lra$ \\
+$Frei(A) = \emptyset$ $\ \Lra \ $ jede Variable kommt nur gebunden vor \\ 
+
+\subsection{Semantik der Prädikatenlogik}
+$(D, I)$ \tbf{Interpretation} von einer Signatur $\Sigma$ $:\Lra$
+\begin{itemize}
+ \item $D$ beliebige, nichtleere Menge
+ \item $\forall f \in \Funk, n = \stell(f)$ gilt $I(f): D^n \ \rightarrow \ D$ 
+ \item $\forall P \in \Prad$ mit $\stell(P) = 0$ gilt $I(P) \in \{W, F\}$
+ \item $\forall p \in \Prad$ mit $n := \stell(p) > 0$ gilt $I(p) \subseteq D^n$
+\end{itemize}
+\ \\ \tbf{Variablenbelegung} über $D$: \\
+$\beta: Var \ \rightarrow \ D$ \\
+\ \\ \tbf{Modifikation} von $\beta$ an der Stelle $x \in Var$ zu $d \in D$: \\
+$\forall y \in Var$ gilt $\beta_x^d(y) := \begin{cases} d &$ falls $y = x \\ \beta(y) &$ sonst $\end{cases}$ \\ \ \\
+\ \\ \tbf{Auswertung} einer Belegung $\beta$ zu einer Interpretation $(D, I)$ über $\Sigma$:
+\begin{itemize}
+ \item $\val: \Term \cup \For \ \rightarrow \ D \cup \{W, F\}$
+% \item $\forall t \in \Term$ gilt $\val(t) \in D$
+% \item $\forall A \in \For$ gilt $\val(A) \in \{W, F\}$
+ \item $\forall x \in Var$ sei $\val(x) := \beta(x)$
+ \item $\forall f \in \Funk, n = \stell(f), t_1, ..., t_n \in \Term$ sei \\ $\val(f(t_1, ..., t_m)) := (I(f))(\val(t_1), ..., \val(t_n))$
+% \item $\val(1) := W$ und $\val(0) := F$
+ \item $\forall t,u \in \Term$ sei $\val(t \doteq u) := \begin{cases} W &$ falls $\val(t) = \val(u) \\ F &$ sonst $\end{cases}$
+ \item $\forall P \in \Prad$ mit $\stell(P) = 0$ sei $\val(P) := I(P)$
+ \item $\forall p \in \Prad$ mit $n := \stell(p) > 0, t_1, ..., t_n \in \Term$ sei \\ $\val(p(t_1, ..., t_n)) := \begin{cases} W &$ falls $(\val(t_1), ..., \val(t_n)) \in I(p) \\ F &$ sonst $\end{cases}$
+ \item $\forall A \in \For$ sei $\val(\forall x A) := \begin{cases} W &$ falls $\forall d \in D$ gilt $val_{D,I,\beta_x^d}(A) = W \\ F &$ sonst $\end{cases}$
+ \item $\forall A \in \For$ sei $\val(\exists x A) := \begin{cases} W &$ falls $\exists d \in D$ mit $val_{D,I,\beta_x^d}(A) = W \\ F &$ sonst $\end{cases}$
+ \item Für aussagenlogische Teilformen sei $\val$ wie in der Aussagenlogik definiert
+\end{itemize}
+\ \\ $(D, I)$ \tbf{Modell} von $A \in \For$ ohne freie Variablen über $\Sigma$ $:\Lra$ \\
+$(D, I)$ Interpretation über $\Sigma$ mit $val_{D,I}(A) = W$ \\
+\ \\ $(D, I)$ \tbf{Modell} von $M \subseteq \For$ ohne freie Variablen $:\Lra$ \\
+$\forall A \in M$ gilt $(D, I)$ Modell von $A$ \\
+\ \\ Aus $M \subseteq \For$ ohne freie Variablen \tbf{folgt} $A \in \For$ ohne freie Variablen $:\Lra$ \\
+$M \fol A$ $\ :\Lra \ $ Jedes Modell von $M$ ist auch Modell von $A$ \\
+\ \\ Aus $M \subseteq \For$ \tbf{folgt lokal} $A \in \For$ $:\Lra$ \\
+$M \fol^\circ A$ $\ :\Lra \ $ Für jede Belegung ist jedes Modell von $M$ auch Modell von $A$ \\
+\ \\ $A \in \For$ ohne freie Variablen \tbf{allgemeingültig} $:\Lra$ \\
+$\fol A$ \\
+\ \\ $A \in \For$ ohne freie Variablen \tbf{erfüllbar} $:\Lra$ \\
+$\nfol \neg A$ \\
+\ \\ $A \in \For$ \tbf{Tautologie} $:\Lra$
+\begin{itemize}
+ \item $\exists$ endliche aussagenlogische Signatur $\Sigma' = \{P_1, ..., P_n\}, A' \in For0_{\Sigma'}, A_1, ..., A_n \in \For$, so dass
+ \item $A'$ aussagenlogisch allgemeingültig über $\Sigma'$ ist und
+ \item $A$ aus $A'$ durch das Ersetzten aller $P_i$ durch $A_i$ ($1 \leq i \leq n$) entsteht
+\end{itemize}
+
+  
+\ \\ $A, B \in \For$ \tbf{logisch äquivalent} $:\Lra$ \\
+$A \equiv B$ $\ :\Lra \ $ $\fol A \leftrightarrow B$ \\
+($\Rightarrow \ \equiv$ ist eine Kongruenzrelation) \\
+
+\subsection{Normalformen}
+$A \in \For$ in \tbf{Negations-Normalform} $:\Lra$ \\
+In $A$ steht jedes $\neg$ vor einer atomaren Teilformel \\
+\ \\ $A \in \For$ \tbf{bereinigt} $:\Lra$ \\
+$Frei(A) \cap Bd(A) = \emptyset$ und die quantifizierten Variablen paarweise verschieden sind \\
+\ \\ $A \in \For$ in \tbf{Pränex-Normalform} $:\Lra$ \\
+$A = Q_1 x_1 ... Q_n x_n B$ mit $B \in \For$ quantorenfrei und $\forall 1 \leq i \leq n$ gilt $Q_i \in \{\forall, \exists \}, x_i \in Var$ \\
+\ \\ $A \in \For$ in \tbf{Skolem-Normalform} $:\Lra$ \\
+$A = \forall x_1 ... \forall x_n B$ geschlossen mit $B \in \For$ quantorenfreie KNF und $\forall 1 \leq i \leq n$ gilt $x_i \in Var$ \\
+\ \\ $\forall A \in \For \ \exists$ endliche Erweiterung $\Sigma_{sk}$ von $\Sigma$ und eine \tbf{erfüllbarkeits-äquivalente} $A_{sk} \in For_{\Sigma_{sk}}$ in Skolem-Normalform \\
+\ \\ Interpretation $(D, I)$ von einer Signatur $\Sigma$ \tbf{Herbrand-Interpretation} $:\Lra$
+\begin{itemize}
+ \item $D = \Term^0$
+ \item $\forall f \in \Funk$ mit $n := \stell(f), t_1, ..., t_n \in \Term^0$ gilt $I(f)(t_1, ..., t_n) = f(t_1, ...,t_n)$
+\end{itemize}
+% SATZ VON HERBRAND ?
+
+\subsection{Beweistheorie der Prädikatenlogik erster Ordnung}
+\tbf{Kompaktheitssatz}: \\
+$\forall M \subseteq \For, A \in \For$ gilt $M \fol A$ $\ \Lra \ $ $\exists$ endliches $E \subseteq M$ mit $E \fol A$ \\
+\ \\ \tbf{Endlichkeitssatz}: \\
+$M \subseteq \For$ hat ein Modell $\ \Lra \ $ Jede endliche Teilmenge von $M$ hat ein Modell \\
+\ \\ \tbf{Nichtcharakterisierbarkeit der Endlichkeit}: \\
+$\nexists M \subseteq \For$, so dass $\forall (D, I)$ gilt $(D, I)$ Modell von M $\ \Lra \ $ D endlich \\
+
+\subsection{Reduktionssysteme}
+$(D,\succ)$ \tbf{Reduktionssystem} $:\Lra$ \\
+$D$ nichtleere Menge und $\succ \ \subseteq D \times D$ \\
+\ \\ $\forall$ Reduktionssysteme $(D, \succ)$ sei $\rightarrow$ die \tbf{reflexive, transitive Hülle} und $\leftrightarrow$ die \tbf{reflexive, transitive, symmetrische Hülle}  von $\succ$ \\
+\ \\ Reduktionssystem $(D, \succ)$ \tbf{konfluent} $:\Lra$ \\
+$\forall s, s_1, s_2 \in D$ mit $s \rightarrow s_1, s \rightarrow s_2$ gilt $\exists t \in D$ mit $s_1 \rightarrow t, s_2 \rightarrow t$ \\
+\ \\ Reduktionssystem $(D, \succ)$ \tbf{lokal konfluent} $:\Lra$ \\
+$\forall s, s_1, s_2 \in D$ mit $s \succ s_1, s \succ s_2$ gilt $\exists t \in D$ mit $s_1 \rightarrow t, s_2 \rightarrow t$ \\
+\ \\ Reduktionssystem $(D, \succ)$ \tbf{noethersch} oder \tbf{terminierend} $:\Lra$ \\
+$\nexists$ unendliche Folge $s_0 \succ s_1 \succ ...$ \\
+\ \\ Reduktionssystem $(D, \succ)$ \tbf{kanonisch} $:\Lra$ \\
+$(D, \succ)$ noethersch und konfluent \\
+\ \\ $s \in D$ \tbf{irreduzibel} in einem Reduktionssystem $(D, \succ)$ $:\Lra$ \\
+$\nexists t \in D$ mit $s \succ t$ \\
+\ \\ $s_n \in D$ \tbf{Normalform} für $s \in D$ in einem Reduktionssystem $(D, \succ)$ $:\Lra$ \\
+$s_n$ irreduzibel und $s \rightarrow s_n$ \\
+\ \\ $\forall$ \tbf{kanonische}n Reduktionssysteme $(D, \succ)$ gilt: \\
+$\forall s,t \in D \ \exists$ \tbf{eindeutige Normalformen} $irr(s), irr(t)$ mit $s \leftrightarrow t$ $\Lra$ $irr(s) = irr(t)$ \\
+\ \\ Reduktionssystem $(D, \succ)$ noethersch und lokal konfluent $\ \Rightarrow \ $ $(D, \succ)$ konfluent \\
+
+\newpage
+\section{Modale Aussagenlogik}
+\subsection{Syntax der modalen Aussagenlogik}
+\tbf{Formeln der modalen Aussagenlogik} über einer aussagenlogischen Signatur $\Sigma$:
+\begin{itemize}
+ \item $\{1,0\} \cup \Sigma \subset \mForn$ 
+ \item $\forall A,B \in \mForn$ und $\circ \in \{\land, \lor, \rightarrow, \leftrightarrow \}$ ist auch $\neg A, A \circ B, \Box A, \Diamond A \in \mForn$
+\end{itemize}
+
+\subsection{Semantik der modalen Aussagenlogik}
+\ \\ $\KripkeR$ \tbf{Kripke-Rahmen} $:\Lra$
+\begin{itemize}
+ \item $S$ nichtleere Menge von Zuständen
+ \item $R \subseteq S \times S$
+\end{itemize}
+\ \\ $\Kripke$ \tbf{Kripke-Struktur} über $\Sigma$ $:\Lra$
+\begin{itemize}
+ \item $(S, R)$ Kripke-Rahmen
+ \item $I: (\Sigma \times S) \ \rightarrow \ \{W, F\}$
+\end{itemize}
+\ \\ \tbf{Auswertung} einer Kripke-Struktur $\Kripke$:
+\begin{itemize}
+ \item $\valK: \mForn \ \rightarrow \ \{W, F\}$ vollkommen analog zur Aussagenlogik bis auf:
+ \item $\forall A \in \Sigma$ gilt $\valK(A) := I(A)(s)$
+ \item $\forall A \in \Sigma$ gilt $\valK(\Box A) := \begin{cases} W & $ falls $\forall s' \in S$ mit $sRs'$ gilt $\valK(A) = W \\ F & $ sonst $\end{cases}$
+ \item $\forall A \in \Sigma$ gilt $\valK(\Diamond A) := \begin{cases} W & $ falls $\exists s' \in S$ mit $sRs'$ gilt $\valK(A) = W \\ F & $ sonst $\end{cases}$
+\end{itemize}
+\ \\ Die Begriffe \tbf{Modell}, \tbf{allgemeingültig} und \tbf{erfüllbar} ergeben sich analog zur Aussagenlogik jedoch mit $\KS$ anstatt $I$ und zusätzlichem ebenso quantifizierten $s \in S$ \\
+
+\subsection{Charakterisierungen der modalen Aussagenlogik}
+$A \in \mForn$ \tbf{charakterisiert} Klasse von Kripke-Rahmen $K$ $:\Lra$ \\
+$\forall$ Kripke-Rahmen $(S,R), \forall$ Interpretationen  $I, \forall s \in S$ gilt: \\
+$val_{(S,R,I),s}(A) = W$ $\Lra$ $(S,R) \in K$ \\
+\ \\ $\forall A \in Var$ gelten folgende \tbf{Charakterisierungen}:
+\begin{itemize}
+ \item $\Box A \ \rightarrow \ A$ charakterisiert reflexive $\KR$
+ \item $\Box A \ \rightarrow \ \Box \Box A$ charakterisiert transitive $\KR$
+ \item $A \ \rightarrow \ \Box \Diamond A$ charakterisiert symmetrische $\KR$
+ \item $\Box A \ \rightarrow \ \Diamond A$ charakterisiert endlose $\KR$
+\end{itemize}
+
+
+\newpage
+\section{Temporale Logik}
+\subsection{Syntax der Linearen Temporalen Logik}
+\tbf{LTL Formeln} über einer aussagenlogischen Signatur $\Sigma$:
+\begin{itemize}
+ \item Definiere $\LTLF$ analog zur modalen Aussagenlogik und zusätzlich:
+ \item $\forall A,B \in \LTLF$ ist auch $A \until B, A \ \mathbf{U}_w \ B, A \ \mathbf{V} \ B, \neXt A \in \LTLF$
+\end{itemize}
+
+\subsection{Semantik der Linearen Temporalen Logik}
+$\omegaS$ \tbf{omega-Struktur} für eine aussagenlogische Signatur $\Sigma$ $:\Lra$ \\
+$\xi: \nat \ \rightarrow \ 2^\Sigma$ mit der Intention $p \in \xi(n) \Lra p$ ist in $\calR$ zum Zeitpunkt $n$ wahr \\
+\ \\ bei $n$ beginnende \tbf{Endstück} von $\xi$: \\
+$\xi_n(m) := \xi(n + m)$ \\
+\ \\ $\forall$ omega-Strukturen $\omegaS$ und $A \in \LTLF$ sei: 
+\begin{itemize}
+ \item $\xi \gilt p$ $\ \Lra \ $ $p \in \xi(0)$
+ \item $\xi \gilt \Box A$ $\ \Lra \ $ $\forall n \in \nat$ gilt $\xi_n \gilt A$
+ \item $\xi \gilt \Diamond A$ $\ \Lra \ $ $\exists n \in \nat$ gilt $\xi_n \gilt A$
+ \item $\xi \gilt A \until B$ $\ \Lra \ $ $\exists n \in \nat$ mit $\xi_n \gilt B$ und $\forall m \in \nat_0$ mit $m < n$ gilt $\xi_m \gilt A$
+ \item $\xi \gilt A \ \mathbf{U}_w \ B$ $\ \Lra \ $ Es gilt $\xi_n \gilt (A \land \neg B)$ für alle $n \in \nat$ oder es gilt $\xi \gilt A \until B$
+ \item $\xi \gilt A \ \mathbf{V} \ B$ $\ \Lra \ $ $\xi \gilt B$ und $\forall n \in \nat$ gilt: $\xi_n \gilt \neg B$ $\ \Rightarrow \ $ $\exists m \in \nat_0$ mit $m < n$ und $\xi_m \gilt A$
+ \item $\xi \gilt \neXt A$ $\ \Lra \ $ $\xi_1 \gilt A$
+ \item $\xi \gilt A \circ B$ und $\xi \gilt \neg A$ wie für aussagenlogische Variablen $A,B$ üblich
+\end{itemize}
+
+
+\newpage
+\section{Automaten}
+\subsection{Büchi Automaten}
+Sei $\Vo$ die Menge der \tbf{unendlichen Wörter} über einem endlichen Alphabet $V$ \\
+\ \\ Interpretiere jedes $w \in \Vo$ als $w: \nat \ \rightarrow V$ \\
+\ \\ \tbf{endliche Anfangsstück} von $w \in \Vo$: \\
+$w \downarrow (n) := w(0) ... w(n)$ \\
+\ \\ $\forall K \subseteq V^*, J \subseteq \Vo$ sei: 
+\begin{itemize}
+ \item $K^\omega := \{ w \in \Vo \ | \ w = w_1 ... w_n ...$, so dass $\forall n \in \nat$ gilt $w_n \in K \}$
+ \item $\vec K := \{ w \in \Vo \ | \ w \downarrow (n) \in K$ für unendlich viele $n \in \nat \}$
+ \item $KJ := \{ w_1 w_2 \ | \ w_1 \in K, w_2 \in J \}$
+\end{itemize}
+\ \\ $s_0, ..., s_n, ...$ \tbf{Berechnungsfolge} von $w \in \Vo$ $:\Lra$ \\
+$\forall n \in \nat_0$ gilt $s_{n+1} \in \delta(s_n, w(n))$ \\
+\ \\ $s_0, ..., s_n, ...$ \tbf{akzeptierende Berechnungsfolge} $\Lra$ unendlich viele Finalzustände vorkommen \\
+\ \\ Von einem endlichen Automaten $\calA$ \tbf{akzeptierte $\omega$-Sprache}: \\
+$L^\omega(\calA) := \{ w \in \Vo \ | \ \exists$ akzeptierende Berechnungsfolge von $w \}$ \\
+\ \\ $L \subseteq \Vo$ \tbf{$\omega$-regulär} $:\Lra$ \\
+$\exists$ endlicher Automat $\calA$ mit $L^\omega(\calA) = L$ \\
+\ \\ $\forall$ endlichen Automaten $\calA$ gilt:
+\begin{itemize}
+ \item $L^\omega(\calA) \not = \emptyset$ $\ \Lra \ $ $\exists$ erreichbarer Endzustand $q_f \in F$ der auf einer Schleife liegt
+ \item $L^\omega(\calA) \subseteq \overset{\longrightarrow}{L(\calA)}$ mit Gleichheit gdw. $\calA$ deterministisch
+\end{itemize}
+\ \\ $\forall L_1, L_2 \ \omega$-regulär, $K$ regulär gilt:
+\begin{itemize}
+ \item $K^\omega \ \omega$-regulär $\ \Lra \ $ $\epsilon \not \in K$
+ \item $K L_1 \ \omega$-regulär
+ \item $L_1 \cup L_2 \ \omega$-regülär
+ \item $L_1 \cap L_2 \ \omega$-regülär
+ \item $\forall$ endlichen Alphabete $V$ ist $\Vo \setminus L_1 \ \omega$-regülär
+\end{itemize}
+
+\subsection{Büchi Automaten und LTL}
+$\forall B \in \LTLF \ \exists$ endlicher Automat $\calA_B$ mit $L^\omega(\calA_B) = \{ \xi \in \Vo \ | \ \xi \gilt B \}$ \\
+\end{document}
