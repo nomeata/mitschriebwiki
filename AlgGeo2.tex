@@ -113,6 +113,28 @@
 \theorembodyfont{\small}
 \newtheorem{anmerkung}{Anmerkung}
 
+
+%Aufzählungstypen
+\newenvironment{aaufz}
+             {\renewcommand{\labelenumi}{\alph{enumi})}              
+             \renewcommand{\labelenumii}{\alph{enumii})}
+                \begin{enumerate}}
+               {\end{enumerate}}
+
+\newenvironment{iaufz}            
+							{\renewcommand{\labelenumi}{(\roman{enumi})}            
+							\renewcommand{\labelenumii}{(\roman{enumii})}
+                \begin{enumerate}}
+               {\end{enumerate}}
+               
+\newenvironment{1aufz}             
+							{\renewcommand{\labelenumi}{\arabic{enumi}.)}               
+							\renewcommand{\labelenumii}{\arabic{enumii}.)}
+                \begin{enumerate}}
+               {\end{enumerate}}
+
+
+%Selbstdefinierter Schnickschnack
 \newcommand{\emp}[1]{\textbf{\emph{#1}}}
 \newcommand{\begriff}[1]{{\index{#1}}\emp{#1}}
 \newcommand{\defeqr}[0]{\mathrel{\mathop:}=}
@@ -215,6 +237,9 @@
 	\ensuremath{\operatorname{Proj}}%
 }
 
+\newcommand{\HomSheaf}{% Hom-Sheaf
+	\ensuremath{\operatorname{\mathcal H\emph{om}}}%
+}
 
 \newcommand{\closure}[1]{% closure of a set U subseteq X
 	\ensuremath{\overline{#1}}%
@@ -2135,6 +2160,175 @@ Behauptung 1 ist (für $f=\Delta$) ein Spezialfall von
   \end{center}
   genau eine Fortsetzung $h$ gibt.
 \end{Satz}
+
+%HIER FEHLT NOCH WAS
+
+\chapter{Kohomologie von Garben}
+\setcounter{section}{8}
+\section{$\mathcal O_X$-Modulgarben}
+\begin{Def}
+  Sei $(X,\mathcal O_X)$ ein lokal geringter Raum, $\mathcal F$ eine Garbe von abelschen Gruppen auf $X$. 
+  $\mathcal F$ heißt \begriff{$\mathcal O_X$-Modulgarbe}, wenn gilt:
+  \begin{iaufz}
+  \item Für jedes offene $U\subseteq X$ ist $\mathcal F(U)$ ein $\mathcal O_X$-Modul
+  \item Für $U^\prime\subseteq U\subseteq X$ offen ist $\mathcal F(U)\to\mathcal F(U^\prime)$
+    ein $\mathcal O_X(U)$-Modulhomomorphismus, wobei $\mathcal F(U^\prime)$ durch den Ringhomomorphismus
+     $\mathcal O_X(U)\to\mathcal O_X(U^\prime)$ zum $\mathcal O_X(U)$-Modul wird.
+  \end{iaufz}
+\end{Def}
+
+\begin{Bem}
+  \label{bem:9.2}
+  Die $\mathcal O_X$-Modulgarben bilden mit den $\mathcal O_X$-linearen Abbildungen eine Kategorie \Cat{\mathcal O_X-Mod}.
+\end{Bem}
+
+\begin{nnBsp}
+  Sei $X$ eine nichtsinguläre Kurve über einem algebraisch abgeschlossenen Körper $k$
+  und $D=\sum_{P\in X}n_PP$ ein Divisor auf $X$. \\
+  Für offenes $U\subseteq X$ sei
+  \begin{align*}
+    \mathcal L(D)(U)\defeqr & \{f\in k(X):\operatorname{div} f\vert U+D\vert U \geq 0\} \\
+    =& \{f\in k(X):\forall P\in U:\ord_P(f)+n_P\geq 0\}
+  \end{align*}
+  $\mathcal L(D)$ ist eine $\mathcal O_X$-Modulgarbe, denn $\operatorname{div}(f\cdot g)=\operatorname{div}(f)+\operatorname{div}(g)$.
+\end{nnBsp}
+
+\begin{DefBem}
+  \label{defbem:9.3}
+  Seien $\mathcal F,\mathcal G$ $\mathcal O_X$-Modulgarben.
+  \begin{enumerate}
+  \item $\mathcal F\otimes_{\mathcal O_X}\mathcal G$ sei die zu $U\mapsto \mathcal F(U)\otimes_{\mathcal O_X(U)}\mathcal G(U)$ assoziierte Garbe.
+  \item Für offenes $U\subseteq X$ sei 
+    \begin{align*}
+      \HomSheaf(\mathcal F,\mathcal G)(U)\defeqr\Hom_{\mathcal O_X\vert U}(\mathcal F\vert U,\mathcal G\vert U)
+    \end{align*}
+  \end{enumerate}
+  $\mathcal F\otimes\mathcal G$ und $\HomSheaf(\mathcal F,\mathcal G)$ sind $\mathcal O_X$-Modulgarben.
+\end{DefBem}
+
+\begin{DefBem}
+  \label{defbem:9.4}
+  Sei $f:X\to Y$ ein Morphismus von lokalgeringten Räumen.
+  \begin{enumerate}
+  \item Für jede $\mathcal O_X$-Modulgarbe $\mathcal F$ ist $f_\ast\mathcal F$ eine $\mathcal O_Y$-Modulgarbe auf $Y$.
+  \item Für jede $\mathcal O_Y$-Modulgarbe $\mathcal G$ ist $f^{-1}\mathcal G$ eine $f^{-1}\mathcal O_Y$-Modulgarbe und
+    \begin{align*}
+      f^\ast\mathcal G\defeqr f^{-1}\mathcal G\otimes_{f^{-1} \mathcal O_Y}\mathcal O_X
+    \end{align*}
+    eine $\mathcal O_X$-Modulgarbe.
+  \end{enumerate}
+\end{DefBem}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item Für offenes $U\subseteq Y$ ist $f_\ast \mathcal F(U)=\mathcal F(f^{-1}(U))$ ein $\mathcal O_X(f^{-1}(U))$-Modul.
+    $f^\sharp_U$ ist ein Ringhomomorphismus $\mathcal O_Y(U)\to\mathcal O_X(f^{-1}(U))$. Dadurch wird $f_\ast\mathcal F(U)$
+    zu einem $\mathcal O_Y(U)$-Modul.
+  \item Den Garbenhomomorphismus $f^{-1}\mathcal O_Y\to\mathcal O_X$ erhält man aus $f^\sharp:\mathcal O_Y\to f_\ast\mathcal O_X$
+    \begin{align*}
+      f^{-1}(f^\sharp):f^{-1}\mathcal O_Y\to f^{-1}f_\ast\mathcal O_X\to\mathcal O_X
+    \end{align*}
+    den hintere Morphismus liefert \ref{def:image_sheaf} (d).
+  \end{enumerate}
+\end{Bew}
+
+\section{Quasikohärente Garben}
+\begin{DefBem}
+  \label{defbem:10.1}
+  Sei $X=\Spec R$ ein affines Schema, $M$ ein $R$-Modul. Für offenes $U\subseteq X$ sei
+  \begin{align*}
+    \widetilde{M}(U)\defeqr\{s:U\to\bigcup_{\mathfrak p\in U}M_{\mathfrak p}:~ &\text{für jedes $\mathfrak p\in U$ gibt es eine Umgebung $U_{\mathfrak p}$} \\
+    &\text{und Elemente $m_{\mathfrak p}\in M$, $f_{\mathfrak p}\in R-\mathfrak p$, sodass } \\
+    & \text{für alle $\mathfrak q\in U_{\mathfrak p}$ gilt: $s(\mathfrak q)=\frac{m_{\mathfrak p}}{f_{\mathfrak p}}\in M_{\mathfrak p}$}\}
+  \end{align*}
+  wobei $M_{\mathfrak p}=M\otimes_RR_{\mathfrak p}$ ist.
+\end{DefBem}
+
+\begin{Prop}
+  \label{prop:10.2}
+  Seien $X=\Spec R, M,\widetilde{M}$ wie in 10.1.
+  \begin{enumerate}
+  \item Für jedes $\mathfrak p\in X$ ist $\widetilde{M}_{\mathfrak p}\cong M_{\mathfrak p}$.
+  \item Für jedes $f\in R$ ist $\widetilde{M}(D(f))\cong M_f$ (insbesondere $\widetilde{M}(X)\cong M$).
+  \end{enumerate}
+\end{Prop}
+
+\begin{Bew}
+  Wie für $\mathcal O_X$.
+\end{Bew}
+
+\begin{Bem}
+  \label{bem:10.3}
+  $M\mapsto \widetilde{M}$ ist ein exakter, volltreuer Funktor $\Cat{R-Mod}\to\Cat{\mathcal O_X-Mod}$, denn: \\
+  Lokalisieren ist exakt, da $R_{\mathfrak p}$ flacher $R$-Modul ist (was Tensorieren exakt macht)
+\end{Bem}
+
+\begin{Bem}
+  \label{bem:10.4}
+  \begin{enumerate}
+  \item $\widetilde{M\otimes_RN}\cong\widetilde{M}\otimes_{\mathcal O_X}\widetilde{N}$
+  \item $\widetilde{\bigotimes M_i}\cong\bigotimes\widetilde{M_i}$
+  \end{enumerate}
+\end{Bem}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item $(M\otimes_RN)\otimes_RR_{\mathfrak p}\cong (M\otimes_RR_{\mathfrak p})\otimes_{R_{\mathfrak p}}(N\otimes_RR_{\mathfrak p})$
+  \end{enumerate}
+\end{Bew}
+
+\begin{Bem}
+  \label{bem:10.5}
+  Sei $f:X\to Y$ ein Morphismus, $X=\Spec R, Y=\Spec R^\prime, \alpha: R^\prime\to R$ der zugehörige Ringhomomorphismus.
+  \begin{enumerate}
+  \item Für jeden $R$-Modul $M$ ist $f_\ast\widetilde{M}\cong \widetilde{_\alpha M}$. ($_\alpha M$ sei $M$ aufgefasst als $R^\prime$-Modul über $\alpha$)
+  \item Für jeden $R^\prime$-Modul $N$ ist $f^\ast\widetilde{N}=\widetilde{N\otimes_{R^\prime}R}$
+  \end{enumerate}
+\end{Bem}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item
+    \begin{align*}
+      f_\ast\widetilde{M}(U)=&\widetilde{M}(f^{-1}(U))\text{ als $\mathcal O_Y(U)$-Modul} \\
+      =& _\alpha \widetilde{M}(U) 
+    \end{align*}
+  \item $f^\ast\widetilde{N}(X)=(f^{-1}\widetilde{N}\otimes_{f^{-1}\mathcal O_Y}\mathcal O_X)(X)=N\otimes_{R^\prime}R$
+  \end{enumerate}
+\end{Bew}
+
+\begin{Def}
+  \label{def:10.6}
+  Sei $(X,\mathcal O_X)$ ein Schema, $\mathcal F$ eine $\mathcal O_X$-Modulgarbe.
+  \begin{enumerate}
+  \item $\mathcal F$ heißt \begriff{quasi-kohärent}, wenn es eine offene affine Überdeckung $(U_i=\Spec R_i)_i$
+    con $X$ und $R_i$-Moduln $M_i$ gibt, sodass 
+    \begin{align*}
+      \mathcal F\vert U_i\cong\widetilde{M_i}
+    \end{align*}
+    für alle $i$ gilt.
+  \item $\mathcal F$ heißt \begriff{kohärent}, wenn in (a) jedes $M_i$ endlich erzeugbarer $R_i$-Modul ist.
+  \end{enumerate}
+\end{Def}
+
+\begin{Prop}
+  \label{prop:10.7}
+  Eine $\mathcal O_X$-Modulgarbe $\mathcal F$ auf einem Schema $X$ ist genau dann quasi-kohärent, wenn für jedes offene affine 
+  $U=\Spec R\subseteq X$ ein $R$-Modul $M$ existiert mit $\mathcal F\vert U\cong \widetilde{M}$.
+\end{Prop}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item[1. Schritt] Sei $X$ \OE affin, denn: \\
+    Sei $U=\Spec R\subseteq X$ offen und affin, $(U_i=\Spec R_i)$ die gegebene Überdeckung von $X$.
+    $(U\cap U_i)$ ist eine offene Überdeckung von $U$. Überdecke $U\cap U_i$ durch $D(f_{ij}), f_{ij}\in R_i$.
+    Dann gilt:
+    \begin{align*}
+      \mathcal F\vert D(f_{ij})=(\mathcal F\vert U)\vert D(f_{ij})=\widetilde{M_i}\vert D(f_{ij}) =\widetilde{(M_i)_{f_{ij}}}
+    \end{align*}
+  \end{enumerate}
+\end{Bew}
+
 
 \appendix
 
