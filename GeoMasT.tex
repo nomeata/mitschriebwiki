@@ -1,0 +1,309 @@
+\documentclass[a4paper,twoside,DIV15,BCOR12mm]{scrbook}
+
+\usepackage{mathe}
+\usepackage{saetze-hug}
+\usepackage{enumerate}
+
+\newcommand{\A}{\mathcal A}
+
+\pdfinfo{
+	/Author (Die Mitarbeiter von http://mitschriebwiki.nomeata.de/)
+	/Title   (Geometrische Maßtheorie)
+	/Subject (Geometrische Maßtheorie)
+}
+
+\author{PD. Dr. Daniel Hug}
+\publishers{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
+\title{Geometrische Maßtheorie}
+\date{Wintersemester 2009/2010}
+\makeindex
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\chapter*{Vorwort}
+
+\section*{Über dieses Skriptum}
+Dies ist ein Mitschrieb der Vorlesung \glqq Geometrische Maßtheorie\grqq\
+von Herrn PD. Dr. Daniel Hug im Wintersemester 2009/2010 an der Universität Karlsruhe (TH).
+ Die Mitschriebe der Vorlesung werden mit ausdrücklicher Genehmigung von Herrn Hug hier veröffentlicht,
+Herr Hug ist für den Inhalt nicht verantwortlich.
+
+\section*{Wer}
+Beteiligt am Mitschrieb ist Joachim Breitner.
+
+\section*{Wo}
+Alle Kapitel inklusive \LaTeX-Quellen können unter \url{http://mitschriebwiki.nomeata.de} abgerufen werden.
+Dort ist ein \emph{Wiki} eingerichtet und von Joachim Breitner um die \LaTeX-Funktionen erweitert.
+Das heißt, jeder kann Fehler nachbessern und sich an der Entwicklung
+beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
+
+\chapter{Grundlage: Maß und Integral}
+
+\section{Äußere Maße und Meßbarkeit}
+
+\begin{definition}
+Sei $X$ eine Menge. Eine Abbildung
+\[
+\mu : \mathcal P(X) \to [0,\infty]
+\]
+heißt \emph{äußeres Maß} auf $X$, falls gilt:
+\begin{enumerate}
+\item $\mu(\emptyset) = 0$
+\item Für $A,A_n \subset X$, $i\in \MdN$ mit $A\subset \bigcup_{i\ge 1} A_i$ gilt 
+\[
+\mu(A) \le \sum_{i\ge1} \mu(A_i).
+\]
+\end{enumerate}
+\end{definition}
+
+Beobachte folgende einfache Folgerungen der Definition:
+
+\begin{itemize}
+\item $A\subset B \subset X \implies \mu(A)\le \mu(B)$
+\item $A\subset B \cup \emptyset \cup \emptyset \cup \ldots \implies \mu(A) \le \mu(B) + \mu(\emptyset) + \mu(\emptyset) + \cdots = \mu(B)$
+\end{itemize}
+
+\begin{beispiel}
+\begin{align*}
+\mu_1(A) &= 
+\begin{cases}
+\#A, & A \text{ endlich} \\
+0, & \text{sonst}
+\end{cases}
+&
+\mu_2(A) &= 
+\begin{cases}
+1, & A \ne 0\\
+0, & \text{sonst}
+\end{cases} \\
+\mu_3(A) &= 
+\begin{cases}
+\infty, & A \ne \emptyset \\
+0, & \text{sonst}
+\end{cases}
+&
+\mu_4(A) &= 
+\begin{cases}
+\infty, & A^c \text{ endlich} \\
+0, & \text{sonst}
+\end{cases} \\
+\mu_5(A) &= 
+\begin{cases}
+0, & \text{$A$ abzählbar oder $A^c$ abzählbar} \\
+1, & \text{sonst}
+\end{cases}
+\end{align*}
+\end{beispiel}
+
+Für die Konstruktion eines äußeren Maßes aus Rohdaten ist folgender Satz nützlich:
+
+\begin{satz}
+Sei $\mathcal E \subset \mathcal P (X)$ mit $\emptyset \in \mathcal E$, sei $\eta: \mathcal E \to [0,\infty]$ mit $\eta(\emptyset)=0$. Dann wird durch
+\[
+\mu(A) \da \inf\{\sum_{i=1}^\infty \eta(A_i) \mid A_i\in \mathcal E, i\in \MdN, A\subset\bigcup_{i\ge1}A_i\}
+\]
+($\inf\emptyset = \infty$) für $A\subset X$ ein äußeres Maß erklärt, das von $(\mathcal E, \eta)$ induzierte äußere Maß.
+\end{satz}
+
+\begin{beweis}
+Es ist $0\le \mu(\emptyset) \le \sum_{i=1}^\infty \eta(\emptyset)$, da $\emptyset \subset \bigcup_{i=1}^\infty\emptyset$ und $\emptyset\in\mathcal E$.
+
+Seien $A, A_i\subset X$ und $A\subset \bigcup_{i\ge1}A_i$. Wir müssen zeigen: $\mu(A) \le \sum_{i\ge 1}A_i$.
+
+Ist für ein $i\in\MdN$ bereits $\mu(A_i)=\infty$, so sind wir fertig. Sei also $\mu(A_i)<\infty$ für alle $i\in\MdN$. Sei $\varepsilon>0$, dann existiert ein $E_{ij}\in \mathcal E$, $j\in \MdN$ mit $A_i\subset \bigcup_{j\ge 1} E_{ij}$ und
+\[
+\mu(A_i) + \frac{\varepsilon}{2^i}\ge \sum_{i\ge j}\mu(E_{ij}).
+\]
+Also gilt
+\[
+A \subset \bigcup_{i\ge j} Ai \subset \bigcup_{i,j\ge 1} E_{ij}, \quad E_{ij}\in \mathcal E
+\]
+und daraus folgt
+\begin{align*}
+\mu(A) &\le \sum_{i,j\ge 1}\eta(E_{ij}) \\
+&= \sum_{i=1}^\infty \sum_{j=1}^\infty \mu(E_{ij}) \\
+&\le \sum_{i=1}^\infty \mu(A_i) + \frac\varepsilon{2^i} \\
+&\le \sum_{i=1}^\infty \mu(A_i) + \varepsilon
+\end{align*}
+was mit $\varepsilon \to 0$ bedeutet dass
+\[
+\mu(A) \le \sum_{i=1}^\infty \mu(A_i)
+\]
+\end{beweis}
+
+\begin{definition}
+Sei $\mu$ das äußere Maß auf $X$. Eine Menge $A\subset X$ heißt $\mu$-messbar, falls für alle $M\subset X$ gilt:
+\[
+\mu(M) = \mu(M\cap A) + \mu(M \cap A^c).
+\]
+Die Menge aller $\mu$-messbaren Mengen wird mit $\mathcal A_\mu$ bezeichnet.
+\end{definition}
+
+Es genügt bereits: $A$ ist $\mu$-messbar genau dann wenn
+\[
+\mu(M) \ge \mu(M\cap A) + \mu(M\cap A^c) \quad \forall M\subset X
+\]
+
+Denn wegen
+\[
+M\subset (M\cap A) \cup (M\cap A^c) \cup \emptyset \cup \emptyset\cdots
+\]
+gilt 
+\[
+\mu(M)\le \mu(M\cap A) + \mu(M\cap A^c) + \mu(\emptyset) + \cdots.
+\]
+
+Es gilt stets $\emptyset, X\in\mathcal A_\mu$.
+
+\begin{bemerkung}
+Sei $Y\subset X$. $\mu LY$ ist das durch
+\[
+(\mu LY)(M) \da \mu(M\cap Y)\quad M\subset X
+\]
+erklärte äußere Maß. Ferner ist $\mathcal A_\mu \subset \mathcal A_{\mu LY}$, denn: für $A\in\mathcal A_\mu$ und $M\subset X$ ist
+\begin{align*}
+\mu_{LY}(M)
+&= \mu(Y\cap M) = \mu(Y\cap M\cap A) + \mu(Y\cap M \cap A^c) \\
+&= (\mu LY) (M\cap A) + (\mu LY)(M\cap A^c)
+\end{align*}
+Es gilt
+\[
+A \in \mathcal A_\mu \iff \mu= (\mu LA) + (\mu L A^c)
+\]
+\end{bemerkung}
+
+\begin{proposition}
+Für ein äußeres Mapß $\mu$ auf $X$ gelten die folgenden Aussagen:
+\begin{enumerate}[a)]
+\item $\emptyset,\, X\in \mathcal A_\mu$ sowie $A\in \mathcal A_\mu \iff A^c\in\mathcal A_\mu$.
+\item Für $A\subset X$ mit $\mu(A)=0$ gilt $A\in\mathcal A_\mu$.
+\item Für $A_i\in\mathcal A_\mu$, $i\in\MdN$ gilt $\bigcup_{i\ge1} A_i\in\mathcal M_\mu$ und $\bigcap_{i\ge1} A_i\in\mathcal M_\mu$.
+\item Für $A_\in\mathcal A_\mu$, $B\in X$ gilt
+\[
+\mu(A\cap B) + \mu(A\cup B) = \mu(A) + \mu(B).
+\]
+\item Für $A_i\in\mathcal A_\mu$, paarweise disjunkt, gilt
+\[
+\mu(\bigcup_{i=1}^\infty A_i) = \sum_{i=1}^\infty A_i.
+\]
+\item Für $A_i\in \mathcal A_\mu$, $i\in\MdN$ und $A_i\subset A_{i+1}$ für alle $i\in\MdN$ gilt
+\[
+\mu(\bigcup_{i=1}^\infty A_i) = \lim_{i\to\infty}\mu(A_i).
+\]
+\item Für $A_i \in \mathcal A_\mu$, $i\in \MdN$ mit $\mu(A_1) < \infty$ und $A_i\supset A_{i+1}$ für alle $i\in\MdN$ gilt:
+\[
+\mu(\bigcap_{i=1}^\infty A_i) = \lim_{i\to\infty}\mu(A_i).
+\]
+\end{enumerate}
+\end{proposition}
+
+\begin{beweis}
+\begin{enumerate}
+\item[c)] $A_1,A_2\in \mathcal A_\mu$.
+\begin{align*}
+\mu(M) &= \mu(M\cap A_1) + \mu(M\cap A_1^c) \\
+&= \mu(M\cap A_1) + \mu(M\cap A_1^c\cap A_2) + \mu(M\cap A_1^c \cap A_2^c) \\
+&\ge \mu(M \cap (A_1 \cup (A_1^c \cap A_2))) + \mu)(M \cap A_1^c \cap A_2^c) \\
+&= \mu(M\cap (A_1 \cup A_2)) + \mu(M\cap (A_1\cup A_2)^c)
+\end{align*}
+Daraus folgt, dass $A_1\cup A_2$ $\mu$-messbar ist. Per Induktion sieht man dann, dass für $A_1,\ldots,A_n\in\mathcal A_\mu$ gilt: $\bigcup_{i=1}^n A_i \in \mathcal A_\mu$.
+\item[e)] Sind $A_1,\ldots,A_n\in\mathcal A_\mu$ und paarweise disjunkt. Dann gilt
+\begin{align*}
+\mu(A_1\cup A_2) = \mu( (A_1\cup A_2)\cap A_1) + \mu( (A_1\cup A_2)\cap A_1^c) 
+= \mu(A_1) + \mu(A_2)
+\end{align*}
+woraus folgt dass
+\[
+\mu(\bigcup_{i=1}^n A_i) = \sum_{i=1}^n \mu(A_i).
+\]
+Wegen
+\[
+\sum_{i=1}^n \mu(A_i) \le \mu(\bigcup_{i=1}^n A_i) \quad \forall n\in\MdN
+\]
+gilt
+\[
+\sum_{i=1}^\infty \mu(A_i) \le \mu(\bigcup_{i=1}^\infty A_i) \le \sum_{i=1}^\infty \mu(A_i)
+\]
+und damit Gleichheit.
+\item[f)] Wir definieren $B_1 \da A_1$, $B_2 \da A_2\setminus A_1$, $B_3 \da A_3\setminus A_2\ldots$ Es gilt nun dass $B_i\in \mathcal A_\mu$ für alle $i\in\MdN$ und die $B_i$ sind paarweise disjunkt. Nun kann ausrechnen dass
+\begin{align*}
+\lim_{k\to\infty} \mu(A_k) 
+&= \lim_{k\to\infty} \mu(\bigcup_{i=1}^k B_i) \\
+&= \lim_{k\to\infty} \sum_{i=1}^k \mu(B_i)\\
+&= \sum_{i=1}^\infty \mu(B_i)\\
+&= \mu(\bigcup_{i=1}^\infty B_i) \\
+&= \mu(\bigcup_{i=1}^\infty A_i)
+\end{align*}
+\item[g)] Es ist
+\begin{align*}
+\mu(A_1) = \mu(A_2\cup A_1\setminus A_2) = \mu(A_2) + \mu(A_1\setminus A_2),
+\end{align*}
+das heißt
+\[
+\mu(A_1\setminus A_2) = \mu(A_1) - \mu(A_2).
+\]
+\textbf{Seite 5 einfügen}
+\end{enumerate}
+\end{beweis}
+
+\begin{definition}
+Sei $\A$ eine $\sigma$-Algebra auf $X$. Ein äußeres Maß $\mu$ auf $X$ heißt $A$-reguläre, falls $\A\subset \A_\mu$ gilt und zu jeder Menge $M\subset X$ ein $A\in\A$ existiert mit $M\subset A$ und $\mu(M) = \mu(A)$. Das äußere Maß $\mu$ heißt regulär, falls $\mu$ ein $\A_\mu$-reguläres Maß ist.
+\end{definition}
+
+\begin{proposition}
+Sei $\mathcal A$ eine $\sigma$-Algebra in $X$, $\mu$ ein $\A$-reguläres äußeres Maß auf $X$. Dann gilt:
+\begin{enumerate}[a)]
+\item Ist $M_i\subset X$, $M_i\subset M_{i+1}$ für alle $i\in\MdN$, so ist
+\[
+\mu(\bigcup_{i\ge 1}) = \lim_{i\to\infty}\mu(M_i)
+\]
+\item Zu jedem $M\in X$ mit $\mu(M)<\infty$ existiert ein $A\in\A$, so dass für alle $B\in \A_\mu$ gilt:
+\[
+\mu(B\cap M) = \mu(B\cap A)
+\]
+\item Ist $M_1\cup M_2\in \A$ und $\mu(M_1\cup M_2) = \mu(M_1)+\mu(M_2) <\infty$, so existiereren $A_1,A_2\in\A$ mit $M_i\subset A_i$, $i=1,2$ und $\mu(A_i\setminus M_i) = 0$. Insbesondere ist $M_1,M_2\in \A_\mu$.
+\end{enumerate}
+\end{proposition}
+
+\begin{beweis}
+\begin{enumerate}[a)]
+\item Zu jedem $i\in\MdN$ finden wir ein $A_i\in \A$ so dass $M_i\subset A_i$ und $\mu(M_i) =\mu(A_i)$. Dazu definieren wir $B_i \da \bigcap_{j\ge i} A_j$. Damit gilt $M_i \subset B_i\subset A_i$, $B_i\subset B_{i+1}$ und $B_i\in\A$, $i\in\MdN$. Es folgt:
+\begin{align*}
+\mu(\bigcup_{i\ge 1} M_i) &\le \mu(\bigcup_{i\ge1}B_i) \\
+&= \lim_{i\to\infty} \mu(B_i) \\
+&\le \lim_{i\to\infty} \mu(A_i) \\
+&\le \lim_{i\to\infty} \mu(M_i) \\
+&\le \lim_{i\to\infty} \mu(\bigcup_{i\ge 1} M_i)
+\end{align*}
+\item  Zu $M$ existiert ein $A\in\A$ mit $M\subset A$ und $\mu(M) = \mu(A)$. Sei $B\in \A_\mu$. Dann folgt:
+\begin{align*}
+\mu(A) = \mu(M) &= \mu(M\cap B) + \mu(M\cap B^c) \\
+&\le \mu(A\cap B) + \mu(M \cap B^c) \\
+&\le \mu(A\cap B) + \mu(A \cap B^c) = \mu(A) \\
+\end{align*}
+woraus Gleichheit in obiger Ungleichung folgt. Wegen $\mu(M)<\infty$ ist auch $\mu(M\cap B^c)<\infty$, und wir können dies von zwei obigen Termen abziehen und erhalten
+\[
+\mu(M\cap B) = \mu(A\cap B).
+\]
+\item  Zu $M_1$ existiert $\tilde A_1\in\A$ mit $M_1 \subset \tilde A_1$ und $\mu(M_1) = \mu(\tilde A_1)$. Wir definieren $A_1 \da \tilde A_1 \cap (M_1\cup M_2)$. Für diese Menge gilt nun $M_1\subset A_1 \subset M_1\cup M_2$. Wir folgern 
+\[
+\mu(M_1) \le \mu(A_1) \le \mu (\tilde A_1) \le \mu(M_1)
+\]
+und
+\begin{align*}
+\mu(A_1\cap M_2) + \mu(A_1 \cup M_2) &= \mu(A_1) + \mu(M_2) \\
+&= \mu(M_1) + \mu(M_2) \\
+&= \mu(M_1\cup M_2) \\
+&= \mu(A_1 \cup M_2) < \infty
+\end{align*}
+woraus $\mu(A_1\cap M_2) = 0$ folgt.
+
+Nun liegt $A_1\setminus M_1\subset A_1\cap M_2$, also gilt $\mu(A_1\setminus M_1) = 0$ und somit $A_1\setminus M_1\in \A_\mu$. Damit gilt dann $M_1 = A_1\cap (A_1\setminus M_1)^c\in \A_\mu$.
+\end{enumerate}
+\end{beweis}
+
+\end{document}
