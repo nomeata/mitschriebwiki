@@ -3,8 +3,11 @@
 \usepackage{mathe}
 \usepackage{saetze-hug}
 \usepackage{enumerate}
+\usepackage{dsfont}
 
 \newcommand{\A}{\mathcal A}
+\newcommand{\ind}{\mathds 1}
+\DeclareMathOperator{\im}{im}
 
 \pdfinfo{
 	/Author (Die Mitarbeiter von http://mitschriebwiki.nomeata.de/)
@@ -528,7 +531,169 @@ und damit
 &\le \mu(M\cap \{f\le r\}) + \mu(M\cap \{r<f<r+\frac1n\}) + \mu(M\cap \{f\ge r+\frac 1n\}) \\
 &\le \mu(M) + \ep
 \end{align*}
+\end{beweis}
 
+\begin{satz}
+Seien $\mu$ ein äußeres Maß auf $X$, $f: X \to [0,\infty]$ eine $\mu$-messbare Abbildung und $(r_n)_{n\in\MdN}$ eine Folge in $[0,\infty)$ mit $\lim_{n\to\infty} r_n = 0$ und $\sum_{n=1}^\infty r_n = \infty$. Dann gibt es eine Folge $(A_n)_{n\in\MdN}$ $\mu$-messbarer Mengen mit
+\[
+f = \sum_{n\ge1} r_n \ind_{A_n}.
+\]
+\end{satz}
+
+\begin{beweis}
+Setze $A_1 \da \{ f \ge r_1 \}$ und allgemein $A_n \da \{f \ge r_n + \sum_{j=1}^{n-1} r_j \ind_{A_j}\}$, $n\ge 1$.
+
+\textbf{Behauptung:} Es ist $f \ge \sum_{i=1}^n r_i \ind_{A_i}$, $n\in\MdN$. Dies gilt für $n=1$, und wenn es für ein $n\in\MdN$ gilt, dann folgt: Ist $x\notin A_{n+1}$, dann ist
+\begin{align*}
+f(x) \ge \sum_{i=1}^n r_i \ind_{A_i}(x) + \underbrace{r_{n+1}\ind_{A_{n+1}}(x)}_{=0}
+\end{align*}
+nach Induktionsvoraussetzung. Ist dagegen $x\in A_{n+1}$, so gilt nach der Definition von $A_{n+1}$
+\begin{align*}
+f(x) \ge \sum_{i=1}^n r_i \ind_{A_i}(x) + r_j = \sum_{i=1}^n r_i \ind_{A_i}(x) + r_j \underbrace{\ind_{A_{n+1}}(x)}_{=1}.
+\end{align*}
+
+Folglich ist $f\ge \sum_{i=1}^\infty r_i \ind_{A_i}$.
+
+\textbf{Annahme:} Es gelte $f(x) > \sum_{i=1}^\infty r_i \ind_{A_i}(x)$ für ein $x\in X$.
+
+Also ist $\sum_{i=1}^\infty r_i \ind_{A_i}(x)<\infty$. Da $\sum_{i=1}^\infty r_i = \infty$ gilt, muss es eine Folge natürlicher Zahlen $(j_k)_{k\in\MdN}$ geben mit $\ind_{A_{j_k}}(x)=0$ für alle $k\in\MdN$.
+Wegen $\lim_{k\to\infty} r_{j_k} = 0$ gibt es ein $k\in\MdN$ mit
+\begin{align*}
+r_{j_k} < f(x) - \sum_{j=1}^\infty r_j \ind_{A_j}(x)
+\end{align*}
+und damit 
+\begin{align*}
+f(x) &> \sum_{j=1}^\infty r_j \ind_{A_j}(x) + r_{j_k} \\
+&\ge \sum_{j=1}^{j_k-1} r_j \ind{A_j}(x) + r_{j_k}.
+\end{align*}
+Das bedeutet $x\in A_{j_k}$ im Widerspruch zu $\ind_{A_{j_k}}(x) \ne 0$.
+\end{beweis}
+
+\section{Integration}
+
+In diesem Abschnitt wird generell vorausgesetzt, dass $X$ eine Menge und $\mu$ ein äußeres Maß auf $X$ sei.
+
+\begin{definition}
+Eine $\mu$-Treppenfunktion auf $X$ ist eine $\mu$-messbare Abbildung $h\in \mathbb F_\mu(X,\MdR)$ mit abzählbarer Wertemenge $\im(h)$ und
+\[
+\sum_{\substack{r\in \im(h)\\r< 0}} r \cdot \mu(\{h=r\}) > -\infty \quad\text{ oder }\quad
+\sum_{\substack{r\in \im(h)\\r> 0}} r \cdot \mu(\{h=r\}) < \infty.
+\]
+Ist $h$ eine $\mu$-Treppenfunktion auf $X$, so wird durch
+\[
+\int hd\mu = \sum_{r\in \im(h)} r \cdot \mu(\{h=r\})
+\]
+das $\mu$-Integral von $h$ erklärt, wobei „$0\cdot \infty\da 0$“ gelte.
+\end{definition}
+
+\begin{bemerkung}
+\begin{enumerate}
+\item  Es gilt
+\[
+\int h d\mu = \int h^+ d\mu - \int h^- d\mu.
+\]
+\item $h=\ind_A$, $A\in\A_\mu$ ist eine $\mu$-Treppenfunktion, $\int \ind_A d\mu=\mu(A)$.
+\end{enumerate}
+\end{bemerkung}
+
+\begin{lemma}
+\label{lem1.10}
+Seien $h,g$ $\mu$-Treppenfunktionen auf $X$. Es gelte $\int h^+ d\mu <\infty$ und $\int g^+ d\mu<\infty$  oder $\int h^- d\mu <\infty$ und $\int g^- d\mu<\infty$. Dann ist $h+g$ eine $\mu$-Treppenfunktion und es gilt
+\[
+\int (h+g) d\mu = \int h d\mu + \int g d\mu.
+\]
+\end{lemma}
+
+\begin{beweis}
+Es gilt zunächst $h+g \in \mathbb F_\mu(X,\MdR)$. Zur Additivität: Wir definieren $A(r,s) \da \{h=r\} \cap \{g=s\}$ für $r,s\in\MdR$.
+\begin{align*}
+\int hd\mu + \int gd\mu 
+&= \sum_{r\in\im(h)} r\cdot \mu(\{h=r\}) + \sum_{s\in \im(h)} s \cdot \mu(\{g=s\}) \\
+&= \sum_{r\in\im(h)} r \cdot \sum_{s\in \im(g)} \mu(A(r,s)) + \sum_{s\in\im(g)} s \cdot \sum_{r\in \im(h)} \mu(A(r,s)) \\
+&= \sum_{\substack{r\in\im(h)\\s\in\im(g)}} (r+s)\cdot \mu(A(r,s)) \\
+&= \sum_{t\in \im(g+h)} t \cdot \sum_{\substack{r\in \im(h) \\s\in\im(g)\\r+s=t}} \mu(A(r,s)) \\
+&= \sum_{t\in \im(g+h)} t \cdot \mu\big(\bigcup_{\substack{r\in \im(h) \\s\in\im(g)\\r+s=t}} A(r,s)\big) \\
+&= \sum_{t\in \im(g+h)} t \cdot \mu(\{g+h=t\}) \\
+&= \int (h+g) d\mu
+\end{align*}
+Übung: Zeige, dass $g+h$ integrierbar ist.
+\end{beweis}
+
+\begin{bemerkung}
+Sei $h$ eine $\mu$-Treppenfunktion mit $h\ge 0$. Dann gilt $\int hd\mu \ge 0$. Mit Lemma \ref{lem1.10} folgt für $\mu$-Treppenfunktionen $h,g$:
+\[
+h \le g \implies \int h d\mu \le \int g d\mu
+\]
+\end{bemerkung}
+
+\begin{definition}
+Sei $f\in\mathbb F_\mu(X,\bar\MdR)$. Eine $\mu$-Oberfunktion (bzw. $\mu$-Unterfunktion) von $f$ ist eine $\mu$-Treppenfunktion $h$ auf $X$ mit $f\le h$ $\mu$-fast-überall auf $X$ (bzw. $h\le f$ $\mu$-fast-überall auf $X$).
+
+Durch
+\[
+\int^* fd\mu \da \inf\left\{\int hd\mu \mid \text{$h$ ist eine $\mu$-Oberfunktion von $f$}\right\}
+\]
+wird das $\mu$-Oberintegral von $f$ erklärt.
+Analog wird durch
+\[
+\int_* fd\mu \da \sup\left\{\int hd\mu \mid \text{$h$ ist eine $\mu$-Unterfunktion von $f$}\right\}
+\]
+wird das $\mu$-Unterintegral von $f$ erklärt.
+\end{definition}
+
+\begin{lemma}
+Für $f,g\in\mathbb F_\mu(X,\bar\MdR)$ gelten die folgenden Aussagen:
+\begin{enumerate}
+\item $\int_* fd\mu = - \int^* (-f)d\mu$.
+\item Gilt $\mu$-fast-überall $f\le g$, so ist $\int^* fd\mu \le \int^* gd\mu$ und $\int_* fd\mu \le \int_* gd\mu$.
+\item Gilt $\mu$-fast-überall $f\ge 0$, so ist $\int^* fd\mu \ge 0$ und $\int_* fd\mu \ge 0$.
+\item Gilt $\int^* fd\mu <\infty$, so auch $\int^*f^+d\mu<\infty$ und $f<\infty$ $\mu$-fast-überall.
+\item Für $c\in(0,\infty)$ gilt $\int^*(cf)d\mu = c\cdot \int^*fd\mu$ und $\int_*(cf)d\mu = c\cdot \int_*fd\mu$.
+\item Ist $\int^* fd\mu <\infty$ und $\int^*g d\mu<\infty$, so ist $f+g \in \mathbb F_\mu(X,\bar\MdR)$ und $\int^*(f+g)d\mu \le \int^*fd\mu + \int^*gd\mu$.
+
+Analog gilt: Ist $\int_* fd\mu >-\infty$ und $\int_*g d\mu>-\infty$, so ist $f+g \in \mathbb F_\mu(X,\bar\MdR)$ und $\int_*(f+g)d\mu \ge \int_*fd\mu + \int_*gd\mu$.
+\item $\int_* fd\mu \le \int^* fd\mu$.
+\end{enumerate}
+\end{lemma}
+
+\begin{bemerkung}
+Ist $h$ eine $\mu$-Treppenfunktion, so ist $h$ eine $\mu$-Oberfunktion und eine $\mu$-Unterfunktion seinerselbst. Das heißt insbesondere
+\[
+\int hd\mu \le \int_* h d\mu \le \int^* h d\mu \le \int h d\mu.
+\]
+\end{bemerkung}
+
+\begin{definition}
+Ist $f\in \mathbb F_\mu(X,\bar\MdR)$ eine $\mu$-messbare Abbildung und stimmen das $\mu$-Oberintegral mit dem $\mu$-Unterintegral von $f$ überein, so wird durch
+\[
+\int fd\mu \da \int^* fd\mu = \int_* fd\mu
+\]
+das $\mu$-Integral von $f$ erkärt. Man sagt in diesem Fall, dass das $\mu$-Integral existiert. Ist $\int fd\mu \in \MdR$, so heißt $f$ $\mu$-integrierbar.
+\end{definition}
+
+\begin{satz}
+Sei $f\in \mathbb F_\mu(X,\bar\MdR)$ nicht-negativ und $\mu$-messbar. Dann existiert das $\mu$-Integral von $f$. Es gilt $\int fd\mu \ge 0$ und 
+\[
+\int fd\mu = \sup\left\{ \int hd\mu \mid \text{$h$ ist $\mu$-Unterfunktion, $\im(h)$ ist endlich}\right\}.
+\]
+\end{satz}
+
+\begin{beweis}
+Ist $\mu(\{f=\infty\})>0$, dann ist für jedes $n\in\MdN$ die Funktion $n\cdot \ind_{\{f=\infty\}}$ eine $\mu$-Unterfunktion von $f$ und 
+\[
+\int^*fd\mu \ge \int_* fd\mu \ge \int n \cdot\ind_{\{f=\infty\}} d\mu = n \cdot \mu(\{f=\infty\})\to \infty\text{ für }n\to\infty.
+\]
+Also ist $\int^* fd\mu = \int_* fd\mu = \infty$.
+
+Sei jetzt $f<\infty$ $\mu$-fast-überall. Für $t\in(1,\infty)$ sei
+\[
+U_t \da \sum_{n\in\MdZ} t^n \cdot \ind_{\{t^n \le f < t^{n+1}\}} \le f \le t\cdot U_t
+\]
+$U_t$ ist eine $\mu$-Unterfunktion von $f$, $tU_t$ eine $\mu$-Oberfunktion von $f$. Damit gilt
+\begin{align*}
+\int^* fd\mu \le \int t U_t d\mu = t \cdot \int U_t d\mu \le t \int_* f d \mu.
+\end{align*}
+Ist $\int_* fd\mu <\infty$, dann folgt $\int^* fd\mu \le \int_* fd\mu$ aus $t\to 1$. Ist $\int_* fd\mu = \infty$, so ist $\int^* fd\mu = \int_* fd\mu = \infty$.
 \end{beweis}
 
 \end{document}
