@@ -1,0 +1,173 @@
+\documentclass[reqno, a4paper,11pt]{scrbook}
+\usepackage[ngerman]{babel}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{stmaryrd}
+
+% Move sections to new page if there is not enough space
+\usepackage[nobottomtitles]{titlesec}
+
+% smaller border
+\usepackage{geometry}
+\geometry{a4paper,tmargin=2cm,lmargin=2cm,rmargin=2cm}
+\setlength\parskip{\smallskipamount}
+\setlength\parindent{0pt}
+\tolerance=900
+
+% theorem environment
+\usepackage[hyperref,amsmath,thmmarks,thref]{ntheorem}
+
+% no italics in theorems
+\theorembodyfont{}
+
+% create index
+\usepackage{index}
+\newindex{default}{idx}{ind}{Vokabeln}
+
+% define theorem environments
+
+
+\theoremstyle{break}
+	\newtheorem{thm}{theorem}
+	\newtheorem{example}{Example}
+
+\theoremstyle{nonumberbreak}
+	\newtheorem{nnexam}{Example}
+
+\theoremstyle{nonumberplain}
+\theoremsymbol{\ensuremath{\Box}}
+    \newtheorem{proof}{Proof}
+
+%aliases for commands
+\newcommand{\boundary}{\partial}
+
+\newcommand{\RR}{% real numbers
+	\ensuremath{\mathbb{R}}%
+}
+
+\newcommand{\CC}{% complex numbers
+	\ensuremath{\mathbb{C}}%
+}
+
+\newcommand{\NN}{% natural numbers
+	\ensuremath{\mathbb{N}}%
+}
+
+\newcommand{\ZZ}{% integers
+	\ensuremath{\mathbb{Z}}%
+}
+
+\renewcommand{\phi}{% use the nice phi
+	\ensuremath{\varphi}%
+}
+\renewcommand{\theta}{% use the nice theta
+	\ensuremath{\vartheta}%
+}
+\newcommand{\define}{% nice Def symbol
+	\ensuremath{\mathrel{\mathop:}=}%
+}
+
+\author{Jonas Fietz}
+
+\begin{document}
+
+\chapter{Introduction}
+Setup: Let $(X, \|.\|)$ be a Banach space and $L: X \rightarrow \RR$ a functional. Furthermore, let $\phi \neg M \subset X$ be a given set or set of admissable elements. \\
+Goal: Minimize $L$ over $M$. \\
+Find $u_0 \in M$ such that $L[u_0] \subseteq L[u]$ $\forall u \in M$. This is equivalent to $L[u_0] = \inf_M L$. $u_0$ is called a minimum. \\
+Two basic questions come to mind:
+\begin{enumerate}
+\item Does a minimizer exist? (not always: $M=[0,\infty), L(x) = e^{-x})$
+\item If it exists, can one determine it explicitly?
+\end{enumerate}
+
+\section{Examples}
+\begin{example}[Straight line]
+Given $A = (a, y_a), B=(b, y_b)$. Find the curve $\gamma: [a,b] \rightarrow \RR$, $\gamma(a) = y_a$, $\gamma(b) = y_b$ of shortest length. \\
+
+$X = \{ \gamma \in C^1[a,b] \}, \left|\gamma\right| = \max_{t \in [a,b]}{\left| \gamma(t) \right|} + \max_{t \in [a,b]}{\left| \gamma^\prime(t) \right|} $
+$M = \{ \gamma \in X: \gamma(u) = y_a, \gamma(b) = y_b \}$ \\
+$L[\gamma] = \text{ length of curve} \Gamma = \{ (t, \gamma(t)): t \in [a,b]\} \subset \RR^2$ $= \int_{\Gamma}{1 ds} = \int_a^b{\sqrt{1 + \gamma^{\prime 2}} dt}$ \\
+Find $\gamma_0: L[\gamma_0] = \inf_M L$. \\
+Let us assume that a minimizer $\gamma_0$ exists. Can we determine it? \\
+Consider curves $\gamma_\epsilon (t) \define \gamma_0(t) + \epsilon \delta(t)$ where  $\delta \in X$, $\delta(a) = \delta(b) = 0$ and $\epsilon \in \RR$. Notice $\gamma_\epsilon \in M$. Define $l(\epsilon) \define L[\gamma_\epsilon]$. Then $l: \RR \rightarrow \RR$, $l$ has a minimum at $\epsilon = 0$. \\
+\begin{displaymath}
+l(0) = L[\gamma_0] \leq L[\gamma_\epsilon] = l(\epsilon), \epsilon \in \RR 
+\end{displaymath}
+Necessary condition: 
+\begin{eqnarray*}
+0 &=& \frac{d}{d \epsilon} l(\epsilon)|_{\epsilon = 0} = \frac{d}{d \epsilon} \int_a^b{\sqrt{1+ \gamma_\epsilon^{\prime 2}(t)} dt}  \\
+ &=&  \int_a^b{\frac{d}{d \epsilon} \sqrt{1+ (\gamma_0^{\prime}(t) + \epsilon \delta^\prime (t))^2} dt} |_{\epsilon=0} \\
+ &=& \int_a^b{ \frac{2 \gamma_0^{\prime}(t) \delta^\prime (t)}{2 \sqrt{1+ \gamma_0^{\prime 2}(t)}} dt} = \int_a^b{\rho (t) \delta^\prime(t) dt} \text{, where } \rho(t) \define \frac{\gamma_0^{\prime}(t)}{\sqrt{1+ \gamma_0^{\prime 2}(t)}} \\
+\end{eqnarray*}
+Choose $\delta(t) = \int_a^t{\delta(s)ds}- \frac{t-a}{b-a} \int_a^b{\rho(s)ds}$, $\delta \in X$, $\delta(a)=0=\delta(b)$ \\
+
+Plug in: $0 = \int_a^b{\rho(t)(\rho(t)-c)dt}$, $c=\frac{1}{b-a} \int_a^b{\rho(s)ds} = \int_a^b{(\rho(t)-c)^2}dt$ because: \\
+$c*\int_a^b{(\rho(t)-c)dt} = 0$ \\
+Conclusion: $\rho(t)=c$
+This implies $\gamma_0'(t)\equiv \text{const}$
+
+So $\gamma_0$ is a straight line. Warning: We did not prove that a minimizer exists. What we proved is that if a minimizer exists, then it is the straight line.
+\end{example}
+\begin{example}[The law of refraction]
+Two names: Fermat (1662) and Snellius (1618). Ray of light from A to B. How does it look? 
+$v(x,y)$ = speed of light at $(x,y) \in \mathbb{R}$ \\
+Fermat: the ray of light from A to B is such, that among all paths from A to B, it minimizes the time. \\
+
+Paths: $\{(x,y(x)): x \in [a,b]\} = \Gamma_y$
+$y \in X = C^1 [a,b ]$. $M=\{\gamma \in X: \gamma(a) = y_a, \gamma(b) = y_b\}$
+
+$T[y] = \int^{\Gamma}{\frac{1}{v} ds} = \int_a^b{\frac{1}{v(x, y(x)} \sqrt{1+y^{\prime 2}(x)}dx}  $
+
+Special case: \\
+Change definition of $X = \{y \in ([a,b], \text{piecewise} C^1\}$
+
+$T[y] = \int_a^b{n(x) \sqrt{1+{y^{\prime 2}(x)}dx}}$
+$t(\epsilon) := T[y_0+\epsilon z]$, $y_0$ is the minimizer (assumed to exist). $z \in X$, $z(a)=z(b)=0$
+
+$0 = \frac{d}{d\epsilon} t(\epsilon) |_{\epsilon = 0}  = \int_a^b{n(x) \frac{y_0^\prime (x) z^\prime}{\sqrt{1+{y^\prime}^2(x)}} dx}$ Define $\rho$ as before.
+
+Choice of $z(x): z(x):=\int_a^x{\rho(\xi)d\xi} - \frac{x-a}{b-a}\int_a^b{\rho(\xi)d\xi}$ as before 
+$0 = \int_a^b{\rho (x)-c}$, $\rho = \text{const}$
+
+
+Therefore: $\delta_0^\prime (x) = \{ {c_1, a < x < \nu}{c_2, \nu < x < b}$ TODO FIX BIG \{
+$\delta_0^\prime (x) = \{ {tan(\alpha), x\in(a,\nu)}{tan(\beta), x \in (\nu, b)}$
+
+$\rho = \text(const) \Leftrightarrow n_1 sin(\alpha) = n_2 sin(\beta)$
+Snellius-Fermat law of refraction.
+\end{example}
+\begin{example}[Dirichlet's principle (Dirichlet, 1805-1859)]
+Dirichlet's attempt to solve: * TODO BIG \{$\Delta laplace u(x) = 0$ for $x \in \Omega$ $u(x) = f(x)$ for $x \in \delta \Omega$
+
+$\Omega \subset \mathbb{R}^n$ open, bounded
+$f: \boundary \Omega \rightarrow \mathbb{R}$ continuous
+
+$\Delta u(x) = \sum_{i=1}^n{\frac{\partial^2 u}{\partial x^2} (x)}$
+
+Dirichlet's idea: Find a minimizer $u_0$ of the functional 
+
+$L[u] = \int_{\Omega}{|\nabla u(x)|^2 dx}$, $u \in M=\{v \ in C^1(\Omega-quer), v(x) = f(x) \forall (x) = f(x) \forall x \in \boundary \Omega\}$
+
+Claim: if a minimizer exists, then it solves (*) $X = C^1(\Omega-quer)$
+
+$\frac{d}{d \epsilon} L[u_0+\epsilon w] |_{\epsilon=0} = 0 \forall w \in X with w(x) = 0 \forall x \in \boundary \Omega$
+
+$0 = \frac{d}{d\epsilon} L [u_0 + \epsilon w] | _{\epsilon = 0} = \frac{d}{d\epsilon} \int_{\Omega}{|\nabla u(x)|^2 dx}|_{\epsilon=0}$
+
+$ = TODO Equations 1$
+
+Conclusion: Solving (*) is reduced to proving existence of a minimizer of $L$ over the set $M$. In Dirichlet's time the existence of a minimizer was supposed to be ''self evident''. \\
+\end{example}
+\subsection{crisis in the calculus of variations}
+Weierstra\ss (approx. 1870) gave an example of a well-behaved functional which did not have a minimizer. 
+
+$X=C^1 [0,1], M=\{u\in X: u(0)=0, u(1) = 1\}$ $L [u] = \int_0^1{x^4 u'^2(x) dx}$. $L[u] >= 0 \forall u$
+
+It exists a sequence $u_n \in M$ such that $L[u_n] \rightarrow^{n\rightarrow \infty} 0$. Hence $inf_M L = 0$.
+But $\nexists u_0 ¸in M$ such that $L[u_0] = 0$. ($Ö[u_0]= 0 \Rightarrow u'_0 \equiv 0$, contradicting $u_0(0)=0$, $u_0(1)=1$
+
+TODO Equations 2
+
+\end{document}
