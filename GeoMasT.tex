@@ -918,7 +918,7 @@ Existiert das $\mu$-Integral von $\ind_A \cdot f$, so setzt man
 \label{satz1.19}
 Sei $g\in \mathbb F_\mu(X,\bar\MdR)$ eine nichtnegative Funktion. Dann wird  durch
 \begin{align*}
-\psi(A) \da \int_A^* gd\mu, \  A\subset X
+\psi(A) \da \int_A^* gd\mu, \  A\subset X,
 \end{align*}
  ein äußeres Maß auf $X$ definiert. Es gilt $\A_\mu \subseteq \A_\psi$. Ist $g$ sogar $\mu$-messbar und $f\in\mathbb F_\mu(X,\bar\MdR)$ $\mu$-messbar, dann existiert $\int fd\psi$ genau dann, wenn $\int fgd\mu$ existiert. In diesem Fall gilt
 \begin{align*}
@@ -926,13 +926,187 @@ Sei $g\in \mathbb F_\mu(X,\bar\MdR)$ eine nichtnegative Funktion. Dann wird  dur
 \end{align*}
 \end{satz}
 
+\begin{beweis}
+Es gilt $\psi(\emptyset)=0$. Die Subsigmaadditivität folgt direkt aus dem Lemma \ref{lem1.18}.
 
+Sei $A\in\A_\mu$ und $M\subset X$ mit $\psi(M)<\infty$. Sei $\ep>0$ beliebig. Dann existiert eine $\mu$-Oberfunktion $h$ zu $\ind_M\cdot g$ mit $h\ge 0$ und
+\[
+\int h d\mu \le \int^* \ind_M g \mu + \ep.
+\]
+Dann ist $\ind_A\cdot h$ eine $\mu$-Oberfunktion zu $\ind_{M\cap A}\cdot g$ und $\ind_{A^c}\cdot h$ ist eine $\mu$-Oberfunktion zu $\ind_{M\cap A^c}\cdot g$. Daher folgt
+\begin{align*}
+\psi(M\cap A)+\psi(M\cap A^c)
+&= \int^* \ind_{M\cap A} gd\mu + \int^* \ind_{M\cap A^c} gd\mu \\
+&\le \int \ind_A \cdot h d\mu + \int \ind_{A^c} \cdot h d\mu \\
+&= \int h d\mu \le \int^* \ind_M g d\mu + \ep = \psi(M) + \ep.
+\end{align*}
 
+Sei nun $g$ $\mu$-messbar und $f\in \mathbb F_\mu(X,\bar\MdR)$ und sei zunächst $f\ge 0$. Also existieren $\int fd\psi$ und $\int gfd\mu$. Es gibt eine Folge $(r_j)_{j\in\MdN}$ in $(0,\infty)$ und $(A_j)_{j\in\MdN}$ in $A_\mu$ mit $f = \sum_{j=1}^\infty r_j\ind_{A_j}$. Hiermit gilt:
+\begin{align*}
+\int fd\psi 
+&= \int \sum_{j=1}^\infty r_j \ind_{A_j} d\psi \\
+&= \sum_{j=1}^\infty r_j \int \ind_{A_j} d\psi \\
+&= \sum_{j=1}^\infty r_j \psi(A_j) \\
+&= \sum_{j=1}^\infty r_j \int \ind_{A_j} gd\mu \\
+&= \int \left( \sum_{j=1}^\infty r_j \ind_{A_j}\right) g d\mu \\
+&= \int fgd\mu.
+\end{align*}
+Sei nun $f$ eine beliebige $\mu$-messbare Funktion. Wegen $(fg)^\pm = f^\pm \cdot g$ gilt $\int f^\pm d\psi < \infty$ genau dann, wenn $\int f^\pm g d\mu<\infty$. Somit existiert $\int fd\psi$ genau dann, wenn $\int fdd\mu$ existiert und
+\begin{multline*}
+\int fd\psi = \int f^+ d\psi - \int f^- d\psi = \int f^+gd\mu - \int f^-gd\mu = \int (f^+ - f^-)g d\mu = \int fgd\mu.
+\end{multline*}
+\end{beweis}
 
+\begin{satz}
+Sei $f\in \mathbb F_\mu(X,\bar\MdR)$ $\mu$-integrierbar. Dann gibt es zu jedem $\ep >0$ mit $\delta > 0$ derart, dass für alle $A\in \A_\mu$ mit $\mu(A)<\delta$ gilt
+\[
+\int_A |f|d\mu <\ep.
+\]
+\end{satz}
 
+\begin{beweis}
+Betrachte $g_n\da \min\{|f|,n\}$, $n\in\MdN$. Es gilt $0\le g_n\nearrow |f|$ für $n\to\infty$. Damit ist
+\begin{align*}
+\lim_{n\to \infty} \int g_n d\mu = \int |f| d\mu <\infty.
+\end{align*}
+Es gibt somit zu gegenenem $\ep$ ein $N$ mit 
+\begin{align*}
+0\le \int |f|d\mu - \int g_N d\mu < \frac\ep2.
+\end{align*}
+Für $A\in\A_\mu$ mit $\mu(A) < \frac\ep{2N} \ad \delta$ folgt nun
+\begin{align*}
+\int_A |f| d\mu
+&= \int_A\underbrace{(|f|-g_N)}_{\ge 0} d\mu + \int _A g_N d\mu \\
+&\le \int_A\underbrace{(|f|-g_N)}_{\ge 0} d\mu + N \cdot \mu(A) \\
+&< \frac\ep2 + \frac\ep2 = \ep.
+\end{align*}
+\end{beweis}
 
+Seien $X,Y$ Mengen mit äußeren Maßen $\mu$ auf $X$, $\nu$ auf $Y$. Durch
+\[
+(\mu \times \nu)(M) \da \inf\{ \sum_{i=1}^\infty \mu(A_i)\nu(B_i): A_i\in \A_\mu, B_i\in \A_\nu,\, i\in\MdN,\, M\subset \bigcup_{i=1}^\infty (A_i \times B_i)\}
+\]
+wird ein äußeres Maß auf $X\times Y$ erklärt, nämlich das von $\mathcal E_0 \da \{A \times B : A\in\A_\mu,\, B_\in\A_\nu\}$ und $\lambda$ mit $\lambda(A\times B) \da \mu(A)\cdot \nu(B)$ für $A\in\A_\mu$, $B\in\A_\nu$ induzierte äußere Maß.
 
+\begin{satz}
+Seien $X,Y\ne \emptyset$ Mengen mit äußeren Maße $\mu$ auf $X$ und $\nu$ auf $Y$. Dann gelten folgende Aussagen:
+\begin{enumerate}
+\item $\A_\mu \otimes \A_\nu \subset \A_{\mu\times \nu}$ und $(\mu\times \nu)(A\times B) = \mu(A) \cdot \nu(B)$ für $A\in\A_\mu$, $B\in\A_\nu$.
+\item Das Maß $\mu\times\nu$ ist regulär.
+\item Existiert das $(\mu \times \nu)$-Integral von $f\in\mathbb F_{\mu\times\nu}(X\times Y,\bar\MdR)$ und gilt $\{f\ne 0\}\subset \bigcup_{i=1}^\infty M_i$, $M_i\in\A_{\mu\times\nu}(M_i)$, $(\mu\times\nu)(M_i)<\infty$, $i\in\MdN$, so ist:
 
+$f(\cdot,y) \in\mathbb F_\mu(X,\bar\MdR)$ ist $\mu$-messbar für $\nu$-fast-alle $y\in Y$. Es ist $\int f(x,y)\mu(dx)$ $\nu$-messbar und $\iint f(x,y)\mu(dx)\nu(dy)$ existiert (und symmetrisch in $x$ und $y$) und schließlich:
+\[
+\int f d(\mu\times\nu) = \iint f(x,y)\mu(dx)\nu(dy) = \iint f(x,y) \nu(dy) \mu(dx)
+\]
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+Wir setzen
+\begin{multline*}
+\mathcal E \da \{ M\subset X\times Y: \ind_M(\cdot,y) \in \mathbb F_\mu(X,\bar\MdR) \text{ ist $\mu$-messbar für $\nu$-fast-alle $y\in Y$,} \\
+\int\ind_M(x,y) \mu(dx) \in \mathbb F_\nu(Y,\bar\MdR)\text{ ist $\nu$-messbar}\}.
+\end{multline*}
+Für $M\in\mathcal E$ sei
+\[
+\varrho(M) \da \iint \ind_M (x,y)\mu(dx)\nu(dy).
+\]
+Wir zeigen zwei Hilfsbehauptungen:
+\begin{enumerate}
+\item[($\alpha$)] Ist $M_j\in\mathcal E$, $j\in\MdN$, eine Folge paarweise disjunkter Mengen, so ist $\bigcup_{j=1}^\infty M_j\in\mathcal E$, denn:
+
+\[
+\ind_{\bigcup_{i=1}^\infty M_j}(\cdot, y)=\sum_{j=1}^\infty \ind_{M_j}(\cdot, y)
+\]
+ist $\mu$-messbar für $\nu$-fast-alle $y\in Y$ und \[
+\int\ind_{\bigcup_{i=1}^\infty M_j} (x,y)\mu(dx) = \sum_{j=1}^\infty \int \ind_{M_j}(x,y) \mu(dx)
+\]
+ist $\nu$-messbar.
+
+\item[($\beta$)] Ist $M_j\in\mathcal E$, $j\in\MdN$, $M_1\supset M_2 \supset \cdots$ sowie $\varrho(M_1) <\infty$, so gilt $\bigcap_{j\ge 1}M_j \in\mathcal E$, denn:
+
+\[
+\ind_{\bigcap_{j=1}^\infty M_j}(\cdot, y) = \lim_{j\to\infty}\ind_{M_j}(\cdot,y)
+\]
+ist $\mu$-messbar für $\nu$-fast-alle $y\in Y$ und 
+\[
+\int\ind_{\bigcap_{j=1}^\infty M_j} (x,y)\mu(dx) = \lim_{j\to\infty} \int \ind_{M_j} (x,y)\mu(dx)
+\]
+ist $\nu$-messbar.
+\end{enumerate}
+
+Betrachte nun folgende Mengensysteme:
+\begin{align*}
+\mathcal E_0 &\da \{A\times B: A\in\A_\mu,\, B\in\A_\nu\}, \\
+\mathcal E_1 &\da \{\bigcup_{i=1}^\infty G_i: G_i\in\mathcal E_0\}, \\
+\mathcal E_2 &\da \{\bigcap_{j\ge 1}^\infty H_j: H_j\in\mathcal E_1\}.
+\end{align*}
+
+Für $A\times B\in\mathcal E_0$ ist $\ind_{A\times B}(\cdot, y) = \ind_A \cdot \ind_B(y)$ $\mu$-messbar für alle $y\in Y$ und $\int \ind_{A\times B}(x,y) \mu(dx) = \mu(A) \cdot \ind_B(y)$ ist $\nu$-messbar. Also ist $A\times B\in \mathcal E$, also $\mathcal E_0\subset\mathcal E$.
+
+Für $A\times B\in \mathcal E_0$, $C\times D\in\mathcal E_0$ ist 
+\begin{align*}
+(A\times B)\cap (C\times D) &= (A\cap C) \times (B\cap D) \in \mathcal E_0
+\intertext{und}
+(A\times B)\setminus (C\times D) &= \big(\underbrace{(A\setminus C) \times B}_{\in\mathcal E_0}\big) \stackrel{\bullet}\cup \big(\underbrace{(A\cap C) \setminus (B\setminus D)}_{\in\mathcal E_0}\big).
+\end{align*}
+Jede abzählbare Vereinigung von Mengen aus $\mathcal E_0$ kann als abzählbare Vereinigung von paarweise disjunkten Mengen aus $\mathcal E_0$ erhalten werden, das heißt $\mathcal E_1\subset \mathcal E$ nach ($\alpha$).
+
+Ferner gilt
+\[
+\{\bigcap_{i=1}^\infty H_i : H_i\in\mathcal E_1,\, i\in\MdN,\, \varrho(H_1)<\infty\} \subset \mathcal E.
+\]
+
+\textbf{Behauptung:} Für $M\subset X\times Y$ gilt 
+\[
+(\mu\times\nu)(M) = \inf\{\varrho(V):M\subset V, V\in \mathcal E_1\}
+\]
+und es gibt zu $M$ ein $W\in\mathcal E_2$ mit $M\subset W$ und $(\mu\times\nu)(M) = (\mu\times\nu)(W) = \varrho (W)$.
+
+\textbf{Nachweis:} Sei $(A_i\times B_i)  \in \mathcal E_0$ mit $M\subset \bigcup_{i=1}^\infty (A_i\times B_i)\ad V \in\mathcal E_1$. Dann gilt $\ind_V = \sum_{i=1}^\infty \ind_{A_i\times B_i}$, wobei Gleichheit gilt, falls die Mengen $(A_i\times B_i)$ paarweise disjunkten sind, und somit gilt $\varrho(V) \le \sum_{i=1}^\infty \varrho(A_i\times B_i) = \sum_{i=1}^\infty \nu(A_i) \nu(B_i)$, wobei auch hier Gleichheit gilt, falls die Mengen $(A_i\times B_i)$ paarweise disjunkt sind.
+
+Hiermit gilt der erste Teil der Behauptung
+\begin{align*}
+(\mu\times\nu)(M) &= \inf\{\sum_{i=1}^\infty \mu(A_i)\nu(B_i) : A_i\times B_i \in \mathcal E_0, i\in\MdN, M\subset\bigcup_{i=1}^\infty(A_i\times B_i)\} \\
+&= \inf\{\varrho(V): M\subset V, V\in\mathcal E_1\}.
+\end{align*}
+
+Ist $(\mu\times \nu)(M)<\infty$, so existieren $V_1\in\mathcal E_1$, $i\in\MdN$, $M\subset V_i$ mit
+\[
+\lim_{i\to\infty} \varrho(V_i) = (\mu\times\nu)(M).
+\]
+Setze $M\subset W \da \bigcap_{i=1}^\infty V_i \in\mathcal E_2$. Es gilt
+\[
+(\mu\times\nu)(M) \le (\mu\times \nu)(W) \le \lim_{i\to\infty}\varrho(V_i) = \varrho(W) = (\mu\times\nu)(M).
+\]
+Ist $(\mu\times\nu)(M) =\infty$, so setze $W\da X\times Y\in\mathcal E_2$.
+
+Nun beweisen wir die eigentlichen Aussagen des Satzes:
+\begin{enumerate}
+\item Sei $A\times B\in\mathcal E_0$. Für ein beliebiges $V\in\mathcal E_1$ mit $A\times B\subset V$ gilt
+\[
+(\mu\times\nu)(A\times B) = \varrho(A\times B) = \mu(A) \nu(B)
+\]
+Für $T\subset X\times Y$ und $U\in \mathcal E_1$ mit $T\subset U$ Sind
+$U\cap (A\times B)$ und $U\cap (A\times B)^c$ disjunkt Mengen in $\mathcal E_1$ und erhalten
+\begin{multline*}
+(\mu\times \nu) (T\cap (A\times B)) + (\mu\times\nu)(T\cap (A\times B)^c)
+\\ \le \varrho(U\cap (A\times B)) + \varrho(U\cap (A\times B)^c) = \varrho(U).
+\end{multline*}
+Bildet man das Infimum über alle alle $U\in\mathcal E_1$ mit $U>T$, so ergibt diese Ungleichung
+\[
+(\mu\times \nu) (T\cap (A\times B)) + (\mu\times\nu)(T\cap (A\times B)^c) \le (\mu\times \nu)(T)
+\]
+woraus $A\times B\in\A_{\mu\times\nu}$ folgt.
+\item Ist $M\subset X\times Y$ und $(\mu\times\nu)(M)<\infty$, so gibt es $W\in\mathcal E_2$ mit $\varrho(W)<\infty$ und mit der gewünschten Eigenschaft $(\mu\times\nu)(M) = (\mu\times\nu)(W)$.
+\item Sei $f=\ind_M$, $M\in\A_{\mu\times\nu}$ und $(\mu\times\nu)(M)<\infty$. Zu $M$ existiert ein $W\in\mathcal E_2$ mit $M\subset W$ und $(\mu\times\nu)(M) = (\mu\times\nu)(W) =\varrho(W)$.
+
+Fall 1: $(\mu\times\nu)(M) = 0$. Dann gilt $\rho(W)=0$ und $\ind_M(\cdot,y)=0$ $\mu$-fast-überall für $\nu$-fast-alle $y\in Y$. Insbesondere ist $M\in\mathcal E$ und $\rho(M)=0$.
+
+Fall 2: $(\mu\times\nu)(M) > 0$. Dann existiert $W\in\mathcal E_2$ mit $(\mu\times\nu)(W\setminus M) = 0$, $M\subset W$. Fall 1 liefert $W\setminus M\in\mathcal E$ und $\rho(W\setminus M)=0$. Also ist $\ind_M(\cdot, y) = (\ind_W - \ind_{W\setminus M})(\cdot,y)$ $\mu$-messbar für $\nu$-fast-alle $y\in Y$ und  $\ind_M(\cdot,y) = \ind_W(\cdot,y)$ $\mu$-fast-überall für $\nu$-fast-alle $y\in Y$. Insbesondere ist $M\in\mathcal E$ und $\varrho(M) = \varrho(w) = (\mu\times\nu)(M)$.
+\end{enumerate}
+\end{beweis}
 
 
 \end{document}
