@@ -260,7 +260,7 @@ Damit zeigt man
 \mu(A_1) -  \mu(\bigcap_{i\ge 1} A_i) 
 &= \mu(A_1\setminus \bigcap_{i\ge1}A_i)  \\
 &= \mu(A_1 \cap (\bigcap_{i\ge1}A_i)^c) \\
-&= \mu(A_1 \cap (\bigcap_{i\ge1}A_i^c)) \\
+&= \mu(A_1 \cap (\bigcup_{i\ge1}A_i^c)) \\
 &= \mu(\bigcup_{i\ge 1}(A_1\cap A_i^c)) \\
 &= \lim_{i\to\infty} \mu(\underbrace{\A_1\cap A_i^c}_{= A_1\setminus A_i})\tag{nach f)} \\
 &= \lim_{i\to\infty} (\mu(A_1) -\mu(A_i)) \\
@@ -681,7 +681,7 @@ Ist $f\in \mathbb F_\mu(X,\bar\MdR)$ eine $\mu$-messbare Abbildung und stimmt da
 \[
 \int fd\mu \da \int^* fd\mu = \int_* fd\mu
 \]
-das $\mu$-Integral von $f$ erkärt. Man sagt in diesem Fall, dass das $\mu$-Integralvon $f$ existiert. Ist $\int fd\mu \in \MdR$, so heißt $f$ $\mu$-integrierbar.
+das $\mu$-Integral von $f$ erkärt. Man sagt in diesem Fall, dass das $\mu$-Integral von $f$ existiert. Ist $\int fd\mu \in \MdR$, so heißt $f$ $\mu$-integrierbar.
 \end{definition}
 
 \begin{satz}
@@ -1344,6 +1344,7 @@ Folglich ist $\mathcal K=\emptyset$. Für jedes $S\in\mathcal S$ existiert also 
 Dieser Satz ist ein entscheidentes Hilfsmittel im Beweis des folgenden Satzes.
 
 \begin{satz}
+\label{satz:2.6}
 Seien $\mu\in\mathbb M(X)$, $A\subset X$, $A\ne \emptyset$ sowie $t>1$ und $r>0$. Sei $\mathcal S$ eine abgeschlossene Überdeckung von $A$ mit
 \begin{enumerate}
 \item $\sup\{\diam(S): S\in\mathcal S\}<\infty$
@@ -1376,13 +1377,82 @@ Da $\ep>0$ beliebig ist folgt $\mu(A\cap U\setminus \bigcup_{C\in\mathcal C}C)=0
 Sei nun $A$ beliebig. Wähle $a\in A$. Induktiv werden beschänkte Mengen $A_j\subset X$, offene Mengen $W_j\subset X$ und endliche disjunkte Folgen $\mathcal C_j\subset\mathcal S$ abgeschlossener Mengen konstruiert. Setze hierzu $W_0\da U$, $A_0\da \emptyset$, $\mathcal C_0\da \emptyset$ und falls $W_{j-1}$, $A_{j-1}$ und $\mathcal C_{j-1}$ für $j>0$ schon definiert sind, so sei $W_j \da W_{j-1} \setminus \bigcup_{C\in\mathcal C_{j-1}}C$, $A_j \da \{x\in A: d(a,x)\le j\}$. Da $A_j$ beschränkt ist und $W_{j-1}\setminus \bigcup_{C\in\mathcal C_{j-1}}C = W_j$ offen, gibt es eine endliche disjunkte Teilfamilie $\mathcal C_j\subset \mathcal S$ mit $\bigcup_{C\in\mathcal C_j} C \subset W_j$ und $\mu(W_j\cap A_j \setminus \bigcup_{C\in\mathcal C_j} C) <\frac1{2^j}$. Die Mengen $W_j = \mathcal U\setminus \bigcup_{i=1}^{j-1} \bigcup_{C\in\mathcal C_i} C$, $j\in\MdN$, sind absteigend, $(A_j)_{j\in\MdN}$ sind aufsteigend, $\mathcal C\da \bigcup_{j\ge 1}\mathcal C_j$ ist nach Konstruktion eine abzählbare disjunkte Mengenfolge in $\mathcal S$. Ferner ist $U\setminus \bigcup_{C\in\mathcal C}C\subset W_i$ für jedes $i\in\MdN$. Für $k\in\MdN$ beliebig gibt also:
 \begin{align*}
 \mu(U\cap A \setminus\bigcup_{C\in\mathcal C} C)
-&= \mu(\bigcup_{j=1}^\infty ( (U\setminus \bigcup_{C\in\mathcal C}C)\cap A_j ) \\
-&= \mu(\bigcup_{j=k}^\infty ( (U\setminus \bigcup_{C\in\mathcal C}C)\cap A_j ) \\
+&= \mu(\bigcup_{j=1}^\infty ( (U\setminus \bigcup_{C\in\mathcal C}C)\cap A_j )) \\
+&= \mu(\bigcup_{j=k}^\infty ( (U\setminus \bigcup_{C\in\mathcal C}C)\cap A_j )) \\
 &= \mu(\bigcup_{j=k}^\infty (W_{j+1} \cap A_j) )\\
 &= \mu(\bigcup_{j=k}^\infty (W_j \cap A_j \setminus \bigcup_{C\in\mathcal C_j}C)) \\
 &\le \sum_{j=k}^\infty \frac1{2^j}.
 \end{align*}
 Da $k\in\MdN$ beliebig, folgt $\mu(U\cap A \setminus\bigcup_{C\in\mathcal C} C) = 0$.
 \end{beweis}
+
+\begin{beispiel}
+Sei $V=\{(x,[x,x+h]): x\in [a,b),\, 0<h<b-x\}$. Dann gilt:
+\begin{enumerate}
+\item $\inf\{\diam([x,x+h]) : 0 < h < b-x\}=0$ für alle $x\in[a,b)$.
+\item Seien $Z\subset [a,b)$, $C\subset V$ mit $\inf\{\diam(S): (z,S) \in C\}=0$ für alle $z\in Z$.
+
+Betrachte $C(Z) \da \{S: (z,S)\in C\text{ für ein }z\in Z\}$.
+
+Wir werden Satz \ref{satz:2.6} verwenden und weisen die folgenden Voraussetzungen nach:
+\begin{enumerate}
+\item $\sup\{\diam(S): S\in C(Z)\} \le b-a < \infty$
+\item $\inf\{\diam(S): S\in C(Z),\, x\in S\} = \inf\{\diam(S) : (z,S) \in C, x\in S\} \le \inf\{\diam(S): (x,S)\in C\} = 0$ für alle $x\in Z$.
+\item Sei $B \da [x,x+h] \in C(Z) \ad \mathcal S$. Dann ist $\mathcal S$ eine abgeschlossene Überdeckung von $Z$. Ferner: $[y,y+\bar h]\in\mathcal S_B^t$ impliziert $[y,y+\bar h] \cap [x,x+h] \ne \emptyset$ und $\diam([y,y+\bar h]) \le t\cdot \diam([x,x+h])$, das heißt $\bar h \le h$, also gilt $[y,y+\bar h] \subset [x-th,x+h+th]$ und damit $\lambda(\bigcup_{S\in\mathcal S_B^t}S) \le \lambda([x-th,(1+t)h]) = (1+2t)h = (1+2t)\lambda(B)$.
+\end{enumerate}
+Nach Satz \ref{satz:2.6} existiert eine abzählbare disjunkte $\lambda$-Überdeckung von $Z$ mit Mengen aus $\mathcal S = C(Z)$. 
+\end{enumerate}
+Somit ist $V$ eine $\lambda$-Vitali-Relation.
+\end{beispiel}
+
+\begin{definition}
+Eine metrische abgeschlossene Kugel in $(X,d)$ ist $\mathbb B(x,r) \da \{z\in X, d(z,x) \le r\}$ für $r>0$.
+\end{definition}
+
+\begin{korollar}
+Seien $\mu \in \mathcal M(X)$, $A\subset X$, $r>0$, $t>1$. Sei $\mathcal S$ eine Überdeckung von $A$ durch abgeschlossene Kugeln mit
+\begin{enumerate}
+\item $\sup\{\diam(S): S\in\mathcal S\} <\infty$,
+\item $\inf\{\diam(\mathbb B(y,s)): y\in A, x\in\mathbb B(y,s)\in \mathcal S\} = 0$ für alle $x\in A$,
+\item für alle $x\in A$ und alle $\mathbb B(x,s)\in\mathcal S$ gilt: $\mu(\mathbb B(x,(1+2t)s)) < r \cdot \mu(\mathbb B(x,s))$.
+\end{enumerate}
+Dann gibt es zu jeder offenen Menge $U\subset X$ eine abzählbare disjunkte $\mu$-Überdeckung $\mathcal C\subset \mathcal S$ von $U\cap A$, mit $C\subset U$ für alle $C\in\mathcal C$ (wobei alle $C\in\mathcal C$ ihren Mittelpunkt in $A$ haben).
+\end{korollar}
+
+\begin{beweis}
+Sei $\mathcal S' \da \{\mathbb B(x,s)\in \mathcal S: x\in A\}$. Dann ist $\mathcal S'$ eine abgeschlossene Überdeckung von $A$ wegen (2). Bedingung (1) in Satz \ref{satz:2.6} folgt aus der Voraussetzung (1) hier, die Bedingung (2) in Satz \ref{satz:2.6} folgt aus der Voraussetzung (2) hier. Wir weisen die Bedingung (3) in Satz \ref{satz:2.6} nach. Hierzu sei $\mathbb B(x,s)\in\mathcal S'$, das heißt $x\in A$.
+
+\textbf{Behauptung:} \[
+\bigcup_{s\in\mathcal S'^t_{\mathrlap{\mathbb B(x,s)}}} S \subset \mathbb B(x,(1+2t)s)
+\]
+
+\textbf{Nachweis:}
+Sei $S=\mathbb B(y,\varrho)\in \mathcal S'^t_{\mathbb B(x,s)}$. Dann ist $\mathbb B(y,\varrho) \cap \mathbb B(x,s) \ne \emptyset$, $\diam(\mathbb B(y,\varrho)) \le t \cdot \diam(\mathbb B(x,s))$. Sei $\bar z\in \mathbb B(y,\varrho)$ und $z_0\in\mathbb B(y,\varrho)\cap \mathbb B(x,s)$. Dann gilt $d(\bar z, x)\le d(\bar z, z_0) + d(z_0,x)\le \diam(\mathbb B(y,\varrho)) + s \le t \cdot 2s +s = (1+2t)s$. Hiermit:
+\[
+\mu(\bigcup_{s\in\mathcal S'^t_{\mathrlap{\mathbb B(x,s)}}} S )
+\le \mu ( \mathbb B(x,(1+2t)s) 
+< r\cdot \mu(\mathbb B(x,s)).
+\]
+Die Aussage des Korollars folgt nun mit Satz \ref{satz:2.6}.
+\end{beweis}
+
+\begin{bemerkungen}
+\item Die Bedingung (2) ist insbesondere dann erfüllt, wenn $\inf\{\diam(\mathbb B(s,x) ): \mathbb B(x,s)\in\mathcal S\} = 0$ für alle $x\in A$. Falls jetzt $\mu$ eine diametrische Regularitätsbedingung erfüllt, dann ist $V \da \{(x,\mathbb B(x,s)): x\in X,\, s>0\}$ eine $\mu$-Vitali-Relation.
+
+In Satz \ref{satz:2.8} werden wir einen Überdeckungssatz formulieren, mit dessen Hilfe zum Beispiel für $X\in\MdR^n$, $d=\|\cdot\|$, gezeigt werden kann dass $V$ für jedes Maß $\mu\in\mathbb M(\MdR^n)$ eine $\mu$-Vitali-Relation ist.
+
+\item Ist $\mu\in\mathbb M(X)$ und gibt es $0<u<v$, $n\in\MdN$ mit
+\[
+0 < u < \frac{\mu(\mathbb B(x,s))}{s^n} < v
+\]
+für alle $a\in X$, $s>0$, so folgt 
+\begin{align*}
+\mu(\mathbb B(x,(2t+1)s))
+&\le s^n \cdot v \cdot (2t+1)^n\\
+&= s^n \cdot u \frac vu \cdot (2t+1)^n \\
+&< \mu(\mathbb B(x,s)) \cdot \underbrace{\frac vu \cdot (2t+1)^n}_{\ad r} \\
+&= r \cdot \mu(\mathbb B(x,s))
+\end{align*}
+\end{bemerkungen}
 
 \end{document}
