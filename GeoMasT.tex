@@ -7,6 +7,7 @@
 \newcommand{\A}{\mathcal A}
 \newcommand{\borel}{\mathfrak B}
 \newcommand{\ind}{\mathds 1}
+%\renewcommand{\mathbb}{\mathds}
 \DeclareMathOperator{\im}{im}
 \DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\diam}{diam}
@@ -1831,6 +1832,146 @@ Es ist \(A_{i,n} \subset M_i\), \(A_{i,n}\nearrow M_i \cap T\) und \(A_{1,n} \cu
 &= \mu(M_1 \cap T) + \mu(M_2 \cap T).
 \end{align*}
 Die Behauptung folgt nun aus Satz \ref{satz:1.8}.
+\end{beweis}
+
+\begin{satz}
+\label{satz:2.15}
+Seien $\nu,\mu\in\mathbb M(X)$ und $V$ eine $\mu$-Vitali-Relation. Dann gilt $\A_\mu \subset \A_{\nu_\mu}$ und für $A\in\A_\mu$ gilt
+\[
+\nu_\mu(A) = \int_A \mathbb D(\nu,\mu,V,x)\mu(dx).
+\]
+\end{satz}
+
+\begin{beweis}
+Sei $A\in\A_\mu$ beschränkt. Dann gibt es eine Borelmenge $B\in\borel(X)$ mit $A\subset B$ und $\mu(A) = \mu(B)$, also $\mu(B\setminus A)=0$.  Dann ist auch $\nu_\mu(B\setminus A) = 0$, das heißt $B\setminus  A \in \mathcal \A_{\nu_\mu}$ und folglich $A = B \setminus (B\setminus A) \in \A_{\nu_\mu}$, da $\borel(X)\subset\A_{\nu_\mu}$. Wegen $A = \bigcup_{i=1}^\infty A_i$ mit beschränkten $A_i \in \A_\mu$ folgt allgemein $A\in\A_{\nu_\mu}$, das heißt $A_\mu\subset\A_{\nu_\mu}$.
+
+Sei nun $Z_0 \da \{ \mathbb D(\nu,\mu,V,\cdot) = 0 \}$, $Z_\infty \da \{ \mathbb D(\nu,\mu,V,\cdot) = \infty \}$. Da $\mu(Z_\infty)  = 0$ ist, ist $\nu_\mu(Z_\infty) = 0$ und daher ist
+\[
+\nu_\mu(Z_\infty) = 0 = \int_{Z_\infty} \mathbb D(\nu,\mu,V,x) \mu(dx).
+\]
+
+Ferner ist $Z_0 = \bigcup_{n=1}^\infty Z_n$ mit $Z_n$ beschränkt. Aus Korollar \ref{kor:2.12} erhält man für $\ep>0$ die Abschätzung $\nu_\mu(Z_n) \le \ep \cdot \underbrace{\mu(Z_n)}_{<\infty}$, das heißt $\nu_\mu(Z_n)=0$, also auch $\nu_\mu(Z_0)=0$. Daher ist
+\[
+\nu_\mu(Z_0) = 0 = \int_{Z_0} \underbrace{\mathbb D(\nu,\mu,V,x)}_{=0} \mu(dx).
+\]
+
+Sei schließlich $t\in(1,\infty)$, $n\in\MdZ$ und $P_n^t \da \{t^n \le \mathbb D(\nu,\mu,V,\cdot) < t^{n+1}\}$. Man erhält
+\[
+A\setminus(Z_0\cup Z_\infty) = \bigcup_{n\in\MdZ} \underbrace{(P_n^t \cap A)}_{\in\A_\mu}
+\]
+mit disjunkter Vereinigung und daher 
+\[
+\nu_\mu(A) = \sum_{n\in\MdZ}\nu_\mu(P_n^t \cap A).
+\]
+Andererseits ist wegen $\mu(Z_\infty)=0$
+\begin{align*}
+t^{-1} \int_A \mathbb D(\nu,\mu,V,x)\mu(dx)
+&= \sum_{n\in\MdZ} t^{-1} \int_{P_n^t\cap A} \underbrace{\mathbb D(\nu,\mu,V,x)}_{<t^{n+1}}\mu(dx) \\
+&\le \sum_{n\in\MdZ} t^n \cdot \mu(P_n^t \cap A) \\
+&\le \sum_{n\in\MdZ} \nu_\mu(P_n^t \cap A) = \mu_\nu(A) \\
+&\le \sum_{n\in\MdZ} t^{n+1} \mu(P_n^t \cap A) \\
+&\le \sum_{n\in\MdZ} t \int_{P_n^t \cap A} \mathbb D(\nu,\mu,V,x)\mu(dx) \\
+&= t \cdot \int_A \mathbb D(\nu,\mu,V,x)\mu(dx).
+\end{align*}
+Da $t>1$ beliebig war, folgt die Behauptung.
+\end{beweis}
+
+\begin{satz}
+\label{satz:2.16}
+Sind $\mu,\nu\in\mathbb M(X)$ und $V_1,V_2$ zwei beliebige $\mu$-Vitali-Relationen auf $X$, dann gilt
+\[
+\mathbb D(\nu,\mu,V_1,\cdot) = \mathbb D(\nu,\mu,V_2,\cdot)
+\]
+$\mu$-fast-überall.
+\end{satz}
+
+\begin{beweis}
+Sei $y\in X$ fest. Für $i,j\in\{1,2\}$, $i\ne j$, sei
+\[
+A_{ij}^n \da \{x\in \mathbb B(y,n): \mathbb D(\nu,\mu,V_i,x) \ge \mathbb D(\nu,\mu,v_j,x) + \frac1n\}.
+\]
+Hiermit ist
+\[
+\frac 1n\cdot \mu(A_{ij}^n) \le \int_{A_{ij}^n}(\mathbb D(\nu,\mu,V_i,x) - \mathbb D(\nu,\mu,V_j,x)) \mu(dx) = \nu_\mu(A_{ij}^n) - \nu_\mu(A_{ij}^n) = 0.
+\]
+Dies zeigt $\mu(A_{ij}^n)=0$ für alle $n\in\MdN$. Die Behauptung folgt nun aus 
+\[
+\mu(\mathbb D(\nu,\mu,V_1,\cdot) \ne \mathbb D(\nu,\mu,v_2,\cdot)) =  \mu(\bigcup_{n\in\MdN} A_{12}^n \cup \bigcup_{n\in\MdN} A_{21}^n) = 0.
+\]
+\end{beweis}
+
+\begin{satz}[Lebesguescher Dichtesatz]
+\label{satz:2.17}
+Seien $\mu\in\mathbb M(x)$, $V$ eine $\mu$-Vitali-Relationen auf $X$ , $f:X\to\bar\MdR$ sei $\mu$-messbar und $\int_A |f|d\mu <\infty$ für jede beschränkte Menge $A\in\A_\mu$. Dann gilt:
+\[
+V\text-\lim_{S\to x} \frac1{\mu(S)} \cdot \int_S fd\mu = f(x)
+\]
+für $\mu$-fast-sicher alle $x\in X$.
+\end{satz}
+
+\begin{beweis}
+Sei zunächst $f\ge 0$. Sei $A\subset X$ und $\bar\nu(A) \da \int^*_A fd\mu$. Dann ist $\bar\nu$ ein äußeres Maß auf $X$. Setze
+\[
+\nu(M) \da \inf\{\underbrace{\bar\nu(A)}_{=\int_A fd\mu}: A\supset M,\, A\in \A_\mu\}.
+\]
+Dann ist $\nu$ ein $\A_\mu$-reguläres äußeres Maß. Ferner ist $\borel(X) \subset \A_\mu \subset A_\nu$. Ist $M\subset X$, so gibt es ein $A\in \A_\mu$ mit $M\subset A$ und $\nu(M)=\nu(A)$. Zu $A\in \A_\mu$ existiert $B\in\borel(X)$ mit $A\subset B$ und $\mu(B\setminus A)=0$. Daraus folgt
+\[
+\nu(M) = \nu(A) = \int_Afd\mu = \int_A fd\mu + \int_{B\setminus A} fd\mu = \int_B fd\mu = \nu(B),
+\]
+da $B\in\borel(X)$ mit $M\subset A \subset B$. Also ist $\nu\in\mathbb M(X)$, denn für ein beschränktens $A\in\A_\mu$ ist $\nu(A) = \int_A fd\mu < \infty$ nach Voraussetzung.
+
+Offenbar ist $\nu \ll \mu$ und daher $\nu_\mu = \nu$. Wegen $A\in\A_\mu$ ist 
+\[
+\int_A fd\mu = \nu(A) = \nu_\mu(A) = \int_A \mathbb D(\nu,\mu,V,x)\mu(dx)
+\]
+für alle $A\in\A_\mu$. Dies zeigt $f = \mathbb D(\nu,\mu,V,\cdot)$ $\mu$-fast-überall, das heißt für $\mu$-fast-alle $x\in X$ gilt
+\[
+f(x) = \mathbb D(\nu,\mu,V,x) = V\text-\lim_{S\to x} \frac{\nu(S)}{\mu(S)} =  V\text-\lim_{S\to x} \frac1{\mu(S)} \int_S fd\mu,
+\]
+da $S\in\borel(X)$.
+
+Für die allgemeine Aussage zerlege $f=f^+-f^-$.
+\end{beweis}
+
+\begin{definition}
+Sei $\mu\in\mathbb M(X)$, $V$ eine $\mu$-Vitali-Relation, $M\subset X$ und $x\in x$. Dann nennt man
+\[
+V\text-\lim_{S\to x}\frac{\mu(M\cap S)}{\mu(S)} = V\text-\lim_{S\to x} \frac{(\mu\MR M)(S)}{\mu(S)}
+\]
+die $(\mu,V)$-Dichte von $M$ in $x$, falls der Limes existiert.
+\end{definition}
+
+\begin{satz}
+\label{satz:2.18}
+Seien $\mu\in\mathbb M(X)$, $V$ eine $\mu$-Vitali-Relation, $M\subset X$. Dann existiert die $(\mu,V)$-Dichte für $\mu$-fast-alle $x\in X$ Seien
+\[
+P \da \{x\in X: V\text-\lim_{S\to x}\frac{\mu(S\cap M)}{\mu(S)} = 1\} \quad\text{und}\quad
+Q \da \{x\in X: V\text-\lim_{S\to x}\frac{\mu(S\setminus M)}{\mu(S)} = 0\}.
+\]
+Dann gilt $P,Q\in\A_\mu$, $\mu(M\setminus P)$ und $\mu(Q\setminus M) =0$.
+
+Ferner sind äquivalent:
+\begin{enumerate}
+\item $M\in \A_\mu$,
+\item $\mu(P\setminus M) = 0$,
+\item $\mu(M\setminus Q) = 0$.
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+Zu $M\subset X$ existiert $A\in\A_\mu$ mit $M\subset A$ und $\mu(M\cap B) = \mu(A\cap B)$ für alle $B\in\A_\mu$. Es gilt $\mu\MR A\in\mathbb M(X)$ und daher ist $\{\mathbb D(\mu\MR A,\mu,V,\cdot)= 1\} \in \A_\mu$. Ferner existiert wegen $S\in\borel(X)$ der Limes
+\[
+\mathbb D(\mu\MR A, \mu, V, x) = V\text-\lim_{S\to x} \frac{(\mu\MR A)(S)}{\mu(S)} = V\text-\lim_{S\to x}\frac{\mu(M\cap S)}{\mu(S)} 
+\]
+für $\mu$-fast-alle $x\in X$. Dies zeigt insbesondere $P,Q\in\A_\mu$.
+
+Für $\mu$-fast-alle $x\in X$ gilt wegen Satz \ref{satz:2.17} 
+\[
+\ind_A(x)  = V\text-\lim_{S\to x} \frac1{\mu(S)} \int_S \ind_A(x) \mu(dx) = V\text-\lim_{S\to x} \frac{\mu(A\cap S)}{\mu(S)} = \mathbb D(\mu\MR A,\mu,V,x).
+\]
+Sei $x\notin P$, dann ist $x\notin A$ für $\mu$-fast-alle $x\in x$, das heißt $\mu(A\setminus P) = 0$ und analog $\mu(P\setminus A)=0$. Ist $M\subset A$, so $\mu(M\setminus P) \le \mu(A\setminus P) =0$ und damit $M\setminus P\in\A_\mu$. Analog für $Q$.
+
+Ist $M\in\A_\mu$, so wähle $A=M$, das heißt $\mu(P\setminus M)=0$. Ist  dagegen $\mu(P\setminus M)=0$, so ist $P\setminus M\in\A_\mu$ und $M=(M\setminus P) \cup (M\cap P) = (M\setminus P) \cup (P\setminus (P\setminus M)) \in \A_\mu$. Analog für $Q$.
 \end{beweis}
 
 \end{document}
