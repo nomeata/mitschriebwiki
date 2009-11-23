@@ -10,6 +10,7 @@
 \DeclareMathOperator{\im}{im}
 \DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\Lip}{Lip}
 % Maß-Restriktions-Symbol
 \newcommand{\MR}{\lfloor}
 
@@ -1210,6 +1211,7 @@ wobei die Abgeschlossenheit von $C$ verwendet wurde.
 \end{beweis}
 
 \begin{satz}[Kriterium von Carathéodory]
+\label{satz:2.4}
 Für ein äußeres Maß $\mu$ auf $(X,d)$ sind äquivalent:
 \begin{enumerate}
 \item $\borel(X) \subset \A_\mu$.
@@ -1680,7 +1682,7 @@ Für \(\mu, \nu \in \mathbb{M}(X)\) schreibt man \(\nu \ll \mu\) und sagt \(\nu\
 \[
 \mu(M) = 0 \Rightarrow \nu(M) = 0.
 \]
-Das Maß \(\nu_\mu\) ist absolutstetig bezüglich \(\mu\) und \(\nu_\mu = \nu\MR B\) mit \(\mu(B^c) = 0,$ $B \in \borel(X)\). Also ist
+Das Maß \(\nu_\mu\) ist absolut stetig bezüglich \(\mu\) und \(\nu_\mu = \nu\MR B\) mit \(\mu(B^c) = 0,$ $B \in \borel(X)\). Also ist
 \[
 \nu = \nu_\mu + \underbrace{(\nu - \nu_\mu)}_{=: \nu_\mu^\bot}
 \]
@@ -1983,11 +1985,16 @@ Die Argumentation f\"ur $Q$ verl\"auft analog.
 
 \section{Hausdorffmaße und Hausdorffdimension}
 
+\begin{definition}
 Sei \((X,d)\) ein metrischer Raum. Wir definieren für \(\delta > 0\) und \(M \subset X\)
-\[
-\Omega_\delta(M) \da \{ (A_i)_{i\in\MdN} : A_i \subset X, \diam(A_i) \leq \delta, i\in \MdN, M \subset \bigcup_{i\geq 1} A_i \}
-\]
-wobei \(\diam(\emptyset) \da 0\). Analog \(\tilde\Omega_\delta(M)\) und \(\bar\Omega_\delta(M)\), wobei \(A_i\) offen bzw. abgeschlossen gewählt werden.
+\begin{align*}
+& \Omega_\delta(M) \da \{ (A_i)_{i\in\MdN} : A_i \subset X, \diam(A_i) \leq \delta, i\in \MdN, M \subset \bigcup_{i\geq 1} A_i \} \\
+& \tilde\Omega_\delta(M) \da \{ (A_i)_{i\in\MdN} : X \supset A_i \text{ offen}, \diam(A_i) \leq \delta, i\in \MdN, M \subset \bigcup_{i\geq 1} A_i \} \\
+& \bar\Omega_\delta(M) \da \{ (A_i)_{i\in\MdN} : X \supset A_i \text{ abgeschlossen}, \diam(A_i) \leq \delta, i\in \MdN, M \subset \bigcup_{i\geq 1} A_i \}
+\end{align*}
+wobei \(\diam(\emptyset) \da 0\).
+% Analog \(\tilde\Omega_\delta(M)\) und \(\bar\Omega_\delta(M)\), wobei \(A_i\) offen bzw. abgeschlossen gewählt werden.
+\end{definition}
 
 \begin{lemma}
 \label{lem:2.19}
@@ -2001,7 +2008,7 @@ Sei \(s\in [0,\infty)\). Für \(\delta>0\) und \(M \subset X\) sei
 Dann gilt:
 \begin{enumerate}[(1)]
 \item \(\mu_\delta^s, \tilde\mu_\delta^s, \bar\mu_\delta^s\) sind äußere Maße auf \(X\),
-\item \(\tilde\varepsilon^s(M) \leq \bar\mu_\delta^s(M) = \mu_\delta^s(M) \leq \tilde\mu_\delta^s(M)\) für alle \(0 < \delta < \varepsilon\)
+\item \(\tilde\mu_\varepsilon^s(M) \leq \bar\mu_\delta^s(M) = \mu_\delta^s(M) \leq \tilde\mu_\delta^s(M)\) für alle \(0 < \delta < \varepsilon\)
 \end{enumerate}
 
 \end{lemma}
@@ -2014,7 +2021,7 @@ Sei \(s \in [0,\infty)\). Für \(M \subset X\) wird durch
 \[
 \mu^s(M) \da \sup\{\mu_\delta^s(M) : \delta > 0\}
 \]
-auf \(X\) ein borelreguläres, äußeres Maß erklärt, das \(s\)-dimensionale Hausdorffmaß \((X,d)\). Es gilt:
+auf \(X\) ein borelreguläres, äußeres Maß erklärt, das \(s\)-dimensionale Hausdorffmaß auf \((X,d)\). Es gilt:
 \begin{enumerate}[(1)]
 \item \(\mu^s(M) = \sup\{\bar\mu_\delta^s(M) : \delta > 0\} = \sup\{\tilde\mu_\delta^s(M) : \delta > 0\}\)
 \item \(\mu^s(M) = \lim_{\delta \searrow 0} \mu_\delta^s(M) = \lim_{\delta\searrow0} \bar\mu_\delta^s(M) = \lim_{\delta\searrow0} \tilde\mu_\delta^s(M)\)
@@ -2086,7 +2093,7 @@ Sei jetzt \(p<s\). Wäre \(\mu^p(M)<\infty\), so würde \(\mu^q(M)=0\) für alle
 \end{beweis}
 
 \begin{beispiel}
-\(\mu^0(M) = \begin{cases} \#M & (M \text{endlich}) \\ \infty & (\text{sonst}) \end{cases}\)
+\(\mu^0(M) = \begin{cases} \#M & (M \text{ endlich}) \\ \infty & (\text{sonst}) \end{cases}\)
 \par
 \(\dim_H(M) = 0\) für \(\#M < \infty\).
 \end{beispiel}
@@ -2096,15 +2103,15 @@ Seien \((X,d)\) und \((\bar X,\bar d)\) metrische Räume. Eine Abbildung \(f: X 
 \par
 Zu \(f:X \rightarrow \bar X\) wird
 \[
-Lip(f) \da \sup\{\frac{\bar d(f(x),f(y))}{d(x,y)} : x,y \in X, x\neq y\}
+\Lip(f) \da \sup\{\frac{\bar d(f(x),f(y))}{d(x,y)} : x,y \in X, x\neq y\}
 \]
-erklärt. Man nennt \(f\) eine Lipschitzfunktion und \(Lip(f)\) die Lipschitz-Konstante von \(f\), falls \(Lip(f)<\infty\).
+erklärt. Man nennt \(f\) eine Lipschitzfunktion und \(\Lip(f)\) die Lipschitz-Konstante von \(f\), falls \(\Lip(f)<\infty\).
 \end{definition}
 
 \begin{lemma}
 \label{lem:2.22}
 
-Ist \(f: (X,d) \rightarrow (\bar X, \bar d)\) eine Lipschitzfunktion, so gilt \(\bar\mu^s(f(M)) \leq Lip(f)^s \cdot \mu^s(M)\) und \(\dim_H(f(M)) \leq \dim_H(M)\).
+Ist \(f: (X,d) \rightarrow (\bar X, \bar d)\) eine Lipschitzfunktion, so gilt \(\bar\mu^s(f(M)) \leq \Lip(f)^s \cdot \mu^s(M)\) und \(\dim_H(f(M)) \leq \dim_H(M)\).
 
 \end{lemma}
 
@@ -2113,31 +2120,31 @@ Ist \(f: (X,d) \rightarrow (\bar X, \bar d)\) eine Lipschitzfunktion, so gilt \(
 Sei \((A_i)_{i\in\MdN} \in Omega_\delta(M)\). Dann gilt \(f(M) \subset \bigcup_{i\geq1} f(A_i)\) und
 \begin{align*}
 \diam(f(A_i)) & = \sup\{\bar d(f(x),f(y)) : x,y \in A_i\} \\
-& \leq \sup \{ Lip(f) \cdot d(x,y) : x,y \in A_i \} \\
-& = Lip(f) \cdot \diam(A_i) \leq Lip(f) \cdot \delta
+& \leq \sup \{ \Lip(f) \cdot d(x,y) : x,y \in A_i \} \\
+& = \Lip(f) \cdot \diam(A_i) \leq \Lip(f) \cdot \delta
 \end{align*}
-d.h. \((f(A_i))_{i\in\MdN} \in \Omega_{Lip(f)\cdot\delta}(f(M))\) und
+d.h. \((f(A_i))_{i\in\MdN} \in \Omega_{\Lip(f)\cdot\delta}(f(M))\) und
 \begin{align*}
-\mu_{Lip(f)\cdot\delta}^s(f(M)) & \leq \sum_{i\geq1}(\diam(f(A_i)))^s \\
-& \leq Lip(f)^s \cdot \sum_{i\geq1} (\diam(A_i))^s
+\mu_{\Lip(f)\cdot\delta}^s(f(M)) & \leq \sum_{i\geq1}(\diam(f(A_i)))^s \\
+& \leq \Lip(f)^s \cdot \sum_{i\geq1} (\diam(A_i))^s
 \end{align*}
 Dies zeigt
 \[
-\mu_{Lip(f)\cdot\delta}^s(f(M)) \leq Lip(f)^s\cdot \mu_\delta^s(M)
+\mu_{\Lip(f)\cdot\delta}^s(f(M)) \leq \Lip(f)^s\cdot \mu_\delta^s(M)
 \]
 Aus \(\delta\searrow0\) folgt die Behauptung.
 
 \end{beweis}
 
-Sei nun \(K(x) \da \{f:X\rightarrow X: Lip(f)<1\}\). Für \(m \geq 2\) induziert \(\Psi \da (\psi_1,\dots,\psi_m) \in K(X)^m\) eine Abbildung
+Sei nun \(K(x) \da \{f:X\rightarrow X: \Lip(f)<1\}\). Für \(m \geq 2\) induziert \(\Psi \da (\psi_1,\dots,\psi_m) \in K(X)^m\) eine Abbildung
 \[
 \Psi^\ast: \mathcal P(X) \rightarrow \mathcal P(X), \; M \mapsto \bigcup_{i=1}^m \psi_i(M)
 \]
-Man erklärt \(\Psi^{\ast k} \da \underbrace{\Psi^\ast \circ \dots \circ \Psi^\ast}_{k \text{mal}} \;(k\in\MdN)\). Offenbar gilt \(M \subset M' \Rightarrow \Psi^{\ast k}(M) \subset \Psi^{\ast k}(M')\).
+Man erklärt \(\Psi^{\ast k} \da \underbrace{\Psi^\ast \circ \dots \circ \Psi^\ast}_{k \text{ mal}} \;(k\in\MdN)\). Offenbar gilt \(M \subset M' \Rightarrow \Psi^{\ast k}(M) \subset \Psi^{\ast k}(M')\).
 \par
 Ist \(A_i \subset X, \; i\in\MdN\), so sei
 \[
-\limsup_{i\rightarrow\infty} A_i \da \{x \in X : x \text{liegt in unendlich vielen} A_i\} = \bigcap_{n\in\MdN}\bigcup_{i\geq n} A_i
+\limsup_{i\rightarrow\infty} A_i \da \{x \in X : x \text{ liegt in unendlich vielen } A_i\} = \bigcap_{n\in\MdN}\bigcup_{i\geq n} A_i
 \]
 
 \begin{lemma}
@@ -2154,9 +2161,9 @@ Sei \(M \subset X\) beschränkt. Sei \(y \in \limsup_{k\rightarrow\infty} \Psi^{
 Sei \(z \in C\) beliebig. Dann gilt \(\psi_{i_k}\circ\dots\circ\psi_{i_1}(z) \in C\), sowie
 \begin{align*}
 d(y,C) & \leq d(y,\psi_{i_k}\circ\dots\circ\psi_{i_1}(z)) \\
-& \leq Lip(\psi_{i_k}) \cdot d(\psi_{i_{k-1}}\circ\dots\circ\psi_{i_1}(y_k), \psi_{i_{k-1}}\circ\dots\circ\psi_{i_1}(z)) \\
-& \leq Lip(y_{i_k}) \cdots Lip(y_{i_1}) \cdot d(y_k, z) \\
-& \leq {\underbrace{\max\{Lip(\psi_i): 1 \leq i \leq m\}}_{\ad r < 1}}^k \cdot d(y_k,z) \\
+& \leq \Lip(\psi_{i_k}) \cdot d(\psi_{i_{k-1}}\circ\dots\circ\psi_{i_1}(y_k), \psi_{i_{k-1}}\circ\dots\circ\psi_{i_1}(z)) \\
+& \leq \Lip(y_{i_k}) \cdots \Lip(y_{i_1}) \cdot d(y_k, z) \\
+& \leq {\underbrace{\max\{\Lip(\psi_i): 1 \leq i \leq m\}}_{\ad r < 1}}^k \cdot d(y_k,z) \\
 & = r^k \cdot \underbrace{\diam(M\cup C)}_{<\infty}
 \end{align*}
 Mit \(n\rightarrow\infty \Rightarrow k\rightarrow\infty\) folgt \(d(y,C)=0\), d.h. \(y\in C\), da \(C\) abgeschlossen.
