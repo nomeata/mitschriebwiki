@@ -6,6 +6,8 @@
 \newcommand{\A}{\mathcal A}
 \newcommand{\borel}{\mathfrak B}
 \newcommand{\ind}{\mathds 1}
+\newcommand{\HR}{\mathcal H}
+\newcommand{\HM}{\mathcal H}
 %\renewcommand{\mathbb}{\mathds}
 \DeclareMathOperator{\im}{im}
 \DeclareMathOperator{\id}{id}
@@ -2449,9 +2451,192 @@ der betrachteten Mengenklasse ab.
 \end{itemize}
 \end{bemerkung}
 
+\begin{definition}
+Für \(\delta > 0, p>0\) und \(M \subseteq \mathbb R^n\) sei
+\[
+\HM^p_\delta \da \inf\left\{ \sum_{A\in\mathcal A} \alpha(p) 2^{-p} \diam(A)^p \colon \mathcal A \in \Omega_\delta(M) \right\}
+\]
+und
+\[
+\HM^p(M) \da \lim_{\varepsilon\searrow0} \HM^p_\varepsilon(M)
+\]
+Notation: Für \(p>0\) sei \(\alpha(p) \da \frac{\pi^{\frac{p}2}}{\Gamma(\frac{p}2+1)}\).
+\end{definition}
+
+Dann ist für \(\alpha(p) = \lambda^p(B^p(0,1))\) mit \(B^p(0,1) \da \{ x \in \mathbb R^d \colon \|x\| = 1 \}\).
+
+\begin{lemma}
+Im euklidischen Raum \(\mathbb R^n\) gilt: \(\HM^n \ll \lambda^n\)
+\end{lemma}
+\begin{beweis}
+Allgemeines Argument folgt aus Übungsblatt 6, Nr. 1.
+\par
+Die überdeckenden Mengen \(A=(a_1,b_1) \times \dots \times (a_n,b_n)\) bei der Definition des Maßes \(\lambda^n\) können so gewählt werden, dass \(\diam(A) < \delta\) für ein vorgegebenes \(\delta > 0\) und
+\begin{align*}
+\tag{\(\ast\)}& |a_i-b_i| \leq 2 \min\{|b_j-a_j| \colon 1 \leq j \leq n\} = 2|b_{i_0}-a_{i_0}|, \; i_0 \in \{1,\dots,n\}
+\end{align*}
+Dann gilt:
+\[
+\lambda^n(A) = \prod_{i=1}^n(b_i-a_i) \geq (b_{i_0}-a_{i_0})^n
+\]
+und
+\begin{align*}
+\diam(A)^n &= \left( \sum_{i=1}^n (b_i-a_i)^2 \right)^{\frac{n}2} \\
+&\leq 2^n {\sqrt n}^n |b_{i_0}-a_{i_0}|^n \\
+&\leq 2^n n^{\frac{n}2} \lambda^n(A)
+\end{align*}
+Ist nun \(M \subseteq \mathbb R^n\) mit \(\lambda^n(M)=0\). Sei \(\delta > 0\) fest. Zu \(\varepsilon > 0\) gibt es \(A_i \subseteq \mathbb R^n\), wie oben beschrieben, d.h. \(\diam(A_i) < \delta\) und mit \((\ast)\), \(M \subseteq \bigcup_{i=1}^\infty A_i\) und \(\sum_{i=1}^\infty \lambda(A_i) < \varepsilon \Rightarrow \sum_{i=1}^\infty \diam(A_i)^n \leq 2^n \cdot n^{\frac{n}2} \cdot \varepsilon \Rightarrow \HM^n_\delta(M) \leq \alpha(n) \cdot 2^{-n}\cdot 2^n \cdot n^{\frac{n}2} \cdot \varepsilon\). Da \(\varepsilon\) beliebig war, ist \(\HM^n_\delta(M=0\). Folglich ist auch \(\HM^n(M)=0\).
+\end{beweis}
+
+\begin{satz}
+In \(\mathbb R^n\) gilt: \(\HM^n = \lambda^n = \HM^n_\delta\) für \(\delta > 0\).
+\end{satz}
+\begin{beweis}
+Sei \(M \subseteq \mathbb R^n\) und \(\varepsilon > 0\). Dann existiert eine offene Menge \(U\) mit \(M \subseteq U\) und \(\lambda^n(U) \leq \lambda^n(M) + \varepsilon\) (vgl. Satz \ref{satz:2.2} c))
+\par
+Sei \(\mathcal S\) die Menge aller Kugeln in \(\mathbb R^n\) mit Radius kleiner als \(\frac{\delta}2\). Wegen Korollar \ref{cor:2.9} und Übung Nr. 1 auf Blatt 4 gibt es eine abzählbare Folge \((B_i)_{i\in\mathbb N}\) in \(\mathcal S\) paarweise disjunkter Kugeln in \(U\) mit \(\lambda^n(M \setminus \bigcup_{i=1}^\infty B_i) = 0\). Mit Lemma \ref{lem:2.28} folgt
+\begin{align*}
+\HM^n_\delta(M) &\leq \underbrace{\HM^n_\delta(M\setminus \bigcup_{i=1}^\infty B_i)}_{=0} + \HM^n_\delta(\bigcup_{i=1}^\infty B_i) \\
+&\leq \sum_{i\geq1} \underbrace{ \alpha(n) \cdot 2^{-n} \diam(B_i)^n }_{= \lambda^n(B_i)} \\
+&= \lambda^n(\bigcup_{i\geq1} B_i) \\
+&\leq \lambda^n(U) \\
+&\leq \lambda^n(M) + \varepsilon
+\end{align*}
+folglich also
+\[
+\HM^n(M) \leq \lambda^n(M)
+\]
+und
+\[
+\HM^n_\delta(M) \leq \HM^n(M) \leq \lambda^n(M)
+\]
+Sei \((A_i)_{i\in\mathbb N} \in \Omega_\delta(M)\). Dann ist mit Satz \ref{satz:2.27}
+\[
+\lambda^n(M) \leq \lambda^n(\bigcup_{i\geq1} A_i) \leq \sum_{i\geq1} \lambda^n(A_i) \leq \sum_{i\geq1} \alpha(n)\cdot 2^{-n} \diam(A_i)^n
+\]
+Wir erhalten
+\[
+\lambda^n(M) \leq \HM^n_\delta(M) \leq \HM^n(M) \leq \lambda^n(M)
+\]
+\end{beweis}
 
 \chapter{Lipschitzfunktionen und Rektifizierbarkeit}
 
 \section{Fortsetzbarkeit und Differenzierbarkeit von Lipschitzfunktionen}
+
+\begin{definition}
+Seien \((X,d), (\bar X,\bar d)\) metrische Räume, \(f: A\rightarrow \bar X, \emptyset \neq A \subseteq X\).
+\[
+\Lip(f) \da \sup \{ \frac{\bar d(f(x),f(y))}{d(x,y)} \colon x,y \in A, x\neq y\}
+\]
+\(f\) heißt \emph{Lipschitz-Abbildung}, falls \(\Lip(f) < \infty\).
+\end{definition}
+
+\begin{satz}
+Sei \((X,d)\) metrischer Raum, \(\emptyset \neq A \subseteq X\)
+\begin{enumerate}[(1)]
+\item Ist \(f: A \rightarrow \mathbb R\) Lipschitzfunktion, so ist
+\[
+g(x) \da \inf\{f(z)+Lip(f) \cdot d(x,z) \colon z\in A\} \quad (x\in X)
+\]
+eine Lipschitzfunktion mit \(\Lip(g) = \Lip(f)\) und \(g|_A=f\).
+\item Ist \(f: A \rightarrow \mathbb R^n\) eine Lipschitzfunktion, so gibt es eine Lipschitzfunktion \(h: X \rightarrow \mathbb R^n\) mit \(\Lip(h) \leq \sqrt n \Lip(f)\) und \(h|_A = f\).
+\end{enumerate}
+\end{satz}
+
+\begin{bemerkung}
+\begin{enumerate}[(1)]
+\item Johnson, Lindenstrauss und Schechtman zeigen, dass im Allgemeinen nicht \(\Lip(h) = \Lip(f)\) möglich ist.
+\item Ist \(f: A \subseteq \mathbb R^n \rightarrow \mathbb R^n\) Lipschitzfunktion, so existiert eine Lipschitz-Fortsetzung mit gleicher Lipschitzkonstante (Satz von Kirszbraun, Valentine)
+\end{enumerate}
+\end{bemerkung}
+
+\begin{beweis}
+\begin{enumerate}[(1)]
+\item Sei \(f: A\rightarrow \mathbb R\). Für \(x,y \in X\) ist
+\begin{align*}
+g(x) &\leq \inf\{f(x)+(d(x,y)+d(y,z))\Lip(f) \colon z \in A\} \\
+&\leq g(y) + \Lip(f)\cdot d(x,y)
+\end{align*}
+und aus Symmetriegründen also \(|g(x)-g(y)| \leq \Lip(f) d(x,y)\). Insbesondere ist \(\Lip(g) \leq \Lip(f)\). Für \(x\in A\) gilt
+\[
+f(x) + \Lip(f) d(x,x) = f(x) \leq f(z)+ \Lip(f) d(x,z)
+\]
+also \(g(x) \leq f(x) \leq g(x)\), d.h. \(g(x) = f(x)\) für \(x\in A\). Somit ist \(\Lip(g) \geq \Lip(f)\).
+\item Wir haben \(f=(f_1,\ldots,f_n)^T, f_i: A \rightarrow \mathbb R, \Lip(f_i) \leq \Lip(f)\). Zu \(i\in \{1,\ldots,n\}\) gibt es nach (1) eine Lipschitz-Fortsetzung \(h_i: X \rightarrow \mathbb R\) von \(f_i\) mit \(\Lip(h_i)=\Lip(f_i)\). Dann ist \(h\da (h_1,\ldots,h_n)^T\) eine Lipschitz-Fortsetzung von \(f\) und \(\Lip(h) \leq \sqrt n \Lip(f)\), denn
+\begin{align*}
+\|h(x)-h(y)\| &= \left( \sum_{i=1}^n (h_i(x)-h_i(y))^2 \right)^{\frac12} \\
+&\leq \left( \sum_{i=1}^n \Lip(h)^2 d(x,y)^2 \right)^{\frac12} \\
+&\leq \Lip(f) \cdot (d d(x,y)^2)^{\frac12} \\
+&= \sqrt n \Lip(f) d(x,y)
+\end{align*}
+\end{enumerate}
+\end{beweis}
+
+\begin{satz}[Kirszbraun, Valentine]
+Seien \((\HR_1, \langle,\rangle)\) und \((\HR_2, \langle,\rangle)\) Hilberträume, \(\emptyset \neq D \subseteq \HR_1\),
+\(f:D\rightarrow \HR_2\) eine Lipschitz-Abbildung. Dann existiert eine Lipschitz-Fortsetzung \(h\) von \(f\) mit \(\Lip(h)=\Lip(f)\) und \(h|_D = f\).
+\end{satz}
+\begin{beweis}[Reich und Simons '05]
+Es genügt, den Fall \(\HR_1 = \HR_2 = \HR\) zu betrachten, sowie \(\Lip(f)=1\).
+\par
+\emph{Skizze}: \(\HR \da \HR_1 \oplus \HR_2 \da \{ (x,y) \colon x \in \HR_1, y \in \HR_2\}, \langle (x_1,y_1), (x_2,y_2) \rangle \da \langle x_1,x_2\rangle_1 + \langle y_1,y_2 \rangle_2\), \((x_i,y_i) \in \HR_1 \oplus \HR_2\).
+Zu \(f:D \subseteq \HR_1 \rightarrow \HR_2\) betrachte \(\tilde f: D \oplus \HR_2 \rightarrow \HR_1 \oplus \HR_2\), \((x,y) \mapsto (0,f(x))\), usw. (Übung)
+\end{beweis}
+
+Sei nun \(f: D \subseteq \HR \rightarrow \HR\) mit \(\Lip(f)=1\). Zu \(f\) gebe es keine echte 1-Lipschitz-Fortsetzung. Seien
+\[\HR^2 \da \HR \oplus \HR = \HR \times \HR\]
+und \[\chi: \HR^2 \rightarrow (-\infty, \infty], \chi(x,y) \da \sup\{ \|y-f(z)\|^2 - \|x-z\|^2 \colon z \in D\}\]
+
+\begin{lemma}
+Es gilt \(\chi \geq 0\) und \(\{\chi=0\} = G(f) \da \{(z,f(z)) \colon z \in D\}\).
+\end{lemma}
+\begin{beweis}
+Seien \(x,y \in \HR\). Ist \(x \in D\), so ergibt die Wahl \(z \da x \in D\)
+\[\chi(x,y) \geq \|y-f(x)\|^2 - \|x-y\|^2 = \|y-f(x)\|^2 \geq 0\]. Sei nun \(x \notin D\). Sei \(\tilde f\) die Fortsetzung von \(f\) auf \(D \cup \{x\}\) mit \(\tilde f(x) \da y\). Da \(\tilde f\) keine 1-Lipschitz-Abbildung ist, muss es ein \(z \in D\) geben mit
+\[
+\|y-f(z)\|^2 = \|\tilde f(x) - \tilde f(z)\|^2 > \|x-y\|^2
+\]
+\(\Rightarrow \chi(x,y) > 0\). Also: \(\chi \geq 0 \) und \(\{\chi = 0\} \subseteq G(f)\).
+\par
+Sei nun \((x,y) \in G(f)\), d.h. \(x\in D\) und \(y=f(x)\). Also
+\[
+\|y-f(z)\|^2 = \|f(x)-f(z)\|^2 \leq \|x-z\|^2
+\]
+\(\Rightarrow \chi(x,y) \leq 0 \Rightarrow \chi(x,y) = 0\), d.h. \(G(f) \subseteq \{\chi=0\}\).
+\end{beweis}
+
+\begin{lemma}
+Die Abbildung \(\varphi: \HR^2 \rightarrow (-\infty, \infty]\), \(\varphi(x,y) \da \frac14 \chi(x+y,x-y) + \langle x,y \rangle, x,y\in\HR\).
+\begin{enumerate}[(1)]
+\item Für \(x,y \in \HR\) gilt
+\[
+4\cdot \varphi(x,y) = \sup\{ \|f(z)\|^2 - \|z\|^2 + 2 \langle x,z-f(z) \rangle + 2 \langle y,z+f(z) \rangle \colon z \in D\}
+\]
+\item Für \(z \in D\) gilt
+\[
+4 \cdot \varphi(\frac{z+f(z)}2, \frac{z-f(z)}2) = \|z\|^2 - \|f(z)\|^2
+\]
+\item \(\varphi\) ist eine eigentliche (\(\varphi \not\equiv \infty\)), unterhalbstetige, konvexe Funktion mit \(\varphi^\ast(x,y) \geq \varphi(x,y)\) für \(x,y\in \HR\). Hierbei ist \(\varphi^\ast\) die zu \(\varphi\) konjugierte Funktion, explizit
+\[
+\varphi^\ast(\zeta) \da \sup\{ \langle \zeta,\xi \rangle - \varphi(\xi) \colon \xi \in \HR^2 \}, \zeta \in \HR^2
+\]
+\end{enumerate}
+\end{lemma}
+\begin{beweis}
+\begin{enumerate}[(1)]
+\item Für \(x,y\in \HR, z \in D\) gilt:
+\begin{align*}
+\|x-y-f(z)\|^2 - \|x+y-z\|^2 &= -4\langle x,y\rangle - 2\langle x,y, f(z)\rangle + 2\langle x+y, z\rangle + \|f(z)\|^2 - \|z\|^2 \\
+&= -4\langle x,y\rangle + 2\langle x,z-f(z)\rangle + 2\langle y,z-f(z)\rangle + \|f(z)\|^2-\|z\|^2
+\end{align*}
+Bildung des Supremums ergibt die Behauptung.
+\item Direkt durch Einsetzen in die Definition:
+\[
+4\varphi(\frac{z+f(z)}2, \frac{z-f(z)}2) = \underbrace{\chi(z,f(z))}_{=0} + \langle z-f(z),z+f(z)\rangle = \|z\|^2 - \|f(z)\|^2
+\]
+\item Als Supremum von stetigen, konvexen Funktionen ist \(\varphi^\ast\) konvex und unterhalbstetig.
+\end{enumerate}
+\end{beweis}
 
 \end{document}
