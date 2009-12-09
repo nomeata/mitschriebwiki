@@ -2274,7 +2274,7 @@ E = \bigcap_{k=1}^\infty \Psi^{*k}(E) \subset \bigcap_{k=1}^\infty \Psi^{*k}(C) 
 \label{satz:2.25}
 Für $\Psi= (\psi_1,\ldots,\psi_m)\in K(\MdR^n)^m$ seien die folgenden Eigenschaften erfüllt:
 \begin{enumerate}
-\item Für $i=1,\ldots,m$ gibt es $r_i\in(0,1)$ mit $|\psi_i(x) = \psi_i(y)| = r_i|x-y|$ für alle $x,y\in\MdR^n$.
+\item Für $i=1,\ldots,m$ gibt es $r_i\in(0,1)$ mit $|\psi_i(x) - \psi_i(y)| = r_i|x-y|$ für alle $x,y\in\MdR^n$.
 \item Es gibt eine beschränkte, offene Menge $\emptyset \ne U\subset\MdR^n$ derart, dass $\psi_1(U),\ldots,\psi_m(U)$ paarweise disjunkt sind und $\Psi^*(U) \subset U$.
 \end{enumerate}
 Dann gilt für die durch $\sum_{i=1}^m r_i^s = 1$ festgelegte Zahl $s>0$ und das $\Psi^*$-invariante Kompaktum $E\subset \MdR^n$ die Abschätzung $0<\mu^s(E) < \infty$, das heißt insbesondere $\dim_H(E)= s$. Man nennt $s$ die Ähnlichkeitsdimension von $R$.
@@ -2463,7 +2463,7 @@ und
 Notation: Für \(p>0\) sei \(\alpha(p) \da \frac{\pi^{\frac{p}2}}{\Gamma(\frac{p}2+1)}\).
 \end{definition}
 
-Dann ist für \(\alpha(p) = \lambda^p(B^p(0,1))\) mit \(B^p(0,1) \da \{ x \in \mathbb R^d \colon \|x\| = 1 \}\).
+Dann ist für \(\alpha(p) = \lambda^p(B^p(0,1))\) mit \(B^p(0,1) \da \{ x \in \mathbb R^p \colon \|x\| \leq 1 \}\).
 
 \begin{lemma}
 Im euklidischen Raum \(\mathbb R^n\) gilt: \(\HM^n \ll \lambda^n\)
@@ -2482,10 +2482,21 @@ Dann gilt:
 und
 \begin{align*}
 \diam(A)^n &= \left( \sum_{i=1}^n (b_i-a_i)^2 \right)^{\frac{n}2} \\
-&\leq 2^n {\sqrt n}^n |b_{i_0}-a_{i_0}|^n \\
+&\leq 2^n n^{\frac{n}2} |b_{i_0}-a_{i_0}|^n \\
 &\leq 2^n n^{\frac{n}2} \lambda^n(A)
 \end{align*}
-Ist nun \(M \subseteq \mathbb R^n\) mit \(\lambda^n(M)=0\). Sei \(\delta > 0\) fest. Zu \(\varepsilon > 0\) gibt es \(A_i \subseteq \mathbb R^n\), wie oben beschrieben, d.h. \(\diam(A_i) < \delta\) und mit \((\ast)\), \(M \subseteq \bigcup_{i=1}^\infty A_i\) und \(\sum_{i=1}^\infty \lambda(A_i) < \varepsilon \Rightarrow \sum_{i=1}^\infty \diam(A_i)^n \leq 2^n \cdot n^{\frac{n}2} \cdot \varepsilon \Rightarrow \HM^n_\delta(M) \leq \alpha(n) \cdot 2^{-n}\cdot 2^n \cdot n^{\frac{n}2} \cdot \varepsilon\). Da \(\varepsilon\) beliebig war, ist \(\HM^n_\delta(M=0\). Folglich ist auch \(\HM^n(M)=0\).
+Ist nun \(M \subseteq \mathbb R^n\) mit \(\lambda^n(M)=0\). Sei \(\delta > 0\) fest. Zu \(\varepsilon > 0\) gibt es \(A_i \subseteq \mathbb R^n\), wie oben beschrieben, d.h. \(\diam(A_i) < \delta\) und mit \((\ast)\):
+\[
+M \subseteq \bigcup_{i=1}^\infty A_i \quad \text{ und } \quad \sum_{i=1}^\infty \lambda(A_i) < \varepsilon
+\]
+Daraus folgt:
+\[
+\sum_{i=1}^\infty \diam(A_i)^n \leq 2^n \cdot n^{\frac{n}2} \cdot \varepsilon
+\]
+\[
+\Rightarrow \; \HM^n_\delta(M) \leq \alpha(n) \cdot 2^{-n}\cdot 2^n \cdot n^{\frac{n}2} \cdot \varepsilon
+\]
+Da \(\varepsilon\) beliebig war, ist \(\HM^n_\delta(M)=0\). Folglich ist auch \(\HM^n(M)=0\).
 \end{beweis}
 
 \begin{satz}
@@ -2567,8 +2578,8 @@ also \(g(x) \leq f(x) \leq g(x)\), d.h. \(g(x) = f(x)\) für \(x\in A\). Somit i
 \begin{align*}
 \|h(x)-h(y)\| &= \left( \sum_{i=1}^n (h_i(x)-h_i(y))^2 \right)^{\frac12} \\
 &\leq \left( \sum_{i=1}^n \Lip(h)^2 d(x,y)^2 \right)^{\frac12} \\
-&\leq \Lip(f) \cdot (d d(x,y)^2)^{\frac12} \\
-&= \sqrt n \Lip(f) d(x,y)
+&\leq \Lip(f) \cdot (d(x,y)^2)^{\frac12} \\
+&= \sqrt n \cdot \Lip(f) \cdot d(x,y)
 \end{align*}
 \end{enumerate}
 \end{beweis}
@@ -2593,7 +2604,10 @@ Es gilt \(\chi \geq 0\) und \(\{\chi=0\} = G(f) \da \{(z,f(z)) \colon z \in D\}\
 \end{lemma}
 \begin{beweis}
 Seien \(x,y \in \HR\). Ist \(x \in D\), so ergibt die Wahl \(z \da x \in D\)
-\[\chi(x,y) \geq \|y-f(x)\|^2 - \|x-y\|^2 = \|y-f(x)\|^2 \geq 0\]. Sei nun \(x \notin D\). Sei \(\tilde f\) die Fortsetzung von \(f\) auf \(D \cup \{x\}\) mit \(\tilde f(x) \da y\). Da \(\tilde f\) keine 1-Lipschitz-Abbildung ist, muss es ein \(z \in D\) geben mit
+\[
+\chi(x,y) \geq \|y-f(x)\|^2 - \|x-y\|^2 = \|y-f(x)\|^2 \geq 0
+\]
+ Sei nun \(x \notin D\). Sei \(\tilde f\) die Fortsetzung von \(f\) auf \(D \cup \{x\}\) mit \(\tilde f(x) \da y\). Da \(\tilde f\) keine 1-Lipschitz-Abbildung ist, muss es ein \(z \in D\) geben mit
 \[
 \|y-f(z)\|^2 = \|\tilde f(x) - \tilde f(z)\|^2 > \|x-y\|^2
 \]
@@ -2607,7 +2621,10 @@ Sei nun \((x,y) \in G(f)\), d.h. \(x\in D\) und \(y=f(x)\). Also
 \end{beweis}
 
 \begin{lemma}
-Die Abbildung \(\varphi: \HR^2 \rightarrow (-\infty, \infty]\), \(\varphi(x,y) \da \frac14 \chi(x+y,x-y) + \langle x,y \rangle, x,y\in\HR\).
+Die Abbildung \(\varphi: \HR^2 \rightarrow (-\infty, \infty]\) sei definiert durch
+\[
+\varphi(x,y) \da \frac14 \chi(x+y,x-y) + \langle x,y \rangle \quad (x,y\in\HR)
+\]
 \begin{enumerate}[(1)]
 \item Für \(x,y \in \HR\) gilt
 \[
