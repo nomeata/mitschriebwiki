@@ -13,6 +13,8 @@
 \DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\diam}{diam}
 \DeclareMathOperator{\Lip}{Lip}
+\DeclareMathOperator{\epi}{epi}
+\DeclareMathOperator{\supp}{supp}
 % Maß-Restriktions-Symbol
 \newcommand{\MR}{\lfloor}
 \jot3mm
@@ -2585,19 +2587,18 @@ Seien \((\HR_1, \langle,\rangle_1)\) und \((\HR_2, \langle,\rangle_2)\) Hilbertr
 \end{satz}
 \begin{beweis}[Reich und Simons '05]
 Es genügt, den Fall \(\HR_1 = \HR_2 = \HR\) zu betrachten, sowie \(\Lip(f)=1\).
-\par
+
 \emph{Skizze}: \(\HR \da \HR_1 \oplus \HR_2 \da \{ (x,y) \colon x \in \HR_1, y \in \HR_2\}, \langle (x_1,y_1), (x_2,y_2) \rangle \da \langle x_1,x_2\rangle_1 + \langle y_1,y_2 \rangle_2\), \((x_i,y_i) \in \HR_1 \oplus \HR_2\).
 Zu \(f:D \subseteq \HR_1 \rightarrow \HR_2\) betrachte \(\tilde f: D \oplus \HR_2 \rightarrow \HR_1 \oplus \HR_2\), \((x,y) \mapsto (0,f(x))\), usw. (Übung)
-\end{beweis}
 
 Sei nun \(f: D \subseteq \HR \rightarrow \HR\) mit \(\Lip(f)=1\). Zu \(f\) gebe es keine echte 1-Lipschitz-Fortsetzung. Seien
 \[\HR^2 \da \HR \oplus \HR = \HR \times \HR\]
 und \[\chi: \HR^2 \rightarrow (-\infty, \infty], \qquad\chi(x,y) \da \sup\{ \|y-f(z)\|^2 - \|x-z\|^2 \colon z \in D\}.\]
 
-\begin{lemma}
+\textbf{Lemma A:}
 Es gilt \(\chi \geq 0\) und \(\{\chi=0\} = G(f) \da \{(z,f(z)) \colon z \in D\}\).
-\end{lemma}
-\begin{beweis}
+
+\textbf{Beweis des Lemmas:}
 Seien \(x,y \in \HR\). Ist \(x \in D\), so ergibt die Wahl \(z \da x \in D\)
 \[\chi(x,y) \geq \|y-f(x)\|^2 - \|x-x\|^2 = \|y-f(x)\|^2 \geq 0.\] 
 Sei nun \(x \notin D\). Sei \(\tilde f\) die Fortsetzung von \(f\) auf \(D \cup \{x\}\) mit \(\tilde f(x) \da y\). Da \(\tilde f\) keine 1-Lipschitz-Abbildung ist, muss es ein \(z \in D\) geben mit
@@ -2610,10 +2611,9 @@ Sei nun \((x,y) \in G(f)\), d.h. \(x\in D\) und \(y=f(x)\). Also ist für $z\in 
 \[
 \|y-f(z)\|^2 = \|f(x)-f(z)\|^2 \leq \|x-z\|^2.
 \]
-Dies ergibt \(\Rightarrow \chi(x,y) \leq 0\) und daher \( \chi(x,y) = 0\), d.h. \(G(f) \subseteq \{\chi=0\}\).
-\end{beweis}
+Dies ergibt \(\chi(x,y) \leq 0\) und daher \( \chi(x,y) = 0\), d.h. \(G(f) \subseteq \{\chi=0\}\).
 
-\begin{lemma}
+\textbf{Lemma B:}
 Definiere die Abbildung \(\varphi: \HR^2 \rightarrow (-\infty, \infty]\),\quad \(\varphi(x,y) \da \frac14 \chi(x+y,x-y) + \langle x,y \rangle\) für \( x,y\in\HR\).
 \begin{enumerate}[(1)]
 \item Für \(x,y \in \HR\) gilt
@@ -2629,13 +2629,14 @@ Definiere die Abbildung \(\varphi: \HR^2 \rightarrow (-\infty, \infty]\),\quad \
 \varphi^\ast(\zeta) \da \sup\{ \langle \zeta,\xi \rangle - \varphi(\xi) \colon \xi \in \HR^2 \},\qquad  \zeta \in \HR^2.
 \]
 \end{enumerate}
-\end{lemma}
-\begin{beweis}
+
+\textbf{Beweis des Lemmas:}
 \begin{enumerate}[(1)]
 \item Für \(x,y\in \HR, z \in D\) gilt:
 \begin{align*}
-&\|x-y-f(z)\|^2 - \|x+y-z\|^2\\ &= -4\langle x,y\rangle - 2\langle x-y, f(z)\rangle + 2\langle x+y, z\rangle + \|f(z)\|^2 - \|z\|^2 \\
-&= -4\langle x,y\rangle + 2\langle x,z-f(z)\rangle + 2\langle y,z+f(z)\rangle + \|f(z)\|^2-\|z\|^2.
+&\|x-y-f(z)\|^2 - \|x+y-z\|^2\\
+=& -4\langle x,y\rangle - 2\langle x-y, f(z)\rangle + 2\langle x+y, z\rangle + \|f(z)\|^2 - \|z\|^2 \\
+=& -4\langle x,y\rangle + 2\langle x,z-f(z)\rangle + 2\langle y,z+f(z)\rangle + \|f(z)\|^2-\|z\|^2.
 \end{align*}
 Bildung des Supremums über $z\in D$ ergibt die Behauptung.
 \item Direkt durch Einsetzen in die Definition erhält man für $z\in D$
@@ -2646,12 +2647,169 @@ Bildung des Supremums über $z\in D$ ergibt die Behauptung.
 gilt
 \begin{align*}
 \varphi^*(x,y)&\ge \left\langle \left(\frac{z+f(z)}{2}, \frac{z-f(z)}{2}\right),(x,y)\right\rangle -\varphi\left(\frac{z+f(z)}{2}, \frac{z-f(z)}{2}\right)\\
-&=\frac{1}{4}\left[2\langle x,z+f(z)\rangle +2\langle y,z-f(z)\rangle+\|f(z)\|^2-\|z\|^2\right].
+&=\frac{1}{4}\left(2\langle x,z+f(z)\rangle +2\langle y,z-f(z)\rangle+\|f(z)\|^2-\|z\|^2\right).
 \end{align*}
 wobei zuletzt (2) verwendet wurde. Aufgrund von (1) ist das Supremum über $z\in D$ auf der rechten Seite 
 gerade $\varphi(y,x)$. 
 \end{enumerate}
 
+\textbf{Lemma C:} Sei $\tilde\HR$ ein Hilbertraum, $h(\zeta) \da \frac12\|\zeta\|^2$, $\zeta\in\tilde\HR$. Sei ferner $\psi : \tilde\HR \to (-\infty,\infty]$ eine eigentliche, unterhalbstetige konvexe Funktion. Gilt $\psi(\zeta) + h(\zeta) \ge 0 $ für alle $\zeta\in\tilde\HR$, dann gibt es ein $v\in\tilde\HR$ mit $\psi^*(v)+ h(v) \le 0$.
+
+\textbf{Beweis des Lemmas:} Nach Voraussetzung gilt $\psi(\zeta) \ge -h(\zeta)$ für $\zeta\in\tilde\HR$. Sei
+\[
+\epi(\psi) \da \{ (\zeta,t) \in\tilde\HR\times\MdR: \psi(\zeta)\le t\}, \quad 
+\widetilde\epi(-h) \da \{ (\zeta,s) \in\tilde\HR\times\MdR: s \le h(\zeta) \}
+\]
+Dann sind $\epi(\psi)$, $\widetilde\epi(-h)$ abgeschlossene, konvexe, nicht leere Mengen, die keinen gemeinsamen inneren Punkt habe. Dann gibt es eine „nicht vertikale“ trennende Hyperebene, das heißt es gibt ein $\alpha \in \MdR$ und $v\in\tilde\HR$ mit:
+\[
+\psi(\zeta) \ge \langle \zeta, v \rangle + \alpha \ge -h(\zeta)
+\]
+für alle $\zeta\in\tilde\HR$.
+Insbesondere 
+\begin{align*}
+\psi^*(v) &= \sup\{\langle\zeta,v\rangle - \psi(\zeta) : \zeta \in \tilde\HR\} \\
+&\le -\alpha \\
+&\le \inf\{\langle \zeta,v\rangle + h(\zeta) : \zeta \in \tilde\HR\}\\
+&\le \langle -v, v\rangle + \frac12 \|v\|^2\\
+&= -\frac12 \|v\|^2 = -h(v)
+\end{align*}
+also $\psi^*(v)+ h(v) \le 0$.
+
+\textbf{Lemma D}: Hat $f:D\to \HR$ keine echte 1-Lipschitzfortsetzung, so gilt $D=\HR$.
+
+\textbf{Beweis des Lemmas:} Sei $h(x,y) \da \frac12\|(x,y)\|^2$, $(x,y)\in\HR^2$. Es gilt für $x,y\in\HR$:
+\begin{multline*}
+4(\varphi(x,y) + h(x,y)) = \chi(x+y,x-y) + 4\langle x,y\rangle + 2\|x\|^2 + 2\|y\|^2 \\
+= \chi(x+y,x-y) + 2\|x+y\|^2 \ge 0.
+\end{multline*}
+Wegen Lemma B gilt somit
+\[
+\varphi^*(y,x) + h(y,x) \ge \varphi(x,y) + h(x,y) \ge0
+\]
+für alle $x,y\in\HR$. Nach Lemma C gibt es ein $(x_0,y_0)\in\HR^2$ mit
+$\varphi(y_0,x_0) + h(y_0,x_0) \le 0$, das heißt $\varphi^*(y_0,x_0) + h(x_0,y_0) = 0 = \varphi(x_0,y_0)+h(x_0,y_0)$ also $\chi(x_0+y_0, x_0-y_0) + 2\|x_0+y_0\|^2 = 0$ und somit $x_0=-y_0$ und $\chi(0,2x_0)= 0$. Dies liegt wegen Lemma A $(0,2x_0)\in G(f)$, das heißt $0\in D$.
+
+Sei nun $x_1\in\HR$ beliebig und definiere $f_{x_1} : D-x_1 \to \HR$ durch $f_{x_1}(x) \da f(x+x_1)$. Da $f_{x_1}$ keine echte 1-Lipschitzfortsetzung hat, muss $0\in D(f_{x_1}) = D-x_1$, also $x_1\in D$ und somit $D=\HR$.
+
+\textbf{Beweis des Satzes:}
+Sei $f:D \to \HR$ eine 1-Lipschitzabbildung mit $\emptyset \ne D \subset \HR$. Betrachte
+\[
+\mathcal S \da \{(E,g) : D\subset E,\, g|_D = f,\, g\text{ ist 1-Lipschitzabbildung}\}
+\]
+Durch 
+\[
+(E,g)\prec(\tilde E, \tilde g) :\iff E\subset \tilde E \text{ und } \tilde g|_E = g
+\]
+für $(E,g),(\tilde E,\tilde g)\in \mathcal S$ wird auf $\mathcal S$ eine Ordnung eingeführt, in der jede Kette eine obere Schranke besitzt. Nach dem Zornschen Lemma gibt es ein maximales Element in $\mathcal S$, etwa $(E,g)$. Dann ist wegen Lemma D aber $E=\HR$, das heißt $(\HR,g)$ ist die gewählte 1-Lipschitzfortsetzung von $f$.
+\end{beweis}
+
+Eine Abbildung $f:\MdR^m \to \MdR^n$ heißt differzierbar an der Stelle $x\in\MdR^m$, falls es eine lineare Abbildung $L:\MdR^m\to\MdR^n$ gibt mit
+\[
+\lim_{y\to x} \frac{f(y)-f(x)- L(y-x)}{\|y-x\|} = 0.
+\]
+In diesem Fall schreiben wir $Df(x) \da Df_x \da L$. Ferner ist
+\[
+Df_x(u) \da L(u) = \lim_{t\to0}\frac{f(x+tu) - f(x)}{t}
+\]
+für $u\in\MdR^m$.
+
+Ist $f$ in $x$ differzierbar, so gilt speziell $D_iF(x) \da D_{e_i}f(x) \da Df_x(e_i)$.
+
+\begin{satz}[Rademacher]
+Jede Lipschitzfunktion $f:\MdR^m \to \MdR^n$ ist $\lambda^m$-fast-überall differenzierbar.
+\end{satz}
+
+\begin{beweis}
+Sei stets ohne Beschränkung der Allgemeinenheit $n=1$.
+\begin{enumerate}[{Teil} 1:]
+\item $m=1$ und $f$ ist monoton wachsend. Definiere
+\[
+v_f(M) \da \inf\{\sum_{i=1}^\infty (\underbrace{f(b_i) - f(a_i)}_{\ge 0}): a_i < b_i,\, M\subset \bigcup_{i=1}^\infty (a_i,b_i)\}.
+\]
+Wie im Fall $\lambda^1$ ist $v_f\in\mathbb M (\MdR)$. Beachte hierzu $v_f(M) \le \Lip(f) \cdot \lambda^1(M)$. Dies zeigt auch $v_f \ll \lambda^1$ und daher $(v_f)_{\lambda^1} = v_f$. Das System
+\[
+V \da \{ (x,[a,b]): x\in[a,b]\}
+\]
+ist eine $\lambda^1$-Vitali-Relation. Also ist $\mathbb D(v_f,\lambda^1,V,\cdot) \in [0,\infty)$ $\lambda^1$-fast-überall und
+\[
+\mathbb D(v_f,\lambda^1,V,x)
+= V\text-\lim_{[a,b]\to x} \frac{v_f([a,b])}{\lambda^1([a,b])}
+= \lim_{y\to x} \frac{f(y) - f(x) }{y-x} = f'(x)
+\]
+für $\lambda^1$-fast-alle $x\in\MdR$.
+
+\item $m=1$, $f:\MdR\to\MdR$ nicht notwendigerweise monoton. Für $x\in \MdR$ sei
+\[
+g(x) \da 
+\begin{cases}
+\phantom{-}\sup\{\sum_{i=1}^m|f(a_i)-f(a_{i-1})| : 0 = a_0 \le a_1 \le \cdots \le a_m = x, \, m\in\MdN\}, & x\ge 0,\\
+-\sup\{\sum_{i=1}^m|f(a_i)-f(a_{i-1})| : x = a_0 \le a_1 \le \cdots \le a_m = 0, \, m\in\MdN\}, & x\ge 0
+\end{cases}
+\]
+Damit ist $g$ monoton wachsend. Für $x>y$ gilt
+\begin{align*}
+g(x)
+&= g(y) + \sup\{\sum_{i=1}^m |f(a_i) - f(a_{i-1})|: y = a_0\le a_1\le \cdots \le a_m = x,\, m\in\MdN\} \\
+&\le g(y) + \Lip(f) \cdot \sup\{\sum_{i=1}^m |a_i-a_{i_1}|: y = a_0\le a_1\le \cdots \le a_m = x,\, m\in\MdN\} \\
+&= g(y) + \Lip(f) \cdot |y-x|
+\end{align*}
+also $|g(x) - g(y)| \le \Lip(f) \cdot |x-y|$. Außerdem erhalten wir für $x>y$ dass
+\[
+g(x)\ge g(y) + |f(x)-f(y)| \ge g(y) + f(x) - f(y)
+\]
+also $(g-f)(x) \ge (g-f)(y)$, das heißt $g-f$ ist ebenfalls monoton wachsend und ebenfalls Lipschitz. Nach Teil 1 sind daher $g$ und $g-f$ $\lambda^1$-fast-überall differenzierbar. Somit auch $f=g-(g-f)$.
+
+\textbf{Nebenbemerkung:} $f(b)-f(a) = v_f([a,b]) = (v_f)_{\lambda^1}([a,b]) = \int_{[a,b]} \mathbb D(v_f, \lambda^1, V, x)\lambda(dx) = \int_{[a,b]} f'(x) \lambda(dx)$. Dies ist der Hauptsatz der Differenzial- und Integrationsrechnung für Lipschitzfunktionen.
+
+\item $m\ge 1$. Seien $e\in S^{m-1}$. Sei $N_e$ die Menge aller $x\in\MdR^m$, für die $t \mapsto f(x+te)$ in $t=0$ nicht differenzierbar ist. Dann ist $N_e$ eine Borelmenge und $\HM^1(N_e \cap (x+\MdR e)) = 0$ nach Teil 2. Fubini zeigt $\lambda^m(N_e) = 0$ für beliebige $e\in S^{m-1}$.
+
+Für $\lambda^m$-fast-alle $x\in\MdR^m$ existiert dann 
+\[
+\nabla f(x) \da (D_1 f(x), \ldots, D_mf(x))
+\]
+wobei
+$D_i(f) \da D_{e_i}f(x)$ für die Standarbasis $(e_1,\ldots,e_m)$ des $\MdR^m$. Für festes $e\in S^{m-1}$ existiert auch $D_ef(x)$ für $\lambda^m$-fast-alle $x\in\MdR^m$. Sei $\varphi \in\mathcal C^\infty_c(\MdR^m)$. Für $\ep>0$ und $e\in S^{m-1}$ gilt
+\[
+\int_{\MdR^m} \frac{f(x+\ep e) - f(x)}\ep \cdot \varphi(x) \lambda^m(dx)
+= 
+-\int f(x) \cdot \frac{\varphi(x) - \varphi(x-\ep e)}\ep\varphi(x) \lambda^m(dx)
+\]
+wegen $|\varphi| \le \|\varphi\|_\infty \cdot \ind_{\supp(\varphi)}$ und da $f$ Lipschitz-stetig ist erhält mal mit dem Satz von der majorisierten Konvergenz:
+\begin{align*}
+\int_{\MdR^m} D_ef(x) \varphi(x) \lambda^m(dx)
+&= -\int f(x) D_e\varphi(x) \lambda^m(dx). \\
+&= - \sum_{j=1}^m \langle e, e_j\rangle \cdot \int f(x) \cdot D_j \varphi(x)\lambda^m(dx) \\
+&= - \sum_{j=1}^m \langle e, e_j\rangle \cdot (-1) \int_{\MdR^m} D_{e_j} f(x) \varphi(x) \lambda^m(dx) \\
+&= \int_{\MdR^m} \langle e, \nabla f(x) \rangle \varphi(x) \lambda^m(dx).
+\end{align*}
+Hieraus liest man $D_ef(x) = \langle e,\nabla f(x) \rangle$ für $\lambda^m$-fast-alle $x\in\MdR^m$ ab, wobei $e\in S^{m-1}$ fest, aber beliebig ist.
+
+Sei $E\subset S^{m-1}$ eine abzählbare dichte Teilmenge. Dann ist das Komplement der Menge 
+\[
+A \da \bigcap_{e\in E}\{x\in\MdR^m : D_ef(x) = \langle e, \nabla f(x) \rangle\}
+\]
+eine $\lambda^m$-Nullmenge. Wir zeigen, dass $f$ in $x\in A$ differenzierbar ist. Sei also $x\in A$. Für $\ep>0$ und $e\in S^{m-1}$ sei
+\[
+\Delta_\ep(e) \da \frac{f(x+\ep e)- f(x)}{\ep} - \langle e,\nabla f(x) \rangle.
+\]
+
+Wir zeigen: $\Delta_\ep(e) \to 0$ für $\ep\to 0$ gleichmäßig in $e\in S^{m-1}$.
+
+Setze $M\da 2\max\{\Lip(f), \|\nabla f(x)\|, 1\}$. Dann gilt für $e,\bar e\in S^{m-1}$:
+\begin{align*}
+|\Delta_\ep (e) - \Delta_\ep(\bar e)|
+\le | \frac{f(x + \ep e) - f(x + \ep \bar e)}\ep | + \|\nabla f(x) \| \cdot \|e-\bar e\|
+\le M \cdot \|e-\bar e\|.
+\end{align*}
+Ferner gilt $\delta_\ep(e) \to 0$ für alle $e\in E$, wenn $\ep \to 0$. Es gibt eine endliche Teilmenge $\bar E\subset E$ mit $d(e,\bar E) \le \frac\ep{2M}$ für jedes $e\in S^{m-1}$. Es gibt zu $\ep >0$ ein $\delta>0$ so dass $|\Delta_{\ep'} (\bar e) | \le \frac\ep2$ für alle $\bar e\in\bar E$ und $0<\ep'\le \delta$. Für $e\in S^{m-1}$ und $0<\ep'\le\delta$ gilt dann:
+\begin{align*}
+|\Delta_{\ep'} (e)|
+&\le \min_{\bar e\in\bar E} \{ |\Delta_{\ep'}(e) - \Delta_{\ep'}(\bar e)| + |\Delta_{\ep'}(\bar e)|\} \\
+&\le \min_{\bar e\in\bar E} \{ M \cdot \|e-\bar e\| + \frac\ep2\} \\
+&\le \frac\ep{2M} \cdot M + \frac\ep2 = \ep.
+\end{align*}
+Dies zeigt $\Delta_\ep\to 0$ gleichmäßig für $\ep\to 0$ und daraus oflgt die Behauptung.
+\end{enumerate}
 \end{beweis}
 
 \end{document}
