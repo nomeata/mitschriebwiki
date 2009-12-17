@@ -16,6 +16,7 @@
 \DeclareMathOperator{\epi}{epi}
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Kern}{Kern}
 % Maß-Restriktions-Symbol
 \newcommand{\MR}{\lfloor}
 \jot3mm
@@ -475,7 +476,7 @@ Sei $\mu$ ein äußeres Maß auf $X$ und $f\in \mathbb F_\mu(X,\bar\MdR)$. Genau
 
 \begin{lemma}
 Sei $\mu$ ein äußeres Maß auf $X$, seien $f,g,f_n\in \mathbb F_\mu(X,\bar\MdR)$, $n\in\MdN$, $\mu$-messbar. Dann gilt
-\begin{enumerate}[(a)]
+\begin{enumerate}[\quad(a)]
 \item $\{f<g\}$, $\{f\le g\}$, $\{f=g\}$, $\{f\ne g\}$ sind $\mu$-messbare Mengen.
 \item Die Funktionen
 \begin{align*}
@@ -2964,6 +2965,7 @@ Dies ist der verallgemeinerte Satz des Pythagoras.
 \end{bemerkungen}
 
 \begin{proposition}
+\label{prop:3.5}
 Seien $m\le n$, $f:\MdR^m\to\MdR^n$ eine Lipschitzabbildung und $A\in \borel(\MdR^m)$. Dann ist die Abbildung
 \[
 y\mapsto \#(A\cap f^{-1}(\{y\}))
@@ -3041,7 +3043,7 @@ die Jakobische (Jakobi-Determinante) von $f$ in $x$.
 Unser Ziel im folgenden ist es, $\{x\in\MdR^m: Jf(x) \ne 0\}$ in Teile zu zerlegen, auf denen $f$ injektiv ist und auf denen $Df_x$ kontrolliert ist.
 
 \begin{lemma}
-\label{lem:3.8}
+\label{lem:3.7}
 Sei $m\le n$ und $f:\MdR^m\to\MdR^n$ eine stetige Abbildung. Sei $t>1$. Dann existiert eine abzählbare Borel-Überdeckung $\mathcal E$ der Menge
 \[
 B \da \{x\in\MdR^n: f \text{ ist differenzierbar in $x$, } Jf(x) \ne 0\}
@@ -3060,9 +3062,182 @@ derart, dass für jedes $E\in\mathcal E$ gilt:
 
 \begin{beweis}
 Sei $\ep>0$ mit $t^{-1}+ \ep < 1< t-\ep$. Wähle abzählbare dichte Teilmengen $C\subset \MdR^m$ und $T\subset \GL(m,\MdR)$. Für $c\in C$, $\tau\in T$ und $i\in\MdN$ sei $E(c,\tau,i)$ die Menge aller $b\in B \cap B(c,\frac1i)$, für die gilt:
-\begin{enumerate}[(a)]
+\begin{enumerate}[\quad(a)]
 \item $ (t^{-1} +\ep)\cdot \|\tau(v)\| \le \|Df_b(v)\| \le (t-\ep) \cdot \|\tau(v)\|$ für alle $v\in\MdR^m$ und
-\item $\|f(a)- f(b) - Df_b(a-b)\| \le \ep \cdot \|\tau(b-a)\|$ für alle $a\in B(c,\frac1i)$.
+\item $\|f(a)- f(b) - Df_b(a-b)\| \le \ep \cdot \|\tau(a-b)\|$ für alle $a\in B(c,\frac1i)$.
+\end{enumerate}
+Sei $b\in E(c,\tau,i)$ und $a\in B(c,\frac1i)$. Dann gilt 
+\begin{align*}
+\|f(a) - f(b)\| &\le \|Df_b(a-b)\| + \ep \cdot \|\tau(a-b)\|\\
+&\le (t-\ep)\|\tau(a-b)\| +\ep\cdot \|\tau (a-b)\| \\
+&= t\cdot \|\tau(a-b)\| = t\cdot \|\tau(a) - \tau(b)\|
+\end{align*}
+und
+\begin{align*}
+\|f(a) - f(b)\| &\ge \|Df_b(a-b)\| - \ep \cdot \|\tau(a-b)\| \\
+&\ge (t^{-1} + \ep )\|\tau(a-b)\| - \ep \cdot \|\tau(a-b)\| \\
+&=  t^{-1} \cdot \|\tau(a)-\tau(b)\|.
+\end{align*}
+Zusammen erhält man für $a,b\in E(c,\tau,\frac1i)$:
+\begin{align*}
+t^{-1}\cdot \|\tau(a)-\tau(b)\| \le \|f(a) - f(b)\| \le t\cdot \|\tau(a)-\tau(b)\|.
+\end{align*}
+Dies zeigt (1). Für $a,b\in E(c,\tau,i)$ gilt also
+\begin{align*}
+\|f\circ \tau^{-1}(\tau(a)) - f\circ \tau^{-1}(\tau(b))\|\le t \cdot\|\tau(a)-\tau(b)\|,
+\end{align*}
+das heißt
+\begin{align*}
+\Lip(\underbrace{f|_{E(c,\tau,i)} \circ \tau^{-1}}_{\mathclap{\text{Abbildung auf }\tau(E(c,\tau,i))}}) \le t
+\end{align*}
+sowie
+\begin{align*}
+\|\tau\circ f^{-1}(f(a)) - \tau \circ f^{-1}(f(b))\| \le t \cdot \|f(a)-f(b)\|,
+\end{align*}
+das heißt
+\begin{align*}
+\Lip(\underbrace{\tau\circ(f|_{E(c,\tau,i)})^{-1}}_{\mathclap{\text{Abbildung auf }f(E(c,\tau,i))}}) \le t.
+\end{align*}
+
+Sei $b\in E(c,\tau,i)$. Sei $(e_1,\ldots,e_m)$ die Standardbasis. Da $Df_b$ injektiv ist, ist in der Zerlegung $Df_b=\rho\circ\sigma$ mit $\sigma:\MdR^m\to\MdR^m$ symmetrisch, $\varrho:\MdR^m\to\MdR^n$ eine lineare Isometrie die Abbildung $\sigma$ ein Automophismus. Wir schätzen ab
+\begin{align*}
+Jf(b) &= |\det(\sigma)| = |\det(\sigma\circ\tau^{-1})|\cdot |\det(\tau)|\\
+&= |\det(\sigma\circ\tau^{-1}(e_1),\ldots,\sigma\circ\tau^{-1}(e_m))| \cdot |\det(\tau)| \\
+&\le \prod_{i=1}^m \|\sigma\circ\tau^{-1}(e_i)\| \cdot |\det(\tau)| \\
+&= \prod_{i=1}^m \underbrace{\|Df_b(\tau^{-1}(e_i))\|}_{\le t\cdot \|\tau(\tau^{-1}(e_i))\| = t}\cdot |\det(\tau)| \\
+&\le t^m \cdot |\det(\tau)|.
+\end{align*}
+Analog erhält man:
+\begin{align*}
+(Jf(b))^{-1} &= |\det(\sigma)|^{-1} = |\det(\sigma^{-1})| = |\det(\tau\circ\sigma^{-1})| \cdot |\det(\tau^{-1})| \\
+&\le |\det(\tau \circ \sigma^{-1}(e_1),\ldots,\tau\circ\sigma^{-1}(e_m))| \cdot |\det(\tau)|^{-1} \\
+&\le \prod_{i=1}^m \|\tau \circ \sigma^{-1} (e_i)\|\cdot|\det(\tau)|^{-1} \\
+&\le \prod_{i=1}^m t \cdot \|Df_b(\sigma^{-1}(e_i))\| \cdot |\det(\tau)|^{-1} \\
+&= t^m \cdot |\det(\tau)|^{-1}.
+\end{align*}
+das heißt
+\begin{align*}
+Jf(b) \ge t^{-1}\cdot |\det(\tau)|.
+\end{align*}
+
+Zu zeigen ist noch, dass die Mengen $B$ überdecken. Sei hierzu $b\in B$. Dann ist $Df_b = \varrho \circ \tau$ mit $\varrho, \sigma$ wie oben. Wähle $\delta>0$ so, dass
+\begin{align*}
+(1-\delta\cdot\|\sigma^{-1}\|)^{-1} < t - \ep \quad\text{und} \quad 1<1+\delta\cdot\|\sigma^{-1}\| < (t^{-1}+\ep)^{-1}
+\end{align*}
+und $\tau\in T$ so dass $\|\sigma-\tau\|< \delta$. Dann gilt:
+\begin{align*}
+\|\tau\circ\sigma^{-1}\| 
+&= \|\tau \circ \sigma^{-1} - \id_{\MdR^m} + \id_{\MdR^m}\|\\
+&\le 1 + \| \tau \circ \sigma - \sigma\circ \sigma^{-1}\| \\
+&=   1 + \|(\tau -\sigma)\circ \sigma^{-1}\| \\
+&\le 1 + \|\tau -\sigma\|\cdot\|\sigma^{-1}\| \\
+&<  1+\delta\cdot\|\sigma^{-1}\| \\
+&< (t^{-1}+\ep)^{-1}
+\end{align*}
+und ähnlich folgt
+\begin{align*}
+\|\sigma\circ\tau^{-1}\| &\le 1 + \|\sigma - \tau\| \cdot \|\tau^{-1}\| \\
+&< 1 + \delta\cdot\|\tau^{-1}\| \\
+&= 1+\delta\cdot\|\sigma^{-1} \circ \sigma\circ\tau^{-1}\| \\
+&\le 1 + \delta\cdot\|\sigma^{-1}\|\cdot \|\sigma\circ\tau^{-1}\| 
+\end{align*}
+und damit
+\begin{align*}
+\|\sigma\circ\tau^{-1}\| \le (1-\delta\cdot\|\sigma^{-1}\|)^{-1} < t-\ep.
+\end{align*}
+
+Wähle $i\in\MdN$ mit
+\begin{align*}
+\|f(a)-f(b) - Df_b(a-b)\| \le \ep \cdot \frac{\|a-b\|}{\Lip(\tau^{-1})}
+\end{align*}
+für alle $a\in B(b,\frac2i)$ und wähle $c\in C$ mit $\|c-b\| < \frac1i$. Für $v\in\MdR^m$ gilt dann
+\begin{align*}
+(t^{-1} + \ep)\cdot \|\tau(v)\| 
+&= (t^{-1} + \ep)\cdot \|\tau\circ\sigma^{-1}(\sigma(v))\| \\
+&\le (t^{-1} + \ep)\cdot \|\tau\circ\sigma^{-1}\| \cdot \|\sigma(v)\| \\
+&\le \|\sigma(v)\| \\
+&= \|Df_b(v)\|
+\end{align*}
+und
+\begin{align*}
+\|Df_b(v)\| &= \|\sigma(v)\| = \|\sigma\circ\tau^{-1}(\tau(v))\| \\
+&\le \|\sigma\circ\tau^{-1}\| \cdot \|\tau(v)\| \\
+&\le (t-\ep)\|\tau(v)\|.
+\end{align*}
+Dies zeigt Bedingung (a).
+
+Für $a\in B(c,\frac1i) \subset B(b,\frac2i)$ ist 
+\begin{align*}
+\|f(a) - f(b) - Df_b(a-b)\|
+&\le \ep\cdot\frac{\|a-b\|}{\Lip(\tau^{-1})} \\
+&= \ep\cdot\frac{\|\tau^{-1}(\tau(a)) - \tau^{-1}(\tau(b))\|}{\Lip(\tau^{-1})} \\
+&\le \ep\cdot \|\tau(a-b)\|.
+\end{align*}
+Dies zeigt Bedingung (b). Somit ist eine Überdeckung gegeben.
+
+Der Beweis der Borel-Messbarkeits wird hier nicht ausgeführt.
+\end{beweis}
+
+\begin{satz}
+Sei $m\le n$, $f:\MdR^m\to\MdR^n$ eine Lipschitzabbildung und $A\subset\MdR^m$ eine $\lambda^m$-messbare Menge. Dann gilt
+\[
+\int_A Jf(X) \lambda^m(dx) = \int_{\MdR^n} \#(A\cap f^{-1}(\{y\}))\,\HM^m(dy).
+\]
+\end{satz}
+
+\begin{beweis}
+Aufgrund des Satzes von Rademacher, Proposition \ref{prop:3.5}, und der Regularität des Lebesguemaßes kann man annehmen, dass $A\in\borel(\MdR^m)$ und $f$ in jedem Punkt von $A$ differenzierbar ist. Ferner kann $\lambda^m(A) < \infty$ angenommen werden.
+\begin{enumerate}[{Fall} (a):]
+\item $A\subset \{x\in\MdR^m: Jf(x)\ne 0\}$. Sei $t>1$ beliebig. Wähle eine Borel-Überdeckung $\mathcal E$ von $B\da \{x\in\MdR^m: Jf(x) \ne 0\}$ wie in Lemma \ref{lem:3.7}. Sei $\mathcal G$ eine abzählbare Zerlegung von $A$ derart, das für jedes $G\in\mathcal G$ gilt: $G\in \borel(\MdR^m)$ und $G\subset E$ für ein $E\in\mathcal E$ und $\tau_E$ wie in Lemma \ref{lem:3.7}. Dann folgt
+\begin{align*}
+t^{-2m}\cdot\HM^m(f(G)) 
+&= t^{-2m} \cdot \HM^m( ( (f|_E)\circ\tau_E^{-1}) (\tau_E(G)) ) \\
+&\le t^{-2m} \cdot \underbrace{\Lip( (f|_E)\circ\tau_E^{-1})^m}_{\le t^m} \cdot \HM^m(\tau_E(G))\\
+&\le t^{-m} \cdot \HM^m(\tau_E(G))\\
+&= t^{-m} \cdot |\det(\tau_E)| \cdot \HM^m(G) \\
+&=\int_G t^{-m} |\det(\tau_E)| d\lambda^m \\
+&\le \int_G Jfd\lambda^m\\
+&\le \int_G t^m |\det(\tau_E)| d\lambda^m \\
+&= t^m \cdot |\det(\tau_E)| \cdot \HM^m(G) \\
+&= t^m \cdot \HM^m(\tau_E(G)) \\
+&= t^m \cdot \HM^m(\tau_E \circ (f|_E)^{-1} (f|_E(G))) \\
+&\le t^m \cdot \Lip(\tau_E \circ (f|_E)^{-1})^m \cdot \HM^m(f(G)) \\
+&\le t^{2m} \cdot \HM^m(f(G)).
+\end{align*}
+Da $f|_G$ injektiv ist für alle $G\in\mathcal G$ erhält man zunächst
+\begin{align*}
+\sum_{G\in\mathcal G} \HM^m(f(G))
+&= \sum_{G\in\mathcal G} \int_{\MdR^m} \ind_{f(G)} d\HM^m \\
+&= \sum_{G\in\mathcal G} \int_{\MdR^m} \#(G\cap f^{-1}(\{y\}))\, \HM^m(dy) \\
+&= \int_{\MdR^m} \#(A\cap f^{-1}(\{y\}))\, \HM^m(dy)
+\end{align*}
+und hiermit
+\begin{align*}
+t^{-2m}\cdot \int_{\MdR^m} \#(A\cap f^{-1}(\{y\}))\, \HM^m(dy) 
+&\le \int_A Jfd\lambda^m \\
+&\le t^{2m} \cdot \int_{\MdR^m} \#(A\cap f^{-1}(\{y\})) \, \HM^m(dy).
+\end{align*}
+Dies gilt für jedes $t>1$, so folgt die Gleichheit.
+\item $A\subset \{x: Jf(x) = 0\}$. Sei $\ep>0$. Dann werden Lipschitzabbildungen $g,p$ erklärt;
+\begin{align*}
+p: {}&\MdR^n\times\MdR^m \to\MdR^n, & (y,z) &\mapsto y \\
+g: {}&\MdR^m\to\MdR^n\times\MdR^m,  & x&\mapsto (f(x),\ep\cdot x).
+\end{align*}
+Dann ist $f= p\circ g$. Für $x\in A$ gilt $Dg_x(v) = (Df_x(v), \ep\cdot v)$ für $v\in\MdR^m$. Somit ist $Dg_x$ injektiv und daher $Jg(x)\ne 0$ für $x\in A$. Da $Jf(x)=0$ für $x\in A$ ist $q \da \dim(\Kern(Df_x)) \ge 1$.  Sei $(b_1,\ldots,b_q)$ eine Orthonormalbasis von $\Kern(Df_x)$ und $(b_1,\ldots,b_m)$ eine Ergänzung zu einer Orthonormalbasis von $\MdR^m$. Somit gilt
+\begin{align*}
+\|Dg_x(b_i)\| = \|(0,\ep \cdot b_i)\| = \ep
+\end{align*}
+für $i=1,\ldots,q$ und
+\begin{align*}
+\|Dg_x(b_j)\| = \|(Df_x(b_j),\ep\cdot b_j)\| \le \Lip(f) + \ep
+\end{align*}
+für $j=q+1,\ldots,m$. Nach Fall $(a)$ ist
+\begin{align*}
+\HM^m(f(A)) &= \HM^m(p\circ g(A))\\
+&\le \HM^m(g(A)) = \int_{A} Jgd\lambda^m\\
+&\le \ep^q\cdot(\Lip(f)+\ep)^{m-q}\cdot\lambda^m(A).
+\end{align*}
+Dies zeigt $\HM^m(f(A))=0$ und somit $\#(A\cap f^{-1}(\{y\})) = 0$ für $\HM^m$-fast alle $y\in\MdR^n$. Dies zeigt die Gleichheit auch in diesem Fall.
 \end{enumerate}
 \end{beweis}
 
