@@ -3055,7 +3055,7 @@ derart, dass für jedes $E\in\mathcal E$ gilt:
 \begin{enumerate}
 \item $\Lip(f|_E \circ \tau_E^{-1}) \le t$ und $\Lip(\tau_E \circ (f|_E)^{-1}) \le t$.
 \item $t^{-1} \cdot\|\tau_E(v)\| \le \|Df_b(v)\| \le t \cdot\|\tau_E(v)\|$ für alle $b\in B$ und $v\in \MdR^m$.
-\item $t^{-m} \cdot |\det(\tau_E)| \le J(f|_E) \le t^m \cdot |\det(\tau_E)|$.
+\item $t^{-m} \cdot |\det(\tau_E)| \le J(f)|_E \le t^m \cdot |\det(\tau_E)|$.
 \end{enumerate}
 \end{enumerate}
 \end{lemma}
@@ -3099,7 +3099,7 @@ das heißt
 \Lip(\underbrace{\tau\circ(f|_{E(c,\tau,i)})^{-1}}_{\mathclap{\text{Abbildung auf }f(E(c,\tau,i))}}) \le t.
 \end{align*}
 
-Sei $b\in E(c,\tau,i)$. Sei $(e_1,\ldots,e_m)$ die Standardbasis. Da $Df_b$ injektiv ist, ist in der Zerlegung $Df_b=\rho\circ\sigma$ mit $\sigma:\MdR^m\to\MdR^m$ symmetrisch, $\varrho:\MdR^m\to\MdR^n$ eine lineare Isometrie die Abbildung $\sigma$ ein Automophismus. Wir schätzen ab
+Sei $b\in E(c,\tau,i)$. Sei $(e_1,\ldots,e_m)$ die Standardbasis. Da $Df_b$ injektiv ist, ist in der Zerlegung $Df_b=\rho\circ\sigma$, wobei $\sigma:\MdR^m\to\MdR^m$ symmetrisch und $\varrho:\MdR^m\to\MdR^n$ eine lineare Isometrie ist, die Abbildung $\sigma$ ein Automophismus. Wir schätzen ab
 \begin{align*}
 Jf(b) &= |\det(\sigma)| = |\det(\sigma\circ\tau^{-1})|\cdot |\det(\tau)|\\
 &= |\det(\sigma\circ\tau^{-1}(e_1),\ldots,\sigma\circ\tau^{-1}(e_m))| \cdot |\det(\tau)| \\
@@ -3113,21 +3113,21 @@ Analog erhält man:
 &\le |\det(\tau \circ \sigma^{-1}(e_1),\ldots,\tau\circ\sigma^{-1}(e_m))| \cdot |\det(\tau)|^{-1} \\
 &\le \prod_{i=1}^m \|\tau \circ \sigma^{-1} (e_i)\|\cdot|\det(\tau)|^{-1} \\
 &\le \prod_{i=1}^m t \cdot \|Df_b(\sigma^{-1}(e_i))\| \cdot |\det(\tau)|^{-1} \\
-&= t^m \cdot |\det(\tau)|^{-1}.
+&= t^m \cdot |\det(\tau)|^{-1},
 \end{align*}
 das heißt
 \begin{align*}
 Jf(b) \ge t^{-1}\cdot |\det(\tau)|.
 \end{align*}
 
-Zu zeigen ist noch, dass die Mengen $B$ überdecken. Sei hierzu $b\in B$. Dann ist $Df_b = \varrho \circ \tau$ mit $\varrho, \sigma$ wie oben. Wähle $\delta>0$ so, dass
+Zu zeigen ist noch, dass die Mengen $E(c,\tau,i)$ mit $c\in C, \tau\in T,i\in \MdN$ die Menge $B$ überdecken. Sei hierzu $b\in B$. Dann ist $Df_b = \varrho \circ \sigma$ mit $\varrho, \sigma$ wie oben. Wähle $\delta>0$ so, dass
 \begin{align*}
-(1-\delta\cdot\|\sigma^{-1}\|)^{-1} < t - \ep \quad\text{und} \quad 1<1+\delta\cdot\|\sigma^{-1}\| < (t^{-1}+\ep)^{-1}
+(1-\delta\cdot\|\sigma^{-1}\|)^{-1} < t - \ep \quad\text{und} \quad 1+\delta\cdot\|\sigma^{-1}\| < (t^{-1}+\ep)^{-1}
 \end{align*}
-und $\tau\in T$ so dass $\|\sigma-\tau\|< \delta$. Dann gilt:
+und $\tau\in T$ so, dass $\|\sigma-\tau\|< \delta$. Dann gilt:
 \begin{align*}
 \|\tau\circ\sigma^{-1}\| 
-&= \|\tau \circ \sigma^{-1} - \id_{\MdR^m} + \id_{\MdR^m}\|\\
+&= \|\id_{\MdR^m}+\tau \circ \sigma^{-1} - \id_{\MdR^m} \|\\
 &\le 1 + \| \tau \circ \sigma - \sigma\circ \sigma^{-1}\| \\
 &=   1 + \|(\tau -\sigma)\circ \sigma^{-1}\| \\
 &\le 1 + \|\tau -\sigma\|\cdot\|\sigma^{-1}\| \\
@@ -3175,20 +3175,42 @@ Für $a\in B(c,\frac1i) \subset B(b,\frac2i)$ ist
 \end{align*}
 Dies zeigt Bedingung (b). Somit ist eine Überdeckung gegeben.
 
-Der Beweis der Borel-Messbarkeits wird hier nicht ausgeführt.
+Nun kommen wir zur Borel-Messbarkeit der überdeckenden Mengen.
+
+Sei $M$ die Menge aller $x\in \MdR^m$, für die $f$ in $x$ differenzierbar ist. Nach einer 
+Übungsaufgabe, ist diese Menge messbar. Sei $\{x_i:i\in \MdN\}$ eine dichte Teilmenge von $\MdR^m$. 
+Da $\tau $ und $Df_b(\cdot)$ stetig sind, gilt
+\begin{align*}
+\{b\in M:\text{ (a) gilt in } b\}=&\bigcap_{j\in\MdN}\{b\in M:(t^{-1}+\ep)\|\tau(x_j)\|\le \|Df_b(x_j)\|\le (t-\ep)\|\tau(x_j)\|\}\\
+\in &\mathfrak{B}(\MdR^m)
+\end{align*}
+und
+\begin{align*}
+\{b\in M:\text{ (b) gilt in } b\}=&\bigcap_{j\in\MdN\atop x_j\in B(c,1/i)}\{b\in M:
+\|f(x_j)-f(b)-Df_b(x_j-b)\|\le\ep\|\tau(x_j-b)\|\}\\
+\in &\mathfrak{B}(\MdR^m).
+\end{align*}
+Zusammen ergibt dies die behauptete Messbarkeitsaussage.
 \end{beweis}
 
 \begin{satz}
 Sei $m\le n$, $f:\MdR^m\to\MdR^n$ eine Lipschitzabbildung und $A\subset\MdR^m$ eine $\lambda^m$-messbare Menge. Dann gilt
 \[
-\int_A Jf(X) \lambda^m(dx) = \int_{\MdR^n} \#(A\cap f^{-1}(\{y\}))\,\HM^m(dy).
+\int_A Jf(x) \lambda^m(dx) = \int_{\MdR^n} \#(A\cap f^{-1}(\{y\}))\,\HM^m(dy).
 \]
 \end{satz}
 
 \begin{beweis}
+Die Abbildung $y\mapsto \#(A\cap f^{-1}(\{y\}))$ ist messbar, falls $A$ eine Borelmenge ist. Zu der
+gegebenen $\HM$-messbaren Menge $A$ gibt es eine Borelmenge $A'$ mit $A\subset A'$ und $\HM^m(A'\setminus A)=0$. 
+Nach Proposition \ref{prop:3.5} ist $y\mapsto \#((A'\setminus A)\cap f^{-1}(\{y\}))$ 
+$\HM^m$ fast überall die Nullfunktion und damit $\HM^m$-messbar. Hieraus folgt die Messbarkeit 
+der Abbildung $y\mapsto \#(A\cap f^{-1}(\{y\}))$ allgemein. 
+
+
 Aufgrund des Satzes von Rademacher, Proposition \ref{prop:3.5}, und der Regularität des Lebesguemaßes kann man annehmen, dass $A\in\borel(\MdR^m)$ und $f$ in jedem Punkt von $A$ differenzierbar ist. Ferner kann $\lambda^m(A) < \infty$ angenommen werden.
 \begin{enumerate}[{Fall} (a):]
-\item $A\subset \{x\in\MdR^m: Jf(x)\ne 0\}$. Sei $t>1$ beliebig. Wähle eine Borel-Überdeckung $\mathcal E$ von $B\da \{x\in\MdR^m: Jf(x) \ne 0\}$ wie in Lemma \ref{lem:3.7}. Sei $\mathcal G$ eine abzählbare Zerlegung von $A$ derart, das für jedes $G\in\mathcal G$ gilt: $G\in \borel(\MdR^m)$ und $G\subset E$ für ein $E\in\mathcal E$ und $\tau_E$ wie in Lemma \ref{lem:3.7}. Dann folgt
+\item $A\subset \{x\in\MdR^m: Jf(x)\ne 0\}$. Sei $t>1$ beliebig. Wähle eine Borel-Überdeckung $\mathcal E$ von $B\da \{x\in\MdR^m: Jf(x) \ne 0\}$ wie in Lemma \ref{lem:3.7}. Sei $\mathcal G$ eine abzählbare Zerlegung von $A$ derart, das für jedes $G\in\mathcal G$ gilt: $G\in \borel(\MdR^m)$ und $G\subset E$ für ein $E\in\mathcal E$ mit  $\tau_E$ wie in Lemma \ref{lem:3.7}. Dann folgt
 \begin{align*}
 t^{-2m}\cdot\HM^m(f(G)) 
 &= t^{-2m} \cdot \HM^m( ( (f|_E)\circ\tau_E^{-1}) (\tau_E(G)) ) \\
@@ -3196,7 +3218,11 @@ t^{-2m}\cdot\HM^m(f(G))
 &\le t^{-m} \cdot \HM^m(\tau_E(G))\\
 &= t^{-m} \cdot |\det(\tau_E)| \cdot \HM^m(G) \\
 &=\int_G t^{-m} |\det(\tau_E)| d\lambda^m \\
-&\le \int_G Jfd\lambda^m\\
+&\le \int_G Jfd\lambda^m.
+\end{align*}
+Die Abschätzungen lassen sich nun in analoger Weise fortsetzen:
+\begin{align*}
+\int_G Jfd\lambda^m
 &\le \int_G t^m |\det(\tau_E)| d\lambda^m \\
 &= t^m \cdot |\det(\tau_E)| \cdot \HM^m(G) \\
 &= t^m \cdot \HM^m(\tau_E(G)) \\
@@ -3204,20 +3230,20 @@ t^{-2m}\cdot\HM^m(f(G))
 &\le t^m \cdot \Lip(\tau_E \circ (f|_E)^{-1})^m \cdot \HM^m(f(G)) \\
 &\le t^{2m} \cdot \HM^m(f(G)).
 \end{align*}
-Da $f|_G$ injektiv ist für alle $G\in\mathcal G$ erhält man zunächst
+Da $f|_G$ für alle $G\in\mathcal G$ injektiv ist, erhält man zunächst
 \begin{align*}
 \sum_{G\in\mathcal G} \HM^m(f(G))
-&= \sum_{G\in\mathcal G} \int_{\MdR^m} \ind_{f(G)} d\HM^m \\
-&= \sum_{G\in\mathcal G} \int_{\MdR^m} \#(G\cap f^{-1}(\{y\}))\, \HM^m(dy) \\
-&= \int_{\MdR^m} \#(A\cap f^{-1}(\{y\}))\, \HM^m(dy)
+&= \sum_{G\in\mathcal G} \int_{\MdR^n} \ind_{f(G)} d\HM^m \\
+&= \sum_{G\in\mathcal G} \int_{\MdR^n} \#(G\cap f^{-1}(\{y\}))\, \HM^m(dy) \\
+&= \int_{\MdR^n} \#(A\cap f^{-1}(\{y\}))\, \HM^m(dy)
 \end{align*}
 und hiermit
 \begin{align*}
-t^{-2m}\cdot \int_{\MdR^m} \#(A\cap f^{-1}(\{y\}))\, \HM^m(dy) 
+t^{-2m}\cdot \int_{\MdR^n} \#(A\cap f^{-1}(\{y\}))\, \HM^m(dy) 
 &\le \int_A Jfd\lambda^m \\
-&\le t^{2m} \cdot \int_{\MdR^m} \#(A\cap f^{-1}(\{y\})) \, \HM^m(dy).
+&\le t^{2m} \cdot \int_{\MdR^n} \#(A\cap f^{-1}(\{y\})) \, \HM^m(dy).
 \end{align*}
-Dies gilt für jedes $t>1$, so folgt die Gleichheit.
+Dies gilt für jedes $t>1$ und somit folgt die Gleichheit.
 \item $A\subset \{x: Jf(x) = 0\}$. Sei $\ep>0$. Dann werden Lipschitzabbildungen $g,p$ erklärt;
 \begin{align*}
 p: {}&\MdR^n\times\MdR^m \to\MdR^n, & (y,z) &\mapsto y \\
@@ -3240,5 +3266,21 @@ für $j=q+1,\ldots,m$. Nach Fall $(a)$ ist
 Dies zeigt $\HM^m(f(A))=0$ und somit $\#(A\cap f^{-1}(\{y\})) = 0$ für $\HM^m$-fast alle $y\in\MdR^n$. Dies zeigt die Gleichheit auch in diesem Fall.
 \end{enumerate}
 \end{beweis}
+
+\begin{korollar}
+Seien $m\le n$, $f:\MdR^m\to\MdR^n$ eine Lipschitzabbildung und $h:\MdR^m\to\MdR$ eine Funktion, 
+deren $\lambda^m$-Integral existiert. Dann gilt
+\begin{align*}
+\int_{\MdR^m}h(x)Jf(x)\, \lambda^m(dx)&=\int_{\MdR^n}\left(\sum_{x\in f^{-1}(\{y\})}h(x)\right)
+\, \HM^m(dy)\\
+&=\int_{\MdR^n}\int_{f^{-1}(\{y\})}h(x)\,\HM^0(dx)\, \HM^m(dy).
+\end{align*}
+\end{korollar}
+
+\begin{beweis}
+Übung
+\end{beweis}
+
+
 
 \end{document}
