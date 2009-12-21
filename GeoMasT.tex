@@ -17,6 +17,7 @@
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\GL}{GL}
 \DeclareMathOperator{\Kern}{Kern}
+\DeclareMathOperator{\Bild}{Bild}
 % Maß-Restriktions-Symbol
 \newcommand{\MR}{\lfloor}
 \jot3mm
@@ -3282,5 +3283,130 @@ deren $\lambda^m$-Integral existiert. Dann gilt
 \end{beweis}
 
 
+\emph{Anwendung:}
+Sei \(m \leq n\), \(A \subset \MdR^m\), \(f: \MdR^m \to \MdR^n\) sei \(C^1\) und injektiv. Dann gilt:
+\[
+\HM^m(f(A)) = \int_A Jf(x) \HM^m(dx) = \int_a \sqrt{g(x)}\HM^m(dx)
+\]
+mit \(g(x) = \det( (\langle D_i f(x), D_j f(y) \rangle)_{i,j=1,\dots,m} )\).
+Ist \(f\) nicht injektiv, so nennt man
+\[
+\int_{\MdR^n} \#(A \cap f^{-1}(\{y\})) \HM^m(dy) \quad (\geq \HM^n(f(A)))
+\]
+die Hausdorfffläche von A unter f.
+
+
+\section{Die Koflächenformel}
+
+Sei jetzt \(m \geq n\) und \(f: \MdR^m \to \MdR^n\). Sei ferner \(g: \MdR^m \to [0,\infty]\). Dann werden wir zeigen, daß
+\[
+\int_{\MdR^m} g(x) Jf(x) \HM^m(dx) = \int_{\MdR^n} \int_{f^{-1}(\{y\})} g(x) \HM^{m-n}(dx) \HM^n(dy)
+\]
+gilt. Im Spezialfall \(g(x) = \ind_A(x)\), \(A \subset \MdR^m\) messbar ist dies
+\[
+\int_A Jf(x) \HM^m(dx) = \int_{\MdR^n} \HM^{m-n}(A \cap f^{-1}(\{y\})) \HM^n(dy)
+\]
+
+\begin{beispiel}
+\(d: \MdR^m \to [0,\infty), x \mapsto \|x\|\) \(\Rightarrow\) \( d^{-1}(\{r\}) = \{x\in\MdR^m \colon \|x\|=r\}\)
+\end{beispiel}
+
+\begin{lemma}\label{lem:3.10}
+Sei \(k\geq m\geq n\), \(A\subset\MdR^k\) und \(f: \MdR^k \to \MdR^n\) eine Lipschitz-Abbildung. Dann gilt
+\[
+\int_{\MdR^n}^* \HM^{m-n}(A \cap f^{-1}(\{y\})) \HM^n(dy) \; \leq \; \frac{\alpha(m-n) \alpha(n)}{\alpha(m)} \Lip(f)^m
+\]
+\end{lemma}
+\begin{beweis}
+Für \(j \in \MdN\) gilt \(\HM^m_{\frac1j}(A) \leq \HM^m(A) \leq \HM^m(A) + \frac1j\). Dann existiert eine Folge \(\mathcal B_j \in \bar\Omega_{\frac1j}(A)\) mit
+\[
+\HM^m_{\frac1j}(A) \leq \sum_{B\in\mathcal B_j} \frac{\alpha(m)}{2^m} \diam (B)^m \leq \HM^m(A)+\frac1j.
+\]
+Für \(B \in \mathcal B_j\) ist \(f(B)\) kompakt, also Borelmenge. Erkläre \(g_B: \MdR^n \to \MdR, y \mapsto \frac{\alpha(m-n)}{2^{m-n}}\cdot\diam(B)^{m-n}\cdot\ind_{f(B)}(y)\). Insbesondere ist \(g_B\) eine \(\HM^n\)-messbare Funktion und \(\diam(B\cap f^{-1}(\{y\})) \leq \diam(B) \cdot \ind_{f(B)}(y) \leq \frac1j\). Es folgt
+\[
+\HM_{\frac1j}^{m-n}(A\cap f^{-1}(\{y\})) \leq \sum_{B \in \mathcal B_j} \frac{\alpha(m-n)}{2^{m-n}} \diam(B\cap f^{-1}(\{y\}))^{m-n} \leq \sum_{B \in \mathcal B_j} g_B(y)
+\]
+\begin{align*}
+\int_{\MdR^n}^* \HM^{m-n}(A \cap f^{-1}(\{y\})) \HM^n(dy) &= \int_{\MdR^n}^* \lim_{j\to\infty} \HM_{\frac1j}^{m-n}(A\cap f^{-1}(\{y\})) \HM^n(dy) \\
+&\leq \int_{\MdR^n} \liminf_{j\to\infty} \sum_{B\in\mathcal B_j} g_B(y) \HM^n(dy) \\
+&\leq \liminf_{j\to\infty} \int_{\MdR^n} \sum_{B\in\mathcal B_j} g_B(y) \HM^n(dy) \\
+&= \liminf_{j\to\infty} \sum_{B\in\mathcal B_j} \int_{\MdR^n} g_B(y) \HM^n(dy) \\
+&= \liminf_{j\to\infty} \sum_{B\in\mathcal B_j} \frac{\alpha(m-n)}{2^{m-n}} \diam(B)^{m-n} \cdot \HM^n(\underbrace{f(B)}_{\subset \MdR^n}) \\
+&\leq \liminf_{j\to\infty} \sum_{B\in\mathcal B_j} \frac{\alpha(m-n)}{2^{m-n}}\diam(b)^{m-n} \cdot \frac{\alpha(n)}{2^n}\diam(f(B))^n \\
+&\leq \liminf_{j\to\infty} \frac{\alpha(m-n)\alpha(n)}{\alpha(m)} \Lip(f)^n \cdot \underbrace{\sum_{B\in\mathcal B_j} \frac{\alpha(m)}{2^m}\diam(B)^m}_{= \HM^m(A) + \frac1j} \\
+&= \frac{\alpha(m-n)\alpha(n)}{\alpha(m)}\Lip(f)^n\HM^m(A).
+\end{align*}
+\end{beweis}
+
+\begin{lemma}\label{lem:3.11}
+Sei \(m\geq n\) und \(f:\MdR^m\to\MdR^n\) eine Lipschitz-Abbildung. Sei ferner \(A \subset \MdR^m\) eine \(\HM^m\)-messbare Menge. Dann gilt:
+\begin{enumerate}[(1)]
+\item \(A\cap f^{-1}(\{y\})\) ist \(HM^{m-n}\)-messbar für \(\HM^n\)-fast-alle \(y \in \MdR^n\).
+\item \(y\mapsto\HM^{m-n}(A\cap f^{-1}(\{y\}))\) ist \(\HM^n\)-messbar.
+\end{enumerate}
+\end{lemma}
+\begin{beweis}
+Sei \(A\) kompakt. Dann ist \(A\cap f^{-1}(\{y\})\) kompakt, also Borelmenge. Sei \(t>0\) beliebig. Für \(j \in \MdN\) sei \(U_j\) die Menge aller \(y\in\MdR^n\), für die es eine endliche, offene Überdeckung \(\mathcal G\) von \(A \cap f^{-1}(\{y\})\) gibt mit \(\diam(G) \leq \frac1j \, (G \in \mathcal G)\) und \(\sum_{G\in \mathcal G} \frac{\alpha(m-n)}{2^{m-n}} \diam(G)^{m-n} \leq t + \frac1j\). Dann gilt
+\[
+\{y\in\MdR^n \colon \HM^{m-n}(A\cap f^{-1}(\{y\})) \leq t\} = \bigcap_{j\in\MdN} U_j
+\]
+Wir zeigen, dass \(U_j\) Borelmenge ist; schärfer: \(U_j\) ist offene Menge. Sei hierzu \(y\in U_j\) und hierzu \(y\in U_j\), und \(\mathcal G\) eine offene, endliche Überdeckung von \(A \cap f^{-1}(\{y\})\). Da \(A\) kompakt ist, ist \(A \setminus \bigcup_{G \in \mathcal G} G\) kompakt und somich auch \(f(A\setminus \bigcup_{G\in\mathcal G} G)\). Daher ist \(f(A \setminus \bigcup_{G\in\mathcal G}^c \subset \MdR^n\) offen.
+\par
+\emph{Behauptung}: Für \(z \in \MdR^n\) gilt: \(z \in f(A \setminus \bigcup_{G\in\mathcal G})^c \Leftrightarrow A \cap f^{-1}(\{z\}) \subseteq \bigcup_{G\in\mathcal G} G\). Dies ist leicht zu zeigen. Wegen \(y\in U_j\) ist \(y\in \underbrace{f(A \cap \bigcup_{G\in\mathcal G} G)^c}_{\text{offen}} \subseteq U_j\). Also ist \(U_j\) offen.
+\par
+Sei \(A \subset \MdR^m\) nun beliebige \(\HM^m\)-messbare Menge. Es genügt, \(\HM^m(A)<\infty\) zu betrachten. Es gibt kompakte Mengen \(A_1 \subset A_2 \subset \dots \subset A_i \subset A_{i+1} \subset \dots \subset A\) mit \(\HM^m(A \setminus \bigcup_{i\geq1}A_i)=0\). Lemma \ref{lem:3.10} zeigt nun
+\[
+\HM^{m-n}((A\setminus\bigcup_{i\geq1}A_i)\cap f^{-1}(\{y\})) = 0
+\]
+für \(\HM^n\)-fast-alle \(y\in\MdR^n\). Hieraus folgt (1) und wegen \(\HM^{m-n}(A\cap f^{-1}(\{y\})) = \lim_{i\to\infty} \HM^{m-n}(A_i\cap f^{-1}(\{y\}))\) auch (2).
+\end{beweis}
+
+\emph{Notation:} Zu \(f \in \L(\MdR^m,\MdR^n)\) ist \(f^* \in \L(\MdR^n,\MdR^m\) die adjungierte Abbildung, die \(\langle f(x),y\rangle = \langle x,f^*(y)\rangle\) für \(x\in\MdR^m, y\in\MdR^n\) erfüllt.
+
+\begin{lemma}\label{lem:3.12}
+Sei \(f:\MdR^m\to\MdR^n\), \(m\geq n\). Dann gilt:
+\begin{enumerate}[(1)]
+\item \(f^{**} = f\).
+\item \(f\in\L(\MdR^m,\MdR^n), g\in\L(\MdR^n,\MdR^p) \; \Rightarrow \; (g\circ f)^* = f^* \circ g^* \in \L(\MdR^p,\MdR^m)\).
+\item Ist \(\varrho \in \L(\MdR^n,\MdR^m)\) orthogonal, so gilt \(\varrho^* \circ \varrho = \id_{\MdR^n}\) und \(\Bild(\varrho) = \Kern(\varrho^*)^\perp\).
+\item Zu \(f\) exisitiert \(\sigma \in \L(\MdR^n,\MdR^n)\) symmetrisch und \(\varrho\in \L(\MdR^n,\MdR^m)\)orthogonal mit \(f = \sigma \circ \varrho^*\).
+\item Ist \(h \in \L(\MdR^m,\MdR^m)\), so gilt \(\llbracket h \rrbracket = \llbracket h^* \rrbracket = |\det(h)| = |\det(h^*)|\).
+\item Setze \(\llbracket f \rrbracket \da \llbracket f^* \rrbracket\). Dann gilt
+	\begin{enumerate}[(a)]
+	\item \(\llbracket f \rrbracket = 0\), falls \(\dim(f(\MdR^n)) < n\).
+	\item Ist \(\dim(f(\MdR^n)) = n\) und \((b_1,\dots,b_n)\) eine Orthonormalbasis von \(\Kern(f)^\perp\), so gilt:
+\[
+\llbracket f \rrbracket = |\det(f(b_1),\dots,f(b_n))|.
+\]
+	\end{enumerate}
+\item Ist \((a_1,\dots,a_n)\) eine ONB von \(\MdR^n\), so gilt:
+\[
+\llbracket f \rrbracket \da \sqrt{\det(f\circ f^*)} = \sqrt{\det(\langle f^*(a_i),f^*(a_j)\rangle_{i,j=1,\dots,n}}
+\]
+\end{enumerate}
+\end{lemma}
+
+\begin{lemma}\label{lem:3.13}
+Seien \(m\leq n\) und \(h: \MdR^m\to\MdR^n, \tilde h: \MdR^n\to\MdR^m\) Lipschitz-Abbildung. Sei \(E \subset \{x\in\MdR^m\colon \tilde h \circ h (x) = x \}\) eine \(\HM^m\)-messbare Menge. Dann gibt es eine \(\HM^m\)-messbare Menge \(S_E \subset E\) mit \(\HM^m(E\setminus S_e) = \) und für \(x \in S_e\) gilt:
+\begin{itemize}
+\item \(h\) ist in \(x\) differenzierbar.
+\item \(\tilde h\) ist in \(h(x)\) differenzierbar.
+\item \(D\tilde h_{h(x)} \circ D\tilde h_x = \id_{\MdR^m}\).
+\end{itemize}
+\end{lemma}
+\begin{beweis}
+Sei \(Z \da \{ x\in \MdR^m \colon \tilde h\circ h (x) - x = 0 \} = \{ x\in\MdR^m \colon (\tilde h\circ h-\id)(x) = 0 \}\). Dann gilt (nach Übung) für \(\HM^m\)-fast-alle \(x \in Z\), dass \(D(\tilde h \circ h - \id)_x = 0\), d.h. \(D(\tilde h \circ h)_x = \id_{\MdR^m}\). Ist \(E \subset Z\), so gilt dies auch für \(\HM^m\)-fast-alle \(x\in E\). Sei \(F \da \{x\in\MdR^m \colon h \text{ ist differenzierbar in } x\}\), \(G \da \{y\in\MdR^n \colon \tilde h \text{ ist differenzierbar in } y\}\), \(D \da F \cap \{x\in\MdR^m \colon h(x)\in G\}\). Dann gilt:
+\[
+E\setminus D = (E\setminus F) \cup (E \setminus \{x\in\MdR^m \colon h(x) \in G\}) = (E\setminus F) \cup \{x\in E \colon h(x) \notin G\},
+\]
+sowie \(\HM^m(E\setminus F) = 0\) und wegen \(\{x\in E \colon h(x) \notin G\} \subset \tilde h(\MdR^n\setminus G)\) ist \(\HM^m(\{x\in E \colon h(x) \notin G\}) \leq \HM^m(\tilde h(\MdR^n\setminus G)) \leq \Lip(\tilde h)^m \cdot \HM^m(\MdR^n\setminus G) = 0\).
+\end{beweis}
+
+\begin{lemma}\label{lem:3.14}
+Seien \(m\geq n\) und \(f: \MdR^m\to\MdR^n\) stetig. Dann existiert eine abzählbare Borelüberdeckung \(\mathcal E\) von \(B \da \{x\in\MdR^m \colon f\text{ diff'bar in } x \wedge Df_x(\MdR^m)=\MdR^n\}\) derart, dass für jedes \(E \in \mathcal E\) eine Orthogonalprojektion \(p_E: \MdR^m \to \MdR^{m-n}\) und Lipschitzabbildungen \(h_E: \MdR^m \to \MdR^n \times \MdR^{m-n}, \tilde h_E:\MdR^n\times \MdR^{m-n} \to \MdR^m\) existieren mit
+\[
+h_E(x) = (f(x),p_E(x)) \quad \text{und} \quad \tilde h_E \circ h_E(x) = x \quad (\forall x\in E)
+\]
+\end{lemma}
 
 \end{document}
