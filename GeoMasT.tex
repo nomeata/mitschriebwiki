@@ -8,7 +8,7 @@
 \newcommand{\borel}{\mathfrak B}
 \newcommand{\ind}{\mathds 1}
 \newcommand{\HR}{\mathcal H}
-\newcommand{\HM}{\H}
+\newcommand{\HM}{\mathscr H}
 \newcommand{\bw}{\bigwedge\nolimits}
 %\renewcommand{\mathbb}{\mathds}
 \DeclareMathOperator{\im}{im}
@@ -20,6 +20,7 @@
 \DeclareMathOperator{\GL}{GL}
 \DeclareMathOperator{\Kern}{Kern}
 \DeclareMathOperator{\Bild}{Bild}
+\DeclareMathOperator{\Div}{div}
 \DeclareMathOperator{\downto}{\searrow}
 \DeclareMathOperator{\sgn}{sgn}
 % Maß-Restriktions-Symbol
@@ -4326,6 +4327,204 @@ Eine $k$-Form $\Phi$ mit $d\Phi = 0$ heißt geschlossen. Eine $k$-Form $\Phi$, z
 Im Allgemeinen gilt dies nicht. Für ein einfach zusammenhängendes $U$ ist dies jedoch richtig (Lemma von Poincaré).
 \end{bemerkung}
 
+\textbf{Ziele:}
+\begin{itemize}
+\item Integration von Differetialformen
+\item Satz von Stokes (Spezialfall)
+\end{itemize}
+
+\begin{definition}
+Sei $U\subset \MdR^n$ eine $\lambda^n$-messbare Menge und $\omega$ eine stetige $n$-Form auf $U$. Dann wird das Integral von $\omega$ über $U$ erklärt durch
+\[
+\int_U \omega \da  \int_U \langle \omega(x), e_1\wedge \dots \wedge e_n\rangle \, \lambda^n(dx)
+\]
+wobei das $U$ im linkten Integral als Menge mit Orientierung (durch die rechts verwendete geordnete Standardbasis) zu verstehen ist. So legt man auch fest, dass
+\[
+\int_{-U} \omega \da  \int_U - \langle \omega(x), e_1\wedge \dots \wedge e_n\rangle \, \lambda^n(dx)
+\]
+\end{definition}
+
+Niederdimensionale Mengen und Integration:
+\begin{beispiel}
+Sei $F = \{p\}$ eine 0-dimensionale Menge, sei $\omega$ eine 0-Form, das heißt eine Funktion $\omega \colon U\to \MdR$, $p\in U$. Dann wird erklärt
+\[
+\int_{F} \omega \da \omega(p) \ad \delta_p(\omega).
+\]
+\end{beispiel}
+
+\begin{definition}
+Sei $n\ge 1$.
+\begin{enumerate}
+\item Ein $(n-1)$-dimensionaler Quader $F$, der zur $i$-ten Koordinatensystemachse orthogonale ist, ist von der Form
+\[
+F = [ (a_1,b_1) \times \dots \times (a_i,b_i) \times\dots \times (a_n,b_n) ]
+\]
+mit $a_i=b_i$ und $a_j < b_j$ für $j\in\{1,\dots,n\}\setminus \{i\}$.
+\item Orientierung von $F$ durch den $(n-1)$-Vektor
+\[
+\hat e_i \da \bigwedge_{j\ne i} e_j \da e_1\wedge \dots \wedge \cancel{e_i} \wedge \dots\wedge e_n.
+\]
+\item Integration einer $(n-1)$-Form $\omega$ über $F$. Sei $\omega\colon F\to \bw^{n-1}\MdR^n$ stetig (oder $\lambda^{n-1}$-messbar). Dann sei
+\[
+\int_F \omega \da \int_F \langle \omega(x), \hat e_i\rangle\, \lambda^{n-1}(dx)
+\]
+und
+\[
+\int_{-F} \omega \da \int_F -\omega = \int_F -\langle \omega(x), \hat e_i\rangle\, \lambda^{n-1}(dx).
+\]
+\item Seien $\alpha_k\in \MdR$, $F_k$ orientierte „Seitenflächen“ von $n$-dimensionalen Quadern, $k\in \MdN$. Sei $\sum \alpha_k F_k$ eine formale, endliche Linearkombination. Sei $\omega$ eine $(n-1)$-Form auf $U\subset \MdR^n$, $F_k\subset U$. Dann sei
+\[
+\int_{\sum \alpha_k F_k} \omega \da \sum \alpha_k\cdot \int_{F_k} \omega.
+\]
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Orientierter Rand]
+Sei $R=[a_1,b_1]\times\dots [a_n,b_n]$ ein Quader mit $a_i<b_i$. Dann sei für $1\le i\le n$
+\begin{align*}
+R_i^+ &\da [a_1,b_1]\times \dots \times \{b_i\} \times \dots \times [a_n,b_n]\\
+R_i^- &\da [a_1,b_1]\times \dots \times \{a_i\} \times \dots \times [a_n,b_n]
+\end{align*}
+definiert und
+\[
+\partial_o R \da \sum_{i=1}^n (-1)^{i-1} (R_i^+-R_i^-)
+\]
+sei eine formale Linearkombination von Flächen.
+\end{definition}
+
+\begin{satz}
+Seien $R=[a_1, b_1] \times \dots \times [a_n,b_n]$, $a_i < b_i$ und $\varphi$ eine $(n-1)$-Form der Klasse $C^k$, $(k \ge 1)$, auf einer offenen Menge $U$ mit $R\subset R$. Dann gilt
+\[
+\int_R d\varphi  = \int_{\partial_o R} \varphi.
+\]
+\end{satz}
+
+\begin{beweis}
+Sei zunächst $n=1$, $\varphi$ eine 0-form, das heißt eine Funktion auf $U$. Es gilt $d\varphi(x) = \varphi'(x)\cdot dx$. Nun gilt
+\begin{align*}
+\int_{\partial_o R}\varphi = \int_{\partial_o [a_1,b_1]}\varphi = \int_{\{b\}-\{a\}} \varphi = \varphi(b)-\varphi(a)
+\end{align*}
+und
+\begin{multline*}
+\int_R d\varphi = \int_{[a,b]} \varphi'(x)dx = \int_{[a,b]}\langle \varphi'(x)dx_1, e_1\rangle \, \lambda^1(dx) \\
+= \int_a^b \varphi'(x) \,\lambda^1(dx) = \varphi(b)-\varphi(a) = \int_{\partial_oR}\varphi.
+\end{multline*}
+
+Sei nun $n\ge 2$. Sei
+\[
+\varphi = \sum_{i=1}^n \varphi_i dx_1\wedge \dots \wedge \cancel{dx_i}\wedge \dots\wedge dx_n.
+\]
+Es genügt zu zeigen, dass für $1\le i \le n$ gilt:
+\[
+\int_R d(\varphi_i \cdot dx_1\wedge \dots \wedge \cancel{dx_i} \wedge \dots\wedge dx_n) = 
+\int_{\partial_0 R} \varphi_i \cdot dx_1\wedge \dots \wedge \cancel{dx_i} \wedge \dots\wedge dx_n.
+\]
+
+Zunächst ist 
+\begin{align*}
+d(\varphi_i \cdot dx_1\wedge \dots \wedge \cancel{dx_i} \wedge \dots\wedge dx_n)
+&= \sum_{j=1}^n \frac{\partial \varphi_i}{\partial x_j} dx_j \wedge dx_1\wedge \dots \wedge \cancel{dx_i} \wedge \dots\wedge dx_n \\
+&= (-1)^{i-1} \frac{\partial \varphi_i}{\partial x_i} dx_1\wedge \dots\wedge dx_n.
+\end{align*}
+Also
+\begin{align*}
+\int_R d(\varphi_i \cdot dx_1\wedge \dots \wedge \cancel{dx_i} \wedge \dots\wedge dx_n)
+&= (-1)^{i-1} \int_R \frac{\partial \varphi_i}{\partial x_i} dx_1\wedge \dots\wedge dx_n \\
+&= (-1)^{i-1} \int_R \langle \frac{\partial \varphi_i}{\partial x_i}(x) dx_1\wedge \dots\wedge dx_n, e_1\wedge\dots\wedge e_n\rangle \, \lambda^n(dx) \\
+&= (-1)^{i-1} \int_R \frac{\partial \varphi_i}{\partial x_i}(x)\, \lambda^n(dx) \\
+&= (-1)^{i-1} \cdot \left(\int_{R_i^+} \varphi_i\, d\HM^{n-1} - \int_{R_i^-} \varphi_i\, d\HM^{n-1}\right)
+\end{align*}
+Andererseits gilt
+\begin{align*}
+&\phantom{ {}=} \int_{\partial_o R} \varphi_i \cdot dx_1\wedge \dots \wedge \cancel{dx_i} \wedge \dots\wedge dx_n \\
+&= \sum_{j=1}^n (-1)^{j-1}\Big( \int_{R_j^+} \varphi_i \cdot dx_1\wedge \dots \wedge \cancel{dx_i} \wedge \dots\wedge dx_n - \int_{R_j^-} \varphi_i \cdot dx_1\wedge \dots \wedge \cancel{dx_i} \wedge \dots\wedge dx_n \Big) \\
+&= \sum_{j=1}^n (-1)^{j-1}\Big( \int_{R_j^+} \underbrace{\langle \varphi_i \cdot dx_1\wedge \dots \wedge \cancel{dx_i} \wedge \dots\wedge dx_n , \hat e_j\rangle}_{=
+\begin{cases}
+0, &\text{für } j\ne i\\
+1, &\text{sonst}
+\end{cases}} \, \HM^{n-1}(dx)\\
+&\hspace{4cm} - \int_{R_j^-} \langle \varphi_i \cdot dx_1\wedge \dots \wedge \cancel{dx_i} \wedge \dots\wedge dx_n , \hat e_j\rangle \, \HM^{n-1}(dx)\Big) \\
+&= (-1)^{i-1} \Big( \int_{R_i^+} \varphi \, d\HM^{n-1} - \int_{R_i^+} \varphi \, d\HM^{n-1}\Big).
+\end{align*}
+Dies zeigt die Gleichheit.
+\end{beweis}
+
+\textbf{Spezialfall:} Divergenzsatz/Satz von Gauß-Gren.
+
+Sei $U\subset\MdR^n$ offen, $V\colon U\to \MdR^n$ ein Vektorfeld. Setze $V_i(x) \da \langle V(x),e_i\rangle$, $x\in U$. Sei $V$ von der Klasse $\mathcal C^r$, $r\ge 1$. Die Divergenz von $V$ ist
+\[
+\Div(V)(x) \da \sum_{i=1}^n \frac{\partial V_i}{\partial x_i}(x).
+\]
+
+Ist $\varphi$ eine $(n-1)$-Form auf $\MdR^n$, das heißt
+\[
+\varphi = \sum_{i=1}^n \varphi_1\cdot dx_1\wedge \dots \wedge \cancel{dx_i} \wedge \dots\wedge dx_n
+\]
+so setze
+\[
+V(x) \da \sum_{i=1}^n (-1)^{i-1}\varphi_i \cdot e_i = 
+\begin{pmatrix}
+\varphi_1\\
+\mathllap{-}\varphi_2\\
+\varphi_3\\
+\vdots \\
+(-1)^{n-1} \varphi_n
+\end{pmatrix}.
+\]
+Dann gilt
+\begin{align*}
+d\varphi 
+&= (\sum_{i=1}^n (-1)^{i-1} \frac{\partial \varphi_i}{\partial x_i}) \cdot dx_1\wedge\dots\wedge d x_n\\
+&= (\Div(V)(x)) \cdot dx_1\wedge\dots\wedge d x_n.
+\end{align*}
+Bezeichnet nun $n$ den äußeren Normaleneinheitsvektor von $R$ in $\partial R$, so folgt:
+
+\begin{korollar}
+Für ein $\mathcal C^1$-Vektorfeld auf einer Umgebung von $R$ gilt
+\[
+\int_R \Div(V)\, d\HM^n = \int_{\partial R} \langle V, n\rangle \, d\HM^{n-1}.
+\]
+\end{korollar}
+
+\textbf{Zurückholen von Form:}
+Sei $U\subset\MdR^n$ offen, $F\colon: U\to \MdR^m$ von der Klasse $\mathcal C^k$ mit $k\ge 1$. Sei $x\in U$ und sei $\varphi$ eine in $F(x)$ erklärte $r$-Form. dann wird eine $r$-Form $(F^\#\varphi)(x)$ erklärt als $r$-Kovektor durch:
+\[
+\Big(F^\#\varphi\Big)\big(x\big)(v_1,\ldots,v_r) \da \varphi\Big(F(x)\Big)\big(DF_x(v_1),\ldots,DF_x(v_r)\big)
+\]
+Im Spezialfall $r=0$ ist $\varphi$ eine Funktion und
+\[
+(F^\#\varphi)(x) = \varphi(F(x)) = (\varphi\circ F)(x).
+\]
+
+\begin{bemerkungen}
+\item Ist $\varphi$ von der Klasse $\mathcal C^k$, $k\ge 0$, und $F$ von der Klasse $\mathcal C^{k+1}$, so ist $F^\#\varphi$ von der Klasse $\mathcal C^k$.
+\item $F^\#\varphi(x)$ kann als lineare Abbildung $\bw_r\MdR^n\to \MdR$ aufgefasst werden.
+\item Sei $L\colon V\to W$ linear. Dann wird durch
+\begin{align*}
+\bw_rL \colon \bw_r V &\to \bw_r W \\
+v_1\wedge\dots\wedge v_r &\mapsto L(v_1)\wedge \dots \wedge L(v_r)
+\end{align*}
+eine lineare Abbildung erklärt.
+\item $(F^\# \varphi)(x)(v_1\wedge\dots\wedge v_r) = (\varphi\circ F)(x)(\bw_r DF_x(v_1\wedge \dots\wedge v_r))$.
+\end{bemerkungen}
+
+\pagebreak[3]
+Wir haben nun vier Operationen für Formen ($\wedge$, $d$, $f^\#$, $+$), für die nun Rechenregeln angegeben werden:
+\begin{lemma}
+\label{lem:4.5}
+Seien $U\subset \MdR^n$, $V\subset\MdR^m$, $W\subset\MdR^l$ offene Mengen. Seien $f\colon U\to V$, $g\colon V\to W$ Abbildungen der Klasse $\mathcal C^r$, $r\ge 1$.
+Für $k$-Formen $\varphi$, $\omega$ auf $V$, eine $h$-Form $\eta$  auf $V$ und eine $k$-Form $\zeta$ auf $W$ gelten die folgenden Aussagen:
+\begin{enumerate}
+\item $f^\#(\omega + \varphi) = f^\# \omega + f^\# \varphi$,
+\item $f^\#(\varphi \wedge \eta) = (f^\# \varphi) \wedge (f^\# \eta)$,
+\item $d(f^\# \varphi) = f^\#(d\varphi)$,
+\item $(g\circ f)^\#\zeta = f^\#(g^\#(\zeta))$.
+\end{enumerate}
+\end{lemma}
+
+\begin{beweis}
+Übung.
+\end{beweis}
 
 \chapter{Anhang: Geometrische Integrationstheorie}
 
