@@ -9,7 +9,10 @@
 \newcommand{\ind}{\mathds 1}
 \newcommand{\HR}{\mathcal H}
 \newcommand{\HM}{\mathscr H}
+\newcommand{\MN}{\mathbf M}
+\newcommand{\NS}{\mathbf N}
 \newcommand{\bw}{\bigwedge\nolimits}
+\newcommand{\loc}{\mathrm loc}
 %\renewcommand{\mathbb}{\mathds}
 \DeclareMathOperator{\im}{im}
 \DeclareMathOperator{\id}{id}
@@ -4740,11 +4743,171 @@ und Lemma \ref{lem:4.9} ist dies ein Strom.
 \[
 T_\xi(\omega) \da \int_U \omega\wedge\xi = \int_U \langle \omega\wedge \xi, e_1\wedge\dots\wedge e_n\rangle  \text{ für }\omega \in \mathcal D^k(U).
 \]
-\item Sei $T\in \mathcal D_k(U)$, $\psi\in\mathcal D^m(U)$, $m\le k$. $T\MR \psi \in \mathcal D_{k-m}(U)$ ist erklärt durch
+\item Sei $T\in \mathcal D_k(U)$, $\psi\in\mathcal E^m(U)$, $m\le k$. $T\MR \psi \in \mathcal D_{k-m}(U)$ ist erklärt durch
 \[
 (T\MR \psi)(\omega) \da T(\psi \wedge \omega) \text{ für } \omega \in \mathcal D^{k-m}(U).
 \]
 \end{beispiele}
+
+\begin{definition}[Rand eines Stroms]
+Sei $T\in \mathcal D_k(U)$ für $U\subset \MdR^n$ offen. Der Rand $\partial T$ ist erklärt durch $\partial T\in \mathcal D_{k-1}(U)$, falls $k\ge 1$, und $\partial T=0$, falls $k=0$, wobei
+\[
+\partial T(\omega) \da T(d\omega)
+\]
+für $\omega\in\mathcal D^{k-1}(U)$.
+\end{definition}
+
+\begin{beispiele}
+\item $a,b\in \MdR$, $a<b$:
+\begin{align*}
+\partial(\llbracket a,b\rrbracket) (f) = \llbracket a,b\rrbracket(df) = \llbracket a,b\rrbracket(f'(x)dx) = \int_a^b f'(x) dx = f(b)-f(a) = (\delta_b-\delta_a)(f)
+\end{align*}
+Also $\partial\llbracket a,b\rrbracket = \delta_b - \delta_a$.
+
+\item Sei $g\in \mathcal C^\infty(\MdR)$. Dann ist $T_g\in \mathcal D_1(\MdR)$ erklärt durch
+\begin{align*}
+T_g(\omega(x)dx) \da \int_\MdR g(x) \omega(x) dx.
+\end{align*}
+Ferner sei $S_g\in\mathcal D_0(\MdR)$ wie im vorigen Beispiel. Dann folgt
+\begin{align*}
+\partial T_g(f) = T_g(df) = T_g(f'(x)dx) = \int_\MdR g(x) f'(x) dx = -\int_\MdR g'(x) f(x) dx = -S_{g'}(f) = S_{-g'}(f)
+\end{align*}
+Also $\partial T_g = S_{-g'}$.
+\item Sei in (2) nun $g$ nu rnoch stetig, etwa $g(x) = |x|$. Dann ist $\partial T_g = S_{-\operatorname{sgn}}$.
+\item Sei $M$ eine orientierte $k$-dimensionale Untermannigfaltigkeit von $\MdR^n$ mit Rand und $\llbracket M \rrbracket\in\mathcal D_k(\MdR)$ der induzierte Strom. Mit dem Satz von Stokes folgt: Für $\eta \in \mathcal D^{k-1}(U)$ gilt
+\begin{align*}
+\partial\llbracket M \rrbracket (\eta) = \llbracket M \rrbracket (d\eta) = \int_M d \eta = \int_{\partial M} \eta = \llbracket \partial M\rrbracket(\eta)
+\end{align*}
+also gilt $\partial\llbracket M \rrbracket = \llbracket \partial M\rrbracket$.
+\item Sei $k \ge j \ge 1$, $\xi\in\mathcal E^{j}(U)$, $T\in\mathcal D_k(U)$ und $\omega \in \mathcal D^{k-j-1}(U)$. Es ist
+\begin{align*}
+\partial(T\MR \xi)(\omega)
+&= T\MR\xi(d\omega) =  T(\xi\wedge d\omega)\\
+&= T( (-1)^j d(\xi\wedge \omega) + (-1)^{j-1} d\xi \wedge\omega)\\
+&= (-1)^jT(d(\xi\wedge\omega)) + (-1)^{j-1} T(d\xi \wedge \omega) \\
+&= (-1)^j\partial T(\xi\wedge \omega) + (-1)^{j-1} (T\MR d\xi)(\omega) \\
+&= (-1)^j( (\partial T) \MR \xi)(\omega) + (-1)^{j-1} (T\MR d\xi)(\omega)
+\end{align*}
+also gilt
+\[
+\partial(T\MR \xi) = (-1)^j ( (\partial T) \MR \xi) + (-1)^{j-1} (T\MR d\xi)
+\]
+und somit
+\[
+(\partial T) \MR \xi = T\MR (d\xi) + (-1)^j \partial T(L\MR\xi).
+\]
+\item $\partial\partial T=0$, für $T\in\mathcal D_k(U)$, da $\partial\partial T(\omega) = \partial T(d\omega) = T(dd\omega)$.
+\end{beispiele}
+
+\begin{definition}[Masse von Differntialformen und Strömen]
+\begin{itemize}
+\item Euklidische Masse von Differntialformen $\omega\in\mathcal D^k(U)$ in $x\in U$:
+\[
+|\omega(x)| \da \big(\sum_{I\in I_k^n} \omega_I(x)^2\big)^{\frac12}
+\]
+\item Komasse von $\omega(x)$:
+\[
+\|\omega(x)\| \da \sup\{\omega(x)(v_1\wedge\dots\wedge v_k) : v_i\in\MdR^n, \|v_i\|\le 1\}
+\]
+\item Euklidische Masse eines Stromes $T\in\mathcal D_k(U)$:
+\[
+\underline{\MN}(T) \da \sup\{T(\omega) : |\omega(x)|\le 1 \ \forall x\in U\}
+\]
+\item Masse von $T$:
+\[
+{\MN}(T) \da \sup\{T(\omega) : \|\omega(x)\|\le 1 \ \forall x\in U\}
+\]
+\end{itemize}
+\end{definition}
+
+Wegen 
+\[
+|\omega(x)| \ge \|\omega(x)\| \ge \binom{n}{k}^{-\frac12}\cdot |\omega(x)|
+\]
+folgt
+\[
+\frac 1c \cdot \MN(T) \le \underline{\MN}(t) \le c\cdot \MN(T)
+\]
+mit einer Konstanten $c$, die nur von $n$ abhängt.
+
+\begin{beispiel}
+Ist $T=\llbracket M\rrbracket$, $M$ eine orientierbare $k$-dimensionale Untermannigfaltigkeit von $\MdR^n$, so gilt
+\begin{align*}
+\MN(T) &= \sup\{ \int_M\omega : \|\omega(x)\|\le 1 \ \forall x\in U\} \\
+&= \sup\{ \int_M \underbrace{\langle \omega(x), \xi(x) \rangle}_{\mathclap{\le \|\omega(x)\|\cdot\|\xi\| \le 1}}\, \HM^k(dx) : \|\omega(x)\|\le 1 \ \forall x\in U\} \\ 
+&\le \HM^k(M).
+\end{align*}
+\end{beispiel}
+
+\begin{definition}
+Eine Folge $T_i\in\mathcal D_k(U)$ konvergiert in der Massenorm gegen ein $T\in\mathcal D_k(U)$, falls $\MN(T_i - T)\to 0$ für $i\to\infty$.
+\end{definition}
+
+\begin{bemerkung}
+\begin{itemize}
+\item Ist $\MN(0)=0$, so gilt $T=0$.
+\item Gilt $T_i\to T$ in der Massenorm, so gilt $T_i \stackrel{s}{\rightharpoonup} T$, denn:
+
+Sei $T_j\to 0$ in der Massenorm für $j\to\infty$, das heißt $\MN(T_j) \to 0$. Für $\omega\in\mathcal D^k(U)$ gilt:
+\begin{align*}
+|T_j(\omega)| \le \MN(T_j) \cdot \sup_{x\in U}\|\omega(x)\| \to 0
+\end{align*}
+also $T_j(\omega) \stackrel{s}{\rightharpoonup} 0$.
+
+Die Umkehrung gilt im Allgemeinen nicht: Seien $T_j = S_j\in\mathcal D^0(\MdR)$, $j\in \MdN$. Dann gilt $\mathbf(M)(T_j)=1$, aber $T_j \stackrel s\rightharpoonup 0$, da $T_j(f) \to 0$ für $j\to\infty$.
+\end{itemize}
+\end{bemerkung}
+
+\begin{lemma}
+\label{lem:4.10}
+Seien $T_j, T \in\mathcal D_k(U)$, $j\in\MdN$ und $T_j \stackrel s\rightharpoonup T$. Dann gilt
+\[
+\MN(t) \le \liminf_{j\to\infty} \MN(T_j).
+\]
+\end{lemma}
+
+\begin{beweis}
+Sei $\MN(t)<\infty$. Sei $\ep >0$. Dann existiert $\omega\in\mathcal D^k(U)$ mit $\|\omega(x)\|\le 1$ für alle $x\in U$ und $T(\omega)\ge \MN(T) - \ep$. Daher folgt:
+\[
+\liminf_{j\to\infty} \MN(T_j) \ge \liminf_{j\to\infty} T_j(\omega) = T(\omega) \ge \MN(T)-\ep
+\]
+also  $\MN(T) \le \liminf_{j\to\infty} \MN(T_j)$.
+
+Sei $\MN(T)=\infty$. Dann existiert zu $m\in\MdN$ ein $\omega$ wie oben mit $T(\omega) \ge m$. Weiter wie oben.
+\end{beweis}
+
+\section{Ströme mit lokalendlicher Masse}
+
+Für Ströme mit lokalendlicher Masse liefert der Rieszsche Darstellungssatz eine „explizite“ Integraldarstellung. Dazu sei
+\[
+\MN_k(U) \da \{T\in \mathcal D_k(U) : \MN(T)<\infty\}
+\]
+die Menge der Ströme endlicher Masse und
+\[
+\NS_k(U) \da \{T\in\mathcal D_k(U) : \MN(T) < \infty \text{ und } \MN(\partial T)\}
+\]
+die Menge der normalen Ströme.
+
+\begin{beispiel}
+$T\in\mathcal D_1(\MdR)$ mit $T(\omega(x)\, dx)\da \omega(0)$. Dann ist $\|\omega(x)\,dx\| = |\omega(x)|$ und daher $\MN(T)=1$. Aber $\partial T(f) = T(df) = T(f'(x)\,dx) = f'(0)$ für $f\in\mathcal D^0(\MdR)$ und somit $\MN(\partial T) = \infty$.
+\end{beispiel}
+
+\textbf{Lokalisierung:} Sei $V\subset U\subset\MdR^n$, $V$ und $U$ offen, $T\in\mathcal D_k(U)$. Es sei
+\[
+\underline\MN_V(T) \da \sup\{T(\omega) : \phantom\|\mathllap|\omega(x)\mathrlap|\phantom\| \le 1 \ \forall x\in U,\, \supp(\omega)\subset V\}
+\]
+und
+\[
+\MN_V(T) \da \sup\{T(\omega) : \|\omega(x)\|\le 1 \ \forall x\in U,\, \supp(\omega)\subset V\}\mathrlap{.}
+\]
+Weiter seien definiert:
+\begin{align*}
+\underline\MN_{k,\loc}(U) &\da \{T\in \mathcal D_k(U) : \underline\MN_V(T) < \infty\ \forall V\subset U,\, V\text{ offen},\, \bar V \text{ kompakt in }U\}\\
+\MN_{k,\loc}(U) &\da \{T\in \mathcal D_k(U) : \MN_V(T) < \infty\ \forall V\subset U,\, V\text{ offen},\, \bar V \text{ kompakt in }U\} \\
+\underline\NS_{k,\loc}(U) &\da \{T\in \mathcal D_k(U) : \underline\NS_V(T) < \infty,\, \underline\NS_V(\partial T)<\infty \ \forall V\subset U,\, V\text{ offen},\, \bar V \text{ kompakt in }U\}\\
+\NS_{k,\loc}(U) &\da \{T\in \mathcal D_k(U) : \NS_V(T) < \infty,\,\NS_V(\partial T) <\infty\ \forall V\subset U,\, V\text{ offen},\, \bar V \text{ kompakt in }U\}.
+\end{align*}
+
 
 \chapter{Anhang: Geometrische Integrationstheorie}
 
