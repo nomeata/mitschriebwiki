@@ -29,6 +29,7 @@
 \DeclareMathOperator{\sgn}{sgn}
 % Maß-Restriktions-Symbol
 \newcommand{\MR}{\lfloor}
+\newcommand{\overarrow}{\overrightarrow}
 \jot3mm
 \pdfinfo{
 	/Author (Die Mitarbeiter von http://mitschriebwiki.nomeata.de/)
@@ -5034,20 +5035,20 @@ $\|\omega\|=|\omega|$ für einen einfachen Kovektor $\omega$. Hierbei nennt man 
 		|\langle \varphi, \xi \rangle| \leq \|\varphi\| \cdot \|\xi\|
 	$$
 	für $\varphi \in \bw^p\MdR^n$, $\xi \in \bw_p\MdR^n$.
-	\item Im vorangehenden Satz setzt man $\overset\rightarrow T(x) \da \frac{\xi(x)}{\|\xi(x)\|}$ und $\|T\| \da \|\xi\| \cdot \mu_T$, wobei 
+	\item Im vorangehenden Satz setzt man $\overarrow T(x) \da \frac{\xi(x)}{\|\xi(x)\|}$ und $\|T\| \da \|\xi\| \cdot \mu_T$, wobei 
 	$$
 	\|T\|(M) = \int \mathbb{1}_M(x) \|\xi\| \mu_T(dx)$$ und erhält so:
 	$$
-		T(\omega) = \int_U \langle\omega(x),\overset\rightarrow T(x)\rangle \, \|T\|(dx)
+		T(\omega) = \int_U \langle\omega(x),\overarrow T(x)\rangle \, \|T\|(dx)
 	$$
-	mit $\|\overset\rightarrow T\| = 1$, $\|T\|$-fast-überall auf $U$, $\|T\|(V) = \sup\{T(\omega : \omega \in \mathcal D^k(U),\, \|\omega(x)\| \leq 1 \text{ für } x\in U,\, \supp(\omega) \subset V\}$, sowie $\MN_V(T) = \|T\|(V)$.
+	mit $\|\overarrow T\| = 1$, $\|T\|$-fast-überall auf $U$, $\|T\|(V) = \sup\{T(\omega : \omega \in \mathcal D^k(U),\, \|\omega(x)\| \leq 1 \text{ für } x\in U,\, \supp(\omega) \subset V\}$, sowie $\MN_V(T) = \|T\|(V)$.
 	\item Ist $T$ durch ein Integral darstellbar, so erklärt man für $A \subset U$, $A$ Borelsch:
 	$$
-		(T\MR A)(\omega) \da \int_A\langle \omega,\overset\rightarrow T \rangle \, d\|T\|
+		(T\MR A)(\omega) \da \int_A\langle \omega,\overarrow T \rangle \, d\|T\|
 	$$
 	oder für eine beschränkte Borelfunktion $f: U \to \MdR$:
 	$$
-		(T\MR f)(\omega) \da \int_U f\cdot \langle\omega,\overset\rightarrow T\rangle \, d\|T\|.
+		(T\MR f)(\omega) \da \int_U f\cdot \langle\omega,\overarrow T\rangle \, d\|T\|.
 	$$
 \end{enumerate}
 \end{bemerkung}
@@ -5055,12 +5056,175 @@ $\|\omega\|=|\omega|$ für einen einfachen Kovektor $\omega$. Hierbei nennt man 
 
 \section{Produkt, Push-forward und Homotopieformel}
 
+\textbf{Produkt von Strömen.} Seien $U_1\subset \MdR^{n_1}$, $U_2\subset\MdR^{n_2}$ offen und $S\in \mathcal D_{m_1}(U_1)$ und $T\in\mathcal D_{m_2}(U_2)$ Ströme. Im folgenden sind $x_1,\ldots,x_{n_1}$ Koordinaten von $\MdR^{n_1} \subset \MdR^{n_1+n_2}$ und $y_1,\ldots,y_{n_2}$ sind Koordinaten von $\MdR^{n_2} \subset \MdR^{n_1+n_2}$.
 
+Sei $\omega \in \mathcal D^{m_1+m_2}(U_1\times U_2)$. Dann kann man $\omega$ in der Form
+\[
+\omega = \sum_{\substack{\alpha,\beta\\ \mathclap{|\alpha| + |\beta| = m_1+m_2}}}  \omega_{\alpha\beta}(x,y) dx_\alpha \wedge dy_\beta
+\]
+geschrieben werden.
 
+\begin{definition}
+Mit obiger Notation setzen wir
+\[
+S\times T(\omega) \da \sum_{\mathclap{\substack{\alpha,\beta\\ |\alpha|=m_1 \\ |\beta| = m_2}}} S_x( T_y (\omega_{\alpha\beta}(x,y) dy_\beta) dx_\alpha).
+\]
+\end{definition}
 
+\begin{satz}
+\label{satz:4.15}Seien $S\in \mathcal D_{m_1}(U_1)$ und $T\in \mathcal D_{m_2}(U_2)$ Ströme.
+\begin{enumerate}
+\item Seien $p\colon \MdR^{m_1+m_1} \to \MdR^{m_1}$, $(x,y)\mapsto x$ und $q\colon \MdR^{m_1+m_1} \to \MdR^{m_2}$, $(x,y)\mapsto y$ die Projektionsabbildungen. Seien $\varphi \in \mathcal D^k(U_1)$, $\eta \in \mathcal D^{m_1+m_2-k}(U_2)$. Dann gilt:
+\[
+S \times T (p^\#\varphi \wedge q^\#\eta) = 
+\begin{cases}
+S(\varphi) \cdot T(\eta), & k=m_1 \\
+0, & k\ne m_1
+\end{cases}
+\]
+und für 
+\[
+\omega = \sum_{\alpha,\beta} \omega_\alpha(x) \omega_\beta(y) dx_\alpha \wedge dx_\beta = \big(\underbrace{\sum_\alpha \omega_\alpha(x) dx_\alpha}_{= \omega_1(x)}\big) \wedge \big( \underbrace{\sum_\beta \omega_\beta(y) dy_\beta}_{=\omega_2(y)}\big) 
+\]
+gilt
+\[
+S\times T(\omega) = S(\omega_1) \times T(\omega_2).
+\]
+\item $\spt(S\times T) = \spt(S) \times \spt(T)$.
+\item $\partial(S\times T) = \partial S \times T + (-1)^{m_1} S\times \partial T$.
+\item Seien $P:\MdR^{n_1} \hookrightarrow \MdR^{n_1+n_2}$, $x\mapsto (x,0)$, $Q:\MdR^{n_2}\hookrightarrow\MdR^{n_1+n_2}$, $y\mapsto (0,y)$. Haben $S$ und $T$ lokalendliche Massen, so auch $S\times T$ und
+\[
+S\times T(\cdot) = \int \langle \cdot, (\bw_{m_1}P) \overarrow S \wedge (\bw_{m_2}Q) \overarrow T\rangle \, d(\|S\|\otimes \|T\|)
+\]
+\end{enumerate}
+\end{satz}
 
+\begin{beweis}
+\begin{enumerate}
+\item[(3)] Sei $\omega = \omega_{\alpha\beta}(x,y) dx_\alpha\wedge dy_\beta \in \mathcal D^{m_1+m_2-1}(U_1\times U_2)$. Dann ist
+\begin{align*}
+d\omega = \sum_{i=1}^{n_1} \frac{\partial \omega_{\alpha\beta}}{\partial x_i} dx_i \wedge dx_\alpha dy_\beta + \sum_{j=1}^{n_2}  \frac{\partial \omega_{\alpha\beta}}{\partial y_j} dy_j \wedge dx_\alpha dy_\beta.
+\end{align*}
+Hiermit folgt
+\begin{align*}
+\partial(S\times T)(\omega) &= S\times T(dw) \\
+&= S(\sum_{i=1}^{n_1} T(\frac{\partial \omega_{\alpha\beta}}{\partial x_i} dy_\beta) dx_i \wedge dx_\alpha) + (-1)^{|\alpha|} S(T(\sum_{j=1}^{n_2} \frac{\partial \omega_{\alpha\beta}}{\partial y_j} dy_j \wedge dy_\beta) dx_\alpha)\\
+&= S(d_x (T(\omega_{\alpha\beta} dy_\beta) dx_\alpha)) + (-1)^{|\alpha|} S(T(d_y (\omega_{\alpha\beta} dy_\beta) dx_\alpha))\\
+&= \partial S(T(\omega_{\alpha\beta} dy_\beta)) + (-1)^{m_1} S(\partial T(\omega_{\alpha\beta} dy_\beta) dx_\alpha) \\
+&= \partial S \times T (\omega_{\alpha\beta}(x,y)) dx_\alpha\wedge dy_\beta) + (-1)^{m_1} (S\times \partial T) (\omega_{\alpha\beta}(x,y))\\
+&= (\partial S \times T d + (-1)^{m_1} (S\times \partial T)) (\omega_{\alpha\beta}(x,y))\\
+&= (\partial S \times T d + (-1)^{m_1} (S\times \partial T)) (\omega)
+\end{align*}
+\item[(4)] Für $\omega = \omega_{\alpha\beta}(x,y) dx_\alpha dy_\beta \in \mathcal D^{m_1+m_2} (U_1\times U_2)$. Mit der Voraussetzung, dass 
+\[
+S= \int_{U_1}\langle \cdot, \overarrow S\rangle d\|S\|
+\]
+und
+\[
+T=\int_{U_2}\langle \cdot, \overarrow T\rangle d\|T\|
+\]
+gilt, folgt
+\begin{align*}
+S\times T (\omega) &= S_x(T_y(\omega_{\alpha\beta} dy_\beta) dx_\alpha) \\
+&= \int \langle T(\omega_{\alpha\beta} dx_\alpha, \overarrow S) \rangle d\|S\| \\
+&= \int T(\omega_{\alpha\beta} dy_\beta) \langle dx_\alpha, \overarrow \rangle d\|S\| = \\
+&= \int_{U_1}\int_{U_2} \langle \omega_{\alpha\beta},\overarrow T\rangle \, d\|T\| \langle dx_\alpha, \overarrow S\rangle \, \|S\| \\
+&= \iint_{U_1\times U_2} \langle \omega_{\alpha\beta}(x,y) dx_\beta, \overarrow T(y)\rangle \langle dx_\alpha,\overarrow S\rangle \, d(\|S\| \otimes \|T\|) \\
+&= \iint_{U_1\times U_2} \langle \omega_{\alpha\beta}(x,y) dx_\alpha\wedge dy_\beta, (\bw_{n_1}P) \overarrow S(x)\wedge (\bw_{n_2}Q)\overarrow T(y)\rangle \, d(\|S\| \otimes \|T\|).
+\end{align*}
+Fazit: $\|S\times T\| = \|S\|\otimes \|T|$, $\overarrow {S\times T} = (\bw_{n_1}P) \overarrow S\wedge (\bw_{n_2}Q)\overarrow T$. 
+\end{enumerate}
+\end{beweis}
 
+\begin{beispiel}
+Ist $T$ durch ein Integral darstellbar, so auch $\llbracket 0\times 1\rrbracket \times T$ mit $\| \llbracket 0,1\rrbracket \times T\| = \lambda^|_{[0,1]} \otimes \|T\|$ und $\overarrow {\llbracket 0,1\rrbracket \times T} = $„$e_1\wedge \overarrow T$“.
+\end{beispiel}
 
+\textbf{Bild eines Stromes.} Seien $U\subset \MdR^n$ offen und $V\subset\MdR^m$ offen. Ferner seien $T\in \mathcal D_k(U)$ und $f\colon U\to V$ eine $\mathcal C^{\infty}$-Abbildung. \textbf{Voraussetzung:} $f|_{\spt(T)}$ sei eigentlich (das heißt, für $K\subset V$, $K$ kompakt sei $f^{-1}(K)\cap \spt(T)\subset U$ stets kompakt).
+
+\begin{beispiel}
+Seien $f\colon U\da (0,\infty) \to V\da \MdR$ und $T\da \llbracket 0,b\rrbracket \in \mathcal D_0(U)$ für $b> 0$. Dann ist
+\[
+f^{-1}([0,b])\cap \spt(T) = (0,b] \cap [0,b] = (0,b] \subset U
+\]
+ist nicht kompakt.
+\end{beispiel}
+
+\begin{definition}
+Seien $f$ und $T$ wie oben. Sei $\omega  \in \mathcal D^k(V)$. Sei $\gamma\in\mathcal D_0(U)$ mit 
+\[
+\spt(T) \cap \underbrace{\supp(f^\#\omega)}_{\subset f^{-1}(\supp(\omega))} \subset \{\gamma=1\}^o.
+\]
+Dann setzt man
+\[
+(f_\# T) (\omega) \da T(\gamma \wedge f^\#\omega).
+\]
+\end{definition}
+
+\begin{bemerkung}
+\begin{enumerate}
+\item $\supp(f^\#\omega) \subset f^{-1}(\supp(\omega))$ und $\supp(\omega)\subset V$ ist kompakt, das heißt $\spt(T) \cap \supp(f^\#\omega) \subset \spt(T) \cap f^{-1}(\supp(\omega))$. Dabei ist $\spt(T) \cap f^{-1}(\supp(\omega))$ kompakt und $\spt(T) \cap \supp(f^\#\omega)$ abgeschlossen und damit auch kompakt.
+\item $\gamma$ ist im Allgemeinen einzuführen, da $\spt(f^\#\omega)$ nicht kompakt sein muss.
+\item Die Definition von $(f_\#T)(\omega)$ ist von der konkreten Wahl von $\gamma$ unabhängig. Sei nähmlich $\gamma_1,\gamma_2$ wie oben. Es ist
+\[
+\supp(\gamma_1-\gamma_2) \wedge f^\#\omega) \cap \spt(T) = \emptyset.
+\]
+Daraus folgt mittels einer Zerlegung der Eins
+\[
+T( (\gamma_1-\gamma_2) \wedge f^\# \omega) = 0.
+\]
+was heißt
+\[
+T( \gamma_1 \wedge f^\#\omega) = T(\gamma_2 \wedge f^\#\omega).
+\]
+\item Manchmal geht es auch ohne $\gamma$.
+\end{enumerate}
+\end{bemerkung}
+
+\begin{lemma}
+\label{lem:4.16}Seien $U\subset \MdR^n$, $V\subset \MdR^m$ offen, $T\in\mathcal D_k(U)$, $f\colon U\to V$ von der Klasse $\mathcal C^\infty$, wobei $f|_{\spt(T)}$ eigentlich ist. Dann gilt
+\begin{enumerate}
+\item $\spt(f_\# T) \subset f(\spt(T))$
+\item $\partial(f_\# T) = f_\#(\partial T)$.
+\item Ist $T$ durch ein Integral darstellbar, so gilt das auch für $f_\# T$ und
+\[
+\| f_\# T\| \le \underbrace{f_\#\big(\|T\| \MR \|(\bw_m Df) \overarrow T\|\big)}_{\mathclap{=\int_{f^{-1}(A)} \|\bw_m Df(x) \overarrow T(x)\|\, \|T\|(dx), \ A\subset V}}.
+\]
+\end{enumerate}
+\end{lemma}
+
+\begin{satz}[Homotopieformel]
+\label{satz:4.17}
+Seien $U\subset\MdR^n$, $V\subset\MdR^m$ offen, seien $f,g\colon U\to V$ von der Klasse $\mathcal C^\infty$ und $h\colon [0,1]\times U\to V$ von der Klasse $\mathcal C^\infty$ mit $h(0,\cdot) = f$ und $h(1,\cdot) = g$. Sei $T\in\mathcal D_k(U)$ und $h|_{[0,1]\times \spt(T)}$ sei eigentlich. Dann gilt
+\[
+g_\# T - f_\# T = h_\#(\llbracket 0,1\rrbracket \times \partial T) + \partial h_\#(\llbracket 0,1\rrbracket \times T)
+\]
+wobei der erste Term in der Summe für $k=0$ entfällt.
+\end{satz}
+
+\begin{beweis}
+Wegen $\spt(\llbracket 0,1\rrbracket \times T) = [0,1]\times \spt(T)$ und $\spt(\partial T) \subset \spt(T)$ und nach Voraussetzung sind alle Ströme erklärt. Nun gilt:
+\begin{align*}
+\partial h_\#(\llbracket 0,1\rrbracket \times T) 
+&= h_\# \partial (\llbracket 0,1\rrbracket \times T) \\
+&= h_\# (\partial \llbracket 0,1\rrbracket + (-1)^1 \llbracket 0,1\rrbracket \times \partial T) \\
+&= h_\# ( (\delta_1-\delta_0) \times T  - \llbracket 0,1\rrbracket \times \partial T) \\
+&= h_\#  (\delta_1 \times T) - h_\#(\delta_0 \times T) - h_\#(\llbracket 0,1\rrbracket \times \partial T) \\
+&= g_\# T - f_\# T - h_\# (\llbracket 0,1\rrbracket \times \partial T).
+\end{align*}
+Sei für den letzten Schritt $\tau\colon U \to \MdR \times U$, $x\mapsto (0,x)$. Dann ist $\delta_0\times T = \tau_\# T$. In der Tat:
+\begin{align*}
+\delta_0 \times T(\omega(t, x)dx) = \delta_0(T(t,w)dx) = T(\omega(0,x) dx)
+\end{align*}
+und
+\begin{align*}
+\tau_\# T( \omega(t,x)dx) = T(\gamma \wedge \tau^\# (\omega(t,x)dx)) = T(\gamma \wedge \omega(0,x)dx) = T(\omega(0,x) dx).
+\end{align*}
+Hiermit folgt
+\begin{align*}
+h_\# (\delta_0 \times T) = h_\#(\tau_\# T) = (h \circ \tau)_\#T = f_\# T.
+\end{align*}
+\end{beweis}
 
 
 \chapter{Anhang: Geometrische Integrationstheorie}
