@@ -4,6 +4,7 @@
 \usepackage{enumerate}
 \usepackage{dsfont}
 \usepackage{cancel}
+\usepackage{graphicx}
 \newcommand{\A}{\mathcal A}
 \newcommand{\borel}{\mathfrak B}
 \newcommand{\ind}{\mathds 1}
@@ -5226,9 +5227,209 @@ h_\# (\delta_0 \times T) = h_\#(\tau_\# T) = (h \circ \tau)_\#T = f_\# T.
 \end{align*}
 \end{beweis}
 
+\begin{beispiel}
+Sei $T\in\mathcal D_k(\MdR^n)$ mit $\partial T =0$, $\spt(T)$ kompakt, $k\ge 1$. Nach der Homotopieformel gilt
+\[
+g_\# T - f_\# T = \partial h_\#(\llbracket 0,1\rrbracket \times T) + 0.
+\]
+Ist spezieller: $g(x) \da x$, $f(x) \da 0$, so gilt $g_\#T = T$, $f_\#T = 0$ und somit:
+\[
+T = \partial \underbrace{h_\#(\llbracket 0,1\rrbracket \times T)}_{\in\mathcal D_{k+1}(\MdR^n)}.
+\]
+\end{beispiel}
+
+\begin{korollar}
+Seien die Voraussetzungen wie in Satz \ref{satz:4.17}.
+\begin{enumerate}[\quad(a)]
+\item Ist $T$ durch ein Integral darstellbar, so gilt mit der affinen Homotopie $h(t,x) = (1-t)\cdot f(x) + t\cdot g(x)$:
+\[
+\MN(h_\#(\llbracket 0,1\rrbracket \times T)) \le \|T\|\big(|g-f| \cdot \max\{\|Df\|^k, \|Dg\|^k\}\big).
+\]
+\item Ist $\MN(T)<\infty$ und $h$ wie in (a), so gilt
+\[
+\MN(h_\#(\llbracket 0,1\rrbracket \times T)) \le \sup_{\mathclap{\spt(T)}} |g-f|\cdot \sup_{\spt(T)} \{\|Df\|^k, \|Dg\|^k\}\cdot \MN(T).
+\]
+\end{enumerate}
+\end{korollar}
+
+\begin{beweis}
+(Ansatz) Für $\psi\in\mathcal D^{k+1}(V)$, $V$ konvex folgt:
+\begin{align*}
+h_\#(\llbracket 0,1\rrbracket)(\psi)
+&= \int_{(0,1)\times U} \langle e_1\wedge \overarrow T, h^\#\psi\rangle \, (\lambda^{1}\otimes \|T\|)(d(t,x)) \\
+&= \int_{(0,1)\times U} \langle \psi(h(t,x)),\underbrace{\bw_{k+1}Dh_{(t,x)} (e_1\wedge \overarrow T)}_{\mathclap{=(g(x)-f(x))\wedge \underbrace{\bw_k D_xh_{(t,x)} \overarrow T}_{\mathclap{=(1-t) Df_x(\overarrow T) + t\cdot Dg_x(\overarrow T)}}}}\rangle \, (\lambda^1\otimes\|T\|)(d(t,x)) \\
+&= \int_{(0,1)\times U} \|\psi(h(t,x))\| \cdot \big( (1-t) \|Df_x\|^k + t\cdot \|Dg_x\|^k\big) \, (\lambda^1 \otimes \|T\|)(d(t,x)).
+\end{align*}
+\end{beweis}
+
+\begin{anwendung}
+Sei $U$ sternförmig in $\MdR^n$ bezüglich $u\in U$. Betrachte: $g(x) \da x$, $f(x) \da u$, $x\in U$, $h(t,x)\da (1-T)\cdot u + t\cdot x$. Für $\psi \in \mathcal D^k(U)$ ist $f^\#\psi = 0$ $(k\ge 1)$ und $g^\#\psi = \psi$. Für den speziellen Strom
+\[
+T(\beta) \da \langle \beta, \eta \rangle, \quad \beta\in \mathcal D^k(U)
+\]
+für ein festes $\eta \colon U \to \bw_k\MdR^n$ mit kompaktem Träger in $U$ und von der Klasse $\mathcal C^\infty$.
+
+Dann gilt:
+\begin{align*}
+g_\# T (\psi) &= T(\gamma \wedge g^\#\psi) = T(\gamma \wedge \psi)
+= \langle \gamma \wedge \psi, \eta \rangle = \langle \psi, \eta\rangle \\
+f_\#T (\psi) &= 0\\
+h_\#(\llbracket 0,1\rrbracket\times \partial T) (\psi) &= \llbracket 0,1\rrbracket \times \partial T(h^\#\psi) = \partial T \big( (h^\#\psi)_{\llbracket 0,1\rrbracket} \big ) = T\big(d ((h^\#\psi)_{\llbracket 0,1\rrbracket})  \big) \\
+\partial h_\#( \llbracket 0,1\rrbracket\times T)(\psi) &= 
+h_\# (\llbracket 0,1\rrbracket\times T)(d\psi) =  \dots
+\end{align*}
+Ist $d\psi = 0$, so erhält man aus der Homotopieformel für Ströme:
+\[
+\langle \psi, \eta\rangle = T\big(d( (h^\#\psi)_{\llbracket 0,1\rrbracket})\big) + 0 
+\]
+und damit
+\[
+\langle \psi, \eta\rangle = \langle d( (h^\#\psi)_{\llbracket 0,1\rrbracket}), \eta \rangle.
+\]
+Dies zeigt
+\[
+\varphi = d( (h^\#\psi)_{\llbracket 0,1\rrbracket} ).
+\]
+Also ist $\psi$ exakt (Vergleiche Lemma von Poincaré).
+\end{anwendung}
+
+\textbf{Bild eines Stromes unter einer Lipschitzabbildung}. Sei $U\in\MdR^n$ und $T\in \NS_{k,\loc}(U)$, sei $f\colon U\to V$ Lipschitz, so dass $f|_{\spt(T)}$ eigentlich ist. Zu $f$ gibt es eine Folge $(f_i)_{i\in\MdN}$ von $\mathcal C^\infty$"~Abbildungen auf $U$ nach $V$ mit einer globalen Lipschitzkonstante, wobei $f_i \to f$ gleichmäßig konvergiert. Mit der Homotopieformel sieht man:
+\[
+\big|({f_i}_\# T)(\omega) - ({f_j}_\# T)(\omega) \big| \le c\cdot \sup_{\mathclap{f^{-1}(K) \cap \spt(T)}} |f_i - f_j|,
+\]
+falls $K\subset V$, $K$ kompakt und $\supp(\omega) \subset K^o$. Folglich ist $({f_i}_\#T)(\omega)$ eine Cauchyfolge reeler Zahlen und es existiert also
+\[
+(f_\# T)(\omega) \da \lim_{i\to \infty} ({f_i}_\# T) (\omega).
+\]
+Man kann zeigen:
+\begin{itemize}
+\item $f_\# T \in \NS_{n,\loc}(V)$.
+\item Die Definition ist von der Wahl der Folge unabhängig.
+\item $\partial f_\#T = f_\#\partial T$.
+\item $\spt(f_\#T) \subset f(\spt(T))$.
+\end{itemize}
+
+\section{Rektifizierbare Ströme}
+
+\begin{definition}
+\begin{enumerate}[\quad(a)]
+\item Sei $U\subset \MdR^n$. Ein Strom $T\in \mathcal D_k(U)$ heißt rektifizierbar, falls es
+\begin{itemize}
+\item eine $\HM^k$-messbare, abzählbar $k$-rektifizierbare Menge $M\subset\MdR^n$ mit $\HM^k(M\cap K)<\infty$ für $K\subset U$, $K$ kompakt,
+\item eine $\HM^k$-messbare Abbildung $\xi\colon M\to\bw_k \MdR^n$ mit $\|\xi\| =1$ $\HM^k$-fast-überall auf $M$ und $\xi = v_1\wedge\dots\wedge v_i$ mit $v_i(x) \in \bw_k T_xM$ für $\HM^k$-fast-alle $x\in M$,
+\item eine $\HM^k$-messbare Funktion $\theta\colon M \to [0,\infty]$
+\end{itemize}
+gibt, so dass gilt
+\[
+T(\omega) = \int_M \langle \omega , \xi \rangle \theta \, d\HM^k.
+\]
+\item Ist $\theta$ sogar ganzzahlig, so heißtein solcher Strom $T$ ganzzahlig rektifizierbar. Die Menge der ganzzahlig rektifizierbaren Ströme wird mit $\mathcal R_k(U)$ bezeichnet.
+\item T heißt integraler Strom, falls $T$ und $\partial T$ ganzzahlig rektifizierbare Ströme sind. Die Menge der integralen Ströme wird mit $\mathcal I_k(U)$ bezeichnet.
+\end{enumerate}
+\end{definition}
+
+\begin{bemerkungen}
+\item  Übersicht:
+\[
+\begin{array}[c]{ccc}
+\mathcal I_k(U) & \subset & \mathcal R_k(U) \\
+\rotatebox{90}{$\supset$}  & & \rotatebox{90}{$\supset$} \\
+\NS_{k,\loc}(U) & \subset & M_{k,\loc}(U)
+\end{array}
+\]
+\item $T\in\mathcal R_k(U)$, $\theta$ sei mit
+\[
+\MN(T) = \int_M \theta \, d\HM^k.
+\]
+\item $\mathcal I_k(U) \subset \mathcal R_k(U) \cap \NS_{k,\loc}(U)$. Gilt „$\supset$“?
+\end{bemerkungen}
+
+\begin{beispiele}
+\item Sei $M\subset \MdR^n$ eine kompakte $k$-dimensionale Mannigfaltigkeit. Dann gilt
+\[
+\llbracket M \rrbracket \in \mathcal R_k(\MdR^n)
+\]
+\item Sei $M$ wie in (1) und $\HM^{k-1}(\partial M) < \infty$. Dann gilt
+\[
+\llbracket M \rrbracket \in \mathcal I_k(\MdR^n)
+\]
+denn $\partial \llbracket M \rrbracket = \llbracket \partial M \rrbracket$.
+\item $\tilde T\in\mathcal D_1(\MdR^2)$ sei definiert durch
+\[
+\tilde T (\omega_1 dx + \omega_2 dy) \da \int_0^1 \omega_2 (s,0) \, ds
+\]
+Dan ist $\tilde T$ nicht 1-rektifizierbar. Aber
+\[
+T(\omega_1 dx + \omega_2 dy) \da \int_0^1 \omega_1(s,0)\cdot ds
+\]
+ist 1-rektifizierbar.
+\item Es ist
+\[
+T_j \da \sum_{i=1}^j \big\llbracket \{- \frac ij\} \times [0,\frac 1j] \big\rrbracket \in \mathcal R_1(\MdR^2) \cap \NS_1(\MdR^2).
+\]
+Es gilt $\MN(T_j) = 1$, $\MN(\partial T_j) = 2j$, $T_j\overset s \rightharpoonup \tilde T$ für $j\to \infty$. „Folge integraler Ströme, deren schwaher Limes nicht rektifizierbar ist.“
+\end{beispiele}
+
+\begin{satz}
+\begin{enumerate}
+\item (Randrektifizierbarkeit)  Sei $T\in\mathcal R_k(U)$ und $\MN_V(\partial T)<\infty$ für alle $V\subset U$ mit $V$ offen, $\bar V$ eine kompakte Teilmannigfaltigkeit von $U$. Dann ist $T\in \mathcal I_k(U)$.
+\item (Closure Theorem) Seien $T_j\in\mathcal R_k(U)$, $j\in\MdN$, $\sup_{j\in\MdN}(\MN_V(T_j) + \MN_V(\partial T_j)) < C_V < \infty$ für alle $V\subset U$ mit $V$ offen, $\bar V$ eine kompakte Teilmannigfaltigkeit von $U$. Gilt $T_j \stackrel s \rightharpoonup T\in\mathcal D_k(U)$ für $j\to\infty$, so ist $T\in\mathcal R_k(U)$.
+\item (Kompaktheitssatz) Seien $T_j$ wie in (2). Dann gibt es eine Teilfolge $T_{j'}$ von $T_j$ und $T\in\mathcal R_k(U)$ mit $T_{j'} \stackrel s\rightharpoonup T$.
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+Idee: Simultaner Beweis von (1) und (2)/(3) durch vollständige Induktion über $k$. Aus (2)/(3) für $k-1$ und der Deformationssatz folgt (1) für $k$. Ferner geht das Konzept „Schnitt eines Stroms“ ein.
+\end{beweis}
+
+\textbf{Polyedrische Ströme} Sei $\ep>0$, $[0,\ep]^n + \ep \cdot z$, $z\in\MdZ^n$ sei ein kompakter $\ep$-Würfel. Ein $k$-dimensionaler $\ep$-Würfel sei das relative innere einer $k$-dimensionaler Seite eines solchen $\ep$"~Würfels.
+
+\begin{definition}
+Ein $k$-dimensionaler polyedrischer Strom in $\MdR^n$ der Seitenlänge $\ep$ ist ein Strom der Form
+\[
+P \da \sum_Q a_Q \llbracket Q\rrbracket,
+\]
+wobei $Q$ ein $k$-dimensionaler $\ep$-Würfel ist. Dieser heißt ganzzahlig polyedrischer, falls $a_Q\in \MdZ$.
+\end{definition}
+
+\begin{bemerkungen}
+\item $\MN(P) = \sum_Q |a_Q| \ep ^k$
+\item $\MN(P) \le 2^k \MN(P)$. $\partial P$ ist stets polyedrisch.
+\end{bemerkungen}
+
+\begin{satz}[Deformationssatz]
+Es gibt eine Konstate $c= c(n)$, so dass für jedes $T\in \NS_k(\MdR^n)$ und jedes $\ep >0$ ein $k$-dimensionaler polyedrischer Strom $P$, $R\in \NS_{k+1}(\MdR^n)$ und $S\in \MN_k(\MdR^n)$ existieren mit
+\[
+T = P + \partial R + S
+\]
+mit
+\begin{enumerate}
+\item $\MN(P) \le c\cdot \MN(T)$, $\MN(\partial P) \le c\cdot \MN(T)$,
+\item $\MN(R) \le c\cdot \ep \cdot \MN(T)$, $\MN(S) \le c \cdot \ep \cdot \MN(\partial T)$,
+\item $\MN(\partial R) \le c \cdot \big( \MN(T) + \ep \cdot \MN(\partial T)\big)$,
+\item $\spt(P), \spt(R) \subset \spt(T)_{\delta(\ep)}$ mit $\delta(\ep)\to 0$ für $\ep \to 0$ und $\spt(\partial P), \spt(\partial R) \subset \spt(\partial T)_{\delta(\ep)}$,
+\item Aus $T\in \mathcal R_k(\MdR^n)$ folgt $P$, $R$ sind rektifizierbar wählbar. Aus $T\in\mathcal I_k(\MdR^n)$ folgt $S$ rektifizierbar wählbar.
+\end{enumerate}
+\end{satz}
+
+\begin{anwendung}
+\begin{enumerate}
+\item Zu $T\in\mathcal R_k(\MdR^n) \cap \NS_k(\MdR^n)$ gibt es eine Folge $P_i$ von polyedrischen Strömen mit $P_i \stackrel s\rightharpoonup T$, wobei die Massen der $P_i$ uniform beschränkt sind.
+\item Sei $T \in \mathcal D_k(\MdR^n)$, $1\le k\le n-1$, $\spt(T)$ kompakt.
+\begin{enumerate}[\quad(a)]
+\item Gibt es $S\in\mathcal D_{k+1}(\MdR^n)$ mit $\partial S=T$? Notwendige Bedingung: $\partial T = 0$. dies ist auch hinreichend!
+\item Isoperimetrisches Problem: Finde eine Massenschranke für die „Füllung S“ von $T$.
+
+\textbf{Satz} $T\in\mathcal R_k(\MdR^n)$, $\partial T=0$, $\spt(T)$ kompakt. Dann gibt es ein $R\in\mathcal R_k(\MdR^n)$ mit $\spt(R)$ kompakt, $\partial R=T$ und
+\[
+\MN(R) \le c\cdot \MN(T)^{\frac k{k+1}}
+\]
+mit $c = c(n)$.
+\end{enumerate}
+\end{enumerate}
+\end{anwendung}
 
 \chapter{Anhang: Geometrische Integrationstheorie}
-
 
 \section{Multilineare Algebra}
 
