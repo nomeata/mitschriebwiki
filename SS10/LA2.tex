@@ -1,0 +1,1102 @@
+\documentclass[parskip,a4paper,twoside,DIV15,BCOR12mm]{scrbook}
+\usepackage{la}
+
+\author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
+\title{Lineare Algebra II}
+
+\makeindex
+
+\begin{document}
+\maketitle
+
+\renewcommand{\thechapter}{\Roman{chapter}}
+\addcontentsline{toc}{chapter}{Inhaltsverzeichnis}
+
+\tableofcontents
+
+\chapter{Vorwort}
+
+\section{Über dieses Skriptum}
+Dies ist ein erweiterter Mitschrieb der Vorlesung \glqq Lineare Algebra II\grqq\ von Prof. Dr. Schmidt im
+Sommersemester 2010 an der Universität Karlsruhe (KIT). Die Mitschriebe der Vorlesung werden mit
+ausdrücklicher Genehmigung von Prof. Dr. Schmidt hier veröffentlicht, Prof. Dr. Schmidt ist für den
+Inhalt nicht verantwortlich.
+
+\section{Wer}
+Gestartet wurde das Mitschriebwiki von Joachim Breitner. Beteiligt an diesem Mitschrieb sind
+Rebecca Schwerdt und hoffentlich bald noch andere.
+
+\section{Wo}
+Alle Kapitel inklusive \LaTeX-Quellen können unter \url{http://mitschriebwiki.nomeata.de} abgerufen werden.
+Dort ist ein \emph{Wiki} eingerichtet und von Joachim Breitner um die \LaTeX-Funktionen erweitert worden.
+Das heißt, jeder kann Fehler nachbessern und sich an der Entwicklung
+beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
+
+
+\renewcommand{\thechapter}{\arabic{chapter}}
+\renewcommand{\chaptername}{§}
+\setcounter{chapter}{14}
+
+\chapter{Multilineare Abbildungen und Tensorprodukte}
+\section{Bilinearformen}
+\begin{definition}
+\index{Vektorraumpaarung}\index{Paarung}
+\index{Bilinearform}
+\index{ausgeartet!Paarung}
+Seien $V,W$ $K$-VRme. Ein Abbildung $P:V\times W\to K$ heißt \textbf{\mbox{(Vektorraum-)}Paarung},
+falls $P$ in jedem Argument linear ist, d.h. wenn für jedes feste $w_o\in W$
+\[P(\cdot,w_0):V\to K, v\mapsto P(v,w_0)\]
+und für jedes feste $v_0\in V$
+\[P(v_0,\cdot):W\to K, w\mapsto P(v_0,w)\]
+eine lineare Abbildung, also Linearform ist.\\
+Im Fall $V=W$ heißt $P$ eine \textbf{Bilinearform} auf $V$.\\
+Eine Paarung $P$ heißt \textbf{nicht ausgeartet}, wenn für jedes $w_0\in W$ und
+für jedes $v_0\in V$ die Abbildung $P(\cdot,w_0)$ bzw. $P(v_0,\cdot)$ nicht die Nullabbildung
+ist.
+\end{definition}
+
+\begin{comment}
+Die Menge $\mathcal{P}(V,W)$ aller Paarungen von $V$ und $W$ ist ein untervektorraum
+des $K$-VRms $\Abb(V\times W,K)$ aller Abbildungen von $V\times W$ nach $K$.
+\end{comment}
+
+\begin{example}
+Auf dem Dualraum $W:=V*(=\Hom(V,K))$ ist die nicht ausgeartete Paarung
+\[P:V\times V*\to K,(v,f)\mapsto f(v)\]
+eine Bilinearform.\\
+Für eine Paarung $P:V\times W\to K$ setzen wir $\rho_w(v):=P(v,w)$ und erhalten
+so Linearformen $\rho_w\in V*$ für alle $w\in W$.
+\end{example}
+
+\begin{theo}
+\begin{enumerate}
+\item Die Abbildung $\rho:W\to V*,w\mapsto \rho_w$ ist ein Homomorphismus
+von $K$-VRmen.
+\item Die Zuordnung $\eta:P\to \rho$ ist ein Isomorphismus, es gilt:
+\[\mathcal{P}(V,W)\stackrel{\sim}{\to} \Hom(W,V*)\]
+\end{enumerate}
+\end{theo}
+
+\begin{proof}
+\begin{enumerate}
+\item Es gilt für alle $\alpha\in K,w_1,w_2\in W$:
+\begin{align*}
+\rho_{\alpha w_1+w_2}&=(v\mapsto P(v,\alpha w_1+w_2))\\
+&=(v\mapsto \alpha P(v,w_1)+P(v,w_2))\\
+&=\alpha((v\mapsto P(v,w_1))+(v\mapsto P(v,w_2)))\\
+&=\alpha\rho_{w_1}+\rho_{w_2} 
+\end{align*}
+\item Homomorphie selbst nachrechnen!\\
+Die Umkehrabbildung ist:
+\[\Hom(W,V*)\to \mathcal{P}(V,W),\rho\mapsto P:=((v,w)\mapsto(\rho(w))(v))\]
+\end{enumerate}
+\end{proof}
+
+\begin{remind}
+Lineare Abbildungen sind bereits durch ihre Wirkung auf einer Basis eindeutig
+bestimmt. Dieses Prinzip gilt auch für Paarungen.
+\end{remind}
+
+\begin{comment}
+\index{bilineare!Fortsetzung}\index{Fortsetzung!bilineare}
+Seien $V,W$ $K$-VRme mit jeweiliger Basis $B:=\{b_1,\ldots,b_m\}\subseteq V,
+C:=\{c_1,\ldots,c_n\}\subseteq W$, so ist eine Paarung $P$ auf $V\times W$
+Bereits durch ihre Einschränkung auf $B\times C$ festgelegt.\\
+Für $v:=\sum_{i=1}^m \alpha_i b_i,w:=\sum_{j=1}^n \beta_j c_j$ gilt:
+\[P(v,w)=\sum_{i=1}^m\sum_{j=1}^n \alpha_i\beta_j\cdot P(b_i,c_j)\]
+Jede Abbildung $P':B\times C\to K$ definiert über diese Gleichung eine Paarung
+$P':V\times W\to K$. Diese heißt \textbf{bilineare Fortsetzung}.
+\end{comment}
+
+\setcounter{chapter}{18}
+\chapter{Isometrien}
+
+\begin{task}
+Studiere alle linearen Abbildungen, die \textbf{Abstände} von Punkten nicht ändern.
+Z.B. Drehungen um einen Punkt im $\mathbb{R}^2$.
+\end{task}
+
+\section{Charakterisierung und orthogonale Gruppe}
+\begin{definition}
+\index{Morphismus}\index{Isometrie}\index{Automorphismus}\index{Automorphismengruppe}
+Seien $V_1,V_2\ \mathbb{K}$-VRme mit Sesquilinearformen $s_1,s_2$.
+\begin{enumerate}[(a)]
+\item Ein \textbf{Morphismus von $\mathbb{K}$-VRmen mit Sesquilinearform} ins
+$\Phi\in \Hom(V_1,V_2)$ mit:\\
+\[\forall x,y\in V_1:s_2(\Phi(x),\Phi(y))=s_1(x,y)\]\\
+Schreibe: $\Phi:(V_1,s_1)\to (V_2,s_2)$.
+\item Ist $\Phi$ zusätzlich bijektiv, so heißt $\Phi$ eine \textbf{(lineare) Isometrie}.
+\item Eine Isometrie $\Phi:(V,s)\to (V,s)$ heißt \textbf{Automorphismus} von s.\\
+Die Gruppe $\Aut(s)\le\Aut(V)$ heißt die \textbf{Automorphismengruppe} von s.
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+\index{Lorenzgruppe}
+In der Relativitätstheorie wichtig ist die \textbf{Lorenzgruppe} $\Aut(s)$ zu\\
+\[s:\mathbb{R}^4 \times \mathbb{R}^4 \to\mathbb{R}, (x,y)\mapsto x^T
+\begin{pmatrix}
+1&0&\cdots&0\\
+0&\ddots&\ddots&\vdots\\
+\vdots&\ddots&1&0\\
+0&\cdots&0&-c
+\end{pmatrix}
+y\]\\ 
+für $c:=$Lichtgeschwindigkeit.
+\end{example}
+
+\begin{definition}
+\index{orthogonale!Gruppe}\index{Gruppe!orthogonale}
+\index{orthogonale!Abbildung}\index{Abbildung!orthogonale}
+\index{unitär!Gruppe}\index{Gruppe!unitäre}
+\index{unitär!Abbildung}\index{Abbildung!unitäre}
+Im Folgenden sei $s$ stets SKP.\\
+\textbf{Fall $\mathbb{K}=\mathbb{R}$:}\\
+$O(V,s):=\Aut(s)$ heißt \textbf{orthogonale Gruppe}. Die Elemente der Gruppe
+heißen \textbf{orthogonale Abb. bzgl. s}.\\
+\textbf{Fall $\mathbb{K}=\mathbb{C}$:}\\
+$U(V.s):=\Aut(s)$ heißt \textbf{unitäre Gruppe}. Die Elemente der Gruppe heißen
+\textbf{unitäre Abb. bzgl. s}.
+\end{definition}
+
+\begin{comment}
+Eine wichtige Isometrie ist: abstrakter VRm $\cong$ Standartraum
+\end{comment}
+
+\begin{theo}
+Sei $V$ VRm mit SKP $s$, $\dim(V)=n$ und ONB $B$. Dann ist die Koordinatendarstellung:\\
+\[D_B:(V,s)\to(\mathbb{K}^n,\langle\cdot,\cdot\rangle)\] eine Isometrie.
+\end{theo}
+
+\begin{proof}
+Sei $B=\{b_1,\ldots,b_n\}, x,y\in V$ mit $x=\sum_{i=1}^n{\alpha_i b_i},
+y=\sum_{i=1}^n{\beta_i b_i}$. Dann gilt:
+\begin{align*}
+s(x,y)&=\sum_{i,j}{\alpha_i \overline{b_j}\cdot s(b_i,b_j)}\\
+&= \sum_{i=1}^n{\alpha_i \overline{b_i}}\\
+&= \langle
+\begin{pmatrix}
+\alpha_1\\
+\vdots\\
+\alpha_n
+\end{pmatrix},
+\begin{pmatrix}
+\beta_1\\
+\vdots\\
+\beta_n
+\end{pmatrix} 
+\rangle\\
+&= \langle D_B(x),D_B(y)\rangle
+\end{align*}
+\end{proof}
+
+\begin{comment}
+\begin{enumerate}
+\index{Längentreue}\index{Winkeltreue}
+\item Sei $\Phi: V_1\to V_2$ Morphismus von SKP-Räumen, dann ist $\Phi$ \textbf{längentreu}.
+\[\iff\|x\|_1 = \|\Phi(x)\|_2\]
+\textbf{Winkeltreue} für $K=\mathbb{R}$ bedeutet: 
+\[\frac{\langle x_1,y_1\rangle_1}{\|x_1\|_1\|y_1\|_1} = \frac{\langle\Phi(x_1),
+\Phi(y_1)\rangle_2}{\|\Phi(x_1)\|_2\|\Phi(y_1)\|_2}\]
+\item $\Phi:(V,s)\to(V,s)$ Endomorphismus von SKP-Räumen und $\dim(V)<\infty
+\implies \Phi$ ist Isomorphismus und Automorphismus, also orthogonal und unitär. 
+\end{enumerate}
+\end{comment}
+
+\begin{theo}[Isometriekriterium]
+Sei $V$ VRm mit SKP $s=\langle\cdot,\cdot\rangle$ und sei $\Phi\in\Aut(V)$.\\
+Folgende Aussagen sind äquivalent:
+\begin{enumerate}
+\item $\Phi$ ist Isometrie (d.h. $\Phi\in\Aut(s)$).
+\item $\Phi\in\End^a(V)$ und $\Phi^*=\Phi^{-1}$.
+\item $\forall x\in V: \|x\|=\|\Phi(x)\|$
+\item $\forall y\in V: (\|y\|=1)\implies(\|\Phi(y)\|=1)$ (Einheitssphärenabbildung).
+\end{enumerate}
+\end{theo}
+
+\begin{proof}
+Die Äquivalenz ergibt sich aus folgendem Ringschluss:
+\begin{enumerate}
+\item[1.$\implies$2.] Es gilt $\forall x,y\in V$, $z:=\Phi(y)$:
+\begin{align*}
+&\Phi \text{ Isometrie}\\
+&\iff \forall x,y\in V:\langle\Phi(x),\Phi(y)\rangle =\langle x,y\rangle\\
+&\stackrel{\Phi^{-1}\text{ ex.}}{\iff} \forall x,z\in V:\langle\Phi(x),z\rangle
+=\langle x,\Phi^{-1}(z)\rangle
+\end{align*}
+Nach Definition der Adjungierten folgt daraus $\Phi^{-1} = \Phi^*$.
+\item[2.$\implies$3.] Es gilt für alle $x\in V$:
+\[\|\Phi(x)\|^2=\langle\Phi(x),\Phi(x)\rangle\stackrel{2.}{=}
+\langle x,\Phi^*\Phi(x)\rangle=\langle x,x\rangle\]
+\item[3.$\iff$4.] \checkmark
+\item[3.$\implies$1.] Es gilt für alle $x,y,\in V,\alpha\in K:$
+\begin{align*}
+\langle\alpha x+y,\alpha x+y\rangle &= \langle\Phi(\alpha x+y),\Phi(\alpha x+y)\rangle\\
+\iff\langle \alpha x,y\rangle +\langle y,\alpha x\rangle &= \langle\Phi(\alpha x),
+\Phi(y)\rangle + \langle\Phi(y),\Phi(\alpha x)\rangle\\
+\iff\alpha\langle x,y\rangle +\overline{\alpha}\overline{\langle x,y\rangle} &=
+\alpha\langle\Phi(x),\Phi(y)\rangle + \overline{\alpha}\overline{\langle\Phi(x),\Phi(y)\rangle}
+\end{align*}
+\textbf{Fall $K=\mathbb{R}$:}\\ 
+Mit $\alpha:=\frac12:\langle x,y\rangle =\langle\Phi(x),\Phi(y)\rangle$\\
+\textbf{Fall $K=\mathbb{C}$:}\\ 
+Mit $\alpha:=\frac12:\Real\langle x,y\rangle =\Real\langle\Phi(x),\Phi(y)\rangle$\\
+Mit $\alpha:=\frac i2:\Imag\langle x,y\rangle =\Imag\langle\Phi(x),\Phi(y)\rangle$
+\end{enumerate}
+\end{proof}
+
+\begin{corollary}
+Sei $\dim(V)=n<\infty$, $B$ ONB von $V$ und $\Phi\in\End(V)$.\\
+Folgende Aussagen sind äquivalent:
+\begin{enumerate}
+\item $\Phi$ ist Isometrie.
+\item Es gilt für alle $x\in V:\|\Phi(x)\|=\|x\|$
+\item $\Phi(B)$ ist ONB.
+\item Es gilt $D_{BB}(\Phi)^{-1} = D_{BB}(\Phi^*)$, d.h. $D_{BB}(\Phi)$ ist unitär bzw. orthogonal.
+\item Die Spalten (bzw. Zeilen) von $D_{BB}(\Phi)$ bilden eine ONB von $\mathbb{K}^n$ bzgl.
+dem Standard-SKP.
+\item Es existiert eine ONB $C$ von $V$ mit $D_{BB}(\Phi)=I_n$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Jede der Aussagen impliziert $\Phi\in\Aut(V)$.\\
+Sei $B:=\{b_1,\ldots,b_n\}$.
+\begin{enumerate}
+\item[1.$\iff$2.$\iff$4.] Klar nach Isometriekriterium.
+\item[4.$\iff$5.]Es gilt:
+\begin{align*}
+&D_{BB}(\Phi)^{-1} = D_{BB}(\Phi^*)\\
+&	\implies D_{BB}(\Phi)\cdot D_{BB}(\Phi^*) = I_n\\
+&\iff\{\text{Zeilen von }\Phi\}\text{ sind ONB bezgl. Standardform}\\
+&\implies D_{BB}(\Phi^*)\cdot D_{BB}(\Phi) = I_n\\
+&\iff\{\text{Spalten von }\Phi\}\text{ sind ONB bezgl. Standardform}
+\end{align*}
+\item[3.$\implies$2.]Da für alle $b_i,b_j\in B$ gilt:
+\[\langle\Phi(b_i),\Phi(b_j)\rangle =\delta_{ij}=\langle b_i,b_j\rangle\]
+Folgt für alle $x=\sum_{i=1}^n{\alpha_i b_i}\in V:$
+\begin{align*}
+\langle\Phi(x),\Phi(x)\rangle
+&=\sum_{i,j}{\alpha_i\overline{\alpha_j}\langle\Phi(b_i),\Phi(b_j)\rangle}\\
+&=\sum_{i,j}{\alpha_i\overline{\alpha_j}\langle b_i,b_j\rangle}\\
+&=\langle x,x\rangle
+\end{align*}
+Also ist $\|\Phi(x)\|=\|x\|$ und $\Phi$ längenerhaltend.
+\item[1.$\implies$3.] Da $\Phi$ Isometrie ist, gilt:
+\[\implies \langle\Phi(b_i),\Phi(b_j)\rangle=\langle b_i,b_j\rangle =\delta_{ij}\]
+D.h. $\Phi(B)$ ist ONB.
+\item[3.$\implies$6.] Es existiert eine ONB $C=\{c_1,\ldots,c_n\}$, sodass gilt:
+\[D_{BC}(\Phi) = I_n\]
+Daraus folgt: $D_{BB}(\Phi)=D_{BC}(\Phi)\cdot M_{CB}=M_{CB}=:(\gamma_{ij})$\\
+Also gilt für alle $b_j\in B$:
+\[b_j=\sum_k{\gamma_{kj}\cdot c_k}\]
+Daraus folgt:
+\begin{align*}
+\delta_{ij}&=\langle b_j,b_i\rangle\\
+&=\langle\sum_k{\gamma_{kj}\cdot c_k},\sum_l{\gamma_{li}\cdot c_l}\rangle\\
+&=\sum_{k,l}{\gamma_{kj}\cdot\overline{\gamma_{li}}\cdot\langle c_k,c_l\rangle}\\
+&=\sum_k{\gamma_{kj}\cdot\overline{\gamma_{ki}}}\\
+&=\sum_k{\overline{\gamma_{ki}}\cdot\gamma_{kj}}-(\overline{M}_{CB}^T\cdot M_{CB})_{ij}
+\end{align*}
+Es gilt also $M_{CB}^* = M_{CB}^{-1}$.
+\end{enumerate}
+\end{proof}
+
+\section{Normalformen für Isometrien und normale Endomorphismen}
+Sei $V$ VRm mit SKP $\langle\cdot,\cdot\rangle, \dim(V)=n<\infty$.
+
+\subsection{Fall $\mathbb{K}=\mathbb{C}$}
+\begin{lemma}
+Ein Endomorphismus $\Phi$ ist genau dann unitär, wenn er normal ist und alle Eigenwerte 
+Betrag 1 haben.
+\end{lemma}
+
+\begin{proof}
+Da $\Phi$ unitär ist, also $\Phi^*=\Phi^{-1}$ gilt, ist $\Phi$ normal. 
+Nach Spektralsatz existiert dann eine ONB $B=\{b_1,\ldots,b_n\}$ aus Eigenvektoren von $\Phi$.
+Also gilt: 
+\[\Phi(b_i)=\lambda_i b_i \text{ mit } \lambda_i\in\mathbb{C}\]
+Mit dem Korollar folgt:\\
+\begin{align*}
+&\Phi \text{ unitär}\\
+&\iff \Phi(B) \text{ ONB}\\
+&\iff \delta_{ij}=\langle\Phi(b_i),\Phi(b_j)\rangle=\langle\lambda_i b_i,\lambda_j b_j\rangle
+=|\lambda_i|^2\cdot\delta_{ij}\\
+&\iff |\lambda_i|^2=1\\
+&\iff |\lambda_i|=1
+\end{align*}
+\end{proof}
+
+\begin{conclusion}
+\index{Normalform}
+$D_{BB}(\Phi)=\diag(\lambda_1,\ldots,\lambda_n)$ mit $|\lambda_i|=1$ heißt \textbf{Normalform}
+der unitären Abb. $\Phi$ und ist bis auf die Reihenfolge der Eigenwerte eindeutig bestimmt.
+\end{conclusion}
+
+\begin{corollary}
+\index{unitär!Basiswechsel}\index{Basiswechsel!unitärer}
+Ist $A\in\mathbb{C}^{n\times n}$ normal, so existieren $M\in U_n$ und $\lambda_i\in\mathbb{C}$,
+sodass gilt:
+\begin{align*}
+M^{-1}\cdot A\cdot M = \diag(\lambda_1,\ldots,\lambda_n)
+\end{align*}
+D.h. jedes normale $A$ erlangt durch \textbf{unitären Basiswechsel} Normalform.\\
+Falls $A$ unitär ist, so existiert $\Phi_j\in\mathbb{R}$, sodass gilt:
+\begin{align*}
+\lambda_j=e^{i\Phi_j}=\cos\Phi_j+i\sin\Phi_j
+\end{align*}
+\end{corollary}
+
+
+
+\chapter{Affine Räume}
+
+Man möchte vom Anschauungsraum $\mathbb{R}^3$ abstrahieren:\\
+\begin{itemize}
+\item statt $\mathbb{R}$ \textbf{beliebige} Körper $K$
+\item statt Dimension $3$ \textbf{beliebige} Dimensionen $< \infty$
+\end{itemize}
+
+\begin{task}
+Finde die "`richtige"' Verallgemeinerung der vertrauten \textbf{geometrischen} 
+Begriffe, sodass bekannte geometrische Sätze richtig bleiben.
+\end{task}
+
+Im Folgenden sei $K$ stets ein beliebiger Körper.
+
+\section{Grunbegriffe}
+\begin{definition}
+\index{affin!Raum}\index{Raum!affiner}
+\index{Richtungsvektorraum}
+\index{Translation}
+\index{Punkt}
+\index{Translationsvektor}
+Sei $V$ $K$-VRm mit $\dim(V)=n<\infty$.
+\begin{enumerate}[(a)]
+\item Eine Menge $A \ne \emptyset$ heißt \textbf{affiner Raum mit Richtungsvektorraum $V$},
+falls $(V,+)$ auf $A$ operiert, d.h. es existiert eine Paarung "`$+$"' genannt
+\textbf{Translation} $V \times A \to A$, $(x,P) \mapsto x+P$, mit der Eigentschaft:
+\[\forall P,Q\in A\exists_1 x\in V: Q=x+P\]
+\item Elemente von $A$ heißen \textbf{Punkte}.\\
+Der zu gegebenen Punkten $P$, $Q$ eindeutig bestimmte Vektor $x$ mit $Q=x+P$ heißt
+der \textbf{Translationsvektor von $P$ nach $Q$}.\\
+Schreibe: $x:=\overrightarrow{PQ}$
+\item $\dim(A) := \dim(V)$ heißt \textbf{Dimension von $A$}.
+\end{enumerate}
+\end{definition}
+
+\begin{comment}
+\begin{enumerate}
+\item Vorsicht in 1. wird das Zeichen "`+"' für verschiedene Verknüpfungen benutzt.
+\item Es gilt für $P,Q,R,\in A:$
+\begin{align*}
+\overrightarrow{PP}&=0\\
+\overrightarrow{PQ}+\overrightarrow{QR} &= \overrightarrow{PR}\\
+\overrightarrow{QP}&=-\overrightarrow{PQ}
+\end{align*} 
+\item $A$ besteht aus genau einer Bahn:
+\[\forall P\in A: A=V+P:=\{x+P\mid x\in V\}\]
+\end{enumerate}
+\end{comment}
+
+\begin{example}
+\index{affin!Standardraum}\index{Standardraum!affiner}
+Der \textbf{affine Standardraum} $\mathbb{A}_n(K)$ ist definiert als  Punktmenge
+$\mathbb{A}:=K^n$ und $V:=K^n$, mit Translation $:=$ Addition in $K^n$, d.h.
+für $P,Q\in K^n$ gilt:
+\[\overrightarrow{PQ}=Q-P\]
+\end{example}
+
+\begin{definition}
+\index{affin!Teilraum}\index{Teilraum!affiner}
+\index{linear!Varietät}\index{Varietät!lineare}
+\index{Gerade}
+\index{Ebene}
+\index{Hyperebene}
+Eine Teilmenge $B \ne \emptyset$ eines affinen Raumes A heißt \textbf{(affiner) Teilraum}
+oder \textbf{lineare Varietät} von $A$, falls ein VRm $U_B \le V$ existiert, sodass
+$B$ affiner Raum ist, mit Richtungsvektorraum $U_B$ (unter der in $A$ gegebenen
+Operation).\\
+Auch $B = \emptyset$ werde affiner Teilraum genannt.\\
+Spezielle affine Teilräume B sind:
+\begin{enumerate}[(a)]
+\item \textbf{Gerade} $\iff \dim(B) = 1$
+\item \textbf{Ebene} $\iff \dim(B) = 2$
+\item \textbf{Hyperebene} $\iff \dim(B) = \dim(A)-1$
+\end{enumerate}
+\end{definition}
+
+\begin{lemma}
+\index{Verbindungsgerade}
+\begin{enumerate}
+\item Ist $B\ne \emptyset$ affiner Teilraum, dann gilt:
+\[U_B=\{\overrightarrow{PQ}\mid P,Q\in B\}\]
+\item Sind $\emptyset\ne B \subseteq C$ affine Teilräume und $\dim(B)=\dim(C)$, dann ist $B=C$.
+\item Durch zwei Punkte $P\ne Q$ in $A$ geht genau eine Gerade.
+\[PQ := K \cdot \overrightarrow{PQ}+P = \{\lambda \cdot \overrightarrow{PQ}+P\mid\lambda\in K\}\le A\]
+Diese wird die \textbf{Verbindungsgerade} von $P$ und $Q$ genannt.
+\item Drei Punkte $P,Q,R \in A$ liegen genau dann auf \textbf{einer} Geraden, wenn gilt,
+dass $\overrightarrow{PQ}$ und $\overrightarrow{QR}$ linear abhängig sind.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item["`$\supseteq$"']\checkmark
+\item["`$\subseteq$"'] Da $B$ affiner Teilraum mit Richtung $U_B$ ist, gilt für alle $P,Q\in B$:
+\[\exists_1 x\in B: x=\overrightarrow{PQ} \iff x+P = Q\]
+\end{enumerate}
+\item Aus 1. folgt mit $B\subseteq C$, dass $U_B\subseteq U_C$ gilt. Da diese die
+gleiche Dimension haben muss dann schon $U_B=U_C$ gelten. Für $P\in B\cap C$ gilt dann:
+\[B=U_B+P=U_C+P=C\]
+\item Es ist klar, dass $P$ und $Q$ auf der Geraden $PQ$ liegen, daher muss lediglich die
+Eindeutigkeit gezeigt werden.\\
+Sei $B$ eine Gerade mit $P,Q\in B$ und $U:=U_B$. Da $P\ne Q$ ist, 
+ist $\overrightarrow{PQ}\in U$ nicht der Nullvektor. Da außerdem $\dim U=1$ ist, gilt:
+\[U=K\cdot\overrightarrow{PQ}\]
+Daraus folgt:
+\[B=U+P=PQ\]
+\item Sei $x:=\overrightarrow{PQ}$ und $y:=\overrightarrow{QR}$. Es existiert genau dann
+eine Gerade $B$ mit $P,Q,R\in B$, wenn gilt:
+\[\exists\text{ VRm }U: \dim U=1, x,y\in U\]
+Also genau dann, wenn $x$ und $y$ linear abhängig sind.
+\end{enumerate}
+\end{proof}
+
+\begin{theo}[Teilraumkriterium]
+Sei $A$ affiner Raum mit Richtung $V$ und sei $\emptyset \ne B\subseteq A$. Dann 
+sind equivalent:
+\begin{enumerate}
+\item $B$ ist affiner Teilraum.
+\item Es existieren $P\in A$ und $U\le V$, sodass gilt:
+\[B=U+P\]
+\item Falls $|K| >2$, so ist auch equivalent:
+\[\forall P,Q\in B: P\ne Q \implies PQ \subseteq B\]
+\item Falls $A=\mathbb{A}_n(K)$, so ist auch equivalent, dass $B$ Lösungsmenge eines LGS ist.
+\end{enumerate}
+\end{theo}
+
+\begin{proof}
+Die Äquivalenz ergibt sich aus folgendem Ringschluss:
+\begin{itemize}
+\item[1.$\implies$2.] Ist $B$ affiner Teilraum, so gilt:
+\[\exists U\le V:\forall P\in U:B=U+P\]
+\item[2.$\implies$1.] $B=U+P$ ist affiner Teilraum, denn $U$ operiert auf $B$
+und für $Q,R\in B:$ gilt:
+\[\exists x,y\in U: Q=x+P,R=y+P \text{ und}\] 
+\[\exists_1 \text{ Translation } \overrightarrow{QR}=y-x\in U\]
+Daraus folgt, dass $U$ affiner Teilraum ist.
+\item[1.$\implies$3.] Sei $B$ affiner Teilraum mit $P,Q\in B, P\ne Q$. Dann gilt:
+\begin{align*}
+&\overrightarrow{PQ}\in U_B\\
+&\implies\forall \lambda\in K:\lambda\cdot\overrightarrow{PQ}+P\in B\\
+&\implies PQ\subseteq B
+\end{align*}
+\item[3.$\implies$2.] Setze $U:=\{\overrightarrow{PQ}\mid P,Q\in B\}\subseteq V$.\\
+\textbf{Zeige zunächst:} Für alle $P\in B$ gilt:
+\[U+P\subseteq B\] 
+D.h. für alle $y\in U$ gilt:
+\[y+P\in B\]
+\begin{enumerate}
+\item["`$\subseteq$"'] Sei also $0\ne y\in U$, dann existiert ein $Q\ne R\in B$, sodass gilt: 
+\[ y=\overrightarrow{QR}\] 
+Setze $z:=\overrightarrow{PQ}$.\\
+\textbf{Fall $y,z$ linear abhängig:}\\
+Aus dem Lemma folgt, dass $P,Q,R$ auf der Geraden $QR=\{\lambda\cdot y+P\mid \lambda\in K\}
+\stackrel{3.}{\subseteq} B$ liegen. Insbesondere gilt: 
+\[y+P\in B\]
+\textbf{Fall $y,z$ linear unabhängig:}\\
+Wähle $\lambda\in K\setminus\{0,1\}$. Betrachte $S:=\frac{\lambda}{\lambda-1}y+P$, 
+$N:=\lambda z+P$.\\
+Dann ist $N\in PQ\subseteq B$.\\
+Annahme: $N=R$.
+Dann gilt:
+\begin{align*}
+N&=\lambda z+p\\
+&=R\\
+&=y+z+P
+\end{align*}
+Daraus folgt, dass $y$ und $z$ linear abhängig sind. $\lightning$
+Es gilt also $N\ne R$. Ferner gilt, dass $S,N,R$ auf einer Geraden liegen, denn:
+\[\overrightarrow{NR} = y+z-\lambda z = y+(1-\lambda)z \text{ und}\]
+\[\overrightarrow{SN} = \lambda z-\frac{\lambda}{1-\lambda}y=\frac{\lambda}{\lambda-1}
+((\lambda-1)z-y)\]
+sind linear abhängig.\\
+Aus $N,R\in B$ folgt:
+\[S\in NR \stackrel{3.}{\subseteq}B\]
+Außerdem gilt: $S\ne P$, also $SP\in B$ und damit $y+P\in B$\\
+Es gilt sogar: $B=U+P$, da für alle $Q\in B$ gilt:
+\[Q=\overrightarrow{PQ}+P\in U+P\]
+\item["`$\supseteq$"'] \checkmark
+\end{enumerate}
+\textbf{Es bleibt zu zeigen:} $U\le V$ (Untervektorraum)\\
+Seien $x,y\in U,\alpha\in K$. O.B.d.A lässt sich $x\ne 0$ annehmen, etwa $x=\overrightarrow{PQ},
+P,Q\in B$. Dann gilt:\\
+\[\alpha x+P\in PQ \subseteq B \implies \alpha x\in U\]
+Also genügt es zu zeigen, dass $x+y$ in $U$ liegt. Sei $P':=x+P$.\\
+Dann gilt mit $x=\overrightarrow{PQ}$ und $y+P\in U+P\subseteq B$:\\
+\begin{align*}
+&(x+y)+P=x+(y+P)\in U+P'\subseteq B\\
+&\implies x+y\in U
+\end{align*}
+\end{itemize}
+\end{proof}
+
+\section{Eigentschaften affiner Räume}
+\begin{lemma}
+Sei $I\ne\emptyset$ Indexmenge und $(B_i)_{i\in I}$ eine Familie affiner Teilräume von $A$.\\
+Dann ist $B:= \bigcap_{i\in I} B_i$ affiner Teilraum von $A$ mit Richtung
+$U_B=\bigcap_{i\in I} U_{B_i}$, falls $B\ne\emptyset$.
+\end{lemma}
+
+\begin{proof}
+Sei $B\ne\emptyset$, dann existiert ein $P\in\bigcap_{i\in I}B_i$.
+Setze $U:=\bigcap_{i\in I}U_{B_i} \le V$.\\
+Dann gilt für ein $Q\in A$:\\
+\begin{align*}
+Q\in U+P &\iff \forall i\in I: Q\in U_{B_i}+P\\
+&\iff Q\in\bigcap_{i\in I}B_i\\
+&\iff Q\in B
+\end{align*}
+Daraus folgt: $B=U+P$
+\end{proof}
+
+\begin{definition}
+\index{affin!Hülle}\index{Hülle!affine}
+Sei $M$ Teilmenge von $A$, $C$ die Menge aller affinen Teilräume von $A$, die $M$ enthalten.\\
+Dann heißt:
+\[[M]:=\bigcap_{B\in C}B\]
+die \textbf{affine Hülle} von $M$.\\
+Für $M=\{P_1,\ldots,P_m\}$ schreibe: $[P_1,\ldots,P_m]:=[M]$.
+\end{definition}
+
+\begin{example}
+Sei $P\ne Q$, dann ist $[P,Q]=PQ$ die Gerade durch $P$ und $Q$.
+\end{example}
+
+\begin{lemma}
+\index{allgemeine!Lage}\index{Lage!allgemeine}
+Seien $P_0,\ldots,P_m\in A$ und sei $x_i:=\overrightarrow{P_0P_i}\in V$ für alle $i\in\{1,\ldots,m\}$.\\
+Dann gilt:
+\[[P_0,\ldots ,P_m]=\langle x_1,\ldots ,x_m \rangle +P_0\]
+Insbesondere ist $\dim{[P_0,\ldots,P_m]}\le m$.\\
+Falls gilt: $\dim{[P_0,\ldots,P_m]}=m$ sagt man, $P_0,\ldots,P_m$ sind in \textbf{allgemeiner Lage}.
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item["`$\subseteq$"'] Für alle $i\in\{1,\ldots,m\}$ gilt:
+\[P_i=x_i+P_0\subseteq\langle x_1,\ldots,x_m\rangle+P_0\]
+\item["`$\supseteq$"'] Sei $\sum_{i=1}^m{\alpha_i x_i+P_0}\in\langle x_1,\ldots,x_m\rangle+P_0$,
+und sei $B\supseteq\{P_0,\ldots,P_m\}$ beliebiger affiner Teilraum. Dann gilt:
+\begin{align*}
+&\forall i\in\{1,\ldots,m\}: x_i=\overrightarrow{P_0P_i}\in U_B\\
+&\implies \sum_{i=1}^m{\alpha_i x_i}\in U_B\\
+&\implies \sum_{i=1}^m{\alpha_i x_i+P_0}\in U_B+P_0=B
+\end{align*}
+Da dies für einen beliebigen affinen Teilraum $B$ gilt, der $\{P_0,\ldots,P_m\}$ enthält, gilt dies für alle
+solche Teilräume. Sei $C$ die Menge aller affinen Teilräume die $\{P_0,\ldots,P_m\}$ enthalten. Dann folgt:
+\begin{align*}
+&\forall B\in C: \sum_{i=1}^m{\alpha_i x_i+P_0}\in B\\ 
+&\iff \sum_{i=1}^m{\alpha_i x_i+P_0}\in\bigcap_{B\in C}B\\
+&\iff \sum_{i=1}^m{\alpha_i x_i+P_0}\in[P_0,\ldots,P_m]
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+\begin{theo}
+Seien $A_1:=U_1+P_1,A_2:=U_2+P_2$ affine Teilräume von A. Dann gilt:
+\begin{enumerate}
+\item $U_{[A_1\cup A_2]}=U_1+U_2+\langle\overrightarrow{P_1P_2}\rangle$
+\item $A_1\cap A_2\ne\emptyset \implies \dim([A_1\cup A_2])=\dim{A_1}+\dim{A_2}-\dim{(A_1\cap A_2)}\\
+A_1\cap A_2=\emptyset \implies \dim([A_1\cup A_2])=\dim{A_1}+\dim{A_2}-\dim{(U_1\cap U_2)}+1$
+\end{enumerate}
+\end{theo}
+
+\begin{proof}
+\begin{enumerate}
+\item Sei $y:=\overrightarrow{P_1P_2}$ und $U:=U_1+U_2+\langle y\rangle$.\\
+\textbf{Zu Zeigen:} $U+P_1=[A_1\cup A_2]$, d.h. $U_{[A_1\cup A_2]}=U$
+\begin{enumerate}
+\item["`$\subseteq$"'] Für einen beliebigen affinen Raum $B\supseteq A_1\cup A_2$ gilt: $U_B\ge U_1,U_2,
+\langle y\rangle$.\\
+Also gilt für $x=x_1+x_2+\alpha y\in U$ mit $x_1\in U_1, x_2\in U_2$:
+\begin{align*}
+&x=x_1+x_2+\alpha y\in U_B\\
+&\implies x+P_1\in U_B+P_1=B\\
+&\implies x+P_1\in \bigcap B=[A_1\cup A_2]
+\end{align*}
+\item["`$\supseteq$"'] \textbf{Zu zeigen:} $A_1\cup A_2\subseteq U+P_1$\\
+\begin{align*}
+A_1&=U_1+P_1\subseteq U+P_1\\
+A_2&=U_2+P_2=U_2+y+P_1\subseteq U+P_1
+\end{align*}
+\end{enumerate}
+\item 
+\textbf{Fall $A_1\cap A_2\ne\emptyset$:} Nach Lemma gilt $U_{A_1\cap A_2}=U_1\cap U_2$,
+und dass $P_1=P_2$ wählbar ist.\\ 
+Daraus folgt $U=U_1+U_2$ (mit $y=0$). Also gilt: $[A_1\cup A_2]=U_1+U_2+P_1$ mit:
+\begin{align*}
+\dim{[A_1+A_2]}&=\dim{(U_1+U_2)}\\
+&=\dim{U_1}+\dim{U_2}-\dim{(U_1\cap U_2)}\\
+&=\dim{A_1}+\dim{A_2}-\dim{(A_1\cap A_2)}
+\end{align*}
+\textbf{Fall $A_1\cap A_2=\emptyset$}: Annahme: $y\in U_1+U_2$.\\
+Dann ist $y=x_1+x_2$ für ein $x_1\in U_1,x_2\in U_2$. Daraus folgt:
+\[x_1+P_1 = -x_2+y+P_1=-x_2+P_2\in A_1\cap A_2\ \lightning\]
+Also ist $y\notin U_1+U_2$. Daraus folgt:
+\[\dim{U}=\dim{(U_1+U_2)}+1\]
+Der restliche Beweis erfolgt analog zum ersten Fall.
+\end{enumerate}
+\end{proof}
+
+\begin{definition}
+\index{Parallelität}
+Affine Teilräume $B,C$ von $A$ heißen \textbf{parallel}, wenn gilt:
+\[U_B\le U_C \text{ oder }U_C\le U_B\]
+Schreibe: $B\parallel C$.
+\end{definition}
+
+\begin{example}
+Man denke nicht nur an parallele Geraden oder Ebenen, sondern etwa auch an Gerade $\parallel$ Ebene.
+\end{example}
+
+\begin{comment}
+\begin{enumerate}
+\item Auf den Teilräumen einer festen Dimension ist Parallelität eine Äquivalenzrelation.
+\item Aus $B\parallel C$ folgt: $(B\subseteq C) \vee (B\supseteq C) \vee (B\cap C=\emptyset)$
+\item Für alle $P\in A$ und alle affinen Teilräume $B\ne\emptyset$ existiert genau ein affiner Teilraum
+$C$ mit:
+\begin{enumerate}[(a)]
+\item $P\in C$
+\item $B\parallel C$
+\item $\dim{C}=\dim{B}$
+\end{enumerate}
+\end{enumerate}
+\end{comment}
+
+\begin{proof}
+\begin{enumerate}
+\item Leichte Übung!
+\item Sei $P\in B\cap C$ und o.B.d.A $U_B\le U_C$. Dann gilt:
+\[B=U_B+P\le U_C+P=C\]
+\item Es muss $C=U_B+P$ gelten, da aus b) und c) folgt: $U_C=U_B$
+\end{enumerate}
+\end{proof}
+
+\begin{theo}
+Sei $A$ affiner Raum mit $\dim{A}=n>1$, $G\subseteq A$ Gerade und $H$ Hyperebene in $A$.\\
+Dann gilt:
+\begin{enumerate}
+\item $G\cap H=\emptyset \implies G\parallel H$
+\item $G\not\parallel H \implies \exists P: G\cap H=\{P\}$
+\end{enumerate}
+\end{theo}
+
+\begin{comment}
+$\dim{G\cap H}\le\dim{G}=1 \implies G\cap H=\begin{cases}
+\emptyset\\
+\text{Punkt}\\
+\text{Gerade}
+\end{cases}$
+\end{comment}
+
+\begin{proof}
+\begin{enumerate}
+\item Sei $G\cap H=\emptyset$, dann ist $G\cup H$ echte Obermenge von $H$. Es gilt also:
+\[H \subsetneq G\cup H \subseteq [G\cup H]\]
+Daraus folgt für die Dimensionen:
+\begin{align*}
+&n-1=\dim H < dim[G\cup H]\le n\\
+&\implies \dim[G\cup H]=n\\
+&\implies [G\cup H]=A
+\end{align*}
+Aus der Dimensionsformel für die affine Hülle folgt:
+\begin{align*}
+n&=\dim[G\cup H]\\
+&= \dim G+\dim H -\dim(U_G\cap U_H)+1\\
+&= n-\dim(U_G\cap U_H)+1
+\end{align*}
+Daraus folgt:
+\begin{align*}
+&\dim(U_G\cap U_H)=1=\dim U_G\\
+&\implies U_G\cap U_H = U_G\\
+&\implies U_G \subseteq U_H\\
+&\implies G\parallel H
+\end{align*}
+\item Aus 1. folgt, dass $G\cap H$ nicht die leere Menge ist, wenn $G$ und $H$ nicht
+parallel sind.\\
+Sei nun $G':=G\cap H$ eine Gerade. Dann gilt:
+\begin{align*}
+&G'\subseteq G\\
+&\implies G'=G\\
+&\implies G\subseteq H\\
+&\implies G\parallel H
+\end{align*}
+Also kann $G\cap H$ auch keine Gerade sein, wenn $G$ und $H$ nicht parallel sind. Mit der
+Vorbemerkung folgt daraus, dass $G\cap H$ ein Punkt sein muss.
+\end{enumerate}
+\end{proof}
+
+\chapter{Affine Koordinaten und affine Abbildungen}
+\section{Grundbegriffe}
+\begin{definition}
+\index{affin!Koordinatensystem}\index{Koordinatensystem!affines}
+\index{Ursprung}
+\index{Koordinatenvektor}
+\index{Koordinatendarstellung}
+Sei $A$ ein affiner Raum mit Richtungs-VRm V der Dimension n.
+\begin{enumerate}[(a)]
+\item Sei $\mathcal{B}$ die Menge aller Basen von V. Ein Paar $\mathcal{K}:=(\mathcal{O},B)
+\in A\times\mathcal{B}$ heißt \textbf{affines Koordinatensystem}, wobei $\mathcal{O}$ der
+\textbf{Ursprung} heißt.
+\item  Durch die Koordinatendarstellung $D_B:V\to K^n$ zur Basis $B$ definiert:
+\[D_\mathcal{K}:A\to K^n,P\mapsto D_B(\overrightarrow{\mathcal{O}P})\]
+den \textbf{Koordinatenvektor} $D_\mathcal{K}(P)$ von P bezüglich $\mathcal{O}$.
+\item Die Abbildung $D_\mathcal{K}:A\to\mathbb{A}^n(K)$ heißt \textbf{Koordinatendarstellung}
+zum Koordinatensystem $\mathcal{K}$.
+\end{enumerate}
+\end{definition}
+
+\begin{task}
+Was entspricht Homomorphismen von VRmen bei affinen Räumen?
+\end{task}
+
+\begin{definition}
+\index{affin!Abbildung}\index{Abbildung!affine}
+\index{Morphismus!affiner Räume}
+Seien $A,B$ affine Räume mit Richtungen $V,W$.
+Eine Abbildung $\varphi:A\to B$ heißt \textbf{affine Abbildung} oder \textbf{Morphismus affiner Räume},
+falls ein $\Phi\in\Hom(V,W)$ existiert, sodass gilt:
+\[\forall x\in V,\forall P\in A: \varphi(x+P)=\Phi(x)+\varphi(P)\]
+Schreibe: $\Homaff(A,B):=\{\varphi:A\to B\mid\varphi$ affin $\}$.
+\end{definition}
+
+\begin{example}
+\begin{enumerate}
+\item  Die Identität $\id_A:A\to A$ ist affin mit zugehörigem $\Phi=\id_V$.
+\item Für \textbf{festes} $Q\in B$ ist die konstante Abbildung $\varphi_Q:A\to B,
+P\mapsto Q$ affin, mit der Nullabbildung als zugehörigem Homomorphismus.
+\end{enumerate}
+\end{example}
+
+\begin{comment}
+\begin{enumerate}
+\item $\varphi:A\to B$ mit zugehörigem $\Phi\in\Hom(V,W)$ ist genau dann affin, wenn gilt:
+\[\exists P_0\in A:\forall x\in V: \varphi(x+P_0)=\Phi(x)+\varphi(P_0)\]
+\item Ist $\varphi\in\Homaff(A,B)$, so ist der zugehörige Homomorphismus \mbox{$\Phi=:\Lambda_\varphi$}
+eindeutig bestimmt.
+\item Die Hintereinanderausführung affiner Abbildungen ist affin, d.h.:
+\[\Homaff(A,B)\times\Homaff(B,C)\to \Homaff(A,C), (\varphi,\psi)\mapsto\psi\circ\varphi\]
+\item $\varphi\in\Homaff(A,B)$ ist genau dann injektiv (bzw. surjektiv), wenn $\Lambda_\varphi$
+injektiv (bzw. surjektiv) ist.
+\item Ist $\varphi\in\Homaff(A,B)$ bijektiv, so existiert $\varphi^{-1}\in\Homaff(B,A)$.
+\end{enumerate}
+\end{comment}
+
+\begin{definition}
+\index{Isomorphismus!affiner Räume}
+\index{Affinität}
+\index{affin!Automorphismus}\index{Automorphismus!affiner}
+\index{affin!Gruppe}\index{Gruppe!affine}
+Ein bijektives $\varphi\in\Homaff(A,B)$ heißt \textbf{Isomorphismus affiner Räume} oder \textbf{Affinität}.\\
+Ist zusätzlich $A=B$, so heißt $\varphi\in\Homaff(A,A)$ \textbf{Automorphismus}. Diese Automorphismen
+bilden die Gruppe $\Autaff(A)$, genannt die \textbf{affine Gruppe} von $A$.
+\end{definition}
+
+\begin{proof}
+\begin{enumerate}
+\item Sei $P\in A$ beliebig und $y:=\overrightarrow{P_0P}$. Dann gilt für alle $x\in V$:
+\begin{align*}
+\varphi(x+P) &= \varphi(x+y+P_0)\\
+&= \Phi(x+y)+\varphi(P_0)\\
+&= \Phi(x)+\Phi(y)+\varphi(P_0)\\
+&= \Phi(x)+\varphi(y+P_0)\\
+&= \Phi(x)+\varphi(P)
+\end{align*}
+\item Sei $\varphi\in\Homaff(A,B)$ gegeben, dann gilt für alle $P\in A,x\in V$:
+\begin{align*}
+&\varphi(x+P)=\Phi(x)+\varphi(P)\\
+&\implies \Phi(x)=\overrightarrow{\varphi(P)\varphi(x+P)}
+\end{align*}
+Also ist $\Phi$ durch $\varphi$ eindeutig bestimmt.
+\item Sei $\varphi\in\Homaff(A,B)$, $\psi\in\Homaff(B,C)$. Dann gilt für alle $P\in A,x\in V$:
+\begin{align*}
+\psi\circ\varphi(x+P) &= \psi(\varphi(x+P))\\
+&= \psi(\Lambda_\varphi(x)+\varphi(P))\\
+&= \Lambda_\psi(\Lambda_\varphi(x))+\psi(\varphi(P))\\
+&= \Lambda_\psi\circ\Lambda_\varphi(x)+\psi\circ\varphi(P)
+\end{align*}
+Also ist $\psi\circ\varphi$ affin mit zugehörigem Homomorphismus $\Lambda_{\psi\circ\varphi}=
+\Lambda_\psi\circ\Lambda_\varphi$.
+\item Es gilt für $\varphi\in\Homaff(A,B)$:
+\begin{align*}
+\varphi \text{ injektiv }&\iff (\varphi(P)=\varphi(Q) \implies P=Q)\\
+&\iff (\varphi(\overrightarrow{QP}+Q)=\varphi(Q) \implies P=Q)\\
+&\iff (\Lambda_\varphi(\overrightarrow{QP})+\varphi(Q)=\varphi(Q) \implies P=Q)\\
+&\iff (\Lambda_\varphi(\overrightarrow{QP})=0 \implies \overrightarrow{QP}=0)\\
+&\iff \Lambda_\varphi \text{ ist injektiv}
+\end{align*}
+Der Beweis für Surjektivität erfolgt analog.
+\item Leichte Übung!
+\end{enumerate}
+\end{proof}
+
+\begin{theo}
+Seien $A,B$ affine Teilräume mit Richtungen $V,W$.
+Zu $(P_0,Q_0)\in A\times B$ und $\Phi\in\Hom(V,W)$ existiert genau eine affine Abbildung
+$\varphi:A\to B$ mit $\Lambda_\varphi=\Phi$ und $\varphi(P_0)=Q_0$.
+\end{theo}
+
+\begin{proof}
+Es ist $A=V+P_0$. Definiere $\varphi(x+P_0):=\Phi(x)+Q_0$, so ergibt sich nach Bemerkung 1.
+eine affine Abbildung mit $\varphi(P_0)=Q_0$. Dies legt $\varphi$ bereits eindeutig fest.
+\end{proof}
+
+\begin{theo}
+Die Koordinatenabbildung $D_\mathcal{K}:A\to\mathbb{A}^n(K)$ zu einem Koordinatensystem 
+$\mathcal{K}=(\mathcal{O},B)$ ist ein affiner Isomorphismus (mit zugehöriger linearer Abbildung
+$D_B:V\to K^n$).
+\end{theo}
+
+\begin{proof}
+Es gilt:
+\begin{align*}
+D_\mathcal{K}(x+\mathcal{O})&\stackrel{Def.}{=} D_B(x)\\
+&= D_B(x)+0\\
+&= D_B(x)+D_\mathcal{K}(\mathcal{O})
+\end{align*}
+Nach dem letzten Satz existiert genau eine affine Abbildung, die dies tut.
+Dass es sich bei $D_\mathcal{K}$ um eine Isometrie handelt, wurde bereits früher eingesehen,
+da $D_B$ Isometrie ist.
+\end{proof}
+
+\begin{corollary}
+Affine Räume über festen Körper sind genau dann isomorph, wenn ihre Dimension gleich ist.
+\end{corollary}
+
+\begin{theo}[Erhaltung von Teilräumen]
+Sei $\varphi\in\Homaff(A,B)$ und $C\subseteq A$.
+Falls $C$ affiner Teilraum  mit Richtung $U:=U_C$ ist, so ist $\varphi(C)\subseteq B$
+affiner Teilraum mit Richtung $\Lambda_\varphi(U)$.\\
+Ist $\varphi$ Isomorphismus, so gilt:
+\begin{enumerate}
+\item $C\subseteq A$ ist genau dann affiner Teilraum, wenn $\varphi(C)\subseteq B$ affiner Teilraum ist.
+\item Es gilt $\dim C = \dim \varphi(C)$ für jeden affinen Teilraum $C$.
+\item Sind $C,C'\subseteq A$ affine Teilräume, so gilt:
+\[\varphi([C\cup C'])=[\varphi(C)\cup\varphi(C')]\]
+und:
+\[\varphi(C\cap C')=\varphi(C)\cap\varphi(C')\]
+\item $C\parallel C' \implies \varphi(C)\parallel\varphi(C')$
+\end{enumerate}
+\end{theo}
+
+\begin{proof}
+Sei $\varphi\in\Homaff(A,B), P\in C$ (d.h. $C=U+P$). Nach Teilraumkriterium gilt dann:
+\[\varphi(C)=\Phi(U)+\varphi(P)\]
+Daraus folgt, dass $\varphi(C)$ affiner Teilraum ist.
+\begin{enumerate}
+\item Leichte Übung!
+\item Leichte Übung!
+\item Sogar für beliebige Teilmengen $C,C'\subseteq A$ gilt, wenn $\varphi$ bijektiv ist:
+\[\varphi(C\cap C')=\varphi(C)\cap\varphi(C')\]
+Für alle affinen Teilräume $D$, die $C\cup C'$ enhalten, gilt:
+\[\varphi(D)\supseteq\varphi(C)\cup\varphi(C')\]
+Also gilt insbesondere auch für $D:=[C\cup C']$:
+\[\varphi([C\cup C'])\supseteq\varphi(C)\cup\varphi(C')\]
+Daraus folgt (für jede affine Abbildung, also insbesondere auch für $\varphi^{-1}$):
+\[\varphi([C\cup C'])\supseteq[\varphi(C)\cup\varphi(C')]\]
+Insgesamt folgt:
+\begin{align*}
+[C\cup C']&\supseteq\varphi^{-1}([\varphi(C)\cup\varphi(C')])\\
+&\supseteq[\varphi^{-1}(\varphi(C))\cup\varphi^{-1}(\varphi(C'))]\\
+&= [C\cup C']
+\end{align*}
+Daraus folgt die Gleichheit.
+\item Leichte Übung!
+\end{enumerate}
+\end{proof}
+
+\subsection{Grundaufgaben im affinen Standartraum $\mathbb{A}_n(K)$}
+Seien $P_0,\ldots,P_m,Q_0,\ldots,Q_s\in K^n$ und $B:=[P_0,\ldots,P_m], C:=Q_0,\ldots,Q_s$
+gegeben. Ziel ist es $[B\cup C]$ und $B\cap C$ zu berechnen.\\
+
+Mit $x_i:=\overrightarrow{P_0P_i}=P_i-P_0$ gilt:
+\[B=\langle x_1,\ldots,x_m\rangle+P_0\]
+Analog gilt mit $z_j:=\overrightarrow{Q_0Q_i}=Q_i-Q_0$:
+\[C=\langle z_1,\ldots,z_s\rangle+Q_0\]
+Daraus folgt dann mit $y:=\overrightarrow{P_0Q_0}$:
+\[[B\cup C]=\langle x_1,\ldots,x_m,z_1,\ldots,z_s,y\rangle+P_0\]
+
+\begin{enumerate}
+\item Finde mit dem Gauß-Algorithmus eine Basis $\{b_1,\ldots,b_r\}$ von $U$, dann gilt:
+\[[B\cup C]=[b_1+P_0,\ldots,b_r+P_0,P_0]\]
+mit erzeugenden Punkten in allgemeiner Lage.
+\item Interpretiere $B$ als Lösungsmenge $\mathcal{L}(A,b)$ eines LGS $Ax=b$.\\
+Sei $x_0=P_0\in K^n$, dann liefert der Spezialfall $B=C$ in 1.:
+\[B=U+x_0\]
+wobei ${b_1,\ldots,b_r}$ Basis von $U$ ist.\\
+Ziel ist es nun, eine Matrix $A\in K^{n-r\times n}$ zu finden, mit $U=\Kern(\Lambda_A)$.
+Dazu betrachte die Matrix:
+\[M:=
+\begin{pmatrix}
+b_1&\cdots&b_r
+\end{pmatrix}\]
+Offensichtlich gilt $\rank(M)=r$.\\
+Betrachte nun die Rechtsmultiplikation:
+% rho groß machen?
+\[\rho_M:K^n\to K^r,y\mapsto yM\]
+Dann hat der Kern von $\rho_M$ Dimension $n-r$ und eine Basis aus Zeilenvektoren
+$\{c_1,\ldots,c_{n-r}\}$. Damit lässt sich nun die Matrix $A$ wie folgt definieren:
+\[A:=
+\begin{pmatrix}
+c_1\\
+\vdots\\
+c_{n-r}
+\end{pmatrix}\]
+Da der Rang von A offensichtlich $n-r$ ist, ist die Dimension des Kerns genau $r$, und es gilt:
+\begin{align*}
+&\forall t\in\{1,\ldots,n-r\}: c_tM=0\\
+&\iff\forall t\in\{1,\ldots,n-r\},j\in\{1,\ldots,r\}: c_t\cdot b_j=0\\
+&\iff\forall j\in\{1,\ldots,r\}: Ab_j=0
+\end{align*}
+Also ist $U$ Unterraum von $\Kern(\Lambda_A)$ und aus der Gleichheit der Dimensionen
+beider Räume folgt dann:
+\[B=\mathcal{L}(A,b)\]
+\item Durchschnittsberechnung:\\
+Finde mit Hilfe von 2. Matrizen $A,A'$ und $b,b'\in K^n$, sodass $B=\mathcal{L}(A,b),
+C=\mathcal{L}(A',b')$ ist. Dann gilt:
+\[B\cap C = \mathcal{L}(D,d)\text{ mit }D:=
+\begin{pmatrix}
+A\\
+A'
+\end{pmatrix}, d=
+\begin{pmatrix}
+b\\
+b'
+\end{pmatrix}\]
+Es genügt nun das LGS $Dx=d$ zu lösen, um $B\cap C$ zu erhalten. 
+\end{enumerate}
+
+\begin{example}
+Betrachte den affinen Raum $\mathbb{A}_3(\mathbb{F}_2)=\{0,1\}^3$. Gegeben seien die
+Ebenen:
+\begin{align*}
+&E:=\langle 
+\begin{pmatrix}
+1\\0\\0\\
+\end{pmatrix},
+\begin{pmatrix}
+0\\1\\0
+\end{pmatrix}\rangle +
+\begin{pmatrix}
+0\\0\\0
+\end{pmatrix}=[e_1,e_2,0]\\
+&F:=\langle 
+\begin{pmatrix}
+0\\0\\1\\
+\end{pmatrix},
+\begin{pmatrix}
+1\\0\\0
+\end{pmatrix}\rangle +
+\begin{pmatrix}
+1\\1\\1
+\end{pmatrix}=[e_2,e_1+e_2,e_2+e_3]
+\end{align*}
+Zur Bestimmung von $E\cap F$ werden zunächst die zu $E$ und $F$ gehörigen Gleichungssysteme
+aufgestellt:
+\begin{align*}
+&E=\{x\in\mathbb{F}_2^3\mid x_3=0\}=\mathcal{L}((0,0,1),0)\\
+&F=\Kern(\Lambda_{(0,1,0)})+
+\begin{pmatrix}
+1\\1\\1
+\end{pmatrix} = \mathcal{L}((0,1,0),1)
+\end{align*}
+Daraus folgt:
+\[E\cap F=\mathcal{L}(
+\begin{pmatrix}
+0&0&1\\
+0&1&0
+\end{pmatrix},
+\begin{pmatrix}
+0\\1
+\end{pmatrix})=\{e_2,e_1+e_2\}\]
+\end{example}
+
+\begin{theo}[Satz von Pappos]
+In einem affinen Raum $A$ mit Dimension 2 seien $G,G'$ verschiedene Geraden
+mit $G\cap G'=\{O\}\in A$. Ferner seien $P_1,P_2,P_3\in G\setminus\{O\}$
+und $Q_1,Q_2,Q_3\in G'\setminus\{O\}$, sodass gilt:
+\[ P_1Q_3\parallel P_3Q_1\text{ und }P_1Q_2\parallel P_2Q_1\]
+Daraus folgt:
+\[ P_2Q_3\parallel P_3Q_2\]
+\end{theo}
+
+\begin{proof}
+Da $Q_3\notin G$ ist, sind $O,P_1,Q_3$ in allgemeiner Lage. Daraus erhalten
+wir folgendes Koordinatensystem: 
+\[\mathcal{K}:=(O,\{\overrightarrow{OP_1},\overrightarrow{OQ_3}\})\]
+Da die Koordinatendarstellung $D_{\mathcal{K}}:A\stackrel{\sim}{\to}\mathbb{A}_2(K)$ 
+Parallelitäten und Schnittpunkte erhält, können wir o.B.d.A annehmen:
+\[A=\mathbb{A}_2(K) \text{ und }O=\begin{pmatrix}0\\0\end{pmatrix}\]
+Dann gilt:
+\begin{align*}
+&P_1=\overrightarrow{OP_1}=\begin{pmatrix}\lambda_1\\0\end{pmatrix}=\begin{pmatrix}1\\0\end{pmatrix}
+& &P_2=\begin{pmatrix}\lambda_2\\0\end{pmatrix}
+& &P_3=\begin{pmatrix}\lambda_3\\0\end{pmatrix}\\
+&Q_3=\overrightarrow{OQ_3}=\begin{pmatrix}0\\\mu_1\end{pmatrix}=\begin{pmatrix}0\\1\end{pmatrix}
+& &Q_2=\begin{pmatrix}0\\\mu_2\end{pmatrix}
+& &Q_3=\begin{pmatrix}0\\\mu_3\end{pmatrix}
+\end{align*}
+Wobei $\lambda_2,\lambda_3,\mu_2,\mu_3\ne 0$ sind. Daraus folgt für die Richtungen:
+\begin{align*}
+&\forall i,j\in \{1,2,3\}:U_{P_iQ_j}=\langle\overrightarrow{P_iQ_j}\rangle =\langle 
+\begin{pmatrix}\lambda_i\\-\mu_j\end{pmatrix}\rangle\\
+&\implies U_{P_1Q_3}=\langle \begin{pmatrix}1\\-1\end{pmatrix}\rangle
+\end{align*}
+Nach Vorraussetzung ist $\lambda_3=\mu_1$ und es existiert ein $\rho\in K^\times$, sodass gilt:
+\[ \begin{pmatrix}\lambda_2\\-\mu_1 \end{pmatrix}=\rho\begin{pmatrix}1\\-\mu_2\end{pmatrix}\]
+Daraus folgt mit $\lambda_3=\rho\mu_2=\lambda_2\mu_2$:
+\begin{align*}
+U_{P_2Q_3}&=\langle \begin{pmatrix}\lambda_2 \\-\mu_3 \end{pmatrix}\rangle\\
+&=\langle \begin{pmatrix} \lambda_2\mu_2\\-\mu_2 \end{pmatrix}\rangle\\
+&=\langle \begin{pmatrix} \lambda_3\\-\mu_2 \end{pmatrix}\rangle\\
+&= U_{P_3Q_2}
+\end{align*}
+Also sind $P_2Q_3$ und $P_3,Q_2$ parallel.
+\end{proof}
+
+\section{Koordinatenwechsel und Darstellung affiner Abbildungen}
+\begin{lemma}
+Seien $\mathcal{K}=(O,B)$ und $\mathcal{L}=(Q,C)$ Koordinatensysteme des affinen Raums
+$A$ mit Richtung $V$. Sei $M_{CB}:=D_{CB}(\id_V)$ die Basiswechselmatrix.\\
+Dann rechnen sich Koordinaten eines Punktes $P$ bzgl. $\mathcal{K}$ in die
+Koordinaten bzgl. $\mathcal{L}$ wie folgt um:
+\[D_\mathcal{L}(P)=M_{CB}\cdot(D_\mathcal{K}(P)-D_\mathcal{K}(Q)\]
+\end{lemma}
+
+\begin{proof}
+Es gilt:
+\begin{align*}
+D_\mathcal{L}(P)&=D_C(\overrightarrow{QP})\\
+&=M_{CB}\cdot D_B(\overrightarrow{QP})\\
+&=M_{CB}\cdot D_B(\overrightarrow{OP}-\overrightarrow{OQ})\\
+&=M_{CB}\cdot (D_B(\overrightarrow{OP})-D_B(\overrightarrow{OP}))\\
+&=M_{CB}\cdot(D_\mathcal{K}(P)-D_\mathcal{K}(Q)
+\end{align*}
+\end{proof}
+
+\begin{application}
+Ist ein beliebiges Koordinatensystem $\mathcal{L}=(Q,B)$ gegeben, so lässt sich ein 
+Punkt $P$ einfach in das Koordinatensystem $\mathcal{K}=(0,S)$ von $\mathbb{A}_n(K)$ 
+mit Standardbasis $S$ überführen. Schreibe dazu $B$ als:
+\[B=\begin{pmatrix}b_1&\cdots &b_n\end{pmatrix}\in K^{(n\times n)}\]
+Dann ist $M_{SB}=B$ und es gilt:
+\[D_\mathcal{L}(P)=M_{BS}(P-Q)=B^{-1}(P-Q)\]
+\end{application}
+
+\renewcommand{\indexname}{Stichwortverzeichnis}
+\printindex
+\end{document}
