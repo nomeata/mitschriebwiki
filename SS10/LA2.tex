@@ -61,19 +61,19 @@ des $K$-VRms $\Abb(V\times W,K)$ aller Abbildungen von $V\times W$ nach $K$.
 \end{comment}
 
 \begin{example}
-Auf dem Dualraum $W:=V*(=\Hom(V,K))$ ist die nicht ausgeartete Paarung
-\[P:V\times V*\to K,(v,f)\mapsto f(v)\]
+Auf dem Dualraum $W:=V^*(=\Hom(V,K))$ ist die nicht ausgeartete Paarung
+\[P:V\times V^*\to K,(v,f)\mapsto f(v)\]
 eine Bilinearform.\\
 Für eine Paarung $P:V\times W\to K$ setzen wir $\rho_w(v):=P(v,w)$ und erhalten
-so Linearformen $\rho_w\in V*$ für alle $w\in W$.
+so Linearformen $\rho_w\in V^*$ für alle $w\in W$.
 \end{example}
 
 \begin{theo}
 \begin{enumerate}
-\item Die Abbildung $\rho:W\to V*,w\mapsto \rho_w$ ist ein Homomorphismus
+\item Die Abbildung $\rho:W\to V^*,w\mapsto \rho_w$ ist ein Homomorphismus
 von $K$-VRmen.
 \item Die Zuordnung $\eta:P\to \rho$ ist ein Isomorphismus, es gilt:
-\[\mathcal{P}(V,W)\stackrel{\sim}{\to} \Hom(W,V*)\]
+\[\mathcal{P}(V,W)\stackrel{\sim}{\to} \Hom(W,V^*)\]
 \end{enumerate}
 \end{theo}
 
@@ -88,7 +88,7 @@ von $K$-VRmen.
 \end{align*}
 \item Homomorphie selbst nachrechnen!\\
 Die Umkehrabbildung ist:
-\[\Hom(W,V*)\to \mathcal{P}(V,W),\rho\mapsto P:=((v,w)\mapsto(\rho(w))(v))\]
+\[\Hom(W,V^*)\to \mathcal{P}(V,W),\rho\mapsto P:=((v,w)\mapsto(\rho(w))(v))\]
 \end{enumerate}
 \end{proof}
 
@@ -107,6 +107,197 @@ Für $v:=\sum_{i=1}^m \alpha_i b_i,w:=\sum_{j=1}^n \beta_j c_j$ gilt:
 Jede Abbildung $P':B\times C\to K$ definiert über diese Gleichung eine Paarung
 $P':V\times W\to K$. Diese heißt \textbf{bilineare Fortsetzung}.
 \end{comment}
+
+\begin{definition}
+\index{Fundamentalmatrix}
+Die Matrix $D_{BC}(P):=(P(b_i,c_j))\in K^{m\times n}$ heißt \textbf{Fundamentalmatrix}
+der Paarung $P$ bzgl. der Basen $B$ und $C$. Mit den Kkordinatenvektoren:
+\[D_B(v)=\begin{pmatrix}\alpha_1\\\vdots\\\alpha_m\end{pmatrix}\text{ und }
+D_C(w)=\begin{pmatrix}\beta_1\\\vdots\\\beta_n\end{pmatrix}\]
+gilt nach obiger Gleichung:
+\[P(v,w)=D_B(v)^T\cdot D_{BC}(P)\cdot D_C(w)\]
+\end{definition}
+
+\begin{theo}
+Eine Paarung $P$ endlichdimensionaler $K$-VRme $V,W$ mit Basen $B,C$ ist genau dann
+nicht ausgeartet, wenn die Dimensionen von $V$ und $W$ gleich und $D_{BC}(P)$ invertierbar
+ist.
+\end{theo}
+
+\begin{proof}
+Der Beweis erfolgt durch Implikation in beiden Richtungen:
+\begin{enumerate}
+\item["`$\impliedby$"'] Sei $\dim V=\dim W$ und $F:=D_{BC}(P)$ invertierbar.
+Sei nun $w\ne 0\in W$, dann ist $D_C(w)\ne 0$.\\
+Daraus folgt, dass auch $F\cdot D_C(w)$ nicht null ist. O.B.d.A sei die
+$i$-te Koordinate ungleich null. Dann gilt:
+\[P(b_i,w)=e_i^T\cdot F\cdot D_C(w)\ne 0\]
+Insbesondere ist $P(\cdot,w)\ne 0$.
+Analog folgt $P(v,\cdot)\ne 0$ für alle $0\ne v\in V$. Also ist $P$ nicht ausgeartet.
+\item["`$\implies$"'] Sei $P$ nicht ausgeartet, dann ist insbesondere $\rho:W\to V^*,
+w\mapsto \rho_w=(v\mapsto P(v,w))$ injektiv. Daraus folgt:
+\[\dim V=\dim V^*\ge \dim W\]
+Analog gilt:
+\[\dim W=\dim W^*\ge \dim V\]
+Also haben $V$ und $W$ gleiche Dimension.\\
+\textbf{Annahme:} $F$ ist nicht invertierbar.\\
+Dann existiert ein $D_C(w)\ne 0$, sodass $F\cdot D_C(w)$ gilt. Daraus folgt
+für alle $v\in V$:
+\[P(v,w)=D_B(v)^T\cdot F\cdot D_C(w)=0\ \lightning\]
+Also ist $P(\cdot,w)=0$, was einen Widerspruch zur nicht Ausgeartetheit von $P$ darstellt.
+\end{enumerate}
+\end{proof}
+
+\begin{theo}
+Seien $B,\hat B$ Basen von $V$, $C,\hat C$ Basen von $W$ und $P$ eine Paarung von
+$V$ und $W$. Dann gilt:
+\[D_{BC}(P)=D_{\hat BB}(\id_V)^T\cdot D_{\hat B\hat C}(P)\cdot D_{\hat CC}(\id_W)\]
+\end{theo}
+
+\begin{proof}
+Für $(v,w)\in V\times W$ gilt:
+\begin{align*}
+P(v,w)&=D_{\hat B}(v)^T\cdot D_{\hat B\hat C}(P)\cdot D_{\hat C}(w)\\
+&=(D_{\hat BB}(\id_V)\cdot D_B(v))^T\cdot D_{\hat B\hat C}(P)\cdot(D_{\hat CC}(\id_W)\cdot D_C(w))\\
+&=D_B(v)^T \cdot (D_{\hat BB}(\id_V)^T \cdot D_{\hat B\hat C}(P)\cdot D_{\hat CC}(\id_W))\cdot D_C(w)
+\end{align*}
+Aber es gilt auch:
+\[P(v,w)=D_B(v)^T\cdot D_{BC}(P)\cdot D_C(w)\]
+Durch einsetzen aller Basispaare $b_i,c_j$ folgt die Behauptung.
+\end{proof}
+
+\begin{comment}
+Mit der Dualbasis $B^*=\{b_1^*,\ldots,b_m^*\}$ von $V^*$ zu $B$ (erinnere:
+$b_k^*(b_i)=\delta_{ik}$) gilt für $\rho=\eta(P):W\to V^*$:
+\[\rho(c_j)=\sum_{i=1}^n P(b_i,c_j)\cdot b_i^*\]
+D.h. $D_{B^*C}(\rho)=D_{BC}(P)$.
+\end{comment}
+
+\begin{proof}
+Es gilt:
+\begin{align*}
+\rho(c_j)&=P(\cdot,c_j)\\
+&=(b_i\mapsto P(b_i,c_j))\\
+&=\sum_{i=1}^n P(b_i,c_j)\cdot b_i^*
+\end{align*}
+\end{proof}
+
+\begin{example}
+Sei $W=V^*$ und für alle $f\in V^*$ sei $P(v,f)=f(v)$. Nehme nun die Dualbasis 
+$C=B*$ zur Basis $B$ von $V$. Dann gilt:
+\[P(b_i,b_k^*)=b_k^*(b_i)=\delta{ik}\]
+Also ist $D_{BB}(P)=I_m$
+\end{example}
+
+Wir spezialisieren nun $W=V$.
+
+\begin{definition}
+\index{symmetrisch!Paarung}
+\index{Orthogonalbasis(OGB)}
+\index{Orthonormalbasis(ONB)}
+Sei $P$ eine Paarung von $V$ und $V$.
+\begin{enumerate}[(a)]
+\item $P$ heißt \textbf{symmetrisch}, falls für alle $v,w\in V$ gilt:
+\[P(v,w)=P(w,v)\]
+\item Eine Basis $B=\{b_1,\ldots,b_m\}$ heißt \textbf{Orthogonalbasis} (OGB) von $V$
+bezüglich $P$, wenn für alle $i\ne j$ gilt:
+\[P(b_i,b_j)=0\]
+\item Eine Basis $B=\{b_1,\ldots,b_m\}$ heißt \textbf{Orthonormalbasis} (ONB) von $V$
+bezüglich $P$, wenn $B$ OGB ist und für alle $i\in\{1,\ldots,m\}$ gilt:
+\[P(b_i,b_i)=1\]
+\end{enumerate}
+\end{definition}
+
+\begin{comment}
+Falls eine OGB $B$ existiert, so ist die Fundamentalmatrix $D_{BB}(P)$ diagonal, insbesondere
+symmetrisch, also ist $P$ symmetrisch.
+\end{comment}
+
+\begin{theo}
+Sei $K$ ein Körper mit $1+1\ne =$ und $P$ eine symmetrische Bilinearform auf einem
+$K$-VRm $V$ mit $\dim V=:n<\infty$. Dann existiert eine OGB von $V$ bzgl. $P$.
+\end{theo}
+
+\begin{proof}
+Der beweis erfolgt durch vollständige Induktion nach der Dimension $n$.\\
+Für $n=1$ ist die Behauptung offensichtlich wahr, nehmen wir also als Induktionsvoraussetzung an,
+dass sie für $n-1$ erfüllt sei.\\
+Da für $P=0$ jede Basis Orthogonalbasis ist, lässt sich im Folgenden o.B.d.A annehmen,
+dass $P\ne 0$ ist. Also existieren $v,w\in V$ mit $P(v,w)\ne 0$, es gilt:
+\begin{align*}
+P(v+w,v+w)&=P(v,v)+P(w,w)+P(v,w)+P(w,v)\\
+&= P(v,v)+P(w,w)+2P(v,w)
+\end{align*}
+Daraus folgt:
+\[P(v,v)\ne 0 \vee P(w,w)\ne 0 \vee P(v+w,v+w)\ne 0\]
+Also existiert ein $b_1\in V$ mit $P(b_1,b_1)\ne 0$. Nun betrachte:
+\begin{align*}
+W&:=\{v\in V\mid P(v,b_1)=0\}\\
+&=\Kern(P(\cdot,b_1))
+\end{align*}
+Nach Dimensionsformel ist $\dim W=n-1$ und $V=K\cdot b_1 \oplus W$. Da die 
+Einschränkung $P|_{W\times W}$ symmetrisch ist, existiert nach Induktionsvoraussetzung
+eine OGB $\{b_2,\ldots,b_n\}$ von $W$ bzgl. $P|_{W\times W}$.\\
+Da außerdem für alle $w\in W$ $P(w,b_1)=0$ ist, ist
+$\{b_1,\ldots,b_n\}$ OGB von $V$ bzgl. $P$.
+\end{proof}
+
+\begin{comment}
+\index{Fourierformel}
+Die Basisdarstellung bzgl. eine ONB $B$ lautet:
+\[v=\sum_{b\in B}P(v,b)\cdot b\]
+\end{comment}
+
+\begin{proof}
+Leichte Übung!
+\end{proof}
+
+\section{Multilineare Abbildungen}
+Veralgemeinere nun die Bilinearität und den Zielbereich.
+
+\begin{definition}
+\index{multilinear}
+Seien $V_1,\ldots,V_n,W$ $K$-VRme und $M:V_1\times\ldots\times V_n\to W$ eine Abbildung.\\
+$M$ heißt \textbf{(n-fach) multilinear}, falls für jedes $i\in\{1,\ldots,n\}$ bei fester
+Wahl von $v_j\in V_j$ (für alle $j\ne i$) $M(v_1,\ldots,v_{i-1},\cdot,v_{i+1},\ldots,v_n):V_i\to W$
+eine lineare Abbildubg ist.
+\end{definition}
+
+\begin{example}
+Multilineare Abbildungen sind:
+\begin{enumerate}
+\item Die Determinantenabbildung:
+\[\det:K^n\times\ldots\times K^n\to K\]
+\item Die Skalarmultiplikation:
+\[K\times V\to V,(\lambda,v)\mapsto \lambda\cdot v\]
+\item Die Matrizenmultiplikation:
+\[K^{p\times q}\times K^{q\times r}\times K^{r\times s}\to K^{p\times s},(A,B,C)\mapsto A\cdot B\cdot C\]
+\end{enumerate}
+\end{example}
+
+\section{Tensorprodukte}
+\begin{definition}
+\index{universell!Abbildungseigenschaft (UAE)}\index{Abbildungseigenschaft!universelle (UAE)}
+Seien $V,W$ $K$-VRme. Eine $K$-VRm $T$ mit einer bilinearen Abbildung $\tau:V\times W\to T$
+heißt ein \textbf{Tensorprodukt} von $V$ und $W$, falls $\tau$ die folgende 
+\textbf{universelle Abbildungseigenschaft} (UAE) erfüllt:\\
+Zu jedem $K$-VRm $U$ und jeder bilinearen Abbildung $\beta:V\times W\to U$ existiert
+genau eine lineare Abbildung $\Phi_\beta:T\to U$ derart, dass $\beta=\Phi_\beta\circ \tau$.\\
+Schreibe: $T=:V\otimes_K W,\tau(v,w)=:v\otimes w$
+\end{definition}
+
+\begin{comment}
+\begin{enumerate}
+\item Falls $T$ existiert, so hat man eine Bijektion:
+\[\Bil(V\times W,U)\stackrel{\sim}{\to}\Hom(T,U),\beta\mapsto\Phi_\beta\]
+\item Sind $(T_1,\tau_1),(T_2,\tau_2)$ Tensorprodukte von $V$ und $W$, so existiert genau 
+ein Isomorphismus $\Phi:T_1\to T_2$ mit $\tau_2=\Phi\circ\tau_1$.
+\end{enumerate}
+\end{comment}
+
+\begin{task}
+Beweise die Existenz von Tensorprodukten.
+\end{task}
 
 \setcounter{chapter}{18}
 \chapter{Isometrien}
