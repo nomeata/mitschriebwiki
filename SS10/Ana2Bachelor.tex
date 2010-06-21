@@ -2113,6 +2113,199 @@ konvergiert in $z=-1$.
 haben jeweils KR $r=\infty$ (siehe 16.3).
 \end{beispiele}
 
+\chapter{Normierte Räume, Banachräume, Fixpunktsatz}
+In diesem Paragraphen sei $\mathbb{K}$ stets gleich $\mathbb{R}$ oder $\mathbb{C}$
+und sei $X$ ein Vektorraum (VR) über $\mathbb{K}$.
+
+\begin{definition}
+\index{Norm}
+\index{normiert!Raum}\index{Raum!normierter}
+Eine Abbildung $\|\cdot\|:X\to\mathbb{R}$ heißt genau dann eine \textbf{Norm} auf $X$,
+wenn folgendes erfüllt ist:
+\begin{enumerate}
+\item $\forall x\in X: \|x\|\ge0 \text{ und } \|x\|=0\iff x=0$
+\item $\forall x\in X,\alpha\in\mathbb{K}:\|\alpha x\|=|\alpha|\cdot\|x\|$
+\item $\forall x,y\in X: \|x+y\|\le \|x\|+\|y\|$
+\end{enumerate}
+In diesem Fall heißt $(X,\|\cdot\|)$ ein \textbf{normierter Raum} (NR).
+\end{definition}
+
+\begin{beispiele}
+\index{euklidisch!Norm}\index{Norm!euklidische}
+\item Sei $n\in\mathbb{N},X=\mathbb{K}^n$ und für $x=(x_1,\ldots,x_n)\in X$
+die \textbf{euklidische Norm} gegeben:
+\[\|x\|_2:=\sqrt{\sum_{j=1}^n |x_j|^2}\]
+Dann ist $(\mathbb{K}^n,\|\cdot\|_2)$ ein normierter Raum (vgl. §1).
+\item Sei $X=C[a,b]$ und für $f\in X$ seien die folgenden Normen gegeben:
+\begin{align*}
+&\|f\|_1:=\int_a^b|f(x)|\text{ d}x\\
+&\|f\|_2:=\sqrt{\int_a^b|f(x)|^2\text{ d}x}\\
+&\|f\|_\infty:=\max\{|f(x)|:x\in[a,b]\}
+\end{align*}
+Leichte Übung: $(X,\|\cdot\|_1),(X,\|\cdot\|_2)$ und $(X,\|\cdot\|_\infty)$
+sind NRe.
+\item Sei $K\subseteq \mathbb{R}^n$ kompakt, $X:=C(K,\mathbb{R}^m)$ und sei für
+$f\in X$ die Norm
+\[\|f\|_\infty:=\max\{\|f(x)\|:x\in K\}\]
+Leichte Übung: $(X,\|\cdot\|_\infty)$ ist ein NR.
+\end{beispiele}
+
+Für den Rest dieses Paragraphen sei $X$ stets ein NR mit Norm $\|\cdot\|$.
+
+\begin{bemerkung}
+Wie in §1 zeigt man die umgekehrte Dreiecksungleichung:
+\[\forall x,y\in X:|\|x\|-\|y\||\le\|x-y\|\]
+\end{bemerkung}
+
+\begin{definition}
+\index{Konvergenz}
+\index{Divergenz}
+\index{Grenzwert}
+\index{Limes}
+\index{Cauchyfolge}
+\index{offen}
+\index{abgeschlossen}
+\begin{enumerate}
+\item Sei $(x_n)$ eine Folge in $X$. $(x_n)$ heißt genau dann \textbf{konvergent},
+wenn ein $x_0\in X$ existiert für das gilt:
+\[\|x_n-x_0\|\stackrel{n\to\infty}\to 0\]
+In diesem Fall ist $x_0$ eindeutig bestimmt und man schreibt $x_n\stackrel{n\to\infty}\to x_0$
+oder $\lim_{n\to\infty} x_n=x_0$. $x_0$ heißt \textbf{Grenzwert} oder \textbf{Limes}
+von $(x_n)$.
+\item $(x_n)$ heißt genau dann \textbf{divergent}, wenn $(x_n)$ nicht konvergent ist.
+\item $(x_n)$ heißt genau dann eine \textbf{Cauchyfolge} (CF), wenn gilt:
+\[\forall\ep>0 \exists n_0=n_0(\ep)\in\MdN:\|x_n-x_m\|<\ep\ \forall n,m\ge n_0\]
+\item Sei $x_0\in X$ und $\delta>0$. Definiere:
+\[U_\delta(x):=\{x\in X\mid \|x-x_0\|<\delta\}\]
+\item Sei $A\subseteq X$. $A$ heißt \textbf{offen}, genau dann wenn gilt:
+\[\forall x\in A\exists \delta=\delta(x)>0: U_\delta(x)\subseteq A\]
+A heißt \textbf{abgeschlossen}, genau dann wenn $X\setminus A$ offen ist.
+\end{enumerate}
+\end{definition}
+
+\begin{satz}[Eigenschaften von Folgen in normierten Räumen]
+\index{Beschränktheit}
+\index{gleichmäßig!Konvergenz}\index{Konvergenz!gleichmäßige}
+Seien $(x_n),(y_n)$ Folgen in $X$, $(\alpha_n)$ Folge in $\mathbb{K}$, $x,y\in X$ und
+$A\subseteq X$.
+\begin{enumerate}
+\item Gilt $x_n\to x,y_n\to y$ und $\alpha_n\to\alpha\in\mathbb{K}$, so folgt:
+\begin{align*}
+&x_n+y_n\to x+y& &\alpha_n x_n\to\alpha x& &\|x_n\|\to\|x\|
+\end{align*}
+D.h. die Addition und Skalarmultiplikation sind stetig.
+\item Ist $(x_n)$ konvergent, so ist $(x_n)$ \textbf{beschränkt}, d.h.:
+\[\exists c\ge 0:\forall n\in\MdN:\|x_n\|\le c\]
+und $(x_n)$ ist eine CF.
+\item Genau dann wenn $A$ abgeschlossen ist, gilt für jede konvergente Folge $(x_n)$ in $A$:
+\[\lim_{n\to\infty}x_n\in A\]
+\item Sei $(X,\|\cdot\|_\infty)$ wie in obigem Beispiel (3). Dann gilt für
+$(f_n)$ in $X$ und $f\in X$, dass $(f_n)$ genau dann auf $K$ \textbf{gleichmäßig} gegen $f$ 
+\textbf{konvergiert}, wenn gilt:
+\begin{align*}
+&\|f_n-f\|_\infty \stackrel{n\to\infty}{\to}0\\
+:\iff &\forall\ep>0\exists n_0\in\MdN:\|f_n(x)-f(x)\|<\ep\ \forall n\ge n_0\forall x\in K
+\end{align*}
+\end{enumerate}
+\end{satz}
+
+\begin{beweise}
+\item Wie im $\MdR^n$.
+\item Wie im $\MdR^n$.
+\item Wie im $\MdR^n$.
+\item In der großen Übung.
+\end{beweise}
+
+\begin{beispiel}
+Sei $X=C[-1,1]$ mit $\|f\|_2:=\sqrt{\int_{-1}^1 |f(x)|^2\text{ d}x}$. Definiere die
+Folge $(f_n)$ wie folgt:
+\[\forall n\in\MdN: f_n(x)=
+\begin{cases}
+-1&,-1\le x\le -\frac1n\\
+nx&,-\frac1n\le x\le \frac1n\\
+1&,\frac1n\le x\le 1
+\end{cases}\]
+Dann ist klar, dass $f_n\in X$ für alle $n\in\MdN$. In den großen Übungen wird gezeigt:
+\begin{enumerate}
+\item $(f_n)$ ist eine CF in $X$.
+\item Es existiert \textbf{kein} $f\in X$ mit $\|f_n-f\|_2\to 0$
+\end{enumerate}
+\end{beispiel}
+
+\begin{definition}
+\index{Banachraum}
+\index{vollständig!Raum}\index{Raum!vollständiger}
+$X$ heißt ein \textbf{Banachraum} oder \textbf{vollständig}, genau dann wenn jede
+CF in $X$ einen Grenzwert in $X$ hat.
+\end{definition}
+
+\begin{beispiele}
+\item Sei $X=\mathbb{K}^n, \|x\|_2=\sqrt{\sum_{j=1}^n |x_j|^2}$. Dann folgt aus §2,
+dass $(X,\|\cdot\|_2)$ ein BR ist.
+\item Sei $X=C[-1,1], \|f\|_2=\sqrt{\int_{-1}^1 |f(x)|^2 \text{ d}x}$. Dann ist
+$(X,\|\cdot\|_2)$ \textbf{kein} BR.
+\item Sei $(X,\|\cdot\|_\infty)$ wie in 17.1(4). In den großen Übungen wird gezeigt,
+dass $(X,\|\cdot\|_\infty)$ ein BR ist.
+\end{beispiele}
+
+\begin{satz}[Banachscher Fixpunktsatz]
+\index{Kontraktion}
+\index{Folge!der sukzessiven Approximationen}\index{sukzessive Approximationen!Folge der}
+Sei $(X,\|\cdot\|)$ ein BR, $\emptyset\ne A\subseteq X$ sei abgeschlossen und es sei
+$F:A\to X$ eine Abbildung mit:
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\begin{enumerate}
+\item $F(A)\subseteq A$
+\item $F$ ist eine \textbf{Kontraktion}, d.h.:
+\[\exists L\in[0,1):\forall x,y\in A:\|F(x)-F(y)\|\le L\cdot \|x-y\|\]
+\end{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+Dann existiert genau ein $x^*\in A$ mit $F(x^*)=x^*$.\\
+Ist $x_0\in A$ beliebig und $(x_n)$ definiert durch $x_{n+1}:=F(x_n)\ (n\ge 0)$,
+so ist $x_n\in A$ für alle $n\in\MdN$ und es gilt:
+\[x_n\stackrel{n\to\infty}\to x^*\]
+Weiter gilt für alle $n\in\MdN$:
+\[\|x_n-x^*\|\le\frac{L^n}{1-L}\|x_1-x_0\|\]
+Diese Folge heißt Folge der \textbf{sukzessiven Approximationen}.
+\end{satz}
+
+\begin{beweis}
+Sei $x_0\in A$ und $(x_n)$ wie oben definiert. Es gilt:
+\[\|x_2-x_1\|=\|F(x_1)-F(x_2)\|\le L\cdot \|x_1-x_0\|\]
+Induktiv lässt sich zeigen:
+\[\forall k\in\MdN_0: \|x_{k+1}-x_k\|\le L^k\cdot \|x_1-x_0\|\]
+Seien nun $m,n\in\MdN$ und $m>n$, dann gilt:
+\begin{align*}
+\|x_m-x_n\| &= \|(x_m-x_{m-1})+\ldots+(x_{n+1}-x_n)\|\\
+&\le \|x_m-x_{m-1}\|+\ldots+\|x_{n+1}-x_n\|\\
+&\le L^{m-1}\|x_1-x_0\|+\ldots+L^n\|x_1-x_0\|\\
+&=(L^{m-1}+\ldots+L^n)\cdot \|x_1-x_0\|\\
+&= L^n(1+\ldots+L^{m-n-1})\cdot \|x_1-x_0\|\\
+&\le L^n(\sum_{j=0}^\infty L^j)\cdot \|x_1-x_0\|\\
+&= \frac{L^n}{1-L}\|x_1-x_0\|
+\end{align*}
+Also ist $(x_n)$ eine CF. Da $X$ außerdem $BR$ ist, existiert ein $x^*\in X$ mit
+$x_n\to x^*$. Wegen $(x_n)\subseteq A$ und $A$ abgeschlossen ist außerdem $x^*\in A$.\\
+Festes $n$ und $m\to\infty$ liefert aus obiger Gleichung:
+\[\forall n\in\MdN:\|x_n-x^*\|\le \frac{L^n}{1-L}\|x_1-x_0\|\]
+Für $F(x^*)$ gilt also:
+\begin{align*}
+\|F(x^*)-x^*\| &= \|F(x^*)-x_{n+1}+x_{n+1}-x^*\|\\
+&\le \|F(x^*)-x_{n+1}\|+\|x_{n+1}-x^*\|\\
+&=\|F(x^*)-F(x_n)\|+\|x_{n+1}-x^*\|\\
+&\le L\|x^*-x_n\|+\|x_{n+1}-x^*\|\stackrel{n\to\infty}\to 0
+\end{align*}
+Daraus folgt:
+\[\|F(x^*)-x^*\| = 0\iff F(x^*)=x^*\]
+Sei nun $z\in A$ und $F(z)=z$. Es gilt:
+\begin{align*}
+&\|x^*-z\|=\|F(x^*)-F(z)\| \le L\|x^*-z\|\\
+\implies &(1-L)\|x^*-z\| \le 0\\
+\implies &x^*=z
+\end{align*}
+Also ist $x^*$ eindeutig.
+\end{beweis}
+
 \appendix
 \chapter{Satz um Satz (hüpft der Has)}
 \listtheorems{satz,wichtigedefinition}
@@ -2138,5 +2331,6 @@ haben jeweils KR $r=\infty$ (siehe 16.3).
 \textbf{§ 14: Stammfunktionen}: Joachim Breitner und Ines Türk\\
 \textbf{§ 15: Vorgriff auf Analysis III}: Rebecca Schwerdt\\
 \textbf{§ 16: Folgen, Reihen und Potenzreihen in $\MdC$}: Rebecca Schwerdt\\
+\textbf{§ 17: Normierte Räume, Banachräume, Fixpunktsatz}: Rebecca Schwerdt\\
 
 \end{document}
