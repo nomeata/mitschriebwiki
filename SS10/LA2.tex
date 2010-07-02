@@ -2195,11 +2195,223 @@ f(X_{1},\ldots,X_{n})=\sum_{i_{1},\ldots,i_{n}\in\mathbb{N}}{\alpha_{i_{1},\ldot
 \sum_{\underline{i}\in\mathbb{N}^{n}}{\alpha_{\underline{i}}\cdot\underline{X}^{\underline{i}}}
 \]
 
-\(\underline{i}\) hei\ss t \emph{Multiindex}.
+\(\underline{i}\) hei\ss t \textbf{Multiindex}.
 \begin{definition}
-F\"ur \(\underline{i}\in\mathbb{N}^{n}\) sei \(|\underline{i}|:=i_{1}+\ldots+i_{n}\) der \emph{Grad} von \(\underline{X}^{\underline{i}}\).\\
-Der \emph{(Gesamt-)Grad} von \(f\) ist \(\deg(f):=\max\{|\underline{i}|:\alpha_{\underline{i}}\neq0\}\).
+F\"ur \(\underline{i}\in\mathbb{N}^{n}\) sei \(|\underline{i}|:=i_{1}+\ldots+i_{n}\) der \textbf{Grad} von \(\underline{X}^{\underline{i}}\).\\
+Der \textbf{(Gesamt-)Grad} von \(f\) ist \(\deg(f):=\max\{|\underline{i}|:\alpha_{\underline{i}}\neq0\}\).
 \end{definition}
+
+Wunsch: Beschreibe die Nullstellenmenge
+\(\mathcal{N}(f):=\{x=(x_{1},\dots,x_{n}\in K^{n}\mid f(x_{1},\dots,x_{n})=0\}\)
+f\"ur ein Polynom \(f\) mit \(\deg(f)=2\).
+
+\begin{comment}
+Den Fall eines oder mehrerer Polynome vom Grad 1 erledigt die lineare Algebra.
+Mehrere Polynome vom Grad \(\geq 2\) behandelt die \textbf{Kommutative Algebra 
+und algebraische Geometrie}.
+\end{comment}
+
+% Hier noch eine passende Umgebung definieren damit es am Ende auch schoen 
+% aussieht
+%\begin{vorarbeit}
+\paragraph{Vorarbeit:} Klassifiziere die Menge \(\mathcal{N}(f)\) durch
+Klassifizierung der Polynome. (Erinnerung: Klasseneinteilung entspricht einer
+\"Aquivalenzrelation)
+
+Dazu sei \(G\leq\Autaff(K^{n})\) (Untergruppe).
+
+Definiere hiermit eine \"Aquivalenzrelation auf Polynomen bzw. auf Teilmengen
+\(T\subseteq K^{n}\).
+\begin{align*}
+f_{1}\approx_{G}f_{2}&:\Longleftrightarrow\exists\mu\in K^{\times}\exists\varphi
+\in G:\,f_{2}=\mu\cdot (f_{1}\circ\phi)\\
+M_{1}\sim_{G}M_{2}&:\Longleftrightarrow\exists\varphi\in G:\,M_{2}=\varphi(M_{1})
+\end{align*}
+Klar: \(f_{1}\approx_{G}f_{2}\implies\mathcal{N}(f_{1})\sim_{G}\mathcal{N}(f_{2})\)
+%\end{vorarbeit}
+
+% Fuer sowas wie das Ziel auch eine Umgebung?
+\paragraph{Ziel:} Klassifiziere die Polynome f\"ur spezielle \(G\).
+\begin{itemize}
+\item Affine Klassifikation (f\"ur Char(K)\(\neq 2\)): 
+\[
+G=\Autaff(K^{n})=\{\varphi=(A,b)\mid A\in\GL_{n}(K),b\in K^{n}\}
+\]
+\item Euklidische Klassifikation: 
+\[
+G=\Autaff(\mathbb{R}^{n})=\{(A,b)\mid A\in O_{n},b\in\mathbb{R}^{n}\}
+\]
+\end{itemize}
+
+Sei nun Char(K)\(\neq 2\).
+
+% Hierfuer auch eine eigene Umgebung?
+\paragraph{Vorbereitung:} Jedes Polynom \(f\) mit \(\deg(f)=2\) hat die Form
+\[
+f(X_{1},\dots,X_{n})=\sum_{i,j=1}^{n}{\alpha_{ij}X_{i}X_{j}}+2\sum_{i=1}^{n}{\beta_{i}X_{i}}+\gamma
+\]
+mit einer symmetrischen Matrix \(A=(\alpha_{ij})\neq 0,\,b=\begin{pmatrix}\beta_{1}\\\vdots\\\beta_{n}\end{pmatrix}\in K^{n},\,y\in K\).
+
+\begin{proof}(Symmetrie von A)\\
+Falls \(A\) nicht symmetrisch ist, ersetze \(A\) durch 
+\[
+\frac{1}{2}\left(A+A^{\top}\right)=:A'
+\]
+\end{proof}
+
+Beachte: F\"ur \(x=\begin{pmatrix} x_{1}\\\vdots\\ x_{n}\end{pmatrix}\in K^{n}\)
+gilt
+\[
+f\left(x^{\top}\right)=x^{\top}Ax+2b^{\top}x+\gamma
+\]
+mit \(A^{\top}=A\).
+
+\(Q:=\mathcal{N}(f)\) hei\ss t \textbf{affine Quadrik}.
+\begin{lemma}
+F\"ur \(f\) wie oben und \(\varphi=(C,d)\in\Autaff(K^{n})\) sei 
+\(g(y):=(f\circ\varphi)(y)\). Dann ist
+\[
+g(y)=y^{\top}A'y+2b'^{\top}y+\gamma'
+\]
+wobei \(A':=C^{\top}AC,\,b':=C^{\top}(Ad+b),\,\gamma':=f(d)\).
+\end{lemma}
+\begin{proof}
+\begin{align*}
+f\left(\varphi(y)\right)&=f(Cy+d)\\
+&=\underbrace{(Cy+d)^{\top}}_{y^{\top}C^{\top}+d^{\top}}A(Cy+d)+2b^{\top}(Cy+d)+\gamma\\
+&=y^{\top}\underbrace{C^{\top}AC}_{=:A'}y+d^{\top}ACy+
+    \underbrace{\overbrace{y^{\top}C^{\top}Ad}}^{\in K^{1\times 1}}_{=d^{\top}A^{\top}Cy = d^{\top}ACy}
+    +2b^{\top}Cy+\underbrace{d^{\top}Ad+2b^{\top}d+\gamma}_{=:\gamma'}\\
+&=y^{\top}A'y+2b'^{\top}y+\gamma'
+\end{align*}
+\end{proof}
+
+\textbf{Prinzip der Klassifikation:} Zu gegebenem \(f\) finde \((C,d)\), so 
+da\ss \ \(A',\,b",\,\gamma'\) eine einfache, \"ubersichtliche ``Normalform''
+annehmen.
+
+\begin{comment}
+\(\vp\) bewirkt Wechsel des Koordinatensystems \(y=\vp^{-1}(x)=D_{\mathcal{L}}(x)\).
+\(y\) beschreibt \(Q=\mathcal{N}(f)\) im Koordinatensystem \(\mathcal{L}\).
+\end{comment}
+\begin{theo}%(von der quadratischen Erg\"anzung)
+Sei \(A\in K^{n\times n}\) symmetrisch vom Rang \(r\) und 
+\(\text{Char}(K)\neq 2\). Dann existiert \(C\in\GL_{n}(K)\) so da\ss \ 
+\[
+C^{\top}AC=\diag(\alpha_{1},\ldots,\alpha_{r},0,\ldots,0)
+\]
+\end{theo}
+\begin{proof}
+Sei \(A=(\alpha_{ij})\) mit \(\alpha_{ij}=\alpha_{ji}\) f\"ur alle \(i,j\).\\
+Nutze eine Variante des Gau\ss algorithmus; es gen\"ugt Diagonalgestalt zu 
+erreichen, den Rest erledigen Vertauschungsmatrizen \(V_{ij}\).
+
+\(\nu\)-ter Schritt: Angenommen die Zeilen (Spalten) mit einer Nummer kleiner
+\(\nu\) haben die gew\"unschte Form. Dann ist:
+\[
+A_{\nu}:=
+    \begin{pmatrix}
+    *& & &0& & \\
+     &\ddots& & &\ddots& \\
+     & &*& & &0\\
+    0& & &*&\cdots&* \\
+     &\ddots& &\vdots&\ddots&\vdots\\
+     & &0&*&\cdots&*\\
+    \end{pmatrix}
+\]
+Unterscheide folgende F\"alle:
+\begin{enumerate}
+\item \(\alpha_{\nu\nu}\neq 0\):\\
+Mache Zeilenumformung: Subtrahiere Vielfaches
+der \(\nu\)-ten Zeile von der unteren Zeile, so da\ss \ dort die \(\nu\)-te 
+Spalte Null wird.\\
+Dies geht mit
+\[
+C':=I-\sum_{k=\nu+1}^{n}{\frac{\alpha_{k\nu}}{\alpha_{\nu\nu}}E_{k\nu}}:\quad
+C'A_{\nu}=(\beta_{ij})
+\]
+mit \(\beta_{\nu+1,\nu}=\ldots =\beta_{n}=0\). Die \(\nu\)-te Zeile ist 
+\(\beta_{\nu j}=\alpha_{\nu j}\left(=\alpha_{j\nu}\right)\).
+\item \(\alpha_{\nu\nu}=0,\,\alpha_{kk}\neq 0\) f\"ur ein \(k>\nu\):\\
+Bilde \(A'_{\nu}:=V_{\nu k}A_{\nu}V_{\nu k}\), dann weiter wie in Fall 1.
+\item \(\alpha_{kk}=0\) f\"ur \(k=\nu,\ldots,n\):\\
+Ist \(\alpha_{k\nu}=0\,\forall k\geq\nu\), so ist bereits \(A_{\nu}\) diagonal
+bis Zeile \(\nu\).\\
+Sonst sei \(\beta:=\alpha_{k\nu}\neq0\) f\"ur ein \(k>\nu\)
+(addiere die \(k\)-te Zeile zur \(\nu\)-ten).
+Nutze die Additionsmatrix \(T:=A_{\nu k}(1)=I+E_{\nu k}\) mit
+\(T^{\top}=I+E_{k\nu}\).\\
+Dann folgt \(A'_{\nu}:=TA_{\nu}T^{\top}\) hat \(\alpha'_{\nu\nu}=2\beta\neq0\)
+(da Char\((K)\neq2\)). Fahre fort wie in Fall 1.
+\end{enumerate}
+\end{proof}
+Vorsicht: Die \(\alpha_{1},\ldots,\alpha_{n}\) sind im allgemeinen nicht eindeutig.
+\begin{theo}
+Sei \(A\in K^{n\times n}\) symmetrisch vom Rang \(r\).
+\begin{enumerate}
+\item F\"ur \(K=\mathbb{C}\) existiert \(C\in\GL_{n}(\mathbb{C})\) mit
+\[
+C^{\top}AC=\diag(\underbrace{1,\ldots,1}_{r},0,\ldots,0)
+\]
+\item F\"ur \(K=\mathbb{R}\) existiert \(C\in\GL_{n}(\mathbb{R})\) mit
+\[
+C^{\top}AC=\diag(\underbrace{1,\ldots,1}_{p},\underbrace{-1,\ldots,-1}_{q},0,\ldots,0)
+\]
+wobei \(p,q\) durch \(A\) eindeutig bestimmt sind (``Tr\"agheitssatz von 
+Sylvester'').
+\end{enumerate}
+\end{theo}
+\begin{proof}
+\begin{enumerate}
+\item Nach dem vorherigen Satz mit \(D:=\diag(\beta_{1},\ldots,\beta_{r},0,\ldots,0)\).\\
+Weiteres umformen liefert:
+\[
+D^{\top}\cdot\diag(\alpha_{1},\ldots,\alpha_{r},0,\ldots,0)\cdot D=
+\diag(\beta_{1}^{2}\alpha_{1},\ldots,\beta_{r}^{2}\alpha_{r},0,\ldots,0)
+\]
+Falls \(\beta_{i}\) Nullstelle von \(X^{2}-\frac{1}{\alpha_{i}}\) ist, existiert
+in \(\mathbb{C}\) immer in eine Diagonalmatrix \(\diag(1,\ldots,1,0,\ldots,0)\).
+\item \"Ahnlich f\"ur \(\mathbb{R}\). Vorzeichen ber\"ucksichtigen
+
+Restbehauptung: \(p\) ist eindeutig bestimmt durch \(A\)\\
+Behauptung: \(p=\max\left\{\dim U\mid U\leq\mathbb{R}^{n}\text{ mit } \left.
+s_{A}\right|_{U}\text{ positiv definit}\right\}\) wobei 
+\(s_{A}(x,y):=\langle Ax,y\rangle\).\\
+Sei anderes \(C'\) mit zugeh\"origem \(p',\,q'\). Setze
+\begin{align*}
+b_{i}&:=Ce_{i}\\
+b'_{i}&:=C'e_{i}\\
+U&:=\langle b_{1},\ldots,b_{p}\rangle\\
+U'&:=\langle b'_{1},\ldots,b'_{p'}\rangle\\
+V&:=\langle b_{p+1},\ldots,b_{p+q}\rangle\\
+V'&:=\langle b'_{p'+1},\ldots,b'_{p'+q'}\rangle\\
+\end{align*}
+Dann sind \(\left.s_{A}\right|_{U},\,\left.s_{A}\right|_{U'},\,\left.-s_{A}\right|_{V},\,\left.-s_{A}\right|_{V'}\) positiv definit.
+
+F\"ur \(W:=\Kern(\Lambda_{A})=\langle b_{r+1},\ldots,b_{n}\rangle =\langle b'_{r+1},\ldots,b'_{n}\rangle\) gilt
+\[
+\mathbb{R}^{n}=U\oplus V\oplus W=U'\oplus V'\oplus W
+\]
+Damit folgt
+\[
+U\cap(V'\oplus W)=0,
+\]
+denn 
+\begin{align*}
+\forall x\in U\cap(V'\oplus W): s_{A}(x,x)\geq 0,s_{A}(x,x)\leq 0&\implies
+s_{A}(x,x)=0\\
+&\implies x=0
+\end{align*}
+Damit folgt \(p=\dim U\leq\dim U'=p'\), da 
+\begin{align*}
+\dim U'+\dim(V'+W)&=n\\
+&\geq\dim(U+V'+W)\\
+&=\dim(U\oplus V'+W)\\
+&=\dim U + \dim (V'+W)
+\end{align*}
+Aus Symmetriegr\"unden folgt \(p=p'\).
+\end{enumerate}
+\end{proof}
 
 \renewcommand{\indexname}{Stichwortverzeichnis}
 \printindex
