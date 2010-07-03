@@ -732,6 +732,197 @@ Daraus folgt:
 \end{align*}
 \end{proof}
 
+\section{Der Spektralsatz}
+\index{Spektralsatz}\index{Spektrum}
+
+\begin{proposition}
+Sei \(\phi\in\End^{a}(V)\)
+\begin{enumerate}
+\item F\"ur \(\lambda,\mu\in\Spec(\phi)\) mit \(\lambda\neq\mu\) gilt:
+\[
+E_{\lambda}(\phi)\bot E_{\mu}(\phi)
+\]
+\item Folgende Aussagen sind \"aquivalent:
+    \begin{enumerate}
+    \item\(\phi\circ\phi^{*}=\phi^{*}\circ\phi\)
+    \item\(\forall x,y\in V:\,\langle\phi(x),\phi(y)\rangle=\langle\phi^{*}(x),\phi^{*}(y)\rangle\)\\
+    \(\phi\) hei\ss t \textbf{normal}.
+    \end{enumerate}
+\item Ist \(\phi\) normal, dann folgt \(\Kern(\phi)=\Kern(\phi^{*})\), 
+insbesondere \(E_{\lambda}(\phi)=E_{\overline{\lambda}}(\phi^{*})\).
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+\item Seien \(u\in E_{\lambda}(\phi),\,v\in E_{\mu}(\phi)\). Dann gilt
+\begin{align*}
+\lambda\cdot\langle u,v\rangle&=\langle\lambda u,v\rangle\\
+&=\langle\phi(u),v\rangle\\
+&=\langle u,\phi^{*}(v)\rangle\\
+&=\langle u,\overline{\mu}v\rangle\\
+&=\mu\langle u,v\rangle\\
+\end{align*}
+Mit \(\lambda\neq\mu\) folgt \(\langle u,v\rangle=0\)
+\end{enumerate}
+\end{proof}
+
+\begin{theo}[Spektralsatz]
+Sei \(\dim V<\infty,\,\langle\cdot,\cdot\rangle\) Skalarprodukt mit 
+\(\phi\in\End(V)\) normal.\\
+Im Fall \(\mathbb{K}=\mathbb{R}\) habe das charakteristische Polynom 
+\(f_{\phi}(T)\) nur reelle Nullstellen. Dann existiert eine Orthonormalbasis
+aus Eigenvektoren von \(\phi\).
+\end{theo}
+\begin{proof}
+Sei \(n:=\dim V,\,\lambda_{1}\in\Spec(\phi),\,b_{1}\neq0\in E_{\lambda_{1}}(\phi)\). Ohne Beschr\"ankung der Allgemeinheit sei \(\lVert b_{1}\rVert=1\).\\
+Betrachte das orthogonale Komplement \(U:=b_{1}^{\top}\). Es gilt
+\[
+V=\langle b_{1}\rangle\oplus U,
+\]
+wobei \(\phi(U)\subseteq U,\,\phi^{*}(U)\subseteq U\) ist, denn f\"ur alle 
+\(u\in U\) gilt
+\begin{align*}
+\langle\phi(u),b_{1}\rangle&=\langle u,\phi^{*}(b_{1})\rangle\\
+&=\langle u,\overline{\lambda_{1}}b_{1}\rangle\\
+&=\lambda_{1}\underbrace{\rangle u,b_{1}\rangle}_{=0}=0
+\end{align*}
+Daraus folgt \(\phi(u)\bot b_{1}\), das hei\ss t \(\phi(U)\bot b_{1}\), damit
+folgt \(\phi(U)\subseteq U\).\\
+F\"ur \(\phi^{*}\) ist die Vorgehensweise analog.\\
+Insbesondere ist \(\left.\phi\right|_{U}\in\End(U)\).
+
+Ferner gilt \(\left(\left.\phi\right|_{U}\right)^{*}=\left.\phi^{*}\right|_{U}\), also
+\begin{align*}
+\left.\phi\right|_{U}\left.\phi^{*}\right|_{U}&=\left.\left(\phi\phi^{*}\right)\right|_{U}\\
+% das hier ist von der Ausrichtung noch nicht optimal...
+&\overset{\phi\text{ normal}}{=}\left.\left(\phi^{*}\phi\right)\right|_{U}\\
+&=\left.\phi^{*}\right|_{U}\left.\phi\right|_{U}
+\end{align*}
+Also ist \(\phi\) normal.
+
+Vollst\"andige Induktion nach \(n\):\\
+\(n-1 \leadsto n\): \(U\) hat eine Orthonormalbasis \(\{b_{2},\ldots,b_{n}\}\)
+aus Eigenvektoren von \(\left.\phi\right|_{U}\).\\
+Dann ist \(\{b_{1},b_{2},\ldots,b_{n}\}\) die gesuchte Orthonormalbasis.
+\end{proof}
+\begin{lemma}[Transfer zu Matrizen]
+F\"ur beliebiges \(\phi\in\End(V)\) sei \(s_{\phi}\) die Sesquilinearform
+\[
+s_{\phi}(x,y):=\langle\phi(x),y\rangle
+\]
+\(B\) sei eine Orthonormalbasis von \(V\). Dann gilt:
+\begin{enumerate}
+\item\(D_{BB}(\phi^{*})=D_{BB}(\phi)^{*}\)
+\label{Lemma: 18.2; 1; Beh. 1}
+\item\(D_{BB}(s_{\phi})=D_{BB}(\phi)^{\top}\)
+\label{Lemma: 18.2; 1; Beh. 2}
+\item\(\phi\) ist normal, genau dann wenn f\"ur \(A:=D_{BB}(\phi)\) gilt:
+\label{Lemma: 18.2; 1; Beh. 3}
+\[
+A\cdot A^{*}=A^{*}\cdot A
+\]
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Sei \(B=\{b_{1},\ldots,b_{n}\}\).\\
+Erinnere: \(D_{BB}(\phi)=(x_{ij})\) ist 
+definiert durch \(\phi(b_{ij})=\sum_{i=1}^{n}{\alpha_{ij}b_{i}}\).\\
+Es gilt
+\begin{align*}
+s_{\phi}(b_{j},b_{k})&=\langle\phi(b_{j}),b_{k}\rangle\\
+&=\sum_{i=1}^{n}{\alpha_{ij}\underbrace{\langle b_{i},b_{k}\rangle}_{=\delta_{ik}}}\\
+&=\alpha_{kj}
+\end{align*}
+Damit folgt die Behauptung \eqref{Lemma: 18.2; 1; Beh. 2}.
+
+Sei \(D_{BB}(\phi^{*})=(\beta_{ij})\), das hei\ss t
+\begin{align*}
+\overline{\alpha_{ji}}&=\overline{\langle\phi(b_{i}),b_{j}\rangle}\\
+&=\langle b_{j},\phi(b_{i})\rangle\\
+&=\langle\phi^{*}(b_{j}),b_{i}\rangle\\
+&=\beta_{ij}
+\end{align*}
+Damit folgt die Behauptung \eqref{Lemma: 18.2; 1; Beh. 1}.
+
+Es bleibt noch Behauptung \eqref{Lemma: 18.2; 1; Beh. 3} zu zeigen:
+\[
+\phi\cdot\phi^{*}\Longleftrightarrow
+\underbrace{D_{BB}(\phi\phi^{*})}_{=AA^{*}}=
+\underbrace{D_{BB}(\phi^{*}\phi)}_{=A^{*}A}
+\]
+\end{proof}
+\begin{corollary}[zum Spektralsatz]
+F\"ur \(\lambda\in\Spec(\phi)\) sei \(U_{\lambda}:=E_{\lambda}(\phi)\) und
+\(\Pi_{\lambda}:=\Pi_{U_{\lambda}}\) (orthogonale Projektion). Dann gilt f\"ur
+\(p(T)\in\mathbb{K}[T]\):
+\[
+p(\phi)=\sum_{\lambda\in\Spec(\phi)}{p(\lambda)\cdot\Pi_{\lambda}}
+\]
+und
+\[
+\phi^{*}=\sum_{\lambda}{\overline{\lambda}\cdot\Pi_{\lambda}}
+\]
+\end{corollary}
+\begin{proof}
+Da \(U_{\lambda}\bot U_{\mu}\) f\"ur \(\lambda\neq\mu\) folgt \(\Pi_{\lambda}\Pi_{\mu}=\delta_{\lambda\mu}\Pi_{\lambda}\).\\
+Spektralsatz: Aus \(V=\underset{\lambda}{\bigoplus}U_{\lambda}\) folgt 
+\(\id_{V}=\sum_{\lambda}{\Pi_{\lambda}}\).\\
+Aus \(\left.p(\phi)\right|_{U_{\lambda}}=p(\lambda)\cdot\id_{U_{\lambda}}\)
+folgt \(p(\phi)=\sum_{\lambda}{p(\lambda)\Pi_{\lambda}}\).\\
+\(\left.\phi^{*}\right|_{U_{\lambda}}=\overline{\lambda}\cdot\id_{U_{\lambda}}\)
+liefert
+\begin{align*}
+\phi^{*}&=\phi^{*}\cdot\id_{U_{\lambda}}\\
+&=\phi^{*}\cdot\sum_{\lambda}{\Pi_{\lambda}}\\
+&=\sum_{\lambda}{\phi^{*}\Pi_{\lambda}}\\
+&=\sum_{\lambda}{\overline{\lambda}\Pi_{\lambda}}
+\end{align*}
+\end{proof}
+\begin{theo}
+Seien \(\phi,\,\Psi\in\End(V)\) normal und \(\phi\cdot\Psi=\Psi\cdot\phi\).\\
+Falls in \(V\) eine Orthonormalbasis aus Eigenvektoren existiert und eine
+Orthonormalbasis aus Eigenvektoren zu \(\Psi\), dann existiert eine
+Orthonormalbasis aus gemeinsamen Eigenvektoren zu \(\phi\) und \(\Psi\).
+\end{theo}
+\begin{proof}
+Seien \(V=\underset{\lambda}{\bigoplus}U_{\lambda},\,U_{\lambda}:=E_{\lambda}(\phi)\).\\
+Zeige: \(\Psi(U_{\lambda})\subseteq U_{\lambda}\) und \(\left.\Psi\right|_{U_{\lambda}}\) sind diagonalisierbar.
+
+Dazu:
+\begin{align*}
+u\in U_{\lambda}&\implies\phi(u)=\lambda u\\
+&\implies\Psi(\phi(u))=\Psi(\lambda u)=\lambda\Psi(u)\\
+&\Longleftrightarrow\phi(\Psi(u))=\lambda\Psi(u)\quad\implies\Psi(u)\in U_{\lambda}
+\end{align*}
+Analog: \(\phi(E_{\mu}(\Psi))\subseteq E_{\mu}(\Psi)\).\\
+Da \(V=\underset{\mu}{\bigoplus}E_{\mu}(\Psi)\), gilt insbesondere f\"ur alle
+\(u\in U_{\lambda}:\,u=\sum_{\mu}{x_{\mu}}\in E_{\mu}(\Psi)\). Es gilt sogar:
+jedes \(x_{\mu}\in U_{\lambda}\), denn:
+\[
+\phi(x_{\mu}=:x'_{\mu}\in E_{\mu}(\Psi)
+\]
+\begin{align*}
+\lambda{\sum_{\mu}}^{\oplus}x_{\mu}&=\lambda u\\
+&=\phi(u)\\
+&=\sum_{\mu}{\phi(x_{\mu}})\\
+&={\sum_{\mu}}^{\oplus}{x'_{\mu}}
+\end{align*}
+Da die Summe direkt ist, folgt f\"ur alle \(\mu\)
+\[
+\lambda\cdot x_{\mu}=x'_{\mu}=\phi(x_{\mu}),
+\]
+das hei\ss t \(x_{\mu}\in U_{\lambda}\).
+
+Insgesamt gezeigt:
+\[
+U_{\lambda}=\underset{\mu}{\bigoplus}E_{\mu}(\Psi)\cap U_{\lambda}
+\]
+(d.h. \(\left.\Psi\right|_{U_{\lambda}}\) ist diagonalisierbar). Damit folgt
+\[
+V=\underset{\lambda}{\bigoplus}\underset{\mu}{\bigoplus}E_{\mu}(\Psi)\cap E_{\lambda}(\phi)
+\]
+\end{proof}
+
 \chapter{Isometrien}
 
 \begin{task}
@@ -744,7 +935,7 @@ Z.B. Drehungen um einen Punkt im $\mathbb{R}^2$.
 \index{Morphismus}\index{Isometrie}\index{Automorphismus}\index{Automorphismengruppe}
 Seien $V_1,V_2\ \mathbb{K}$-VRme mit Sesquilinearformen $s_1,s_2$.
 \begin{enumerate}[(a)]
-\item Ein \textbf{Morphismus von $\mathbb{K}$-VRmen mit Sesquilinearform} ins
+\item Ein \textbf{Morphismus von $\mathbb{K}$-VRmen mit Sesquilinearform} ist
 $\Phi\in \Hom(V_1,V_2)$ mit:\\
 \[\forall x,y\in V_1:s_2(\Phi(x),\Phi(y))=s_1(x,y)\]\\
 Schreibe: $\Phi:(V_1,s_1)\to (V_2,s_2)$.
