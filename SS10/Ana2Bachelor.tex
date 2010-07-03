@@ -2681,6 +2681,262 @@ $y(x)=\log(x^2+e-1)$ ist Lösung des AwPs von $\MdR$.
 \end{beispiele}
 
 
+\chapter{Systeme von Differentialgleichungen 1. Ordnung}
+
+In diesem Paragraphen sei $D \subseteq \MdR^{n+1}$ und $f = (f_1, ..., f_n): D \to \MdR^n$. Für Punkte im $\MdR^{n+1}$ schreiben wir $(x,y)$, wobei $x \in \MdR$ und $y = (y_1,...,y_n) \in \MdR^n$.
+
+\begin{definition}
+\index{System!von Differentialgleichungen}\index{Differentialgleichung!System von}
+\index{Anfangswertproblem}
+Ein \textbf{System von Differentialgleichungen 1. Ordnung} hat die Form:
+\begin{align*}
+\begin{cases}
+y_1'=f_1(x, y_1, ..., y_n)\\
+y_2'=f_2(x, y_1, ..., y_n)\\
+\qquad\vdots\\
+y_n'=f_n(x, y_1, ..., y_n)
+\end{cases}
+\tag{i}
+\quad\text{oder kurz: } y'=f(x,y)
+\end{align*}
+Wir betrachten auch noch das AwP
+\begin{align*}
+\begin{cases}
+y'=f(x,y)\\
+y(x_0) = y_0\\
+\end{cases}
+\tag{ii}
+\quad\text{(wobei } (x_0, y_0) \in D)
+\end{align*}
+\end{definition}
+
+\begin{satz}[Integralgleichung zur Lösbarkeit eines Anfangswertproblems]
+Sei $I \subseteq \MdR$ ein Intervall, $D := I \times \MdR^n, x_o\in I, y_0\in \MdR^n$ und $f:D\to\MdR^n$ sei stetig. Für $y\in C(I,\MdR^n)$ gilt:
+\[\text{$y$ ist eine Lösung des AwP (ii)} \iff  \forall x\in I:y(x) = y_0 + \int_{x_0}^x f(t, y(t)) \text{d}t \]
+In diesem Fall ist $y \in C^1(I, \MdR^n)$.
+\end{satz}
+
+\begin{beweis}
+\begin{enumerate}
+\item["`$\implies$"'] Es gilt: $y'(x) = f(x, y(x)) \forall x\in I$; da $y$ und $f$ stetig sind, folgt: $y' \in C(I,\MdR )$. Weiter:
+\[\int_{x_0}^x f(t,y(t)) \text{d}t = \int_{x_0}^x y'(t)\text{d}t = y(x) - y(x_0) = y(x) - y_0 \quad \forall x\in I.\]
+Bringt man $y_0$ auf die linke Seite, ergibt sich die Behauptung.
+\item["`$\impliedby$"'] Es gelte für alle $x\in I$:
+\[y(x) = y_0  + \int_{x_0}^x f(t, y(t))\text{d}t\]
+Aus dem zweiten Hauptsatz der Differential- und Integralrechnung folgt: $y$ ist auf $I$ differenzierbar und 
+\[ y'(x) = \frac{\text{d}}{\text{d}x} \int_{x_0}^x f(t, y(t))\text{d}t = f(x, y(x) \quad \forall x \in I. \]
+Also erfüllt $y$ die Differentialgleichung.
+Klar: $y(x_0) = y_0$. Also löst $y$ das AwP.
+\end{enumerate}
+\end{beweis}
+
+
+\begin{definition}
+\index{Lipschitz-Bedingung}
+\index{Lipschitz-Bedingung!lokale}\index{lokal!Lipschitz-Bedingung}
+Sei $g: D \to \MdR^n$ eine Funktion.
+\begin{enumerate}
+\item $g$ genügt auf $D$ einer \textbf{Lipschitz-Bedingung (LB) bezüglich $y$},
+genau dann wenn gilt:
+\[\exists L \ge 0:\forall (x,y), (x,\bar y ) \in D: \|g(x,y)-g(x,\bar y)\| \le L \|y-\bar y \|\]
+\item $g$ genügt auf $D$ einer \textbf{lokalen Lipschitz-Bedingung bezüglich $y$},
+genau dann wenn für alle $a \in D$ eine Umgebung $U$ von $a$ existiert, sodass 
+$g_{|_{D \cap U}}$ auf $D \cap U$ einer LB bezüglich $y$ genügt.
+\end{enumerate}
+\end{definition}
+
+\begin{satz}[Satz über die $\alpha$-Norm]
+Sei $I = [a,b] \subseteq \MdR, x_o \in I$ und für $y\in C(I, \MdR^n)$ sei $\|y\|_\infty := \max \{\|y(x)\| : x\in I \}$ wie in §17 (also ist $(C(I, \MdR^n), \|\cdot \|_\infty )$ ein Banachraum).
+
+Sei $\alpha > 0$ mit $\varphi_\alpha (x) := e^{-\alpha |x-x_0|}\ (x \in I)$.
+
+Für $y \in C(I, \MdR^n)$ sei $\|y\|_\alpha := \max \{\varphi_\alpha(x)\cdot \|y(x)\| : x\in I \}$.
+
+Dann:
+\begin{enumerate}
+\item $\|\cdot\|_\alpha$ ist eine Norm auf $C(I,\MdR^n)$.
+\item Seien $c_1 := \min \{ \varphi_\alpha(x) : x \in I \},\text{ } c_2 := \max \{ \varphi_\alpha(x) : x \in I \}$. Es gilt: 
+\[c_1\|y\|_\infty \leq \|y\|_\alpha \leq c_2 \|y\|_\infty \quad \forall y \in C(I, \MdR^n)\]
+
+\item Sei $(g_k)$ eine Folge in $C(I,\MdR^n)$ und $g \in C(I, \MdR^n)$.
+\begin{enumerate}
+\item Es gilt:
+\begin{align*}
+\|g_k -g\|_\alpha \stackrel{k \to \infty}\to 0 &\iff \|g_k - g\|_\infty \stackrel{k \to \infty}\to 0\\
+&\iff (g_k)\text{ konvergiert auf $I$ gleichmäßig gegen $g$}
+\end{align*}
+\item $(g_k)$ ist eine Cauchy-Folge in $(C(I,\MdR^n), \|\cdot \|_\alpha)$, genau dann
+wenn $(g_k)$ eine Cauchy-Folge in $(C(I,\MdR^n), \|\cdot \|_\infty)$ ist.
+\item $(C(I,\MdR^n), \|\cdot \|_\alpha)$ ist ein Banachraum.
+\end{enumerate}
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+(1), (2) \text{ Nachrechnen.}
+
+(3) \text{ (i) und (ii) folgen aus (2); (iii) folgt aus (i) und (ii).}
+\end{beweis}
+
+\textbf{Bezeichnung:} EuE = Existenz und Eindeutigkeit.
+\index{Existenz und Eindeutigkeit}
+\begin{satz}[EuE-Satz von Picard-Lindelöf (Version I)]
+Sei $I = [a,b], x_o \in I, y_0 \in \MdR^n, D:= I \times \MdR^n, f\in C(D, \MdR^n)$ und $f$ genüge auf $D$ einer LB bezüglich $y$. Dann ist das AwP
+\begin{align*}
+\begin{cases}
+y'=f(x,y)\\
+y(x_0) = y_0\\
+\end{cases}
+\tag{ii}
+\end{align*}
+auf $I$ eindeutig lösbar.
+
+Ist $g_0 \in C(I, \MdR^n)$ und $(g_k)$ definiert durch
+\[ g_{k+1}(x) := y_0 + \int_{x_0}^x f(t, g_k(t)) \text{d}t \quad (x \in I, k \geq 0), \]
+dann konvergiert $(g_k)$ auf $I$ gleichmäßig gegen die Lösung des AwPs (ii).
+\end{satz}
+
+\begin{beweis}
+Da $f$ auf $D$ einer Lipschitz-Bedingung genügt, gilt:
+\[ \exists L > 0: \|f(x,y) - f(x, \bar y )\| \leq L \|y- \bar y \| \quad \forall(x,y), (x, \bar y ) \in D.\]
+Es sei $\alpha := 2L$; $\varphi_\alpha$ und $\|\cdot\|_\alpha$ seien wie in 21.2, $X := C(I, \MdR^n)$. Definiere $F: X \to X$ durch 
+\[(F(y))(x) := y_0 + \int_{x_0}^x f(t, y(t))\text{d}t\]
+Für $y \in X$ gilt dann:
+\begin{align*}
+F(y) = y &\iff y(x) = y_0 + \int_{x_0}^x f(t, y(t))\text{d}t \quad \forall x \in I \\
+&\stackrel{21.1}\iff y \text{ löst das AwP (ii)}
+\end{align*} 
+Wir zeigen: $\|F(y)-F(z)\| \leq \frac12 \|y-z\|_\alpha \quad \forall y,z \in X$. \textbf{Alle} Behauptungen folgen dann aus 17.2.
+
+Seien $y,z \in X, x \in I$. Dann ist
+\begin{align*}
+\|(F(y))(x) - (F(z))(x)\|&= \left\|\int_{x_0}^x (f(t, y(t)) - f(t, z(t)))\text{d}t \right\|\\
+&\stackrel{12.4}\le \left| \int_{x_0}^x \underbrace{\|f(t, y(t)) - f(t,z(t))\|}_{\le L \|y(t)-z(t)\|} \text{d}t \right|\\
+&\le L \left| \int_{x_0}^x \|y(t)-z(t)\| \text{d}t \right|\\
+&= L \lvert \int_{x_0}^x \underbrace{\|y(t)-z(t)\| \varphi_\alpha}_{\leq \|y-z\|_\alpha} \cdot \frac1{\varphi_\alpha(x)}\text{d}t \rvert\\
+&\le L \|y-z\|_\alpha \underbrace{\left| \int_{x_0}^x \frac1{\varphi_\alpha(t) \text{d}t}\right|}_{=\frac1\alpha \left(  \frac1{\varphi_\alpha(x)} - 1 \right) }\\
+&= \underbrace{\frac{L}{\alpha}}_{=\frac12} \|y-z\|_\alpha \left(\frac1{\varphi_\alpha(x)} -1 \right)\\ 
+&\le \frac12 \|y-z\|_\alpha \frac{1}{\varphi_\alpha(x)}
+\end{align*}
+Also gilt: 
+\begin{align*}
+&\|(F(y))(x) - (F(z))(x)\| \leq \frac12 \|y-z\|_\alpha \frac{1}{\varphi_\alpha(x)} \quad \forall x \in I\\
+\implies &\varphi_\alpha(x) \|(F(y))(x) - (F(z))(x)\| \leq \frac12 \|y-z\|_\alpha \quad \forall x \in I
+\end{align*}
+Fazit: $\|F(y)-F(z)\|_\alpha \leq \frac12 \|y-z\|_\alpha$.
+\end{beweis}
+
+\textbf{Frage: } Warum haben wir in obigem Beweis nicht die $\|\cdot \|_\infty$-Norm benutzt?
+
+\[\|(F(y))(x) -(F(z))(x)\| \stackrel{\text{wie oben}}\leq L \left| \int_{x_0}^x \underbrace{\|y(t)-z(t)\|}_{\leq \|y-z\|_\infty} dt \right| \leq L \|y-z\|_\infty \left| \int_{x_0}^x 1 \text{d}t \right|\]
+\[= L \|y-z\|_\infty \underbrace{|x-x_0|}_{\leq b-a} \leq L(b-a) \|y-z\|_\infty \quad \forall x \in I.\]
+Dann:  $\|F(y)-F(z)\|_\infty \leq \underbrace{L(b-a)} \|y-z\|_\infty$
+
+I.A. wird $L(b-a)$ \textbf{nicht} kleiner 1 sein!
+
+\textbf{\color{red}Hier fehlt noch der Rest von §21!}
+
+\chapter{Lineare Systeme}
+In diesem Paragraphen sei $I\subseteq\mdr$ ein Intervall, $x_0\in I, y_0\in\mdr^n,
+D:=I\times\mdr^n,b:I\to\mdr^n$ stetig und $A:I\to\mdr^{n\times n}$ ebenfalls stetig 
+(d.h. für $A(x)=(a_{jk}(x))$ sind alle $a_{jk}:I\to\mdr$ stetig).\\
+Hier ist für alle $x\in I$ und $y=(y_1,\ldots,y_n)\in\mdr^n$:
+\[f(x,y):=A(x)y+b(x)\]
+
+\begin{definition}
+\index{linear!System von Differentialgleichungen}
+\index{System von Differentialgleichungen!lineares}
+\index{homogen!System von Differentialgleichungen}
+\index{System von Differentialgleichungen!homogenes}
+\index{inhomogen!System von Differentialgleichungen}
+\index{System von Differentialgleichungen!inhomogenes}
+Das System von Differentialgleichungen:
+\begin{align*}
+y'=A(x)y+b(x)\tag{S}
+\end{align*}
+heißt ein \textbf{lineares System}. (Fall $n=1$ siehe §19.)\\
+Ist $b\equiv 0$, so heißt (S) \textbf{homogen}, anderenfalls \textbf{inhomogen}.\\
+Neben (S) betrachten wir auch noch das zu (S) gehörige \textbf{homogene System}
+\begin{align*}
+y'=A(x)y\tag{H}
+\end{align*}
+und das AwP
+\begin{align*}
+\tag{A}
+\begin{cases}
+y'=A(x)y+b(x)\\
+y(x_0)=y_0
+\end{cases}
+\end{align*}
+\end{definition}
+
+\begin{satz}
+\begin{enumerate}
+\item (A) hat auf $I$ genau eine Lösung.
+\item Das System (S) hat Lösungen auf $I$.
+\item Ist $J\subseteq I$ ein Intervall und $\hat y:J\to\mdr^n$ eine Lösung von (S),
+so gibt es eine Lösung $y:I\to\mdr^n$ von (S) mit $\hat y=y$ auf $J$.
+\item Sei $y_s:I\to\mdr^n$ eine spezielle Lösung von (S), dann ist $y:I\to\mdr^n$ genau dann eine
+Lösung von (S) auf $I$, wenn eine Lösung $y_h:I\to\mdr^n$ von (H) existiert mit:
+\[y=y_h+y_s\]
+\end{enumerate}
+\end{satz}
+
+\begin{bemerkung}
+Wegen 22.1(3) gehen wir immer davon aus, dass Lösungen von (S) auf ganz $I$ definiert sind.
+\end{bemerkung}
+
+\begin{beweise}
+\item \textbf{Fall 1:} $I=[a,b]$\\
+Es ist $f(x,y)=A(x)y+b(x)$. Sei $L:=\max\{\|A(x)\|:x\in I\}$. Für alle $(x,y),(x,\overline y)\in D$ gilt:
+\begin{align*}
+\|f(x,y)-f(x,\overline y) \| &=\|A(x)(y-\overline y)\\
+&\stackrel{\text{§1}}{\le} \|A(x)\|\cdot\|y-\overline y\|\\
+&\le L\|y-\overline y\|
+\end{align*}
+Die Behauptung folgt aus 21.3.
+
+\textbf{Fall 2:} $I$ beliebig.\\
+Sei $\mathfrak{M}:=\{K\subseteq I\mid K\text{ ist kompaktes Intervall, } x_0\in K\}$.
+Dann ist $I=\bigcup_{K\in\mathfrak{M}} K$.\\
+Ist $x\in I$, so existiert ein $K\in\mathfrak{M}$ mit $x\in K$. Nach Fall 1. hat das
+AwP auf $K$ genau eine Lösung $y_K:K\to\mdr^n$. Definiere nun $y:I\to\mdr^n$ wie folgt:
+\begin{align}
+y(x):=y_K(x)\tag{$*$}
+\end{align}
+Sei $\tilde K\in\mathfrak{M}$ mit $x\in\tilde K$ und sei $y_{\tilde K}$ die eindeutig
+bestimmte Lösung von (A) auf $\tilde K$. Dann ist $y_K=y_{\tilde K}$ auf $K\cap\tilde K$, also:
+\[y_K(x)=y_{\tilde K}(x)\]
+D.h. $y$ ist durch ($*$) wohldefiniert.\\
+\textbf{Leichte Übung}: $y$ ist auf $I$ db und löst das AwP auf $I$.\\
+Sei $\tilde y:I\to\mdr^n$ eine weitere Lösung von (A) auf $I$ und sei $x\in I$.
+Dann existiert ein $K\in\mathfrak{M}$ mit $x\in K$ und nach Definition gilt $y(x)=y_K(x)$.
+Da $\tilde y_K$ eine Lösung des AwPs (A) auf $K$ ist, gilt nach Fall 1.: $\tilde y\mid_K=y_K$
+Dann gilt also:
+\[\tilde y(x)=\tilde y\mid_K(x)=y_K(x)=y(x)\]
+\item Folgt aus (1).
+\item Sei $\xi \in J,\eta:=\hat y(\xi)$. Dann ist $\hat y$ eine Lösung auf $J$ des AwPs
+\begin{align*}
+\tag{+}
+\begin{cases}
+y'=A(x)+b(x)\\
+y(\xi)=\eta
+\end{cases}
+\end{align*}
+Aus (1) folgt, dass das AwP auf $I$ eine eindeutig bestimmte Lösung $y:I\to\mdr^n$ hat. Sei $x\in J$.\\
+\textbf{Fall $x=\xi$}:\\
+In diesem Fall gilt: 
+\[\hat y(x)=\hat y(\xi)=\eta=y(\xi)=y(x)\]
+\textbf{Fall $x>\xi$}:\\
+Sei $K:=[\xi,x]$. Da $\hat y$ und $y$ Lösungen des AwPs (+) auf $[\xi,x]$ sind folgt aus
+(1), dass $y=\hat y$ auf $K$, also:
+\[\hat y(x)=y(x)\]
+\textbf{Fall $x<\xi$}:\\
+Sei $K:=[x,\xi]$. Da $\hat y$ und $y$ Lösungen des AwPs (+) auf $[x,\xi]$ sind folgt aus
+(1), dass $y=\hat y$ auf $K$, also:
+\[\hat y(x)=y(x)\]
+\item Leichte Übung!	
+\end{beweise}
 
 \appendix
 \chapter{Satz um Satz (hüpft der Has)}
@@ -2710,5 +2966,8 @@ $y(x)=\log(x^2+e-1)$ ist Lösung des AwPs von $\MdR$.
 \textbf{§ 17: Normierte Räume, Banachräume, Fixpunktsatz}: Rebecca Schwerdt\\
 \textbf{§ 18: Differentialgleichungen: Grunbegriffe}: Rebecca Schwerdt\\
 \textbf{§ 19: Lineare Differentialgleichungen 1. Ordnung}: Rebecca Schwerdt\\
+\textbf{§ 20: Differentialgleichungen mit getrennten Veränderlichen}: Rebecca Schwerdt\\
+\textbf{§ 21: Systeme von Differentialgleichungen 1. Ordnung}: Peter Pan\\
+\textbf{§ 22: Lineare Systeme}: Rebecca Schwerdt
 
 \end{document}
