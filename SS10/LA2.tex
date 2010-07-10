@@ -683,6 +683,235 @@ Dann gilt f\"ur alle \(c\in B\):
 \end{align*}
 \end{proof}
 
+\section{Das E. Schmidtsche Orthogonalisierungsverfahren}
+\index{E. Schmidt!Orthogonalisierungsverfahren}\index{Gram-Schmidt}
+\begin{theo}
+Sei \(V\) ein Vektorraum mit Skalarprodukt \(\SKP\) und sei 
+\(M:=\{x_{0},x_{1},\ldots\}\) eine abz\"ahlbare Teilmenge von \(V\).
+\begin{enumerate}
+\item Es existiert ein Orthogonalsystem \(\{y_{0},y_{1},\ldots\}\) derart, 
+da\ss \ gilt:
+\begin{equation}
+\label{eq: Gram-Schmidt; lineare Huelle}
+\forall n:\quad\langle y_{0},y_{1},\ldots,y_{n}\rangle=\langle x_{0},\ldots,x_{n}\rangle\quad\text{(gleiche lineare H\"ulle)}
+\end{equation}
+\item Falls \(M\) linear unabh\"angig ist, so sind alle \(y_{i}\neq0\) und
+\(B:=\{z_{0},z_{1},\ldots\}\) mit
+\[
+z_{i}:=\frac{1}{\lVert y_{i}\rVert}y_{i}
+\]
+ist ein Orthonormalsystem mit 
+\[
+\forall n:\quad\langle z_{0},z_{1},\ldots,z_{n}\rangle=\langle x_{0},x_{1},\ldots,x_{n}\rangle
+\]
+\end{enumerate}
+\end{theo}
+\begin{proof}
+\begin{enumerate}
+\item Wir beschreiben einen Algorithmus zum Auffinden der \(y_{n}\).\\
+Start: \(y_{0}:=x_{0}\). Angenommen: alle \(y_{m}\) f\"ur \(m<n\) sind bereits
+gefunden. Setze
+\[
+y_{n}:=x_{n}-\sum_{i=0}^{n-1}{\frac{\langle x_{n},y_{i}\rangle}{\langle y_{i},y_{i}\rangle}}y_{i}
+\]
+(nur \"uber \(i\) mit \(y_{i}\neq0\) summieren).\\
+Damit folgt:
+\begin{align*}
+y_{n}&\in\langle\underbrace{y_{0},y_{1},\ldots,y_{n-1}}_{=\langle x_{0},\ldots,x_{n-1}\rangle},x_{n}\rangle=\langle x_{0},\ldots,x_{n}\rangle\\
+x_{n}&\in\langle y_{0},y_{1},\ldots,y_{n}\rangle
+\end{align*}
+Daraus folgt \eqref{eq: Gram-Schmidt; lineare Huelle}.
+
+Rest: F\"ur alle \(m<n:\,y_{n}\bot y_{m}\). Damit:
+\begin{align*}
+\langle y_{n},y_{m}\rangle&=\langle x_{n},y_{m}\rangle-\sum_{i=0}^{n-1}{\frac{\langle x_{n},y_{i}\rangle}{\langle y_{i},y_{i}\rangle}}\langle y_{i},y_{m}\rangle\\
+&=\langle x_{n},y_{m}\rangle-\sum_{i=0}^{n-1}{\frac{\langle x_{n},y_{i}\rangle}{\langle y_{i},y_{i}\rangle}}\delta_{im}\langle y_{i},y_{i}\rangle\\
+&=\langle x_{n},y_{m}\rangle-\langle x_{n},y_{m}\rangle\\
+&=0
+\end{align*}
+\item \checkmark \ Leicht selbst zu verifizieren.
+\end{enumerate}
+\end{proof}
+\begin{example}
+Sei \(V=\mathbb{R}^{3}\) mit dem Standardskalarprodukt, 
+\(M:=\left\{
+\begin{pmatrix}1\\0\\1\end{pmatrix},
+\begin{pmatrix}1\\1\\0\end{pmatrix},
+\begin{pmatrix}0\\1\\1\end{pmatrix}
+\right\}\).
+Dann:
+\begin{align*}
+y_{0}&=x_{0},\quad\lVert y_{0}\rVert=\sqrt{2}\\
+y_{1}&=x_{1}-\frac{\langle x_{1},y_{0}\rangle}{\langle y_{0},y_{0}\rangle}y_{0}
+    =\begin{pmatrix}1\\1\\0\end{pmatrix}-\frac{1}{2}\begin{pmatrix}1\\0\\1\end{pmatrix}
+    =\frac{1}{2}\begin{pmatrix}1\\2\\-1\end{pmatrix},
+    \quad\lVert y_{1}\rVert=\sqrt{\frac{3}{2}}\\
+y_{2}&=x_{2}-\frac{\langle x_{2},y_{0}\rangle}{\langle y_{0},y_{0}\rangle}y_{0}-
+    \frac{\langle x_{2},y_{1}\rangle}{y_{1},y_{1}\rangle}y_{1}
+    =\frac{2}{3}\begin{pmatrix}-1\\1\\1\end{pmatrix}
+\end{align*}
+\end{example}
+
+Auswirkungen (des Orthogonalisierungsverfahrens) auf Matrizen:\\
+Sei \(V\cong\mathbb{K}^{n}\) mit Standardskalarprodukt \(s\) und Basis
+\(B:=\{b_{1},\ldots,b_{n}\}\).
+Das Orthogonalisierungsverfahren liefert eine Orthogonalbasis 
+\(C=\{c_{1},\ldots,c_{n}\}\).
+\begin{align*}
+c_{\nu}&=b_{\nu}-\sum_{i=1}^{n-1}{\frac{\SKP}{\SKP}\cdot c_{i}}=\ldots
+    =\sum_{i=1}^{\nu}{\alpha_{i\nu}b_{i}}
+    \longrightarrow A=M_{BC}=\left(\alpha_{i\nu}\right)=
+    \begin{pmatrix}1&&*\\&\ddots&\\0&&1\end{pmatrix}\\
+\frac{c_{\nu}}{\lVert c_{\nu}\rVert}
+    &=\sum_{i=1}^{\nu}{\frac{\alpha_{i\nu}}{\lVert c_{i}\rVert}b_{i}}=z_{\nu}
+    \longrightarrow M_{BZ}=
+	\begin{pmatrix}*&&*\\&\ddots&\\0&&*\end{pmatrix}
+\end{align*}
+\begin{remind}[Darstellungsmatrix]
+\[
+D_{BB}(s)=\left(s\left(b_{\nu},b_{\mu}\right)\right)\in\mathbb{K}^{n}\\
+\]
+Da \(C\) eine Orthogonalbasis ist, folgt
+\(s\left(c_{\nu},c_{\mu}\right)=\delta_{\nu\mu}\lVert c_{\nu}\rVert^{2}\), also
+\[
+D_{CC}(s)=\diag\left(\ldots,\lVert c_{\nu}\rVert^{2},\ldots\right)
+\]
+Falls \(Z\) eine Orthonormalbasis ist, so folgt \(D_{ZZ}(s)=I\).
+
+Generell f\"ur beliebige Basen \(B,C\) und \(A=M_{BC}\):
+\begin{align*}
+D_{CC}(s)&=\left(s\left(c_{\nu},c_{\mu}\right)\right)\\
+&=\left(s\left(\sum_{i=1}^{n}{\alpha_{i\nu}},\sum_{j}{\alpha_{j\mu}b_{j}}\right)\right)\\
+&=\left(\sum_{i}{\sum_{j}{\alpha_{i\nu}\overline{\alpha_{i\mu}}\cdot s(b_{i},b_{j})}}\right)\\
+&=A^{\top}\left(s(b_{i},b_{j})\right)\overline{A}
+\end{align*}
+\end{remind}
+\begin{definition}
+F\"ur beliebige \(D\in\mathbb{K}^{n\times n}\) setze \(D^{*}:=\overline{D}^{\top}\) (die sogenannte \textbf{Adjungierte}).
+\[
+D_{CC}(s)=A^{\top}D_{BB}(s)\overline{A}
+\]
+Speziell f\"ur jede Orthonormalbasis \(C\):
+\[
+D_{CC}(s)=I,
+\]
+das folgt wegen \(M_{BC}^{-1}=M_{CB}\).\\
+Es ist 
+\[
+D_{BB}(s)=D^{*}D
+\]
+f\"ur \(D:=\overline{M}_{CB}\), wobei \(D\) obere Dreiecksmatrix ist.
+\end{definition}
+\begin{theo}
+F\"ur \(P\in\mathbb{K}^{n\times n}\) ist \"aquivalent:
+\begin{enumerate}
+\item \(P\) ist hermitesch (symmetrisch) und positiv definit
+\item Es gibt ein \(A\in\GL_{n}(\mathbb{K})\) mit \(P=A^{*}A\).
+\end{enumerate}
+\end{theo}
+\begin{proof}
+\begin{enumerate}
+\item \(\implies\,(2)\):\\
+Sei \(V=\mathbb{K}^{n},\,B=\{e_{1},\ldots,e_{n}\}\) die Standardbasis.\\
+\(P\) definiert ein Skalarprodukt:
+\begin{align*}
+s(x,y)&=(\overline{\eta}_{1},\ldots,\overline{\eta}_{n})\cdot P\cdot
+    \begin{pmatrix}\xi_{1}\\\vdots\\\xi_{n}\end{pmatrix}\\
+P&=\left(s(e_{i},e_{j})\right)=D_{BB}(s)
+\end{align*}
+% Okay, das hier ist leicht seltsam -- mein Aufschrieb ist an der Stelle etwas
+% wirr und unverstaendlich... Fuer einen Hinweis bin ich dankbar ;-) P.
+Das Schmidtsche Orthogonalisierungsverfahren liefert eine Orthonormalbasis und
+damit \(P=D^{*}D\).
+\item\(\implies\,(1)\):\\
+\(P=A^{*}A\) ist hermitesch; zu zeigen: \(P^{*}=P\)
+\begin{align*}
+P^{*}&=\left(A^{*}\cdot A\right)^{*}\\
+&=\overline{\left(A^{*}\cdot A\right)}^{\top}\\
+&=\overline{\left(\overline{A}^{\top}\cdot A\right)}^{\top}\\
+&=\left(A^{\top}\cdot\overline{A}\right)^{\top}\\
+&=\overline{A}^{\top}\cdot A\\
+&=A^{*}A\\
+&=P
+\end{align*}
+Daraus folgt: \(s(x,y)\) ist hermitesche Form. F\"ur alle \(x\in\mathbb{K}^{n}\)
+gilt:
+\begin{align*}
+s(x,x)&=\overline{x}^{\top}\cdot P\cdot x\\
+&=\overline{x}^{\top}\left(\overline{A}^{\top}\cdot A\right)x\\
+&=\left(\overline{A}\overline{x}\right)^{\top}Ax\\
+&=s_{0}(Ax,Ax)\\
+&\geq0
+\end{align*}
+Weiterhin:
+\begin{align*}
+&s_{0}(Ax,Ax)=0\\
+\Longleftrightarrow&Ax=0\\
+\overset{A\text{ inv.}}{\Longleftrightarrow}&x=0\\
+\implies&s\text{ positiv definit}
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+Falls speziell \(B\) und \(C\) Orthonormalbasen sind, folgt:
+\[
+D_{BB}(s)=I=D_{CC}(s)
+\]
+und \(D:=\overline{M}_{CB}\).
+\begin{conclusion}
+Die Basiswechselmatrix \(A=M_{BC}\) einer Orthonormalbasis \(C\) in eine andere
+Orthonormalbasis \(B\) geh\"ort zur \textbf{orthogonalen Gruppe}
+\[
+O(n):=\left\{A\in\GL_{n}(\mathbb{R})\mid A^{\top}\cdot A=I\right\}\quad
+    \text{f\"ur } \mathbb{K}=\mathbb{R}
+\]
+beziehungsweise zur \textbf{unit\"aren Gruppe}
+\[
+U(n):=\left\{A\in\GL_{n}(\mathbb{C})\mid A^{\top}\cdot\overline{A}=I\right\}
+    \quad\text{f\"ur } \mathbb{K}=\mathbb{C}
+\]
+\end{conclusion}
+\begin{comment}
+\(O(n)\), beziehungsweise \(U(n)\), ist eine Untergruppe von 
+\(\GL_{n}(\mathbb{R})\), beziehungsweise \(\GL_{n}(\mathbb{C})\).
+\end{comment}
+\begin{conclusion}[Iwasawa-Zerlegung]
+\index{Iwasawa!Zerlegung}\index{Iwasawa-Zerlegung}
+Jede Matrix \(g\in\GL_{n}(\mathbb{R})\) hat eine eindeutige Produktzerlegung
+\[
+g=k\cdot b
+\]
+mit \(k\in O(n)\) und \(b\in B(n):=\left\{
+    \begin{pmatrix}\beta_{1}&&*\\&\ddots&\\0&&\beta_{n}\end{pmatrix}\mid
+    \beta_{\nu}>0\right\}\).
+Das hei\ss t:
+\[
+\GL_{n}(\mathbb{R})=O(n)\cdot B(n)
+\]
+Analog gilt: 
+\[
+\GL_{n}(\mathbb{C})=U(n)\cdot B(n)_{\mathbb{C}}
+\]
+mit
+\[
+B(n)_{\mathbb{C}}:=\left\{
+    \begin{pmatrix}\beta_{1}&&*\\&\ddots&\\0&&\beta_{n}\end{pmatrix}\in
+	\GL_{n}(\mathbb{C})\mid\beta_{\nu}\in\mathbb{R}_{>0}
+    \right\}
+\]
+\end{conclusion}
+\begin{proof}
+F\"ur \(\mathbb{K}=\mathbb{R}\,g\in\GL_{n}(\mathbb{R})\) folgt: Die Spalten
+\(b_{1},\ldots,b_{n}\) sind eine Basis von \(\mathbb{R}^{n}\).\\
+Das Schmidtsche Orthogonalisierungsverfahren liefert eine Orthonormalbasis
+\(\{c_{1},\ldots,c_{n}\}\) mit \"Ubergangsmatrix \(A=M_{BC}\in B(n)\). Denn:
+\[
+c_{\nu}:=\sum_{i=1}^{\nu}{\alpha_{i\nu}b_{i}}
+\]
+besagt \(g\cdot A=(c_{1},\ldots,c_{n})\) und \(k=(c_{1},\ldots,c_{n})\in O(n)\),
+da \(k^{\top}\cdot k=\left(\langle c_{i},c_{j}\rangle\right)=I\).
+\end{proof}
+
 \chapter{Normale Endomorphismen}
 \index{Endomorphismus}\index{normaler Endomorphismus}
 \section{Die adjungierte lineare Abbildung}
