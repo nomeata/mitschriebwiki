@@ -1,0 +1,257 @@
+\documentclass[a4paper,twoside,DIV15,BCOR12mm,chapterprefix=true,headings=twolinechapter]{scrbook}
+\usepackage{ana}
+
+\KOMAoptions{headings=onelinechapter}
+
+\author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
+\title{Analysis III - Bachelorversion}
+\makeindex
+
+\begin{document}
+\maketitle
+
+\renewcommand{\thechapter}{\Roman{chapter}}
+%\chapter{Inhaltsverzeichnis}
+\addcontentsline{toc}{chapter}{Inhaltsverzeichnis}
+\tableofcontents
+
+\chapter{Vorwort}
+
+\section{Über dieses Skriptum}
+Dies ist ein Mitschrieb der Vorlesung \glqq Analysis III\grqq\ von Herrn Schmoeger im
+Wintersemester 2010 an der Universität Karlsruhe (KIT). Die Mitschriebe der Vorlesung werden mit ausdrücklicher Genehmigung 
+von Herrn Schmoeger hier veröffentlicht, Herr Schmoeger ist für den Inhalt nicht 
+verantwortlich.
+
+\section{Wer}
+Gestartet wurde das Projekt von Joachim Breitner. Beteiligt an diesem Mitschrieb sind \ldots na mal schaun.
+
+\section{Wo}
+Alle Kapitel inklusive \LaTeX-Quellen können unter \url{http://mitschriebwiki.nomeata.de} abgerufen werden.
+Dort ist ein \emph{Wiki} eingerichtet und von Joachim Breitner um die \LaTeX-Funktionen erweitert.
+Das heißt, jeder kann Fehler nachbessern und sich an der Entwicklung
+beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
+
+
+\renewcommand{\thechapter}{\arabic{chapter}}
+\renewcommand{\chaptername}{§}
+\renewcommand*{\chapterformat}{§\,\thechapter \enskip}
+\setcounter{chapter}{-1}
+
+\chapter{Vorbereitungen}
+In diesem Paragraphen seien $X,Y,Z$ Mengen ($\ne\emptyset$) und $f:X\to Y, g:Y\to Z$ Abbildungen.
+\begin{enumerate}
+\index{Potenzmenge}
+\index{Disjunktheit}
+\item 
+\begin{enumerate}
+\item $\mathcal{P}(X):=\{A:A\subseteq X\}$ heißt \textbf{Potenzmenge} von $X$.
+\item Sei $\fm\subseteq\mathcal{P}(X)$, so heißt $\fm$ \textbf{disjunkt}, genau dann wenn $A\cap B=\emptyset$ für $A,B\in\fm$ mit $A\ne B$.
+\item Sei $(A_j)$ eine Folge in $\mathcal{P}(X)$ (also $A_j\subseteq X$), so heißt $(A_j)$ \textbf{disjunkt}, genau dann wenn $\{A_1,A_2,\ldots\}$ disjunkt ist. In diesem Fall schreibe: $\dot{\bigcup}_{j=1}^\infty:=\bigcup_{j=1}^\infty A_j$\\
+Allgemein sei $\bigcup_{j=1}^\infty A_j:=\bigcup A_j$ und $\bigcap_{j=1}^\infty A_j:=\bigcap A_j$.
+\end{enumerate}
+\item Sei $A\subseteq X$, für $x\in X$ definiere
+\[\mathds{1}_A(x):=\begin{cases}1, x\in A\\ 0, x\in A^C\end{cases}\]
+wobei $A^C:=X\setminus A$.
+\item Sei $B\subseteq Y$ dann ist $f^{-1}(B):=\{x\in X: f(x)\in B\}$ und es gelten folgende Eigenschaften:
+\begin{enumerate}
+\item $f^{-1}(B^C)=f^{-1}(B)^C$
+\item Ist $B_j$ eine Folge in $\mathcal{P}(Y)$, so gilt:
+\begin{align*}
+f^{-1}(\bigcup B_j)=\bigcup f^{-1}(B_j)\\
+f^{-1}(\bigcap B_j)=\bigcap f^{-1}(B_j)\\
+\end{align*}
+\item Ist $C\subseteq Z$, so gilt:
+\[(g\circ f)^{-1}(C)=f^{-1}(g^{-1}(C))\]
+\end{enumerate}
+\item $\sum_{j=1}^\infty a_j =: \sum a_j$
+\end{enumerate}
+
+\chapter{$\sigma$-Algebren und Maße}
+In diesem Paragraphen sei $\emptyset\ne X$ eine Menge.
+
+\begin{definition}
+\index{$\sigma$-Algebra}
+Sei $\fa\subseteq\mathcal{P}(X)$, $\fa$ heißt eine \textbf{$\sigma$-Algebra} auf $X$, wenn gilt:
+\begin{enumerate}
+\item[($\sigma_1$)] $X\in\fa$
+\item[($\sigma_2$)] Ist $A\in\fa$, so ist auch $A^C\in\fa$.
+\item[($\sigma_3$)] Ist $(A_j)$ eine Folge in $\fa$, so ist $\bigcup A_j\in\fa$.
+\end{enumerate}
+\end{definition}
+
+\begin{beispiel}
+\begin{enumerate}
+\item $\{X,\emptyset\}$ und $\mathcal{P}(X)$ sind $\sigma$-Algebren auf $X$.
+\item Sei $A\subseteq X$, dann ist $\{X,\emptyset, A, A^C\}$ eine $\sigma$-Algebra auf $X$.
+\item $\fa:=\{A\subseteq X: A$ abzählbar oder $A^C$ abzählbar$\}$ ist eine $\sigma$-Algebra auf $X$.
+\end{enumerate}
+\end{beispiel}
+
+\begin{lemma}
+Sei $\fa$ eine $\sigma$-Algebra auf $X$, dann:
+\begin{enumerate}
+\item $\emptyset\in\fa$
+\item Ist $(A_j)$ eine Folge in $\fa$, so ist $\bigcap A_j\in\fa$.
+\item Sind $A_1,\ldots,A_n\in\fa$, so gilt:
+\begin{enumerate}
+\item $A_1\cup\cdots\cup A_n\in\fa$
+\item $A_1\cap\cdots\cap A_n\in\fa$
+\item $A_1\setminus A_2\in\fa$
+\end{enumerate}
+\end{enumerate}
+\end{lemma}
+
+\begin{beweis}
+\begin{enumerate}
+\item $\emptyset=X^C\in\fa$ (nach ($\sigma_2$)).
+\item $D:=\bigcap A_j$. $D^C=\bigcup A_j^C\in\fa$ (nach ($\sigma_2$) und ($\sigma_3$)), also gilt auch $D=(D^C)^C\in\fa$.
+\item \begin{enumerate}
+\item $A_1\cup\cdots\cup A_n\in\fa$ folgt aus ($\sigma_3$) mit $A_{n+j}:=\emptyset$ ($j\ge 1$).
+\item $A_1\cap\cdots\cap A_n\in\fa$ folgt aus (2) mit $A_{n+j}:=X$ ($j\ge 1$).
+\item $A_1\setminus A_2=A_1\cap A_2^C\in\fa$
+\end{enumerate}
+\end{enumerate}
+\end{beweis}
+
+\begin{lemma}
+Sei $\emptyset\ne\cf$ eine Menge von $\sigma$-Algebren auf $X$. Dann ist 
+\[\fa_0:=\bigcap_{\fa\in\cf}\fa\]
+eine $\sigma$-Algebra auf $X$.
+\end{lemma}
+
+\begin{beweis}
+\begin{enumerate}
+\item[($\sigma_1$)] $\forall\fa\in\cf:X\in\fa\implies X\in\fa_0$.
+\item[($\sigma_2$)] Sei $A\in\fa_0$, dann gilt:
+\begin{align*}
+\forall\fa\in\cf:A\in\fa &\implies \forall\fa\in\cf:A^C\in\fa\\
+&\implies A^C\in\fa_0
+\end{align*}
+\item[($\sigma_3$)] Sei $(A_j)$ eine Folge in $\fa_0$, dann ist $(A_j)$ Folge in $\fa$ für alle $\fa\in\cf$, dann gilt:
+\begin{align*}
+\forall\fa\in\cf:\bigcap A_j\in\fa \implies \bigcap A_j\in\fa_0
+\end{align*}
+\end{enumerate}
+\end{beweis}
+
+\begin{definition}
+\index{Erzeuger}
+Sei $\emptyset\ne\mathcal{E}\subseteq\mathcal{P}(X)$ und $\cf:=\{\fa:\fa$ ist $\sigma$-Algebra auf $X$ mit $\mathcal{E}\subseteq\fa\}$. Definiere
+\[\sigma(\mathcal{E}):=\bigcap_{\fa\in\cf}\fa\]
+Dann ist wegen 1.2 $\sigma(\mathcal{E})$ eine $\sigma$-Algebra auf $X$. $\sigma(\mathcal{E})$ heißt die \textbf{von $\mathcal{E}$ erzeugte $\sigma$-Algebra}. $\mathcal{E}$ heißt ein \textbf{Erzeuger} von $\sigma(\mathcal{E})$.
+\end{definition}
+
+\begin{lemma}
+Sei $\emptyset\ne\mathcal{E}\subseteq\mathcal{P}(X)$.
+\begin{enumerate}
+\item $\mathcal{E}\subseteq\sigma(\mathcal{E})$. $\sigma(\mathcal{E})$ ist die "kleinste" $\sigma$-Algebra auf $X$, die $\mathcal{E}$ enthält.
+\item Ist $\mathcal{E}$ eine $\sigma$-Algebra, so ist $\sigma(\mathcal{E})=\mathcal{E}$.
+\item Ist $\mathcal{E}\subseteq\mathcal{E}'$, so ist $\sigma(\mathcal{E})\subseteq\sigma(\mathcal{E}')$.
+\end{enumerate}
+\end{lemma}
+
+\begin{beweis}
+\begin{enumerate}
+\item Klar nach Definition.
+\item $\fa:=\mathcal{E}$, dann gilt $\fa\subseteq\sigma(\mathcal{E})\subseteq\fa$.
+\item $\mathcal{E}\subseteq\mathcal{E}'\subseteq\sigma(\mathcal{E}')$, also folgt nach Definition $\sigma(\mathcal{E})\subseteq\sigma(\mathcal{E}')$.
+\end{enumerate}
+\end{beweis}
+
+\begin{beispiel}
+\begin{enumerate}
+\item Sei $A\subseteq X$ und $\mathcal{E}:=\{A\}$. Dann ist $\sigma(\mathcal{E})=\{X,\emptyset,A,A^C\}$.
+\item $X:=\{1,2,3,4,5\}, \mathcal{E}:=\{\{1\},\{1,2\}\}$. Dann gilt:
+\[\sigma(\mathcal{E}):=\{X,\emptyset, \{1\},\{2\},\{1,2\},\{3,4,5\},\{1,3,4,5\},\{2,3,4,5\}\}\]
+\end{enumerate}
+\end{beispiel}
+
+\begin{erinnerung}
+\index{Offenheit}\index{Abgeschlossenheit}
+Sei $d\in\mdn, X\subseteq\mdr^d$. $A\subseteq X$ heißt \textbf{offen} (\textbf{abgeschlossen}) in $X$, genau dann wenn ein offenes (abgeschlossenes) $G\subseteq\mdr^d$ existiert mit $A=X\cap G$.\\
+Beachte: $A$ abgeschlossen in $X$ $\iff$ $X\setminus A$ offen in $X$.
+\end{erinnerung}
+
+\begin{definition}
+\index{Borel!$\sigma$-Algebra}\index{$\sigma$-Algebra!Borelsche}
+\index{Borel!Mengen}
+Sei $X\subseteq\mdr^d$.
+\begin{enumerate}
+\item $\mathcal{O}(X):=\{A\subseteq X:A$ ist offen in $X\}$
+\item $\fb(X):=\sigma(\mathcal{O}(X))$ heißt \textbf{Borelsche $\sigma$-Algebra} auf $X$.
+\item $\fb_d:=\fb(\mdr^d)$. Die Elemente von $\fb_d$ heißen \textbf{Borelsche Mengen} oder \textbf{Borel-Mengen}.
+\end{enumerate}
+\end{definition}
+
+\begin{beispiel}
+\begin{enumerate}
+\item Sei $X\subseteq\mdr^d$. Ist $A\subseteq$ offen (abgeschlossen) in $X$, so ist $A\in\fb(X)$.
+\item Ist $A\subseteq\mdr^d$ offen (abgeschlossen) so ist $A\in\fb_d$.
+\item Sei $d=1, A=\mdq$. $\mdq$ ist abzählbar, also $\mdq=\{r_1,r_2,\ldots\}$ (mit $r_i\ne r_j$ für $i\ne j$). Also ist $\mdq=\bigcup \{r_j\}$. Sei nun $r\in\mdq$, dann ist $B:=(-\infty,r)\cup(r,\infty)\in\fb_1$. Daraus folgt $\{r_j\}\in\fb_1$, also auch $\mdq\in\fb_1$.\\
+Allgemeiner lässt sich zeigen: $\mdq^d:=\{(x_1,\ldots,x_n):x_j\in\mdq (j=1,\ldots,n)\}\in\fb_d$.
+\end{enumerate}
+\end{beispiel}
+
+\begin{definition}
+\index{Intervall}
+\index{Halbraum}
+\begin{enumerate}
+\item Seien $I_1,\ldots,I_d$ Intervalle in $\mdr$. $I_1\times\cdots\times I_d$ heißt ein \textbf{Intervall} in $\mdr^d$.
+\item Seien $a=(a_1,\ldots,a_d), b=(b_1,\ldots,b_d)\in\mdr^d$.
+\[a\le b:\iff a_j\le b_j\quad (j=1,\ldots,d)\]
+\item Seien $a,b\in\mdr^d$ und $a\le b$.
+\begin{align*}
+(a,b)&:=(a_1,b_1)\times\cdots\times(a_d,b_d)\\
+(a,b]&:=(a_1,b_1]\times\cdots\times(a_d,b_d]\\
+[a,b)&:=[a_1,b_1)\times\cdots\times[a_d,b_d)\\
+[a,b]&:=[a_1,b_1]\times\cdots\times[a_d,b_d]
+\end{align*}
+mit der Festlegung $(a,b):=(a,b]:=[a,b):=\emptyset$, falls $a_j=b_j$ für ein $j\in\{1,\ldots,d\}$.
+\item Für $k\in\{1,\ldots,d\}$ und $\alpha\in\mdr$ definiere die folgenden \textbf{Halbräume}:
+\begin{align*}
+H_k^-(\alpha):=\{(x_1,\ldots,x_d)\in\mdr^d:x_k\le\alpha\}\\
+H_k^+(\alpha):=\{(x_1,\ldots,x_d)\in\mdr^d:x_k\ge\alpha\}
+\end{align*}
+\end{enumerate}
+\end{definition}
+
+\begin{satz}
+Es seien $\ce_1,\ce_1,\ce_3$ wie folgt definiert:
+\begin{align*}
+\ce_1&:=\{(a,b):a,b\in\mdq^d,a\le b\}\\
+\ce_2&:=\{(a,b]:a,b\in\mdq^d, a\le b\}\\
+\ce_3&:=\{H^-_k(\alpha):\alpha\in\mdq, k=1,\ldots,d\}
+\end{align*}
+Dann gilt:
+\[\fb=\sigma(\ce_1)=\sigma(\ce_2)=\sigma(\ce_3)\]
+Entsprechendes gilt für die anderen Typen von Intervallen und Haupträumen.
+\end{satz}
+
+\begin{beweis}
+\begin{enumerate}
+\item Sei $G\in\co(\mdr^d), \fm:=\{(a,b):a,b\in\mdq^d,a\le b, (a,b)\subseteq G\}$. Dann ist $\fm$ abzählbar und $G=\bigcup_{I\in\fm}I$. also gilt:
+\[G\in\sigma(\ce_1)\implies \fb=\sigma(\co(\mdr^d))\subseteq\sigma(\ce_1)\]
+\item Sei $(a,b)\in\ce_1$.\\
+\textbf{Fall 1:} $(a,b)=\emptyset\in\ce_2\subseteq(\ce_2)$\\
+\textbf{Fall 2:} $(a,b)\ne\emptyset, a=(a_1\ldots,a_d), b=(b_1\ldots,b_d)$. Dann gilt für alle $j\in\{1,\ldots,d\}:a_j<b_j$, also gilt auch:
+\[\exists N\in\mdn:\forall n\ge N: \forall j\in\{1,\ldots,d\}:a_j>b_j-\frac1n\]
+Definiere $c_n:=(\frac1n,\ldots,\frac1n)\in\mdq^d$. Dann gilt:
+\[(a,b)=\bigcup_{n\ge N}(a,b-c_n]\in\sigma(\ce_2)\]
+Also auch $\ce_1\subseteq\sigma(\ce_2)$ und damit $\sigma(\ce_1)\subseteq\sigma(\ce_2)$.
+\end{enumerate}
+\end{beweis}
+
+\appendix
+\chapter{Satz um Satz (hüpft der Has)}
+\listtheorems{satz,wichtigedefinition}
+
+\renewcommand{\indexname}{Stichwortverzeichnis}
+\addcontentsline{toc}{chapter}{Stichwortverzeichnis}
+\printindex
+
+\chapter{Credits für Analysis III} Abgetippt haben die folgenden Paragraphen:\\% no data in Ana2Vorwort.tex
+\textbf{§ 1: $\sigma$-Algebren und Maße}: Rebecca Schwerdt\\
+
+
+\end{document}
