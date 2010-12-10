@@ -1166,6 +1166,9 @@ heißt \textbf{Normalform} von $f$.
 \end{definition}
 
 \begin{beispiel}
+Sei $A\in\fb(X)$definiere:
+\[f:=\mathds{1}_A=2\cdot\mathds{1}_A-\mathds{1}_X+\mathds{1}_{X\setminus A}=\mathds{1}_A+0\cdot\mathds{1}_{X\setminus A}\]
+Wobei das letzte die Normalform von $f$ ist. Man sieht also, dass einfache Funktionen mehrere Darstellungen haben können.
 \end{beispiel}
 
 \begin{satz}
@@ -1185,9 +1188,25 @@ Sei $f:X\to\imdr$ messbar.
 \end{satz}
 
 \begin{folgerungen}
+Sei $f:X\to\imdr$ eine Funktion, dann ist $f$ genau dann messbar, wenn eine Folge einfacher Funktionen $(f_n)$ mit $f_n:X\to\mdr$ und $f_n(x)\stackrel{n\to\infty}\to f(x)$ für alle $x\in X$ existiert.
 \end{folgerungen}
 
 \begin{beweis}
+\begin{enumerate}
+\item Für $n\in\mdn$ definiere $\varphi_n:[0,\infty]\to[0,\infty)$ durch
+\[\varphi_n(t):=\begin{cases}\frac{[2^nt]}{2^n} &,0\le t<n\\ n &,n\le t\le\infty\end{cases}\]
+Dann ist $\varphi_n$ $(\fb_1)_{[0,\infty]}$-$\fb_1$-messbar, außerdem gilt:
+\begin{align*}
+\forall t\in[0,\infty]\forall n\in\mdn&: 0\le\varphi_1\le\cdots\le t\\
+\forall t\in[0,n]\forall n\in\mdn&: t-\frac1{2^n}\le\varphi_n(t)\le t 
+\end{align*}
+und es ist $\varphi_n(t)\stackrel{n\to\infty}\to t$ für alle $t\in[0\infty]$. Setze $f_n:=\varphi_n\circ f$. Dann leistet $(f_n)$ das gewünschte.
+\item Es ist $f=f_+-f_-$ und $f_+,f_-\ge0$ auf $X$. Seien $(g_n),(h_n)$ zulässige Folgen für $f_+$ bzw. $f_-$. Definiere $f_n:=g_n-h_n$. Dann ist klar, dass gilt:
+\[\forall x\in X: f_n(x)=g_n(x)-h_n(x)\stackrel{n\to\infty}\to f_+(x)+f_-(x)=f(x)\]
+Weiter gilt:
+\[|f_n|\le g_n+h_n\le f_++f_-=|f|\]
+\item Ohne Beweis. 
+\end{enumerate}
 \end{beweis}
 
 \chapter{Konstruktion des Lebesgueintegrals}
@@ -1222,6 +1241,21 @@ Seien $f,g:X\to[0,\infty)$ einfach, $\alpha, \beta\in[0,\infty)$ und $A\in\fb(X)
 \end{satz}
 
 \begin{beweis}
+\begin{enumerate}
+\item Folgt aus der Definition und \ref{Satz 4.1}.
+\item Es seien $f=\sum_{j=1}^m y_j \mathds{1}_{A_j}$ und $g=\sum_{j=1}^k z_j \mathds{1}_{B_j}$ die Normalformen von $f$ und $g$. Dann gilt:
+\[\alpha f+ \beta g=\sum_{j=1}^m \alpha y_j\mathds{1}_{A_j}+\sum_{j=1}^k \beta z_j\mathds{1}_{B_j}\]
+Dann gilt:
+\begin{align*}
+\int_X (\alpha f+\beta g) &\stackrel{\ref{Satz 4.1}}= \sum_{j=1}^m \alpha y_j \lambda(A_j) + \sum_{j=1}^k \beta z_j \lambda(B_j)\\
+&= \alpha \sum_{j=1}^m y_j \lambda(A_j) + \beta \sum_{j=1}^k z_j \lambda(B_j)\\
+&= \alpha \int_X f(x)\text{ d}x + \beta \int_X g(x)\text{ d}x
+\end{align*}
+\item Definiere $h:=g-f$. Dann ist $h\ge 0$ und einfach. Sei $h=\sum_{j=1}^m x_j\mathds{1}_{C_j}$ die Normalform von $h$, d.h. $x_1,\ldots,x_m\ge 0$. Dann gilt:
+\[\int_X h(x)\text{ d}x = \sum_{j=1}^m x_j\lambda(C_j)\ge 0\]
+Also folgt aus $g=f+h$ und (2):
+\[\int_X g(x)\text{ d}x=\int_X f(x)\text{ d}x +\int_X h(x)\text{ d}x\ge \int_X f(x)\text{ d}x\]
+\end{enumerate}
 \end{beweis}
 
 \begin{definition}
@@ -1232,7 +1266,14 @@ Sei $f:X\to[0,\infty]$ messbar. $(f_n)$ sei eine für $f$ zulässige Folge. Das 
 \end{align*}
 \end{definition}
 
-\begin{bemerkung}
+\begin{bemerkung}\ 
+\begin{enumerate}
+\item In \ref{Satz 4.3} werden wir sehen, dass $(*)$ unabhängig ist von der Wahl der für $f$ zulässigen Folge $(f_n)$.
+\item $(f_n(x))$ ist wachsend für alle $x\in X$, d.h.:
+\[f(x)=\lim_{n\to\infty} f_n(x)=(\sup_{n\in\mdn} f_n)(x)\]
+\item Aus \ref{Satz 4.2}(3) folgt dass $(\int_X f_n(x)\text{ d}x)$ wachsend ist, d.h.:
+\[\lim_{n\to\infty} \int_X f_n(x)\text{ d}x = \sup\{\int_X f_n(x)\text{ d}x\mid n\in\mdn\}=\int_X f_(x)\text{ d}x\]
+\end{enumerate}
 \end{bemerkung}
 
 \textbf{Bezeichnung:}\\
@@ -1423,11 +1464,11 @@ Sei $f: X \to \imdr$ messbar. Die folgenden Aussagen sind äquivalent:
 \end{enumerate}
 \end{beweis}
 
-\begin{satz}[Folgerung]
+\begin{folgerungen}
 \label{Folgerung 4.10}
 \label{Satz 4.10}
 Sei $f:X\to\imdr$ integrierbar und $N := \{\lvert f \rvert = +\infty\} = \{x\in X : \lvert f(x) \rvert = + \infty\}$. Dann ist $N\in \fb(X)$ und $\lambda(N) = 0$.
-\end{satz}
+\end{folgerungen}
 
 \begin{beweis}
  $\ref{Satz 3.4} \implies N \in \fb(X).$ $n\mathds{1}_N \leq \lvert f \rvert$ für alle $n\in N$. Dann: 
