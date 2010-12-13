@@ -2204,6 +2204,183 @@ Das heißt:
 \end{enumerate}
 \end{beispiel}
 
+
+\chapter{Satz von Fubini}
+Die Bezeichnungen seien wie in den Paragraphen 8 und 9.
+
+\begin{satz}[Satz von Tonelli]
+\label{Satz 10.1}
+Es sei \(f\colon\mdr^d\to[0,+\infty]\) messbar. (Aus \S folgt dann, dass \(f^x,f_y\) messbar sind, wobei klar ist, dass \(f^x,f_y\geq 0\) sind.)\\
+Für \(x\in\mdr^k\):
+\[F(x):=\int_{\mdr^l}f(x,y)\,dy=\int_{\mdr^l}f^x(y)\,dy\]
+Für \(y\in\mdr^l\):
+\[G(y):=\int_{\mdr^k}f(x,y)\,dx=\int_{\mdr^k}f_y(x)\,dx\]
+Dann sind $F,G$ messbar und 
+\[\int_{\mdr^d}f(z)\,dz=\int_{\mdr^k}F(x)\,dx=\int_{\mdr^l}G(y)\,dy\]
+also
+\[ (\ast) \ \int_{\mdr^d}f(x,y)\,d(x,y)=\int_{\mdr^k}\left(\int_{\mdr^l}f(x,y)\,dy\right)dx=\int_{\mdr^l}\left(\int_{\mdr^k}f(x,y)\,dx\right)dy\]
+\textbf{(iterierte Integrale)}
+\end{satz}
+
+\begin{beweis}
+\textbf{Fall 1:} Sei \(C\in\fb_d\) und \(f=\mathds{1}_{C}\). Die Behauptungen folgen dann aus \ref{Satz 9.1}.\\
+\textbf{Fall 2:} Sei \(f\geq 0\) und einfach. Die Behauptungen folgen aus Fall 1, \ref{Satz 3.6} und \ref{Satz 4.5}.\\
+\textbf{Fall 3 - Der allgemeine Fall:}\\
+ Sei \((f_n)\) zulässig für $f$, also: \(0\leq f_n\leq f_{n+1}\), \(f_n\) einfach und \(f_n\to f\) auf \(\mdr^d\).
+Für \(x\in\mdr^k\) und \(\natn\) gilt:
+\[F_n(x):=\int_{\mdr^l}f_n(x,y)\,dy\]
+und nach Fall 2 ist \(F_n\) messbar. \\
+Aus \(0\leq f_n\leq f_{n+1}\) folgt \(0\leq F_n\leq F_{n+1}\) und \ref{Satz 4.6} liefert \(F_n\to F\) auf \(\mdr^k\). Dann gilt
+\[\int_{\mdr^d}f(z)\,dz = \lim \int_{\mdr^d}f_n(z)\,dz \overset{Fall 2}= \lim \int_{\mdr^k}F_n(x)\,dx \overset{\ref{Satz 4.6}}=\int_{\mdr^k}F(x)\,dx\]
+Genauso zeigt man 
+\[\int_{\mdr^d}(f(z)\,dz=\int_{\mdr^l}G(y)\,dy\]
+\end{beweis}
+
+\begin{satz}[Satz von Fubini (Version I)]
+\label{Satz 10.2}
+Es sei \(f\colon\mdr^d\to\imdr\) integrierbar. Dann existieren Nullmengen \(M\subseteq\mdr^k\) und \(N\subseteq\mdr^l\) mit
+\begin{align*}
+	 f^x\colon\mdr^l\to\imdr \text{ ist integrierbar für jedes } x\in\mdr^k\setminus M \\
+	 f_y\colon\mdr^k\to\imdr \text{ ist integrierbar für jedes } y\in\mdr^l\setminus N 
+\end{align*}
+Setze
+\begin{align*}
+	F(x):=
+	\begin{cases}
+		\int_{\mdr^l}f^x(y)\,dy=\int_{\mdr^l}f(x,y)\,dy	& \text{, falls } x\in\mdr^k\setminus M \\
+		0							& \text{, falls } x\in M
+	\end{cases}
+\intertext{und}
+	G(y):=
+	\begin{cases}
+		\int_{\mdr^k}f_y(x)\,dx=\int_{\mdr^k}f(x,y)\,dx	& \text{, falls } y\in\mdr^l\setminus N \\
+		0							& \text{, falls } y\in N
+	\end{cases}
+\end{align*}
+Dann sind $F$ und $G$ integrierbar und es gelten folgende zwei Gleichungen
+\[ \int_{\mdr^d}f(z)\,dz = \int_{\mdr^k}F(x)\,dx = \int_{\mdr^l}G(y)\,dy \]
+Es gilt also wieder \((\ast)\) aus \ref{Satz 10.1}.
+\end{satz}
+
+\begin{beweis}
+Wir zeigen nur die Aussagen über \(f^x\), $F$ und die erste der obigen beiden Gleichungen. Genauso zeigt man die Aussagen über \(f_n, G\) und die zweite Gleichung.\\
+Aus \ref{Lemma 8.1} folgt, dass \(f^x\) messbar ist. Definiere
+	\begin{align*}
+	\Phi(x) := \int_{\mdr^l}\lvert f^x(y)\rvert\,dy 
+	= \int_{\mdr^l}\lvert f(x,y)\rvert\,dy \ \text{ für } x\in\mdr^k 
+	\end{align*}
+Nach \ref{Satz 10.1} ist \(\Phi\) messbar und 
+	\begin{align*}
+	\int_{\mdr^k}\Phi(x)\,dx 
+	= \int_{\mdr^k}\left(\int_{\mdr^l}\lvert f(x,y)\rvert\,dy\right)dx \overset{\ref{Satz 10.1}} 
+	= \int_{\mdr^d}\lvert f(z)\rvert\,dz 
+	< \infty
+	\end{align*}
+(denn mit $f$ ist nach \ref{Satz 4.9} auch \(\lvert f\rvert\) integrierbar). Somit ist \(\Phi\) integrierbar.
+Setze \(M:=\{\Phi = \infty \}\) was nach \ref{Saz 4.10} eine Nullmenge ist. 
+Also gilt:
+	\begin{align*}
+	\int_{\mdr^l}\lvert f^x(y)\rvert\,dy 
+	= \Phi(x) < \infty \ \text{ für jedes } x\in\mdr^k\setminus M 
+	\end{align*}
+Das heißt, \(\lvert f^x\rvert\) ist für jedes \(x\in\mdr^k\setminus M\) integrierbar und es gilt nach \ref{Satz 4.9} auch
+	\begin{align*}
+	f^x \text{ ist integrierbar für jedes } x\in\mdr^k\setminus M
+	\end{align*}
+Aus \ref{Folgerung 9.2} folgt, dass \(M\times\mdr^l\) eine Nullmenge ist.
+Setze
+	\begin{align*}
+	\tilde f(z):=
+		\begin{cases}
+		f(z)	&\text{, falls } z\in\mdr^d\setminus(M\times\mdr^l)\\
+		0	&\text{, falls } z\in M\times\mdr^l
+		\end{cases}
+	\end{align*}
+Aus \ref{Satz 9.3} folgt, dass \(\tilde f\) messbar ist. Klar ist, dass fast überall \(f=\tilde f\) gilt. Es ist 
+\[\tilde f^x = \left(\mathds{1}_{(M\times\mdr^l)^C}\cdot f\right)^x\]
+Das heißt \(\tilde f^x\) ist integrierbar für jedes \(x\in\mdr^k\). Dann gilt
+	\begin{align*}
+	 F(x) \overset{\ref{Satz 5.3}} 
+	= \int_{\mdr^l}\tilde f(x,y)\,dy 
+	= \underbrace{\int_{\mdr^l}\tilde f_+ (x,y)\,dy}_{=:F^+(x)} - \underbrace{\int_{\mdr^l}\tilde f_- (x,y)\,dy}_{=:F^-(x)} 
+	\end{align*}
+Nach \ref{Satz 10.1} sind \(F^+\) und \(F^-\) messbar. Die Dreiecksungleichung liefert nun
+	\begin{align*}
+	\lvert F(x)\rvert 
+	\leq \int_{\mdr^l}\lvert \tilde f(x,y)\rvert\,dy 
+	\overset{\ref{Satz 5.3}}= \int_{\mdr^l}\lvert f(x,y)\rvert\,dy 
+	= \Phi(x) \ \text{ für } x\in\mdr^k
+	\end{align*}
+Also ist \(\lvert F\rvert\leq\Phi\) und \(\Phi\) ist integrierbar. Aus \ref{Satz 4.9} folgt, dass $F$ und \(\lvert F\rvert\) integrierbar sind 
+und dann sind auch \(F^+\) und \(F^-\) integrierbar (zur Übung). Es folgt
+	\begin{align*}
+	\int_{\mdr^k}F(x)\,dx
+	& = \int_{\mdr^k}F^+(x)\,dx - \int_{\mdr^k}F^-(x)\,dx 											\\
+	& = \int_{\mdr^k} \left(\int_{\mdr^l} \tilde f_+(x,y)\,dy\right)dx - \int_{\mdr^k} \left(\int_{\mdr^l}\tilde f(x,y)\,dy\right)dx 		\\
+	& \overset{\ref{Satz 10.1}}= \int_{\mdr^d}\tilde f_+(z)\,dz - \int_{\mdr^d}\tilde f_-(z)\,dz 						\\
+	& = \int_{\mdr^d}\tilde f(z)\,dz 														\\
+	& = \int_{\mdr^d}f(z)\,dz
+	\end{align*}
+\end{beweis}
+
+\begin{satz}[Satz von Fubini (Version II)]
+\label{Satz 10.3}
+Sei \(\varnothing\neq X\in\fb_k\), \(\varnothing\neq Y\in\fb_l\) und \(D:=X\times Y\) (nach \S 8 ist \(D\in\fb_d\)).
+Es sei \(f\colon D\to\imdr\) messbar.
+Ist \(f\geq 0\) auf $D$ oder ist $f$ integrierbar, so gilt
+\[ \int_D f(x,y)\,d(x,y) = \int_X\left(\int_Yf(x,y)\,dy\right)dx = \int_Y\left(\int_Xf(x,y)\,dx\right)dy \]
+\end{satz}
+
+\begin{beweis}
+Definiere \(\tilde f\) wie in \ref{Satz 9.3} und wende \ref{Satz 10.1} beziehungsweise \ref{Satz 10.2} an.
+\end{beweis}
+
+\begin{bemerkung}
+\ref{Satz 10.1}, \ref{Satz 10.2} und \ref{Satz 10.3} gelten natürlich auch für mehr als zwei iterierte Integrale.
+\end{bemerkung}
+
+\textbf{"'Gebrauchsanweisung"' für Fubini:}\\
+Gegeben: \(\varnothing\neq D\subseteq\fb_d\) und messbares \(f\colon D\to\imdr\).
+Setze $f$ auf \(\mdr^d\) zu einer messbaren Funktion \(\tilde f\) fort (zum Beispiel wie in \ref{Satz 9.3}).
+Aus \ref{Satz 3.8} folgt dann, dass \(\mathds{1}_{D}f\) messbar ist und \ref{Satz 10.1} liefert
+	\begin{align*}
+	\int_{\mdr^d}\lvert \mathds{1}_{D}\tilde f\rvert\,dz 
+	= \int_{\mdr^k}\left(\int_{\mdr^l}\lvert \mathds{1}_{D}\tilde f\rvert\,dy\right)dx 
+	= \int_{\mdr^l}\left(\int_{\mdr^k}\lvert \mathds{1}_{D}\tilde f\rvert\,dx\right)dy
+	\end{align*}
+Ist eines der drei obigen Integrale endlich, so ist \(\lvert \mathds{1}_{D}\tilde f\rvert\) integrierbar und
+damit ist nach \ref{Satz 4.9} auch \(\mathds{1}_{D}\tilde f\) integrierbar.\\
+Dann ist $f$ integrierbar und es folgt
+	\begin{align*}
+	\int_Df(z)\,dz 
+	& = \int_{\mdr^d}\left(\mathds{1}_{D}\tilde f\right)(z)\,dz									\\
+	& \overset{\ref{Satz 10.2}}= \int_{\mdr^k}\left(\int_{\mdr^l}\left(\mathds{1}_{D}\tilde f\right)(x,y)\,dy\right)dx 	\\
+	& = \int_{\mdr^l}\left(\int_{\mdr^k}\left(\mathds{1}_{D}\tilde f\right)(x,y)\,dx\right)dy
+	\end{align*}
+
+\begin{beispiel}
+Sei \(D=[a_1,b_1]\times[a_2,b_2]\times\ldots\times[a_d,b_d]\) mit \(a_i\leq b_i \ (i=1,\ldots,d)\). 
+Es sei \(f\colon D\to\mdr\) stetig. $D$ ist kompakt, also gilt \(D\in\fb_d\).
+Nach \ref{Satz 4.12}(2) ist \(f\in\mathfrak{L}^1(D)\) und aus obiger Bemerkung folgt
+	\begin{align*}
+	\int_Df(x_1,\ldots,x_d)\,d(x_1,\ldots,x_d) 
+	= \int_{a_d}^{b^d} \left(\ldots \left( \int_{a_2}^{b^2} \left(\int_{a_1}^{b^1}f(x_1,\ldots,x_d)\,dx_1\right)dx_2\right)\ldots\right)dx_d
+	\end{align*}
+Die Reihenfolge der Integrationen darf beliebig vertauscht werden. Aus \ref{Satz 4.13} folgt
+\[\int_{a_i}^{b_i}\ldots = \text{R-}\int_{a_i}^{b_i}\]
+\end{beispiel}
+
+
+\textbf{Konkretes Beispiel}\\
+Sei  \(D:=[a,b]\times[c,d]\subseteq\mdr^2\), \(f\in C([a,b])\) und \(g\in C([c.d])\).
+	\begin{align*}
+	\int_Df(x)g(x)\,d(x,y)						
+	& = \int_c^d\left(\int_a^bf(x)g(x)\,dx\right)dy			\\
+	& = \int_c^d\left(g(y)\left(\int_a^bf(x)\,dx\right)\right)dy		\\
+	&= \left(\int_a^bf(x)\,dx\right) \left(\int_c^dg(y)\,dy\right)
+	\end{align*}
+
+
 \appendix
 \chapter{Satz um Satz (hüpft der Has)}
 \listtheorems{satz,wichtigedefinition}
