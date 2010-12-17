@@ -2165,7 +2165,7 @@ Die Bezeichnungen seien wie im Paragraphen 8.
 \begin{satz}[Prinzip von Cavalieri]
 \label{Satz 9.1}
 Sei \(C\in\fb_d\). Dann:
-\[ \lambda_d(C)=\int_{\mdr^k}\lambda_l(C^x)\,dx=\int_{\mdr^l}\lambda(C_y)\,dy \]
+\[ \lambda_d(C)=\int_{\mdr^k}\lambda_l(C^x)\,dx=\int_{\mdr^l}\lambda_k(C_y)\,dy \]
 \end{satz}
 Das heißt:
 \[ \int_{\mdr^d}\mathds{1}_{C}(x,y) \text{ d}(x,y) = \int_{\mdr^k}\left(\int_{\mdr^l} \mathds{1}_{C}(x,y)\,dy\right)\,dx = \int_{\mdr^l} \left(\int_{\mdr^k} \mathds{1}_{C}(x,y)\,dx\right)\,dy \]
@@ -2204,6 +2204,73 @@ Das heißt:
 \end{enumerate}
 \end{beispiel}
 
+\begin{beweis}[Prinzip von Cavalieri]
+Wir definieren $\mu,\nu:\fb_d\to[0,\infty]$ durch:
+\begin{align*}
+\mu(A):=\int_{\mdr^k} \lambda_l(A^x)\text{ d}x && \mu(A):=\int_{\mdr^l} \lambda_k(A_y)\text{ d}y
+\end{align*}
+Dann ist klar, dass $\mu(\varnothing)=\nu(\varnothing)=\lambda_d(\varnothing)=0$ ist.\\
+Sei $(A_j)$ eine disjunkte Folge in $\fb_d$. Dann ist $(A_j^x)$ ebenfalls disjunkt und $(\bigcup A_j)^x=\bigcup A_j^x$. Somit gilt:
+\begin{align*}
+\mu(\bigcup A_j)&=\int_{\mdr^k} \lambda_l(\bigcup A_j^x)\text{ d}x\\
+&=\int_{\mdr^k} \sum \lambda_l(A_j^x)\text{ d}x\\
+&=\sum \int_{\mdr^k} \lambda_l(A_j^x)\text{ d}x\\
+&=\sum \mu(A_j)
+\end{align*}
+D.h. $\mu$ ist ein Maß auf $\fb_d$. Analog lässt sich zeigen, dass $\nu$ ein Maß auf $\fb_d$ ist.\\
+Sei nun $I\in\ci_d$, dann existieren $I'\in\ci_k, I''\in\ci_l$ mit $I=I'\times I''$. Aus §8 folgt:
+\begin{align*}
+I^x=\begin{cases} I''&,x\in I'\\ 
+\varnothing &,x\not\in I'\end{cases}
+\end{align*}
+Also ist $\lambda_l(I^x)=\lambda_l(I'')\cdot\mathds{1}_{I'}(x)$ und damit:
+\begin{align*}
+\mu(I)&=\int_{\mdr^k}\lambda_l(I'')\cdot\mathds{1}_{I'}(x) \text{ d}x\\
+&=\lambda_l(I'')\cdot\lambda_k(I') = \lambda_d(I)
+\end{align*}
+D.h. auf $\ci_d$ stimmen $\mu$ und $\lambda_d$ überein. Analog gilt $\nu=\lambda_d$ auf $\ci_d$. Da $\ci_d$ die Vorraussetzungen des Satzes \ref{Satz 2.6} erfüllt, gilt $\mu=\lambda_d=\nu$ auf $\fb_d$.
+\end{beweis}
+
+\begin{folgerung}
+\label{Folgerung 9.2}
+\begin{enumerate}
+\item Sei $N\in\fb_d$. Dann gilt:
+\begin{align*}
+\lambda_d(N)=0 &\iff \lambda_l(N^x) = 0 \quad \text{ f.ü. auf }\mdr^k\\
+&\iff \lambda_k(N_y) = 0 \quad \text{ f.ü. auf }\mdr^l\\
+\end{align*}
+\item Sei $M\subseteq\mdr^k$ ($M\subseteq\mdr^l$) eine Nullmenge, dann ist $M\times\mdr^l$ ($\mdr^k\times M$) eine Nullmenge.
+\end{enumerate}
+\end{folgerung}
+
+\begin{beweis}
+\begin{enumerate}
+\item Nach \ref{Satz 9.1} gilt:
+\[\lambda_d(N)=\int_{\mdr^k}\lambda_l(N^x)\text{ d}x\]
+Nach \ref{Satz 5.2}(2) folgt die Behauptung. Analog lässt sich die zweite Äquivalenz zeigen.
+\item Es gilt:
+\[\forall y\in\mdr^l:(M\times\mdr^l)_y=M\]
+Damit folgt die Behauptung aus (1).
+\end{enumerate}
+\end{beweis}
+
+\begin{lemma}
+\label{Lemma 9.3}
+Sei $\varnothing\ne D\in\fb_d$ und $f:D\to\imdr$ messbar. Definiere
+\[\tilde f(z):=\begin{cases} f(x) &,z\in D\\ 0&,z\not\in D\end{cases}\]
+Dann ist $\tilde f:\mdr^d\to\imdr$ messbar.
+\end{lemma}
+
+\begin{beweis}
+Sei $a\in\mdr$, $B_a:=\{n\in\mdr^d\mid \tilde f(z)\le a\}$.\\
+\textbf{Fall $a<0$:}
+\[B_a=\{z\in D\mid f(z)\le a\}\stackrel{\ref{Satz 3.4}}\in\fb_d\]
+\textbf{Fall $a\ge0$:}
+\[B_a=\{z\in D\mid f(z)\le a\}\cup \{z\in\mdr^d\setminus D\}\in\fb_d\]
+Also folgt aus \ref{Satz 3.4} die Messbarkeit von $\tilde f$.
+\end{beweis}
+
+\textbf{Hier fehlt noch der Rest vom 10.12.}
 
 \chapter{Der Satz von Fubini}
 Die Bezeichnungen seien wie in den Paragraphen 8 und 9.
@@ -2398,7 +2465,7 @@ Sei  \(D:=[a,b]\times[c,d]\subseteq\mdr^2\), \(f\in C([a,b])\) und \(g\in C([c.d
 \textbf{§ 6: Der Konvergenzsatz von Lebesgue}: Philipp Ost, Jan Ihrens \\
 \textbf{§ 7: Parameterintegrale}: Jan Ihrens \\
 \textbf{§ 8: Vorbereitungen}: Jan Ihrens \\
-\textbf{§ 9: Das Prinzip von Cavalieri}: Jan Ihrens\\
+\textbf{§ 9: Das Prinzip von Cavalieri}: Jan Ihrens, Rebecca Schwerdt\\
 \textbf{§ 10: Der Satz von Fubini}: Jan Ihrens\\
 
 \end{document}
