@@ -2585,6 +2585,7 @@ und daraus folgt \(\int_0^\infty e^{-xy}\,dy=\frac1x\)
 \end{enumerate}
 \end{beispiel}
 
+
 \chapter{Der Transformationssatz (Substitutionsregel)}
 
 Die Sätze in diesem Paragraphen geben wir \textbf{ohne} Beweis an. Es seien
@@ -2641,7 +2642,7 @@ Dann:
 \begin{enumerate}
 \item	$Y := \Phi(X)$ ist offen und $\Phi: X\to Y$ ist ein Diffeomorphismus
 \item	Ist $f\colon B \to [0, \infty]$ messbar, so ist $g\colon A \to [0, \infty]$ messbar und
-\[ \int_B f(y) dx = \int_A g(x) dx= \int_A f(\Phi(x)) \lvert\det(\Phi'(x))\rvert dx \qquad (\ast\ast)\]
+\[ \int_B f(y) \, dx = \int_A g(x) \, dx= \int_A f(\Phi(x)) \lvert\det(\Phi'(x))\rvert \, dx \qquad (\ast\ast)\]
 \item	Ist $f\colon B \to \imdr$ messbar, so gilt:\\
 \[ f \in \fl^{1}(B) \gdw g \in \fl^{1}(A) \]
 Ist $f \in \fl^{1}(B)$ so gilt $(\ast\ast)$
@@ -2654,7 +2655,7 @@ Ist $f \in \fl^{1}(B)$ so gilt $(\ast\ast)$
 \item	Sei $T\colon \MdR^d \to \MdR^d$ linear und $\det T \neq 0$. Weiter sei $A \in \fb_d$ und $v \in \MdR^d$.
 Dann ist $T(A) \in \fb_d$ und $\lambda_d(T(A)+v) = \lvert\det T\rvert \lambda_d(A)$
 \item	$\Phi\colon X \to Y$ sei ein Diffeomorphismus und $A \in \fb(X)$. 
-Dann ist $\Phi(A) \in \fb_d$ und $\lambda_d(\Phi(A)) = \int_A |\det \Phi'(X)| dx$
+Dann ist $\Phi(A) \in \fb_d$ und $\lambda_d(\Phi(A)) = \int_A |\det \Phi'(X)| \, dx$
 \item	Sei $F \in C^1(X, \MdR^d)$ und $N \subseteq X$ eine Nullmenge.
 Dann ist $F(N)$ enthalten in einer Nullmenge.
 \end{enumerate}
@@ -2664,13 +2665,127 @@ Dann ist $F(N)$ enthalten in einer Nullmenge.
 Seien $a,b > 0$ und $T:=\begin{pmatrix} a &  0 \\ 0 & b \end{pmatrix}$, $\det T = a b > 0$,
 $A:={(x,y)\in \MdR^2: x^2 + y^2 \leq 1}$, $A \in \fb_2$, $\lambda_2(A) = \pi$
 \[
-(u,v) \in T(A) \gdw \exists (x,y)\in A: (u,v) = (a x, b y) \gdw \exists (x,y) \in A: x = \frac{u}{a}, y = \frac{v}{b}
+(u,v) \in T(A)
+\gdw \exists (x,y)\in A: (u,v) = (a x, b y)
+\gdw \exists (x,y) \in A: x = \frac{u}{a}, y = \frac{v}{b}
 \gdw \frac{u^2}{a^2} + \frac{v^2}{b^2} \leq 1
 \]
 %% BILD: einer Ellipse
 11.3 $\implies T(A) \in \fb_2$ und $\lambda(T(A)) = a b \pi$.
 \end{beispiel}
 
+\begin{definition}[Polarkoordinaten]
+\label{Polarkoordinaten}
+%% BILD: von PK neben Formeln
+%% Tabellarisches Layout?
+$r = \parallel (x,y) \parallel = \sqrt{x^2 + y^2}$\\
+\( \left\{ 
+\begin{aligned}
+x &= r \cos(\varphi)\\
+y &= r \sin(\varphi)
+\end{aligned}
+\right.
+\)
+
+$\Phi(r,\varphi) := (r \cos(\varphi), r \sin(\varphi))$ für $((r,\varphi) \in \MdR^2)$,
+$\Phi \in C^1(\MdR^2, \MdR^2)$, 
+$\Phi'(r,\varphi) = \begin{pmatrix}
+\cos(\varphi) & -r \sin(\varphi) \\ 
+\sin(\varphi) & r \cos(\varphi)
+\end{pmatrix} $,
+$\det\Phi'(r,\varphi) = r \cos^2(\varphi) + r \sin^2(\varphi) = r > 0$ falls $r > 0$.
+\end{definition}
+
+\begin{bemerkung}[Faustregel für \ref{Polarkoordinaten}]
+Zu berechnen: $\int_B f(x,y) d(x,y)$. Finde A so, daß $\Phi(A) = B$.
+%% BILD: Kreissektor <=> Rechteck
+Mit \ref{Satz 11.2} $\implies \int_B f(x,y) d(x,y) = \int_A f(r \cos \varphi, r \sin \varphi) \, d(x,y) \cdot r \, d(r,\varphi)$
+\end{bemerkung}
+
+\begin{beispiel}
+\begin{enumerate}
+
+\item	Sei $0 \le \rho < R$; $B := \{(x,y) \in \MdR^2 : \rho \le x^2 + y^2 \le R^2\} $, 
+		%% BILD: der Kreisfläche und Trafo
+		\[
+			\lambda_2(B) = \int_B 1 \, d(x,y) = \int_A 1 \cdot r \, d(x,y) 
+			\overset{\text{§10}}= \int_{\rho}^{R} \left( \int_0^{2\pi} r \, dr \right) \, d\varphi
+			= \left. 2\pi \frac{1}{2} r^2 \right\rvert_\rho^R 
+			= \pi (R^2 - \rho^2)
+		\]
+		
+\item	$B := \{ (x,y) \in \MdR^2 : x^2 + y^2 \le 1, y \ge 0 \} $
+		%% BILD: der (Halb)Kreisfläche und Trafo
+		Berechne: $\int_B y \sqrt{x^2+y^2} \, d(x,y)$.
+		\begin{equation*}
+		\begin{split}
+			\int_B y \sqrt{x^2+y^2} \, d(x,y)
+			= \int_A r \sin(\varphi) r \cdot r \, d(r,\varphi)
+			= \int_A r^3 \sin\varphi \, d(r,\varphi)	\\
+			\overset{\text{§10}}= \int_0^\pi \left( \int_0^1 r^3 \sin\varphi \, dr \right) \, d\varphi
+			= \frac{1}{4} \int_0^\pi sin\varphi \, d\varphi
+			= \left. \frac{1}{4}(-\cos\varphi) \right\rvert_0^\pi
+			= \frac{1}{4}(1+1) = \frac{1}{2}
+		\end{split}
+		\end{equation*}
+\item	%%\begin{behauptung}
+		\( \textbf{Behauptung:} \int_{-\infty}^\infty e^{-x^2} \, dx = \sqrt{\pi} \)
+		%%\end{behauptung}
+		\begin{beweis}
+		%% BILD: Bilder von Kreis und Rechtecktrafos/näherungen
+		Für $\rho > 0 : B_\rho := \{(x,y) \in \MdR^2 : x^2+ y^2 \le \rho^2 ; x \ge 0, y \ge 0 \}$ und
+		$Q_\rho := [0,\rho] \times [0,\rho]$, $f(x,y) = e^{-(x^2 + y^2)}$
+
+		%% align sorgt für häßliche Darstellung...
+		\begin{align*}
+			\int_{ B_\rho } f(x,y) \, d(x,y)
+			&= \int_{Q_\rho} e^{-r^2} r\, d(r,\varphi)
+			\overset{\text{§10}}= \int_0^{\frac{\pi}{2}} \left( \int_0^\rho r e^{-r^2} \, dr \right) \, d\varphi	\\
+			&= \frac{\pi}{2} \left[ -\frac{1}{2} e^{-r^2} \right]_{0}^{\rho}
+			= \frac{\pi}{2} \left( -\frac{1}{2} e^{-\rho^2} +\frac{1}{2} \right)	\\
+			& := h(\rho) 
+		\end{align*}
+		
+		\[ h(\rho) \to \frac{\pi}{4} \qquad (\rho \to \infty) \]
+		
+		\begin{align*}
+			\int_{Q_\rho} f(x,y) \, d(x,y)
+			&= \int_{Q_\rho} e^{-x^2} e^{-y^2}\, d(x,y)	\\
+			&= \int_0^\rho \left( \int_0^\rho e^{-x^2} e^{-y^2} \, dy \right) \, dx \\
+			&= \left( \int_0^\rho e^{-x^2} \, dx \right)^2
+		\end{align*}
+		
+		Wegen $ B_\rho \subseteq Q_\rho \subseteq B_{\sqrt{2} \rho} $ und $f \ge 0$ folgt:
+		%% Formatierung crcl wäre um einiges schöner!
+		\begin{align*}
+			& &
+			\int_{B_\rho} f \, d(x,y)
+			&\le& \int_{Q_\rho} f \, d(x,y)
+			&\le& \int_{B_{\sqrt{2} \rho}} f \, d(x,y)
+			\\
+			&\implies&
+			h(\rho) 
+			&\le& \int_{Q_\rho} f \, d(x,y)
+			&\le& h(\sqrt{2} \rho)
+			\\
+			&\implies&
+			h(\rho) 
+			&\le& \left( \int_0^\rho e^{-x^2} \, dx \right)^2
+			&\le& h(\sqrt{2} \rho)
+			\\
+			&\implies&
+			\sqrt{h(\rho)}
+			&\le& \int_0^\rho e^{-x^2} \, dx
+			&\le& \sqrt{h(\sqrt{2} \rho)}
+		\end{align*}
+		%% Als Zeile die über mehrere Spalten geht (an obiges angeschlossen) wäre um einiges schöner
+		\(	\overset{\rho \to \infty} \implies
+			\int_0^\infty e^{-x^2} \, dx = \frac{\sqrt{\pi}}{2}
+			\implies \text{Behauptung}
+		\)
+		\end{beweis}
+\end{enumerate}
+\end{beispiel}
 
 
 \appendix
