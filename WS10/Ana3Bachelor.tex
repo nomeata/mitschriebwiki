@@ -3511,12 +3511,119 @@ Seien \((E,\lvert\lvert\cdot\rvert\rvert_1), (F,\lvert\lvert\cdot\rvert\rvert_2)
 		\[\sum^\infty_{n=1}x_n\] bezeichnet. \(\sum^\infty_{n=1}x_n\) heißt
 		\textbf{konvergent} genau dann, wenn \((s_n)\) konvergiert. In diesem Fall ist
 		\[\sum^\infty_{n=1}x_n:=\lim_{n\to\infty}s_n\]
-\item 	\(\Phi\colon E_1\to E_2\) sei eine Abbildung. \(\Phi\) heißt \textbf{stetig} in \(x_o\in E\)
+\item 	\(\Phi\colon E\to F\) sei eine Abbildung. \(\Phi\) heißt \textbf{stetig} in \(x_o\in E\)
 		genau dann, wenn für jede konvergente Folge \((x_n)\) in $E$ mit \(x_n\to x_0\)
 		gilt: \[\Phi(x_n)\to\Phi(x_0)\] 
 		\(\Phi\) heißt auf $E$ stetig genau dann, wenn \(\Phi\) ist in jedem \(x\in E\) stetig.
+\item Für $(x,y)\in E\times E$ setze 
+\[\|(x,y)\|:=\sqrt{\|x\|_1^2+\|y\|_1^2}\]
+Dann ist $\|\cdot\|$ eine Norm auf $E\times E$ (nachrechnen!). Weiter gilt, dass $E\times E$ genau dann ein Banachraum ist, wenn $E$ einer ist. Für eine Folge $((x_n,y_n))$ in $E\times E$ und $(x,y)\in E\times E$ gilt
+\[(x_n,y_n)\stackrel{\|\cdot\|}\to (x,y) \iff x_n\stackrel{\|\cdot\|}\to x \wedge y_n\stackrel{\|\cdot\|}\to y\]
 \end{enumerate}
 \end{definition}
+
+\begin{bemerkung}
+Ist $(x_n)$ eine konvergente Folge in $E$, so ist $(x_n)$ beschränkt (d.h. $\exists c>0: \|x_n\|_1\le c \forall n\in\mdn$).
+
+(Beweis wie in Ana I)
+\end{bemerkung}
+
+\begin{vereinbarung}
+Für den Rest dieser Vorlesung schreiben wir (meist) $f$ statt $\hat f$ und identifizieren $\fl^p(X)$ mit $L^p(X)$. Ebenso schreiben wir $\int_X f\text{ d}x$ statt $\int_X \hat f\text{ d}x$ und $(f|g)$ statt $(\hat f|\hat g)$.
+\end{vereinbarung}
+
+\begin{wichtigesbeispiel}
+\label{Beispiel 16.6}
+\begin{enumerate}
+\item Die Abbildung $\Phi:L^1(X)\to\mdr$, definiert durch
+\[\Phi(f):=\|f\|_p\]
+ist stetig auf $L^p(X)$. D.h. für $f_n,f\in L^p(X)$ mit $f_n\stackrel{\|\cdot\|_p}\to f$ gilt $\|f_n\|_p\to\|f\|_p$, also
+\[\int_X|f_n|^p\text{ d}x\to\int_X|f|^p\text{ d}x\] 
+\begin{beweis}
+Aus Analysis II §17 folgt:
+\[| \|f_n\|_p-\|f\|_p |\le \|f_n-f\|_p\stackrel{n\to\infty}\to 0\]
+\end{beweis}
+\item Die Abbildung $\Phi:L^1(X)\to\mdr$ definiert durch
+\[\Phi(f):=\int_X f\text{ d}x\]
+ist stetig auf $L^1(X)$. D.h. aus $f_n,f\in L^1(X)$ und $f_n\stackrel{\|\cdot\|_1}\to f$ folgt
+\[\int_X f_n\text{ d}x\to\int_X f \text{ d}x\]
+\begin{beweis}
+Es gilt:
+\begin{align*}
+|\int_X f_n \text{ d}x-\int_X f \text{ d}x| &=|\int_X f_n-f \text{ d}x|\\
+&\le \int_X |f_n-f| \text{ d}x\\
+&= \|f_n-f\|_1\stackrel{n\to\infty}\to \infty
+\end{align*}
+\end{beweis}
+\item Die Abbildung $\Phi:L^2(X)\times L^2(X)\to\mdr$ definiert durch
+\[\Phi(f,g):=(f|g)\]
+ist stetig auf $L^2(X)\times L^2(X)$. D.h. für $f_n,g_n,f,g\in L^2(X)$ mit $f_n\stackrel{\|\cdot\|_2}\to f$ und $g_n\stackrel{\|\cdot\|_2}\to g$ gilt
+\[(f_n|g_n)\stackrel{n\to\infty}\to(f|g)\]
+\begin{beweis}
+Es gilt:
+\begin{align*}
+|(f_n|g_n)-(f|g)|&=|(f_n|g_n)-(f_n|g)+(f_n|g)-(f|g)|\\
+&=|(f_n|g_n-g)+(f_n-f|g)|\\
+&\le |(f_n|g_n-g)|+|(f_n-f|g)|\\
+&\le \|f_n\|_2\cdot \|g_n-g\|_2 + \|f_n-f\|_2\cdot\|g\|_2\stackrel{n\to\infty}\to 0
+\end{align*}
+\end{beweis}
+\end{enumerate}
+\end{wichtigesbeispiel}
+
+\begin{satz}
+\label{Satz 16.7}
+Sei $f=f_-f_-\in L^p(X)$ und $(g_n)$ und $(h_n)$ seien zulässige Folgen für $f_+$ bzw. $f_-$ (d.h. $g_n,h_n$ einfach, $0\le g_n\le g_{n+1}, g_n\to f_+$, $0\le h_n\le h_{n+1}, h_n\to f_-$). Setze $f_n:=g_n-h_n$.\\
+Dann sind $f_n,g_n,h_n\in L^p(X)$ und es gilt:
+\begin{align*}
+&\|g_n-f_+\|_p\to 0&&\|h_n-f_-\|_p\to 0&&\|f_n-f\|_p\to 0
+\end{align*}
+\end{satz}
+
+\begin{beweis}
+Es genügt den Fall $f\ge 0$ zu betrachten (also $f=f_+$, $f_-\equiv 0$). Sei also $(f_n)$ zulässig für $f$. Definiere $\varphi:=|f_n-f|^p$. Es ist klar, dass punktweise gilt $\varphi_n\to 0$. Außerdem gilt:
+\begin{align*}
+0\le\varphi_n&\le (|f_n|+|f|)^p\\
+&=|f_n+f|^p\le (2f)^p\\
+&=2^pf^p=:g 
+\end{align*}
+Dann ist $g\in L^1(X)$ integrierbar.\\
+Aus \ref{Satz 4.9} folgt:
+\begin{align*}
+\varphi\in L^1(X)&\implies f_n-f\in L^p(X)\\
+&\implies f_n=(f_n-f)+f\in L^p(X) 
+\end{align*}
+Aus \ref{Satz 6.2} folgt:
+\[\int_X\varphi_n\text{ d}x\to 0 \implies \|f_n-f\|_p^p\to 0\]
+\end{beweis}
+
+\begin{definition}
+\index{Träger}
+\begin{enumerate}
+\item Sei $f:X\to\mdr$. Dann heißt
+\[\supp (f):=\overline{\{x\in X\mid f(x)\ne 0\}}\]
+heißt \textbf{Träger} von $f$
+\item $C_c(X,\mdr):=\{f\in C(X,\mdr)\mid \supp(f)\subseteq X\text{ und } \supp(f) \text{ kompakt}\}$
+\end{enumerate}
+\end{definition}
+
+\begin{satz}
+\index{dicht}
+\label{Satz 16.8}
+\begin{enumerate}
+\item $C_c(X,\mdr)\subseteq L^p(X)$
+\item Ist $X$ offen, so liegt $C_c(X,\mdr)$ \textbf{dicht} in $L^p(X)$, d.h. ist $f\in L^p(X)$ und $\ep>0$, so existiert $g\in C_c(X,\mdr)$ mit $\|f-g\|_p<\ep$.
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+\begin{enumerate}
+\item Sei $f\in C_c(C,\mdr)$ und $K:=\supp(f)$, dann ist $K\subseteq X$ kompakt, also $K\in\fb_d$. Es gilt für alle $x\in X\setminus K$ $f(x)=0$ und damit folgt aus \ref{Satz 4.12} $\int_K |f|^p\text{ d}x<\infty$. Dann gilt:
+\[\int_X |f|^p\text{ d}x=\int_{X\setminus K} |f|^p\text{ d}x+\int_K |f|^p\text{ d}x=\int_K |f|^p\text{ d}x<\infty\]
+Also ist $f\in L^p(X)$.
+\item Siehe Übungsblatt.
+\end{enumerate}
+\end{beweis}
 
 \appendix
 \chapter{Satz um Satz (hüpft der Has)}
