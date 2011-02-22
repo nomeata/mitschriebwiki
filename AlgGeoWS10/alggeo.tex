@@ -51,6 +51,7 @@
 %\newtheorem{db}[dfn]{Definition/Bemerkung}
 \definetheorem{bem}{Bemerkung}{thmcnt}
 \definetheorem{db}{Definition/Bemerkung}{thmcnt}
+\definetheorem{de}{Definition/Erinnerung}{thmcnt}
 \theoremstyle{stz}
 %\newtheorem{satz}{Satz}
 \definetheorem{satz}{Satz}{satzcnt}
@@ -122,6 +123,7 @@
 \newcommand{\da}{:=}
 \newcommand{\leer}{\ensuremath{\varnothing}}
 \newcommand{\Quot}{\mathrm{Quot}}
+\newcommand{\card}[1]{|#1|}
 
 \newcommand{\set}[1]{\ensuremath{\mathbb{#1}}}
 \newcommand{\Q}{\set{Q}}
@@ -266,7 +268,7 @@ injektiv ist. Ist sie auch surjektiv?
 
 \section{Zariski-Topologie}
 
-\begin{db}Sei $n\in\N$. Die affinen Varietäten im $k^{n}$ bilden die abgeschlossenen Mengen einer Topologie auf dem $k^{n}$. Diese heißt \emph{Zariski-Topologie}.\end{db}
+\begin{db}\label{1.2.1}Sei $n\in\N$. Die affinen Varietäten im $k^{n}$ bilden die abgeschlossenen Mengen einer Topologie auf dem $k^{n}$. Diese heißt \emph{Zariski-Topologie}.\end{db}
 \begin{proof}\begin{prooflist}
 \item $\leer$ und $k^{n}$ sind affine Varietäten nach \autoref{bsp1.2}.
 \item Seien $V_{1},V_{2}$ affine Varietäten, d.h. $V_{1}=\V(I_{1})$ und $V_{2}=\V(I_{2})$, wobei $I_{1},I_{2}$ Ideale in $k\polyx$ sind. Dann gilt:
@@ -310,14 +312,75 @@ Sei $n=1$. Dann gilt: $X\subseteq\A^{1}(k)$ ist genau dann abgeschlossen, wenn $
 \item[\ref{1.2.5a}] Punkte sind abgeschlossen, denn sei $x=(x_{1},\dotsc,x_{k})\in k^{n}$, dann ist
 \[{x}=\V(X_{1}-x_{1},\dotsc,X_{n}-x_{n}).\]
 Damit sind auch endliche Vereinigungen von Punkten abgeschlossen und somit schon \emph{alle} Teilmengen von $\A^{1}(k)$.
-\item[\ref{1.2.5b}] {\sc Erinnerung:} Ein topologischer Raum $X$ heißt hausdorffsch$\iff$ Für alle $x,y\in X$ existieren offene Umgebungen $U_{x}\ni x$ und $U_{y}\ni y$ mit $U_{x}\cap U_{y}=\leer$.
+\item[\ref{1.2.5b}] {\sc Erinnerung:} Ein topologischer Raum $X$ heißt hausdorffsch, wenn für alle $x,y\in X$ offene Umgebungen $U_{x}\ni x$ und $U_{y}\ni y$ mit $U_{x}\cap U_{y}=\leer$ existieren.
 
 Für $n=1$ folgt die Behauptung also aus \autoref{1.2.4}.
 
+Den Fall $n\geq 2$ führen wir zurück auf den Fall $n=1$:
 
+Seien $x,y\in\A^{n}(k)$, $U_{x},U_{y}$ offene Umgebungen von $x$ bzw. $y$. Wir setzen
+\[V_{1}:=\A^{n}(k)\setminus U_{x} = \V(I_{1})\text{ und }V_{2}:=\A^{n}(k)\setminus U_{y}=\V(I_{2})\]
+für entsprechende Ideale $I_{1}$ und $I_{2}$. Ohne Einschränkung gebe es Polynome $f\in I_{1}$ und $g\in I_{2}$, in denen $X_{1}$ als Variable vorkommt (sonst
+
+\begin{w}Hilfe!\end{w}
+
+Sei $W:=\V(X_{2},\dotsc,X_{n})$. Dann besteht $V_{1}\cap W$ aus nur endlich vielen Punkten, da diese Nullstellen von $f(X_{1},0,\dotsc,0)$ sein müssen. Gleiches gilt für $V_{2}\cap W$. Also schneiden sich $U_{x}$ und $U_{y}$ sogar schon in $W$.\qedhere
 \end{enumerate}\end{proof}
 
-\sect{Der Hilbertsche Nullstellensatz}
+\begin{de}\label{1.2.6} Seien $X,X_{1},X_{2}$ topologische Räume.
+\begin{enumerate}
+\item Sei $Y\subseteq X$. Definiere auf $Y$ die \emph{Spurtopologie} durch
+\[U\subseteq Y\text{ offen}\: :\Longleftrightarrow\:\exists\;V\subseteq X\text{ offen mit }U=V\cap Y.\]
+\item Sei $X\times Y$ das kartesische Produkt (als Mengen) und seien
+\begin{align*}p_{1}\colon X_{1}\times X_{2}\rightarrow X_{1},\quad(x_{1},x_{2})\mapsto x_{1},\\p_{2}\colon X_{1}\times X_{2}\rightarrow X_{2},\quad(x_{1},x_{2})\mapsto x_{2},\end{align*}
+die zugehörigen Projektionen. Die \emph{Produkttopologie} auf $X_{1}\times X_{2}$ ist die gröbste Topologie (d.h. möglichst wenig offene Mengen), so dass $p_{1}$ und $p_{2}$ stetig sind.
+
+D.h. $U\subseteq X_{1}\times X_{2}$ ist genau dann offen, wenn $U$ beliebige Vereinigung endlicher Schnitte von Urbildern offener Mengen in $X_{1}$ bzw. $X_{2}$ unter $p_{1}$ bzw. $p_{2}$ ist.
+
+\item $X$ heißt \emph{reduzibel}, wenn es abgeschlossene echte Teilmengen $A,B\subsetneq X$ mit $X=A\cup B$ gibt.
+
+\item $X$ heißt \emph{irreduzibel}, wenn $X$ nicht reduzibel ist.
+
+\item Eine maximale irreduzible Teilmenge von $X$ heißt \emph{irreduzible Komponente}.
+\end{enumerate}\end{de}
+
+\begin{bsp}\label{1.2.7}
+Sei $X$ hausdorffsch und $M\subseteq X$. Dann gilt:
+\[M\text{ ist irreduzibel (bzgl. Spurtopologie)}\iff \card{M}\leq 1,\]
+d.h. $M$ ist einelementig oder leer.
+
+\emph{Denn}: Liegen $x\neq y$ in $M$, so finden wir (offene) Umgebungen $U_{x}$ und $U_{y}$ mit leerem Schnitt, können also
+\[M=(M\setminus U_{x})\cup(M\setminus U_{y})\]
+schreiben und sehen so, dass $M$ reduzibel ist. $\leer$ ist nie irreduzibel.
+\end{bsp}
+
+\begin{bsp}\label{1.2.8} Sei $k$ ein Körper mit unendlich vielen Elementen.
+\begin{enumerate}
+\item $\A^{1}(k)$ ist irreduzibel, da echte abgeschlossene Teilmengen endlich sind.
+\item $\V(X\cdot Y) = \V(X)\cup\V(Y)$ ist reduzibel mit irreduziblen Komponenten $\V(X)$ und $\V(Y)$.
+\end{enumerate}\end{bsp}
+
+\begin{bem}\label{1.2.9}
+Sei $V\subseteq\A^{n}(k)$ eine affine Varietät. Dann gilt:
+\[V\text{ ist irreduzibel}\iff\I(V)\text{ ist ein Primideal}.\]
+\end{bem}
+\begin{proof}
+Sei zuerst $V$ irreduzibel. Seien $f,g\in k\polyx$ mit $f\cdot g\in\I(V)$. 
+
+Angenommen $f\notin\I(V)$, dann gilt auch $\V(f)\not\supseteq\V(\I(V))=V$.
+
+Andererseits gilt nach \autoref{1.2.1}: $\V(f)\cup\V(g)=\V(f\cdot g)\supseteq V$, also
+\[V=(V\cap \V(f))\cup(V\cap\V(g)),\]
+wobei $V\cap\V(f)$ und $V\cap\V(g)$ in $V$ abgeschlossen sind. Außerdem ist $V\neq V\cap\V(f)$, also gilt, da $V$ irreduzibel ist, $V=V\cap\V(g)$. Daraus folgt $V\subseteq\V(g)$ und damit ist $g\in\I(V)$ und $\I(V)$ ist somit ein Primideal.
+
+Sei nun $\I(V)$ ein Primideal. Seien $V_{1},V_{2}$ Varietäten mit $V=V_{1}\cup V_{2}$ und $I_{1}:=\I(V_{1})$, $I_{2}:=\I(V_{2})$.
+
+Angenommen $V\neq V_{1}$, d.h. $V\supsetneq V_{1}$, dann ist auch $\I(V)\subsetneq\I(V_{1})=I_{1}$.
+
+Andererseits ist $V=V_{1}\cup V_{2}=\V(I_{1}\cdot I_{2})$, also ist $I_{1}\cdot I_{2}\subseteq\I(V)$. Das impliziert aber $I_{2}\subseteq\I(V)$, da $\I(V)$ ein Primideal ist und $I_{1}\not\subseteq\I(V)$. Daher gilt $V_{2}=\V(I_{2})\supseteq\V(\I(V))=V$, also ist schon $V=V_{2}$ und damit ist $V$ irreduzibel.
+\end{proof}
+
+\section{Der Hilbertsche Nullstellensatz}
 
 \begin{motivation}
   Bisher haben wir die Mengen
