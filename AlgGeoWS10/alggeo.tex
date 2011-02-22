@@ -44,6 +44,8 @@
 \definetheorem{dfn}{Definition}{thmcnt}
 \definetheorem{bsp}{Beispiel}{thmcnt}
 \definetheorem{lem}{Lemma}{thmcnt}
+\definetheorem{prop}{Proposition}{thmcnt}
+\definetheorem{kor}{Korollar}{thmcnt}
 %\theoremstyle{foo}
 %\newtheorem{bem}[dfn]{Bemerkung}
 %\newtheorem{db}[dfn]{Definition/Bemerkung}
@@ -138,8 +140,8 @@
 \setlist[prooflist,2]{label=(\roman*)}
 
 %Polynomringe
-\newcommand{\polyx}{\ensuremath%
-  [X_{1},\dotsc,X_{n}]}
+\newcommand{\polyx}[1][n]{\ensuremath%
+  [X_{1},\dotsc,X_{#1}]}
 
 % sectionformat:
 \renewcommand{\thesection}{\arabic{section}}
@@ -316,8 +318,8 @@ Für $n=1$ folgt die Behauptung also aus \autoref{1.2.4}.
      \mathpzc{J}_n = \{ I\subseteq k\polyx \mid I \text{ Radikalideal }\} \]
   und zwischen ihnen die Abbildungen
   \begin{align*}
-    \V\colon& \mathpzc{J}_n \ra \mathpzc{V}_n, &I\mapsto\V(I)\\
-    \I\colon& \mathpzc{V}_n \ra \mathpzc{J}_m, &V\mapsto\I(V)
+    \V\colon& \mathpzc{J}_n \ra \mathpzc{V}_n, \quad I\mapsto\V(I)\\
+    \I\colon& \mathpzc{V}_n \ra \mathpzc{J}_m, \quad V\mapsto\I(V)
   \end{align*}
   betrachtet. Wir haben gesehen, dass $\V\circ\I=\id$ gilt. Gilt auch $\I\circ\V=\id$?
 \end{motivation}
@@ -327,30 +329,27 @@ Für $n=1$ folgt die Behauptung also aus \autoref{1.2.4}.
   $\I(\V(I)) = k\polyx$.
 \end{bsp*}
 
-Wir werden sehen, dass $\I\circ\V=\id$ gilt, falls $k$ algebraisch abgeschlossen ist. Die einzige ``Obstruktion'' ist,
+Wir werden sehen, dass $\I\circ\V=\id$ gilt, falls $k$ algebraisch abgeschlossen ist. Die einzige \enquote{Obstruktion} ist,
 dass $\V(I)=\leer$ gilt, obwohl $I\neq k\polyx$.
 
-\begin{satz}[Hilbertscher Nullstellensatz]\label{1.3.2}\label{HNS}
+\begin{satz}[Hilbertscher Nullstellensatz]\label{satz2}\label{HNS}
   \begin{enumerate}
-  \item {\bf Algebraische Form:}\label{1.3.2a} Sei $m$ ein maximales Ideal in $k\polyx$. Dann ist $\Quotient{k\polyx}{m}$ eine
+  \item {\bf Algebraische Form:}\label{satz2a} Sei $m$ ein maximales Ideal in $k\polyx$. Dann ist $\Quotient{k\polyx}{m}$ eine
     endliche algebraische Körpererweiterung von $k$.
-  \item {\bf Schwacher Hilbertscher Nullstellensatz:}\label{1.3.2b} Ist $k$ algebraisch abgeschlossen und $I\subsetneq k\polyx$
+  \item {\bf Schwacher Hilbertscher Nullstellensatz:}\label{satz2b} Ist $k$ algebraisch abgeschlossen und $I\subsetneq k\polyx$
     ein echtes Ideal, dann ist $\V(I)\neq\leer$.
-  \item {\bf Starker Hilbertscher Nullstellensatz:}\label{1.3.2c} Ist $k$ algebraisch abgeschlossen und $I\subseteq k\polyx$ ein
+  \item {\bf Starker Hilbertscher Nullstellensatz:}\label{satz2c} Ist $k$ algebraisch abgeschlossen und $I\subseteq k\polyx$ ein
     Ideal, dann ist $\I(\V(I))=\sqrt(I)$.
   \end{enumerate}
 \end{satz}
-\begin{proof}
-  \begin{enumerate}
-  \item Wir bezeichnen $x_1=\Bar{X}_1,\dotsc,x_n=\Bar{X}_n$. Ohne Einschränkung können wir nach einer eventuellen Umsortierung
-    der Variablen annehmen, dass $x_1,\dotsc,x_k$ algebraisch unabhängig über $k$ sind und $x_{k+1},\dotsc,x_n$ algebraisch über
-    $k(x_1,\dotsc,x_k)$. Also:
-    \[ k \subseteq S = k(x_1,\dotsc,x_k) \subseteq L=\Quotient{k\polyx}{m}, \]
-    dabei ist $k(x_1,\dotsc,x_k)\cong\Quot(k[X_1,\dotsc,X_k])$ und $L$ ist endlich erzeugt als $S$-Modul.
 
-    Die Aussage folgt dann aus den nachfolgenden Lemmata.
-  \end{enumerate}
-\end{proof}
+Die Aussage wird in mehreren Schritten im Rest dieses Abschnitts bewiesen.
+
+Wir bezeichnen $x_1=\Bar{X}_1,\dotsc,x_n=\Bar{X}_n$. Ohne Einschränkung können wir nach einer eventuellen Umsortierung
+der Variablen annehmen, dass $x_1,\dotsc,x_k$ algebraisch unabhängig über $k$ sind und $x_{k+1},\dotsc,x_n$ algebraisch über
+$k(x_1,\dotsc,x_k)$. Also:
+\[ k \subseteq S = k(x_1,\dotsc,x_k) \subseteq L=\Quotient{k\polyx}{m}, \]
+dabei ist $k(x_1,\dotsc,x_k)\cong\Quot(k\polyx[k])$ und $L$ ist endlich erzeugt als $S$-Modul.
 
 \begin{lem}\label{1.3.1}
   Seien $R$, $S$, $T$ Ringe mit $R\subseteq S\subseteq T$, sodass gilt:
@@ -362,8 +361,79 @@ dass $\V(I)=\leer$ gilt, obwohl $I\neq k\polyx$.
   Dann ist $S$ als $R$-Algebra endlich erzeugt.
 \end{lem}
 \begin{proof}
-  Wir schreiben $x_i=\sum_{j=1}^m a_{ij}w_j$ mit $a_{ij}\in S$ und $w_iw_j=\sum_{k=1}^m b_{ijk}w_k$ mit $b_{ijk}\in S$. Sei 
+  Wir schreiben 
+  \[ x_i=\displaystyle\sum_{j=1}^m a_{ij}w_j \text{ mit } a_{ij}\in S, \qquad
+     w_iw_j=\displaystyle\sum_{k=1}^m b_{ijk}w_k \text { mit } b_{ijk}\in S. \]
+  Sei $S_0$ die $R$-Unteralgebra von $S$, die von allen $a_{ij}$ und $b_{ijk}$ erzeugt wird. Nach dem Hilbertschen Basissatz ist
+  $S_0$ ein noetherscher Ring. $T$ wird von den $w_i$ auch als $S_0$-Modul erzeugt und ist noethersch als $S_0$-Modul, da er ein
+  endlich erzeugter Modul über einem noetherschen Ring ist. $S$ ist ein $S_0$-Untermodul von $T$. Damit ist $S$ endlich erzeugt
+  als $S_0$-Modul, also auch als $R$-Algebra.
 \end{proof}
+
+Insbesondere ist in der Situation im Beweis des Hilbertschen Nullstellensatzes (\autoref{HNS}) $k(x_1,\dotsc,x_k)$ als
+$k$-Algebra endlich erzeugt.
+
+\begin{lem}\label{1.3.2}
+  Es sei $k$ ein Körper. Dann ist $k(X_1,\dotsc,X_r)$ nicht endlich erzeugt als $k$-Algebra für $r\ge1$.
+\end{lem}
+\begin{proof}
+  Wir nehmen an, wir hätten endlich viele Erzeuger $h_1,\dotsc,h_k$ und schreiben $h_i=\frac{f_i}{g_i}$ mit $f_i,g_i\in
+  k\polyx[r]$. Dann wählen wir ein Primpolynom $p$, das keines der $g_i$ teilt und schreiben
+  \[ \frac1p = \sum_{i=1}^N a_i h_{i_1}\dotsm h_{i_{l_i}}. \quad (a_i\in k,\ i,j\in\{1,\dotsc,k\})\]
+  Sei $H=g_1\dotsm g_k$. Multipliziert man obige Gleichung mit $H$ durch, bekommt man $\frac{H}{p}\in k\polyx[r]$, also
+  ist $p$ ein Teiler von $H$. Aber $p$ war teilerfremd zu allen $g_i$ gewählt. Das ist ein Widerspruch.
+\end{proof}
+
+\begin{prop}\label{1.3.3}
+  Die algebraische Version des Hilbertschen Nullstellensatzes stimmt.
+\end{prop}
+\begin{proof}
+  Das folgt nun direkt aus \autoref{1.3.1} und \autoref{1.3.2}.
+\end{proof}
+
+%27.10.10
+
+Um die Implikation $I\subsetneq k\polyx \implies \V(I)\neq\leer$ zu zeigen, betrachten wir für einen Punkt $p=(x_1,\dotsc,x_n)\in
+k^n$ den Einsetzungshomomorphismus \[ \phi_p\colon k\polyx \ra k, \quad f\mapsto f(p) \] (das ist ein
+$k$-Algebrenhomomorphismus). Dieser steigt genau dann ab auf $A=\Quotient{k\polyx}{I}$, wenn $p\in\V(I)$ gilt. Außerdem ist jeder
+$k$-Algebrenhomomorphismus $\phi\colon A\ra k$ von dieser Art: wähle $p=(\phi(\Bar{X_1}),\dotsc,\phi(\Bar{X_n}))$. Ist $I=m$ ein
+maximales Ideal, dann ist $A=\Quotient{k\polyx}{m}$ eine endliche algebraische Körpererweiterung von $k$. In diesem Fall
+existiert genau dann ein $k$-Algebrenhomomorphismus $A\ra k$, wenn $A=k$ gilt.
+
+\begin{lem}\label{1.3.4}
+  Aus der algebraischen Version \ref{satz2a} folgt der schwache Hilbertsche Nullstellensatz \ref{satz2b}.
+\end{lem}
+\begin{proof}
+  Sei $m$ ein maximales Ideal mit $I\subseteq m$. Da $k$ algebraisch abgeschlossen ist, ist nach \ref{satz2a}
+  $L=\Quotient{k\polyx}{m}\cong k$. Sei $\phi\colon L\ra K$ ein Isomorphismus und $p=(\phi(\Bar{X_1}),\dotsc,\phi(\Bar{X_n}))\in
+  k^n$. Für $f\in m$ gilt dann $f(p)=\phi(f(\Bar{X}_1,\dotsc,\Bar{X}_n))=\phi(\Bar{f(X_1,\dotsc,X_n)}) = \phi(0)=0$. Also ist
+  $p\in\V(I)$ und damit $\V(I)\neq\leer$.
+\end{proof}
+
+\begin{lem}[Schluss von Rabinowitsch]
+  Aus \ref{satz2b} folgt \ref{satz2c}.
+\end{lem}
+\begin{proof}
+Zu zeigen ist $\I(\V(I))=\sqrt{I}$. Die Inklusion \enquote{$\supseteq$} ist klar. Für die andere Inklusion nehmen wir uns ein
+$g\in\I(\V(I))$ und zeigen: es gibt ein $d\ge1$ mit $g^d\in I$.
+
+Wir betrachten $k^{n+1}$ und definieren $J=(I,gX_{n+1}-1)$. Dann ist $\V(J)=\leer$, denn wäre
+$p=(x_1,\dotsc,x_{n+1})\in\V(J)$, dann wäre $(x_1,\dotsc,x_n)\in\V(I)$, also $g(x_1,\dotsc,x_n)=0$, aber damit wäre
+$(gX_{n+1}-1)(p)=-1\neq0$, was ein Widerspruch ist.
+
+Nach \ref{satz2b} muss dann also $J=k\polyx[n+1]$ gelten. Also gibt es $b_1,\dotsc,b_{n+1}\in k\polyx[n+1]$, sodass
+\[ 1=b_1f_1 + \dotsm + b_nf_n + b_{n+1}(gX_{n+1}-1) \] gilt. Wir verwenden den $k$-Algebrenhomomorphismus
+\[ \phi\colon k\polyx[n+1] \ra k(X_1,\dotsc,X_n),\quad X_i\mapsto X_i \text{ für } i\in\{1,\dotsc,n\},\ X_{n+1}\mapsto\frac1g \]
+und bekommen
+\[ 1 = \phi(1) = \phi(b_1)f_1 + \dotsm + \phi(b_n)f_n + 0. \]
+Nun schreiben wir $\phi(b_i)=\frac{\tilde{b_i}}{g}a_i$ für $\tilde{b_i}\in k\polyx$. Durchmultiplizieren mit $g^d$ für genügend
+großes $d$ ergibt dann $g^d\in I$.
+\end{proof}
+
+\begin{kor}\label{1.3.6}
+  Ist $k$ algebraisch abgeschlossen, dann entsprechen die affinen Varietäten in $\A^n(k)$ bijektiv den Radikalidealen in
+  $k\polyx$ via $V\mapsto\I(V)$.
+\end{kor}
 
 \section{Morphismen zwischen affinen Varietäten}
 
