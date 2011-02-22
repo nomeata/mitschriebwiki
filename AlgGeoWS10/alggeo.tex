@@ -1,0 +1,238 @@
+\documentclass[a4paper,12pt]{scrbook}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setdefaultlanguage{german}
+
+\setmainfont[Mapping=tex-text,Numbers=OldStyle,Ligatures=Rare]{Linux Libertine O}
+\setsansfont{Linux Biolinum O}
+
+\usepackage{csquotes}
+\usepackage{hyperref,amsmath,amsthm,amsfonts,bbm,enumitem}
+
+\usepackage{tikz}
+\usetikzlibrary{matrix,arrows,calc}
+
+\deffootnote[1em]{1em}{1em}{\textsuperscript{\thefootnotemark}\ }
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+
+\newtheoremstyle{blah}{10pt}{3pt}{}{}{\sc}{:}{ }{}
+\newtheoremstyle{foo}{10pt}{3pt}{\it}{}{\sc}{:}{ }{}
+\newtheoremstyle{stz}{10pt}{3pt}{\it}{}{\bfseries}{:}{ }{}
+
+\theoremstyle{blah}
+% coole gabi-style umgebungen:
+\newtheorem*{ziel}{Ziel}
+\newtheorem*{zeige}{Zeige}
+\newtheorem*{q}{Frage}
+\newtheorem*{bsp*}{Beispiel}
+\newtheorem{dfn}{Definition}[section]
+\newtheorem{bsp}[dfn]{Beispiel}
+%\theoremstyle{foo}
+\newtheorem{bem}[dfn]{Bemerkung}
+\newtheorem{db}[dfn]{Definition/Bemerkung}
+\theoremstyle{stz}
+\newtheorem{satz}{Satz}
+
+%\AtBeginEnvironment{ziel}{\begin{addmargin}[1cm]{0cm}\hspace*{-1cm}}
+%\AtEndEnvironment{ziel}{\end{addmargin}}
+
+\makeatletter
+\renewcommand{\proofname}{Beweis}
+\renewenvironment{proof}[1][\proofname]{\par
+  \pushQED{\qed}%
+  \normalfont \topsep6\p@\@plus6\p@\relax
+  \trivlist
+  \item[\hskip\labelsep
+        \itshape
+    #1\@addpunct{:}]\ignorespaces
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+\makeatother
+
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathpzc{D}}
+\newcommand{\Grp}{\mathpzc{Grp}}
+\newcommand{\Cat}{\mathpzc{Cat}}
+\newcommand{\Set}{\mathpzc{Set}}
+\newcommand{\Top}{\mathpzc{Top}}
+\newcommand{\Ob}{\mathpzc{Ob}}
+\newcommand{\Ar}{\mathpzc{Ar}}
+\newcommand{\F}{\mathpzc{F}}
+\newcommand{\G}{\mathpzc{G}}
+\renewcommand{\H}{\mathpzc{H}}
+\renewcommand{\L}{\mathpzc{L}}
+\newcommand{\T}{\mathpzc{T}}
+\newcommand{\Hom}{\mathrm{Hom}}
+\newcommand{\Abb}{\mathrm{Abb}}
+\newcommand{\Func}{\mathrm{Func}}
+\newcommand{\Nat}{\mathrm{Nat}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\cod}{\operatorname{cod}}
+\newcommand{\Cone}{\mathrm{Cone}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\Eq}{\mathrm{Eq}}
+\newcommand{\ra}{\longrightarrow}
+\renewcommand{\phi}{\varphi}
+\newcommand{\ep}{\varepsilon}
+\newcommand{\da}{:=}
+\newcommand{\leer}{\ensuremath{\emptyset}}
+
+\newcommand{\set}[1]{\ensuremath{\mathbb{#1}}}
+\newcommand{\Q}{\set{Q}}
+\newcommand{\N}{\set{N}}
+\newcommand{\R}{\set{R}}
+\newcommand{\Z}{\set{Z}}
+
+\newcommand{\smapsto}{\mapsto}
+\renewcommand{\mapsto}{\longmapsto}
+
+%Listenformate:
+\setenumerate[1]{leftmargin=*,labelindent=\parindent,label=(\alph*)}
+%seperate listen im Beweise
+\newlist{prooflist}{enumerate}{2}
+\setlist[prooflist]{leftmargin=*,labelindent=\parindent,label=(\arabic*)}
+\setlist[prooflist,2]{label=(\roman*)}
+
+%Polynomringe
+\newcommand{\polyx}{\ensuremath%
+  [X_{1},\dotsc,X_{n}]}
+
+% sectionformat:
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thechapter}{\Roman{chapter}}
+
+\begin{document}
+
+% Titelseite kommt irgedwann noch....
+
+% 18.10.10
+%\setcounter{chapter}{-1}
+\chapter*{Motivation}
+
+\begin{ziel}
+Untersuche Nullstellenmengen von Polynomen: Für eine Menge von Polynomen
+\[p_{1},\dotsc,p_{r}\in k\polyx\]
+über einem Körper $k$ möchte man die Menge der Nullstellen
+\[\{x=(x_{1},\dotsc,x_{n})\mid p_{i}(x)=0\text{ für alle }i\}\]
+analysieren.
+\end{ziel}
+
+\begin{bsp*}
+\begin{enumerate}
+\item Betrachte $ax^{2}+by^{2}=1\iff x^{2}+y^{2}-1=0$ über $k=\R$. Das liefert eine Ellipse, für $a=b=1$ einen Kreis.
+%Bild...
+\item Betrachte $x^{2}+y^{2}=z^{2}$.
+%Bild...
+\item Betrachte (b) mit $x=1$: Dann ist $1+y^{2}=z^{2}\iff 1=z^{2}-y^{2}$, also eine Hyperbel.
+%Bild
+\item Bei linearen Gleichungen sehen wir mit Hilfe der linearen Algebra, das wir affine Unterräume erhalten.
+\item Die Lösungsmengen sind abhängig vom Körper, z.B. sehen wir für $k=\Z/3\Z$ hat das Polynom $X^{3}-X$ als Lösungsmenge ganz $k$.
+\end{enumerate}
+\end{bsp*}
+
+% Rest kommt noch ;)
+
+\chapter{Die Kategorie der affinen Varietäten}
+\section{Affine Varietäten und Verschwindungsideale}
+
+Sei $k$ stets ein Körper.
+
+\begin{dfn}
+$V\subseteq k^{n}$ heißt \emph{affine Varietät}, wenn
+$\F\subseteq k\polyx$
+mit \[V=V(\F):=\{x=(x_{1},\dotsc,x_{n})\in k^{n}\mid f(x)=0\;\forall f\in\F\}\] existiert.
+\end{dfn}
+
+\begin{bsp}\label{bsp1.2}
+\begin{enumerate}
+\item $k^{n}=V(\{0\})$
+\item $\leer=V(\{1\})$
+\end{enumerate}
+\end{bsp}
+
+\begin{q}Wie eindeutig ist das $\F$? Zum Beispiel liefern Produkte und Summen von Polynomen keine neuen Nullstellen:
+\[V(x^{2}+y^{2}+z^{2}-1) \supseteq V(x^{2}+y^{2}+z^{2}-1, z-\frac{1}{2}) = V(x^{2}+y^{2}+z^{2}-1, z-\frac{1}{2}, x^{2}+y^{2}+z^{2}-1 + z-\frac{1}{2}).\]
+\end{q}
+
+\begin{bem} Seien $\F_{1},\F_{2}\subseteq k\polyx$. Dann gilt:
+\begin{enumerate}
+\item\label{1.1.3a} $\F_{1}\subseteq\F_{2}\implies V(\F_{1})\supseteq V(\F_{2})$
+\item\label{1.1.3b} Sei $(\F)$ das von $\F$ erzeugte Ideal. Dann gilt: $V(\F) = V((\F))$.
+\item\label{1.1.3c} Sei
+\[\sqrt{(\F)}:=\{p\in k\polyx\mid\exists\, d\geq 1\text{ mit }p^{d}\in(\F)\}\]
+das \emph{Radikalideal} von $(\F)$ ($\sqrt{(\F)}$ ist Ideal!). Dann gilt: $V(\sqrt{(\F)})=V(\F)$.
+\item\label{1.1.3d} Zu jeder affinen Varietät $V\subseteq k^{n}$ gibt es endlich viele Polynome $f_{1},\dotsc,f_{r}$ mit \[V=V(\{f_{1},\dotsc,f_{r}\})=:V(f_{1},\dotsc,f_{r}).\]
+\end{enumerate}
+\end{bem}
+
+\begin{proof}
+\ref{1.1.3a} und \ref{1.1.3b} folgen direkt aus der Definition.
+\begin{enumerate}%\addtocounter{enumi}{2}
+\item[\ref{1.1.3c}] Offenbar ist $\sqrt{(\F)}\supseteq(\F)$, also gilt nach \ref{1.1.3a} und \ref{1.1.3b}: $V(\sqrt{(\F)})\subseteq V((\F))=V(\F)$.
+
+Für die andere Richtung: Sei $x=(x_{1},\dotsc,x_{n})\in V(\F)$ und $f\in\sqrt{(\F)}$. Nach Definition existiert $d\in\N$, so dass $f^{d}\in(\F)$. Also gilt $f^{d}(x)=0$ und damit $f(x)=0$, demnach ist $x\in V(\sqrt{(\F)})$.
+\item[\ref{1.1.3d}] Nach \ref{1.1.3b} gilt $V(\F)=V((\F))$ und nach Hilberts Basissatz wird $(\F)$ von endlich vielen Elementen erzeugt.\qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{db}
+Sei $V\subseteq k^{n}$. Wir nennen
+\[I(V):=\{f\in k\polyx\mid f(x)=0\;\forall x\in V\}\]
+das \emph{Verschwindungsideal von $V$}. Es ist ein Ideal.
+\end{db}
+
+\begin{bem} Es gilt:
+\begin{enumerate}
+\item\label{1.1.5a} Seien $V_{1},V_{2}\subseteq k^{n}$ mit $V_{1}\subseteq V_{2}$. Dann ist $I(V_{1})\supseteq I(V_{2})$.
+\item\label{1.1.5b} Sei $V\subseteq k^{n}$. Dann ist $I(V)$ ein Radikalideal.
+\item\label{1.1.5c} Sei $V$ eine affine Varietät. Dann gilt $V=V(I(V))$.
+
+Es gilt sogar: $I(V)$ ist das größte Ideal mit dieser Eigenschaft, d.h. für $J\subseteq k\polyx$ mit $V(J)=V$ folgt schon $J\subseteq I(V)$.
+\item\label{1.1.5d} Seien $V_{1},V_{2}$ affine Varietäten. Dann gilt:
+\[V_{1}=V_{2}\iff I(V_{1})=I(V_{2})\text{ und } V_{1}\subseteq V_{2}\iff I(V_{1})\supseteq I(V_{2}).\]
+\end{enumerate}
+\end{bem}
+
+\begin{proof} Die Aussagen \ref{1.1.5a} und \ref{1.1.5b} folgen sofort aus der Definition.
+\begin{enumerate}
+\item[\ref{1.1.5c}] Sei zuerst $x\in V$. Dann gilt für alle $f\in I(V)$: $f(x)=0$, also gilt $x\in V(I(V))$.
+
+Sei nun $V$ eine affine Varietät. Dann gilt $V=V(\F)$ für eine geeignete Menge $\F$. Es gilt $\F\subseteq I(V)$, also ist
+\[V=V(\F)\supseteq V(I(V)).\]
+
+Der Rest der Behauptung folgt aus der Definition des Verschwindungsideals.
+\item[\ref{1.1.5d}] Die eine Richtung ist klar, bzw. folgt aus \ref{1.1.5a}. Für die andere Richtung überlegt man sich, dass nach \ref{1.1.5c} $V_{1}=V(I(V_{1}))=V(I(V_{2}))=V_{2}$ gilt.  Die Aussage für die Inklusionen folgt analog.\qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{q}
+Wir haben gesehen, dass die Zuordnung
+\[V\mapsto I(V)\]
+injektiv ist. Ist sie auch surjektiv?
+\end{q}
+
+\section{Zariski-Topologie}
+
+\begin{db}Sei $n\in\N$. Die affinen Varietäten im $k^{n}$ bilden die abgeschlossenen Mengen einer Topologie auf dem $k^{n}$. Diese heißt \emph{Zariski-Topologie}.\end{db}
+\begin{proof}\begin{prooflist}
+\item $\leer$ und $k^{n}$ sind affine Varietäten nach \autoref{bsp1.2}.
+\item Seien $V_{1},V_{2}$ affine Varietäten, d.h. $V_{1}=V(I_{1})$ und $V_{2}=V(I_{2})$, wobei $I_{1},I_{2}$ Ideale in $k\polyx$ sind. Dann gilt:
+\[V_{1}\cap V_{2}=V(I_{1}\cup I_{2}) = V(I_{1}+I_{2}).\]
+Das gleiche Argument funktioniert für beliebige Familien $V_{\lambda}$ mit $\lambda\in\Lambda$ und $\Lambda$ Indexmenge, d.h. $\displaystyle\bigcap_{\lambda\in\Lambda}V_{\lambda}$ ist wieder eine affine Varietät.
+\item Seien $V_{1},V_{2}$ affine Varietäten mit $I_{1}=I(V_{1})$ und $I_{2}=I(V_{2})$.
+\begin{zeige} $V(I_{1}\cdot I_{2})\subseteq V_{1}\cup V_{2}\subseteq V(I_{1}\cap I_{2})\subseteq V(I_{1}\cdot I_{2})$.
+\begin{prooflist}
+\item $V_{1}\cup V_{2}\subseteq V(I_{1}\cap I_{2})$ ist nach Definition klar.
+\item Sei $x\in V(I_{1}\cdot I_{2})$. Angenommen $x\notin V_{1}$. Dann existiert $g\in I_{1}$ mit $g(x)\neq 0$. Sei $f\in I_{2}$. Dann ist $f\cdot g\in I_{1}\cdot I_{2}$, also ist $f\cdot g(x) = f(x)\cdot g(x) = 0$ und da $g(x)\neq 0$ ist $f(x)=0$, also $x\in V(I_{2})=V_{2}$.
+\end{prooflist}\end{zeige}
+\end{prooflist}\end{proof}
+
+
+
+\end{document}
