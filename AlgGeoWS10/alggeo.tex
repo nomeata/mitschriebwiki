@@ -4,11 +4,11 @@
 \usepackage{polyglossia}
 \setdefaultlanguage{german}
 
-\setmainfont[Mapping=tex-text,Numbers=OldStyle,Ligatures=Rare]{Linux Libertine}
-\setsansfont{Linux Biolinum}
+\setmainfont[Mapping=tex-text,Numbers=OldStyle,Ligatures=Rare]{Linux Libertine O}
+\setsansfont{Linux Biolinum O}
 
 \usepackage{csquotes}
-\usepackage{hyperref,amsmath,amsthm,amsfonts,bbm,enumitem}
+\usepackage{hyperref,amsmath,amsthm,amsfonts,bbm,enumitem,aliascnt}
 
 \usepackage{tikz}
 \usetikzlibrary{matrix,arrows,calc}
@@ -16,6 +16,15 @@
 \deffootnote[1em]{1em}{1em}{\textsuperscript{\thefootnotemark}\ }
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{3pt}
+
+\newtheorem{thmcnt}{Dummy}[section]
+\newcommand{\definetheorem}[2]{
+  \newaliascnt{#1}{thmcnt}
+  \newtheorem{#1}[#1]{#2}
+  \aliascntresetthe{#1}
+  \newtheorem*{#1*}{#2}
+  \expandafter\def\csname #1autorefname\endcsname{#2}
+}
 
 \newtheoremstyle{blah}{10pt}{3pt}{}{}{\sc}{:}{ }{}
 \newtheoremstyle{foo}{10pt}{3pt}{\it}{}{\sc}{:}{ }{}
@@ -26,14 +35,19 @@
 \newtheorem*{ziel}{Ziel}
 \newtheorem*{zeige}{Zeige}
 \newtheorem*{q}{Frage}
-\newtheorem*{bsp*}{Beispiel}
-\newtheorem{dfn}{Definition}[section]
-\newtheorem{bsp}[dfn]{Beispiel}
+%\newtheorem*{bsp*}{Beispiel}
+%\newtheorem{dfn}{Definition}[section]
+%\newtheorem{bsp}[dfn]{Beispiel}
+\definetheorem{dfn}{Definition}
+\definetheorem{bsp}{Beispiel}
 %\theoremstyle{foo}
-\newtheorem{bem}[dfn]{Bemerkung}
-\newtheorem{db}[dfn]{Definition/Bemerkung}
+%\newtheorem{bem}[dfn]{Bemerkung}
+%\newtheorem{db}[dfn]{Definition/Bemerkung}
+\definetheorem{bem}{Bemerkung}
+\definetheorem{db}{Definition/Bemerkung}
 \theoremstyle{stz}
-\newtheorem{satz}{Satz}
+%\newtheorem{satz}{Satz}
+\definetheorem{satz}{Satz}
 
 % Warnungen :)
 \usepackage{manfnt,environ}
@@ -62,7 +76,7 @@
 
 \DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
 
-\renewcommand{\C}{\mathbb{C}}
+\newcommand{\C}{\mathbb{C}}
 \newcommand{\D}{\mathpzc{D}}
 \newcommand{\Grp}{\mathpzc{Grp}}
 \newcommand{\Cat}{\mathpzc{Cat}}
@@ -71,10 +85,10 @@
 \newcommand{\Ob}{\mathpzc{Ob}}
 \newcommand{\Ar}{\mathpzc{Ar}}
 \newcommand{\F}{\mathpzc{F}}
-\renewcommand{\G}{\mathpzc{G}}
+\newcommand{\G}{\mathpzc{G}}
 \renewcommand{\H}{\mathpzc{H}}
 \renewcommand{\L}{\mathpzc{L}}
-\renewcommand{\T}{\mathpzc{T}}
+\newcommand{\T}{\mathpzc{T}}
 \newcommand{\Hom}{\mathrm{Hom}}
 \newcommand{\Abb}{\mathrm{Abb}}
 \newcommand{\Func}{\mathrm{Func}}
@@ -123,7 +137,6 @@
 %\setcounter{chapter}{-1}
 \chapter*{Motivation}
 
-Hallo.
 \begin{ziel}
 Untersuche Nullstellenmengen von Polynomen: Für eine Menge von Polynomen
 \[p_{1},\dotsc,p_{r}\in k\polyx\]
