@@ -99,6 +99,7 @@
 \def\B{\mathpzc{B}}
 \newcommand{\J}{\mathpzc{J}}
 \newcommand{\AffVar}{\mathpzc{AffVar}}
+\newcommand{\RedAlg}{\mathpzc{RedAlg}}
 \newcommand{\Grp}{\mathpzc{Grp}}
 \newcommand{\Cat}{\mathpzc{Cat}}
 \newcommand{\Set}{\mathpzc{Set}}
@@ -547,9 +548,9 @@ großes $d$ ergibt dann $g^d\in I$.
 
 \begin{ziel}In diesem Abschnitt sollen Morphismen definiert werden. Die Idee dabei ist, Abbildungen zu betrachten, die von Polynomen herkommen.
 \end{ziel}
-\begin{dfn}
+\begin{dfn}\label{1.4.1}
 \begin{enumerate}
-\item\label{1.4.1a} Seien $V\subseteq k^{n}, W\subseteq k^{m}$ affine Varietäten. Eine Abbildung $f:V\mapsto W$ heißt Morphismus, wenn es Polynome $f_1,\dotsc,f_m \in \polyx$ mit 
+\item\label{1.4.1a} Seien $V\subseteq k^{n}, W\subseteq k^{m}$ affine Varietäten. Eine Abbildung $f:V\mapsto W$ heißt Morphismus, wenn es Polynome $f_1,\dotsc,f_m \in k\polyx$ mit 
 \[f(p)=(f_1(p),\dotsc,f_m(p)) \in k^{m}\]
 gibt.
 \item\label{1.4.1b} Ein Morphismus $f:V\mapsto W$ heißt Isomorphismus, wenn es einen Morphismus $g:W\mapsto V$ mit $g\circ f=\id_V, f\circ g=\id_W$ gibt.
@@ -557,13 +558,121 @@ gibt.
 \end{enumerate}
 \end{dfn}
 \begin{bem}\label{1.4.2} Die affinen Varietäten über $k$ bilden zusammen mit den Morphismen eine Kategorie: $\AffVar_k$.
-Dabei sind die Objekte gerade die affinen Varietäten und die Morphismen zwischen zwei affinen Varietäten sind wie in \ref{1.4.1a} 
-gegeben. Man beachte, dass die Verkettung von Polynomen wieder ein Polynom ist, d.h. die Verkettung zweier Morphismen ist auch wieder ein Morphismus.
+Dabei sind die Objekte gerade die affinen Varietäten und die Morphismen zwischen zwei affinen Varietäten sind wie in \autoref{1.4.1} gegeben. Man beachte, dass die Verkettung von Polynomen wieder ein Polynom ist, d.h. die Verkettung zweier Morphismen ist auch wieder ein Morphismus.
 \end{bem}
 
-\begin{bsp}
+
+\begin{bsp}\label{1.4.3}
 \begin{enumerate}
-\item Projektoren bzw. Einbettungen 
+\item\label{1.4.3a}  Projektoren bzw. Einbettungen $\A^{n}(k)\ra \A^{m}(k)$ 
+\[\begin{cases} (x_1,\dotsc,x_n) \mapsto (x_1,\dotsc,x_m),\text{ falls $n\ge m$} \\ (x_1,\dotsc,x_n)\mapsto (x_1,\dotsc,x_n,0,\dotsc,0),\text{ falls $n<m$} \end{cases}\] sind Morphismen.
+\item\label{1.4.3b} Jedes $f \in k\polyx$ definiert ein Morphismus $\A^{n}(k)\ra \A^{n}(k)$.
+\item\label{1.4.3c} Seien $V=\A^1(k)$, $W=\V(Y^2-X^3) \subseteq \A^2(k)$. Die Abbildung 
+\[f:V\ra W, \qquad x\mapsto (x^2,x^3)\]
+definiert einen Morphismus.
+%Bild : Neilsche Parabel
+Hierbei ist f bijektiv mit Umkehrabbildung 
+\[g(x,y)=\begin{cases} y/x,\text{ falls $x\neq 0$} \\ 0,\text{ falls $x=0$} \end{cases}\]
+Ist $k$ unendlich, so ist $g$ kein Morphismus. Also sind bijektive Morphismen im Allgemeinen keine Isomorphismen.
+\item\label{1.4.3d} Sei char$(k)=p>0$. Dann heißt $f:\A^n(k)\ra \A^n(k)$ gegeben durch 
+\[f(x_1,\dotsc,x_n)=(x_1^p,\dotsc,x_n^p)\] 
+Frobeniusmorphismus. Bekanntermaßen sind die Nullstellen des Polynoms $X^{p}-X$ genau die Elemente aus $\F_p$. Damit sind die Fixpunkte des Frobeniusmorphismus gerade die Punkte mit Koordinaten in $\F_p$.
+\end{enumerate}
+\end{bsp}
+
+\begin{bem}
+\begin{enumerate}
+\item\label{1.4.4a} Morphismen sind stetig bezüglich der Zariski-Topologie.
+\item\label{1.4.4b} Sind $V\subseteq \A^n(k)$, $W \subseteq \A^m(k)$ affine Varietäten, dann lässt sich jeder Morphismus $f:V\ra W$ zu einem Morphismus $f^n:\A^n(k)\ra A^m(k)$ fortsetzen.
+\end{enumerate}
+\end{bem}
+
+\begin{proof}
+\begin{enumerate}
+\item[\ref{1.4.4a}] Sei $f:V\ra W$ ein Morphismus und $Z=\V(J)\subseteq W$ abgeschlossen. Setze $I=\{g\circ f \mid g\in J\}$. Dann ist $f^{-1}(Z)=V(I)$, denn: 
+\[x\in f^{-1}(Z)\iff f(x)\in Z \iff g(f(x))=0\text{ für alle $g\in J$}\]
+Also ist $f^{-1}(Z)$ abgeschlossen und f damit stetig.
+\item[\ref{1.4.4b}] Das folgt direkt aus der \autoref{1.4.1}, da Polynome global definierbar. \qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{w}
+Im Allgemeinen gibt es viel mehr stetige Abbildungen als Morphismen, so ist beispielsweise jede bijektive Abbildung $f:k\ra k$ stetig nach \autoref{1.2.4}
+\end{w}
+
+\begin{dfn}\label{1.4.5}
+Sei $V\subseteq A^n(k)$ eine affine Varietät. Dann heißt 
+\[k[V]=\{f:V\ra k \mid f\text{ ist Morphismus\}}\]
+ der \emph{affine Koordinatenring}
+\end{dfn}
+
+\begin{bem}
+\begin{enumerate}
+\item\label{1.4.6a} Der Koordinatenring $k[V]$ ist eine reduzierte k-Algebra, d.h aus $f^n=0$ folgt $f=0$.
+\item\label{1.4.6b} Es gilt $k[V] \cong \Quotient{k\polyx}{\I(V)}$
+\end{enumerate}
+\end{bem}
+
+\begin{proof}
+\begin{enumerate}
+\item[\ref{1.4.6a}] folgt aus \ref{1.4.6b}, wobei Additon, Muliplikation und Skalarmultiplikation komponentenweise definiert sind. Die Reduziertsheitsaussage ist klar.
+\item[\ref{1.4.6b}] Definiere
+\[\phi: k\polyx\ra k[V],  \qquad p\mapsto p|_V\]
+Dann ist $\phi$ surjektiv nach Definiton des Morphismus, vgl. \autoref{1.4.1}.Weiter gilt:
+\[p \in Kern(\phi) \iff p|_V \equiv 0 \iff \forall x\in V: p(x)=0 \iff p\in \I(V)\] 
+Mit dem Homomorphiesatz folgt die Behauptung. \qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{bem}\label{1.4.7} Seien $V\subseteq \A^n(k)$, $W\subseteq \A^m(k)$ affine Varietäten. Dann gilt:
+\begin{enumerate}
+\item Jeder Morphismus $f:V\ra W$ induziert wie folgt einen k-Algebrenhomomorphismus:  
+\[f^{\#}: k[W]\ra k[V], \qquad g\mapsto g\circ f\]
+\item Jeder $k$-Algebrenhomomorphismus zwischen $k[W]$ und $k[v]$ wird von einem solchen $f$ induziert.
+\item Die Abbildung 
+\[\#:Mor(V,W)\ra Hom_k(k[W],k[V]), \qquad f\mapsto f^{\#}\]
+ist sogar bijektiv.
+\end{enumerate}
+\end{bem}
+
+\begin{proof}
+\begin{enumerate}
+\item Die Algebrenhomomorphismuseigenschaften zu überprüfen ist elementar.
+\item Sei $\phi: k[W]\ra k[V]$ ein $k$-Algebrenhomomorphismus. 
+\item Die Surjektivität der Abbildung wurde gerade gezeigt, also bleibt nur die Injektivität zu zeigen.
+Sei also $f_1^{\#}=f_2^{\#}$, d.h. $g\circ f_1=g\circ f_2$ für alle $g\in k[W]$.
+Insbesondere gilt das für die Projektionen auf die einzelnen Koordinaten. Damit folgt $f_1(x)=f_2(x)$ für alle $x\in V$. \qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{satz}\label{satz3} Die Kategorie der endlich erzeugten, reduzierten $k$-Algebren wird mit $\RedAlg_k$ bezeichnet.
+\begin{enumerate}
+\item\label{satz3a} Die Zuordnung $V\mapsto k[V]$ induziert einen kontravarianten Funktor $\Phi$.
+\item\label{satz3b} Ist $k=K$ algebraisch abgeschlossen, so induziert $\Phi$ eine Äquivalenz der Kategorien $\RedAlg_k$ und $\AffVar_k$.
+\end{enumerate}
+\end{satz}
+
+\begin{proof}
+\begin{enumerate}
+\item[\ref{satz3a}] Definiere $\Phi$ auf den Morphismen durch 
+\[Mor(V,W)\ra Hom_k(k[W],k[V]), \qquad g\mapsto g^{\#}\]
+Dann: $\Phi(g_1\circ g_2)=(g_1\circ g_2)^{\#}=g_2^\#\circ g_1^\#$ und $\Phi(id)=id$.
+\item[\ref{satz3b}] Zeige, dass $\Phi$ eine natürliche Äquivalenz definiert. Dazu müssen gezeigt werden: 
+\begin{itemize}
+\item $\Phi$ ist volltreuer Funktor (d.h. induziert Bijektion auf den Morphismen)
+\item Für jede endlich erz., red. $K$-Algebra $A$ gibt es eine affine Varietät $V$ mit $\Phi(V)\cong A$. 
+\end{itemize}
+\end{enumerate}
+\end{proof}
+
+\begin{bsp}\label{1.4.8} In diesem Beispiel sei $k=K$ algebraisch abgeschlossen.
+\begin{enumerate}
+\item\label{1.4.8a} Ist $V=\A^n(K)$, so ist $\I(V)=0$ und damit $K[V]\cong K\polyx$.
+\item\label{1.4.8b} Im anderen Extremfall $V=\leer$ gilt $\I(V)=K\polyx$, d.h. $K[V]\cong 0$.
+\item\label{1.4.8c} Ist $V$ ein Punkt, d.h. $V=\{(x_1,\dotsc,x_n)\}$, dann ist $\I(V)=(X_1-x_1,\dotsc,X_n-x_n)$. Also gilt dann $K[V]\cong K$. Man man weiß ja auch, dass die maximalen Ideale in einem algebraisch abgeschlossenen Körper gerade den Punkten entsprechen.
+\item\label{1.4.8d} Sei $V$ eine Hyperebene, d.h.$\I(V)=(a_1X_1+\dotsc+a_nX_n+c)$ mit mindestens einem $a_i\neq 0$.
+Dann ist $K[V]\cong K\polyx$ und $V\cong \A^{n-1}$.
+\item\label{1.4.8e} Wir betrachten die Neilsche Parabel aus $\autoref{1.4.3}$. Wir haben also $I=(Y^2-X^3)$, $\V(I)=\{(t^2,t^3) \mid t\in K\}$. Folglich: $K[V]\cong \Quotient{K[X,Y]}{(Y^2-X^3)}$.
 \end{enumerate}
 \end{bsp}
 
