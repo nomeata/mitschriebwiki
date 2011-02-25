@@ -33,8 +33,11 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{3pt}
 
-%\chardef\hash=`\#
-%\def\args{\begingroup\catcode`\$=6\relax\catcode`\#=11\relax#\endgroup}
+\begingroup
+\catcode`\#=12
+\gdef\hashchar{#}%
+\endgroup
+
 \newtheorem{thmcnt}{Dummy}[section]
 \newcommand{\definetheorem}[3]{
   \np %nummerierte Variante
@@ -46,14 +49,10 @@
   \BeforeBeginEnvironment{#1}{\makeatletter%
      \addtocounter{thmcnt}{1}% noch nicht passiert
      \edef\labelcode{ctr@#1@\roman{chapter}@\roman{section}@\arabic{thmcnt}}\relax%
-     %\expandafter\edef\csname ctr@#1@\roman{chapter}@\roman{section}@\arabic{thmcnt}@name \endcsname{#2~\thethmcnt}
      % formatierungszeugs wird in datei geschrieben, so dass es beim nächsten mal rechtzeitig eingelesen und verwendet werden kann...
      \immediate\write\blah{\string\crefname{\labelcode}{#2~\thethmcnt}{}}\relax%
-    % links klappen leider nicht, weil sich # nicht in Datei schreiben lässt und sonst der counter sich nicht merken kann, wo er sein soll...
-    % Möglichkeit: in Datei schreiben und manuell ## durch # ersetzen....
-    %\immediate\write\blah{\noexpand\crefformat{\labelcode}{##2#2~\thethmcnt~##1##3}}%\endgroup%
-    % hier nimmt thmcnt den Wert an, wo wir sind, nicht wo wir hinlinken:
-    %\crefformat{\labelcode}{##2#2~\thethmcnt~##1##3}
+    % jetzt noch die Formatierungsinformationen mit rein...
+    \immediate\write\blah{\noexpand\crefformat{\labelcode}{\string##2#2~\thethmcnt~\hashchar1\hashchar3}}%\endgroup%
       % neuer Befehl: Label setzt richtigen label für Aufzählungen in Umgebungen
       \edef\Label##1{\noexpand\label[\labelcode]{##1}}%
       \addtocounter{thmcnt}{-1} % schnell wieder zurück :)
