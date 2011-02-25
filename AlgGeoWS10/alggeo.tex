@@ -8,7 +8,22 @@
 \setsansfont{Linux Biolinum O}
 
 \usepackage{csquotes}
-\usepackage{hyperref,amsmath,amsthm,amsfonts,amssymb,bbm,enumitem,aliascnt}
+\usepackage{hyperref,amsmath,amsfonts,amssymb,bbm,enumitem}
+\usepackage[thmmarks,amsmath,thref,hyperref]{ntheorem}
+\usepackage{cleveref}
+
+\def\filename{alggeo.sublinks}
+% coole Datei mit Formaten einlesen und dann neue erstellen:
+% Existenz überprüfen:
+\newread\foo
+\immediate\openin\foo=\filename\relax
+\ifeof\foo\relax%überprüfen ob schon vorhanden
+\else\input\filename\fi
+\immediate\closein\foo
+\newwrite\blah
+\immediate\openout\blah=\filename\relax
+%% und am Ende wieder zu machen:
+\AtEndDocument{\immediate\write\blah{\string\endinput}\relax \immediate\closeout\blah}
 
 \usepackage{tikz}
 \usetikzlibrary{matrix,arrows,calc}
@@ -17,45 +32,78 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{3pt}
 
+%\def\args{\begingroup\catcode`\$=6\relax\catcode`\#=11\relax#\endgroup}
 \newtheorem{thmcnt}{Dummy}[section]
-\newtheorem{satzcnt}{SatzDummy}
 \newcommand{\definetheorem}[3]{
-  \newaliascnt{#1}{#3}
-  \newtheorem{#1}[#1]{#2}
-  \aliascntresetthe{#1}
-  \newtheorem*{#1*}{#2}
-  \expandafter\def\csname #1autorefname\endcsname{\sc#2}
+  \np %nummerierte Variante
+  \newtheorem{#1}[#3]{#2}
+  \nnp %unnummerierte Variante
+  \newtheorem{n#1}[#3]{#2}
+  \BeforeBeginEnvironment{n#1}{\addtocounter{thmcnt}{-1}}%ausgleich, weil er trotzdem weiterzählt...
+  \crefformat{#1}{##2#2~##1##3}
+  \BeforeBeginEnvironment{#1}{\makeatletter%
+     \addtocounter{thmcnt}{1}% noch nicht passiert
+     \edef\labelcode{ctr@#1@\roman{chapter}@\roman{section}@\arabic{thmcnt}}%
+     % formatierungszeugs wird in datei geschrieben, so dass es beim nächsten mal rechtzeitig eingelesen und verwendet werden kann...
+     \immediate\write\blah{\string\crefname{\labelcode}{#2~\thethmcnt}{}}\relax%
+    %\begingroup\@makeother\#
+    %\immediate\write\blah{\string\creflabelformat{\labelcode}{\detokenize\expandafter{\@hashsign\relax}}}\endgroup%
+      % neuer Befehl: Label setzt richtigen label für Aufzählungen in Umgebungen
+      \edef\Label##1{\noexpand\label[\labelcode]{##1}}%
+      \addtocounter{thmcnt}{-1} % schnell wieder zurück :)
+  \makeatother}%
 }
 
-\newtheoremstyle{blah}{10pt}{3pt}{}{}{\sc}{:}{ }{}
-\newtheoremstyle{foo}{10pt}{3pt}{\it}{}{\sc}{:}{ }{}
-\newtheoremstyle{stz}{10pt}{3pt}{\it}{}{\bfseries}{:}{ }{}
-
-\theoremstyle{blah}
 % coole gabi-style umgebungen:
-\newtheorem*{ziel}{Ziel}
-\newtheorem*{motivation}{Motivation}
-\newtheorem*{zeige}{Zeige}
-\definetheorem{erinnerung}{Erinnerung}{thmcnt}
-\newtheorem*{q}{Frage}
-%\newtheorem*{bsp*}{Beispiel}
-%\newtheorem{dfn}{Definition}[section]
-%\newtheorem{bsp}[dfn]{Beispiel}
+% Format ohne Nummern
+\newcommand{\nnp}{%
+  \theoremstyle{nonumberplain}%
+  \theorempreskipamount0pt plus 2pt\relax%
+  \theorempostskipamount0pt plus 2pt\relax%
+  \theoremheaderfont{\hspace*{-2.5em}\sc}%
+  \theorembodyfont{\normalfont}%
+  \theoremseparator{:}%
+  \theoremindent3em\relax%
+  \theoremsymbol{}%
+}
+%Format mit Nummern
+\newcommand{\np}{%
+  \theoremstyle{plain}
+  \theorempreskipamount0pt plus 2pt\relax
+  \theorempostskipamount0pt plus 2pt\relax
+  \theoremheaderfont{\hspace*{-2.5em}\sc}%
+  \theorembodyfont{\normalfont}%
+  \theoremseparator{:}%
+  \theoremindent3em\relax%
+  \theoremsymbol{}%
+  \theoremnumbering{arabic}%
+}
+\nnp % ab hier ohne Nummern
+\newtheorem{ziel}{Ziel}
+\newtheorem{motivation}{Motivation}
+\newtheorem{zeige}{Zeige}
+\newtheorem{q}{Frage}
+%Beweise:
+\theoremsymbol{\ensuremath{\Box}}
+\newtheorem{proof}{Beweis}
+% ab hier mit nummer, n### ohne...
 \definetheorem{dfn}{Definition}{thmcnt}
 \definetheorem{bsp}{Beispiel}{thmcnt}
 \definetheorem{lem}{Lemma}{thmcnt}
 \definetheorem{prop}{Proposition}{thmcnt}
 \definetheorem{kor}{Korollar}{thmcnt}
-%\theoremstyle{foo}
-%\newtheorem{bem}[dfn]{Bemerkung}
-%\newtheorem{db}[dfn]{Definition/Bemerkung}
 \definetheorem{bem}{Bemerkung}{thmcnt}
+\definetheorem{erinnerung}{Erinnerung}{thmcnt}
 \definetheorem{db}{Definition/Bemerkung}{thmcnt}
 \definetheorem{de}{Definition/Erinnerung}{thmcnt}
 \definetheorem{eb}{Erinnerung/Bemerkung}{thmcnt}
-\theoremstyle{stz}
-%\newtheorem{satz}{Satz}
-\definetheorem{satz}{Satz}{satzcnt}
+% Sätze separat...
+\np
+\theorembodyfont{\normalfont\it}
+\theoremheaderfont{\bf}
+\crefformat{satz}{#2Satz~#1#3}
+\newtheorem{satz}{Satz}
+%\definetheorem{satz}{Satz}{satzcnt}
 
 % Warnungen :)
 \usepackage{manfnt,environ}
@@ -72,23 +120,6 @@
   \begin{minipage}[c]{.96\textwidth}\section{#1}\end{minipage}%
   \hfill\makebox[\width][t]{\raisebox{-5pt}{\raisebox{4pt}{\textleaf}}}%
 }};\end{tikzpicture}\nopagebreak[4]\markright{\thesection. #1}}
-
-%\AtBeginEnvironment{ziel}{\begin{addmargin}[1cm]{0cm}\hspace*{-1cm}}
-%\AtEndEnvironment{ziel}{\end{addmargin}}
-
-\makeatletter
-\renewcommand{\proofname}{Beweis}
-\renewenvironment{proof}[1][\proofname]{\par
-  \pushQED{\qed}%
-  \normalfont \topsep6\p@\@plus6\p@\relax
-  \trivlist
-  \item[\hskip\labelsep
-        \itshape
-    #1\@addpunct{:}]\ignorespaces
-}{%
-  \popQED\endtrivlist\@endpefalse
-}
-\makeatother
 
 \DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
 
@@ -197,7 +228,7 @@ Untersuche Nullstellenmengen von Polynomen: Für eine Menge von Polynomen
 analysieren.
 \end{ziel}
 
-\begin{bsp*}
+\begin{nbsp}
 \begin{enumerate}
 \item Betrachte $ax^{2}+by^{2}=1\iff x^{2}+y^{2}-1=0$ über $k=\R$. Das liefert eine Ellipse, für $a=b=1$ einen Kreis.
 %Bild...
@@ -208,7 +239,7 @@ analysieren.
 \item Bei linearen Gleichungen sehen wir mit Hilfe der linearen Algebra, das wir affine Unterräume erhalten.
 \item Die Lösungsmengen sind abhängig vom Körper, z.B. sehen wir für $k=\Z/3\Z$ hat das Polynom $X^{3}-X$ als Lösungsmenge ganz $k$.
 \end{enumerate}
-\end{bsp*}
+\end{nbsp}
 
 % Rest kommt noch ;)
 
@@ -236,12 +267,12 @@ mit \[V=\V(\F):=\{x=(x_{1},\dotsc,x_{n})\in k^{n}\mid f(x)=0\;\forall f\in\F\}\]
 
 \begin{bem}\label{1.1.3} Seien $\F_{1},\F_{2}\subseteq k\polyx$. Dann gilt:
 \begin{enumerate}
-\item\label{1.1.3a} $\F_{1}\subseteq\F_{2}\implies \V(\F_{1})\supseteq \V(\F_{2})$
-\item\label{1.1.3b} Sei $(\F)$ das von $\F$ erzeugte Ideal. Dann gilt: $\V(\F) = \V((\F))$.
-\item\label{1.1.3c} Sei
+\item\Label{1.1.3a} $\F_{1}\subseteq\F_{2}\implies \V(\F_{1})\supseteq \V(\F_{2})$
+\item\Label{1.1.3b} Sei $(\F)$ das von $\F$ erzeugte Ideal. Dann gilt: $\V(\F) = \V((\F))$.
+\item\Label{1.1.3c} Sei
 \[\sqrt{(\F)}:=\{p\in k\polyx\mid\exists\, d\geq 1\text{ mit }p^{d}\in(\F)\}\]
 das \emph{Radikalideal} von $(\F)$ ($\sqrt{(\F)}$ ist Ideal!). Dann gilt: $\V(\sqrt{(\F)})=\V(\F)$.
-\item\label{1.1.3d} Zu jeder affinen Varietät $V\subseteq k^{n}$ gibt es endlich viele Polynome $f_{1},\dotsc,f_{r}$ mit \[V=\V(\{f_{1},\dotsc,f_{r}\})=:\V(f_{1},\dotsc,f_{r}).\]
+\item\Label{1.1.3d} Zu jeder affinen Varietät $V\subseteq k^{n}$ gibt es endlich viele Polynome $f_{1},\dotsc,f_{r}$ mit \[V=\V(\{f_{1},\dotsc,f_{r}\})=:\V(f_{1},\dotsc,f_{r}).\]
 \end{enumerate}
 \end{bem}
 
@@ -263,12 +294,12 @@ das \emph{Verschwindungsideal von $V$}. Es ist ein Ideal.
 
 \begin{bem}\label{1.1.5} Es gilt:
 \begin{enumerate}
-\item\label{1.1.5a} Seien $V_{1},V_{2}\subseteq k^{n}$ mit $V_{1}\subseteq V_{2}$. Dann ist $\I(V_{1})\supseteq \I(V_{2})$.
-\item\label{1.1.5b} Sei $V\subseteq k^{n}$. Dann ist $\I(V)$ ein Radikalideal.
-\item\label{1.1.5c} Sei $V$ eine affine Varietät. Dann gilt $V=\V(\I(V))$.
+\item\Label{1.1.5a} Seien $V_{1},V_{2}\subseteq k^{n}$ mit $V_{1}\subseteq V_{2}$. Dann ist $\I(V_{1})\supseteq \I(V_{2})$.
+\item\Label{1.1.5b} Sei $V\subseteq k^{n}$. Dann ist $\I(V)$ ein Radikalideal.
+\item\Label{1.1.5c} Sei $V$ eine affine Varietät. Dann gilt $V=\V(\I(V))$.
 
 Es gilt sogar: $\I(V)$ ist das größte Ideal mit dieser Eigenschaft, d.h. für $J\subseteq k\polyx$ mit $\V(J)=V$ folgt schon $J\subseteq \I(V)$.
-\item\label{1.1.5d} Seien $V_{1},V_{2}$ affine Varietäten. Dann gilt:
+\item\Label{1.1.5d} Seien $V_{1},V_{2}$ affine Varietäten. Dann gilt:
 \[V_{1}=V_{2}\iff \I(V_{1})=\I(V_{2})\text{ und } V_{1}\subseteq V_{2}\iff \I(V_{1})\supseteq \I(V_{2}).\]
 \end{enumerate}
 \end{bem}
@@ -295,7 +326,7 @@ injektiv ist. Ist sie auch surjektiv?
 
 \begin{db}\label{1.2.1}Sei $n\in\N$. Die affinen Varietäten im $k^{n}$ bilden die abgeschlossenen Mengen einer Topologie auf dem $k^{n}$. Diese heißt \emph{Zariski-Topologie}.\end{db}
 \begin{proof}\begin{prooflist}
-\item $\leer$ und $k^{n}$ sind affine Varietäten nach \autoref{bsp1.2}.
+\item $\leer$ und $k^{n}$ sind affine Varietäten nach \cref{bsp1.2}.
 \item Seien $V_{1},V_{2}$ affine Varietäten, d.h. $V_{1}=\V(I_{1})$ und $V_{2}=\V(I_{2})$, wobei $I_{1},I_{2}$ Ideale in $k\polyx$ sind. Dann gilt:
 \[V_{1}\cap V_{2}=\V(I_{1}\cup I_{2}) = \V(I_{1}+I_{2}).\]
 Das gleiche Argument funktioniert für beliebige Familien $V_{\lambda}$ mit $\lambda\in\Lambda$ und $\Lambda$ Indexmenge, d.h. $\displaystyle\bigcap_{\lambda\in\Lambda}V_{\lambda}$ ist wieder eine affine Varietät.
@@ -330,8 +361,8 @@ Sei $n=1$. Dann gilt: $X\subseteq\A^{1}(k)$ ist genau dann abgeschlossen, wenn $
 
 \begin{bem}\label{1.2.5}
 \begin{enumerate}
-\item\label{1.2.5a} Wenn $k$ endlich ist, entspricht die Zariski-Topologie auf $\A^{1}(k)$ der diskreten Topologie.
-\item\label{1.2.5b} Wenn $k$ unendlich ist, ist die Zariski-Topologie nicht hausdorffsch.
+\item\Label{1.2.5a} Wenn $k$ endlich ist, entspricht die Zariski-Topologie auf $\A^{1}(k)$ der diskreten Topologie.
+\item\Label{1.2.5b} Wenn $k$ unendlich ist, ist die Zariski-Topologie nicht hausdorffsch.
 \end{enumerate}\end{bem}
 \begin{proof}\begin{enumerate}
 \item[\ref{1.2.5a}] Punkte sind abgeschlossen, denn sei $x=(x_{1},\dotsc,x_{k})\in k^{n}$, dann ist
@@ -339,7 +370,7 @@ Sei $n=1$. Dann gilt: $X\subseteq\A^{1}(k)$ ist genau dann abgeschlossen, wenn $
 Damit sind auch endliche Vereinigungen von Punkten abgeschlossen und somit schon \emph{alle} Teilmengen von $\A^{1}(k)$.
 \item[\ref{1.2.5b}] {\sc Erinnerung:} Ein topologischer Raum $X$ heißt hausdorffsch, wenn für alle $x,y\in X$ offene Umgebungen $U_{x}\ni x$ und $U_{y}\ni y$ mit $U_{x}\cap U_{y}=\leer$ existieren.
 
-Für $n=1$ folgt die Behauptung also aus \autoref{1.2.4}.
+Für $n=1$ folgt die Behauptung also aus \cref{1.2.4}.
 
 Den Fall $n\geq 2$ führen wir zurück auf den Fall $n=1$:
 
@@ -381,10 +412,9 @@ schreiben und sehen so, dass $M$ reduzibel ist. $\leer$ ist nie irreduzibel.
 
 \begin{bsp}\label{1.2.8} Sei $k$ ein Körper mit unendlich vielen Elementen.
 \begin{enumerate}
-\item\label{1.2.8a} $\A^{1}(k)$ ist irreduzibel, da echte abgeschlossene Teilmengen endlich sind.
+\item\Label{1.2.8a} $\A^{1}(k)$ ist irreduzibel, da echte abgeschlossene Teilmengen endlich sind.
 \item $\V(X\cdot Y) = \V(X)\cup\V(Y)$ ist reduzibel mit irreduziblen Komponenten $\V(X)$ und $\V(Y)$.
 \end{enumerate}\end{bsp}
-\ref{1.2.8a} und \autoref{1.2.8a}
 
 \begin{bem}\label{1.2.9}
 Sei $V\subseteq\A^{n}(k)$ eine affine Varietät. Dann gilt:
@@ -395,7 +425,7 @@ Sei zuerst $V$ irreduzibel. Seien $f,g\in k\polyx$ mit $f\cdot g\in\I(V)$.
 
 Angenommen $f\notin\I(V)$, dann gilt auch $\V(f)\not\supseteq\V(\I(V))=V$.
 
-Andererseits gilt nach \autoref{1.2.1}: $\V(f)\cup\V(g)=\V(f\cdot g)\supseteq V$, also
+Andererseits gilt nach \cref{1.2.1}: $\V(f)\cup\V(g)=\V(f\cdot g)\supseteq V$, also
 \[V=(V\cap \V(f))\cup(V\cap\V(g)),\]
 wobei $V\cap\V(f)$ und $V\cap\V(g)$ in $V$ abgeschlossen sind. Außerdem ist $V\neq V\cap\V(f)$, also gilt, da $V$ irreduzibel ist, $V=V\cap\V(g)$. Daraus folgt $V\subseteq\V(g)$ und damit ist $g\in\I(V)$ und $\I(V)$ ist somit ein Primideal.
 
@@ -425,8 +455,8 @@ was im Widerspruch zur Irreduzibilität von $Y_{\lambda_{2}}$ steht. Folglich ha
 
 \begin{satz}\label{satz1} Sei $V$ eine affine Varietät. Dann gilt:
 \begin{enumerate}
-\item\label{s1a} $V$ ist eine endliche Vereinigung von irreduziblen affinen Varietäten.
-\item\label{s1b} $V$ hat nur endlich viele irreduzible Komponenten $V_{1},\dotsc,V_{r}$. Insbesondere ist die Zerlegung
+\item\Label{s1a} $V$ ist eine endliche Vereinigung von irreduziblen affinen Varietäten.
+\item\Label{s1b} $V$ hat nur endlich viele irreduzible Komponenten $V_{1},\dotsc,V_{r}$. Insbesondere ist die Zerlegung
 \[V=V_{1}\cup\dotsm\cup V_{r}\]
 eindeutig.\end{enumerate}\end{satz}
 \begin{proof}\begin{enumerate}
@@ -434,7 +464,7 @@ eindeutig.\end{enumerate}\end{satz}
 \begin{align*}&\B:=\{V\subseteq k^{n}\mid V\text{ ist affine Varietät und erfüllt \emph{nicht} \ref{s1a}}\},\\
 &\J:=\{\I(V)\subseteq k\polyx\mid V\in\B\}.\end{align*}
 Wir nehmen an, $\B$ wäre nicht leer. Dann ist auch $\J$ nicht leer. Da $k\polyx$ noethersch ist, finden wir in $\J$ ein maximales Element $I_{0}=\I(V_{0})$. Damit ist $V_{0}$ ein minimales Element in $\B$. Dann ist $V_{0}$ aber \emph{nicht} irreduzibel, also existieren affine Varietäten $V_{1},V_{2}\subsetneq V$ mit $V=V_{1}\cup V_{2}$. Insbesondere sind diese aber nicht in $\B$, da $V_{0}$ minimal gewählt war, lassen sich also als Vereinigung endlich vieler irreduzibler Varietäten schreiben. Dann geht das aber auch für $V_{0}$ und das ist ein Widerspruch, da $V_{0}\in\B$.
-\item[\ref{s1b}] Mit Hilfe von \autoref{1.2.10} und dem \ref{s1a}-Teil sehen wir, dass wir \[V=V_{1}\cup\dotsm\cup V_{r}\] schreiben können, wobei die $V_{i}$ irreduzible Komponenten sind. Wir zeigen noch die Eindeutigkeit dieser Zerlegung: Sei $W$ eine irreduzible Komponente von $V$. Wir schreiben
+\item[\ref{s1b}] Mit Hilfe von \cref{1.2.10} und dem \ref{s1a}-Teil sehen wir, dass wir \[V=V_{1}\cup\dotsm\cup V_{r}\] schreiben können, wobei die $V_{i}$ irreduzible Komponenten sind. Wir zeigen noch die Eindeutigkeit dieser Zerlegung: Sei $W$ eine irreduzible Komponente von $V$. Wir schreiben
 \[W=(W\cap V_{1})\cup\dotsm\cup(W\cap V_{r})\]
 und sehen, da $W$ irreduzibel ist, dass es ein $i$ mit $W=W\cap V_{i}$ gibt. Also gilt $W\subseteq V_{i}$ und damit schon $W=V_{i}$, da $W$ als irreduzible \emph{Komponente} eine \emph{maximale} irreduzible Teilmenge von $V$ ist.
 \end{enumerate}\end{proof}
@@ -453,21 +483,21 @@ und sehen, da $W$ irreduzibel ist, dass es ein $i$ mit $W=W\cap V_{i}$ gibt. Als
   betrachtet. Wir haben gesehen, dass $\V\circ\I=\id$ gilt. Gilt auch $\I\circ\V=\id$?
 \end{motivation}
 
-\begin{bsp*}
+\begin{nbsp}
   Wenn $k$ nicht algebraisch abgeschlossen ist, muss das nicht gelten: sei $k=\R$ und $I=(X^2+1)$. Dann ist $\V(I)=\leer$, aber
   $\I(\V(I)) = k\polyx$.
-\end{bsp*}
+\end{nbsp}
 
 Wir werden sehen, dass $\I\circ\V=\id$ gilt, falls $k$ algebraisch abgeschlossen ist. Die einzige \enquote{Obstruktion} ist,
 dass $\V(I)=\leer$ gilt, obwohl $I\neq k\polyx$.
 
 \begin{satz}[Hilbertscher Nullstellensatz]\label{satz2}\label{HNS}
   \begin{enumerate}
-  \item {\bf Algebraische Form:}\label{satz2a} Sei $m$ ein maximales Ideal in $k\polyx$. Dann ist $\Quotient{k\polyx}{m}$ eine
+  \item\Label{s2a} {\bf Algebraische Form:}\Label{satz2a} Sei $m$ ein maximales Ideal in $k\polyx$. Dann ist $\Quotient{k\polyx}{m}$ eine
     endliche algebraische Körpererweiterung von $k$.
-  \item {\bf Schwacher Hilbertscher Nullstellensatz:}\label{satz2b} Ist $k$ algebraisch abgeschlossen und $I\subsetneq k\polyx$
+  \item {\bf Schwacher Hilbertscher Nullstellensatz:}\Label{satz2b} Ist $k$ algebraisch abgeschlossen und $I\subsetneq k\polyx$
     ein echtes Ideal, dann ist $\V(I)\neq\leer$.
-  \item {\bf Starker Hilbertscher Nullstellensatz:}\label{satz2c} Ist $k$ algebraisch abgeschlossen und $I\subseteq k\polyx$ ein
+  \item {\bf Starker Hilbertscher Nullstellensatz:}\Label{satz2c} Ist $k$ algebraisch abgeschlossen und $I\subseteq k\polyx$ ein
     Ideal, dann ist $\I(\V(I))=\sqrt{(I)}$.
   \end{enumerate}
 \end{satz}
@@ -499,7 +529,7 @@ dabei ist $k(x_1,\dotsc,x_k)\cong\Quot(k\polyx[k])$ und $L$ ist endlich erzeugt 
   als $S_0$-Modul, also auch als $R$-Algebra.
 \end{proof}
 
-Insbesondere ist in der Situation im Beweis des Hilbertschen Nullstellensatzes (\autoref{HNS}) $k(x_1,\dotsc,x_k)$ als
+Insbesondere ist in der Situation im Beweis des Hilbertschen Nullstellensatzes (\cref{HNS}) $k(x_1,\dotsc,x_k)$ als
 $k$-Algebra endlich erzeugt.
 
 \begin{lem}\label{1.3.2}
@@ -517,7 +547,7 @@ $k$-Algebra endlich erzeugt.
   Die algebraische Version des Hilbertschen Nullstellensatzes stimmt.
 \end{prop}
 \begin{proof}
-  Das folgt nun direkt aus \autoref{1.3.1} und \autoref{1.3.2}.
+  Das folgt nun direkt aus \cref{1.3.1} und \cref{1.3.2}.
 \end{proof}
 
 %27.10.10
@@ -570,31 +600,30 @@ großes $d$ ergibt dann $g^d\in I$.
 \end{ziel}
 \begin{dfn}\label{1.4.1}
 \begin{enumerate}
-\item\label{1.4.1a} Seien $V\subseteq k^{n}, W\subseteq k^{m}$ affine Varietäten. Eine Abbildung $f\colon V\ra W$ heißt Morphismus, wenn es Polynome $f_1,\dotsc,f_m \in k\polyx$ mit 
+\item\Label{1.4.1a} Seien $V\subseteq k^{n}, W\subseteq k^{m}$ affine Varietäten. Eine Abbildung $f\colon V\ra W$ heißt Morphismus, wenn es Polynome $f_1,\dotsc,f_m \in k\polyx$ mit 
 \[f(p)=(f_1(p),\dotsc,f_m(p)) \in k^{m}\]
 gibt.
-\item\label{1.4.1b} Ein Morphismus $f\colon V\ra W$ heißt Isomorphismus, wenn es einen Morphismus $g\colon W\ra V$ mit $g\circ f=\id_V, f\circ g=\id_W$ gibt.
-\item\label{1.4.1c} Gibt es einen Isomorphismus zwischen $V$ und $W$, so heißen $V$ und $W$ isomorph.
+\item\Label{1.4.1b} Ein Morphismus $f\colon V\ra W$ heißt Isomorphismus, wenn es einen Morphismus $g\colon W\ra V$ mit $g\circ f=\id_V, f\circ g=\id_W$ gibt.
+\item\Label{1.4.1c} Gibt es einen Isomorphismus zwischen $V$ und $W$, so heißen $V$ und $W$ isomorph.
 \end{enumerate}
 \end{dfn}
 \begin{bem}\label{1.4.2} Die affinen Varietäten über $k$ bilden zusammen mit den Morphismen eine Kategorie: $\AffVar_k$.
-Dabei sind die Objekte gerade die affinen Varietäten und die Morphismen zwischen zwei affinen Varietäten sind wie in \autoref{1.4.1} gegeben. Man beachte, dass die Verkettung von Polynomen wieder ein Polynom ist, d.h. die Verkettung zweier Morphismen ist auch wieder ein Morphismus.
+Dabei sind die Objekte gerade die affinen Varietäten und die Morphismen zwischen zwei affinen Varietäten sind wie in \cref{1.4.1} gegeben. Man beachte, dass die Verkettung von Polynomen wieder ein Polynom ist, d.h. die Verkettung zweier Morphismen ist auch wieder ein Morphismus.
 \end{bem}
-
 
 \begin{bsp}\label{1.4.3}
 \begin{enumerate}
-\item\label{1.4.3a}  Projektoren bzw. Einbettungen $\A^{n}(k)\ra \A^{m}(k)$ 
+\item\Label{1.4.3a}  Projektoren bzw. Einbettungen $\A^{n}(k)\ra \A^{m}(k)$ 
 \[\begin{cases} (x_1,\dotsc,x_n) \mapsto (x_1,\dotsc,x_m),&\text{ falls }n\ge m \\ (x_1,\dotsc,x_n)\mapsto (x_1,\dotsc,x_n,0,\dotsc,0),&\text{ falls }n<m \end{cases}\] sind Morphismen.
-\item\label{1.4.3b} Jedes $f \in k\polyx$ definiert ein Morphismus $\A^{n}(k)\ra \A^{n}(k)$.
-\item\label{1.4.3c} Seien $V=\A^1(k)$, $W=\V(Y^2-X^3) \subseteq \A^2(k)$. Die Abbildung 
+\item\Label{1.4.3b} Jedes $f \in k\polyx$ definiert ein Morphismus $\A^{n}(k)\ra \A^{n}(k)$.
+\item\Label{1.4.3c} Seien $V=\A^1(k)$, $W=\V(Y^2-X^3) \subseteq \A^2(k)$. Die Abbildung 
 \[f\colon V\ra W, \qquad x\mapsto (x^2,x^3)\]
 definiert einen Morphismus.
 %Bild : Neilsche Parabel
 Hierbei ist f bijektiv mit Umkehrabbildung 
 \[g(x,y)=\begin{cases} y/x,&\text{ falls }x\neq 0 \\ 0,&\text{ falls }x=0. \end{cases}\]
 Ist $k$ unendlich, so ist $g$ kein Morphismus. Also sind bijektive Morphismen im Allgemeinen keine Isomorphismen.
-\item\label{1.4.3d} Sei char$(k)=p>0$. Dann heißt $f\colon \A^n(k)\ra \A^n(k)$ gegeben durch 
+\item\Label{1.4.3d} Sei char$(k)=p>0$. Dann heißt $f\colon \A^n(k)\ra \A^n(k)$ gegeben durch 
 \[f(x_1,\dotsc,x_n)=(x_1^p,\dotsc,x_n^p)\] 
 \emph{Frobeniusmorphismus}. Bekanntermaßen sind die Nullstellen des Polynoms $X^{p}-X$ genau die Elemente aus $\FF_p$. Damit sind die Fixpunkte des Frobeniusmorphismus gerade die Punkte mit Koordinaten in $\FF_p$.
 \end{enumerate}
@@ -602,8 +631,8 @@ Ist $k$ unendlich, so ist $g$ kein Morphismus. Also sind bijektive Morphismen im
 
 \begin{bem}\label{1.4.4}
 \begin{enumerate}
-\item\label{1.4.4a} Morphismen sind stetig bezüglich der Zariski-Topologie.
-\item\label{1.4.4b} Sind $V\subseteq \A^n(k)$, $W \subseteq \A^m(k)$ affine Varietäten, dann lässt sich jeder Morphismus $f\colon V\ra W$ zu einem Morphismus $f^n\colon \A^n(k)\ra A^m(k)$ fortsetzen.
+\item\Label{1.4.4a} Morphismen sind stetig bezüglich der Zariski-Topologie.
+\item\Label{1.4.4b} Sind $V\subseteq \A^n(k)$, $W \subseteq \A^m(k)$ affine Varietäten, dann lässt sich jeder Morphismus $f\colon V\ra W$ zu einem Morphismus $f^n\colon \A^n(k)\ra A^m(k)$ fortsetzen.
 \end{enumerate}
 \end{bem}
 
@@ -612,12 +641,12 @@ Ist $k$ unendlich, so ist $g$ kein Morphismus. Also sind bijektive Morphismen im
 \item[\ref{1.4.4a}] Sei $f\colon V\ra W$ ein Morphismus und $Z=\V(J)\subseteq W$ abgeschlossen. Setze $I=\{g\circ f \mid g\in J\}$. Dann ist $f^{-1}(Z)=V(I)$, denn: 
 \[x\in f^{-1}(Z)\iff f(x)\in Z \iff g(f(x))=0\text{ für alle }g\in J.\]
 Also ist $f^{-1}(Z)$ abgeschlossen und $f$ damit stetig.
-\item[\ref{1.4.4b}] Das folgt direkt aus der \autoref{1.4.1}, da Polynome global definierbar sind.
+\item[\ref{1.4.4b}] Das folgt direkt aus der \cref{1.4.1}, da Polynome global definierbar sind.
 \end{enumerate}
 \end{proof}
 
 \begin{w}
-Im Allgemeinen gibt es viel mehr stetige Abbildungen als Morphismen, so ist beispielsweise jede bijektive Abbildung $f\colon k\ra k$ stetig nach \autoref{1.2.4}.
+Im Allgemeinen gibt es viel mehr stetige Abbildungen als Morphismen, so ist beispielsweise jede bijektive Abbildung $f\colon k\ra k$ stetig nach \cref{1.2.4}.
 \end{w}
 
 \begin{dfn}\label{1.4.5}
@@ -628,8 +657,8 @@ Sei $V\subseteq \A^n(k)$ eine affine Varietät. Dann heißt
 
 \begin{bem}
 \begin{enumerate}
-\item\label{1.4.6a} Der Koordinatenring $k[V]$ ist eine reduzierte k-Algebra, d.h. aus $f^n=0$ folgt $f=0$.
-\item\label{1.4.6b} Es gilt $k[V] \cong \Quotient{k\polyx}{\I(V)}$.
+\item\Label{1.4.6a} Der Koordinatenring $k[V]$ ist eine reduzierte k-Algebra, d.h. aus $f^n=0$ folgt $f=0$.
+\item\Label{1.4.6b} Es gilt $k[V] \cong \Quotient{k\polyx}{\I(V)}$.
 \end{enumerate}
 \end{bem}
 
@@ -638,7 +667,7 @@ Sei $V\subseteq \A^n(k)$ eine affine Varietät. Dann heißt
 \item[\ref{1.4.6a}] folgt aus \ref{1.4.6b}, wobei Addition, Multiplikation und Skalarmultiplikation komponentenweise definiert sind. Die Reduziertsheitsaussage ist klar.
 \item[\ref{1.4.6b}] Definiere
 \[\phi\colon  k\polyx\ra k[V],  \qquad p\mapsto p|_V.\]
-Dann ist $\phi$ surjektiv nach Definiton des Morphismus, vgl. \autoref{1.4.1}. Weiter gilt:
+Dann ist $\phi$ surjektiv nach Definiton des Morphismus, vgl. \cref{1.4.1}. Weiter gilt:
 \[p \in \Kern(\phi) \iff p|_V \equiv 0 \iff \forall x\in V: p(x)=0 \iff p\in \I(V).\] 
 Mit dem Homomorphiesatz folgt die Behauptung. 
 \end{enumerate}
@@ -687,8 +716,8 @@ Insbesondere gilt das für die Projektionen auf die einzelnen Koordinaten. Damit
 
 \begin{satz}\label{satz3} Die Kategorie der endlich erzeugten, reduzierten $k$-Algebren wird mit $\RedAlg_k$ bezeichnet.
 \begin{enumerate}
-\item\label{satz3a} Die Zuordnung $V\mapsto k[V]$ induziert einen kontravarianten Funktor $\Phi$.
-\item\label{satz3b} Ist $k=K$ algebraisch abgeschlossen, so induziert $\Phi$ eine Äquivalenz der Kategorien $\RedAlg_k$ und $\AffVar_k$.
+\item\Label{satz3a} Die Zuordnung $V\mapsto k[V]$ induziert einen kontravarianten Funktor $\Phi$.
+\item\Label{satz3b} Ist $k=K$ algebraisch abgeschlossen, so induziert $\Phi$ eine Äquivalenz der Kategorien $\RedAlg_k$ und $\AffVar_k$.
 \end{enumerate}
 \end{satz}
 
@@ -703,7 +732,7 @@ Dann gilt $\Phi(g_1\circ g_2)=(g_1\circ g_2)^{\#}=g_2^\#\circ g_1^\#$ und $\Phi(
 \item Für jede endlich erz., red. $K$-Algebra $A$ gibt es eine affine Varietät $V$ mit $\Phi(V)\cong A$. 
 \end{itemize}
 Alternativ könnte man auch zeigen: Es existiert ein Funktor $\Psi\colon  \RedAlg_k\ra \AffVar_k$ mit $\Psi\circ \Phi\cong \id_{\AffVar_k}$ und $\Phi\circ \Psi\cong \id_{\RedAlg_k}$.
-Nach \autoref{1.4.7} ist $\Phi$ volltreu. Sei also nun $A$ eine endlich erzeuge $K$-Algebra mit Erzeugern $a_1,\dotsc,a_n$.
+Nach \cref{1.4.7} ist $\Phi$ volltreu. Sei also nun $A$ eine endlich erzeuge $K$-Algebra mit Erzeugern $a_1,\dotsc,a_n$.
 Definiere den Homomorphismus $\phi\colon  K\polyx\ra A$ durch $X_i\mapsto a_i$. Aus der Reduziertheit von $A$ folgt, dass
 $I=\Kern(\phi)$ ein Radikalideal ist. Setze nun $V=\ V(I)$. Da $K$ algebraisch abgeschlossen ist, gilt $\I(V)=\sqrt{(I)}=I$. Insgesamt:
 \[K[V]\cong\Quotient{K\polyx}{\I(V)}=\Quotient{K\polyx}{I}\cong A\] 
@@ -712,12 +741,12 @@ $I=\Kern(\phi)$ ein Radikalideal ist. Setze nun $V=\ V(I)$. Da $K$ algebraisch a
 
 \begin{bsp}\label{1.4.8} In diesem Beispiel sei $k=K$ algebraisch abgeschlossen.
 \begin{enumerate}
-\item\label{1.4.8a} Ist $V=\A^n(K)$, so ist $\I(V)=0$ und damit $K[V]\cong K\polyx$.
-\item\label{1.4.8b} Im anderen Extremfall $V=\leer$ gilt $\I(V)=K\polyx$, d.h. $K[V]\cong 0$.
-\item\label{1.4.8c} Ist $V$ ein Punkt, d.h. $V=\{(x_1,\dotsc,x_n)\}$, dann ist $\I(V)=(X_1-x_1,\dotsc,X_n-x_n)$. Also gilt dann $K[V]\cong K$. Man weiß ja auch, dass die maximalen Ideale in einem algebraisch abgeschlossenen Körper gerade den Punkten entsprechen.
-\item\label{1.4.8d} Sei $V$ eine Hyperebene, d.h. $\I(V)=(a_1X_1+\dotsc+a_nX_n+c)$ mit mindestens einem $a_i\neq 0$.
+\item\Label{1.4.8a} Ist $V=\A^n(K)$, so ist $\I(V)=0$ und damit $K[V]\cong K\polyx$.
+\item\Label{1.4.8b} Im anderen Extremfall $V=\leer$ gilt $\I(V)=K\polyx$, d.h. $K[V]\cong 0$.
+\item\Label{1.4.8c} Ist $V$ ein Punkt, d.h. $V=\{(x_1,\dotsc,x_n)\}$, dann ist $\I(V)=(X_1-x_1,\dotsc,X_n-x_n)$. Also gilt dann $K[V]\cong K$. Man weiß ja auch, dass die maximalen Ideale in einem algebraisch abgeschlossenen Körper gerade den Punkten entsprechen.
+\item\Label{1.4.8d} Sei $V$ eine Hyperebene, d.h. $\I(V)=(a_1X_1+\dotsc+a_nX_n+c)$ mit mindestens einem $a_i\neq 0$.
 Dann ist $K[V]\cong K\polyx$ und $V\cong \A^{n-1}$.
-\item\label{1.4.8e} Wir betrachten die Neilsche Parabel aus \autoref{1.4.3}. Wir haben also $V=\V(Y^2-X^3)$ sowie $I=(Y^2-X^3)$,
+\item\Label{1.4.8e} Wir betrachten die Neilsche Parabel aus \cref{1.4.3}. Wir haben also $V=\V(Y^2-X^3)$ sowie $I=(Y^2-X^3)$,
   $\V(I)=\{(t^2,t^3) \mid t\in K\}$. Folglich gilt
 \[K[V]\cong \Quotient{K[X,Y]}{(Y^2-X^3)}.\] 
 Man beachte: $\A^1(k)$ und $V$ sind birational, also gilt $K(V)\cong K(\A^1(K))$. Konkreter:
@@ -766,9 +795,9 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
   \end{enumerate}
 \end{dfn}
 
-\begin{bsp*}
+\begin{nbsp}
   Für $V=\A^1(K)$ und $U=V\setminus\{0\}$ ist z.B. $\frac1x\in\O_V(U)$.
-\end{bsp*}
+\end{nbsp}
 
 \begin{bem}\label{1.5.4}
   Sei $V\subseteq\A^n(K)$ eine affine Varietät und $U\subseteq V$ offen. Dann ist $\O_V(U)$ eine $K$-Algebra, die $K[V]$
@@ -780,11 +809,11 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
   \[ \rho_{UU'}\colon \O_V(U)\ra\O_V(U'),\quad f\mapsto f\restrict{U'} \]
   ein $K$-Algebrenhomomorphismus mit folgenden Eigenschaften:
   \begin{enumerate}
-  \item\label{1.5.5a} Für in $V$ offene Mengen $U''\subseteq U'\subseteq U$ gilt $\rho_{UU''}=\rho_{U'U''}\circ\rho_{UU'}$.
-  \item\label{1.5.5b} Ist $U$ offen in $V$ und $(U_i)_{i\in I}$ eine offene Überdeckung von $U$, so gilt
+  \item\Label{1.5.5a} Für in $V$ offene Mengen $U''\subseteq U'\subseteq U$ gilt $\rho_{UU''}=\rho_{U'U''}\circ\rho_{UU'}$.
+  \item\Label{1.5.5b} Ist $U$ offen in $V$ und $(U_i)_{i\in I}$ eine offene Überdeckung von $U$, so gilt
     \begin{enumerate}
-    \item\label{1.5.5bi} Für alle $f\in\O_V(U)$ gilt $f=0$ genau dann wenn $\rho_{UU_i}(f)=0$ für alle $i\in I$.
-    \item\label{1.5.5bii} Ist eine Familie $(f_i)_{i\in I}$ mit $f_i\in\O_V(U_i)$ gegeben, die $\rho_{U_iU_i\cap
+    \item\Label{1.5.5bi} Für alle $f\in\O_V(U)$ gilt $f=0$ genau dann wenn $\rho_{UU_i}(f)=0$ für alle $i\in I$.
+    \item\Label{1.5.5bii} Ist eine Familie $(f_i)_{i\in I}$ mit $f_i\in\O_V(U_i)$ gegeben, die $\rho_{U_iU_i\cap
         U_j}(f_i)=\rho_{U_jU_i\cap U_j}(f_j)$  für alle $i,j\in I$ erfüllt, dann gibt es ein $f\in\O_V(U)$ mit
       $\rho_{UU_i}(f)=f_i$ für alle $i\in I$
       (\enquote{Verklebeeigenschaft}).
@@ -807,18 +836,18 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
   \begin{enumerate}
   \item Sei $X$ ein topologischer Raum. Für jede offene Menge $U\subseteq X$ sei eine $K$-Algebra $\O(U)$ gegeben. Weiter sei
     für jede Inklusion von offenen Mengen $U'\subseteq U$ eine $K$-Algebren-Homomorphismus $\rho_{UU'}\colon\O(U)\ra\O(U')$
-    gegeben, sodass die Eigenschaften \ref{1.5.5a} und \ref{1.5.5b} aus \autoref{1.5.5} gelten. Dann heißt
+    gegeben, sodass die Eigenschaften \ref{1.5.5a} und \ref{1.5.5b} aus \cref{1.5.5} gelten. Dann heißt
     $\{\O(U),\rho_{UU'}\}_{U'\subseteq U\text{ offen}}$ eine \emph{Garbe von $K$-Algebren} und $\rho_{UU'}$ heißt
     \emph{Restriktionshomomorphismus}.
   \item Garben von Vektorräumen, Ringen, Mengen etc. sind analog definiert.
-  \item Aus der Bedingung \ref{1.5.5bi} in \autoref{1.5.5} folgt die Eindeutigkeit von $f$ in \ref{1.5.5bii}
+  \item Aus der Bedingung \ref{1.5.5bi} in \cref{1.5.5} folgt die Eindeutigkeit von $f$ in \ref{1.5.5bii}
   \item Sei $X$ ein topologischer Raum und $\O_X$ eine Garbe von Ringen auf $X$. Dann heißt $(X,\O_X)$ ein \emph{geringter Raum}
     und $\O_X$ heißt \emph{Strukturgarbe} auf $X$.
   \end{enumerate}
 \end{dfn}
 
 \begin{bem}\label{1.5.7}
-  Sei $V$ eine affine Varietät über $K$. Die regulären Ringe $\O_V(U)$ aus \autoref{1.5.3} bilden eine Garbe von $K$-Algebren.
+  Sei $V$ eine affine Varietät über $K$. Die regulären Ringe $\O_V(U)$ aus \cref{1.5.3} bilden eine Garbe von $K$-Algebren.
 \end{bem}
 
 \begin{bsp}\label{1.5.8}
@@ -841,11 +870,11 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
 \begin{bem}\label{1.5.9}
   Sei $V$ eine affine Varietät.
   \begin{enumerate}
-  \item\label{1.5.9i} $V$ ist ein \emph{noetherscher topologischer Raum}, d.h. jede absteigende Kette abgeschlossener Mengen
+  \item\Label{1.5.9i} $V$ ist ein \emph{noetherscher topologischer Raum}, d.h. jede absteigende Kette abgeschlossener Mengen
     $V_1\supseteq V_2\supseteq V_3\supseteq\dotso$ wird stationär.
-  \item\label{1.5.9ii} Offene Mengen in $U$ sind \emph{quasikompakt}, d.h. jede offene Überdeckung besitzt eine endliche
+  \item\Label{1.5.9ii} Offene Mengen in $U$ sind \emph{quasikompakt}, d.h. jede offene Überdeckung besitzt eine endliche
     Teilüberdeckung.
-  \item\label{1.5.9iii} Für $g\in K[V]$ sei $D(g)=\{x\in V\mid g(x)\neq0\}$. Die Mengen $D(g)$ bilden eine Basis der Topologie
+  \item\Label{1.5.9iii} Für $g\in K[V]$ sei $D(g)=\{x\in V\mid g(x)\neq0\}$. Die Mengen $D(g)$ bilden eine Basis der Topologie
     von $V$. Es gilt sogar, dass jede offene Menge in $V$ Vereinigung von endlich vielen der $D(g)$ ist.
   \end{enumerate}
 \end{bem}
@@ -856,7 +885,7 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
     Folge $i_1,i_2,i_3,\dotsc$, so dass man kein $U_{i_j}$ weglassen kann. Damit wäre $U_{i_1}\subseteq U_{i_1}\cup U_{i_2}
     \subseteq U_{i_1}\cup U_{i_2}\cup U_{i_3}\subseteq \dotso$ eine aufsteigende Kette offener Mengen, die nie stationär
     wird. Dies ist ein Widerspruch zu \ref{1.5.9i}.
-  \item[\ref{1.5.9iii}] Dass die $D(g)$ eine Basis bilden, sieht man wie in \autoref{1.5.1}. Es reichen endlich viele, weil
+  \item[\ref{1.5.9iii}] Dass die $D(g)$ eine Basis bilden, sieht man wie in \cref{1.5.1}. Es reichen endlich viele, weil
     jedes Ideal in $K[V]$ endlich erzeugt ist.
   \end{enumerate}
 \end{proof}
@@ -869,13 +898,13 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
 \end{prop}
 \begin{proof}
   \begin{enumerate}
-  \item\label{1.5.10i} Ohne Einschränkung kann in \autoref{1.5.3} $U_p=D(g_p)$ gewählt werden. Damit ist zunächst
+  \item\Label{1.5.10i} Ohne Einschränkung kann in \cref{1.5.3} $U_p=D(g_p)$ gewählt werden. Damit ist zunächst
     $r(x)=\frac{f_p(x)}{g_p(x)}$ für alle $x\in U_p$. Wir wählen ein $\tilde{g}_p\in K[V]$ mit $x\in D(\tilde{g}_p)$. Also ist
     $D(\tilde{g}_p)\subseteq U_p=D(g_p)$ und damit $\tilde{g}_p\in\sqrt{(g_p)}$, es gibt also ein $h\in K[V]$ und ein $d\in\N$
     mit $\tilde{g}_p=h\cdot g_p$. Wir wählen $\tilde{\tilde{f}}=f_p\cdot h$ und $\tilde{\tilde{g}}_p=\tilde{g}_p^d$ und haben
     dann $r(x)=\frac{f_p(x)}{g_p(x)} = \frac{f_p(x)h(x)}{g_p(x)h(x)} = \frac{\tilde{\tilde{f}}_p(x)}{\tilde{\tilde{g}}_p(x)}$
     auf $D(\tilde{\tilde{g}}_p)=D(\tilde{g}_p)\subseteq D(g_p)$.
-  \item Nach \autoref{1.5.9ii} genügen endlich viele der $D(g_p)$, also können wir $U_p=D(g_1)\cup\dotso\cup
+  \item Nach \cref{1.5.9ii} genügen endlich viele der $D(g_p)$, also können wir $U_p=D(g_1)\cup\dotso\cup
     D(g_n)$ schreiben und haben nach \ref{1.5.10i} $r=\frac{f_i}{g_i}$ auf $D(g_i)$ mit $f_i,g_i\in K[V]$.
     \begin{ziel}
       Bastle $\tilde{f}_i,\tilde{g}_i\in K[V]$ mit $r=\frac{\tilde{f}_i}{\tilde{g}_i}$ auf $D(\tilde{g}_i)=D(g_i)$ und
@@ -889,7 +918,7 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
 
     %10.11.10
     Es gilt $D(g)=\bigcup_{i=1}^n D(g_i)$, also $\V(g)=\cap_{i=1}^n\V(g_i)$. Nach dem Hilbertschen Nullstellensatz
-    (\autoref{HNS}) gilt also $g\in\sqrt{(g_1,\dotsc,g_n)}$, d.h. es gibt ein $d\in\N$ mit $g^d=h_1g_1+\dotso+h_ng_n$ mit
+    (\cref{HNS}) gilt also $g\in\sqrt{(g_1,\dotsc,g_n)}$, d.h. es gibt ein $d\in\N$ mit $g^d=h_1g_1+\dotso+h_ng_n$ mit
     $h_i\in K[V]$. Damit ist
     \[ f_jg^d = \sum_{i=1}^nh_ig_if_j = \sum_{i=1}^n h_ig_jf_i = g_j\sum_{i=1}^nh_if_i. \]
     Wir setzen $f=\displaystyle\sum_{i=1}^nh_if_i$ und haben dann für alle $j$: $r(x)=\frac{f_i(x)}{g_i(x)}=\frac{f(x)}{g^d(x)}$
@@ -899,9 +928,9 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
 
 \begin{kor}\label{1.5.11}
   \begin{enumerate}
-  \item\label{1.5.11i} $\O_V(D(g))\cong K[V][\frac1g] = K[V]_{\{g^d\mid d\in\N_0\}}$
-  \item\label{1.5.11ii} Ist $V$ irreduzibel, so gilt $\O_V(D(g))=\{\frac{f}{g^d}\in\Quot(K[V])\}$.
-  \item\label{1.5.11iii} $\O_V(V)=K[V]$
+  \item\Label{1.5.11i} $\O_V(D(g))\cong K[V][\frac1g] = K[V]_{\{g^d\mid d\in\N_0\}}$
+  \item\Label{1.5.11ii} Ist $V$ irreduzibel, so gilt $\O_V(D(g))=\{\frac{f}{g^d}\in\Quot(K[V])\}$.
+  \item\Label{1.5.11iii} $\O_V(V)=K[V]$
   \end{enumerate}
 \end{kor}
 \begin{proof}
@@ -912,7 +941,7 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
     ist ein wohldefinierter $K$-Algebren-Homomorphismus, denn $\frac{f_1}{g^{d_1}}=\frac{f_2}{g^{d_2}}$ gilt genau dann, wenn es
     ein $\tilde{d}\in\N_0$ gibt, sodass $g^{\tilde{d}}(f_1g^{d_2}-f_2g^{d_1})=0$ ist. Da $g(x)\neq0$ auf $D(g)$ gilt, ist das
     äquivalent zu $\frac{f_1(x)}{g^{d_1}(x)}=\frac{f_2(x)}{g^{d_2}(x)}$ für alle $x\in D(g)$. Außerdem ist die Abbildung
-    offenbar injektiv und wegen \autoref{1.5.10} auch surjektiv.
+    offenbar injektiv und wegen \cref{1.5.10} auch surjektiv.
   \end{enumerate}
 \end{proof}
 
@@ -922,21 +951,21 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
   $r\circ f\in\O_V(f^{-1}(U))$).
 \end{prop}
 \begin{proof}
-  Sei zuerst $f$ ein Morphismus. Dann ist $f$ stetig nach \autoref{1.4.4}. Sei $r\in\O_W(U)$. Dann lässt sich $r$ lokal
+  Sei zuerst $f$ ein Morphismus. Dann ist $f$ stetig nach \cref{1.4.4}. Sei $r\in\O_W(U)$. Dann lässt sich $r$ lokal
   schreiben als $r(x)=\frac{g_p(x)}{h_p(x)}$ mit $g_p,h_p\in K[W]$. Weil $g_p\circ f=f^\sharp(g_p)$ und $h_p\circ
   f=f^\sharp(h_p)$ in $K[V]$ liegen, gilt $r\circ f(x)=\frac{g_p\circ f(x)}{h_p\circ f(x)}$, was eine lokale Darstellung von
   $r\circ f$ ist. Also ist $r\circ f$ eine reguläre Funktion.
 
   Sei nun umgekehrt $f$ eine stetige Abbildung, die reguläre Funktionen erhält. Für die Koordinatenfunktionen $p_i\colon
   \A^m(K)\ra \A^1(K),\ (x_1,\dotsc,x_m)\mapsto x_i$ wollen wir $p_i\circ f\in K[V]$ zeigen. Dies gilt, denn $p_i\in K[W] =
-  \O_W(W)$, also nach Voraussetzung $p_i\circ f\in\O_V(V)=K[V]$ mit \autoref{1.5.11iii}.
+  \O_W(W)$, also nach Voraussetzung $p_i\circ f\in\O_V(V)=K[V]$ mit \cref{1.5.11iii}.
 \end{proof}
 
 \begin{bem}\label{1.5.13}
   Sei $V$ eine affine Varietät.
   \begin{enumerate}
-  \item\label{1.5.13a} Sei $U\subseteq V$ offen, $r\in\O_V(U)$ und $A=\{p\in U\mid r(p)=0\}$. Dann ist $A$ abgeschlossen in $U$.
-  \item\label{1.5.13b} (\enquote{Identitätssatz}) Sind $r_1\in\O_V(U_1)$, $r_2\in\O_V(U_2)$ und gibt es ein $\tilde{U}\subseteq
+  \item\Label{1.5.13a} Sei $U\subseteq V$ offen, $r\in\O_V(U)$ und $A=\{p\in U\mid r(p)=0\}$. Dann ist $A$ abgeschlossen in $U$.
+  \item\Label{1.5.13b} (\enquote{Identitätssatz}) Sind $r_1\in\O_V(U_1)$, $r_2\in\O_V(U_2)$ und gibt es ein $\tilde{U}\subseteq
     U_1\cap U_2$, das in $U_1\cap U_2$ dicht liegt und so, dass $r_1\restrict{\tilde{U}}=r_2\restrict{\tilde{U}}$, dann gilt
     $r_1\restrict{U_1\cap U_2}=r_2\restrict{U_1\cap U_2}$.
   \end{enumerate}
@@ -953,17 +982,17 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
 
 \begin{db}\label{1.5.14}
   \begin{enumerate}
-  \item\label{1.5.14i} Eine \emph{quasi-affine Varietät} $W$ ist eine Zariski-offene Teilmenge einer affinen Varietät.
-  \item\label{1.5.14ii} Eine Abbildung $f\colon W_1\ra W_2$ zwischen quasi-affinen Varietäten heißt \emph{Morphismus}, wenn $f$
+  \item\Label{1.5.14i} Eine \emph{quasi-affine Varietät} $W$ ist eine Zariski-offene Teilmenge einer affinen Varietät.
+  \item\Label{1.5.14ii} Eine Abbildung $f\colon W_1\ra W_2$ zwischen quasi-affinen Varietäten heißt \emph{Morphismus}, wenn $f$
     stetig ist und reguläre Funktionen erhält. Die quasi-affinen Varietäten bilden zusammen mit den Morphismen eine Kategorie.
-  \item\label{1.5.14iii} Eine quasi-affine Varietät $W$ heißt \emph{affin (als abstrakte Varietät)}, wenn es einen Isomorphismus
+  \item\Label{1.5.14iii} Eine quasi-affine Varietät $W$ heißt \emph{affin (als abstrakte Varietät)}, wenn es einen Isomorphismus
     $f\colon W\ra V$ gibt, sodass $V=\V(I)$ eine affine Varietät in einem $A^n(K)$ ist.
   \end{enumerate}
 \end{db}
 
 \begin{bsp}\label{1.5.15}
   \begin{enumerate}
-  \item\label{1.5.15i} Sei $f\in K\polyx$. Dann ist $D(f)$ affin als abstrakte Varietät, denn: Definiere $\tilde{f}\in
+  \item\Label{1.5.15i} Sei $f\in K\polyx$. Dann ist $D(f)$ affin als abstrakte Varietät, denn: Definiere $\tilde{f}\in
     K\polyx[n+1]$ durch $\tilde{f}=f\cdot X_{n+1}-1$ und $I=(\tilde{f})$. Dann ist $\V(I)=\{(x_1,\dotsc,x_{n+1})\in\A^{n+1}(K)
     \mid f(x_1,\dotsc,x_n)\cdot x_{n+1}=1\}$. Definiere weiter
     \begin{align*}
@@ -971,9 +1000,9 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
       r_2&\colon \V(I)\ra D(f),\quad (x_1,\dotsc,x_{n+1})\mapsto(x_1,\dotsc,x_n).
     \end{align*}
     Dann sind $r_1$ und $r_2$ wohldefinierte reguläre Abbildungen und zueinander invers.
-  \item\label{1.5.15ii} $\A^1(K)\setminus\{0\}=D(X)$ ist affin als abstrakte Varietät.
-  \item\label{1.5.15iii} $\A^2(K)\setminus\{(0,0)\}$ ist nicht affin als abstrakte Varietät; siehe Übungsblatt
-  \item\label{1.5.15iv} Für $\GL_n(K) = \{A\in K^{n\times n}\mid \det{A}\neq0\} \subseteq K^{n^2}$ gilt
+  \item\Label{1.5.15ii} $\A^1(K)\setminus\{0\}=D(X)$ ist affin als abstrakte Varietät.
+  \item\Label{1.5.15iii} $\A^2(K)\setminus\{(0,0)\}$ ist nicht affin als abstrakte Varietät; siehe Übungsblatt
+  \item\Label{1.5.15iv} Für $\GL_n(K) = \{A\in K^{n\times n}\mid \det{A}\neq0\} \subseteq K^{n^2}$ gilt
     $\GL_n(K)=D(\det(\cdot))$. Mit \ref{1.5.15i} kann $\GL_n(K)$ als affine Varietät in $\A^{n^2+1}(K)$ aufgefasst werden,
     nämlich als $\{(A,y)\in K^{n^2+1} \mid y\det{A}-1=0\}$.
   \end{enumerate}
@@ -987,18 +1016,18 @@ In diesem Abschnitt sei stets $K$ algebraisch abgeschlossen und $V$ eine affine 
 
 \begin{db}\label{1.6.1}
 \begin{enumerate}
-\item\label{1.6.1a} Eine \emph{rationale Funktion} auf V ist eine Äquivalenzklasse von Paaren $(U,f)$, wobei $U$ dichte, offene Teilmenge von V ist und $f\in \O_V(U)$. Hierbei sei 
+\item\Label{1.6.1a} Eine \emph{rationale Funktion} auf V ist eine Äquivalenzklasse von Paaren $(U,f)$, wobei $U$ dichte, offene Teilmenge von V ist und $f\in \O_V(U)$. Hierbei sei 
 \[(U,f)\sim(U',f') \iff f\restrict{U\cap U'}=f'\restrict{U\cap U'}\]
-\item\label{1.6.1b} In jeder Äquivalenzklasse gibt es ein maximales Element (bzgl. Inklusion auf U) $(U,f)$. Dieses $U$ heißt \emph{Definitionsbereich} und $V\setminus U$ heißt \emph{Polstellenmenge}.
-\item\label{1.6.1c} Die rationalen Funktionen auf $V$ bilden eine $K$-Algebra. Schreibweise: \emph{Rat(V)}
-\item\label{1.6.1d} Ist $V$ irreduzibel, so ist $\Rat(V)$ isomorph zu Quot(K[V])=K(V).
+\item\Label{1.6.1b} In jeder Äquivalenzklasse gibt es ein maximales Element (bzgl. Inklusion auf U) $(U,f)$. Dieses $U$ heißt \emph{Definitionsbereich} und $V\setminus U$ heißt \emph{Polstellenmenge}.
+\item\Label{1.6.1c} Die rationalen Funktionen auf $V$ bilden eine $K$-Algebra. Schreibweise: \emph{Rat(V)}
+\item\Label{1.6.1d} Ist $V$ irreduzibel, so ist $\Rat(V)$ isomorph zu Quot(K[V])=K(V).
 \end{enumerate}
 \end{db}
 
 \begin{proof}
 \begin{enumerate}
 \item[\ref{1.6.1a}] Zu zeigen: $\sim$ definiert eine Äquivalenzrelation. Es bleibt nur die Transitivität zu zeigen.
-Seien $(U_1,f_1)\sim (U_2,f_2)$ und $(U_2,f_2)\sim (U_3,f_3)$. Dann stimmen $f_1$ und $f_3$ auf $U_1\cap U_2\cap U_3$ überein. Da $U_1\cap U_2\cap U_3$ dicht in $V$ ist, folgt mit dem Identitätssatz \autoref{1.5.13}:
+Seien $(U_1,f_1)\sim (U_2,f_2)$ und $(U_2,f_2)\sim (U_3,f_3)$. Dann stimmen $f_1$ und $f_3$ auf $U_1\cap U_2\cap U_3$ überein. Da $U_1\cap U_2\cap U_3$ dicht in $V$ ist, folgt mit dem Identitätssatz \cref{1.5.13}:
 \[f_1\restrict{U_1\cap U_3}=f_3\restrict{U_1\cap U_3}\]
 \item[\ref{1.6.1b}] Ist $(U,f)\sim(U',f')$, so kann auf $U\cup U'$ die reguläre Funktion $\dach{f}$ definiert werden, indem man 
 \[\dach{f}(x)=\begin{cases} f(x),\text{ falls x$\in$ U} \\ f'(x),\text{falls x$\in$ U'}\end{cases}\] setzt.
@@ -1043,17 +1072,17 @@ Ist jedoch $K[V]$ faktoriell, so gilt $D(h)=D(r)$ (vgl. Übungsblätter 4 und 5)
 \begin{eb}\label{1.7.1}
   Sei $V\subseteq\A^n(K)$ eine affine Varietät ($K$ algebraisch abgeschlossen). Dann haben wir Bijektionen
   \begin{enumerate}
-  \item\label{1.7.1.1} $\displaystyle \{\text{Untervarietäten von }V\} \longleftrightarrow \{\text{Radikalideale in }K\polyx\text{,
+  \item\Label{1.7.1.1} $\displaystyle \{\text{Untervarietäten von }V\} \longleftrightarrow \{\text{Radikalideale in }K\polyx\text{,
       die }\I(V)\text{ enthalten}\} \longleftrightarrow \{\text{Radikalideale in }K[V]\}$
-  \item\label{1.7.1.2} $\displaystyle \{\text{irreduzible Untervarietäten von }V\} \longleftrightarrow \{\text{Radikalideale in
+  \item\Label{1.7.1.2} $\displaystyle \{\text{irreduzible Untervarietäten von }V\} \longleftrightarrow \{\text{Radikalideale in
     }K[V]\}$
-  \item\label{1.7.1.3} $\displaystyle\{\text{Punkte in }V\} \longleftrightarrow \{\text{maximale Ideale in }K[V]\}$
+  \item\Label{1.7.1.3} $\displaystyle\{\text{Punkte in }V\} \longleftrightarrow \{\text{maximale Ideale in }K[V]\}$
   \end{enumerate}
 \end{eb}
 \begin{proof}
   \begin{enumerate}
-  \item[\ref{1.7.1.1}] \autoref{1.1.3}, \autoref{1.1.5}, \autoref{HNS} und \autoref{1.7.0}
-  \item[\ref{1.7.1.2}] \autoref{1.2.9} und \autoref{1.7.0}
+  \item[\ref{1.7.1.1}] \cref{1.1.3}, \cref{1.1.5}, \cref{HNS} und \cref{1.7.0}
+  \item[\ref{1.7.1.2}] \cref{1.2.9} und \cref{1.7.0}
   \item[\ref{1.7.1.3}] Die eine Zuordnung ist $p=(x_1,\dotsc,x_n)\mapsto m_p=\I(\{p\})=(X_1-x_1,\dotsc,X_n-x_n)$. Für die andere
     sei $I$ ein maximales Ideal in $K[V]$, dann gibt es einen Isomorphismus $\alpha\colon\Quotient{K\polyx}{m}\ra K$ und wir
     wählen $p=(\alpha(X_1),\dotsc,\alpha(X_n))$.
@@ -1063,12 +1092,12 @@ Ist jedoch $K[V]$ faktoriell, so gilt $D(h)=D(r)$ (vgl. Übungsblätter 4 und 5)
 \begin{db}\label{1.7.2}
   Sei $R$ ein kommutativer Ring mit Eins.
   \begin{enumerate}
-  \item\label{1.7.2i} Die Menge $\Spec R = \{\wp\subseteq R \mid \wp\text{ ist Primideal}\}$ heißt \emph{Spektrum von $R$}.
-  \item\label{1.7.2ii} Für eine Teilmenge $S\subseteq R$ heißt $\V(S) = \{p\in\Spec R \mid p\supseteq S\}$
+  \item\Label{1.7.2i} Die Menge $\Spec R = \{\wp\subseteq R \mid \wp\text{ ist Primideal}\}$ heißt \emph{Spektrum von $R$}.
+  \item\Label{1.7.2ii} Für eine Teilmenge $S\subseteq R$ heißt $\V(S) = \{p\in\Spec R \mid p\supseteq S\}$
     \emph{Verschwindungsmenge von $S$} und es gilt $\V(S)=\V((S))$.
-  \item\label{1.7.2iii} Die Mengen $\V(I)$ für Ideale $I\subseteq R$ bilden die abgeschlossenen Mengen einer Topologie auf
+  \item\Label{1.7.2iii} Die Mengen $\V(I)$ für Ideale $I\subseteq R$ bilden die abgeschlossenen Mengen einer Topologie auf
     $\Spec R$, diese heißt \emph{Zariski-Topologie}.
-  \item\label{1.7.2iv} Für $Z\subseteq\Spec R$ heißt $\I(Z)=\displaystyle\bigcap_{p\in Z}p$ das \emph{Verschwindungsideal von
+  \item\Label{1.7.2iv} Für $Z\subseteq\Spec R$ heißt $\I(Z)=\displaystyle\bigcap_{p\in Z}p$ das \emph{Verschwindungsideal von
       $Z$}.
   \end{enumerate}
 \end{db}
@@ -1076,7 +1105,7 @@ Ist jedoch $K[V]$ faktoriell, so gilt $D(h)=D(r)$ (vgl. Übungsblätter 4 und 5)
   \begin{enumerate}
   \item[\ref{1.7.2ii}] Die Inklusion \enquote{$\supseteq$} ist klar. Für die umgekehrte Inklusion sei $p\in\V(S)$, also
     $p\supseteq S$. Da $p$ ein Ideal ist, folgt $p\supseteq (S)$, also $p\in\V((S))$.
-  \item[\ref{1.7.2iii}] Das zeigt man wie in \autoref{1.2.1}, insbesondere gilt
+  \item[\ref{1.7.2iii}] Das zeigt man wie in \cref{1.2.1}, insbesondere gilt
     \[\displaystyle\bigcap_{\lambda\in\Lambda}\V(I_\lambda) =
     \V\Bigl(\bigcup_{\lambda\in\Lambda}I_\lambda\Bigr)=\V\Bigr(\sum_{\lambda\in\Lambda}I_\lambda\Bigr)\] und
     $\V(I_1)\cup\V(I_2)=\V(I_1\cap I_2)=\V(I_1\cdot I_2)$.
@@ -1085,30 +1114,30 @@ Ist jedoch $K[V]$ faktoriell, so gilt $D(h)=D(r)$ (vgl. Übungsblätter 4 und 5)
 
 \begin{db}\label{1.7.3}
   \begin{enumerate}
-  \item\label{1.7.3i} Elemente aus $R$ können als Funktionen aufgefasst werden:
+  \item\Label{1.7.3i} Elemente aus $R$ können als Funktionen aufgefasst werden:
     \[ r\colon \Spec R \ra \!\!\!\bigcup_{p\in\Spec R}\!\!\! \Quot\bigl(\Quotient{R}{p}\bigr),\quad
     p\mapsto\Bar{r}\in\Quot\bigl(\Quotient{R}{p}\bigr) \]
-  \item\label{1.7.3ii} Ein Primideal $p$ ist genau dann Nullstelle von $r\in R$, wenn $\Bar{r}=0$ in $\Quotient{R}{p}$, also wenn
+  \item\Label{1.7.3ii} Ein Primideal $p$ ist genau dann Nullstelle von $r\in R$, wenn $\Bar{r}=0$ in $\Quotient{R}{p}$, also wenn
     $r\in p$ gilt.
   \end{enumerate}
 \end{db}
 
 \begin{bsp}\label{1.7.4}
   \begin{enumerate}
-  \item\label{1.7.4i} Sei $R=K[V]$ für eine affine Varietät $V$ und einen algebraisch abgeschlossenen Körper $K$. Dann enthält
+  \item\Label{1.7.4i} Sei $R=K[V]$ für eine affine Varietät $V$ und einen algebraisch abgeschlossenen Körper $K$. Dann enthält
     $\Spec R$ je einen Punkt für jede irreduzible Untervarietät von $V$. Ist $m$ ein maximales Ideal in $\Spec R$, dann ist
     $\Quot\bigl(\Quotient{R}{m}\bigr)\cong K$.
-  \item\label{1.7.4ii} Für $R=\Z$ ist $\Spec R = \{(p)\mid p\in\P\}\cup\{(0)\}$, kann also als $\P\cup\{0\}$ aufgefasst werden.
+  \item\Label{1.7.4ii} Für $R=\Z$ ist $\Spec R = \{(p)\mid p\in\P\}\cup\{(0)\}$, kann also als $\P\cup\{0\}$ aufgefasst werden.
   \end{enumerate}
 \end{bsp}
 
 %22.11.10
 \begin{bem}\label{1.7.5}
   \begin{enumerate}
-  \item\label{1.7.5i} Für $Z\subseteq\Spec R$ ist $\V(\I(Z))=\Bar{Z}$ der Abschluss von $Z$.
-  \item\label{1.7.5ii} Für $f\in R$ sei $\D(f)=\Spec R\setminus\V(f)$ = $\{p\in\Spec R\mid f\notin p\}$. Die Mengen $D(f)$
+  \item\Label{1.7.5i} Für $Z\subseteq\Spec R$ ist $\V(\I(Z))=\Bar{Z}$ der Abschluss von $Z$.
+  \item\Label{1.7.5ii} Für $f\in R$ sei $\D(f)=\Spec R\setminus\V(f)$ = $\{p\in\Spec R\mid f\notin p\}$. Die Mengen $D(f)$
     bilden eine Basis der Topologie auf $\Spec R$.
-  \item\label{1.7.5iii} Sei $V\subseteq\Spec R$ nichtleer. Dann ist $V$ genau dann irreduzibel, wenn $\I(V)$ ein Primideal ist.
+  \item\Label{1.7.5iii} Sei $V\subseteq\Spec R$ nichtleer. Dann ist $V$ genau dann irreduzibel, wenn $\I(V)$ ein Primideal ist.
   \end{enumerate}
 \end{bem}
 \begin{proof}
@@ -1117,16 +1146,16 @@ Ist jedoch $K[V]$ faktoriell, so gilt $D(h)=D(r)$ (vgl. Übungsblätter 4 und 5)
     \supseteq Z$. Daraus folgt, dass der Abschluss von $Z$ in $\V(\I(Z))$ liegt. Für die andere Inklusion sei
     $\Bar{Z}=\V(J)=\{q\in\Spec R\mid q\supseteq J\}$. Da $Z\subseteq\Bar{Z}$, gilt für alle $p\in Z$, dass $p\supseteq J$. Sei
     nun $q\in\V(\I(Z))$. Dann gilt $q\supseteq\bigcap_{p\in Z}p\supseteq J$, also $q\in\V(J)$.
-  \item[\ref{1.7.5ii}] Das geht wie in \autoref{1.5.9iii}.
-  \item[\ref{1.7.5iii}] Das geht wie in \autoref{1.2.9}.
+  \item[\ref{1.7.5ii}] Das geht wie in \cref{1.5.9iii}.
+  \item[\ref{1.7.5iii}] Das geht wie in \cref{1.2.9}.
   \end{enumerate}
 \end{proof}
 
 \begin{bem}\label{1.7.6}
   \begin{enumerate}
-  \item\label{1.7.6i} Für $p\in\Spec R$ gilt $\Bar{\{p\}}=\{q\in\Spec R\mid q\supseteq p\}=\V(p)$.
-  \item\label{1.7.6ii} Für $p\in\Spec R$ ist $\{p\}$ genau dann abgeschlossen, wenn $p$ ein maximales Ideal ist.
-  \item\label{1.7.6iii} Sei $R$ nullteilerfrei. Dann gilt $\Bar{\{(0)\}}=\Spec R$.
+  \item\Label{1.7.6i} Für $p\in\Spec R$ gilt $\Bar{\{p\}}=\{q\in\Spec R\mid q\supseteq p\}=\V(p)$.
+  \item\Label{1.7.6ii} Für $p\in\Spec R$ ist $\{p\}$ genau dann abgeschlossen, wenn $p$ ein maximales Ideal ist.
+  \item\Label{1.7.6iii} Sei $R$ nullteilerfrei. Dann gilt $\Bar{\{(0)\}}=\Spec R$.
   \end{enumerate}
 \end{bem}
 
@@ -1147,9 +1176,9 @@ Ist jedoch $K[V]$ faktoriell, so gilt $D(h)=D(r)$ (vgl. Übungsblätter 4 und 5)
 \begin{bem}\label{1.7.9}
   Sei $\alpha\colon R\ra R'$ ein Ringhomomorphismus.
   \begin{enumerate}
-  \item\label{1.7.9i} $\alpha$ induziert eine stetige Abbildung \[ f_\alpha\colon \Spec R'\ra\Spec R,\quad
+  \item\Label{1.7.9i} $\alpha$ induziert eine stetige Abbildung \[ f_\alpha\colon \Spec R'\ra\Spec R,\quad
     \wp\mapsto\alpha^{-1}(\wp). \]
-  \item\label{1.7.9ii} Ist $I\subseteq R$ ein Ideal, so ist $f_\alpha^{-1}(\V(I))=\V(\alpha(I))$.
+  \item\Label{1.7.9ii} Ist $I\subseteq R$ ein Ideal, so ist $f_\alpha^{-1}(\V(I))=\V(\alpha(I))$.
   \end{enumerate}
 \end{bem}
 \begin{proof}
@@ -1169,7 +1198,7 @@ Ist jedoch $K[V]$ faktoriell, so gilt $D(h)=D(r)$ (vgl. Übungsblätter 4 und 5)
   injektiv und stetig.
 \end{prop}
 \begin{proof}
-  Die Injektivität folgt aus \autoref{1.7.1}. Für den Beweis der Stetigkeit sei $I\subseteq K[V]$ ein Ideal und
+  Die Injektivität folgt aus \cref{1.7.1}. Für den Beweis der Stetigkeit sei $I\subseteq K[V]$ ein Ideal und
   $Z=\V(I)\subseteq\Spec K[V]$. Für die affine
   Varietät $V$ gilt
   \[x\in\V(I) \iff f(x)=0 \text{ für alle }f\in I \iff f\in m_x \text{ für alle }f\in I \iff I\subseteq m_x. \]
@@ -1181,23 +1210,23 @@ Ist jedoch $K[V]$ faktoriell, so gilt $D(h)=D(r)$ (vgl. Übungsblätter 4 und 5)
   Sei $R$ ein kommutativer Ring mit Eins, $I\subseteq R$ ein Ideal und $V\subseteq\Spec R$ eine abgeschlossene Menge. Dann
   gelten:
   \begin{enumerate}
-  \item\label{1.7.11i} $\V(\I(V))=V$
-  \item\label{1.7.11ii} $\I(\V(I))=\sqrt{I}$
+  \item\Label{1.7.11i} $\V(\I(V))=V$
+  \item\Label{1.7.11ii} $\I(\V(I))=\sqrt{I}$
   \end{enumerate}
 \end{prop}
 \begin{proof}
   \begin{enumerate}
-  \item[\ref{1.7.11i}] Aus \autoref{1.7.5i} folgt $\V(\I(V))=\Bar{V}=V$.
-  \item[\ref{1.7.11ii}] Nach \autoref{1.7.12} gilt $\displaystyle\I(\V(I))=\bigcap_{p\in\V(I)}p=\bigcap_{p\supseteq I}p=\sqrt{I}$.
+  \item[\ref{1.7.11i}] Aus \cref{1.7.5i} folgt $\V(\I(V))=\Bar{V}=V$.
+  \item[\ref{1.7.11ii}] Nach \cref{1.7.12} gilt $\displaystyle\I(\V(I))=\bigcap_{p\in\V(I)}p=\bigcap_{p\supseteq I}p=\sqrt{I}$.
   \end{enumerate}
 \end{proof}
 
 \begin{lem}[Lemma von Krull]\label{1.7.12}
   Sei $R$ ein kommutativer Ring mit Eins.
   \begin{enumerate}
-  \item\label{1.7.12i} Sei $S\subseteq R$ ein multiplikatives System und $I\subseteq R$ ein Ideal, das disjunkt zu $S$ ist. Dann
+  \item\Label{1.7.12i} Sei $S\subseteq R$ ein multiplikatives System und $I\subseteq R$ ein Ideal, das disjunkt zu $S$ ist. Dann
     gibt es ein Primideal $\wp\subseteq R$, das $I$ enthält und ebenfalls zu $S$ disjunkt ist.
-  \item\label{1.7.12ii} $\displaystyle\!\!\!\bigcap_{\substack{\wp\in\Spec R\\\wp\supseteq I}}\!\!\!\wp = \sqrt{I}$
+  \item\Label{1.7.12ii} $\displaystyle\!\!\!\bigcap_{\substack{\wp\in\Spec R\\\wp\supseteq I}}\!\!\!\wp = \sqrt{I}$
   \end{enumerate}
 \end{lem}
 \begin{proof}
@@ -1244,7 +1273,7 @@ Wir bezeichnen $\mathpzc{B}=\{D(g)\mid g\in R\}$, was eine Basis der Topologie a
 \begin{proof}
   Wir definieren $\mathpzc{F}(D(f))=R_f$ und zeigen
   \begin{enumerate}
-  \item\label{1.7.13a} $\mathpzc{F}$ erfüllt auf $\mathpzc{B}$ die Garbeneigenschaften, d.h.
+  \item\Label{1.7.13a} $\mathpzc{F}$ erfüllt auf $\mathpzc{B}$ die Garbeneigenschaften, d.h.
     \begin{enumerate}[label=(\textsc{g}\arabic*)]
     \item\label{G1} $\rho_{U''}^U=\rho_{U''}^{U'}\circ\rho_{U'}^U$ und $\rho_U^U=\id_{\mathpzc{F}(U)}$ für
       $U,U',U''\in\mathpzc{B}$ mit $U''\subseteq U\subseteq U$
@@ -1252,11 +1281,11 @@ Wir bezeichnen $\mathpzc{B}=\{D(g)\mid g\in R\}$, was eine Basis der Topologie a
       $U'\in\mathpzc{B}$ mit $U'\subseteq U_i\cap U_j$, dass $\rho_{U'}^{U_i}=\rho_{U'}^{U_j}$, dann gibt es genau ein
       $f\in\mathpzc{U}$ mit $\rho_{U_i}^U(f)=f_i$.
     \end{enumerate}
-  \item\label{1.7.13b} $\mathpzc{F}$ lässt sich eindeutig zu einer Garbe fortsetzen.
+  \item\Label{1.7.13b} $\mathpzc{F}$ lässt sich eindeutig zu einer Garbe fortsetzen.
   \end{enumerate}
   \begin{enumerate}
   \item[zu] \ref{1.7.13a}: Die erste Garbeneigenschaft ist klar. Für die zweite sei ohne Einschränkung $I=\{1,\dotsc,m\}$ endlich
-    (denn wie in \autoref{1.5.9} sind offene Mengen quasikompakt). Sei $U=D(f)$ und $U_i=D(f_i)$. Wegen
+    (denn wie in \cref{1.5.9} sind offene Mengen quasikompakt). Sei $U=D(f)$ und $U_i=D(f_i)$. Wegen
     $D(f)=D(f_1)\cup\dotso\cup D(f_m)$ ist $\V(f)=\V(f_1,\dotsc,f_m)$, also gibt es ein $k\in\N$ mit
     $f^k\in(f_1,\dotsc,f_m)$. \hfill ($*$)
 
@@ -1273,14 +1302,14 @@ Wir bezeichnen $\mathpzc{B}=\{D(g)\mid g\in R\}$, was eine Basis der Topologie a
     \[ gf_j^N=\frac{1}{f^w}\sum_{i=1}^ma_if_i^Nf_j^Ng_j=\frac{1}{f^w}f^wg_jf_j^N=g_jf_j^N, \]
     also $g=g_j$ in $R_{f_j}$.
     % 29.11.10
-  \item [zu] \ref{1.7.13b}: Das folgt aus dem folgenden \autoref{1.7.14}.
+  \item [zu] \ref{1.7.13b}: Das folgt aus dem folgenden \cref{1.7.14}.
   \end{enumerate}
 \end{proof}
 
 \begin{lem}\label{1.7.14}
   Sei $X$ ein topologischer Raum und $\mathpzc{B}$ eine Basis. Eine \emph{$\mathpzc{B}$-Garbe} besteht aus einem Ring
   $\mathpzc{F}(U)$ für jedes $U\in\mathpzc{B}$ und Restriktionsabbildungen $\rho_{U'}^U$ für alle $U,U'\in\mathpzc{B}$ mit
-  $U'\subseteq U$, sodass die Garbeneigenschaften \ref{G1} und \ref{G2} aus \autoref{1.7.13} erfüllt sind.
+  $U'\subseteq U$, sodass die Garbeneigenschaften \ref{G1} und \ref{G2} aus \cref{1.7.13} erfüllt sind.
 
   Jede $\mathpzc{B}$-Garbe lässt sich eindeutig zu einer Garbe auf $X$ fortsetzen.
 \end{lem}
@@ -1300,17 +1329,17 @@ Wir bezeichnen $\mathpzc{B}=\{D(g)\mid g\in R\}$, was eine Basis der Topologie a
 \end{proof}
 
 \begin{bem*}
-  In \autoref{1.7.13} muss $R$ nicht noethersch sein! Es gilt für beliebige Ringe $R$ und $f\in R$, dass $D(f)$ quasikompakt ist
-  (siehe \autoref{1.7.15}).
+  In \cref{1.7.13} muss $R$ nicht noethersch sein! Es gilt für beliebige Ringe $R$ und $f\in R$, dass $D(f)$ quasikompakt ist
+  (siehe \cref{1.7.15}).
 \end{bem*}
 
 \begin{bem}\label{1.7.15}
   Sei $R$ ein beliebiger kommutativer Ring mit Eins und $f$, $f_i$ ($i\in I$) aus $R$.
   \begin{enumerate}
-  \item\label{1.7.15i} Es gilt $\displaystyle D(f)=\bigcup_{i\in I}D(f_i)$ genau dann, wenn $\sqrt{(f)}=\sqrt{(f_i\mid i\in
+  \item\Label{1.7.15i} Es gilt $\displaystyle D(f)=\bigcup_{i\in I}D(f_i)$ genau dann, wenn $\sqrt{(f)}=\sqrt{(f_i\mid i\in
       I)}$. Insbesondere gilt $\displaystyle\Spec R=\bigcup_{i\in I}D(f_i)$ genau dann, wenn $1\in(f_i\mid i\in I)$.
-  \item\label{1.7.15ii} $D(f)$ ist quasikompakt.
-  \item\label{1.7.15iii} Wenn $R$ noethersch ist, ist $\Spec R$ ein noetherscher topologischer Raum.
+  \item\Label{1.7.15ii} $D(f)$ ist quasikompakt.
+  \item\Label{1.7.15iii} Wenn $R$ noethersch ist, ist $\Spec R$ ein noetherscher topologischer Raum.
     \begin{w}
       Die Gegenrichtung stimmt nicht! Insbesondere ist $\Spec R$ nicht immer ein noetherscher topologischer Raum.
     \end{w}
@@ -1332,9 +1361,9 @@ Wir bezeichnen $\mathpzc{B}=\{D(g)\mid g\in R\}$, was eine Basis der Topologie a
 
 \begin{dfn}\label{1.7.16}
   \begin{enumerate}
-  \item\label{1.7.16i} Sei $R$ ein beliebiger kommutativer Ring mit Eins, $X=\Spec R$ und $O_X$ die Garbe aus
-    \autoref{1.7.13}. Der geringte Raum $(X,\O_X)$ heißt \emph{affines Schema zu $R$}.
-  \item\label{1.7.16ii} Ist $R$ noethersch, so heißt $(X,\O_X)$ ein \emph{noethersches affines Schema}.
+  \item\Label{1.7.16i} Sei $R$ ein beliebiger kommutativer Ring mit Eins, $X=\Spec R$ und $O_X$ die Garbe aus
+    \cref{1.7.13}. Der geringte Raum $(X,\O_X)$ heißt \emph{affines Schema zu $R$}.
+  \item\Label{1.7.16ii} Ist $R$ noethersch, so heißt $(X,\O_X)$ ein \emph{noethersches affines Schema}.
   \end{enumerate}
 \end{dfn}
 
@@ -1359,10 +1388,10 @@ verträglich, d.h. für $U'\subseteq U$ ist das Diagramm
 \end{tikzpicture}\]
 kommutativ.
 \begin{proof}
-  Wir zeigen, dass die Garben auf der Basis übereinstimmen. Dann folgt die Behauptung aus \autoref{1.7.14}. Sei
-  $U=D(f)=\{p\in\Spec R\mid p\not\ni f\}$. Aus \autoref{1.7.13} folgt einerseits $\O_X(D(f))=R_f$. Andererseits gilt $m^{-1}(U)
+  Wir zeigen, dass die Garben auf der Basis übereinstimmen. Dann folgt die Behauptung aus \cref{1.7.14}. Sei
+  $U=D(f)=\{p\in\Spec R\mid p\not\ni f\}$. Aus \cref{1.7.13} folgt einerseits $\O_X(D(f))=R_f$. Andererseits gilt $m^{-1}(U)
   = \{x\in V \mid m_x\not\ni f\} = \{x\in V\mid f(x)\neq0\} = D(f)\subseteq V$, also $m_*\O_V(U)=\O_V(m^{-1}(U))\cong R_f$ wegen
-  \autoref{1.5.11}. Außerdem passen die Restriktionsabbildungen zusammen.
+  \cref{1.5.11}. Außerdem passen die Restriktionsabbildungen zusammen.
 \end{proof}
 
 
