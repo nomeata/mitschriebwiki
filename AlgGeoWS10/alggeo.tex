@@ -13,12 +13,13 @@
 \usepackage{cleveref}
 
 \def\filename{alggeo.sublinks}
+\newcommand{\readfromfile}[1]{\input{#1}}
 % coole Datei mit Formaten einlesen und dann neue erstellen:
 % Existenz überprüfen:
 \newread\foo
 \immediate\openin\foo=\filename\relax
 \ifeof\foo\relax%überprüfen ob schon vorhanden
-\else\input\filename\fi
+\else\readfromfile\filename\relax\fi
 \immediate\closein\foo
 \newwrite\blah
 \immediate\openout\blah=\filename\relax
@@ -32,6 +33,7 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{3pt}
 
+%\chardef\hash=`\#
 %\def\args{\begingroup\catcode`\$=6\relax\catcode`\#=11\relax#\endgroup}
 \newtheorem{thmcnt}{Dummy}[section]
 \newcommand{\definetheorem}[3]{
@@ -43,11 +45,15 @@
   \crefformat{#1}{##2#2~##1##3}
   \BeforeBeginEnvironment{#1}{\makeatletter%
      \addtocounter{thmcnt}{1}% noch nicht passiert
-     \edef\labelcode{ctr@#1@\roman{chapter}@\roman{section}@\arabic{thmcnt}}%
+     \edef\labelcode{ctr@#1@\roman{chapter}@\roman{section}@\arabic{thmcnt}}\relax%
+     %\expandafter\edef\csname ctr@#1@\roman{chapter}@\roman{section}@\arabic{thmcnt}@name \endcsname{#2~\thethmcnt}
      % formatierungszeugs wird in datei geschrieben, so dass es beim nächsten mal rechtzeitig eingelesen und verwendet werden kann...
      \immediate\write\blah{\string\crefname{\labelcode}{#2~\thethmcnt}{}}\relax%
-    %\begingroup\@makeother\#
-    %\immediate\write\blah{\string\creflabelformat{\labelcode}{\detokenize\expandafter{\@hashsign\relax}}}\endgroup%
+    % links klappen leider nicht, weil sich # nicht in Datei schreiben lässt und sonst der counter sich nicht merken kann, wo er sein soll...
+    % Möglichkeit: in Datei schreiben und manuell ## durch # ersetzen....
+    %\immediate\write\blah{\noexpand\crefformat{\labelcode}{##2#2~\thethmcnt~##1##3}}%\endgroup%
+    % hier nimmt thmcnt den Wert an, wo wir sind, nicht wo wir hinlinken:
+    %\crefformat{\labelcode}{##2#2~\thethmcnt~##1##3}
       % neuer Befehl: Label setzt richtigen label für Aufzählungen in Umgebungen
       \edef\Label##1{\noexpand\label[\labelcode]{##1}}%
       \addtocounter{thmcnt}{-1} % schnell wieder zurück :)
@@ -55,9 +61,13 @@
 }
 
 % coole gabi-style umgebungen:
+%\makeatletter
+%\newtheoremstyle{keinenummern}{\item[\theorem@headerfont]{\sc##1}}{\item[\theorem@headerfont](##3)}
+%\makeatother
 % Format ohne Nummern
 \newcommand{\nnp}{%
   \theoremstyle{nonumberplain}%
+  %\theoremstyle{keinenummern}
   \theorempreskipamount0pt plus 2pt\relax%
   \theorempostskipamount0pt plus 2pt\relax%
   \theoremheaderfont{\hspace*{-2.5em}\sc}%
@@ -100,7 +110,7 @@
 % Sätze separat...
 \np
 \theorembodyfont{\normalfont\it}
-\theoremheaderfont{\bf}
+\theoremheaderfont{\hspace*{-2.5em}\bf}
 \crefformat{satz}{#2Satz~#1#3}
 \newtheorem{satz}{Satz}
 %\definetheorem{satz}{Satz}{satzcnt}
