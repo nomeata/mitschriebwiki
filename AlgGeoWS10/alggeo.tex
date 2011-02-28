@@ -2,7 +2,8 @@
 
 \usepackage{fontspec}
 \usepackage{polyglossia}
-\setdefaultlanguage[spelling=new,latesthyphen=true,babelshorthands=true]{german}
+%\setdefaultlanguage[spelling=new,latesthyphen=true,babelshorthands=true]{german}
+\setdefaultlanguage[spelling=new,latesthyphen=true]{german}
 
 \setmainfont[Mapping=tex-text,Numbers=OldStyle,Ligatures=Rare]{Linux Libertine O}
 \setsansfont{Linux Biolinum O}
@@ -144,6 +145,8 @@
 \def\O{\mathcal{O}}
 \def\P{\mathbb{P}}
 \newcommand{\D}{\mathfrak{D}}
+\newcommand{\DD}{\mathcal{D}} % Dehomogenierung
+\renewcommand{\H}{\mathcal{H}} % Homogenisierung
 \def\B{\mathcal{B}}
 \def\S{\mathcal{S}}
 \newcommand{\J}{\mathcal{J}}
@@ -158,7 +161,6 @@
 \newcommand{\F}{\mathcal{F}}
 \newcommand{\FF}{\mathbb{F}}
 \def\G{\mathcal{G}}
-\renewcommand{\H}{\mathcal{H}}
 \renewcommand{\L}{\mathcal{L}}
 \def\T{\mathcal{T}}
 \def\M{\mathcal{M}}
@@ -1550,23 +1552,26 @@ ist eine Bijektion und ordnet jeder Geraden ihre Steigung zu.
 \[\card{\P^{n}(\FF_{p})}=\frac{p^{n+1}-1}{p-1}=1+\dotsm+p^{n}.\]
 \end{enumerate}\end{bsp}
 
-\begin{bem}\label{2.2.3}
+\begin{db}\label{2.2.3}
 Für $i\in\{0,\dotsc,n\}$ sei $U_{i}:=\{x=(x_{0}:\dotsm:x_{n})\in\P^{n}(k)\mid x_{i}\neq 0\}$. Das ist wohldefiniert(!) und es gilt:
 \begin{enumerate}
 \item\Label{2.2.3a} $\displaystyle\P^{n}(k)=\bigcup_{i=0}^{n}U_{i}$
-\item\Label{2.2.3b} Die Abbildung
+\item\Label{2.2.3b}\Label{phii} Sei
+\[\phi_{i}\colon\A^{n}(k)\ra \P^{n}(k),\quad(y_{1},\dotsc,y_{n})\mapsto(y_{1}:\dotsm:y_{i}:1:y_{i+1}:\dotsm:y_{n}).\]
+Das ist eine Einbettung mit Bild $U_{i}$.
+Die Abbildung
 \[U_{i}\ra\A^{n}(k),\quad(x_{0}:\dotsm:x_{n})\mapsto\left(\frac{x_{0}}{x_{i}},\dotsc,\frac{x_{i-1}}{x_{i}},\frac{x_{i+1}}{x_{i}},\dotsc,\frac{x_{n}}{x_{i}}\right)\]
-ist wohldefiniert und bijektiv.
-\item\Label{2.2.3c} Die Abbildung $\P^{n}(k)\setminus U_{i}\ra\P^{n-1}(k),$
+ist wohldefiniert und bijektiv und ihre Umkehrabbildung ist $\phi_{i}$.
+\item\Label{2.2.3c}
+Die Abbildung $\P^{n}(k)\setminus U_{i}\ra\P^{n-1}(k),$
 \[(x_{0}:\dotsm:x_{n})\mapsto(x_{0}:x_{1}:\dotsm:x_{i-1}:x_{i+1}:\dotsm:x_{n})=:(x_{0}:\dotsm:\dach{x_{i}}:\dotsm:x_{n})\]
 ist wohldefiniert und bijektiv.
 \item\Label{2.2.3d} Damit erhalten wir eine Bijektion:
 \[\P^{n}(k)\longleftrightarrow\A^{n}(k)\cup\A^{n-1}(k)\cup\dotsm\A^{1}(k)\cup\{\infty\}.\]
-\end{enumerate}\end{bem}
+\end{enumerate}\end{db}
 \begin{proof}\begin{enumerate}
 \item[\ref{2.2.3a}] ist klar nach Definition der $U_{i}$.
-\item[\ref{2.2.3b}] Wir geben eine Umkehrabbildung an:
-\[\A^{n}(k)\ra U_{i},\quad(y_{1},\dotsc,y_{n})\mapsto(y_{1}:\dotsm:y_{i}:1:y_{i+1}:\dotsm:y_{n}).\]
+\item[\ref{2.2.3b}] Man rechnet einfach nach, dass die Abbildungen zueinander invers sind.
 \item[\ref{2.2.3c}] Da $x_{i}=0$ gibt es ein $j\neq i$ mit $x_{j}\neq0$, also ist die Abbildung wohldefiniert. Wir geben wieder eine Umkehrabbildung an:
 \[\P^{n-1}(k)\ra\P^{n}(k)\setminus U_{i},\quad(y_{0}:\dotsm:y_{n-1})\mapsto(y_{0}:\dotsm:y_{i-1}:0:y_{i}:\dotsm:y_{n-1}).\]
 \item[\ref{2.2.3d}] Das folgt induktiv aus \ref{2.2.3b} und \ref{2.2.3c}.
@@ -1732,19 +1737,42 @@ da $f_{i}g_{k-i}$ Grad $k$ hat. Also ist $H(fg)=H(f)H(g)$.
 
 Sei, ohne Einschränkung, $e\leq d$. Dann gilt für die Summe von $f$ und $g$:\vspace*{-6pt}
 \[f+g=\sum_{i=0}^{d}(f_{i}+g_{i})=\sum_{i=0}^{d-j}(f_{i}+g_{i}),\]\vspace*{-6pt}
-für ein $j\in\N_{0}$, denn eventuell heben sich Summanden weg. Es gilt also\vspace*{-6pt}
+für ein $j\in\N_{0}$, denn eventuell heben sich Summanden weg. Es gilt also\vspace*{-4pt}
 \[H(f+g)=\sum_{i=0}^{d-j}(f_{i}+g_{i})X_{0}^{d-i-j}\]
-\vspace*{-6pt}und damit\vspace*{-6pt}
+\vspace*{-10pt}
+und damit\vspace*{-6pt}
 \[X_{0}^{j}H(f+g)
 %=\sum_{i=0}^{d}(f_{i}+g_{i})X_{0}^{d-i}
-=H(f)+\sum_{i=0}^{d}g_{i}X_{0}^{d-i}=H(f)+\sum_{i=0}^{e}g_{i}X_{0}^{d-i}=H(f)+X_{0}^{d-e}\cdot H(g),\]\vspace*{-6pt}
+=H(f)+\sum_{i=0}^{d}g_{i}X_{0}^{d-i}=H(f)+\sum_{i=0}^{e}g_{i}X_{0}^{d-i}=H(f)+X_{0}^{d-e}\cdot H(g),\]%\vspace*{-6pt}
 da $g_{i}=0$ für $i>e=\deg g$. Das zeigt die Behauptung.
 \end{enumerate}\end{proof}
 
-\begin{w}Hier fehlt noch was.\end{w}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{lem}\label{2.3.10}
+  Sei $\phi_{0}\colon\A^{n}(k)\inj\P^{n}(k)$ wie in \cref{phii} und $I\subseteq k\polyx$ ein Ideal. Sei $I^{*}=(\H(I))$ das von
+  den Homogenierungen aller Polynome aus $I$ erzeugte Ideal. Seien $\V(I)\subseteq\A^{n}(K)$ und $\V(I^{*})\subseteq\P^{n}(K)$
+  die zugehörigen Varietäten. Dann gilt $\phi_{o}(\V(I))=U_{0}\cap\V(I^{*})$.
+\end{lem}
+\begin{proof}
+  Sei $x=(x_{1},\dotsc,x_{n})\in\A^{n}(K)$. Dann gilt
+  \begin{align*}
+    x\in\V(I) &\iff \forall f\in I: f(x)=0 \\ &\iff \forall f\in I: F(1:x_1:\dotsm:x_n)=0 \text{ für } F=\H(f) \\
+    &\iff \forall f\in I: F(\phi_{0}(x))=0 \\ &\iff \phi_{0}(x)\in\V(I^{*})\cap U_{0}.
+  \end{align*}
+  Daraus folgt $\phi_{0}(\V(I))=U_{0}\cap\V(I^{*})$.
+\end{proof}
+
+\begin{prop}\label{2.3.11}
+  Sei $\phi_{0}\colon \A^{n}(K)\inj\P^{n}(K)$ wie vorher. Dann ist $\phi_{0}$ ein Homöomorphismus auf $U_{0}$.
+\end{prop}
+\begin{proof}
+  Eine abgeschlossene Teilmenge von $U_{0}$ hat die Form $\V(J)\cap U_{0}$ mit einem homogenen Ideal $J$. Für eine solche sei
+  $I=(\DD(F)\mid F\in J, F\text{ homogen})$ und $I^{*}=(\H(I))$ wie vorher.
+
+  Dann gilt $J\subseteq I^{*}$. Denn sei $F\in J$ homogen und $f=\DD(F)\in I$ seine Dehomogenisierung. Dann gilt
+  $F=X_0^e\H(\DD(f))\in I^*$, also $\V(J)\supseteq\V(I^*)$.
+
+  Wir zeigen
+\end{proof}
 
 \sect{Quasi-projektive Varietäten}
 
