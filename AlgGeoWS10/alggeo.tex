@@ -2293,13 +2293,105 @@ Gegeben die Strukturgarbe zu einer Varietät wollen wir \enquote{Funktionskeime}
 \end{bem}
 
 \begin{prop}\label{3.1.5}
-  Ist $V$ eine affine Varietät, so gilt \[ \O_{V,p}\cong K[V]_{m_p^\vee}. \]
-  Hierbei ist $m_p^\vee = \{ f\in K[V] \mid f(p)=0\}$.
+  Ist $V$ eine affine Varietät, so gilt \[ \O_{V,p}\cong K[V]_{m_p^V}. \]
+  Hierbei ist $m_p^V = \{ f\in K[V] \mid f(p)=0\}$.
 \end{prop}
 \begin{proof}
   Wir definieren
-  \[ \phi\colon K[V]_{m_p^\vee}\ra\O_{V,p},\quad\frac{f}{g}\mapsto\Bigl[\Bigl(\D(g),x\smapsto\frac{f(x)}{g(x)}\Bigr)\Bigr]. \]
+  \[ \phi\colon K[V]_{m_p^V}\ra\O_{V,p},\quad\frac{f}{g}\mapsto\Bigl[\Bigl(\D(g),x\smapsto\frac{f(x)}{g(x)}\Bigr)\Bigr]. \]
+
+  $\phi$ ist wohldefiniert: denn $\phi$ wird induziert von
+  \[ \psi_p\colon \O_V(V)=K[V]\ra\O_{V,p},\quad f\mapsto[(V,x\smapsto f(x))], \]
+  denn für $g\notin m_p^V$ gilt $g(p)\neq0$, also ist $\psi_p(g)$ eine Einheit in $\O_{V,p}$.
+
+  $\phi$ ist injektiv: Sei $\phi(\frac{f}{g})=0$, dann gibt es ein $U\subseteq\D(g)$ mit $\frac{f(x)}{g(x)}=0$ für alle $x\in
+  U$. Für $h\in K[V]$ mit $p\in\D(h)\subseteq U$ gilt dann $h(p)\neq0$, also $h\in m_p^V$. Also gilt $h(x)f(x)=0$ für alle
+  $x\in V$, also $f=0$ in $K[V]_{m_p^V}$.
+
+  $\phi$ ist surjektiv: Sei $[(U,f)]\in\O_{V,p}$. Ohne Einschränkung ist $U=\D(h)$ für ein $h\in K[V]$. Es gilt dann
+  $f\in\O_V(U)=\O_V(\D(h))=K[V]_h$, also ist $f=\frac{g}{h^k}$ für ein $g\in K[V]$ und $k\in\N_0$. Damit ist
+  $[(U,f)]=\phi(\frac{g}{h^k})$.  
 \end{proof}
+
+\begin{kor}\label{3.1.6}
+  Sei $W$ eine quasi-projektive Varietät und $x\in W$. Sei weiter $V_0\subseteq W$ offen und affin mit $x\in V_0$. Dann gilt
+  \[ \O_{W,x} \cong \O_{V_0,x} \cong K[V_0]_{m_x^V}. \]
+\end{kor}
+
+\begin{prop}\label{3.1.7}
+  Seien $W_1$, $W_2$ quasi-projektive Varietäten, $p\in W_1$, $q\in W_2$ und $\O_{W_1,p}\cong\O_{W_2,q}$. Dann gibt es offene
+  Umgebungen $U_1$ und $U_2$ von $p$ bzw. $q$ mit $U_1\cong U_2$, d.h. \enquote{der lokale Ring kennt die Umgebung eines Punktes}.
+\end{prop}
+\begin{proof}
+  Sei $\phi\colon\O_{W_1,p}\ra\O_{W_2,p}$ ein Isomorphismus.
+  \begin{prooflist}
+  \item Wir wählen $U_1$ offen und affin in $W_1$ mit $p\in U_1$ und so, dass $U_1$ nur die irreduziblen Komponenten von $W_1$
+    schneidet, die $p$ enthalten. Entsprechend wählen wir ein $\tilde{U_2}$ für $q$. Wir haben dann
+    \[ \begin{tikzpicture}[bij/.style={below,sloped,inner sep=1pt}]
+      \matrix (m) [matrix of math nodes, row sep=3em,
+      column sep=3em, text height=1.5ex, text depth=0.25ex]
+      { \O(U_1) & \O_{W_1,p} & \O_{W_2,q} & \O(\tilde{U_2}). \\};
+      \path[right hook->] (m-1-1) edge node[auto] {$\psi_p$} (m-1-2);
+      \path[->] (m-1-2) edge node [bij] {$\sim$} node[above] {$\phi$} (m-1-3);
+      \path[left hook->] (m-1-4) edge node[above] {$\psi_q$} (m-1-3);
+    \end{tikzpicture} \]
+    Wir hätten gerne, dass $\phi\circ\psi_p(\O(U_1))\subseteq\psi_q(\O(\tilde{U_2}))$ gilt (sogar \enquote{$=$}).
+  \item Da $U_1$ affin ist, gilt $\O(U_1)=K[U_1]$. Seien $f_1,\dotsc,f_k$ Erzeuger von $K[U_1]$. Wir betrachten
+    $\phi((f_1)_p),\dotsc,\phi((f_k)_p)$ in $\O_{W_2,q}\cong K[\tilde{U}_2]_{m_q^{\tilde{U}_2}}$: es ist
+    \[ \phi((f_i)_p) = \frac{g_i}{h_i} \text{ mit } g_i,h_i\in K[U_2] \text{ und } h_i\notin m_q^{\tilde{U}_2}. \]
+    Wir wählen nun eine offene und affine Teilmenge $U_2\subseteq\tilde{U_2}\cap\D(h_1)\cap\dotso\cap\D(h_n)$ mit $q\in U_2$. Es
+    gilt dann $\displaystyle\frac{g_i}{h_i}\in\O(U_2)$ und
+    $\displaystyle\psi_q\Bigl(\frac{g_i}{h_i}\Bigr)=\phi(\psi_p(f_i))$. Wir haben dann
+    \[ \begin{tikzpicture}[bij/.style={below,sloped,inner sep=1pt}]
+      \matrix (m) [matrix of math nodes, row sep=3em,
+      column sep=3em, text height=1.5ex, text depth=0.25ex]
+      { \O(U_1) & \O_{W_1,p} & \O(U_2)\subseteq\O_{W_2,p}. \\};
+      \path[right hook->] (m-1-1) edge node[auto] {$\psi_p$} (m-1-2);
+      \path[->] (m-1-2) edge node[above] {$\phi$} node [bij] {$\sim$} (m-1-3);
+    \end{tikzpicture} \]
+    Insbesondere definiert ein injektiver Homomorphismus $K[U_1]\cong\O(U_1)\inj\O(U_2)\cong K[U_2]$ einen surjektiven
+    Morphismus $U_2\surj U_1$ von affinen Varietäten.
+    % 12.1.11
+  \item Wir haben jetzt $p\in U_1\subseteq W_1$, $q\in U_2\subseteq W_2$ und ein kommutatives Diagramm
+    \[\begin{tikzpicture}[bij/.style={above,sloped,inner sep=0.5pt}]
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=5em, text height=1.5ex, text depth=0.25ex]
+      {K[U_1] & K[U_2] \\ \O_{W_1,p} & \O_{W_2,q},\\};
+      \path[->]
+      (m-1-1) edge node [below] {$\phi$} (m-1-2) 
+      (m-2-1) edge node [bij] {$\sim$} node [below] {$\phi$} (m-2-2);
+      \path[right hook->]
+      (m-1-1) edge node [auto] {$\psi_p$} (m-2-1)
+      (m-1-2) edge node [auto] {$\psi_q$} (m-2-2);
+    \end{tikzpicture}\]
+    sodass $\phi\circ\psi_p(K[U_1])\subseteq K[U_2]$. Dadurch erhalten wir einen Morphismus $f\colon U_2\ra
+    U_1$ mit $f(q)=p$, $f^\sharp = \phi\colon K[U_1]\ra K[U_2]$ und $f_p^\sharp = \phi\colon\O_{W_1,p}\ra\O_{W_2,p}$. Analog
+    erhalten wir einen Morphismus $g\colon \tilde{U}_1\ra\tilde{U}_2$ (es ist ohne Einschränkung $\tilde{U}_1\subseteq U_1$,
+    $\tilde{U_2}\subseteq U_2$) mit $g(p)=q$, $g^\sharp=\phi^{-1}\colon K[\tilde{U}_2] \ra K[\tilde{U}_1]$ und
+    $g_p^\sharp=\phi^{-1}\colon \O_{W_2,q}\ra\O_{W_1,p}$.
+
+    Wir setzen jetzt $\tilde{\tilde{U}}_1=\tilde{U}_1$ und $\tilde{\tilde{U}}_2=f^{-1}(\tilde{U})\subseteq U_2$. Wir haben dann
+    Abbildungen \[ f\circ g\colon \tilde{\tilde{U}}_1\ra U_1,\qquad g\circ f\colon\tilde{\tilde{U}}_2\ra \tilde{U}_2. \]
+    Auf den lokalen Ringen induziert $g\circ f$ die Identität, also ist $g\circ f$ die Einbettung $\tilde{\tilde{U}}_2\inj
+    U_2$. Analog ist $f\circ g$ die Einbettung $\tilde{\tilde{U}}_1\inj\tilde{U}_1$. Daraus folgt $f\circ
+    g(\tilde{\tilde{U}}_1)\subseteq \tilde{\tilde{U}}_1$, also $g(\tilde{\tilde{U}})\subseteq
+    f^{-1}(\tilde{\tilde{U}}_1)=\tilde{\tilde{U}}_2$, und analog $f(\tilde{\tilde{U}}_2)\subseteq\tilde{\tilde{U}}_1$. Hier gilt
+    dann $f\circ g=\id_{\tilde{\tilde{U}}_1}$ und $g\circ f=\id_{\tilde{\tilde{U}}_2}$.
+
+    Also sind $f$ und $g$ Isomorphismen.
+  \end{prooflist}
+\end{proof}
+
+\begin{bem}\label{3.1.8}
+  \begin{enumerate}
+  \item\Label{3.1.8i} Morphismen von Varietäten induzieren Homomorphismen zwischen den lokalen Ringen: Sei $\phi\colon W_1\ra
+    W_2$ ein Morphismus von quasi-projektiven Varietäten und $x\in W_1$. Dann ist
+    \[ \phi_x^\sharp\colon \O_{W_2,\phi(x)}\ra\O_{W_1,x},\quad [(U,f)] \mapsto [(\phi^{-1}(U),f\circ \phi)] \]
+    ein wohldefinierter $K$-Algebrenhomomorphismus mit $\phi_x^\sharp(m_{\phi(x)})\subseteq m_x$.
+  \item\Label{3.1.8ii} Es gilt $\id_x^\sharp=\id_{\O_{V,x}}$ und
+    $(\phi_2\circ\phi_1)^\sharp_x={\phi_1}^\sharp_x\circ{\phi_2}^\sharp_x$. Wir erhalten also einen Funktor von der Kategorie der
+    punktierten quasi-projektiven Varietäten in die Kategorie der lokalen Ringe.
+  \end{enumerate}
+\end{bem}
 
 \sect{Dimension von Varietäten}
 
