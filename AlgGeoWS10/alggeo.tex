@@ -11,6 +11,7 @@
 \usepackage{csquotes}
 \usepackage{hyperref,amsmath,amsfonts,amssymb,bbm,enumitem}
 \usepackage[thmmarks,amsmath,thref,hyperref]{ntheorem}
+%\usepackage{thmtools}
 \usepackage{cleveref}
 
 \def\filename{alggeo.sublinks}
@@ -41,9 +42,9 @@
 
 \newtheorem{thmcnt}{Dummy}[section]
 \newcommand{\definetheorem}[3]{
-  \np %nummerierte Variante
+  \theoremstyle{mitnummern} %nummerierte Variante
   \newtheorem{#1}[#3]{#2}
-  \nnp %unnummerierte Variante
+  \theoremstyle{keinenummern} %unnummerierte Variante
   \newtheorem{n#1}[#3]{#2}
   \BeforeBeginEnvironment{n#1}{\addtocounter{thmcnt}{-1}}%ausgleich, weil er trotzdem weiterzählt...
   \crefformat{#1}{##2#2~##1##3}
@@ -61,42 +62,37 @@
 }
 
 % coole gabi-style umgebungen:
-%\makeatletter
-%\newtheoremstyle{keinenummern}{\item[\theorem@headerfont]{\sc##1}}{\item[\theorem@headerfont](##3)}
-%\makeatother
-% Format ohne Nummern
-\newcommand{\nnp}{%
-  \theoremstyle{nonumberplain}%
-  %\theoremstyle{keinenummern}
-  \theorempreskipamount0pt plus 2pt\relax%
-  \theorempostskipamount0pt plus 2pt\relax%
-  \theoremheaderfont{\hspace*{-2.5em}\sc}%
-  \theorembodyfont{\normalfont}%
-  \theoremseparator{:}%
-  \theoremindent3em\relax%
+\makeatletter
+\newtheoremstyle{keinenummern}{%
+  \item[\hskip\labelsep\theorem@headerfont ##1\theorem@separator]}%
+  {\item[\hskip\labelsep\theorem@headerfont ##1\ {\normalfont(##3)\theorem@separator}]%
 }
-%Format mit Nummern
-\newcommand{\np}{%
-  \theoremstyle{plain}
-  \theorempreskipamount0pt plus 2pt\relax
-  \theorempostskipamount0pt plus 2pt\relax
-  \theoremheaderfont{\hspace*{-2.5em}\sc}%
-  \theorembodyfont{\normalfont}%
-  \theoremseparator{:}%
-  \theoremindent3em\relax%
-  \theoremnumbering{arabic}%
+\newtheoremstyle{mitnummern}{%
+  \item[\hskip\labelsep\theorem@headerfont ##1\ ##2\theorem@separator]}%
+  {\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\ {\normalfont(##3)\theorem@separator}]%
 }
-\nnp % ab hier ohne Nummern
+\newtheoremstyle{unserbeweis}{%
+  \item[{\hskip\labelsep\theorem@headerfont ##1}\theorem@separator]}%
+  {\item[\hskip\labelsep{\theorem@headerfont ##3}\theorem@separator]%
+}
+\makeatother
+
+% Standardformat
+\theorempreskipamount0pt plus 2pt\relax
+\theorempostskipamount0pt plus 2pt\relax
+\theoremheaderfont{\hspace*{-2.5em}\sc}%
+\theorembodyfont{\normalfont}%
+\theoremseparator{:}%
+\theoremindent3em\relax%
+\theoremnumbering{arabic}%
 \theoremsymbol{}%
+
+\theoremstyle{keinenummern} % ab hier ohne Nummern
 \newtheorem{ziel}{Ziel}
 \newtheorem{motivation}{Motivation}
 \newtheorem{zeige}{Zeige}
 \newtheorem{q}{Frage}
-%Beweise:
-\theoremsymbol{\ensuremath{\Box}}
-\newtheorem{proof}{Beweis}
 % ab hier mit nummer, n### ohne...
-\theoremsymbol{}%
 \definetheorem{dfn}{Definition}{thmcnt}
 \definetheorem{bsp}{Beispiel}{thmcnt}
 \definetheorem{lem}{Lemma}{thmcnt}
@@ -109,12 +105,18 @@
 \definetheorem{dl}{Definition/Lemma}{thmcnt}
 \definetheorem{eb}{Erinnerung/Bemerkung}{thmcnt}
 % Sätze separat...
-\np
+\theoremstyle{mitnummern}
 \theorembodyfont{\normalfont\it}
 \theoremheaderfont{\hspace*{-2.5em}\bf}
 \crefformat{satz}{#2Satz~#1#3}
 \newtheorem{satz}{Satz}
-%\definetheorem{satz}{Satz}{satzcnt}
+%Beweise:
+\theoremstyle{unserbeweis}
+\theoremheaderfont{\hspace*{-2.5em}\it}
+\theorembodyfont{\normalfont}
+\theoremsymbol{\ensuremath{\Box}}
+\newtheorem{proof}{Beweis}
+
 
 %Format für Querverweise auf Formeln:
 \crefformat{equation}{#2(#1)#3}
@@ -2202,6 +2204,7 @@ ist ein Isomorphismus.
 \end{proof}
 
 
+% 22.12.10
 \sect{Graßmann-Varietäten}
 
 Sei $G(d,n):=\{U\subseteq K^{n}\mid U\text{ ist Untervektorraum vom $K^{n}$ von Dimension }d\}$.
@@ -2215,18 +2218,18 @@ Sei $G(d,n):=\{U\subseteq K^{n}\mid U\text{ ist Untervektorraum vom $K^{n}$ von 
 \end{ziel}
 
 \begin{db}\label{2.7.1}
-Sei $1\leq d\leq n$, $V=K^{n}$, $\Lambda^{d}V$ die \emph{$d$-te äußere Potenz} und
+Sei $1\leq d\leq n$, $V=K^{n}$, $\bigwedge^{d}V$ die \emph{$d$-te äußere Potenz} und
 \[\P(V):=\Quotient{V\setminus\{0\}}{\sim},\text{ wobei }w_{1}\sim w_{2}\; :\Longleftrightarrow\;\exists\lambda\in K^{\times}\text{ mit }w_{2}=\lambda w_{1}.\]
 Dann ist die Abbildung
-\[\Psi\colon G(d,n)\ra\P(\Lambda^{d}V),\quad U=[u_{1},\dotsc,u_{d}]\mapsto[u_{1}\wedge\dotsm\wedge u_{d}]\]
+\[\Psi\colon G(d,n)\ra\P(\bigwedge\hbox{}^{d}V),\quad U=[u_{1},\dotsc,u_{d}]\mapsto[u_{1}\wedge\dotsm\wedge u_{d}]\]
 wohldefiniert und injektiv.
 \end{db}
 
 \begin{nerinnerung}\begin{itemize}[leftmargin=*,labelindent=\parindent]
-\item $\Lambda^{d}V$ hat die Basis $\{e_{i_{1}}\wedge\dotsm\wedge e_{i_{d}}\mid 1\leq i_{1}<\dotsm<i_{d}\leq n\}$.
-Insbesondere ist $\dim\Lambda^{d}V=\binom{n}{d}$.
+\item $\bigwedge^{d}V$ hat die Basis $\{e_{i_{1}}\wedge\dotsm\wedge e_{i_{d}}\mid 1\leq i_{1}<\dotsm<i_{d}\leq n\}$.
+Insbesondere ist $\dim\bigwedge^{d}V=\binom{n}{d}$.
 %
-\item $\Lambda$ ist multilinear und alternierend, insbesondere gilt $v_{1}\wedge\dotsm\wedge v_{d}=0$, wenn $v_{i}=v_{j}$ für $i\neq j$. Genauer:
+\item $\bigwedge$ ist multilinear und alternierend, insbesondere gilt $v_{1}\wedge\dotsm\wedge v_{d}=0$, wenn $v_{i}=v_{j}$ für $i\neq j$. Genauer:
 \[v_{1}\wedge\dotsm\wedge v_{d}=0\iff v_{1},\dotsc, v_{d}\text{ sind linear abhängig.}\]
 \end{itemize}\end{nerinnerung}
 
