@@ -172,6 +172,7 @@
 \newcommand{\Rat}{\mathrm{Rat}}
 \newcommand{\Mor}{\mathrm{Mor}}
 \newcommand{\Kern}{\operatorname{Kern}}
+\newcommand{\Bild}{\operatorname{Bild}}
 \newcommand{\hoehe}{\operatorname{ht}}
 \newcommand{\Spec}{\operatorname{Spec}}
 \newcommand{\Abb}{\mathrm{Abb}}
@@ -181,18 +182,26 @@
 \newcommand{\dom}{\operatorname{dom}}
 \newcommand{\Def}{\operatorname{Def}}
 \newcommand{\cod}{\operatorname{cod}}
-\newcommand{\Cone}{\mathrm{Cone}}
+\newcommand{\Cone}{\operatorname{Cone}}
 \newcommand{\op}{\mathrm{op}}
 \newcommand{\Eq}{\mathrm{Eq}}
 \renewcommand{\phi}{\varphi}
 \newcommand{\ep}{\varepsilon}
 \newcommand{\da}{:=}
 \newcommand{\leer}{\ensuremath{\varnothing}}
-\newcommand{\Quot}{\mathrm{Quot}}
-\newcommand{\GL}{\mathrm{GL}}
+\newcommand{\Quot}{\operatorname{Quot}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\sign}{\operatorname{sign}}
 \newcommand{\card}[1]{|#1|}
 \newcommand{\restrict}[1]{|_{#1}}
+\let\olddotsc\dotsc % für Bew. zu 2.7.3
 \renewcommand{\dotsc}{\ensuremath{\!...}}
+% punktloses mit ``quer''
+\newcommand{\iq}{\Bar{\imath}}
+
+% Graßmann-Dinger:
+\let\grassmann\bigwedge
+\def\bigwedge{\begingroup\textstyle\grassmann\endgroup}
 
 \newcommand{\set}[1]{\ensuremath{\mathbb{#1}}}
 \newcommand{\Q}{\set{Q}}
@@ -2222,7 +2231,7 @@ Sei $G(d,n):=\{U\subseteq K^{n}\mid U\text{ ist Untervektorraum vom $K^{n}$ von 
 Sei $1\leq d\leq n$, $V=K^{n}$, $\bigwedge^{d}V$ die \emph{$d$-te äußere Potenz} und
 \[\P(V):=\Quotient{V\setminus\{0\}}{\sim},\text{ wobei }w_{1}\sim w_{2}\; :\Longleftrightarrow\;\exists\lambda\in K^{\times}\text{ mit }w_{2}=\lambda w_{1}.\]
 Dann ist die Abbildung
-\[\Psi\colon G(d,n)\ra\P(\bigwedge\hbox{}^{d}V),\quad U=[u_{1},\dotsc,u_{d}]\mapsto[u_{1}\wedge\dotsm\wedge u_{d}]\]
+\[\Psi\colon G(d,n)\ra\P(\bigwedge^{d}V),\quad U=\langle u_{1},\dotsc,u_{d}\rangle\mapsto[u_{1}\wedge\dotsm\wedge u_{d}]\]
 wohldefiniert und injektiv.
 \end{db}
 
@@ -2234,6 +2243,55 @@ Insbesondere ist $\dim\bigwedge^{d}V=\binom{n}{d}$.
 \[v_{1}\wedge\dotsm\wedge v_{d}=0\iff v_{1},\dotsc, v_{d}\text{ sind linear abhängig.}\]
 \end{itemize}\end{nerinnerung}
 
+\begin{proof}[Beweis von \cref{2.7.1}]
+Sei $\tilde{v}_{1},\dotsm,\tilde{v}_{d}$ eine andere Basis von $U$. Dann gibt es
+\[\tilde{v}_{i}=\sum_{j=1}^{d}a_{ij}v_{j}.\]
+mit $A=(a_{ij})\in\GL_{d}(K)$. Damit gilt aber
+\begin{align*}
+\tilde{v}_{1}\wedge\dotsm\wedge\tilde{v}_{d}&=\sum_{j=1}^{d}a_{1j}v_{j}\wedge\dotsm\wedge\sum_{j=1}^{d}a_{dj}v_{j}=\sum_{\sigma\in S_{d}}a_{1\sigma(1)}v_{\sigma(1)}\wedge\dotsm\wedge a_{d\sigma(d)}v_{\sigma(d)}\\
+&=\biggl(\sum_{\sigma\in S_{d}}(-1)^{\sign\sigma}\cdot\prod_{j=1}^{d}a_{j}\sigma(j)\biggr)\cdot v_{1}\wedge\dotsm\wedge v_{d}=\det A\cdot v_{1}\wedge\dotsm\wedge v_{d}
+\end{align*}
+und da $\det A\neq 0$ ist, sind die beiden Punkte äquivalent, die Abbildung ist also wohldefiniert.
+
+Für die Injektivität überlegen wir uns, dass $U=\{v\in V\mid v\wedge v_{1}\wedge\dotsm\wedge v_{d}=0\}$ ist, wobei $v_{1},\dotsc, v_{d}$ eine Basis von $U$ ist. Das ist so, denn es gilt:
+\begin{align*}
+v\wedge v_{1}\wedge\dotsm\wedge v_{d}=0&\iff v,v_{1},\dotsc,v_{d}\text{ sind linear abhängig}\\
+&\iff v\in\langle v_{1},\dotsc,v_{d}\rangle=U,
+\end{align*}
+da $v_{1},\dotsc,v_{d}$ als Basis linear unabhängig sind.
+\end{proof}
+
+\begin{ndb}
+Sei $[w]\in\P(\bigwedge^{d}(V))$. Dann gilt
+\[[w]\in\Bild\Psi\iff\exists\; v_{1},\dotsc,v_{d}\in V\text{ linear unabhängig mit }w=v_{1}\wedge\dotsm\wedge v_{d}.\]
+In diesem Fall heißt $w$ \emph{total zerlegbar}. Insbesondere gilt, wenn $w\wedge v_{i}=0$ für alle $i\in\{1,\dotsc,d\}$, für die lineare Abbildung
+\[V\ra\bigwedge^{d+1}V,\quad \varphi_{w}\colon v\mapsto w\wedge v\]
+dass $\dim(\Kern\varphi_{w})\geq d$.
+\end{ndb}
+
+\begin{lem}\label{2.7.3}
+Sei $d\geq 2$ und $w\in\bigwedge^{d}V$. Dann gilt:
+\begin{enumerate}
+\item\Label{2.7.3a} $v\in\Kern\varphi_{w}\iff\exists\; w'\in\bigwedge^{d-1}V\text{ mit }w=v\wedge w'$,
+\item\Label{2.7.3b} Seien $v_{1},\dotsc,v_{k}\in V$ linear unabhängig. Dann gilt:
+\[v_{1},\dotsc,v_{k}\in\Kern\varphi_{w}\iff\exists\; w'\in\bigwedge^{d-k}V\text{ mit }w=v_{1}\wedge\dotsm\wedge v_{k}\wedge w'.\]
+\item\Label{2.7.3c} $\dim(\Kern\varphi_{w})\leq d$,
+\item\Label{2.7.3d} $\dim(\Kern\varphi_{w})=d\iff w$ ist total zerlegbar.
+\end{enumerate}\end{lem}
+
+\begin{proof}
+Die Aussagen \ref{2.7.3a}, \ref{2.7.3c} und \ref{2.7.3d} folgen sofort aus \ref{2.7.3b}. Es genügt also das zu zeigen. Die eine Implikation ist nach Definition von $\varphi_{w}$ sofort klar. 
+
+Für die andere ergänzen wir zunächst $v_{1},\dotsc,v_{k}$ zu einer Basis $\{e_{1},\dotsc,e_{n}\}$ von $V$ mit 
+\[e_{1}=v_{1},\dotsc,e_{k}=v_{k}.\]
+Für $w$ finden wir also
+\[w=\!\!\!\!\!\!\!\!\!\!\sum_{\substack{\iq\in\{i_{1},\olddotsc,i_{d}\}\\1\leq i_{1}<\dotsm<i_{d}\leq n}}\!\!\!\!\!\!\!\!\! \lambda_{\iq}e_{i_{1}}\wedge\dotsm\wedge e_{i_{d}}.\]
+Für $j\in\{1,\dotsc,k\}$ gilt dann:
+\[0=w\wedge e_{j}=\sum_{\iq}\lambda_{\iq}e_{i_{1}}\wedge\dotsm\wedge e_{i_{d}}\wedge e_{j}=\!\!\!\!\sum_{\substack{\iq\\ j\notin\{i_{1},\olddotsc,i_{d}\}}}\!\!\!\!\!\lambda_{\iq}e_{i_{1}}\wedge\dotsm\wedge e_{i_{d}}\wedge e_{j}\]
+und das ist eine Linearkombination von linear unabhängigen Vektoren. Also ist für $j\notin\{i_{1},\dotsc,i_{d}\}$ schon $\lambda_{\iq}=0$. Damit gilt
+\[w=\sum_{\iq}\lambda_{\iq}e_{1}\wedge\dotsm\wedge e_{k}\wedge e_{i_{k+1}}\wedge\dotsm\wedge e_{i_{d}}=(e_{1}\wedge\dotsm\wedge e_{k})\wedge\biggl(\sum_{\iq}\lambda_{\iq}e_{i_{k+1}}\wedge\dotsm\wedge e_{i_{d}}\biggr)\]
+und damit
+\end{proof}
 
 \chapter{Geometrische Eigenschaften}
 \label{kap3}
