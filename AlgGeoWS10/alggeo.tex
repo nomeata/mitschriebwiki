@@ -198,11 +198,13 @@
 \newcommand{\Z}{\set{Z}}
 
 %coole tikzpfeile :)
-\newcommand{\smapsto}{\mapsto}
+\newcommand{\smapsto}{\raisebox{-1pt}{\tikz{\draw[thin,shorten >=3pt, |->] (0,0) node{\hspace*{0pt}} -- node{} (0.7,0);}}\penalty1000\relax}
 \newcommand{\ra}{\raisebox{-1pt}{\tikz{\draw[thin,shorten >=3pt, ->] (0,0) node{\hspace*{-2pt}} -- node{} (1,0);}}\penalty1000\relax}
 \renewcommand{\mapsto}{\raisebox{-1pt}{\tikz{\draw[thin,shorten >=3pt, |->] (0,0) node{\hspace*{0pt}} -- node{} (1,0);}}\penalty1000\relax}
 \newcommand{\inj}{\raisebox{-1pt}{\tikz{\draw[thin,shorten >=3pt, right hook->] (0,0) node{\hspace*{0pt}} -- node{} (1,0);}}\penalty1000\relax}
 \newcommand{\surj}{\raisebox{-1pt}{\tikz{\draw[thin,shorten >=3pt, ->>] (0,0) node{\hspace*{0pt}} -- node{} (1,0);}}\penalty1000\relax}
+\newcommand{\isom}{\raisebox{-1pt}{\tikz{\draw[thin,shorten >=3pt, ->] (0,0) node{\hspace*{0pt}} -- node{} (1,0);\draw (0.4,0.1)
+    node {$\sim$};}}\penalty1000\relax}
 \newcommand{\lra}{\raisebox{-1pt}{\tikz{\draw[thin,shorten >=3pt, <->] (0,0) node{\hspace*{-2pt}} -- node{} (1,0);}}\penalty1000\relax}
 % ``punktierte'' Pfeile...
 \newcommand{\ppf}{\raisebox{-1pt}{\tikz{\draw[densely dashed,thin,shorten >=3pt, ->] (0,0) node{\hspace*{-2pt}} -- node{} (1,0);}}\penalty1000\relax}
@@ -212,9 +214,22 @@
 \def\Bar#1{\ensuremath\overline{#1}}
 
 \newcommand{\Quotient}[2]{
-  \raisebox{0.7ex}{\ensuremath{#1}}
-  \ensuremath{\mkern-3mu}\big/\ensuremath{\mkern-3mu}
-  \raisebox{-0.6ex}{\ensuremath{#2}}}
+  \mathchoice
+  { %displaystyle
+    \raisebox{0.7ex}{\ensuremath{#1}}
+    \ensuremath{\mkern-3mu}\big/\ensuremath{\mkern-3mu}
+    \raisebox{-0.6ex}{\ensuremath{#2}}
+  }
+  { %textstyle
+    #1/#2
+  }
+  { %scriptstyle
+    #1/#2
+  }
+  { %scriptscriptstyle
+    #1/#2
+  }
+}
 
 %Listenformate:
 \setenumerate[1]{leftmargin=*,labelindent=\parindent,label=(\alph*)}
@@ -756,7 +771,7 @@ Insbesondere gilt das für die Projektionen auf die einzelnen Koordinaten. Damit
 \begin{satz}\label{satz3} Die Kategorie der endlich erzeugten, reduzierten $k$-Algebren wird mit $\RedAlg_k$ bezeichnet.
 \begin{enumerate}
 \item\Label{satz3a} Die Zuordnung $V\mapsto k[V]$ induziert einen kontravarianten Funktor $\Phi$.
-\item\Label{satz3b} Ist $k=K$ algebraisch abgeschlossen, so induziert $\Phi$ eine Äquivalenz der Kategorien $\RedAlg_k$ und $\AffVar_k$.
+\item\Label{satz3b} Ist $k$ algebraisch abgeschlossen, so induziert $\Phi$ eine Äquivalenz der Kategorien $\RedAlg_k$ und $\AffVar_k$.
 \end{enumerate}
 \end{satz}
 
@@ -778,7 +793,7 @@ $I=\Kern(\phi)$ ein Radikalideal ist. Setze nun $V=\ V(I)$. Da $K$ algebraisch a
 \end{enumerate}
 \end{proof}
 
-\begin{bsp}\label{1.4.8} In diesem Beispiel sei $k=K$ algebraisch abgeschlossen.
+\begin{bsp}\label{1.4.8} In diesem Beispiel sei $K$ algebraisch abgeschlossen.
 \begin{enumerate}
 \item\Label{1.4.8a} Ist $V=\A^n(K)$, so ist $\I(V)=0$ und damit $K[V]\cong K\polyx$.
 \item\Label{1.4.8b} Im anderen Extremfall $V=\leer$ gilt $\I(V)=K\polyx$, d.h. $K[V]\cong 0$.
@@ -1682,7 +1697,7 @@ $f_{n}^{m}$ ist auch ein homogenes Element, also gilt nach \ref{2.3.4d}: $f_{n}^
 \end{enumerate}\end{proof}
 
 \begin{prop}[Projektiver Nullstellensatz]\label{2.3.6}
-Seien $k=K$ ein algebraisch abgeschlossener Körper und $I$ ein homogenes Ideal in $K\ppolyx$. Dann gilt:
+Seien $K$ ein algebraisch abgeschlossener Körper und $I$ ein homogenes Ideal in $K\ppolyx$. Dann gilt:
 \begin{enumerate}
 \item\Label{2.3.6a} $\I(\V(I))=\sqrt{I}$, falls $\sqrt{I}\neq(X_{0},\dotsc,X_{n})$,
 \item\Label{2.3.6b} $\V(I)=\leer\iff I=K\ppolyx$ oder $\sqrt{I}=(X_{0},\dotsc,X_{n})$.
@@ -2161,5 +2176,72 @@ Insbesondere ist $\dim\Lambda^{d}V=\binom{n}{d}$.
 \item $\Lambda$ ist multilinear und alternierend, insbesondere gilt $v_{1}\wedge\dotsm\wedge v_{d}=0$, wenn $v_{i}=v_{j}$ für $i\neq j$. Genauer:
 \[v_{1}\wedge\dotsm\wedge v_{d}=0\iff v_{1},\dotsc, v_{d}\text{ sind linear abhängig.}\]
 \end{itemize}\end{nerinnerung}
+
+
+\chapter{Geometrische Eigenschaften}
+\label{kap3}
+
+In diesem Kapitel sei stets $K$ ein algebraisch abgeschlossener Körper.
+
+\sect{Lokale Ringe zu Punkten}
+
+Gegeben die Strukturgarbe zu einer Varietät wollen wir \enquote{Funktionskeime} in einem Punkt betrachten.
+
+\begin{dfn}\label{3.1.1}
+  Sei $W$ eine quasi-projektive Varietät und $x\in W$.
+  \begin{enumerate}
+  \item\Label{3.1.1i} Es sei
+    \[ \O_{W,x} = \Quotient{\{ (U,f) \mid x\in U\subseteq W\text{ offen, } f\in\O_{W}(U) \}}{\sim}, \]
+    wobei $(U_1,f_1)\sim(U_2,f_2)$ bedeuten soll, dass es eine offene Teilmenge $U_3\subseteq U_1\cap U_2$ mit $x\in U_3$,
+    sodass $f_1\restrict{U_3}=f_2\restrict{U_3}$ gilt. Das ist eine $K$-Algebra und heißt \emph{lokaler Ring von $W$ in $x$}.
+  \item\Label{3.1.1ii} Die Elemente in $\O_{W,x}$ heißen \emph{Funktionskeime}. Für die Äquivalenzklasse eines $(U,f)$ schreiben
+    wir auch $f_x$.
+  \end{enumerate}
+\end{dfn}
+
+\begin{bsp}\label{3.1.2}
+  Sei $W=\A^1(K)$ und $x=0$. Wir wissen, dass die nichtleeren offenen Teilmengen von $\A^1(K)$ alle von der Form
+  $\A^1(K)\setminus\{x_1,\dotsc,x_n\}$ sind und reguläre Funktionen auf einer solchen Menge sind Quotienten von Polynomen
+  $\frac{f}{g}$ mit $g(x)\neq0$ für $x\neq x_i$, $i=1,\dotsc,n$. Also ist $\O_{\A^1(K),0}\cong K[X]_{(X)}$.
+\end{bsp}
+
+\begin{bem}\label{3.1.3}
+  \begin{enumerate}
+  \item\Label{3.1.3i} Die Abbildung \[ \phi_{p}\colon \O_{W,p}\ra K,\quad f_p=[(U,f)]\mapsto f_p(p):=f(p) \]
+    ist ein wohldefinierter $K$-Algebrenhomomorphismus und heißt \emph{Auswertung}.
+  \item\Label{3.1.3ii} $\O_{W,x}$ ist ein lokaler Ring mit maximalem Ideal \[ m_X = \{ [(U,f)]\in\O_{W,x}\mid f(x)=0\}. \]
+  \end{enumerate}
+\end{bem}
+\begin{proof}
+  \begin{enumerate}
+  \item[\ref{3.1.3i}] Die Wohldefiniertheit folgt direkt aus der Definition der Äquivalenzrelation.
+  \item[\ref{3.1.3ii}] Die Abbildung $\phi_p$ ist surjektiv, denn die konstanten Abbildungen definieren Elemente in $\O_{W,p}$,
+    und $\Kern \phi_p=m_p$. Damit gilt $\Quotient{\O_{W,p}}{m_p}\cong K$, also ist $m_p$ ein maximales Ideal. Es bleibt noch zu
+    zeigen, dass es kein weiteres maximales Ideal gibt. Sei dazu $I\subseteq\O_{W,p}$ ein Ideal mit $I\not\subseteq m_p$. Dann
+    gibt es ein $[(U,f)]\in I$ mit $[(U,f)]\notin m_p$, also $f(p)\neq0$. Wir definieren $\tilde{U}=\D(f)\ni p$ und
+    $g=\frac1f\in\O_W(\tilde{U})$. Dann gilt $[(U,f)]\cdot[(\tilde{U},g)]=[(\tilde{U},1)]=1$, also ist $[(U,f)]\in I$
+    invertierbar und damit $I=\O_{W,p}$.
+  \end{enumerate}
+\end{proof}
+
+\begin{bem}\label{3.1.4}
+  Die Abbildung \[ \psi_p\colon \O_W(U)\ra\O_{W,p},\quad f\mapsto[(U,f)]=f_p \] heißt \emph{kanonische Keim-Abbildung}.
+
+  Sei $W=W_1\cup\dotsc\cup W_k$ die Zerlegung von $W$ in irreduzible Komponenten. Wir wissen: ist $U\subseteq W$ offen und $p\in
+  U$, so ist $U\cap W_i$ dicht in $W_i$, falls $p\in W_i$.
+
+  Falls $U\cap W_j=\leer$ für alle $W_j$ mit $p\notin W_j$, dann ist $\psi_p\colon\O_W(U)\ra\O_{W,p}$ injektiv. Denn wenn
+  $\psi_p(f)=0$ ist, gibt es ein offenes $\tilde{U}\subseteq U$ mit $f\restrict{\tilde{U}}=0$. Da $\tilde{U}$ dicht in $U$ ist,
+  gilt $f\restrict{U}=0$, denn \enquote{$=0$} ist eine abgeschlossene Bedingung.
+\end{bem}
+
+\begin{prop}\label{3.1.5}
+  Ist $V$ eine affine Varietät, so gilt \[ \O_{V,p}\cong K[V]_{m_p^\vee}. \]
+  Hierbei ist $m_p^\vee = \{ f\in K[V] \mid f(p)=0\}$.
+\end{prop}
+\begin{proof}
+  Wir definieren
+  \[ \phi\colon K[V]_{m_p^\vee}\ra\O_{V,p},\quad\frac{f}{g}\mapsto\Bigl[\Bigl(\D(g),x\smapsto\frac{f(x)}{g(x)}\Bigr)\Bigr]. \]
+\end{proof}
 
 \end{document}
