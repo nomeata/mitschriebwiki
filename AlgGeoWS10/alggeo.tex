@@ -146,10 +146,11 @@
 \def\V{\mathfrak{V}}
 \def\VV{\mathcal{V}}
 \def\I{\mathfrak{I}}
+\def\II{\mathcal{I}}
 \def\O{\mathcal{O}}
 \def\P{\mathbb{P}}
 \newcommand{\D}{\mathfrak{D}}
-\newcommand{\DD}{\mathcal{D}} % Dehomogenierung
+\newcommand{\DD}{\mathcal{D}} % Dehomogenierung und D_{p}
 \renewcommand{\H}{\mathcal{H}} % Homogenisierung
 \def\B{\mathcal{B}}
 \def\S{\mathcal{S}}
@@ -197,7 +198,7 @@
 \newcommand{\sign}{\operatorname{sign}}
 \newcommand{\card}[1]{|#1|}
 \newcommand{\restrict}[1]{|_{#1}}
-\let\olddotsc\dotsc % für Bew. zu 2.7.3
+\let\olddotsc\dotsc % für Bew. zu 2.7.3 und taylor-entwicklung (3.3)
 \renewcommand{\dotsc}{\ensuremath{\!...}}
 % punktloses mit ``quer''
 \newcommand{\iq}{\Bar{\imath}}
@@ -2636,5 +2637,55 @@ Nach \cref{3.2.2} ist $\dim V_1=2$.
    Die Wünsche zu Beginn des \hyperref[3.2]{Abschnitts \cref{3.2}} sind also erfüllt.
   \end{enumerate}
 \end{bsp}
+
+%17.1.11
+\sect{Der Tangentialraum}
+
+\begin{nbsp}
+\begin{enumerate}
+\item Sei $V=\V(Y^{2}-X^{3}+X)$ eine elliptische Kurve, $P=(0,0)$. Die Tangente an $V$ in $P$ ist die $Y$-Achse, also $\V(X)$.
+% hier bräuchte man ein schönes Bild von einer elliptischen Kurve...
+\item Sei $V=\V(Y^{2})$ der Newton-Knoten. Dann gibt es in $P=(0,0)$ zwei \enquote{Tangenten.} Aber wie könnte der Tangentialraum aussehen?
+% hübsches Bild vom Newtonknoten
+\item Sei $V=\V(Y^{2}-X^{3})$ die Neilsche Parabel. Dann ist die $X$-Achse \enquote{doppelte Tangente} in $P=(0,0)$, aber auch hier ist der Tangentialraum nicht intuitiv klar.
+% neilsche Parabel....
+\end{enumerate}\end{nbsp}
+
+\begin{erinnerung}\label{3.3.1}
+Sei $f\in K\polyx$ und $p=(p_{1},\dotsc,p_{n})\in K^{n}$. Dann haben wir die \emph{Taylor-Entwicklung}
+\[f=\!\!\!\!\sum_{\substack{\alpha=(k_{1},\olddotsc,k_{n})\\k_{i}\geq 0}}\!\!\frac{1}{(k_{1}+\dotsm+k_{n})!}\frac{\partial^{k_{1}}}{\partial x_{n}}\dotsm\frac{\partial^{k_{n}}}{\partial x_{n}}f(p)(X_{1}-p_{1})^{k_{1}}\dotsm(X_{n}-p_{n})^{k_{n}}.\]
+Insbesondere gilt dann:
+\[f=f(p)+\sum_{i=1}^{n}\frac{\partial f}{\partial x_{i}}(p)\cdot(X_{i}-p_{i})+\text{Restterme},\]
+wobei die Restterme vom Grad mindestens $2$ sind, also in $\m_{p}^{2}$, wobei
+\[\m_{p}:=(X_{1}-p_{1},\dotsc,X_{n}-p_{n}).\]
+\end{erinnerung}
+
+\begin{dfn}\label{3.3.2}
+Sei $p\in K$ mit $p=(p_{1},\dotsc,p_{n})$.
+\begin{enumerate}
+\item\Label{3.3.2a} Für $f\in K\polyx$ sei
+\[f_{p}^{(1)}:=f^{(1)}:=\sum_{i=1}^{n}\frac{\partial f}{\partial x_{i}}(p)\cdot X_{i}=:\DD_{p}(f).\]
+\item\Label{3.3.2b} Sei $\leer\neq V\subseteq\A^{n}(K)$ eine affine Varietät, $p\in V$ und $I:=\I(V)$. Seien zusätzlich
+\[\II_{p}:=\langle f_{p}^{(1)}\mid f\in I\rangle\text{ und }\T_{p}:=\T_{V,p}:=\V(\II_{p})\subseteq\A^{n}(K).\]
+Dann heißt $\T_{p}$ \emph{Tangentialraum an $V$ in $p$}.
+\end{enumerate}\end{dfn}
+
+\begin{bsp}\label{3.3.3}
+Seien $f=X^{2}+Y^{2}-1$, $V=\V(f)$, $I=(f)$ und $p=(a,b)\in V$.
+% Bild...
+Dann ist
+\[f_{p}^{(1)}=\frac{\partial f}{\partial x}(p)\cdot X+\frac{\partial f}{\partial y}(p)\cdot Y=2aX + 2bY,\]
+also $\II_{p}=\langle 2aX+2bY \rangle$ und $\T_{V,p}=\V(\II_{p})=\{(x,y)\in K^{2}\mid bY=-aX\}$, denn es gilt
+\[h\cdot f_{p}^{(1)}=\sum_{i=1}^{n}\frac{\partial(h\cdot f)}{\partial x_{i}}(p)\cdot X_{i}=\sum_{i=1}^{n}\frac{\partial h}{\partial x_{i}}(p)\cdot f(p)\cdot X_{i}+\sum_{i=1}^{n}\frac{\partial f}{\partial x_{i}}(p)\cdot h(p)\cdot X_{i}=h(p)\cdot f_{p}^{1},\]
+denn $f(p)=0$, da $p\in V$, und damit ist $\II_{p}$ auch nicht größer.
+\end{bsp}
+
+\begin{bem}\label{3.3.4}
+\begin{enumerate}
+\item Die Taylor-Entwicklung liefert
+\[f=f(p)+f_{p}^{(1)}-f_{p}^{(1)}(p)+\text{Restterme},\]
+wobei die Restterme in $\m_{p}^{2}$ liegen.
+\item $\DD_{p}(f+g)=(f+g)_{p}^{(1)}=f_{p}^{(1)}+g_{p}^{(1)}=\DD_{p}(f)+\DD_{p}(g)$
+\end{enumerate}\end{bem}
 
 \end{document}
