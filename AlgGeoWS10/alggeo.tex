@@ -140,18 +140,20 @@
 % Warnungen :)
 \usepackage{manfnt,environ}
 \NewEnviron{w}{\begin{center}\begin{tikzpicture}%
-\node[right,text width=0.85\textwidth,rounded corners,fill=orange,inner sep=1ex]{%
+\node[right,text width=0.95\textwidth,rounded corners,fill=orange,inner sep=1ex]{%
   \hbox{\hspace{1em}\makebox[\width][t]{\raisebox{1.3ex}{\lhdbend}}\hspace{2em}%
-  \begin{minipage}[c]{.85\textwidth}\smallskip\BODY\medskip\end{minipage}%
+  \begin{minipage}[c]{.88\textwidth}\smallskip\BODY\medskip\end{minipage}%
 }};\end{tikzpicture}\end{center}\par}
 
 \usepackage{textcomp}
-\newcommand{\sect}[1]{\begin{tikzpicture}%
-\node[right,text width=\textwidth,rounded corners,fill=blue!15,inner sep=5pt]{%
+\newcommand{\sect}[1]{% nicht zu breit:
+\begin{tikzpicture}%
+\node[right,text width=\textwidth-10pt,rounded corners,fill=blue!15,inner sep=5pt]{%
   \hbox{%
   \begin{minipage}[c]{.96\textwidth}\section{#1}\end{minipage}%
   \hfill\makebox[\width][t]{\raisebox{-5pt}{\raisebox{4pt}{\textleaf}}}%
-}};\end{tikzpicture}\nopagebreak[4]\markright{\thesection. #1}}
+}};\end{tikzpicture}%
+\nopagebreak[4]\markright{\thesection. #1}}
 
 \DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
 
@@ -371,7 +373,7 @@ mit \[V=\V(\F):=\{x=(x_{1},\dotsc,x_{n})\in k^{n}\mid f(x)=0\;\forall f\in\F\}\]
 \item\Label{1.1.3b} Sei $(\F)$ das von $\F$ erzeugte Ideal. Dann gilt: $\V(\F) = \V((\F))$.
 \item\Label{1.1.3c} Sei
 \[\sqrt{(\F)}:=\{p\in k\polyx\mid\exists\, d\geq 1\text{ mit }p^{d}\in(\F)\}\]
-das \emph{Radikalideal} von $(\F)$ ($\sqrt{(\F)}$ ist Ideal!). Dann gilt: $\V(\sqrt{(\F)})=\V(\F)$.
+das \emph{Radikalideal} von $(\F)$ ($\sqrt{(\F)}$ ist ein Ideal!). Dann gilt: $\V(\sqrt{(\F)})=\V(\F)$.
 \item\Label{1.1.3d} Zu jeder affinen Varietät $V\subseteq k^{n}$ gibt es endlich viele Polynome $f_{1},\dotsc,f_{r}$ mit \[V=\V(\{f_{1},\dotsc,f_{r}\})=:\V(f_{1},\dotsc,f_{r}).\]
 \end{enumerate}
 \end{bem}
@@ -399,7 +401,7 @@ das \emph{Verschwindungsideal von $V$}. Es ist ein Ideal.
 \item\Label{1.1.5b} Sei $V\subseteq k^{n}$. Dann ist $\I(V)$ ein Radikalideal.
 \item\Label{1.1.5c} Sei $V$ eine affine Varietät. Dann gilt $V=\V(\I(V))$.
 
-Es gilt sogar: $\I(V)$ ist das größte Ideal mit dieser Eigenschaft, d.h. für $J\subseteq k\polyx$ mit $\V(J)=V$ folgt schon $J\subseteq \I(V)$.
+Es gilt sogar: $\I(V)$ ist das größte Ideal mit dieser Eigenschaft, d.h. für jedes Ideal $J\subseteq k\polyx$ mit $\V(J)=V$ folgt schon $J\subseteq \I(V)$.
 \item\Label{1.1.5d} Seien $V_{1},V_{2}$ affine Varietäten. Dann gilt:
 \[V_{1}=V_{2}\iff \I(V_{1})=\I(V_{2})\text{ und } V_{1}\subseteq V_{2}\iff \I(V_{1})\supseteq \I(V_{2}).\]
 \end{enumerate}
@@ -435,13 +437,15 @@ Das gleiche Argument funktioniert für beliebige Familien $V_{\lambda}$ mit $\la
 \item Seien $V_{1},V_{2}$ affine Varietäten mit $I_{1}=\I(V_{1})$ und $I_{2}=\I(V_{2})$.
 \begin{zeige} $\V(I_{1}\cdot I_{2})\subseteq V_{1}\cup V_{2}\subseteq \V(I_{1}\cap I_{2})\subseteq \V(I_{1}\cdot I_{2})$.
 \begin{prooflist}
-\item $V_{1}\cup V_{2}\subseteq \V(I_{1}\cap I_{2})$ ist nach Definition klar.
-\item Sei $x\in \V(I_{1}\cdot I_{2})$. Angenommen $x\notin V_{1}$. Dann existiert $g\in I_{1}$ mit $g(x)\neq 0$. Sei $f\in I_{2}$. Dann ist $f\cdot g\in I_{1}\cdot I_{2}$, also ist $f\cdot g(x) = f(x)\cdot g(x) = 0$ und da $g(x)\neq 0$ ist $f(x)=0$, also $x\in \V(I_{2})=V_{2}$.
+\item $V_{1}\cup V_{2}\subseteq \V(I_{1}\cap I_{2})\subseteq \V(I_{1}\cdot I_{2})$ ist nach Definition klar.
+\item Sei $x\in \V(I_{1}\cdot I_{2})$. Angenommen $x\notin V_{1}$. Dann existiert $g\in I_{1}$ mit $g(x)\neq 0$. Sei $f\in I_{2}$. Dann ist $f\cdot g\in I_{1}\cdot I_{2}$, folglich ist 
+\[\bigl(f\cdot g\bigr)(x) = f(x)\cdot g(x) = 0\]
+ und da $g(x)\neq 0$ ist $f(x)=0$, also $x\in \V(I_{2})=V_{2}$.
 \end{prooflist}\end{zeige}
 \end{prooflist}\end{proof}
 
 \begin{dfn}\label{1.2.2}
-Schreibe $\A^{n}(k)$ für $k^{n}$ mit der Zariski-Topologie.
+Wir schreiben $\A^{n}(k)$ für $k^{n}$ mit der Zariski-Topologie.
 \end{dfn}
 
 \begin{bem}\label{1.2.3}
@@ -450,7 +454,7 @@ Sei $M\subseteq\A^{n}(k)$. Der Abschluss $\Bar{M}$ von $M$ bezüglich der Zarisk
 \begin{proof}
 $\Bar{M}\subseteq \V(\I(M))$ folgt sofort aus der Definition.
 
-Für die andere Inklusion überlegt man sich: Sei $M\subseteq\V(J)$ eine abgeschlossene Obermenge von $M$. Dann ist $\I(M)\supseteq\I(\V(J))$ und damit
+Für die andere Inklusion überlegt man sich: Sei $\V(J)\supseteq M$ eine abgeschlossene Obermenge von $M$. Dann ist $\I(M)\supseteq\I(\V(J))$ und damit
 \[\V(\I(M))\subseteq\V(\I(\V(J)))=\V(J).\]
 \end{proof}
 
@@ -467,21 +471,19 @@ Sei $n=1$. Dann gilt: $X\subseteq\A^{1}(k)$ ist genau dann abgeschlossen, wenn $
 \end{enumerate}\end{bem}
 \begin{proof}\begin{enumerate}
 \item[\ref{1.2.5a}] Punkte sind abgeschlossen, denn sei $x=(x_{1},\dotsc,x_{k})\in k^{n}$, dann ist
-\[{x}=\V(X_{1}-x_{1},\dotsc,X_{n}-x_{n}).\]
+\[\{x\}=\V(X_{1}-x_{1},\dotsc,X_{n}-x_{n}).\]
 Damit sind auch endliche Vereinigungen von Punkten abgeschlossen und somit schon \emph{alle} Teilmengen von $\A^{1}(k)$.
-\item[\ref{1.2.5b}] {\scshape Erinnerung:} Ein topologischer Raum $X$ heißt hausdorffsch, wenn für alle $x,y\in X$ offene Umgebungen $U_{x}\ni x$ und $U_{y}\ni y$ mit $U_{x}\cap U_{y}=\leer$ existieren.
+\item[\ref{1.2.5b}] {\scshape Erinnerung:} Ein topologischer Raum $X$ heißt hausdorffsch, wenn für alle Punkte $x,y\in X$ offene Umgebungen $U_{x}\ni x$ und $U_{y}\ni y$ mit $U_{x}\cap U_{y}=\leer$ existieren.
 
 Für $n=1$ folgt die Behauptung also aus \cref{1.2.4}.
 
 Den Fall $n\geq 2$ führen wir zurück auf den Fall $n=1$:
 
 Seien $x,y\in\A^{n}(k)$, $U_{x},U_{y}$ offene Umgebungen von $x$ bzw. $y$. Wir setzen
-\[V_{1}:=\A^{n}(k)\setminus U_{x} = \V(I_{1})\text{ und }V_{2}:=\A^{n}(k)\setminus U_{y}=\V(I_{2})\]
-für entsprechende Ideale $I_{1}$ und $I_{2}$. Ohne Einschränkung gebe es Polynome $f\in I_{1}$ und $g\in I_{2}$, in denen $X_{1}$ als Variable vorkommt (sonst
+\[V_{1}:=\A^{n}(k)\setminus U_{x} =: \V(I_{1})\text{ und }V_{2}:=\A^{n}(k)\setminus U_{y}=:\V(I_{2})\]
+für entsprechende Ideale $I_{1}$ und $I_{2}$. Ohne  Einschränkung wählen wir $x$ und $y$ in $W:=\V(X_{2},\dotsc,X_{n})$, also auf der \enquote{$X_{1}$-Achse}. Dann gilt für alle Polynome $f\in I_{1}$ und $g\in I_{2}$, dass sie auf $W$ nicht verschwinden, da $x$ bzw. $y$ in den Komplementen von $V_{1}$ bzw. $V_{2}$ liegen.
 
-\begin{w}Hilfe!\end{w}
-
-Sei $W:=\V(X_{2},\dotsc,X_{n})$. Dann besteht $V_{1}\cap W$ aus nur endlich vielen Punkten, da diese Nullstellen von $f(X_{1},0,\dotsc,0)$ sein müssen. Gleiches gilt für $V_{2}\cap W$. Also schneiden sich $U_{x}$ und $U_{y}$ sogar schon in $W$.
+Dann besteht $V_{1}\cap W$ aus nur endlich vielen Punkten, da diese Nullstellen von $f(X_{1},0,\dotsc,0)\neq 0$ sein müssen. Gleiches gilt für $V_{2}\cap W$. Also schneiden sich ihre Komplemente $U_{x}$ und $U_{y}$ sogar schon in $W$, da $\card{W}=\card{k}=\infty$.
 \end{enumerate}\end{proof}
 
 \begin{de}\label{1.2.6} Seien $X,X_{1},X_{2}$ topologische Räume.
@@ -492,9 +494,9 @@ Sei $W:=\V(X_{2},\dotsc,X_{n})$. Dann besteht $V_{1}\cap W$ aus nur endlich viel
 \begin{align*}p_{1}\colon X_{1}\times X_{2}\ra X_{1},\quad(x_{1},x_{2})\mapsto x_{1},\\p_{2}\colon X_{1}\times X_{2}\ra X_{2},\quad(x_{1},x_{2})\mapsto x_{2},\end{align*}
 die zugehörigen Projektionen. Die \emph{Produkttopologie} auf $X_{1}\times X_{2}$ ist die gröbste Topologie (d.h. möglichst wenig offene Mengen), so dass $p_{1}$ und $p_{2}$ stetig sind.
 
-D.h. $U\subseteq X_{1}\times X_{2}$ ist genau dann offen, wenn $U$ beliebige Vereinigung endlicher Schnitte von Urbildern offener Mengen in $X_{1}$ bzw. $X_{2}$ unter $p_{1}$ bzw. $p_{2}$ ist.
+Daher ist $U\subseteq X_{1}\times X_{2}$ genau dann offen, wenn $U$ beliebige Vereinigung endlicher Schnitte von Urbildern offener Mengen in $X_{1}$ bzw. $X_{2}$ unter $p_{1}$ bzw. $p_{2}$ ist.
 
-\item $X$ heißt \emph{reduzibel}, wenn es abgeschlossene echte Teilmengen $A,B\subsetneq X$ mit $X=A\cup B$ gibt.
+\item $X$ heißt \emph{reduzibel}, wenn es abgeschlossene echte Teilmengen \[A,B\subsetneq X\text{ mit }X=A\cup B\text{ gibt.}\]
 
 \item $X$ heißt \emph{irreduzibel}, wenn $X$ nicht reduzibel ist.
 
@@ -504,7 +506,7 @@ D.h. $U\subseteq X_{1}\times X_{2}$ ist genau dann offen, wenn $U$ beliebige Ver
 \begin{bsp}\label{1.2.7}
 Sei $X$ hausdorffsch und $M\subseteq X$. Dann gilt:
 \[M\text{ ist irreduzibel (bzgl. Spurtopologie)}\iff \card{M}\leq 1,\]
-d.h. $M$ ist einelementig oder leer.
+$M$ ist also einelementig oder leer.
 
 \emph{Denn}: Liegen $x\neq y$ in $M$, so finden wir (offene) Umgebungen $U_{x}$ und $U_{y}$ mit leerem Schnitt, können also
 \[M=(M\setminus U_{x})\cup(M\setminus U_{y})\]
@@ -534,7 +536,9 @@ Sei nun $\I(V)$ ein Primideal. Seien $V_{1},V_{2}$ Varietäten mit $V=V_{1}\cup 
 
 Angenommen $V\neq V_{1}$, d.h. $V\supsetneq V_{1}$, dann ist auch $\I(V)\subsetneq\I(V_{1})=I_{1}$.
 
-Andererseits ist $V=V_{1}\cup V_{2}=\V(I_{1}\cdot I_{2})$, also ist $I_{1}\cdot I_{2}\subseteq\I(V)$. Das impliziert aber $I_{2}\subseteq\I(V)$, da $\I(V)$ ein Primideal ist und $I_{1}\not\subseteq\I(V)$. Daher gilt $V_{2}=\V(I_{2})\supseteq\V(\I(V))=V$, also ist schon $V=V_{2}$ und damit ist $V$ irreduzibel.
+Andererseits ist $V=V_{1}\cup V_{2}=\V(I_{1}\cdot I_{2})$, also ist $I_{1}\cdot I_{2}\subseteq\I(V)$. Das impliziert aber $I_{2}\subseteq\I(V)$, da $\I(V)$ ein Primideal ist und $I_{1}\not\subseteq\I(V)$. Daher gilt 
+\[V_{2}=\V(I_{2})\supseteq\V(\I(V))=V,\] 
+also ist schon $V=V_{2}$ und damit ist $V$ irreduzibel.
 \end{proof}
 
 \begin{prop}\label{1.2.10} Sei $X$ ein topologischer Raum. Dann ist jede irreduzible Teilmenge in einer irreduziblen Komponente enthalten.\end{prop}
@@ -543,7 +547,9 @@ Andererseits ist $V=V_{1}\cup V_{2}=\V(I_{1}\cdot I_{2})$, also ist $I_{1}\cdot 
 
 {\scshape Erinnerung:} Hat in einer halbgeordneten Menge $\M$ jede Kette (d.h. totalgeordnete Teilmenge) eine obere Schranke, dann hat $\M$ mindestens ein maximales Element.
 
-Seien also $X'\subseteq X$ eine irreduzible Teilmenge, $\M:=\{Y\subseteq X\mid Y\text{ irreduzibel, }Y\supseteq X'\}$ und $\{Y_{\lambda}\}_{\lambda\in\Lambda}$ eine Familie aus $\M$, die totalgeordnet ist. Sei $\displaystyle Y:=\bigcup_{\lambda\in\Lambda}Y_{\lambda}$.
+Seien also $X'\subseteq X$ eine irreduzible Teilmenge, 
+\[\M:=\{Y\subseteq X\mid Y\text{ irreduzibel, }Y\supseteq X'\}\]
+und $\{Y_{\lambda}\}_{\lambda\in\Lambda}$ eine Familie aus $\M$, die totalgeordnet ist. Sei $\displaystyle Y:=\bigcup_{\lambda\in\Lambda}Y_{\lambda}$.
 
 {\scshape Zeige:} $Y\in\M$, d.h. $Y$ ist irreduzibel.
 
@@ -554,6 +560,7 @@ Folglich existieren ein $\lambda_{1}$ mit $(X\setminus A)\cap Y_{\lambda_{1}}\ne
 was im Widerspruch zur Irreduzibilität von $Y_{\lambda_{2}}$ steht. Folglich hat jede Kette eine obere Schranke und nach dem Lemma von Zorn hat $\M$ somit ein maximales Element.
 \end{proof}
 
+\pagebreak[3]
 \begin{satz}\label{satz1} Sei $V$ eine affine Varietät. Dann gilt:
 \begin{enumerate}
 \item\Label{s1a} $V$ ist eine endliche Vereinigung von irreduziblen affinen Varietäten.
@@ -574,7 +581,7 @@ und sehen, da $W$ irreduzibel ist, dass es ein $i$ mit $W=W\cap V_{i}$ gibt. Als
 
 \begin{motivation}
   Bisher haben wir die Mengen
-  \[ \VV_n = \{ V\subseteq k^n \mid V \text{ affine Varietät }\} \quad\text{und}\quad
+  \[ \VV_n = \{ V\subseteq k^n \mid V \text{ affine Varietät }\}\text{ und }
      \J_n = \{ I\subseteq k\polyx \mid I \text{ Radikalideal }\} \]
   und zwischen ihnen die Abbildungen
   \begin{align*}
@@ -590,7 +597,7 @@ und sehen, da $W$ irreduzibel ist, dass es ein $i$ mit $W=W\cap V_{i}$ gibt. Als
 \end{nbsp}
 
 Wir werden sehen, dass $\I\circ\V=\id$ gilt, falls $k$ algebraisch abgeschlossen ist. Die einzige \enquote{Obstruktion} ist,
-dass $\V(I)=\leer$ gilt, obwohl $I\neq k\polyx$.
+dass $\V(I)=\leer$ gilt, obwohl $I\neq k\polyx$ ist.
 
 \begin{satz}[Hilbertscher Nullstellensatz]\label{satz2}\label{HNS}
   \begin{enumerate}
@@ -605,11 +612,11 @@ dass $\V(I)=\leer$ gilt, obwohl $I\neq k\polyx$.
 
 Die Aussage wird in mehreren Schritten im Rest dieses Abschnitts bewiesen.
 
-Wir bezeichnen $x_1=\Bar{X}_1,\dotsc,x_n=\Bar{X}_n$. Ohne Einschränkung können wir nach einer eventuellen Umsortierung
-der Variablen annehmen, dass $x_1,\dotsc,x_k$ algebraisch unabhängig über $k$ sind und $x_{k+1},\dotsc,x_n$ algebraisch über
-$k(x_1,\dotsc,x_k)$. Also:
-\[ k \subseteq S = k(x_1,\dotsc,x_k) \subseteq L=\Quotient{k\polyx}{\m}, \]
-dabei ist $k(x_1,\dotsc,x_k)\cong\Quot(k\polyx[k])$ und $L$ ist endlich erzeugt als $S$-Modul.
+Wir nennen $x_1:=\Bar{X}_1,\dotsc,x_n:=\Bar{X}_n$. Ohne Einschränkung können wir nach einer eventuellen Umsortierung
+der Variablen annehmen, dass $x_1,\dotsc,x_l$ algebraisch unabhängig über $k$ sind und $x_{l+1},\dotsc,x_n$ algebraisch über
+$k(x_1,\dotsc,x_l)$. Also:
+\[ k \subseteq S = k(x_1,\dotsc,x_l) \subseteq L=\Quotient{k\polyx}{\m}, \]
+dabei ist $k(x_1,\dotsc,x_l)\cong\Quot(k\polyx[l])$ und $L$ ist endlich erzeugt als $S$-Modul.
 
 \begin{lem}\label{1.3.1}
   Seien $R$, $S$, $T$ Ringe mit $R\subseteq S\subseteq T$, sodass gilt:
@@ -623,68 +630,72 @@ dabei ist $k(x_1,\dotsc,x_k)\cong\Quot(k\polyx[k])$ und $L$ ist endlich erzeugt 
 \begin{proof}
   Wir schreiben 
   \[ x_i=\displaystyle\sum_{j=1}^m a_{ij}w_j \text{ mit } a_{ij}\in S, \qquad
-     w_iw_j=\displaystyle\sum_{k=1}^m b_{ijk}w_k \text { mit } b_{ijk}\in S. \]
-  Sei $S_0$ die $R$-Unteralgebra von $S$, die von allen $a_{ij}$ und $b_{ijk}$ erzeugt wird. Nach dem Hilbertschen Basissatz ist
+     w_iw_j=\displaystyle\sum_{l=1}^m b_{ijl}w_l \text { mit } b_{ijl}\in S. \]
+  Sei $S_0$ die $R$-Unteralgebra von $S$, die von allen $a_{ij}$ und $b_{ijl}$ erzeugt wird. Nach dem Hilbertschen Basissatz ist
   $S_0$ ein noetherscher Ring. $T$ wird von den $w_i$ auch als $S_0$-Modul erzeugt und ist noethersch als $S_0$-Modul, da er ein
   endlich erzeugter Modul über einem noetherschen Ring ist. $S$ ist ein $S_0$-Untermodul von $T$. Damit ist $S$ endlich erzeugt
   als $S_0$-Modul, also auch als $R$-Algebra.
 \end{proof}
 
-Insbesondere ist in der Situation im Beweis des Hilbertschen Nullstellensatzes (\cref{HNS}) $k(x_1,\dotsc,x_k)$ als
+Insbesondere ist in der Situation im Beweis des \hyperref[HNS]{Hilbertschen Nullstellensatzes} $k(x_1,\dotsc,x_l)$ als
 $k$-Algebra endlich erzeugt.
 
 \begin{lem}\label{1.3.2}
-  Es sei $k$ ein Körper. Dann ist $k(X_1,\dotsc,X_r)$ nicht endlich erzeugt als $k$-Algebra für $r\ge1$.
+  Es sei $k$ ein Körper und $r\ge1$. Dann ist $k(X_1,\dotsc,X_r)$ nicht endlich erzeugt als $k$-Algebra.
 \end{lem}
 \begin{proof}
-  Wir nehmen an, wir hätten endlich viele Erzeuger $h_1,\dotsc,h_k$ und schreiben $h_i=\frac{f_i}{g_i}$ mit $f_i,g_i\in
+  Wir nehmen an, wir hätten endlich viele Erzeuger $h_1,\dotsc,h_l$ und schreiben $h_i=\frac{f_i}{g_i}$ mit $f_i,g_i\in
   k\polyx[r]$. Dann wählen wir ein Primpolynom $p$, das keines der $g_i$ teilt und schreiben
-  \[ \frac1p = \sum_{i=1}^N a_i h_{i_1}\dotsm h_{i_{l_i}} \quad (a_i\in k,\ i,j\in\{1,\dotsc,k\}). \]
-  Sei $H=g_1\dotsm g_k$. Multipliziert man obige Gleichung mit $H$ durch, bekommt man $\frac{H}{p}\in k\polyx[r]$, also
+  \[ \frac1p = \sum_{i=1}^N a_i h_{i_1}\dotsm h_{i_{m_i}} \quad (a_i\in k,\ m_{i}\in\{1,\dotsc,l\}). \]
+  Sei $H=g_1\dotsm g_l$. Multipliziert man obige Gleichung mit $H$ durch, bekommt man \[\frac{H}{p}\in k\polyx[r],\] also
   ist $p$ ein Teiler von $H$. Aber $p$ war teilerfremd zu allen $g_i$ gewählt. Das ist ein Widerspruch.
 \end{proof}
 
 \begin{prop}\label{1.3.3}
-  Die algebraische Version des Hilbertschen Nullstellensatzes stimmt.
+  Die \hyperref[s2a]{algebraische Version des Hilbertschen Nullstellensatzes} stimmt.
 \end{prop}
 \begin{proof}
-  Das folgt nun direkt aus \cref{1.3.1} und \cref{1.3.2}.
+  Das liegt daran, dass $\Quotient{k\polyx}{\m}$ nach \cref{1.3.1} als $k$-Algebra endlich erzeugt ist und nach \cref{1.3.2} folglich keine transzendenten Elemente enthält, also eine algebraische Körpererweiterung ist.
 \end{proof}
 
 %27.10.10
 
 Um die Implikation $I\subsetneq k\polyx \implies \V(I)\neq\leer$ zu zeigen, betrachten wir für einen Punkt $p=(x_1,\dotsc,x_n)\in
 k^n$ den Einsetzungshomomorphismus \[ \phi_p\colon k\polyx \ra k, \quad f\mapsto f(p) \] (das ist ein
-$k$-Algebrenhomomorphismus). Dieser steigt genau dann ab auf $A=\Quotient{k\polyx}{I}$, wenn $p\in\V(I)$ gilt. Außerdem ist jeder
-$k$-Algebrenhomomorphismus $\phi\colon A\ra k$ von dieser Art: wähle $p=(\phi(\Bar{X_1}),\dotsc,\phi(\Bar{X_n}))$. Ist $I=\m$ ein
+$k$-Algebrenhomomorphismus). Dieser steigt genau dann auf $A=\Quotient{k\polyx}{I}$ ab, wenn $p\in\V(I)$ gilt. Außerdem ist jeder
+$k$-Algebrenhomomorphismus $\phi\colon A\ra k$ von dieser Art: wähle \[p=(\phi(\Bar{X_1}),\dotsc,\phi(\Bar{X_n})).\] Ist $I=\m$ ein
 maximales Ideal, dann ist $A=\Quotient{k\polyx}{\m}$ eine endliche algebraische Körpererweiterung von $k$. In diesem Fall
-existiert genau dann ein $k$-Algebrenhomomorphismus $A\ra k$, wenn $A=k$ gilt.
+existiert genau dann ein $k$-Algebrenhomomorphismus von $A$ nach $k$, wenn $A=k$ gilt.
 
 \begin{lem}\label{1.3.4}
-  Aus der algebraischen Version \ref{satz2a} folgt der schwache Hilbertsche Nullstellensatz \ref{satz2b}.
+  Aus der \hyperref[satz2a]{algebraischen Version} folgt der \hyperref[satz2b]{schwache Hilbertsche Nullstellensatz}.
 \end{lem}
 \begin{proof}
-  Sei $\m$ ein maximales Ideal mit $I\subseteq\m$. Da $k$ algebraisch abgeschlossen ist, ist nach \ref{satz2a}
+  Sei $\m$ ein maximales Ideal mit $I\subseteq\m$. Da $k$ algebraisch abgeschlossen ist, ist also, nach \cref{satz2a},
   $L=\Quotient{k\polyx}{\m}\cong k$. Sei $\phi\colon L\ra K$ ein Isomorphismus und \[p=(\phi(\Bar{X_1}),\dotsc,\phi(\Bar{X_n}))\in
-  k^n.\] Für $f\in\m$ gilt dann $f(p)=\phi(f(\Bar{X}_1,\dotsc,\Bar{X}_n))=\phi(\Bar{f(X_1,\dotsc,X_n)}) = \phi(0)=0$. Also ist
-  $p\in\V(I)$ und damit $\V(I)\neq\leer$.
+  k^n.\] Für $f\in\m$ gilt dann $f(p)=\phi(f(\Bar{X}_1,\dotsc,\Bar{X}_n))=\phi(\Bar{f(X_1,\dotsc,X_n)}) = \phi(0)=0$. 
+  
+Also ist $p\in\V(I)$ und damit $\V(I)\neq\leer$.
 \end{proof}
 
 \begin{lem}[Schluss von Rabinowitsch]
-  Aus \ref{satz2b} folgt \ref{satz2c}.
+  Aus dem \hyperref[satz2b]{schwache Hilbertsche Nullstellensatz} folgt der \hyperref[satz2c]{starke Hilbertsche Nullstellensatz}.
 \end{lem}
 \begin{proof}
 Zu zeigen ist $\I(\V(I))=\sqrt{I}$. Die Inklusion \enquote{$\supseteq$} ist klar. Für die andere Inklusion nehmen wir uns ein
 $g\in\I(\V(I))$ und zeigen: es gibt ein $d\ge1$ mit $g^d\in I$.
 
-Wir betrachten $k^{n+1}$ und definieren $J=(I,gX_{n+1}-1)$. Dann ist $\V(J)=\leer$, denn wäre
+Wir betrachten $k^{n+1}$ und definieren \[J=(I,gX_{n+1}-1).\] Dann ist $\V(J)=\leer$, denn wäre
 $p=(x_1,\dotsc,x_{n+1})\in\V(J)$, dann wäre $(x_1,\dotsc,x_n)\in\V(I)$, also $g(x_1,\dotsc,x_n)=0$, aber damit wäre
-$(gX_{n+1}-1)(p)=-1\neq0$, was ein Widerspruch ist.
+\[\bigl(gX_{n+1}-1\bigr)(p)=-1\neq0,\] was ein Widerspruch ist.
 
-Nach \ref{satz2b} muss dann also $J=k\polyx[n+1]$ gelten. Also gibt es $b_1,\dotsc,b_{n+1}\in k\polyx[n+1]$, sodass
+Nach \cref{satz2b} muss dann also $J=k\polyx[n+1]$ gelten. Also gibt es \[b_1,\dotsc,b_{n+1}\in k\polyx[n+1],\] sodass
 \[ 1=b_1f_1 + \dotsm + b_nf_n + b_{n+1}(gX_{n+1}-1) \] gilt. Wir verwenden den $k$-Algebrenhomomorphismus
-\[ \phi\colon k\polyx[n+1] \ra k(X_1,\dotsc,X_n),\quad X_i\mapsto X_i \text{ für } i\in\{1,\dotsc,n\},\ X_{n+1}\mapsto\frac1g \]
-und bekommen
+\[ \phi\colon k\polyx[n+1] \ra k(X_1,\dotsc,X_n),\quad X_i\mapsto 
+%X_i \text{ für } i\in\{1,\dotsc,n\},\ X_{n+1}\mapsto\frac1g \]
+\begin{cases}X_{i},&\text{ für }i\in\{1,\dotsc,n\},\\
+\frac{1}{g},&\text{ für }i=n+1.\end{cases}\]
+und erhalten so
 \[ 1 = \phi(1) = \phi(b_1)f_1 + \dotsm + \phi(b_n)f_n + 0. \]
 Nun schreiben wir $\phi(b_i)=\frac{\schlange{b_i}}{g}a_i$ für $\schlange{b_i}\in k\polyx$. Durchmultiplizieren mit $g^d$ für genügend
 großes $d$ ergibt dann $g^d\in I$.
@@ -701,10 +712,9 @@ großes $d$ ergibt dann $g^d\in I$.
 \end{ziel}
 \begin{dfn}\label{1.4.1}
 \begin{enumerate}
-\item\Label{1.4.1a} Seien $V\subseteq k^{n}, W\subseteq k^{m}$ affine Varietäten. Eine Abbildung $f\colon V\ra W$ heißt Morphismus, wenn es Polynome $f_1,\dotsc,f_m \in k\polyx$ mit 
-\[f(p)=(f_1(p),\dotsc,f_m(p)) \in k^{m}\]
-gibt.
-\item\Label{1.4.1b} Ein Morphismus $f\colon V\ra W$ heißt Isomorphismus, wenn es einen Morphismus $g\colon W\ra V$ mit $g\circ f=\id_V, f\circ g=\id_W$ gibt.
+\item\Label{1.4.1a} Seien $V\subseteq k^{n}, W\subseteq k^{m}$ affine Varietäten. Wir nennen eine Abbildung $f\colon V\ra W$ Morphismus, wenn es Polynome $f_1,\dotsc,f_m \in k\polyx$ mit 
+\[f(p)=(f_1(p),\dotsc,f_m(p)) \in k^{m}\text{ gibt.}\]
+\item\Label{1.4.1b} Ein Morphismus $f\colon V\ra W$ heißt Isomorphismus, wenn es einen Morphismus $g\colon W\ra V$ mit $g\circ f=\id_V$ und $f\circ g=\id_W$ gibt.
 \item\Label{1.4.1c} Gibt es einen Isomorphismus zwischen $V$ und $W$, so heißen $V$ und $W$ isomorph.
 \end{enumerate}
 \end{dfn}
@@ -714,15 +724,15 @@ Dabei sind die Objekte gerade die affinen Varietäten und die Morphismen zwische
 
 \begin{bsp}\label{1.4.3}
 \begin{enumerate}
-\item\Label{1.4.3a}  Projektoren bzw. Einbettungen $\A^{n}(k)\ra \A^{m}(k)$ 
-\[\begin{cases} (x_1,\dotsc,x_n) \mapsto (x_1,\dotsc,x_m),&\text{ falls }n\ge m \\ (x_1,\dotsc,x_n)\mapsto (x_1,\dotsc,x_n,0,\dotsc,0),&\text{ falls }n<m \end{cases}\] sind Morphismen.
+\item\Label{1.4.3a}  Projektionen bzw. Einbettungen $\A^{n}(k)\ra \A^{m}(k)$ 
+\[\begin{cases} (x_1,\dotsc,x_n) \mapsto (x_1,\dotsc,x_m),&\text{ falls }n\ge m, \\ (x_1,\dotsc,x_n)\mapsto (x_1,\dotsc,x_n,0,\dotsc,0),&\text{ falls }n<m, \end{cases}\] sind Morphismen.
 \item\Label{1.4.3b} Jedes $f \in k\polyx$ definiert ein Morphismus $\A^{n}(k)\ra \A^{n}(k)$.
 \item\Label{1.4.3c} Seien $V=\A^1(k)$, $W=\V(Y^2-X^3) \subseteq \A^2(k)$. Die Abbildung 
 \[f\colon V\ra W, \qquad x\mapsto (x^2,x^3)\]
 definiert einen Morphismus.
 %Bild : Neilsche Parabel
 Hierbei ist f bijektiv mit Umkehrabbildung 
-\[g(x,y)=\begin{cases} y/x,&\text{ falls }x\neq 0 \\ 0,&\text{ falls }x=0. \end{cases}\]
+\[g(x,y)=\begin{cases} y/x,&\text{ falls }x\neq 0, \\ 0,&\text{ falls }x=0. \end{cases}\]
 Ist $k$ unendlich, so ist $g$ kein Morphismus. Also sind bijektive Morphismen im Allgemeinen keine Isomorphismen.
 \item\Label{1.4.3d} Sei char$(k)=p>0$. Dann heißt $f\colon \A^n(k)\ra \A^n(k)$ gegeben durch 
 \[f(x_1,\dotsc,x_n)=(x_1^p,\dotsc,x_n^p)\] 
@@ -739,15 +749,17 @@ Ist $k$ unendlich, so ist $g$ kein Morphismus. Also sind bijektive Morphismen im
 
 \begin{proof}
 \begin{enumerate}
-\item[\ref{1.4.4a}] Sei $f\colon V\ra W$ ein Morphismus und $Z=\V(J)\subseteq W$ abgeschlossen. Setze $I=\{g\circ f \mid g\in J\}$. Dann ist $f^{-1}(Z)=V(I)$, denn: 
-\[x\in f^{-1}(Z)\iff f(x)\in Z \iff g(f(x))=0\text{ für alle }g\in J.\]
+\item[\ref{1.4.4a}] Sei $f\colon V\ra W$ ein Morphismus und $Z=\V(J)\subseteq W$ abgeschlossen. Setze $I=\{g\circ f \mid g\in J\}$. Dann ist $f^{-1}(Z)=\V(I)$, denn: 
+\[x\in f^{-1}(Z)\iff f(x)\in Z \iff g\bigl(f(x)\bigr)=0\text{ für alle }g\in J.\]
 Also ist $f^{-1}(Z)$ abgeschlossen und $f$ damit stetig.
-\item[\ref{1.4.4b}] Das folgt direkt aus der \cref{1.4.1}, da Polynome global definierbar sind.
+\item[\ref{1.4.4b}] Das folgt direkt aus \cref{1.4.1}, da Polynome global definierbar sind.
 \end{enumerate}
 \end{proof}
 
 \begin{w}
-Im Allgemeinen gibt es viel mehr stetige Abbildungen als Morphismen, so ist beispielsweise jede bijektive Abbildung von $k$ nach $k$ stetig nach \cref{1.2.4}.
+Im Allgemeinen gibt es viel mehr stetige Abbildungen als Morphismen. 
+
+So ist beispielsweise, nach \cref{1.2.4}, jede bijektive Abbildung von $k$ nach $k$ stetig.
 \end{w}
 
 \begin{dfn}\label{1.4.5}
@@ -758,17 +770,17 @@ Sei $V\subseteq \A^n(k)$ eine affine Varietät. Dann heißt
 
 \begin{bem}
 \begin{enumerate}
-\item\Label{1.4.6a} Der Koordinatenring $k[V]$ ist eine reduzierte k-Algebra, d.h. aus $f^n=0$ folgt $f=0$.
+\item\Label{1.4.6a} Der Koordinatenring $k[V]$ ist eine reduzierte $k$-Algebra, d.h. aus $f^n=0$ folgt $f=0$.
 \item\Label{1.4.6b} Es gilt $k[V] \cong \Quotient{k\polyx}{\I(V)}$.
 \end{enumerate}
 \end{bem}
 
 \begin{proof}
 \begin{enumerate}
-\item[\ref{1.4.6a}] folgt aus \ref{1.4.6b}, wobei Addition, Multiplikation und Skalarmultiplikation komponentenweise definiert sind. Die Reduziertsheitsaussage ist klar.
+\item[\ref{1.4.6a}] folgt aus \ref{1.4.6b}, wobei Addition, Multiplikation und Skalarmultiplikation komponentenweise definiert sind. Die Reduziertsheitsaussage ist klar, da $\I(V)$ ein Radikalideal ist.
 \item[\ref{1.4.6b}] Definiere
 \[\phi\colon  k\polyx\ra k[V],  \qquad p\mapsto p\restrict{V}.\]
-Dann ist $\phi$ surjektiv nach Definiton des Morphismus, vgl. \cref{1.4.1}. Weiter gilt:
+Dann ist $\phi$ nach Definiton der Morphismen surjektiv, vgl. \cref{1.4.1}. Weiter gilt:
 \[p \in \Kern(\phi) \iff p\restrict{V} \equiv 0 \iff \forall x\in V\colon p(x)=0 \iff p\in \I(V).\] 
 Mit dem Homomorphiesatz folgt die Behauptung. 
 \end{enumerate}
@@ -788,84 +800,120 @@ ist sogar bijektiv.
 \begin{proof}
 \begin{enumerate}
 \item[\ref{1.4.7a}] Die Algebrenhomomorphismuseigenschaften zu überprüfen ist elementar.
-\item[\ref{1.4.7b}] Sei $\phi\colon  k[W]\ra k[V]$ ein $k$-Algebrenhomomorphismus. $p_i\colon  W\ra k$ sei die Projektion auf die $i$-te Koordinate.
-Definiere nun $f\colon V\ra W$ durch \[x=(x_1,\dotsc,x_n)\mapsto (\phi(p_1)(x),\dotsc,\phi(p_m)(x)).\]
-Zeige:
-\begin{itemize}
-\item$f$ ist wohldefiniert.
-\item$f^{\sharp}=\phi$.
-\end{itemize}
-Die $p_i$'s erzeugen $k[W]$ und $f^{\sharp}(p_i)=p_i\circ f=\phi(p_i)$ nach der Definition von $f$.
+\item[\ref{1.4.7b}] Sei $\phi\colon  k[W]\ra k[V]$ ein $k$-Algebrenhomomorphismus und \[k[W]\ni p_i\colon  W\ra k\] sei die Projektion auf die $i$-te Koordinate.
+Definiere nun $f\colon V\ra W$ durch \[x=(x_1,\dotsc,x_n)\mapsto \bigl(\phi(p_1)(x),\dotsc,\phi(p_m)(x)\bigr).\]
+Wir zeigen, dass $f$ wohldefiniert ist und dass $f^{\sharp}=\phi$ ist.
+
+Zuerst sehen wir, dass die $p_i$'s $k[W]$ als $k$-Algebra erzeugen  und nach der Definition von $f$ ist 
+\[f^{\sharp}(p_i)=p_i\circ f=\phi(p_i).\]
 
 Es bleibt also nur noch die Wohldefiniertheit zu zeigen, d.h. $f$ bildet wirklich nach $W=\V(\I(W))$ ab.
 
-Zeige also: Für alle $g \in k[W]$ gilt $g(f(x))=0$. Wir wissen, dass $g$ als Element in $k[W]$ $0$ ist. Daraus folgt $\phi(g)=0$ in $k[V]$. Also folgt die Behauptung, da $g(\phi(p_1)(x),\dotsc,\phi(p_m)(x))=\dach\phi(g)(x)$ für $g \in \I(W)$, wobei $\dach\phi$ so gewählt ist, dass folgendes Diagramm kommutiert.
+Wir zeigen also: Für alle $g \in \I(W)$ und $x\in V$ gilt $g\bigl(f(x)\bigr)=0$. 
+
+Sei also $g\in\I(W)$. Dann ist $g$ als Element in $k[W]$ schon $0$ und damit ist auch $\phi(g)=0$ in $k[V]$. 
+
+Nun definieren wir uns $\dach{\phi}$ indem wir $X_{i}\in k\polyx[m]$ auf ein Urbild von $\phi(p_{i})$ in $k\polyx$ schicken. Das dürfen wir, da der Polynomring frei ist und daher kommutiert das folgende Diagramm:
 \[\begin{tikzpicture}
 \matrix (m) [matrix of math nodes, row sep=3em, column sep=5em, text height=1.5ex, text depth=0.25ex]
-{k[X_1,\dotsc,X_m]&k\polyx\\
-k[W]=\Quotient{k[X_1,\dotsc,X_m]}{\I(W)}&k[V]=\Quotient{k\polyx}{\I(V)}\\};
+{k\polyx[m]&k\polyx\\
+\displaystyle k[W]=\Quotient{k[X_1,\dotsc,X_m]}{\I(W)}&\displaystyle k[V]=\Quotient{k\polyx}{\I(V)}\\};
 \path[->,font=\scriptsize]
 (m-1-1) edge node [auto] {$\dach\phi$} (m-1-2) 
-(m-1-2) edge node [auto] {$$} (m-2-2)
-(m-1-1) edge node [above right] {$X_i\mapsto p_i$} node [below right] {$g\mapsto 0$} (m-2-1) 
+(m-1-2) edge node [auto] {$\pi_{V}$} (m-2-2)
+(m-1-1) edge node [auto] {$\pi_{W}$} (m-2-1) 
 (m-2-1) edge node [auto] {$\phi$} (m-2-2);
 \end{tikzpicture}\] 
+%\[\begin{tikzpicture}
+%\matrix (m) [matrix of math nodes, row sep={4em,between origins}, column sep={5em,between origins}, text height=1.5ex, text depth=0.25ex]
+% {%
+%  X_{i}     &[-2em]       &[+1.5em]       &[-2em]\dach{\phi}(p_{i})\in\pi_{V}^{-1}\bigl(\phi(p_{i})\bigr) \\[-2em]
+%        &[-2em] k\polyx[m]     &[+1.5em] k\polyx&[-2em]                                             \\[+1.5em]
+%        &[-2em] \displaystyle k[W]=\Quotient{k[X_1,\dotsc,X_m]}{\I(W)}     &[+1.5em] \displaystyle k[V]=\Quotient{k\polyx}{\I(V)} &[-2em]                                             \\[-2em]
+% p_{i}   &[-2em]       &[+1.5em]       &[-2em] \phi(p_{i})           \\
+% };
+%  \path[->,font=\scriptsize]
+% (m-2-2) edge node [auto] {$\eta_{V}$} (m-2-3) 
+% (m-2-3) edge node [auto] {$f^{**}$} (m-3-3)
+% (m-2-2) edge node [auto] {$f$} (m-3-2) 
+% (m-3-2) edge node [auto] {$\eta_{W}$} (m-3-3);
+%  \path[|->,font=\scriptsize]
+% ($ (m-1-1)! 2/5 !(m-4-1) $) edge ($ (m-1-1)! 3/5 !(m-4-1) $)
+% ($ (m-1-1)! 2/5 !(m-1-4) $) edge ($ (m-1-1)! 3/5 !(m-1-4) $)
+% ($ (m-4-1)! 2/5 !(m-4-4) $) edge ($ (m-4-1)! 3/5 !(m-4-4) $)
+% ($ (m-1-4)! 2/5 !(m-4-4) $) edge ($ (m-1-4)! 3/5 !(m-4-4) $);
+%\end{tikzpicture}\]
+Also folgt die Behauptung, da 
+\[g\bigl(\phi(p_1)(x),\dotsc,\phi(p_m)(x)\bigr)=\dach{\phi}(g)(x)=0\] 
+für $g \in \I(W)$, da $\dach{\phi}(g)\in\I(V)$ liegt, da das Diagramm kommutiert.
 \item[\ref{1.4.7c}] Die Surjektivität der Abbildung wurde gerade gezeigt, also bleibt nur die Injektivität zu zeigen.
 Sei also $f_1^{\sharp}=f_2^{\sharp}$, d.h. $g\circ f_1=g\circ f_2$ für alle $g\in k[W]$.
-Insbesondere gilt das für die Projektionen auf die einzelnen Koordinaten. Damit folgt $f_1(x)=f_2(x)$ für alle $x\in V$. 
+Insbesondere gilt das für die Projektionen auf die einzelnen Koordinaten. Damit sind $f_{1}$ und $f_{2}$ in allen Komponenten gleich und es folgt $f_1(x)=f_2(x)$ für alle $x\in V$. 
 \end{enumerate}
 \end{proof}
 
-\begin{satz}\label{satz3} Die Kategorie der endlich erzeugten, reduzierten $k$-Algebren wird mit $\RedAlg_k$ bezeichnet.
+\begin{satz}\label{satz3} Wir bezeichnen die Kategorie der endlich erzeugten, reduzierten $k$-Algebren mit $\RedAlg_k$.
 \begin{enumerate}
 \item\Label{satz3a} Die Zuordnung $V\mapsto k[V]$ induziert einen kontravarianten Funktor $\Phi$.
-\item\Label{satz3b} Ist $k$ algebraisch abgeschlossen, so induziert $\Phi$ eine Äquivalenz der Kategorien $\RedAlg_k$ und $\AffVar_k$.
+\item\Label{satz3b} Ist $K=k$ algebraisch abgeschlossen, so induziert $\Phi$ eine Äquivalenz der Kategorien $\AffVar_k$ und $\RedAlg_k$.
 \end{enumerate}
 \end{satz}
 
 \begin{proof}
 \begin{enumerate}
-\item[\ref{satz3a}] Definiere $\Phi$ auf den Morphismen durch 
+\item[\ref{satz3a}] Wir definieren $\Phi$ auf den Morphismen durch 
 \[\Mor(V,W)\ra \Hom_k(k[W],k[V]), \qquad g\mapsto g^{\sharp}.\]
 Dann gilt $\Phi(g_1\circ g_2)=(g_1\circ g_2)^{\sharp}=g_2^\sharp\circ g_1^\sharp$ und $\Phi(\id)=\id$.
-\item[\ref{satz3b}] Zeige, dass $\Phi$ eine natürliche Äquivalenz definiert. Dazu müssen gezeigt werden: 
+\item[\ref{satz3b}] Nun zeigen wir, dass $\Phi$ eine natürliche Äquivalenz definiert. Genauer: 
 \begin{itemize}
-\item $\Phi$ ist volltreuer Funktor (d.h. induziert Bijektion auf den Morphismen)
-\item Für jede endlich erz., red. $K$-Algebra $A$ gibt es eine affine Varietät $V$ mit $\Phi(V)\cong A$. 
+\item $\Phi$ ist ein volltreuer Funktor (d.h. induziert Bijektion auf den Morphismen)
+\item Für jede endlich erzeugte, reduzierte $K$-Algebra $A$ gibt es eine affine Varietät $V$ mit $\Phi(V)\cong A$. 
 \end{itemize}
-Alternativ könnte man auch zeigen: Es existiert ein Funktor $\Psi\colon  \RedAlg_k\ra \AffVar_k$ mit $\Psi\circ \Phi\cong \id_{\AffVar_k}$ und $\Phi\circ \Psi\cong \id_{\RedAlg_k}$.
-Nach \cref{1.4.7} ist $\Phi$ volltreu. 
+Alternativ könnte man auch zeigen: Es existiert ein Funktor 
+\[\Psi\colon  \RedAlg_k\ra \AffVar_k\] mit $\Psi\circ \Phi\cong \id_{\AffVar_k}$ und $\Phi\circ \Psi\cong \id_{\RedAlg_k}$.
 
-Sei also nun $A$ eine endlich erzeuge $K$-Algebra mit Erzeugern $a_1,\dotsc,a_n$.
-Definiere den Homomorphismus $\phi\colon  K\polyx\ra A$ durch $X_i\mapsto a_i$. Aus der Reduziertheit von $A$ folgt, dass
-$I=\Kern(\phi)$ ein Radikalideal ist. Setze nun $V=\ V(I)$. Da $K$ algebraisch abgeschlossen ist, gilt $\I(V)=\sqrt{(I)}=I$. Insgesamt:
-\[K[V]\cong\Quotient{K\polyx}{\I(V)}=\Quotient{K\polyx}{I}\cong A\] 
+Zuerst stellen wir fest: Nach \cref{1.4.7} ist $\Phi$ volltreu. 
+
+Sei nun $A$ eine endlich erzeuge $K$-Algebra mit Erzeugern $a_1,\dotsc,a_n$.
+Definiere den Homomorphismus 
+\[\phi\colon  K\polyx\ra A\text{ durch }X_i\mapsto a_i.\]
+Aus der Reduziertheit von $A$ folgt, dass
+$I=\Kern(\phi)$ ein Radikalideal ist. Setze nun $V=\V(I)$. Da $K$ algebraisch abgeschlossen ist, gilt $\I(V)=\sqrt{(I)}=I$. Insgesamt gilt mit dem Homomorphiesatz:
+\[K[V]\cong\Quotient{K\polyx}{\I(V)}=\Quotient{K\polyx}{I}\cong A.\] 
 \end{enumerate}
 \end{proof}
 
-\begin{bsp}\label{1.4.8} In diesem Beispiel sei $K$ algebraisch abgeschlossen.
+\begin{bsp}\label{1.4.8} In diesem Beispiel sei wieder $K$ algebraisch abgeschlossen.
 \begin{enumerate}
-\item\Label{1.4.8a} Ist $V=\A^n(K)$, so ist $\I(V)=0$ und damit $K[V]\cong K\polyx$.
-\item\Label{1.4.8b} Im anderen Extremfall $V=\leer$ gilt $\I(V)=K\polyx$, d.h. $K[V]\cong 0$.
+\item\Label{1.4.8a} Ist $V=\A^n(K)$, so ist $\I(V)=(0)$ und damit $K[V]\cong K\polyx$.
+\item\Label{1.4.8b} Im anderen Extremfall $V=\leer$ gilt $\I(V)=K\polyx$, d.h. $K[V]\cong \{0\}$.
 \item\Label{1.4.8c} Ist $V$ ein Punkt, d.h. $V=\{(x_1,\dotsc,x_n)\}$, dann ist $\I(V)=(X_1-x_1,\dotsc,X_n-x_n)$. Also gilt dann $K[V]\cong K$. Man weiß ja auch, dass die maximalen Ideale in einem algebraisch abgeschlossenen Körper gerade den Punkten entsprechen.
 \item\Label{1.4.8d} Sei $V$ eine Hyperebene, d.h. $\I(V)=(a_1X_1+\dotsc+a_nX_n+c)$ mit mindestens einem $a_i\neq 0$.
-Dann ist $K[V]\cong K\polyx$ und $V\cong \A^{n-1}$.
-\item\Label{1.4.8e} Wir betrachten die Neilsche Parabel aus \cref{1.4.3}. Wir haben also $V=\V(Y^2-X^3)$ sowie $I=(Y^2-X^3)$,
-  $\V(I)=\{(t^2,t^3) \mid t\in K\}$. Folglich gilt
+Dann ist $K[V]\cong K\polyx[n-1]$ und $V\cong \A^{n-1}$.
+\item\Label{1.4.8e} Wir betrachten die Neilsche Parabel aus \cref{1.4.3}. Wir haben also 
+\[V=\V(Y^2-X^3)\text{ sowie }I=(Y^2-X^3),\text{ also }\V(I)=\{(t^2,t^3) \mid t\in K\}.\] 
+Folglich gilt
 \[K[V]\cong \Quotient{K[X,Y]}{(Y^2-X^3)}.\] 
-Man beachte: $\A^1(k)$ und $V$ sind birational, also gilt $K(V)\cong K(\A^1(K))$. Konkreter:
+Man beachte: $\A^1(k)$ und $V$ sind birational, also gilt $K(V)\cong K(\A^1(K))$. 
+
+Konkreter:
 Die Äquivalenzklasse von $X^3$ ist ein Quadrat in $K(V)$, also ist auch die Klasse von $X$ ein Quadrat.
-Wie sieht eine Wurzel von der Klasse von $X$ aus? Betrachte  
-\[r_1\colon  \begin{cases} \A^1(K)\ra V \\ t\mapsto (t^2,t^3) \end{cases} \text{ und \quad  } r_2\colon  \begin{cases} V\ra \A^1(K) \\ (x,y) \mapsto y/x\end{cases}\]
-Dann sind $r_1$ und $r_2$ sind birationale Abbildungen und induzieren 
-\begin{align*}&\alpha_1\colon  K(V)\ra K(\A^1(K))=K(t)\\
-\text{sowie }&\alpha_2\colon  K(\A^1(K))\ra K(V),\end{align*}
+Wie sieht eine Wurzel von der Klasse von $X$ aus? 
+
+Betrachte  dazu
+\[r_1\colon  \begin{cases} \A^1(K)\ra&\!\!\! V \\ \hfill t\mapsto &\!\!\!(t^2,t^3) \end{cases}\quad \text{ und } \quad r_2\colon  \begin{cases} \hfill V\ra&\!\!\! \A^1(K) \\ (x,y) \mapsto &\!\!\! y/x\end{cases}\]
+Dann sind $r_1$ und $r_2$ \hyperref[1.6.5]{birationale Abbildungen} und induzieren 
+\begin{align*}\alpha_1\colon  K(V)&\ra K(\A^1(K))=K(t),\\
+\alpha_2\colon  K(\A^1(K))&\ra K(V),\end{align*}
 wobei $\alpha_1(X)=t^2$ und $\alpha_2(t)=Y/X$. Also gilt in $K(V)$: $Y^2/X^2=X$.
-Im Koordinatenring $K[V]$ gibt es hingegen keine Wurzel aus der Klasse von $X$. Denn:
-Ansonsten gäbe es $P \in K[X,Y]$ mit $P^2-X \in (Y^2-X^3)$. Also gäbe es ein $f \in K[X,Y]$ mit $P^2(X,Y)=X+f(X,Y)(Y^2-X^3)$.
-Insbesondere:
- \[P^2(X,0)=X-f(X,0)\cdot X^3=X(1-f(X,0)X^2)\text{ in } K[X].\]
+
+Im Koordinatenring $K[V]$ gibt es hingegen keine Wurzel aus der Klasse von $X$. Denn ansonsten gäbe es $P \in K[X,Y]$ mit $P^2-X \in (Y^2-X^3)$. Also gäbe es ein 
+\[f \in K[X,Y]\text{ mit }P^2(X,Y)=X+f(X,Y)(Y^2-X^3).\]
+Insbesondere wäre dann
+ \[P^2(X,0)=X-f(X,0)\cdot X^3=X(1-f(X,0)X^2)\text{ in } K[X],\]
  Also wäre $P^2(X,0)$ durch $X$ aber nicht durch $X^2$ teilbar, was unmöglich ist.
+ 
+Daher ist $K[V]$ hier nicht isomorph zu $K[X]$.
 \end{enumerate}
 \end{bsp}
 
@@ -1499,7 +1547,7 @@ Wir bezeichnen $\B=\{\D(g)\mid g\in R\}$, was eine Basis der Topologie auf $\Spe
     und das ohne Einschränkung nicht von $i$ und $j$ abhängt. Insbesondere gibt es wie gerade eben ein $w\in\N$ mit
     \[f^w\in(f_1^N,\dotsc,f_m^N)\text{ und }f^w=\sum_{i=1}^ma_if_i^N.\] 
     Wir definieren 
-    \[g=\frac{1}{f^w}sum_{i=1}^ma_if_i^Ng_i\in R_f.\] 
+    \[g=\frac{1}{f^w}\sum_{i=1}^ma_if_i^Ng_i\in R_f.\] 
     Dann gilt in $R_{f_i}$
     \[ gf_j^N=\frac{1}{f^w}\sum_{i=1}^ma_if_i^Nf_j^Ng_j=\frac{1}{f^w}f^wg_jf_j^N=g_jf_j^N, \]
     also $g=g_j$ in $R_{f_j}$.
