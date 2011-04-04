@@ -288,6 +288,12 @@
 \setlist[prooflist]{leftmargin=*,labelindent=\parindent,label=(\arabic*)}
 \setlist[prooflist,2]{label=(\roman*)}
 
+% index
+\usepackage{makeidx}
+\makeindex
+\let\saveemph\emph
+\def\emph#1{\saveemph{#1}\index{#1}}
+
 %Polynomringe
 \newcommand{\polyx}[1][n]{\ensuremath%
   [X_{1},\dotsc,X_{#1}]}
@@ -712,10 +718,10 @@ großes $d$ ergibt dann $g^d\in I$.
 \end{ziel}
 \begin{dfn}\label{1.4.1}
 \begin{enumerate}
-\item\Label{1.4.1a} Seien $V\subseteq k^{n}, W\subseteq k^{m}$ affine Varietäten. Wir nennen eine Abbildung $f\colon V\ra W$ Morphismus, wenn es Polynome $f_1,\dotsc,f_m \in k\polyx$ mit 
+\item\Label{1.4.1a} Seien $V\subseteq k^{n}, W\subseteq k^{m}$ affine Varietäten. Wir nennen eine Abbildung $f\colon V\ra W$ einen \emph{Morphismus}, wenn es Polynome $f_1,\dotsc,f_m \in k\polyx$ mit 
 \[f(p)=(f_1(p),\dotsc,f_m(p)) \in k^{m}\text{ gibt.}\]
-\item\Label{1.4.1b} Ein Morphismus $f\colon V\ra W$ heißt Isomorphismus, wenn es einen Morphismus $g\colon W\ra V$ mit $g\circ f=\id_V$ und $f\circ g=\id_W$ gibt.
-\item\Label{1.4.1c} Gibt es einen Isomorphismus zwischen $V$ und $W$, so heißen $V$ und $W$ isomorph.
+\item\Label{1.4.1b} Ein Morphismus $f\colon V\ra W$ heißt \emph{Isomorphismus}, wenn es einen Morphismus $g\colon W\ra V$ mit $g\circ f=\id_V$ und $f\circ g=\id_W$ gibt.
+\item\Label{1.4.1c} Gibt es einen Isomorphismus zwischen $V$ und $W$, so heißen $V$ und $W$ \emph{isomorph}.
 \end{enumerate}
 \end{dfn}
 \begin{bem}\label{1.4.2} Die affinen Varietäten über $k$ bilden zusammen mit den Morphismen eine Kategorie: $\AffVar_k$.
@@ -920,6 +926,7 @@ Daher ist $K[V]$ hier nicht isomorph zu $K[X]$.
 \sect{Die Garbe der regulären Funktionen}
 
 In diesem Abschnitt wollen wir Morphismen \enquote{lokal}, d.h. auf offenen Mengen definieren.
+
 In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
 
 \begin{db}\label{1.5.1}
@@ -967,8 +974,9 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
   \item\Label{1.5.5b} Ist $U$ offen in $V$ und $(U_i)_{i\in I}$ eine offene Überdeckung von $U$, so gilt
     \begin{enumerate}
     \item\Label{1.5.5bi} Für alle $f\in\O_V(U)$ gilt $f=0$ genau dann wenn $\rho_{UU_i}(f)=0$ für alle $i\in I$.
-    \item\Label{1.5.5bii} Ist eine Familie $(f_i)_{i\in I}$ mit $f_i\in\O_V(U_i)$ gegeben, die $\rho_{U_iU_i\cap
-        U_j}(f_i)=\rho_{U_jU_i\cap U_j}(f_j)$  für alle $i,j\in I$ erfüllt, dann gibt es ein $f\in\O_V(U)$ mit
+    \item\Label{1.5.5bii} Ist eine Familie $(f_i)_{i\in I}$ mit $f_i\in\O_V(U_i)$ gegeben, die 
+    \[\rho_{U_iU_i\cap U_j}(f_i)=\rho_{U_jU_i\cap U_j}(f_j)\]
+      für alle $i,j\in I$ erfüllt, dann gibt es ein $f\in\O_V(U)$ mit
       $\rho_{UU_i}(f)=f_i$ für alle $i\in I$
       (\enquote{Verklebeeigenschaft}).
     \end{enumerate}
@@ -989,12 +997,12 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
 \begin{dfn}\label{1.5.6}
   \begin{enumerate}
   \item Sei $X$ ein topologischer Raum. Für jede offene Menge $U\subseteq X$ sei eine $K$-Algebra $\O(U)$ gegeben. Weiter sei
-    für jede Inklusion von offenen Mengen $U'\subseteq U$ eine $K$-Algebren-Homomorphismus $\rho_{UU'}\colon\O(U)\ra\O(U')$
+    für jede Inklusion von offenen Mengen $U'\subseteq U$ ein $K$-Algebren-Homomorphismus $\rho_{UU'}\colon\O(U)\ra\O(U')$
     gegeben, sodass die Eigenschaften \ref{1.5.5a} und \ref{1.5.5b} aus \cref{1.5.5} gelten. Dann heißt
     $\{\O(U),\rho_{UU'}\}_{U'\subseteq U\text{ offen}}$ eine \emph{Garbe von $K$-Algebren} und $\rho_{UU'}$ heißt
     \emph{Restriktionshomomorphismus}.
   \item Garben von Vektorräumen, Ringen, Mengen etc. sind analog definiert.
-  \item Aus der Bedingung \ref{1.5.5bi} in \cref{1.5.5} folgt die Eindeutigkeit von $f$ in \ref{1.5.5bii}
+  \item Aus der Bedingung \ref{1.5.5bi} in \cref{1.5.5} folgt die Eindeutigkeit von $f$ in \ref{1.5.5bii}.
   \item Sei $X$ ein topologischer Raum und $\O_X$ eine Garbe von Ringen auf $X$. Dann heißt $(X,\O_X)$ ein \emph{geringter Raum}
     und $\O_X$ heißt \emph{Strukturgarbe} auf $X$.
   \end{enumerate}
@@ -1007,18 +1015,15 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
 \begin{bsp}\label{1.5.8}
   Weitere Beispiele für Garben:
   \begin{itemize}
-  \item topologischer Raum mit Garbe der stetigen Funktionen
-  \item differenzierbare Mannigfaltigkeiten mit $C^k$-Funktionen
-  \item Riemannsche Flächen mit Garbe der holomorphen Funktionen
+  \item topologischer Raum mit Garbe der stetigen Funktionen,
+  \item differenzierbare Mannigfaltigkeiten mit $C^k$-Funktionen,
+  \item Riemannsche Flächen mit Garbe der holomorphen Funktionen.
   \end{itemize}
 \end{bsp}
 
-\begin{ziel}
-  \begin{itemize}
-  \item reguläre Funktionen möglichst global definieren
-  \item zunächst: endlich viele der $U_p$ reichen
-  \item $\O_V(V)=K[V]$
-  \end{itemize}
+\begin{ziel} Wir wollen reguläre Funktionen möglichst global definieren.
+Dazu zeigen wir zunächst, dass endlich viele der $U_p$ reichen
+und dass $\O_V(V)=K[V]$.
 \end{ziel}
 
 \begin{bem}\label{1.5.9}
@@ -1035,9 +1040,9 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
 \begin{proof}
   \begin{enumerate}
   \item[\ref{1.5.9i}] Das gilt, weil $K[V]$ noethersch als Ring ist.
-  \item[\ref{1.5.9ii}] Wenn das nicht so wäre, dann gäbe es in einer offenen Überdeckung $U\subseteq\bigcup_{i\in I}U_i$ eine
-    Folge $i_1,i_2,i_3,\dotsc$, so dass man kein $U_{i_j}$ weglassen kann. Damit wäre $U_{i_1}\subseteq U_{i_1}\cup U_{i_2}
-    \subseteq U_{i_1}\cup U_{i_2}\cup U_{i_3}\subseteq \dotso$ eine aufsteigende Kette offener Mengen, die nie stationär
+  \item[\ref{1.5.9ii}] Wenn das nicht so wäre, dann gäbe es in einer offenen Überdeckung \[U\subseteq\bigcup_{i\in I}U_i\] eine
+    Folge $i_1,i_2,i_3,\dotsc$, so dass man kein $U_{i_j}$ weglassen kann. Damit wäre \[U_{i_1}\subseteq U_{i_1}\cup U_{i_2}
+    \subseteq U_{i_1}\cup U_{i_2}\cup U_{i_3}\subseteq \dotsm\] eine aufsteigende Kette offener Mengen, die nie stationär
     wird. Dies ist ein Widerspruch zu \ref{1.5.9i}.
   \item[\ref{1.5.9iii}] Dass die $\D(g)$ eine Basis bilden, sieht man wie in \cref{1.5.1}. Es reichen endlich viele, weil
     jedes Ideal in $K[V]$ endlich erzeugt ist.
@@ -1047,12 +1052,12 @@ In diesem Abschnitt sei stets $K$ ein algebraisch abgeschlossener Körper.
 %8.11.10
 
 \begin{prop}\label{1.5.10}
-  Sei $V$ eine affine Varietät. Für $g\in K[V]$ und eine reguläre Funktion $r\in\O_V(\D(g))$ gibt es ein $f\in K[V]$ und ein
+  Sei $V$ eine affine Varietät. Dann gibt es für $g\in K[V]$ und eine reguläre Funktion $r\in\O_V(\D(g))$ ein $f\in K[V]$ und ein
   $d\in\N_0$, sodass $r=\frac{f}{g^d}$.
 \end{prop}
 \begin{proof}
   \begin{prooflist}
-  \item\Label{1.5.10i} Ohne Einschränkung kann in \cref{1.5.3} $U_p=\D(g_p)$ gewählt werden. Damit ist zunächst
+  \item\Label{1.5.10i} Ohne Einschränkung kann in \cref{1.5.3} $U_p=\D(g_p)$ für ein $g_{p}\in K[V]$ gewählt werden. Damit ist zunächst
     $r(x)=\frac{f_p(x)}{g_p(x)}$ für alle $x\in U_p$. Wir wählen ein $\schlange{g}_p\in K[V]$ mit $x\in \D(\schlange{g}_p)$. Also ist
     $\D(\schlange{g}_p)\subseteq U_p=\D(g_p)$ und damit $\schlange{g}_p\in\sqrt{(g_p)}$, es gibt also ein $h\in K[V]$ und ein $d\in\N$
     mit $\schlange{g}_p=h\cdot g_p$. Wir wählen $\schlange{\schlange{f}}=f_p\cdot h$ und $\schlange{\schlange{g}}_p=\schlange{g}_p^d$ und haben
@@ -3704,11 +3709,15 @@ Nun sei $a=\infty$. Dann ist $\frac{1}{X}$ uniformisierend und mit Leibniz sieht
 Also ist $\ord_{\infty}(\omega)=-2$ und damit ist $\K=-2\cdot \infty$ der kanonische Divisor zu $w$. Insbesondere ist $\deg \K=-2$. Setze $D=\K$. Nun liefert \cref{4.4.3b}: \[g(\P^1(K))=0.\] 
 \end{bsp}
 
-\chapter{Listen :)}
+\chapter{Anhang}
 
-\section{Sätze}
+\sect{Sätze}
+\theoremlisttype{allname}
 \listtheorems{satz}
 
-\section{Definitionen}
-\listtheorems{dfn}
+%\section{Definitionen}
+%\listtheorems{dfn}
+
+\sect{Stichwortverzeichnis}
+\printindex
 \end{document}
