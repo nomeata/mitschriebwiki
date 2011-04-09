@@ -139,11 +139,19 @@
 
 % Warnungen :)
 \usepackage{manfnt,environ}
+\newcommand{\currentsidemargin}{%
+  \ifodd\value{page}%
+     \oddsidemargin%
+   \else%
+     \evensidemargin%
+   \fi%
+}
 \NewEnviron{w}{\begin{center}\begin{tikzpicture}%
-\node[right,text width=0.95\textwidth,rounded corners,fill=orange,inner sep=1ex]{%
-  \hbox{\hspace{1em}\makebox[\width][t]{\raisebox{1.3ex}{\lhdbend}}\hspace{2em}%
-  \begin{minipage}[c]{.88\textwidth}\smallskip\BODY\medskip\end{minipage}%
-}};\end{tikzpicture}\end{center}\par}
+\node[text width=0.8\textwidth,rounded corners,fill=orange,inner sep=1ex]{%
+  \hbox{\hspace{1em}\makebox[\width][t]{\raisebox{1.3ex}{\lhdbend}}\hspace{1.2em}%
+  \begin{minipage}[c]{.8\textwidth}\smallskip\raggedright\BODY\medskip\end{minipage}%
+}};%\draw[->] (0,0) -- (current page.east);%
+\end{tikzpicture}\end{center}\par}
 
 \usepackage{textcomp}
 \newcommand{\sect}[1]{% nicht zu breit:
@@ -765,8 +773,9 @@ Also ist $f^{-1}(Z)$ abgeschlossen und $f$ damit stetig.
 \begin{w}
 Im Allgemeinen gibt es viel mehr stetige Abbildungen als Morphismen. 
 
-So ist beispielsweise, nach \cref{1.2.4}, jede bijektive Abbildung von $k$ nach $k$ stetig.
-\end{w}
+Beispielsweise ist jede bijektive Abbildung von $k$ nach $k$   stetig, wie wir in\par \cref{1.2.4} gesehen haben.
+
+\end{w}\par
 
 \begin{dfn}\label{1.4.5}
 Sei $V\subseteq \A^n(k)$ eine affine Varietät. Dann heißt 
@@ -776,7 +785,7 @@ Sei $V\subseteq \A^n(k)$ eine affine Varietät. Dann heißt
 
 \begin{bem}
 \begin{enumerate}
-\item\Label{1.4.6a} Der Koordinatenring $k[V]$ ist eine reduzierte $k$-Algebra, d.h. aus $f^n=0$ folgt $f=0$.
+\item\Label{1.4.6a} Der Koordinatenring $k[V]$ ist eine reduzierte $k$-Algebra, das heißt aus $f^n=0$ folgt $f=0$.
 \item\Label{1.4.6b} Es gilt $k[V] \cong \Quotient{k\polyx}{\I(V)}$.
 \end{enumerate}
 \end{bem}
@@ -1180,8 +1189,8 @@ In diesem Abschnitt sei stets $K$ algebraisch abgeschlossen und $V$ eine affine 
 
 \begin{db}\label{1.6.1}
 \begin{enumerate}
-\item\Label{1.6.1a} Eine \emph{rationale Funktion} auf $V$ ist eine Äquivalenzklasse von Paaren $(U,f)$, wobei $U$ dichte, offene Teilmenge von $V$ ist und $f\in \O_V(U)$. Hierbei sei 
-\[(U,f)\sim(U',f') \iff f\restrict{U\cap U'}=f'\restrict{U\cap U'}\]
+\item\Label{1.6.1a} Eine \emph{rationale Funktion} auf $V$ ist eine Äquivalenzklasse von Paaren $(U,f)$, wobei $U$ eine dichte, offene Teilmenge von $V$ mit $f\in \O_V(U)$ ist. Hierbei sei 
+\[(U,f)\sim(U',f') \iff f\restrict{U\cap U'}=f'\restrict{U\cap U'}.\]
 \item\Label{1.6.1b} In jeder Äquivalenzklasse gibt es ein maximales Element (bzgl. Inklusion auf $U$) $(U,f)$. Dieses $U$ heißt \emph{Definitionsbereich} und $V\setminus U$ heißt \emph{Polstellenmenge}.
 \item\Label{1.6.1c} Die rationalen Funktionen auf $V$ bilden eine $K$-Algebra. Schreibweise: $\Rat(V)$.
 \item\Label{1.6.1d} Ist $V$ irreduzibel, so ist $\Rat(V)$ isomorph zu $\Quot(K[V])=K(V)$.
@@ -1194,14 +1203,14 @@ In diesem Abschnitt sei stets $K$ algebraisch abgeschlossen und $V$ eine affine 
 Seien $(U_1,f_1)\sim (U_2,f_2)$ und $(U_2,f_2)\sim (U_3,f_3)$. Dann stimmen $f_1$ und $f_3$ auf $U_1\cap U_2\cap U_3$ überein. Da $U_1\cap U_2\cap U_3$ dicht in $V$ ist, folgt mit dem Identitätssatz \cref{1.5.13}:
 \[f_1\restrict{U_1\cap U_3}=f_3\restrict{U_1\cap U_3}\]
 \item[\ref{1.6.1b}] Ist $(U,f)\sim(U',f')$, so kann auf $U\cup U'$ die reguläre Funktion $\dach{f}$ definiert werden, indem man 
-\[\dach{f}(x)=\begin{cases} f(x),&\text{falls } x\in U \\ f'(x),&\text{falls } x\in U'\end{cases}\] setzt.
+\[\dach{f}(x)=\begin{cases} f(x),&\text{falls } x\in U, \\ f'(x),&\text{falls } x\in U',\end{cases}\] setzt.
 
 Setze also $U_{max}=U\cup U'$, wobei $U'$ alle offenen Mengen durchläuft für die es ein $f'\in \O(U')$ gibt mit $(U',f')\sim (U,f)$.
 \item[\ref{1.6.1c}] Summen und Produkte von rationalen Funktionen sind wieder rational und das ist mit der Äquivalenzrelation verträglich. Dabei ist zu beachten, dass man die Definitionsbereiche schneiden muss.
 \item[\ref{1.6.1d}] Definiere den $K$-Algebrenhomomorphismus $\alpha$ durch
-\[\alpha\colon K(V)\ra \Rat(V), \quad \frac{g}{h}\mapsto\relax [(\D(h),\frac{g}{h}].\] 
-Sei $(U,r)$ mit $r\in \O(U)$ rationale Funktion. Da $r$ regulär gibt es $U'\subseteq U$ mit $r\restrict{U'}=\frac{g}{h}$, wobei
-$g,h \in K[V]$ und $h\in \O(U')$. Da V irreduzibel ist, ist $U'$ bereits dicht. Also gilt $\alpha(\frac{g}{h})=[(U,r)]$ und $\alpha$ ist surjektiv.
+\[\alpha\colon K(V)\ra \Rat(V), \quad \frac{g}{h}\mapsto\relax \left[\left(\D(h),\frac{g}{h}\right)\right].\] 
+Sei $(U,r)$ mit $r\in \O(U)$ eine rationale Funktion. Da $r$ regulär ist, gibt es $U'\subseteq U$ mit $r\restrict{U'}=\frac{g}{h}$, wobei
+$g,h \in K[V]$ und $h\in \O(U')$. Da $V$ irreduzibel ist, ist $U'$ bereits dicht. Also gilt $\alpha(\frac{g}{h})=[(U,r)]$ und $\alpha$ ist surjektiv.
 
 Die Injektivität ist klar, da $K(V)$ ein Körper ist.
 \end{enumerate}
@@ -1212,29 +1221,29 @@ Sei $V$ irreduzibel. Der Körper $K(V)\cong \Rat(V)$ heißt \emph{Funktionenkör
 \end{dfn}
 
 \begin{w}
-Ist $V$ irreduzibel, so repräsentiert $\frac{g}{h} \in K(V)$ mit $g,h$ gekürzt die rationale Funktion $[(\D(h),\frac{g}{h})]$.
-%
-Aber: $\D(h)$ kann eine echte Teilmenge des Definitionsbereichs $\Def(r)$ sein. 
+Ist $V$ irreduzibel, so repräsentiert der gekürzte Bruch $\frac{g}{h} \in K(V)$ die rationale Funktion $r:=[(\D(h),\frac{g}{h})]$.
 
-Ist jedoch $K[V]$ faktoriell, so gilt $\D(h)=\D(r)$ (vgl. dazu auch Übungsblätter 4 und 5).
+Aber $\D(h)$ kann eine \textit{echte} Teilmenge des Definitionsbereichs $\Def(r)$ sein. 
+
+Ist jedoch $K[V]$ faktoriell, so gilt $\D(h)=\Def(r)$ (vgl. dazu auch Übungsblätter 4 und 5).
 \end{w}
 
 \begin{prop}\label{1.6.3}
-Seien $V,W$ irreduzible, affine Varietäten, $f \colon V\ra W$ ein Morphismus und $f^{\sharp} \colon K[W]\ra K[V]$ der reduzierte $K$-Algebrenhomomorphismus. Dann gilt:
+Seien $V,W$ irreduzible, affine Varietäten, $f \colon V\ra W$ ein Morphismus und $f^{\sharp} \colon K[W]\ra K[V]$ der induzierte $K$-Algebrenhomomorphismus. Dann gilt:
   \begin{enumerate}
   \item\Label{1.6.3a} $f^{\sharp}$ kann genau dann zu einem Körperhomomorphismus von $K(W)\ra K(V)$ fortgesetzt werden, wenn $f^{\sharp}$ injektiv ist.
-  \item\Label{1.6.3b} Weiter ist $f^{\sharp}$ genau dann injektiv, wenn $f(V)$ dicht in $W$ ist.
+  \item\Label{1.6.3b} $f^{\sharp}$ ist genau dann injektiv, wenn $f(V)$ dicht in $W$ ist.
   \end{enumerate}
 \end{prop}
 
 \begin{proof}
   \begin{enumerate}
   \item[\ref{1.6.3a}] Die Notwendigkeit der Injektivität von $f^{\sharp}$ ist klar. Ist umgekehrt $f^{\sharp}$ injektiv, so definiert man $f^{\sharp}(\frac{a}{b})=\frac{f^{\sharp}(a)}{f^{\sharp}(b)}$. Die Injektivität impliziert die Wohldefiniertheit und man sieht, dass man auf diese Art einen     Körperhomomorphismus erhält.
-  \item[\ref{1.6.3b}]  Mit $\alpha=f^{\sharp}$ gilt: Für jede Untervarietät $Z \subseteq V$ ist $\alpha^{-1}(\I(Z))=\I(f(Z))$. Denn:
-\begin{align*}g \in \alpha^{-1}(\I(Z))& \iff g\circ f \in \I(Z) \iff g \circ f(x)=0 \;\forall x \in Z\\
-& \iff g(y)=0 \;\forall y \in f(Z)\end{align*}
-Nun gilt: $\alpha$ ist injektiv $\iff 0=\alpha^{-1}(0)=\alpha^{-1}(\I(V)))=\I(f(V))=\I(\Bar{f(V)})$
-\[ \iff \Bar{f(V)}=W\]  
+  \item[\ref{1.6.3b}]  Für $f^{\sharp}$ gilt: Für jede Untervarietät $Z \subseteq V$ ist ${f^{\sharp}}^{-1}(\I(Z))=\I(f(Z))$. Denn:
+\begin{align*}g \in {f^{\sharp}}^{-1}(\I(Z))& \iff g\circ f \in \I(Z) \iff g \circ f(x)=0 \;\forall x \in Z\\
+& \iff g(y)=0 \;\forall y \in f(Z).\end{align*}
+Nun gilt: $f^{\sharp}$ ist injektiv $\iff 0={f^{\sharp}}^{-1}(0)={f^{\sharp}}^{-1}(\I(V))=\I(f(V))=\I(\Bar{f(V)})$
+\[ \iff \Bar{f(V)}=W.\]  
   \end{enumerate}
 \end{proof}
 
@@ -1244,65 +1253,74 @@ Ein Morphismus $f \colon V\ra W$ mit $\Bar{f(V)}=W$ heißt \emph{dominant}.
 
 \begin{db}\label{1.6.5} Seien $V\subseteq \A^n(K)$, $W\subseteq \A^m(K)$ affine Varietäten.
   \begin{enumerate}
-  \item\label{1.6.5a} Eine \emph{rationale Abbildung} $f \colon V\ppf W$ ist eine Äquivalenzklasse von Paaren $(U,f_U)$, wobei $U$ offen und dicht in $V$ und $f_U \colon U\ra W$ reguläre Abbildungen sind. Dabei:
-  \[(U,f_U)\sim (U',f'_U) \iff f_U\restrict{U\cap U'}=f'_{U'}\restrict{U\cap U'}\]
+  \item\label{1.6.5a} Eine \emph{rationale Abbildung} $f \colon V\ppf W$ ist eine Äquivalenzklasse $(U,f_U)$, wobei $U$ offen und dicht in $V$ und $f_U \colon U\ra W$ reguläre Abbildungen sind. Dabei ist
+  \[(U,f_U)\sim (U',f'_U) \iff f_U\restrict{U\cap U'}=f'_{U'}\restrict{U\cap U'}.\]
   \item\label{1.6.5b} Rationale Abbildungen nach $\A^1(K)$ sind rationale Funktionen.
   \item\label{1.6.5c} Jede rationale Abbildung $r \colon V\ppf W$ hat einen maximalen Definitionsbereich $\Def(r)$, der offen ist.
-  \item\label{1.6.5d} Sind $V$ und $W$ irreduzibel, so ist die Kompositon von dominanten rationalen Abbildungen wieder eine dominante rationale Abbildung, d.h. für $U$ dicht in $V$ ist \[\Bar{r(U)}=W.\]
-  \item\label{1.6.5e} Sind $V$ und $W$ irreduzibel, so induziert jede dominante rationale Abbildung \[f \colon V\ppf W\] einen Körperhomomorphismus $\alpha:=f^{\sharp} \colon K(W)\ra K(V)$ mit \[\alpha(g)=g\circ f.\]
+  \item\label{1.6.5d} Sind $V$ und $W$ irreduzibel, so ist die Komposition von dominanten rationalen Abbildungen wieder eine dominante rationale Abbildung, d.h. für $U$ dicht in $V$ ist \[\Bar{r(U)}=W.\]
+  \item\label{1.6.5e} Sind $V$ und $W$ irreduzibel, so induziert jede dominante rationale Abbildung \[f \colon V\ppf W\] einen Körperhomomorphismus $f^{\sharp} \colon K(W)\ra K(V)$ mit \[f^{\sharp}(g)=g\circ f.\]
   \item\label{1.6.5f} Eine rationale Abbildung $f \colon V\ppf W$ heißt birational, wenn es eine rationale Abbildung $g \colon W\ppf V$ gibt, so dass $f\circ g$ und $g\circ f$ definiert sind und jeweils die Identität ergeben.
   \end{enumerate}
 \end{db}
 
 \begin{bsp}\label{1.6.6}
   \begin{enumerate}
-  \item\Label{1.6.6a} Seien $V_1=V(X\cdot Y)$, $V_2=\A^1(K)$ und $V_3=\A^1(K)$. Weiter seien folgende rationale Abbildungen gegeben:
-  \begin{align*}f\colon&V_1\ppf V_2, \quad (x,y)\mapsto x\\
-  g\colon&V_2\ppf V_3, \quad x\mapsto \tfrac{1}{x}\end{align*}
+  \item\Label{1.6.6a} Seien $V_1=\V(X\cdot Y)$, $V_2=\A^1(K)$ und $V_3=\A^1(K)$. Weiter seien folgende rationale Abbildungen gegeben:
+  \begin{align*}f\colon&V_1\ppf V_2, \quad (x,y)\mapsto x,\\
+  g\colon&V_2\ppf V_3, \quad x\mapsto \tfrac{1}{x},\end{align*}
 
-  Hier ist $\Def(g\circ f)\subseteq V(Y)$, also insbesondere nicht dicht in $V_1$.
-  \item\Label{1.6.6b} Betrachte $\sigma \colon \A^2(K)\ra \A^2(K), \quad (x,y)\mapsto (\frac{1}{x},\frac{1}{y})$ ist auf $\A^2(K)\setminus V(X\cdot Y)$ definiert, also eine rationale Abbildung.
+  Hier ist $\Def(g\circ f)\subseteq \V(Y)$, also insbesondere nicht dicht in $V_1$.
+  \item\Label{1.6.6b} Die Abbildung $\sigma \colon \A^2(K)\ra \A^2(K),$  $(x,y)\mapsto (\frac{1}{x},\frac{1}{y})$ ist auf $\A^2(K)\setminus \V(X\cdot Y)$ definiert, also eine rationale Abbildung.
 
-  Beachte: $\sigma\circ \sigma=\id{\restrict{\A^2(K)-\V(X\cdot Y)}}$, folglich ist $\sigma$ sogar birational.
+  Beachte: $\sigma\circ \sigma=\id{\restrict{\A^2(K)\setminus\V(X\cdot Y)}}$, folglich ist $\sigma$ sogar birational.
 
-  \item\label{1.6.6c} Seien $V_1=\A^1(K)$, $V_2=\V(Y^2-X^3)$ (vgl. \cref{1.4.8e}) Betrachte die rationalen Abbildungen 
-  \[r_1 \colon V_1\ra V_2, \quad t\mapsto (t^2,t^3)\]
-  \[r_2 \colon V_2\supseteq \D(X)\ra V_1, \quad (x,y)\mapsto \frac{y}{x}\]
+  \item\label{1.6.6c} Seien $V_1=\A^1(K)$, $V_2=\V(Y^2-X^3)$ (vgl. \cref{1.4.8e}). Betrachte die rationalen Abbildungen 
+  \[r_1 \colon V_1\ra V_2, \quad t\mapsto (t^2,t^3),\]
+  \[r_2 \colon V_2\supseteq \D(X)\ra V_1, \quad (x,y)\mapsto \frac{y}{x},\]
 
   Dann erhalten wir:\begin{itemize}
      \item $r_2\circ r_1=\id_{U_1}$ mit $U_1=\Def(r_2\circ r_1)=\A^1(K)\setminus \{0\}$.
      \item $r_1\circ r_2=\id_{U_2}$ mit $U_2=\Def(r_1\circ r_2)=V_2\setminus \{(0,0)\}$.
      \end{itemize}
-  Ergebnis: $\V(Y^2-X^3)$ ist birational zu $\A^1(K)$, aber sie sind nicht isomorph.
+  Also ist $\V(Y^2-X^3)$ birational zu $\A^1(K)$, aber sie sind nicht isomorph.
   \end{enumerate}
 \end{bsp}  
 
 \begin{nbem}
-\begin{itemize}[leftmargin=*,labelindent=\parindent]
-  \item Irreduzible affine Varietäten und dominante rationale Abbildungen bilden eine Kategorie.
-\end{itemize}
+Irreduzible affine Varietäten bilden zusammen mit den dominanten rationalen Abbildungen  eine Kategorie.
 \end{nbem}
  
-\begin{satz}\label{satz4} Sei $K$ algebraisch abgeschlossen. Dann ist die Kategorie der endlich erzeugten Körpererweiterungen $\Quotient{L}{K}$ mit $K$-Algebrenhomomorphismen äquivalent zur Kategorie der irreduziblen affinen Varietäten mit dominanten rationalen Abbildungen.
+\begin{satz}\label{satz4} Sei $K$ algebraisch abgeschlossen. Dann ist die Kategorie der endlich erzeugten Körper\-erweiterungen $\Quotient{L}{K}$ mit $K$-Algebrenhomomorphismen äquivalent zur Kategorie der irreduziblen affinen Varietäten mit dominanten rationalen Abbildungen.
 \end{satz}
 
-\begin{proof} Zeige: $\Phi$ definiert Äquivalenz von Kategorien. Dazu:
+\begin{proof} Wir definieren
+\[\Phi\colon\begin{cases}V\mapsto K(V)\\f\mapsto f^{\sharp}\end{cases}\]
+und zeigen, dass das eine Äquivalenz von Kategorien liefert. Dazu zeigen wir: 
   \begin{itemize}
-  \item Für jede end. erz. Körpererweiterung $\Quotient{L}{K}$ gibt es eine irreduzible affine Varietät $V$ mit $K(V)\cong L$.
-  \item $\Phi$ ist volltreu, (d.h. induziert eine Bijektion auf den Morphismen)
+  \item Für jede endlich erzeugte Körpererweiterung $\Quotient{L}{K}$ gibt es eine irreduzible affine Varietät $V$ mit $K(V)\cong L$.
+  \item $\Phi$ ist volltreu, d.h. induziert eine Bijektion auf den Morphismenmengen.
   \end{itemize}
-Zum ersten Punkt: Wähle endlich viele Erzeuger $x_1,\dotsc,x_n$ von $\Quotient{L}{K}$, d.h. $L=K(x_1,\dotsc,x_n)$. Definiere $A=K[x_1,\dotsc,x_n]$ als die von $x_1,\dotsc,x_n$ erzeugte $K$-Algebra in $L$. Dann ist $A$ eine endlich erzeugte, reduzierte, nullteilerfreie
+Zum ersten Punkt: Wir wählen endlich viele Erzeuger $x_1,\dotsc,x_n$ der Körpererweiterung $\Quotient{L}{K}$, d.h. $L=K(x_1,\dotsc,x_n)$. Wir definieren $A=K[x_1,\dotsc,x_n]$ als die von $x_1,\dotsc,x_n$ erzeugte $K$-Algebra in $L$. Dann ist $A$ eine endlich erzeugte, reduzierte, nullteilerfreie
 $K$-Algebra. Deshalb gibt es nach \cref{satz3} eine affine Varietät $V$ mit $K[V]\cong A$. Da $A$ nullteilerfrei ist, ist $V$ irreduzibel und es gilt $K(V)\cong \Quot(A)\cong L$.
 
-Zum zweiten Punkt: Zeige: Sind $V,W$ affine Varietäten und $\alpha \colon K(W)\ra K(V)$ $K$-Algebrenhomomorphismus, so gibt es eine rationale Abbildung $f=f_{\alpha}\colon V\ppf W$ mit $\alpha=f^{\sharp}$.
-Für den Beweis dieser Aussage seien $g_1,\dotsc,g_m$ Erzeuger von $K[W]$. Dann ist $\alpha(g_i)\in K(V)$ und $\bigcup_{i=1}^{m} \Def(\alpha(g_i))$ ist offen und dicht in $V$. Wähle \[U=D(g)\subseteq \bigcup_{i=1}^{m} \Def(\alpha(g_i))\text{ mit }g \in K[V].\]
-Nach \cref{1.5.15} ist  $D(g)$ affin, also existiert eine affine Varietät $X$ und ein Isomorphismus $\Psi \colon X\ra (D(g)$.
-%kommutatives Diagramm
-Also: $\Psi^{\sharp}\circ \alpha \colon K[W] \ra \O(X)=K[X]$ induziert $\schlange{f} \colon X\ra W$.
-Damit ist $f:=\schlange{f}\circ \Psi^{-1}$ eine reguläre Abbildung von $U$ nach $W$. Diese induziert eine rationale Abbildung $f \colon V\ppf W$. Da $\Psi^{\sharp}\circ \alpha$ injektiv ist, ist $f$ dominant und nach \cref{1.6.3} ist damit auch $\schlange{f}$ dominant.
+Zum zweiten Punkt zeigen wir: Sind $V,W$ affine Varietäten und $\alpha \colon K(W)\ra K(V)$ ein $K$-Algebrenhomomorphismus, so gibt es eine rationale Abbildung \[f=f_{\alpha}\colon V\ppf W\text{ mit }\alpha=f^{\sharp}.\]
+%
+Für den Beweis dieser Aussage seien $g_1,\dotsc,g_m$ Erzeuger von $K[W]$. 
 
-Nun fehlt nur noch zu zeigen, dass $\Phi$ treu ist. Seien dazu $v_1$, $v_2 \colon V\ppf W$ rationale Abbildungen und $r_1^{\sharp}=r_2^{\sharp}=\alpha$. Wähle $U$ offen, affin und klein genung, so dass $r_1$, $r_2$ auf $U$ definiert sind.
-Folglich induzieren $r_1$ und $r_2$ als Abbildungen von $U\cong X$ nach $W$ dasselbe $\alpha \colon K[W] \ra \O(U)\cong K[X]$. Nach \cref{satz3} gilt: $r_1\restrict{U}=r_2\restrict{U}$. Da $U$ dicht in $V$ ist, folgt $r_1=r_2$.
+Dann ist $\alpha(g_i)\in K(V)$ und $\bigcup_{i=1}^{m} \Def(\alpha(g_i))$ ist offen und dicht in $V$. Wähle 
+\[U:=\D(g)\subseteq \bigcap_{i=1}^{m} \Def(\alpha(g_i))\text{ mit }g \in K[V].\]
+Nach \cref{1.5.15} ist  $\D(g)$ affin, also existiert eine affine Varietät $Z$ und ein Isomorphismus $\Psi \colon Z\ra \D(g)$.
+%kommutatives Diagramm
+So erhalten wir
+\[\Psi^{\sharp}\circ \alpha \colon K[W] \ra \O(Z)=K[Z]\]
+und das induziert $\schlange{f} \colon Z\ra W$.
+
+Damit ist $\dach{f}:=\schlange{f}\circ \Psi^{-1}$ eine reguläre Abbildung von $U$ nach $W$. Diese induziert eine rationale Abbildung $f \colon V\ppf W$, da $U$ dicht in $V$ liegt. Da $\Psi^{\sharp}\circ \alpha$ injektiv ist, ist $f$ dominant nach \cref{1.6.3}.
+
+Nun bleibt nur noch zu zeigen, dass $\Phi$ treu ist. Seien dazu $r_1$, $r_2 \colon V\ppf W$ rationale Abbildungen und $r_1^{\sharp}=r_2^{\sharp}=\alpha$. Wir wählen $U$ offen, affin und so klein, dass $r_1$ und $r_2$ auf $U$ definiert sind.
+Dann induzieren $r_1$ und $r_2$ aber als Abbildungen von $U\cong Z$ nach $W$ aufgefasst das selbe 
+\[\alpha \colon K[W] \ra \O(U)\cong K[Z].\] 
+Nun können wir \cref{satz3} anwenden und sehen $r_1\restrict{U}=r_2\restrict{U}$ und da $U$ dicht in $V$ liegt, folgt $r_1=r_2$.
 \end{proof}
 
 \sect{Spektrum eines Rings}
@@ -1320,11 +1338,17 @@ Folglich induzieren $r_1$ und $r_2$ als Abbildungen von $U\cong X$ nach $W$ dass
   ist).
 \end{erinnerung}
 
+\newlength\breite
+\settowidth\breite{Radikalideale in $K\polyx$,}
 \begin{eb}\label{1.7.1}
   Sei $V\subseteq\A^n(K)$ eine affine Varietät ($K$ algebraisch abgeschlossen). Dann haben wir Bijektionen
   \begin{enumerate}
-  \item\Label{1.7.1.1}\mbox{$\{\text{Untervarietäten von }V\}$\begin{minipage}[t]{\textwidth}$ \lra \{\text{Radikalideale in }K\polyx,\text{ die }\I(V)\text{ enthalten}\}$\\ $\lra \{\text{Radikalideale in }K[V]\}$\end{minipage}}
-  \item\Label{1.7.1.2} $\displaystyle \{\text{irreduzible Untervarietäten von }V\} \lra \{\text{Radikalideale in
+  \item\Label{1.7.1.1}\mbox{$\{\text{Untervarietäten von }V\}$\begin{minipage}[t]{.5\textwidth}$ \lra \left\{%
+  \begin{minipage}[c]{\breite}\begin{center}%
+    Radikalideale in $K\polyx$,\par die $\I(V)$ enthalten%
+  \end{center}\end{minipage}%
+  \right\}$\par $\lra\; \{\text{Radikalideale in }K[V]\}$\end{minipage}}
+  \item\Label{1.7.1.2} $\displaystyle \{\text{irreduzible Untervarietäten von }V\} \lra \{\text{Primideale in
     }K[V]\}$
   \item\Label{1.7.1.3} $\displaystyle\{\text{Punkte in }V\} \lra \{\text{maximale Ideale in }K[V]\}$
   \end{enumerate}
@@ -1344,19 +1368,19 @@ Folglich induzieren $r_1$ und $r_2$ als Abbildungen von $U\cong X$ nach $W$ dass
 \begin{db}\label{1.7.2}
   Sei $R$ ein kommutativer Ring mit Eins.
   \begin{enumerate}
-  \item\Label{1.7.2i} Die Menge $\Spec R = \{\wp\subseteq R \mid \wp\text{ ist Primideal}\}$ heißt \emph{Spektrum von $R$}.
-  \item\Label{1.7.2ii} Für eine Teilmenge $S\subseteq R$ heißt $\V(S) = \{p\in\Spec R \mid p\supseteq S\}$
+  \item\Label{1.7.2i} Die Menge $\Spec R := \{\wp\subseteq R \mid \wp\text{ ist Primideal}\}$ heißt \emph{Spektrum von $R$}.
+  \item\Label{1.7.2ii} Für eine Teilmenge $S\subseteq R$ heißt $\V(S) := \{\wp\in\Spec R \mid \wp\supseteq S\}$
     \emph{Verschwindungsmenge von $S$} und es gilt $\V(S)=\V((S))$.
   \item\Label{1.7.2iii} Die Mengen $\V(I)$ für Ideale $I\subseteq R$ bilden die abgeschlossenen Mengen einer Topologie auf
     $\Spec R$, diese heißt \emph{Zariski-Topologie}.
-  \item\Label{1.7.2iv} Für $Z\subseteq\Spec R$ heißt $\I(Z)=\displaystyle\bigcap_{p\in Z}p$ das \emph{Verschwindungsideal von
+  \item\Label{1.7.2iv} Für $Z\subseteq\Spec R$ heißt $\I(Z):=\displaystyle\bigcap_{\wp\in Z}\wp$ das \emph{Verschwindungsideal von
       $Z$}.
   \end{enumerate}
 \end{db}
 \begin{proof}
   \begin{enumerate}
-  \item[\ref{1.7.2ii}] Die Inklusion \enquote{$\supseteq$} ist klar. Für die umgekehrte Inklusion sei $p\in\V(S)$, also
-    $p\supseteq S$. Da $p$ ein Ideal ist, folgt $p\supseteq (S)$, also $p\in\V((S))$.
+  \item[\ref{1.7.2ii}] Die Inklusion \enquote{$\supseteq$} ist klar. Für die umgekehrte Inklusion sei $\wp\in\V(S)$, also
+    $\wp\supseteq S$. Da $\wp$ ein Ideal ist, folgt $\wp\supseteq (S)$, also $\wp\in\V((S))$.
   \item[\ref{1.7.2iii}] Das zeigt man wie in \cref{1.2.1}, insbesondere gilt
     \[\displaystyle\bigcap_{\lambda\in\Lambda}\V(I_\lambda) =
     \V\Bigl(\bigcup_{\lambda\in\Lambda}I_\lambda\Bigr)=\V\Bigr(\sum_{\lambda\in\Lambda}I_\lambda\Bigr)\] und
@@ -1367,10 +1391,10 @@ Folglich induzieren $r_1$ und $r_2$ als Abbildungen von $U\cong X$ nach $W$ dass
 \begin{db}\label{1.7.3}
   \begin{enumerate}
   \item\Label{1.7.3i} Elemente aus $R$ können als Funktionen aufgefasst werden:
-    \[ r\colon \Spec R \ra \!\!\!\bigcup_{p\in\Spec R}\!\!\! \Quot\bigl(\Quotient{R}{p}\bigr),\quad
-    p\mapsto\Bar{r}\in\Quot\bigl(\Quotient{R}{p}\bigr) \]
-  \item\Label{1.7.3ii} Ein Primideal $p$ ist genau dann Nullstelle von $r\in R$, wenn $\Bar{r}=0$ in $\Quotient{R}{p}$, also wenn
-    $r\in p$ gilt.
+    \[ r\colon \Spec R \ra \!\!\!\bigcup_{\wp\in\Spec R}\!\!\! \Quot\bigl(\Quotient{R}{\wp}\bigr),\quad
+    p\mapsto\Bar{r}\in\Quot\bigl(\Quotient{R}{\wp}\bigr) \]
+  \item\Label{1.7.3ii} Ein Primideal $\wp$ ist genau dann Nullstelle von $r\in R$, wenn $\Bar{r}=0$ in $\Quotient{R}{\wp}$, also wenn
+    $r\in \wp$ gilt.
   \end{enumerate}
 \end{db}
 
@@ -1387,7 +1411,7 @@ Folglich induzieren $r_1$ und $r_2$ als Abbildungen von $U\cong X$ nach $W$ dass
 \begin{bem}\label{1.7.5}
   \begin{enumerate}
   \item\Label{1.7.5i} Für $Z\subseteq\Spec R$ ist $\V(\I(Z))=\Bar{Z}$ der Abschluss von $Z$.
-  \item\Label{1.7.5ii} Für $f\in R$ sei $\D(f)=\Spec R\setminus\V(f)$ = $\{p\in\Spec R\mid f\notin p\}$. Die Mengen $\D(f)$
+  \item\Label{1.7.5ii} Für $f\in R$ sei $\D(f)=\Spec R\setminus\V(f)$ = $\{\wp\in\Spec R\mid f\notin \wp\}$. Die Mengen $\D(f)$
     bilden eine Basis der Topologie auf $\Spec R$.
   \item\Label{1.7.5iii} Sei $V\subseteq\Spec R$ nichtleer. Dann ist $V$ genau dann irreduzibel, wenn $\I(V)$ ein Primideal ist.
   \end{enumerate}
@@ -1395,10 +1419,10 @@ Folglich induzieren $r_1$ und $r_2$ als Abbildungen von $U\cong X$ nach $W$ dass
 \begin{proof}
   \begin{enumerate}
   \item[\ref{1.7.5i}] Es gilt:\vspace*{-6pt}
-  \[\V(\I(Z))=\{p\in\Spec R\mid p\supseteq\I(Z)\} = \{p\in\Spec R\mid p\subseteq\bigcap_{q\in Z}q\}\supseteq Z.\]
+  \[\V(\I(Z))=\{\wp\in\Spec R\mid \wp\supseteq\I(Z)\} = \{\wp\in\Spec R\mid \wp\supseteq\bigcap_{q\in Z}q\}\supseteq Z.\]
     Daraus folgt, dass der Abschluss von $Z$ in $\V(\I(Z))$ liegt. Für die andere Inklusion sei
     $\Bar{Z}=\V(J)=\{q\in\Spec R\mid q\supseteq J\}$. Da $Z\subseteq\Bar{Z}$, gilt für alle $p\in Z$, dass $p\supseteq J$. Sei
-    nun $q\in\V(\I(Z))$. Dann gilt $q\supseteq\bigcap_{p\in Z}p\supseteq J$, also $q\in\V(J)$.
+    nun $q\in\V(\I(Z))$. Dann gilt \[q\supseteq\bigcap_{\wp\in Z}\wp\supseteq J,\] also $q\in\V(J)$.
   \item[\ref{1.7.5ii}] Das geht wie in \cref{1.5.9iii}.
   \item[\ref{1.7.5iii}] Das geht wie in \cref{1.2.9}.
   \end{enumerate}
@@ -1406,8 +1430,8 @@ Folglich induzieren $r_1$ und $r_2$ als Abbildungen von $U\cong X$ nach $W$ dass
 
 \begin{bem}\label{1.7.6}
   \begin{enumerate}
-  \item\Label{1.7.6i} Für $p\in\Spec R$ gilt $\Bar{\{p\}}=\{q\in\Spec R\mid q\supseteq p\}=\V(p)$.
-  \item\Label{1.7.6ii} Für $p\in\Spec R$ ist $\{p\}$ genau dann abgeschlossen, wenn $p$ ein maximales Ideal ist.
+  \item\Label{1.7.6i} Für $\wp\in\Spec R$ gilt $\Bar{\{\wp\}}=\{q\in\Spec R\mid q\supseteq \wp\}=\V(\wp)$.
+  \item\Label{1.7.6ii} Für $\wp\in\Spec R$ ist $\{\wp\}$ genau dann abgeschlossen, wenn $\wp$ ein maximales Ideal ist.
   \item\Label{1.7.6iii} Sei $R$ nullteilerfrei. Dann gilt $\Bar{\{(0)\}}=\Spec R$.
   \end{enumerate}
 \end{bem}
@@ -1418,10 +1442,10 @@ Folglich induzieren $r_1$ und $r_2$ als Abbildungen von $U\cong X$ nach $W$ dass
 
 \begin{bsp}\label{1.7.8}
   Sei $V$ eine affine Varietät.
-  \begin{itemize}
+  \begin{enumerate}
   \item Die abgeschlossenen Punkte in $\Spec K[V]$ entsprechen bijektiv den Punkten der affinen Varietät $V$.
-  \item Ist $V$ irreduzibel, dann ist $(0)$ ein generischer Punkt. Dazu gehört gerade $V$ als Untervarietät von $V$.
-  \end{itemize}
+  \item Ist $V$ irreduzibel, dann ist $\{(0)\}$ ein generischer Punkt. Dazu gehört gerade $V$ als Untervarietät von $V$.
+  \end{enumerate}
 \end{bsp}
 
 %24.11.10
@@ -1447,15 +1471,15 @@ Folglich induzieren $r_1$ und $r_2$ als Abbildungen von $U\cong X$ nach $W$ dass
 
 \begin{prop}\label{1.7.10}
   Sei $K$ algebraisch abgeschlossen und $V\subseteq\A^n(K)$ eine affine Varietät. Dann ist die Abbildung
-  \[ m\colon V\ra \Spec K[V], \quad x\mapsto m_x=\{f\in K[V]\mid f(x)=0\} \]
+  \[ \m\colon V\ra \Spec K[V], \quad x\mapsto \m_x=\{f\in K[V]\mid f(x)=0\} \]
   injektiv und stetig.
 \end{prop}
 \begin{proof}
   Die Injektivität folgt aus \cref{1.7.1}. Für den Beweis der Stetigkeit sei $I\subseteq K[V]$ ein Ideal und
   $Z=\V(I)\subseteq\Spec K[V]$. Für die affine
-  Varietät $V$ gilt
-  \[x\in\V(I) \iff f(x)=0 \text{ für alle }f\in I \iff f\in m_x \text{ für alle }f\in I \iff I\subseteq m_x. \]
-  Damit gilt $m^{-1}(Z)=\{x\in V\mid m_x\in Z\}=\{x\in V\mid m_x\supseteq I\}=\V(I)\subseteq V$. Also sind Urbilder
+  Varietät $Z$ gilt
+  \[x\in\V(I) \iff f(x)=0 \text{ für alle }f\in I \iff f\in \m_x \text{ für alle }f\in I \iff I\subseteq \m_x. \]
+  Damit gilt $\m^{-1}(Z)=\{x\in V\mid \m_x\in Z\}=\{x\in V\mid \m_x\supseteq I\}=\V(I)\subseteq V$. Also sind Urbilder
   abgeschlossener Mengen abgeschlossen.
 \end{proof}
 
@@ -1470,7 +1494,7 @@ Folglich induzieren $r_1$ und $r_2$ als Abbildungen von $U\cong X$ nach $W$ dass
 \begin{proof}
   \begin{enumerate}
   \item[\ref{1.7.11i}] Aus \cref{1.7.5i} folgt $\V(\I(V))=\Bar{V}=V$.
-  \item[\ref{1.7.11ii}] Nach \cref{1.7.12} gilt $\displaystyle\I(\V(I))=\bigcap_{p\in\V(I)}p=\bigcap_{p\supseteq I}p=\sqrt{I}$.
+  \item[\ref{1.7.11ii}] Nach \cref{1.7.12} gilt $\displaystyle\I(\V(I))=\!\!\bigcap_{\wp\in\V(I)}\!\!\wp=\bigcap_{\wp\supseteq I}\wp=\sqrt{I}$.
   \end{enumerate}
 \end{proof}
 
@@ -1485,10 +1509,10 @@ Folglich induzieren $r_1$ und $r_2$ als Abbildungen von $U\cong X$ nach $W$ dass
 \begin{proof}
   \begin{enumerate}
   \item[\ref{1.7.12ii}] Die Inklusion \enquote{$\supseteq$} gilt, weil der Schnitt von Radikalidealen wieder ein Radikalideal
-    ist. Die andere Inklusion folgt aus \ref{1.7.12i}: Sei $a\in R\setminus\sqrt{I}$ und $S=\{a^n\mid n\in\N_0\}$. Dann ist $S$
+    ist. Die andere Inklusion folgt aus \ref{1.7.12i}: Sei $a\in R\setminus\sqrt{I}$ und $S:=\{a^n\mid n\in\N_0\}$. Dann ist $S$
     ein multiplikatives System und $I\cap S=\leer$. Nach \ref{1.7.12i} gibt es dann ein Primideal $\wp$ mit $\wp\supseteq I$ und
-    $\wp\cap S=\leer$. Damit fliegt $a$ raus im Schnitt.
-  \item[\ref{1.7.12i}] Betrachte den kanonischen Ringhomomorphismus $\phi\colon R\ra R_S$. Sei $I'=\langle\phi(I)\rangle$ das von $\phi(i)$
+    $\wp\cap S=\leer$. Damit fliegt $a$ im Schnitt raus.
+  \item[\ref{1.7.12i}] Betrachte den kanonischen Ringhomomorphismus $\phi\colon R\ra R_S$. Sei $I'=\langle\phi(I)\rangle$ das von $\phi(I)$
     erzeugte Ideal in $R_S$, also $I'=\{\frac{f}{a}\in R_S\mid f\in I,\ a\in S\}$.
 
     Zunächst überlegen wir uns, dass $I'\neq R_S$, also $1\notin I'$. Denn wäre $1\in I'$, dann gäbe es $f\in I$ und $a\in S$
@@ -1503,14 +1527,13 @@ Folglich induzieren $r_1$ und $r_2$ als Abbildungen von $U\cong X$ nach $W$ dass
 \end{proof}
 
 \begin{ziel}
-  Strukturgarbe $\O_X$ auf $X=\Spec R$ mit $\O_X(\D(f))\cong R_f$
-%Verbesserung: Satzbau
+  Wir suchen eine Strukturgarbe $\O_X$ auf $X=\Spec R$ mit $\O_X(\D(f))\cong R_f$.
 \end{ziel}
 
-\textsc{Schreibweisen}:
+Ab jetzt verwenden wir Folgende \textsc{Schreibweisen}:
 \begin{itemize}
-\item Für $f\in R$ und $S=\{f^n\mid n\in\N_0\}$ schreiben wir $R_f=R_S$.
-\item Für ein Primideal $\wp\subseteq R$ und $S=R\setminus\wp$ schreiben wir $R_\wp=R_S$.
+\item Für $f\in R$ und $S=\{f^n\mid n\in\N_0\}$ schreiben wir $R_f:=R_S$.
+\item Für ein Primideal $\wp\subseteq R$ und $S=R\setminus\wp$ schreiben wir $R_\wp:=R_S$.
 \item Es gilt $a=0$ in $R_S$ genau dann, wenn es ein $t\in S$ gibt mit $ta=0$.
 \end{itemize}
 
@@ -1518,12 +1541,12 @@ Folglich induzieren $r_1$ und $r_2$ als Abbildungen von $U\cong X$ nach $W$ dass
 $g\in\sqrt{(f)}$, d.h. es gibt ein $m\in\N$ und $h\in R$ mit $g^m=fh$. Wir erhalten so eine Abbildung
 \[ \rho_{\D(g)}^{\D(f)}\colon R_f\ra (R_f)_h=R_{fh}=R_{g^m}=R_g. \]
 
-Wir bezeichnen $\B=\{\D(g)\mid g\in R\}$, was eine Basis der Topologie auf $\Spec R$ ist.
+Wir setzen $\B=\{\D(g)\mid g\in R\}$, was eine Basis der Topologie auf $\Spec R$ ist.
 
 \begin{prop}\label{1.7.13}
   Sei $R$ ein noetherscher kommutativer Ring mit Eins.
   Auf $\Spec R$ gibt es eine eindeutige Garbe $\F$ von Ringen mit $\F(\D(f))\cong R_f$ und für $\D(g)\subseteq
-  \D(f)$ ist die Restriktionsabbildung $\rho_{\D(g)}^{\D(f)}$ definiert wie in der Vorüberlegung.
+  \D(f)$ ist die Restriktionsabbildung $\rho_{\D(g)}^{\D(f)}$ wie in der Vorüberlegung definiert.
 \end{prop}
 \begin{proof}
   Wir definieren $\F(\D(f))=R_f$ und zeigen
@@ -1602,11 +1625,13 @@ Wir bezeichnen $\B=\{\D(g)\mid g\in R\}$, was eine Basis der Topologie auf $\Spe
       I)}$. Insbesondere gilt $\displaystyle\Spec R=\bigcup_{i\in I}\D(f_i)$ genau dann, wenn $1\in(f_i\mid i\in I)$.
   \item\Label{1.7.15ii} $\D(f)$ ist quasikompakt.
   \item\Label{1.7.15iii} Wenn $R$ noethersch ist, ist $\Spec R$ ein noetherscher topologischer Raum.
-    \begin{w}
-      Die Gegenrichtung stimmt nicht! Insbesondere ist $\Spec R$ nicht immer ein noetherscher topologischer Raum.
-    \end{w}
   \end{enumerate}
 \end{bem}
+
+    \begin{w}
+      Die Gegenrichtung stimmt nicht! Insbesondere ist $\Spec R$ nicht immer ein\par noetherscher topologischer Raum.
+    \end{w}
+
 \begin{proof}
   \begin{enumerate}
   \item[\ref{1.7.15i}] Es gilt $\displaystyle \D(f)=\bigcup_{i\in I}\D(f_i) \iff V(f)=\bigcap_{i\in I}V(f_i) \iff
@@ -1665,7 +1690,7 @@ projektiven Raum $\P^n(K)$ vergrößern. Die Punkte darin sollen die Geraden in 
 %\sect{Der Projektive Raum für Schüler}
 
 %29.11.10
-\sect{Der Projektive Raum $\P^{n}(k)$}
+\sect{Der Projektive Raum \texorpdfstring{$\P^{n}(k)$}{P\textasciicircum\relax n(k)}}
 
 Sei $k$ immer ein Körper und $n\in\N_{0}$.
 
@@ -1688,14 +1713,16 @@ ist eine Bijektion und ordnet jeder Geraden ihre Steigung zu.
 \item Für $k=\C$ ist $\P^{1}(\C)=\C\cup\{\infty\}$. Das lässt sich (z.B. mit Hilfe der riemannschen Zahlenkugel) mit der $\S^{2}$ identifizieren.
 \end{itemize}
 \item Es gilt $\P^{n}(\R)=\Quotient{\S^{n}(\R)}{\{\pm1\}}$ und $\P^{n}(\C)=\Quotient{\S^{n}(\C)}{\{c\in\C\mid |c|=1\}}$. Bezüglich der Quotiententopologie, die von $k^{n+1}$ mit der euklidischen Topologie herkommt, sind das kompakte Hausdorffräume.
+\end{enumerate}
 \begin{w}Das ist nicht die Zariski-Topologie!\end{w}
 %1.12.10
+\begin{enumerate}[resume]
 \item Für $k=\FF_{p}$ ist
 \[\card{\P^{n}(\FF_{p})}=\frac{p^{n+1}-1}{p-1}=1+\dotsm+p^{n}.\]
 \end{enumerate}\end{bsp}
 
 \begin{db}\label{2.2.3}
-Für $i\in\{0,\dotsc,n\}$ sei $U_{i}:=\{x=(x_{0}:\dotsm:x_{n})\in\P^{n}(k)\mid x_{i}\neq 0\}$. Das ist wohldefiniert(!) und es gilt:
+Für $i\in\{0,\dotsc,n\}$ sei \[U_{i}:=\{x=(x_{0}:\dotsm:x_{n})\in\P^{n}(k)\mid x_{i}\neq 0\}.\] Das ist wohldefiniert(!) und es gilt:
 \begin{enumerate}
 \item\Label{2.2.3a} $\displaystyle\P^{n}(k)=\bigcup_{i=0}^{n}U_{i}$
 \item\Label{2.2.3b}\Label{phii} Sei
@@ -1706,7 +1733,7 @@ Die Abbildung
 ist wohldefiniert und bijektiv und ihre Umkehrabbildung ist $\phi_{i}$.
 \item\Label{2.2.3c}
 Die Abbildung $\P^{n}(k)\setminus U_{i}\ra\P^{n-1}(k),$
-\[(x_{0}:\dotsm:x_{n})\mapsto(x_{0}:x_{1}:\dotsm:x_{i-1}:x_{i+1}:\dotsm:x_{n})=:(x_{0}:\dotsm:\dach{x_{i}}:\dotsm:x_{n})\]
+\begin{align*}(x_{0}:\dotsm:x_{n})\mapsto&(x_{0}:x_{1}:\dotsm:x_{i-1}:x_{i+1}:\dotsm:x_{n})\\&=:(x_{0}:\dotsm:\dach{x_{i}}:\dotsm:x_{n})\end{align*}
 ist wohldefiniert und bijektiv.
 \item\Label{2.2.3d} Damit erhalten wir eine Bijektion:
 \[\P^{n}(k)\longleftrightarrow\A^{n}(k)\cup\A^{n-1}(k)\cup\dotsm\A^{1}(k)\cup\{\infty\}.\]
@@ -1715,7 +1742,7 @@ ist wohldefiniert und bijektiv.
 \item[\ref{2.2.3a}] ist klar nach Definition der $U_{i}$.
 \item[\ref{2.2.3b}] Man rechnet einfach nach, dass die Abbildungen zueinander invers sind.
 \item[\ref{2.2.3c}] Da $x_{i}=0$ gibt es ein $j\neq i$ mit $x_{j}\neq0$, also ist die Abbildung wohldefiniert. Wir geben wieder eine Umkehrabbildung an:
-\[\P^{n-1}(k)\ra\P^{n}(k)\setminus U_{i},\quad(y_{0}:\dotsm:y_{n-1})\mapsto(y_{0}:\dotsm:y_{i-1}:0:y_{i}:\dotsm:y_{n-1}).\]
+\begin{align*}\P^{n-1}(k)&\ra\P^{n}(k)\setminus U_{i},\\(y_{0}:\dotsm:y_{n-1})&\mapsto(y_{0}:\dotsm:y_{i-1}:0:y_{i}:\dotsm:y_{n-1}).\end{align*}
 \item[\ref{2.2.3d}] Das folgt induktiv aus \ref{2.2.3b} und \ref{2.2.3c}.
 \end{enumerate}\end{proof}
 
@@ -1771,7 +1798,7 @@ und sehen mit dem gleichem Argument, dass für die betroffenen Punkte \[\frac{x_
 \begin{erinnerung}\label{2.3.4}\begin{enumerate}
 \item\Label{2.3.4a} Der Polynomring $S:=k\ppolyx$ ist ein \emph{graduierter Ring} mit Graduierung 
 \[S_{d}:=\{f\in k\ppolyx\mid f\text{ homogen von Grad }d\},\]
-\mbox{d.h.:\hspace*{-1em}\begin{minipage}[t]{\textwidth}\begin{itemize}
+\mbox{d.h.:\hspace*{-1em}\begin{minipage}[t]{.85\textwidth}\begin{itemize}
 \item $\displaystyle S=\bigoplus_{d\geq 0}S_{d}$; die Elemente in $S_{d}$ bezeichnen wir als \emph{homogene Elemente}.\vspace*{-6pt}
 \item Es gilt: $S_{d}\cdot S_{l}\subseteq S_{d+l}$.
 \end{itemize}\end{minipage}}
@@ -1887,7 +1914,7 @@ da $g_{i}=0$ für $i>e=\deg g$. Das zeigt die Behauptung.
 \end{ndfn}
 
 \begin{lem}\label{2.3.10}
-  Sei $\phi_{0}\colon\A^{n}(k)\inj\P^{n}(k)$ wie in \cref{phii}, $I\subseteq k\polyx$ ein Ideal und $I^*$ wie eben.
+  Seien $I\subseteq k\polyx$ ein Ideal und $I^*$ wie eben, sowie $\phi_{0}\colon\A^{n}(k)\inj\P^{n}(k)$ wie in \cref{phii}.
   Seien $\V(I)\subseteq\A^{n}(K)$ und $\V(I^{*})\subseteq\P^{n}(K)$
   die zugehörigen Varietäten. Dann gilt $\phi_{o}(\V(I))=U_{0}\cap\V(I^{*})$.
 \end{lem}
@@ -2176,15 +2203,15 @@ $f$ ist genau dann ein Morphismus, wenn für alle $i,j$ mit \[U_{ij}=f^{-1}(W'\c
 \begin{proof}
   \begin{enumerate}
   \item[\ref{2.6.1b}] Sei zunächst $f$ ein Morphismus. Dann kann man $f$ lokal schreiben als (ohne Einschränkung: $i=0$)
-\[f(x)=(F_0(1:x_1:\dotsm_n):\dotsm:F_m(1:x_1:\dotsm:x_n))=(f_0(x):\dotsm :f_m(x))\]
-\[=(\frac {f_0(x)}{f_j(x)},\dotsc,\frac{f_{j-1}(x)}{f_j(x)},\frac{f_{j+1}(x)}{f_j(x)},\dotsc,\frac {f_m(x)}{f_j(x)})\]
+\begin{align*}f(x)&=(F_0(1:x_1:\dotsm:x_n):\dotsm:F_m(1:x_1:\dotsm:x_n))\\
+&=(f_0(x):\dotsm :f_m(x))=\left(\frac {f_0(x)}{f_j(x)},\dotsc,\frac{f_{j-1}(x)}{f_j(x)},\frac{f_{j+1}(x)}{f_j(x)},\dotsc,\frac {f_m(x)}{f_j(x)}\right)\end{align*}
 
 wobei $f_j$ die Dehomogenisierung von $F_j$ nach $X_0$ bezeichnet.
 
 Für die Rückrichtung weiß man, dass $f$ lokal gegeben ist durch 
 \[f(y)=(r_1(y),\dotsc,r_m(y))\]
 wobei $r_i=\frac{f_i}{g_i}$, $z=(y_1:\dotsm:y_{i-1}:1:y_i:\dotsm :y_n)$. Damit:
-\[ f(z)=(1:\frac{f_1(y)}{g_1(y)}:\dotsm :\frac{f_m(y)}{g_m(y)})=(G_1(z):\dotsm :G_m(z)X_0^{e_0}:F_1(z)X_0^{e_1}: \dotsm :F_m(z)X_0^{e_m})\]
+\begin{align*} f(z)&=\left(1:\frac{f_1(y)}{g_1(y)}:\dotsm :\frac{f_m(y)}{g_m(y)}\right)\\&=(G_1(z):\dotsm :G_m(z)X_0^{e_0}:F_1(z)X_0^{e_1}: \dotsm :F_m(z)X_0^{e_m})\end{align*}
 wobei die Homogenisierungen $F_i$, $G_i$ von $f_i$ bzw. $g_i$ bzgl. $X_0$ und $e_i$ so gewählt seien, dass am Ende alle Polynome denselben Grad haben.  
   \item[\ref{2.6.1c}] Zu zeigen:
 \[\{f\colon W\ra U_0\subseteq \P^1(k) \mid f \text{ ist Morphismus}\} \lra \O(W)\]
@@ -2312,13 +2339,24 @@ ist ein Isomorphismus.
 \end{enumerate}
 \end{proof}
 % 22.12.10
+\settowidth\breite{irreduzible quasi-projektive}
+\newlength\zweitebreite
+\settowidth\zweitebreite{mit $K$-Algebrenhomomorphismens}
 \begin{db}\label{2.6.6} Seien $W_1$, $W_2$ quasi-projektive Varietäten.
   \begin{enumerate}
   \item\Label{2.6.6a} Eine \emph{rationale Abbildung} $f\colon W_1\ppf W_2$ ist eine Äquivalenzklasse von Paaren $(U,f_U)$, wobei $U\subseteq W_1$ offen und dicht, $f_U\colon U\ra W_2$ ein Morphismus ist und
    \[(U,f_U)\sim (\schlange{U},f_{\schlange{U}} \iff f_U\restrict{U\cap \schlange{U}}=f_{\schlange U}\restrict{U\cap \schlange{U}}\]
   \item\Label{2.6.6b} $f$ heißt \emph{dominant}, wenn das Bild in $W_2$ für einen Repräsentanten $(U,f_U)$ (und damit für alle) dicht ist. 
   \item\Label{2.6.6c} Die Zuordnung $W\mapsto K(W)=\Rat(W)$  definiert kontravariante Äquivalenz von Kategorien.
-    \[\{\text{irred. quasi-proj. Varietäten mit dom. rat. Abb.}\} \lra \{\text{endlich erz. KE } \Quotient{L}{K} \text{ mit } K\text{-Algebrenhom.}\}\] 
+    \[\left\{%
+    \begin{minipage}[c]{\breite}\begin{center}%
+      irreduzible quasi-projektive\par Varietäten mit dominanten\par rationalen Abbildungen%
+    \end{center}\end{minipage}%
+    \right\} \lra \left\{%
+    \begin{minipage}[c]{\zweitebreite}\begin{center}%
+      endlich erzeugte\par Körpererweiterungen $\Quotient{L}{K}$\par mit $K$-Algebrenhomomorphismen
+    \end{center}\end{minipage}%
+    \right\}\] 
   \end{enumerate}
 \end{db}
 
@@ -2427,7 +2465,7 @@ als zugehörige Basis von $\bigwedge^{d}V$. Sei wieder, für $w\in\bigwedge^{d}V
 und $\L_{w}:=(l_{ij}(w))_{i,j}$ die Abbildungsmatrix von $\varphi_{w}$ bzgl. $\B$ und $\S_{d+1}$. Außerdem sind die $l_{ij}$ linear in $w$.
 
 Aus \cref{2.7.2} und \cref{2.7.3} folgt, dass
-\[w\in\Bild\Psi\iff \dim(\Kern\varphi_{w})\geq d\iff\Rang\varphi_{w}\leq n-d\iff\det(l_{ij}(w))_{I,J}=0,\]
+\[w\in\Bild\Psi\!\iff\! \dim(\Kern\varphi_{w})\geq d\iff\Rang\varphi_{w}\leq n-d\iff\det(l_{ij}(w))_{I,J}=0,\]
 für alle $\card{I}=\card{J}=n-d+1$, also alle $n-d+1$-Minoren der Matrix $0$ sind (d.h. wenn beliebige $n-d+1$ Zeilen bzw. Spalten linear abhängig sind).
 
 Diese sind homogene Polynome in den Koordinaten von $w$ (bzgl. $\S_{d}$) von Grad $n-d+1$. $\Bild\Psi$ ist Nullstelle von diesen und damit projektive Varietät.
@@ -2450,7 +2488,9 @@ Gegeben die Strukturgarbe zu einer Varietät wollen wir \enquote{Funktionskeime}
     \[ \O_{W,p} = \Quotient{\{ (U,f) \mid p\in U\subseteq W\text{ offen, } f\in\O_{W}(U) \}}{\sim}, \]
     wobei $(U_1,f_1)\sim(U_2,f_2)$ bedeuten soll, dass es eine offene Teilmenge $U_3\subseteq U_1\cap U_2$ mit $p\in U_3$,
     sodass $f_1\restrict{U_3}=f_2\restrict{U_3}$ gilt. Das ist eine $K$-Algebra und heißt \emph{lokaler Ring von $W$ in $p$}.
-  \item\Label{3.1.1ii} Die Elemente in $\O_{W,p}$ heißen \emph{Funktionskeime}. Für die Äquivalenzklasse eines $(U,f)$ schreiben
+  \item\Label{3.1.1ii} Die Elemente in $\O_{W,p}$ heißen \emph{Funktionskeime}. 
+  
+  Für die Äquivalenzklasse eines $(U,f)$ schreiben
     wir auch $f_p$.
   \end{enumerate}
 \end{dfn}
@@ -2609,8 +2649,9 @@ Sei $X$ ein topologischer Raum. Dann heißt
 die \emph{Krulldimension} von $X$. 
 \end{dfn}
 
+\settowidth\breite{Insbesondere ist die Krulldimension von $\C^n$ mit euklidischer Topologie $0$.FFGH}
 \begin{w}
-Für Mannigfaltigkeiten stimmen Krulldimension und Dimension nicht überein, da in Hausdorffräumen Punkte die einzigen irreduziblen, nichtleeren Teilmengen sind (vgl. \cref{1.2.7} in \cref{kap1}).
+Für Mannigfaltigkeiten stimmen Krulldimension und Dimension nicht über\-ein, da in Hausdorffräumen Punkte die einzigen irreduziblen, nichtleeren Teil\-mengen sind (vgl. \cref{1.2.7} in \cref{kap1}).
 
 Insbesondere ist die Krulldimension von $\C^n$ mit euklidischer Topologie $0$.
 \end{w}
@@ -2921,10 +2962,13 @@ ist ein Isomorphismus von Vektorräumen.
 Wir zeigen zuerst, dass $\beta$ wohldefiniert ist, also $\beta_{p}(\l)=:a\in\T_{V,p}=\V(\II_{p})$.
 
 Sei dazu $f\in\I(V)$, also $f_{p}^{1}\in\II_{p}$. Dann gilt nach Definition
-\[f_{p}^{(1)}(a)=\sum_{i=1}^{n}\frac{\partial f}{\partial X_{i}}(p)\cdot\l(\Bar{X_{i}-p_{i}})=\l\biggl(\sum_{i=1}^{n}\Bar{\frac{\partial f}{\partial X_{i}}(p)\cdot(X_{i}-p_{i})}\biggr)=\l\bigl(\Bar{f_{p}^{(1)}-f_{p}^{(1)}(p)}\bigr).\]
+\begin{align*}
+f_{p}^{(1)}(a)&=\sum_{i=1}^{n}\frac{\partial f}{\partial X_{i}}(p)\cdot\l(\Bar{X_{i}-p_{i}})\\
+&=\l\biggl(\sum_{i=1}^{n}\Bar{\frac{\partial f}{\partial X_{i}}(p)\cdot(X_{i}-p_{i})}\biggr)=\l\bigl(\Bar{f_{p}^{(1)}-f_{p}^{(1)}(p)}\bigr).
+\end{align*}
 In \cref{3.3.4a} hatten wir gesehen, dass
 \[f-f(p)-(f_{p}^{(1)}-f_{p}^{(1)}(p))\in\m_{p}^{2}\]
-liegt, wobei hier natürlich $f(p)=0$ ist. In $K[V]$ gilt damit sogar $f_{p}^{(1)}-f_{p}^{(1)}(p)\in\m_{p}^{2}$, also gilt 
+liegt, wobei hier natürlich $f(p)=0$ ist. In $K[V]$ ist damit sogar $f_{p}^{(1)}-f_{p}^{(1)}(p)\in\m_{p}^{2}$, also gilt 
 \[\text{in }\Quotient{\m_{p}}{\m_{p}^{2}}\text{ ist }\Bar{f_{p}^{(1)}-f_{p}^{(1)}(p)}=0,\]
 also ist $f_{p}^{(1)}(a)=0$ und damit ist $a\in\V(\II_{p})=\T_{V,p}$.
 
@@ -2945,7 +2989,9 @@ geschickt wird. In $\Quotient{\m_{p}}{\m_{p}^{2}}$ ist aber, wie oben gesehen,
 \[\Bar{f}=\Bar{f_{p}^{(1)}-f_{p}^{(1)}(p)}\]
 und damit gilt tatsächlich
 \[\alpha_{p}(\beta_{p}(\l))=\bigl(f\mapsto \l(f)\bigr)=\l,\]
-$\beta_{p}$ ist also, wie behauptet, die Umkehrabbildung, die Vektorräume somit isomorph.
+$\beta_{p}$ ist also, wie behauptet, die Umkehrabbildung.
+
+Somit sind die Vektorräume isomorph.
 \end{enumerate}\end{proof}
 
 \begin{db}\label{3.3.10}
@@ -3063,7 +3109,7 @@ Dann ist $p'$ regulär, d.h. $\O_{U',p'}$ ist regulär. Also ist auch $\phi(p') 
  
        Damit gilt für eine irreduzible Varietät $V$ die Formel $\trdeg K(V)=\dim V$.
   \end{itemize}
-   \item\label{3.4erinn} Sei $\Quotient{L}{K(X_1,\dotsc,X_n)}$ endliche Körpererweiterung, $E:=K(X_1,\dotsc,X_d)$.
+   \item\Label{3.4erinn} Sei $\Quotient{L}{K(X_1,\dotsc,X_n)}$ endliche Körpererweiterung, $E:=K(X_1,\dotsc,X_d)$.
 
 Hat $K$ Charakteristik $0$, so ist $\Quotient{L}{K}$ separabel, d.h. $L=E(\alpha))$ für ein $\alpha \in L$ nach dem Satz vom primitven Element.
 
@@ -3082,9 +3128,10 @@ Sei $g:=\prod\limits_{i=1}^{n-1} g_i$, $h:=gY+ga_{n-1}Y^{n-1}+\dotsm+ga_0 \in K[
 
 Beachte: $ga_{n-1}, ga_0 \in K\polyx[d]$.
 
-Definiere $H=\V(h)\subseteq \A^{d+1}$ und $K(H)=\Quot(\Quotient{K[X_1,\dotsc,X_d,Y]}{(h)})=K=K(W)$.
+Definiere $H=\V(h)\subseteq \A^{d+1}$ und 
+\[K(H)=\Quot(\Quotient{K[X_1,\dotsc,X_d,Y]}{(h)})=K=K(W).\]
 
-Nach \cref{satz4} und \cref{2.6.6c} gibt es eine birationale Abbildung $H\ppf W$.
+Nach \cref{satz4} und \cref{2.6.6c} gibt es eine birationale Abbildung \[H\ppf W.\]
 \end{proof}
 
 \sect{Reguläre Ringe und Krullscher Höhensatz}
@@ -3144,10 +3191,16 @@ $k\ge 2$: Sei $\wp$ minimales Primoberideal von $I$, $\wp_0\varsubsetneq \dotsm 
 Zeige:$l\ge k$. Nach \cref{3.5.1} finden wir Primidealkette $\wp_0'\varsubsetneq \dotsm \varsubsetneq \wp_{l-1}'=\wp$. Also gilt $\Bar{\wp}_0'\varsubsetneq \dotsm \varsubsetneq \Bar{\wp}_{l-1}'=\Bar{\wp}$ und $\Bar{\wp}$ ist minimales Primoberideal von $I=\langle\Bar{x_1},\dotsc,\Bar{x_{k-1}}\rangle$. Mit der Induktionsvoraussetzung folgt: $l-1\ge \hoehe \Bar{\wp}\ge k-1$ und damit die Behauptung.
 \end{proof}
 
+\settowidth\breite{$\{\m_1,\dotsc,\m_n\}$ ist minimalesmmm}
 \begin{lem}\label{3.5.4} Sei $(R,\m)$ noetherscher, lokaler Ring, $k=\Quotient{R}{\m}$.
 \begin{enumerate}
-  \item\Label{3.5.4a} Für $\m_1,\dotsc,\m_n$ gilt: \[\{\m_1,\dotsc,\m_n\} \text{ minimales Erzeugendensystem von }\m \iff \{\m_1,\dotsc,\m_n\} \text{ ist Basis von }\Quotient{\m}{\m^2}\]
-  \item\Label{3.5.4b} Alle minialen Erzeugendensysteme von $\m$ haben dieselbe Anzahl, nämlich $\dim_k \Quotient{\m}{\m^2}$.
+  \item\Label{3.5.4a} Für $\m_1,\dotsc,\m_n$ gilt: 
+  \[\begin{minipage}[c]{\breite}\begin{center}%
+    $\{\m_1,\dotsc,\m_n\}$ ist minimales\\
+    Erzeugendensystem von $\m$%
+  \end{center}\end{minipage}%
+    \!\!\!\!\!\iff \{\m_1,\dotsc,\m_n\} \text{ ist Basis von }\Quotient{\m}{\m^2}\]
+  \item\Label{3.5.4b} Alle minialen Erzeugendensysteme von $\m$ haben dieselbe Anzahl: $\dim_k \Quotient{\m}{\m^2}$.
   \item\Label{3.5.4c} Es ist $\dim_k \Quotient{\m}{\m^2}\ge \dim R$.
 \end{enumerate}
 \end{lem}
@@ -3166,7 +3219,11 @@ Insbesondere haben wir damit auch \cref{3.4.3} bewiesen.
 \begin{prop}\label{3.5.5}
 Ist $(R,\m)$ regulär, so ist $R$ auch nullteilerfrei.
 \end{prop}
-\begin{proof} Erinnerung aus \cref{3.4.2}: \[(R,\m) \text{ ist regulär } \iff \dim_k \Quotient{\m}{\m^2}=\dim R \iff \m\text{ kann durch } \dim R\text{ viele Elemente erzeugt werden}\]
+\begin{proof} Erinnerung aus \cref{3.4.2}: 
+\begin{align*}
+(R,\m) \text{ ist regulär }& \iff \dim_k \Quotient{\m}{\m^2}=\dim R\\
+&\iff \m\text{ kann durch } \dim R\text{ viele Elemente erzeugt werden}
+\end{align*}
 Wir beweisen die Aussage nun via Induktion über $d:=\dim R=\dim\Quotient{\m}{\m^2}$.
 
 Ist $d=0$, so kann $\m$ von $0$ Elementen erzeugt werden, d.h. $\m=\{0\}$ und damit ist $R$ ein Körper.
@@ -3417,11 +3474,14 @@ wobei $(0)$ bzw. $(\infty)$ die Divisoren sind, bei denen $n_{0}=1$ bzw. $n_{\in
 \end{enumerate}
 \end{proof}
 
+\settowidth\breite{Für jedes Primideal $\wp\neq 0$ ist $R_{\wp}$}
 \begin{nerinnerung}
 Aus Algebra {\scshape ii} wissen wir, dass für einen nullteilerfreien Ring $R$, der kein Körper ist, gilt:
 \begin{align*}
 R\text{ ist ein Dedekindring }&\iff R\text{ ist $1$-dimensional und normal}\\
-&\iff\text{ Für jedes Primideal }\wp\neq 0\text{ ist }R_{\wp}\text{ ein diskreter Bewertungsring.}
+&\iff\begin{minipage}[c]{\breite}\begin{center}%
+Für jedes Primideal $\wp\neq 0$ ist $R_{\wp}$\\ein diskreter Bewertungsring.%
+\end{center}\end{minipage}
 \end{align*}
 \end{nerinnerung}
 
@@ -3442,7 +3502,7 @@ Sei $V$ irreduzible projektive Varietät in $\P^n$.
 \begin{enumerate}
   \item[\ref{4.2.10a}] Nach LA gibt es ein lineares $F \in K[X_0,\dotsc,X_n]$ mit $F(p_i)\neq 0\; (\forall i)$. 
 
-Nach Koordinatenwechsel ist $F=X_0$ und $U_0=\P^n\setminus \V(F)$. Also sind $P_1,\dotsc,P_{N+1}\in U:=U_0\cap V$ und dies ist eine affine Varietät.
+Nach Koordinatenwechsel ist $F=X_0$ und $U_0=\P^n\setminus \V(F)$. Also sind \[P_1,\dotsc,P_{N+1}\in U:=U_0\cap V\] und dies ist eine affine Varietät.
   \item[\ref{4.2.10b}] Sei $U$ wie in \ref{4.2.10a} mit $P_1,\dotsc,P_{N+1}\in U$. Wähle $h\in \O(U)=K[U]$ mit \[h(P_1),\dotsc,h(P_N)\neq 0\text{ mit }h(P_{N+1})=0.\] Das geht nach dem \hyperref[pivl]{Primidealvermeidungslemma}. Nun tut $\frac{1}{h}$ das Gewünschte.
  \end{enumerate}
 \end{proof}
