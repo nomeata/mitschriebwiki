@@ -1,0 +1,642 @@
+\documentclass{article}
+
+\usepackage[german]{babel}
+\usepackage[latin1]{inputenc}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+
+\usepackage{color}
+\usepackage{dsfont}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\usepackage{multicol}
+
+\usepackage{svninfo}
+
+\usepackage[top=0.5cm, left=1cm, right=1cm, bottom=1cm, a4paper]{geometry}
+
+% Mathezeug
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\mse}{MSE}
+
+
+% Platzsparende Überschriften
+\newcommand{\h}[1]{\vspace{1ex}\begin{center}\small\textbf{#1}\end{center}}
+\newcommand{\hh}[1]{{\vspace{1pt}\hrule\vspace{1pt} \noindent\textbf{#1}}\\*}
+\newcommand{\hhh}[1]{{\vspace{1pt}\noindent\emph{#1:}}}
+\setlength{\parindent}{2ex}
+
+\newenvironment{tightlist}{
+\begin{list}{\textbullet}{
+\setlength{\topsep}{-1ex}
+\setlength{\itemsep}{-1ex}
+\setlength{\leftmargin}{4ex}
+}
+}{
+\end{list}
+\vspace{1ex}
+}
+
+\newcounter{Lcount}
+\newenvironment{tightenum}{
+\begin{list}{\arabic{Lcount}.}{
+\usecounter{Lcount}
+\setlength{\topsep}{-1ex}
+\setlength{\itemsep}{-1ex}
+\setlength{\leftmargin}{4ex}}
+}{
+\end{list}
+\vspace{1ex}
+}
+
+% FIXME
+\newcommand{\FM}[1]{{\color{red}\emph{#1}}}
+
+\pagestyle{empty}
+
+\begin{document}
+\setlength{\topsep}{0ex}
+%\setlength{\parskip}{10ex}
+\setlength{\abovedisplayskip}{0ex}
+\setlength{\belowdisplayskip}{0ex}
+
+\svnInfo $Id: Stoch1Zettel.tex 4607 2006-10-22 13:51:33Z nomeata $
+
+\begin{center}\end{center}
+\begin{multicols}{4}
+\scriptsize\raggedright
+
+\h{Definitionen}
+
+\hh{Dichte}
+$f:\mathbb{R}\to\mathbb{R}_{\ge 0}$ mit $\int_\mathbb{R} f(x)\text{ d}x = 1$ 
+$P([a,b])=\int_a^b f(x)\text{ d}x$
+
+\hh{Ereignis}
+$A\subseteq\Omega$ bzw. $A\in\mathfrak{A}$.
+\hhh{Elementarereignis} $\{\omega\}, \omega\in\Omega$
+
+\hh{Ergebnis}
+$\omega\in\Omega$
+
+\hh{Erwartungstreue}
+\[\forall\theta\in\Theta:E_\theta(T)=\theta\]
+
+\hh{Erwartungswert}
+(Ex. falls mit $|\cdot|<\infty$)
+\begin{align*}
+E(X)&:=\sum_{\omega\in\Omega} X(\omega)\cdot P(\{\omega\})\\
+&= \sum_{x\in\mathbb{R}:P(X=x)>0} x\cdot P(X=x)\\
+E(X)&:=E(X_+)-E(X_-)\\
+&=\int_\mathbb{R} x\cdot f(x)\text{ d}x
+\end{align*}
+\hhh{bedingter Erwartungswert}
+\[E(X|Y=y)=\sum x P(X=x|Y=y)\]
+\hhh{bedingte Erwartung}
+\[E(X|Y):\mathbb{R}^k\to\mathbb{R}, y\mapsto E(X|Y=y)\]
+\hhh{iterierter}
+\[E(X)=E(E(X|Y))\]
+
+\hh{Faltung}
+$X(\Omega)+Y(\Omega)$ F. der Verteilungen $X,Y$. ($P^{X+Y}=P^X*P^Y$)
+
+\hh{Fehler 1./2. Art}
+\hhh{1. Art} Wahre Hypothese abgelehnt.
+\hhh{2. Art} Falsche Hypothese nicht verworfen.
+
+\hh{G"utefunktion}
+\[g:\Theta\to[0,1],\theta\mapsto P_\theta(X\in\mathcal{K})\]
+\[g_\varphi:\Theta\to[0,1],\theta\mapsto E_\theta(\varphi)\]
+
+\hh{H"aufigkeit}
+Sei $(x_1,\ldots,x_n)\in\{a_1,\ldots,a_s\}^n$ Stichprobe.\\
+\hhh{absolute}
+\[h_j=\sum_{i=1}^n \mathds{1}\{x_i=a_j\}\]
+\hhh{relative}
+\[\frac{h_j}n\]
+
+\hh{Kombination}
+\begin{align*}
+Kom_k^n(mW)=\{(&a_1,\ldots,a_k)\in M^k: \\&a_1\le\cdots\le a_k\}\\
+Kom_k^n(oW)=\{(&a_1,\ldots,a_k)\in M^k: \\&a_1<\cdots< a_k\}\\
+\end{align*}
+\begin{align*}
+|Kom_k^n(mW)|&={n+k-1\choose k}\\
+|Kom_k^n(oW)|&={n\choose k}\\
+\end{align*}
+
+\hh{Konfidenzber./Bereichssch.}
+$(\mathcal{X},(P_\theta)_{\theta\in\Theta})$ stat. Modell.
+\[\mathcal{C}:\mathcal{X}\to\mathcal{P}(\Theta)\]
+hei"st Konfidenzbereich oder Bereichssch"atzer.\\
+\hhh{Konfidenzniveau}
+$\mathcal{C}$ Konfidenzber. zum Niveau $1-\alpha$:
+\[P_\theta(\mathcal{A}(\theta))\ge 1-\alpha\]
+
+\hh{Konsistenz}
+\hhh{$(T_n)$ Sch"atzfolge} 
+$\forall\varepsilon>0,\forall\theta\in\Theta:$\[\lim_{n\to\infty} P_\theta(|T_n-\theta|\ge\varepsilon)=0\]
+\hhh{$\varphi_n$ Testfolge}
+$\forall\theta\in\Theta_1:$
+\[\lim_{n\to\infty} g_{\varphi_n}(\theta)=1\]
+
+\hh{Konvergenz nach W-keit}
+\begin{align*}
+Y_n\stackrel P\to Y \iff \forall\varepsilon>0: \\
+P(|Y_n-Y|\ge\varepsilon)\stackrel{n\to\infty}\to 0
+\end{align*}
+
+\hh{Koppelung}
+Das zu einem W-Ma"s $P_1$ und einer "Ubergangs-W-keit $P_{12}$ geh"orende W-Ma"s
+\[P=P_1\otimes P_{12}\]
+auf $\Omega_1\times\Omega_2$ hei"st Koppelung von $P_1$ und $P_{12}$.
+
+\hh{Korrelationskoeffizient}
+\begin{align*}
+\rho(X,Y)=\frac{C(X,Y)}{\sqrt{V(X)V(Y)}}
+\end{align*}
+\hhh{empirischer}
+\begin{align*}
+&r_{xy}:=\\
+&\frac{\frac1n\sum(x_j-\overline x)(y_j-\overline y)}{\sqrt{\frac1n\sum(x_j-\overline x)^2\cdot\frac1n\sum(y_j-\overline y)^2}}
+\end{align*}
+
+\hh{Kovarianz}
+\begin{align*}
+C(X,Y)&=E((X-EX)(Y-EY))\\
+&=E(XY)-E(X)E(Y)
+\end{align*}
+
+\hh{kritischer Bereich}
+$\mathcal{K}\subseteq\mathcal{X}$ mit:\\
+\begin{align*}
+x\in\mathcal{K}\implies d_1\\ 
+x\in\mathcal{X}\setminus\mathcal{K}\implies d_0
+\end{align*}
+
+\hh{Lagema"s}
+$l:\{a_1,\ldots,a_s\}^n\to\mathbb{R}$ ist ein Lagema"s, falls gilt:
+\[l(x_1+a,\ldots,x_n+a)=l(x_1,\ldots,x_n)+a\]
+
+\hh{Likelihood-Funktion}
+\[L_x:\Theta\to[0,1],\theta\mapsto P_\theta(X=x)\]
+
+\hh{Marginalverteilung}
+$P$ W-Ma"s auf $\Omega_1\times\cdots\times\Omega_n$. j-te Marginalverteilung:
+\begin{align*}
+P_j(B):=P(\Omega'\times B\times\Omega'') % nicht schön! \bigtimes?
+\end{align*}
+mit
+\begin{align*}
+\Omega':=\Omega_1\times\cdots\times\Omega_{j-1}\\
+\Omega':=\Omega_{j+1}\times\cdots\times\Omega_{n}
+\end{align*}
+(Analog f"ur Zufallsvektoren.)
+
+\hh{Maximum-Likelihood-Sch"atzung}
+$\hat\theta:\mathcal{X}\to\Theta$ ist ML-Sch"atzwert, falls
+$\forall x\in\mathcal{X}:$ 
+\[L_x(\hat\theta(x))=\sup\{L_x(\theta):\theta\in\Theta\}\]
+
+\hh{Median}
+Sei $F^{-1}$ die Quantil-Funktion, dann hei"st $F^{-1}(\frac12)$ der Median von $F$ bzw. von $X$. \\
+\hhh{empirischer}
+Sei $(x_{(1)},\ldots,x_{(n)})$ geordnete Stichprobe.
+\begin{align*}
+x_{\frac12}:=
+\begin{cases}
+x_{(\frac{n+1}2)}, n=2k+1\\
+\frac12(x_{(\frac n2)}+x_{(\frac n2 +1)}),n=2k
+\end{cases}
+\end{align*}
+
+\hh{Mittel}
+\hhh{arithmetisches}
+\[\overline x_n:= \frac1n \sum_{j=1}^n x_j\]
+\hhh{getrimmtes/gestutztes}
+\[x_{t,\alpha}:=\frac1{n-2k}\sum_{j=k+1}^{n-k}x_{(j)}\]
+mit $0<\alpha<\frac12$ und $k:=\lfloor n\alpha\rfloor$ hei"st $\alpha$-getrimmtes Mittel.
+
+\hh{MQA}
+\begin{align*}
+MQA_T(\theta)=E_\theta((T-\theta)^2)\\
+=\sum_{x\in\cal{X}}(T(x)-\theta)^2\cdot P_\theta(X=x)
+\end{align*}
+hei"st mittlere quadratische Abweichung vom $T$ an der Stelle $\theta$.
+
+\hh{Moment}
+\hhh{k-tes} \[E(X^k)=\int_\mathbb{R} x^k\cdot f(x)\text{ d}x\]
+\hhh{k-tes absolutes} \[E(|X|^k)=\int_\mathbb{R} |x|^k\cdot f(x)\text{ d}x\]
+\hhh{k-tes zentrales} \[E((X-EX)^k)=\int_\mathbb{R} (x-EX)^k\cdot f(x)\text{ d}x\]
+
+\hh{Permutation}
+\begin{align*}
+Per_k^n(mW)=M&^k\\
+Per_k^n(oW)=\{(&a_1,\ldots,a_k)\in M^k: \\&a_i\ne a_j (i\ne j)\}\\
+\end{align*}
+\begin{align*}
+|Per_k^n(mW)|&=n^k\\
+|Per_k^n(oW)|&=n\cdots(n-k+1)=n^{\underline k}\\
+\end{align*}
+
+\hh{Quantil}
+\hhh{empirisches}
+Ist $0<p<1$, so hei"st
+\begin{align*}
+x_p:=
+\begin{cases}
+x_{(\lfloor np+1\rfloor)}, np\not\in\mathbb{N}\\
+\frac12(x_{(np)}+x_{(np+1)}),np\in\mathbb{N}
+\end{cases}
+\end{align*}
+empirisches $p$-Quantil.
+
+\hh{Quantil-Funktion}
+$X$ Zufallsvariable mit Verteilungsfunktion $F$.
+\begin{align*}
+&F^{-1}:(0,1)\to\mathbb{R}\\ 
+&p\mapsto\inf\{x\in\mathbb{R}:F(x)\ge p\}
+\end{align*}
+hei"st Quantil-Funktion von $X$ bzw. $F$.
+
+\hh{Quartil}
+Sei $F^{-1}$ die Quantil-Funktion, dann hei"st $F^{-1}(\frac14)$ das untere und $F^{-1}(\frac34)$ das obere Quartil von $F$ bzw. von $X$.\\
+\hhh{empirisch} Das $\frac14$-Quantil hei"st unteres und das $\frac34$-Quantil oberes Quartil.
+
+\hh{Quartilsabstand}
+\[x_{\frac34}-x_{\frac14}\]
+
+\hh{Sch"atzer}
+$(\mathcal{X},(P_\theta)_{\theta\in\Theta})$ stat. Modell.
+\[T:\mathcal{X}\to\tilde\Theta\] 
+hei"st Sch"atzer f"ur $\theta$.
+
+\hh{Sch"atzfolge}
+$\mathcal{X}_n\subseteq\mathbb{R}^n$ Stichprobenraum f"ur $X_{(n)}=(X_1,\ldots,X_n)$ und $T_n:\mathcal{X}_n\to\tilde\Theta$ Sch"atzer $\forall n\in\mathbb{N}$, dann hei"st $(T_n)_{n\in\mathbb{N}}$ Sch"atzfolge.
+
+\hh{Sch"atzwert}
+$T(x)$ f"ur $x\in \mathcal{X}$.
+
+\hh{Spannweite}
+\[x_{(n)}-x_{(1)}\]
+
+\hh{Standardabweichung}
+\[\sigma_X:=\sqrt{V(X)}\]
+\hhh{empirische}
+\[s:=\sqrt{s^2}\]
+
+\hh{Standardisierung}
+\[X^*:=\frac{X-EX}{\sqrt{V(X)}}\]
+
+\hh{Statistisches Modell}
+$(\mathcal{X},(P_\theta)_{\theta\in\Theta})$, wobei $\mathcal{X}$ der Stichprobenraum einer Zufallvariable $X$, $(P_\theta)_{\theta\in\Theta}$ Bild einer bijektiven Abbildung des Parameterraum $\Theta$ auf eine Klasse von W-Ma"sen $\mathcal{P}$ ist.
+
+\hh{Streuungsma"s}
+$\sigma:\{a_1,\ldots,a_s\}^n\to\mathbb{R}$ hei"st ein Streuungsma"s, falls gilt:
+\[\sigma(x_1+a,\ldots,x_n+a)=\sigma(x_1,\ldots,x_n)\]
+
+
+\hh{Test}
+\hhh{nichtrandomisiert} \[\varphi:\mathcal{X}\to\{0,1\}, x\mapsto\mathds{1}_\mathcal{K}\]
+\hhh{randomisiert} \[\varphi:\mathcal{X}\to[0,1]\]
+
+\hh{Testfolge}
+$\mathcal{X}_n$ Stichprobenraum f"ur $X_{(n)}=(X_1,\ldots,X_n)$ und $\varphi_n:\mathcal{X}_n\to[0,1]$ Test $\forall n\in\mathbb{N}$, dann hei"st $(\varphi_n)_{n\in\mathbb{N}}$ Testfolge.
+
+\hh{"Ubergangswahrscheinlichkeit}
+\[P_{12}:\Omega_1\times\mathcal{P}(\Omega_2)\to[0,1]\] 
+hei"st "Ubergangs-W-keit, falls $\forall\omega_1\in\Omega_1$ 
+\[P_{12}(\omega_1,\cdot):\mathcal{P}(\Omega_2)\to[0,1]\] 
+ein W-Ma"s ist.
+
+\hh{Unabh"angigkeit}
+\hhh{Ereignisse}
+$A_1,\ldots,A_n$ unanbh"angig, falls $\forall T\subseteq{1,\ldots,n}$
+\[P(\bigcap_{j\in T} A_j)=\prod_{j\in T} P(A_j)\]
+\hhh{Zufallsvariablen diskret}
+$X_1,\ldots,X_n$ unabh"angig, falls $\forall A_j\subseteq\Omega_j$ bzw. $\forall x_j\in\Omega_j$ gilt:
+\begin{align*}
+P(X_1\in A_1,\ldots, X_n\in A_n)\\
+=\prod_{j=1}^n P(X_j\in A_j)\\
+P(X_1=x_1,\ldots, X_n=x_n)\\
+=\prod_{j=1}^n P(X_j=x_j)
+\end{align*}
+\hhh{Zufallsvariablen indiskret}
+$X_1,\ldots,X_n$ unabh"angig, falls gilt:
+\[F(x)=\prod_{j=1}^n F(x_j)\]
+\[f(x)=\prod_{j=1}^n f(x_j)\]
+
+\hh{Varianz}
+(Ex. falls $E(X^2)$ existiert.)
+\begin{align*}
+V(X)&=E(X-EX)^2=E(X^2)-(EX)^2\\
+&=\int_\mathbb{R} (x-EX)^2\cdot f(x)\text{ d}x
+\end{align*}
+\hhh{empirische}
+\[s^2:=\frac1{n-1}\sum_{j=1}^n (x_j-\overline x_n)^2\]
+
+\hh{Verteilung}
+$X:\Omega\to\tilde\Omega$ Zufallsvariable.
+\[P^X:\mathcal{P}(\tilde\Omega)\to[0,1],A'\mapsto P(X^{-1}(A')) \]
+hei"st Verteilung von $X$.
+
+\hh{Verteilungsfunktion}
+$P:\mathfrak{B}_1\to[0,1]$ W-Ma"s.
+\[F:\mathbb{R}\to[0,1],x\mapsto P((-\infty,x])\]
+hei"st Verteilungsfunktion von $P$.
+
+\hh{Verzerrung}
+Verzerrung eines Sch"atzers $T$ an der Stelle $\theta$:
+\[b_T(\theta)=E_\theta(T)-\theta\]
+
+\hh{Wahrscheinlichkeit}
+\hhh{bedingte}
+\[P(A|B)=\frac{P(A\cap B)}{P(B)}\]
+
+\hh{W-Funktion}
+$(\Omega,P)$ W-Raum, 
+\[p:\Omega\to\mathbb{R}, \omega\mapsto P(\{\omega\})\] 
+ist W-Funktion zum W-Ma"s $P$.
+
+\hh{W-Ma"s}
+$P:\mathcal{P}(\Omega)\to[0,1]$ hei"st W-Ma"s auf $\Omega$, falls gilt
+\begin{enumerate}
+\item $P(A)\ge 0$
+\item $P(\Omega)=1$
+\item $P(\sum_{j\in\mathbb{N}} A_j)=\sum_{j\in\mathbb{N}} P(A_j)$
+\end{enumerate}
+
+\hh{W-Raum}
+$(\Omega,P)$ bzw. $(\Omega,\mathcal{A},P)$ mit $\mathcal{A}$ $\sigma$-Algebra auf $\Omega$, $P$ W-Ma"s auf $\Omega$ bzw. $\mathcal{A}$.\\
+\hhh{Laplace'scher} falls $P(A):=\frac{|A|}{|\Omega|}$
+
+\hh{Zufallsvariable}
+$(\Omega,P)$ bzw. $(\Omega,\frak{A},P)$ W-Raum, $\frak{A}'$ $\sigma$-Algebra auf $\Omega'$. 
+\[X:\Omega\to\Omega'\] 
+hei"st $\Omega'$-wertige Zufallsvariable, falls $X$ $\frak{A}$-$\frak{A}'$-mb.
+
+\hh{Zufallsvektor}
+$X$ hei"st Zufallsvektor, falls es eine $\mathbb{R}^d$-wertige Zufallsvariable ist.
+
+\h{S"atze und Formeln}
+\hh{Bayes-Formel}
+Sei $(A_n)_{n\in\mathbb{N}}$ eine Zerlegung von $\Omega$. Dann gilt:
+\[P(A_k|B)=\frac{P(A_k)\cdot P(B|A_k)}{\sum_{j=1}^\infty P(A_j)\cdot P(B|A_j)}\]
+
+\hh{Binomialkoeffizient}
+\begin{align*}
+{n+1\choose k}={n\choose k}+{n\choose k-1}
+\end{align*}
+
+\hh{Binomischer Lehrsatz}
+\begin{align*}
+(x+y)^k=\sum_{j=0}^k {k\choose j}\cdot x^j\cdot y^{k-j}
+\end{align*}
+
+\hh{Blockungslemma}
+Seien $A_1,\ldots,A_n$ unabh"angig, $1\le k\le n-1$, $C\in\sigma(A_1,\ldots,A_k)$, $D\in\sigma(A_k+1,\ldots,A_n)$. Dann sind auch $C$ und $D$ unabh"angig.
+
+\hh{Cauchy-Schwarz}
+\[C(X,Y)^2 \le V(X)\cdot V(Y)\]
+
+\hh{Erwartungswert}
+\begin{align*}
+&E(aX)=a\cdot EX\\
+&E(X+Y)=EX+EY\\
+&|EX|\le E|X|
+\end{align*}
+Sind $X,Y$ unkorreliert gilt au"serdem:
+\[E(X\cdot Y)=EX\cdot EY\]
+
+\hh{Faltungsformel}
+\hhh{f"ur Dichten}
+\[f_{X+Y}(x)=\int_\mathbb{R} f_X(t)\cdot f_Y(x-t)\text{ d}t\]
+
+\hh{Gesetz gro"ser Zahlen}
+Seien $X_1,\ldots,X_n$ unabh"angige Zufallvariablen mit existierender Varianz. Dann gilt $\forall\varepsilon>0$:
+\[P\left(\left|\frac1n\sum_{j=1}^n X_j-EX_1\right|\ge\varepsilon\right)\stackrel{n\to\infty}\to 0\]
+
+\hh{Gesetz seltener Ereignisse}
+Ist $(p_n)_{n\in\mathbb{N}}$ eine Folge in $[0,1]$ mit $\lim_{n\to\infty} np_n=\lambda$ f"ur ein $0<\lambda<\infty$, so gilt:
+\begin{align*}
+{n\choose k}p_n^k(1-p_n)^{n-k}\stackrel{n\to\infty}\to e^{-\lambda}\frac{\lambda^k}{k!}
+\end{align*}
+
+\hh{Kovarianz}
+\begin{align*}
+&C(X,Y)=C(Y,X)\\
+&C(X,X)=V(X)\\
+&C(aX+b,cY+d)=ac\cdot C(X,Y)\\
+&\rho(aX+b,cY+d)=sgn(ac)\cdot\rho(X,Y)
+\end{align*}
+$X,Y$ sind unkorreliert,genau dann wenn:
+\[C(X,Y)=0\]
+
+\hh{kleinste Quadrate}
+\[(a^*,b^*):=\text{arg}\min_{a,b\in\mathbb{R}} E(Y-a-bX)^2\]
+ist bestimmt durch
+\begin{align*}
+a^*&= EY-b^*EX\\
+b^*&=\begin{cases} 0&, V(X)V(Y)=0\\ \frac{C(X,Y)}{V(X)}&, V(X)V(Y)>0\end{cases}
+\end{align*}
+
+\hh{Methoden zur Dichtebest.}
+\hhh{Methode 1}\\
+$X$ reelle Zufallsvariable mit Verteilungsfunktion $F$, st"uckweise stetiger Dichte $f$. Weiter sei $T:\mathbb{R}\to\mathbb{R}$ stetig differenzierbar und streng monoton wachsend, wobei $T'(x)\ne 0$. Dann besitzt $Y=T(X)$ die Verteilungsfunktion:
+\begin{align*}
+G(y)&=F(T^{-1}(y))\\
+&=\int_{-\infty}^{T^{-1}(y)} f(x)\text{ d}x
+\end{align*}
+(bzw. $1-G(y)$ falls $T$ monoton fallend), sowie die Dichte:
+\[g(y)=\frac{f(T^{-1}(y))}{|T'(T^{-1}(y))|}\]
+\hhh{Methode 2}\\
+$X=(X_1,\ldots,X_n)$ $k$-dimensionaler Zufallsvektor mit positiver Dichte $f$. Weiter sei $T:\mathbb{R}^k\to\mathbb{R}^k$ stetig differenzierbar und injektiv, wobei $T'(x)\ne 0$. Dann besitzt $Y=T(X)$ die Dichte:
+\[g(y)=\frac{f(T^{-1}(y))}{|\det T'(T^{-1}(y))|}\]
+\hhh{Methode 3}\\
+Ist $T:\mathbb{R}^k\to\mathbb{R}^s$ mit $s<k$, so l"asst sich $T$ h"aufig zu einer Abbildung $T':\mathbb{R}^k\to\mathbb{R}^k$ erg"anzen, die die Voraussetzungen von Methode 2 erf"ullt. Die Gew"unschte Dichte ergibt sich dann aus Marginalverteilungsbildung. 
+
+\hh{Markow-Ungleichung}
+Sei $\varphi:[0,\infty)\to[0,\infty)$ monoton wachsend. Dann gilt f"ur jede Zufallsvariable $Y$ mit $E_\varphi(|Y|)<\infty$ und jedes $\varepsilon>0$ mit $\varphi(\varepsilon)>0$:
+\[P(|Y|\ge\varepsilon)\le \frac1{\varphi(\varepsilon)}E_\varphi(|Y|)\]
+
+\hh{Quantilsfunktion}
+\begin{align*}
+&F(x)\ge p\iff x\ge F^{-1}(p)\\
+&F(F^{-1}(p))\ge p\\
+&F(F^{-1}(p))=p\iff p\in F(\mathbb{R})
+\end{align*}
+Au"serdem ist $F^{-1}$ monoton wachsend und linksseitig stetig.
+
+\hh{Siebformel/Poincare-Sylvester}
+F"ur $1\le\nu\le n$ sei
+\[S_\nu :=\sum_{1\le i_1<\cdots<i_\nu\le n} P(A_{i_1}\cap\cdots\cap A_{i_\nu})\]
+(Summation "uber $\nu$-elementige Teilmengen.) Dann gilt:
+\[P(\bigcup_{j=1}^n A_j)=\sum_{\nu=1}^n (-1)^{\nu-1}S_\nu\]
+
+\hh{Steiner-Formel}
+\[\forall a\in\mathbb{R}:V(X)=E(X-a)^2-(EX-a)^2\]
+
+\hh{Stetigkeit}
+Es gilt:
+\[P(\bigcup_{j=1}^\infty A_j)=\lim_{j\to\infty} P(A_j)\]
+f"ur jede aufsteigende Folge $A_1\subseteq A_2\subseteq\cdots$. Ebenso gilt:
+\[P(\bigcap_{j=1}^\infty A_j)=\lim_{j\to\infty} P(A_j)\]
+f"ur jede absteigende Folge $A_1\supseteq A_2\supseteq\cdots$.
+
+\hh{Subadditivit"at}
+\[P(\bigcup_{j=1}^\infty A_j)\le \sum_{j=1}^\infty P(A_j)\]
+
+\hh{totale W-keit}
+Sei $(A_n)_{n\in\mathbb{N}}$ eine Zerlegung von $\Omega$. Dann gilt:
+\[P(B)=\sum_{j=1}^\infty P(A_j)\cdot P(B|A_j)\]
+
+\hh{Transformationsformel}
+\begin{align*}
+E(g(Z))&=\sum_{z\in\mathbb{R}^k} g(z)\cdot P(Z=z)\\
+&=\int_{\mathbb{R}^k} g(x)\text{ d}x
+\end{align*}
+
+\hh{Tschebyschow-Ungleichung}
+\[P(|X-EX|\ge\varepsilon)\le \frac1{\varepsilon^2}\cdot V(X)\]
+
+\hh{Varianz}
+\begin{align*}
+&V(X)=\min_{a\in\mathbb{R}} E(X-a)^2\\
+&V(a\cdot X+b)=a^2\cdot V(X)\\
+&V(X)\ge 0\\
+&V(X)=0\iff\exists a\in\mathbb{R}: P(X=a)=1\\
+&V(X+Y)=V(X)+V(Y)+2C(X,Y)\\
+&V(X_1+\cdots+X_n)\\
+&=\sum_{j=1}^n V(X_j)+2\sum_{1\le i<j\le n} C(X_i,X_j)
+\end{align*}
+(siehe auch Steiner-Formel)
+
+\hh{ZGWS}
+Sei $X_n\sim Bin(n,p_n)$ mit $\lim_{n\to\infty} np_n(1-p_n)=\infty$. Dann gilt:
+\begin{align*}
+\lim_{n\to\infty} &P\left(a\le\frac{X_n-np_n}{\sqrt{np_n(1-p_n)}}\le b\right)\\
+ = &\Phi(b)-\Phi(a)\\
+\lim_{n\to\infty} &P\left(\frac{X_n-np_n}{\sqrt{np_n(1-p_n)}}\le b\right)\\
+ = &\Phi(b)
+\end{align*}
+
+
+\h{Verteilungen}
+\hh{Binomialverteilung}
+$X\sim Bin(n,p)$
+\begin{align*}
+&P(X=k)={n\choose k}\cdot p^k\cdot (1-p)^{n-k}\\
+&F_X(x)=\sum_{k\le x} {n\choose k}\cdot p^k\cdot (1-p)^{n-k}\\
+&EX = np\\
+&V(X)=np(1-p)\\
+\end{align*}
+Ist $Y\sim Bin(m,p)$ und $X,Y$ unabh"angig, so gilt $X+Y\sim Bin(n+m,p)$.
+
+
+\hh{Exponentialverteilung}
+$X\sim Exp(\lambda)$
+\begin{align*}
+&F_X(x)=(1-e^{-\lambda x})\cdot\mathds{1}_{[0,\infty)}(x)\\
+&f_X(x)=\lambda\cdot e^{-\lambda x}\cdot\mathds{1}_{[0,\infty)}(x)\\
+&EX=\frac1\lambda\\
+&V(X)=\frac1{\lambda^2}
+\end{align*}
+
+
+\hh{geometrische Verteilung}
+$X\sim G(p)=Nb(1,p)$\\
+Gibt die Wahrscheinlichkeit an, dass vor dem ersten Treffer in einem Bernoullischen Versuchsschema mit Trefferwahrscheinlichkeit $p$ genau $k$ Nieten gezogen werden.
+\begin{align*}
+&P(X=k)=p\cdot(1-p)^{k}\\
+&F_X(x)=\sum_{k\le x}p\cdot (1-p)^{k}\\
+&EX=\frac{1-p}p\\
+&V(X)=\frac{1-p}{p^2}
+\end{align*}
+Ist $Y\sim G(p)$ und $X,Y$ unabh"angig, so gilt $X+Y\sim Nb(2,p)$.
+
+\hh{Gleichverteilung}
+$X\sim U(A)$\\
+\hhh{diskrete}\\
+Sei $A=\{x_1,\ldots,x_n\}$.
+\begin{align*}
+&P(X=x_j)=\frac1n\\
+&EX=\frac1n\sum_{j=1}^n x_j\\
+&V(X)=\frac1n\left(\sum_{j=1}^n x_j^2-\left(\sum_{j=1}^n x_j\right)^2\right)
+\end{align*}
+\hhh{indiskrete}\\
+Sei $A\in\frak{B}_1$.
+\begin{align*}
+&P(B)=\frac{\lambda_1(A\cap B)}{\lambda_1(A)}\\
+&F_X(x)=\frac{\lambda_1(A\cap (-\infty,x])}{\lambda_1(A)}\\
+&f_X(x)=\frac1{\lambda_1(A)}\cdot\mathds{1}_A(x)
+\end{align*}
+
+\hh{hypergeometrische Verteilung}
+$X\sim Hyp(n,r,s)$\\
+Gibt die Wahrscheinlichkeit an, beim $n$-maligen Ziehen ohne Zur"ucklegen $k$ der $r$ roten von insgesamt $r+s$ Kugeln zu ziehen.
+\begin{align*}
+&P(X=k)=\frac{{r\choose k}\cdot{s\choose n-k}}{{r+s\choose n}}\\
+&EX=\frac{rn}{r+s}\\
+&V(X)=\\&\left(\frac{rs}{r+s}\right)\left(1-\frac r{r+s}\right)\left(\frac{r+s-n}{r+s-1}\right)
+\end{align*}
+
+\hh{Multinomialverteilung}
+$X=(X_1,\ldots,X_s)\sim Mult(n, p_1,\ldots,p_s)$
+\begin{align*}
+&P(X=x)={k\choose x_1,\ldots, x_s}\cdot\prod_{j=1}^s p_j^{x_j}\\
+&X_k\sim Bin(n,p_k)\\
+&\sum_{j=1}^k X_{i_j}\sim Bin(n,\sum_{j=1}^k p_{i_j})\\
+&C(X_i,X_j)=-np_ip_j\\
+&\rho(X_i,X_j)=-\sqrt{\frac{p_ip_j}{(1-p_i)(1-p_j)}}
+\end{align*}
+
+\hh{negative Binomialverteilung}
+$X\sim Nb(r,p)$\\
+Gibt die Wahrscheinlichkeit an, dass vor dem $r$-ten Treffer in einem Bernoullischen Versuchsschema mit Trefferwahrscheinlichkeit $p$ genau $k$ Nieten gezogen werden.
+\begin{align*}
+&P(X=k)={k+r-1\choose k}\cdot p^r\cdot(1-p)^{k}\\
+&F_X(x)=\sum_{k\le x}{k+r-1\choose k}\cdot p^r\cdot (1-p)^{k}\\
+&EX=r\cdot\frac{1-p}p\\
+&V(X)=r\cdot\frac{1-p}{p^2}
+\end{align*}
+Ist $Y\sim Nb(s,p)$ und $X,Y$ unanh"angig, so gilt $X+Y\sim Nb(r+s,p)$.
+
+\hh{Normalverteilung}
+$X\sim N(\mu,\sigma^2)$
+\begin{align*}
+&F_X(x)=\Phi\left(\frac{x-\mu}\sigma\right)\\
+&\Phi(x)=\int_{-\infty}^x \frac1{\sqrt{2\pi}}\exp\left(-\frac{y^2}2\right)\text{ d}y\\
+&\Phi(x)=1-\Phi(-x)\\
+&\Phi^{-1}(x)=-\Phi^{-1}(1-x)\\
+&f_X(x)=\frac1{\sigma\sqrt{2\pi}}\cdot\exp\left(-\frac{(x-\mu )^2}{2\sigma^2}\right)\\
+&EX=\mu\\
+&V(X)=\sigma^2
+\end{align*}
+Ist $Y\sim N(\tilde\mu,\tilde\sigma^2)$ und $X,Y$ unanh"angig, so gilt $X+Y\sim N(\mu+\tilde\mu,\sigma^2+\tilde\sigma^2)$.
+\hhh{mehrdimensionale}\\
+$X\sim N_k(\mu,\Sigma)$\\
+Dabei seien $Y_1,\ldots, Y_k\sim N(0,1)$ unabh"angig, $A\in\mathbb{R}^{k\times k}$ regul"ar, $\Sigma=A\cdot A^\bot$, $\mu\in\mathbb{R}^k$ und $X:=A\cdot Y+\mu$. Dann gilt:
+\begin{align*}
+f_X(x)=&\frac1{\sqrt{(2\pi)^k\cdot\det\Sigma}}\\
+&\cdot\exp\left(-\frac12(x-\mu)^\bot\Sigma^{-1}(x-\mu)\right)
+\end{align*}
+
+\hh{Poisson-Verteilung}
+$X\sim Po(\lambda)$
+\begin{align*}
+&P(X=k)=e^{-\lambda}\cdot\frac{\lambda^k}{k!}\\
+&F_X(x)=\sum_{k\le x}e^{-\lambda}\cdot\frac{\lambda^k}{k!}\\
+&EX=\lambda\\
+&V(X)=\lambda
+\end{align*}
+Ist $Y\sim Po(\mu)$ und $X,Y$ unabh"angig, so gilt $X+Y\sim Po(\lambda+\mu)$. In diesem Fall ist
+\[P^{X|X+Y=n}=Bin\left(n,\frac\lambda{\lambda+\mu}\right)\]
+
+\end{multicols}
+\end{document}
