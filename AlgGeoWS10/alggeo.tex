@@ -1,12 +1,22 @@
 \documentclass[a4paper,12pt,index=toc]{scrbook}
 
-\usepackage{fontspec}
-\usepackage{polyglossia}
-%\setdefaultlanguage[spelling=new,latesthyphen=true,babelshorthands=true]{german}
-\setdefaultlanguage[spelling=new,latesthyphen=true]{german}
+\usepackage{ifxetex}
 
-\setmainfont[Mapping=tex-text,Numbers=OldStyle,Ligatures=Rare]{Linux Libertine O}
-\setsansfont{Linux Biolinum O}
+\ifxetex %xelatex-Zeugs:
+  \usepackage{fontspec}
+  \usepackage{polyglossia}
+%\setdefaultlanguage[spelling=new,latesthyphen=true,babelshorthands=true]{german}
+  \setdefaultlanguage[spelling=new,latesthyphen=true]{german}
+
+  \setmainfont[Mapping=tex-text,Numbers=OldStyle,Ligatures=Rare]{Linux Libertine O}
+  \setsansfont[Mapping=tex-text,Numbers=OldStyle,Ligatures=Rare]{Linux Biolinum O}
+
+\else % für pdflatex...
+  \usepackage[utf8x]{inputenc}
+  \usepackage[german]{babel}
+  \usepackage[T1]{fontenc}
+  \usepackage{etoolbox} % in polyglossia enthalten ...
+\fi
 
 \usepackage{csquotes}
 \usepackage{hyperref,amsmath,amsfonts,amssymb,bbm,enumitem}
@@ -14,19 +24,20 @@
 %\usepackage{thmtools}
 \usepackage{cleveref}
 
-\def\filename{alggeo.sublinks}
-\newcommand{\readfromfile}[1]{\input{#1}}
-% coole Datei mit Formaten einlesen und dann neue erstellen:
-% Existenz überprüfen:
-\newread\foo
-\immediate\openin\foo=\filename\relax
-\ifeof\foo\relax%überprüfen ob schon vorhanden
-\else\readfromfile\filename\relax\fi
-\immediate\closein\foo
-\newwrite\blah
-\immediate\openout\blah=\filename\relax
-%% und am Ende wieder zu machen:
-\AtEndDocument{\immediate\write\blah{\string\endinput}\relax \immediate\closeout\blah}
+%\def\filename{alggeo.sublinks}
+%\newcommand{\readfromfile}[1]{\input{#1}}
+%% coole Datei mit Formaten einlesen und dann neue erstellen:
+%% Existenz überprüfen:
+%\newread\foo
+%\immediate\openin\foo=\filename\relax
+%\ifeof\foo\relax%überprüfen ob schon vorhanden
+%\else\readfromfile\filename\relax\fi
+%\immediate\closein\foo
+%\newwrite\blah
+%\immediate\openout\blah=\filename\relax
+%%% und am Ende wieder zu machen:
+%\AtEndDocument{\immediate\write\blah{\string\endinput}\relax \immediate\closeout\blah}
+\usepackage{coolthms}
 
 \usepackage{tikz}
 \usetikzlibrary{matrix,arrows,calc}
@@ -35,49 +46,7 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{3pt}
 
-\begingroup
-\catcode`\#=12
-\gdef\hashchar{#}%
-\endgroup
-
-\newtheorem{thmcnt}{Dummy}[section]
-\newcommand{\definetheorem}[3]{
-  \theoremstyle{mitnummern} %nummerierte Variante
-  \newtheorem{#1}[#3]{#2}
-  \theoremstyle{keinenummern} %unnummerierte Variante
-  \newtheorem{n#1}[#3]{#2}
-  \BeforeBeginEnvironment{n#1}{\addtocounter{thmcnt}{-1}}%ausgleich, weil er trotzdem weiterzählt...
-  \crefformat{#1}{##2#2~##1##3}
-  \BeforeBeginEnvironment{#1}{\makeatletter%
-     \addtocounter{thmcnt}{1}% noch nicht passiert
-     \edef\labelcode{ctr@#1@\roman{chapter}@\roman{section}@\arabic{thmcnt}}\relax%
-     % formatierungszeugs wird in datei geschrieben, so dass es beim nächsten mal rechtzeitig eingelesen und verwendet werden kann...
-     \immediate\write\blah{\string\crefname{\labelcode}{#2\noexpand~\thethmcnt}{}}\relax%
-    % jetzt noch die Formatierungsinformationen mit rein...
-    \immediate\write\blah{\string\crefformat{\labelcode}{\string##2#2\noexpand~\thethmcnt\noexpand~\hashchar1\hashchar3}}%
-      % neuer Befehl: Label setzt richtigen label für Aufzählungen in Umgebungen
-      \edef\Label##1{\noexpand\label[\labelcode]{##1}}%
-      \addtocounter{thmcnt}{-1} % schnell wieder zurück :)
-  \makeatother}%
-}
-
-% coole gabi-style umgebungen:
-\makeatletter
-\newtheoremstyle{keinenummern}{%
-  \item[\hskip\labelsep\theorem@headerfont ##1\theorem@separator]}%
-  {\item[\hskip\labelsep\theorem@headerfont ##1\ {\normalfont(##3)\theorem@separator}]%
-}
-\newtheoremstyle{mitnummern}{%
-  \item[\hskip\labelsep\theorem@headerfont ##1\ ##2\theorem@separator]}%
-  {\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\ {\normalfont(##3)\theorem@separator}]%
-}
-\newtheoremstyle{unserbeweis}{%
-  \item[{\hskip\labelsep\theorem@headerfont ##1}\theorem@separator]}%
-  {\item[\hskip\labelsep{\theorem@headerfont ##3}\theorem@separator]%
-}
-\makeatother
-
-% Standardformat
+%% Standardformat
 \theorempreskipamount0pt plus 2pt\relax
 \theorempostskipamount0pt plus 2pt\relax
 \theoremheaderfont{\hspace*{-2.5em}\scshape}%
@@ -86,56 +55,13 @@
 \theoremindent3em\relax%
 \theoremnumbering{arabic}%
 \theoremsymbol{}%
-
 \theoremstyle{keinenummern} % ab hier ohne Nummern
 \newtheorem{ziel}{Ziel}
 \newtheorem{motivation}{Motivation}
 \newtheorem{zeige}{Zeige}
 \newtheorem{q}{Frage}
-% ab hier mit nummer, n### ohne...
-\definetheorem{dfn}{Definition}{thmcnt}
-\definetheorem{bsp}{Beispiel}{thmcnt}
-\definetheorem{lem}{Lemma}{thmcnt}
-\definetheorem{prop}{Proposition}{thmcnt}
-\definetheorem{kor}{Korollar}{thmcnt}
-\definetheorem{bem}{Bemerkung}{thmcnt}
-\definetheorem{erinnerung}{Erinnerung}{thmcnt}
-\definetheorem{db}{Definition/Bemerkung}{thmcnt}
-\definetheorem{defprop}{Definition/Proposition}{thmcnt}
-\definetheorem{de}{Definition/Erinnerung}{thmcnt}
-\definetheorem{dl}{Definition/Lemma}{thmcnt}
-\definetheorem{eb}{Erinnerung/Bemerkung}{thmcnt}
-% Sätze separat...
-\theoremstyle{mitnummern}
-\theorembodyfont{\normalfont\it}
-\theoremheaderfont{\hspace*{-2.5em}\bf}
-\crefformat{satz}{#2Satz~#1#3}
-\newtheorem{satz}{Satz}
-% den ganzen Spaß nochmal für Sätze....
-  \BeforeBeginEnvironment{satz}{\makeatletter%
-     \addtocounter{satz}{1}% noch nicht passiert
-     \edef\labelcode{ctr@satz@\roman{chapter}@\roman{section}@\arabic{satz}}\relax%
-     % formatierungszeugs wird in datei geschrieben, so dass es beim nächsten mal rechtzeitig eingelesen und verwendet werden kann...
-     \immediate\write\blah{\string\crefname{\labelcode}{Satz\noexpand~\thesatz}{}}\relax%
-    % jetzt noch die Formatierungsinformationen mit rein...
-    \immediate\write\blah{\string\crefformat{\labelcode}{\string#2 Satz\noexpand~\thesatz\noexpand~\hashchar1\hashchar3}}%
-      % neuer Befehl: Label setzt richtigen label für Aufzählungen in Umgebungen
-      \edef\Label#1{\noexpand\label[\labelcode]{#1}}%
-      \addtocounter{satz}{-1} % schnell wieder zurück :)
-  \makeatother}%
 
-%Beweise:
-\theoremstyle{unserbeweis}
-\theoremheaderfont{\hspace*{-2.5em}\it}
-\theorembodyfont{\normalfont}
-\theoremsymbol{\ensuremath{\Box}}
-\newtheorem{proof}{Beweis}
-
-
-%Format für Querverweise auf Formeln:
-\crefformat{equation}{#2(#1)#3}
-\crefformat{chapter}{#2Kapitel~#1#3}
-\crefformat{section}{#1}
+% "Standardumgebungen" alle in coolthms.sty enthalten...
 
 % Warnungen :)
 \usepackage{manfnt,environ,ragged2e}
@@ -249,38 +175,13 @@
 \newcommand{\Z}{\set{Z}}
 
 %coole tikzpfeile :)
-\newcommand{\smapsto}{\raisebox{-1pt}{\tikz{\draw[thin,shorten >=3pt, |->] (0,0) node{\hspace*{0pt}} -- node{} (0.7,0);}}\penalty1000\relax}
-\newcommand{\ra}[1][]{\raisebox{-1pt}{\tikz{\draw[thin,shorten >=3pt, ->,font=\scriptsize] (0,0) node{\hspace*{-2pt}} -- (0.5,0) node[above] {#1} -- node{} (1,0);}}\penalty1000\relax}
-\renewcommand{\mapsto}{\raisebox{-1pt}{\tikz{\draw[thin,shorten >=3pt, |->] (0,0) node{\hspace*{0pt}} -- node{} (1,0);}}\penalty1000\relax}
-\newcommand{\inj}[1][]{\raisebox{-1pt}{\tikz{\draw[thin,shorten >=3pt, right hook->,font=\scriptsize] (0,0) node{\hspace*{0pt}} -- (0.5,0) node[above] {#1} -- node{} (1,0);}}\penalty1000\relax}
-\newcommand{\surj}[1][]{\raisebox{-1pt}{\tikz{\draw[thin,shorten >=3pt, ->>,font=\scriptsize] (0,0) node{\hspace*{0pt}} -- (0.5,0) node[above] {#1} -- node{} (1,0);}}\penalty1000\relax}
-\newcommand{\isom}{\raisebox{-1pt}{\tikz{\draw[thin,shorten >=3pt, ->] (0,0) node{\hspace*{0pt}} -- node{} (1,0);\draw (0.4,0.1)
-    node {$\sim$};}}\penalty1000\relax}
-\newcommand{\lra}[1][]{\raisebox{-1pt}{\tikz{\draw[thin,shorten >=3pt, <->,font=\scriptsize] (0,0) node{\hspace*{-2pt}} -- (0.5,0) node[above] {#1} -- node{} (1,0);}}\penalty1000\relax}
-% ``punktierte'' Pfeile...
-\newcommand{\ppf}{\raisebox{-1pt}{\tikz{\draw[densely dashed,thin,shorten >=3pt, ->] (0,0) node{\hspace*{-2pt}} -- node{} (1,0);}}\penalty1000\relax}
+\usepackage{tikzpfeile}
 
 \newcommand{\dach}{\widehat}
 \newcommand{\oldbar}[1]{\bar{#1}}
 \def\Bar#1{\ensuremath\overline{#1}}
 
-\newcommand{\Quotient}[2]{
-  \mathchoice
-  { %displaystyle
-    \raisebox{0.7ex}{\ensuremath{#1}}
-    \ensuremath{\mkern-3mu}\big/\ensuremath{\mkern-3mu}
-    \raisebox{-0.6ex}{\ensuremath{#2}}
-  }
-  { %textstyle
-    #1/#2
-  }
-  { %scriptstyle
-    #1/#2
-  }
-  { %scriptscriptstyle
-    #1/#2
-  }
-}
+\usepackage{quotienten}
 
 %Listenformate:
 \setenumerate[1]{leftmargin=*,labelindent=\parindent,label=(\alph*)}
@@ -767,7 +668,7 @@ Also ist $f^{-1}(Z)$ abgeschlossen und $f$ damit stetig.
 \begin{w}
 Im Allgemeinen gibt es viel mehr stetige Abbildungen als Morphismen. 
 
-Beispielsweise ist jede bijektive Abbildung von $k$ nach $k$   stetig, wie wir in\par \cref{1.2.4} gesehen haben.
+Beispielsweise ist jede bijektive Abbildung von $k$ nach $k$   stetig, wie wir in \cref{1.2.4} gesehen haben.
 
 \end{w}\par
 
@@ -1215,7 +1116,7 @@ Sei $V$ irreduzibel. Der Körper $K(V)\cong \Rat(V)$ heißt \emph{Funktionenkör
 \end{dfn}
 
 \begin{w}
-Ist $V$ irreduzibel, so repräsentiert der gekürzte Bruch $\frac{g}{h} \in K(V)$ die rationale Funktion $r:=[(\D(h),\frac{g}{h})]$.
+Ist $V$ irreduzibel, so repräsentiert der gekürzte Bruch\par $\frac{g}{h} \in K(V)$ die rationale Funktion $r:=[(\D(h),\frac{g}{h})]$.
 
 Aber $\D(h)$ kann eine \textit{echte} Teilmenge des Definitionsbereichs $\Def(r)$ sein. 
 
