@@ -57,8 +57,10 @@
 \usepackage{stmaryrd}
 
 % Verschiedene items in enumerate Umgebungen
-%\usepackage{enumitem}
 \usepackage{enumerate}
+
+% Erweiterte description umgebung
+\usepackage{expdlist}
 
 %für schoene Brueche
 \usepackage{nicefrac}
@@ -78,7 +80,6 @@
 
 % keine kursiv schrift in theorems
 \theorembodyfont{}
-
 
 % Theoreme definieren
 \theoremstyle{break}
@@ -214,6 +215,9 @@
 \newcommand{\frakp}{\mathfrak{p}}
 \newcommand{\frakP}{\mathfrak{P}}
 \newcommand{\frakq}{\mathfrak{q}}
+
+%X als Malzeichen
+\newcommand{\X}{\times}
 
 \newcommand{\FakRaum}[2]{
   \raisebox{0.7ex}{\ensuremath{#1}}
@@ -754,11 +758,11 @@ Sei $V=V_1,\dots ,V_r$ mit irreduziblen Variet\"aten $V_1,\dots ,V_r$.\\
 \emph{denn:} Sei $W \subseteq V$ irreduzible Komponente\\
 Es gilt \[W = \bigcup_{j=1}^r (V_i \cap W)\]
 $\overset{W \textrm{ irred.}}{\Longrightarrow} \exists j$ mit $V_j \cap W=W$, also $W\subseteq V_j$\\
-$\Rightarrow V_j\subseteq V_j \Rightarrow i=j\Rightarrow W=V_i$\\
-\emph{Eindeutigkeit:} Sei $W$ irreduzible Komponente von $V$.\\
+$\Rightarrow V_j\subseteq V_j \Rightarrow i=j\Rightarrow W=V_i$\begin{description}[\setlabelstyle{\itshape}]
+\item[Eindeutigkeit:] Sei $W$ irreduzible Komponente von $V$.\\
 Aus $W= \bigcup_{j=1}^r(V_j\cap W)$ folgt $W\cap V_j=W$ f\"ur ein $j$\\
 $\Rightarrow W\subseteq V_j  \overset{W \textrm{ irred. Komp.}}{\Longrightarrow }W=V_j$
-\end{enumerate}\end{Bew}
+\end{description}\end{enumerate}\end{Bew}
 
 \begin{Prop}
 Die irreduzible Teilmenge eines topologischen Raumes $X$ ist enthalten in einer irreduziblen Komponente von $X$.
@@ -3063,7 +3067,7 @@ Dann sind \"aquivalent:\begin{enumerate}[i)]
 	$R$ ist Hauptidealring
 \end{enumerate}\end{Prop}
 
-%31. 01. 2012
+% 01. 02. 2012
 \begin{Bew}\begin{enumerate}[(a) $\Rightarrow$ (a)]
 \item[\underline{(i)$\Rightarrow$(ii)}:]$\checkmark$
 \item[\underline{(ii)$\Rightarrow$(iii)}:]$\checkmark$
@@ -3151,20 +3155,61 @@ $\calO_{v_p}=\Z_{(p)}=\{\frac{a}{b}\in\Q\mid p\nmid b\}$
 \end{enumerate}\end{nnBsp}
 
 \begin{Bem}
-
-\end{Bem}
+Sei $v:K^\X\to\Z$ diskrete \textcolor{red}{nichttriviale} Bewertung auf K\"orper $K$. Sei $0<\varrho<1$. Setzte:
+	\[|x|_v:=\left\{\begin{array}{lr}\varrho^{v(x)} & ,x\ne 0\\0 & ,x=0\end{array}\right.\]
+Dann erf\"ullt $|\cdot|_v:K\to\R$:\begin{itemize}
+\item$|xy|_v=\varrho^{v(xy)}=\varrho^{v(x)+v(y)}=\varrho^{v(x)}\cdot\varrho^{v(y)}=|x|_v\cdot|y|_v$
+\item$|x+y|_v=\varrho^{v(x+y)}\le\max(\varrho^{v(x)},\varrho^{v(y)})\le\max(|x|_v,|y|_v)$ ($\le|x|_v+|y|_v$)
+\end{itemize}\end{Bem}
 
 \begin{Def}
-
+Sei $C$ nichtsingul\"are Kurve, $P\in C$.\\
+Dann ist $\calO_{C,P}$ diskreter Bewertungsring. Die zugeh\"orige diskrete Bewertung auf $k(C)=\Quot(\calO_{C,P})$ hei\ss t $\ord_P$. $\ord_P$ hei\ss t die \begriff{Ordnung} von $f$ in $P$.
 \end{Def}
 
 \begin{Bem}
-
+Sie $C$ nichtsingul\"are Kurve, $f\in k(C)^\X$.\\
+Dann gibt es nur endlich viele $P\in C$ mit $\ord_P(f)\ne0$.
 \end{Bem}
 
 \begin{Bew}
-
+Es ist $\ord_P(f) > 0 \Leftrightarrow f \in m_P \Leftrightarrow f(P)=0$\\
+\textcolor{white}{Es ist} $\ord_P(f) < 0 \Leftrightarrow \frac{1}{f} \in m_P \Leftrightarrow \frac{1}{f}(P)=0$\\
+$\Rightarrow \{P\in C: \ord_P(f)\ne0\} = V(f)\cup V(\frac{1}{f})$\\
+$V(f)$ und $\textcolor{red}{V}(\frac{1}{f})$ sind echte abgeschlossene Teilmengen von $C$.\\
+$\dim C=1$ $\Rightarrow$ $V(f)$, $V(\frac{1}{f})$ sind endlich.
 \end{Bew}
+
+\begin{Prop}
+Sei $C$ nichtsingul\"are Kurve, $\emptyset\ne U\subseteq C$ offen, $V$ projektive Variet\"at, $f:U\to V$ Morphismus.\\
+Dann gibt es genau einen Morphismus $\overline{f}:C\to V$ mit $\overline{f}|_U=f$.
+\end{Prop}
+
+\begin{Bew}\begin{description}[\setlabelstyle{\itshape}]
+\item[Eindeutigkeit:] Seien $g,h:C\to V$ Morphismen mit $g|_U=h|_U=f$.\\
+	$\{x\in C:g(x)=h(x)\}$ ist abgeschlossen.\\
+	$\Rightarrow g|_{\overline U}=h|_{\overline U}$. Da $\overline U=C$, folgt $g=h$.
+\item[Existenz:] \OE $U=C\setminus\{P\}$ f\"ur ein $P\in C$. Sei $V\subseteq\IP^n(k)$, also \OE $V=\IP^n(k)$.\\
+	\OE $f(U)\nsubset V(X_i)$ f\"ur ein $i\in\{0,\ldots ,n\}$ (sonst $V=\IP^{n-1}(k)$).\\
+	$\Rightarrow W:=f^{-1}(\bigcap\limits_{i=0}^n U_i) \ne \emptyset$\\
+	$\Rightarrow$ $W$ ist dicht in $U$.\\
+	Sei $h_{ij}:=\frac{X_i}{X_j}\circ f$, $i,j=0,\ldots ,n$\\
+	$h_{ij}$ ist regul\"are Funktion auf $W$ und damit Element von $k(C)^\X$.\\
+	Sei $r_i:=\ord_P(h_{i0})$, $i=0,\ldots ,n$\\
+	Sei $k$ so gew\"ahlt, dass $r_k\le r_j$ f\"ur alle $j\ne k$\\
+	$\Rightarrow \ord_P(h_{ik}) = \ord_P(\frac{h_{i0}}{h_{k0}}) = r_i-k_k \ge 0 \ \forall \ i$\\
+	$\Rightarrow h_{ik}\in \calO_{C,P}$, $i=0,\ldots ,n$\\
+	$\Rightarrow \exists$ Umgebung $\widetilde U$ von $P$ in $C$, sodass $h_{ik}\in \calO_{C,P}(\widetilde U)$, $i=0,\ldots ,n$.\\
+	Setze $\overline f(x)=\left\{\begin{array}{lr}f(x) & :x\ne P\\ \underbrace{(h_{0k}(x):\ldots:h_{nk}(x))}_{\in\IP^n(k), \text{ da } h_{kk}=1} & :x=P \end{array}\right.$\\
+	F\"ur $x\in \overline U\setminus\{P\}$ gilt:
+	\[\begin{array}{rrrrl}
+	\overline f(x) &=& f(x) &=& \left( \left( \frac{X_0}{X_k}\circ f \right) (x) : \left( \frac{X_1}{X_k}\circ f \right) (x) : \ldots : \left( \frac{X_n}{X_k}\circ f \right) (x) \right)\\
+	&&&&\\
+	&&&=& (h_{0k}(x):\ldots :h_{nk}(x))\end{array}\]
+	$\Rightarrow \overline f$ ist Morphismus.
+\end{description}\end{Bew}
+
+% 06. 02. 2012
 
 %-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Anhang -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
