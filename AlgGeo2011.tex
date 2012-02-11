@@ -120,6 +120,8 @@
 	\newtheorem{Eri}{Erinnerung}
 	\newtheorem{Beh}{Behauptung}
 	\newtheorem{Frag}{Frage}
+	\newtheorem{Ziel}{Ziel}
+	\newtheorem{Strat}{Strategie}
 	\theoremsymbol{\ensuremath{\Box}}
 	\newtheorem{Bew}{Beweis}
 \theoremstyle{nonumberplain}
@@ -188,6 +190,9 @@
 \DeclareMathOperator{\height}{ht}
 \DeclareMathOperator{\trdeg}{trdeg}
 \DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Ddiv}{div}
+\DeclareMathOperator{\ddiv}{div}
+\DeclareMathOperator{\dd}{d} % das "d" zum Beispiel beim Integral am Ende "dx"
 \DeclareMathOperator{\ord}{ord}
 \DeclareMathOperator{\modmodulo}{mod}%\modulo und \mod bereis belegt
 \DeclareMathOperator{\red}{red}%reduziert
@@ -3067,7 +3072,7 @@ Dann sind \"aquivalent:\begin{enumerate}[i)]
 	$R$ ist Hauptidealring
 \end{enumerate}\end{Prop}
 
-% 01. 02. 2012
+% 30. 02. 2012
 \begin{Bew}\begin{enumerate}[(a) $\Rightarrow$ (a)]
 \item[\underline{(i)$\Rightarrow$(ii)}:]$\checkmark$
 \item[\underline{(ii)$\Rightarrow$(iii)}:]$\checkmark$
@@ -3167,7 +3172,7 @@ Sei $C$ nichtsingul\"are Kurve, $P\in C$.\\
 Dann ist $\calO_{C,P}$ diskreter Bewertungsring. Die zugeh\"orige diskrete Bewertung auf $k(C)=\Quot(\calO_{C,P})$ hei\ss t $\ord_P$. $\ord_P$ hei\ss t die \begriff{Ordnung} von $f$ in $P$.
 \end{Def}
 
-\begin{Bem}
+\begin{Bem}\label{20.8}
 Sie $C$ nichtsingul\"are Kurve, $f\in k(C)^\X$.\\
 Dann gibt es nur endlich viele $P\in C$ mit $\ord_P(f)\ne0$.
 \end{Bem}
@@ -3180,7 +3185,7 @@ $V(f)$ und $\textcolor{red}{V}(\frac{1}{f})$ sind echte abgeschlossene Teilmenge
 $\dim C=1$ $\Rightarrow$ $V(f)$, $V(\frac{1}{f})$ sind endlich.
 \end{Bew}
 
-\begin{Prop}
+\begin{Prop}\label{20.9}
 Sei $C$ nichtsingul\"are Kurve, $\emptyset\ne U\subseteq C$ offen, $V$ projektive Variet\"at, $f:U\to V$ Morphismus.\\
 Dann gibt es genau einen Morphismus $\overline{f}:C\to V$ mit $\overline{f}|_U=f$.
 \end{Prop}
@@ -3209,7 +3214,234 @@ Dann gibt es genau einen Morphismus $\overline{f}:C\to V$ mit $\overline{f}|_U=f
 	$\Rightarrow \overline f$ ist Morphismus.
 \end{description}\end{Bew}
 
+\newpage
+
+% 01. 02. 2012
+
+\section{Divisoren}
+
+Sei $C$ nichtsingul\"are Kurve (also projektiv, irreduzibel, \"uber algebraisch abgeschlossenem $k$).
+
+\begin{Def}\begin{enumerate}[a)]
+\item
+	Ein \begriff{Divisor} auf $C$ ist eine formale Summe $D=\sum\limits_{i=1}^nn_iP_i$ mit $n\in \N$, $n_i\in\Z$, $P_i\in C$.
+\item
+	$\Div(C)=\{D=\sum\limits_{i=1}^nn_iP_i \ | D$ ist Divisor auf $C\}$ mit der formalen Addition hei\ss t \begriff{Divisorengruppe} von $C$.
+\item
+	F\"ur $D=\sum\limits_{i=1}^nn_iP_i$ hei\ss t $\deg(D):= \sum\limits_{i=1}^nn_i$ der \begriff{Grad} von $D$.
+\item
+	$D=\sum\limits_{i=1}^nn_iP_i$ hei\ss t \begriff{effektiv}, wenn alle $n_i\ge0$ sind.\\
+	Schreibweise: $D\ge0$
+\end{enumerate}\end{Def}
+
+\begin{DefBem}\begin{enumerate}[a)]
+\item
+	F\"ur $f\in k(C)^\X$ hei\ss t $\Ddiv(f):=\sum\limits_{P\in C}\ord_P(f)_P$ der \begriffspez{Divisor von f}{Divisor!-von $f$}
+\item
+	$\Ddiv(f)$ ist Divisor (wegen Bemerkung \ref{20.8})
+\item
+	$D\in\Div(C)$ hei\ss t \begriff{Hauptdivisor}\index{Divisor!Haupt-}, wenn es ein $f\in k(C)^\X$ gibt mit $D=\Ddiv(f)$.
+\item
+	$\Ddiv:k(C)^\X\to \Div(C)$, $f\mapsto\Ddiv(f)$ ist Gruppenhomomorphismus.\\
+	$\Bild(\Ddiv)=\Div_H(C)$ sind die Hauptdivisoren.
+\item
+	$\Cl(C):=\Div(C)/\Div_H(C)$ hei\ss t \begriff{Divisorenklassengruppe} von $C$.
+\item
+	$D,D'\in \Div(C)$ hei\ss en \begriff{linear \"aquivalent}, wenn $D-D'$ Hauptdivisor ist.\\
+	Schreibweise: $D \equiv D'$
+\end{enumerate}\end{DefBem}
+
+\begin{Bsp}\textcolor{red}{(Ist es OK, dass $P$ und $Q$ gro\ss e Buchstaben sind?)}
+$C=\IP^1(k)$\\
+Jedes $f\in k(C)^\X=k(X)^\X$ l\"asst sich eindeutig schreiben in der Form $f=\frac{\prod\limits_{i=1}^n(X-a_i)}{\prod\limits_{i=1}^m(X-b_j)}$ mit $a_i\textcolor{red}{=}b_j$ f\"ur alle $i,j$ ($a_i,b_j\in k$).\\
+Dann ist $\ord_a(f)=\#\{i:a_i=a\}-\#\{j:b_j=a\}$ f\"ur $a\in k$\\
+\textcolor{white}{Dann ist} $\ord_\infty(f)=m-n$\\
+$\Rightarrow \Ddiv(f)=\sum\limits_{i=1}^na_i-\sum\limits_{j=1}^mb_j+(m-n)\cdot\infty$\\
+$\Rightarrow \deg(\Ddiv(f))=0$\\
+Umgekehrt: Sei $D\in \Div(\IP^1(k))$, $\deg(D)=0$\\
+Schreibe $D=\sum\limits_{i=1}^nP_i-\sum\limits_{j=1}^{\textcolor{red}{m}}Q_j$\\
+Sei zum Beispiel $P_1=\ldots =P_d=\infty$, $P_i\ne\infty$ f\"ur ein $i>d$\\
+$\Rightarrow$ f\"ur $f=\frac{\prod\limits_{i=d+1}^n(X-P_i)}{\prod\limits_{j=1}^{\textcolor{red}{m}}(X-Q_j)}$ gilt: $\Ddiv(f)=D \Rightarrow \Cl(\IP^1(k))\cong\Z, [D]\mapsto\deg(D)$
+\end{Bsp}
+
+\begin{Ziel}
+$\deg(\Ddiv(f))=0$ f\"ur jedes $f\in k(C)^\X$
+\end{Ziel}
+
+\begin{Beo}
+$f$ induziert Morphismus $f:C\to\IP^1(k)$ (Proposition \ref{20.9})
+\end{Beo}
+
+\begin{Strat}\begin{enumerate}[i)]
+\item
+	$\Ddiv(f)=f^*((0)-(\infty))$
+\item
+	$\deg(f^*(D))=\deg(f)-\deg(G)$
+\end{enumerate}\end{Strat}
+
+\begin{DefBem}
+Sei $f:C_1\to C_2$ surjektiver Morphismus von nichtsingul\"aren Kurven $C_1$, $C_2$.\begin{enumerate}[a)]
+\item
+	Sei $Q\in C_2$, $P\in f^{-1}(Q)$, $t\in m_Q$ Uniformierende (das hei\ss t $m_Q=(t)$)\\
+	Dann hei\ss t $e_P=e_P(f):=\ord_P(t\circ f)$ Verzweigungsordnung von $f$ in $P$.
+\item
+	Definiere Gruppenhomomorphismus	
+		\[f^*: \Div(C_2) \to \Div(C_1) \]
+	durch $f^*(Q)=\sum\limits_{P\in f^{-1}(Q)}e_P(f)\cdot P$
+\item
+	F\"ur $g\in k(C_2)^\X$ gilt:
+		\[ f^*(\Ddiv(g))=\Ddiv(g\circ f) \]
+\item
+	$f^*$ induziert Gruppenhomomorphismus:
+		\[ f^*: \Cl(C_2) \to \Cl(C_1) \]
+\end{enumerate}\end{DefBem}
+
+\begin{Bew}\begin{enumerate}[a)]
+\item
+	\begin{description}[\setlabelstyle{\itshape}]
+	\item[zu zeigen:]$e_P(f)$ h\"angt nicht vond er Wahl von $f$ ab.
+	\end{description}
+	Ist $t'$ weitere Uniformierende, so ist $t'=u\cdot t$ f\"ur ein $u\in \calO_{C_2,Q}^\X$\\
+	$\Rightarrow \ord_P(t'\circ f)=\ord_P(u\cdot t\circ f)= \ord_P((u\circ f)\cdot(t\circ f))= \underbrace{\ord_P(u\circ f)}_{=0}+\ord_P(t\circ f)$
+\item
+	\begin{description}[\setlabelstyle{\itshape}]
+	\item[zu zeigen:]$\#\{D\in C_1 : f(P)=Q\}$ ist endlich.
+	\end{description}
+	Denn $\underbrace{f^{-1}(\{Q\})}_{\ne C_1\text{, da }f\text{ surj.}}$ ist abgeschlossen $\Rightarrow f^{-1}(\{Q\})$ endlich
+\end{enumerate}\end{Bew}
+
 % 06. 02. 2012
+\textcolor{red}{Hier fehlt der Rest des Abschnitts}
+
+\newpage
+
+\section{Der Satz von Riemann-Roch}
+
+Sei weiterhin $C$ nichtsingul\"are Kurve.
+
+\begin{DefBem}
+Sei $D=\sum\limits_{P\in C}n_P\cdot P \in \Div(C)$\begin{enumerate}[a)]
+\item
+	$L(D):=\{f\in k(C)^\X \ |D+\Ddiv(f)\ge0\} \cup \{0\}$ ist $k$-Vektorraum, der \begriff{Riemann-Roch-Raum} zu $D$.
+\item
+	$l(D):=\dim L(D)$
+\item
+	$L(0)=k$
+\item
+	Ist $\deg(D)<0$, so ist $L(D)=0$
+\item
+	Ist $D'\equiv D$ f\"ur ein $D'\in\Div(C)$, so ist $l(D')=l(D)$
+\end{enumerate}\end{DefBem}
+
+\begin{Bew}\begin{enumerate}[a)]
+\item[a)]
+	$\Ddiv(f)\ge-D\Leftrightarrow \ord_P(f)\ge-n_P \ \forall P$\\
+	$\ord_P(f+g) \ge \min\{\ord_P(f), \ord_P(g)\}$
+\item[e)]
+	Sei $D'=D+\Ddiv(g)$ f\"ur ein $g\in k(C)^\X$.\\
+	Dann ist $L(D')\to L(D)$; $f\mapsto f\cdot g$ ein Isomorphismus von $k$-Vektorr\"aumen.\\
+	\emph{Denn:} $D+\Ddiv(fg) = \underbrace{D+\Ddiv(g)}_{=D'} +\Ddiv(f) \ge 0$\\
+	($h\cdot\frac{1}{g}\mapsfrom h$)
+\end{enumerate}\end{Bew}
+
+\begin{Prop}
+Sei $D\in \Div(C)$\begin{enumerate}[a)]
+\item
+	$l(D+P) \le l(D)+1$
+\item
+	$l(D)\le \deg(D)+1$ (falls $\deg(D)\ge 1$)
+\end{enumerate}
+Insbesondere ist $L(D)$ endlich dimensionalr Vektorraum\end{Prop}
+
+\begin{Bew}\begin{enumerate}[a)]
+\item
+	Es ist $L(D)\subseteq L(D+P)$\\
+	Ist $f\in L(D+P) - L(D)$, dann ist $\ord_P(f) = -(n_P+1)$.\\
+	Ist $L(D+P)\ne L(D)$, so w\"ahle $f\in L(D+P) - L(D)$.
+	\begin{description}[\setlabelstyle{\itshape}]
+	\item[Behauptung:] $L(D+P)$ wird erzeugt von $L(D)$ und $f$.
+	\item[Denn:]
+		Sei $g\in L(D+P) - L(D)$\\
+		$\Rightarrow \ord_P(g)= -n_P-1$\\
+		$\Rightarrow f=ut^{-n_P-1}$, $g=u't^{-n_P-1}$ f\"ur ein $t\in m_P$ mit $m_P=(t)$ ($u,u'\in\calO_P^\X$)\\
+		Sei $h:= u(P)g - u'(P)f \in L(D+P)$\\
+		\textcolor{white}{Sei $h:$}$= (u(P)\cdot u' - u'(P)\cdot u)t^{-n_P-1}$\\
+		$\Rightarrow \ord_P(h) \ge -(n_P + 1) +1 \Rightarrow h \in L(D)$\\
+		$\Rightarrow g= \frac{1}{u(P)} \cdot (h - u'(P)f) \in L(D) + (f)$
+	\end{description}
+\item
+	Induktion \"uber $d=\deg(D)$\begin{enumerate}[\underline{$d=-1$}:]
+	\item[\underline{$d=-1$}:]
+		$L(D)=0$
+	\item[\underline{$d\ge0$\textcolor{white}{-1}}:]
+		Sei $P\in C$, $D'=D-P$\\
+		$\overset{\text{I. V.}}{\Longrightarrow} l(D')\le \deg(D')+1=d$\\
+		$\overset{\text{a)}}{\Longrightarrow} l(D) = l(D'+P) \le d+1$
+\end{enumerate}\end{enumerate}\end{Bew}
+
+\begin{SatzDef}[Riemann-Roch]\label{s12}\begin{enumerate}[a)]
+\item\label{s12a}
+	Es gibt ein $\gamma \in \N$, sodass f\"ur alle $D\in \Div(C)$ gilt:
+		\[ l(D) \ge \deg(D) + 1 - \gamma \]
+\item
+	Das kleinste $\gamma$, f\"ur das a) erf\"ullt ist, hei\ss t \begriff{Geschlecht} von $C$ ($g(C)=g$).
+\item\label{s12c}
+	Es gibt einen Divisor $K \in \Div(C)$ (\quot{kanonischer Divisor}), sodass f\"ur jedes $D\in \Div(C)$ gilt:
+		\[ l(D)- l(K-D) = \deg(D) +1 - g \]
+	Dabei ist $K= \Ddiv \omega$ f\"ur ein (beliebiges) Differential $\omega \in \Omega(C)$. Zum Beispiel $\omega = \dd f$ f\"ur ein $f\in k(C)^\X$; $\ord_P(\omega)=\ord_P(\frac{\dd f}{\dd t_P})$, $t_P$ Uniformisierende in $P$.
+\end{enumerate}\end{SatzDef}
+
+\begin{nnBsp}\begin{enumerate}[1)]
+\item
+	$C=\IP^1(k)$, $\omega=\dd x$, $\ddiv \omega =?$\\
+	F\"ur $a\in k$ ist $t_a:=x-a$ Uniformisierende, $\frac{\dd x}{\dd (x-a)}=1$\\
+	In $\infty$ ist $\frac{1}{x}$ Uniformisierende.\\
+	$\frac{\dd x}{\dd(\frac{1}{x})} = (-\frac{1}{x})^{-2} \Rightarrow \ord_\infty(\dd x) = -2$\\
+	$\Rightarrow K=-2\cdot \infty$ ist kanonischer Divisor auf $\IP^1(k)$.
+\item
+	$C=\overline{V(Y^2-X^3+X)}$, $\omega = \frac{\dd y}{x}$ $\Rightarrow \ddiv \omega = 0$ (Rechnung selber)
+\end{enumerate}\end{nnBsp}
+
+\begin{Folg}\begin{enumerate}[a)]
+\item
+	$l(K)=g$\\
+	(setze $D=0$ in Satz \ref{s12} \ref{s12c}) ein: $\underbrace{l(0)}_{=1} - l(K) = \underbrace{\deg 0}_{=0} + 1 - g$)
+	\item
+	$\deg K = 2g - 2$\\
+	(setze $K$ in Satz \ref{s12} \ref{s12c}) ein: $\underbrace{l(k)}_{=g} - \underbrace{l(0)}_{=1} = \deg K + 1 - g$)
+\end{enumerate}\end{Folg}
+
+\begin{Bew}[von Satz \ref{s12}]\begin{enumerate}[a)]
+\item
+	Setze $s(D):=\deg D + 1 - l(D)$\\
+	Es gilt:\begin{itemize}
+		\item $s(D) = s(D')$ falls $D'\equiv D$
+		\item $D' \le D \Rightarrow s(D') \le s(D)$
+	\end{itemize}
+	Sei nun $f\in k(C)^\X$ und $N:= f^*(0)$ der Nullstellendivisor.
+	\begin{description}[\setlabelstyle{\itshape}]
+	\item[Behauptung 1:]
+		F\"ur jedes $D\in \Div(C)$ gibt es $D'$ mit $D'\equiv D$, sodass $D' \le m \cdot N$ f\"ur ein $m \ge 1$.
+	\item[Behauptung 2:]
+		Es gibt $\gamma \ge 0$ mit $s(m\cdot N) \le \gamma \ \forall m \ge 1$.
+	\end{description}
+	Aus Behauptung 1 und Behauptung 2 folgt \ref{s12} \ref{s12a}).
+	\begin{description}[\setlabelstyle{\itshape}]
+	\item[Beweis 1:]
+		Sei $D=\sum\limits_{P\in C} n_PP$\\
+		\emph{Gesucht:} $h\in k(C)^\X$ mit $n_P + \ord_P h \le \left\{ \begin{array}{ll} m\cdot \ord_P(f) & : \ord_P(f)>0\\ 0 & :\ord_P(f) \le 0\end{array}\right.$\\
+		Ersetze dann $D$ durch $D' = D+ \ddiv(h)$.\\
+		Seien $P_1,\ldots ,P_r \in C$ die Punkte mit $\ord_P(1) \le 0$ und $n_P > 0$.\\
+		$h_i:= \frac{1}{f} - \frac{1}{f}(P_i) \in m_{P_i}$\\
+		$h:= \prod\limits_{i=1}^r h_i^{-\textcolor{red}{n}} P_i$ tut's \textcolor{red}{(wo kommt das $n$ her? ist das $n_P$?)}
+	\item[Beweis 2:]
+		$[k(C) : k(f)] = \deg(f) =: r$\\
+		Sei $g_1,\ldots ,g_r$ Vektorraum-Basis von $k(C)$ \"uber $k(f)$.\\
+		\OE jede Polstelle von $g_i$ ist auch Polstelle von $f$.\\
+		$\Rightarrow \frac{g_i}{f^j} \in L(mN)$ mit $i=1,\ldots ,r$, $j=0,\ldots ,m$\\
+		$\Rightarrow \underset{\deg(mN)=mr}{\ldots} \Rightarrow l(mN) \ge mr - r(\gamma_0 - 1)$
+	\end{description}
+\end{enumerate}\end{Bew}
 
 %-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Anhang -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
