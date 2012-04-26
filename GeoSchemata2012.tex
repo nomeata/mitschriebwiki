@@ -189,6 +189,7 @@
 \DeclareMathOperator{\kgv}{kgV}
 \DeclareMathOperator{\kgV}{kgV}
 \DeclareMathOperator{\Spe}{Sp\'e}
+\DeclareMathOperator{\Spec}{Spec}
 
 \DeclareMathOperator{\Kern}{Kern}
 \DeclareMathOperator{\Bild}{Bild}
@@ -213,6 +214,8 @@
 %Kategorien
 \DeclareMathOperator{\Sh}{\underline{Sh}}
 \DeclareMathOperator{\Ab}{\underline{Ab}}
+\DeclareMathOperator{\Ringe}{\underline{Ringe}}
+\DeclareMathOperator{\Top}{\underline{Top}}
 
 
 
@@ -240,6 +243,7 @@
 
 %alte Buchstaben
 \newcommand{\p}{\mathfrak{p}}
+\newcommand{\q}{\mathfrak{q}}
 \newcommand{\frakp}{\mathfrak{p}}
 \newcommand{\frakP}{\mathfrak{P}}
 \newcommand{\frakq}{\mathfrak{q}}
@@ -316,8 +320,7 @@ Dies ist ein Mitschrieb der Vorlesung \glqq Geometrie der Schemata (Algebraische
 Getippt wurde das Skript von Aleksandar Sandic. Es basiert auf meinem Skript zur Vorlesung Algebraische Geometrie aus dem Wintersemster 2011/12.
 
 \section*{Wo}
-%\url{http://mitschriebwiki.nomeata.de/AlgGeo2011.html}\\
-Link zum diesem Skript kommt sobald das Skript im Mitschriebwiki steht.
+\url{http://mitschriebwiki.nomeata.de/GeoSchemata2012.html}\\
 Link zum Mitschriebwiki: \url{http://mitschriebwiki.nomeata.de/}
 
 \section*{To Do}\begin{itemize}
@@ -625,14 +628,32 @@ Seien $\calF, \calG$ Garben abelscher Gruppen auf $X$, $i:\calG \to \calF$ Monom
 \end{enumerate}\end{Def}
 
 \begin{bsp}
-\begin{minipage}[t]{0.7\textwidth}
+\begin{minipage}[t]{0.6\textwidth}
 Sei $X=S^1$ (Einheitskreislinie)\\
 $\calF = \calC$ (stetige Funktionen $S^1\to \R$)\\
 $\calG = $ konstante Garbe $\Z$\\
 $U = x$, $U_1, U_2$ wie im Bild
 \end{minipage}
-\begin{minipage}[t]{0.3\textwidth}
-\textcolor{red}{[ ! BILD ! ]}
+\begin{minipage}[t]{0.4\textwidth}
+\textcolor{white}{[ ! BILD ! ]}\\
+\begin{tikzpicture}
+	\node at (-2.75,0) {\textcolor{green}{$D_1$}};
+	\node at (2.75,0) {\textcolor{green}{$D_2$}};
+	
+	\node at (2.25,1.5) {$U_1$};
+	\node at (2.25,-1.5) {$U_2$};
+	
+	\draw[yellow, line width=5] (2,0) arc (0:180:2);
+	\draw[red, line width=5] (-2,0) arc (180:360:2);
+	
+	\draw[orange, line width=5] (-1.94,0.5) arc (165.5:194.5:2);
+	\draw[orange, line width=5] (1.94,-0.5) arc (345.5:374.5:2);
+	
+	\draw[very thick] (0,0) circle (2);
+
+	\draw[green, thick] (-2.25,0.5) -- (-2.25,-0.5) -- (-1.75,-0.5) -- (-1.75,0.5) -- cycle;
+	\draw[green, thick] (2.25,0.5) -- (2.25,-0.5) -- (1.75,-0.5) -- (1.75,0.5) -- cycle;
+\end{tikzpicture}
 \end{minipage}
 	\[U_1 \cap U_2 = D_1 \cup D_2\]
 Sei $f_1 \in \calF(U_1)$ mit $f_1|_{D_1} = 0, f_1|_{D_2} = 1, 0 = f_2 \in \calF(U_2)$\\
@@ -678,24 +699,188 @@ Sei $f: X\to Y$ stetig.
 
 \begin{bew}\begin{enumerate}[a)]
 \item
-	
+	Sei $U\subseteq Y$ offen, $(U_i)_{i\in I}$ offene \"Uberdeckung von $U$, also $(f^{-1}(U_i))_{i\in I}$ offene \"Uberdeckung von $f^{-1}(U)$. $s_i \in \underbrace{f_*\F(U_i)}_{=\F(f^{-1}(U_i))}$, $i \in I$, konsistente Familie.\\
+	$\Rightarrow \exists$ Amalgam $s\in \underbrace{\F(f^{-1}(U))}_{=f_*\F(U)}$ mit $s|_{f^{-1}(U_i)} = s_i$ f\"ur alle $i \in I$.
 \item[c)]
-	
+	Sei $\varphi:\F \to \G$ Morphismus von Garben auf $X$.
 	\begin{enumerate}[i)]
 	\item
-		
+		Definiere $\varphi_*: f_*\F \to f_* \G$ durch
+			\[(\varphi_*)_U = \varphi_{f^{-1}(U)}: f_*\F(U) = \F(f^{-1}(U)) \to f_x\G(U) = \G(f^{-1}(U))\]
 	\item
-		
+		Definiere $f^{-1}\varphi: f^{-1}\F \to f^{-1}\G$ durch $(f^{-1}_\varphi)_U = \lim\limits_{f^{-1}(U)\subseteq V\in \Off(Y)} \varphi_V$\\
+		\begin{center}$V'\subseteq V \qquad$
+		\begin{tikzpicture}[baseline = 0]
+			\node (FV) at (-2,1) {$\F(V)$};
+			\node (FV') at (2,1) {$\F(V')$};
+			\node (GV) at (-2,-1) {$\G(V)$};
+			\node (GV') at (2,-1) {$\G(V')$};
+			
+			\node(fF) at (4,2) {$f^{-1}\F(U)$};
+			\node(fG) at (4,-2) {$f^{-1}\G(U)$};
+			
+			\draw[->] (FV) -- (FV');
+			\draw[->] (FV) -- node[right]{$\varphi_V$} (GV);
+			\draw[->] (GV) -- (GV');
+			\draw[->] (FV') -- node[right]{$\varphi_{V'}$} (GV');
+			
+			\draw[->] (FV) to [out=30,in=170] (fF);
+			\draw[->] (GV) to [out=330,in=190] (fG);
+			\draw[->] (FV') -- (fF);
+			\draw[->] (GV') -- (fG);
+			\draw[->, dashed] (fF) to [out=300,in=60] (fG);
+		\end{tikzpicture}\end{center}
 	\end{enumerate}
 \end{enumerate}\end{bew}
 
 \begin{Prop}
-
+Sei $f:X\to Y$ stetig, $\F$ eine Garbe auf $X$, $\G$ Garbe auf $Y$.\\
+Dann gibt es eine (nat\"urliche) Bijektion
+	\[\Hom(f^{-1}\G, \F) \to \Hom(\G, f_*\F)\]
+Das bedeutet: $f^{-1}$ ist linksadjungiert zu $f_*$.
 \end{Prop}
 
 \begin{bew}
-
+Definiere $\varphi_\F: f^{-1}f_*\F \to \F$ und $\psi_\G: \G \to f_*f^{-1}\F$\\
+Dann:
+	\[ T_1:\left\{ \begin{array}{ccc}\Hom(f^{-1}\G,\F) &\to& \Hom(\G, f_*\F)\\
+	\alpha &\mapsto& f_*(\alpha)\circ\psi_\G: \G \to f_*f^{-1}\G \overset{f_*\alpha}{\to} f_*\F\end{array}\right.\]
+Analog: $T_2: \beta \mapsto \varphi_\F \circ f^{-1}(\beta)$\\
+Rest: \"Ubung
 \end{bew}
+
+\newpage
+%-------------------------- Abschnitt 2 (Affine Schemata) --------------------------
+%26. 4.
+
+\section{Affine Schemata}
+
+\begin{description}
+\item[Behauptung:]
+	$\alpha:R\to R'$ Ringhomom., $\p\subset R'$ Primideal $\Rightarrow \alpha^{-1}(\p)$ Primideal in $R$
+\item[Beweis:]
+	Seien $f,g \in R$ mit $f\cdot g \in \alpha^{-1}(\p)$\\
+	$\Rightarrow \underbrace{\alpha(f\cdot g)}_{=\alpha(f)\cdot\alpha(g)} \in \p \overset{\text{\OE}}{\Rightarrow } \alpha(f) \in \p \Rightarrow f \in \alpha^{-1}(\p)$
+\end{description}
+
+\begin{DefBem}
+Sei $R$ ein Ring (das hei\ss t kommutativer Ring mit Eins)
+\begin{enumerate}[a)]
+\item
+	$\Spec R:= \{\p \subset R: \p \text{ Primideal}\}$ hei\ss t \defterm{Spektrum} von $R$.
+\item
+	F\"ur $I\subseteq R$ sei $V(I)=\{\p \in \Spec R: I \subseteq \p\}$. $V(I)$ hei\ss t \defterm{Nullstellenmenge} (vanishing set) von $I$, es ist $V(I) = V((I))$.
+\item
+	Die $V(I)$, $I\subseteq R$ Ideal, bilden die abgeschlossenen Mengen einer Topologie auf $\Spec R$, der \defterm{Zariski-Topologie}.
+\item
+	F\"ur $V\subseteq \Spec R$ hei\ss t $I(V):= \bigcap\limits_{\p \in V}\p$ \defterm{Verschwindungsideal} von $V$.
+\end{enumerate}\end{DefBem}
+
+\begin{bew}\begin{enumerate}[a)]\item[c)]
+$\emptyset = V(R)$\\
+$\Spec R = V(0)$\\
+$\bigcap\limits_{i\in I} V(I_i) = \bigcap\limits_{i\in I}\{\p \in I_i \subseteq \p\} = \{\p: I_i \subseteq \p \forall i\} = V(\bigcup\limits_{i\in I} I_i) = V(\sum\limits_{i\in I} I_i)$\\
+$V(I_1)\cup V(I_2) = \{\p \in \Spec R: I_1 \subseteq \p \text{ oder } I_2 \subseteq \p\} = V(I_1\cdot I_2) \overset{?}{=} V(I_1\cap I_2)$\\
+\hspace*{10mm} $I_1\cdot I_2 \subseteq I_1 \cap I_2 \Rightarrow V(I_1\cdot I_2) \supseteq V(I_1\cap I_2)$\\
+\hspace*{10mm} $\p \in V(I_1\cdot I_2) \Rightarrow I_1\cdot I_2 \subseteq \p \overset{\text{\OE}}{\Rightarrow} I_1 \subseteq \p \Rightarrow I_1\cap I_2 \subseteq \p$\\
+$\Rightarrow V(I_1\cdot I_2) = V(I_1\cap I_2)$
+\end{enumerate}\end{bew}
+
+\begin{Bem}\begin{enumerate}[a)]
+\item
+	$V(I(V)) = \bar{V}$ f\"ur jedes $V\subseteq \Spec R$
+\item
+	$I(V(I)) = \sqrt{I}$ f\"ur jedes ideal $I\subseteq R$
+\end{enumerate}\end{Bem}
+
+\begin{bew}\begin{enumerate}[a)]
+\item
+	\begin{twosidedproof}
+	\proofsupseteq
+		$V\subseteq V(I(V)) = \{\q \in \Spec R: \bigcap\limits_{\p \in V} \p \subseteq \q \}$
+	\proofsubseteq
+		Es ist $\bar{V} = \bigcap\limits_{V\subseteq V(I)}V(I)$\\
+		Ist $I$ Ideal in $R$ mit $V\subseteq V(I)$, so ist $I\subseteq I(V) = \bigcap\limits_{\p \in V} \p$.\\
+		$\Rightarrow V(I) \supseteq V(I(V))$\\
+		$\Rightarrow V(I(V)) \subseteq \bigcap\limits_{I:V\subseteq V(I)} V(I) = \bar{V}$
+	\end{twosidedproof}
+\item
+	$I(V(I)) = \bigcap\limits_{\p \in V(I)} \p = \bigcap\limits_{I\subseteq \p} \p \overset{!}{=} \sqrt{I}$ (\"Ubung)
+\end{enumerate}\end{bew}
+
+\begin{Prop}
+Sei $V\subseteq \Spec R$ abgeschlossen, $V\ne 0$.\\
+Dann gilt: $V$ irreduzibel $\Leftrightarrow I(V)$ Primideal
+\end{Prop}
+
+\begin{bew}
+Wie in Algebraische Geometrie I, Proposition 4.4
+\end{bew}
+
+\begin{Bem}
+Jeder Ringhomomorphismus $\alpha: R \to R'$ induziert stetige Abbildung $f_\alpha:\Spec R' \to R$ durch $\p \mapsto \alpha^{-1}(\p)$, das hei\ss t $\Spec: \left\{\begin{array}{ccc} \Ringe &\to& \Top \\ R &\mapsto& \Spec R\end{array}\right.$ ist kontravarianter Funktor.
+\end{Bem}
+
+\begin{bew}
+Noch zu zeigen: $f_\alpha$ stetig\\
+Sei $V=V(I) \subseteq \Spec R$\\
+$\Rightarrow f_\alpha^{-1}(V) = \{\p \in \Spec R': \alpha^{-1}(\p) \supseteq I\} = \{ \p: \p \supseteq \alpha(I)\} = V(\alpha(I))$
+\end{bew}
+
+\begin{Bem}
+Sei $k$ algebraisch abgeschlossener K\"orper, $V\subseteq \A^n(k)$ affine Variet\"at.\\
+Dann ist $m: \left\{ \begin{array}{ccc} V &\to& \Spec k[V]\\ x &\mapsto& m_x\end{array}\right.$ injektiv und stetig.
+\end{Bem}
+
+\begin{bew}
+injektiv: $\checkmark$\\
+$m$ stetig: Sei$V(I) \subseteq \Spec k[V]$ abgeschlossen.\\
+$\Rightarrow m^{-1}(V(I)) = \{ x\in V: m_x \in V(I)\} = \{x: I \subseteq m_x\} = \{x: f(x) = 0$ f\"ur alle $f\in I\} = V(I)$
+\end{bew}
+
+\begin{bsp}
+Seien $\p \subsetneq\q$. Dann ist $\q \in \overline{\{\p\}}$
+\end{bsp}
+
+\begin{DefBem}\begin{enumerate}[a)]
+\item
+	Ein Punkt $x\in X$ ($X$ topologischer Raum) hei\ss t \defterm{generisch}, wenn $\overline{\{x\}} = X$ ist.
+\item
+	Jede irreduzible Teilmenge von $\Spec R$ hat genau einen generischen Punkt.
+\item
+	Die irreduziblen Komponenten von $\Spec R$ entsprechen bijektiv den minimalen Primidealen in $R$.
+\end{enumerate}\end{DefBem}
+
+\begin{Bem}
+F\"ur jedes $f\in R$ ist $D(f) = \Spec R\setminus V(f) = \{\p \in \Spec R : f \notin \p\}$ offen in $\Spec R$. Die $D(f), f\in R$ bilden eine Basis der Zariski-Topologie.
+\end{Bem}
+
+\begin{bew}
+Sei $U\subseteq \Spec R$ offen, $V= \Spec R - U \Rightarrow \exists I \subseteq R$ Ideal mit $V=V(I)$\\
+F\"ur $f\in I$ ist $f\in \p$ f\"ur jedes $\p \in V$, das hei\ss t $V(I) \subseteq V(f) \Rightarrow D(f) \subseteq U$
+\end{bew}
+
+\begin{Bem}
+$\Spec R$ ist quasikompakt.
+\end{Bem}
+
+\begin{bew}
+Sei $(U_i)_{i\in I}$ offene \"Uberdeckung von $\Spec R$.\\
+\OE $U_i = D(f_i)$ f\"ur ein $f_i\in R$\\
+Dann gilt : $\bigcup\limits_{i\in I}D(f_i) = \Spec R \Leftrightarrow\bigcap\limits_{i\in I}V(f_i) = \emptyset \Leftrightarrow$ Die $f_i$, $i \in I$, erzeugen $R$\\
+$\Rightarrow \exists i_1,\ldots ,i_k$ mit $1=\sum\limits_{\nu=1}^k a_\nu f_{i_\nu}$ f\"ur gewisse $a_\nu \in R$\\
+$\Rightarrow \bigcup\limits_{\nu = 1}^k D(f_\nu) = \Spec R$
+\end{bew}
+
+\begin{DefBem}
+Sei $R$ Ring, $X = \Spec R$
+\begin{enumerate}[a)]
+\item
+	F\"ur $0 \ne f \in R$ sei $\calO_x(D(f)) = R_f$
+\item
+	Es gibt genau eine Garbe $\calO_x$ auf $X$ mit $\calO_x(D(f)) = R_f$ (\"Ubung)
+\end{enumerate}\end{DefBem}
+
 
 %-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Anhang -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
@@ -867,16 +1052,51 @@ $\calF^+$ assoziiert Garbe zu $\calF$, also f\"ur $U\subseteq X$ offen:
 \setcounter{Aufg}{0}
 \setcounter{Loes}{0}
 
+%-------------------------- Uebung 7 --------------------------
+\newpage
+\section{12. Juni 2012}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
+%-------------------------- Uebung 8 --------------------------
+\newpage
+\section{19. Juni 2012}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
+%-------------------------- Uebung 9 --------------------------
+\newpage
+\section{26. Juni 2012}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
 
 %-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Gaestebuch -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
 
 \chapter{G\"astebuch}
 Hier kann jeder, der g\"o\ss ere \"Anderungen oder Korrekturen am Skript vorgenommen hat, seinen Namen und einen Kommentar hinterlassen. Kleinigkeiten wie Rechtschreibfehler m\"ussen nicht unbedingt sein (und bei meinen Tippfehlern w\"are das G\"astebuch gr\"o\ss er als das Skript), aber ein korrigierter Satz, ein vervollst\"andigter Beweis, solche Sachen, einfach damit jemand der eine \"altere Version des Skriptes hat schnell den Unterschied finden kann. Oder hinterlasst einfach ein Paar nette Worte :-)\\
-Dieser Teil ist absichtlich am Ende, damit man ihn beim Drucken einfach weglassen kann. Wenn jemand einen weiteren Anhang einf\"ugen m\"ochte, dann tut das bitte \emph{vor} dem G\"astebuch.
+Zum Schreiben im G\"astebuch stehen euch folgende Umgebungen zur Verf\"ugung (neben den \"ublichen aus dem Skript):
+\begin{center}\begin{minipage}{0.3\textwidth}\begin{verbatim}
+	\begin{gast}
+		...
+	\end{gast}
+\end{verbatim}\end{minipage}
+\begin{minipage}{0.3\textwidth}\begin{verbatim}	
+	\begin{komm}
+		...	
+	\end{komm}
+\end{verbatim}\end{minipage}
+\begin{minipage}{0.3\textwidth}\begin{verbatim}	
+	\begin{korr}
+		...	
+	\end{korr}
+\end{verbatim}\end{minipage}\end{center}
+G\"astebucheintr\"age sind f\"ur alle Arten von Eintr\"agen gedacht. Kommentare sollten nur f\"ur wichtige Sachen verwendet werden und auch blo\ss,  wenn man sie nicht direkt in das Skript einbauen kann. Korrekturen sind da um gr\"o\ss ere und wichtige Korrekturen festzuhalten, damit man schnell wei\ss was sich seit der letzten Version wichtiges ge\"andert hat.\\
+Dieser Teil ist absichtlich am Ende, damit man ihn beim Drucken einfach weglassen kann. Wenn jemand einen weiteren Anhang einf\"ugen m\"ochte, dann tut das bitte \emph{vor} dem G\"astebuch.\\
 
 \begin{gast}[von Aleks am 23. April 2012]
-habe das G\"astebuch angelegt. Ihr k\"onnt hier Aufz\"ahlungen verwenden:
+Ich habe das G\"astebuch angelegt. Ihr k\"onnt hier Aufz\"ahlungen verwenden:
 \begin{enumerate}[1)]
 \item
 	Ist das nicht toll?
