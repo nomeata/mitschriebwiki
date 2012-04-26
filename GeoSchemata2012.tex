@@ -210,6 +210,10 @@
 \DeclareMathOperator{\modmodulo}{mod}%\modulo und \mod bereis belegt
 \DeclareMathOperator{\red}{red}%reduziert
 \DeclareMathOperator{\GL}{GL}
+%Kategorien
+\DeclareMathOperator{\Sh}{\underline{Sh}}
+\DeclareMathOperator{\Ab}{\underline{Ab}}
+
 
 
 % zweigestrichene Buchstaben im Mathe Umgebungen
@@ -220,14 +224,16 @@
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\A}{\mathbb{A}}
-\newcommand{\F}{\mathbb{F}}
+%\newcommand{\F}{\mathbb{F}}
 \newcommand{\IP}{\mathbb{P}}%\P bereits belegt
 
 % kursive Buchstaben im Mathe Umgebungen
 \newcommand{\calO}{\mathcal{O}}
 \newcommand{\calF}{\mathcal{F}}
+\newcommand{\F}{\mathcal{F}} % <-- schnellere alternative
 \newcommand{\calW}{\mathcal{W}}
 \newcommand{\calG}{\mathcal{G}}
+\newcommand{\G}{\mathcal{G}} % <-- schnellere alternative
 \newcommand{\calB}{\mathcal{B}}
 \newcommand{\calC}{\mathcal{C}}
 \newcommand{\calJ}{\mathcal{J}}
@@ -570,16 +576,20 @@ $\vartheta$ ist Isomorphismus: $\checkmark$
 Sei $\varphi:\calF \to \calG$ Morphismus von Garben abelscher Gruppen auf $X$.
 \begin{enumerate}[a)]
 \item
-	Sei $\Kern(\varphi)$ die Pr\"agarbe $\Kern(\varphi)(U) = \Kern(\varphi_U)$.
+	Sei $\Kern(\varphi)$ die Pr\"agarbe $\Kern(\varphi)(U) := \Kern(\varphi_U)$.
 \item
 	$\Kern(\varphi)$ ist Garbe.
 \item
 	$\varphi$ hei\ss t \defterm{injektiv} (oder \defterm{Monomorphismus}) $:\Leftrightarrow \Kern(\varphi) = 0$
+		\[\begin{array}{c}\mathcal E_1\overset{\psi_1}{\to}\\\mathcal E_2\overset{\psi_2}{\to}\end{array}\calF \overset{\varphi}{\to} \calG\]
+	$\varphi$ Monomorphismus $\Leftrightarrow \varphi \circ \psi_1 = \varphi \circ \psi_2 \Rightarrow \psi_1  = \psi_2$
 \item
-	Sei $\calB_\varphi$ die Pr\"agarbe $\calB_\varphi(U) = \Bild(\varphi_U)$\\
+	Sei $\calB_\varphi$ die Pr\"agarbe $\calB_\varphi(U) := \Bild(\varphi_U)$\\
 	$\Bild(\varphi_U) := \calB_\varphi^+$
 \item
 	$\varphi$ hei\ss t \defterm{surjektiv} (oder \defterm{Epimorphismus}) $:\Leftrightarrow \Bild(\varphi) = \calG$
+			\[\calF \overset{\varphi}{\to} \calG \begin{array}{c}\overset{\psi_1}{\to}\mathcal H_1\\\overset{\psi_2}{\to}\mathcal H_2\end{array}\]
+	$\varphi$ Epimorphismus $\Leftrightarrow \psi_1 \circ \varphi = \psi_2 \circ \varphi \Rightarrow \psi_1 = \psi_2$
 \end{enumerate}\end{DefBem}
 
 \begin{bew}\begin{enumerate}[a)]
@@ -599,7 +609,93 @@ Sei $\varphi:\calF \to \calG$ Morphismus von Garben abelscher Gruppen auf $X$.
 	Sei $(U_i)_{i\in I}$ offene \"Uberdeckung von $U\in \Off(X)$, $s_i \in \Kern(\varphi_{U_i}) \subseteq \calF(U_i)$ konsistente Familie.\\
 	$\exists!$ Amalgam $s\in \calF(U)$.\\
 	$\varphi_x(s_x) = 0$ f\"ur jedes $x\in U$ $\overset{\ref{1.8} \ref{1.8a})}{\Rightarrow} \varphi_U(s) = 0$
+%25.4.
+\item[e)]
+	$\Bild(\varphi) = \calG \Leftrightarrow \underbrace{\Bild(\varphi)_x}_{=\Bild(\varphi_x)} = \calG_x$ f\"ur alle $x$\\
+	$\varphi$ Epimorphismus $\Leftrightarrow$ f\"ur jedes $x\in X$ ist $\varphi_x$ surjektiv, das hei\ss t $\Bild(\varphi_x) = \calG_x$.
 \end{enumerate}\end{bew}
+
+\begin{Def}
+Seien $\calF, \calG$ Garben abelscher Gruppen auf $X$, $i:\calG \to \calF$ Monomorphismus.
+\begin{enumerate}[a)]
+\item
+	$\calG$ hei\ss t \defterm{Untergarbe}\index{Garbe!Unter} von $\calF$.
+\item
+	$U\mapsto \FakRaum{\calF(U)}{\calG(U)}$ ist Pr\"agarbe auf $X$, die assoziierte Garbe $\FakRaum{\calF}{\calG}$ hei\ss t \defterm{Quotientengarbe}\index{Garbe!Quotienten}.
+\end{enumerate}\end{Def}
+
+\begin{bsp}
+\begin{minipage}[t]{0.7\textwidth}
+Sei $X=S^1$ (Einheitskreislinie)\\
+$\calF = \calC$ (stetige Funktionen $S^1\to \R$)\\
+$\calG = $ konstante Garbe $\Z$\\
+$U = x$, $U_1, U_2$ wie im Bild
+\end{minipage}
+\begin{minipage}[t]{0.3\textwidth}
+\textcolor{red}{[ ! BILD ! ]}
+\end{minipage}
+	\[U_1 \cap U_2 = D_1 \cup D_2\]
+Sei $f_1 \in \calF(U_1)$ mit $f_1|_{D_1} = 0, f_1|_{D_2} = 1, 0 = f_2 \in \calF(U_2)$\\
+$\Rightarrow f_1|_{U_1\cap U_2} \in \calG(U_1\cap U_2)$ (!)\\
+$\bar{f_1} = \bar{f_2}$ in $\FakRaum{\calF(U_1\cap U_2)}{\calG(U_1\cap U_2)}$\\
+$\Rightarrow (\bar{f_i} \in \FakRaum{\calF(U_i)}{\calG(U_i)})_{i=1,2}$ ist konsistente Familie.\\
+\emph{Aber:} Es gibt kein $f\in \calF(U)$ mit $f|_{U_1} = f_1, f|_{U_2} = f_2$
+\end{bsp}
+
+\begin{Prop}
+Sei $X$ topologischer Raum, $U\subseteq X$ offen, $x\in X$.
+\begin{enumerate}[a)]
+\item
+	Die Zuordnung $\Phi: \calF \mapsto \calF_x$ induziert exakten kovarianten Funktor von der Kategorie $\Sh(X)$ der Garben abelscher Gruppen auf $X$ in die Kategorie $\Ab$ der abelschen Gruppen.\\
+	Dabei ist $\Phi_x(\varphi) = \varphi_x$ f\"ur $\varphi: \calF \to \calG$ Morphismus.
+\item
+	Die Zuordnung $\Phi_U: \F \to \F(U)$ induziert linksexakten kovarianten Funktor $\Sh(X) \to \Ab$ (mit $\Phi_U(\varphi) = \varphi_U$)
+\end{enumerate}\end{Prop}
+
+\begin{bew}
+(*) Sei $0 \to \F' \overset{\varphi}{\to} \F \overset{\psi}{\to} \F'' \to 0$ exakte Sequenz in $\Sh(X)$. \textbf{Achtung:} Das bedeutet \emph{nicht}, dass f\"ur jedes $\widetilde U \in \Off(X)$ die Sequenz $0 \to \F'(\widetilde U) \to \F(\widetilde U) \to \F''(\widetilde U) \to 0$ exakt sein muss.\\
+Aber: (*) ist \"aquivalent zu: $0 \to \F'_y \overset{\varphi_y}{\to} \F_y \overset{\psi_y}{\to} \F''_y \to 0$ ist exakt f\"ur jedes $y \in X$\\
+$\Rightarrow $ a)
+\begin{enumerate}[a)]\item[b)]
+$\Phi_U$ linksexakt bedeutet:
+	\[0 \to \F'(U) \overset{\varphi_U}{\to} \F(U) \overset{\psi_U}{\to} \F''(U) \to 0 \text{ ist exakt}\]
+Das stimmt nach \ref{1.8} und \dots
+\end{enumerate}\end{bew}
+
+\begin{DefBem}
+Sei $f: X\to Y$ stetig.
+\begin{enumerate}[a)]
+\item
+	Sei $\F$ Garbe auf $X$.\\
+	Dann ist die Pr\"agarbe $U\mapsto \F(f^{-1}(U))$ auf $Y$ eine Garbe, sie hei\ss t (direkte) \defterm{Bildgarbe}\index{Garbe!Bild} von $\F$ (unter $f$). Bezeichnung: $f_*\F$
+\item
+	Sei $\G$ Garbe auf $Y$.\\
+	Die zur Pr\"agarbe $U\mapsto \lim\limits_{\substack{f(U)\subseteq V\\ V\in \Off(Y)}} \G(V)$ assoziierte Garbe hei\ss t \defterm{Urbildgarbe}\index{Garbe!Urbild} von $\G$.\\
+	Bezeichnung: $f^{-1}(G)$
+\item
+	$f_*$ und $f^{-1}$ sind kovariante Funktoren.
+\end{enumerate}\end{DefBem}
+
+\begin{bew}\begin{enumerate}[a)]
+\item
+	
+\item[c)]
+	
+	\begin{enumerate}[i)]
+	\item
+		
+	\item
+		
+	\end{enumerate}
+\end{enumerate}\end{bew}
+
+\begin{Prop}
+
+\end{Prop}
+
+\begin{bew}
+
+\end{bew}
 
 %-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Anhang -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
@@ -665,11 +761,11 @@ Sei $\varphi:\calF \to \calG$ Morphismus von Garben abelscher Gruppen auf $X$.
 	
 \end{enumerate}\end{Loes}
 
-\begin{Loes} \textcolor{white}{a}\\
-\begin{minipage}{0.6\textwidth}
+\begin{Loes}
+\begin{minipage}[t]{0.6\textwidth}
 $s\in \calF(U), x\in U \leadsto [U,s]_x \in \calF_x$\\
 $\bar s :\left\{\begin{array}{rcl}U &\to& \Spe(\calF)\\ x &\mapsto& [U,s]_x\in\calF_x\end{array}\right., \pi \circ \bar s = \id_U$\end{minipage}
-\begin{minipage}{0.4\textwidth}
+\begin{minipage}[c]{0.4\textwidth}
 \begin{tikzpicture}
 	%Punkte definieren
 	\node (x) at (0,-0.5){$x \in X$};
