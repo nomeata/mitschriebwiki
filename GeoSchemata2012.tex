@@ -13,7 +13,10 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
+
+% F\"ur TikZ-Diagramme
 \usepackage{tikz}
+\usetikzlibrary{matrix,arrows,calc}
 \usetikzlibrary{decorations.text}
 
 % schmaler rand
@@ -68,10 +71,6 @@
 
 %fÃ¼r schoene Brueche
 \usepackage{nicefrac}
-
-% Für TikZ-Diagramme
-\usepackage{tikz}
-\usetikzlibrary{matrix,arrows,calc}
 
 % Fuer Diagramme
 \usepackage[arrow,matrix,curve]{xy}
@@ -822,7 +821,7 @@ Dann gilt: $V$ irreduzibel $\Leftrightarrow I(V)$ Primideal
 Wie in Algebraische Geometrie I, Proposition 4.4
 \end{bew}
 
-\begin{Bem}
+\begin{Bem}\label{2.4}
 Jeder Ringhomomorphismus $\alpha: R \to R'$ induziert stetige Abbildung $f_\alpha:\Spec R' \to R$ durch $\p \mapsto \alpha^{-1}(\p)$, das hei\ss t $\Spec: \left\{\begin{array}{ccc} \Ringe &\to& \Top \\ R &\mapsto& \Spec R\end{array}\right.$ ist kontravarianter Funktor.
 \end{Bem}
 
@@ -934,7 +933,7 @@ Dann hei\ss t $(X,\calO_X)$ \defterm{affines Schema}\index{Schema!affines}.
 	$\Rightarrow \q = (X-a), a\in k$, $\FakRaum{R_\q}{m_\q} \cong \FakRaum{k[X]}{(X-a)} \cong k$
 \end{enumerate}\end{bspe}
 
-\begin{Bem}
+\begin{Bem}\label{2.11}
 Sei $(X,\calO_X)$ affines Schema, $X= \Spec R$.\\
 Dann ist f\"ur jedes $f\in R$ auch $(D(f), \calO_X(f))$ affines Schema. \emph{Genauer:} $(D(f), \calO_X(D(f))) = (\Spec R_f, \calO_{\Spec R_f})$
 \end{Bem}
@@ -950,6 +949,116 @@ Sei $h = \frac{g}{f^d} \in R_f$. \emph{Zu zeigen:}
 	\[ \underbrace{\calO_x|_{D(f)} (D(h))}_{\calO_X(D(f)\cap D(g) = R_{f\cdot g}} \cong \underbrace{\calO_{\Spec R_f}(D(h))}_{(R_f)_h = R_{f\cdot g}} \]
 \end{bew}
 
+\newpage
+%-------------------------- Abschnitt 3 (Affine Schemata) --------------------------
+%3. 5.
+
+\section{(allgemeine) Schemata}
+
+\begin{Def}\begin{enumerate}[a)]
+\item
+	Ein \defterm{geringter Raum} ist ein topologischer Raum $X$ zusammen mit einer Garbe $\calO_X$ von Ringen.
+\item
+	Ein geringter Raum $(X, \calO_X)$ hei\ss t \defterm{lokal}\index{geringter Raum!lokal} geringter Raum, wenn f\"ur jedes $x\in X$ der Halm $\calO_{X,x}$ ein lokaler Ring ist.
+\end{enumerate}\end{Def}
+
+\begin{Bem}
+Jedes affine Schema $(\Spec R, \calO_{\Spec R})$ ist ein lokal geringter Raum.
+\end{Bem}
+
+\begin{Def}\label{3.3}\begin{enumerate}[a)]
+\item
+	Ein \defterm{Morphismus} $f:(X,\calO_X) \to (Y, \calO_Y)$ ist eine stetige Abbildung $f:X \to Y$ zusammen mit einem Morphismus $f^\#: \calO_Y \to f_*\calO_X$ von Garben.
+\item\label{3.3b}
+	Ein Morphismus zwischen lokal geringten R\"aumen $(X, \calO_X)$ und $(Y, \calO_Y)$ ist ein Morphismus $f: (X, \calO_X) \to (Y, \calO_Y)$ wie in a) sodass f\"ur jedes $x\in X$ der auf den Halmen induzierte Homomophismus $f_x^\#: \calO_{Y,f(x)} \to \calO_{X,x}$ die Bedingung $f_x^\#(m_{f(x)}) \subseteq m_x$ erf\"ullt ($f_x^\#$ hei\ss t dann lokaloer Homomophismus).\\
+	$(f_* \calO_X)_{f(x)} = \lim\limits_{f(x) \in U} \calO_X(\underbrace{f^{-1}(U)}_{x\in}) \to \calO_{X,x}$
+\end{enumerate}\end{Def}
+
+\begin{bsp}
+Sei $R$ lokaler Ring, nullteilerfrei, $K= \Quot(R) \ne R$. Dann ist die Inklusion $R \hookrightarrow K$ \emph{nicht} lokal.
+\end{bsp}
+
+\begin{Prop}\label{3.4}
+Die Kategorie der affinen Schemata mit Morphismen aus Definition \ref{3.3} \ref{3.3b}) ist (anti-)\"aquivalent zur Kategorie der Ringe.
+\end{Prop}
+
+\begin{bew}\begin{enumerate}[(i)]\item
+Sie Zuordnung $R\to (\Spec R, \calO_{\Spec R})$ ist Funktor. Sei $\alpha: R\to S$ Ringhomomorphismus, $f_\alpha: \Spec S \to \Spec R, \p \mapsto \alpha^{-1}(\q)$. Nach Bemerkung \ref{2.4} ist $f_\alpha$ stetig und $f_\alpha^{-1}(D(g)) = D(\alpha(g))$.
+
+Definiere $f_\alpha^\# : \calO_{\Spec R} \to (f_\alpha)_* \calO_{\Spec S}$ durch
+	\[\begin{array}{rcccr} \underbrace{\calO_{\Spec R}(D(g))} &\to& (f_\alpha)_* \calO_{\Spec S} (D(g)) =& \calO_{\Spec S} (f_\alpha^{-1}(D(g)) =& \underbrace{\calO_{Spec S} (D(\alpha(g))}\\
+		= R_g \ni \frac{a}{g^d} &\mapsto& \frac{\alpha(a)}{\alpha(g)^d} &\in& =S_{\alpha(g)}\end{array}\]
+\emph{Noch zu zeigen:} $(f_\alpha^\#)_\q$ ist lokal f\"ur jedes $\q\in \Spec S$
+
+Sei $\p = \alpha^{-1}(\q) \in \Spec R$, das hei\ss t $\p = f_\alpha(\q)$.\\
+Das maximale Ideal $m_\p$ (beziehungsweise $m_\q$) in $\calO_{\Spec R, \p} (=R_\p)$ (beziehungsweise $\calO_{\Spec S, \q}$) ist $\p R_\p$ (beziehungsweise $\q R_\q$).\\
+F\"ur $a = \frac{b}{f} \in m_\p$ ($b \in \p, f\notin \p$) ist $(f_\alpha^\#)_\q(a) = \frac{\alpha(b)}{\alpha(f)} \in m_\q$, da $b\in \q = \alpha^{-1}(\q)$, also $\alpha(b) \in \q$ und $f\notin \p = \alpha^{-1}(\q)$, also $\alpha(f) \notin \q$.
+\end{enumerate}\end{bew}
+
+\begin{bsp}[Forsetzung des Beispiels]
+$\alpha: R\hookrightarrow K$, $\dim R = 1$ (zum Beispiel diskreter Bewertungsring)
+	\[\begin{array}{cccc} &\Spec K = \{(0)\} &\to& \Spec R = \{(0), m\}\\
+		&(0) &\mapsto& (0)\\
+		(f_\alpha^\#)_{(0)} :& R_{(0)} = K &\to& K
+	\end{array}\]
+\end{bsp}
+
+\begin{bew}[Fortsetzung des Beweises von Proposition \ref{3.4}]\begin{enumerate}[i)]\item[(ii)]
+Ist $(X,\calO_X)$ affines Schema, $X= \Spec R$, so ist $R = \calO_X(X)$.\\
+Ein Morphismus $\Spec S \to \Spec R$ induziert Homomophismus
+	\[ f^\#: \underbrace{\calO_{\Spec R}(\Spec R)}_{=R} \to \underbrace{f_* \calO_{\Spec S} (\Spec R)}_{\substack{= \calO_{\Spec S} (f^{-1}(\Spec R)) = S \\ f^{-1}(\Spec R) = \Spec S }} \]
+\emph{Nachrechnen:} Die Funktoren in (i) und (ii) sind zueinander invers.
+\end{enumerate}\end{bew}
+
+\begin{Def}
+Ein lokal geringter Raum $(X, \calO_X)$ hei\ss t \defterm{Schema}, wenn es eine offene \"Uberdeckung $(U_i)_{i\in I}$ von $X$ gibt und affine Schemata $(\Spec R_i, \calO_{\Spec R_i})$ f\"ur jedes $i\in I$, sodass
+	\[(U_i, \calO_X|_{U_i}) \overset{\text{als lokal}}{\underset{\text{geringter Raum}}{\cong}} (\Spec R_i, \calO_{\Spec R_i})\]
+\end{Def}
+
+\begin{BemDef}
+Sei $(X, \calO_X)$ Schema, $U\subseteq X$ offen.\\
+Dann ist $(U, \calO_X|_{U})$ auch ein Schema. $(U, \calO_X|_{U})$ hei\ss t \defterm{offenes Unterschema}\index{Unterschema!offenes} von $X$.
+\end{BemDef}
+
+\begin{bew}
+Sei $X= \bigcup\limits_{i\in I} \Spec R_i$ eine offene \"Uberdeckung von $X$ durch affine Schemata.\\
+$\Rightarrow U = \bigcup\limits_{i\in I} (\underbrace{U \cap \Spec R_i}_{\subset \Spec R_i \text{ offen}})$, wobei $U \cap \Spec R_i \subset \Spec R_i$ offen, also $= \bigcup\limits_{j \in J} D(f_{ij}), f_{ij} \in R_i$
+
+$(D(f_{ij}), \calO_{\Spec R_i}|_{D(f_{ij})})$ ist affines Schema nach Bemerkung \ref{2.11}
+\end{bew}
+
+\begin{Prop}[Verkleben]
+Seien $(X, \calO_X)$ und $(Y, \calO_Y)$ Schemata, $U\subseteq X$ und $V\subseteq Y$ offen und $\varphi: (U, \calO_X|_U) \to (V, \calO_Y|_V)$ Isomorphismus von Schemata (das hei\ss t von lokal geringten R\"aumen). Sei $Z= (X\cup Y)/_\sim$ der topologische Raum, der durch Verkleben von $X$ und $Y$ l\"angs $\varphi$ ntsteht.
+
+Dann gibt es genau eine Garbe $\calO_Z$ auf $Z$ mit $\calO_Z|_X = \calO_X$ und $\calO_Z|_Y \cong \calO_Y$.
+\end{Prop}
+
+\begin{bew}
+Die offenen Teilmengen von $X$ und von $Y$ bilden eine Basis der Topologie auf $Z$.
+\end{bew}
+
+\begin{bsp}\textcolor{white}{\,}\\
+$\begin{array}{l}X = \A^1, U = \A^1\setminus \{0\} \\ Y = \A^1, V = \A^1\setminus \{0\}\end{array} \varphi = \id \qquad$\begin{tikzpicture}[baseline = 0]
+	\node (X) at (2,0.5) {$X$};
+	\node (X) at (2,-0.5) {$Y$};
+	\node (U) at (-1,0.75) {$\textcolor{cyan}{U}$};
+	\node (V) at (-1,-0.25) {$\textcolor{cyan}{V}$};
+	
+	\draw[thick] (1.75,0.5) -- (-1,0.5);
+	\draw[thick] (1.75,-0.5) -- (-1,-0.5);
+	\draw[cyan, fill] (0.375,0.5) circle [radius=0.1];
+	\draw[cyan, fill] (0.375,-0.5) circle [radius=0.1];
+\end{tikzpicture}
+\begin{tikzpicture}[baseline = 0]
+	\node (Z) at (2,0) {$Z$};
+		
+	\draw[thick] (1.75,0) -- (0.45,0);
+	\draw[thick] (0.3,0) -- (-1,0);
+	\draw[fill] (0.375,0.25) circle [radius=0.05];
+	\draw[fill] (0.375,-0.25) circle [radius=0.05];
+	
+\end{tikzpicture}
+\end{bsp}
 
 
 %-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Anhang -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
@@ -965,7 +1074,7 @@ Sei $h = \frac{g}{f^d} \in R_f$. \emph{Zu zeigen:}
 
 \chapter{\"Ubungen}
 
-%Die Benennung der "section" so aendern, dass "Übung 123 vom " am Anfang steht
+%Die Benennung der "section" so aendern, dass "\"Ubung 123 vom " am Anfang steht
 %Hab's von oben kopiert, kien Ahung wie das hier funktioniert
 \makeatletter
 \def\@seccntformat#1{\@ifundefined{#1@cntformat}%
@@ -988,12 +1097,12 @@ $\mathcal{W}(U) \coloneqq \left\{ \begin{array}{ll}
                                    A & ,\, x \in U\\
                                    \{0\} & ,\,x \notin U
                                   \end{array}
-\right.$ für $U \subseteq X$ offen, mit Restriktionsabbildungen 
+\right.$ f\"ur $U \subseteq X$ offen, mit Restriktionsabbildungen 
 $$\rho_V^U = \left\{ \begin{array}{rcll}
                      \{0\} \ni &0 \mapsto 0& \in \{0\}& ,\, x \notin V,\, x \notin U\\
                      A \ni &a \mapsto 0& \in \{0\}& ,\, x \notin V,\, x \in U\\
                      & \id_A && ,\,x \in V,\, x \in U
-                    \end{array} \right.$$ für $V \subseteq U \subseteq X$ offen.
+                    \end{array} \right.$$ f\"ur $V \subseteq U \subseteq X$ offen.
 \begin{enumerate}%[topsep=0cm, parsep=0cm, label=\alph*)]
  \item Zeige, dass $\mathcal{W}$ eine Garbe von abelschen Gruppen auf $X$ ist.
  \item Berechne die Halme der Garbe.
@@ -1003,19 +1112,19 @@ $$\rho_V^U = \left\{ \begin{array}{rcll}
 
 
 \begin{Aufg}
- Sei $X$ ein topologischer Raum und $\mathcal{F}$ eine Prägarbe von abelschen Gruppen auf $X$. Ist $x \in X$ ein Punkt, so bezeichne $\mathcal{F}_x$ den Halm von $\mathcal{F}$ in $x$. Nun definiert man die Menge
+ Sei $X$ ein topologischer Raum und $\mathcal{F}$ eine Pr\"agarbe von abelschen Gruppen auf $X$. Ist $x \in X$ ein Punkt, so bezeichne $\mathcal{F}_x$ den Halm von $\mathcal{F}$ in $x$. Nun definiert man die Menge
 \begin{center}
 Sp\'e$(\mathcal{F}):= \stackrel{.}{\bigcup\limits_{x\in X}} \mathcal{F}_x$.
 \end{center}
 Definiere weiter eine Projektionsabbildung
 $\pi \colon \textup{Sp\'e}(\mathcal{F}) \rightarrow X$ durch $\mathcal{F}_x \ni s \mapsto x$. \\
-Für jede offene Menge $U \subseteq X$ und für jedes $s \in \mathcal{F}(U)$ erhält man eine Abbildung $\overline{s} \colon U \rightarrow \textup{Sp\'e}(\mathcal{F})$ durch
-$x \mapsto s_x$, wobei $s_x$ der Keim von $s$ in $x$ sei. Alle diese Abbildungen sind Schnitte von $\pi$ über $U$, d.\,h. für jedes dieser $\overline{s}$ gilt: $\pi \circ \overline{s} = \textup{id}_U$.
-Nun macht man Sp\'e$(\mathcal{F})$ zu einem topologischen Raum, indem man ihm die feinste Topologie gibt, so dass alle diese $\overline{s}$ für alle $s$ und alle $U$ stetig werden. Versehen mit dieser Topologie heißt $\textup{Sp\'e}(\mathcal{F})$ der \textit{Espace Etal\'e} zur Prägarbe $\mathcal{F}$.
+F\"ur jede offene Menge $U \subseteq X$ und f\"ur jedes $s \in \mathcal{F}(U)$ erh\"alt man eine Abbildung $\overline{s} \colon U \rightarrow \textup{Sp\'e}(\mathcal{F})$ durch
+$x \mapsto s_x$, wobei $s_x$ der Keim von $s$ in $x$ sei. Alle diese Abbildungen sind Schnitte von $\pi$ \"uber $U$, d.\,h. f\"ur jedes dieser $\overline{s}$ gilt: $\pi \circ \overline{s} = \textup{id}_U$.
+Nun macht man Sp\'e$(\mathcal{F})$ zu einem topologischen Raum, indem man ihm die feinste Topologie gibt, so dass alle diese $\overline{s}$ f\"ur alle $s$ und alle $U$ stetig werden. Versehen mit dieser Topologie hei\ss t $\textup{Sp\'e}(\mathcal{F})$ der \textit{Espace Etal\'e} zur Pr\"agarbe $\mathcal{F}$.
 
 Sei nun $\mathcal{F}^+$ die zu $\mathcal{F}$ assoziierte Garbe. Zeige:\\
-Für jede offene Menge $U \subseteq X$ ist $\mathcal{F}^+(U)$ die Menge aller \textbf{stetigen} Schnitte von $\pi$ über $U$.
- Insbesondere ist $\mathcal{F}$ genau dann eine Garbe, wenn für jedes offene $U \subseteq X$ die Menge aller stetigen Schnitte von $\pi$ über $U$ gerade $\mathcal{F}(U)$ ist.
+F\"ur jede offene Menge $U \subseteq X$ ist $\mathcal{F}^+(U)$ die Menge aller \textbf{stetigen} Schnitte von $\pi$ \"uber $U$.
+ Insbesondere ist $\mathcal{F}$ genau dann eine Garbe, wenn f\"ur jedes offene $U \subseteq X$ die Menge aller stetigen Schnitte von $\pi$ \"uber $U$ gerade $\mathcal{F}(U)$ ist.
 \end{Aufg}
 
 
@@ -1114,15 +1223,15 @@ $\calF^+$ assoziiert Garbe zu $\calF$, also f\"ur $U\subseteq X$ offen:
 	$\Rightarrow s'|_{U_x} \in \calF(U_x)$ erf\"ullt Garbeneigenschaft.
 \end{twosidedproof}
 
-\textbf{zur Lösung:}
+\textbf{zur L\"osung:}
 
-In der Übung wollte ich zeigen, dass für offenes $U' \subseteq X$ mit $x \in U'$ und $s' \in \mathcal{F}(U')$ die Menge $\tilde{U} \coloneqq \{ [U',s']_y \in \mathcal{F}_y \mid y \in U' \}$ offen ist bezüglich der oben definierten Topologie auf Sp\'e$(\mathcal{F})$.
+In der \"Ubung wollte ich zeigen, dass f\"ur offenes $U' \subseteq X$ mit $x \in U'$ und $s' \in \mathcal{F}(U')$ die Menge $\tilde{U} \coloneqq \{ [U',s']_y \in \mathcal{F}_y \mid y \in U' \}$ offen ist bez\"uglich der oben definierten Topologie auf Sp\'e$(\mathcal{F})$.
 
-Auf einmal scheint das Argument auf meinem Zettel wieder zu stimmen (war nur etwas knapp formuliert), deshalb schreibe ich es hier nochmal ausführlicher auf.
+Auf einmal scheint das Argument auf meinem Zettel wieder zu stimmen (war nur etwas knapp formuliert), deshalb schreibe ich es hier nochmal ausf\"uhrlicher auf.
 
-Zu zeigen ist ja, dass für jedes offene $U'' \subseteq X$ und jedes $s'' \in \mathcal{F}(U'')$ die Menge $\left(\overline{s''}\right)^{-1}\left(\tilde{U}\right)$ offen in $X$ ist. Sei also $U'' \in \Off(X)$ und $s'' \in \mathcal{F}(U'')$.
+Zu zeigen ist ja, dass f\"ur jedes offene $U'' \subseteq X$ und jedes $s'' \in \mathcal{F}(U'')$ die Menge $\left(\overline{s''}\right)^{-1}\left(\tilde{U}\right)$ offen in $X$ ist. Sei also $U'' \in \Off(X)$ und $s'' \in \mathcal{F}(U'')$.
 
-Ist $\left(\overline{s''}\right)^{-1}\left(\tilde{U}\right) = \emptyset$, so ist nichts weiter zu zeigen, da $\emptyset$ ja offen ist. Ist andernfalls $y \in \left(\overline{s''}\right)^{-1}\left(\tilde{U}\right)$, so ist $ \overline{s''}(y) \in \tilde{U}$ und wegen $\overline{s''}(y) \in \mathcal{F}_y$ folgt $[U'',s'']_y = [U',s']_y$ ($\tilde{U}$ enthält ja pro Halm höchstens ein Element). Folglich existiert ein offenes $U''' \subseteq U' \cap U''$ mit $y \in U'''$ und $s'|_{U'''} = s''|_{U'''}$. Somit ist $U''' \subseteq \left(\overline{s''}\right)^{-1}\left(\tilde{U}\right)$ eine offene Umgebung von $y$ und $\left(\overline{s''}\right)^{-1}\left(\tilde{U}\right)$ offen.
+Ist $\left(\overline{s''}\right)^{-1}\left(\tilde{U}\right) = \emptyset$, so ist nichts weiter zu zeigen, da $\emptyset$ ja offen ist. Ist andernfalls $y \in \left(\overline{s''}\right)^{-1}\left(\tilde{U}\right)$, so ist $ \overline{s''}(y) \in \tilde{U}$ und wegen $\overline{s''}(y) \in \mathcal{F}_y$ folgt $[U'',s'']_y = [U',s']_y$ ($\tilde{U}$ enth\"alt ja pro Halm h\"ochstens ein Element). Folglich existiert ein offenes $U''' \subseteq U' \cap U''$ mit $y \in U'''$ und $s'|_{U'''} = s''|_{U'''}$. Somit ist $U''' \subseteq \left(\overline{s''}\right)^{-1}\left(\tilde{U}\right)$ eine offene Umgebung von $y$ und $\left(\overline{s''}\right)^{-1}\left(\tilde{U}\right)$ offen.
 
 \end{Loes}
 
@@ -1132,43 +1241,42 @@ Ist $\left(\overline{s''}\right)^{-1}\left(\tilde{U}\right) = \emptyset$, so ist
 \setcounter{Aufg}{0}
 \setcounter{Loes}{0}
 
-\begin{Aufg}
-\begin{enumerate}
+\begin{Aufg}[4 Punkte]
+\begin{enumerate}[a)]
  \item Sei $X:=\{0,1\}$ mit der diskreten Topologie versehen (d.\,h. jede Teilmenge ist offen).
 Bestimme alle Garben $\mathcal{F}$ von Mengen auf $X$.
  \item Bestimme die Halme $\mathcal{F}_x$ der Garben $\mathcal{F}$ aus Teil a) in den Punkten $x=0$ und $x=1$.
 \end{enumerate}
 \end{Aufg}
 
-\begin{Aufg}
-Sei $X$ ein topologischer Raum und $\mathcal{F}$ die Prägarbe der konstanten Funktionen auf $X$. Genauer sei für $U \subseteq X$ offen 
-$\mathcal{F}(U) \coloneqq \{ \, f \colon U \to \Z \mid f \textrm{ ist konstant } \}$ und für $V \subseteq U \subseteq X$ offen $\rho_V^U\colon \mathcal{F}(U) \to \mathcal{F}(V), f \mapsto f|_{V}$.
-
-\begin{enumerate}%[topsep=0cm, parsep=0cm, label=\alph*)]
+\begin{Aufg}[4 Punkte]
+Sei $X$ ein topologischer Raum und $\mathcal{F}$ die Pr\"agarbe der konstanten Funktionen auf $X$. Genauer sei f\"ur $U \subseteq X$ offen 
+$\mathcal{F}(U) \coloneqq \{ \, f \colon U \to \Z \mid f \textrm{ ist konstant } \}$ und f\"ur $V \subseteq U \subseteq X$ offen $\rho_V^U\colon \mathcal{F}(U) \to \mathcal{F}(V), f \mapsto f|_{V}$.
+\begin{enumerate}[a)]%[topsep=0cm, parsep=0cm, label=\alph*)]
 \item Zeige, dass $\mathcal{F}$ im allgemeinen keine Garbe ist.
 \item Berechne die zu $\mathcal{F}$ assoziierte Garbe $\mathcal{F}^+$.
 \end{enumerate}
 \end{Aufg}
 
-\begin{Aufg}
+\begin{Aufg}[4 Punkte]
 Sei $X$ ein topologischer Raum und $\mathcal{B}$ eine Basis\footnote{d.\,h. alle offenen $U \subseteq X$ lassen sich als Vereinigung von Elementen aus $\mathcal{B}$ schreiben} der Topologie von $X$. Weiter sei $\mathcal{C}$ eine Kategorie.
-Wir definieren eine $\mathcal{B}$-Garbe auf $X$ als kontravarianten Funktor $\mathcal{F}'$ von $(\mathcal{B}, \subseteq)$ nach $\mathcal{C}$, der die $\mathcal{B}$-Garbeneigenschaft erfüllt:
+Wir definieren eine $\mathcal{B}$-Garbe auf $X$ als kontravarianten Funktor $\mathcal{F}'$ von $(\mathcal{B}, \subseteq)$ nach $\mathcal{C}$, der die $\mathcal{B}$-Garbeneigenschaft erf\"ullt:
 
-Sind $U = \bigcup_{i\in I} U_i$ mit $U, U_i \in \mathcal{B}$ und $(s_i)_{i \in I}$ mit $s_i \in \mathcal{F}'(U_i)$ gegeben, so dass $\rho^{U_i}_V(s_i) = \rho^{U_j}_V(s_j)$ für alle $V \subseteq U_i \cap U_j, V \in \mathcal{B}$ gilt, dann existiert genau ein $s \in \mathcal{F}'(U)$ mit $\rho^{U}_{U_i}(s) = s_i$ für alle $i \in I$.
+Sind $U = \bigcup_{i\in I} U_i$ mit $U, U_i \in \mathcal{B}$ und $(s_i)_{i \in I}$ mit $s_i \in \mathcal{F}'(U_i)$ gegeben, so dass $\rho^{U_i}_V(s_i) = \rho^{U_j}_V(s_j)$ f\"ur alle $V \subseteq U_i \cap U_j, V \in \mathcal{B}$ gilt, dann existiert genau ein $s \in \mathcal{F}'(U)$ mit $\rho^{U}_{U_i}(s) = s_i$ f\"ur alle $i \in I$.
 
-Sei zunächst $\mathcal{C}$ die Kategorie der Mengen. 
-\begin{enumerate}%[topsep=0cm, parsep=0cm, label=\alph*)]
- \item Zeige, dass sich $\mathcal{F}'$ eindeutig zu einer Garbe $\mathcal{F}$ auf $X$ fortsetzen lässt.\\
+Sei zun\"achst $\mathcal{C}$ die Kategorie der Mengen. 
+\begin{enumerate}[a)]%[topsep=0cm, parsep=0cm, label=\alph*)]
+ \item Zeige, dass sich $\mathcal{F}'$ eindeutig zu einer Garbe $\mathcal{F}$ auf $X$ fortsetzen l\"asst.\\
   \textit{Hinweis:} Inverser Limes
- \item Es seien $\mathcal{F}$ und $\mathcal{G}$ Garben auf $X$ und für $U \in \mathcal{B}$ Abbildungen $\tilde{\varphi}(U)\colon \mathcal{F}(U) \to \mathcal{G}(U)$ gegeben, die mit den Restriktionsabbildungen $\rho^U_{U'}$ kommutieren. 
+ \item Es seien $\mathcal{F}$ und $\mathcal{G}$ Garben auf $X$ und f\"ur $U \in \mathcal{B}$ Abbildungen $\tilde{\varphi}(U)\colon \mathcal{F}(U) \to \mathcal{G}(U)$ gegeben, die mit den Restriktionsabbildungen $\rho^U_{U'}$ kommutieren. 
  
- Zeige, dass es einen eindeutigen Garbenmorphismus $\varphi\colon \mathcal{F} \to \mathcal{G}$ gibt mit $\varphi(U) = \tilde{\varphi}(U)$ für alle $U \in \mathcal{B}$.
+ Zeige, dass es einen eindeutigen Garbenmorphismus $\varphi\colon \mathcal{F} \to \mathcal{G}$ gibt mit $\varphi(U) = \tilde{\varphi}(U)$ f\"ur alle $U \in \mathcal{B}$.
  \item Mache dir klar, dass a) und b) auch in der Kategorie der (abelschen) Gruppen, der Ringe und der $R$-Moduln gelten.
 \end{enumerate}
 \end{Aufg}
 
 \begin{Loes}
-\begin{enumerate}%[topsep=0cm, parsep=2mm, label=\alph*)]
+\begin{enumerate}[a)]%[topsep=0cm, parsep=2mm, label=\alph*)]
  \item Die offenen Mengen von $X$ sind $\Off(X)= \{ \emptyset, \{0\}, \{1\}, \{0,1\}\}$. Eine Garbe von Mengen auf $X$ ordnet jedem Element aus $\Off(X)$ eine Menge zu, also 
 $$
 \emptyset  \rightarrow  M_\emptyset,  \quad
@@ -1176,7 +1284,7 @@ $$
 \{1\} \rightarrow  M_1,\quad
 X  \rightarrow  M_X.
 $$
-Zusätzlich brauchen wir noch Restriktionsabbildungen
+Zus\"atzlich brauchen wir noch Restriktionsabbildungen
 $$
 M_0 \rightarrow  M_\emptyset,\quad
 M_1  \rightarrow  M_\emptyset,\quad
@@ -1199,13 +1307,13 @@ so dass das folgende Diagramm kommutiert:
 \end{center}
 In der Vorlesung wurde bewiesen, dass $M_\emptyset$ einelementig sein muss. Dann kommutiert das obige Diagramm automatisch.
 
-Da die offenen Mengen $\{0\}$ und $\{1\}$ die offene Menge $\{0,1\}$ überdecken, besagt die Garbeneigenschaft, dass es zu jedem $a \in M_0$ und jedem $b\in M_1$ ein eindeutig bestimmtes $c \in M_X$ geben muss mit $\rho^X_{\{0\}}(c) = a$ und $\rho^X_{\{1\}}(c)=b$. Das bedeutet, dass $M_X \cong M_0 \times M_1$ ist. Damit haben wir alle Garben von Mengen auf $X$ charakterisiert.
+Da die offenen Mengen $\{0\}$ und $\{1\}$ die offene Menge $\{0,1\}$ \"uberdecken, besagt die Garbeneigenschaft, dass es zu jedem $a \in M_0$ und jedem $b\in M_1$ ein eindeutig bestimmtes $c \in M_X$ geben muss mit $\rho^X_{\{0\}}(c) = a$ und $\rho^X_{\{1\}}(c)=b$. Das bedeutet, dass $M_X \cong M_0 \times M_1$ ist. Damit haben wir alle Garben von Mengen auf $X$ charakterisiert.
 
  \item Der Halm der Garbe $\mathcal{F}$ in $x$ ist definiert als 
 \begin{eqnarray*}
 \mathcal{F}_x \coloneqq \{\, (U,f) \mid U \in \Off(X), x \in U, s \in \mathcal{F}(U) \,\}/\sim,
 \end{eqnarray*}
-wobei zwei Paare $(U,s)$ und $(U',s')$ äquivalent sein sollen, wenn es ein $U'' \subseteq U \cap U'$ gibt mit $\rho^U_{U''}(s) = \rho^{U'}_{U''}(s')$.
+wobei zwei Paare $(U,s)$ und $(U',s')$ \"aquivalent sein sollen, wenn es ein $U'' \subseteq U \cap U'$ gibt mit $\rho^U_{U''}(s) = \rho^{U'}_{U''}(s')$.
 
 Zwei Punkte $(X,(a,b))$ und $(X,(a',b'))$ beschreiben genau dann den gleichen Punkt in $\mathcal{F}_0$, wenn $a = \rho^X_{\{0\}}((a,b)) = \rho^{X}_{\{0\}}((a',b'))=a'$.
 Also ist $\mathcal{F}_0 \cong M_0$. Ebenso ist $\mathcal{F}_1 \cong M_1$.
@@ -1213,14 +1321,14 @@ Also ist $\mathcal{F}_0 \cong M_0$. Ebenso ist $\mathcal{F}_1 \cong M_1$.
 \end{Loes}
 
 \begin{Loes}
-\begin{enumerate}%[topsep=0cm, parsep=2mm, label=\alph*)]
+\begin{enumerate}[a)]%[topsep=0cm, parsep=2mm, label=\alph*)]
  \item Falls es in $X$ offene Mengen $U$ und $U'$ gibt mit $U \cap U' = \emptyset$, dann ist $\mathcal{F}$ keine Garbe:
  
- Seien $f_1 \in \mathcal{F}(U)$ mit $f_1 \equiv 1$ und $f_2 \in \mathcal{F}(U')$ mit $f_2 \equiv 2$. Da $U \cap U' = \emptyset$, ist $f_1|_{U \cap U'} = {f_2}|_{ U \cap U'}$ und $(f_i)_{i\in \{1,2\}}$ ist eine konsistente Familie für die offene Überdeckung $U \cup U'$. Da aber für $f \in \mathcal{F}(U \cup U')$ nicht gleichzeitig $f|_U \equiv 1$ und $f|_{U'} \equiv 2$ gelten kann, gibt es zu der konsistenten Familie kein Amalgam.
+ Seien $f_1 \in \mathcal{F}(U)$ mit $f_1 \equiv 1$ und $f_2 \in \mathcal{F}(U')$ mit $f_2 \equiv 2$. Da $U \cap U' = \emptyset$, ist $f_1|_{U \cap U'} = {f_2}|_{ U \cap U'}$ und $(f_i)_{i\in \{1,2\}}$ ist eine konsistente Familie f\"ur die offene \"Uberdeckung $U \cup U'$. Da aber f\"ur $f \in \mathcal{F}(U \cup U')$ nicht gleichzeitig $f|_U \equiv 1$ und $f|_{U'} \equiv 2$ gelten kann, gibt es zu der konsistenten Familie kein Amalgam.
  
- \item Zunächst berechnen wir die Halme von $\mathcal{F}$: 
+ \item Zun\"achst berechnen wir die Halme von $\mathcal{F}$: 
  $$[(U,f)]_x = [(U',f')]_x \Leftrightarrow \exists U'' \subseteq U \cap U' \textrm{ mit } x \in U'' : f|_{U''} = f'|_{U''} \Leftrightarrow f(x) = f'(x)$$
- Die Halme sind also über $[(U,f)]_x \mapsto f(x)$ alle isomorph zu $\Z$.
+ Die Halme sind also \"uber $[(U,f)]_x \mapsto f(x)$ alle isomorph zu $\Z$.
  
  Es gilt 
  $$\begin{array}{cl}
@@ -1240,27 +1348,27 @@ Also ist $\mathcal{F}_0 \cong M_0$. Ebenso ist $\mathcal{F}_1 \cong M_1$.
 \end{Loes}
 
 \begin{Loes}
-\begin{enumerate}%[topsep=0cm, parsep=0.1cm, label=\alph*)]
- \item Wir nutzen den Hinweis und definieren $\F$ mit Hilfe des inversen Limes. Für $U \in \Off(X)$ setzen wir 
+\begin{enumerate}[a)]%[topsep=0cm, parsep=0.1cm, label=\alph*)]
+ \item Wir nutzen den Hinweis und definieren $\F$ mit Hilfe des inversen Limes. F\"ur $U \in \Off(X)$ setzen wir 
  $$\begin{array}{rcl}
     \F(U) &\coloneqq& \varprojlim\limits_{V \subseteq U, V \in \mathcal{B}} \F'(V) \\
     &=& \{ \, (s_V)_{V \subseteq U, \, V \in \mathcal{B}} \in \prod_{V \subseteq U, V \in \mathcal{B}} \F'(V) \mid \forall W \subseteq V \subseteq U, V,W \in \mathcal{B}: \rho^V_W(s_V) = s_W \, \}
    \end{array}
 $$
-und für $U' \subseteq U \subseteq X$ offen sei
+und f\"ur $U' \subseteq U \subseteq X$ offen sei
 $$
 \rho^U_{U'} \colon \F(U) \to \F(U'), (s_V)_{V \subseteq U, V \in \mathcal{B}} \mapsto (s_V)_{V \subseteq U', V \in \mathcal{B}}\,.
 $$
-Die Abbildung $\rho^U_{U'}$ bildet die Familie $(s_V)_{V \subseteq U, V \in \mathcal{B}}$ auf die Teilfamilie über den $V \subseteq U'$ ab, also gilt $\rho^U_U = \id_U$ und $\rho^{U'}_{U''} \circ \rho^U _ {U'} = \rho^U_{U''}$
-und wir haben eine Prägarbe von Mengen definiert.
+Die Abbildung $\rho^U_{U'}$ bildet die Familie $(s_V)_{V \subseteq U, V \in \mathcal{B}}$ auf die Teilfamilie \"uber den $V \subseteq U'$ ab, also gilt $\rho^U_U = \id_U$ und $\rho^{U'}_{U''} \circ \rho^U _ {U'} = \rho^U_{U''}$
+und wir haben eine Pr\"agarbe von Mengen definiert.
 
-Die Prägarbe $\F$ stimmt auf den Mengen $V \in \mathcal{B}$ mit $\F'$ überein: 
+Die Pr\"agarbe $\F$ stimmt auf den Mengen $V \in \mathcal{B}$ mit $\F'$ \"uberein: 
 
 Die Abbildung
 $$
 \psi(V)\colon \F'(V) \to \F(V), s \mapsto (s|_{V'})_{V' \subseteq V, V' \in \mathcal{B}}
 $$
-ist wohldefiniert, da eine $\mathcal{B}$-Garbe insbesondere ein kontravarianter Funktor von $(\mathcal{B}, \subseteq)$ nach $\mathcal{C}$ ist. Außerdem liefert uns die $\mathcal{B}$-Garbeneigenschaft eine wohldefinierte Umkehrabbildung
+ist wohldefiniert, da eine $\mathcal{B}$-Garbe insbesondere ein kontravarianter Funktor von $(\mathcal{B}, \subseteq)$ nach $\mathcal{C}$ ist. Au\ss erdem liefert uns die $\mathcal{B}$-Garbeneigenschaft eine wohldefinierte Umkehrabbildung
 $$
 \psi^{-1}(V)\colon \F(V) \to \F'(V),  (s_{V'})_{V' \subseteq V, V' \in \mathcal{B}} \mapsto s_V\,.
 $$
@@ -1268,19 +1376,19 @@ Sowohl $\psi$ als auch $\psi^{-1}$ kommutieren mit den Restriktionsabbildungen.
 
 Weiter ist $\F$ sogar eine Garbe von Mengen auf $X$:
 
-Sei $U = \bigcup_{i \in I} U_i$ eine offene Überdeckung, $s_i = (s_{i,V} )_{V \subseteq U_i, V \in \mathcal{B}} \in \F(U_i)$ und $(s_i)_{i\in I}$ eine konsistente Familie. 
-Ist $s \coloneqq (s_V)_{V \subseteq U, V \in \mathcal{B}}$  ein Amalgam zu der konsistenten Familie $(s_i)_{i \in I}$, so muss für alle $V \subseteq U_i$, $V \in \mathcal{B}$ wegen $\rho^{U_i}_V(s) = s_i$ die Gleichheit $s_V = s_{i,V}$ gelten. Da die Familie konsistent ist, gilt $(s_{i,V})_{V \subseteq U_i\cap U_j, V \in \mathcal{B}} = \rho^{U_i}_{U_i \cap U_j}(s_i) = \rho^{U_j}_{U_i \cap U_j}(s_j) = (s_{j,V} )_{V \subseteq U_i\cap U_j, V \in \mathcal{B}}$ und $s_V$ ist auch für $V \in U_i \cap U_j$ wohldefiniert. 
+Sei $U = \bigcup_{i \in I} U_i$ eine offene \"Uberdeckung, $s_i = (s_{i,V} )_{V \subseteq U_i, V \in \mathcal{B}} \in \F(U_i)$ und $(s_i)_{i\in I}$ eine konsistente Familie. 
+Ist $s \coloneqq (s_V)_{V \subseteq U, V \in \mathcal{B}}$  ein Amalgam zu der konsistenten Familie $(s_i)_{i \in I}$, so muss f\"ur alle $V \subseteq U_i$, $V \in \mathcal{B}$ wegen $\rho^{U_i}_V(s) = s_i$ die Gleichheit $s_V = s_{i,V}$ gelten. Da die Familie konsistent ist, gilt $(s_{i,V})_{V \subseteq U_i\cap U_j, V \in \mathcal{B}} = \rho^{U_i}_{U_i \cap U_j}(s_i) = \rho^{U_j}_{U_i \cap U_j}(s_j) = (s_{j,V} )_{V \subseteq U_i\cap U_j, V \in \mathcal{B}}$ und $s_V$ ist auch f\"ur $V \in U_i \cap U_j$ wohldefiniert. 
 
-Sei nun $V \subseteq U, V \in \mathcal{B}$ beliebig. Dann sind die $(s_{V'})_{V' \subseteq V \cap U_i, V' \in \mathcal{B}}$ bereits alle definiert und stimmen auf den Schnitten $U_i \cap U_j$ überein. Da $\mathcal{B}$ eine Basis der Topologie ist, ist $V = \bigcup\limits_{i \in I} \bigcup\limits_{V' \subseteq V \cap U_i, V' \in \mathcal{B}} V'$ und nach der $\mathcal{B}$-Garbeneigenschaft gibt es dann genau ein $s_V \in \F'(V) \cong \F(V)$ mit $\rho^V_{V'}(s_V) = s_{V'}$ für alle $i \in I$, $V' \subseteq V \cap U_i$, $V' \in \mathcal{B}$. Folglich existiert das Amalgam $s$ und da wir bei der Konstruktion keine Wahl zu treffen hatten, ist es auch eindeutig. 
+Sei nun $V \subseteq U, V \in \mathcal{B}$ beliebig. Dann sind die $(s_{V'})_{V' \subseteq V \cap U_i, V' \in \mathcal{B}}$ bereits alle definiert und stimmen auf den Schnitten $U_i \cap U_j$ \"uberein. Da $\mathcal{B}$ eine Basis der Topologie ist, ist $V = \bigcup\limits_{i \in I} \bigcup\limits_{V' \subseteq V \cap U_i, V' \in \mathcal{B}} V'$ und nach der $\mathcal{B}$-Garbeneigenschaft gibt es dann genau ein $s_V \in \F'(V) \cong \F(V)$ mit $\rho^V_{V'}(s_V) = s_{V'}$ f\"ur alle $i \in I$, $V' \subseteq V \cap U_i$, $V' \in \mathcal{B}$. Folglich existiert das Amalgam $s$ und da wir bei der Konstruktion keine Wahl zu treffen hatten, ist es auch eindeutig. 
 
-Es bleibt zu zeigen, dass $\F$ bis auf Isomorphie eindeutig ist. Dafür verwenden wir den Aufgabenteil b):
+Es bleibt zu zeigen, dass $\F$ bis auf Isomorphie eindeutig ist. Daf\"ur verwenden wir den Aufgabenteil b):
 
-Sei also $\G$ eine weitere Garbe von Mengen auf $X$, mit $\G(V) = \F'(V) = \F(V)$ für alle $V \in \mathcal{B}$.
+Sei also $\G$ eine weitere Garbe von Mengen auf $X$, mit $\G(V) = \F'(V) = \F(V)$ f\"ur alle $V \in \mathcal{B}$.
 Auf den Basismengen $V$ der Topologie sind also $\id(V)\colon \F(V) \to \G(V)$ und $\id(V)\colon \G(V) \to \F(V)$ wohldefinierte Abbildungen, die mit den Restriktionen kommutieren. Nach b) existieren dann genau ein Garbenmorphismus $\varphi\colon \F \to \G$ und ein Garbenmorphismus $\varphi'\colon \G \to \F$, der $\id$ fortsetzt.
 
-Weiterhin ist $\varphi' \circ \varphi(V) = \id_{\F(V)}$ und, wiederum nach b), gibt es genau einen Garbenmorphismus von $\F$ nach $\F$, der diese fortsetzt. Da sowohl der Identitätsfunktor $\id_{\F}$, als auch $\varphi' \circ \varphi$ solche eine Fortsetzung sind, gilt $\varphi' \circ \varphi \cong \id_{\F}$. Genauso zeigt man $\varphi \circ \varphi' \cong \id_G$ und hat damit bewiesen, dass $\G \cong \F$ ist.
+Weiterhin ist $\varphi' \circ \varphi(V) = \id_{\F(V)}$ und, wiederum nach b), gibt es genau einen Garbenmorphismus von $\F$ nach $\F$, der diese fortsetzt. Da sowohl der Identit\"atsfunktor $\id_{\F}$, als auch $\varphi' \circ \varphi$ solche eine Fortsetzung sind, gilt $\varphi' \circ \varphi \cong \id_{\F}$. Genauso zeigt man $\varphi \circ \varphi' \cong \id_G$ und hat damit bewiesen, dass $\G \cong \F$ ist.
 
-\item Seien also $\F$ und $\G$ zwei Garben und für alle $V \in \mathcal{B}$ eine Abbildung $\varphi(V)\colon \F(V) \to \G(V)$ gegeben, so dass die $\varphi(V)$ mit den Restriktionsabbildungen kommutieren. Sei nun $U \in \Off(X)$ beliebig. Da $\mathcal{B}$ eine Basis der Topologie auf $X$ ist, gilt $U = \bigcup\limits_{V \subseteq U, V \in \mathcal{B}} V$. Damit ist $\varphi(U)$ bereits eindeutig bestimmt:
+\item Seien also $\F$ und $\G$ zwei Garben und f\"ur alle $V \in \mathcal{B}$ eine Abbildung $\varphi(V)\colon \F(V) \to \G(V)$ gegeben, so dass die $\varphi(V)$ mit den Restriktionsabbildungen kommutieren. Sei nun $U \in \Off(X)$ beliebig. Da $\mathcal{B}$ eine Basis der Topologie auf $X$ ist, gilt $U = \bigcup\limits_{V \subseteq U, V \in \mathcal{B}} V$. Damit ist $\varphi(U)$ bereits eindeutig bestimmt:
 
 \begin{center}
 \begin{tikzpicture}
@@ -1296,14 +1404,14 @@ Weiterhin ist $\varphi' \circ \varphi(V) = \id_{\F(V)}$ und, wiederum nach b), g
 \end{tikzpicture}
 \end{center}
 
-Sei $f \in \F(U)$. Für alle $V \subseteq U, V \in \mathcal{B}$ sind die Schnitte $\rho^U_V(\varphi(U)(f)) = \varphi(V)(\rho^U_V(f)) \in \G(V)$ festgelegt und bilden eine konsistente Familie in $\G$. Da $\G$ eine Garbe ist, ist $\varphi(U)(f) \in \G(U)$ damit eindeutig bestimmt.
+Sei $f \in \F(U)$. F\"ur alle $V \subseteq U, V \in \mathcal{B}$ sind die Schnitte $\rho^U_V(\varphi(U)(f)) = \varphi(V)(\rho^U_V(f)) \in \G(V)$ festgelegt und bilden eine konsistente Familie in $\G$. Da $\G$ eine Garbe ist, ist $\varphi(U)(f) \in \G(U)$ damit eindeutig bestimmt.
 
-Ist $U' \subseteq U \subseteq X$ offen, dann ist jedes $V \subseteq U', V \in \mathcal{B}$ auch in $U$ enthalten. Es gilt $\rho^{U'}_V(\rho^U_{U'}(\varphi(U)(f))) = \rho^U_V(\varphi(U)(f)) = \varphi(V)(\rho^U_V(f))$, also ist $\rho^U_{U'}(\varphi(U)(f))$ ein Amalgam für die $\varphi(V)(\rho^U_V(f))$ und es gilt $\rho^U_{U'}(\varphi(U)(f)) = \varphi(U')(\rho^U_ {U'}(f))$.  
+Ist $U' \subseteq U \subseteq X$ offen, dann ist jedes $V \subseteq U', V \in \mathcal{B}$ auch in $U$ enthalten. Es gilt $\rho^{U'}_V(\rho^U_{U'}(\varphi(U)(f))) = \rho^U_V(\varphi(U)(f)) = \varphi(V)(\rho^U_V(f))$, also ist $\rho^U_{U'}(\varphi(U)(f))$ ein Amalgam f\"ur die $\varphi(V)(\rho^U_V(f))$ und es gilt $\rho^U_{U'}(\varphi(U)(f)) = \varphi(U')(\rho^U_ {U'}(f))$.  
 
 \item Hier muss man sich klar machen, dass $\F(U)$ eine (abelsche) Gruppe/ein Ring/ein $R$-Modul ist, falls die $\F'(V)$ es sind und dass die Restriktionsabbildungen in der entsprechenden Kategorie liegen. Auch in b) muss gezeigt werden, dass die $\varphi(U)$ Morphismen aus der richtigen Kategorie sind.
 \end{enumerate}
 
-\textit{Anmerkung:} Natürlich hätte man bei dieser Aufgabe alles noch ein wenig kategorieller formulieren können und vor allem die UAE des inversen Limes mit ins Spiel bringen.
+\textit{Anmerkung:} Nat\"urlich h\"atte man bei dieser Aufgabe alles noch ein wenig kategorieller formulieren k\"onnen und vor allem die UAE des inversen Limes mit ins Spiel bringen.
 \end{Loes}
 
 %-------------------------- Uebung 2 --------------------------
@@ -1354,6 +1462,29 @@ Ist $U' \subseteq U \subseteq X$ offen, dann ist jedes $V \subseteq U', V \in \m
 \setcounter{Aufg}{0}
 \setcounter{Loes}{0}
 
+%-------------------------- Uebung 10 --------------------------
+\newpage
+\section{3. Juli 2012}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
+%-------------------------- Uebung 11 --------------------------
+\newpage
+\section{10. Juli 2012}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
+%-------------------------- Uebung 12 --------------------------
+\newpage
+\section{17. Juli 2012}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
+%-------------------------- Uebung 13 --------------------------
+\newpage
+\section{24. Juli 2012}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
 
 %-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Gaestebuch -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
