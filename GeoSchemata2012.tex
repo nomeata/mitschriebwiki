@@ -1,4 +1,8 @@
-\documentclass[a4paper,12pt]{report}
+\documentclass[a4paper, 12pt, numbers=noendperiod]{scrbook}
+% "numbers=noendperiod" macht dass beim Kapteln und aehnlichem kein Punkt am Ende steht
+% normalerweise ist der Vorgang automatisiert, aber bei mir versagt es. ich mache die
+% Punkte spaeter dann per hand wenn es sein muss.
+
 %Nummerierung der Paragraphen anpassen (sonst kommt etwas wie "Definition 2.9.1" heraus)
 \renewcommand{\thesection}{\arabic{section}}
 
@@ -13,6 +17,27 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
+
+%einheitliche Schriftart (KOMA Script verwendet fuer einige Ueberschriften eine serifenlose Schrift, mischt also
+% Schriftarten. Ich habe mir die Argumente dafuer durchgelsen und war nicht ueberzeugt. Wenn jemand, der mehr als
+% ich von der Materie versteht, anderer Meinung ist kann er diese Zeilen hier einfach auskommentieren)
+\setkomafont{chapter}{\Huge\normalfont\textbf}
+\setkomafont{chapterentry}{\normalfont\textbf}
+\setkomafont{section}{\Large\rmfamily}
+
+
+% Einige Anstrengungen, um das Pragraphzeichen vor die Section-Nummer zu stellen
+% \renewcommand{\thesection} allein f\"uhrt zu einem Konflikt mit ntheorem-hyper
+\makeatletter
+\def\@seccntformat#1{\@ifundefined{#1@cntformat}%
+{\csname the#1\endcsname\quad}% default
+{\csname #1@cntformat\endcsname}% individual control
+}
+\def\section@cntformat{\S\@arabic\c@section\quad}
+\makeatother
+
+% Kapitel sollen mit "Kapitel X:" beginnen (Doppelpunkt koennte eine schlechte Idee sein, entfernen wenn noetig)
+%\renewcommand{\thechapter}{\chaptername\ \arabic{chapter}:} $ <-- Ueberlagrte Texte im Inhaltsverzeichnis
 
 % F\"ur TikZ-Diagramme
 \usepackage{tikz}
@@ -279,15 +304,6 @@
 }
 \makeatother
 
-% Einige Anstrengungen, um das Pragraphzeichen vor die Section-Nummer zu stellen
-% \renewcommand{\thesection} allein f\"uhrt zu einem Konflikt mit ntheorem-hyper
-\makeatletter
-\def\@seccntformat#1{\@ifundefined{#1@cntformat}%
-{\csname the#1\endcsname\quad}% default
-{\csname #1@cntformat\endcsname}% individual control
-}
-\def\section@cntformat{\S\@arabic\c@section\quad}
-\makeatother
 \setcounter{secnumdepth}{-1}
 \title{Geometrie der Schemata (Algebraische Geometrie II)  - Sommersemester 2012\\ Prof. Dr. F. Herrlich}
 \author{Aleksandar Sandic}
@@ -1151,6 +1167,8 @@ $S= k[X_0,\ldots ,X_n]$
 
 Dann: $\Proj S = t(\IP^n(k)) =: \IP_k^n$, denn $D_+(X_i) = \Spec k[\frac{X_0}{X_i},\ldots ,\frac{X_n}{X_i}]$
 \end{bsp}
+
+
 
 
 %-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Anhang -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
