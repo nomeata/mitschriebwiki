@@ -1,9 +1,31 @@
-\documentclass[a4paper, 12pt, numbers=noendperiod]{scrbook}
+%		UEBER DIESES DESIGN
+%	
+%	Dieses Vorlesungsskript soll dem Layout eines Buches entsprechen und alles beinhalten, 
+%	was man fuer eine Mathevorlesung brauchen koennte. Ich habe mich fuer eine KOMA Script 
+%	Klasse entschieden, einfach weil sie Optioen bieten, die man bei den Standardklassen 
+%	nur ueber Umwege erreichen konnte. Der Code ist teilweise von mir selbst, teilweise aus 
+%	allen moeglichen Quellen zusammengekratzt, ich habe mich bemueht ihn so sehr ich kann 
+%	zu kommentieren.
+%	Ich bin kein Experte fuer Typographie, alles wurde zwar nach meinem besten Gewissen getan, 
+%	aber wenn jemand anderer Meinung ist, dann waere ich froh, wenn er meine Fehler korrigieren
+%	koennte.
+%
+%		FEATURES DIE ICH GERNE NOCH HAETTE
+%	* dehnbare Folgepfeile: amsmath stellt den \xrightarrow und \xleftarrow bereit, dehnbare 
+%		einfach Pfeile, aber keine Folgepfeile. Man koennte sie mit dem extpfeil Paket 
+%		konstruieren.
+%	* besseres Beweisende: das Kaestchen am Ende eines Beweises steht auf der gleichen Zeile 
+%		wie die letzte Zeile. Es sollte eine Zeile tiefer 
+
+\documentclass[a4paper, 12pt, numbers=noendperiod, chapterprefix=true]{scrbook}
 % "numbers=noendperiod" macht dass beim Kapteln und aehnlichem kein Punkt am Ende steht
 % normalerweise ist der Vorgang automatisiert, aber bei mir versagt es. ich mache die
 % Punkte spaeter dann per hand wenn es sein muss.
 
-%Nummerierung der Paragraphen anpassen (sonst kommt etwas wie "Definition 2.9.1" heraus)
+% "chapterprefix=true" macht dass Kapitel, Abschnitte und aehnliches immer eine Ueber-
+% schrift wie "Kapitel 1" hat. Gilt auch fuer den Anhang.
+
+% Nummerierung der Paragraphen anpassen (sonst kommt etwas wie "Definition 2.9.1" heraus)
 \renewcommand{\thesection}{\arabic{section}}
 
 % Deutsche Sprache
@@ -18,31 +40,24 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 
-%einheitliche Schriftart (KOMA Script verwendet fuer einige Ueberschriften eine serifenlose Schrift, mischt also
+% Einheitliche Schriftart (KOMA Script verwendet fuer einige Ueberschriften eine serifenlose Schrift, mischt also
 % Schriftarten. Ich habe mir die Argumente dafuer durchgelsen und war nicht ueberzeugt. Wenn jemand, der mehr als
 % ich von der Materie versteht, anderer Meinung ist kann er diese Zeilen hier einfach auskommentieren)
 \setkomafont{chapter}{\Huge\normalfont\textbf}
 \setkomafont{chapterentry}{\normalfont\textbf}
-\setkomafont{section}{\Large\rmfamily}
+\setkomafont{disposition}{\bfseries\rmfamily}
+%\setkomafont{section}{\Large\bfseries\rmfamily} % <- Scheint mit der Umdefinierung von disposition unnoetig zu sein
 
+%Stellt das Paragraphenzeichen vor die Section-Nummer (das ist ein KOMA Script exklusiver Befehl)
+% \ifstr{#1}{section} ueberprueft, ob der erste parameter (also die erste Ebene der Ueberschrift)
+% section heisst, wenn ja, dann wird sie geaendert, ansonsten behalten wir den Standard
+\renewcommand*{\othersectionlevelsformat}[3]{\ifstr{#1}{section}{\S\ #3\autodot}{#3\autodot}\enskip}
 
-% Einige Anstrengungen, um das Pragraphzeichen vor die Section-Nummer zu stellen
-% \renewcommand{\thesection} allein f\"uhrt zu einem Konflikt mit ntheorem-hyper
-\makeatletter
-\def\@seccntformat#1{\@ifundefined{#1@cntformat}%
-{\csname the#1\endcsname\quad}% default
-{\csname #1@cntformat\endcsname}% individual control
-}
-\def\section@cntformat{\S\@arabic\c@section\quad}
-\makeatother
+%Aendert die Kapitelbeschriftung in der Kopfzeile der linken Seiten
+\renewcommand*{\chaptermarkformat}{\chapappifchapterprefix{\ }\thechapter\autodot:\enskip}
 
-% Kapitel sollen mit "Kapitel X:" beginnen (Doppelpunkt koennte eine schlechte Idee sein, entfernen wenn noetig)
-%\renewcommand{\thechapter}{\chaptername\ \arabic{chapter}:} $ <-- Ueberlagrte Texte im Inhaltsverzeichnis
-
-% F\"ur TikZ-Diagramme
-\usepackage{tikz}
-\usetikzlibrary{matrix,arrows,calc}
-\usetikzlibrary{decorations.text}
+%Stellt ein Pragraphenzeichen vor den Abschnitt in der Kopfzeile der linken Seiten
+\renewcommand*{\sectionmarkformat}{\S \thesection\autodot\enskip}
 
 % schmaler rand
 \usepackage{geometry}
@@ -81,6 +96,9 @@
   pdfpagemode=None
 }
 
+% um Code schreiben zu koennen
+\usepackage{listings}
+
 % Mathe-Pakete
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -88,13 +106,18 @@
 \usepackage{stmaryrd}
 \usepackage{mathtools}
 
-% Verschiedene items in enumerate Umgebungen
+% F\"ur TikZ-Diagramme
+\usepackage{tikz}
+\usetikzlibrary{matrix,arrows,calc}
+\usetikzlibrary{decorations.text}
+
+% Verschiedene items in enumerate Umgebungen (Das enumitem Paket bietet mehr Optionen)
 \usepackage{enumerate}
 
 % Erweiterte description umgebung
 \usepackage{expdlist}
 
-%fÃÂ¼r schoene Brueche
+%fuer schoene Brueche
 \usepackage{nicefrac}
 
 % Fuer Diagramme
@@ -113,7 +136,7 @@
 % keine kursiv schrift in theorems
 \theorembodyfont{}
 
-% Theoreme definieren (konventien: Grossbuchstaben mit nummerierung, Kleinbuchstaben ohne)
+% Theoreme definieren (konvention: Grossbuchstaben mit nummerierung, Kleinbuchstaben ohne)
 \theoremstyle{break}
     \newtheorem{Satz}{Satz}
     \newtheorem{SatzDef}[Satz]{Satz + Definition}
@@ -148,8 +171,6 @@
   \newtheorem{bspe}{Beispiele}
   \newtheorem{satz}{Satz}
   \newtheorem{erinn}{Erinnerung}
-  \newtheorem{satz1}{Satz 1'} %dreckiger workaround, bessere Idee?
-  \newtheorem{satz3}{Satz 3'} %dreckiger workaround, bessere Idee?
   \newtheorem{folg}{Folgerung}
   \newtheorem{beo}{Beobachtung}
   \newtheorem{beh}{Behauptung}
@@ -165,12 +186,16 @@
   \newtheorem{bew}{Beweis}
 \theoremstyle{nonumberplain}
 
-
+% Anfuerungszeichen unten und oben
 \newcommand{\quot}[1]{\textrm{\glqq}{#1}\textrm{\grqq}}
+
 \newcommand{\emp}[1]{\textbf{\emph{#1}}}
 \newcommand{\linetitle}[1]{\textbf{#1}}
+
+% fuer Definitionen
 \newcommand{\defterm}[1]{{\index{#1}}\emp{#1}}
 \newcommand{\deftermspec}[2]{{\index{#2}}\emp{#1}}
+
 \newcommand{\defeqr}[0]{\mathrel{\mathop:}=}
 \newcommand{\defeql}[0]{=\mathrel{\mathop:}}
 
@@ -204,6 +229,7 @@
 \hyperref[#2]{#1~\ref*{#2}}%
 }
 
+% Mathe Operatoren
 \DeclareMathOperator{\Aut}{Aut}
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\Mor}{Mor}
@@ -251,7 +277,7 @@
 
 
 % zweigestrichene Buchstaben im Mathe Umgebungen
-%\usepackage{bbm}
+\usepackage{bbm} % <- \mathbb sieht ein wenig anders aus als \mathbbm
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\N}{\mathbb{N}}
@@ -273,8 +299,8 @@
 \newcommand{\calJ}{\mathcal{J}}
 
 %alte Buchstaben
-\newcommand{\p}{\mathfrak{p}}
-\newcommand{\q}{\mathfrak{q}}
+\newcommand{\p}{\mathfrak{p}} % <-- schnellere alternative
+\newcommand{\q}{\mathfrak{q}} % <-- schnellere alternative
 \newcommand{\frakp}{\mathfrak{p}}
 \newcommand{\frakP}{\mathfrak{P}}
 \newcommand{\frakq}{\mathfrak{q}}
@@ -282,6 +308,7 @@
 %X als Malzeichen
 \newcommand{\X}{\times}
 
+% ein schoener aussehender Faktorraum anstaat einfach nur A/B
 \newcommand{\FakRaum}[2]{
   \raisebox{0.7ex}{\ensuremath{#1}}
   \ensuremath{\mkern-3mu}\big/\ensuremath{\mkern-3mu}
@@ -292,7 +319,9 @@
 
 \newcommand{\ilim}{\mathop{\varprojlim}\limits}
 
+% "ohne Einschraenkung" Zeichen
 \renewcommand{\OE}{O\!\!E~}
+
 \newcommand{\nsubset}{\subset\!\!\!\!\!/~}
 
 % Weniger Abstand nach der Ueberschrift des Inhaltsverzeichnisses
@@ -305,8 +334,12 @@
 \makeatother
 
 \setcounter{secnumdepth}{-1}
-\title{Geometrie der Schemata (Algebraische Geometrie II)  - Sommersemester 2012\\ Prof. Dr. F. Herrlich}
-\author{Aleksandar Sandic}
+
+%\titlehead{inoffizielles Vorlesungsskript}
+\subject{inoffizielles Skript}
+\title{Geometrie der Schemata\\(Algebraische Geometrie II)}
+\subtitle{Gehalten von Prof. Dr. F. Herrlich im Sommersemester 2012}
+\author{getippt von Aleksandar Sandic\thanks{Aleksandar.Sandic@student.kit.edu}}
 
 
 %--------------------------------------------------------------------
@@ -314,6 +347,7 @@
 %--------------------------------------------------------------------
 
 \begin{document}
+
 \maketitle
 
 % Inhaltsverzeichnis
@@ -335,20 +369,23 @@
 
 \chapter{Vorwort}
 \setcounter{secnumdepth}{2}
-\section*{\"Uber dieses Skriptum}
-Dies ist ein Mitschrieb der Vorlesung \glqq Geometrie der Schemata (Algebraische Geometrie II)\grqq\ von Prof. Dr. F. Herrlich im Sommersemster 2012 am Karlsruher Institut f\"ur Technologie (KIT). Prof. Dr. F. Herrlich ist f\"ur  den Inhalt nicht verantwortlich.\\
+\section*{\"Uber dieses Skript}
+Dies ist ein Mitschrieb der Vorlesung \glqq Geometrie der Schemata (Algebraische Geometrie II)\grqq\ von Prof. Dr. F. Herrlich im Sommersemster 2012 am Karlsruher Institut f\"ur Technologie (KIT). Prof. Dr. F. Herrlich ist f\"ur  den Inhalt nicht verantwortlich.
+
 \textcolor{red}{Die Vorlesung l\"auft noch und dieses Skript wird w\"ahrend der Vorlesung erweiter. Der Inhalt sollte mit einer kleinen Verz\"ogerung der Vorlesung folgen. Stellen bei denen ich unsicher war sind rot markiert.}
 \section*{Wer}
 Getippt wurde das Skript von Aleksandar Sandic. Es basiert auf meinem Skript zur Vorlesung Algebraische Geometrie aus dem Wintersemster 2011/12.
 
 \section*{Wo}
-\url{http://mitschriebwiki.nomeata.de/GeoSchemata2012.html}\\
-Link zum Mitschriebwiki: \url{http://mitschriebwiki.nomeata.de/}
+Link zum Skript: \url{http://mitschriebwiki.nomeata.de/GeoSchemata2012.html}\\
+Link zum Mitschriebwiki: \url{http://mitschriebwiki.nomeata.de/}\\
+Seite der Vorlesung: \url{http://www.math.kit.edu/iag3/lehre/geoschemata2012s/de}
 
 \section*{To Do}\begin{itemize}
 \item
   Ein sch\"ones TikZ Bild am Ende vom dritten Beispiel nach Definition \ref{1.3} w\"are besser
 \item
+	Dehnbare Folgepfeile wie \verb!\xrightarrow! w\"aren gut (w\"are mit dem extpfeil Paket machbar)
 \item
 %\item Unsicherheiten (rot markiert) korrigieren oder best\"atigen (wichtig)
 %\item Design aufpolieren (weniger wichtig)
@@ -1184,20 +1221,19 @@ Dann: $\Proj S = t(\IP^n(k)) =: \IP_k^n$, denn $D_+(X_i) = \Spec k[\frac{X_0}{X_
 
 \chapter{\"Ubungen}
 
-%Die Benennung der "section" so aendern, dass "\"Ubung 123 vom " am Anfang steht
-%Hab's von oben kopiert, keine Ahnung wie das genau funktioniert
-\makeatletter
-\def\@seccntformat#1{\@ifundefined{#1@cntformat}%
-{\csname the#1\endcsname\quad}% default
-{\csname #1@cntformat\endcsname}% individual control
-}
-\def\section@cntformat{\"Ubung \@arabic\c@section \mbox{ vom }}
+% Die Benennung der "section" so aendern, dass "\"Ubung 123 vom " am Anfang steht
+% Der Code ist fast genau der vom Anfang der Praeambel, dort steht die Erklaerung
+\renewcommand*{\othersectionlevelsformat}[3]{\ifstr{#1}{section}{\"Ubung\ #3\ vom\ }{#3\autodot\enskip}}
+
+% Das Format der "section" in Kopfzeile der rechten Seiten
+\renewcommand*{\sectionmarkformat}{\"Ubung \thesection\autodot\ vom\enskip}
 
 \setcounter{section}{-1}
 
 %-------------------------- Uebung 0 --------------------------
 \section{24. April 2012}
 \setcounter{Aufg}{0} %Damit die Aufgaben jedes Mal bei Aufgabe 1 anfangen
+\setcounter{Loes}{0}
 
 \begin{Aufg}
  Sei $X$ ein topologischer Raum, $A$ eine abelsche Gruppe und $x \in X$. 
@@ -1896,7 +1932,8 @@ Zeige:
 
 
 \chapter{G\"astebuch}
-Hier kann jeder, der g\"o\ss ere \"Anderungen oder Korrekturen am Skript vorgenommen hat, seinen Namen und einen Kommentar hinterlassen. Kleinigkeiten wie Rechtschreibfehler m\"ussen nicht unbedingt sein (und bei meinen Tippfehlern w\"are das G\"astebuch gr\"o\ss er als das Skript), aber ein korrigierter Satz, ein vervollst\"andigter Beweis, solche Sachen, einfach damit jemand der eine \"altere Version des Skriptes hat schnell den Unterschied finden kann. Oder hinterlasst einfach ein Paar nette Worte :-)\\
+Hier kann jeder, der g\"o\ss ere \"Anderungen oder Korrekturen am Skript vorgenommen hat, seinen Namen und einen Kommentar hinterlassen. Kleinigkeiten wie Rechtschreibfehler m\"ussen nicht unbedingt sein (und bei meinen Tippfehlern w\"are das G\"astebuch gr\"o\ss er als das Skript), aber ein korrigierter Satz, ein vervollst\"andigter Beweis, solche Sachen, einfach damit jemand der eine \"altere Version des Skriptes hat schnell den Unterschied finden kann. Oder hinterlasst einfach ein Paar nette Worte :-)
+
 Zum Schreiben im G\"astebuch stehen euch folgende Umgebungen zur Verf\"ugung (neben den \"ublichen aus dem Skript):
 \begin{center}\begin{minipage}{0.3\textwidth}\begin{verbatim}
   \begin{gast}
@@ -1913,7 +1950,8 @@ Zum Schreiben im G\"astebuch stehen euch folgende Umgebungen zur Verf\"ugung (ne
     ...  
   \end{korr}
 \end{verbatim}\end{minipage}\end{center}
-G\"astebucheintr\"age sind f\"ur alle Arten von Eintr\"agen gedacht. Kommentare sollten nur f\"ur wichtige Sachen verwendet werden und auch blo\ss,  wenn man sie nicht direkt in das Skript einbauen kann. Korrekturen sind da um gr\"o\ss ere und wichtige Korrekturen festzuhalten, damit man schnell wei\ss was sich seit der letzten Version wichtiges ge\"andert hat.\\
+G\"astebucheintr\"age sind f\"ur alle Arten von Eintr\"agen gedacht. Kommentare sollten nur f\"ur wichtige Sachen verwendet werden und auch blo\ss,  wenn man sie nicht direkt in das Skript einbauen kann. Korrekturen sind da um gr\"o\ss ere und wichtige Korrekturen festzuhalten, damit man schnell wei\ss was sich seit der letzten Version wichtiges ge\"andert hat.
+
 Dieser Teil ist absichtlich am Ende, damit man ihn beim Drucken einfach weglassen kann. Wenn jemand einen weiteren Anhang einf\"ugen m\"ochte, dann tut das bitte \emph{vor} dem G\"astebuch.\\
 
 \begin{gast}[von Aleks am 23. April 2012]
@@ -1925,4 +1963,11 @@ Ich habe das G\"astebuch angelegt. Ihr k\"onnt hier Aufz\"ahlungen verwenden:
   Ich kann sogar einen Link zu einem Eintrag setzen, wie zum Beispiel Definition \ref{1.3}
 \end{enumerate}
 \end{gast}
+
+\begin{komm}[von Aleks am 13. Mai 2012]
+Eine Sache, die mich immer gewurmt hat, ist dass das Skript einfach runtergeleiert aussah, es sah nicht wie ein Buch aus. Das war auch kein Wunder, schlie\ss lich hatte ich die Dokumentenklasse \verb!report! verwendet gehabt. Ich habe das endlich ge\"andert, und wo ich schon dabei war dachte ich mir, ich k\"onnte auch gleich diese \verb!KOMA Script! Klassen ausprobieren, also in diesem Fall \verb!scrbook!.
+
+Das war eine gute Idee, die Klasse ist sehr anpassbar, ohne gro\ss en Aufwand, man muss sich nur in der riesigen Dokumentation zurechtfinden. Wo ich schon dabei war habe ich den Code ein wenig besser kommentiert und aufger\"aumt, falls jemand in Zukunft dieses Skript als Vorlage verwenden m\"ochte.
+\end{komm}
+
 \end{document}
