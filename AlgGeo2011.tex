@@ -1,5 +1,28 @@
-\documentclass[a4paper,12pt]{report}
-%Nummerierung der Paragraphen anpassen (sonst kommt etwas wie "Definition 2.9.1" heraus)
+%		UEBER DIESES DESIGN
+%	
+%	Dieses Vorlesungsskript soll dem Layout eines Buches entsprechen und alles beinhalten, 
+%	was man fuer eine Mathevorlesung brauchen koennte. Ich habe mich fuer eine KOMA Script 
+%	Klasse entschieden, einfach weil sie Optioen bieten, die man bei den Standardklassen 
+%	nur ueber Umwege erreichen konnte. Der Code ist teilweise von mir selbst, teilweise aus 
+%	allen moeglichen Quellen zusammengekratzt, ich habe mich bemueht ihn so sehr ich kann 
+%	zu kommentieren.
+%	Ich bin kein Experte fuer Typographie, alles wurde zwar nach meinem besten Gewissen getan, 
+%	aber wenn jemand anderer Meinung ist, dann waere ich froh, wenn er meine Fehler korrigieren
+%	koennte.
+%
+%		FEATURES DIE ICH GERNE NOCH HAETTE
+%	* besseres Beweisende: das Kaestchen am Ende eines Beweises steht auf der gleichen Zeile 
+%		wie die letzte Zeile. Es sollte eine Zeile tiefer 
+
+\documentclass[a4paper, 12pt, numbers=noendperiod, chapterprefix=true]{scrbook}
+% "numbers=noendperiod" macht dass beim Kapteln und aehnlichem kein Punkt am Ende steht
+% normalerweise ist der Vorgang automatisiert, aber bei mir versagt es. ich mache die
+% Punkte spaeter dann per hand wenn es sein muss.
+
+% "chapterprefix=true" macht dass Kapitel, Abschnitte und aehnliches immer eine Ueber-
+% schrift wie "Kapitel 1" hat. Gilt auch fuer den Anhang.
+
+% Nummerierung der Paragraphen anpassen (sonst kommt etwas wie "Definition 2.9.1" heraus)
 \renewcommand{\thesection}{\arabic{section}}
 
 % Deutsche Sprache
@@ -13,7 +36,25 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage{tikz}
+
+% Einheitliche Schriftart (KOMA Script verwendet fuer einige Ueberschriften eine serifenlose Schrift, mischt also
+% Schriftarten. Ich habe mir die Argumente dafuer durchgelsen und war nicht ueberzeugt. Wenn jemand, der mehr als
+% ich von der Materie versteht, anderer Meinung ist kann er diese Zeilen hier einfach auskommentieren)
+\setkomafont{chapter}{\Huge\bfseries\rmfamily}
+\setkomafont{chapterentry}{\bfseries\rmfamily}
+\setkomafont{disposition}{\bfseries\rmfamily}
+\setkomafont{descriptionlabel}{\bfseries\rmfamily}
+
+%Stellt das Paragraphenzeichen vor die Section-Nummer (das ist ein KOMA Script exklusiver Befehl)
+% \ifstr{#1}{section} ueberprueft, ob der erste parameter (also die erste Ebene der Ueberschrift)
+% section heisst, wenn ja, dann wird sie geaendert, ansonsten behalten wir den Standard
+\renewcommand*{\othersectionlevelsformat}[3]{\ifstr{#1}{section}{\S\ #3\autodot}{#3\autodot}\enskip}
+
+%Aendert die Kapitelbeschriftung in der Kopfzeile der linken Seiten
+\renewcommand*{\chaptermarkformat}{\chapappifchapterprefix{\ }\thechapter\autodot:\enskip}
+
+%Stellt ein Pragraphenzeichen vor den Abschnitt in der Kopfzeile der linken Seiten
+\renewcommand*{\sectionmarkformat}{\S \thesection\autodot\enskip}
 
 % schmaler rand
 \usepackage{geometry}
@@ -52,19 +93,27 @@
   pdfpagemode=None
 }
 
+% um Code schreiben zu koennen
+\usepackage{listings}
+
 % Mathe-Pakete
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{stmaryrd}
 
-% Verschiedene items in enumerate Umgebungen
+% F\"ur TikZ-Diagramme
+\usepackage{tikz}
+\usetikzlibrary{matrix,arrows,calc}
+\usetikzlibrary{decorations.text}
+
+% Verschiedene items in enumerate Umgebungen (Das enumitem Paket bietet mehr Optionen)
 \usepackage{enumerate}
 
 % Erweiterte description umgebung
 \usepackage{expdlist}
 
-%für schoene Brueche
+%fuer schoene Brueche
 \usepackage{nicefrac}
 
 % Fuer Diagramme
@@ -78,7 +127,7 @@
 \usepackage[hyperref,amsmath,thmmarks,thref]{ntheorem}
 
 % Fuer verlaengerte Pfeile
-%\usepackage{extpfeil}
+\usepackage{extarrows}
 
 % keine kursiv schrift in theorems
 \theorembodyfont{}
@@ -133,12 +182,16 @@
 	\newtheorem{Bew}{Beweis}
 \theoremstyle{nonumberplain}
 
-
+% Befehl fuer Anfuerungszeichen unten und oben
 \newcommand{\quot}[1]{\textrm{\glqq}{#1}\textrm{\grqq}}
+
 \newcommand{\emp}[1]{\textbf{\emph{#1}}}
 \newcommand{\linetitle}[1]{\textbf{#1}}
+
+% fuer Definitionen
 \newcommand{\begriff}[1]{{\index{#1}}\emp{#1}}
 \newcommand{\begriffspez}[2]{{\index{#2}}\emp{#1}}
+
 \newcommand{\defeqr}[0]{\mathrel{\mathop:}=}
 \newcommand{\defeql}[0]{=\mathrel{\mathop:}}
 
@@ -232,6 +285,7 @@
 %X als Malzeichen
 \newcommand{\X}{\times}
 
+% ein schoener aussehender Faktorraum anstaat einfach nur A/B
 \newcommand{\FakRaum}[2]{
   \raisebox{0.7ex}{\ensuremath{#1}}
   \ensuremath{\mkern-3mu}\big/\ensuremath{\mkern-3mu}
@@ -242,7 +296,9 @@
 
 \newcommand{\ilim}{\mathop{\varprojlim}\limits}
 
+% "ohne Einschraenkung" Zeichen
 \renewcommand{\OE}{O\!\!E~}
+
 \newcommand{\nsubset}{\subset\!\!\!\!\!/~}
 
 % Weniger Abstand nach der Ueberschrift des Inhaltsverzeichnisses
@@ -254,18 +310,13 @@
 }
 \makeatother
 
-% Einige Anstrengungen, um den Â§ vor die Section-Nummer zu stellen
-% \renewcommand{\thesection} allein fÃ¼hrt zu einem Konflikt mit ntheorem-hyper
-\makeatletter
-\def\@seccntformat#1{\@ifundefined{#1@cntformat}%
-{\csname the#1\endcsname\quad}% default
-{\csname #1@cntformat\endcsname}% individual control
-}
-\def\section@cntformat{\S\@arabic\c@section\quad}
-\makeatother
 \setcounter{secnumdepth}{-1}
-\title{Algebraische Geometrie - Wintersemester 2011/2012\\ Prof. Dr. F. Herrlich}
-\author{Aleksandar Sandic}
+
+%\titlehead{inoffizielles Vorlesungsskript}
+\subject{inoffizielles Skript}
+\title{Algebraische Geometrie}
+\subtitle{Gehalten von Prof. Dr. F. Herrlich im Wintersemester 2011/12}
+\author{getippt von Aleksandar Sandic\thanks{Aleksandar.Sandic@student.kit.edu}}
 
 
 %--------------------------------------------------------------------
@@ -295,7 +346,7 @@
 
 \chapter{Vorwort}
 \setcounter{secnumdepth}{2}
-\section*{\"Uber dieses Skriptum}
+\section*{\"Uber dieses Skript}
 Dies ist ein Mitschrieb der Vorlesung \glqq Algebraische Geometrie\grqq\ von Prof. Dr. F. Herrlich im
 Wintersemester 2011/12 am Karlsruher Institut f\"ur Technologie (KIT). Prof. Dr. F. Herrlich ist f\"ur  den Inhalt nicht verantwortlich.\\
 \textcolor{red}{Die Vorlesung ist beendet und dieses Skript ist erst in der Endphase. Der Inhalt sollte vollst\"andig sein. Stellen bei denen ich unsicher war sind rot markiert.}
