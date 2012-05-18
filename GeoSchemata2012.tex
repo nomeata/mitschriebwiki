@@ -14,13 +14,18 @@
 %	* besseres Beweisende: das Kaestchen am Ende eines Beweises steht auf der gleichen Zeile 
 %		wie die letzte Zeile. Es sollte eine Zeile tiefer 
 
-\documentclass[a4paper, 12pt, numbers=noendperiod, chapterprefix=true]{scrbook}
+\documentclass[paper = A4, fontsize=12pt, numbers=noendperiod, chapterprefix=true]{scrbook}
 % "numbers=noendperiod" macht dass beim Kapteln und aehnlichem kein Punkt am Ende steht
 % normalerweise ist der Vorgang automatisiert, aber bei mir versagt es. ich mache die
 % Punkte spaeter dann per hand wenn es sein muss.
 
 % "chapterprefix=true" macht dass Kapitel, Abschnitte und aehnliches immer eine Ueber-
 % schrift wie "Kapitel 1" hat. Gilt auch fuer den Anhang.
+
+% eigener Rand (Normalerweise sollte der innere Rand hie Haelfte des aeusseren Randes betragen, aber
+% ich musst ein wenig dazugeben, weil ein Teil beim Binden wegfaellt)
+\usepackage[twoside]{geometry}
+\geometry{top=2cm, inner=2.5cm,outer=2.5cm}
 
 % Nummerierung der Paragraphen anpassen (sonst kommt etwas wie "Definition 2.9.1" heraus)
 \renewcommand{\thesection}{\arabic{section}}
@@ -56,10 +61,6 @@
 
 %Stellt ein Pragraphenzeichen vor den Abschnitt in der Kopfzeile der linken Seiten
 \renewcommand*{\sectionmarkformat}{\S \thesection\autodot\enskip}
-
-% schmaler rand
-\usepackage{geometry}
-\geometry{a4paper,tmargin=2cm,lmargin=2cm,rmargin=2cm}
 
 \setlength\parskip{\smallskipamount}
 \setlength\parindent{0pt}
@@ -115,7 +116,7 @@
 % Erweiterte description umgebung
 \usepackage{expdlist}
 
-%fuer schoene Brueche
+%fue�r schoene Brueche
 \usepackage{nicefrac}
 
 % Fuer Diagramme
@@ -1312,10 +1313,33 @@ Seien $X, Y, S$ Mengen, $f: X\to Y$, $g: Y \to S$ Abbildungen.\begin{enumerate}[
 \item\label{5.1c}
 	Das Faserprodukt erf\"ullt folgende UAE:\\
 	F\"ur alle Mengen $Z$, Abbildungen $\varphi: Z \to X$, $\psi: Z \to Y$ mit $f \circ \varphi = g \circ \psi$ gibt es genau eine $h: Z \to X \X_S Y$ mit $\varphi = \pr_X \circ h$, $\psi = \pr_Y \circ h$.
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}
+	\node (0) at (0,0) {\textcolor{green}{$Z$}};
+	\node (1) at (2,0.5) {\textcolor{green}{$Y$}};
+	\node (2) at (2,-0.5) {\textcolor{green}{$X$}};
+	\node (3) at (4,1.5) {$X \X_S Y$};
+	\node (4) at (4,-1.5) {$S$};
+	
+	\draw[->, green] (0) -- node[above] {$\psi$} (1);
+	\draw[->, green] (0) -- node[below] {$\varphi$} (2);
+	
+	\draw[->, dashed, cyan] (0) to [out=90, in=135] node[above] {$\exists! h$} (3);
+	\draw[->, green] (0) to [out=270, in=225] (4);
+	
+	\draw[->] (3) -- node[above] {$\pr_Y$} (1);
+	\draw[->] (3) to [out=315, in=0] node[right] {$\pr_X$} (2);
+	\draw[->] (1) to [out=0, in=90] node[left] {$g$} (4);
+	\end{tikzpicture}\end{center}
 \item
 	Das Faserprodukt ist der Limes des Diagramms
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}
+	\node (0) at (-1.5,0) {$X$};
+	\node (1) at (1.5,0) {$Y$};
+	\node (2) at (0,-1) {$S$};
+	
+	\draw[->] (0) -- node[below] {$f$} (2);
+	\draw[->] (1) -- node[below] {$g$} (2);
+	\end{tikzpicture}\end{center}
 \end{enumerate}\end{DefBem}
 
 \begin{bew}\begin{enumerate}[a)]\item[c)]
@@ -1365,7 +1389,21 @@ Das Faserprodukt $X \X_S Y$ existiert f\"ur alle $S$-Schemata $f: X \to S$ und $
 	\emph{Behauptung:} Das Tensorprodukt $A \otimes_R B$ erf\"ullt $\Spec (A \otimes_R B) = X \X_S Y$.
 	
 	\emph{Erinnerung:} Das Tensorprodukt $M \otimes_R N$ von $R$-Moduln $M,n$ \quot{linearisiert} die bilinieare Abbildung
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}
+	\node (0) at (-1.5,0) {$M\X N$};
+	\node (1) at (1.5,0) {$M\otimes_R N$};
+	
+	\node (2) at (-1.5,-0.5) {$(x,y)$};
+	\node (3) at (1.5,-0.5) {$x\otimes y$};
+	
+	\node (4) at (0, -2) {$P$};
+	
+	\draw[->] (0) -- (1);
+	\draw[|->] (2) -- (3);
+	
+	\draw[->] (2) -- node[left] {$\Phi$ bilinear}(4);
+	\draw[->, dashed, green] (3) -- node[right] {$\exists! \varphi$ linear} (4);
+	\end{tikzpicture}\end{center}
 	
 	\begin{enumerate}[\textbullet]
 	\item
@@ -1375,7 +1413,25 @@ Das Faserprodukt $X \X_S Y$ existiert f\"ur alle $S$-Schemata $f: X \to S$ und $
 		$\begin{array}{l} \sigma_A: A \to A \otimes_R B, a \mapsto a \otimes 1 \\ \sigma_B: B \to A \otimes_R B, b \mapsto 1 \otimes b \end{array}$ sind $R$-Algebren-Homomophismen.
 	\item
 		$A \otimes_R B$ erf\"ullt die richtige UAE
-		\begin{center}\textcolor{red}{[BILD]}\end{center}
+		\begin{center}\begin{tikzpicture}
+		\node (0) at (-4, 0) {$C$};
+		\node (1) at (0, 0) {$A$};
+		\node (2) at (4, 0) {$B$};
+		
+		\node (3) at (2, 1.5) {$A \otimes_R B$};
+		\node (4) at (2, -1.5) {$R$};
+		
+		\draw[->, cyan] (1) -- node[below] {$\alpha$} (0);
+		\draw[->, cyan] (2) to [in=15, out=165] node[above] {$\beta$} (0);
+		
+		\draw[->] (4) -- (1);
+		\draw[->] (4) -- (2);
+		\draw[->] (1) -- node[right] {$\sigma_A$} (3);
+		\draw[->] (2) -- node[left] {$\sigma_B$}(3);
+		
+		\draw[->, cyan] (4) to [in=315, out=180] (0);
+		\draw[->, dashed, green] (3) to [in=45, out=180] node[above] {$\exists! \gamma$} (0);
+		\end{tikzpicture}\end{center}
 		\quot{Beweis:} $\tilde \gamma: A \X B \to C$, $(a,b) \mapsto \alpha(a) \cdot \beta(b)$ ist bilinear, induziert also $\gamma: A \otimes B \to C$ linear. Nachrechnen: $\gamma$ Ringhomomorphismus, $\gamma$ eindeutig.
 	\end{enumerate}
 	\emph{Also:} $\Spec(A \otimes_R B)$ erf\"ullt die geforderte UAE f\"ur alle affinen Schemata $Z$.
@@ -1404,7 +1460,25 @@ Das Faserprodukt $X \X_S Y$ existiert f\"ur alle $S$-Schemata $f: X \to S$ und $
 		\[ T=S, V=X, W=Y, V_l = X_l \Rightarrow X \X_S Y \text{ existiert} \]
 	
 	\emph{Beweis 2:}
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}
+		\node (0) at (-4, 0) {\textcolor{green}{$Z$}};
+		\node (1) at (0, 0) {$X_i$};
+		\node (2) at (4, 0) {$Y_{\textcolor{green}{i}}$};
+		
+		\node (3) at (2, 1.5) {$X_i \X_S Y_i$};
+		\node (4) at (2, -1.5) {$S_{\textcolor{green}{i}}$};
+		
+		\draw[->, cyan] (0) -- node[below] {$\varphi$} (1);
+		\draw[->, cyan] (0) to [in=165, out=15] node[above] {$\psi$} (2);
+		
+		\draw[->] (1) -- node[left] {$f|_{X_i}$} (4);
+		\draw[->] (2) -- node[right] {$g$}(4);
+		\draw[->] (3) -- node[right] {$\pr_{X_i}$} (1);
+		\draw[->] (3) -- node[left] {$\pr_{Y_i}$}(2);
+		
+		\draw[->, cyan] (0) to [in=180, out=315] (4);
+		\draw[->, green] (0) to [in=180, out=45] node[above] {$h$} (3);
+	\end{tikzpicture}\end{center}
 		\[ \Psi(Z) \subseteq g^{-1} (\underbrace{f (\overbrace{\varphi(Z)}^{\subseteq X_i} )}_{\subseteq S_i} ) \subseteq Y_i \]
 	\emph{Beweis 1:} Verklebe die $V_l \X_T W$ l\"angs $U_{lm} = \pr_l^{-1} (V_l \cap V_m) \subseteq V_l \X_T W$. Es gilt: $U_{lm} = (V_l \cap V_m) \X_T W$. Dann ist $U_{lm} \quot{=} U_{ml}$, lassen sich also verkleben zu Schema $V$. Zeige: $\tilde V = V \X_T W$
 \end{enumerate}\end{bew}
@@ -1416,6 +1490,7 @@ Das Faserprodukt $X \X_S Y$ existiert f\"ur alle $S$-Schemata $f: X \to S$ und $
 \appendix
 
 \def\indexspace{\par\medskip}
+%\printindex[default]
 \printindex[default][\phantomsection\addcontentsline{toc}{chapter}{Stichwortverzeichnis}\vspace{-1.2em}]
 
 
@@ -2202,7 +2277,7 @@ $(\varphi, \varphi^\#) \to \varphi^\#(\Spec R) \to (\varphi', (\varphi^{\#})' )$
 \setcounter{Aufg}{0}
 \setcounter{Loes}{0}
 
-\begin{Aufg}
+\begin{Aufg}[4 Punkte]
  Seien $R$, $S$ Ringe, $X\coloneqq\textup{Spec}(R)$, $Y\coloneqq\textup{Spec}(S)$ sowie $\varphi \colon R \to S$ ein Ringhomomorphismus und $g \colon Y \to X$ der von $\varphi$ induzierte Schemamorphismus. Zeige:
 \begin{enumerate}%[topsep=0cm, parsep=0cm, label=\alph*)]
 \item Ein Element $f \in R$ ist genau dann nilpotent, wenn $D(f)$ leer ist.
@@ -2211,19 +2286,29 @@ $(\varphi, \varphi^\#) \to \varphi^\#(\Spec R) \to (\varphi', (\varphi^{\#})' )$
 \end{enumerate}
 \end{Aufg}
 
-\begin{Aufg}
+\begin{Aufg}[4 Punkte]
  Finde einen Ring $R$ und eine Idealgarbe $\mathcal{I}$ auf $\Spec(R)$, die nicht quasikohärent ist (und beweise, dass du solche $R$ und $\mathcal{I}$ gefunden hast).
 
 \textit{Hinweis: Diskrete Bewertungsringe können helfen.}
 \end{Aufg}
 
-\begin{Aufg}
+\begin{Aufg}[4 Punkte]
  Beweise die Proposition 4.5 aus der Vorlesung:
 
 Eine Idealgarbe $\mathcal{I}$ auf einem Schema $X$ ist genau dann quasikohärent, wenn es eine offene Überdeckung $(U_i)_{i \in M}$ von $X$ durch affine Schemata $U_i$ gibt, so dass $\mathcal{I}|_{U_i}$ für jedes $i \in M$ quasikohärent ist.
 \end{Aufg}
 
+\begin{Loes}
 
+\end{Loes}
+
+\begin{Loes}
+
+\end{Loes}
+
+\begin{Loes}
+
+\end{Loes}
 
 %-------------------------- Uebung 5 --------------------------
 \newpage
