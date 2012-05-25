@@ -242,6 +242,7 @@
 \DeclareMathOperator{\Proj}{Proj}
 \DeclareMathOperator{\chara}{char}
 \DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\op}{op}
 \DeclareMathOperator{\kgv}{kgV}
 \DeclareMathOperator{\kgV}{kgV}
 \DeclareMathOperator{\Spe}{Sp\'e}
@@ -271,6 +272,9 @@
 \DeclareMathOperator{\GL}{GL}
 %Kategorien
 \DeclareMathOperator{\Sh}{\underline{Sh}}
+\DeclareMathOperator{\Sch}{\underline{Sch}}
+\DeclareMathOperator{\Fun}{\underline{Fun}}
+\DeclareMathOperator{\Sets}{\underline{Sets}}
 \DeclareMathOperator{\Ab}{\underline{Ab}}
 \DeclareMathOperator{\Ringe}{\underline{Ringe}}
 \DeclareMathOperator{\Top}{\underline{Top}}
@@ -1539,7 +1543,7 @@ Sei $X$ ein Schema, $x \in X$
 		$X = \A_k^2 = \Spec k[X,Y]$\\
 		$x = (f)$, $f$ irreduzibel $\Rightarrow \kappa(x) = \Quot(k[V]) = k(V)$ ($V = V(f)$)
 	\end{enumerate}
-\item
+\item\label{6.1b}
 	Sei $f: X \to S$ ein Morphismus, $s:= f(x)$. $f$ induziert Homomorphismus $\kappa(s) \to \kappa(x)$.
 \item\label{6.1c}
 	F\"ur einen K\"orper $k$ gibt es genau dann einen Morphismus $\iota: \Spec k \to X$ mit $\iota(0) = x$, wenn $\kappa(x)$ isomorph zu einem Teilk\"orper von $k$ ist.
@@ -1559,7 +1563,7 @@ Sei $X$ ein Schema, $x \in X$
 	\begin{twosidedproof}\proofreverse $\alpha: R \to R_\p \to \FakRaum{R_{\p}}{\p \cdot R_{\p}} \xrightarrow{\overline \alpha} k$
 \end{twosidedproof}\end{enumerate}\end{bew}
 
-\begin{Bem}
+\begin{Bem}\label{6.2}
 Seien $X, Y$ $S$-Schemata.\\
 Dann ist die Abbildung $\begin{array}{ccc} X \X_S Y &\to& \{(x,y) \in X \X Y: f(x)=g(y)\} \\ z &\mapsto& (\pr_X(z), \pr_Y(z))\end{array}$ surjektiv.
 \begin{center}\textcolor{red}{[BILD]}\end{center}
@@ -1572,6 +1576,81 @@ Seien $x\in X, y \in Y$ mit $f(x) = g(y) =: s \in S$. Seien $\kappa: \kappa(s), 
 
 Nach \ref{6.1} \ref{6.1c}) gibt es Morphismen $\varphi: Z \to X, \varphi(0) = x$, $\psi: Z \to Y, \psi(0) = y$. Es ist $f \circ \varphi = g \circ \psi \Rightarrow  \exists h: Z \to X \X Y$ mit $\pr_X \circ h = \varphi, \pr_Y \circ h = \psi$. Setze $z := h(0)$.
 \end{bew}
+
+%24. 5.
+
+\begin{DefBem}
+Sei $f:X \to Y$ Morphismus von Schemata, $y \in Y$\begin{enumerate}[a)]
+\item
+	$X_y = f^{-1}(y) = X \X_Y \Spec \kappa(y)$ hei\ss t \defterm{Faser} von $f$ \"uber $y$. Dabei ist $\iota: \Spec \kappa(y) \to Y$ der zu $y$ geh\"orige Morphismus aus \ref{6.1}.
+\item
+	$\pr_X: X_y \to X$ ist injektiv.
+\item
+	$\pr_X(X_y) \to \{ x\in X: f(x) = y \}$ ist bijektiv.
+\item
+	Ist $y$ abgeschlossen, so ist $X_y$ abgeschlossenes Unterschema.
+\end{enumerate}\end{DefBem}
+
+\begin{bew}\begin{enumerate}[a)]
+\item[c)]
+	Folgt aus b) und \ref{6.2}.
+\item[d)]
+	Folgt aus c).
+\item[b)]
+	Seien $x_1, x_2 \in X_y$ mit $\pr_X(x_1) = \pr(x_2) =: x \in X \Rightarrow f(x) = y$. Sei $Z = \Spec \kappa(x)$ und $\iota: Z \to X$ mit $\iota(0) = x$. Sei $\psi: Z \to \Spec \kappa(y)$ der von $f_*^\#$ induzierte Morphismus (\ref{6.1} \ref{6.1b})).\\
+	Nach \ref{6.1} \ref{6.1b}) ist $\kappa(x) \subseteq \kappa(x_i)$, $i=1,2$.
+	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	$\xRightarrow{\ref{6.1} \ref{6.1c}} \exists$ Morphismen $h_i: Z \to X_y$ mit $h_i(0) = x_i$, $i = 1,2$\\
+	Es gilt: $\pr_Z \circ h_i = \psi$, $i = 1,2$\\
+	\textcolor{white}{Es gilt:} $\pr_X \circ h_i = \iota$ nach Definition von $h_i$
+	
+	$\xRightarrow{\text{Eindeutigkeit}} h_1 = h_2 \Rightarrow x_1 = x_2$
+\end{enumerate}\end{bew}
+
+\begin{bspe}\begin{enumerate}[1)]
+\item
+	$f: \underset{=\Spec k[X]}{\quot{\A_k^1}} \to \A_k^1, \quot{x \mapsto x^2}$; $f$ werde induziert von $\alpha: k[X] \to k[X], X \mapsto X^2$\\
+	Sei $y=(X-a) \Rightarrow X_y = \A_k^1 \X_{\A_k^1} \Spec k = \Spec ( \underbrace{k[X] \otimes_{k[X]} k}_{\cong k[X]/\alpha(X-a)} )$\\
+	$\FakRaum{k[X]}{\alpha(X-a)} = \FakRaum{k[X]}{(X^2-a)} = \begin{cases} k \oplus k & \text{falls } a \in (k^\X)^2 \\ \FakRaum{k[X]}{(X^2)} & \text{falls } a = 0\end{cases}$
+\item
+	$X = (x,y)$-Ebene $\cup \ (z,w)$-Ebene in $\A_k^4$\\
+	$\textcolor{white}{X} = V(z,w) \cup V(x,y) = V(xz, yz, xw, yw)$
+	
+	$f: X \to \A_k^2, (x,y,z,w) \mapsto (x+z, y+w)$ wird induziert von $\alpha: k[s,t] \to k[X,Y,Z,W] \to k[V], s \mapsto X + Z, t \mapsto Y + W$.
+	
+	Sei $ y = \quot{(0,0)} = (s,t) \Rightarrow V_y = V \X_{\A_k^2} \Spec k = \Spec (k \otimes_{k[s,t]} k) \cong \FakRaum{k[V]}{\alpha(s,t)} = \FakRaum{k[V]}{(X+Z, Y+W)} = \FakRaum{k[X,Y,Z,W]}{(X+Z, Y+W, XZ, YZ, XW, YW)}$\\
+	$ = \FakRaum{k[X,Y]}{(-X^2, -XY, -Y^2)} =: R$
+	
+	\emph{Beachte:} $\dim_k R = 3$
+\end{enumerate}\end{bspe}
+
+\begin{DefBem}
+Sei $X$ ein Schema, $T$ ein weiteres Schema.
+\begin{enumerate}[a)]
+\item
+	Ein $T$-\deftermspec{wertiger Punkt}{Punkt!$T$-wertiger} von $X$ ist ein Morphismus $T \to X$.
+\item
+	Der Funktor $h_X: \Sch \to \Sets$, $T \mapsto \Hom(T,X)$ hei\ss t \deftermspec{Punktfunktor}{Funktor!Punkt-} zu $X$. $h_X$ ist kontravarianter Funktor.
+\item
+	Die $H_X$ definieren Funktor $h: \Sch \to \Fun(\text{Sch}^{\op}, \text{Sets})$. Dieser Funktor ist Kovariant. \textcolor{gray}{($\Fun(\text{Sch}^{\op}, \text{Sets})$ ist die Kategorie der kontravarianten Funktoren von Schemata nach Mengen; $\op$ steht f\"ur \quot{opposite})}
+\end{enumerate}\end{DefBem}
+
+\begin{bspe}\begin{enumerate}[1)]
+\item
+	Sei $T = \Spec(\FakRaum{k[\epsilon]}{(\epsilon^2)})$ ($k$ ein K\"orper), $X = \A_k^2 = \Spec k[X,Y]$. Ein $T$-wertiger Punkt von $X$ ist ein Ringhomomorphismus $\alpha: k[X,Y] \to \FakRaum{k[\epsilon]}{(\epsilon^2)}$. Sei $\alpha$ surjektiv, $\alpha^{-1}((\epsilon)) = (X,Y)$.
+	
+	Also $\alpha(X) = a\epsilon$, $\alpha(Y) = b\epsilon$ ($a,b \in k$) $\Rightarrow \alpha(bX - aY) = 0$. $\alpha$ bestimmt also nicht nur einen Punkt $x$ von $X$, sondern auch eine \quot{Richtung} in $x$.
+\item
+	$T = \Spec R$, $R$ diskreter Bewertungsring.
+	
+	$T = \{t_0, t_1\}$, $t_0 \in \overline{\{t_1\}}$, $K:= \Quot R$, $X$ ein Schema, $\kappa(t_0)=k$, $\kappa(t_1) = K$
+	\[\begin{array}{lcr}\Hom(T,X) &=& \{ (x_0,x_1,x_2): x_0, x_1 \in X, x_0 \ne x_1, x_0 \in \overline{\{x_1\}}, \iota: \kappa(x_1) \to K\\
+		&&\text{ Homomorphismus mit } \iota(\calO_{\overline{\{x_1\}}, x_0}) \subseteq R \text{ und } \iota(m_{x_0}) \subseteq m \}\end{array}\]
+\end{enumerate}\end{bspe}
+
+
+
+
 
 %-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Anhang -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
