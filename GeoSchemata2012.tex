@@ -1016,7 +1016,7 @@ Sei $h = \frac{g}{f^d} \in R_f$. \emph{Zu zeigen:}
 %-------------------------- Abschnitt 3 (Affine Schemata) --------------------------
 %3. 5.
 
-\section{(allgemeine) Schemata}
+\section{(allgemeine) Schemata}\label{par3}
 
 \begin{Def}\begin{enumerate}[a)]
 \item
@@ -1100,7 +1100,7 @@ Dann gibt es genau eine Garbe $\calO_Z$ auf $Z$ mit $\calO_Z|_X = \calO_X$ und $
 Die offenen Teilmengen von $X$ und von $Y$ bilden eine Basis der Topologie auf $Z$.
 \end{bew}
 
-\begin{bsp}\textcolor{white}{\,}\\
+\begin{bsp}\label{3bsp2}\textcolor{white}{\,}\\
 $\begin{array}{l}X = \A^1, U = \A^1\setminus \{0\} \\ Y = \A^1, V = \A^1\setminus \{0\}\end{array} \varphi = \id \qquad$\begin{tikzpicture}[baseline = 0]
   \node (X) at (2,0.5) {$X$};
   \node (X) at (2,-0.5) {$Y$};
@@ -1856,6 +1856,182 @@ $B$ ist nach Voraussetzung endl. erzeugter $A$-Modul. Weiter ist $f^{-1}(y) = \S
 
 $B \otimes_A \kappa(y)$ ist endlich-dimensionaler $\kappa(y)$-Vektorraum $\Rightarrow B \otimes_A \kappa(y)$ hat nur endlich viele Primideale
 \end{bew}
+
+\newpage
+
+%-------------------------- Abschnitt 7 (eigentliche Morphismen) --------------------------
+%31. 5.
+
+\section{eigentliche Morphismen}
+
+\begin{Def}
+Sei $f: X \to X$ ein Morphismus von Schemata.
+\begin{enumerate}[a)]
+\item
+	Der von $\id_X$ induzierte Morphismus $\Delta = \Delta_f: X \to X \X_S X$ hei\ss t \deftermspec{Diagonalmorphismus}{Morphismus!Diagonal-} (oder Diagonale\index{Diagonale}) zu $f$.
+	\begin{center}\begin{tikzpicture}
+	\node (0) at (0,1.5) {$X \X_S X$};
+	\node (1) at (-2.5,0) {$X$};
+	\node (2) at (2.5,0) {$X$};
+	\node (3) at (0,-1.5) {$S$};
+	\node (4) at (-3.5,1) {$X$};
+	
+	\draw[->, font=\scriptsize] (0) -- node[above]{$\pr_1$} (1);
+	\draw[->, font=\scriptsize] (0) -- node[above]{$\pr_2$} (2);
+	\draw[->, font=\scriptsize] (1) -- node[below]{$f$} (3);
+	\draw[->, font=\scriptsize] (2) -- node[below]{$f$} (3);
+	
+	\draw[->, font=\scriptsize] (4) to[in=135, out=45] node[above]{$\Delta = \Delta_f$} (0);
+	\draw[->, font=\scriptsize] (4) -- node[below]{$\id$} (1);
+	\draw[->, font=\scriptsize] (4) to[in=165, out=15] node[below]{$\id$} (2);
+	\end{tikzpicture}
+	
+	Es ist $\pr_1(\Delta(X)) = \pr_2(\Delta(X))$\end{center}
+\item
+	$f$ hei\ss t \defterm{separiert} (oder auch $X$ hei\ss t separiert \"uber $S$), wenn $\Delta$ einen abgeschlossene Einbettung ist.
+\end{enumerate}\end{Def}
+
+\begin{Erinn}
+Ein topologischer Raum $X$ ist genau dann hausdorffsch, wenn $\Delta = \{ (x,x) \in X \X X \}$ abgeschlossene Teilmenge von $X \X X$ ist
+\end{Erinn}
+
+\begin{bsp}
+Sei $X = $ \begin{tikzpicture}[baseline=-4]
+  \draw[thick] (-1.5,0) -- (-0.2,0);
+  \draw[thick] (0.2,0) -- (1.5,0);
+  \draw[fill, font=\scriptsize] (0,0.25) circle(0.05) node[right] {$0_1$};
+  \draw[fill, font=\scriptsize] (0,-0.25) circle(0.05) node[right] {$0_1$};
+\end{tikzpicture} $\A_k^1$ mit doppeltem Nullpunkt (\S \ref{par3} Beispiel 2), $F:X \to \Spec k$ der Strukturmorphismus.
+
+$f$ ist nicht separiert, da $\Delta(X)$ nicht abgeschlossen is in $ X \X_k X$, denn $(0_1,0_2) \notin \Delta$ aber $\in \Delta$.
+\end{bsp}
+
+\begin{Bem}
+Jeder Morphismus affiner Schemata ist separiert.
+\end{Bem}
+
+\begin{bew}
+Sei $f: X = \Spec B \to \Spec A = Y$ Morphismus, induziert von Ringhomomorphismus $\alpha: A \to B$. Dann ist $X \X_Y X = \Spec (B \otimes_A B)$.
+
+$\Delta: X \to X \X_Y X$ wird induziert von $\mu: \begin{array}{ccc} B \otimes_A B &\to& B \\ b_1 \otimes b_2 &\mapsto& b_1 \cdot b_2\end{array}$\\
+$\mu$ ist surjektiv, also ist $\Delta$ abgeschlossene Einbettung.
+\end{bew}
+
+\begin{Bem}
+Offene und abgeschlossene Einbettungen sind separiert.
+\end{Bem}
+
+\begin{bew}
+Sei $i: U \hookrightarrow X$ offene abgeschlossene Einbettung.
+
+$\Rightarrow U \X_X U \cong U$ und f\"ur $\Delta: U \to U \X_X U \cong U$ gilt $\Delta = \id_U$.
+\end{bew}
+
+\begin{Def}
+Sei $f:X \to Y$ ein Morphismus von Schemata.
+\begin{enumerate}[a)]
+\item
+	$f$ hei\ss t \deftermspec{universell abgeschlossen}{abgeschlossen!universell}, wenn f\"ur jeden Morphismus $g: Y' \to Y$ gilt: $f': X \X_Y Y' \to Y'$ ist abgeschlossen.
+\item
+	$f$ hei\ss t \defterm{eigentlich}, wenn es von endlichem Typ, separiert und universell abgeschlossen ist.
+\end{enumerate}\end{Def}
+
+\begin{bsp}
+$\A_k^1 \to \Spec$ ist abgeschlossen, aber nicht universell abgeschlossen.
+
+\emph{Denn:}
+\begin{center}\begin{tikzpicture}
+	\node (0) at (-2,0.75) {\textcolor{white}{$\A_k^1 \X_k \A_k^1$}};
+	\node at (-2.5,0.75) {$\A_k^2 = \A_k^1 \X_k \A_k^1$};
+	\node (1) at (2,0.75) {$\A_k^1$};
+	\node (2) at (-2,-0.75) {$\A_k^1$};
+	\node (3) at (2,-0.75) {$\Spec k$};
+
+	\draw[->] (0) -- (1);
+	\draw[->, font=\scriptsize] (0) -- node[right]{$\pr_1$} (2);
+	\draw[->] (2) --(3);
+	\draw[->] (1) --  (3);
+\end{tikzpicture}\end{center}
+
+$\pr_1$ ist nicht abgeschlossen.
+
+$V = V(X^2 + Y^2 - 1) \subseteq \A_k^2$, $\pr_1(V) = ?$\\
+$V = V(XY - 1) \Rightarrow \pr_1(V) = \A_k^1 - \{0\}$
+
+$\Rightarrow \pr_1(V) = \A_k^1 - \{0\}$ ist nicht abgeschlossen (\OE $k$ algebraisch abgeschlossen)
+\end{bsp}
+
+\begin{Def}\begin{enumerate}[a)]
+\item
+	Ein nullteilerfreier Ring $R$ hei\ss t \defterm{Bewertungsring}, wenn f\"ur jedes $x \in K = \Quot R$ gilt: $x \in R$ oder $x^{-1} \in R$. $R$ ist lokaler Ring mit maximalem Ideal $m = \{ x \in R: x^{-1} \notin R\}$, $(x+y)^{-1} =$ "Ubung??
+\item
+	Sei $f: X \to Y$ ein Morphismus von Schemata, $R$ ein Bewertungsring, $K = \Quot R$, $U = \Spec K$, $ T = \Spec R$.
+	
+	Ein kommutatives Diagramm \begin{tikzpicture}[baseline=0]
+		\node (0) at (-1,0.5) {$U$};
+		\node (1) at (1,0.5) {$X$};
+		\node (2) at (-1,-0.5) {$T$};
+		\node (3) at (1,-0.5) {$Y$};
+		
+		\draw[->, font=\scriptsize] (0) -- node[above]{$h_0$} (1);
+		\draw[->, font=\scriptsize] (0) -- (2);
+		\draw[->, font=\scriptsize] (1) -- node[right]{$f$} (3);
+		\draw[->, font=\scriptsize] (2) -- node[below]{$h_1$} (3);
+	\end{tikzpicture} hei\ss t \defterm{Bewertungsdiagramm} f\"ur $f$.
+\end{enumerate}\end{Def}
+
+\begin{Satz}
+Sei $f: X \to Y$ ein Morphismus von Schemata. Dann gilt:
+\begin{enumerate}[a)]
+\item
+	$f$ ist genau dann $\left\{\begin{array}{c}\text{separiert}\\ \text{eigentlich}\end{array}\right\}$, wenn es zu jedem Bewertungsdiagramm \begin{tikzpicture}[baseline=0]
+		\node (0) at (-1,0.5) {$U$};
+		\node (1) at (1,0.5) {$X$};
+		\node (2) at (-1,-0.5) {$T$};
+		\node (3) at (1,-0.5) {$Y$};
+		
+		\draw[->, font=\scriptsize] (0) -- node[above]{$h_0$} (1);
+		\draw[->, font=\scriptsize] (0) -- (2);
+		\draw[->, font=\scriptsize] (3) -- (1);
+		\draw[->, font=\scriptsize] (2) -- node[below]{$h_1$} (3);
+		\draw[->, dashed, font=\scriptsize, green] (2) -- node[above]{$h$}(1);
+	\end{tikzpicture} $\left\{\begin{array}{c}\text{h"ochstens}\\ \text{mindestens}\end{array}\right\}$ einen Morphismus $h: T \to X$ gibt, der das Diagramm kommutativ macht.
+\item
+	Sind $X$ und $Y$ noethersch und $f$ von unendlichem Typ, so gen"ugt es, Bewertugnsdiagramme zu diskreten Bewertungsringen zu betrachten.
+\end{enumerate}\end{Satz}
+
+\begin{bsp}
+Sei $X = \A_k^1$, $Y = \Spec k$, $f: X \to Y$\ldots\\
+$K = k(T)$, $R = \{ \frac{g}{h}: g,h \in k[T], \deg h \ge \deg g\}$, $R$ diskreter Bewertungsring, $K = \Quot(R)$
+\begin{center}\begin{tikzpicture}
+	\node (0) at (-2,1) {$\Spec k(T)$};
+	\node (1) at (2,1) {$\A_k^1$};
+	\node (2) at (-2,-1) {$\Spec R$};
+	\node (3) at (2,-1) {$\Spec k$};
+	
+	\draw[->, font=\scriptsize] (0) -- (1);
+	\draw[->, font=\scriptsize] (0) -- (2);
+	\draw[->, font=\scriptsize] (1) -- node[right]{$f$}(3);
+	\draw[->, font=\scriptsize] (2) -- (3);
+\end{tikzpicture}
+\begin{tikzpicture}
+	\node (0) at (-2,1) {$k(T)$};
+	\node (1) at (2,1) {$k[T]$};
+	\node (2) at (-2,-1) {$R$};
+	\node (3) at (2,-1) {$k$};
+	
+	\draw[->, font=\scriptsize] (1) -- (0);
+	\draw[->, font=\scriptsize] (2) -- (0);
+	\draw[->, font=\scriptsize] (3) -- (1);
+	\draw[->, font=\scriptsize] (3) -- (2);
+	\draw[->, dashed, font=\scriptsize] (1) -- node[above]{$h?$}(2);
+\end{tikzpicture}\end{center}
+Es gibt kein $h$, da $k[T] \hookrightarrow k(T)$ \emph{nicht} \"uber $R$ faktorisiert: $T \notin R$
+\end{bsp}
+
+
+
+
 
 
 
