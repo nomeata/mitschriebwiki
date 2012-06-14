@@ -109,6 +109,9 @@
 \usepackage{stmaryrd}
 \usepackage{mathtools}
 
+% \mathcal unterstuetzt keine Kleinbuchstaben, das hier sollte eine brauchbare Alternative bieten
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+
 % F\"ur TikZ-Diagramme
 \usepackage{tikz}
 \usetikzlibrary{matrix,arrows,calc,intersections}
@@ -298,25 +301,27 @@
 \newcommand{\IP}{\mathbb{P}}%\P bereits belegt
 
 % kursive Buchstaben im Mathe Umgebungen
-\newcommand{\calB}{\mathcal{B}}
-\newcommand{\calO}{\mathcal{O}}
-\newcommand{\calI}{\mathcal{I}}
-\newcommand{\calN}{\mathcal{N}}
-\newcommand{\calX}{\mathcal{X}}
-\newcommand{\calF}{\mathcal{F}}
-\newcommand{\F}{\mathcal{F}} % <-- schnellere alternative
-\newcommand{\calW}{\mathcal{W}}
-\newcommand{\calG}{\mathcal{G}}
-\newcommand{\G}{\mathcal{G}} % <-- schnellere alternative
 \newcommand{\calC}{\mathcal{C}}
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calI}{\mathcal{I}}
 \newcommand{\calJ}{\mathcal{J}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calO}{\mathcal{O}}
+\newcommand{\calW}{\mathcal{W}}
+\newcommand{\calX}{\mathcal{X}}
+\newcommand{\F}{\mathcal{F}} % <-- schnellere alternative
+\newcommand{\G}{\mathcal{G}} % <-- schnellere alternative
+\newcommand{\calHom}{\mathcal{H}\mathpzc{om}}
 
 %alte Buchstaben
-\newcommand{\p}{\mathfrak{p}} % <-- schnellere alternative
-\newcommand{\q}{\mathfrak{q}} % <-- schnellere alternative
 \newcommand{\frakp}{\mathfrak{p}}
 \newcommand{\frakP}{\mathfrak{P}}
 \newcommand{\frakq}{\mathfrak{q}}
+\newcommand{\p}{\mathfrak{p}} % <-- schnellere alternative
+\newcommand{\q}{\mathfrak{q}} % <-- schnellere alternative
 
 %X als Malzeichen
 \newcommand{\X}{\times}
@@ -805,7 +810,7 @@ Sei $f: X\to Y$ stetig.
   \end{enumerate}
 \end{enumerate}\end{bew}
 
-\begin{Prop}
+\begin{Prop}\label{1.14}
 Sei $f:X\to Y$ stetig, $\F$ eine Garbe auf $X$, $\G$ Garbe auf $Y$.\\
 Dann gibt es eine (nat\"urliche) Bijektion
   \[\Hom(f^{-1}\G, \F) \to \Hom(\G, f_*\F)\]
@@ -2362,6 +2367,94 @@ Sei $(X, \calO_X)$ ein lokal geringter Raum. Eine Garbe $\calF$ von abelschen Gr
 \begin{bem}
 Die $\calO_X$-Modulgarben auf $X$ bilden eine Kategorie. Gegenbeispiel: $\calO_X^\X$ ist \emph{keine} $\calO_X$-Modulgarbe.
 \end{bem}
+
+\begin{bspe}[f\"ur $\calO_X$-Modulgarben]\begin{enumerate}[1)]
+\item
+	Idealgarben
+\item
+	Sei $X$ eine nichtsingul"are Kurve (\"uber einem algebraisch abgeschlossenen K\"orper $k$), $D := \sum\limits_{\substack{P \in X \\ \text{(abg.)}}} n_P P$ ein Divisor.
+	
+	$\calO_X$ soll die Garbe der regul\"aren Differentiale auf $X$ sein.
+	
+	F\"ur $U \subseteq X$ offen sein $\calL(D)(U) := \{ f \in k(X): \ddiv f|_U + D|_U \ge 0\}$, das hei\ss t f\"ur alle $P \in U$ gilt $\ord_P f \ge -m_P$.
+	
+	$\calL(D)(U)$ ist $\calO_X(U)$-Modul: f\"ur $g \in \calO_X(U)$, $f \in \calL(D)(U)$ und $P \in U$ ist $\ord_P(fg) = \ord_P(f) + \underbrace{\ord_P(g)}_{\ge 0}$
+	
+	$\Rightarrow \calL(D)$ ist Modulgarbe
+\item
+	Sei $X$ weiterhin nichtsingul"are Kurve.
+	
+	\textbf{Erinnerung:} Sei $R$ ein Ring, $A$ eine $R$-Algebra, $M$ ein $A$-Modul, $\Der_R (A,M) = \{ \delta: A \to M, R$-liniear, $\delta(f \cdot g) = f \cdot \delta(g) + g \cdot \delta(f)\}$.
+	
+	Es gibt $\left\{\begin{array}{ll} \Omega_{A/R} & A\text{-Modul} \\ d: \begin{array}{rcl} A &\to& \Omega_{A/R} \\ a &\mapsto& da\end{array} & \text{Derivation} \end{array}\right\}$ sodass \begin{tikzpicture}[baseline=0]
+		\node (A) at (-1.25,0.75) {$A$};
+		\node (O) at (1.25,0.75) {$\Omega_{A/R}$};
+		\node (M) at (0,-0.75) {$M$};
+		
+		\draw[->,font=\scriptsize] (A) -- (O);
+		\draw[->,font=\scriptsize] (A) -- node[left]{$\delta$} (M);
+		\draw[->,font=\scriptsize,dashed] (O) -- node[right,align=left]{$\exists! \varphi$ \\ $A$-linear} (M);
+	\end{tikzpicture}
+	
+	$A = k[X]$\\
+	$\Rightarrow \boxed{\Omega_{A/k} = A \cdot dX}$\\
+	$\Omega_{k(X)/k} = k(X) \cdot dX$
+	
+	\emph{Es gilt}: Ist $X$ irreduzible Kurve, so ist $\Omega_{k(X)/k}$ 1-dimensionaler Vektorraum \"uber $k(X)$ (Beispiel $y^2 = x^3 + ax + b \Rightarrow 2ydy = 3x^2dx + adx$)
+	
+	F\"ur $\omega \in \Omega_{k(X)/k}$ und $P \in X$ sei $\ord_P \omega$ wie folgt definiert: sei $t_P$ ein Erzeuger von $m_P$ ($=$ maximales Ideal in $\calO_{X,P}$)
+	
+	$\Rightarrow \exists\ f_P \in k(X)$ mit $\omega = f_P dt_P$. Setze $\ord_P \omega := \ord_P f_P$
+	
+	F\"ur $\omega \in \Omega_{k(X)/k}$ sei $\ddiv \omega := \sum\limits_{P \in X} \ord_P \omega$ (wobei $d(t_P - c) = dt_P$).
+	
+	F\"ur $U \subseteq X$ offen: $\Omega_X(U) := \{ \omega \in \Omega_{k(X)/k}: \ddiv \omega|_U \ge 0\}$
+	
+	$\calO_X$ ist $\calO_X$-Modulgarbe, da $\ddiv(f \cdot \omega) = \ddiv f + \ddiv \omega$.
+\end{enumerate}\end{bspe}
+
+\begin{DefBem}
+Sei $(X, \calO_X)$ lokal geringter Raum, $\calF, \calG$ $\calO_X$-Modulgarben.
+\begin{enumerate}[a)]
+\item
+	$\calF \otimes_{\calO_X} \calG$ sei die zur Pr\"agarbe $U \mapsto \calF(U) \otimes_{\calO_X(U)} \calG(U)$ assoziierte Garbe, $\calF \otimes_{\calO_X} \calG$ ist eine $\calO_X$-Modulgarbe.
+\item
+	F\"ur $U \subseteq X$ offen sei
+		\[ \calHom(\calF, \calG)(U) := \Hom_{\calO_X|_U} (\calF|_U, \calG|_U) \]
+	Das ist eine $\calO_X$-Modulgarbe.
+\end{enumerate}\end{DefBem}
+
+\begin{bew}\begin{enumerate}[a)]\item[b)]
+\ldots
+\end{enumerate}\end{bew}
+
+\begin{DefBem}
+Sei $f: X \to Y$ ein Morphismus lokal geringter R"aume
+\begin{enumerate}[a)]
+\item
+	F\"ur jede $\calO_X$-Modulgarbe $\calF$ auf $X$ ist $f_* \calF$ eine $\calO_Y$-Modulgarbe.
+\item
+	F\"ur jede $\calO_Y$-Modulgarbe $\calG$ auf $Y$ ist $f^{-1} \calG$ eine $f^{-1} \calO_Y$-Modulgarbe und $f^* \calG := f^{-1} \calG \otimes_{f^{-1}\calO_Y} \calO_X$ eine $\calO_X$-Modulgarbe.
+\end{enumerate}\end{DefBem}
+
+\begin{bew}\begin{enumerate}[a)]
+\item
+	F\"ur $U \subseteq Y$ offen ist $f_*\calF(U) = \calF (f^{-1}(U))$ ein $\calO_X(f^{-1}(U))$-Modul, $f^\#: \calO_Y \to f_*\calO_X$ induziert $f_U^\#: \calO_Y(U) \to f_*\calO_X(U) = \calO_X(f^{-1}(U))$. Dadurch wird $\calF(f^{-1}(U))$ zu einem $\calO_Y(U)$-Modul.
+\item
+	Zu Definition von $f^*\calG$ wird Garbenhomomorphismus $f^{-1}\calO_Y \to \calO_X$ ben"otigt. $f^\#: \calO_Y \to f_*\calO_X$ induziert $f^{-1}\calO_Y \to f^{-1}f_*\calO_X \xrightarrow{\ref{1.14}} \calO_X$
+\end{enumerate}\end{bew}
+
+\begin{erinn}
+
+\end{erinn}
+
+\begin{DefBem}\begin{enumerate}[a)]
+\item
+	
+\item
+	
+\end{enumerate}\end{DefBem}
+
 
 
 %-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Anhang -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
