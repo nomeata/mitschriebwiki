@@ -3552,8 +3552,8 @@ $S$ Schema, $T$ $S$-Schema, das hei\ss t $T \underset{b}{\to} S$, $X \mapsto X \
 	\draw[->, font=\scriptsize] (5) -- node[right]{$c$} (3);
 	
 	\draw[->, font=\scriptsize, safe1] (1) to[in=45, out=315] (5);
-%	\draw[->, font=\scriptsize] (0) to[in=135, out=225] node[left, align=right]{UAE $Y \X_S T$:\\ $\exists! f \X_S T$} (4); %Die tikz Version im Mitschriebwiki ist veraletet und vertaegt den Befehlt align=right nicht
-	\draw[->, font=\scriptsize] (0) to[in=135, out=225] node[left]{UAE $Y \X_S T$: $\exists! f \X_S T$} (4);
+	\draw[->, font=\scriptsize] (0) to[in=135, out=225] node[left, align=right]{UAE $Y \X_S T$:\\ $\exists! f \X_S T$} (4); %Die tikz Version im Mitschriebwiki ist veraletet und vertaegt den Befehlt align=right nicht
+%	\draw[->, font=\scriptsize] (0) to[in=135, out=225] node[left]{UAE $Y \X_S T$: $\exists! f \X_S T$} (4);
 \end{tikzpicture}\end{center}
 \emph{Noch zu zeigen:} $\id_X \X_S T = \id_{X \X_S T}$, $(f \circ g) \X_S T = (f \X_S T) \circ (g \X_S T)$
 \begin{center}\begin{tikzpicture}
@@ -3877,51 +3877,133 @@ $k$ algebraisch abgeschlossen, $Y = \Spec(k[t])$
 	\end{enumerate}
 	\begin{center}\begin{tikzpicture}
 		%Achsenkreuz zeichnen
-		\draw[->,thick] (-5,0) -- (5,0);
-		\draw[->,thick] (0,-5) -- (0,5);
-		\draw[dashed,thick] (-4,4) -- (0,0);
-		\draw[->,thick] (0,0) -- (4,-4);
-		% safe1 ueber dem Achsenkreuz
-		\draw[safe1,thick] (0,-4.9) -- (0,4.9);
-		
+		\path[draw,->,very thick,name path=t Achse] (-5,0) -- (5,0);
+		\draw[->,very thick,safe1] (0,-5) -- (0,5);
+		\draw[dashed,very thick] (-4,4) -- (0,0);
+		\draw[->,very thick] (0,0) -- (4,-4);
+				
 		%Beschriftungen
 		\node at (5.25,0) {$t$};
 		\node at (-0.25,5) {$y$};
 		\node at (4.25,-4.25) {$x$};
 		
-		\draw[thick] (1.62, 0.2) -- (1.62, -0.2);
-		\node at (1.62,-0.5) {\textcolor{safe1}{$t$}};
-		\draw[thick] (-1.62, 0.2) -- (-1.62, -0.2);
-		\node at (-1.62,0.5) {\textcolor{safe1}{$-1$}};
-		
 		\node at (2.5,-0.5) {\textcolor{safe1}{$X_{(t-1)}$}};
-		\node at (-2,-4) {\textcolor{safe1}{$X_{(t+1)}$}};
+		\node at (-1,-4) {\textcolor{safe1}{$X_{(t+1)}$}};
 		
 		%horizontale Parabeln
-		\draw[bend right=90, looseness=13.75] (4,3) to (4,2);
-		\draw[bend right=90, looseness=13.75] (-4,-3) to (-4,-2);
+		\path[rotate around={-90:(0,2.5)},name path=obere parabel] (-0.75,7) parabola bend (0,2.5) (0.75,7);
+		\path[rotate around={90:(0,-2.5)},name path=untere parabel] (-0.75,2) parabola bend (0,-2.5) (0.75,2);
 		
-		%obere vertikale Parabeln
-		\draw (4,2) .. controls (3.75,-0.75) and (3.25,-0.75) .. (3.5,3);
-		\draw (3,2) .. controls (2.75,-0.75) and (2.25,-0.75) .. (2.5,3);
-		\draw[safe1] (2,2) .. controls (1.75,-0.75) and (1.25,-0.75) .. (1.5,3);
+		%obere vertikale Parabeln (unsichtbar)
+		\path[name path=obere rechte parabel] (3.25,5) parabola bend (3.75,0) (4.25,5);
+		\path[name path=obere mittlere parabel] (2,5) parabola bend (2.5,0) (3,5);
+		\path[name path=obere linke parabel] (0.75,5) parabola bend (1.25,0) (1.75,5);
+		
+		%Schnittpunkte
+		\path[name intersections={of=obere parabel and obere rechte parabel, name=oben rechts}];
+		\path[name intersections={of=obere parabel and obere mittlere parabel, name=oben mitte}];
+		\path[name intersections={of=obere parabel and obere linke parabel, name=oben links}];
+		
+		%der sichtbare Teil der oberen horizontalen Parabel
+		\begin{scope}
+			\clip (oben rechts-4) rectangle (0,2.5);
+			\path[draw,rotate around={-90:(0,2.5)}] (-0.75,7) parabola bend (0,2.5) (0.75,7);
+		\end{scope}\begin{scope}
+			\clip (oben rechts-1) rectangle (0,2.5);
+			\path[draw,rotate around={-90:(0,2.5)}] (-0.75,7) parabola bend (0,2.5) (0.75,7);
+		\end{scope}
+		
+		%die sichtbaren oberen Parabeln
+		\begin{scope}
+			\clip (oben rechts-1) rectangle (3.75,0);
+			\path[draw] (3.25,5) parabola bend (3.75,0) (4.25,5);
+		\end{scope}\begin{scope}		
+			\clip (oben rechts-4) rectangle (3.75,0);
+			\path[draw] (3.25,5) parabola bend (3.75,0) (4.25,5);
+		\end{scope}
+		
+		\begin{scope}
+			\clip (oben mitte-1) rectangle (oben mitte-3);
+			\path[draw] (3.25,5) (2,5) parabola bend (2.5,0) (3,5);
+		\end{scope}\begin{scope}
+			\clip (oben mitte-3) rectangle (2.5,0);
+			\path[draw,dashed] (3.25,5) (2,5) parabola bend (2.5,0) (3,5);
+		\end{scope}\begin{scope}		
+			\clip (oben mitte-4) rectangle (2.5,0);
+			\path[draw] (3.25,5) (2,5) parabola bend (2.5,0) (3,5);
+		\end{scope}
+		
+		\begin{scope}
+			\clip (oben links-1) rectangle (oben links-3);
+			\path[draw,safe1] (0.75,5) parabola bend (1.25,0) (1.75,5);
+		\end{scope}\begin{scope}
+			\clip (oben links-3) rectangle (1.25,0);
+			\path[draw,safe1,dashed] (0.75,5) parabola bend (1.25,0) (1.75,5);
+		\end{scope}\begin{scope}
+			\clip (oben links-4) rectangle (1.25,0);
+			\path[draw,safe1] (3.25,5) (0.75,5) parabola bend (1.25,0) (1.75,5);
+		\end{scope}
+		
 		
 		%untere vertikale Parabeln
-		\draw (-4,-2) .. controls (-3.75,0.75) and (-3.25,0.75) .. (-3.5,-3);
-		\draw (-3,-2) .. controls (-2.75,0.75) and (-2.25,0.75) .. (-2.5,-3);
-		\draw[safe1] (-2,-2) .. controls (-1.75,0.75) and (-1.25,0.75) .. (-1.5,-3);
+		\path[name path=untere linke parabel] (-3.25,-5) parabola bend (-3.75,0) (-4.25,-5);
+		\path[name path=untere mittlere parabel] (-2,-5) parabola bend (-2.5,0) (-3,-5);
+		\path[name path=untere rechte parabel] (-0.75,-5) parabola bend (-1.25,0) (-1.75,-5);
+		
+		%Schnittpunkte
+		\path[name intersections={of=untere parabel and untere rechte parabel, name=unten rechts}];
+		\path[name intersections={of=untere parabel and untere mittlere parabel, name=unten mitte}];
+		\path[name intersections={of=untere parabel and untere linke parabel, name=unten links}];
+		
+		%der sichtbare Teil der unteren horizontalen Parabel
+		\begin{scope}
+			\clip (unten links-4) rectangle (unten links-3);
+			\path[draw,rotate around={90:(0,-2.5)},name path=untere parabel] (-0.75,2) parabola bend (0,-2.5) (0.75,2);
+		\end{scope}\begin{scope}
+			\clip (unten links-3) rectangle (0,-2.5);
+			\path[draw,dashed,rotate around={90:(0,-2.5)},name path=untere parabel] (-0.75,2) parabola bend (0,-2.5) (0.75,2);
+		\end{scope}\begin{scope}
+			\clip (unten links-1) rectangle (0,-2.5);
+			\path[draw,rotate around={90:(0,-2.5)},name path=untere parabel] (-0.75,2) parabola bend (0,-2.5) (0.75,2);
+		\end{scope}
+		
+		%die sichtbaren unteren Parabeln
+		\begin{scope}
+			\clip (unten links-4) rectangle (-3.75,0);
+			\path[draw,dashed,name path=untere linke parabel] (-3.25,-5) parabola bend (-3.75,0) (-4.25,-5);
+		\end{scope}\begin{scope}
+			\clip (unten links-1) rectangle (-3.75,0);
+			\path[draw,name path=untere linke parabel] (-3.25,-5) parabola bend (-3.75,0) (-4.25,-5);
+		\end{scope}
+		
+		\begin{scope}
+			\clip (unten mitte-4) rectangle (-2.5,0);
+			\path[draw,dashed,name path=untere mittlere parabel] (-2,-5) parabola bend (-2.5,0) (-3,-5);
+		\end{scope}\begin{scope}
+			\clip (unten mitte-1) rectangle (-2.5,0);
+			\path[draw,name path=untere mittlere parabel] (-2,-5) parabola bend (-2.5,0) (-3,-5);
+		\end{scope}
+		
+		\begin{scope}
+			\clip (unten rechts-4) rectangle (-1.25,0);
+			\path[draw,dashed,safe1,name path=untere rechte parabel] (-0.75,-5) parabola bend (-1.25,0) (-1.75,-5);
+		\end{scope}\begin{scope}
+			\clip (unten rechts-1) rectangle (-1.25,0);
+			\path[draw,safe1,name path=untere rechte parabel] (-0.75,-5) parabola bend (-1.25,0) (-1.75,-5);
+		\end{scope}
+		
+		%Markierungen auf der t-Achse
+		\path[draw,thick,name intersections={of=obere linke parabel and t Achse, name=t}] (t-1) ++ (0,0.25) -- ++(0,-0.5) node[below,safe1] {$t$};
+		\path[draw,thick,name intersections={of=untere rechte parabel and t Achse, name=minus eins}] (minus eins-1) ++ (0,-0.25) -- ++(0,0.5) node[above,safe1] {$-1$};
 	\end{tikzpicture}\end{center}
-	\textcolor{gray}{Anmerkung: Ich konnte das nicht mit TikZ zeichnen, bei den Parabeln soll der jeweils hintere Teil gestrichelt sein. Bei der unteren horizontalen Parabel w"are das die obere H"alfte, bei den beiden linken oberen Parabeln die linke H"alfte unter der horizinatalen Parabel und bei den unteren drei vertikalen Parabeln die jeweils linke H"alfte. Wenn jemand der mehr Ahnung von TikZ hat das korrigieren k"onnte w"are ich dankbar.}
+	
 \item
 	$Z:= \Spec \left(\FakRaum{k[x,y,t]}{(xy-t)} \right)$
 	
 	\begin{center}\begin{tikzpicture}
 		%Achsenkreuz zeichnen
-		\draw[->,very thick] (-5,0) -- (5,0);
-		\draw[->,very thick] (0,-5) -- (0,5);
-		% safe1 ueber dem Achsenkreuz
-		\draw[safe1,very thick] (0,-4.9) -- (0,4.9);
-		\draw[safe1,very thick] (-4.9,0) -- (4.9,0);
+		\draw[->,very thick,safe1] (-5,0) -- (5,0);
+		\draw[->,very thick,safe1] (0,-5) -- (0,5);
 		
 		%Beschriftungen
 		\node at (5.25,0) {$x$};
