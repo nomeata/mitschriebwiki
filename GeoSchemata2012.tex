@@ -14,7 +14,7 @@
 %	* besseres Beweisende: das Kaestchen am Ende eines Beweises steht auf der gleichen Zeile 
 %		wie die letzte Zeile. Es sollte eine Zeile tiefer 
 
-\documentclass[paper = A4, fontsize=12pt, numbers=noendperiod, chapterprefix=true]{scrbook}
+\documentclass[paper = A4, fontsize=12pt, numbers=noendperiod, chapterprefix=true, index=toc]{scrbook}
 % "numbers=noendperiod" macht dass beim Kapteln und aehnlichem kein Punkt am Ende steht
 % normalerweise ist der Vorgang automatisiert, aber bei mir versagt es. ich mache die
 % Punkte spaeter dann per hand wenn es sein muss.
@@ -67,8 +67,11 @@
 \tolerance=900
 
 % Index erzeugen
-\usepackage{index}
-\newindex{default}{idx}{ind}{Stichwortverzeichnis}
+\usepackage{splitidx}
+\makeindex
+%\usepackage{index}
+%\newindex{default}{idx}{ind}{Stichwortverzeichnis}
+\newindex[Stichwortverzeichnis]{idx}
 
 % links
 \usepackage{xcolor}
@@ -200,8 +203,10 @@
 \newcommand{\linetitle}[1]{\textbf{#1}}
 
 % fuer Definitionen
-\newcommand{\defterm}[1]{{\index{#1}}\emp{#1}}
-\newcommand{\deftermspec}[2]{{\index{#2}}\emp{#1}}
+%\newcommand{\defterm}[1]{{\index{#1}}\emp{#1}}
+%\newcommand{\deftermspec}[2]{{\index{#2}}\emp{#1}}
+\newcommand{\defterm}[1]{{\sindex[idx]{#1}}\emp{#1}}
+\newcommand{\deftermspec}[2]{{\sindex[idx]{#2}}\emp{#1}}
 
 \newcommand{\defeqr}[0]{\mathrel{\mathop:}=}
 \newcommand{\defeql}[0]{=\mathrel{\mathop:}}
@@ -1032,7 +1037,7 @@ Sei $h = \frac{g}{f^d} \in R_f$. \emph{Zu zeigen:}
 \item
   Ein \defterm{geringter Raum} ist ein topologischer Raum $X$ zusammen mit einer Garbe $\calO_X$ von Ringen.
 \item
-  Ein geringter Raum $(X, \calO_X)$ hei\ss t \defterm{lokal}\index{geringter Raum!lokal} geringter Raum, wenn f\"ur jedes $x\in X$ der Halm $\calO_{X,x}$ ein lokaler Ring ist.
+  Ein geringter Raum $(X, \calO_X)$ hei\ss t \defterm{lokal}\sindex[idx]{geringter Raum!lokal} geringter Raum, wenn f\"ur jedes $x\in X$ der Halm $\calO_{X,x}$ ein lokaler Ring ist.
 \end{enumerate}\end{Def}
 
 \begin{Bem}
@@ -1878,7 +1883,7 @@ $B \otimes_A \kappa(y)$ ist endlich-dimensionaler $\kappa(y)$-Vektorraum $\Right
 Sei $f: X \to X$ ein Morphismus von Schemata.
 \begin{enumerate}[a)]
 \item
-	Der von $\id_X$ induzierte Morphismus $\Delta = \Delta_f: X \to X \X_S X$ hei\ss t \deftermspec{Diagonalmorphismus}{Morphismus!Diagonal-} (oder Diagonale\index{Diagonale}) zu $f$.
+	Der von $\id_X$ induzierte Morphismus $\Delta = \Delta_f: X \to X \X_S X$ hei\ss t \deftermspec{Diagonalmorphismus}{Morphismus!Diagonal-} (oder Diagonale\sindex[idx]{Diagonale}) zu $f$.
 	\begin{center}\begin{tikzpicture}
 	\node (0) at (0,1.5) {$X \X_S X$};
 	\node (1) at (-2.5,0) {$X$};
@@ -2445,7 +2450,7 @@ Sei $f: X \to Y$ ein Morphismus lokal geringter R"aume
 \end{enumerate}\end{bew}
 
 \begin{erinn}
-$X = \Spec R$ affines Schema, $I \subseteq R$ Ideal, $f \in R$, $\tilde I (D(f)) = I \cdot R_f = I \cdot \calO_X(D(f))$, $\tilde I$ hei\ss t quasikoh"arente\index{koh"arent!quasi-} Idealgarbe\index{Garbe!Ideal-}.
+$X = \Spec R$ affines Schema, $I \subseteq R$ Ideal, $f \in R$, $\tilde I (D(f)) = I \cdot R_f = I \cdot \calO_X(D(f))$, $\tilde I$ hei\ss t quasikoh"arente\sindex[idx]{koh"arent!quasi-} Idealgarbe\sindex[idx]{Garbe!Ideal-}.
 \end{erinn}
 
 \begin{DefBem}\begin{enumerate}[a)]
@@ -4241,7 +4246,8 @@ Es sei $X$ ein Schema von endlichem Typ über einem Körper $k$, d.h. $X \to \Sp
 
 \def\indexspace{\par\medskip}
 %\printindex[default]
-\printindex[default][\phantomsection\addcontentsline{toc}{chapter}{Stichwortverzeichnis}\vspace{-1.2em}]
+%\printindex[default][\phantomsection\addcontentsline{toc}{chapter}{Stichwortverzeichnis}\vspace{-1.2em}]
+\printindex*
 
 
 
