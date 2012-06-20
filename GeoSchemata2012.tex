@@ -10,9 +10,6 @@
 %	aber wenn jemand anderer Meinung ist, dann waere ich froh, wenn er meine Fehler korrigieren
 %	koennte.
 %
-%		FEATURES DIE ICH GERNE NOCH HAETTE
-%	* besseres Beweisende: das Kaestchen am Ende eines Beweises steht auf der gleichen Zeile 
-%		wie die letzte Zeile. Es sollte eine Zeile tiefer 
 
 \documentclass[paper = A4, fontsize=12pt, numbers=noendperiod, chapterprefix=true]{scrbook}
 % "numbers=noendperiod" macht dass beim Kapteln und aehnlichem kein Punkt am Ende steht
@@ -25,7 +22,7 @@
 % eigener Rand (Normalerweise sollte der innere Rand hie Haelfte des aeusseren Randes betragen, aber
 % ich musst ein wenig dazugeben, weil ein Teil beim Binden wegfaellt)
 \usepackage[twoside]{geometry}
-\geometry{top=2cm, inner=2.5cm,outer=2.5cm}
+\geometry{top=2cm, inner=2cm,outer=2.5cm}
 
 % Nummerierung der Paragraphen anpassen (sonst kommt etwas wie "Definition 2.9.1" heraus)
 \renewcommand{\thesection}{\arabic{section}}
@@ -106,6 +103,7 @@
 % Mathe-Pakete
 \usepackage{amssymb}
 \usepackage{amsmath}
+%\usepackage{amsthm} & <-- Konflikt mis ntheorem Paket
 \usepackage{amsfonts}
 \usepackage{stmaryrd}
 \usepackage{mathtools}
@@ -135,7 +133,7 @@
 \usepackage{graphicx}
 
 % Theorem-Umgebung
-\usepackage[hyperref,amsmath,thmmarks,thref]{ntheorem}
+\usepackage[hyperref,amsmath,thmmarks,thref, amsthm]{ntheorem}
 
 % Fuer verlaengerte Pfeile
 \usepackage{extarrows}
@@ -199,6 +197,9 @@
 
 \newcommand{\emp}[1]{\textbf{\emph{#1}}}
 \newcommand{\linetitle}[1]{\textbf{#1}}
+
+% vertikales Gleichheitszeichen (rotatebox gehoert zum graphicx Paket)
+\newcommand{\verteq}{\rotatebox{90}{$=$}}
 
 % fuer Definitionen
 \newcommand{\defterm}[1]{{\index{#1}}\emp{#1}}
@@ -2429,10 +2430,10 @@ Sei $(X, \calO_X)$ lokal geringter Raum, $\calF, \calG$ $\calO_X$-Modulgarben.
 \ldots
 \end{enumerate}\end{bew}
 
-\begin{DefBem}
+\begin{DefBem}\label{9.3}
 Sei $f: X \to Y$ ein Morphismus lokal geringter R"aume
 \begin{enumerate}[a)]
-\item
+\item\label{9.3a}
 	F\"ur jede $\calO_X$-Modulgarbe $\calF$ auf $X$ ist $f_* \calF$ eine $\calO_Y$-Modulgarbe.
 \item
 	F\"ur jede $\calO_Y$-Modulgarbe $\calG$ auf $Y$ ist $f^{-1} \calG$ eine $f^{-1} \calO_Y$-Modulgarbe und $f^* \calG := f^{-1} \calG \otimes_{f^{-1}\calO_Y} \calO_X$ eine $\calO_X$-Modulgarbe.
@@ -2453,9 +2454,131 @@ $X = \Spec R$ affines Schema, $I \subseteq R$ Ideal, $f \in R$, $\tilde I (D(f))
 \item
 	Sei $X = \Spec R$ affines Schema, $M$ ein $R$-Modul. Dann sei $\tilde M$ die (!) Garbe auf $X$ mit $\tilde M(D(f)) := M_f$ (der von $M$ erzeugte Modul \"uber $R_f$) f\"ur jedes $f \in R$.
 	$\tilde M$ ist $\calO_X$-Modulgarbe, $(\tilde M)_\p = M_\p$ f\"ur jedes Primideal $\p \in \Spec R$.
+%20.6
 \item
-	
+	Sei $X$ ein Schema. Eine $\calO_X$-Modulgarbe $\calF$ hei\ss t \deftermspec{quasikoh"arent}{koh"arent!quasi-}, wenn f\"ur jede affine Teilmenge $U = \Spec R \subseteq X$ ein $R$-Modul $M_U$ existiert, sodass $\calF|_U \cong \tilde M_U$.
+\item
+	$\calF$ (wie in b)) ist genau dann quasikoh"arent, wennn es eine offene affine \"Uberdeckung $U_i = \Spec R_i$ von X gibt mit $\calF|_{U_i} \cong \tilde M_i$ f\"ur geeignete $R_i$-Moduln $M_i$.
+\item
+	Ist $X$ noethersch, so hei\ss t $\calF$ \defterm{koh"arent}, wenn in b) (beziehungsweise c)) alle $R$-Moduln $M_U$ endllich erzeugbar sind.
 \end{enumerate}\end{DefBem}
+
+\begin{bew}\begin{enumerate}[a)]\item[c)]
+Wie "Ubung 4, Aufgabe 3
+\end{enumerate}\end{bew}
+
+\begin{Bem}
+Sei $X = \Spec R$ ein affines Schema.
+
+Die Zuordnung $M \mapsto \tilde M$ ist ein kovarianter auf Objekten injektiver Funktor von der Kategorie $R$-Mod in $\calO_X$-Mod; Umkehrfunktor: $\calF \to \calF(X)$.
+\end{Bem}
+
+\begin{bew}
+Sei $0 \to M' \to M \to M'' \to 0$ exakt.
+
+\emph{Zu zeigen}: $0 \to \tilde M' \to \tilde M \to \tilde M'' \to 0$ ist exakt.
+
+\emph{Gen"ugt zu zeigen}: $\begin{array}{cccccccccl} 0 &\to& \tilde M_\p' &\to& \tilde M_\p &\to& \tilde M_\p'' &\to& 0 & \text{exakt f"ur jedes Prim-}\\
+	&&\verteq&&\verteq&&\verteq&&&\text{ideal } \p \in \Spec R \\
+	0 &\to& M_\p' &\to& M_\p &\to& M_\p'' &\to& 0 & \text{Das stimmt!}\end{array}$
+\end{bew}
+
+\begin{Bem}
+Sei $X = \Spec R$ affines Schema.
+\begin{enumerate}[a)]
+\item
+	F\"ur $R$-Moduln $M$ und $N$ gilt:
+		\[\tilde M \otimes_{\calO_X} \tilde N \cong \widetilde{M \otimes_R N}\]
+\item
+	F\"ur $R$-Moduln $M_i$, $i \in I$ gilt:
+		\[ \bigotimes_{i\in I} \tilde M_i \cong \widetilde{\bigotimes_{i \in I} M_i} \]
+\end{enumerate}\end{Bem}
+
+\begin{bew}\begin{enumerate}[a)]
+\item
+	$\widetilde{(M \otimes_R N)}_\p = (M \otimes_R N)_\p \cong M_\p \otimes_{R_\p} N_\p = \tilde M_\p \otimes_{R_\p} \tilde N_\p \cong (\tilde M \otimes_R \tilde N)_\p$
+\item
+	genauso
+\end{enumerate}\end{bew}
+
+\begin{Bem}\label{9.7}
+Seien $X= \Spec R$, $Y = \Spec R'$ affine Schemata, $f: X \to Y$ Morphismen, $\alpha = f_X^\#: R' \to R$.
+\begin{enumerate}[a)]
+\item
+	F\"ur jeden $R$-Modul gilt:
+		\[ f_*\tilde M = _\alpha\tilde M (= \text{der via } \alpha \text{ als } R' \text{-Modul aufgefasste } R \text{-Modul } M) \]
+\item\label{9.7b}
+	F\"ur jeden $R'$-Modul $N$ gilt:
+		\[ f^*\tilde N \cong \widetilde{(N \otimes_{R'} R)} \]
+\end{enumerate}\end{Bem}
+
+\begin{bew}\begin{enumerate}[a)]
+\item
+	F\"ur $U \subseteq Y$ offen ist $f_* \tilde M (U) = \tilde M (f^{-1}(U))$; das wird durch $f_U^\#: \calO_Y(U) \to \calO_X(f^{-1}(U))$ zum $\calO_Y(U)$-Modul (vergleiche \ref{9.3} \ref{9.3a})).
+\item
+	$f^* \tilde N (X) = f^{-1} \tilde N (X) \otimes_{f^{-1} \calO_Y(X)} \calO_X (X) = N \otimes_R R$; Entsprechendes gilt f\"ur jedes $U \subseteq X$ offen.
+\end{enumerate}\end{bew}
+
+\begin{Prop}
+Sei $f: X \to Y$ Morphismus von Schemata.
+\begin{enumerate}[a)]
+\item
+	Ist $\calG$ quasikoh"arent auf $Y$, so ist $f^*\calG$ quasikoh"arent auf $X$.
+\item
+	Sind $X$ und $Y$ noethersch und ist $\calG$ koh"arent, so ist $f^*\calG$ koh"arent.
+\item
+	Ist $X$ noethersch und $\calF$ quasikoh"arent auf $X$, so ist $f_*\calF$ quasikoh"arent auf $Y$.
+\end{enumerate}\end{Prop}
+
+\begin{bew}\begin{enumerate}[a)]
+\item
+	\OE $Y = \Spec R'$ affin, $\calG = \tilde N$ f\"ur einen $R'$-Modul $N$. \OE $X = \Spec R$ affin.
+	
+	Damit folgt die Behauptung aus \ref{9.7} \ref{9.7b}).
+	
+	\textcolor{gray}{$x_1,\ldots ,x_n$ seien Erzeuger von $N$ also $R'$-Modul $\Rightarrow x \in N$ hat Darstellung $\sum\limits_{i=1}^n a_i x_i$\\
+	\emph{Behauptung}: $x_1\otimes 1,\ldots ,x_n \otimes 1$ erzeugen $N \otimes_{R'} R$ als $R$-Modul\\
+	Sei $x \otimes a \in N \otimes_{R'} R, x = \sum a_i x_i$ ($a_i \in R'$) $\Rightarrow x \otimes a = a \cdot \sum a_i (x_i \otimes 1)$}
+\item
+	Ist $N$ endlich erzeugt als $R'$-Modul, so ist $N \otimes_{R'} R$ endlich erzeugt als $R'$-Modul.
+\item
+	\OE $Y$ affin. Sei $U_1,\ldots ,U_r$ offene affine \"Uberdeckung von $X$. \OE $U_i \cap U_j$ affin(!)? ("Ubung)
+	
+	\[\begin{array}{ccccccl} 0 &\to& \textcolor{safe1}{f_*}\calF &\to& \bigoplus\limits_{i=1}^r \textcolor{safe1}{f_*}\calF|_{U_i} &\to& \bigoplus\limits_{i < j} \textcolor{safe1}{f_*}\calF|_{U_i \cap U_j} \\
+		&& m &\mapsto& (m|_{u_i})_{i=1,\ldots ,r} && \\
+		&&&& (m)_{i=1,\ldots ,r} &\mapsto& (m_i|_{u_i \cap u_j} - m_j|_{u_i \cap u_j})_{i<j}\end{array}\]
+	ist exakt (weil $\calF$ Garbe ist, \textcolor{safe1}{weil $f_*$ linksexakt ist})
+	
+	$\Rightarrow f_*\calF$ ist als Kern einer Morphismus von quasikoh"arenten Garben selbst quasikoh"arent.
+\end{enumerate}\end{bew}
+
+\newpage
+%-------------------------- Abschnitt 9 ($\calO_X$-Modulgarben) --------------------------
+
+\section{Lokal Freie Garben}
+
+\begin{DefBem}
+Sei $(X, \calO_X)$ lokal geringter Raum, $\calF$ eine $\calO_X$-Modulgarbe.
+\begin{enumerate}[a)]
+\item
+	$\calF$ hei\ss t \defterm{frei} vom Rang $n \ge 1$, wenn $\calF \cong \calO_X^n = \bigoplus\limits_{i=1}^n \calO_X$.
+\item
+	$\calF$ hei\ss t \deftermspec{lokal frei}{frei!lokal} vom Rang $n$, wenn es eine offene \"Uberdeckung $(U_i)_{i\in I}$ von $X$ gibt, sodass $\calF|_{U_i} \cong (\calO_X|_{U_i})^n$ f\"ur jedes $i \in I$.
+\item
+	Ist $X$ Schema, so sind lokal freie Garben quasikoh"arent (und sogar koh"arent wenn $X$ noethersch ist)
+\end{enumerate}\end{DefBem}
+
+\begin{bew}\begin{enumerate}[a)]\item[c)]
+Ist $U = \Spec R$, so ist $\calF|_U$ frei vom Rang $ n \Leftrightarrow\calF \cong \tilde R^n$.
+\end{enumerate}\end{bew}
+
+\begin{bsp}
+Sei $X$ nichtsingul"are Kurve (\"uber $k$\ldots) und $D$ ein Divisor auf $X$.
+
+Dann ist $\calL(D)$ lokal frei vom Rang 1: "Ubung 9, Aufgabe 3b)
+
+\textcolor{gray}{$\calL(D)(U) = \{ f \in k(X): \ddiv(f|_U) + D|_U \ge 0 \}$}
+\end{bsp}
 
 
 
