@@ -2645,14 +2645,14 @@ Sei $X$ ein Schema. Die Isomorphieklassen von lokal freien Garben vom Rang $n$ a
 Analog Beispiel \ref{10.3}; "Ubung?
 \end{bew}
 
-\begin{DefProp}
+\begin{DefProp}\label{10.6}
 Sei $(X, \calO_X)$ lokal geringter Raum, $\calE$ lokal freie Garbe vom Rang $n$ auf $X$.
 \begin{enumerate}[a)]
 \item
 	$\calE^* = \calHom_{\calO_X} (\calE, \calO_X)$ ist lokal freie Garbe vom Rang $n$, sie hei\ss t zu $\calE$ \deftermspec{duale}{dual} Garbe.
 \item
 	$(\calE^*)^* \cong \calE$
-\item
+\item\label{10.6c}
 	F\"ur jede $\calO_X$-Modulgarbe $\calF$ ist $\calHom_{\calO_X}(\calE, \calF) \cong \calE^* \otimes_{\calO_X} \calF$.
 \item
 	Ist $\calE'$ eine weitere lokal freie Garbe vom Rang $m$, so ist $\calE \otimes_{\calO_X} \calE'$ lokal frei vom Rang $n \cdot m$.
@@ -2691,7 +2691,9 @@ Sei $(X, \calO_X)$ lokal geringter Raum.
 \end{enumerate}\end{BemDef}
 
 \begin{bew}\begin{enumerate}[a)]\item
+Nach \ref{10.6} \ref{10.6c}) ist $\calL \otimes \calL^* \cong \Hom_{\calO_X}(\calL, \calL)$. Sei $\varphi: \calO_X \to \Hom_X(\calL, \calL)$ gegeben durch $1 \mapsto \id$. $\varphi$ ist injektiver Morphismus von Garben.
 
+$\varphi$ ist surjektiv, da $\varphi_X$ surjektiv ist f"ur jedes $x \in X$: sei dazu $\alpha \in \Hom_{\calO_X}(\calL_X, \calL_X)$ und $(U, \tilde \alpha)$ Vertreter von $\alpha$, sodass $\calL|_U = \calO_X|_U$. Dann ist $\tilde \alpha$ durch $\tilde \alpha(1) \in \calL(U) = \calO_X(U)$ bestimmt $\Rightarrow \tilde \alpha = \tilde \alpha(1) \cdot \id \in \Bild \varphi_U$.
 \end{enumerate}\end{bew}
 
 \newpage
@@ -2703,21 +2705,31 @@ Sei $X$ ein noethersches, $\underbrace{\text{irreduzibles, reduziertes}}_{=:\tex
 
 \begin{DefBem}\begin{enumerate}[a)]
 \item
-	
+	Ein \deftermspec{Primdivisor}{Divisor!Prim-} auf $X$ ist ein integres abgeschlossenes Unterschema der Kodimension $1$.
 \item
-	
+	Die freie abelsche Gruppe $\Div(X)$, die von den Primdivisoren erzeugt wird, hei\ss t die gruppe der \deftermspec{Weil-Divisoren}{Divisoren!Weil-}\index{Gruppe!der Weil-Divisoren}.
 \item
-	
+	Ist $X$ eine Kurve "uber einem algebraisch abgeschlossenen K"orper, so sind die Primdivisoren die abgeschlossenen Punkte auf $X$.
 \item
+	Sei $W$ ein Primdivisor auf $X$, $\eta_W$ der generische Punkt von $W$, $\calO_{X,W} = \calO_{X,\eta_W}$ ($\dim \calO_{X,W} = 1$). F"ur $f \in \calO_{X,W} \setminus \{0\}$ sei $\ord_W(f) := \dim_{\kappa(W)} \FakRaum{\calO_{X,W}}{(f)}$. F"ur $f = \frac{g}{h} \in K = k(X) = \Quot (\calO_{X,W})$ sei $\ord_W(f) = \ord_W(g) - \ord_W(h)$ (wohldefiniert).
 	
+	Es gilt: $\ord_W(f \cdot g) = \ord_W(f) + \ord_W(g)$.
+	
+	\begin{center}\textcolor{gray}{[BILD]}\end{center}
 \item
-	
+	F"ur $f \in k^\X$ sei $\ddiv(f) := \sum\limits_{W\text{Primdiv.}} \ord_W(f) \cdot W$; $\ddiv(f)$ ist Divisor.
 \item
-	
+	$\Cl(X) := \FakRaum{\Div(X)}{\underset{\textcolor{gray}{\text{Hauptdivisoren}}}{\Div_H(X)}}$ hei\ss t \deftermspec{Weil-Divisorengruppe}{Gruppe!Weil-Divisoren-} von $X$.
 \end{enumerate}\end{DefBem}
 
 \begin{Bsp}
+$X = \IP_\Z^n = \Proj \Z[X_0,\ldots ,X_n]$
 
+Jeder Primdivisor $W$ auf $\IP^n$ ist von der Form $W = V(F)$ f"ur ein irreduzibles homogenes Polynom $F \in \Z[X_0,\ldots ,X_n]$. Sei $d := \deg F$.
+
+\textbf{Behauptung:} $W - d \cdot H$ ist hauptdivisor f"ur $H := V(X_0)$
+
+\emph{denn:} $\frac{F}{X_0^d} \in K = k(X)$, $\ddiv \frac{F}{X_0^d} = W - d \cdot H \Rightarrow \Cl(\IP^n) \cong \Z$ \textcolor{gray}{(als Gruppe)}
 \end{Bsp}
 
 \begin{Prop}
@@ -2725,8 +2737,17 @@ Sei $R$ faktorieller Ring, $X = \Spec R$. Dann ist $\Cl(X) = 0$.
 \end{Prop}
 
 \begin{bew}
+Sei $W$ Primdivisor, also $W = V(\p)$ f"ur ein Primideal $\p$ der H"ohe $1$.
 
-\end{bew}
+\begin{description}[\setlabelstyle{\bfseries}]
+	\item[Behauptung:]$\p$ ist Hauptideal
+\end{description}
+
+Dann ist $\p(f)$ f"ur ein Primideal $f \in R \Rightarrow \ddiv(f) = W$
+
+\begin{description}[\setlabelstyle{\itshape}]
+	\item[Beweis der Behauptung:]Sei $0 \ne f \in \p$, $f = f_1 \cdot \ldots \cdot f_r$ die Primfaktorzerlegung $\Rightarrow$ \OE $f_1 \in \p \Rightarrow (0) \subsetneq (f_1) \subseteq \p$ ist Primidealkette $\xRightarrow[\Ht(\p) = 1]{} \p = (f_1)$
+\end{description}\end{bew}
 
 \begin{bsp}
 Sei $R = \FakRaum{k[X,Y]}{(Y^2-X^3+X)} = k[E]$, $E = V(Y^2-X^3+X) \subseteq \A_k^2$. Dann ist f"ur $P \in E$ abgeschlossen $1 \cdot P$ kein Hauptdivisor!
