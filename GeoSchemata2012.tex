@@ -28,7 +28,8 @@
 \renewcommand{\thesection}{\arabic{section}}
 
 % Deutsche Sprache
-\usepackage{ngerman}
+\usepackage[ngerman]{babel}
+\usepackage[ngerman]{translator}
 
 % Verschiebt \sections auf die naechste seite falls sie zu tief sind. Muss vor
 % hyperref kommen.
@@ -72,13 +73,18 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 
+%Symbolverzeichnis
+\usepackage[toc]{glossaries}
+\glossarystyle{super}
+\makeglossaries
+
 \definecolor{rltred}{rgb}{0.75,0,0}
 \definecolor{rltgreen}{rgb}{0,0.5,0}
 \definecolor{rltblue}{rgb}{0,0,0.75}
 
 %sichere Fraben, die sich auch bei einem SW-Druck unterscheiden lassen (Platzhalter momentan)
-\definecolor{safe1}{cmyk}{1,0,0,0} %cyan
-\definecolor{safe2}{rgb}{0,1,0} %green
+\definecolor{color1}{cmyk}{1,0,0,0} %cyan
+\definecolor{color2}{rgb}{0,1,0} %green
 
 \hypersetup{
   pdftitle={Algebraische Geometrie Prof. Herrlich},
@@ -249,6 +255,7 @@
 \DeclareMathOperator{\Ddef}{Def}%Definitionsbereich
 \DeclareMathOperator{\Der}{Der}
 \DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\GL}{GL}
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\Kern}{Kern}
 \DeclareMathOperator{\Mor}{Mor}
@@ -259,6 +266,7 @@
 \DeclareMathOperator{\Quot}{Quot}
 \DeclareMathOperator{\Rang}{Rang}
 \DeclareMathOperator{\Rat}{Rat}
+\DeclareMathOperator{\Red}{Red}%reduziert
 \DeclareMathOperator{\Rg}{Rg}
 \DeclareMathOperator{\Sing}{Sing}
 \DeclareMathOperator{\Spe}{Sp\'e}
@@ -266,48 +274,41 @@
 \DeclareMathOperator{\Var}{Var}
 
 \DeclareMathOperator{\chara}{char}
+\DeclareMathOperator{\dd}{d} % das "d" zum Beispiel beim Integral am Ende "dx"
+\DeclareMathOperator{\Ddiv}{div}
+\DeclareMathOperator{\ddiv}{div}
 \DeclareMathOperator{\Ht}{ht}
 \DeclareMathOperator{\height}{ht}
 \DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\kgv}{kgV}
 \DeclareMathOperator{\kgV}{kgV}
+\DeclareMathOperator{\modmodulo}{mod}%\modulo und \mod bereis belegt
 \DeclareMathOperator{\op}{op}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\red}{red}%reduziert
 \DeclareMathOperator{\sign}{sign}
 \DeclareMathOperator{\trdeg}{trdeg}
 
-
-
-\DeclareMathOperator{\Ddiv}{div}
-\DeclareMathOperator{\ddiv}{div}
-\DeclareMathOperator{\pr}{pr}
-\DeclareMathOperator{\dd}{d} % das "d" zum Beispiel beim Integral am Ende "dx"
-\DeclareMathOperator{\ord}{ord}
-\DeclareMathOperator{\modmodulo}{mod}%\modulo und \mod bereis belegt
-\DeclareMathOperator{\red}{red}%reduziert
-\DeclareMathOperator{\Red}{Red}%reduziert
-\DeclareMathOperator{\GL}{GL}
-
 %Kategorien
-\DeclareMathOperator{\Sh}{\underline{Sh}}
-\DeclareMathOperator{\Sch}{\underline{Sch}}
-\DeclareMathOperator{\Fun}{\underline{Fun}}
-\DeclareMathOperator{\Sets}{\underline{Sets}}
 \DeclareMathOperator{\Ab}{\underline{Ab}}
+\DeclareMathOperator{\Fun}{\underline{Fun}}
 \DeclareMathOperator{\Ringe}{\underline{Ringe}}
+\DeclareMathOperator{\Sch}{\underline{Sch}}
+\DeclareMathOperator{\Sets}{\underline{Sets}}
+\DeclareMathOperator{\Sh}{\underline{Sh}}
 \DeclareMathOperator{\Top}{\underline{Top}}
-
-
 
 % zweigestrichene Buchstaben im Mathe Umgebungen
 \usepackage{bbm} % <- \mathbb sieht ein wenig anders aus als \mathbbm
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\C}{\mathbb{C}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\Q}{\mathbb{Q}}
 \newcommand{\A}{\mathbb{A}}
+\newcommand{\C}{\mathbb{C}}
 %\newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}}
 \newcommand{\IP}{\mathbb{P}}%\P bereits belegt
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
 
 % kursive Buchstaben im Mathe Umgebungen
 \newcommand{\calC}{\mathcal{C}}
@@ -315,6 +316,7 @@
 \newcommand{\calE}{\mathcal{E}}
 \newcommand{\calF}{\mathcal{F}}
 \newcommand{\calG}{\mathcal{G}}
+\newcommand{\calHom}{\mathcal{H}\mathpzc{om}}
 \newcommand{\calI}{\mathcal{I}}
 \newcommand{\calJ}{\mathcal{J}}
 \newcommand{\calK}{\mathcal{K}}
@@ -325,7 +327,6 @@
 \newcommand{\calX}{\mathcal{X}}
 \newcommand{\F}{\mathcal{F}} % <-- schnellere alternative
 \newcommand{\G}{\mathcal{G}} % <-- schnellere alternative
-\newcommand{\calHom}{\mathcal{H}\mathpzc{om}}
 
 %alte Buchstaben
 \newcommand{\frakp}{\mathfrak{p}}
@@ -333,6 +334,9 @@
 \newcommand{\frakq}{\mathfrak{q}}
 \newcommand{\p}{\mathfrak{p}} % <-- schnellere alternative
 \newcommand{\q}{\mathfrak{q}} % <-- schnellere alternative
+
+% Eintraege fuer das Symbolverzeichnis (Glossar)
+\newglossaryentry{GL}{name={\ensuremath{\GL_n}},description={Allgemeine lineare Gruppe, Gruppe aller regul"aren $n \X n$-Matrizen mit Koeffizienten aus einem K"orper $K$},text={\ensuremath{\GL}},symbol={\ensuremath{\GL}},sort=GL}
 
 %X als Malzeichen
 \newcommand{\X}{\times}
@@ -725,8 +729,8 @@ $U = x$, $U_1, U_2$ wie im Bild
 \begin{minipage}[t]{0.4\textwidth}
 \textcolor{white}{[ ! BILD ! ]}\\
 \begin{tikzpicture}
-  \node at (-2.75,0) {\textcolor{safe2}{$D_1$}};
-  \node at (2.75,0) {\textcolor{safe2}{$D_2$}};
+  \node at (-2.75,0) {\textcolor{color2}{$D_1$}};
+  \node at (2.75,0) {\textcolor{color2}{$D_2$}};
   
   \node at (2.25,1.5) {$U_1$};
   \node at (2.25,-1.5) {$U_2$};
@@ -739,8 +743,8 @@ $U = x$, $U_1, U_2$ wie im Bild
   
   \draw[very thick] (0,0) circle (2);
 
-  \draw[safe2, thick] (-2.25,0.5) -- (-2.25,-0.5) -- (-1.75,-0.5) -- (-1.75,0.5) -- cycle;
-  \draw[safe2, thick] (2.25,0.5) -- (2.25,-0.5) -- (1.75,-0.5) -- (1.75,0.5) -- cycle;
+  \draw[color2, thick] (-2.25,0.5) -- (-2.25,-0.5) -- (-1.75,-0.5) -- (-1.75,0.5) -- cycle;
+  \draw[color2, thick] (2.25,0.5) -- (2.25,-0.5) -- (1.75,-0.5) -- (1.75,0.5) -- cycle;
 \end{tikzpicture}
 \end{minipage}
   \[U_1 \cap U_2 = D_1 \cup D_2\]
@@ -859,15 +863,15 @@ Sei $R$ ein Ring (das hei\ss t kommutativer Ring mit Eins)
 \item
   F\"ur $I\subseteq R$ sei $V(I)=\{\p \in \Spec R: I \subseteq \p\}$. $V(I)$ hei\ss t \defterm{Nullstellenmenge} (vanishing set) von $I$, es ist $V(I) = V((I))$.
 \item
-  Die $V(I)$, $I\subseteq R$ Ideal, bilden die abgeschlossenen Mengen einer Topologie auf $\Spec R$, der \defterm{Zariski Topologie}.
+  Die $V(I)$, $I\subseteq R$ Ideal, bilden die abgeschlossenen Mengen einer Topologie auf $\Spec R$, der \deftermspec{Zariski Topologie}{Topologie!Zariski-}.
 \item
-  F\"ur $V\subseteq \Spec R$ hei\ss t $I(V):= \bigcap\limits_{\p \in V}\p$ \deftermspec{Verschwindungsideal}{Ideal-Verschwindungs-} von $V$.
+  F\"ur $V\subseteq \Spec R$ hei\ss t $I(V):= \bigcap\limits_{\p \in V}\p$ \deftermspec{Verschwindungsideal}{Ideal!Verschwindungs-} von $V$.
 \end{enumerate}\end{DefBem}
 
 \begin{bew}\begin{enumerate}[a)]\item[c)]
 $\emptyset = V(R)$\\
 $\Spec R = V(0)$\\
-$\bigcap\limits_{i\in I} V(I_i) = \bigcap\limits_{i\in I}\{\p \in I_i \subseteq \p\} = \{\p: I_i \subseteq \p \forall\  i\} = V(\bigcup\limits_{i\in I} I_i) = V(\sum\limits_{i\in I} I_i)$\\
+$\bigcap\limits_{i\in I} V(I_i) = \bigcap\limits_{i\in I}\{\p \in I_i \subseteq \p\} = \{\p: I_i \subseteq \p \forall\  i\} = V(\bigcup\limits_{i\in I} I_i) = V(\Sum_{i\in I} I_i)$\\
 $V(I_1)\cup V(I_2) = \{\p \in \Spec R: I_1 \subseteq \p \text{ oder } I_2 \subseteq \p\} = V(I_1\cdot I_2) \overset{?}{=} V(I_1\cap I_2)$\\
 \hspace*{10mm} $I_1\cdot I_2 \subseteq I_1 \cap I_2 \Rightarrow V(I_1\cdot I_2) \supseteq V(I_1\cap I_2)$\\
 \hspace*{10mm} $\p \in V(I_1\cdot I_2) \Rightarrow I_1\cdot I_2 \subseteq \p \xRightarrow{\text{\OE}} I_1 \subseteq \p \Rightarrow I_1\cap I_2 \subseteq \p$\\
@@ -956,7 +960,7 @@ $\Spec R$ ist quasikompakt.
 Sei $(U_i)_{i\in I}$ offene \"Uberdeckung von $\Spec R$.\\
 \OE $U_i = D(f_i)$ f\"ur ein $f_i\in R$\\
 Dann gilt : $\bigcup\limits_{i\in I}D(f_i) = \Spec R \Leftrightarrow\bigcap\limits_{i\in I}V(f_i) = \emptyset \Leftrightarrow$ Die $f_i$, $i \in I$, erzeugen $R$\\
-$\Rightarrow \exists i_1,\ldots ,i_k$ mit $1=\sum\limits_{\nu=1}^k a_\nu f_{i_\nu}$ f\"ur gewisse $a_\nu \in R$\\
+$\Rightarrow \exists i_1,\ldots ,i_k$ mit $1=\Sum_{\nu=1}^k a_\nu f_{i_\nu}$ f\"ur gewisse $a_\nu \in R$\\
 $\Rightarrow \bigcup\limits_{\nu = 1}^k D(f_{i_\nu}) = \Spec R$
 \end{bew}
 
@@ -995,10 +999,10 @@ Sei also $f\in R$, $(D(f_i))_{i\in I}$ offene \"Uberdeckung von $D(f)$, $g_i \in
   $\Rightarrow g = h$
 \item[$\bullet$ Existenz:]
   Schreibe $g_i = \frac{h_i}{f_i^N}$, $h_i \in R$, $N\ge 1$. Nach Voraussetzung ist $\overbrace{f_i^Nf_j^Ng_i}^{=f_j^Nh_i} = \overbrace{f_j^Nf_i^Ng_j}^{f_i^Nh_j}$ f\"ur ein (anderes) $N\ge 1$.\\
-  $(f_1^N,\ldots ,f_n^N) =R \Rightarrow \exists b_i \in R$ mit $ 1 = \sum\limits_{i=1}^n b_if_i^N$\\
-  Setze $g:= \sum\limits_{i=1}^n b_ih_i$\\
+  $(f_1^N,\ldots ,f_n^N) =R \Rightarrow \exists b_i \in R$ mit $ 1 = \Sum_{i=1}^n b_if_i^N$\\
+  Setze $g:= \Sum_{i=1}^n b_ih_i$\\
   Dann ist f\"ur $j=1,\ldots ,n$
-    \[f_j^Ng = f_j \sum\limits_{i=1}^n b_ih_i = \sum\limits_{i=1}^n b_if_j^Nh_i = \underbrace{\sum\limits_{i=1}^n b_if_i^N}_{=1}h_j = h_j = f_j^Ng_j \text{ in } R_{f_j}\]
+    \[f_j^Ng = f_j \Sum_{i=1}^n b_ih_i = \Sum_{i=1}^n b_if_j^Nh_i = \underbrace{\Sum_{i=1}^n b_if_i^N}_{=1}h_j = h_j = f_j^Ng_j \text{ in } R_{f_j}\]
   $\Rightarrow g= g_j$ in $R_{f_j}$
 \end{description}\end{enumerate}\end{bew}
 
@@ -1043,7 +1047,7 @@ Sei $h = \frac{g}{f^d} \in R_f$. \emph{Zu zeigen:}
 \item
   Ein \defterm{geringter Raum} ist ein topologischer Raum $X$ zusammen mit einer Garbe $\calO_X$ von Ringen.
 \item
-  Ein geringter Raum $(X, \calO_X)$ hei\ss t \defterm{lokal}\index{geringter Raum!lokal} geringter Raum, wenn f\"ur jedes $x\in X$ der Halm $\calO_{X,x}$ ein lokaler Ring ist.
+  Ein geringter Raum $(X, \calO_X)$ hei\ss t \deftermspec{lokal}{geringter Raum!lokal} geringter Raum, wenn f\"ur jedes $x\in X$ der Halm $\calO_{X,x}$ ein lokaler Ring ist.
 \end{enumerate}\end{Def}
 
 \begin{Bem}
@@ -1125,13 +1129,13 @@ Die offenen Teilmengen von $X$ und von $Y$ bilden eine Basis der Topologie auf $
 $\begin{array}{l}X = \A^1, U = \A^1\setminus \{0\} \\ Y = \A^1, V = \A^1\setminus \{0\}\end{array} \varphi = \id \qquad$\begin{tikzpicture}[baseline = 0]
   \node (X) at (2,0.5) {$X$};
   \node (X) at (2,-0.5) {$Y$};
-  \node (U) at (-1,0.75) {$\textcolor{safe1}{U}$};
-  \node (V) at (-1,-0.25) {$\textcolor{safe1}{V}$};
+  \node (U) at (-1,0.75) {$\textcolor{color1}{U}$};
+  \node (V) at (-1,-0.25) {$\textcolor{color1}{V}$};
   
   \draw[thick] (1.75,0.5) -- (-1,0.5);
   \draw[thick] (1.75,-0.5) -- (-1,-0.5);
-  \draw[safe1, fill] (0.375,0.5) circle(0.1);
-  \draw[safe1, fill] (0.375,-0.5) circle(0.1);
+  \draw[color1, fill] (0.375,0.5) circle(0.1);
+  \draw[color1, fill] (0.375,-0.5) circle(0.1);
 \end{tikzpicture}
 \begin{tikzpicture}[baseline = 0]
   \node (Z) at (2,0) {$Z$};
@@ -1176,9 +1180,9 @@ Erhalte Schema $Z$ mit offenen Einbettungen $i_X: X\to Z$, $i_Y: Y \to Z$ sodass
 $i_X\left((T)\right) =: 0_X$, $i_Y\left((T)\right) =: 0_Y$
 \begin{tikzpicture}
   \node (Z) at (2.25,0) {$Z$};
-  \node (W) at (-0.5,1) {$\textcolor{safe1}{W}$};
-  \node (KlammerRechts) at (1.5,0) {$\textcolor{safe1}{)}$};
-  \node (KlammerLinks) at (-1.5,0) {$\textcolor{safe1}{(}$};
+  \node (W) at (-0.5,1) {$\textcolor{color1}{W}$};
+  \node (KlammerRechts) at (1.5,0) {$\textcolor{color1}{)}$};
+  \node (KlammerLinks) at (-1.5,0) {$\textcolor{color1}{(}$};
   \node (0X) at (0.5,0.6) {$0_X$};
   \node (0Y) at (0.5,-0.6) {$0_Y$};
     
@@ -1281,7 +1285,7 @@ Sei $(X, \calO_X)$ ein Schema\begin{enumerate}[a)]
 \item
 	Eine Garbe $\calI$ (von abelschen Gruppen) auf $X$ hei\ss t \deftermspec{Idealgarbe}{Garbe!Ideal-}, wenn f\"ur jedes offene $U\subseteq X$ $\calI(X)$ ein Ideal in $\calO_X(U)$ ist und die Restriktionshomomorphismen $\calO_X(U)$-linear sind.
 \item
-	Ist $X = \Spec R$ affines Schema, so hei\ss t eine Idealgarbe $\calI$ auf $X$ \deftermspec{quasikoh\"arent}{koh\"arent!quasi-}, wenn es ein Ideal $I$ in R gibt mit $\calI(U) = \textcolor{red}{I\calO_X(U)}$ f\"ur jedes offene $U\subseteq X$.
+	Ist $X = \Spec R$ affines Schema, so hei\ss t eine Idealgarbe $\calI$ auf $X$ \deftermspec{quasikoh"arent}{koh"arent!quasi-}, wenn es ein Ideal $I$ in R gibt mit $\calI(U) = \textcolor{red}{I\calO_X(U)}$ f\"ur jedes offene $U\subseteq X$.
 \item
 	Eine Idealgarbe $\calI$ auf $X$ hei\ss t \defterm{koh\"arent}, wenn f\"ur jedes offene affine Unterschema $U\textcolor{red}{\subset} X$ die Einschr\"ankung $\calI|_U$ quasikoh\"arent ist.
 \end{enumerate}\end{Def}
@@ -1300,7 +1304,7 @@ Eine Idealgarbe $\calI$ auf $X$ ist genau dann quasikoh\"arent, wenn es eine off
 \begin{DefBem}\begin{enumerate}[a)]
 \item
 	Sei $R$ ein Ring.\\
-	$N_R := \sqrt{(0)} = \{x \in R | \exists n \ge 1: x^n = 0\}$ ist ein Ideal in $R$, das \defterm{Nilradikal}.
+	$N_R := \sqrt{(0)} = \{x \in R | \exists n \ge 1: x^n = 0\}$ ist ein Ideal in $R$, das \deftermspec{Nilradikal}{Radikal!Nil-}.
 \item
 	Ein Ring $R$ hei\ss t \defterm{reduziert}, wenn $N_R = (0)$ ist.
 \item
@@ -1339,17 +1343,17 @@ Seien $X, Y, S$ Mengen, $f: X\to Y$, $g: Y \to S$ Abbildungen.\begin{enumerate}[
 	Das Faserprodukt erf\"ullt folgende UAE:\\
 	F\"ur alle Mengen $Z$, Abbildungen $\varphi: Z \to X$, $\psi: Z \to Y$ mit $f \circ \varphi = g \circ \psi$ gibt es genau eine $h: Z \to X \X_S Y$ mit $\varphi = \pr_X \circ h$, $\psi = \pr_Y \circ h$.
 	\begin{center}\begin{tikzpicture}
-	\node (0) at (0,0) {\textcolor{safe2}{$Z$}};
-	\node (1) at (2,0.5) {\textcolor{safe2}{$Y$}};
-	\node (2) at (2,-0.5) {\textcolor{safe2}{$X$}};
+	\node (0) at (0,0) {\textcolor{color2}{$Z$}};
+	\node (1) at (2,0.5) {\textcolor{color2}{$Y$}};
+	\node (2) at (2,-0.5) {\textcolor{color2}{$X$}};
 	\node (3) at (4,1.5) {$X \X_S Y$};
 	\node (4) at (4,-1.5) {$S$};
 	
-	\draw[->, safe2] (0) -- node[above] {$\psi$} (1);
-	\draw[->, safe2] (0) -- node[below] {$\varphi$} (2);
+	\draw[->, color2] (0) -- node[above] {$\psi$} (1);
+	\draw[->, color2] (0) -- node[below] {$\varphi$} (2);
 	
-	\draw[->, dashed, safe1] (0) to [out=90, in=135] node[above] {$\exists! h$} (3);
-	\draw[->, safe2] (0) to [out=270, in=225] (4);
+	\draw[->, dashed, color1] (0) to [out=90, in=135] node[above] {$\exists! h$} (3);
+	\draw[->, color2] (0) to [out=270, in=225] (4);
 	
 	\draw[->] (3) -- node[above] {$\pr_Y$} (1);
 	\draw[->] (3) to [out=315, in=0] node[right] {$\pr_X$} (2);
@@ -1427,7 +1431,7 @@ Das Faserprodukt $X \X_S Y$ existiert f\"ur alle $S$-Schemata $f: X \to S$ und $
 	\draw[|->] (2) -- (3);
 	
 	\draw[->] (2) -- node[left] {$\Phi$ bilinear}(4);
-	\draw[->, dashed, safe2] (3) -- node[right] {$\exists! \varphi$ linear} (4);
+	\draw[->, dashed, color2] (3) -- node[right] {$\exists! \varphi$ linear} (4);
 	\end{tikzpicture}\end{center}
 	
 	\begin{enumerate}[\textbullet]
@@ -1446,16 +1450,16 @@ Das Faserprodukt $X \X_S Y$ existiert f\"ur alle $S$-Schemata $f: X \to S$ und $
 		\node (3) at (2, 1.5) {$A \otimes_R B$};
 		\node (4) at (2, -1.5) {$R$};
 		
-		\draw[->, safe1] (1) -- node[below] {$\alpha$} (0);
-		\draw[->, safe1] (2) to [in=15, out=165] node[above] {$\beta$} (0);
+		\draw[->, color1] (1) -- node[below] {$\alpha$} (0);
+		\draw[->, color1] (2) to [in=15, out=165] node[above] {$\beta$} (0);
 		
 		\draw[->] (4) -- (1);
 		\draw[->] (4) -- (2);
 		\draw[->] (1) -- node[right] {$\sigma_A$} (3);
 		\draw[->] (2) -- node[left] {$\sigma_B$}(3);
 		
-		\draw[->, safe1] (4) to [in=315, out=180] (0);
-		\draw[->, dashed, safe2] (3) to [in=45, out=180] node[above] {$\exists! \gamma$} (0);
+		\draw[->, color1] (4) to [in=315, out=180] (0);
+		\draw[->, dashed, color2] (3) to [in=45, out=180] node[above] {$\exists! \gamma$} (0);
 		\end{tikzpicture}\end{center}
 		\quot{Beweis:} $\tilde \gamma: A \X B \to C$, $(a,b) \mapsto \alpha(a) \cdot \beta(b)$ ist bilinear, induziert also $\gamma: A \otimes B \to C$ linear. Nachrechnen: $\gamma$ Ringhomomorphismus, $\gamma$ eindeutig.
 	\end{enumerate}
@@ -1486,23 +1490,23 @@ Das Faserprodukt $X \X_S Y$ existiert f\"ur alle $S$-Schemata $f: X \to S$ und $
 	
 	\emph{Beweis 2:}
 	\begin{center}\begin{tikzpicture}
-		\node (0) at (-4, 0) {\textcolor{safe2}{$Z$}};
+		\node (0) at (-4, 0) {\textcolor{color2}{$Z$}};
 		\node (1) at (0, 0) {$X_i$};
-		\node (2) at (4, 0) {$Y_{\textcolor{safe2}{i}}$};
+		\node (2) at (4, 0) {$Y_{\textcolor{color2}{i}}$};
 		
 		\node (3) at (2, 1.5) {$X_i \X_S Y_i$};
-		\node (4) at (2, -1.5) {$S_{\textcolor{safe2}{i}}$};
+		\node (4) at (2, -1.5) {$S_{\textcolor{color2}{i}}$};
 		
-		\draw[->, safe1] (0) -- node[below] {$\varphi$} (1);
-		\draw[->, safe1] (0) to [in=165, out=15] node[above] {$\psi$} (2);
+		\draw[->, color1] (0) -- node[below] {$\varphi$} (1);
+		\draw[->, color1] (0) to [in=165, out=15] node[above] {$\psi$} (2);
 		
 		\draw[->] (1) -- node[left] {$f|_{X_i}$} (4);
 		\draw[->] (2) -- node[right] {$g$}(4);
 		\draw[->] (3) -- node[right] {$\pr_{X_i}$} (1);
 		\draw[->] (3) -- node[left] {$\pr_{Y_i}$}(2);
 		
-		\draw[->, safe1] (0) to [in=180, out=315] (4);
-		\draw[->, safe2] (0) to [in=180, out=45] node[above] {$h$} (3);
+		\draw[->, color1] (0) to [in=180, out=315] (4);
+		\draw[->, color2] (0) to [in=180, out=45] node[above] {$h$} (3);
 	\end{tikzpicture}\end{center}
 		\[ \Psi(Z) \subseteq g^{-1} (\underbrace{f (\overbrace{\varphi(Z)}^{\subseteq X_i} )}_{\subseteq S_i} ) \subseteq Y_i \]
 	\emph{Beweis 1:} Verklebe die $V_l \X_T W$ l\"angs $U_{lm} = \pr_l^{-1} (V_l \cap V_m) \subseteq V_l \X_T W$. Es gilt: $U_{lm} = (V_l \cap V_m) \X_T W$. Dann ist $U_{lm} \quot{=} U_{ml}$, lassen sich also verkleben zu Schema $V$. Zeige: $\tilde V = V \X_T W$
@@ -1525,16 +1529,16 @@ Das Faserprodukt $X \X_S Y$ existiert f\"ur alle $S$-Schemata $f: X \to S$ und $
 		\node (1) at (0, -1.5) {$S$};
 		\node (2) at (1.5, 0) {$S$};
 		\node (3) at (-1.5, 0) {$X$};
-		\node (4) at (-4, 0) {\textcolor{safe1}{$Z$}};
+		\node (4) at (-4, 0) {\textcolor{color1}{$Z$}};
 		
 		\draw[->] (0) --node[above]{$\id$} (3);
 		\draw[->] (0) --node[above]{$f$} (2);
 		\draw[->] (3) --node[below]{$f$} (1);
 		\draw[->] (2) --node[below]{$\id$} (1);
-		\draw[->, safe1] (4) --node[below]{$\varphi$} (3);
+		\draw[->, color1] (4) --node[below]{$\varphi$} (3);
 		
-		\draw[->, dashed, safe1] (4) to [in=180, out=45] node[left]{$\varphi$} (0);
-		\draw[->, safe1] (4) to [in=150, out=30] node[below, near start]{$\psi$} (2);
+		\draw[->, dashed, color1] (4) to [in=180, out=45] node[left]{$\varphi$} (0);
+		\draw[->, color1] (4) to [in=150, out=30] node[below, near start]{$\psi$} (2);
 	\end{tikzpicture}\end{minipage}
 	\begin{minipage}[c]{0.55\textwidth}Es gilt $\id_S \circ \psi = f \circ \varphi$ im unteren Dreieck, also auch im Oberen.\end{minipage}
 \item
@@ -1551,9 +1555,9 @@ Das Faserprodukt $X \X_S Y$ existiert f\"ur alle $S$-Schemata $f: X \to S$ und $
 		\draw[->] (1) -- node[left]{\mbox{\small $f$}} (3);
 		\draw[->] (2) -- node[right]{\mbox{\small$f \circ g$}} (3);
 		
-		\draw[->, safe1] (4) -- node[below]{\mbox{\small $\pr_X$}} (1);
-		\draw[->, dashed, safe1] (4) to [in=180, out=45] node[above]{\mbox{\small $h$}} (0);
-		\draw[->, safe1] (4) to [in=150, out=30] node[below,sloped, near start]{\mbox{\small $g \circ \pr_Y$}} (2);
+		\draw[->, color1] (4) -- node[below]{\mbox{\small $\pr_X$}} (1);
+		\draw[->, dashed, color1] (4) to [in=180, out=45] node[above]{\mbox{\small $h$}} (0);
+		\draw[->, color1] (4) to [in=150, out=30] node[below,sloped, near start]{\mbox{\small $g \circ \pr_Y$}} (2);
 	\end{tikzpicture}$\begin{array}{rccc} g: &Y &\to& T \\ f: &X &\to &S \\ h: &T &\to &S\end{array}$\\
 	\emph{Betrachte:} 
 	\begin{tikzpicture}[baseline=0]
@@ -1561,16 +1565,16 @@ Das Faserprodukt $X \X_S Y$ existiert f\"ur alle $S$-Schemata $f: X \to S$ und $
 		\node (1) at (0, -1.5) {$T$};
 		\node (2) at (2, 0) {$Y$};
 		\node (3) at (-2, 0) {$X \X_S T$};
-		\node (4) at (-5, 0) {\textcolor{safe1}{$Z$}};
+		\node (4) at (-5, 0) {\textcolor{color1}{$Z$}};
 		
 		\draw[->] (0) --node[above]{$h$} (3);
 		\draw[->] (0) --node[above]{$\pr_Y$} (2);
 		\draw[->] (3) --node[below]{$\pr_T$} (1);
 		\draw[->] (2) --node[below]{$g$} (1);
-		\draw[->, safe1] (4) --node[below]{$\varphi$} (3);
+		\draw[->, color1] (4) --node[below]{$\varphi$} (3);
 		
-		\draw[->, dashed, safe1] (4) to [in=180, out=45] node[left]{$\exists! \Phi$} (0);
-		\draw[->, safe1] (4) to [in=160, out=30] node[below, near start]{$\psi$} (2);
+		\draw[->, dashed, color1] (4) to [in=180, out=45] node[left]{$\exists! \Phi$} (0);
+		\draw[->, color1] (4) to [in=160, out=30] node[below, near start]{$\psi$} (2);
 	\end{tikzpicture}
 	
 	\emph{Es gilt:} $f \circ \pr_X = t \circ g \circ \pr_Y$
@@ -1579,39 +1583,39 @@ Das Faserprodukt $X \X_S Y$ existiert f\"ur alle $S$-Schemata $f: X \to S$ und $
 		\node (1) at (0, -1.5) {$S$};
 		\node (2) at (2, 0) {$Y$};
 		\node (3) at (-2, 0) {$X$};
-		\node (4) at (-5, 0) {\textcolor{safe1}{$Z$}};
+		\node (4) at (-5, 0) {\textcolor{color1}{$Z$}};
 		
-		\draw[->] (0) --node[above]{\textcolor{safe1}{$\pr_X$}} (3);
+		\draw[->] (0) --node[above]{\textcolor{color1}{$\pr_X$}} (3);
 		\draw[->] (0) --node[above]{$\pr_Y$} (2);
 		\draw[->] (3) --node[left]{$f$} (1);
 		\draw[->] (2) --node[right]{$t \circ g$} (1);
-		\draw[->, safe1] (4) --node[below]{$\textcolor{black}{\pr_X} \circ \varphi$} (3);
+		\draw[->, color1] (4) --node[below]{$\textcolor{black}{\pr_X} \circ \varphi$} (3);
 		
-		\draw[->, safe1] (4) to [in=160, out=30] node[below, near start]{$\psi$} (2);
+		\draw[->, color1] (4) to [in=160, out=30] node[below, near start]{$\psi$} (2);
 	\end{tikzpicture}\end{center}
-	\emph{Zu zeigen:} \fcolorbox{safe2}{white}{$f \circ \pr_X$} $\circ \varphi = t \circ g \circ \psi =$ \fcolorbox{safe2}{white}{$t \circ \pr_T$} $\circ \varphi$\\
+	\emph{Zu zeigen:} \fcolorbox{color2}{white}{$f \circ \pr_X$} $\circ \varphi = t \circ g \circ \psi =$ \fcolorbox{color2}{white}{$t \circ \pr_T$} $\circ \varphi$\\
 	\begin{center}$\Rightarrow$ \begin{tikzpicture}[baseline=0]
 		\node (0) at (0, 1.5) {$X \X_S Y$};
 		\node (1) at (0, -1.5) {$S$};
 		\node (2) at (2, 0) {$Y$};
 		\node (3) at (-2, 0) {$X$};
-		\node (4) at (-5, 0) {\textcolor{safe1}{$Z$}};
+		\node (4) at (-5, 0) {\textcolor{color1}{$Z$}};
 		
-		\draw[->] (0) --node[above]{\textcolor{safe1}{$\pr_X$}} (3);
+		\draw[->] (0) --node[above]{\textcolor{color1}{$\pr_X$}} (3);
 		\draw[->] (0) --node[above]{$\pr_Y$} (2);
 		\draw[->] (3) --node[left]{$f$} (1);
 		\draw[->] (2) --node[right]{$t \circ g$} (1);
-		\draw[->, safe1] (4) --node[below]{$\textcolor{black}{\pr_X} \circ \varphi$} (3);
+		\draw[->, color1] (4) --node[below]{$\textcolor{black}{\pr_X} \circ \varphi$} (3);
 		
-		\draw[->, dashed, safe1] (4) to [in=180, out=45] node[left]{$\exists! \Phi$} (0);
-		\draw[->, safe1] (4) to [in=160, out=30] node[below, near start]{$\psi$} (2);
+		\draw[->, dashed, color1] (4) to [in=180, out=45] node[left]{$\exists! \Phi$} (0);
+		\draw[->, color1] (4) to [in=160, out=30] node[below, near start]{$\psi$} (2);
 	\end{tikzpicture}\end{center}
 	\emph{Wir wissen:} $\pr_T \circ \varphi = g \circ \psi$\\
 	\emph{Zu zeigen:}(i) $h \circ \Phi = \varphi$\\
 	\textcolor{white}{\emph{Zu zeigen:}}(ii) $\pr_Y \circ \Phi = \psi \checkmark$
 	
-	F\"ur (i) ist zu zeigen: (i$_1$) $\underbrace{\pr_X \circ h}_{\color{safe1}\pr_X} \circ \Phi = \pr_X \circ \varphi \checkmark$\\
-	\textcolor{white}{F\"ur (i) ist zu zeigen:} (i$_2$) $\underbrace{\underbrace{\pr_T \circ h}_{\color{safe2}g \circ \pr_Y} \circ \Phi}_{\color{safe2}g \circ \psi} = \pr_T \circ \varphi$
+	F\"ur (i) ist zu zeigen: (i$_1$) $\underbrace{\pr_X \circ h}_{\color{color1}\pr_X} \circ \Phi = \pr_X \circ \varphi \checkmark$\\
+	\textcolor{white}{F\"ur (i) ist zu zeigen:} (i$_2$) $\underbrace{\underbrace{\pr_T \circ h}_{\color{color2}g \circ \pr_Y} \circ \Phi}_{\color{color2}g \circ \psi} = \pr_T \circ \varphi$
 	
 	Damit ist die Existenz von $\Phi$ gezeigt. Eindeutigkeit in der \"Ubung.
 \end{enumerate}\end{bew}
@@ -1866,7 +1870,7 @@ Sei $f: X \to Y$ Morphismus von Schemata.
 Ein Morphismus $f: X \to Y$ von Schemata hei\ss t \defterm{endlich}, wenn es eine offene affine \"Uberdeckung $(U_i = \Spec A_i)_{i\in I}$ von $Y$ gibt, so dass f"ur jedes $i \in I$ $f^{-1}(U_i)$ affin ist (also $f^{-1}(U_i) = \Spec B_i$) und dabei $B_i$ als $A_i$-Modul endlich erzeugt ist.
 \end{Def}
 
-\begin{Bem}
+\begin{Bem}\label{7.6}
 Ist $f: X \to Y$ endlich, so ist $f^{-1}(y)$ endlich f\"ur jedes $y \in Y$.
 \end{Bem}
 
@@ -1938,7 +1942,7 @@ $\Delta: X \to X \X_Y X$ wird induziert von $\mu: \begin{array}{ccc} B \otimes_A
 $\mu$ ist surjektiv, also ist $\Delta$ abgeschlossene Einbettung.
 \end{bew}
 
-\begin{Bem}
+\begin{Bem}\label{8.4}
 Offene und abgeschlossene Einbettungen sind separiert.
 \end{Bem}
 
@@ -2143,18 +2147,18 @@ Es gibt kein $h$, da $k[T] \hookrightarrow k(T)$ \emph{nicht} \"uber $R$ faktori
 			\node (2) at (-3,-1) {$X$};
 			\node (3) at (3,-1) {$Y$};
 			\node (4) at (-6,1) {$T$};
-			\node (5) at (-4.5,2.5) {$\textcolor{safe1}{U}$};
+			\node (5) at (-4.5,2.5) {$\textcolor{color1}{U}$};
 			
 			\draw[->, font=\scriptsize] (0) -- node[below]{$\pr_2$} (1);
 			\draw[->, font=\scriptsize] (0) -- node[left]{$\pr_1$} (2);
 			\draw[->, font=\scriptsize] (1) -- node[right]{$f$} (3);
 			\draw[->, font=\scriptsize] (2) -- node[below]{$f$}(3);
 			\draw[->, font=\scriptsize] (4) -- node[below]{$h$}(0);
-			\draw[->, font=\scriptsize, safe1] (5) -- node[left]{$i$}(4);
+			\draw[->, font=\scriptsize, color1] (5) -- node[left]{$i$}(4);
 			
-			\draw[->, font=\scriptsize, safe2] (4) to[in=180,out=270] node[below]{$h_1$} (2);
+			\draw[->, font=\scriptsize, color2] (4) to[in=180,out=270] node[below]{$h_1$} (2);
 			\draw[->, font=\scriptsize] (4) to[in=165,out=25] node[below]{$h_2$} (1);
-			\draw[->, font=\scriptsize, safe1] (5) to[in=135,out=15] node[above]{$h_0$} (1);
+			\draw[->, font=\scriptsize, color1] (5) to[in=135,out=15] node[above]{$h_0$} (1);
 		\end{tikzpicture}\end{center}
 		$\Rightarrow f \circ h_1 = f\circ h_2$
 		
@@ -2266,8 +2270,8 @@ Es gibt kein $h$, da $k[T] \hookrightarrow k(T)$ \emph{nicht} \"uber $R$ faktori
 				\draw[->] (4) -- (5);
 				\draw[->] (5) -- (2);
 				
-				\draw[->,dashed,safe1] (5) -- node[above]{$h'$} (0);
-				\draw[->,dashed,safe2] (5) -- node[below]{$h$} (1);
+				\draw[->,dashed,color1] (5) -- node[above]{$h'$} (0);
+				\draw[->,dashed,color2] (5) -- node[below]{$h$} (1);
 			\end{tikzpicture}\end{center}
 		ein Bewertungsdiagramm f"ur $f$.
 		
@@ -2316,12 +2320,12 @@ Sei $\underset{\subseteq \IP_k^n}{X:= t(V)}$, $\underset{\subseteq \IP_k^m}{Y:= 
 		\node (4) at (0,-1.5) {$\Spec k$};
 		
 		\draw[->] (0) -- node[above]{$f$} (1);
-		\draw[->,safe1] (0) -- (2);
-		\draw[->,safe1] (1) -- (3);
-		\draw[->,safe1] (2) -- node[below]{a)} (4);
-		\draw[->,safe1] (3) -- node[below]{a)} (4);
-		\draw[->,safe2] (0) -- node[right]{$g \circ f$} (4);
-		\draw[->,safe2] (1) -- node[left]{$g$} (4);
+		\draw[->,color1] (0) -- (2);
+		\draw[->,color1] (1) -- (3);
+		\draw[->,color1] (2) -- node[below]{a)} (4);
+		\draw[->,color1] (3) -- node[below]{a)} (4);
+		\draw[->,color2] (0) -- node[right]{$g \circ f$} (4);
+		\draw[->,color2] (1) -- node[left]{$g$} (4);
 	\end{tikzpicture}\end{center}
 Aus \ref{8.9} \ref{8.9a}) und \ref{8.9} \ref{8.9c}) folgt: $f$ ist eigentlich.
 \end{enumerate}\end{bew}
@@ -2346,7 +2350,7 @@ Sei \begin{tikzpicture}[baseline=0]
 
 Sei $\xi_1: h_0(t_1)$; \OE $\xi_1 \in \bigcap\limits_{i=0}^n U_i$ ($U_i = D(X_i)$) (sonst ist $\xi_1 \in \IP_\Z^{n-1}$ Induktion \"uber $n$) $\Rightarrow \frac{x_i}{x_j} \in \calO_{\IP_\Z^n, \xi_1}^\X$ f\"ur alle $i,j \Rightarrow$ Das Bild $\tilde f_{ij}$ von $\frac{x_i}{x_j}$ in $\underbrace{\kappa(\xi_1)}_{= \calO_{\IP_\Z^n,\xi_1}/m_{\xi_1}}$ ist $\ne 0$ $\Rightarrow f_{ij} := h_0^\#(\tilde f_{ij}) \in K^\X$
 
-Sei $v: K^\X \to G$ die zu $R$ geh"orige Bewertung. W"ahle $j \in \{1,\ldots ,n\}$, sodass $v(f_{j0}) = \min\limits_{k=1}^n v(f_{k0})$ $\Rightarrow v(f_{ij}) = v(f_{i0}) - v(f_{j0}) \ge 0$ f\"ur $i= 0,\ldots ,n \Rightarrow f_{ij} \in R$ f\"ur $i= 0,\ldots ,n \Rightarrow \frac{X_i}{X_j} \mapsto f_{ij}$ definiert Ringhomomorphismus $\Z[\frac{X_0}{X_j},\ldots ,\frac{X_n}{X_j}] \to R$, also Morphismus $\textcolor{safe2}{h}: T \to U_j \hookrightarrow \IP_\Z^n$
+Sei $v: K^\X \to G$ die zu $R$ geh"orige Bewertung. W"ahle $j \in \{1,\ldots ,n\}$, sodass $v(f_{j0}) = \min\limits_{k=1}^n v(f_{k0})$ $\Rightarrow v(f_{ij}) = v(f_{i0}) - v(f_{j0}) \ge 0$ f\"ur $i= 0,\ldots ,n \Rightarrow f_{ij} \in R$ f\"ur $i= 0,\ldots ,n \Rightarrow \frac{X_i}{X_j} \mapsto f_{ij}$ definiert Ringhomomorphismus $\Z[\frac{X_0}{X_j},\ldots ,\frac{X_n}{X_j}] \to R$, also Morphismus $\textcolor{color2}{h}: T \to U_j \hookrightarrow \IP_\Z^n$
 
 \emph{Eindeutigkeit von $h$}: Sei $\underset{\ne h}{h'}: T \to U_k$ eine weitere Fortsetzung von $h_0$.
 
@@ -2383,7 +2387,7 @@ Die $\calO_X$-Modulgarben auf $X$ bilden eine Kategorie. Gegenbeispiel: $\calO_X
 \item
 	Idealgarben
 \item
-	Sei $X$ eine nichtsingul"are Kurve (\"uber einem algebraisch abgeschlossenen K\"orper $k$), $D := \sum\limits_{\substack{P \in X \\ \text{(abg.)}}} n_P P$ ein Divisor.
+	Sei $X$ eine nichtsingul"are Kurve (\"uber einem algebraisch abgeschlossenen K\"orper $k$), $D := \Sum_{\substack{P \in X \\ \text{(abg.)}}} n_P P$ ein Divisor.
 	
 	$\calO_X$ soll die Garbe der regul\"aren Differentiale auf $X$ sein.
 	
@@ -2417,7 +2421,7 @@ Die $\calO_X$-Modulgarben auf $X$ bilden eine Kategorie. Gegenbeispiel: $\calO_X
 	
 	$\Rightarrow \exists\ f_P \in k(X)$ mit $\omega = f_P dt_P$. Setze $\ord_P \omega := \ord_P f_P$
 	
-	F\"ur $\omega \in \Omega_{k(X)/k}$ sei $\ddiv \omega := \sum\limits_{P \in X} \ord_P \omega$ (wobei $d(t_P - c) = dt_P$).
+	F\"ur $\omega \in \Omega_{k(X)/k}$ sei $\ddiv \omega := \Sum_{P \in X} \ord_P \omega$ (wobei $d(t_P - c) = dt_P$).
 	
 	F\"ur $U \subseteq X$ offen: $\Omega_X(U) := \{ \omega \in \Omega_{k(X)/k}: \ddiv \omega|_U \ge 0\}$
 	
@@ -2545,7 +2549,7 @@ Sei $f: X \to Y$ Morphismus von Schemata.
 	
 	Damit folgt die Behauptung aus \ref{9.7} \ref{9.7b}).
 	
-	\textcolor{gray}{$x_1,\ldots ,x_n$ seien Erzeuger von $N$ also $R'$-Modul $\Rightarrow x \in N$ hat Darstellung $\sum\limits_{i=1}^n a_i x_i$\\
+	\textcolor{gray}{$x_1,\ldots ,x_n$ seien Erzeuger von $N$ also $R'$-Modul $\Rightarrow x \in N$ hat Darstellung $\Sum_{i=1}^n a_i x_i$\\
 	\emph{Behauptung}: $x_1\otimes 1,\ldots ,x_n \otimes 1$ erzeugen $N \otimes_{R'} R$ als $R$-Modul\\
 	Sei $x \otimes a \in N \otimes_{R'} R, x = \sum a_i x_i$ ($a_i \in R'$) $\Rightarrow x \otimes a = a \cdot \sum a_i (x_i \otimes 1)$}
 \item
@@ -2553,10 +2557,10 @@ Sei $f: X \to Y$ Morphismus von Schemata.
 \item
 	\OE $Y$ affin. Sei $U_1,\ldots ,U_r$ offene affine \"Uberdeckung von $X$. \OE $U_i \cap U_j$ affin(!)? ("Ubung)
 	
-	\[\begin{array}{ccccccl} 0 &\to& \textcolor{safe1}{f_*}\calF &\to& \bigoplus\limits_{i=1}^r \textcolor{safe1}{f_*}\calF|_{U_i} &\to& \bigoplus\limits_{i < j} \textcolor{safe1}{f_*}\calF|_{U_i \cap U_j} \\
+	\[\begin{array}{ccccccl} 0 &\to& \textcolor{color1}{f_*}\calF &\to& \bigoplus\limits_{i=1}^r \textcolor{color1}{f_*}\calF|_{U_i} &\to& \bigoplus\limits_{i < j} \textcolor{color1}{f_*}\calF|_{U_i \cap U_j} \\
 		&& m &\mapsto& (m|_{u_i})_{i=1,\ldots ,r} && \\
 		&&&& (m)_{i=1,\ldots ,r} &\mapsto& (m_i|_{u_i \cap u_j} - m_j|_{u_i \cap u_j})_{i<j}\end{array}\]
-	ist exakt (weil $\calF$ Garbe ist, \textcolor{safe1}{weil $f_*$ linksexakt ist})
+	ist exakt (weil $\calF$ Garbe ist, \textcolor{color1}{weil $f_*$ linksexakt ist})
 	
 	$\Rightarrow f_*\calF$ ist als Kern einer Morphismus von quasikoh"arenten Garben selbst quasikoh"arent.
 \end{enumerate}\end{bew}
@@ -2607,7 +2611,7 @@ Nach Voraussetzung ist dann $\calL(U_i) = f_i \cdot \calO_X(U_i)$ f\"ur ein $f_i
 \begin{Bsp}\label{10.3}
 Sei $X$ eine Mannigfaltigkeit (reelle, differenzierbare, komplexe) und $\calO_X$ die Garbe der stetigen (differenzierbaren, holomorphen) Funktionen auf $X$. Sei $E$ eine weitere Mannigfaltigkeit, $p: E \to X$ eine stetige (differenzierbare, holomorphe) Abbildung.
 
-$(E,p)$ hei\ss t \defterm{Vektorb"undel} vom Rang $n$ \"uber $X$, wenn es eine offene "Uberdeckung $(U_i)$ von $X$ gibt und Isomorphismen $\varphi_i: p^{-1}(U_i) \to U_i \X \R^n$ sodass
+$(E,p)$ hei\ss t \defterm{Vektorb\"undel} vom Rang $n$ \"uber $X$, wenn es eine offene "Uberdeckung $(U_i)$ von $X$ gibt und Isomorphismen $\varphi_i: p^{-1}(U_i) \to U_i \X \R^n$ sodass
 	\begin{center}\begin{tikzpicture}
 		\node (0) at (-2,1) {$p^{-1}(U_i)$};
 		\node (1) at (2,1) {$U_i \X \R^n$};
@@ -2618,7 +2622,7 @@ $(E,p)$ hei\ss t \defterm{Vektorb"undel} vom Rang $n$ \"uber $X$, wenn es eine o
 		\draw[->,font=\scriptsize] (0) -- node[left]{$p$} (2);
 		\draw[->,font=\scriptsize] (1) -- node[right]{$\pr_{U_i}$} (2);
 	\end{tikzpicture}\end{center}
-mit $p = \pr_{U_i} \circ \varphi_i$, sodass f"ur alle $i,j$ gilt: $\varphi_i \circ \varphi_j^{-1}: (U_i \cap U_j) \X \R^n \to (U_i \cap U_j) \X \R^n$ induziert f"ur jedes $x \in U_i \cap U_j$ eine lineare Abbildung $\R^n \to \R^n$, die stetig (differenzierbar, holomorph) von $x$ abh"angt, das hei\ss t $\varphi_i \circ \varphi_j^{-1} \in \GL_n (\calO_X(U_i \cap U_j))$.
+mit $p = \pr_{U_i} \circ \varphi_i$, sodass f"ur alle $i,j$ gilt: $\varphi_i \circ \varphi_j^{-1}: (U_i \cap U_j) \X \R^n \to (U_i \cap U_j) \X \R^n$ induziert f"ur jedes $x \in U_i \cap U_j$ eine lineare Abbildung $\R^n \to \R^n$, die stetig (differenzierbar, holomorph) von $x$ abh"angt, das hei\ss t $\varphi_i \circ \varphi_j^{-1} \in \gls{GL}_n (\calO_X(U_i \cap U_j))$.
 
 Sei $\calE$ die Garbe der Schnitte in $E$, das hei\ss t $\calE(U) = \{ s: U \to E$ stetig (differenzierbar, holomorph) $: p \circ s = \id_U\}$. $\calE$ ist lokal frei vom Rang $n$.
 \begin{description}[\setlabelstyle{\itshape}]
@@ -2637,7 +2641,7 @@ Sei $\calE$ die Garbe der Schnitte in $E$, das hei\ss t $\calE(U) = \{ s: U \to 
 \begin{Def}
 Sei $(X, \calO_X)$ ein Schema, $p: E \to X$ ein Morphismus von Schemata.
 
-$(E, p)$ hei\ss t (geometrisches) \defterm{Vektorb"undel} "uber $X$, wenn es eine offene \"Uberdeckung $(U_i)_{i \in I}$ von $X$ gibt und Isomorphismen $\varphi_i: p^{-1}(U_i) \to \A_\Z^n \X_{\Spec \Z} U_i$, sodass f\"ur alle $i,j$ und f\"ur alle offenen affinen Teilmengen $\underset{= \Spec R}{U} \subseteq U_i \cap U_j$ gilt:
+$(E, p)$ hei\ss t (geometrisches) \defterm{Vektorb\"undel} "uber $X$, wenn es eine offene \"Uberdeckung $(U_i)_{i \in I}$ von $X$ gibt und Isomorphismen $\varphi_i: p^{-1}(U_i) \to \A_\Z^n \X_{\Spec \Z} U_i$, sodass f\"ur alle $i,j$ und f\"ur alle offenen affinen Teilmengen $\underset{= \Spec R}{U} \subseteq U_i \cap U_j$ gilt:
 
 $\varphi_i \circ \varphi_j^{-1}|_{\A_U^n}$ wird vone einem linearen Automorphismus $\alpha_{ij}$ von $R[X_1,\ldots ,X_n]$, das hei\ss t $\alpha_{ij}(a) = a$ f\"ur alle $a \in R$ und $\alpha_{ij}(x) = \sum_{j=1}^n a_{ij} X_j$ f\"ur gewisse $a_{ij} \in R$ ($\Leftrightarrow \alpha_{ij}$ ist $R$-Algebra-Homomorphismus), induziert.
 
@@ -2714,7 +2718,7 @@ Sei $X$ ein noethersches, $\underbrace{\text{irreduzibles, reduziertes}}_{=:\tex
 \item
 	Ein \deftermspec{Primdivisor}{Divisor!Prim-} auf $X$ ist ein integres abgeschlossenes Unterschema der Kodimension $1$.
 \item
-	Die freie abelsche Gruppe $\Div(X)$, die von den Primdivisoren erzeugt wird, hei\ss t die gruppe der \deftermspec{Weil-Divisoren}{Divisoren!Weil-}\index{Gruppe!der Weil-Divisoren}.
+	Die freie abelsche Gruppe $\Div(X)$, die von den Primdivisoren erzeugt wird, hei\ss t die gruppe der \deftermspec{Weil-Divisoren}{Divisor!Weil-}\index{Gruppe!Weil-Divisoren-}.
 \item
 	Ist $X$ eine Kurve "uber einem algebraisch abgeschlossenen K"orper, so sind die Primdivisoren die abgeschlossenen Punkte auf $X$.
 \item
@@ -2736,7 +2740,7 @@ Sei $X$ ein noethersches, $\underbrace{\text{irreduzibles, reduziertes}}_{=:\tex
 	\textcolor{gray}{\small{$\FakRaum{\FakRaum{k[X,Y]}{(y^2-x^3)_{(x,y)}}}{(y)} = k\cdot \overline 1 + k \cdot \overline x + k \cdot \overline x^2 \leadsto \ord_{(0,0)}x = 2$}}
 	\end{center}
 \item
-	F"ur $f \in k^\X$ sei $\ddiv(f) := \sum\limits_{W\text{Primdiv.}} \ord_W(f) \cdot W$; $\ddiv(f)$ ist Divisor.
+	F"ur $f \in k^\X$ sei $\ddiv(f) := \Sum_{W\text{Primdiv.}} \ord_W(f) \cdot W$; $\ddiv(f)$ ist Divisor.
 \item
 	$\Cl(X) := \FakRaum{\Div(X)}{\underset{\textcolor{gray}{\text{Hauptdivisoren}}}{\Div_H(X)}}$ hei\ss t \deftermspec{Weil-Divisorengruppe}{Gruppe!Weil-Divisoren-} von $X$.
 \end{enumerate}\end{DefBem}
@@ -2831,7 +2835,7 @@ Sei $X$ noethersches intetegres separiertes Schema. Dann gilt:
 	\item[$n_W$ ist wohldefininiert:]
 		Sei $j \in I$ mit $U_j \cap W \ne \emptyset \xRightarrow{W\text{ irred.}} U_i \cap U_j \cap W \ne \emptyset$, $\frac{f_i}{f_j} \in \calO_X(U_i \cap U_j)^\X \Rightarrow (f_i) = (f_j)$ in $\calO_{X,W} \Rightarrow \ord_W(f_i) = \ord_W(f_j)$
 	\end{description}
-	\OE $I$ endlich, da $X$ noethersch $\Rightarrow D = \sum\limits_{W \text{ Primid.}} n_W W$ ist Weil-Divisor
+	\OE $I$ endlich, da $X$ noethersch $\Rightarrow D = \Sum_{W \text{ Primid.}} n_W W$ ist Weil-Divisor
 \item[c)]
 	Umkehrabbildung zu $\alpha$
 	\begin{description}[\setlabelstyle{\normalfont}]
@@ -2975,11 +2979,11 @@ $\bar s :\left\{\begin{array}{rcl}U &\to& \Spe(\calF)\\ x &\mapsto& [U,s]_x\in\c
   %Punkte definieren
   \node (x) at (0,-0.5){$x \in X$};
   \node (Fx) at (0,2.5){$\calF_x$};
-  \node (s) at (2.25,1.25){\textcolor{safe1}{$s$}};
+  \node (s) at (2.25,1.25){\textcolor{color1}{$s$}};
   \node (X) at (3,0){$X$};
-  \node (KlAuf) at(-2,0) {\textcolor{safe1}{(}};
-  \node (KlZu) at(2,0) {\textcolor{safe1}{)}};
-  \node (U) at(1.75,-0.5) {\textcolor{safe1}{$U$}};
+  \node (KlAuf) at(-2,0) {\textcolor{color1}{(}};
+  \node (KlZu) at(2,0) {\textcolor{color1}{)}};
+  \node (U) at(1.75,-0.5) {\textcolor{color1}{$U$}};
 
   \draw (-2.5,0) -- (2.5,0);
   %senkrechte Linien zeichnen
@@ -2991,10 +2995,10 @@ $\bar s :\left\{\begin{array}{rcl}U &\to& \Spe(\calF)\\ x &\mapsto& [U,s]_x\in\c
   \draw (1,0) -- (1,2);
   \draw (0.5,0) -- (0.5,2);
   %Schlangenlinie
-  \draw[safe1] (-2,1) to [out=30,in=180] (-1,1.25) to [out=0,in=150] (0,1) to [out=330,in=180] (1,0.75) to [out=0,in=210] (2,1);
+  \draw[color1] (-2,1) to [out=30,in=180] (-1,1.25) to [out=0,in=150] (0,1) to [out=330,in=180] (1,0.75) to [out=0,in=210] (2,1);
   %gestrichelte Linien
-  \draw[dashed,safe1] (-2,1) -- (-2,0);
-  \draw[dashed,safe1] (2,1) -- (2,0);
+  \draw[dashed,color1] (-2,1) -- (-2,0);
+  \draw[dashed,color1] (2,1) -- (2,0);
 \end{tikzpicture}
 \end{minipage}
 $\calF^+$ assoziiert Garbe zu $\calF$, also f\"ur $U\subseteq X$ offen:
@@ -3951,16 +3955,16 @@ $S$ Schema, $T$ $S$-Schema, das hei\ss t $T \underset{b}{\to} S$, $X \mapsto X \
 	\node at (0,0.75) {$\Box$};
 	\node at (0,-0.75) {$\Box$};
 	
-	\draw[->, font=\scriptsize, safe1] (0) -- (1);
+	\draw[->, font=\scriptsize, color1] (0) -- (1);
 	\draw[->, font=\scriptsize] (2) -- node[below]{$b$} (3);
 	\draw[->, font=\scriptsize] (4) -- (5);
 	
-	\draw[->, font=\scriptsize, safe1] (0) -- (2);
+	\draw[->, font=\scriptsize, color1] (0) -- (2);
 	\draw[->, font=\scriptsize] (4) -- (2);
 	\draw[->, font=\scriptsize] (1) -- node[right]{$a$} (3);
 	\draw[->, font=\scriptsize] (5) -- node[right]{$c$} (3);
 	
-	\draw[->, font=\scriptsize, safe1] (1) to[in=45, out=315] (5);
+	\draw[->, font=\scriptsize, color1] (1) to[in=45, out=315] (5);
 	\draw[->, font=\scriptsize] (0) to[in=135, out=225] node[left, align=right]{UAE $Y \X_S T$:\\ $\exists! f \X_S T$} (4); %Die tikz Version im Mitschriebwiki ist veraletet und vertaegt den Befehlt align=right nicht
 %	\draw[->, font=\scriptsize] (0) to[in=135, out=225] node[left]{UAE $Y \X_S T$: $\exists! f \X_S T$} (4);
 \end{tikzpicture}\end{center}
@@ -3977,7 +3981,7 @@ $S$ Schema, $T$ $S$-Schema, das hei\ss t $T \underset{b}{\to} S$, $X \mapsto X \
 	
 	\node at (0,1.25) {$\Box$};
 	\node at (0,-1.25) {$\Box$};
-	\node at (0,-0.25) {\textcolor{safe1}{$\Box$}};
+	\node at (0,-0.25) {\textcolor{color1}{$\Box$}};
 	
 	\node at (4.5,0) {$\schraffiert$};
 	
@@ -3987,9 +3991,9 @@ $S$ Schema, $T$ $S$-Schema, das hei\ss t $T \underset{b}{\to} S$, $X \mapsto X \
 	\draw[->, font=\scriptsize] (3) -- node[right]{$g$} (5);
 	
 	\draw[->, font=\scriptsize] (0) -- (1);
-	\draw[->, font=\scriptsize, safe1] (2) -- (6);
-	\draw[->, font=\scriptsize, safe1] (6) -- (7);
-	\draw[->, font=\scriptsize, safe1] (3) -- (7);
+	\draw[->, font=\scriptsize, color1] (2) -- (6);
+	\draw[->, font=\scriptsize, color1] (6) -- (7);
+	\draw[->, font=\scriptsize, color1] (3) -- (7);
 	\draw[->, font=\scriptsize] (4) -- (5);
 	
 	\draw[->, font=\scriptsize] (0) -- (6);
@@ -4000,7 +4004,7 @@ $S$ Schema, $T$ $S$-Schema, das hei\ss t $T \underset{b}{\to} S$, $X \mapsto X \
 	\draw[->, font=\scriptsize] (0) to[in=135, out=225] (4);
 	\draw[->, font=\scriptsize] (1) to[in=45, out=315] (5);
 	
-	\draw[->, font=\scriptsize, safe1] (2) to[in=195, out=345] (3);
+	\draw[->, font=\scriptsize, color1] (2) to[in=195, out=345] (3);
 \end{tikzpicture}\end{center}
 \end{Loes}
 
@@ -4287,7 +4291,7 @@ $k$ algebraisch abgeschlossen, $Y = \Spec(k[t])$
 	\begin{center}\begin{tikzpicture}
 		%Achsenkreuz zeichnen
 		\path[draw,->,very thick,name path=t Achse] (-5,0) -- (5,0);
-		\draw[->,very thick,safe1] (0,-5) -- (0,5);
+		\draw[->,very thick,color1] (0,-5) -- (0,5);
 		\draw[dashed,very thick] (-4,4) -- (0,0);
 		\draw[->,very thick] (0,0) -- (4,-4);
 				
@@ -4296,8 +4300,8 @@ $k$ algebraisch abgeschlossen, $Y = \Spec(k[t])$
 		\node at (-0.25,5) {$y$};
 		\node at (4.25,-4.25) {$x$};
 		
-		\node at (2.5,-0.5) {\textcolor{safe1}{$X_{(t-1)}$}};
-		\node at (-1,-4) {\textcolor{safe1}{$X_{(t+1)}$}};
+		\node at (2.5,-0.5) {\textcolor{color1}{$X_{(t-1)}$}};
+		\node at (-1,-4) {\textcolor{color1}{$X_{(t+1)}$}};
 		
 		%horizontale Parabeln
 		\path[rotate around={-90:(0,2.5)},name path=obere parabel] (-0.75,7) parabola bend (0,2.5) (0.75,7);
@@ -4344,13 +4348,13 @@ $k$ algebraisch abgeschlossen, $Y = \Spec(k[t])$
 		
 		\begin{scope}
 			\clip (oben links-1) rectangle (oben links-3);
-			\path[draw,safe1] (0.75,5) parabola bend (1.25,0) (1.75,5);
+			\path[draw,color1] (0.75,5) parabola bend (1.25,0) (1.75,5);
 		\end{scope}\begin{scope}
 			\clip (oben links-3) rectangle (1.25,0);
-			\path[draw,safe1,dashed] (0.75,5) parabola bend (1.25,0) (1.75,5);
+			\path[draw,color1,dashed] (0.75,5) parabola bend (1.25,0) (1.75,5);
 		\end{scope}\begin{scope}
 			\clip (oben links-4) rectangle (1.25,0);
-			\path[draw,safe1] (3.25,5) (0.75,5) parabola bend (1.25,0) (1.75,5);
+			\path[draw,color1] (3.25,5) (0.75,5) parabola bend (1.25,0) (1.75,5);
 		\end{scope}
 		
 		
@@ -4395,15 +4399,15 @@ $k$ algebraisch abgeschlossen, $Y = \Spec(k[t])$
 		
 		\begin{scope}
 			\clip (unten rechts-4) rectangle (-1.25,0);
-			\path[draw,dashed,safe1,name path=untere rechte parabel] (-0.75,-5) parabola bend (-1.25,0) (-1.75,-5);
+			\path[draw,dashed,color1,name path=untere rechte parabel] (-0.75,-5) parabola bend (-1.25,0) (-1.75,-5);
 		\end{scope}\begin{scope}
 			\clip (unten rechts-1) rectangle (-1.25,0);
-			\path[draw,safe1,name path=untere rechte parabel] (-0.75,-5) parabola bend (-1.25,0) (-1.75,-5);
+			\path[draw,color1,name path=untere rechte parabel] (-0.75,-5) parabola bend (-1.25,0) (-1.75,-5);
 		\end{scope}
 		
 		%Markierungen auf der t-Achse
-		\path[draw,thick,name intersections={of=obere linke parabel and t Achse, name=t}] (t-1) ++ (0,0.25) -- ++(0,-0.5) node[below,safe1] {$t$};
-		\path[draw,thick,name intersections={of=untere rechte parabel and t Achse, name=minus eins}] (minus eins-1) ++ (0,-0.25) -- ++(0,0.5) node[above,safe1] {$-1$};
+		\path[draw,thick,name intersections={of=obere linke parabel and t Achse, name=t}] (t-1) ++ (0,0.25) -- ++(0,-0.5) node[below,color1] {$t$};
+		\path[draw,thick,name intersections={of=untere rechte parabel and t Achse, name=minus eins}] (minus eins-1) ++ (0,-0.25) -- ++(0,0.5) node[above,color1] {$-1$};
 	\end{tikzpicture}\end{center}
 	
 \item
@@ -4411,20 +4415,20 @@ $k$ algebraisch abgeschlossen, $Y = \Spec(k[t])$
 	
 	\begin{center}\begin{tikzpicture}
 		%Achsenkreuz zeichnen
-		\draw[->,very thick,safe1] (-5,0) -- (5,0);
-		\draw[->,very thick,safe1] (0,-5) -- (0,5);
+		\draw[->,very thick,color1] (-5,0) -- (5,0);
+		\draw[->,very thick,color1] (0,-5) -- (0,5);
 		
 		%Beschriftungen
 		\node at (5.25,0) {$x$};
 		\node at (-0.25,5) {$y$};
 		
-		\node at (0.75,4.8) {\textcolor{safe1}{$t=0$}};
+		\node at (0.75,4.8) {\textcolor{color1}{$t=0$}};
 		\node at (5,1.5) {$t=2$};
 		\node at (5,0.5) {$t=1$};
 		\node at (5.5,-0.5) {$t=-1$};
 		\node at (-0.75,-4.8) {$t=1$};
 		\node at (-2,-4.8) {$t=2$};
-		\node at (-5.5,0.5) {\textcolor{safe1}{$-1=t$}};
+		\node at (-5.5,0.5) {\textcolor{color1}{$-1=t$}};
 		
 		%die Hyperbeln
 		\draw[thick, bend right=45, looseness=1.75] (0.5,4.5) to (4.5,0.5);
@@ -4435,8 +4439,8 @@ $k$ algebraisch abgeschlossen, $Y = \Spec(k[t])$
 		\draw[thick, bend right=45, looseness=1.75] (1.5,4.5) to (4.5,1.5);
 		\draw[thick, bend left=45, looseness=1.75] (-4.5,-1.5) to (-1.5,-4.5);
 		
-		\draw[thick, bend right=45, looseness=1.75, dashed, safe1] (-4.5,0.5) to (-0.5,4.5);
-		\draw[thick, bend left=45, looseness=1.75, dashed, safe1] (0.5,-4.5) to (4.5,-0.5);
+		\draw[thick, bend right=45, looseness=1.75, dashed, color1] (-4.5,0.5) to (-0.5,4.5);
+		\draw[thick, bend left=45, looseness=1.75, dashed, color1] (0.5,-4.5) to (4.5,-0.5);
 	\end{tikzpicture}\end{center}
 	\textcolor{gray}{Anmerkung: Falls man es nicht in der Zeichnung sieht, die Hyperbeln im zweiten und vierten Quadranten enthalten auch noch eine gestrichelte Hyperbel in der anderen Farbe.}
 	
@@ -4919,9 +4923,9 @@ Basiswechsel mit dem Morphismus $\textrm{pr}_{\IP^N_{\Z}}$ liefert $j \colon \IP
 \item
 	 Seinen $X,Y$ noethersche Schemata und $f\colon X \to Y$ ein Schemamorphismus. Wir zeigen, dass $f = \textrm{pr}_Y \circ i$ eigentlich ist. 
  
- Nach Proposition 8.10 ist $\IP^n_{\Z} \to \Spec \Z$ eigentlich. Alle beteiligten Schemata sind noethersch, also ist nach Folgerung 8.9. "`eigentlich"' stabil unter Basiswechsel und $\textrm{pr}_Y$ eigentlich.
+ Nach Proposition \ref{8.10} ist $\IP^n_{\Z} \to \Spec \Z$ eigentlich. Alle beteiligten Schemata sind noethersch, also ist nach Folgerung \ref{8.9}. "`eigentlich"' stabil unter Basiswechsel und $\textrm{pr}_Y$ eigentlich.
  
- Abgeschlossene Einbettungen sind nach Bemerkung 8.4 separiert und nach Bemerkung 7.7 endlich (also insbesondere von endlichem Typ). Nach Behauptung~1 ist eine abgeschlossene Einbettung auch universell abgeschlossen. Damit ist $i$ eigentlich. 
+ Abgeschlossene Einbettungen sind nach Bemerkung \ref{8.4} separiert und nach Bemerkung \ref{7.6} endlich (also insbesondere von endlichem Typ). Nach Behauptung~1 ist eine abgeschlossene Einbettung auch universell abgeschlossen. Damit ist $i$ eigentlich. 
  
  Die Komposition von eigentlichen Morphismen ist eigentlich und somit ist $f$ eigentlich. 
 \end{enumerate}
@@ -4934,11 +4938,11 @@ $X$ nichtsingul"are projektive Kurve "uber algebraisch abeschlossenem K"orper $k
 \item
 	\emph{Zu zeigen:} $\forall f \in k(X)^\X: \calL(\ddiv(f)) \cong \calO_X$
 	
-	$\ddiv(f) = \sum\limits_{p \in X} \ord_p(f) \cdot p$
+	$\ddiv(f) = \Sum_{p \in X} \ord_p(f) \cdot p$
 	
 	\[\calL(\ddiv(f)) = \{g \in k(X)^\X \vert \underbrace{\ddiv g + \ddiv f \ge 0}_{\substack{\Leftrightarrow \ddiv(g \cdot f) \ge 0 \\ \Rightarrow g \in \calL(\ddiv(f)) \Leftrightarrow g \cdot f \in \calO_X(U)}}\} \cup \{0\}\]
 \item
-	$D = \sum\limits_{p \in X} e_p \cdot p$, $P = \{p \in X \vert e_p \ne 0\} = \{p_1,\ldots ,p_n\}$. Sei $U \subseteq X$ offen, $|U \cap P| \le 1 \leadsto$ solche $U$ "uberdecken $X$.
+	$D = \Sum_{p \in X} e_p \cdot p$, $P = \{p \in X \vert e_p \ne 0\} = \{p_1,\ldots ,p_n\}$. Sei $U \subseteq X$ offen, $|U \cap P| \le 1 \leadsto$ solche $U$ "uberdecken $X$.
 	
 	\emph{Zu zeigen:} $\calL(D)(U) \cong \calO_X(U)$
 	
@@ -4978,7 +4982,7 @@ $X$ nichtsingul"are projektive Kurve "uber algebraisch abeschlossenem K"orper $k
 
 \begin{Aufg}
  Sei $X$ ein topologischer Raum, 
-$U \subseteq X$ eine offene Teilmenge von $X$ und $\mathcal{F}$ eine Garbe auf $U$. Ist $j\colon U \hookrightarrow X$ die Inklusion, so ist die \textit{durch Null fortgesetzte Garbe}, $j_!(\mathcal{F})$, definiert als die zur Pr"agarbe
+$U \subseteq X$ eine offene Teilmenge von $X$ und $\mathcal{F}$ eine Garbe auf $U$. Ist $j\colon U \hookrightarrow X$ die Inklusion, so ist die \deftermspec{durch Null fortgesetzte Garbe}{Garbe!durch Nullen fortgesetzte}, $j_!(\mathcal{F})$, definiert als die zur Pr"agarbe
 $$
 V \mapsto \left\{ \begin{array}{cc} \mathcal{F}(V) & \textup{f"ur } V \subseteq U \\ 0 & \textup{sonst}
 \end{array} \right. 
@@ -5035,8 +5039,12 @@ Sei $X$ ein noethersches Schema und $\F$ eine koh"arente $\mathcal{O}_X$-Modulga
 %-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Stichwortverzeichnis -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
 \def\indexspace{\par\medskip}
-\printindex[default]
+%\printindex[default]
 \printindex[default][\phantomsection\addcontentsline{toc}{chapter}{Stichwortverzeichnis}\vspace{-1.2em}]
+
+%-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Symbolverzeichnis -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+\printglossaries
 
 
 
