@@ -68,15 +68,14 @@
 \usepackage{index}
 \newindex{default}{idx}{ind}{Stichwortverzeichnis}
 
-
-% links
-\usepackage{xcolor}
-\usepackage{hyperref}
-
 %Symbolverzeichnis
 \usepackage[toc]{glossaries}
 \glossarystyle{super}
 \makeglossaries
+
+% links
+\usepackage{xcolor}
+\usepackage{hyperref}
 
 \definecolor{rltred}{rgb}{0.75,0,0}
 \definecolor{rltgreen}{rgb}{0,0.5,0}
@@ -128,7 +127,7 @@
 % Erweiterte description umgebung
 \usepackage{expdlist}
 
-%fueÂr schoene Brueche
+%fueÃÂr schoene Brueche
 \usepackage{nicefrac}
 
 % Fuer Diagramme
@@ -214,7 +213,11 @@
 \newcommand{\defeqr}[0]{\mathrel{\mathop:}=}
 \newcommand{\defeql}[0]{=\mathrel{\mathop:}}
 
+% Summen, Vereinigungen und Schnitte bei denen die Limits immer oben und unten stehen, nie nebendran
 \newcommand{\Sum}{\sum\limits}
+\newcommand{\Bigcup}{\bigcup\limits}
+\newcommand{\Bigcap}{\bigcap\limits}
+
 \newcommand{\folgtnach}[1]{\ensuremath{\DOTSB\;\xRightarrow{\text{#1}}\;}}
 \newcommand{\folgtwegen}[1]{\ensuremath{\DOTSB\;\stackrel{#1}{\Rightarrow}\;}}
 \newcommand{\equizunach}[1]{\ensuremath{\DOTSB\;\xLeftrightarrow{\text{#1}}\;}}
@@ -323,6 +326,7 @@
 \newcommand{\calL}{\mathcal{L}}
 \newcommand{\calN}{\mathcal{N}}
 \newcommand{\calO}{\mathcal{O}}
+\newcommand{\calP}{\mathcal{P}}
 \newcommand{\calW}{\mathcal{W}}
 \newcommand{\calX}{\mathcal{X}}
 \newcommand{\F}{\mathcal{F}} % <-- schnellere alternative
@@ -343,9 +347,13 @@
 
 % ein schoener aussehender Faktorraum anstaat einfach nur A/B
 \newcommand{\FakRaum}[2]{
-  \raisebox{0.7ex}{\ensuremath{#1}}
-  \ensuremath{\mkern-3mu}\big/\ensuremath{\mkern-3mu}
-  \raisebox{-0.6ex}{\ensuremath{#2}}} 
+	\raisebox{0.7ex}{\ensuremath{#1}}
+	\ensuremath{\mkern-3mu}\big/\ensuremath{\mkern-3mu}
+	\raisebox{-0.6ex}{\ensuremath{#2}}}
+\newcommand{\smallFakRaum}[2]{
+	\scriptsize{\raisebox{0.7ex}{\ensuremath{#1}}
+	\ensuremath{\mkern-3mu}\ / \ensuremath{\mkern-3mu}
+	\raisebox{-0.6ex}{\ensuremath{#2}}}}
 
 \renewcommand{\labelenumi}{\theenumi}    
 \renewcommand{\theenumi}{(\alph{enumi})}
@@ -2718,7 +2726,7 @@ Sei $X$ ein noethersches, $\underbrace{\text{irreduzibles, reduziertes}}_{=:\tex
 \item
 	Ein \deftermspec{Primdivisor}{Divisor!Prim-} auf $X$ ist ein integres abgeschlossenes Unterschema der Kodimension $1$.
 \item
-	Die freie abelsche Gruppe $\Div(X)$, die von den Primdivisoren erzeugt wird, hei\ss t die Gruppe der \deftermspec{Weil-Divisoren}{Divisor!Weil-}\index{Gruppe!Weil-Divisoren-}.
+	Die freie abelsche Gruppe $\Div(X)$, die von den Primdivisoren erzeugt wird, hei\ss t die gruppe der \deftermspec{Weil-Divisoren}{Divisor!Weil-}\index{Gruppe!Weil-Divisoren-}.
 \item
 	Ist $X$ eine Kurve "uber einem algebraisch abgeschlossenen K"orper, so sind die Primdivisoren die abgeschlossenen Punkte auf $X$.
 \item
@@ -4559,8 +4567,47 @@ Da $\varphi$ nicht surjektiv ist, wird der Ringhomomorphismus nicht von einem Id
 \end{Loes}
 
 \begin{Loes}
- 
-\end{Loes}
+$f: X \to Y$ separiert $\Leftrightarrow \Delta_f(X) \subseteq X \X_Y X$ abgeschlossen
+\begin{center}\begin{tikzpicture}[baseline=0]
+	\node (0) at (0, 2) {$X$};
+	\node (1) at (0, 1) {$X \X_Y X$};
+	\node (2) at (-2, 0) {$X$};
+	\node (3) at (2, 0) {$X$};
+	\node (4) at (0, -1) {$Y$};
+	\node at (0,0) {$\Box$};
+	
+	\draw[->] (0) -- (1);
+	\draw[->] (1) -- node[above, font=\scriptsize]{$p_1$} (2);
+	\draw[->] (1) -- node[above, font=\scriptsize]{$p_2$} (3);
+	\draw[->] (2) -- node[below, font=\scriptsize]{$f$} (4);
+	\draw[->] (3) -- node[below, font=\scriptsize]{$f$} (4);
+	\draw[->] (0) to[out=180, in=135] node[above, font=\scriptsize]{$\id$} (2);
+	\draw[->] (0) to[out=0, in=45] node[above, font=\scriptsize]{$\id$} (3);
+\end{tikzpicture}
+\begin{minipage}{7cm}\begin{flushright}$f$ separiert $\Leftrightarrow \Delta_f(X) \subseteq X \X_Y X$ abgeschlossenes Unterschema\end{flushright}\end{minipage}\end{center}
+
+\begin{twosidedproof}
+\proofforward
+	Nach Definition
+\proofreverse
+	\begin{enumerate}[$\bullet$]
+		\item $\Delta_f$ hat Linksinverse $p_1 \Rightarrow \Delta_f$ injektiv
+		\item Noch zu zeigen: $\underbrace{\calO_{\Delta_f(X)}}_{(\Delta_f)_*\calO_X} = \calO_{X \X_Y \smallFakRaum{X}{\calI}}$, $\calI$ quasikoh"arente Idealgarbe auf $X \X X$.
+	\end{enumerate}
+	$\leadsto$ finde offene, affine "Uberdeckung $X \X_Y X = \Bigcup_{i\in I} U_i$, sodass $\forall i \in I: \calI_{U_i}$ quasikoh"arent.
+	
+	$Y = \bigcup \Spec R_i$\\
+	$X = \bigcup \underbrace{f^{-1}(\Spec R_i)}_{X_i}$, $X_i = \bigcup \Spec A_{ij}$
+	
+	$\Rightarrow \Spec A_{ij} \X_{\Spec R_i} \Spec A_{ij}$ "uberdecken $\Delta_f(X)$\\
+	$f|_{\Spec A_{ij}}: \underbrace{\Spec A_{ij}}_{=: Z_{ij}} \to \Spec R_i$ separiert
+	
+	$\Rightarrow \Delta_f|_{Z_{ij}}: Z_{ij} \to Z_{ij} \X_{\Spec R_i} Z_{ij}$ ist abgeschlossene Einbettung
+	
+	$\Rightarrow \calO_{\Delta_f(X)|_{Z_{ij}}} = \calO_{Z_{ij} \X_{\Spec R} \smallFakRaum{Z_{ij}}{I}}$, $I$ quasikoh"arent
+	
+	$\calI|_{Z_{ij}} = I$
+\end{twosidedproof}\end{Loes}
 
 
 \begin{Loes}
@@ -4718,12 +4765,12 @@ Schemamorphismus $f: X \to Y$ quasi-endlich $\Leftrightarrow \forall y \in Y: |f
 \item
 	Beispiel aus b): $f^{-1}(\Spec k) = \Spec k[t]$ ist unendlich.
 \end{enumerate}
-\textbf{Anmerkungen zur L"osung:}
-Die Aufgabe haben wir in der "Ubung bereits gel"ost. Da aber die Diskussion zu der L"osung zu einem falschen Ende gekommen ist, hier noch eine Anmerkung:
+\textbf{Anmerkungen zur LÃ¶sung:}
+Die Aufgabe haben wir in der Ãbung bereits gelÃ¶st. Da aber die Diskussion zu der LÃ¶sung zu einem falschen Ende gekommen ist, hier noch eine Anmerkung:
 
-In der Definition von quasi-endlich ist mit $f^{-1}(y)$ die Faser (als Schema) "uber $y$ gemeint.
-In meinen Gegenbeispielen f"ur c), e), f) hatte ich immer $Y = \Spec k$, also $Y$ einelementig, gew"ahlt.
-Auf "Ubungsblatt 6 Aufgabe 2 haben wir aber schon eingesehen, dass $f^{-1}(Y)$, aufgefasst als topologischer Raum, hom"oomorph zum Urbild von $Y$ unter $f$ ist, wenn wir $f$ als stetige Abbildung zwischen den topologischen R"aumen $X$ und $Y$ auffassen. In meinen Gegenbeispielen gab es daher keinen Unterschied zwischen "`topologisches Urbild nehmen"' und "`Ausrechnen der Faser mit anschließendem Vergessen der Strukturgarbe"'.
+In der Definition von quasi-endlich ist mit $f^{-1}(y)$ die Faser (als Schema) Ã¼ber $y$ gemeint.
+In meinen Gegenbeispielen fÃ¼r c), e), f) hatte ich immer $Y = \Spec k$, also $Y$ einelementig, gewÃ¤hlt.
+Auf Ãbungsblatt 6 Aufgabe 2 haben wir aber schon eingesehen, dass $f^{-1}(Y)$, aufgefasst als topologischer Raum, homÃ¶omorph zum Urbild von $Y$ unter $f$ ist, wenn wir $f$ als stetige Abbildung zwischen den topologischen RÃ¤umen $X$ und $Y$ auffassen. In meinen Gegenbeispielen gab es daher keinen Unterschied zwischen "`topologisches Urbild nehmen"' und "`Ausrechnen der Faser mit anschlieÃendem Vergessen der Strukturgarbe"'.
 \end{Loes}
 
 \begin{Loes}
@@ -4801,10 +4848,10 @@ $f: X \to Y$ projektiv $:\Leftrightarrow \exists\ n \in \N$ mit \begin{tikzpictu
 		$\Rightarrow \begin{array}{ccc} T &\to& R \otimes_S T \\ t &\mapsto& 1 \otimes t \end{array}$ surjektiv\end{minipage}
 	\end{description}
 
-	 Seien also $f \colon X \to Y$ und $g \colon Y \to Z$ projektiv und $m, n$ die nat"urlichen Zahlen, f"ur die es eine abgeschlossene Einbettungen $i \colon X \hookrightarrow \IP^n_Y$ bzw. $i' \colon Y \hookrightarrow \IP^m_Z$ gibt, "uber die $f$ bzw. $g$ faktorisiert. 
+	 Seien also $f \colon X \to Y$ und $g \colon Y \to Z$ projektiv und $m, n$ die natÃ¼rlichen Zahlen, fÃ¼r die es eine abgeschlossene Einbettungen $i \colon X \hookrightarrow \IP^n_Y$ bzw. $i' \colon Y \hookrightarrow \IP^m_Z$ gibt, Ã¼ber die $f$ bzw. $g$ faktorisiert. 
  
- Betrachte das Faserprodukt von $\IP^n_{\Z} \times_{\Spec \Z} \IP^m_Z$ und $Y$ "uber $\IP^m_Z$.
- Da f"ur Schemata allgemein $A \times_B B = B$ und $(A \times_R B) \times_S C =  A \times_R (B \times_S C)$ gilt, gilt auch $\IP^n_{\Z} \times_{\Spec \Z} \IP^m_Z \times_{\IP^m_Z} Y \cong \IP^n_Y$. Somit ist das obere rechte Viereck im kommutativen Diagramm 
+ Betrachte das Faserprodukt von $\IP^n_{\Z} \times_{\Spec \Z} \IP^m_Z$ und $Y$ Ã¼ber $\IP^m_Z$.
+ Da fÃ¼r Schemata allgemein $A \times_B B = B$ und $(A \times_R B) \times_S C =  A \times_R (B \times_S C)$ gilt, gilt auch $\IP^n_{\Z} \times_{\Spec \Z} \IP^m_Z \times_{\IP^m_Z} Y \cong \IP^n_Y$. Somit ist das obere rechte Viereck im kommutativen Diagramm 
  
  \begin{minipage}{7.9cm}
  \centering
@@ -4830,8 +4877,8 @@ $f: X \to Y$ projektiv $:\Leftrightarrow \exists\ n \in \N$ mit \begin{tikzpictu
   ein Faserprodukt und nach Behauptung 1 ist damit $\tilde{i}$ eine abgeschlossene Einbettung.
 \end{minipage}
 
- Weiter erinnern wir uns an die Segre-Einbettung $\Psi \colon \IP^n(k) \times \IP^m(k) \to \IP^N(k)$ mit $N = (n+1)(m+1)-1$ von "Ubungsblatt 7 Aufgabe 3 aus der Algebraischen Geometrie I. Dort haben wir gelernt, dass das Bild abgeschlossen in $\IP^N(k)$ ist, n"amlich $V(J)$ f"ur ein $J$, das wir konkret angegeben hatten. 
- Nun kann man sich klar machen, dass die durch $J$ gegebenen Gleichungen alle schon "uber $\Z$ definiert sind und die Konstruktion somit auch "uber $\Z$ klappt. Alternativ (da wir das Tensorprodukt dieses Semester nicht mehr scheuen) definieren wir in Analogie zu $\Psi$ einen Schemamorphismus $\Psi' \colon \IP^n_{\Z} \times \IP^m_{\Z} \to \IP^N_{\Z}$ lokal auf $D_+(x_r) \times D_+(y_s)$ durch den surjektiven Ringhomomorphismus
+ Weiter erinnern wir uns an die Segre-Einbettung $\Psi \colon \IP^n(k) \times \IP^m(k) \to \IP^N(k)$ mit $N = (n+1)(m+1)-1$ von Ãbungsblatt 7 Aufgabe 3 aus der Algebraischen Geometrie I. Dort haben wir gelernt, dass das Bild abgeschlossen in $\IP^N(k)$ ist, nÃ¤mlich $V(J)$ fÃ¼r ein $J$, das wir konkret angegeben hatten. 
+ Nun kann man sich klar machen, dass die durch $J$ gegebenen Gleichungen alle schon Ã¼ber $\Z$ definiert sind und die Konstruktion somit auch Ã¼ber $\Z$ klappt. Alternativ (da wir das Tensorprodukt dieses Semester nicht mehr scheuen) definieren wir in Analogie zu $\Psi$ einen Schemamorphismus $\Psi' \colon \IP^n_{\Z} \times \IP^m_{\Z} \to \IP^N_{\Z}$ lokal auf $D_+(x_r) \times D_+(y_s)$ durch den surjektiven Ringhomomorphismus
  $$\begin{array}{ccc}
  \Z[\frac{z_{ij}} {z_{rs}} \mid (i,j) \in \{0,\dots,n\}\times \{0,\dots,m\}] & \longrightarrow & \Z[\frac{x_0}{x_r},\dots,\frac{x_n}{x_r}] \otimes \Z[\frac{y_0}{y_s},\dots,\frac{y_m}{y_s}] \\
  \frac{z_{ij}} {z_{rs}} & \mapsto & \frac{x_i}{x_r} \otimes \frac{y_j}{y_s}
@@ -4919,7 +4966,7 @@ Basiswechsel mit dem Morphismus $\textrm{pr}_{\IP^N_{\Z}}$ liefert $j \colon \IP
 \end{tikzpicture}
   \end{center}
  Der Morphismus $i$ ist nach Voraussetzung eine abgeschlossene Einbettung, nach Behauptung 1 also auch $i'$. 
- Die beiden inneren Vierecke sind Faserprodukte und somit auch das "außere Viereck. Daher gilt $\textrm{pr}_{Y'} \circ i' = f'$ und $f'$ ist ein projektiver Schemamorphismus.
+ Die beiden inneren Vierecke sind Faserprodukte und somit auch das Ã¤uÃere Viereck. Daher gilt $\textrm{pr}_{Y'} \circ i' = f'$ und $f'$ ist ein projektiver Schemamorphismus.
 \item
 	 Seinen $X,Y$ noethersche Schemata und $f\colon X \to Y$ ein Schemamorphismus. Wir zeigen, dass $f = \textrm{pr}_Y \circ i$ eigentlich ist. 
  
@@ -5016,12 +5063,52 @@ Sei $X$ ein noethersches Schema und $\F$ eine koh"arente $\mathcal{O}_X$-Modulga
 \end{Aufg}
 
 \begin{Loes}
- 
+$X$ top. Raum, $U \subseteq X$, $\calF$ Garbe auf $U$, $j: U \hookrightarrow X$, Pr"agarbe $\calP: V \mapsto \begin{cases} \calF(V) &, V \subseteq U \\ 0 &, \text{sonst}\end{cases}$ $\leadsto$ assoziierte Garbe $j_!(\calF)$
+
+$X$ Schema, $U \subseteq X$ offen, dicht, $U \ne X$
+
+\emph{Zu zeigen:} $j_!(\calO_U)$ nicht quasikoh"arent
+
+Sei $\Spec R \cong V \subseteq X$ offen, affin, irreduzibel, $V \not\subseteq U$ (existiert, da $U \ne X$). $U$ dicht $\Rightarrow V \cap U \ne 0$. Sei $x \in U \cap V \leadsto x \in \Spec R \Rightarrow \calO_{U,x} = R_X$
+	\[ j_!(\calO_U)_X = \calO_{U \cap V, x} = \calO_{U,x} = R_X \]
+	
+\emph{Annahme:} $j_!(\calO_U)$ ist quasikoh"arent
+
+$\Rightarrow j_!(\calO_U)|_V = \widetilde{j_!(\calO_U)(V)}$ \textcolor{gray}{(die Tilde geht "uber den ganzen Term)}
+
+Sei $s \in j_!(\calO_U)(V)$, $x \in V \setminus U$. F"ur alle $U_x$ Umgebung von $x$ gilt $\calP(U_x) = 0$
+
+$\Rightarrow j_!(\calO_U)_X = 0$\\
+$\Rightarrow s_X = 0$\\
+$\Rightarrow \exists \ U_x \subseteq V$ offene Umgebung von $x$ mit $s|_{D(f)} = 0$, insbesondere gibt es $f \in R \setminus \{0\}$ mit $s|_{D(f)} = 0$ $\Rightarrow \exists \ n \in \N: f^n\cdot s = 0 \xRightarrow[R\text{ nullteilerfrei}]{f\ne0} s = 0$
+
+$\Longrightarrow j_!(\calO_U)|_V \equiv 0 \lightning$
 \end{Loes}
 
 \begin{Loes}
- 
-\end{Loes}
+$X, Y$ noethersche Schemata, $f:X \to Y$ endlich
+\begin{enumerate}[a)]
+\item
+	\emph{Zu zeigen:} $\calF$ koh"arente $\calO_X$-Modulgarbe $\Rightarrow f_*(\calF)$ koh"arente $\calO_Y$-Modulgarbe
+	
+	$\calF$ koh"arent $:\Leftrightarrow X$ noethersch und f"ur $\overset{=\Spec R}{\text{alle }U \subseteq X}$ offen, affin gibt es endlich erzeugten $R$-Modul $M_U$ mit $\calF|_U = \tilde M_U$
+	
+	Sei $\Spec S \cong V \subseteq Y$ offen, affin. $f^{-1}(V) = \Spec R$ affin, offen in $X$, $R$ endlich erzeugter $S$-Modul ($S$-Modul durch $f$).
+	
+	$\calF$ koh"arent $\Rightarrow \exists$ endlich erzeugter $R$-Modul $N$ mit $\calF|_{f^{-1}(V)} = \tilde N$, $f|_{f^{-1}(V)}: \Spec R \to \Spec S$, $\leadsto \alpha: S \to R$
+	
+	Bemerkung \ref{9.7} $\Rightarrow f_*\tilde N = _\alpha\tilde N$, wobei $_\alpha N = N$, aufgefasst als $S$-Modul durch $\alpha$.
+	
+	$N$ endlich erzeugter $R$-Modul, $R$ endlich erzeugter $S$-Modul $\Rightarrow _\alpha N$ endlich erzeugter $S$-Modul
+	
+	$\Rightarrow f_*\calF|_V = f_*\tilde N = _\alpha \tilde N \Rightarrow f_* \calF$ koh"arent
+\item
+	$k \hookrightarrow k[x]$, $k[x]$ nicht endl. erzeugbar als $k$-Modul $\Rightarrow f: \underbrace{\Spec k[x]}_{X} \to \underbrace{\Spec k}_{Y}$ nicht endlich
+	
+	$\calF = \calO_X \Rightarrow \calF$ koh"arent $\checkmark$
+	
+	$f_*\calO_X(Y) = \calF(X) = k[x]$ $\rightarrow$ nicht koh"arent
+\end{enumerate}\end{Loes}
 
 \begin{Loes}
 $X$ noethersches Schema, $\calF$ koh"arenter $\calO_X$-Modulring
@@ -5069,59 +5156,14 @@ $X$ noethersches Schema, $\calF$ koh"arenter $\calO_X$-Modulring
 	$\underset{=\calF_X \otimes_{\calO_{X,x}} \calG_X}{(\calF \otimes_{\calO_X} \calG)_x} \cong \calO_{X,x}$
 	
 	$\xRightarrow{b)} \calF_X \cong \calO_{X,x} \xRightarrow{\text{Bew. v. a)}} \calF$ ist lokal frei von Rang $1$.
-\end{Loes}
+\end{enumerate}\end{Loes}
+
 
 %-------------------------- Uebung 11 --------------------------
 \newpage
 \section{10. Juli 2012}
 \setcounter{Aufg}{0}
 \setcounter{Loes}{0}
-
-
-Auf diesem Blatt bezeichne $k$ immer einen algebraisch abgeschlossenen K"orper.
-
-\begin{Aufg}
-Betrachte das integre Schema $X \coloneqq \Proj( \, k[x,y,z]/(y^2z-x^3)\,)$.
-\begin{enumerate}%[topsep=0cm, parsep=0cm, label=\alph*)]
- \item Finde einen Primdivisor $W$ auf $X$, f"ur den $\ord_W$ keine diskrete Bewertung auf $k(X) = \Quot \calO_{X,W}$ ist.
- \item Berechne den Hauptdivisor von $\frac{\overline x + \overline y}{\overline z}$.
-\end{enumerate}
-\end{Aufg}
-
-
-\begin{Aufg}
-Sei $X$ ein noethersches integres separiertes Schema. Sei weiter $V$ eine echte abgeschlossene Teilmenge von $X$ und $U\coloneqq X \setminus V$. Zeige:
-\begin{enumerate}%[topsep=0cm, parsep=0cm, label=\alph*)]
-\item[a)] Die Abbildung
-\begin{eqnarray*}
-\textup{Cl}(X) & \rightarrow & \textup{Cl}(U)\\
-\sum n_i Y_i & \mapsto & \sum n_i(Y_i \cap U)
-\end{eqnarray*}
-ist ein surjektiver Homomorphismus. Dabei gehe die Summe auf der rechten Seite nur "uber die nichtleeren Schnitte $Y_i\cap U$.
-\item[b)] Ist $\textup{codim}_X V \geq 2$, so ist die Abbildung in a) ein Isomorphismus.
-\item[c)] Ist $V$ irreduzibel und $\textup{codim}_X V=1$, so ist die Sequenz
-\begin{eqnarray*}
-\mathbb{Z} \rightarrow \textup{Cl}(X) \rightarrow \textup{Cl}(U) \rightarrow 0
-\end{eqnarray*}
-exakt. Dabei sei die erste Abbildung definiert durch $k \mapsto k \cdot V$.
-\end{enumerate}
-\end{Aufg}
-
-
-\begin{Aufg}
-Sei $R\coloneqq k[x,y,z]/(xy-z^2)$ und $X\coloneqq\textrm{Spec}(R)$. Zeige:
-\begin{enumerate}%[topsep=0cm, parsep=0.1cm, label=\alph*)]
-\item[a)] $X$ ist ein noethersches integres separiertes Schema, das nicht lokal faktoriell ist.
-\item[b)] $\textrm{Cl}(X) \cong \Z/2\Z$.
-
-\textit{Hinweis: Benutze Aufgabe 2 c) mit $V\coloneqq x$-Achse. Zeige: $2\cdot V=\textrm{div}(y)$, wobei $y$ als rationale Funktion auf $X$ aufgefasst wird. Benutze Proposition 11.3 und zeige, dass $V$ kein Hauptdivisor ist.}
-\item[c)] $\textrm{CaCl}(X) =0$.
-
-\textit{Hinweis: Cartier-Divisoren sind die Weil-Divisoren, die lokal Hauptdivisoren sind.}
-\end{enumerate}
-\end{Aufg}
-
- 
 
 %-------------------------- Uebung 12 --------------------------
 \newpage
@@ -5193,5 +5235,3 @@ Das war eine gute Idee, die Klasse ist sehr anpassbar, ohne gro\ss en Aufwand, m
 \end{komm}
 
 \end{document}
-
-
