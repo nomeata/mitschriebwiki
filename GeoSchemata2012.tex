@@ -171,27 +171,28 @@
     \newtheorem{Bez}[Def]{Bezeichnung}
     \newtheorem{Lemma}{Lemma}
     \newtheorem{Aufg}{Aufgabe}
+	\newtheorem{Verallg}[Def]{Verallgemeinerung}
   \newtheorem{Loes}{L\"osung}
 \theoremstyle{nonumberbreak}
-  \newtheorem{bem}{Bemerkung}
-  \newtheorem{bsp}{Beispiel}
-  \newtheorem{bspe}{Beispiele}
-  \newtheorem{satz}{Satz}
-  \newtheorem{erinn}{Erinnerung}
-  \newtheorem{folg}{Folgerung}
-  \newtheorem{beo}{Beobachtung}
-  \newtheorem{beh}{Behauptung}
-  \newtheorem{frag}{Frage}
-  \newtheorem{ziel}{Ziel}
-  \newtheorem{strat}{Strategie}
-  %fuer das Gaestebuch
-  \newtheorem{gast}{G\"astebucheintrag}
-  \newtheorem{komm}{Kommentar}
-  \newtheorem{korr}{Korrktur}
-  %fuer Beweise
-  \theoremsymbol{\ensuremath{\Box}}
-  \newtheorem{bew}{Beweis}
-  \newtheorem{bewskiz}{Beweisskizze}
+	\newtheorem{bem}{Bemerkung}
+	\newtheorem{bsp}{Beispiel}
+	\newtheorem{bspe}{Beispiele}
+	\newtheorem{satz}{Satz}
+	\newtheorem{erinn}{Erinnerung}
+	\newtheorem{folg}{Folgerung}
+	\newtheorem{beo}{Beobachtung}
+	\newtheorem{beh}{Behauptung}
+	\newtheorem{frag}{Frage}
+	\newtheorem{ziel}{Ziel}
+	\newtheorem{strat}{Strategie}
+	%fuer das Gaestebuch
+	\newtheorem{gast}{G\"astebucheintrag}
+	\newtheorem{komm}{Kommentar}
+	\newtheorem{korr}{Korrktur}
+	%fuer Beweise
+	\theoremsymbol{\ensuremath{\Box}}
+	\newtheorem{bew}{Beweis}
+	\newtheorem{bewskiz}{Beweisskizze}
 \theoremstyle{nonumberplain}
 
 % Befehl fuer Anfuerungszeichen unten und oben
@@ -258,6 +259,7 @@
 \DeclareMathOperator{\GL}{GL}
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\Kern}{Kern}
+\DeclareMathOperator{\Mod}{Mod}
 \DeclareMathOperator{\Mor}{Mor}
 \DeclareMathOperator{\Ob}{Ob}
 \DeclareMathOperator{\Off}{Off}
@@ -272,6 +274,7 @@
 \DeclareMathOperator{\Spe}{Sp\'e}
 \DeclareMathOperator{\Spec}{Spec}
 \DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\VR}{VR}
 
 \DeclareMathOperator{\chara}{char}
 \DeclareMathOperator{\dd}{d} % das "d" zum Beispiel beim Integral am Ende "dx"
@@ -293,8 +296,10 @@
 %Kategorien
 \DeclareMathOperator{\Ab}{\underline{Ab}}
 \DeclareMathOperator{\Fun}{\underline{Fun}}
+\DeclareMathOperator{\Grp}{\underline{Grp}}
 \DeclareMathOperator{\Ringe}{\underline{Ringe}}
 \DeclareMathOperator{\Sch}{\underline{Sch}}
+\DeclareMathOperator{\Set}{\underline{Set}}
 \DeclareMathOperator{\Sets}{\underline{Sets}}
 \DeclareMathOperator{\Sh}{\underline{Sh}}
 \DeclareMathOperator{\Top}{\underline{Top}}
@@ -2364,7 +2369,7 @@ Dann ist $k \ne j$, weil $U_j \to \Spec \Z$ separiert ist (\ref{8.3}). Sei $\bet
 Es ist $\underset{\in R^\X}{f_{ik}} = \underset{\in R^\X}{f_{ij}} \cdot \underset{\in R^\X}{f_{jk}} \Rightarrow \beta$ induziert denselben Morphismus $T \to \IP_\Z^n$ wie $\alpha$.
 \end{bew}
 
-%\newpage
+\newpage
 
 %-------------------------- Kapitel 2 --------------------------
 
@@ -2872,6 +2877,267 @@ Sei $X$ noethersches intetegres separiertes Schema. Dann gilt:
 		$\calL \hookrightarrow \calL \otimes_{\calO_X} \calK \cong \calK$
 	\end{description}
 \end{enumerate}\end{bew}
+
+\newpage
+
+%-------------------------- Kapitel 3 --------------------------
+
+% 4. 7.
+\chapter{Homologie von Garben}
+\setcounter{section}{11}
+
+$0 \to \calF' \to \calF \to \calF'' \to 0$ kurze exakte Sequenz von Garben auf $X$, $U \subseteq X$ offen
+
+$\Rightarrow 0 \to \calF'(U) \to \underset{\substack{\verteq \\ \Gamma(U,\calF)}}{\calF(U)} \to \calF''(U) \to \ldots $? exakt
+
+%-------------------------- Abschnitt 12 (Abgeleitete Funktoren) --------------------------
+
+\section{abgeleitete Funktoren}
+
+\begin{DefBem}\begin{enumerate}[a)]
+\item
+	Eine Kategorie $\calC$ hei\ss t \defterm{abelsch}, wenn gilt:
+	\begin{enumerate}[(i)]
+	\item
+		$\Hom_\calC(A,B)$ ist abelsche Gruppe f"ur alle $A, B \in \Ob(\calC)$
+	\item
+		F"ur Morphismen gelten die Distributivgesetze (bez"uglich $+$ und $\cdot$)
+	\item
+		Direkte Summen, Kerne, Kokerne existieren
+	\item
+		Der Homomorphiesatz gilt
+	\end{enumerate}
+\item
+	$\Ab$, $\underline{k-\VR}$, $\underline{R-\Mod}$, \underline{Ab$(X)$}, $\underline{\calO_X-\Mod}$ sind abelsche Kategoriem
+\item
+	$\Grp$, $\Set$ sind nicht abelsch
+\end{enumerate}\end{DefBem}
+
+\begin{Def}
+Sei $\calC$ abelsche Kategorie
+\begin{enumerate}[a)]
+\item
+	Ein \defterm{Komplex} in $\calC$ ist eine Sequenz $C^0 := \ldots \to C^{i-1} \xrightarrow{d^{i-1}} C^i \xrightarrow{d^i} C^{i+i} \to \ldots$ mit Objekten $C^i$ in $\calC$, Morphismen $d^i \in \Hom_\calC(C^i, C^{i+1})$ sodass f"ur jedes $i \in \Z$ gilt: $\Bild(d^{i-1}) \subseteq \Kern(d^i)$
+\item
+	F"ur einen Komplex $C^0$ hei\ss t $H^i(C^0) := \FakRaum{\Kern(d^i)}{\Bild(d^{i-1})}$ \deftermspec{$i$-tes Kohomologieobjekt}{Kohomologieobjekt!$i$-tes}.
+\item
+	$d^i \circ d^{i-1} = 0 \ \forall \ i$
+\end{enumerate}\end{Def}
+
+\begin{Prop}
+Sei $\calC$ eine abelsche Kategorie
+\begin{enumerate}[a)]
+\item
+	Die Komplexe in $\calC$ bilden eine Kategorie $\calC^0$ mit Morphismen\ldots 
+\item
+	$H^i$ ist Funktor $\calC^0 \to \calC \checkmark$
+\item
+	Zu jeder kurzen exakten Sequenz $0 \to C'^0 \to C^0 \to C''^0 \to 0$ in $\calC^0$	gibt es eine lange exakte Kohomologiesequenz
+		\[ 0 \to H^0(C'^0) \to H^0(C^0) \to H^0(C''^0) \xrightarrow{d} H^1(C'^0) \to H^1(C^0) \to \ldots \]
+	\begin{center}\begin{tikzpicture}
+		\node(11) at (0,0) {$0$};
+		\node(12) at (2,0) {$0$};
+		\node(13) at (4,0) {$0$};
+		\node(14) at (6,0) {$0$};
+		
+		\node(21) at (0,-1) {$C'^{i-1}$};
+		\node(22) at (2,-1) {$C'^{i}$};
+		\node[shape=rectangle,rounded corners=1mm,gray,draw](23) at (4,-1) {$C'^{i+1}$};
+		\node(24) at (6,-1) {$C'^{i+2}$};
+		
+		\node(31) at (0,-2) {$C^{i-1}$};
+		\node(32) at (2,-2) {$C^{i}$};
+		\node(33) at (4,-2) {$C^{i+1}$};
+		\node(34) at (6,-2) {$C^{i+2}$};
+		
+		\node(41) at (0,-3) {$C''^{i-1}$};
+		\node[shape=rectangle,rounded corners=1mm,gray,draw](42) at (2,-3) {$C''^{i}$};
+		\node(43) at (4,-3) {$C''^{i+1}$};
+		\node(44) at (6,-3) {$C''^{i+2}$};
+		
+		\node(51) at (0,-4) {$0$};
+		\node(52) at (2,-4) {$0$};
+		\node(53) at (4,-4) {$0$};
+		\node(54) at (6,-4) {$0$};
+		
+		\node (dl) at (-2,-2) {\ldots}; \node (dr) at (8,-2) {\ldots};
+		
+		\draw[->] (11) -- (21); \draw[->] (21) -- (31); \draw[->] (31) -- (41); \draw[->] (41) -- (51);
+		\draw[->] (12) -- (22); \draw[->] (22) -- (32); \draw[->] (32) -- (42); \draw[->] (42) -- (52);
+		\draw[->] (13) -- (23); \draw[->] (23) -- (33); \draw[->] (33) -- (43); \draw[->] (43) -- (53);
+		\draw[->] (14) -- (24); \draw[->] (24) -- (34); \draw[->] (34) -- (44); \draw[->] (44) -- (54);
+		
+		\draw[->] (21) -- (22); \draw[->] (22) -- (23); \draw[->] (23) -- (24);
+		\draw[->] (dl) -- (31); \draw[->] (31) -- (32); \draw[->] (32) -- (33); \draw[->] (33) -- (34); \draw[->] (34) -- (dr);
+		\draw[->] (41) -- (42); \draw[->] (42) -- (43); \draw[->] (43) -- (44);
+		
+		\draw[->, gray] ([xshift=-2mm]42.north) -- node[left, font=\scriptsize]{Urbild} ([xshift=-2mm]32.south);
+		\draw[->, gray] ([yshift=2mm]32.east) -- ([yshift=2mm]33.west);
+		\draw[->, gray] ([xshift=-2mm]33.north) -- node[left, font=\scriptsize]{Urbild} ([xshift=-2mm]23.south);
+		\draw[->, gray, dashed] ([yshift=2mm]42.east) to[out=0,in=270] ([xshift=2mm]23.south);
+	\end{tikzpicture}\end{center}
+\end{enumerate}\end{Prop}
+
+\textbf{Ziel:} Sei $X$ ein Schema, $\calF$ Garbe auf $X$. Suche Gruppen (beziehungsweise $\calO_X$-Moduln) $H^i(X, \calF)$, $i \ge 0$, sodass f"ur jede kurze exakte Sequenz $0 \to \calF' \to \calF \to \calF'' \to 0$ in \underline{Ab$(X)$} (beziehungsweise $\underline{\calO_X-\Mod}$) gilt:
+
+$0 \to H^0(X, \calF') \to H^0(X, \calF) \to H^0(X, \calF'') \to H^1(X, \calF') \to H^1(X, \calF) \to \ldots$ ist exakt und $H^0(X, \calF) = \Gamma(X, \calF) = \calF(X)$.
+
+\begin{Bem}
+Sei $H^i(X,\cdot)$ so ein Funktor, (*) $0 \to \calF \to \calG^0 \to \calG^1 \to$ exakte Sequenz in \underline{Ab$(X)$} (\quot{Aufl"osung von $\calF$}).
+
+Ist $H^i(X, \calG^j) = 0$ f"ur alle $j \ge 0$ und alle $i \ge 1$ ($\calG^j$ ist \defterm{azyklisch}), so gilt $H^i(X, \calF) = H^i(\Gamma(X, \calG^0))$
+\end{Bem}
+
+\begin{bew}
+Induktion "uber $i$:\begin{enumerate}[$a = 0$:]
+\item[$i = 0$:]
+	$0 \to \Gamma(X, \calF) \to \Gamma(X, \calG^0) \to \Gamma(X, \calG^1)$ ist exakt.\\
+	$H^0(\Gamma(X, \calG^0)) = \Kern (\Gamma(X, \calG^0) \to \Gamma(X, \calG^1)) \cong \Gamma(X, \calF)$
+	
+	Aus (*) folgt $\begin{array}{cccccccccl} 0 &\to& \calF &\to& \calG^0 &\to& \FakRaum{\calG^0}{\calF} &\to& 0 & \text{ist exakt und} \\
+		0 &\to& \FakRaum{\calG^0}{\calF} &\to& \calG^1 &\to& \calG^2 &\to& \ldots & \text{ist exakt}\end{array}$
+\item[$i = 1$:]
+	Nach Voraussetzung gibt es lange exakte Sequenz
+		\[ 0  \to H^0(X, \calF) \to H^0(X, \calG^0) \to H^0(X, \FakRaum{\calG^0}{\calF}) \to H^1(X, \calF) \to 0 \to H^1(X, \FakRaum{\calG^0}{\calF}) \to \ldots  \]
+		$\Rightarrow H^1(X, \calF) = \FakRaum{H^0(X, \calG^0/\calF)}{\Bild(H^0(X, \calG^0))}$\\
+		\textcolor{gray}{($H^0(X, \FakRaum{\calG^0}{\calF}) \cong \Kern(H^0(X, \calG^1) \to H^0(X, \calG^2))$)}
+		
+		$\Rightarrow H^1(X, \calF) \cong \FakRaum{\Kern( H^0(X, \calG^1) \to H^0(X, \calG^2))}{\Bild( H^0(X, \calG^0) \to H^0(X, \calG^1))}$\\
+		$\textcolor{white}{\Rightarrow H^1(X, \calF)} = H^1(\Gamma(X, \calG^0))$
+\end{enumerate}\end{bew}
+
+\begin{DefBem}\begin{enumerate}[a)]
+\item
+	Ein Objekt $I$ in einer abelschen Kategorie $\calC$ hei\ss t \defterm{injektiv}, wenn $\Hom_\calC(\cdot, I)$ exakt ist.
+\item
+	$I$ ist genau dann injektiv, wenn f"ur jedes solches Diagramm ein $\varphi \in \Hom_\calC(C, I)$ existiert mit $\tilde \varphi \circ \alpha = \varphi$.
+	\begin{center}\begin{tikzpicture}
+		\node (0) at (-1,0) {$0$};
+		\node (1) at (0,0) {$C'$};
+		\node (2) at (1,0) {$C$};
+		\node (3) at (0,-1) {$I$};
+		
+		\draw[->] (0) -- (1);
+		\draw[->] (1) -- node[above,font=\scriptsize]{$\alpha$} (2);
+		\draw[->] (1) -- node[left,font=\scriptsize]{$\varphi$} (3);
+		\draw[->,dashed] (2) -- node[right,font=\scriptsize]{$\tilde \varphi$} (3);
+	\end{tikzpicture}\end{center}
+	
+	$0 \to C' \xrightarrow{\alpha} C \to C'' \to 0$
+	
+	$0 \to \Hom(C'', I) \to \Hom(C, I) \to \Hom(C', I)$
+\end{enumerate}\end{DefBem}
+
+\begin{bsp}
+$\FakRaum{\Q}{\Z}$ ist injektiv in $\Ab$, \emph{denn}:
+
+Seien $G' \subseteq G$ abelsche Gruppe, $\varphi: G' \to \FakRaum{\Q}{\Z}$ Homomorphismus. F"ur $a \in G$ sei
+	\[ \tilde \varphi(a) := \begin{cases} \frac{1}{n} \varphi(n \cdot a) & \text{, falls } n \text{ minimal mit } n \cdot a \in G' \\
+		0 & , n \cdot a \notin G' \text{ f"ur alle } n > 0 \end{cases}\]
+\end{bsp}
+
+\begin{Bem}
+Sei $I$ injektives Objekt in \underline{Ab$(X)$} und \begin{tikzpicture}[baseline=-3.75]
+	\node (0) at (0,0) {$0$}; \node (I) at (1,0) {$I$}; \node (F) at (2,0) {$\calF$}; \node (1) at (3,0) {$\calF''$}; \node (2) at (4.25,0) {$\calF''$}; \node (3) at (5.25,0) {$0$};
+	\draw[->] (0) -- (I); \draw[->] (I) -- (F); \draw[->] (F) -- (1); \draw[->] (1) -- (2); \draw[->] (2) -- (3); \draw[->,dashed] (F) to[out=225,in=315] node[below,font=\scriptsize]{$p$} (I);\end{tikzpicture} exakt.
+
+\begin{enumerate}[a)]
+\item
+	Dann gibt es $p: \calF \to I$ mit $p \circ \alpha = \id_I$.
+\item
+	$\calF \cong \calF'' \oplus I$, \emph{denn:}
+	
+	$I \cap \Kern(p) = 0$, $\beta|_{\Kern(p)}: \Kern(p) \to \calF''$ ist Isomorphismus, $I + \Kern(p) = \calF$
+\item
+	$0 \to H^0(X, I) \to H^0(X, \calF) \to H^0(X, \calF'') \to 0 = H^1(X, I)$ ist exakt.
+\end{enumerate}\end{Bem}
+
+% 5. 7.
+\begin{Prop}
+
+\end{Prop}
+
+\begin{bew}
+
+\end{bew}
+
+\begin{DefBem}
+\begin{enumerate}[a)]
+\item
+	
+\item
+	
+\item
+	
+\end{enumerate}\end{DefBem}
+
+\begin{Prop}
+\begin{enumerate}[a)]
+\item
+	
+\item
+	
+\item
+	
+\item
+	
+\end{enumerate}\end{Prop}
+
+\begin{Verallg}
+
+\end{Verallg}
+
+\newpage
+
+%-------------------------- Abschnitt 13 (Cech Kohomologie) --------------------------
+
+\section{\v{C}ech-Kohomologie}
+
+\begin{DefBem}\begin{enumerate}[a)]
+\item
+	
+\item
+	
+\item
+	
+\item
+	
+\end{enumerate}\end{DefBem}
+
+\begin{bew}\begin{enumerate}[a)]\item[d)]
+
+\end{enumerate}\end{bew}
+
+\begin{Bsp}
+\begin{enumerate}[a)]
+\item
+	
+\item
+	
+\end{enumerate}\end{Bsp}
+
+\begin{Def}\begin{enumerate}[a)]
+\item
+	
+\item
+	
+\item
+	
+\item
+	
+\end{enumerate}\end{Def}
+
+\begin{bew}\begin{enumerate}[a)]\item[d)]
+
+\end{enumerate}\end{bew}
+
+\begin{Prop}
+
+\end{Prop}
+
+\begin{bew}
+
+\end{bew}
 
 
 
