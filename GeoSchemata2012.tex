@@ -3149,7 +3149,18 @@ $X = S^1$, $\calF = \Z$ konstante Garbe
 	\begin{minipage}{10cm}
 	$C^0( \calU, \calF) = \calF(U) \X \calF(V) \cong \Z^2$\\
 	$C^1(\calU, \calF) = \calF(U \cap V) = \Z^2, \ \forall \ k \ge 2: C^k(\calU, \calF) = 0$\end{minipage}
-	\begin{minipage}{5cm} \textcolor{red}{BILD}\end{minipage}
+	\begin{minipage}{5cm}\begin{tikzpicture}
+		\node[font=\scriptsize] at (0.6,0.6) {$U$}; \node[font=\scriptsize] at (0.6,-0.6) {$V$};
+		\draw (0,0) circle(0.5);
+		\begin{scope}
+			\clip (-1,-0.2) rectangle (1,1);
+			\draw[color1] (0,0) circle (0.55);
+		\end{scope}
+		\begin{scope}
+			\clip (-1,0.2) rectangle (1,-1);
+			\draw[color2] (0,0) circle (0.6);
+		\end{scope}
+	\end{tikzpicture}\end{minipage}
 		\[ 0 \to \Z^2 \xrightarrow{d^0} \Z^2 \xrightarrow{d^1} 0 \to 0 \to \ldots \]
 	mit $\left.\begin{array}{crcl} d^0:& (s,t) &\mapsto& t-s|_{U \cap V} \\
 		\Z^2:& (s,t) &\mapsto& (t-s, t-s) \in \Z^2 \end{array}\right\} \Rightarrow \Bild d^0 = \{(s,s)\} \in \Z^2\} \cong \Z^2$
@@ -3179,7 +3190,17 @@ $U \subseteq X$ offen: $\calF(U) \xrightarrow{\varepsilon_U} \Prod_{i \in \N} \c
 $d_U^0(\varepsilon_U(s)) = d_U^0((s|_{U \cap U_i})_{i \in N}) = (s|_{U \cap U_i|_{U \cap U_i \cap U_j}} - s|_{U \cap U_j|_{U \cap U_i \cap U_j}}) = 0$
 
 Seien $x \in X$, $j \in \N$, $x \in U_j$. Zeige Exaktheit auf den Halmen
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}
+	\node (0) at (0,0) {$0$};
+	\node (f) [right=0.5cm of 0] {$\calF$};
+	\node (c0) [right=0.5cm of f] {$\calC^0$};
+	\node (c1) [right=0.5cm of c0] {$\calC^1$};
+	\node (c2) [right=0.5cm of c1] {$\calC^2$};
+	\node (d) [right=0.5cm of c2] {$\ldots$};
+	
+	\draw[->] (0) -- (f); \draw[->] (f) -- node[above,font=\scriptsize]{$\varepsilon_X$} (c0); \draw[->] (c0) -- node[above,font=\scriptsize]{$d_X^0$} (c1); \draw[->] (c1) -- node[above,font=\scriptsize]{$d_X^1$} (c2); \draw[->] (c2) -- node[above,font=\scriptsize]{$d_X^2$} (d);
+	\draw[->,dashed] (c1) to[out=225,in=315] node[below,font=\scriptsize]{$h^1$} (c0); \draw[->,dashed] (c2) to[out=225,in=315] node[below,font=\scriptsize]{$h^2$} (c1);
+\end{tikzpicture}\end{center}
 
 Definiere $h^k: \calC_X^k \to \calC_X^{k-1}$.
 
@@ -3201,7 +3222,36 @@ Sei $X$ Schema, $\calF \in$ Ab$(X)$, $U = \{U_i| i \in \N\}$ offene "Uberdeckung
 
 \begin{bew}
 Sei $0 \to \calF \to I^0$ injektive Aufl"osung von $\calF$ und $0 \to \calF \to \calC^0 = \calC^0(\calU, \calF)$ Aufl"osung aus \ref{13.3}. Dann gibt es einen Homomorphismus von Komplexen:
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}
+	\node (0) at (-7,1.5) {$0$};
+	\node (f) [right=2cm of 0] {$\calF$};
+	\node (c0) [right=2.75cm of f] {$\calC^0$};
+	\node (c1) [right=2.75cm of c0] {$\calC^1$};
+	\node (c2) [right=2.75cm of c1] {$\calC^2$};
+	\node (d) [right=2cm of c2] {\ldots };
+	
+	\node (0') [below=2cm of 0] {$0$};
+	\node (f') [below=2cm of f] {$\calI$};
+	\node (i0) [below=2cm of c0] {$\calI^0$};
+	\node (i1) [below=2cm of c1] {$\calI^1$};
+	\node (i2) [below=2cm of c2] {$\calI^2$};
+	\node (d') [right=2cm of i2] {\ldots };
+	
+	\node (1) at (0.75,0.25) {$\FakRaum{\calC^0}{\calF}$};
+	\node (2) at (4.25,0.25) {$\FakRaum{\calC^1}{\Bild(\calC^0)}$};
+	
+	\node [above=0.05cm of 1] {$\schraffiert$}; \node [below=0.1cm of 1] {$\schraffiert$};
+	
+	\draw[-] (f) -- node[left]{$\verteq$} (f'); \draw[->] (0) -- (f); \draw[->] (0') -- (f');
+	\draw[->] (f) -- (c0);\draw[->] (c0) -- (c1);\draw[->] (c1) -- (c2);\draw[->] (c2) -- (d);
+	\draw[->] (f') -- (i0);\draw[->] (i0) -- (i1);\draw[->] (i1) -- (i2);\draw[->] (i2) -- (d');
+	\draw[->] (c0) -- node[left,font=\scriptsize]{$\alpha^0$} (i0);
+	\draw[->] (c1) -- node[right,font=\scriptsize]{$\alpha^1$} (i1);
+	\draw[->] (c2) -- node[right,font=\scriptsize]{$\alpha^2$} (i2);
+	
+	\draw[->>] (c0) -- (1); \draw[right hook->] (1) -- (c1); \draw[->,dashed] (1) -- (i1);
+	\draw[->] (c1) -- (2); \draw[right hook->] (2) -- (c2); \draw[->,dashed] (2) -- (i2);
+\end{tikzpicture}\end{center}
 \end{bew}
 
 
