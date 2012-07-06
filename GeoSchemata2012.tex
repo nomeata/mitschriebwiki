@@ -118,7 +118,7 @@
 
 % F\"ur TikZ-Diagramme
 \usepackage{tikz}
-\usetikzlibrary{matrix,arrows,calc,intersections}
+\usetikzlibrary{matrix,arrows,calc,intersections, positioning}
 \usetikzlibrary{decorations.text}
 
 % Verschiedene items in enumerate Umgebungen (Das enumitem Paket bietet mehr Optionen)
@@ -316,8 +316,9 @@
 \newcommand{\Z}{\mathbb{Z}}
 
 % kursive Buchstaben im Mathe Umgebungen
-\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calA}{\mathcal{A}}
 \newcommand{\calB}{\mathcal{B}}
+\newcommand{\calC}{\mathcal{C}}
 \newcommand{\calE}{\mathcal{E}}
 \newcommand{\calF}{\mathcal{F}}
 \newcommand{\calG}{\mathcal{G}}
@@ -2942,7 +2943,7 @@ Sei $\calC$ eine abelsche Kategorie
 		
 		\node(21) at (0,-1) {$C'^{i-1}$};
 		\node(22) at (2,-1) {$C'^{i}$};
-		\node[shape=rectangle,rounded corners=1mm,gray,draw](23) at (4,-1) {$C'^{i+1}$};
+		\node[shape=rectangle,rounded corners=1mm,gray,draw](23) at (4,-1) {\textcolor{black}{$C'^{i+1}$}};
 		\node(24) at (6,-1) {$C'^{i+2}$};
 		
 		\node(31) at (0,-2) {$C^{i-1}$};
@@ -2951,7 +2952,7 @@ Sei $\calC$ eine abelsche Kategorie
 		\node(34) at (6,-2) {$C^{i+2}$};
 		
 		\node(41) at (0,-3) {$C''^{i-1}$};
-		\node[shape=rectangle,rounded corners=1mm,gray,draw](42) at (2,-3) {$C''^{i}$};
+		\node[shape=rectangle,rounded corners=1mm,gray,draw](42) at (2,-3) {\textcolor{black}{$C''^{i}$}};
 		\node(43) at (4,-3) {$C''^{i+1}$};
 		\node(44) at (6,-3) {$C''^{i+2}$};
 		
@@ -3054,37 +3055,53 @@ Sei $I$ injektives Objekt in \underline{Ab$(X)$} und \begin{tikzpicture}[baselin
 
 % 5. 7.
 \begin{Prop}
-
+In den Kategorien $\Ab$, \underline{$R$-Mod}, \underline{Ab$(X)$}, \underline{$\calO_X$-Modul} gibt es gen"ugend viele injektive Objekte, das hei\ss t jedes Objekt ist isomorph zu einem Unterobjekt eines injektiven Objekts.
 \end{Prop}
 
 \begin{bew}
-
+Aufw"andige Konstruktion aus $\FakRaum{\Q}{\Z}$ (aber naheliegend)
 \end{bew}
 
-\begin{DefBem}
+\begin{DefBem}\label{12.8}
+Sei $X$ Schema, $\calF \in$ Ab$(X)$
 \begin{enumerate}[a)]
 \item
-	
+	$\calF$ besitzt injektive Aufl"osung, das hei\ss t eine exakte Sequenz $0 \to \calF \hookrightarrow I^0 \to I^1 \to I^2 \to \ldots$ mit $\forall \ \nu: I_\nu$ injektiv \textcolor{gray}{($\ldots \xrightarrow{d^{n-1}} I^n $, $\tilde d^n: \FakRaum{I^n}{\Bild(d^{n-1})} \hookrightarrow I^{n+1}$, $d^n = \tilde d^n \circ \pr$)}
 \item
-	
+	$H^i(X, \calF) := H^i(\Gamma(X, I^0))$ hei\ss t $i$-te Kohomologiegruppe von $\calF$, das hei\ss t $H^0$ ist die Kohomologie des Komplexes $0 \to \Gamma(X, I^0) \to \Gamma(X, I^1) \to \Gamma(X, I^2) \to \ldots$
 \item
-	
+	Insbesondere: $H^0(X, \Gamma) = \Kern(\Gamma(X, I^0) \to \Gamma(X, I^1)) \overset{\Gamma\text{ ist}}{\underset{\text{linksexakt}}{=}} \Gamma(X, \calF)$
 \end{enumerate}\end{DefBem}
 
-\begin{Prop}
+\begin{Prop}\label{12.9}
+Sei $X$ Schema, $\calF \in$ Abb$(X)$
 \begin{enumerate}[a)]
 \item
-	
+	$H^{i}(X, \calF)$ h"angen nicht von der gew"ahlten injektiven Aufl"osung ab.
 \item
-	
+	$H^{i}(X, \cdot)$ ist ein Funktor \underline{Ab$(X)$} $\to \Ab$
 \item
-	
+	Jede kurze Sequenz $0 \to A \to B \to C \to 0$ von Garben induziert eine lange exakte Kohomologiesequenz $0 \to H^0(X, A) \to H^0(X, B) \to H^0(X, C) \to H^1(X, A) \to H^1(X, B) \to \ldots$
+	\begin{center}\begin{tikzpicture}
+		\node (0) at (-3,2) {$\calF$};
+		\node (1) [right=3 of 0] {$I^n$};
+		\node (2) [right=3 of 1] {$I^{n+1}$};
+		\node (0') [below=2 of 0] {$\calG$};
+		\node (1') [right=3 of 0'] {$J^n$};
+		\node (2') [right=3 of 1'] {$J^{n+1}$};
+		\node (d) [right=1 of 0] {\ldots};
+		\node (d') [right=1 of 0'] {\ldots};
+		\node (F) at (2.5,0.75) {$\FakRaum{I^n}{\Kern(d^n)}$};
+		
+		\draw[->] (0) -- (0'); \draw[->] (2) -- (2'); \draw[->] (0) -- (d); \draw[->] (0') -- (d'); \draw[->] (d) -- (1); \draw[->] (d') -- (1'); \draw[->] (1) -- node[above,font=\scriptsize]{$d$} (2); \draw[->] (1') -- (2');
+		\draw[->] (1) -- (F); \draw[->,dashed] (F) -- (2'); \draw[right hook->] (F) -- (2);
+	\end{tikzpicture}\end{center}
 \item
-	
+	Injektive Garben $I$ sind azyklisch, das hei\ss t f"ur alle $i \ge 1$ ist $H^{i}(X, I) = 0$. $0 \to I \to I \to 0 \to 0 \ldots$ ist injektive Aufl"osung.
 \end{enumerate}\end{Prop}
 
 \begin{Verallg}
-
+Seien $A, B$ abelsche Kategorien, $\calA$ habe gen"ugend injektive Objekte und $F: \calA \to \calB$ ein kovarianter linksexakter Funktor. $\leadsto$ Definiere analog zu \ref{12.8} \deftermspec{abgeleitete Funktoren}{Funktor!abgeleiteter} $R^{i}F$ von $F$ ($i \ge 0$) $\leadsto$ diese haben die Eigenschaften aus \ref{12.9}.
 \end{Verallg}
 
 \newpage
