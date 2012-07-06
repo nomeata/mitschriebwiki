@@ -215,6 +215,7 @@
 \newcommand{\Sum}{\sum\limits}
 \newcommand{\Bigcup}{\bigcup\limits}
 \newcommand{\Bigcap}{\bigcap\limits}
+\newcommand{\Prod}{\prod\limits}
 
 \newcommand{\folgtnach}[1]{\ensuremath{\DOTSB\;\xRightarrow{\text{#1}}\;}}
 \newcommand{\folgtwegen}[1]{\ensuremath{\DOTSB\;\stackrel{#1}{\Rightarrow}\;}}
@@ -330,6 +331,7 @@
 \newcommand{\calN}{\mathcal{N}}
 \newcommand{\calO}{\mathcal{O}}
 \newcommand{\calP}{\mathcal{P}}
+\newcommand{\calU}{\mathcal{U}}
 \newcommand{\calW}{\mathcal{W}}
 \newcommand{\calX}{\mathcal{X}}
 \newcommand{\F}{\mathcal{F}} % <-- schnellere alternative
@@ -1777,9 +1779,9 @@ Sei $X$ ein Schema, $T$ ein weiteres Schema.
 
 \begin{bspe}\begin{enumerate}[1)]
 \item
-	Sei $T = \Spec(\FakRaum{k[\epsilon]}{(\epsilon^2)})$ ($k$ ein K\"orper), $X = \A_k^2 = \Spec k[X,Y]$. Ein $T$-wertiger Punkt von $X$ ist ein Ringhomomorphismus $\alpha: k[X,Y] \to \FakRaum{k[\epsilon]}{(\epsilon^2)}$. Sei $\alpha$ surjektiv, $\alpha^{-1}((\epsilon)) = (X,Y)$.
+	Sei $T = \Spec(\FakRaum{k[\varepsilon]}{(\varepsilon^2)})$ ($k$ ein K\"orper), $X = \A_k^2 = \Spec k[X,Y]$. Ein $T$-wertiger Punkt von $X$ ist ein Ringhomomorphismus $\alpha: k[X,Y] \to \FakRaum{k[\varepsilon]}{(\varepsilon^2)}$. Sei $\alpha$ surjektiv, $\alpha^{-1}((\varepsilon)) = (X,Y)$.
 	
-	Also $\alpha(X) = a\epsilon$, $\alpha(Y) = b\epsilon$ ($a,b \in k$) $\Rightarrow \alpha(bX - aY) = 0$. $\alpha$ bestimmt also nicht nur einen Punkt $x$ von $X$, sondern auch eine \quot{Richtung} in $x$.
+	Also $\alpha(X) = a\varepsilon$, $\alpha(Y) = b\varepsilon$ ($a,b \in k$) $\Rightarrow \alpha(bX - aY) = 0$. $\alpha$ bestimmt also nicht nur einen Punkt $x$ von $X$, sondern auch eine \quot{Richtung} in $x$.
 \item
 	$T = \Spec R$, $R$ diskreter Bewertungsring.
 	
@@ -2502,8 +2504,8 @@ Sei $0 \to M' \to M \to M'' \to 0$ exakt.
 
 \emph{Zu zeigen}: $0 \to \tilde M' \to \tilde M \to \tilde M'' \to 0$ ist exakt.
 
-\emph{Gen"ugt zu zeigen}: $\begin{array}{cccccccccl} 0 &\to& \tilde M_\p' &\to& \tilde M_\p &\to& \tilde M_\p'' &\to& 0 & \text{exakt f"ur jedes Prim-}\\
-	&&\verteq&&\verteq&&\verteq&&&\text{ideal } \p \in \Spec R \\
+\emph{Gen"ugt zu zeigen}: $\begin{array}{cccccccccl} 0 &\to& \tilde M_\p' &\to& \tilde M_\p &\to& \tilde M_\p'' &\to& 0 & \text{exakt f"ur jedes Primideal } \p\\
+	&&\verteq&&\verteq&&\verteq&&&\text{in } \Spec R \\
 	0 &\to& M_\p' &\to& M_\p &\to& M_\p'' &\to& 0 & \text{Das stimmt!}\end{array}$
 \end{bew}
 
@@ -3110,50 +3112,96 @@ Seien $A, B$ abelsche Kategorien, $\calA$ habe gen"ugend injektive Objekte und $
 
 \section{\v{C}ech-Kohomologie}
 
-\begin{DefBem}\begin{enumerate}[a)]
+Sei $X$ topologischer Raum, $\calU = \{U_i | i \in \N\}$ eine offene "Uberdeckung von $X$, $\calF \in$ \underline{Abb$(X)$}
+
+\begin{DefBem}\label{13.1}\begin{enumerate}[a)]
 \item
-	
+	F"ur $k \ge 0$ sei $C^k(\calU, \calF) := \Prod_{i_0 <\ldots <i_k} \calF(U_{i_0} \cap \ldots \cap U_{i_k})$
+		\[  d^k: \left\{ \begin{array}{rcl}C(\calU, \calF) &\to& C^{k+1}(\calU, \calF)\\
+			(S_{i_0,\ldots ,i_k})_{i_0 <\ldots <i_k} &\mapsto& \left( \Sum_{\nu=0}^{k-1} (-1)^\nu S_{i_0,\ldots ,i_{\nu-1}, i_{\nu+1},\ldots, i_{k+1}}|_{U_{i_0}\cap \ldots U_{i_{k+1}}} \right)_{i_0 < \ldots i_{k+1}}\end{array}\right. \]
 \item
-	
+	F"ur alle $k \ge 0$ gilt $d^{k+1} \circ d^k = 0$, das hei\ss t $0 \to C^0(\calU, \calF) \xrightarrow{d^0} C^1(\calU, \calF) \xrightarrow{d^1} \ldots$ ist Kettenkomplex. [Nachrechnen!]
 \item
-	
+	$\check{H}^k(\calU, \calF) := H^k(C^0(\calU, \calF)) = \FakRaum{\Kern(d^k)}{\Bild(d^{k-1})}$ hei\ss t $k$-te \defterm{\v{C}ech-Kohomologie} von $\calF$ bez"uglich $\calU$.
 \item
-	
+	$\check{H}^0(\calU, \calF) = \calF(X) \overset{\ref{12.8}}{=} H^0(X, \calF)$
 \end{enumerate}\end{DefBem}
 
 \begin{bew}\begin{enumerate}[a)]\item[d)]
-
+$\Phi: \left\{ \begin{array}{rcl} \calF(X) &\to& \check{H}^0(\calU, \calF) = \Kern(d^0)\\
+	S &\mapsto& (S|_{U_i})_{i \in \N} \end{array} \right.$ ist wohldefiniert
+	
+	Garbeneigenschaft: $\Phi$ bijektiv
 \end{enumerate}\end{bew}
 
 \begin{Bsp}
+$X = S^1$, $\calF = \Z$ konstante Garbe
 \begin{enumerate}[a)]
 \item
+	$\calU = \{X, \emptyset, \emptyset,\ldots\} \Rightarrow C^0(\calU, \calF) = \calF(X) \cong \Z$
 	
+	$\forall k \ge 1: C^k(\calU, \calF) = 0$
+		\[ 0 \to \calF(X) \xrightarrow{d^0} 0 \xrightarrow{d^1} 0 \to \ldots \]
+	$\Rightarrow \check{H}^0(\calU, \calF) = \calF(X) \cong \Z$, $\forall \ k \ge 1: \check{H}^k(\calU, \calF) = 0$
 \item
+	$\calU = \{U, V\}$
 	
+	\begin{minipage}{10cm}
+	$C^0( \calU, \calF) = \calF(U) \X \calF(V) \cong \Z^2$\\
+	$C^1(\calU, \calF) = \calF(U \cap V) = \Z^2, \ \forall \ k \ge 2: C^k(\calU, \calF) = 0$\end{minipage}
+	\begin{minipage}{5cm} \textcolor{red}{BILD}\end{minipage}
+		\[ 0 \to \Z^2 \xrightarrow{d^0} \Z^2 \xrightarrow{d^1} 0 \to 0 \to \ldots \]
+	mit $\left.\begin{array}{crcl} d^0:& (s,t) &\mapsto& t-s|_{U \cap V} \\
+		\Z^2:& (s,t) &\mapsto& (t-s, t-s) \in \Z^2 \end{array}\right\} \Rightarrow \Bild d^0 = \{(s,s)\} \in \Z^2\} \cong \Z^2$
+	
+	$\check{H}^0(\calU, \calF) = \Kern(d^0) = \{(s,s) \in \Z^2\} \cong \Z$\\
+	$\check{H}^1(\calU, \calF) = \FakRaum{\Z^2}{\Z} \cong \Z$, $\forall \ k \ge 2: \check{H}^2(\calU, \calF) = 0$
 \end{enumerate}\end{Bsp}
 
-\begin{Def}\begin{enumerate}[a)]
+\begin{Def}\label{13.3}\begin{enumerate}[a)]
 \item
-	
+	Definiere f"ur $k \ge 0$ die Garbe
+		\[ \calC^k = \calC^k(\calU, \calF) := \prod_{i_0 < \ldots < i_k} (i_{i_0 < \ldots < i_k})_* \calF|_{U_{i_0} \cap \ldots \cap U_{i_k}} \]
+		\[ i_{i_0 < \ldots < i_k} : U_{i_0} \cap \ldots \cap U_{i_k} \hookrightarrow X \]
+	Das hei\ss t: $\calC^k(\calU, \calF)(U) = \Prod_{i_0 < \ldots < i_k} \calF(U_{i_0} \cap \ldots \cap U_{i_k} \cap U)$
+		\[ \calC^k = (U, \calF)(X) = \calC^k(U, \calF) \]
 \item
-	
+	Definiere $d_U^k: \calC^k(\calU, \calF)(U) \to \calC^{k+1}(\calU, \calF)(U)$ wie in \ref{13.1} $\Rightarrow d^k$ ist Garbenmorphismus und $\forall \ k \ge 0: d^{k+1} \circ d^k = 0$
 \item
-	
+	$\varepsilon_U: \left\{ \begin{array}{ccc} \calF(U) &\to& \calC^0(\calU, \calF)(U) \\ s &\mapsto& (s|_{U \cap U_i})_{i \in \N} \end{array}\right.$ definiert einen injektiven Garbenmorphismus.
 \item
-	
+	$0 \to \calF \overset{\varepsilon}{\hookrightarrow} \calC^0 \xrightarrow{d^0} \calC^1 \xrightarrow{d^1} \calC^2 \to \ldots$ ist eine Aufl"osung von $\calF$ (das hei\ss t exakt). \emph{Achtung:} im Allgemeinen weder injektiv noch azyklisch!
 \end{enumerate}\end{Def}
 
 \begin{bew}\begin{enumerate}[a)]\item[d)]
+$U \subseteq X$ offen: $\calF(U) \xrightarrow{\varepsilon_U} \Prod_{i \in \N} \calF(U \cap U_i) \xrightarrow{d^0} \Prod_{i \ne j} \calF(U \cap U_i \cap U_j)$
 
+$d_U^0(\varepsilon_U(s)) = d_U^0((s|_{U \cap U_i})_{i \in N}) = (s|_{U \cap U_i|_{U \cap U_i \cap U_j}} - s|_{U \cap U_j|_{U \cap U_i \cap U_j}}) = 0$
+
+Seien $x \in X$, $j \in \N$, $x \in U_j$. Zeige Exaktheit auf den Halmen
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+
+Definiere $h^k: \calC_X^k \to \calC_X^{k-1}$.
+
+$s \in \calC_X^k \Rightarrow \hat s = [(V, s)]$ \OE $V \subseteq U_j$, $\underset{\substack{(s_{i_0,\ldots ,i_k})_{i_0 < \ldots < i_k}}}{\underset{\verteq}{s} \in \calC^k(V)}$
+
+Sei $t_{j_0,\ldots, j_{k-1}}: \begin{cases} 0 &, j \in \{j_0,\ldots ,j_{k-1}\} \\ (-1)^\nu s_{j_0,\ldots ,j, j_{k-1}} & ,j_{\nu - 1} < j < j_\nu \end{cases}$
+
+$h^k(\hat s) = [(V, (t_{j_0,\ldots ,j_{k-1}})_{i_0<\ldots < i_{k-1}}]$
+
+Nachrechnen: $\underbrace{d_X^{k-1} \circ h^k + h^{k+1} \circ d_X^k}_{f} = \id$
+
+Sei $\hat s \in \Kern(d_X^k)$, $\hat s = f(\hat s) = d_X^{k-1} \circ h^k(\hat s) \Rightarrow \hat s \in \Bild (d_X^{k-1})$
 \end{enumerate}\end{bew}
 
 \begin{Prop}
-
+Sei $X$ Schema, $\calF \in$ Ab$(X)$, $U = \{U_i| i \in \N\}$ offene "Uberdeckung von $X$. Dann gibt es f"ur jedes $k \ge 0$ einen nat"urlichen Gruppenhomomorphismus
+	\[ \check{H}^k(\calU, \calF) \to H^k(X, \calF) \]
 \end{Prop}
 
 \begin{bew}
-
+Sei $0 \to \calF \to I^0$ injektive Aufl"osung von $\calF$ und $0 \to \calF \to \calC^0 = \calC^0(\calU, \calF)$ Aufl"osung aus \ref{13.3}. Dann gibt es einen Homomorphismus von Komplexen:
+\begin{center}\textcolor{red}{[BILD]}\end{center}
 \end{bew}
 
 
