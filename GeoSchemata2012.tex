@@ -249,6 +249,7 @@
 % Mathe Operatoren
 \DeclareMathOperator{\Aff}{Aff}
 \DeclareMathOperator{\Alg}{Alg}
+\DeclareMathOperator{\Ann}{Ann}
 \DeclareMathOperator{\Aut}{Aut}
 \DeclareMathOperator{\Bild}{Bild}
 \DeclareMathOperator{\CaCl}{CaCl}
@@ -2493,7 +2494,7 @@ $X = \Spec R$ affines Schema, $I \subseteq R$ Ideal, $f \in R$, $\tilde I (D(f))
 Wie "Ubung 4, Aufgabe 3
 \end{enumerate}\end{bew}
 
-\begin{Bem}
+\begin{Bem}\label{9.5}
 Sei $X = \Spec R$ ein affines Schema.
 
 Die Zuordnung $M \mapsto \tilde M$ ist ein kovarianter auf Objekten injektiver Funktor von der Kategorie $R$-Mod in $\calO_X$-Mod; Umkehrfunktor: $\calF \to \calF(X)$.
@@ -3254,6 +3255,96 @@ Sei $0 \to \calF \to I^0$ injektive Aufl"osung von $\calF$ und $0 \to \calF \to 
 \end{tikzpicture}\end{center}
 \end{bew}
 
+\newpage
+
+%-------------------------- Abschnitt 14 (Kohomologie quasi kohaerenter Garben) --------------------------
+
+\section{Kohomologie quasi koh"arenter Garben}
+
+\begin{DefBem}\label{14.1}
+Sei $X$ ein topologischr Raum, $\calF \in$ Ab$(X)$
+\begin{enumerate}[a)]
+\item
+	$\calF$ hei\ss t \deftermspec{welk}{Garbe!welke}, wenn $\rho_{U'}^U: \calF(U) \to \calF(U')$ surjektiv ist f"ur alle offenen $U' \subseteq U$.
+\item
+	Konstante Garben sind welk, wenn $X$ irreduzibel ist. Wolkenkratzergarben sind welk.
+\item\label{14.1c}
+	Ist $0 \to \calF' \to \calF \overset{\beta}{\to} \calF'' \to 0$ exakt, $\calF$ welk, so ist $0 \to \calF'(U) \to \calF(U) \overset{\beta_U}{\to} \calF''(U) \to 0$ exakt f"ur jedes offene $U \subseteq X)$.
+\item\label{14.1d}
+	Sei $0 \to \calF' \to \calF \to \calF'' \to 0$ exakt. Sind $\calF'$ und $\calF$ welk, so auch $\calF''$.
+\end{enumerate}\end{DefBem}
+
+\begin{bew}\begin{enumerate}[a)]
+\item[c)]
+	Sei  $V \subseteq U$ offen in $X$. Nach c) sind
+	\begin{center}und \textcolor{red}{[BILD]} exakt\end{center}
+	Nach Voraussetzung sind die vertikalen Sequenzen exakt.
+\item[d)]
+	Sei $s \in \calF''(U)$. Nach Voraussetzung ($\beta$ surjektiv) gibt es offene "Uberdeckung $(U_i)_{i \in I}$ von $U$ und $\hat s \in \calF(U_i)$ mit $\beta_{U_i}(\hat s_i) = s_i|_{U_i}$. Sei $d_{ij} := \hat s_i|_{U_i \cap U_j} - s_j|_{U_i \cap U_j} \in \calF(U_i \cap U_j)$.
+	
+	$\beta_{U_i \cap U_j}(d_{ij}) = 0 \Rightarrow d_{ij} \in \calF'(U_i \cap U_j) \xRightarrow{\calF' \text{ welk}}$ \OE $d_{ij} \in \calF'(U_i)$
+	
+	Setze $\hat s_i' := 2 \hat s_i - d_{ij} \Rightarrow \hat s_i'|_{U_i \cap U_j} = 2 \hat s_i - \hat s_i + \hat s_j = \hat s_i + \hat s_j = \hat s_j'|_{U_i \cap U_j} \Rightarrow$ die $\hat s_i'$ bilden konsistente Familie $\Rightarrow \exists \ \tilde s \in \calF(U)$ mit $\tilde s|_{U_i} = \hat s_i'$ f"ur alle $i \in I$ und $s_U(\tilde s) = s$.
+\end{enumerate}\end{bew}
+
+\begin{Prop}\label{14.2}
+Sei $X$ ein Schema, $\calI$ injektive $\calO_X$-Modulgarbe auf $X$. Dann ist $\calI$ welk.
+\end{Prop}
+
+\begin{bew}
+Sei $V \subseteq U$ offen. Es gilt \begin{tikzpicture}[baseline=-0.5ex]
+	\node (0) at (-1,0) {$j_!(\calO_X|_V)$};
+	\node (1) at (1,0) {$j_!(\calO_X|_U)$};
+	\node (2) at (-1,-1.5) {$\calI$};
+	\node at (0,0) {$\subseteq$};
+
+	\draw[->] (0) -- (2); \draw[->,dashed] (1) -- (2);
+\end{tikzpicture}
+
+$\xRightarrow{\calI \text{ inj.}} \Hom_{\calO_X}(j_!(\calO_X|_U), \calI) \to \Hom_{\calO_X}(j_!(\calO_X|_V), \calI)$ ist surjektiv
+\end{bew}
+
+\begin{Satz}
+Sei $X = \Spec R$ ein noethersches affines Schema, $\calF$ quasi-hoh"arente Garbe auf $X$. Dann ist $H^i(X, \calF) = 0$ f"ur alle $i \ge 1$.
+\end{Satz}
+
+\begin{bew}
+Sei $M = \calF(X) = \Gamma(X, \calF) = H^0(X, \calF)$, also $\calF = \tilde M$. Sei $0 \to M \to I^\bullet$ eine injektive Aufl"osung des $R$-Moduls $M$ $\xRightarrow{\text{Bem. \ref{9.5}}} 0 \to \tilde M \to \tilde I^\bullet$ ist exakt (also Ausfl"osung von $\calF$). Der Satz folgt aus \ref{14.4} und \ref{14.3}
+\end{bew}
+
+\begin{Prop}\label{14.3}
+Welke Garben sind azyklisch.
+\end{Prop}
+
+\begin{Prop}\label{14.4}
+ist $I$ injektiver $R$-Modul, so ist $\tilde I$ welke $\calO_X$-Modulgarbe ($X = \Spec R$).
+\end{Prop}
+
+\begin{bew}[von Proposition \ref{14.3}]
+Sei $\calF$ welke Garbe, $\calI$ injektive Garbe mit $\calF \subseteq \calI \Rightarrow 0 \to \calF \to \calI \to \calG \to 0$ exakt mit $\calG = \FakRaum{\calI}{\calF}$
+
+Die lange exakte Kohomologiesequenz dazu ist:
+	\[\scriptstyle{ 0 \to \underset{=\calF(X)}{H^0(X, \calF)} \to \underset{=\calI(X)}{H^0(X, \calI)} \to \underset{=\calG(X)}{H^0(X, \calG)} \xrightarrow[\text{\ref{14.1} \ref{14.1c})}]{\text{Nullabb.}} \underset{=0}{H^1(X, \calF)} \to \underset{=0 (\calI\text{ inj.})}{H^1(X, \calI)} \to \underset{=0 (\calG\text{ welk})}{H^1(X, \calG)} \to H^2(X, \calF) \to \underset{=0}{H^2(X, \calI)} \to }\]
+Nach \ref{14.2} und \ref{14.1} \ref{14.1d}) sind $\calI$ und $\calG$ welk.
+\end{bew}
+
+\begin{bew}[von Proposition \ref{14.4}]
+\emph{Es gen"ugt zu zeigen:} $\tilde \calI(X) \to \tilde \calI(U)$ surjektiv f"ur jedes $U \subseteq X$ offen.
+\begin{description}[\setlabelstyle{\itshape}]
+\item[1. Fall:] $U = D(f)$ f"ur ein $f \in R$
+
+	$\Rightarrow \tilde I(U) = I_f$
+	
+	Sei $\frac{b}{f^n} \in I_f$ (also $b \in I$, $n \ge 0$). \emph{Gesucht:} $a \in I$ mit $\frac{a}{1} = \frac{b}{f^n}$ in $I_f$, also $(f^na - b) \cdot f^m = 0$ f"ur ein $m \ge 0$.
+	
+	F"ur jedes $m \ge 0$ induziert $1 \mapsto f^{m+n}$ eine $R$-lineare Abbildung $R \to (f^{m+n})$. $\Kern(\varphi_m) = \Ann(f^{m+n})$ (Ideal) \textcolor{gray}{($\Ann$ hei\ss t Annulator)}
+	
+	Es ist $\Ann(f^m) \subseteq \Ann(f^{m+1}) \subseteq \ldots \xRightarrow{R\text{ noeth.}} \exists \ m$ mit $\Ann(f^{m+n}) = \Ann(f^m) \Rightarrow (f^{m+n}) \cong \FakRaum{R}{\Ann(f^n)}$
+	
+	Sei $\psi: R \to I$, $1 \mapsto f^m b$ $R$-linear $\Rightarrow \Ann(f^m) \subseteq \Kern(\psi) \Rightarrow \psi$ induziert $\overline \psi: (f^{m+n}) \to I \xRightarrow{I\text{ inj.}} \exists$ Fortsetzung $\tilde \psi: R \to I$ von $\overline \psi$.
+	
+	Setze $a := \tilde \psi(1) \Rightarrow f^m b = \psi(1) = \overline \psi (f^{m+n}) = \tilde \psi (f^{m+n} \cdot 1_R) \overset{\tilde \psi}{\underset{R\text{-lin.}}{=}} f^{m+n} \cdot \tilde \psi(1) = f^{m+n} \cdot a$
+\end{description}\end{bew}
 
 
 
@@ -3280,9 +3371,9 @@ Sei $0 \to \calF \to I^0$ injektive Aufl"osung von $\calF$ und $0 \to \calF \to 
 \setcounter{Loes}{0}
 
 \begin{Aufg}
- Sei $X$ ein topologischer Raum, $A$ eine abelsche Gruppe und $x \in X$. 
+Sei $X$ ein topologischer Raum, $A$ eine abelsche Gruppe und $x \in X$. 
 
-Die "`Wolkenkratzergarbe"' auf $X$ ist definiert durch 
+Die \deftermspec{Wolkenkratzergarbe}{Garbe!Wolkenkratzer-} auf $X$ ist definiert durch 
 $\mathcal{W}(U) \coloneqq \left\{ \begin{array}{ll}
                                    A & ,\, x \in U\\
                                    \{0\} & ,\,x \notin U
@@ -3293,11 +3384,12 @@ $$\rho_V^U = \left\{ \begin{array}{rcll}
                      A \ni &a \mapsto 0& \in \{0\}& ,\, x \notin V,\, x \in U\\
                      & \id_A && ,\,x \in V,\, x \in U
                     \end{array} \right.$$ f\"ur $V \subseteq U \subseteq X$ offen.
-\begin{enumerate}%[topsep=0cm, parsep=0cm, label=\alph*)]
- \item Zeige, dass $\mathcal{W}$ eine Garbe von abelschen Gruppen auf $X$ ist.
- \item Berechne die Halme der Garbe.
-\end{enumerate}
-\end{Aufg}
+\begin{enumerate}[a)]%[topsep=0cm, parsep=0cm, label=\alph*)]
+\item
+	Zeige, dass $\mathcal{W}$ eine Garbe von abelschen Gruppen auf $X$ ist.
+\item
+	Berechne die Halme der Garbe.
+\end{enumerate}\end{Aufg}
 
 
 
