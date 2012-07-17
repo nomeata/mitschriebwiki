@@ -19,7 +19,7 @@
 % "chapterprefix=true" macht dass Kapitel, Abschnitte und aehnliches immer eine Ueber-
 % schrift wie "Kapitel 1" hat. Gilt auch fuer den Anhang.
 
-% Meta-Daten für Latexki
+% Meta-Daten fuer Latexki
 \usepackage{latexki}
 \lecturer{Prof. Dr. F. Herrlich}
 \semester{Sommersemester 2012}
@@ -125,7 +125,7 @@
 
 % F\"ur TikZ-Diagramme
 \usepackage{tikz}
-\usetikzlibrary{matrix,arrows,calc,intersections, positioning}
+\usetikzlibrary{matrix,arrows,calc,intersections, positioning, patterns}
 \usetikzlibrary{decorations.text}
 
 % Verschiedene items in enumerate Umgebungen (Das enumitem Paket bietet mehr Optionen)
@@ -6406,7 +6406,21 @@ $\Rightarrow \Bild(d^0) = \{ k = \Sum_{\substack{i,j \in \Z \\ i \ge 0 \vee j \g
 \begin{enumerate}[a)]
 \item
 	$\mathfrak U = \{U_1, U_2\}$, $U_1, U_2$ echte, offene, \emph{zusammenh"angende} Teilmengen
-	\begin{center}\textcolor{red}{[BILD]}
+	\begin{center}\begin{tikzpicture}[fill opacity=0.3]
+		\node[fill opacity=1] at (1.75,1.75) {$U_1$}; \node[fill opacity=1] at (1.75,-1.75) {$U_1$};
+		\draw[clip] (0,0) circle (2);
+		%sqrt(5) ist etwa 2.23606; der Abstand des Kreises, damit er durch die Mitte des Grossen geht
+		\draw (0,2.23606) circle (3); \draw[dashed] (0,-2.23606) circle (3);
+		\fill[color=red] (0,2) circle (3);
+		\fill[color=blue, even odd rule] (0,0) circle (2) (0,2.5) circle (3);
+		
+		\path[clip](0,2.5) circle (3);
+		\fill[color=blue,rotate=10] (0,-1) rectangle (0.5,2.5);
+		\begin{scope}[even odd rule]
+			\path[clip] (0,0) circle (2) (0,-2.23606) circle (3);
+			\fill[color=blue,rotate=-10] (-0.25,-1) rectangle (-0.75,2.5);
+		\end{scope}
+	\end{tikzpicture}
 	
 	$U_1 \cap U_2$ ist zusammenh"angend\end{center}
 	$\Rightarrow C^0(\mathfrak U, \Z) \cong \Z \X \Z$, $C^1(\mathfrak U, \Z) = \Z$, f"ur alle $k \ge 2$ gilt $C^k(\mathfrak U, \Z) = 0$
@@ -6416,7 +6430,23 @@ $\Rightarrow \Bild(d^0) = \{ k = \Sum_{\substack{i,j \in \Z \\ i \ge 0 \vee j \g
 	$\Rightarrow \check{H}^0(\mathfrak U, \Z) = \Z$, $\check{H}^1(\mathfrak U, \Z) = \FakRaum{\Z}{\Z} = 0$, f"ur alle $k \ge 2$ gilt $\check{H}^k(\mathfrak U, \Z) = 0$
 \item
 	$\mathfrak U = \{U_1, U_2, U_3\}$, $U_i \cap U_j \cong$ Kreisscheibe f"ur $i \ne j$, $U_1 \cap U_2 \cap U_3$ hom"oomorph zu zwei offenen Kreisscheiben.
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[fill opacity=0.3]
+		\node[fill opacity=1] at (0,2.5) {Vorderseite};
+		\draw[clip] (0,0) circle (2);
+		\fill[color=red,name path=r circle] (2,2) circle (3); \fill[color=green,name path=g circle] (-2,2) circle (3);
+		\path[name intersections={of=r circle and g circle}];
+		\fill[color=blue, even odd rule] (0,0) circle (2) (intersection-2) +(0,3) circle (3);
+		%sqrt(5) ist etwa 2.23606; der Abstand des Kreises, damit er durch die Mitte des Grossen geht
+		\draw (0,2.23606) circle (3); \draw[dashed] (0,-2.23606) circle (3);
+	\end{tikzpicture} $\qquad$
+	\begin{tikzpicture}[fill opacity=0.3]
+		\node[fill opacity=1] at (0,2.5) {R"uckseite};
+		\draw[clip] (0,0) circle (2);
+		\fill[color=red,name path=r circle] (-2,2) circle (3); \fill[color=green,name path=g circle] (2,2) circle (3);
+		\path[name intersections={of=r circle and g circle}];
+		\fill[color=blue, even odd rule] (0,0) circle (2) (intersection-2) +(0,3) circle (3);
+		\draw (0,2.23606) circle (3); \draw[dashed] (0,-2.23606) circle (3);
+	\end{tikzpicture}\end{center}
 	$C^0(\mathfrak U, \Z) = \Z(U_1) \X \Z(U_2) \X \Z(U_3) \cong \Z^3$, $C^1(\mathfrak U, \Z) = \Z(U_2 \cap U_3) \X \Z(U_1 \cap U_3) \X \Z(U_1 \cap U_2) \cong \Z^3$, $C^2(\mathfrak U, \Z) = \Z(U_1 \cap U_2 \cap U_3) \cong \Z^3$, f"ur alle $k \ge 3$ gilt $C^k(\mathfrak U, \Z) = 0$
 		\[ 0 \to C^0 \overset{d^0}{\to} C^1 \overset{d^1}{\to} C^2 \to 0 \]
 	$d^0: \left\{ \begin{array}{ccc} C^0 &\to& C^1 \\ (f,g,h) &\mapsto& (h-g, h-f, g-f) \end{array} \right.$
