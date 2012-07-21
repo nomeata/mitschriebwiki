@@ -3,10 +3,16 @@ $.extend($.fn.socialSharePrivacy.settings, {
     language: "de",
     title: "Mitschriebwiki",
     description: "Collaborative creation of lecture notes.", 
+    uri: function() {return "http://mitschriebwiki.nomeata.de/" },
 });
 
 $(document).ready(function(){
-        $('#socialshareprivacy').socialSharePrivacy();
+        $('#socialshareprivacy').socialSharePrivacy({
+		services: {
+		    flattr: {
+		    }
+		}
+	});
     });
 
 // More/Less for lectures: insert button, hide .more, toggle .more/button 
