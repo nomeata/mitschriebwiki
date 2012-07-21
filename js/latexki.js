@@ -1,5 +1,5 @@
 $.extend($.fn.socialSharePrivacy.settings, {
-    path_prefix: "/js/SocialSharePrivacy"
+    path_prefix: "/js/SocialSharePrivacy/"
 });
 
 $(document).ready(function(){
