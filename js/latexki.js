@@ -1,20 +1,6 @@
-jQuery(document).ready(function($){
-	if($('#socialshareprivacy').length > 0){
-		$('#socialshareprivacy').socialSharePrivacy({
-			services : {
-				facebook : {
-				    'perma_option'  : 'off'
-				}, 
-				twitter : {
-				    'perma_option' : 'off'
-				},
-				gplus : {
-				    'perma_option' : 'off'
-				}
-			    }
-		}); 
-	}
-});
+$(document).ready(function(){
+        $('#socialshareprivacy').socialSharePrivacy();
+    });
 
 // More/Less for lectures: insert button, hide .more, toggle .more/button 
 $(document).ready(function() {
