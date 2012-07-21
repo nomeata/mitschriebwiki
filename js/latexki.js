@@ -1,5 +1,8 @@
 $.extend($.fn.socialSharePrivacy.settings, {
-    path_prefix: "/js/SocialSharePrivacy/"
+    path_prefix: "/js/SocialSharePrivacy/",
+    language: "de",
+    title: "Mitschriebwiki",
+    description: "Collaborative creation of lecture notes.", 
 });
 
 $(document).ready(function(){
