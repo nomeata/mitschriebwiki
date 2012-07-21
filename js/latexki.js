@@ -7,12 +7,7 @@ $.extend($.fn.socialSharePrivacy.settings, {
 });
 
 $(document).ready(function(){
-        $('#socialshareprivacy').socialSharePrivacy({
-		services: {
-		    flattr: {
-		    }
-		}
-	});
+        $('#socialshareprivacy').socialSharePrivacy();
     });
 
 // More/Less for lectures: insert button, hide .more, toggle .more/button 
