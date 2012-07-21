@@ -23,7 +23,7 @@
 \usepackage{latexki}
 \lecturer{Prof. Dr. F. Herrlich}
 \semester{Sommersemester 2012}
-\scriptstate{work-in-progress}
+\scriptstate{near-finished}
 
 
 % eigener Rand (Normalerweise sollte der innere Rand hie Haelfte des aeusseren Randes betragen, aber
@@ -57,7 +57,7 @@
 %\setkomafont{section}{\Large\bfseries\rmfamily} % <- Scheint mit der Umdefinierung von disposition unnoetig zu sein
 
 %Stellt das Paragraphenzeichen vor die Section-Nummer (das ist ein KOMA Script exklusiver Befehl)
-% \ifstr{#1}{section} ueberprueft, ob der erste parameter (also die erste Ebene der Ueberschrift)
+% \ifstr{#1}{section} ueberprueft, ob der erste Parameter (also die erste Ebene der Ueberschrift)
 % section heisst, wenn ja, dann wird sie geaendert, ansonsten behalten wir den Standard
 \renewcommand*{\othersectionlevelsformat}[3]{\ifstr{#1}{section}{\S\ #3\autodot}{#3\autodot}\enskip}
 
@@ -75,14 +75,14 @@
 \usepackage{index}
 \newindex{default}{idx}{ind}{Stichwortverzeichnis}
 
-%Symbolverzeichnis
-\usepackage[toc]{glossaries}
-%\glossarystyle{super}
-\makeglossaries
-
 % links
 \usepackage{xcolor}
 \usepackage{hyperref}
+
+%Symbolverzeichnis
+\usepackage[toc]{glossaries}
+\glossarystyle{treehypergroup}
+\makeglossaries
 
 \definecolor{rltred}{rgb}{0.75,0,0}
 \definecolor{rltgreen}{rgb}{0,0.5,0}
@@ -289,9 +289,11 @@
 \DeclareMathOperator{\VR}{VR}
 
 \DeclareMathOperator{\chara}{char}
+\DeclareMathOperator{\cod}{cod}
 \DeclareMathOperator{\dd}{d} % das "d" zum Beispiel beim Integral am Ende "dx"
 \DeclareMathOperator{\Ddiv}{div}
 \DeclareMathOperator{\ddiv}{div}
+\DeclareMathOperator{\dom}{dom}
 \DeclareMathOperator{\Ht}{ht}
 \DeclareMathOperator{\height}{ht}
 \DeclareMathOperator{\hhom}{hom}
@@ -332,6 +334,7 @@
 \newcommand{\calA}{\mathcal{A}}
 \newcommand{\calB}{\mathcal{B}}
 \newcommand{\calC}{\mathcal{C}}
+\newcommand{\calD}{\mathcal{D}}
 \newcommand{\calE}{\mathcal{E}}
 \newcommand{\calF}{\mathcal{F}}
 \newcommand{\calG}{\mathcal{G}}
@@ -356,8 +359,42 @@
 \newcommand{\p}{\mathfrak{p}} % <-- schnellere alternative
 \newcommand{\q}{\mathfrak{q}} % <-- schnellere alternative
 
-% Eintraege fuer das Symbolverzeichnis (Glossar)
-\newglossaryentry{GL}{name={\ensuremath{\GL_n}},description={Allgemeine lineare Gruppe, Gruppe aller regul"aren $n \X n$-Matrizen mit Koeffizienten aus einem K"orper $K$},text={\ensuremath{\GL}},symbol={\ensuremath{\GL}},sort=GL}
+
+
+%-------------------------- Eintraege fuer das Symbolverzeichnis (Glossar) --------------------------
+\newglossaryentry{GL}{name={GL\ensuremath{_n}},description={Allgemeine lineare Gruppe, Gruppe aller regul"aren $n \X n$-Matrizen mit Koeffizienten aus einem K"orper $K$},text={\ensuremath{\GL}},symbol={\ensuremath{\GL}},sort=GL}
+
+\newglossaryentry{topologischer Raum}{name=Topologischer Raum,description={Eine Menge \ensuremath{X} zusammen mit einer Topologie \ensuremath{T}, das hei\ss t einem Mengensystem das offene Teilmengen von \ensuremath{X} definiert, wobei die leere Menge, die Grundmenge, der Durchschnitt endlich vieler offener Mengen und die Vereinigung beliebig vieler offener Mengen offen sind},text={topologischer Raum}}
+
+\newglossaryentry{Kategorie}{name=Kategorie,description={Eine Kategorie \ensuremath{\calC} besteht aus einer Klasse von Objekten \ensuremath{\Ob(\calC)}, Mengen \ensuremath{\Mor_\calC(X, Y)} von Morphismen von Objekten und Verkn"upfungsabbildungen \ensuremath{\Mor_\calC(Y, Z) \X \Mor_\calC(X, Y) \to \Mor_\calC(X, Z), (g, f) \mapsto g \circ f} (das \ensuremath{\circ} wird h"aufig weggelassen). Dabei ist das neutrale Element der Identit"atsmorphismus \ensuremath{\id_X: X \to X}. Mit \ensuremath{\dom(f)} bezeichnet man die Quelle (domain) eines Morphismus \ensuremath{f}, mit \ensuremath{\cod(f)} das Ziel (co-domain)}}
+
+\newglossaryentry{Morphismus}{name=Morphismus,plural=Morphismen,description={Allgemein eine Abbildung zwischen zwei Objekten \ensuremath{X} und \ensuremath{Y} einer Kategorie \ensuremath{\calC}. Die Menge der Morphismen einer Kategorie wird mit \ensuremath{\Mor_\calC(X, Y)} bezeichnet}}
+
+\newglossaryentry{Funktor}{name=Funktor,plural=Funktoren,description={Eine Abbildung zwischen Kategorien. Es wird zwischen kovarianten Funktoren und kontravarianten Funktoren unterschieden. F"ur einen kovarianten Funktor \ensuremath{F} gilt \ensuremath{F: \Mor_\calC(X, Y) \to \Mor_\calD(F(X), F(Y))}, im kontravarianten Fall hingegen gilt \ensuremath{F: \Mor_\calC(X, Y) \to \Mor_calD(F(Y), F(X))}}}
+
+\newglossaryentry{Varietaet}{name=Variet\"at,plural=Variet\"aten,description={Eine algebraische Variet"at ist ein geometrisches Objekt, das durch Polynomgleichungen beschrieben werden kann}}
+
+\newglossaryentry{affine Varietaet}{name=affine Variet"at,plural=affine Variet"aten,parent=Varietaet,description={Eine irreduzible affine algebraische Menge "uber einem K"orper. Affine algebraische Mengen sind definiert als Teilmengen \ensuremath{\{x \in K^n | f_1(x)= \ldots f_k(x) = 0\}} eines affinen Raumes \ensuremath{K^n}, wobei \ensuremath{K} ein K"orper und \ensuremath{\{f_1,\ldots ,f_k\}} eine Menge von Polynomen in \ensuremath{K[X_1,\ldots ,X_n]} ist. Eine quasi-affine Variet"at ist eine offene Teilmenge einer affinen Variet"at},text=affine Variet\"at}
+
+\newglossaryentry{Projektive Varietaet}{name=Projektive Variet\"at,plural=projektive Variet"aten,parent=Varietaet,description={Eine irreduzible projektive algebraische Menge "uber einem K"orper. Projektive algebraische Mengen sind definiert als Teilmengen \ensuremath{\{ x \in \IP^n | f_1(x) = \ldots = f_k(x) = 0\}} eines Projektiven Raumes \ensuremath{\IP^n} "uber einem K"orper \ensuremath{K}. Dabei sind \ensuremath{f_1,\ldots, f_k} homogene Polynome in \ensuremath{K[X_0,\ldots,X_n]} und \ensuremath{x = [x_0: \ldots :x_n]} ein Punkt in \ensuremath{\IP^n}. Eine quasi-projektive Variet"at ist eine offene Teilmenge einer projektiven Variet"at},text=projektive Variet\"at}
+
+\newglossaryentry{Regulaere Funktion}{name=Regul\"are Funktion,plural=Regul\"are Funktionen,description={Eine Abbildung \ensuremath{f: U \to \A^1(K)}, die regul"ar ist f"ur alle \ensuremath{p \in U}, wobei \ensuremath{U \subseteq V} offen und \ensuremath{V \subseteq \A^n(K)} eine affine Variet"at ist. \ensuremath{f} hei\ss t dabei regul"ar in \ensuremath{p}, wenn es eine Umgebung \ensuremath{U_p \subseteq U} von \ensuremath{p} gibt und \ensuremath{g, h \in K[V]} mit \ensuremath{h(x) \ne 0} und \ensuremath{f(x) = \frac{g(x)}{h(x)}} f"ur alle \ensuremath{x \in U_p}. Dieser Begriff wurde in der Vorlesung \quot{Algebraische Geometrie I} im Semester zuvor definiert},text=regul\"aren Funktionen}
+
+\newglossaryentry{Keim}{name=Keim,plural=Keime,description={\ldots}}
+
+\newglossaryentry{Holomorphe Funktion}{name=Holomorphe Funktion,plural=Holomorphe Funktionen,description={\ldots},text=holomorphen Funktionen}
+
+\newglossaryentry{Isomorphismus}{name=Isomorphismus,plural=Isomorphismen,description={\ldots},parent=Morphismus}
+
+\newglossaryentry{Homomorphismus}{name=Homomorphismus,plural=Homomorphismen,description={\ldots},parent=Morphismus}
+
+\newglossaryentry{Amalgam}{name=Amalgam,plural=Amalgame,description={\ldots }}
+
+\newglossaryentry{Ideal}{name=Ideal,plural=Ideale,description={\ldots }}
+
+\newglossaryentry{Primideal}{name=Primideal,plural=Primideale,description={\ldots },parent=Ideal}
+
+%-------------------------- Eintraege fuer das Symbolverzeichnis (Glossar) --------------------------
 
 %X als Malzeichen
 \newcommand{\X}{\times}
@@ -428,9 +465,10 @@
 \chapter{Vorwort}
 \setcounter{secnumdepth}{2}
 \section*{\"Uber dieses Skript}
-Dies ist ein Mitschrieb der Vorlesung \quot{Geometrie der Schemata (Algebraische Geometrie II)} von Prof. Dr. F. Herrlich im Sommersemster 2012 am Karlsruher Institut f\"ur Technologie (KIT). Prof. Dr. F. Herrlich ist f\"ur  den Inhalt nicht verantwortlich. Die Vorlesung ist beendet und der Inhalt ist vollst"andig. Abgesehen von Designverbesserungen plane ich keine weiteren "Anderungen.
+Dies ist ein Mitschrieb der Vorlesung \quot{Geometrie der Schemata (Algebraische Geometrie II)} von Prof. Dr. F. Herrlich im Sommersemester 2012 am Karlsruher Institut f"ur Technologie (KIT). Prof. Dr. F. Herrlich ist f"ur  den Inhalt nicht verantwortlich. Die Vorlesung ist beendet und der Inhalt ist vollst"andig. Abgesehen von Designverbesserungen und eventuellen Korrekturen plane ich keine weiteren "Anderungen.
+
 \section*{Wer}
-Getippt wurde das Skript von Aleksandar Sandic. Es basiert auf meinem Skript zur Vorlesung Algebraische Geometrie aus dem Wintersemster 2011/12. Die L"osungen der "Ubungsbl"atter wurden teilweise von Myriam Finster, der "Ubungsleiterin, getippt, teilweise von mir. Die "Ubungsbl"atter wurden komplett von ihr getippt.
+Getippt wurde das Skript von Aleksandar Sandic. Es basiert auf meinem Skript zur Vorlesung Algebraische Geometrie aus dem Wintersemester 2011/12. Die L"osungen der "Ubungsbl"atter wurden teilweise von Myriam Finster, der "Ubungsleiterin, getippt, teilweise von mir. Die "Ubungsbl"atter wurden komplett von ihr getippt.
 
 \section*{Wo}
 Link zum Skript: \url{http://mitschriebwiki.nomeata.de/GeoSchemata2012.html}
@@ -446,7 +484,6 @@ Seite der Vorlesung: \url{http://www.math.kit.edu/iag3/lehre/geoschemata2012s/de
 	Eintr"age f"ur das Glossar sammeln.
 \item
 	Ich muss Farben finden, die sich auch bei einem SW-Ausdruck unterscheiden lassen und diese als Standard definieren.
-%\item Design aufpolieren (weniger wichtig)
 \end{itemize}
 
 %-------------------------- Kapitel 1 --------------------------
@@ -458,9 +495,7 @@ Seite der Vorlesung: \url{http://www.math.kit.edu/iag3/lehre/geoschemata2012s/de
 \section{Garben}
 
 \begin{Def}
-Sei $X$ ein topologischer raum, $\mathcal C$ eine Kategorie.
-
-Eine \deftermspec{Pr\"agarbe}{Garbe!Pr\"a-} $\mathcal F$ auf $X$ mit Werten in $\mathcal C$ besteht aus einer Abbildung $\Off(X) \to \Ob \mathcal C$, $U \mapsto \mathcal F(U)$ und Morphismen $\rho_U^{U'}: \mathcal F(U') \to \mathcal F(U)$ f\"ur alle $U\subseteq U'$ offen, sodass gilt:
+Sei $X$ ein \gls{topologischer Raum}, $\mathcal C$ eine \gls{Kategorie}. Eine \deftermspec{Pr\"agarbe}{Garbe!Pr\"a-} $\mathcal F$ auf $X$ mit Werten in $\mathcal C$ besteht aus einer Abbildung $\Off(X) \to \Ob \mathcal C$, $U \mapsto \mathcal F(U)$ und \glspl{Morphismus} $\rho_U^{U'}: \mathcal F(U') \to \mathcal F(U)$ f\"ur alle $U\subseteq U'$ offen, sodass gilt:
 \begin{enumerate}[i)]
 \item
   $\rho_U^U = \id_U$ f\"ur alle $U\in \Off(X)$
@@ -469,7 +504,7 @@ Eine \deftermspec{Pr\"agarbe}{Garbe!Pr\"a-} $\mathcal F$ auf $X$ mit Werten in $
 \end{enumerate}\end{Def}
 
 \begin{Bem}
-Eine Pr\"agarbe $\mathcal F$ auf $X$ mit Werten in $\mathcal C$ ist dasselbe wie ein kontravarianter Funktor $\mathcal F: \Off(X) \to \mathcal C$.
+Eine Pr\"agarbe $\mathcal F$ auf $X$ mit Werten in $\mathcal C$ ist dasselbe wie ein kontravarianter \glspl{Funktor} $\mathcal F: \Off(X) \to \mathcal C$.
 \end{Bem}
 
 \begin{Def}\label{1.3}
@@ -480,7 +515,7 @@ Es gibt \emph{genau ein} $s \in \mathcal F(U)$ mit $\rho_{U_i}^U(s) = s_i$ f\"ur
 
 \begin{bspe}\label{bsp1.3}\begin{enumerate}[1)]
 \item
-  $X$ quasi-projektive Variet\"at \"uber einem K\"orper $k$, $\mathcal O(U)$ Ring der regul\"aren Funktionen auf $U$.
+  $X$ quasi-\gls{Projektive Varietaet} \"uber einem K\"orper $k$, $\mathcal O(U) = \{f: U \to \A^1(k): f \text{ regul"ar}\}$ Ring der \gls{Regulaere Funktion} auf $U$.
   
   $\Rightarrow \mathcal O_X$ ist Garbe von Ringen auf $X$ ($k$-Algebren)
 \item
@@ -562,7 +597,7 @@ Sei $\calF$ Garbe von abelschen Gruppen auf $X$, $U\subseteq X$ offen, $s\in \ca
 \proofforward
   $\checkmark$
 \proofreverse
-  F\"ur jedes $x\in U$ gibt es Umgebung $U_x$ mit $s|_{U_x} = 0$. ($s|_{U_x} = \rho_{U_x}^U$). Die $(U_x)_{x\in U}$ bilden offene \"Uberdeckungen, die $s|_{U_x}$ bilden konsistente Familie, $s$ und $0$ sind beides Amalgame $\xRightarrow[\text{eigenschaft}]{\text{Gruppen-}} s= 0$
+  F\"ur jedes $x\in U$ gibt es Umgebung $U_x$ mit $s|_{U_x} = 0$. ($s|_{U_x} = \rho_{U_x}^U$). Die $(U_x)_{x\in U}$ bilden offene \"Uberdeckungen, die $s|_{U_x}$ bilden konsistente Familie, $s$ und $0$ sind beides \glspl{Amalgam} $\xRightarrow[\text{eigenschaft}]{\text{Gruppen-}} s= 0$
 \end{twosidedproof}\end{bew}
 
 \begin{Prop}\label{1.8}
@@ -582,7 +617,7 @@ Seien $\calF, \calG$ Garben von abelschen Gruppen auf $X$, $\varphi: \calF \to \
   \proofforward
     Sei $x\in X, s_x\in \calF$ mit $\varphi_x(s_x)=0$.
     
-    $\exists$ Umgebung von $x$ und $s\in \calF(U)$ mit $s_x =$ Keim von $s$ in $x$ mit $\varphi_x(s_x)=$ Keim von $\varphi_U(s)$ in $x = \varphi_U(s)_s$
+    $\exists$ Umgebung von $x$ und $s\in \calF(U)$ mit $s_x =$ \gls{Keim} von $s$ in $x$ mit $\varphi_x(s_x)=$ Keim von $\varphi_U(s)$ in $x = \varphi_U(s)_s$
     \begin{center}\begin{tikzpicture}
       \node (F) at (-2,1) {$\calF(U)$};
       \node (G) at (2,1) {$\calG(U)$};
@@ -644,7 +679,7 @@ Seien $\calF, \calG$ Garben von abelschen Gruppen auf $X$, $\varphi: \calF \to \
     \end{tikzpicture}\end{center}
   \end{twosidedproof}
   \begin{bsp}
-  Sei $X = \C$, $\calO$ die Garbe der holomorphen Funktionen auf $\C$, $\calO^\X$ die Garbe der invertierbaren holomorphen Funktionen. $\varphi = \exp$, das hei\ss t f\"ur $f\in \calO(U)$ sei $\varphi(f) = e^{2\pi if}$.
+  Sei $X = \C$, $\calO$ die Garbe der \gls{Holomorphe Funktion} auf $\C$, $\calO^\X$ die Garbe der invertierbaren holomorphen Funktionen. $\varphi = \exp$, das hei\ss t f\"ur $f\in \calO(U)$ sei $\varphi(f) = e^{2\pi if}$.
   
   $\varphi$ ist Garbenhomomorphisms ($e^{f+g} = e^f \cdot e^g$). $\varphi_x$ ist surjektiv f\"ur jedes $x\in X$ (lokal gibt es zu jeder holomorphen Funktion ohne Nullstellen einen Logarithmus). $\varphi_{\C\setminus\{0\}}$ ist nicht surjektiv! (zum Beispiel gibt es keine holomorphe Funktion $\log z$ auf ganz $\C$)
   
@@ -673,7 +708,7 @@ Seien $\calF, \calG$ Garben von abelschen Gruppen auf $X$, $\varphi: \calF \to \
 Sei $X$ topoloischer Raum, $\calF$ Pr\"agarbe auf $X$ (mit Werten in $\calC$)
 \begin{enumerate}[a)]
 \item
-  Es gibt genau eine Garbe $\calF^+$ auf $X$ und einen Morphismus $\vartheta: \calF \to \calF^+$, sodass $\vartheta_x:\calF_x \to \calF_x^+$ f\"ur jedes $x\in X$ ein Isomorphismus ist.
+  Es gibt genau eine Garbe $\calF^+$ auf $X$ und einen Morphismus $\vartheta: \calF \to \calF^+$, sodass $\vartheta_x:\calF_x \to \calF_x^+$ f\"ur jedes $x\in X$ ein \gls{Isomorphismus} ist.
 \item
   $\calF^+$ hei\ss t \deftermspec{zu $\calF$ assoziierte Garbe}{Garbe!assoziierte}.
 \item
@@ -898,7 +933,7 @@ Rest: \"Ubung
 
 \begin{description}
 \item[Behauptung:]
-  $\alpha:R\to R'$ Ringhomom, $\p\subset R'$ Primideal $\Rightarrow \alpha^{-1}(\p)$ Primideal in $R$
+  $\alpha:R\to R'$ Ringhomom, $\p\subset R'$ \gls{Primideal} $\Rightarrow \alpha^{-1}(\p)$ Primideal in $R$
 \item[Beweis:]
   Seien $f,g \in R$ mit $f\cdot g \in \alpha^{-1}(\p)$
   
@@ -1051,7 +1086,7 @@ $\Rightarrow V(g) \subseteq V(f) \Rightarrow f\in \bigcap\limits_{(g)\in \p} \p 
 
 $\Rightarrow \exists d \ge 1$ mit $f^d \in (g)$, das hei\ss t $\exists h \in R$ mit $f^d = g\cdot h$
 
-$\Rightarrow $ erhalte Homomorphismus $\begin{array}{ccc} R_g &\to& R_f \\ \frac{a}{g^k} &\mapsto& \frac{a\cdot h^k}{f^{d\cdot k}}\end{array}$
+$\Rightarrow $ erhalte \gls{Homomorphismus} $\begin{array}{ccc} R_g &\to& R_f \\ \frac{a}{g^k} &\mapsto& \frac{a\cdot h^k}{f^{d\cdot k}}\end{array}$
 
 \emph{Wohldefiniertheit:} $\frac{g}{1} \cdot \frac{h}{f^d} = 1$ in $R_f$, da $g\cdot h - f^d = 0$ in $R_f$.
 
