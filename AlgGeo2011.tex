@@ -40,6 +40,13 @@
 % hyperref kommen.
 \usepackage[nobottomtitles]{titlesec}
 
+%Meta-Daten fuer Latexki (nur fuer das Mitschriebwiki interessant; kann ansonsten auskommentiert werden)
+\usepackage{latexki}
+\lecturer{Prof. Dr. F. Herrlich}
+\semester{Wintersemester 2011/12}
+\scriptstate{complete}
+
+
 % Schicke Schrift
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -197,8 +204,8 @@
 \newcommand{\linetitle}[1]{\textbf{#1}}
 
 % fuer Definitionen
-\newcommand{\begriff}[1]{{\index{#1}}\emp{#1}}
-\newcommand{\begriffspez}[2]{{\index{#2}}\emp{#1}}
+\newcommand{\defterm}[1]{{\index{#1}}\emp{#1}}
+\newcommand{\deftermspec}[2]{{\index{#2}}\emp{#1}}
 
 \newcommand{\defeqr}[0]{\mathrel{\mathop:}=}
 \newcommand{\defeql}[0]{=\mathrel{\mathop:}}
@@ -280,9 +287,12 @@
 \newcommand{\IP}{\mathbb{P}}%\P bereits belegt
 
 % kursive Buchstaben im Mathe Umgebungen
-\newcommand{\calO}{\mathcal{O}}
+\newcommand{\calB}{\mathcal{B}}
 \newcommand{\calF}{\mathcal{F}}
+\newcommand{\calI}{\mathcal{I}}
 \newcommand{\calJ}{\mathcal{J}}
+\newcommand{\calO}{\mathcal{O}}
+\newcommand{\calV}{\mathcal{V}}
 
 %alte Buchstaben
 \newcommand{\p}{\mathfrak{p}}
@@ -347,6 +357,13 @@
 \theoremlisttype{optname}
 \listtheorems{Satz,SatzDef,Def,DefBem,BemDef,Prop,PropDef,Bsp,DefProp}
 
+% Liste der Saetze
+\section*{S"atze}
+\pdfbookmark[1]{S"atze}{contents}
+
+\theoremlisttype{all}
+\listtheorems{Satz,SatzDef}
+
 \setlength\parskip{\smallskipamount}
 
 
@@ -357,7 +374,7 @@
 \section*{\"Uber dieses Skript}
 Dies ist ein Mitschrieb der Vorlesung \quot{Algebraische Geometrie} von Prof. Dr. F. Herrlich im
 Wintersemester 2011/12 am Karlsruher Institut f\"ur Technologie (KIT). Prof. Dr. F. Herrlich ist f\"ur  den Inhalt nicht verantwortlich.\\
-\textcolor{red}{Die Vorlesung ist beendet und dieses Skript ist erst in der Endphase. Der Inhalt sollte vollst\"andig sein. Stellen bei denen ich unsicher war sind rot markiert.}
+
 \section*{Wer}
 Getippt wurde das Skript von Aleksandar Sandic. Es basiert auf einem Skript zur Vorlesung vom Wintersemester 2008/09, ich habe den Inhalt jedoch an die aktuelle Vorlesung angepasst. Zudem plane ich im Anhang die L\"osungen der \"Ubungsaufgaben beizulegen. Die Form und das Design sind weitgehend unver\"andert \"ubernommen worden.\\
 Das Originalsrkipt kann unter \url{http://mitschriebwiki.nomeata.de/AlgGeo.html} abgerufen werden.
@@ -367,7 +384,6 @@ Das Originalsrkipt kann unter \url{http://mitschriebwiki.nomeata.de/AlgGeo.html}
 Link zum Mitschriebwiki: \url{http://mitschriebwiki.nomeata.de/}
 
 \section*{To Do}\begin{itemize}
-\item Unsicherheiten (rot markiert) korrigieren oder best\"atigen (wichtig)
 \item Design aufpolieren (weniger wichtig)
 \item L\"osungen der \"Ubungbl\"atter einbauen (weniger wichtig)
 \end{itemize}
@@ -384,16 +400,18 @@ Sei $k$ ein K\"orper, $n \geq 1$, $k[X_1,\dots,X_n]$ Polynomring
 \begin{BemErinn}\label{bemerinn:1.1}
 \begin{enumerate}[a)]
 \item F\"ur $a_1, \dots, a_n \in k$ ist
-	\[\begin{array}{lrl}
-		\phi_{a_1,\dots,a_n}: &k[X_1, \dots, X_n] & \to k \\
-		&f &\mapsto f(a_1, \dots, a_n)
+	\[\begin{array}{lccc}
+		\phi_{a_1,\dots,a_n}: &k[X_1, \dots, X_n] &\to& k \\
+		&f &\mapsto& f(a_1, \dots, a_n)
 	\end{array}\]
 	ein Homomorphismus von Ringen
 	
 \item Ist $A$ eine $k$-Algebra, $a_1,\dots, a_n \in A$, so ist $f \mapsto f(a_1, \dots,a_n)$ ein $k$-Algebra Homomorphismus $k[X_1,\dots,x_n] \to A$
 	
-\item (UAE des Polynomrings)\\
-	Sei $A$ eine $k$-Algebra, $a_1,\dots,a_n\in A$.\\
+\item (UAE des Polynomrings)
+
+	Sei $A$ eine $k$-Algebra, $a_1,\dots,a_n\in A$.
+	
 	Dann gibt es genau einen $k$-Algebra Homomorphismus $\phi:k[X_1,\dots X_n] \to A$ mit $\phi(X_i) = a_i$\label{bemerinn:1.1.c}
 \end{enumerate}
 \end{BemErinn}
@@ -413,64 +431,60 @@ $k[X]$ ist Hauptidealring
 \end{Folg}
 
 \begin{Bew}
-Sei $I \subset[X]$ Ideal.\\
-$I = (0)$ wird von $0$ erzeugt.\\
-Sei also $I\not=0$. W\"ahle: $g \in I-\{0\}$ mit kleinstem Grad.\\
-\textbf{Beh.}: $I = (g)$, \emph{denn:} Sei $f\in I-\{0\}$. Schreibe $f=q\cdot g+r$. $\deg(r)<\deg(g)$ und $r=f-qg \in I$.\\
+Sei $I \subset[X]$ Ideal. $I = (0)$ wird von $0$ erzeugt. Sei also $I\not=0$. W\"ahle: $g \in I-\{0\}$ mit kleinstem Grad.
+
+\textbf{Beh.}: $I = (g)$, \emph{denn:} Sei $f\in I-\{0\}$. Schreibe $f=q\cdot g+r$. $\deg(r)<\deg(g)$ und $r=f-qg \in I$.
+
 $\Rightarrow r=0$
 \end{Bew}
 
 \begin{Folg}\label{folg:1.5}
-$k[X]$ ist faktoriell (eindeutige Zerlegung in Primfaktoren).\\
-\emph{Erinnerung}: $R$ Ring, $f \in R$ keine Einheit\\
+$k[X]$ ist faktoriell (eindeutige Zerlegung in Primfaktoren).
+
+\emph{Erinnerung}: $R$ Ring, $f \in R$ keine Einheit
 	\[f \textrm{ unzerlegbar } \Leftrightarrow \textrm{ Aus } f = g\cdot h \textrm{ folgt } g \in R^x \textrm{ oder } h\in R^x\]
 \end{Folg}
 
 \begin{Prop}
-$k[X_1, \dots, X_n]$ ist faktoriell f\"ur jedes $n\ge 1$.\\
+$k[X_1, \dots, X_n]$ ist faktoriell f\"ur jedes $n\ge 1$.
 \end{Prop}
 
 \begin{Bew}[Beweisidee]
-Induktion \"uber $n$, $n = 1$ ist Folgerung \ref{folg:1.5}.\\
+Induktion \"uber $n$, $n = 1$ ist Folgerung \ref{folg:1.5}.
+
 F\"ur Induktionsschritt: $k[X_1,\dots, X_n] = k[X_1,\dots,X_{n-1}][X_n]$
 \end{Bew}
 
 \begin{Satz}[Hilbertscher Basissatz]\label{satz1}
-Jedes Ideal in $k[X,\dots ,X_n]$ ist endlich erzeugbar.\\
-\emph{Kurz:}	$k[X_1,\dots, X_n]$ ist noethersch
+Jedes Ideal in $k[X,\dots ,X_n]$ ist endlich erzeugbar. \emph{Kurz:} $k[X_1,\dots, X_n]$ ist noethersch
 \end{Satz}
 
 \begin{Def}
-Ein Ring $R$ hei\ss t \begriff{noethersch}\index{noethersch}, wenn jedes Ideal in $R$ endlich erzeugbar ist.
+Ein Ring $R$ hei\ss t \defterm{noethersch}\index{noethersch}, wenn jedes Ideal in $R$ endlich erzeugbar ist.
 \end{Def}
 
-\begin{nnSatz1}\label{satz1}
-$R$ noethersch $\Rightarrow$ $R[X]$ noethersch.\\
-Daraus folgt Satz \ref{satz1}: $k[X_1,\dots ,X_n]$ ist noethersch mit Induktion \"uber $n$.
+\begin{nnSatz1}\label{satz1'}
+$R$ noethersch $\Rightarrow$ $R[X]$ noethersch. Daraus folgt Satz \ref{satz1}: $k[X_1,\dots ,X_n]$ ist noethersch mit Induktion \"uber $n$.
 \end{nnSatz1}
 
 \begin{Bew}[Beweis von Satz \ref{satz1'}]
-\emph{Annnahme:} Es gibt Ideal $I\subset R[X]$, das sich nicht von endlich vielen Elementen erzeugen l\"asst.\\
-W\"ahle $f_0 \in I-\{0\}$ vom kleinsten Grad.\\
-W\"ahle $f_1 \in I-\{f_0\}$ vom kleinsten Grad.\\
-W\"ahle f\"ur $i\ge2\in I-\{f_0,f_1,\dots ,f_{i-1}\}$ vom kleinsten Grad.\\
-Sei $a_i$ der Leitkoeffizient von $f_i$, sei $J\subset R$ das von den $a_i,i\in \N$ erzeugte Ideal.\\
-$J$ ist endlich erzeugt. \OE $J$ wird erzeugt von $a_1,\dots ,a_n$\\
-$\Rightarrow$ es gilt $\lambda_0,\dots ,\lambda_n \in \R$ mit $a_{n+1}=\sum_{i=0}^n\lambda_i a_i$\\
-Sei \begin{align*}g:= f_{n+1}-\sum_{i=0}^n \lambda_i f_i X^{d_{n+1}-d_i}\end{align*}\\
-$\Rightarrow \deg(g) <\deg(f_{n+1})$\\
-\emph{Aber}: $g\notin (f_0,\dots ,f_n)$, da sonst auch $f_{n+1} \in(f_0,\dots ,f_n)$ w\"are. $\lightning$
+\emph{Annnahme:} Es gibt Ideal $I\subset R[X]$, das sich nicht von endlich vielen Elementen erzeugen l\"asst.
+
+W\"ahle $f_0 \in I-\{0\}$ vom kleinsten Grad. W\"ahle $f_1 \in I-\{f_0\}$ vom kleinsten Grad. W\"ahle f\"ur $i\ge2\in I-\{f_0,f_1,\dots ,f_{i-1}\}$ vom kleinsten Grad. Sei $a_i$ der Leitkoeffizient von $f_i$, sei $J\subset R$ das von den $a_i,i\in \N$ erzeugte Ideal.
+
+$J$ ist endlich erzeugt. \OE $J$ wird erzeugt von $a_1,\dots ,a_n$ $\Rightarrow$ es gilt $\lambda_0,\dots ,\lambda_n \in \R$ mit $a_{n+1}=\sum_{i=0}^n\lambda_i a_i$
+
+Sei \begin{align*}g:= f_{n+1}-\sum_{i=0}^n \lambda_i f_i X^{d_{n+1}-d_i}\end{align*} $\Rightarrow \deg(g) <\deg(f_{n+1})$ \emph{Aber}: $g\notin (f_0,\dots ,f_n)$, da sonst auch $f_{n+1} \in(f_0,\dots ,f_n)$ w\"are. $\lightning$
 \end{Bew}
 
 \begin{Bem}\label{bem1.8}
-Sei $R$ ein noetherscher Ring, $I\subset R$ Ideal.\\
-Dann ist auch $R/I$ noethersch.
+Sei $R$ ein noetherscher Ring, $I\subset R$ Ideal. Dann ist auch $R/I$ noethersch.
 \end{Bem}
 
 \begin{Bew}
-Sei $J \subset R/I$ ein ideal. Sei $\Pi:R \to R/I$ die Restklassenabbildung.\\
-$\tilde{J} := \Pi^{-1}(J)$ ist nach Voraussetzung endlich erzeugbar.\\
-Die Bilder der Erzeuger von $\tilde{J}$ in $J$ erzeugen $J$.
+Sei $J \subset R/I$ ein ideal. Sei $\Pi:R \to R/I$ die Restklassenabbildung.
+
+$\tilde{J} := \Pi^{-1}(J)$ ist nach Voraussetzung endlich erzeugbar. Die Bilder der Erzeuger von $\tilde{J}$ in $J$ erzeugen $J$.
 \end{Bew}
 
 \begin{Folg}
@@ -482,26 +496,26 @@ Siehe Folgerung \ref{folg1.2}, Bemerkung \ref{bem1.8} und Satz \ref{satz1}
 \end{Bew}
 
 \begin{Prop}
-Ein Ring $R$ ist genau dann noethersch, wenn jede aufsteigende Kette $I_0 \subseteq I_1 \subseteq \dots$ von Idealen in $R$ station\"ar wird.\\
-(D. h. es gibt $n_0$ mit $I_n=I_{n_0}$ f\"ur alle $n\ge n_0$)
+Ein Ring $R$ ist genau dann noethersch, wenn jede aufsteigende Kette $I_0 \subseteq I_1 \subseteq \dots$ von Idealen in $R$ station\"ar wird. (Das hei\ss t es gibt $n_0$ mit $I_n=I_{n_0}$ f\"ur alle $n\ge n_0$)
 \end{Prop}
 
 \begin{Bew}\begin{twosidedproof}
 \proofforward
-	Sei $I_0 \subseteq I_1 \subseteq \dots $ Kette von Idealen. Sei $I:= \bigcup_{d=0}^{\infty} I_d$.\\
-	$I$ ist Ideal. $I$ ist endlich erzeugbar, $I=(a_1,\dots ,a_r),a_i \in I_{n_1}$, $n_0=\max_{i=1}^r n_i$\\
-	$\Rightarrow I_n = I_{n_0}$ f\"ur $n \ge n_0$
+	Sei $I_0 \subseteq I_1 \subseteq \dots $ Kette von Idealen. Sei $I:= \bigcup_{d=0}^{\infty} I_d$.
+	
+	$I$ ist Ideal. $I$ ist endlich erzeugbar, $I=(a_1,\dots ,a_r),a_i \in I_{n_1}$, $n_0=\max_{i=1}^r n_i$	$\Rightarrow I_n = I_{n_0}$ f\"ur $n \ge n_0$
 	
 \proofreverse
-	Sei $I$ Ideal, $\mathcal{I}:=\{ J\subset I$ | $J$ Ideal in $R$, $J$ endlich erzeugt$\}$.\\
-	$\mathcal{I} \not= \emptyset$, da $(0)\in \mathcal{I}$.\begin{description}[\setlabelstyle{\itshape}]
-	\item[Behauptung:] $\mathcal{I}$ enth\"alt ein maximales Element $I_0$.\end{description}
-	W\"are $I_0 \not= I$, so g\"abe es $a\in I - I_0$. Dann w\"are auch $(I_0,a)\in \mathcal{I} \lightning$ zu $I_0$ maximal.\begin{description}[\setlabelstyle{\itshape}]
-	\item[Beweis der Behauptung:] Ist $(0)$ nicht maximal, so gibt es $(0)\subsetneq I_1 \subset \mathcal{I}$.
-	Ist auch $I_1$ nicht maximal, so gibt es $I_1 \subsetneq I_2 \in \mathcal{I}$.\\
-	$\Rightarrow$ erhalte Kette $(0) \subsetneq I_1 \subsetneq I_2 \subsetneq \dots $\\
-	Nach Voraussetzung wird diese Kette station\"ar ab einem $n_0$.\\
-	$\Rightarrow I_{_0}$ ist maximal in $I$.\end{description}
+	Sei $I$ Ideal, $\calI:=\{ J\subset I$ | $J$ Ideal in $R$, $J$ endlich erzeugt$\}$. 	$\calI \not= \emptyset$, da $(0)\in \calI$.
+	\begin{description}[\setlabelstyle{\itshape}]
+	\item[Behauptung:] $\calI$ enth\"alt ein maximales Element $I_0$.\end{description}
+	W\"are $I_0 \not= I$, so g\"abe es $a\in I - I_0$. Dann w\"are auch $(I_0,a)\in \calI \lightning$ zu $I_0$ maximal.
+	\begin{description}[\setlabelstyle{\itshape}]
+	\item[Beweis der Behauptung:] Ist $(0)$ nicht maximal, so gibt es $(0)\subsetneq I_1 \subset \calI$.
+		Ist auch $I_1$ nicht maximal, so gibt es $I_1 \subsetneq I_2 \in \calI$. $\Rightarrow$ erhalte Kette $(0) \subsetneq I_1 \subsetneq I_2 \subsetneq \dots $
+		
+		Nach Voraussetzung wird diese Kette station\"ar ab einem $n_0$. $\Rightarrow I_{_0}$ ist maximal in $I$.
+	\end{description}
 \end{twosidedproof}\end{Bew}
 
 \newpage
@@ -510,13 +524,15 @@ Ein Ring $R$ ist genau dann noethersch, wenn jede aufsteigende Kette $I_0 \subse
 Sei $k$ ein K\"orper.
 
 \begin{Def}
-Eine Teilmenge $V \subseteq k^n$ hei\ss t \begriffspez{affine Variet\"at}{Variet\"at!affine-}, wenn es eine Menge $F\subseteq k[X_1,\dots ,X_n]$ von Polynomen gibt, sodass
+Eine Teilmenge $V \subseteq k^n$ hei\ss t \deftermspec{affine Variet\"at}{Variet\"at!affine-}, wenn es eine Menge $F\subseteq k[X_1,\dots ,X_n]$ von Polynomen gibt, sodass
 \[ V = V(F) = \{x=(x_1,\dots ,x_n) \in k : f(x)= 0 \textrm{ f\"ur alle } f \in F\} \]
 \end{Def}
 
 \begin{nnBsp}
-$\emptyset = V(1) = V(k[X_1,\dots ,X_n])$\\
-$k^n = V(0) = V(\emptyset)$\\
+$\emptyset = V(1) = V(k[X_1,\dots ,X_n])$
+
+$k^n = V(0) = V(\emptyset)$
+
 $V(X(X-1)(Y-1))$ affine Variet\"at
 \end{nnBsp}
 
@@ -537,12 +553,13 @@ $\Rightarrow f(x)=0 \Rightarrow x\in V((F))$
 \begin{Def}
 F\"ur eine Teilmenge $V\subset k^n$ hei\ss t
 	\[I(V)=\{f\in k[X_1,\dots ,X_n] | f(x) = 0\textrm{ f\"ur alle }x\in V\}\]
-das \begriff{Verschwindungsideal}.
+das \deftermspec{Verschwindungsideal}{Ideal!Verschwindungs-}.
 \end{Def}
 
 \begin{nnBsp}\begin{enumerate}[i)]
 \item
-	$I(\emptyset) = k[X_1,\dots ,X_n]$\\
+	$I(\emptyset) = k[X_1,\dots ,X_n]$
+	
 	$I(k^n) =(0)$ falls $k$ unendlich ist
 \item
 	$I((0,0)) = (X,Y)$
@@ -555,8 +572,7 @@ F\"ur jede Teilmenge $V\subseteq k^n$ gilt:\begin{enumerate}[i)]
 \item
 	$V \subseteq V(I(V))$
 \item
-	$\bar{V} := V(I(V))$ ist die kleinste Variet\"at, die $V$ enth\"alt.\\
-	Insbesondere: $V = V(I(V))$, falls $V$ affine Variet\"at.
+	$\bar{V} := V(I(V))$ ist die kleinste Variet\"at, die $V$ enth\"alt. Insbesondere: $V = V(I(V))$, falls $V$ affine Variet\"at.
 \item\label{bem2.4.iv}
 	f\"ur affine Variet\"aten $V_1,V_2$ gilt:
 	\[ V_1 \subseteq V_2 \Leftrightarrow I(V_1) \supseteq I(V_2)\]
@@ -564,8 +580,7 @@ F\"ur jede Teilmenge $V\subseteq k^n$ gilt:\begin{enumerate}[i)]
 \end{enumerate}\end{Bem}
 
 \begin{Def}
-Ein Ideal $I$ in einem Ring $R$ hei\ss t \begriff{Radikalideal}, wenn gilt:\\
-Ist $f\in R$ und gibt es $n\ge 0$ mit $f^n\in I$, so ist $f\in I$
+Ein Ideal $I$ in einem Ring $R$ hei\ss t \deftermspec{Radikalideal}{Ideal!Radikal-}, wenn gilt: Ist $f\in R$ und gibt es $n\ge 0$ mit $f^n\in I$, so ist $f\in I$
 \end{Def}
 
 \begin{Bew}[von Bemerkung \ref{bem2.4}]\begin{enumerate}[i)]
@@ -575,14 +590,11 @@ Ist $f\in R$ und gibt es $n\ge 0$ mit $f^n\in I$, so ist $f\in I$
 	Sei $V'$ affine Variet\"at mit $V\subseteq V'$. Sei $V'=V(I')$ f\"ur ein Ideal $I'$.\begin{description}[\setlabelstyle{\itshape}]
 	\item[Behauptung:] $I'\subseteq I(V)$\end{description}
 	Dann ist $V' = V(I')\supseteq V(I(V)) = \bar{V}$\begin{description}[\setlabelstyle{\itshape}]
-	\item[Beweis der Behauptung:] $f\in I'$\\
-	$\Rightarrow$ f\"ur alle $x\in V'$ ist $f(x)=0$\\
-	$\Rightarrow f(x)=0$ f\"ur alle $x\in V \Rightarrow f\in I(V)$\end{description}
+	\item[Beweis der Behauptung:] $f\in I'$ $\Rightarrow$ f\"ur alle $x\in V'$ ist $f(x)=0$ $\Rightarrow f(x)=0$ f\"ur alle $x\in V \Rightarrow f\in I(V)$\end{description}
 \end{enumerate}\end{Bew}
 
 \begin{nnBsp}
-$f=X^2+1 \in \R[X], I = (f), V(I)=\emptyset$\\
-$\Rightarrow I(V(I))=\R[X]$
+$f=X^2+1 \in \R[X], I = (f), V(I)=\emptyset$ $\Rightarrow I(V(I))=\R[X]$
 \end{nnBsp}
 
 \begin{DefBem}
@@ -592,7 +604,7 @@ F\"ur eine affine Variet\"at $V\subseteq k^n$ sei
 \item
 	$A(V)$ ist die reduzierte $k$-Algebra (d. h. ohne nilpotente Elemente)
 \item
-	Ist $V\subseteq V'$, so gibt es \begriffspez{surjektiven $k$-Algebra Homomophismus}{Homomophismus!surjektiver $k$-Algebra-} $A(V')\to A(V)$
+	Ist $V\subseteq V'$, so gibt es \deftermspec{surjektiven $k$-Algebra Homomorphismus}{Morphismus!Homo-!surjektiver $k$-Algebra-} $A(V')\to A(V)$
 \end{enumerate}\end{DefBem}
 
 \begin{Bew}\begin{enumerate}[i)]
@@ -601,9 +613,9 @@ F\"ur eine affine Variet\"at $V\subseteq k^n$ sei
 	\[\Rightarrow f^d \in I(V)\]
 	\[ \overset{I(V) \textrm{Radikalideal}}{\Rightarrow} f\in I(V) \Rightarrow g=0\]
 \item
-	Es ist $I(V')\subseteq I(V)$.\\
-	Homomorphiesatz $\Rightarrow $
-	\begin{center}\begin{tikzpicture}
+	Es ist $I(V')\subseteq I(V)$.
+	
+	\begin{center}Homomorphiesatz $\Rightarrow$ \begin{tikzpicture}[baseline=0]
 		%definiere Punkte
 		\node(k) at (-2,1) {$k[X_1,\dots ,X_n]$} node (A) at (2,1) {$A(V)$};
 		\node (A') at (0,-1) {$A'(V)$} node at (0,0){\schraffiert};
@@ -622,7 +634,8 @@ F\"ur eine affine Variet\"at $V\subseteq k^n$ sei
 Sei $k$ ein K\"orper\\
 
 \begin{DefBem}\label{bem3.1}
-Die affinen Variet\"aten in $k^n$ bilden die abgeschlossenen Mengen einer Topologie. Diese Topologie hei\ss t \begriff{Zariski-Topologie}.\\
+Die affinen Variet\"aten in $k^n$ bilden die abgeschlossenen Mengen einer Topologie. Diese Topologie hei\ss t \deftermspec{Zariski-Topologie}{Topologie!Zariski-}.
+
 \emph{Schreibweise:} $\A ^n(k)$ sei $k^n$ mit dieser Topologie
 \end{DefBem}
 
@@ -630,18 +643,20 @@ Die affinen Variet\"aten in $k^n$ bilden die abgeschlossenen Mengen einer Topolo
 \item
 	$k^n=V(0), \emptyset=V(k[X_1,\dots ,X_n])$ sind affine Variet\"aten
 \item
-	Seien $V_1=V(I_1)$ und $V_2 =V(I_2)$ affine Veriet\"aten.\\
-	\emph{Behauptung:} $V_1 \cup V_2 =V(I_1\cdot I_2)=V(I_1\cap I_2)$\\
-	zeige genauer: $V(I_1\cdot I_2) \overset{a)}{\subseteq} V_1 \cup V_2 \overset{b)}{\subseteq} V(I_1\cap I_2) \overset{c)}{\subseteq} V(I_1\cdot I_2)$
+	Seien $V_1=V(I_1)$ und $V_2 =V(I_2)$ affine Veriet\"aten.
+	
+	\emph{Behauptung:} $V_1 \cup V_2 =V(I_1\cdot I_2)=V(I_1\cap I_2)$
+	
+	Zeige genauer: $V(I_1\cdot I_2) \overset{a)}{\subseteq} V_1 \cup V_2 \overset{b)}{\subseteq} V(I_1\cap I_2) \overset{c)}{\subseteq} V(I_1\cdot I_2)$
 	\begin{enumerate}[a)]
 	\item[c)] folgt aus $I_1\cdot I_2 \subseteq I_1 \cap I_2$
 	\item[b)] folgt aus $I_1 \cap I_2 \subset I_1$ und $I_1 \cap I_2 \subset I_2$
 	\item[a)] Sei $x\in V(I_1\cdot I_2), x\notin V_1$\\
-		Dann gibt es $f\in I_1$ mit $f(x) \not= 0$ $\Rightarrow  g(x) \stackrel{x\in V(I_1\cdot I_2)}= 0$ f\"ur alle $g\in I_2$\\
-		$\Rightarrow x\in V(I_2) = V_2$
+		Dann gibt es $f\in I_1$ mit $f(x) \not= 0$ $\Rightarrow  g(x) \stackrel{x\in V(I_1\cdot I_2)}= 0$ f\"ur alle $g\in I_2$ 	$\Rightarrow x\in V(I_2) = V_2$
 	\end{enumerate}
 \item
-	Seien $V_i = V(I_i),i \in J$ ($J$ beliebige Menge), affine Veriet\"aten.\\
+	Seien $V_i = V(I_i),i \in J$ ($J$ beliebige Menge), affine Veriet\"aten.
+	
 	\emph{Behauptung:} \[ \bigcap_{i\in J} V_i = V(\underbrace{\bigcup_{i\in J} I_i}_{= \sum_{i\in J} I_i}) \]
 \end{enumerate}\end{Bew}
 
@@ -669,13 +684,13 @@ Ist $k$ unendlich, so ist $\A ^n(k)$ nicht hausdorffsch.
 \item[$n=1$:] \checkmark
 \item[{$n\ge 2$}:] $x,y \in \A ^n(k)$\\
 	\OE $x$ und $y$ liegen auf der $X_1$-Achse, das hei\ss t \[x,y \in V(X_2,\dots ,X_n) =:W\]\\
-	Seien $U_x,U_y$ offene Umgebungen von $x$ bzw. $y$.\\
-	Dann sind\[\left.
+	Seien $U_x,U_y$ offene Umgebungen von $x$ bzw. $y$. Dann sind\[\left.
 		\begin{array}{rl}
 		 & V_x=V(I_x) = \A ^n(k)-U_x\\
 		 \textrm{und} & V_x=V(I_x) = \A ^n(k)-U_x
 		\end{array}	\right\} \textrm{affine Veriet\"aten}\]\\
-	Da $x\in W$ gibt es $f\in I_x$ mit $f(x) \neq 0 \Rightarrow f \notin I(W) \Rightarrow V(f)\cap W$ endlich $	\Rightarrow V_x \cap W$ endlich.\\
+	Da $x\in W$ gibt es $f\in I_x$ mit $f(x) \neq 0 \Rightarrow f \notin I(W) \Rightarrow V(f)\cap W$ endlich $	\Rightarrow V_x \cap W$ endlich.
+	
 	Genauso $V_y \cap W$ endlich
 	$\Rightarrow (V_x \cup V_y)\cap W$ endlich.
 	\[\Rightarrow U_x \cap U_y \cap W \not= \emptyset\]
@@ -691,26 +706,24 @@ Sei $k$ unendlicher K\"orper. \begin{enumerate}[i)]
 
 \begin{Bew}\begin{enumerate}[i)]
 \item[ii)]
-Sei $U \subseteq \A ^n(k)$ offen.\\
-\emph{Zeige}: Zu jedem $x\in U$ gibt es $f\in k[X_1,\dots ,X_n]$ mit $x\in D(f) \subseteq U$\\
-\emph{denn:} Sei $V:=\A ^n(k)-U, V=V(I)$ f\"ur ein Ideal $I \subseteq k[X_1,\dots ,X_n]$.\\
-Da $x\notin V$ gibt es $f\in I$ mit $f(x) \not= 0$\\
-$\Rightarrow x\in D(f)$ und $D(f) \subseteq U$, da $V(f) \supseteq V(I) =V$
+Sei $U \subseteq \A ^n(k)$ offen.
+
+\emph{Zeige}: Zu jedem $x\in U$ gibt es $f\in k[X_1,\dots ,X_n]$ mit $x\in D(f) \subseteq U$
+
+\emph{denn:} Sei $V:=\A ^n(k)-U, V=V(I)$ f\"ur ein Ideal $I \subseteq k[X_1,\dots ,X_n]$.
+
+Da $x\notin V$ gibt es $f\in I$ mit $f(x) \not= 0$ $\Rightarrow x\in D(f)$ und $D(f) \subseteq U$, da $V(f) \supseteq V(I) =V$
 \end{enumerate}\end{Bew}
 
 \begin{DefErinn}\begin{enumerate}[a)]
 \item
-	Sei $X$ ein topologischer Raum, $Y \subseteq X$.\\
-	Definiere Topologie auf $Y$ durch:
-	\[U \subseteq Y \textrm{ offen } \Leftrightarrow \exists \tilde{U}\subseteq X \textrm{ offen mit } U = \tilde{U}\cap Y\]\\
-	Diese Topologie hei\ss t \begriffspez{Spurtopologie}{Topologie!Spur-}.
+	Sei $X$ ein topologischer Raum, $Y \subseteq X$. Definiere Topologie auf $Y$ durch:
+	\[U \subseteq Y \textrm{ offen } \Leftrightarrow \exists \tilde{U}\subseteq X \textrm{ offen mit } U = \tilde{U}\cap Y\]
+	Diese Topologie hei\ss t \deftermspec{Spurtopologie}{Topologie!Spur-}.
 \item
-	Sei $V \subseteq \A ^n(k)$ affine Variet\"at.\\
-	Dann hei\ss t die Spurtopologie auf $V$ auch \begriffspez{Zariski-Topologie}{Topologie!Zariski-}\index{Zariski-Topologie}.
+	Sei $V \subseteq \A ^n(k)$ affine Variet\"at. 	Dann hei\ss t die Spurtopologie auf $V$ auch \deftermspec{Zariski-Topologie}{Topologie!Zariski-}.
 \item
-	Seien $X_1,X_2$ topologische R\"aume, $X_1 \times X_2$ das kartesische Produkt (als Mengen), \[p_i: X_1 \times X_2 \to X_i (i=1,2)\] die Projektionen.\\
-	Definiere die \begriffspez{Produkttopologie}{Topologie!Produkt-} auf $X_1 \times X_2$ als die gr\"obste Topologie, sodass $p_1$ und $p_2$ stetig sind.\\
-	Das ist die kleinste Topologie, in der alle Mengen $p_1^{-1}(U_1)\cap p_2^{-1}(U_2)$ offen sind, wobei $U_i \subseteq X_i$ offen ist.
+	Seien $X_1,X_2$ topologische R\"aume, $X_1 \times X_2$ das kartesische Produkt (als Mengen), \[p_i: X_1 \times X_2 \to X_i (i=1,2)\] die Projektionen. Definiere die \deftermspec{Produkttopologie}{Topologie!Produkt-} auf $X_1 \times X_2$ als die gr\"obste Topologie, sodass $p_1$ und $p_2$ stetig sind. Das ist die kleinste Topologie, in der alle Mengen $p_1^{-1}(U_1)\cap p_2^{-1}(U_2)$ offen sind, wobei $U_i \subseteq X_i$ offen ist.
 \begin{center}\begin{tikzpicture}
 	%Achsen zeichnen
 	\draw[->] (-1,0) -- (7,0) node[right] {$x_1$};
@@ -742,31 +755,33 @@ Ist die Zariski-Topologie auf $k^2$ die Produkttopologie auf $\A ^1(k) \times \A
 \begin{DefBem}
 Sei $X$ ein topologischer Raum.\begin{enumerate}[a)]
 \item
-	$X$ hei\ss t \begriff{reduzibel}, wenn es abgeschlossene Teilmengen $A, B \subseteq X$ gibt mit $A \cup B = X$ und $A\not= X\not= B$.  Eine Teilmenge von X heißt irreduzibel, wenn sie mit der induzierten Topologie irreduzibel ist.
+	$X$ hei\ss t \defterm{reduzibel}, wenn es abgeschlossene Teilmengen $A, B \subseteq X$ gibt mit $A \cup B = X$ und $A\not= X\not= B$.  Eine Teilmenge von X heißt irreduzibel, wenn sie mit der induzierten Topologie irreduzibel ist.
 \item
-	Eine (bez\"uglich Inklusion) maximale irreduzibel Teilmenge von $X$ hei\ss t \begriffspez{irreduzible Komponente}{Komponente!irreduzible-}\index{irreduzibel!-Komponente} von $X$
+	Eine (bez\"uglich Inklusion) maximale irreduzibel Teilmenge von $X$ hei\ss t \deftermspec{irreduzible Komponente}{Komponente!irreduzible-}\index{irreduzibel!-Komponente} von $X$
 \item
 	Irreduzible Komponenten sind abgeschlossen (\"Ubung)
 \end{enumerate}\end{DefBem}
 
 \begin{Bsp}
-Sei $X$ nichtleerer Hausdorffraum.\\
-Dann sind die einelementigen Teilmengen die irreduziblen Komponenten.\\
-\emph{Denn:} Sei $X$ hausdorffsch, $x\not= y \in X$, \emph{zeige:} $X$ ist irreduzibel\\
-Seien $U_x, U_y$ offene Umgebungen von $x$ bzw. $y$ mit $U_x \cap U_y = \emptyset$\\
+Sei $X$ nichtleerer Hausdorffraum.
+
+Dann sind die einelementigen Teilmengen die irreduziblen Komponenten.
+
+\emph{Denn:} Sei $X$ hausdorffsch, $x\not= y \in X$, \emph{zeige:} $X$ ist irreduzibel
+
+Seien $U_x, U_y$ offene Umgebungen von $x$ bzw. $y$ mit $U_x \cap U_y = \emptyset$
 \[\Rightarrow V_x \cup V_y = X, V_x = X-U_x, V_y = X- U_y\]
 \[x\notin V_x \not= X \not=V_y \not\ni y\]
 \end{Bsp}
 
 \begin{Bsp}
-$\A ^1(k)$ ist irreduzibel, wenn $k$ unendlich ist.\\
-\emph{Denn:} echte abgeschlossene Teilmengen von $\A ^1(k)$ sind endlich.
+$\A ^1(k)$ ist irreduzibel, wenn $k$ unendlich ist. \emph{Denn:} echte abgeschlossene Teilmengen von $\A ^1(k)$ sind endlich.
 \end{Bsp}
 
 \begin{Frag}
-Ist $\A ^2(k)$ irreduzibel?\\
-Sei $\A ^2(k)=V_1 \cup V_2, V_i=V(I)$. Seien $f_1, f_2 \in I_1$ bzw. $I_2, f_i \not= 0$.\\
-$\Rightarrow V_i \subset V(f_i), i = 1,2$\\
+Ist $\A ^2(k)$ irreduzibel?
+
+Sei $\A ^2(k)=V_1 \cup V_2, V_i=V(I)$. Seien $f_1, f_2 \in I_1$ bzw. $I_2, f_i \not= 0$. $\Rightarrow V_i \subset V(f_i), i = 1,2$
 \[\Rightarrow \underbrace{V(f_1)\cup V(f_2)}_{=V(f_1\cdot f_2)} = \A ^2\]
 \begin{tikzpicture}
 	%Achsen zeichen
@@ -776,7 +791,8 @@ $\Rightarrow V_i \subset V(f_i), i = 1,2$\\
 	\draw (-1.5,-1.5) --(1,1) node[right]{$f(X,0)$};
 	\node(f) at (5,0.5){$f= f(X,Y)\in k[X,Y]$};
 \end{tikzpicture}\\
-$V(f)\cup V(Y) = V(f(X,0)) \subset \A ^1(k)$\\
+$V(f)\cup V(Y) = V(f(X,0)) \subset \A ^1(k)$
+
 Entweder $V(f(X,0))$ ist endlich \emph{oder} $f(X,0)=0$, dann ist durch $Y$ teilbar.
 \linetitle{Genauso:} $f$ ist durch $Y-\alpha X$ teilbar f\"ur jedes $\alpha \in k \Rightarrow f=0$.
 \linetitle{Antwort auf die Frage:} ja!
@@ -788,19 +804,19 @@ Eine affine Variet\"at $V\subseteq \A ^n(k)$ ist genau dann irreduzibel, wenn $I
 
 \begin{Bew}\begin{twosidedproof}
 \proofforward
-Seien $f,g\in k[X_1,\dots ,X_n]$ mit $f\cdot g \in I(V)$. Sei $f\notin I(V)$, zu zeigen: $g\in I(V)$\\
-$f\notin I(V) \Rightarrow \exists x\in V$ mit $f(x) \not= 0$\\
-Nach Voraussetzung ist $V\subseteq V(f\cdot g) = V(f)\cup V(g)$\\
-\[\Rightarrow V=\left(V(f)\cap V\right) \cup \left(V(g)\cap V\right) \stackrel{V \textrm{ irred.}}\Rightarrow V(g)\cap V = V\]\\
-$\Rightarrow V\subseteq V(g) \Rightarrow g\in I(V)$
-
+	Seien $f,g\in k[X_1,\dots ,X_n]$ mit $f\cdot g \in I(V)$. Sei $f\notin I(V)$, zu zeigen: $g\in I(V)$
+	
+	$f\notin I(V) \Rightarrow \exists x\in V$ mit $f(x) \not= 0$
+	
+	Nach Voraussetzung ist $V\subseteq V(f\cdot g) = V(f)\cup V(g)$
+		\[\Rightarrow V=\left(V(f)\cap V\right) \cup \left(V(g)\cap V\right) \stackrel{V \textrm{ irred.}}\Rightarrow V(g)\cap V = V\]
+	$\Rightarrow V\subseteq V(g) \Rightarrow g\in I(V)$
 \proofreverse
-Sei $I(V)$ Primideal, $V=V_1\cup V_2$ mit abgeschlossenen Teilmengen $V_1,V_2$, also $V_i=V(I_i), i=1,2$, f\"ur Ideale $I_1,I_2$. Sei $V\not= V_1$, also $V\subsetneq V(I_1)$.
-\[\Rightarrow \exists x\in V, f\in I_1 \textrm{ mit } f(x) \neq 0 \Rightarrow f\notin I(V)\]
-Wegen $V= V_1 \cup V_2=V(I_1)\cup V(I_2) \stackrel{\autoref{bem3.1}}=V(I_1\cdot I_2)$ ist $I_1\cdot I_2 \subseteq I(V)$\\
-$\Rightarrow f\cdot g \in I(V)$ f\"ur jedes $g\in I_2$
-\[\overset{f\notin I(V)}{\underset{I(V) \textrm{ prim}}{\Rightarrow}} g \in I(V) \textrm{ f"ur jedes }g \in I_2\]
-$\Rightarrow I_2\subseteq I(V) \Rightarrow \underbrace{V(I_2)}_{=V_2} \supseteq \underbrace{V(I(V))}_{=V}$
+	Sei $I(V)$ Primideal, $V=V_1\cup V_2$ mit abgeschlossenen Teilmengen $V_1,V_2$, also $V_i=V(I_i), i=1,2$, f\"ur Ideale $I_1,I_2$. Sei $V\not= V_1$, also $V\subsetneq V(I_1)$.
+		\[\Rightarrow \exists x\in V, f\in I_1 \textrm{ mit } f(x) \neq 0 \Rightarrow f\notin I(V)\]
+	Wegen $V= V_1 \cup V_2=V(I_1)\cup V(I_2) \stackrel{\autoref{bem3.1}}=V(I_1\cdot I_2)$ ist $I_1\cdot I_2 \subseteq I(V)$ $\Rightarrow f\cdot g \in I(V)$ f\"ur jedes $g\in I_2$
+		\[\overset{f\notin I(V)}{\underset{I(V) \textrm{ prim}}{\Rightarrow}} g \in I(V) \textrm{ f"ur jedes }g \in I_2\]
+	$\Rightarrow I_2\subseteq I(V) \Rightarrow \underbrace{V(I_2)}_{=V_2} \supseteq \underbrace{V(I(V))}_{=V}$
 \end{twosidedproof}\end{Bew}
 
 \begin{Folg}
@@ -808,8 +824,7 @@ Eine affine Variet\"at$V\subset \A ^n(k)$ ist irreduzibel $\Leftrightarrow A(V) 
 \end{Folg}
 
 \begin{Satz}
-Sei $V\subseteq \A ^n(k)$ affine Variet\"at.\\
-Dann gilt:\begin{enumerate}[a)]
+Sei $V\subseteq \A ^n(k)$ affine Variet\"at. Dann gilt:\begin{enumerate}[a)]
 \item
 	$V$ ist endliche Vereinigung von irreduziblen affinen Variet\"aten.
 \item
@@ -818,28 +833,25 @@ Dann gilt:\begin{enumerate}[a)]
 
 \begin{Bew}\begin{enumerate}[a)]
 \item
-Sei $\mathcal B=\{V\subseteq \A ^n(k)$ affine Variet\"at, $V$ ist \emph{nicht} endliche Vereinigung von irreduziblen affinen Variet\"aten$\}$
-\[\mathcal I =\{I(V) : V\in \mathcal B\}\]
-\emph{zu zeigen:} $\mathcal B = \emptyset$, also auch $\mathcal I = \emptyset$\\
-W\"are $\mathcal I \neq \emptyset$, so enthielte $\mathcal I$ ein maximales Element $I_0=I(V_0)$ f\"ur ein $V_0\in \mathcal B$.\\
-(\emph{denn:} $k[X_1,\dots ,X_n]$ ist noethersch, jede aufsteigende Kette von Elementen in $\mathcal I$ wird also station\"ar.)\\
-Da $V_0\in \mathcal B$ ist $V_0$ reduzibel.\\
-Sei also $V_0=V_1\cup V_2$ mit abgeschlossenen Teilmengen $V_1\neq V_0 \neq V_2$ von $V_0$.\\
-Aus $V_i\subsetneq V_0$ folgt $I(V_i)\supsetneq\underbrace{I(V_0)}_{=I_0}$ (Bem. \ref{bem2.4} \ref{bem2.4.iv}))
-\[\Rightarrow I(V_i)\notin \mathcal I \Rightarrow V_i\notin \mathcal B, i=1,2\]
-$\Rightarrow V_i$ ist endliche Vereinigung von irreduziblen Variet\"aten, also auch $V_0 \notin \mathcal B \lightning$
-
+	Sei $\calB=\{V\subseteq \A ^n(k)$ affine Variet\"at, $V$ ist \emph{nicht} endliche Vereinigung von irreduziblen affinen Variet\"aten$\}$
+		\[\calI =\{I(V) : V\in \calB\}\]
+	\emph{zu zeigen:} $\calB = \emptyset$, also auch $\calI = \emptyset$
+	
+	W\"are $\calI \neq \emptyset$, so enthielte $\calI$ ein maximales Element $I_0=I(V_0)$ f\"ur ein $V_0\in \calB$. (\emph{denn:} $k[X_1,\dots ,X_n]$ ist noethersch, jede aufsteigende Kette von Elementen in $\calI$ wird also station\"ar.) Da $V_0\in \calB$ ist $V_0$ reduzibel.
+	
+	Sei also $V_0=V_1\cup V_2$ mit abgeschlossenen Teilmengen $V_1\neq V_0 \neq V_2$ von $V_0$. Aus $V_i\subsetneq V_0$ folgt $I(V_i)\supsetneq\underbrace{I(V_0)}_{=I_0}$ (Bem. \ref{bem2.4} \ref{bem2.4.iv}))
+		\[\Rightarrow I(V_i)\notin \calI \Rightarrow V_i\notin \calB, i=1,2\]
+	$\Rightarrow V_i$ ist endliche Vereinigung von irreduziblen Variet\"aten, also auch $V_0 \notin \calB \lightning$
 \item
-Sei $V=V_1,\dots ,V_r$ mit irreduziblen Variet\"aten $V_1,\dots ,V_r$.\\
-\OE $V_i\nsubseteq V_j$ f\"ur $i\neq j$ (sonst lasse $V_i$ weg)\\
-\textbf{Behauptung:} Dann ist jedes $V_i$ irreduzible Komponente.\\
-\emph{denn:} Sei $W \subseteq V$ irreduzible Komponente mit $V_i\subseteq W$.\\
-Es gilt \[W = \bigcup_{j=1}^r (V_i \cap W)\]
-$\overset{W \textrm{ irred.}}{\Longrightarrow} \exists j$ mit $V_j \cap W=W$, also $W\subseteq V_j$\\
-$\Rightarrow V_i\subseteq V_j \Rightarrow i=j\Rightarrow W=V_i$\begin{description}[\setlabelstyle{\itshape}]
-\item[Eindeutigkeit:] Sei $W$ irreduzible Komponente von $V$.\\
-Aus $W= \bigcup_{j=1}^r(V_j\cap W)$ folgt $W\cap V_j=W$ f\"ur ein $j$\\
-$\Rightarrow W\subseteq V_j  \overset{W \textrm{ irred. Komp.}}{\Longrightarrow }W=V_j$
+	Sei $V=V_1,\dots ,V_r$ mit irreduziblen Variet\"aten $V_1,\dots ,V_r$. \OE $V_i\nsubseteq V_j$ f\"ur $i\neq j$ (sonst lasse $V_i$ weg)
+	
+	\textbf{Behauptung:} Dann ist jedes $V_i$ irreduzible Komponente.
+	
+	\emph{denn:} Sei $W \subseteq V$ irreduzible Komponente mit $V_i\subseteq W$. Es gilt
+		\[W = \bigcup_{j=1}^r (V_i \cap W)\]
+	$\overset{W \textrm{ irred.}}{\Longrightarrow} \exists j$ mit $V_j \cap W=W$, also $W\subseteq V_j$ $\Rightarrow V_i\subseteq V_j \Rightarrow i=j\Rightarrow W=V_i$
+	\begin{description}[\setlabelstyle{\itshape}]
+	\item[Eindeutigkeit:] Sei $W$ irreduzible Komponente von $V$. Aus $W= \bigcup_{j=1}^r(V_j\cap W)$ folgt $W\cap V_j=W$ f\"ur ein $j$	$\Rightarrow W\subseteq V_j  \overset{W \textrm{ irred. Komp.}}{\Longrightarrow }W=V_j$
 \end{description}\end{enumerate}\end{Bew}
 
 \begin{Prop}
@@ -852,11 +864,11 @@ Die irreduzible Teilmenge eines topologischen Raumes $X$ ist enthalten in einer 
 
 \section{Der Hilbertsche Raum}
 
-$V$ affine Variet\"at in $ \A ^n(k) \Rightarrow V(I(V))=V$\\
-$I\subseteq k[X_1,\dots ,X_n]$ Ideal $\Rightarrow I(V(I))\supseteq I$
+$V$ affine Variet\"at in $ \A ^n(k) \Rightarrow V(I(V))=V$; $I\subseteq k[X_1,\dots ,X_n]$ Ideal $\Rightarrow I(V(I))\supseteq I$
 
 \begin{nnBsp}
-$I=(X^2+1)\subset\R[X]$\\
+$I=(X^2+1)\subset\R[X]$
+
 $V(I)=\emptyset \Rightarrow I(V(I)) = \R[X]$
 \end{nnBsp}
 
@@ -866,14 +878,13 @@ Sei $k$ algebraisch abgeschlossener K\"orper.\begin{enumerate}[a)]
 	Ist $I\subsetneq k[X_1,\dots ,X_n]$ Ideal, so ist $V(I)\not=\emptyset$.
 \item
 	F\"ur jedes Ideal $I\subseteq k[X_1,\dots ,X_n]$ gilt
-	\[I(V(I)) = \sqrt I\]
+		\[I(V(I)) = \sqrt I\]
 \end{enumerate}\end{Satz}
 
 Der Beweise benutzt
 
 \begin{nnSatz3}\label{hilfsatz3}
-Ist $k$ K\"orper, $n\ge1, m\subset k[X_1,\dots ,X_n]$ maximales Ideal, so ist $L:=k[X_1,\dots X_n]/m$ \emph{algebraische} K\"orpererweiterung von $k$.\\
-Das hei\ss t f\"ur jedes $\alpha\in L$ gibt es ein $f\in k[X]$ mit $f(\alpha)=0$, also gibt es $d\ge1$ und $b_0,\dots ,b_{d-1}\in k$ mit
+Ist $k$ K\"orper, $n\ge1, m\subset k[X_1,\dots ,X_n]$ maximales Ideal, so ist $L:=k[X_1,\dots X_n]/m$ \emph{algebraische} K\"orpererweiterung von $k$. Das hei\ss t f\"ur jedes $\alpha\in L$ gibt es ein $f\in k[X]$ mit $f(\alpha)=0$, also gibt es $d\ge1$ und $b_0,\dots ,b_{d-1}\in k$ mit
 	\[\alpha^d+b_{d-1}\alpha^{d-1}+\dots +b_1\alpha + b_0=0\]
 $k(\alpha):=k[X]/(f)$ ist K\"orper, der kleinste Teilk\"orper von $L$, der $k$ und $\alpha$ enth\"alt.
 \end{nnSatz3}
@@ -892,25 +903,27 @@ Ist $k$ algebraisch abgeschlossen, so gibt es Bijektion zwischen den Mengen der\
 \item[(i)$\to$(ii)] $\checkmark$
 
 \item[(ii)$\to$(iii)]
-$m_x$ ist maximales Ideal. Die Abbildung $\varphi_x:k[X_1,\dots ,X_n]\to k, X_i\mapsto x_i, f\mapsto f(x)$ ist der Einsetzungshomomorphismus.\\
-$\Kern(\varphi_x)=m_x$
+	$m_x$ ist maximales Ideal. Die Abbildung $\varphi_x:k[X_1,\dots ,X_n]\to k, X_i\mapsto x_i, f\mapsto f(x)$ ist der Einsetzungshomomorphismus. $\Kern(\varphi_x)=m_x$
 
 \item[(iii)$\to$(i)]
-Sei $m$ maximales Ideal, $\varphi:k[X_1,\dots ,X_n]\to k[X_1,\dots ,X_n]/m  \xrightarrow[\textrm{Satz 3'}]{\sim} k\\
-\Rightarrow m=\Kern(\varphi)$\\
-Sei $x_i=\varphi(X_i)$, dann ist $\varphi=\varphi_x$ f\"ur $x=(x_1,\dots ,x_n) \Rightarrow m=m_x$
+	Sei $m$ maximales Ideal, $\varphi:k[X_1,\dots ,X_n]\to k[X_1,\dots ,X_n]/m  \xrightarrow[\textrm{Satz 3'}]{\sim} k \Rightarrow m=\Kern(\varphi)$
+	
+	Sei $x_i=\varphi(X_i)$, dann ist $\varphi=\varphi_x$ f\"ur $x=(x_1,\dots ,x_n) \Rightarrow m=m_x$
 \end{enumerate}\end{Bew}
 
 \begin{Bew}[Beweis von Satz 3]\begin{enumerate}[a)]
 \item
-	Sei $I\subsetneq k[X_1,\dots ,X_n]$ echtes Ideal. Sei $m$ maximales Ideal mit $I\subseteq m$ (gibt es !).\\
-	$\Rightarrow V(I) \supseteq V(m) \neq \emptyset$, da $m=m_x$ f\"ur ein $x\in k^n$ und $\{x\}=V(m_x)$\\
-	\begin{Bew}[von Satz 3'] Sei $x_i\in L$ die Restklasse von $X_i$. \emph{Zu zeigen:} $x_1,\dots ,x_n$ sind algebraisch \"uber $k$.\\
-	\emph{Induktion \"uber $n$:} $n$=1, $m=(f)$ f\"ur ein irreduzibles Polynom $f \Rightarrow L=k[X]/(f)$ ist $k$-Verktorraum der Dimension $d= \deg(f)$\\
-	Sei $n\geq 2$: \emph{Annahme:} $x_1$ ist transzendent.\\
-	Dann ist $k'=k(x_1) \cong \underbrace{k(X_1)}_{=\Quot{(k[X_1])}}$ Teilk\"orpererweiterung von L.\\
-	L wird \"uber $k'$ von $x_2,\dots ,x_n$ erzeugt.\\
-	$\Rightarrow L \cong k'[X_2,\dots ,X_n]/m'$ f\"ur ein maximales Ideal $m'$ in $k'[X_2,\dots ,X_n]$\\
+	Sei $I\subsetneq k[X_1,\dots ,X_n]$ echtes Ideal. Sei $m$ maximales Ideal mit $I\subseteq m$ (gibt es !) $\Rightarrow V(I) \supseteq V(m) \neq \emptyset$, da $m=m_x$ f\"ur ein $x\in k^n$ und $\{x\}=V(m_x)$
+	
+	\begin{Bew}[von Satz 3']
+	Sei $x_i\in L$ die Restklasse von $X_i$. \emph{Zu zeigen:} $x_1,\dots ,x_n$ sind algebraisch \"uber $k$.
+	
+	\emph{Induktion \"uber $n$:} $n$=1, $m=(f)$ f\"ur ein irreduzibles Polynom $f \Rightarrow L=k[X]/(f)$ ist $k$-Verktorraum der Dimension $d= \deg(f)$
+	
+	Sei $n\geq 2$: \emph{Annahme:} $x_1$ ist transzendent.
+	
+	Dann ist $k'=k(x_1) \cong \underbrace{k(X_1)}_{=\Quot{(k[X_1])}}$ Teilk\"orpererweiterung von L. L wird \"uber $k'$ von $x_2,\dots ,x_n$ erzeugt $\Rightarrow L \cong k'[X_2,\dots ,X_n]/m'$ f\"ur ein maximales Ideal $m'$ in $k'[X_2,\dots ,X_n]$
+	
 	Nach Induktionsvoraussetzung ist $L$ algebraisch \"uber $k'$, das hei\ss t:
 	\[\begin{array}{rclccrl}
 		x_i^{d_i} + \sum\limits_{j=0}^{d_i-1} a_{ij}x_i^j &=& 0 & \quad & i=2,\dots ,n, d_i \geq1 & a_{ij} &\in k'\\
@@ -920,34 +933,38 @@ Sei $x_i=\varphi(X_i)$, dann ist $\varphi=\varphi_x$ f\"ur $x=(x_1,\dots ,x_n) \
 
 	\begin{enumerate}[(1)]
 	\item Sei $R\subset k'$ die von den $a_{ij}$ erzeugte $k$-Algebra.
-	\item Dann sind $x_1,\dots ,x_n$ ganz \"uber $R$.\\
-		$\Rightarrow L$ ist ganze Ringerweiterung von $R$
+	\item Dann sind $x_1,\dots ,x_n$ ganz \"uber $R$ $\Rightarrow L$ ist ganze Ringerweiterung von $R$
 	\item $\Rightarrow R=k$ oder $R$ ist kein K\"orper.
 	\begin{enumerate}[(1)]
-	\item $\Rightarrow R=k$ oder $R$ ist kein K\"orper.\\
-	$R=k \Rightarrow $ f\"ur $\tilde k=k(x_2,\dots ,x_n)$ ist $L= \tilde k[X_1]/m$, also algebraisch abgeschlossen.\\
-	$R\neq k \Rightarrow k(X_1)$ ist nicht endlich erzeugbar als $k$-Algebra.\\
+	\item $\Rightarrow R=k$ oder $R$ ist kein K\"orper.
+	
+		$R=k \Rightarrow $ f\"ur $\tilde k=k(x_2,\dots ,x_n)$ ist $L= \tilde k[X_1]/m$, also algebraisch abgeschlossen.
+		
+		$R\neq k \Rightarrow k(X_1)$ ist nicht endlich erzeugbar als $k$-Algebra.
 	\item $\Rightarrow R$ ist K\"orper: Sei $a\in R\backslash\{0\}$. In $L$ gibt es $\frac{1}{a}$
 		\[\Rightarrow \left(\frac{1}{a}\right)^d+\sum_{j=0}^{d-1} b_j\left(\frac{1}{a} \right)^j\textrm{ f\"ur ein } d\geq1, b_j\in R\]
 		\[\Rightarrow 1+\sum_{j=0}^{d-1} b_ja^{d-j} = 0, 1 = a\left( -\sum_{j=0}^{d-1}b_ja^{d-1-j} \right)\]
 	\end{enumerate}\end{enumerate}
 	
 \item
-Sei $I\subseteq k[X_1,\dots ,X_n], g\in I(V(I))$.\\
-\emph{Zu zeigen:}  es gibt $d\geq 0$ mit $g^d\in I$.\\
-W\"ahle Erzeuger $f_1,\dots , f_n$ von $I$ (geht nach Satz \ref{satz1}).
-Betrachte in $k[X_1,\dots ,X_n,Y]$ das von $f_1,\dots ,f_n$ und $g\cdot Y-1$ erzeugte Ideal $J$.\\
-\emph{Behauptung:} $V(J) = \emptyset$\\
-\emph{denn:} Sei $x= (x_1,\dots ,x_n, y) \in V(J)$\\
-Dann ist $f_i(x)= 0$ f\"ur $i=1,\dots ,m$.\\
-$\Rightarrow $ f\"ur $x'=(x_1,\dots ,x_n)$ ist $f_i(x')=0 \Rightarrow x'\in V(I)$\\
-$\Rightarrow g(x')=0 \Rightarrow g(x)=0\Rightarrow (gY-1)(x)=g(x)\cdot y-1 = -1 \not=0$\\
+Sei $I\subseteq k[X_1,\dots ,X_n], g\in I(V(I))$.
+
+\emph{Zu zeigen:}  es gibt $d\geq 0$ mit $g^d\in I$.
+
+W\"ahle Erzeuger $f_1,\dots , f_n$ von $I$ (geht nach Satz \ref{satz1}). Betrachte in $k[X_1,\dots ,X_n,Y]$ das von $f_1,\dots ,f_n$ und $g\cdot Y-1$ erzeugte Ideal $J$.
+
+\emph{Behauptung:} $V(J) = \emptyset$
+
+\emph{denn:} Sei $x= (x_1,\dots ,x_n, y) \in V(J)$
+
+Dann ist $f_i(x)= 0$ f\"ur $i=1,\dots ,m$. $\Rightarrow $ f\"ur $x'=(x_1,\dots ,x_n)$ ist $f_i(x')=0 \Rightarrow x'\in V(I)$ $\Rightarrow g(x')=0 \Rightarrow g(x)=0\Rightarrow (gY-1)(x)=g(x)\cdot y-1 = -1 \not=0$
+
 Dann ist nach Satz \ref{satz3} \ref{satz3a}) $J=k[X_1,\dots ,X_n,Y]$
-\[\Rightarrow 1= \sum_{i=1}^m b_i f_i + b(gY-1) \textrm{ f\"ur geeignete }b_i, b\in k[X_1,\dots ,X_n,Y]\]
+	\[\Rightarrow 1= \sum_{i=1}^m b_i f_i + b(gY-1) \textrm{ f\"ur geeignete }b_i, b\in k[X_1,\dots ,X_n,Y]\]
 Sei $R =k[X_1,\dots ,X_n,Y]/(gY-1)$
-\[\Rightarrow 1=\sum_{i=1}^m \bar{b}_if_i \textrm{ f\"ur }\bar{b}_i = b_i \modmodulo(gY-1)\]
+	\[\Rightarrow 1=\sum_{i=1}^m \bar{b}_if_i \textrm{ f\"ur }\bar{b}_i = b_i \modmodulo(gY-1)\]
 \emph{Es gilt:} \[R\cong k[X_1,\dots ,X_n][\frac{1}{g}]\]
-\[\bar b_i= \frac{a_i}{g^{d_i}}, a_i\in k[X_1,\dots ,X_n], d_i \geq0\]
+	\[\bar b_i= \frac{a_i}{g^{d_i}}, a_i\in k[X_1,\dots ,X_n], d_i \geq0\]
 $\Rightarrow$ F\"ur $d= \max d_i$ gilt
 	\[g^d = \sum_{i=1}^n \underbrace{\left( g^d \bar b_i \right)}_{\in k[X_1,\dots ,X_n]} \cdot f_i \in I\]
 \end{enumerate}\end{Bew}
@@ -955,26 +972,27 @@ $\Rightarrow$ F\"ur $d= \max d_i$ gilt
 % Vorlesung vom 2.11.
 \begin{Folg}
 Sei $k$ algebraisch abgeschlossen, $n\geq 1$,
-	\[\begin{array}{rl}\mathcal{V}_n := & \{V\subseteq k^n : V \textrm{ affine Variet\"at}\}\\
-	\mathcal{I}_n := & \{ I\subseteq k[X_1,\dots ,X_n] : I \textrm{ Radikalideal}\} \end{array}\]
+	\[\begin{array}{rl}\calV_n := & \{V\subseteq k^n : V \textrm{ affine Variet\"at}\}\\
+	\calI_n := & \{ I\subseteq k[X_1,\dots ,X_n] : I \textrm{ Radikalideal}\} \end{array}\]
 Dann sind \[\begin{array}{rll}
-	I: & \mathcal{V}_n \to \mathcal{I}_n, & V \mapsto I(V)\\
-	V: & \mathcal{I}_n \to \mathcal{V}_n, & I \mapsto V(I)\end{array}\]
+	I: & \calV_n \to \calI_n, & V \mapsto I(V)\\
+	V: & \calI_n \to \calV_n, & I \mapsto V(I)\end{array}\]
 bijektiv und zueinander invers.
 \end{Folg}
 
 \begin{Bem}
-Sei $k$ algebraisch abgeschlossen, $V\subseteq \A ^n(k)$ affine Variet\"at.\\
-Dann entsprechen die Punkte in $V$ bijektiv den maximalen Idealen in \[
-	k(V) =A(V):= k[X_1,\dots ,X_n]/I(V) \]
+Sei $k$ algebraisch abgeschlossen, $V\subseteq \A ^n(k)$ affine Variet\"at. Dann entsprechen die Punkte in $V$ bijektiv den maximalen Idealen in
+	\[ k(V) =A(V):= k[X_1,\dots ,X_n]/I(V) \]
 \end{Bem}
 
 \begin{Bew}
 Die maximalen Ideale in $A(V)$ entsprechen bijektiv den maximalen Idealen in $k[X_1,\dots ,X_n]$, die $I(V)$ enthalten, also (Folgerung \ref{folg5.1}) den Punkten in $k^n$, die in $V$ liegen.
 \end{Bew}
 
-$x= (x_1,\dots ,x_n), m_x=(X_1-x_1,\dots ,X_n-x_n)=I(\{x\})$ \\
-$I(V) \subseteq I(\{x\})$\\
+$x= (x_1,\dots ,x_n), m_x=(X_1-x_1,\dots ,X_n-x_n)=I(\{x\})$
+
+$I(V) \subseteq I(\{x\})$
+
 $V = V(I(V)) \supseteq V(I(\{x\})) = \{x\}$
 
 \newpage
@@ -986,15 +1004,12 @@ $V = V(I(V)) \supseteq V(I(\{x\})) = \{x\}$
 \begin{DefBem} \label{6.1}
 Sei $k$ ein K\"orper, $V\subseteq \A ^n(k)$, $W\subseteq \A ^m(k)$ affine Variet\"aten.\begin{enumerate}[a)]
 \item
-	Eine Abbildung $f: V \to W$ hei\ss t \begriff{Morphismus}, wenn es Polynome \\
-	$f_1,\dots ,f_m \in k[X_1,\dots ,X_n]$ gibt mit \[
-		f(x) = (f_1(x),\dots ,f_n(x))\]
+	Eine Abbildung $f: V \to W$ hei\ss t \defterm{Morphismus}, wenn es Polynome $f_1,\dots ,f_m \in k[X_1,\dots ,X_n]$ gibt mit
+		\[f(x) = (f_1(x),\dots ,f_n(x))\]
 	f\"ur alle $x\in V$.
-
 \item
-	Ein Morphismus $f: V\to W$ hei\ss t \begriffspez{Isomorphismus}{Morphismus!Iso-}\index{Isomorphismus}, wenn es einen Morphismus \\
-	$g:W\to V$gibt mit \[ g\circ f = \id_W \textrm{ und } f\circ g = \id_V\]
-
+	Ein Morphismus $f: V\to W$ hei\ss t \deftermspec{Isomorphismus}{Morphismus!Iso-}, wenn es einen Morphismus $g:W\to V$gibt mit
+		\[ g\circ f = \id_W \textrm{ und } f\circ g = \id_V\]
 \item
 	Die affinen Variet\"aten \"uber $k$ bilden mit den Morphismen aus a) eine Kategorie $\Aff(k)$.
 	
@@ -1012,23 +1027,27 @@ Sei $k$ ein K\"orper, $V\subseteq \A ^n(k)$, $W\subseteq \A ^m(k)$ affine Variet
 		(x_1,\dots ,x_n) & \mapsto & (x_{\sigma(1)},\dots ,x_{\sigma(n)}) \end{array} \]
 	\end{enumerate}
 \item
-	Jedes $f\in k[X_1,\dots ,X_n]$ definert einen Morphismus \[
-		f:\A ^n(k) \to A^1(k), x\mapsto f(x)\]
+	Jedes $f\in k[X_1,\dots ,X_n]$ definert einen Morphismus
+		\[f:\A ^n(k) \to A^1(k), x\mapsto f(x)\]
 \item
-	Sei $V=\A ^1(k)$, $W =V(Y^2 - X^3)\subseteq \A ^2(k)$.\\
+	Sei $V=\A ^1(k)$, $W =V(Y^2 - X^3)\subseteq \A ^2(k)$.
+	
 	$f:V\to W$, $x\mapsto (x^2,x^3)$ ist Morphismus. $f$ ist bijektiv mit Umkehrabbildung\[
 		g(x,y)=\left\{\begin{array}{lcl}
 			0 & \quad & \textrm{ falls } (x,y)=(0,0)\\
 			\frac{y}{x} & \quad & \textrm{ falls } (x,y)\not= (0,0) \end{array}\right.\]
-	$g(f(x))=g(x^2,x^3) = \frac{x^3}{x^2}=x$ (f\"ur $x\not= 0$)\\
-	$f(g(x,y))=f(\frac{y}{x})=(\frac{y^2}{x^2}, \frac{y^3}{x^3})=(\frac{x^3}{x^2}, \frac{y^3}{y^2})$\\
+	$g(f(x))=g(x^2,x^3) = \frac{x^3}{x^2}=x$ (f\"ur $x\not= 0$)
+	
+	$f(g(x,y))=f(\frac{y}{x})=(\frac{y^2}{x^2}, \frac{y^3}{x^3})=(\frac{x^3}{x^2}, \frac{y^3}{y^2})$
+	
 	Ist $k$ unendlich, so ist $g$ kein Morphismus!
 \item
 	Sei $\chara (k) = p > 0$ \[
 		f: \A ^n(k) \to \A ^n(k), (x_1,\dots ,x_n)\mapsto (x_1^p,\dots ,x_n^p)\]
-	hei\ss t \begriffspez{Frobenius-Homomorphismus}{Homomorphismus!Frobenius-}.\\
+	hei\ss t \deftermspec{Frobenius-Homomorphismus}{Morphismus!Homo-!Frobenius-}.
+	
 	Die Fixpunkte von $f$ sind genau die Punkte, deren Koordninaten alle in $\F_p$ liegen (\quot{$\F_p$-wertige Punkte})
-	\[\left( a^p=a \Leftrightarrow a \textrm{ Nullstelle von } X^p-X \Leftrightarrow a\in \F_p \right) \]
+		\[\left( a^p=a \Leftrightarrow a \textrm{ Nullstelle von } X^p-X \Leftrightarrow a\in \F_p \right) \]
 \end{enumerate}\end{Bsp}
 
 \begin{Bem}\label{bem6.3}
@@ -1036,8 +1055,7 @@ Morphismen affiner Variet\"aten sind stetig bez\"uglich der Zariski-Topologie.
 \end{Bem}
 
 \begin{Bew}
-Seien $V\subseteq \A ^n(k)$, $W\subseteq \A ^m(k)$ affine Variet\"aten, $f:V\to W$ Morphismus.\\
-Sei $Z\subseteq W$ abgeschlossen, also $Z=V(J)$ f\"ur ein Ideal $J\subseteq k[X_1,\dots ,X_n]$. Sei $I=\{g\circ f\in k[X_1,\dots ,X_n]:g\in J\}$.\\
+Seien $V\subseteq \A ^n(k)$, $W\subseteq \A ^m(k)$ affine Variet\"aten, $f:V\to W$ Morphismus. Sei $Z\subseteq W$ abgeschlossen, also $Z=V(J)$ f\"ur ein Ideal $J\subseteq k[X_1,\dots ,X_n]$. Sei $I=\{g\circ f\in k[X_1,\dots ,X_n]:g\in J\}$.\\
 \emph{Behauptung:} $V(I)=f^{-1}(Z)$\\
 \emph{denn:}
 	\[x\in f^{-1}(Z) \Leftrightarrow f(x)\in Z \Leftrightarrow f(x)\in V(J) \Leftrightarrow g(f(x)) = 0 \forall g\in J \Leftrightarrow x\in V(I)\]
@@ -1046,15 +1064,14 @@ Sei $Z\subseteq W$ abgeschlossen, also $Z=V(J)$ f\"ur ein Ideal $J\subseteq k[X_
 \begin{DefBem}
 Sei $V\subseteq\A^n(k)$ affine Variet\"at.\begin{enumerate}[a)]
 \item
-	$k[V]:=\{f:V\to \A^1(k) : f \textrm{ ist Morphismus}\}$ hei\ss t \begriffspez{affiner Koordinatenring}{Koordinatenring!affiner-} von V.
-
+	$k[V]:=\{f:V\to \A^1(k) : f \textrm{ ist Morphismus}\}$ hei\ss t \deftermspec{affiner Koordinatenring}{Ring!affiner Koordinaten-} von V.
 \item
 	\[k[V] \cong A(V)=k[X_1,\dots ,X_n]/I(V)\]
 \end{enumerate}\end{DefBem}
 
 \begin{Bew}\begin{enumerate}[b)]\item
-Sei $\varphi:k[X_1,\dots ,X_n]\to k[V], f\mapsto f_{\vert V}$ Einschr\"ankungshomomorphismus.\\
-$\varphi$ ist surjektiv (Bemerkung \ref{6.1} \ref{bem6.1d}))\\
+Sei $\varphi:k[X_1,\dots ,X_n]\to k[V], f\mapsto f_{\vert V}$ Einschr\"ankungshomomorphismus. $\varphi$ ist surjektiv (Bemerkung \ref{6.1} \ref{bem6.1d}))
+
 $\Kern(\varphi)=I(V) \overset{\textrm{Homomorphiesatz}}{\Longrightarrow}$ Behauptung
 \end{enumerate}\end{Bew}
 
@@ -1067,61 +1084,64 @@ Seien $V\subseteq\A^n(k), W\subseteq\A^m(k)$ affine Variet\"at.\begin{enumerate}
 \end{enumerate}\end{Prop}
 
 \begin{Bew}\begin{enumerate}[a)]
-\item $\checkmark$ \item\begin{description}
-
-\item\emph{injektiv:}
-Seien $f,\tilde f:V\to W$ Morphismen mit $f^{\#}=\tilde f^{\#}$\\
-$\Rightarrow g\circ f=g\circ\tilde f$ f\"ur alle$g\in k[W]$\\
-Insbesondere ist $\underbrace{p_i\circ f}_{=f_i}=\underbrace{p_i\circ\tilde f}_{=\tilde f_i}$ f\"ur die Projektion
-	\[p_i:W\to \A^1(k), (x_1,\dots ,x_n)\mapsto x_i\]
-$\Rightarrow f=\tilde f$
-
-\item\emph{surjektiv:}
-Sei $\varphi : k[W]\to k[V]$ $k$-Algebra-Homomorphismus.\\
-Definiere $f:V\to\A^m(k)$ durch $f(x)=(\varphi(p_1)(x),\dots ,\varphi(p_n)(x))$\\
-\emph{Behauptung:}\begin{enumerate}[(i)]
-	\item $f^{\#}=\varphi$
-	\item $f(V)\subseteq W$\end{enumerate}
-Zu (i): f\"ur $i=1,\dots ,m$ gilt:
-	\[f^{\#}(p_i)=p_i\circ f = \varphi(p_i)\]
-Da die $p_i$ $k[V]$ erzeugen (als $k$-Algebra), folgt $f^{\#} = \varphi$\\
-Zu (ii): Sei $g\in I(W), x\in V$\\
-Zu zeigen: $g(f(x))=0$
- \begin{center} \begin{tikzpicture}
-	%definierte die Punkte
- 	\node (kx1) at (-3,1) {$k[X_1,\dots ,X_n]$} node (kx2) at (3,1) {$k[X_1,\dots ,X_n]$};
-	\node (kw) at (-3,-1) {$k[W]$} node (kv) at (3,-1) {$k[V]$};
-	%zeichne die Pfeile
-	\draw[->] (kx1) -- node[above]{$\tilde{\varphi}$} (kx2);
-	\draw[->] (kx1) -- (kw);
-	\draw[->] (kw) -- node[above]{$\varphi$}(kv);
-	\draw[->] (kx2) -- (kv);
- \end{tikzpicture} \end{center}
-Lifte $\varphi$ zu $\tilde{\varphi}$. W\"ahle dazu f\"ur jedes $i$ ein Urbild von $\varphi(p_i).$\\
-Dann ist $\tilde{\varphi}(I(W))\subseteq I(V)$\\
-$\Rightarrow g(f(x))=g(\varphi(p_1)(x),\dots ,\varphi(p_m)(x)) = \tilde{\varphi}(g)(x)=0$
+\item $\checkmark$ \item\begin{description}[\setlabelstyle{\itshape}]
+	\item[injektiv:]
+		Seien $f,\tilde f:V\to W$ Morphismen mit $f^{\#}=\tilde f^{\#}$
+		
+		$\Rightarrow g\circ f=g\circ\tilde f$ f\"ur alle$g\in k[W]$
+		
+		Insbesondere ist $\underbrace{p_i\circ f}_{=f_i}=\underbrace{p_i\circ\tilde f}_{=\tilde f_i}$ f\"ur die Projektion
+			\[p_i:W\to \A^1(k), (x_1,\dots ,x_n)\mapsto x_i\]
+		$\Rightarrow f=\tilde f$
+	\item[surjektiv:] Sei $\varphi : k[W]\to k[V]$ $k$-Algebra-Homomorphismus.
+		
+		Definiere $f:V\to\A^m(k)$ durch $f(x)=(\varphi(p_1)(x),\dots ,\varphi(p_n)(x))$
+		
+		\emph{Behauptung:}\begin{enumerate}[(i)]
+		\item $f^{\#}=\varphi$
+		\item $f(V)\subseteq W$\end{enumerate}
+		Zu (i): f\"ur $i=1,\dots ,m$ gilt:
+			\[f^{\#}(p_i)=p_i\circ f = \varphi(p_i)\]
+		Da die $p_i$ $k[V]$ erzeugen (als $k$-Algebra), folgt $f^{\#} = \varphi$
+		
+		Zu (ii): Sei $g\in I(W), x\in V$
+		
+		Zu zeigen: $g(f(x))=0$
+		\begin{center} \begin{tikzpicture}
+			%definierte die Punkte
+		 	\node (kx1) at (-3,1) {$k[X_1,\dots ,X_n]$} node (kx2) at (3,1) {$k[X_1,\dots ,X_n]$};
+			\node (kw) at (-3,-1) {$k[W]$} node (kv) at (3,-1) {$k[V]$};
+			%zeichne die Pfeile
+			\draw[->] (kx1) -- node[above]{$\tilde{\varphi}$} (kx2);
+			\draw[->] (kx1) -- (kw);
+			\draw[->] (kw) -- node[above]{$\varphi$}(kv);
+			\draw[->] (kx2) -- (kv);
+		\end{tikzpicture} \end{center}
+Lifte $\varphi$ zu $\tilde{\varphi}$. W\"ahle dazu f\"ur jedes $i$ ein Urbild von $\varphi(p_i)$. Dann ist $\tilde{\varphi}(I(W))\subseteq I(V)$ $\Rightarrow g(f(x))=g(\varphi(p_1)(x),\dots ,\varphi(p_m)(x)) = \tilde{\varphi}(g)(x)=0$
 \end{description}\end{enumerate}\end{Bew}
 
 % Vorlesung vom 7.11.
 \begin{Bem}
-Seien $V,W$ affine Variet\"aten \"uber $k$, $\varphi:k[W]\to k[V]$ $k$-Algebra-Homomorphismus und $f= f_{\varphi}: V\to W$ mit $f^{\#}=\varphi$.\\
-Dann gilt f\"ur jedes $x\in V$:
+Seien $V,W$ affine Variet\"aten \"uber $k$, $\varphi:k[W]\to k[V]$ $k$-Algebra-Homomorphismus und $f= f_{\varphi}: V\to W$ mit $f^{\#}=\varphi$. Dann gilt f\"ur jedes $x\in V$:
 	\[ m_{f(x)}=\varphi^{-1}(m_x)\]
 \end{Bem}
 
 \begin{Bew}
-$m_x=\{f\in k[V]: g(x)=0\}$\\
-\[\varphi^{-1}(m_x)=(f^{\#})^{-1}(m_x)=\{h\in k[W]:h\circ f \in m_x\} = \{h\in k[W]:h(f(x))=0\} =m_{f(x)}\]
+$m_x=\{f\in k[V]: g(x)=0\}$
+	\[\varphi^{-1}(m_x)=(f^{\#})^{-1}(m_x)=\{h\in k[W]:h\circ f \in m_x\} = \{h\in k[W]:h(f(x))=0\} =m_{f(x)}\]
 \end{Bew}
 
 \begin{Bsp}
-$V = V(Y^2-X^3)\subseteq\A^2(k)$\\
-$f: \A^1(k)\to V, x\mapsto(x^2,x^3)$\\
-\[f^{\#}:\underbrace{k[V]}_{=k[X,Y]/(Y^2-X^3)}\to k[\A^1(k)]=k[T]\]
-$f^{\#}(\overline X)=T^2$\\
-$f^{\#}(\overline Y)=T^3$\\
+$V = V(Y^2-X^3)\subseteq\A^2(k)$
 
-$f^{\#}$ ist injektiv, aber nicht nicht surjektiv! ($T\notin \Bild(f^{\#})$)\\
+$f: \A^1(k)\to V, x\mapsto(x^2,x^3)$
+	\[f^{\#}:\underbrace{k[V]}_{=k[X,Y]/(Y^2-X^3)}\to k[\A^1(k)]=k[T]\]
+$f^{\#}(\overline X)=T^2$
+
+$f^{\#}(\overline Y)=T^3$
+
+$f^{\#}$ ist injektiv, aber nicht nicht surjektiv! ($T\notin \Bild(f^{\#})$)
+
 Es gilt aber: der von $f^{\#}$ auf dem Quotientenk\"orper induzierte Homomorphismus ist ein Isomorphismus $f^{\#}(\frac{Y}{X}) = T$.
 \end{Bsp}
 
@@ -1134,12 +1154,9 @@ Es gilt aber: der von $f^{\#}$ auf dem Quotientenk\"orper induzierte Homomorphis
 \end{enumerate}\end{Satz}
 
 \begin{Bew}\begin{enumerate}[a)]\item $\checkmark$\item
-Noch zu zeigen: zu jeder $k$-Algebra $A\in k\Alg^{\red}$ gibt es affine Variet\"at $V$ \"uber $k$ mit $k[V]\cong A$.\\
-$A$ werde als $k$-Algebra erzeugt von $a_1,\dots ,a_n$. Sei $\varphi: k[X_1,\dots ,X_n]\to A$ der durch $\varphi(X_i)=a_i$ definierte $k$-Algebra-Homomophismus.\\
-$\varphi$ ist surjektiv, da $A$ von den $a_i$ erzeugt wird.
+Noch zu zeigen: zu jeder $k$-Algebra $A\in k\Alg^{\red}$ gibt es affine Variet\"at $V$ \"uber $k$ mit $k[V]\cong A$. $A$ werde als $k$-Algebra erzeugt von $a_1,\dots ,a_n$. Sei $\varphi: k[X_1,\dots ,X_n]\to A$ der durch $\varphi(X_i)=a_i$ definierte $k$-Algebra-Homomophismus. $\varphi$ ist surjektiv, da $A$ von den $a_i$ erzeugt wird.
 	\[\Rightarrow A \cong k[X_1,\dots ,X_n]/\Kern(\varphi)\]
-Sei $V=V(\Kern(\varphi))\Rightarrow I(V) \stackrel{\textrm{HNS}}{=} \sqrt{\Kern(\varphi)} = \Kern(\varphi)$\\
-$\Rightarrow k[V]=k[X_1,\dots ,X_n]/I(V)\cong A$
+Sei $V=V(\Kern(\varphi))\Rightarrow I(V) \stackrel{\textrm{HNS}}{=} \sqrt{\Kern(\varphi)} = \Kern(\varphi)$ $\Rightarrow k[V]=k[X_1,\dots ,X_n]/I(V)\cong A$
 \end{enumerate}\end{Bew}
 
 \newpage
@@ -1151,8 +1168,7 @@ $\Rightarrow k[V]=k[X_1,\dots ,X_n]/I(V)\cong A$
 Sei $k$ algebraisch abgeschlossener K\"orper
 
 \begin{Bem}\label{bem7.1}
-Sei $V\subset \A^n(k)$affine Variet\"at \"uber $k$, $h\in k[X_1,\dots ,X_n]$.\\
-Dann gilt: $\overline h$ ist Einheit in $k[V] \Leftrightarrow V(h)\cap V=\emptyset$
+Sei $V\subset \A^n(k)$affine Variet\"at \"uber $k$, $h\in k[X_1,\dots ,X_n]$. Dann gilt: $\overline h$ ist Einheit in $k[V] \Leftrightarrow V(h)\cap V=\emptyset$
 \end{Bem}
 
 \begin{Bew}\[\begin{array}{rl}
@@ -1163,19 +1179,15 @@ V\cap V(h) &=V(I(V)+(h))=\emptyset \overset{\textrm{HNS}}{\Longleftrightarrow}I(
 
 \begin{DefBem}\label{Def7.2}
 Sei $V\subseteq\A^n(k)$ affine Variet\"at, $U\subseteq V$ offen, $p\in U$.\begin{enumerate}[a)]
-
 \item
-	Eine Abbildung $f:U\to \A^1(k)$ hei\ss t \begriffspez{regul\"ar in p}{regul\"ar!-in $p$}, wenn es eine Umgebung $U_p\subseteq U$ von $p$ gibt und $g,h\in k[V]$ mit $h(x)\neq 0$ f\"ur alle $x\in U_p$ und $f(x)=\frac{g(x)}{h(x)}$ f\"ur alle $x\in U_p$.
-	
+	Eine Abbildung $f:U\to \A^1(k)$ hei\ss t \deftermspec{regul\"ar in p}{regul\"ar!in $p$}, wenn es eine Umgebung $U_p\subseteq U$ von $p$ gibt und $g,h\in k[V]$ mit $h(x)\neq 0$ f\"ur alle $x\in U_p$ und $f(x)=\frac{g(x)}{h(x)}$ f\"ur alle $x\in U_p$.
 \item
-	$f:U\to \A^1(k)$ hei\ss t \begriff{regul\"ar}, wenn $f$ in jedem $p\in  U$ regul\"ar ist.
-	
+	$f:U\to \A^1(k)$ hei\ss t \defterm{regul\"ar}, wenn $f$ in jedem $p\in  U$ regul\"ar ist.
 \item
-	$\mathcal O(U):=\{f:U\to\A^1(k): f \textrm{ regul\"ar}\}$ hei\ss t $k$-Algebra (oder Ring) der \begriffspez{regul\"aren Funktionen}{regul\"ar!-Funktionen} auf $U$.
-	
+	$\calO(U):=\{f:U\to\A^1(k): f \textrm{ regul\"ar}\}$ hei\ss t $k$-Algebra (oder Ring) der \deftermspec{regul\"aren Funktionen}{regul\"ar!Funktionen} auf $U$.
 \item
 	F\"ur jedes offene $U\subseteq V$ ist
-		\[\alpha_U : k[V]\to\mathcal O_V(U), f\mapsto f_{|_U}\]
+		\[\alpha_U : k[V]\to\calO_V(U), f\mapsto f_{|_U}\]
 	ein $k$-Algebra-Homomophismus.\\
 	Zusatz: Ist $U$ dicht, so ist $\alpha_U$ injektiv (\"Ubung?)
 \end{enumerate}\end{DefBem}
@@ -1184,10 +1196,9 @@ Sei $V\subseteq\A^n(k)$ affine Variet\"at, $U\subseteq V$ offen, $p\in U$.\begin
 \item
 	$V=\A^1(k), U=\A^1(k)-\{0\}, f(x) = \frac{1}{x}$
 \item
-	$V=V(Y^2-X^3)\subset\A^2(k), U=V-\{0,0\}$\\
-	$\Rightarrow g=\frac{y}{x}\in \mathcal O_V(U)$
+	$V=V(Y^2-X^3)\subset\A^2(k), U=V-\{0,0\}$ $\Rightarrow g=\frac{y}{x}\in \calO_V(U)$
 \item
-	$f\in k[X_1,\dots ,,X_n] \Rightarrow \frac{1}{f}\in \mathcal O_{\A^n(k)}(D(f))$
+	$f\in k[X_1,\dots ,,X_n] \Rightarrow \frac{1}{f}\in \calO_{\A^n(k)}(D(f))$
 \end{enumerate}\end{nnBsp}
 
 \begin{Bem}
@@ -1195,33 +1206,31 @@ Sei $V\subseteq\A^n(k)$ affine Variet\"at, $U\subseteq V$ offen.\begin{enumerate
 \item
 	F\"ur offene Teilmengen $U''\subseteq U' \subseteq U$ gilt:
 	\begin{itemize}
-		\item[(i)] $\varrho_{U'}^{U}: \mathcal O_V(U) \to \mathcal O_V(U'), f \mapsto f_{|_{U'}}$ ist k-Algebra Homomorphismus
+		\item[(i)] $\varrho_{U'}^{U}: \calO_V(U) \to \calO_V(U'), f \mapsto f_{|_{U'}}$ ist k-Algebra Homomorphismus
 		\item[(ii)] $\varrho_{U''}^{U} = \varrho_{U''}^{U'} \circ \varrho_{U'}^{U}$
 	\end{itemize}
 \item
-	Sei $(U_i)_{i \in I}$ offene Überdeckung von U (mit Indexmenge I).\\
-	Dann gilt
+	Sei $(U_i)_{i \in I}$ offene Überdeckung von U (mit Indexmenge I).Dann gilt:
 	\begin{itemize}
-		\item[(i)] Für $f \in \mathcal O_V(U)$ ist $ f=0 \Leftrightarrow f_{|_{U_i}}=0 \forall i \in I$
-		\item[(ii)] F\"ur jedes $i\in I$ sei $f_i\in \mathcal O_V(U_i)$ gegeben.\\
-		Ist $f_{i\vert U_i \cap U_j} =f_{j\vert U_i \cap U_j}$ f\"ur alle $i,j$, so gibt es $f\in \mathcal O_V(U)$ mit $f_{\vert U_i}=f_i$ f\"ur alle $i\in I$.
+		\item[(i)] Für $f \in \calO_V(U)$ ist $ f=0 \Leftrightarrow f_{|_{U_i}}=0 \forall i \in I$
+		\item[(ii)] F\"ur jedes $i\in I$ sei $f_i\in \calO_V(U_i)$ gegeben.
+		
+		Ist $f_{i\vert U_i \cap U_j} =f_{j\vert U_i \cap U_j}$ f\"ur alle $i,j$, so gibt es $f\in \calO_V(U)$ mit $f_{\vert U_i}=f_i$ f\"ur alle $i\in I$.
 	\end{itemize}	
 \end{enumerate}\end{Bem}
 
 \begin{FolgDef}
-Die Zuordnung $U\mapsto \mathcal O_V(U)$ ist eine Garbe von Ringen auf dem topologischen Raum $V$.\\
+Die Zuordnung $U\mapsto \calO_V(U)$ ist eine Garbe von Ringen auf dem topologischen Raum $V$.
+
 Allgemeiner:\begin{enumerate}[a)]
 \item
-	ist \begriff{Pr\"agarbe}\index{Garbe!Pr\"a-}
+	ist \deftermspec{Pr\"agarbe}{Garbe!Pr\"a-}
 \item
-	ist die \begriff{Garbeneigenschaft}
+	ist die \deftermspec{Garbeneigenschaft}{Garbe!Garbeneigenschaft}
 \end{enumerate}\end{FolgDef}
 
 \begin{nnBsp}
-$X$ topologisher Raum, $R$ ein Ring.\\
-F\"ur $U\subseteq X$ offen sei $\mathcal F(U)=R, \varrho^U_{U'}=\id_R$\\
-Ist $\mathcal F$ Garbe? Pr\"agarbe: JA!\\
-Garbe nein, falls es disjunkte offene Mengen gibt!
+$X$ topologisher Raum, $R$ ein Ring. F\"ur $U\subseteq X$ offen sei $\calF(U)=R, \varrho^U_{U'}=\id_R$. Ist $\calF$ Garbe? Pr\"agarbe: JA! Garbe nein, falls es disjunkte offene Mengen gibt!
 \end{nnBsp}
 
 %Vorlesung vom 9.11.
@@ -1236,23 +1245,27 @@ Sei $V\subseteq \A^n(k)$ affine Variet\"at, $U\subseteq V$ offen.\begin{enumerat
 
 \begin{Bew}\begin{enumerate}[a)]
 \item
-$V_i=V(I_i)$, $I_i$ Ideal in $k[V]$\\
-$V_i\supseteq V_{i+1} \Rightarrow I_{i+1} \supseteq I_i$\\
+$V_i=V(I_i)$, $I_i$ Ideal in $k[V]$
+
+$V_i\supseteq V_{i+1} \Rightarrow I_{i+1} \supseteq I_i$
+
 $k[V]$ ist noethersch $\Rightarrow $ Behauptung
 
 \item\label{bem7.5b}
-Sei $(U_i)_{i\in I}$ offene \"Uberdeckung von U.\\
-Besitzt $(U_i)$ keine endliche Teil\"uberdeckung, so gibt es Folge $(U_{I_k})_{k=1,2,\dots }$ mit $U_{i_{k+1}} \nsubseteq \bigcup_{j=1}^k U_{i_j}.$\\
+Sei $(U_i)_{i\in I}$ offene \"Uberdeckung von U.
+
+Besitzt $(U_i)$ keine endliche Teil\"uberdeckung, so gibt es Folge $(U_{I_k})_{k=1,2,\dots }$ mit $U_{i_{k+1}} \nsubseteq \bigcup_{j=1}^k U_{i_j}.$
+
 $W_k:= \bigcup_{j=1}^k U_{i_j}$ ist offen in $V \stackrel{a)}{\Rightarrow} (W_k)$ wird station\"ar.
 \end{enumerate}\end{Bew}
 
 \begin{Satz}\label{satz5}
 Sei $V\subseteq\A^n(k)$ affine Variet\"at.\begin{enumerate}[a)]
 \item\label{satz5a}
-	$\mathcal O_v(V) \cong k[V]$
+	$\calO_v(V) \cong k[V]$
 
 \item\label{satz5b}
-	$\mathcal O_v(\underbrace{D(f)}_{=\A^n(k)\backslash V(f)}) \cong k[V]_f = k[f]_{\{f^d:d\ge 0\}}$
+	$\calO_v(\underbrace{D(f)}_{=\A^n(k)\backslash V(f)}) \cong k[V]_f = k[f]_{\{f^d:d\ge 0\}}$
 	f\"ur alle $f\in k[V]\backslash\{0\}$
 \end{enumerate}\end{Satz}
 
@@ -1261,89 +1274,99 @@ Sei $V\subseteq\A^n(k)$ affine Variet\"at.\begin{enumerate}[a)]
 
 \item
 Definiere\[\begin{array}{rlr}
-	\alpha:k[V]_f & \to \mathcal O_V(D(f)) & \\
+	\alpha:k[V]_f & \to \calO_V(D(f)) & \\
 	\frac{g}{f^d} & \mapsto (x\mapsto \frac{g(x)}{f(x)^d}) &\quad (x\in D(f))\end{array}\]
-\begin{description}
-\item
-	$\alpha$ \emph{wohldefiniert}:
-	Sei $\frac{g_1}{f^{d_1}} = \frac{g_2}{f^{d_2}}$ in $k[V]_f$\\
-	$\Rightarrow f^d(g_1 \cdot f^{d_2} - g_2 \cdot f^{d_1}) = 0$ f\"ur ein $d\geq 0$\\
-	f\"ur $x\in D(f)$ ist $g_1(x)f(x)^{d_2} -g_2(x)f(x)^{d_1}=0$\\
+\begin{description}[\setlabelstyle{\itshape}]
+\item[$\alpha$ wohldefiniert:]
+	Sei $\frac{g_1}{f^{d_1}} = \frac{g_2}{f^{d_2}}$ in $k[V]_f$
+	
+	$\Rightarrow f^d(g_1 \cdot f^{d_2} - g_2 \cdot f^{d_1}) = 0$ f\"ur ein $d\geq 0$
+	
+	f\"ur $x\in D(f)$ ist $g_1(x)f(x)^{d_2} -g_2(x)f(x)^{d_1}=0$
+	
 	$\Rightarrow  \frac{g_1(x)}{f(x)^{d_1}}= \frac{g_2(x)}{f(x)^{d_2}}$
-\item
-	$\alpha$ \emph{injektiv}: Sei $\frac{g(x)}{f(x)^d}=0$ f\"ur alle $x\in D(f)$\\
-	$\Rightarrow g(x) =0$ f\"ur alle $x\in V$\\
-	$\Rightarrow f\cdot g=0$ in $k[V]$\\
+\item[$\alpha$ injektiv:] Sei $\frac{g(x)}{f(x)^d}=0$ f\"ur alle $x\in D(f)$
+
+	$\Rightarrow g(x) =0$ f\"ur alle $x\in V$
+	
+	$\Rightarrow f\cdot g=0$ in $k[V]$
+	
 	$\Rightarrow g=0$ in $k[V]_f$
-\item
-	$\alpha$ \emph{surjektiv}: Sei $g\in \mathcal O_V(D(f))$\\
-	$\Rightarrow $ f\"ur jedes $p\in D(f)$ gibt es Umgebung $U_p\subseteq D(f)$ und $g_p,h_p \in k[V]$ mit $g(x) = \frac{g_p(x)}{h_p(x)} \forall x\in U_p$\\
-	\emph{Behauptung 1:} \OE $U_p=D(h_p)$\\
-	\emph{denn:} es gibt $\tilde h_p \in k[V]$ mit $D(\tilde h_p)\subseteq U_p(\subseteq D(h_p))$\\
-	$\Rightarrow V(\tilde h_p)\supset V(h_p) \Rightarrow \tilde h_p\in I(V(h_p)) \stackrel{HNS}{=} \sqrt{(h_p)}$\\
-	$\Rightarrow \exists d\geq 0, h\in k[V]$ mit $\tilde h_p^d =h\cdot h_p$\\
-	Setze $\hat g_p = h g_p, \hat h = \tilde h_p^d = h\cdot h_p$\\
+\item[$\alpha$ surjektiv:] Sei $g\in \calO_V(D(f))$
+
+	$\Rightarrow $ f\"ur jedes $p\in D(f)$ gibt es Umgebung $U_p\subseteq D(f)$ und $g_p,h_p \in k[V]$ mit $g(x) = \frac{g_p(x)}{h_p(x)} \forall x\in U_p$
+	
+	\emph{Behauptung 1:} \OE $U_p=D(h_p)$
+	
+	\emph{denn:} es gibt $\tilde h_p \in k[V]$ mit $D(\tilde h_p)\subseteq U_p(\subseteq D(h_p))$
+	
+	$\Rightarrow V(\tilde h_p)\supset V(h_p) \Rightarrow \tilde h_p\in I(V(h_p)) \stackrel{HNS}{=} \sqrt{(h_p)}$
+	
+	$\Rightarrow \exists d\geq 0, h\in k[V]$ mit $\tilde h_p^d =h\cdot h_p$
+	
+	Setze $\hat g_p = h g_p, \hat h = \tilde h_p^d = h\cdot h_p$
+	
 	Dann gilt f\"ur jedes $x\in D(\hat h_p)=D(\tilde h_p)$
 		\[g(x)=\frac{g_p(x)}{h_p(x)}=\frac{g_p(x)\cdot h(x)}{h_p(x)\cdot h(x)}=\frac{\hat g_p(x)}{\hat h_p(x)}\]
 	\autoref{7.5} $\Rightarrow D(f)=$ \fbox{$D(h_1)\cup \dots  \cup D(h_r)$} (1)
-	f\"ur geeignete $h_i:=h_{p_i}, 1= 1,\dots ,r$\\
-	Nach Behauptung 1 ist \OE $ g= \frac{g_i}{h_i}$ auf $D(h_i)$\\
-	\emph{Behauptung 2:} $g_i h_j = g_j h_i$ in $k[V]$ f\"ur alle $i,j$\\
-	\emph{denn:} es ist $g_ih_j = g_jh_i$ auf $D(h_i)\cap D(h_j)=D(h_ih_j)$\\
-	$\Rightarrow h_ih_j(g_ih_j-g_jh_i)=0$ in $k[V]$ (*)\\
+	f\"ur geeignete $h_i:=h_{p_i}, 1= 1,\dots ,r$
+	
+	Nach Behauptung 1 ist \OE $ g= \frac{g_i}{h_i}$ auf $D(h_i)$
+	
+	\emph{Behauptung 2:} $g_i h_j = g_j h_i$ in $k[V]$ f\"ur alle $i,j$
+	
+	\emph{denn:} es ist $g_ih_j = g_jh_i$ auf $D(h_i)\cap D(h_j)=D(h_ih_j)$
+	
+	$\Rightarrow h_ih_j(g_ih_j-g_jh_i)=0$ in $k[V]$ (*)
+	
 	setze $\tilde g_i = g_ih_i, \tilde h_i = h_i^2$. Dann wird aus (*)
 		\[\tilde g_i \tilde h_j -\tilde g_j \tilde h_i =0\]
-	(1) $\Rightarrow V(f) =\bigcup_{i=1}^r V(h_i) \Rightarrow f \in I(V(h_1,\dots ,h_r)) \stackrel{HNS}{\Rightarrow } f\in \sqrt{(h_1,\dots ,h_n)}$\\
-	$\Rightarrow \exists d\geq 0, b_i\in k[V]$ mit $f^d=\sum_{i=1}^rb_ih_i$\\
-	Setze $\tilde g := \sum_{i=1}^rb_ig_i\in k[V]$\\
+	(1) $\Rightarrow V(f) =\bigcup_{i=1}^r V(h_i) \Rightarrow f \in I(V(h_1,\dots ,h_r)) \stackrel{HNS}{\Rightarrow } f\in \sqrt{(h_1,\dots ,h_n)}$
+	
+	$\Rightarrow \exists d\geq 0, b_i\in k[V]$ mit $f^d=\sum_{i=1}^rb_ih_i$
+	
+	Setze $\tilde g := \sum_{i=1}^rb_ig_i\in k[V]$
+	
 	Dan gilt f\"ur alle $i=1,\dots ,r$ und alle $x\in D(h_j)$:
 		\[g(x)=\frac{g_j(x)}{h_j(x)}=\frac{g_j(x)f(x)^d}{h_j(x)f(x)^d}=\frac{(g_j\sum_{i=1}^rb_ih_i)(x)}{(h_jf^d)(x)} \stackrel{\textrm{Beh. 2}}{=} \frac{h_j(\sum_{i=1}^rb_ig_i)}{h_jf^d}(x) = \frac{\tilde g(x)}{f(x)^d}\]
 \end{description}
 \end{enumerate}\end{Bew}
 
 \begin{Prop}
-Seien $V\subseteq\A^n(k), W\subseteq \A^m(k)$ affine Variet\"aten.\\
-Dann gilt: $f:V\to W$ ist Morphismus $\Leftrightarrow$ $f$ stetig und f\"ur jedes offene $U\subseteq W$ und jedes $g\in \mathcal O_W(U)$ ist $g\circ f\in \mathcal O_V(f^{-1}(U))$
+Seien $V\subseteq\A^n(k), W\subseteq \A^m(k)$ affine Variet\"aten. Dann gilt: $f:V\to W$ ist Morphismus $\Leftrightarrow$ $f$ stetig und f\"ur jedes offene $U\subseteq W$ und jedes $g\in \calO_W(U)$ ist $g\circ f\in \calO_V(f^{-1}(U))$
 \end{Prop}
 
 \begin{Bew}\begin{twosidedproof}
 \proofforward
-$f$ stetig nach Bemerkung \ref{bem6.3}.\\
-Sei $g\in \mathcal O_W(U), p \in f^{-1}(U)$.\\
-In einer Umgebung $U'$ von $p'=f(p)$ ist $g(y)=\frac{g_{p'}(y)}{h_{p'}(y)}$ f\"ur geeignete $g_{p'}, h_{p'}\in k[W]$.\\
-F\"ur $x\in f^{-1}(U')$ ist also $g(f(x))=\frac{g_{p'}(f(x))}{h_{p'}(f(x))}$\\
-Dabei ist\[\begin{array}{lcr}
-	g_p'\circ f & = & f^{\#}(g_p')\in k[V]\\
-	h_p'\circ f & = & f^{\#}(h_p')\in k[V]\end{array}\]
-
+	$f$ stetig nach Bemerkung \ref{bem6.3}. Sei $g\in \calO_W(U), p \in f^{-1}(U)$. In einer Umgebung $U'$ von $p'=f(p)$ ist $g(y)=\frac{g_{p'}(y)}{h_{p'}(y)}$ f\"ur geeignete $g_{p'}, h_{p'}\in k[W]$.	F\"ur $x\in f^{-1}(U')$ ist also $g(f(x))=\frac{g_{p'}(f(x))}{h_{p'}(f(x))}$. Dabei ist\[\begin{array}{lcr}
+		g_p'\circ f & = & f^{\#}(g_p')\in k[V]\\
+		h_p'\circ f & = & f^{\#}(h_p')\in k[V]\end{array}\]
 \proofreverse
-Zu zeigen: f\"ur $i=1,\dots ,m$ ist $p_i\circ f$ ein Polynom, wobei $p_i\in k[W]$ die Restklasse von $X_i$ ist.\\
-Nach Satz \ref{satz5} \ref{satz5a}) ist $k[W] = \mathcal O_W(W)$\\
-$\Rightarrow p_i\circ f\in \mathcal O_V(V)=k[V]$
+	Zu zeigen: f\"ur $i=1,\dots ,m$ ist $p_i\circ f$ ein Polynom, wobei $p_i\in k[W]$ die Restklasse von $X_i$ ist.
+	
+	Nach Satz \ref{satz5} \ref{satz5a}) ist $k[W] = \calO_W(W)$ $\Rightarrow p_i\circ f\in \calO_V(V)=k[V]$
 \end{twosidedproof}\end{Bew}
 
 \begin{DefBem}\label{bem7.7}\begin{enumerate}[a)]
 \item
-	Eine Teilmenge $U\subseteq \A^n(k)$ hei\ss t \begriffspez{quasi-affine Variet\"at}{Variet\"at!quasiaffine-}, wenn $U$ Zariski-offen in einer affinen Variet\"at $V$ ist.
-	
+	Eine Teilmenge $U\subseteq \A^n(k)$ hei\ss t \deftermspec{quasi-affine Variet\"at}{Variet\"at!affine-!quasi-}, wenn $U$ Zariski-offen in einer affinen Variet\"at $V$ ist.
 \item
-	Eine Abbildung $f: U_1 \to U_2$ zwischen quasi-affinen Variet\"aten $U_1,U_2$ hei\ss t \begriff{Morphismus} (oder \begriffspez{regul\"are Abbildung}{Abbildung!regul\"are-}), wenn $f$ stetig ist und f\"ur jedes offene $U \subseteq U_2$ und jedes $g\in\mathcal O_{U_2}(U)$ gilt:
-	\[g\circ f \in \mathcal O_{U_1}(f^{-1}(U))\]
-	(hier sei $\mathcal O_{U_2}:=\calO_{\bar{U}_2}$, $\bar U_2$ der Z-Abschluss von $U_2$)
-	
+	Eine Abbildung $f: U_1 \to U_2$ zwischen quasi-affinen Variet\"aten $U_1,U_2$ hei\ss t \defterm{Morphismus} (oder \deftermspec{regul\"are Abbildung}{Abbildung!regul\"are-}), wenn $f$ stetig ist und f\"ur jedes offene $U \subseteq U_2$ und jedes $g\in\calO_{U_2}(U)$ gilt:
+		\[g\circ f \in \calO_{U_1}(f^{-1}(U))\]
+	(hier sei $\calO_{U_2}:=\calO_{\bar{U}_2}$, $\bar U_2$ der Z-Abschluss von $U_2$)	
 \item
 	$f:\overbrace{U_1}^{\subseteq\A^n(k)}\to\overbrace{U_2}^{\subseteq\A^m(k)}$ ist genau dann regul\"ar, wenn es regul\"are Funktionen $f_1,\dots ,f_n$ auf $U_1$ gibt mit $f(x)=(f_1(x),\dots ,n_m(x))$ f\"ur alle $x\in U_1$
-	
 \item
 	Die quasi-affinen Variet\"aten \"uber $k$ bilden eine Kategorie, die $\underline{\Aff(k)}$ als volle Unterkategorie enth\"alt.
-	
 \item
-	Eine quasi-affine Variet\"at hei\ss t \begriff{affin} (als abstrakte Variet\"at), wenn sie isomorph ist zu einer affinen Variet\"at.
+	Eine quasi-affine Variet\"at hei\ss t \defterm{affin} (als abstrakte Variet\"at), wenn sie isomorph ist zu einer affinen Variet\"at.
 \end{enumerate}\end{DefBem}
 
 \begin{Bem}\label{bem7.8}
-F\"ur $f\in k[X_1,\dots ,X_n]$ ist $D(f)$ (abstrakt) affin.\\
-\linetitle{Beispiel:} $n=1, f(x)=x, D(f) =\A^1(k)-\{0\}$\\
+F\"ur $f\in k[X_1,\dots ,X_n]$ ist $D(f)$ (abstrakt) affin.
+
+\linetitle{Beispiel:} $n=1, f(x)=x, D(f) =\A^1(k)-\{0\}$
+
 \begin{minipage}[c]{0.5\linewidth}
 	$V=V(XY-1)\subseteq\A^2(k)$\\
 	$\varphi:V\to\A^1(k)$\\
@@ -1379,16 +1402,13 @@ $k$ sei wieder algebraisch abgeschlossen
 \begin{DefBem}\label{bem8.1}
  Sei $V\subseteq\mathbb A^n(k)$ (quasi-)affine Variet\"at.\begin{enumerate}[a)]
 \item
-	Eine \begriff{rationale Funktion} auf $V$ ist eine \"Aquivalenzklasse von Paaren $(U,f)$, 
-	wobei $U\subseteq V$ offen und dicht und $f\in\mathcal O(U)$ ist.\\
-	Dabei ist $(U,f)\sim(U',f'):\Leftrightarrow f|_{U\cap U'}=f'|_{U\cap U'}$
-\item In jeder \"Aquivalenzklasse gibt es ein maximales Element $(U_{\max},f_{\max}), U_{\max}=:\Ddef(f)$ hei\ss t \begriff{Definitionsbereich} der nat\"urlichen Funktion.\\
-	$V \setminus \Ddef(V)$ hei\ss t \begriff{Polstellenmenge} der rationalen Funktion.
+	Eine \deftermspec{rationale Funktion}{Funktion!rationale} auf $V$ ist eine \"Aquivalenzklasse von Paaren $(U,f)$, 
+	wobei $U\subseteq V$ offen und dicht und $f\in\calO(U)$ ist. Dabei ist $(U,f)\sim(U',f'):\Leftrightarrow f|_{U\cap U'}=f'|_{U\cap U'}$
+\item In jeder \"Aquivalenzklasse gibt es ein maximales Element $(U_{\max},f_{\max}), U_{\max}=:\Ddef(f)$ hei\ss t \defterm{Definitionsbereich} der nat\"urlichen Funktion. $V \setminus \Ddef(V)$ hei\ss t \defterm{Polstellenmenge} der rationalen Funktion.
 \item
 	Die rationalen Funktionen auf $V$ bilden eine $k$-Algebra $\Rat(V)$.
 \item\label{bem8.1d}
-	Ist $V$ irreduzibel, so ist $\Rat(V)= \Quot(k[V])=:k(V)$.\\
-	$k(V)$ hei\ss t \begriff{Funktionenk\"orper}.
+	Ist $V$ irreduzibel, so ist $\Rat(V)= \Quot(k[V])=:k(V)$. $k(V)$ hei\ss t \deftermspec{Funktionenk\"orper}{Funktion!Funktionenk\"orper}.
 \end{enumerate}\end{DefBem}
 
 \begin{Bew}\begin{enumerate}[a)]
@@ -1422,7 +1442,7 @@ $k$ sei wieder algebraisch abgeschlossen
 \begin{DefBem}\label{bem7.2}
 Seien $V,W$ affine Variet\"aten.\begin{enumerate}[a)]
 \item
-	Eine \begriff{rationale Abbildung}\index{Abbildung!rationale-} $f:V\dashrightarrow W$ ist eine \"Aquivalenzklasse von Paaren $(U,f_U)$, wobei $U\subseteq V$ offen und dicht, $f_U:U\longrightarrow W$ regul\"ar.\\
+	Eine \deftermspec{rationale Abbildung}{Abbildung!rationale-} $f:V\dashrightarrow W$ ist eine \"Aquivalenzklasse von Paaren $(U,f_U)$, wobei $U\subseteq V$ offen und dicht, $f_U:U\longrightarrow W$ regul\"ar.\\
 	Es ist $(U,f_U)\sim (U',f_U'):\Leftrightarrow f_U|_{U\cap U'}=f_{U'}|_{\vert U\cap U'}$.
 \item
 	Rationale Funktionen auf $V$ sind rationale Abbildungen $V\dashrightarrow \mathbb A^1(k)$.
@@ -1433,7 +1453,7 @@ Seien $V,W$ affine Variet\"aten.\begin{enumerate}[a)]
 \linetitle{Warnung:} $V\overset{f}{\dashrightarrow}W\overset{g}{\dashrightarrow}Z$ ist im Allgemeinen keine rationale Abbildung, denn $\Ddef(g)\cap f(\Ddef(f))=\emptyset$ ist m\"oglich.
 
 \begin{Def}
-Ein Morphismus $f:V\to W$ (von quasi-affinen Variet\"at) hei\ss t \begriff{dominant}, wenn $f(V)$ dicht in $W$ ist.
+Ein Morphismus $f:V\to W$ (von quasi-affinen Variet\"at) hei\ss t \defterm{dominant}, wenn $f(V)$ dicht in $W$ ist.
 \end{Def}
 
 \begin{BemDef}\begin{enumerate}[a)]
@@ -1441,7 +1461,7 @@ Ein Morphismus $f:V\to W$ (von quasi-affinen Variet\"at) hei\ss t \begriff{domin
 	Die irreduziblen affinen Variet\"at bilden mit den dominanten rationalen Abbildungen eine Kategorie.
 	
 \item
-	Die Isomorphismen in dieser Kategorie hei\ss en \begriffspez{birationale Abbildungen}{Abbildung!birationale-}.\\
+	Die Isomorphismen in dieser Kategorie hei\ss en \deftermspec{birationale Abbildungen}{Abbildung!birationale-}.\\
 	\emph{Explizit}: $f:V\dashrightarrow W$ birational $\Leftrightarrow \exists g:W\dashrightarrow V$, sodass $g\circ f$ und $f\circ g$ die Identit\"at auf ihren Definitionsbereichen sind.
 
 \item
@@ -1618,7 +1638,7 @@ Sei $f\in k[X_0,\dots ,X_n]$ homogen vom Grad $d >0$.\begin{enumerate}[a)]
 \end{enumerate}\end{Bem}
 
 \begin{Def}
-Eine Teilmenge $V\subseteq\IP^n(k)$ hei\ss t \begriffspez{projektive Variet\"at}{Variet\"at!projektive-}, wenn es eine Menge $F\subset k[X_0,\dots ,X_n]$ von homogenen Polynomen gibt mit $V=\{x\in\IP^n(k):f(x)=0\forall f\in F\}$
+Eine Teilmenge $V\subseteq\IP^n(k)$ hei\ss t \deftermspec{projektive Variet\"at}{Variet\"at!projektive-}, wenn es eine Menge $F\subset k[X_0,\dots ,X_n]$ von homogenen Polynomen gibt mit $V=\{x\in\IP^n(k):f(x)=0\forall f\in F\}$
 \end{Def}
 
 \begin{Bsp}\begin{enumerate}[a)]
@@ -1645,10 +1665,10 @@ kein Ideal!\\
 \begin{Def}\begin{enumerate}[a)]
 \item
 	F\"ur $V\subseteq \IP^n(k)$ sei $I(V)\subseteq k[X_0,\dots ,X_n]$ das von $I_0(V)=\{f\in k[X_1,\dots ,X_n] \text{ homogen}, f(x)=0\forall x\in V\}$ erzeugte Ideal.\\
-	$I(V)$ hei\ss t \begriff{Verschwindungsideal}.
+	$I(V)$ hei\ss t \deftermspec{Verschwindungsideal}{Ideal!Verschwindungs-}.
 	
 \item
-	Ein Ideal $I\subseteq k[X_0,\dots ,X_n]$ hei\ss t \begriffspez{homogen}{homogen!Ideal}, wenn es von homogenen Polynomen erzeugt werden kann.
+	Ein Ideal $I\subseteq k[X_0,\dots ,X_n]$ hei\ss t \deftermspec{homogen}{homogen!Ideal}, wenn es von homogenen Polynomen erzeugt werden kann.
 	
 \item
 	F\"ur ein homogenes Ideal $I\subseteq k[X_0,\dots ,X_n]$ sei
@@ -1657,17 +1677,17 @@ kein Ideal!\\
 	
 \begin{DefBem}\begin{enumerate}[a)]\index{graduiert}
 \item
-	Ein Ring $R$ hei\ss t \begriffspez{graduiert}{graduiert!Ring}, wenn es eine Zerlegung $R=\bigoplus\limits_{d=0}^{\infty}R_d$ gibt mit abelschen Gruppen $R_d$, sodass $R_dR_e\subseteq R_{d+e}$ f\"ur alle $d,e\ge0$
+	Ein Ring $R$ hei\ss t \deftermspec{graduiert}{graduiert!Ring}, wenn es eine Zerlegung $R=\bigoplus\limits_{d=0}^{\infty}R_d$ gibt mit abelschen Gruppen $R_d$, sodass $R_dR_e\subseteq R_{d+e}$ f\"ur alle $d,e\ge0$
 	
 \item
-	Eine $k$-Algebra $S$ hei\ss t \begriffspez{graduiert}{graduiert!$k$-Algebra}, wenn $S=\bigoplus\limits_{d=0}^{\infty}S_d$ graduierter Ring ist und $S_0=k$.\\
+	Eine $k$-Algebra $S$ hei\ss t \deftermspec{graduiert}{graduiert!$k$-Algebra}, wenn $S=\bigoplus\limits_{d=0}^{\infty}S_d$ graduierter Ring ist und $S_0=k$.\\
 	Dann ist jedes $S_d$ ein $k$-Vektorraum.
 	
 \item
-	Die Elemente von $R_d$ hei\ss en \begriff{homogen} vom Grad $d$.
+	Die Elemente von $R_d$ hei\ss en \defterm{homogen} vom Grad $d$.
 	
 \item
-	Ein Ideal $I\subseteq R$ hei\ss t \begriffspez{homogen}{homogen!Ideal}, wenn es von homogenen Elementen erzeugt werden kann.
+	Ein Ideal $I\subseteq R$ hei\ss t \deftermspec{homogen}{homogen!Ideal}, wenn es von homogenen Elementen erzeugt werden kann.
 	
 \item
 	$I$ homogen $\Leftrightarrow I=\bigoplus\limits_{d=0}^{\infty}(I\cap R)\Leftrightarrow$ f\"ur jedes $a\in I, a=\Sum_{d=0}^n a_d$, $a_d\in R_d$ ist $a_d\in  I$ f\"ur jedes $d=0,\dots ,n$
@@ -1726,7 +1746,7 @@ kein Ideal!\\
 	
 \item
 	Die projektiven Variet\"aten in $\IP^n(k)$ bilden die abgeschlossenen Teilmengen einer Topologie auf $\IP^n(k)$.\\
-	Diese hei\ss t \begriff{Zariski-Topologie}\index{Topologie!Zariski-}.
+	Diese hei\ss t \deftermspec{Zariski-Topologie}{Topologie!Zariski-}.
 
 \item
 	Eine projektive Variet\"at $V\subseteq\IP^n(k)$ ist genau dann irreduzibel, wenn $I(V)$ Primideal ist.
@@ -1748,7 +1768,7 @@ $\overset{\sqrt I\text{ homogen}}{\Longrightarrow} \sqrt{I(V)}\subseteq I(V)$
 Sei $V\subseteq \IP^n(k)$ projektive Variet\"at, $V\ne0$
 \begin{enumerate}[a)]
 \item
-	$\widetilde V:=\{(x_0,\ldots ,x_n)\in \A^{n+1}(k)|(x_0:\ldots :x_n)\in V\}\cup\{(0,\ldots ,0)\}$ hei\ss t \begriff{affiner Kegel} \"uber $V$.
+	$\widetilde V:=\{(x_0,\ldots ,x_n)\in \A^{n+1}(k)|(x_0:\ldots :x_n)\in V\}\cup\{(0,\ldots ,0)\}$ hei\ss t \deftermspec{affiner Kegel}{Kegel!affiner} \"uber $V$.
 
 \item
 	$\widetilde V$ ist affine Variet\"at.\\
@@ -1785,7 +1805,7 @@ Nach Bemerkung \ref{bem10.7} \ref{bem10.7c}) ist $I(V)=I(\widetilde V)=I(V_{\tex
 
 \begin{Def}
 Sei $V\subseteq \IP^n(k)$ projektive Variet\"at, $I(V)\subset k[X_0,\ldots ,X_n]$ das Verschwindungsideal.\\
-Dann hei\ss t $K[V]:=\FakRaum{k[X_0,\ldots ,X_n]}{I(V)}$ \begriffspez{homogener Koordinatenring}{Koordinatenrig!homogener-}\index{homogen!Koordinatenring} zu $V$.
+Dann hei\ss t $K[V]:=\FakRaum{k[X_0,\ldots ,X_n]}{I(V)}$ \deftermspec{homogener Koordinatenring}{Ring!homogener Koordinaten-}\index{homogen!Koordinatenring} zu $V$.
 \end{Def}
 
 \newpage
@@ -1800,13 +1820,13 @@ Sei $k$ ein K\"orper, $n\ge1$\begin{enumerate}[a)]
 	$H:\left\{\begin{array}{rcl}
 		k[X_1,\ldots ,X_n] &\to&	 k[X_0,\ldots ,X_n]\\
 		f=\Sum_{i=0}^d f_i &\mapsto& \Sum_{i=0}^d f_iX_0^{d-i}
-	\end{array}\right.$ ($f_i$ homogen vom Grad $i$, $f_d\ne 0$) hei\ss t \begriff{Homogenisierung}.
+	\end{array}\right.$ ($f_i$ homogen vom Grad $i$, $f_d\ne 0$) hei\ss t \deftermspec{Homogenisierung}{homogen!Homogenisierung}.
 
 \item
 	$D:\left\{\begin{array}{rcl}
 		k[X_0,\ldots ,X_n] &\to& k[X_1,\ldots ,X_n]\\
 		f &\mapsto& f(1,X_1,\ldots ,X_n)
-	\end{array}\right.$ hei\ss t \begriff{Dehomogenisierung}.
+	\end{array}\right.$ hei\ss t \deftermspec{Dehomogenisierung}{homogen!Homogenisierung!De-}.
 
 \item
 	$D \circ H = \id$
@@ -1882,14 +1902,14 @@ Sei $k$ algebraisch abgschlossen.\begin{enumerate}[a)]
 \end{enumerate}\end{DefProp}
 
 \begin{Bew}\begin{enumerate}[a)]\item[c)]\begin{twosidedproofeq}\proofsubseteq \checkmark \proofsupseteq
-Sei $V\subseteq\IP^n(k)$ abgeschlossen mit $V(I)\subset V$. Sei $V=V(\mathcal J)$ f\"ur ein homogenes Ideal $\mathcal J\subset k[X_0,\ldots ,X_n]$
+Sei $V\subseteq\IP^n(k)$ abgeschlossen mit $V(I)\subset V$. Sei $V=V(\calJ)$ f\"ur ein homogenes Ideal $\calJ\subset k[X_0,\ldots ,X_n]$
 \begin{description}[\setlabelstyle{\itshape}]
 \item[Behauptung:]
-	$\mathcal J\subseteq I^*$ (denn dann ist $V=V(\mathcal J)\supseteq V(I^*)$)
-\item[denn:] Sei $F\in \mathcal J$ homogen, $x=(y_1,\ldots ,y_n)\in V(I)$.\\
+	$\calJ\subseteq I^*$ (denn dann ist $V=V(\calJ)\supseteq V(I^*)$)
+\item[denn:] Sei $F\in \calJ$ homogen, $x=(y_1,\ldots ,y_n)\in V(I)$.\\
 Dann ist Dehomogenisierung bez\"uglich $x_0$: $D_0(F)(x)=0$ (weil $\varphi(x)\in V\subseteq V(F)$)\\
 $\Rightarrow D_0(F)\in I(V(I)) \overset{\text{HNS}}{=}I$\\
-$\widetilde F = H_0(D_0(F))\in I^* \overset{F=X_0^\nu\cdot\widetilde F}{\Rightarrow}F\in I^* \Rightarrow \mathcal J \subseteq I^*$\\
+$\widetilde F = H_0(D_0(F))\in I^* \overset{F=X_0^\nu\cdot\widetilde F}{\Rightarrow}F\in I^* \Rightarrow \calJ \subseteq I^*$\\
 \end{description}\end{twosidedproofeq}\end{enumerate}\end{Bew}
 
 \begin{nnBsp}
@@ -1899,7 +1919,7 @@ $\overline V \ne V(x_0y-x^2,x_0^2z-x^3)$ (\"Ubung)
 
 \begin{DefBem}\begin{enumerate}[a)]
 \item
-	Eine Teilmenge $W\subseteq \IP^n(k)$ hei\ss t \begriffspez{quasi-projektive Variet\"at}{Variet\"at!quasiprojektive-}, wenn $W$ offene Teilmenge einer projektiven Variet\"at ist.
+	Eine Teilmenge $W\subseteq \IP^n(k)$ hei\ss t \deftermspec{quasi-projektive Variet\"at}{Variet\"at!projektive-!quasi-}, wenn $W$ offene Teilmenge einer projektiven Variet\"at ist.
 \item
 	$W$ quasi-projektiv $\Leftrightarrow$ es gibt $V\subseteq\IP^n(k)$ abgeschlossen und $U\subseteq\IP^n(k)$ offen, sodass $W=V\cap U$
 \item
@@ -1937,10 +1957,10 @@ klar!
 \begin{Def}\label{Def12.2}
 Sei $W\subseteq\IP^n(k)$ quasiprojektive Variet\"at, $f:W\to k$ Abbildung.\begin{enumerate}[a)]
 \item
-	$f$ hei\ss t \begriff{regul\"ar in} $x\in W$, wenn es eine Umgebung $U_x\subseteq W$ von x gibt und homogene Polynome $F, G \in k[X_0,\ldots ,X_n]$ mit $f(y)=\frac{F}{G}(y)$ f\"ur alle $y\in U_x$ (insbesondere $U_x\subseteq D(G)$).
+	$f$ hei\ss t \deftermspec{regul\"ar in}{regul\"ar!in $x$} $x\in W$, wenn es eine Umgebung $U_x\subseteq W$ von x gibt und homogene Polynome $F, G \in k[X_0,\ldots ,X_n]$ mit $f(y)=\frac{F}{G}(y)$ f\"ur alle $y\in U_x$ (insbesondere $U_x\subseteq D(G)$).
 
 \item
-	$f$ hei\ss t \begriff{regul\"ar}, wenn es in jedem $x\in W$ regul\"ar ist.
+	$f$ hei\ss t \defterm{regul\"ar}, wenn es in jedem $x\in W$ regul\"ar ist.
 \end{enumerate}\end{Def}
 
 \begin{Bem}
@@ -1981,7 +2001,7 @@ Sei $k$ algebraisch abgeschlossen, $V\subseteq\IP^n(k)$ projektive Variet\"at.\b
 	Sei $F\in k[X_0,\ldots ,X_n]$ homogen, $\deg(F)\ge1, F\notin I(V)$.\\
 	Dann gilt
 	\[\calO_V(D(F))\cong k[V]_{(F)}:=\left\{\frac{G}{F^r}: G\in k[V] \text{ homogen}, \deg(G)=r\deg(F)\right\}\]
-	(homogene Lokalisierung)\index{homogene Lokalisierung}
+	(homogene Lokalisierung)\index{homogen!Lokalisierung}
 \end{enumerate}\end{Satz}
 
 \begin{Bew}\begin{enumerate}[a)]
@@ -2047,7 +2067,7 @@ Sei $k$ algebraisch abgeschlossen, $V\subseteq\IP^n(k)$ projektive Variet\"at.\b
 \begin{DefBem}\label{bem13.1}
 Seien $V\subseteq\IP^n(k), W\subseteq\IP^m(k)$ quasiprojektive Variet\"aten.\begin{enumerate}[a)]
 \item
-	Eine Abbildung $f:V\to W$ hei\ss t \begriff{Morphismus}, wenn es zu jedem $x\in V$ eine offene Umgebung $U_x \subset V$ und homogene Polynome $F_0,\ldots ,F_m \in k[X_0,\ldots ,X_n]$ vom gleichen Grad gibt, sodass $f(y)=(F_0(y):\ldots :F_n(y))$ f\"ur jedes $y\in U_x$
+	Eine Abbildung $f:V\to W$ hei\ss t \defterm{Morphismus}, wenn es zu jedem $x\in V$ eine offene Umgebung $U_x \subset V$ und homogene Polynome $F_0,\ldots ,F_m \in k[X_0,\ldots ,X_n]$ vom gleichen Grad gibt, sodass $f(y)=(F_0(y):\ldots :F_n(y))$ f\"ur jedes $y\in U_x$
 \item\label{bem13.1b}
 	$f$ ist genau dann Morphismus, wenn f\"ur alle $i=0,\ldots ,n$ und $j=0,\ldots ,m$ mit $U_{ij}:=f^{-1}(W\cap U_j)\cap U_i$ gilt: $f|_{U_{ij}}:U_{ij}\to W\cap U_j$ ist Morphismus von quasiaffinen Variet\"aten
 \item\label{bem13.1c}
@@ -2130,10 +2150,10 @@ Dann ist die Abbildung $\varphi_A:\begin{array}{rcl}\IP^1(k)&\to&\IP^1(k)\\(x_0:
 \begin{DefBem}
 Sei $V\subseteq\IP^n(k)$ quasiprojektive Variet\"at, $k$ algebraisch abgeschlossen.\begin{enumerate}[a)]
 \item
-	Eine \begriffspez{rationale Funktion}{Funktion!rationale-} auf $V$ ist eine \"Aquvalenzklasse von Paaren $(U,f)$, wobei $U\subseteq V$ offen, dicht, $f\in\calO_V(U)$.\\
+	Eine \deftermspec{rationale Funktion}{Funktion!rationale-} auf $V$ ist eine \"Aquvalenzklasse von Paaren $(U,f)$, wobei $U\subseteq V$ offen, dicht, $f\in\calO_V(U)$.\\
 	Dabei ist $(U,f)\sim(U',f'):\Leftrightarrow f|_{U\cap  U'}=f'|_{U\cap  U'}$
 \item
-	Ist $V$ irreduzibel, so bilden die rationalen Funktionen auf $V$ einen K\"orper, den \begriff{Funktionenk\"orper} $k(V)$.
+	Ist $V$ irreduzibel, so bilden die rationalen Funktionen auf $V$ einen K\"orper, den \deftermspec{Funktionenk\"orper}{Funktion!Funktionenk\"orper} $k(V)$.
 \item
 	Ist $V$ irreduzibel, so ist $k(V)=\Quot(k[U])$ f\"ur jede offene, dichte, affine Teilmenge $U\subseteq V$.
 \item
@@ -2158,9 +2178,9 @@ Sei $V\subseteq\IP^n(k)$ quasiprojektive Variet\"at, $k$ algebraisch abgeschloss
 \begin{DefBem}
 Seien $V,W$ quasiprojektive Variet\"aten\begin{enumerate}[a)]
 \item
-	Eine \begriff{rationale Abbildung} $f:V\dashrightarrow W$ ist eine \"Aquivalenzklasse von Paaren $(U,f)$ wo $U\subset V$ offen, dicht und $f:U\to W$ Morphismus.
+	Eine \deftermspec{rationale Abbildung}{Abbildung!rationale} $f:V\dashrightarrow W$ ist eine \"Aquivalenzklasse von Paaren $(U,f)$ wo $U\subset V$ offen, dicht und $f:U\to W$ Morphismus.
 \item
-	Eine rationale Abbildung $f$ hei\ss t \begriff{dominant}, wenn $f(U)\subset W$ dicht ist f\"ur einen Vertreter $(U,f)$ der Klasse (und damit f\"ur jeden).
+	Eine rationale Abbildung $f$ hei\ss t \defterm{dominant}, wenn $f(U)\subset W$ dicht ist f\"ur einen Vertreter $(U,f)$ der Klasse (und damit f\"ur jeden).
 \item
 	Die Zuordnung $V\mapsto k(V)$ induziert eine \"Aquivalenz von Kategorien
 	\[\left\{\begin{array}{c}\text{irred. quasi-proj. Var.}/k\\ +\text{dominante rat. Abb.}\end{array}\right\}
@@ -2242,7 +2262,7 @@ $\Rightarrow \Psi$ wohldefiniert\\
 \begin{DefBem}
 Sei $d\ge 2$ und $\omega \in \Lambda^dV$\begin{enumerate}[a)]
 \item
-	$\omega$ hei\ss t \begriff{total zerlegbar}, wenn es linear unabh\"agige Vektoren $v_1,\ldots ,v_d$ in $V$ gibt mit $\omega=v_1\wedge\ldots \wedge v_d$.
+	$\omega$ hei\ss t \defterm{total zerlegbar}, wenn es linear unabh\"agige Vektoren $v_1,\ldots ,v_d$ in $V$ gibt mit $\omega=v_1\wedge\ldots \wedge v_d$.
 \item
 	$[\omega]\in\Bild(\Psi) \Leftrightarrow\omega$ total zerlegbar
 \item
@@ -2286,7 +2306,7 @@ $\Bild(\Psi)$ ist Zariski-abgeschlossen in $\IP(\Lambda^dV)$, das hei\ss t $\Psi
 F\"ur $\omega\in \Lambda^dV$ ist $\varphi_{\omega}:V\to\Lambda^dV$ linear.\\
 Sei $L_{\omega}$ die Abbildungsmatrix von $\varphi_\omega$ bez\"uglich der Basen $e_1,\ldots ,e_n$ und $e_{i_1} \wedge \ldots \wedge e_{i_d}$.\\
 Sei $L_\omega=\left(l_{ij}^{(\omega)}\right)_{\begin{subarray}{l}j=1,\ldots ,n\\i=1,\ldots, \binom{n}{d+1}\end{subarray}}, l_{ij}:\Lambda^dV\to k$ ist linear (!)\\
-(Die $l_{ij}$ hei\ss en \begriff{Pl\"ucker Koordinaten} auf $\Lambda^dV$)\\
+(Die $l_{ij}$ hei\ss en \defterm{Pl\"ucker Koordinaten} auf $\Lambda^dV$)\\
 $[\omega]\in\Bild(\Psi) \Leftrightarrow \dim(\Kern(\varphi_\omega))\ge d \Leftrightarrow \Rang(L_\omega)\le n - d$\\
 $\textcolor{white}{[\omega]\in\Bild(\Psi)} \Leftrightarrow$ Jede $(n-d+1)\times(n-d+1)$-Untermatrix von $L$ hat Determinante $0$\\
 Diese Determinanten sind homogene Polynome $f_{IJ}$ vom Grad $n-d+1$ in den $l_{ij}(\omega)$ ($|I|=|J|=n-d+1, I\subset \{1,\ldots ,\binom{n}{d}\}, J\subset \{1,\ldots ,n\}$)\\
@@ -2304,7 +2324,7 @@ F\"ur $n\ge 1$ und $1\le d \le n$ sei
 \item
 	F\"ur jedes $\omega=\Psi(U)\in G(d,n)$ ist $\pi^{-1}(\omega)=U\subset\{\omega\}\times k^n$
 \item
-	$\calF_{d,n}(k)$ hei\ss t \begriff{tautologisches B\"undel}.
+	$\calF_{d,n}(k)$ hei\ss t \defterm{tautologisches B\"undel}.
 \end{enumerate}\end{PropDef}
 
 \begin{Bew}\begin{enumerate}[a)]\item
@@ -2338,9 +2358,9 @@ Sei $k$ ein K\"orper, $V$ quasiprojektive Variet\"at \"uber $k$, $x\in V$.
 \begin{enumerate}[a)]
 \item
 	$\calO_{V,x}=\{[(U,f)]_{\sim}: U \text{ offene Umgebung von } x, f\in \calO_V(U)\}$ mit \[(u,f)\sim (U',f') :\Leftrightarrow f|_{u\cap U'}=f'|_{U\cap U'}\]
-	$\calO_{V,x}$ hei\ss t \begriff{lokaler Ring} von $V$ in $x$.
+	$\calO_{V,x}$ hei\ss t \defterm{lokaler Ring} von $V$ in $x$.
 \item
-	Die Elemente von $\calO_{V,x}$ hei\ss en \begriff{Keime} von regul\"aren Funktionen.\\
+	Die Elemente von $\calO_{V,x}$ hei\ss en \deftermspec{Keime}{Keim} von regul\"aren Funktionen.\\
 	Schreibweise: $(U,f)_\sim=:f_x$
 \end{enumerate}\end{Def}
 
@@ -2557,7 +2577,7 @@ Die Zuordnung $(V,x)\mapsto T_{V,x}$ ist ein kovarianter Funktor
 \section{Derivationen und Zariski-Topologie}
 
 \begin{Def}\label{Def17.1}
-Sei $R$ Ring (kommutativ mit Eins), $A$ eine $R$-Algebra, $M$ ein $A$-Modul. Eine $R$-lineare Abbildung $D:A\to M$ hei\ss t \begriffspez{$R$-Derivation}{Derivation}, wenn gilt:
+Sei $R$ Ring (kommutativ mit Eins), $A$ eine $R$-Algebra, $M$ ein $A$-Modul. Eine $R$-lineare Abbildung $D:A\to M$ hei\ss t \deftermspec{$R$-Derivation}{Derivation}, wenn gilt:
 	\[ D(f\cdot g)=f\cdot D(G) + g\cdot D(f) \qquad \text{f\"ur alle }f,g \in A\]
 \end{Def}
 
@@ -2641,7 +2661,7 @@ $\Rightarrow \delta(fg)= l(fg(x)+gf(x)-2f(x)g(x)) = f(x)l(g-g(x))+g(x)l(f-f(x)) 
 Sei $V$ affine Variet\"at, $x\in V$.\\
 Dann gibt es einen nat\"urlichen Isomorphismus
 	\[ T_{V,x} \cong (\FakRaum{m_x}{m_x^2})^v\]
-$(m_x/m_x^2)^v$ hei\ss t \begriff{Zariski-Tangentialraum} an $V$ in $x$.
+$(m_x/m_x^2)^v$ hei\ss t \defterm{Zariski-Tangentialraum} an $V$ in $x$.
 \end{SatzDef}
 
 \begin{Bew}\begin{enumerate}[i)]
@@ -2690,7 +2710,7 @@ $(m_x/m_x^2)^v$ hei\ss t \begriff{Zariski-Tangentialraum} an $V$ in $x$.
 Sei $X$ topologischer Raum.\\
 Dann hei\ss t
 	\[\dim(X):=\sup\{n\in\N:\exists\text{ Kette }\emptyset\ne V_0\subsetneq,\ldots ,\subsetneq V_n\text{ von irred. abgeschl. Teilm. v. }X\}\]
-	\begriff{Krull Dimension} von $X$.
+	\defterm{Krull Dimension} von $X$.
 \end{Def}
 
 \begin{nnBsp}\begin{enumerate}[1)]
@@ -2732,9 +2752,9 @@ Sei $R$ ein Ring (das hei\ss t kommutativ mit Eins)\begin{enumerate}[a)]
 	Sei $\mathfrak p \in R$ Primideal.\\
 	Dann hei\ss t
 		\[\Ht(\mathfrak p):=\sup\{n\in\N:\exists \p_0\subseteq\ldots \subseteq\p_n=\p \text{ Kette von Primelementen in }R\}\]
-	\begriff{H\"ohe} von $\p$.
+	\defterm{H\"ohe} von $\p$.
 \item
-	$\dim(R):=\sup\{\Ht(\p):\p\subset R \text{ Primideal}\}$ hei\ss t \begriff{Krull-Dimension}.
+	$\dim(R):=\sup\{\Ht(\p):\p\subset R \text{ Primideal}\}$ hei\ss t \defterm{Krull Dimension}.
 \end{enumerate}\end{Def}
 
 \begin{nnBsp}\begin{enumerate}[1)]
@@ -2770,7 +2790,7 @@ Sei $k$ ein K\"orper, $A$ endlich erzeugte nullteilerfreie $k$-Algebra.\begin{en
 \end{enumerate}\end{Satz}
 
 \begin{nnErinn}
-$S|R$ \begriff{ganze Ringerweiterung} $\Leftrightarrow$ jedes $a\in S$ ist Nullstelle eines \emph{normierten} Polynoms mit Koeffizienten aus $R$.
+$S|R$ \deftermspec{ganze Ringerweiterung}{Ring!-erweiterung!ganze} $\Leftrightarrow$ jedes $a\in S$ ist Nullstelle eines \emph{normierten} Polynoms mit Koeffizienten aus $R$.
 \end{nnErinn}
 
 \begin{UnterSatz}\label{satz9.1}
@@ -2826,7 +2846,7 @@ Dann gibt es Primideale $\mathfrak P_0\subset \mathfrak P_1$ mit $\mathfrak P_0\
 \begin{DefBem}\label{18.6}
 Sei $V$ eine quasiprojektive Variet\"at \"uber algebraisch abgeschlossenem K\"orper $k$, $x\in V$, $V_0\subseteq V$ offene affine Umgebung von $x$.\begin{enumerate}[a)]
 \item
-	$\dim_x(V)=\dim(\calO_{V,x})$ hei\ss t \begriff{lokale Dimension}\index{Dimension!lokale-} von $V$ in $x$.
+	$\dim_x(V)=\dim(\calO_{V,x})$ hei\ss t \deftermspec{lokale Dimension}{Dimension!lokale-} von $V$ in $x$.
 \item
 	$\dim_x(V)=\dim(\calO_{V,x})=\dim(\calO_{V_0,x})=\Ht(m_x^{V_0})$
 \item
@@ -2861,9 +2881,9 @@ Ist $k$ unendlich, so ist $\IP^n(k)=n$.
 
 \begin{Def}\begin{enumerate}[a)]
 \item
-	Eine quasiprojektive Variet\"at der Dimension 1 hei\ss t (algebraische) \begriff{Kurve}.
+	Eine quasiprojektive Variet\"at der Dimension 1 hei\ss t (algebraische) \defterm{Kurve}.
 \item
-	Eine quasiprojektive Variet\"at der Dimension 2 hei\ss t (algebraische) \begriff{Fl\"ache}.
+	Eine quasiprojektive Variet\"at der Dimension 2 hei\ss t (algebraische) \defterm{Fl\"ache}.
 \end{enumerate}\end{Def}
 
 \begin{Prop}
@@ -2935,7 +2955,7 @@ Induktion \"uber $d$:\begin{enumerate}[$d=10$]
 
 \begin{Def}
 Sei $V$ quasiprojektive Variet\"at \"uber einem K\"orper $k$.\\
-$x\in V$ hei\ss t \begriff{regul\"ar} (oder \begriff{nichtsingul\"ar}), wenn $\dim T_{V,x}=\dim_x V$, andernfalls hei\ss t x \begriff{singul\"ar}. $V$ hei\ss t nichtsingul\"ar, wenn jeder Punkt $x\in V$ regul\"ar ist.
+$x\in V$ hei\ss t \defterm{regul\"ar} (oder \deftermspec{nichtsingul\"ar}{singul\"ar!nicht-}), wenn $\dim T_{V,x}=\dim_x V$, andernfalls hei\ss t x \defterm{singul\"ar}. $V$ hei\ss t nichtsingul\"ar, wenn jeder Punkt $x\in V$ regul\"ar ist.
 \end{Def}
 
 \begin{Prop}[Jacobi-Kriterium]
@@ -2971,7 +2991,7 @@ Dann ist $\calJ_f=\left( \frac{\partial f}{\partial X_1},\ldots ,\frac{\partial 
 \begin{DefBem}\label{19.3}\begin{enumerate}[a)]
 \item
 	Sei $R$ noetherscher lokaler Ring mit maximalem Ideal $m$ und Restklassenk\"orper $k=R/m$.\\
-	$R$ hei\ss t \begriff{regul\"ar}, wenn $\dim R=\dim_k(m/m^2)$.
+	$R$ hei\ss t \defterm{regul\"ar}, wenn $\dim R=\dim_k(m/m^2)$.
 \item\label{19.3b}
 	Sei $V$ quasiprojektive Variet\"at \"uber $k$, $x\in V$.\\
 	Dann gilt:
@@ -3188,11 +3208,11 @@ Dann gilt:\begin{enumerate}[a)]
 \begin{DefBem}
 Sei $K$ ein K\"orper\begin{enumerate}[a)]
 \item
-	Eine surjektive Abbildung $v:K^\times\to \Z$ mit i) und ii) hei\ss t \begriffspez{diskrete Bewertung}{Bewertung!diskrete-} auf $K$.
+	Eine surjektive Abbildung $v:K^\times\to \Z$ mit i) und ii) hei\ss t \deftermspec{diskrete Bewertung}{Bewertung!diskrete-} auf $K$.
 \item
 	Ist $v$ diskrete Bewertung auf $K$, so ist $\calO_v:=\{x\in K: x=0\text{ oder }v(x)\ge 0\}$ lokaler Ring mit maximalem Ideal $m_v=\{x\in K: x=0\text{ oder }v(x)>0\}$.
 \item
-	Ein nullteilerfreier Ring $R$ hei\ss t \begriffspez{diskreter Bewertungsring}{Bewertungsring!diskreter-}, wenn es eine diskrete Bewertung $v$ auf $K:=\Quot(R)$ gibt mit $R=\calO_v$.
+	Ein nullteilerfreier Ring $R$ hei\ss t \deftermspec{diskreter Bewertungsring}{Bewertungsring!diskreter-}, wenn es eine diskrete Bewertung $v$ auf $K:=\Quot(R)$ gibt mit $R=\calO_v$.
 \item
 	Jeder regul\"are lokale Ring der Dimension $1$ ist diskreter Bewertungsring.
 \end{enumerate}\end{DefBem}
@@ -3259,7 +3279,7 @@ Dann erf\"ullt $|\cdot|_v:K\to\R$:\begin{itemize}
 
 \begin{Def}
 Sei $C$ nichtsingul\"are Kurve, $P\in C$.\\
-Dann ist $\calO_{C,P}$ diskreter Bewertungsring. Die zugeh\"orige diskrete Bewertung auf $k(C)=\Quot(\calO_{C,P})$ hei\ss t $\ord_P$. $\ord_P$ hei\ss t die \begriff{Ordnung} von $f$ in $P$.
+Dann ist $\calO_{C,P}$ diskreter Bewertungsring. Die zugeh\"orige diskrete Bewertung auf $k(C)=\Quot(\calO_{C,P})$ hei\ss t $\ord_P$. $\ord_P$ hei\ss t die \defterm{Ordnung} von $f$ in $P$.
 \end{Def}
 
 \begin{Bem}\label{20.8}
@@ -3316,30 +3336,30 @@ Sei $C$ nichtsingul\"are Kurve (also projektiv, irreduzibel, \"uber algebraisch 
 
 \begin{Def}\begin{enumerate}[a)]
 \item
-	Ein \begriff{Divisor} auf $C$ ist eine formale Summe $D=\Sum_{i=1}^nn_iP_i$ mit $n\in \N$, $n_i\in\Z$, $P_i\in C$.
+	Ein \defterm{Divisor} auf $C$ ist eine formale Summe $D=\Sum_{i=1}^nn_iP_i$ mit $n\in \N$, $n_i\in\Z$, $P_i\in C$.
 \item
-	$\Div(C)=\{D=\Sum_{i=1}^nn_iP_i \ | D$ ist Divisor auf $C\}$ mit der formalen Addition hei\ss t \begriff{Divisorengruppe} von $C$.
+	$\Div(C)=\{D=\Sum_{i=1}^nn_iP_i \ | D$ ist Divisor auf $C\}$ mit der formalen Addition hei\ss t \deftermspec{Divisorengruppe}{Divisor!Divisorengruppe} von $C$.
 \item
-	F\"ur $D=\Sum_{i=1}^nn_iP_i$ hei\ss t $\deg(D):= \Sum_{i=1}^nn_i$ der \begriff{Grad} von $D$.
+	F\"ur $D=\Sum_{i=1}^nn_iP_i$ hei\ss t $\deg(D):= \Sum_{i=1}^nn_i$ der \defterm{Grad} von $D$.
 \item
-	$D=\Sum_{i=1}^nn_iP_i$ hei\ss t \begriff{effektiv}, wenn alle $n_i\ge0$ sind.\\
+	$D=\Sum_{i=1}^nn_iP_i$ hei\ss t \defterm{effektiv}, wenn alle $n_i\ge0$ sind.\\
 	Schreibweise: $D\ge0$
 \end{enumerate}\end{Def}
 
 \begin{DefBem}\begin{enumerate}[a)]
 \item
-	F\"ur $f\in k(C)^\X$ hei\ss t $\Ddiv(f):=\Sum_{P\in C}\ord_P(f)_P$ der \begriffspez{Divisor von f}{Divisor!-von $f$}
+	F\"ur $f\in k(C)^\X$ hei\ss t $\Ddiv(f):=\Sum_{P\in C}\ord_P(f)_P$ der \deftermspec{Divisor von f}{Divisor!-von $f$}
 \item
 	$\Ddiv(f)$ ist Divisor (wegen Bemerkung \ref{20.8})
 \item
-	$D\in\Div(C)$ hei\ss t \begriff{Hauptdivisor}\index{Divisor!Haupt-}, wenn es ein $f\in k(C)^\X$ gibt mit $D=\Ddiv(f)$.
+	$D\in\Div(C)$ hei\ss t \defterm{Hauptdivisor}, wenn es ein $f\in k(C)^\X$ gibt mit $D=\Ddiv(f)$.
 \item
 	$\Ddiv:k(C)^\X\to \Div(C)$, $f\mapsto\Ddiv(f)$ ist Gruppenhomomorphismus.\\
 	$\Bild(\Ddiv)=\Div_H(C)$ sind die Hauptdivisoren.
 \item
-	$\Cl(C):=\Div(C)/\Div_H(C)$ hei\ss t \begriff{Divisorenklassengruppe} von $C$.
+	$\Cl(C):=\Div(C)/\Div_H(C)$ hei\ss t \deftermspec{Divisorenklassengruppe}{Divisor!Divisorenklassengruppe} von $C$.
 \item
-	$D,D'\in \Div(C)$ hei\ss en \begriff{linear \"aquivalent}, wenn $D-D'$ Hauptdivisor ist.\\
+	$D,D'\in \Div(C)$ hei\ss en \defterm{linear \"aquivalent}, wenn $D-D'$ Hauptdivisor ist.\\
 	Schreibweise: $D \equiv D'$
 \end{enumerate}\end{DefBem}
 
@@ -3428,7 +3448,7 @@ F\"ur $P$ mit $f(P)=0$ ist $e_P(f) = \ord_P(X \circ f) = \ord_P(f)$; ist $f(P)=\
 \begin{BemDef}
 Sei $f:C_1\to C_2$ surjektiver Morphismus nichtsingul\"arerer Kurven.\\
 Dann induziert $f$ K\"orperhomomorphismus $f^\#: k(C_2) \to k(C_1)$. $f^\#$ macht $k(C_1)$ zu einer endlichen K\"orpererweiterung von $k(C_2)$.\\
-$\deg(f) := [k(C_1) : k(C_2)]$ hei\ss t \begriff{Grad} von $f$.
+$\deg(f) := [k(C_1) : k(C_2)]$ hei\ss t \defterm{Grad} von $f$.
 \end{BemDef}
 
 \begin{Bew}
@@ -3504,7 +3524,7 @@ Sei weiterhin $C$ nichtsingul\"are Kurve.
 \begin{DefBem}
 Sei $D=\Sum_{P\in C}n_P\cdot P \in \Div(C)$\begin{enumerate}[a)]
 \item
-	$L(D):=\{f\in k(C)^\X \ |D+\Ddiv(f)\ge0\} \cup \{0\}$ ist $k$-Vektorraum, der \begriff{Riemann-Roch-Raum} zu $D$.
+	$L(D):=\{f\in k(C)^\X \ |D+\Ddiv(f)\ge0\} \cup \{0\}$ ist $k$-Vektorraum, der \defterm{Riemann-Roch-Raum} zu $D$.
 \item
 	$l(D):=\dim L(D)$
 \item
@@ -3566,7 +3586,7 @@ Insbesondere ist $L(D)$ endlich dimensionaler Vektorraum\end{Prop}
 	Es gibt ein $\gamma \in \N$, sodass f\"ur alle $D\in \Div(C)$ gilt:
 		\[ l(D) \ge \deg(D) + 1 - \gamma \]
 \item
-	Das kleinste $\gamma$, f\"ur das a) erf\"ullt ist, hei\ss t \begriff{Geschlecht} von $C$ ($g(C)=g$).
+	Das kleinste $\gamma$, f\"ur das a) erf\"ullt ist, hei\ss t \defterm{Geschlecht} von $C$ ($g(C)=g$).
 \item\label{s12c}
 	Es gibt einen Divisor $K \in \Div(C)$ (\quot{kanonischer Divisor}), sodass f\"ur jedes $D\in \Div(C)$ gilt:
 		\[ l(D)- l(K-D) = \deg(D) +1 - g \]
@@ -3618,10 +3638,7 @@ Insbesondere ist $L(D)$ endlich dimensionaler Vektorraum\end{Prop}
 		$h:= \prod\limits_{i=1}^r h_i^{-{n_{P_i}}}$ tut's
 	\item[Beweis 2:]
 		$[k(C) : k(f)] = \deg(f) =: r$\\
-		Sei $g_1,\ldots ,g_r$ Vektorraum-Basis von $k(C)$ \"uber $k(f)$.\\
-		\OE jede Polstelle von $g_i$ ist auch Polstelle von $f$.\\
-		$\Rightarrow \frac{g_i}{f^j} \in L(mN)$ mit $i=1,\ldots ,r$, $j=0,\ldots ,m$\\
-		$\Rightarrow \underset{\deg(mN)=mr}{\ldots} \Rightarrow l(mN) \ge mr - r(\gamma_0 - 1)$
+		Sei $g_1,\ldots ,g_r$ Vektorraum-Basis von $k(C)$ \"uber $k(f)$. \OE jede Polstelle von $g_i$ ist auch Polstelle von $f$. $\Rightarrow \frac{g_i}{f^j} \in L(mN)$ mit $i=1,\ldots ,r$, $j=0,\ldots ,m$ $\Rightarrow \underset{\deg(mN)=mr}{\ldots} \Rightarrow l(mN) \ge mr - r(\gamma_0 - 1)$
 	\end{description}
 \end{enumerate}\end{Bew}
 
