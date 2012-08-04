@@ -11,7 +11,8 @@ for file in  \
 	js/SocialSharePrivacy/jquery.socialshareprivacy.twitter.js \
 	js/SocialSharePrivacy/jquery.socialshareprivacy.gplus.js \
 	js/SocialSharePrivacy/jquery.socialshareprivacy.flattr.js \
-	js/latexki.js
+	js/latexki.js \
+	js/browserupdate.js 
 do
 	yui-compressor $file
 done

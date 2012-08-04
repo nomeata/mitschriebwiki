@@ -45,6 +45,7 @@ var $buoop = {
 	vs:{i:8,f:3.6,o:10.6,s:4,n:9}, 
 	text: "Ihr Browser kann diese Seite eventuell nicht korrekt darstellen - bitte beschweren Sie sich bei mir (mail@breitnerundbreitner.de) oder aktualisieren Sie Ihren Browser"
 	} 
+/*
 $buoop.ol = window.onload; 
 window.onload=function(){ 
  try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
@@ -53,4 +54,4 @@ window.onload=function(){
  e.setAttribute("src", "js/browserupdate.js"); 
  document.body.appendChild(e); 
 } 
-
+*/
