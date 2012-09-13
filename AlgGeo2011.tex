@@ -131,6 +131,9 @@
 %fuer schoene Brueche
 \usepackage{nicefrac}
 
+% fuers Durchstreichen
+\usepackage[normalem]{ulem}
+
 % Fuer Diagramme
 \usepackage[arrow,matrix,curve]{xy}
 
@@ -228,6 +231,9 @@
 \newcommand{\formal}[2]{\mbox{$#1$[\hspace{-0.15em}[\hspace{-0.15em}$#2$\hspace{-0.15em}]\hspace{-0.15em}]}} %kommt in Uebungsaufgabe 1, Blatt 1 vor
 \newcommand{\set}[2]{\{#1\mid #2\}} %Menge der Form {#1 | #2}
 
+\newcommand{\textmatrix}[4]{\left(\begin{smallmatrix} #1&#2\\ #3&#4\\ \end{smallmatrix}\right)}
+\newcommand{\textvector}[2]{\left(\begin{smallmatrix} #1\\ #2\\ \end{smallmatrix}\right)}
+
 % Doppelseitige Beweise
 \newenvironment{twosidedproof}{\begin{enumerate}[\quot{$\Rightarrow$}:]}{\end{enumerate}}
 \newenvironment{twosidedproofeq}{\begin{enumerate}[\quot{$\subseteq$}:]}{\end{enumerate}}
@@ -278,6 +284,8 @@
 \DeclareMathOperator{\modmodulo}{mod}%\modulo und \mod bereis belegt
 \DeclareMathOperator{\red}{red}%reduziert
 \DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\PGL}{PGL} % von Uebung 5
+\DeclareMathOperator{\ideal}{\unlhd}
 
 
 % zweigestrichene Buchstaben im Mathe Umgebungen
@@ -291,6 +299,7 @@
 \newcommand{\Affine}{\mathbb{A}} %Wird im Code der Uebung so verwendet, wird am Ende durch \A ersetzt
 \newcommand{\F}{\mathbb{F}}
 \newcommand{\IP}{\mathbb{P}}%\P bereits belegt
+\DeclareMathOperator{\Projective}{\mathbb{P}} %Wird im Code der Uebung so verwendet, wird am Ende durch \A ersetzt
 
 % kursive Buchstaben im Mathe Umgebungen
 \newcommand{\calB}{\mathcal{B}}
@@ -4008,9 +4017,9 @@ Sei $C = V(Y^2 - X^2(X-1))\subseteq \Affine^2(k)$.
 	\item Ist $C$ hm"oomorph zu $\Affine^1(k)$?
 \end{enumerate}\end{Aufg}
 
-%-------------------------- Uebung 3 --------------------------
+%-------------------------- Uebung 4 --------------------------
 \newpage
-\section{4. November 2011}
+\section{11. November 2011}
 \setcounter{Aufg}{0}
 \setcounter{Loes}{0}
 
@@ -4056,6 +4065,351 @@ Sei $U = \Affine^2(k)\setminus \{(0,0)\}$. Bestimme den Ring der regul"aren Funk
 Es seien $V$ eine affine Variet\"at, $U\subseteq V$ offen und $g\in{\cal O}_V(U)$. Zeige, dass $W:= \{x\in U: g(x)=0\}$ abgeschlossen in $U$ ist.
 \end{Aufg}
 
+%-------------------------- Uebung 5 --------------------------
+\newpage
+\section{18. November 2011}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
+Auf diesem Blatt bezeichne $k$ immer einen algebraisch abgeschlossenen K"orper.
+
+\begin{Aufg}[2 Punkte]
+Sei $V \subseteq \Affine^n(k)$ eine affine Variet\"at und $U,\tilde{U}$ dichte, offene Teilmengen von $V$. Zeige, dass auch ihr Schnitt eine dichte, offene Teilmenge von $V$ ist.
+\end{Aufg}
+
+\begin{Aufg}[4 Punkte]
+Es seien $V = V(WX-YZ)\subset \Affine^4(k)$ und $x$, $y$, $z$, $w\in k[V]$ die Restklassen der entsprechenden Polynome in $k[X,Y,Z,W]$. Zeige:
+\begin{enumerate}[a)]
+	\item Die affine Varietät $V$ ist irreduzibel.
+	\item Auf $D(y)\cup D(w)$ wird durch
+		\[r(p) = r(x,y,z,w) = \begin{cases}
+			\frac{x}{y} & \text{ für } p\in D(y)\\
+			\frac{z}{w} & \text{ für } p\in D(w)
+		\end{cases}\]
+	eine regul"are Funktion definiert. 
+	\item Der maximale Definitionsbereich von $r$ als rationale Funktion ist gleich $D(y)\cup D(w)$.
+	\item Die regul"are Funktion $r$ kann auf $D(y)\cup D(w)$ nicht als $f/g$ mit $f$, $g\in k[V]$ geschrieben werden.
+\end{enumerate}\end{Aufg}
+
+\begin{Aufg}[5 Punkte]
+Der algebraisch abgeschlossene K"orper $k$ habe nun Charakteristik $0$.
+Es seien $a$, $b\in \N$, $V = V(X^a - Y^b)\subset \Affine^2(k)$ und $\Phi \colon\Affine^1(k)\to V$, $t\mapsto (t^b,t^a)$. Diskutiere folgende Punkte in Abh"angigkeit von $a$ und $b$:
+\begin{itemize}
+	\item Wann ist $\Phi$ injektiv, wann surjektiv und wann ein Isomorphismus? 
+	\item Zerlege $V$ in irreduzible Komponenten.
+	\item Bestimme, wann $\Phi$ eine birationale Abbildung ist.
+\end{itemize}
+\textit{Hinweis: Betrachte den gr"o\ss ten gemeinsamen Teiler $d$ von $a$ und $b$.}
+\end{Aufg}
+
+\begin{Aufg}[5 Punkte]
+\begin{enumerate}[a)]
+\item \emph{Zeige}: Die Gruppe $\GL_2(k)$ operiert auf $\Projective^1(k)$ durch
+	\[
+		\left( {a \atop c} \ {b \atop d} \right) \cdot (x:y) := (ax+by:cx+dy) .
+	\]
+Dabei operiert das Zentrum $Z(\GL_2(k)) = \{ \Big( {a \atop 0} \, {0 \atop a} \Big) : a \in k^\times \}$ trivial, d.h. obige Operation definiert auch eine Operation von $\PGL_2(k) = \GL_2(k) / Z(\GL_2(k))$ auf $\Projective^1(k)$.
+\end{enumerate}
+
+F"ur paarweise verschiedene Punkte $P_1 = (x_1:y_1), \dots, P_4=(x_4:y_4) \in \Projective^1(k)$ ist das Doppelverh"altnis gegeben durch
+	\[
+		DV(P_1, \ldots, P_4) := \left( \frac{x_1y_3-x_3y_1}{x_2y_3-x_3y_2} : \frac{x_1y_4-x_4y_1}{x_2y_4-x_4y_2} \right).
+	\]
+\begin{enumerate}[a)]
+	\item[b)] \emph{Zeige}: Das Doppelverh"altnis ist invariant unter $\PGL_2(k)$, d.h. f"ur jedes $g \in \PGL_2(k)$ ist $DV(P_1, \ldots, P_4) = DV(g(P_1), \ldots, g(P_4))$.
+	\item[c)] \emph{Zeige}: $\PGL_2(k)$ operiert dreifach transitiv auf $\Projective^1(k)$, d.h. zu je drei paarweise verschiedenen Punkten $Q_1, Q_2, Q_3 \in \Projective^1(k)$ und $Q_1', Q_2', Q_3' \in \Projective^1(k)$ gibt es stets ein $g \in \PGL_2(k)$ mit $(g(Q_1), g(Q_2), g(Q_3)) = (Q_1', Q_2', Q_3')$.
+\end{enumerate}\end{Aufg}
+
+%-------------------------- Uebung 6 --------------------------
+\newpage
+\section{25. November 2011}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
+\begin{Aufg}[5 Punkte]
+Es sei $k$ ein beliebiger(!) K"orper und $n\geq 1$. F"ur einen Untervektorraum $U\subseteq k^{n+1}$ sei $\Projective(U)\subseteq \Projective^n(k)$ die Menge der eindimensionalen Untervektorr"aume von $U$. Falls $\dim_k U = 2$, so nennt man $\Projective(U)$ auch eine \emph{Gerade}. Zeige:
+\begin{enumerate}[a)]
+	\item $\Projective(U)$ ist eine projektive Variet\"at.
+	\item In $\Projective^2(k)$ haben zwei Geraden immer einen nichtleeren Durchschnitt.
+	\item Zwei Punkte $a$, $b\in \Projective^n(k)$, $a\neq b$ liegen auf einer eindeutig bestimmten Geraden. Diese werde mit $\overline{ab}$ bezeichnet.
+	\item Auf jeder Geraden gibt es mindestens 3 Punkte.
+	\item Wenn $a$, $b$, $c$, $d\in \Projective^n(k)$ paarweise verschiedene Punkte sind, so folgt aus $\overline{ab}\cap \overline{cd} \neq \emptyset$, dass auch $\overline{ac}\cap \overline{bd} \neq \emptyset$ gilt.
+\end{enumerate}
+\end{Aufg}
+
+Ab hier bezeichne $k$ immer einen algebraisch abgeschlossenen K"orper.
+
+\textcolor{gray}{\emph{Achtung}: Aufgabe 2 wird auf Blatt 8 verschoben - die Definition von Automorphismus einer projektiven Variet\"aten kam in der Vorlesung noch nicht vor.}
+\begin{Aufg}[3 Punkte]
+\sout{Bestimme die Automorphismen von $\Projective^1(k)$.}
+
+\sout{\emph{Tipp:} Benutze Aufgabe 4 von Blatt 5.}
+\end{Aufg}
+
+\begin{Aufg}[3 Punkte]
+Es sei $S = \bigoplus_{d\geq 0} S_d$ ein graduierter Ring und $I\ideal S$ ein homogenes Ideal. Zeige:
+
+Das Ideal $I$ ist genau dann ein Primideal, wenn f"ur beliebige homogene Elemente $f$, $g\in S$ aus $fg\in I$ folgt, dass $f\in I$ oder $g\in I$.
+\end{Aufg}
+
+\begin{Aufg}[5 Punkte]
+Sei $k$ ein K"orper von Charakteristik $\neq 2$ und  $a\in k^\times$. Die affine Variet\"at
+	\[L = V((X^2+Y^2)^2 - a(X^2-Y^2))\]
+hei\ss t \emph{Lemniskate}. 
+
+Argumentiere, warum $L$ irreduzibel ist. Zeige dann, dass $k(L) = k(t)$ mit $t = \frac{x^2+y^2}{x-y}$ gilt (wobei $x$, $y\in k[L]$ die Restklassen von $X$ und $Y\in k[X,Y]$ sind). Folgere, dass $L$ birational zu $\Affine^1(k)$ ist.
+
+\emph{Hinweis: $L$ entsteht aus einer Hyperbel unter der Inversion am Einheitskreis $\sigma: \Affine^2(k) \dashrightarrow \Affine^2(k)$, $(x,y)\mapsto \frac{1}{x^2+y^2}\cdot(x,y)$.}
+\end{Aufg}
+
+%-------------------------- Uebung 7 --------------------------
+\newpage
+\section{2. Dezember 2011}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
+Auf diesem Blatt bezeichne $k$ immer einen algebraisch abgeschlossenen K"orper.
+
+\begin{Aufg}[3 Punkte]
+Es sei $E = V(Y^2 - X^3 + X)\subset \Affine^2(k)$. Wir betrachten die Einbettung $\varphi_Z: \Affine^2(k)\to \Projective^2(k)$, $(x,y)\mapsto (x:y:1)$.
+
+Zeige: Der Abschluss von $\varphi_Z(E)$ in $\Projective^2(k)$ ist $V(Y^2Z - X^3 + XZ^2)$.
+
+Welche Punkte liegen im Abschluss von $\varphi_Z(E)$, aber nicht in $\varphi_Z(E)$?
+\end{Aufg}
+
+\begin{Aufg}[3 Punkte]
+Zu einem Ideal $I\ideal k[X_1,\dots,X_n]$ sei $I^*$ das von den Homogenisierungen der Elemente von $I$ (bez"uglich $X_0$) erzeugte homogene Ideal in $k[X_0,\dots,X_n]$. Weiter sei $V\subseteq \Affine^n(k)$ eine affine Variet\"at und $\varphi: \Affine^n(k)\to \Projective^n(k)$, $(x_1,\dots,x_n)\mapsto (1:x_1:\ldots:x_n)$ die Einbettung. In der Vorlesung wurde $\overline{\varphi(V(I))} = V(I^*)$ gezeigt.
+
+Zeige, dass auch $I(\overline{\varphi(V)}) = I(V)^*$ gilt.
+\end{Aufg}
+
+\begin{Aufg}[5 Punkte]
+Die getwistete Kubik $V = V(X^2-Y, X^3-Z) \subset \Affine^3(k)$ (von Blatt 1) kommt zur"uck! 
+
+Es sei $\varphi: \Affine^3(k)\to \Projective^3(k)$ die Einbettung $(x,y,z)\mapsto (1:x:y:z)$ und $k[W,X,Y,Z]$ der Koordinatenring von $\Projective^3(k)$. Zeige:
+\begin{enumerate}[a)]
+	\item $XZ-Y^2 \in I(\overline{\varphi(V)})$,$\ $ aber $XZ-Y^2\not\in (X^2-YW, X^3-ZW^2)$. Es reicht also nicht aus, nur die Erzeuger von $I(V) = (X^2-Y, X^3-Z)$ zu homogenisieren.
+	\item Es gilt $\overline{\varphi(V)} = V(X^2 - YW, X^3-ZW^2, XZ-Y^2)$.
+	\item Was sind die irreduziblen Komponenten von $V(X^2 -YW) \cap V(X^3-ZW^2)$?
+	\item In c) haben wir auch gezeigt, dass der Schnitt von irreduziblen Variet\"aten nicht unbedingt irreduzibel sein muss.
+\end{enumerate}\end{Aufg}
+
+\begin{Aufg}[5 Punkte]
+Es seien $r$, $s\in \N$ und $N= (r+1)(s+1) - 1$. Die Abbildung
+	\[\Psi: \left\{ \begin{array}{ccc} \Projective^r(k)\times \Projective^s(k) &\to& \Projective^N(k)\\
+		((x_0:\ldots:x_r),(y_0:\ldots:y_s)) &\mapsto& (x_0y_0:\ldots:x_0y_s:\, \ldots\, : x_ry_0: \ldots :x_ry_s ) 
+		\end{array}
+	\right.\]
+hei\ss t \textit{Segre-Einbettung}. Zeige:
+\begin{enumerate}[a)]
+	\item $\Psi$ ist wohldefiniert und injektiv.
+	\item $\Bild(\Psi)$ ist eine irreduzible Untervariet\"at von $\Projective^N(k)$.
+ 
+	\emph{Hinweis: Es sei $k[Z_{ij}\mid i=0,\dots,r,\ j=0,\dots,s]$ der Koordinatenring von $\Projective^N(k)$. Betrachte den $k$-Algebrenhomomorphismus
+		\[\Phi:k[Z_{ij}]\to k[X_0,\dots,X_r,Y_0,\dots,Y_s]\ ,\quad Z_{ij}\mapsto X_iY_j\]
+	und zeige $V(\Kern(\Phi)) = \Bild(\Psi)$.}
+	\item Ist $r=s=1$, so gilt $\Bild(\Psi) = V(Z_{00}Z_{11}-Z_{01}Z_{10})$.
+\end{enumerate}\end{Aufg}
+
+%-------------------------- Uebung 8 --------------------------
+\newpage
+\section{9. Dezember 2011}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
+Auf diesem Blatt bezeichne $k$ immer einen algebraisch abgeschlossenen K"orper.
+
+\begin{Aufg}[3 Punkte]
+Inzwischen wissen wir, was Morphismen in der Kategorie der projektiven Variet\"aten sind. Darum hier noch einmal Aufgabe 2 von "Ubungsblatt 6:
+
+Bestimme die Automorphismen von $\Projective^1(k)$, d.h. die Menge aller Isomorphismen $\varphi \colon \Projective^1(k) \to \Projective^1(k)$.
+
+\textit{Tipp:} Benutze Aufgabe 4 von "Ubungsblatt 5.
+\end{Aufg}
+
+\begin{Aufg}[3 Punkte]
+Es sei $\varphi: \Projective^n(k)\to \Projective^m(k)$ ein Morphismus. Zeige, dass es homogene Polynome $f_0,\dots,f_m\in k[X_0,\dots,X_n]$ gibt, alle vom gleichen Grad, mit
+	\[\varphi(x) = (f_0(x):\ldots :f_m(x))\]
+f"ur alle $x\in \Projective^n(k)$.
+\end{Aufg}
+
+\begin{Aufg}[3 Punkte]
+Der Nikolaus hat dir und deiner Schwester je eine nichtleere, irreduzible, projektive Variet\"at im $\Projective^n(k)$ geschenkt. Deine ist isomorph zu einer affinen Variet\"at, die deiner Schwester besteht nur aus einem Punkt. Doch der Nikolaus behauptet, dass er keinen von Euch benachteiligt hat. Wieso?
+\end{Aufg}
+
+\begin{Aufg}[\textit{Veronese-Einbettung} 7 Punkte]
+Es seien $M_0,M_1,\dots, M_{N(d)}$ die Monome von Grad $d$ in $k[X_0,\dots,X_n]$. (Hierbei ist $N(d) = \textvector{n+d}{d}-1$.) Der Morphismus
+	\[\rho_d :\Projective^n(k)\to \Projective^{N(d)}(k)\ ,\quad x\mapsto (M_0(x):\ldots :M_{N(d)}(x))\]
+hei\ss t \emph{Veronese-Einbettung}.
+\begin{enumerate}[a)]
+	\item Wir identifizieren den Koordinatenring $k[\Projective^{N(d)}(k)]$ von $\Projective^{N(d)}(k)$ mit
+		\[ k\bigl[Y_{\nu}\mid \nu = (\nu_0,\dots,\nu_n) \in \N_0^{n+1},\ \sum_{i=0}^{n} \nu_i = d\bigr].\]
+	Zeige, dass f"ur den $k$-Algebrenhomomorphismus
+		\[\Phi_d : k[\Projective^{N(d)}(k)] \to k[X_0,\dots,X_n]\ ,\quad Y_\nu \mapsto X^\nu := X_0^{\nu_0}\cdots X_n^{\nu_n}\]
+	gilt: $\Bild(\rho_d)\subseteq V(\Kern(\Phi_d))$.
+	\item Zeige: Die Mengen 
+		\[U_0 = D(Y_{(d,0,\dots,0)})\cap V(\Kern(\Phi_d)),\; \dots,\; U_n = D(Y_{(0,\dots,0,d)})\cap V(\Kern(\Phi_d))\]
+	bilden eine offene "Uberdeckung von $V(\Kern(\Phi_d))$.
+	\item Bestimme f"ur jedes $i\in \{0,\dots, n\}$ einen Umkehrmorphismus $\psi_d^i:U_i \to \Projective^n(k)$ von $\rho_d$ und begr"unde, warum sich diese zu einem globalen Umkehrmorphismus $\psi_d$ von $\rho_d$ \quot{verkleben} lassen.
+	\item Folgere, dass $\rho_d$ ein Isomorphismus zwischen $\Projective^n(k)$ und einer irreduziblen, projektiven Variet\"at in $\Projective^{N(d)}(k)$ ist.
+	\item Zeige: F"ur jedes homogene Polynom $f\in k[X_0,\dots,X_n]$ von Grad $d$ gibt es ein lineares, homogenes Polynom $F\in k[Y_0,\dots,Y_{N(d)}]$, so dass
+		\[\rho_d(V(f)) = V(F)\cap \Bild(\rho_d).\]
+\end{enumerate}\end{Aufg}
+
+%-------------------------- Uebung 9 --------------------------
+\newpage
+\section{16. Dezember 2011}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+\textcolor{gray}{Die "Ubung vor Weihnachten wird vom 23.12. auf den 22.12. vorverlegt. Sie findet am Donnerstag, den 22.12., im 5. Block (15:45-17:15) im Raum 1C-01 statt.}
+
+Auf diesem Blatt bezeichne $k$ immer einen K"orper, der nicht notwendigerweise algebraisch abgeschlossen ist.
+
+\begin{Aufg}[4 Punkte]
+Seien $n \geq 1, d \geq 0$, $V$ ein $n$-dimensionaler $k$-Vektorraum und $\wedge \colon V^d \to \bigwedge^dV$, $(v_1, \dots, v_d) \mapsto v_1 \wedge \dots \wedge v_d$ die aus der Vorlesung bekannte multilineare, alternierende Abbildung. 
+\begin{enumerate}[a)]
+	\item Zeige, dass das "au\ss ere Produkt $\bigwedge^dV$ folgende UAE erf"ullt:
+	F"ur jeden $k$-Vektorraum $W$ und jede multilineare, alternierende Abbildung $\Phi\colon V^d \to W$ existiert genau eine lineare Abbildung $\Psi \colon \bigwedge^d V \to W$ mit $\Psi \circ \wedge = \Phi$.
+	\item Sei $\bigwedge^0 V := k$. Zeige, dass $\bigoplus\limits_{d\geq 0} \bigwedge^d V$ durch 
+		\[(v_{1} \wedge \dots \wedge v_{d}) \cdot (w_{1} \wedge \dots \wedge w_l) = (v_1 \wedge \dots \wedge v_d \wedge w_1 \wedge \dots w_l)\]
+	f"ur $v_i$, $w_j \in V$ zu einer $k$-Algebra wird.
+\end{enumerate}
+\end{Aufg}
+
+\begin{Aufg}[5 Punkte]
+\begin{enumerate}[a)]
+	\item Zeige, dass die Gra\ss mann-Variet\"at $G(2,3)$ isomorph zu $\Projective^2(k)$ ist.
+	\item Die Gra\ss mann-Variet\"at $G(2,4)$ ist die erste, die kein projektiver Raum ist.
+
+	Die Charakteristik von $k$ sei nicht $2$. Zeige, dass $G(2,4)$, aufgefasst als Untervariet"at des $\Projective(\bigwedge^2 k^4)$ und bez"uglich einer geeigneten Wahl der Koordinaten, gleich der Verschwindungsmenge von
+		\[X_{12}X_{34} - X_{13}X_{24} + X_{14}X_{23}\]
+	ist.
+	
+	\emph{Hinweis: Zeige, dass $0\neq w\in \bigwedge^2k^4$ genau dann total zerlegbar ist, wenn $w\wedge w = 0$ gilt.}
+\end{enumerate}\end{Aufg}
+
+\begin{Aufg}[7 Punkte]
+Es seien $n \geq 1$, $d \in \{0,\dots, n\}$, $W \leq k^n$ ein Untervektorraum der Dimension $(n-d)$ und
+	\[U := \{V \in G(d,n) \mid V \oplus W = k^n \}.\]
+\emph{Zeige}:
+\begin{enumerate}[a)]
+	\item $U$ ist offen in $G(d,n)$.
+	\item $U$ ist isomorph zu $\Affine^{d(n-d)}(k)$.
+	
+	\textit{Hinweis:} Interpretiere $U$ als Menge der linearen Projektionen $k^n \rightarrow W$.
+	
+	Auch die UAE des "au\ss eren Produkts k"onnte hilfreich sein.
+
+	\item \textbf{Ist $\mathbf{k}$ ein unendlicher K"orper}, so ist $G(d,n)$ irreduzibel.
+\end{enumerate}\end{Aufg}
+
+%-------------------------- Uebung 10 --------------------------
+\newpage
+\section{22. Dezember 2011}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
+Auf diesem Blatt bezeichne $k$ immer einen K"orper.
+
+\begin{Aufg}[ unsch"atzbarem Wert, 4 Punkte]
+Vergleiche affine Variet"aten mit projektiven Variet"aten. Wo unterscheiden sich die Definitionen von Morphismen, regul"aren Abbildungen, \dots und wo nicht? Welche wichtigen Zusammenh"ange und S"atze gibt es in der affinen und welche in der projektiven Welt?
+
+Ziel dieser Aufgabe ist also, dass ihr euch einen "Uberblick dar"uber verschafft, was wir in den ersten beiden Kapiteln gelernt haben.
+\end{Aufg}
+
+\begin{Aufg}[4 Punkte]
+Sei $V$ eine quasiprojektive Variet\"at "uber $k$ und $x \in V$.
+\begin{enumerate}[a)]
+	\item Sei weiter $\Reg_{V,x}$ der lokale Ring von $V$ in $x$. Weiter sei f"ur eine offene Umgebung $U \subseteq V$ von $x$ der in der Vorlesung eingef"uhrte $k$-Algebren-Homomorphismus $\psi_x^U: \Reg_V(U) \to \Reg_{V,x}, f \mapsto f_x=[(U,f)]$.  
+ 
+	Zeige, dass die $\psi_x^U$ zusammen mit den Restriktionsabbildungen $\rho^U_{U'}: \Reg_V(U) \to \Reg_V(U')$ f"ur offene $U' \subseteq U \subseteq V$ ein injektives System bilden. Zeige also:
+	\begin{enumerate}[i)]
+		\item $\psi_x^{U'} \circ \rho^U_{U'} = \psi_x^U$ und
+		\item f"ur jede $k$-Algebra $A$ mit Homomorphismen $\varphi_x^U : \Reg_V(U) \to A$ f"ur offene Umgebungen $U \subseteq V$ von $x$, so dass f"ur alle offenen $U' \subseteq U$ stets $\varphi_x^{U'} \circ \rho^U_{U'} = \varphi_x^U$ gilt, gibt es genau einen Homomorphismus $\Phi : \Reg_{V,x} \to A$ mit $\Phi \circ \psi_x^U = \varphi_x^U$ f"ur alle offenen Umgebungen $U \subseteq V$ von $x$.
+	\end{enumerate}
+	\item Sei nun $V = \bigcup_{i \in I} V_i$ die Zerlegung von $V$ in irreduzible Komponenten und $U$ eine offene Umgebung von $x$ in $V$. 
+
+	Zeige: Gilt für alle $i \in I$ mit $x \notin V_i$, dass $U \cap V_i = \emptyset$, so ist $\psi^U_x$ injektiv.
+\end{enumerate}\end{Aufg}
+
+\begin{Aufg}[2 Punkte]
+Die Charakteristik von $k$ sei $\neq 2$. Für die getwistete Kubik $V_1 = V(Y-X^2, Z-X^3) \subseteq \Affine^3(k)$ gilt bekanntlich $I(V_1) = (Y-X^2, Z-X^3)$. Die Variet"at $V_2 = V(X^2+Y^2-Z^2) \subseteq \Affine^3(k)$ ist ein Doppelkegel.
+
+Bestimme jeweils eine Basis des Tangentialraums $T_{V_i,p}$ f"ur jeden Punkt $p=(a,b,c) \in V_i$.
+\end{Aufg}
+
+\begin{Aufg}[(Aufblasung der Ebene)6 Punkte]
+Nun sei $k$ algebraisch abgeschlossen und
+	\[X = \set{((x_1,x_2), (y_1:y_2))\in \Affine^2(k)\times \Projective^1(k)}{ x_1y_2 = x_2y_1}.\]
+Man nennt $X$ die \defterm{Aufblasung} von $\Affine^2(k)$ im Punkt $(0,0)$. Au\ss erhalb von $(0,0)$ sieht $X$ aus wie die affine Ebene, aber den Ursprung hat man zu einer projektiven Geraden \quot{aufgeblasen}. Die Punkte des $\Projective^1(k)$ entsprechen den Richtungen von Geraden durch den Nullpunkt.
+
+Sei $\pi:X\to \Affine^2(k)$ die Projektion auf den ersten Faktor. Die Faser $E = \pi^{-1}((0,0))$ "uber dem Ursprung nennt man \deftermspec{exzeptionelle Kurve}{Kurve!exzeptionelle} der Aufblasung. F"ur eine Kurve $C\subset \Affine^2(k)$ mit $(0,0)\in C$ hei\ss t der Abschluss von $\pi^{-1}(C\setminus\{(0,0)\})$ in $X$ die \deftermspec{strikte Transformierte}{Transformierte!strikte} von $C$.
+
+Zeige:
+\begin{enumerate}[a)]
+	\item $X$ wird verm"oge der Segre-Einbettung $\Psi: \Projective^2(k)\times \Projective^1(k)\to \Projective^5(k)$ von Blatt 7 zu einer irreduziblen quasiprojektiven Variet\"at.
+ 
+	\emph{Hinweis: F"ur die Irreduzibilit"at helfen b) und c).}
+	\item $\pi$ ist ein surjektiver Morphismus, der $X_0 = \set{x\in X}{\pi(x)\neq (0,0)}$ isomorph auf $\Affine^2(k)\setminus \{(0,0)\}$ abbildet.
+	\item Es sei $[v] \in \Projective^1(k)$ die "Aquivalenzklasse von $v\in \Affine^2(k)\setminus\{(0,0)\}$ und $L_v = \set{tv}{t\in k}$ die Ursprungsgerade in Richtung $v$. Zeige, dass die strike Transformierte von $L_v$ durch
+		\[\set{(tv, [v]) \in X}{t\in k}\]
+	gegeben ist. Folgere, dass jeder Punkt in $E$ im Abschluss einer Menge aus $X_0$ liegt.
+	\item Durch Aufblasen kann man algebraische Variet\"aten desingularisieren. Im einfachsten Fall sieht eine  Singularit"at zum Beispiel wie der Punkt $(0,0)$ des Achsenkreuzes $V(XY)\subset \Affine^2(k)$ aus.
+ 
+	Zeige, dass sich die strikten Transformierten der $x$- und der $y$-Achse in $X$ nicht mehr schneiden.
+	\item Eine weitere Verwendung der Aufblasung besteht darin, aus rationalen Abbildungen Morphismen zu machen. Als Beispiel betrachten wir
+		\[\varphi:\Affine^2(k) \dashrightarrow \Projective^1(k)\ , \quad (x_1,x_2) \mapsto (x_1:x_2).\]
+	Zeige, dass ein Morphismus $\tilde\varphi: X\to \Projective^1(k)$ existiert, so dass $\tilde\varphi(x) = \varphi\circ \pi(x)$ für alle $x\in X_0$ gilt.
+\end{enumerate}\end{Aufg}
+
+\begin{center}
+
+\vspace{5mm}
+\textsc{\Large Wir wünschen euch ein schönes Weihnachtsfest \\[1ex]
+und alles Gute für das Jahr 2012!
+}
+\end{center}
+
+%-------------------------- Uebung 11 --------------------------
+\newpage
+\section{13. Januar 2011}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
+\begin{Aufg}
+
+\end{Aufg}
+
+%-------------------------- Uebung 12 --------------------------
+\newpage
+\section{20. Januar 2011}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
+\begin{Aufg}
+
+\end{Aufg}
+
+%-------------------------- Uebung 13 --------------------------
+\newpage
+\section{27. Januar 2011}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
+\begin{Aufg}
+
+\end{Aufg}
+
+%-------------------------- Uebung 14 --------------------------
+\newpage
+\section{3. Februar 2011}
+\setcounter{Aufg}{0}
+\setcounter{Loes}{0}
+
+\begin{Aufg}
+
+\end{Aufg}
 
 
 %-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Stichwortverzeichnis -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
