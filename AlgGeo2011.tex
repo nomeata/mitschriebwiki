@@ -230,6 +230,7 @@
 
 \newcommand{\formal}[2]{\mbox{$#1$[\hspace{-0.15em}[\hspace{-0.15em}$#2$\hspace{-0.15em}]\hspace{-0.15em}]}} %kommt in Uebungsaufgabe 1, Blatt 1 vor
 \newcommand{\set}[2]{\{#1\mid #2\}} %Menge der Form {#1 | #2}
+\newcommand{\pder}[2][]{\frac{\partial #1}{\partial #2}}  %Partial derivative wrt. #1s
 
 \newcommand{\textmatrix}[4]{\left(\begin{smallmatrix} #1&#2\\ #3&#4\\ \end{smallmatrix}\right)}
 \newcommand{\textvector}[2]{\left(\begin{smallmatrix} #1\\ #2\\ \end{smallmatrix}\right)}
@@ -251,42 +252,43 @@
 \hyperref[#2]{#1~\ref*{#2}}%
 }
 
-\DeclareMathOperator{\Aut}{Aut}
-\DeclareMathOperator{\Hom}{Hom}
-\DeclareMathOperator{\Mor}{Mor}
-\DeclareMathOperator{\Var}{Var}
-\DeclareMathOperator{\Quot}{Quot}
-\DeclareMathOperator{\Rang}{Rang}
 \DeclareMathOperator{\Aff}{Aff}
 \DeclareMathOperator{\Alg}{Alg}
-\DeclareMathOperator{\Sing}{Sing}
-\DeclareMathOperator{\Ddef}{Def}%Definitionsbereich
-\DeclareMathOperator{\chara}{char}
-\DeclareMathOperator{\sign}{sign}
-\DeclareMathOperator{\kgv}{kgV}
-\DeclareMathOperator{\kgV}{kgV}
-
-\DeclareMathOperator{\Kern}{Kern}
+\DeclareMathOperator{\Aut}{Aut}
 \DeclareMathOperator{\Bild}{Bild}
 \DeclareMathOperator{\Cl}{Cl}
-\DeclareMathOperator{\Rat}{Rat}
+\DeclareMathOperator{\Ddef}{Def}%Definitionsbereich
 \DeclareMathOperator{\Der}{Der}
-\DeclareMathOperator{\id}{id}
-\DeclareMathOperator{\Ht}{ht}
-\DeclareMathOperator{\Rg}{Rg}
-\DeclareMathOperator{\height}{ht}
-\DeclareMathOperator{\trdeg}{trdeg}
 \DeclareMathOperator{\Div}{Div}
-\DeclareMathOperator{\Ddiv}{div}
-\DeclareMathOperator{\ddiv}{div}
-\DeclareMathOperator{\dd}{d} % das "d" zum Beispiel beim Integral am Ende "dx"
-\DeclareMathOperator{\ord}{ord}
-\DeclareMathOperator{\modmodulo}{mod}%\modulo und \mod bereis belegt
-\DeclareMathOperator{\red}{red}%reduziert
 \DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Kern}{Kern}
+\DeclareMathOperator{\Mor}{Mor}
 \DeclareMathOperator{\PGL}{PGL} % von Uebung 5
-\DeclareMathOperator{\ideal}{\unlhd}
+\DeclareMathOperator{\Quot}{Quot}
+\DeclareMathOperator{\Rang}{Rang}
+\DeclareMathOperator{\Rat}{Rat}
+\DeclareMathOperator{\Rg}{Rg}
+\DeclareMathOperator{\Sing}{Sing}
+\DeclareMathOperator{\SO}{SO}
+\DeclareMathOperator{\Var}{Var}
 
+\DeclareMathOperator{\chara}{char}
+\DeclareMathOperator{\Char}{char} %Wird im Code der Uebung so verwendet(12.2), wird am Ende durch \A ersetzt
+\DeclareMathOperator{\dd}{d} % das "d" zum Beispiel beim Integral am Ende "dx"
+\DeclareMathOperator{\Ddiv}{div}
+\DeclareMathOperator{\Divisor}{div}
+\DeclareMathOperator{\ddiv}{div}
+\DeclareMathOperator{\Ht}{ht}
+\DeclareMathOperator{\height}{ht}
+\DeclareMathOperator{\kgv}{kgV}
+\DeclareMathOperator{\kgV}{kgV}
+\DeclareMathOperator{\modmodulo}{mod}%\modulo und \mod bereis belegt
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\red}{red}%reduziert
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\trdeg}{trdeg}
 
 % zweigestrichene Buchstaben im Mathe Umgebungen
 %\usepackage{bbm}
@@ -319,6 +321,8 @@
 
 %X als Malzeichen
 \newcommand{\X}{\times}
+
+\newcommand{\ideal}{\unlhd}
 
 % ein schoener aussehender Faktorraum anstaat einfach nur A/B
 \newcommand{\FakRaum}[2]{
@@ -4374,12 +4378,45 @@ und alles Gute für das Jahr 2012!
 %-------------------------- Uebung 11 --------------------------
 \newpage
 \section{13. Januar 2011}
-\setcounter{Aufg}{0}
+\setcounter{Aufg}{-1}
 \setcounter{Loes}{0}
 
-\begin{Aufg}
-
+\begin{Aufg}[1 Punkt]
+Um das neue Jahr zu feiern, bekommt jeder, der abgibt, einen Punkt geschenkt.
 \end{Aufg}
+
+\begin{Aufg}[2 Punkte]
+Sei $R$ ein Ring und $D\colon R[X] \to R[X]$ die Ableitung $d/dX$, d.h. $D$ ist gegeben durch $D(\sum_{i=0}^n a_i X^i) = \sum_{i=1}^n i a_i X^{i-1}$. Zeige, dass $D$ eine Derivation ist.
+\end{Aufg}
+
+\begin{Aufg}[4 Punkte]
+Sei $R$ ein Ring, $A$ eine $R$-Algebra. Mit \underline{$A$-Mod} bezeichnen wir die Kategorie der $A$-Moduln.
+\begin{enumerate}[a)]
+\item
+	Wir werden zeigen, dass der Funktor von \underline{$A$-Mod} nach \underline{$A$-Mod} mit $M \mapsto \Der_R(A,M)$ darstellbar ist.
+
+	Betrachte dazu den freien $A$-Modul $F$ mit der Basis $A$, wobei $X_f$ das Basiselement zu $f \in A$ bezeichne. Weiter sei $U$ der Untermodul von $F$, der von allen $X_{f+g} - X_f - X_g, X_{\lambda f} - \lambda X_f$ und $X_{f \cdot g} - f \cdot X_g - g \cdot X_f$ f"ur $f,g \in A$ und $\lambda \in R$ erzeugt wird. 
+
+	Zeige, dass der sogenannte \emph{Differentialmodul} $\Omega_{A/R} := F/U$ zusammen mit $d \colon A \to \Omega_{A/R}, f \mapsto \overline{X_f} =: df$ folgende universelle Abbildungseigenschaft erf"ullt:
+
+	Zu jedem $A$-Modul $M$ und jeder $R$-Derivation $\delta\colon A \to M$ existiert genau eine $A$-lineare Abbildung $\varphi \colon \Omega_{A/R} \to M$ mit $\delta = \varphi \circ d$.
+\item
+	Zeige, dass f"ur $A= R[X_1, \dots, X_n]$ der Differentialmodul $\Omega_{A/R}$ ein freier Modul mit Basis $dX_1, \dots, dX_n$ ist.
+\end{enumerate}\end{Aufg}
+
+\begin{Aufg}[4 Punkte]
+Zeige, dass $\Z[X]$ die Krulldimension $2$ hat.
+
+\emph{Hinweis: Wie viele Erzeuger ben"otigt ein Primideal $\p$ in $\Z[X]$ mit $\Z \cap \p \neq \{0\}$ h"ochstens, wie viele ben"otigt eines mit $\Z \cap \p = \{0\}$ h"ochstens?}
+\end{Aufg}
+
+\begin{Aufg}[5 Punkte]
+Sei $k$ ein algebraisch abgeschlossener K"orper der Charakteristik ungleich $2$. Es sei
+	\[\SO(2) = \set{A \in k^{2\times 2}}{\det(A) = 1\ ,\ A^{-1} = A^T}.\]
+\begin{enumerate}[a)]
+	\item Zeige, dass $\SO(2)$ eine affine Variet\"at ist und bestimme Erzeuger des Verschwindungsideals $I(\SO(2))$. Ist $\SO(2)$ irreduzibel?
+	\item Bestimme die lokale Dimension $\dim_A \SO(2)$ f"ur einen Punkt $A\in \SO(2)$.
+\end{enumerate}\end{Aufg}
 
 %-------------------------- Uebung 12 --------------------------
 \newpage
@@ -4387,9 +4424,77 @@ und alles Gute für das Jahr 2012!
 \setcounter{Aufg}{0}
 \setcounter{Loes}{0}
 
-\begin{Aufg}
+Auf diesem Blatt bezeichne $k$ (fast) immer einen algebraisch abgeschlossenen K"orper.
 
-\end{Aufg}
+\begin{Aufg}[3 Punkte]
+\begin{enumerate}[a)]
+	\item Es sei $f\in k[X_1,\dots,X_n]$ ein nichtkonstantes Polynom. Zeige, dass $I(V(f)) = (f)$ genau dann gilt, wenn $f$ quadratfrei ist, d.h. wenn kein irreduzibler Faktor von $f$ mehrfach vorkommt.
+	\item Ist $f\in k[X_1,\dots,X_n]$ ein nichtkonstantes Polynom, das nicht quadratfrei ist, so enth"alt
+		\[V(f, \pder{X_1}{f},\dots, \pder{X_n}{f})\]
+	eine Hyperfl"ache in $\Affine^n(k)$.
+\end{enumerate}\end{Aufg}
+
+\begin{Aufg}[5 Punkte]
+\begin{enumerate}[a)]
+\item
+	Es sei $\Char(k)\neq 2$. Bestimme die singulären Punkte der folgenden affinen Varietäten in $\Affine^2(k)$ bzw. in $\Affine^3(k)$:
+	\begin{align*}
+		&V(X^4 + Y^4 - X^2)& &V(X^6 + Y^6 - XY)\\
+		&V(X^4 + Y^4 + Y^2 - X^3)& &V(X^4 + Y^4 - X^2Y - XY^2)\\
+		&V(X Y^2 - Z^2)
+	\end{align*}
+	\emph{Hinweis:} Benutze Aufgabe 1 zur Bestimmung der Verschwindungsideale.
+\item
+	Nun sei $k = \R$. Welche der obigen Kurven in $\Affine^2(k)$ geh"ort zu welchem Bild?
+	\begin{center}
+		\textcolor{red}{[BILD]} \textcolor{red}{[BILD]} \textcolor{red}{[BILD]} \textcolor{red}{[BILD]}
+		
+		\begin{tikzpicture}[scale=0.25]
+			\draw[ultra thin, densely dashed] (0,-3) -- (0,10);
+			\draw[ultra thin, densely dashed] (-3,0) -- (10,0);
+			\draw (-3,-3) rectangle (10,10);
+		\end{tikzpicture}
+		\begin{tikzpicture}[scale=0.25]
+			\draw[ultra thin, densely dashed] (0,-6.5) -- (0,6.5);
+			\draw[ultra thin, densely dashed] (-6.5,0) -- (6.5,0);
+			\draw (-6.5,-6.5) rectangle (6.5,6.5);
+		\end{tikzpicture}
+		\begin{tikzpicture}[scale=0.25]
+			\draw[ultra thin, densely dashed] (0,-6.5) -- (0,6.5);
+			\draw[ultra thin, densely dashed] (-6.5,0) -- (6.5,0);
+			\draw (-6.5,-6.5) rectangle (6.5,6.5);
+			
+			\draw (0,0) ..controls(0,1.75) and (-0.25,3).. (1,4) ..controls(2.25,4.75) and (3.75,5.25).. (4.5,4.5) ..controls(5,4.25) and (5,2.25).. (3.75,1) ..controls(3.25,0) and (2.25,0).. (0,0);
+			\draw[red] (5,4.25) circle[radius=0.1];
+		\end{tikzpicture}
+		\begin{tikzpicture}[scale=0.25]
+			\draw[ultra thin, densely dashed] (0,-6.5) -- (0,6.5);
+			\draw[ultra thin, densely dashed] (-3,0) -- (10,0);
+			\draw (-3,-6.5) rectangle (10,6.5);
+			
+			\draw (9.5,0) .. controls(9.5,5) and (4,1) .. (0,0);
+			\draw (9.5,0) .. controls(9.5,-5) and (4,-1) .. (0,0);
+		\end{tikzpicture}
+	\end{center}
+\end{enumerate}\end{Aufg}
+
+\begin{Aufg}[4 Punkte]
+F"ur diese Aufgabe habe der K"orper $k$ die Charakteristik $0$. Sei $V$ eine projektive Hyperfl"ache in $\Projective^n(k)$, d.h. $V = V(f)$ für ein homogenes, quadratfreies Polynom $f \in k[X_0, \dots, X_n] \setminus k$.
+\begin{enumerate}[a)]
+	\item Zeige, dass $f \in k[X_0, \dots, X_n] \setminus k$, homogen vom Grad $d$, die folgende Differentialgleichung (von Euler) erf"ullt:  $\sum\limits_{j=0}^n X_j \frac{\partial f}{\partial X_j}=d \cdot f$.
+	\item Ein Punkt $x \in V$ ist genau dann singul"ar, wenn $\frac{\partial f}{\partial X_j}(x)=0$ f"ur $j=0, \dots,n$.
+	\item Bestimme die singul"aren Punkte der Bernoullischen Lemniskate $$B:=V((X^2+Y^2)^2-2(Y^2Z^2-X^2Z^2)) \subseteq \mathbb{P}^2(k)\,.$$
+\end{enumerate}\end{Aufg}
+
+\begin{Aufg}[4 Punkte]
+Die Charakteristik von $k$ sei weder $2$ noch $3$. F"ur $\lambda\in k$ betrachten wir die Kurve $E_\lambda = V(Y^2 - X(X-1)(X-\lambda))$.
+\begin{enumerate}[a)]
+	\item F"ur welche $\lambda$ ist $E_\lambda$ singul"ar?
+	
+	\emph{Hinweis:} Benutze Aufgabe 1 zur Bestimmung von $I(E_\lambda)$.
+	\item Bestimme den projektiven Abschluss $\overline{E_\lambda}$ von $E_\lambda$ und untersuche, ob er singul"are Punkte enth"alt.
+	\item Was passiert f"ur $\Char(k) =2$ oder $3$?
+\end{enumerate}\end{Aufg}
 
 %-------------------------- Uebung 13 --------------------------
 \newpage
@@ -4397,8 +4502,42 @@ und alles Gute für das Jahr 2012!
 \setcounter{Aufg}{0}
 \setcounter{Loes}{0}
 
-\begin{Aufg}
+Auf diesem Blatt bezeichne $k$ immer einen algebraisch abgeschlossenen K"orper.
 
+\begin{Aufg}[5 Punkte]
+Seien $X$ und $Y$ quasiprojektive Variet\"aten in $\Projective^n(k)$. Sind die folgenden Aussagen richtig oder falsch? Begr"unde jeweils Deine Antwort.
+\begin{enumerate}[a)]
+	\item $X,Y$ nichtsingul"ar $\Rightarrow X \cap Y$ nichtsingul"ar.
+	\item $X,Y$ nichtsingul"ar $\Rightarrow X \cup Y$ nichtsingul"ar.
+	\item $X,Y$ singul"ar $\Rightarrow X \cap Y$ singul"ar.
+	\item $X,Y$ singul"ar $\Rightarrow X \cup Y$ singul"ar.
+	\item $\emptyset \neq \textrm{Sing}(Y) \subsetneq X \cap Y \Rightarrow X \cap Y$ ist singul"ar.
+\end{enumerate}
+\emph{Hinweis:} Alle notwendigen Gegenbeispiele k"onnen im affinen Raum gefunden werden.
+\end{Aufg}
+
+\begin{Aufg}[4 Punkte]
+Es sei $f\in k[X,Y] \setminus k$ ein quadratfreies Polynom und $V = V(f)$. f"ur einen Punkt $p \in V(f)$ definieren wir die Vielfachheit $\mu_p(V)$ in $p$ folgenderma\ss en: 
+
+Es sei $\varphi \colon \Affine^2(k)\to \Affine^2(k)$ eine Translation (d.h. $\varphi(x) = x + t$ f"ur ein $t\in k^2$), so dass $\varphi(p) = (0,0)$ gilt. Wir schreiben $\tilde f = f\circ \varphi^{-1}$ als Summe seiner homogenen Komponenten
+	\[\tilde f = \tilde f_0 +\dots + \tilde f_d\,.\]
+Dann sei $\mu_p(V) = \min\set{r\in \N_0}{\tilde f_r \neq 0}$.
+
+Zeige, dass $p$ genau dann ein singul"arer Punkt von $V$ ist, wenn $\mu_p(V) > 1$ gilt.
+
+Bestimme die Vielfachheiten der Singularit"aten der Kurven in $\Affine^2(k)$ aus Aufgabe 2 von "Ubungsblatt 12.
+\end{Aufg}
+
+\begin{Aufg}[3 Punkte]
+Die Charakteristik von $k$ sei $0$. F"ur ein nichtkonstantes Polynom $f\in k[X]$ und eine nat"urliche Zahl $n\geq 1$ sei $C := V(Y^n - f)\subset \Affine^2(k)$. 
+
+F"ur welche $n$ und $f$ ist $C$ eine nichtsingul"are Kurve?
+\end{Aufg}
+
+\begin{Aufg}[4 Punkte]
+Seien $I_1,\ldots, I_n$ Ideale in einem Ring $R$ und $J \subseteq R$ ein Ideal mit $J \nsubseteq I_i$ für $i=1,\ldots,n$. 
+
+Zeige, dass auch $J \nsubseteq\bigcup_{i=1}^n I_i$ gilt, falls mindestens $n-2$ der Ideale $I_i$ Primideale sind.
 \end{Aufg}
 
 %-------------------------- Uebung 14 --------------------------
@@ -4407,9 +4546,43 @@ und alles Gute für das Jahr 2012!
 \setcounter{Aufg}{0}
 \setcounter{Loes}{0}
 
-\begin{Aufg}
+Auf diesem Blatt bezeichne $k$ immer einen algebraisch abgeschlossenen K"orper.
 
-\end{Aufg}
+\begin{Aufg}[4 Punkte]
+Sei $R$ ein nullteilerfreier, noetherscher Ring mit Quotientenk"orper $K \ne R$. Zeige die "Aquivalenz der folgenden Aussagen:
+\begin{enumerate}[i)]
+	\item $R$ ist ein diskreter Bewertungsring.
+	\item F"ur jedes $x \in K$ gilt $x \in R$ oder $x^{-1} \in R$.
+	\item Die Menge der Hauptideale von $R$ ist bez"uglich Inklusion total geordnet.
+	\item Die Menge aller Ideale von $R$ ist bez"uglich Inklusion total geordnet.
+	\item $R$ ist ein lokaler Hauptidealring.
+\end{enumerate}\end{Aufg}
+
+\begin{Aufg}[6 Punkte]
+Die Charakteristik von $k$ sei nicht $2$. Wir betrachten $C = V(Y^4 - XZ(X-Z)(X+Z))\subset \Projective^2(k)$.
+\begin{enumerate}[a)]
+	\item Zeige, dass $C$ eine nichtsingul"are Kurve ist.
+	\item Es sei $h:C\to \Projective^1(k)$, $(x:y:z) \mapsto (x:z)$. Bestimme den Grad von $h$ und f"ur jeden Punkt $P\in C$ den Verzweigungsindex $e_P(h)$.
+	\item Bestimme die Divisoren der rationalen Funktionen $x/z$ und $x/y\in k(C)$.
+\end{enumerate}\end{Aufg}
+
+\begin{Aufg}[6 Punkte]
+Es sei $C \subset \Projective^n(k)$ eine irreduzible, nichtsingul"are, projektive Kurve und $G\in k[X_0,\dots,X_n]$ ein homogenes Polynom, so dass $C\not\subset V(G)$ gilt. Wir definieren den Schnittdivisor $\Divisor(G)$ zu $G$ folgenderma\ss en: F"ur einen Punkt $P\in C$ w"ahlen wir ein homogenes Polynom $H\in k[X_0,\dots,X_n]$ mit $H(P)\neq 0$ und $\deg(H) = \deg(G)$ und setzen $n_P = \ord_P(G/H)$. Dann sei $\Divisor(G) = \sum_{P\in C} n_P\cdot P$.
+\begin{enumerate}[a)]
+\item
+	Zeige, dass $\Divisor(G)$ wohldefiniert ist.
+\item
+	Sei nun $G_1, G_2 \in k[X_0,\dots,X_n]$ mit $\deg(G_1) = \deg(G_2)$. Zeige, dass die zwei Schnittdivisoren $\Divisor(G_1)$ und $\Divisor(G_2)$ linear "aquivalent sind.
+\item
+	Es sei $\Char(k)\neq 2$. Bestimme f"ur $C= V(Y^2Z - X(X-Z)(X+Z))\subset \Projective^2(k)$ die Schnittdivisoren von $X$, $Y$ und $Z$. Welche geometrische Bedeutung haben diese Divisoren?
+\item
+	Der Grad $d$ von $C$ sei der Grad des Schnittdivisors eines homogenen Polynoms von Grad 1. Zeige: Ist $n=2$ und $C= V(F)$ für ein homogenes Polynom $F\in k[X_0,X_1,X_2]$, so gilt $\deg(F) = d$.
+	
+	\emph{Hinweis: Man kann ohne Einschr"ankung voraussetzen, dass $(0:0:1)\not\in V(F)$. (Wieso?) Dann hilft es, den Morphismus $C\to \Projective^1(k)\ ,\ (x:y:z)\mapsto (x:y)$ zu betrachten.}
+\item
+	Zeige eine Version des Satzes von B\'ezout f"ur nichtsingul"are Kurven: Ist $G\in k[X_0,\dots,X_n]$ ein homogenes Polynom von Grad $e$, so dass $C\not\subset V(G)$, und ist $d$ wieder der Grad von $C$, so gilt
+		\[\deg(\Divisor(G)) = d\cdot e.\]
+\end{enumerate}\end{Aufg}
 
 
 %-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Stichwortverzeichnis -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
