@@ -4447,26 +4447,86 @@ Auf diesem Blatt bezeichne $k$ (fast) immer einen algebraisch abgeschlossenen K"
 \item
 	Nun sei $k = \R$. Welche der obigen Kurven in $\Affine^2(k)$ geh"ort zu welchem Bild?
 	\begin{center}
-		\textcolor{red}{[BILD]} \textcolor{red}{[BILD]} \textcolor{red}{[BILD]} \textcolor{red}{[BILD]}
-		
 		\begin{tikzpicture}[scale=0.25]
 			\draw[ultra thin, densely dashed] (0,-3) -- (0,10);
 			\draw[ultra thin, densely dashed] (-3,0) -- (10,0);
 			\draw (-3,-3) rectangle (10,10);
-		\end{tikzpicture}
-		\begin{tikzpicture}[scale=0.25]
-			\draw[ultra thin, densely dashed] (0,-6.5) -- (0,6.5);
-			\draw[ultra thin, densely dashed] (-6.5,0) -- (6.5,0);
-			\draw (-6.5,-6.5) rectangle (6.5,6.5);
-		\end{tikzpicture}
+			
+			\coordinate (0) at (0,0);
+			\coordinate (1) at (7.5,7.5);
+			\coordinate (2) at (-1.75,1);
+			\coordinate (3) at (1,-1.75);
+			
+			\def\dehnungPos{4}
+			\def\dehnungNeg{0.75}
+			\def\grossSchleife{1.5}
+			\def\kleinSchleife{0.25}
+			
+			\coordinate (ctrl0up) at ($\dehnungPos*(0,1)$);% \fill[red] (ctrl0up) circle[radius=0.1];
+			\coordinate (ctrl0right) at ($\dehnungPos*(1,0)$);% \fill[red] (ctrl0right) circle[radius=0.1];
+			\coordinate (ctrl0down) at ($\dehnungNeg*(0,-1)$);% \fill[red] (ctrl0down) circle[radius=0.1];
+			\coordinate (ctrl0left) at ($\dehnungNeg*(-1,0)$);% \fill[red] (ctrl0left) circle[radius=0.1];
+			\coordinate (ctrl0leftUp) at ($\kleinSchleife*(-1,1)$);% \fill[red] (ctrl0leftUp) circle[radius=0.1];
+			\coordinate (ctrl0rightDown) at ($\kleinSchleife*(1,-1)$);% \fill[red] (ctrl0rightDown) circle[radius=0.1];
+			
+			\coordinate (ctrl1up) at ($(1)+\grossSchleife*(-1,1)$);% \fill[green] (ctrl1up) circle[radius=0.1];
+			\coordinate (ctrl1down) at ($(1)+\grossSchleife*(1,-1)$);% \fill[green] (ctrl1down) circle[radius=0.1];
+			
+			\coordinate (ctrl2up) at ($(2)+\kleinSchleife*(1,1)$);% \fill[blue] (ctrl2up) circle[radius=0.1];
+			\coordinate (ctrl2down) at ($(2)+\kleinSchleife*(-1,-1)$);% \fill[blue] (ctrl2down) circle[radius=0.1];
+			
+			\coordinate (ctrl3up) at ($(3)+\kleinSchleife*(1,1)$);% \fill[yellow] (ctrl3up) circle[radius=0.1];
+			\coordinate (ctrl3down) at ($(3)+\kleinSchleife*(-1,-1)$);% \fill[yellow] (ctrl3down) circle[radius=0.1];
+			
+			\path[draw] (0) ..controls(ctrl0up) and (ctrl1up).. (1) ..controls(ctrl1down) and (ctrl0right).. (0) ..controls(ctrl0left) and (ctrl2down).. (2) ..controls(ctrl2up) and (ctrl0leftUp).. (0) ..controls(ctrl0rightDown) and (ctrl3up).. (3) ..controls(ctrl3down) and (ctrl0down).. (0);
+		\end{tikzpicture}$\quad$
 		\begin{tikzpicture}[scale=0.25]
 			\draw[ultra thin, densely dashed] (0,-6.5) -- (0,6.5);
 			\draw[ultra thin, densely dashed] (-6.5,0) -- (6.5,0);
 			\draw (-6.5,-6.5) rectangle (6.5,6.5);
 			
-			\draw (0,0) ..controls(0,1.75) and (-0.25,3).. (1,4) ..controls(2.25,4.75) and (3.75,5.25).. (4.5,4.5) ..controls(5,4.25) and (5,2.25).. (3.75,1) ..controls(3.25,0) and (2.25,0).. (0,0);
-			\draw[red] (5,4.25) circle[radius=0.1];
-		\end{tikzpicture}
+			\coordinate (0) at (0,0);
+			\coordinate (top right) at (4.25,4.25);
+			\coordinate (bottom right) at (4.25,-4.25);
+			\coordinate (bottom left) at (-4.25,-4.25);
+			\coordinate (top left) at (-4.25,4.25);
+			\coordinate (right) at (6,0);
+			\coordinate (left) at (-6,0);
+			
+			
+			\coordinate (ctrl1) at ($(0)+(0,2.25)$);% \fill[red] (ctrl1) circle[radius=0.1];
+			\coordinate (ctrl2) at ($(top right)+(-1.75,0)$);% \fill[red] (ctrl2) circle[radius=0.1];
+			\coordinate (ctrl3) at ($(top right)+(top right)-(ctrl2)$);% \fill[red] (ctrl3) circle[radius=0.1];
+			\coordinate (ctrl4) at ($(right)+(0,1.5)$);% \fill[red] (ctrl4) circle[radius=0.1];
+			
+			\coordinate (lrCtrl1) at ($(0)+(0,-2.25)$);
+			\coordinate (lrCtrl2) at ($(bottom right)+(-1.75,0)$);
+			\coordinate (lrCtrl3) at ($(bottom right)+(bottom right)-(lrCtrl2)$);
+			\coordinate (lrCtrl4) at ($(right)-(0,1.5)$);
+			
+			\coordinate (llCtrl1) at (lrCtrl1);
+			\coordinate (llCtrl2) at ($(bottom left)+(1.75,0)$);
+			\coordinate (llCtrl3) at ($(bottom left)+(bottom left)-(llCtrl2)$);
+			\coordinate (llCtrl4) at ($(left)-(0,1.5)$);
+			
+			\coordinate (ulCtrl1) at (ctrl1);
+			\coordinate (ulCtrl2) at ($(top left)+(1.75,0)$);
+			\coordinate (ulCtrl3) at ($(top left)+(bottom left)-(llCtrl2)$);
+			\coordinate (ulCtrl4) at ($(left)+(0,1.5)$);
+			
+			\path[draw] (0) ..controls(ctrl1) and (ctrl2).. (top right) ..controls(ctrl3) and (ctrl4).. (right);
+			\path[draw] (0) ..controls(lrCtrl1) and (lrCtrl2).. (bottom right) ..controls(lrCtrl3) and (lrCtrl4).. (right);
+			\path[draw] (0) ..controls(llCtrl1) and (llCtrl2).. (bottom left) ..controls(llCtrl3) and (llCtrl4).. (left);
+			\path[draw] (0) ..controls(ulCtrl1) and (ulCtrl2).. (top left) ..controls(ulCtrl3) and (ulCtrl4).. (left);
+		\end{tikzpicture}$\quad$
+		\begin{tikzpicture}[scale=0.25]
+			\draw[ultra thin, densely dashed] (0,-6.5) -- (0,6.5);
+			\draw[ultra thin, densely dashed] (-6.5,0) -- (6.5,0);
+			\draw (-6.5,-6.5) rectangle (6.5,6.5);
+			
+			\draw (0,0) ..controls(0,1.5) and (-0.25,3).. (1,4) ..controls(2.25,5) and (4,5).. (4.5,4.5) ..controls(5,4) and (5,2.25).. (4,1) ..controls(3,-0.25) and (1.5,0).. (0,0);
+			\draw (0,0) ..controls(0,-1.5) and (0.25,-3).. (-1,-4) ..controls(-2.25,-5) and (-4,-5).. (-4.5,-4.5) ..controls(-5,-4) and (-5,-2.25).. (-4,-1) ..controls(-3,0.25) and (-1.5,0).. (0,0);
+		\end{tikzpicture}$\quad$
 		\begin{tikzpicture}[scale=0.25]
 			\draw[ultra thin, densely dashed] (0,-6.5) -- (0,6.5);
 			\draw[ultra thin, densely dashed] (-3,0) -- (10,0);
