@@ -6,6 +6,11 @@ $.extend($.fn.socialSharePrivacy.settings, {
     uri: function() {return "http://mitschriebwiki.nomeata.de/" },
 });
 
+
+$(function() {
+	$(".tocLink a").tocify();
+});
+
 $(document).ready(function(){
         $('#socialshareprivacy').socialSharePrivacy();
     });
