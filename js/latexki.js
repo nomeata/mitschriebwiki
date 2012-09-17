@@ -8,7 +8,7 @@ $.extend($.fn.socialSharePrivacy.settings, {
 
 
 $(document).ready(function() {	
-	$('.tocLink a').toc({
+	$('.tocLink > a').toc({
 	    'selectors': 'h2', //elements to use as headings
 	    'container': '.page', //element to find all selectors in
 	    'smoothScrolling': true, //enable or disable smooth scrolling on click
@@ -24,10 +24,10 @@ $(document).ready(function() {
 	    } 
 	});
 
-	$(".tocLink a ul").hide();
-	$(".tocLink a").hover(function() { 
-		$(".tocLink a").toggleClass('active'); 
-		$(".tocLink a ul").slideToggle();
+	$(".tocLink > a ul").hide();
+	$(".tocLink > a").hover(function() { 
+		$(".tocLink > a").toggleClass('active'); 
+		$(".tocLink > a ul").slideToggle();
 	}).children().click(function(e) {
 		  return false;
 	});
