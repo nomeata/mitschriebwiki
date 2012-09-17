@@ -28,7 +28,7 @@ $(document).ready(function() {
 			}
 			return slices.join(" ") + "...";
 		} else {
-			return "XY" + header;
+			return header;
 		}
 	    } 
 	});
