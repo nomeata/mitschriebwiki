@@ -20,7 +20,16 @@ $(document).ready(function() {
 		return prefix+i;
 	    },
 	    'headerText': function(i, heading, $heading) { //custom function building the header-item text
-		return $heading.text();
+	    	var header = $heading.text();
+		if (header.length > 20) {
+			var slices = header.substring(0,20).split(" ");
+			if (slices.length > 1) {
+				slices = slices.slice(0, -1);
+			}
+			return slices.join(" ") + "...";
+		} else {
+			return header;
+		}
 	    } 
 	});
 
