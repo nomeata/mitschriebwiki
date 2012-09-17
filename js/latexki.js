@@ -36,7 +36,7 @@ $(document).ready(function() {
 	$(".tocLink > a ul").hide();
 	$(".tocLink > a").hover(function() { 
 		$(".tocLink > a").toggleClass('active'); 
-		$(".tocLink > a ul").stop().height('auto').slideDown();
+		$(".tocLink > a ul").stop().slideDown();
 	}, function() {
 		$(".tocLink > a").toggleClass('active'); 
 		$(".tocLink > a ul").stop().slideUp();
