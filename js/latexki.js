@@ -7,7 +7,7 @@ $.extend($.fn.socialSharePrivacy.settings, {
 });
 
 
-$(function() {
+$(document).ready(function() {
 	$(".tocLink a").tocify();
 });
 
