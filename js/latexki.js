@@ -36,10 +36,7 @@ $(document).ready(function() {
 	$(".tocLink > a ul").hide();
 	$(".tocLink > a").hover(function() { 
 		$(".tocLink > a").toggleClass('active'); 
-		$(".tocLink > a ul").stop().height('auto').slideDown();
-	}, function() {
-		$(".tocLink > a").toggleClass('active'); 
-		$(".tocLink > a ul").stop().slideUp();
+		$(".tocLink > a ul").stop(true,true).slideToggle();
 	}).children().click(function(e) {
 		  return false;
 	});
