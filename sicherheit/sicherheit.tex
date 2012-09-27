@@ -28,7 +28,7 @@ Sommersemester 2012 am Karlsruher Institut für Technologie (KIT).
 %Herr Calmet ist für den Inhalt nicht verantwortlich.
 
 \section{Wer}
-Mitgeschrieben in der Vorlesung hat Sabine Oechsner. An diesem Skript hat außerdem Martin Dinh mitgearbeitet.
+Mitgeschrieben in der Vorlesung hat Sabine Oechsner.
 
 \section{Wo}
 Alle Kapitel inklusive \LaTeX-Quellen können unter \url{http://mitschriebwiki.nomeata.de} abgerufen werden.
@@ -800,7 +800,7 @@ Datenversand nur in eine Richtung möglich\\
 
 \section{Bell-LaPadula-Modell}
 
-oberstes Schutzziel: Confidentiality
+Das Bell-LaPadula-Modell ist ein statisches Zugriffskontrollmodell. Oberstes Schutzziel: Confidentiality
 
 \subsection{Definition}
 
@@ -827,7 +827,7 @@ Im Bell-LaPadula-Modell ist der Systemzustand ein Element aus $\mathcal{B} \time
 		Dabei gilt: $f_c$ muss von $f_s$ dominiert werden: $\forall s' \in \mathcal{S} \colon f_c(s') \leq f_s(s')$.
 \end{itemize}
 
-Ein Systemzustand heißt sicher, wenn er die folgenden drei Eigenschaften:
+Ein Systemzustand heißt sicher, wenn er die folgenden drei Eigenschaften erfüllt:
 
 \begin{itemize}
 	\item Simple Security Property (ss-Eigenschaft):\\ ein Zustand $(b,M,f)$ genügt der ss-Eigenschaft, falls $\forall (s',o',a') \in b$ mit $a \in \{read, write\}$ gilt: $f_s(s') \geq f_o(o')$ (\glqq no read up\grqq)
@@ -859,6 +859,384 @@ Weitere Nachteile:
 \end{itemize}
 
 \section{Chinese-Wall-Modell}
+
+Zugriffsrechte hängen von der Vergangenheit ab $\rightarrow$ z.B. kein Informationsfluss zwischen konkurrierenden Firmen (z.B. bei Unternehmensberatung)
+
+\subsection{Definition}
+
+\begin{itemize}
+	\item Menge $\mathcal{C}$ von Firmen
+	\item Objektmenge $\mathcal{O}$ (jedes Objekt gehört einer Firma)
+	\item Subjektmenge $\mathcal{S}$ (die Berater)
+	\item Funktion $y \colon \mathcal{O} \rightarrow \mathcal{C}$, welche jedem Objekt die zugehörige Firma zuordnet
+	\item Funktion $x \colon \mathcal{O} \rightarrow \mathcal{P}(\mathcal{C})$, welche jedem Objekt eine conflict-of-interest-Klasse zuordnet
+\end{itemize}
+
+Die Sicherheitsmarke (security label) eines Objekts $o \in \mathcal{O}$ ist das Tupel $(x(o), y(o))$. Im Falle $x(o) = \emptyset$ spricht man von \glqq sanitized information\grqq.\\
+
+Eine Matrix $M$ enthält Informationen über Zugriffe $M = (M_{so})_{s \in \mathcal{S}, o \in \mathcal{O}}$ mit
+$$M_{so} = 	\begin{cases}
+				true,  & \text{falls }s\text{ Zugriff auf }o\text{ hatte,}\\
+				false, & \text{sonst.}
+			\end{cases}$$
+			
+Der Initialzustand ist $M = (false)_{s \in \mathcal{S}, o \in \mathcal{O}}$.
+
+\subsection{Eigenschaften}
+
+\begin{itemize}
+	\item Simple Security Property (ss-Eigenschaft):\\ $s \in \mathcal{S}$ erhält Zugriff auf $o \in \mathcal{O}$ nur, falls $\forall o' \in \mathcal{O}$ mit $M_{so'} = true$ gilt: $y(o) = y(o')$ oder $y(o) \notin x(o')$.
+	\item Star Property (*-Eigenschaft):\\ ein $s \in \mathcal{S}$ erhält Schreibzugriff auf ein Objekt $o \in \mathcal{O}$ nur, falls $s$ aktuell keinen Lesezugriff auf $o' \in \mathcal{O}$ hat mit $y(o) \neq y(o')$ oder $x(o') = \emptyset$. (Die *-Eigenschaft verhindert die Weitergabe von Daten über Dritte.)
+\end{itemize}
+
+%%%%%%%%%%% Zero Knowledge %%%%%%%%%%%%%%%%%
+
+\chapter{Zero Knowledge}
+
+Idee: Wir wollen (interaktiv( beweisen, dass wir ein Geheimnis kennen, ohne das Geheimnis selbst zu verraten. 
+
+\section{Eigenschaften:} 
+
+\begin{itemize}
+	\item Korrektheit: Ein Beweiser, der das Geheimnis nicht kennt, soll einen Prüfer nur mit vernachlässigbarer Wahrscheinlichkeit davon überzeugen können, es zu kennen.
+	\item Zero Knowledge: Für jeden Prüfer gibt es einen Simulator, der einen Mitschrieb der Beweiskommunikation selbst erzeugen kann, ohne den Beweis zu kennen. (damit der Beweis nicht weiterverwendet werden kann, weil ihn sich der Beweiser selbst ausgedacht haben könnte)
+\end{itemize}
+
+\section{Beispiel: Graph-Isomorphismus}
+
+\subsection{Ablauf}
+
+\begin{itemize}
+	\item allen bekannt: zwei Graphen $G_1$ und $G_2$
+	\item Geheimnis des Beweisers: ein Graph-Isomorphismus zwischen $G_1$ und $G_2$
+	\item der Beweiser erzeugt einen weiteren zufälligen Graphen, der isomorph zu $G_1$ und $G_2$ ist, und gibt ihn dem Prüfer
+	\item der Prüfer fordert den Isomorphismus vom neuen Graphen zu einem der beiden Graphen $G_i$
+	\item der Beweiser gibt den Isomorphismus bekannt
+	\item das Spiel wird häufig wiederholt
+\end{itemize}
+
+\subsection{Eigenschaften}
+
+\begin{itemize}
+	\item kennt der Beweiser das Geheimnis, so kann er dem Prüfer immer den geforderten Isomorphismus angeben
+	\item Korrektheit: kennt er ihn nicht, kann er nur einen der beiden Isomorphismen angeben (den, mit dem er den neuen Graphen erzeugt hat), und wird bei häufigem Wiederholen erwischt
+	\item Zero Knowledge: weiß der Beweiser vorher, welchen Isomorphismus der Prüfer sehen will, so bereitet er genau diesen vor
+\end{itemize}
+
+\section{Beispiel: Graph-3-Färbbarkeit}
+
+Mit Graph-3-Färbbarkeit wird die Frage bezeichnet, ob zu einem gegebenen Graphen eine Knotenfärbung mit 3 Farben existiert, sodass direkt verbundene Knoten immer ungleiche Farben haben. Graph-3-Färbbarkeit ist ein NP-vollständiges Problem.
+
+\subsection{Ablauf}
+
+\begin{itemize}
+	\item allen bekannt: ein Graph $G$
+	\item Geheimnis des Beweisers: eine 3-Färbung von $G$
+	\item der Beweiser benennt die Farben zufällig um (dabei bleibt die Färbung eine 3-Färbung)
+	\item der Beweiser verschlüsselt alle Knoten und zeigt dies dem Prüfer
+	\item der Prüfer wählt eine Kante
+	\item der Beweiser entschlüsselt die zugehörigen Knoten
+	\item dieses Spiel wird häufig wiederholt (mit immer neuer Vertauschung der drei Farben, damit der Prüfer das Geheimnis nicht lernen kann)
+\end{itemize}
+
+\subsection{Eigenschaften}
+
+\begin{itemize}
+	\item Korrektheit: gibt es keine 3-Färbung, so sind immer irgendwo zwei Farben gleich und der Beweiser wird bei häufigem Wiederholen erwischt
+	\item Zero Knowledge: weiß der Beweiser vorher, welche Kante gefragt wird, verschlüsselt er dort zwei zufällige, verschiedene Farben
+\end{itemize}
+
+%%%%%%%%%%%%%% Authentifikation %%%%%%%%%%%55
+
+\chapter{Authentifikation}
+
+\section{Definition}
+
+Authentifizierung bindet eine Identität an ein Subjekt.
+
+\section{Ansätze}
+
+\begin{itemize}
+	\item Entität weiß etwas (Kennwort)
+	\item Entität ist etwas (Biometrie)
+	\item Entität hat etwas (Chipkarte)
+	\item Entität kann etwas (Captcha)
+	\item Entität befindet sich an einem bestimmten Ort
+\end{itemize}
+
+\section{Komponenten}
+
+\begin{itemize}
+	\item Menge $A$ der Authentifizierungsinformation\\ (Information, mit der Identität bewiesen wird)
+	\item Menge $C$ der Komplementärinformationen\\ (was das System speichert, um Authentifizierung zu validieren)
+	\item Menge $\mathcal{F} \in C^A$ der Komplementierungsfunktionen\\ (leitet aus gegebenem $a \in A$ das entsprechende $c \in C$ ab)
+	\item Menge $L \subseteq {\{ true, false \}}^{A \times C}$ der Authentifikationsfunktionen\\ (verifiziert Identifikation)
+	\item Menge $S$ der Auswahlfunktionen\\ (zum Anlegen, Ändern, Entfernen von Entitäten und entsprechenden Daten)
+\end{itemize}
+
+\section{Typische Anwendung: Kennworte}
+
+\begin{itemize}
+	\item 1. Ansatz: System speichert Kennworte explizit\\ $\rightarrow$ Problem: Diebstahl des Passwordfiles
+	\item 2. Ansatz: kryptographische Hashwerte der Kennworte speichern\\ $\rightarrow$ Problem: Offline-Wörterbuchattacke sehr effizient
+	\item 3. Ansatz: Saltung (pro Benutzer andere Hashfunktion): $H_s(pw) := H(pw \| s)$
+	\item 4. Ansatz: \glqq Remote-Login\grqq\ mit dediziertem Authentifizierungsserver
+\end{itemize}
+
+\section{Maßnahmen gegen Offline-Attacken}
+
+\subsection{Wahl guter Kennworte}
+
+\begin{itemize}
+	\item vorgegebene Zufallsstrings (werden aufgeschrieben und am Rechner deponiert)
+	\item \glqq Key-Crunching\grqq\ $\rightarrow$ Hashing langer Passphrases
+	\item Verschleierung aufgeschriebener Kennworte (einfache Transformation)
+	\item proaktive Kennwortwahl
+	\item zeitliche Variation (ganz gut: ab und zu Kennwort verlängern)
+	\item Security Awareness
+\end{itemize}
+
+\section{Maßnahmen gegen Online-Attacken}
+
+\begin{itemize}
+	\item Backoff $\rightarrow$ nach $n$ Fehleingaben Sperrung für $x_n$ Sekunden
+	\item Disconnection $\rightarrow$ nach $n$ Fehleingaben Verbindungstrennung
+	\item Jailing $\rightarrow$ begrenzter Zugriff wird trotz Fehleingabe gewährt, oft mit Honeypots kombiniert
+\end{itemize}
+
+\section{Beispiel: CAPTCHAs}
+
+automatisch generierte Rätsel, die Maschinen nur sehr schwer lösen können, Menschen dagegen sehr leicht
+
+\section{raffiniertere Verfahren (Challenge-Response)}
+
+Schema: Benutzer hat Geheimnis $s$\\
+
+\fixme{Bild Schema, S. 53}\\
+
+Das Geheimnis $S$ soll nicht aus $c$ und $c(r,s)$ rekonstruierbar ein (selbst bei böswillig gewähltem $c$).
+
+\subsection{Beispiele}
+
+\subsubsection{RSA-Signaturen} Server schickt String, lässt ihn sich signieren $\rightarrow$ in der Praxis manchmal zu aufwändig
+\subsubsection{mittels Hashfunktion oder Verschlüsselung} $r(s.c) = h(s,c)$ oder $r(s,c) = Enc_s(c)$ $\rightarrow$ Server muss Geheimnis $S$ kennen
+\subsubsection{Zero Knowledge} $\rightarrow$ in der Praxis zu aufwändig
+\subsubsection{SPEKE (Simple Password Encrypted Key Exchange)}
+
+Parameter:
+
+	\begin{itemize}	
+		\item $p = 2q + 1$, $p,q \in \mathbb{P}$ (\glqq safe prime\grqq)
+		\item Hashfunktion $H$
+		\item $g = H(Passwort)^2 \mod{p}$ (erzeugt die Gruppe der quadratischen Reste $\mod{p}$)
+	\end{itemize}
+	
+\paragraph{Ablauf:} wie Diffie-Hellman, aber $key := H(g^{ab})$ sowie mit Key Confirmation\\ 
+
+\fixme{Bild Ablauf, S. 53}
+
+\paragraph{möglicher Angriff:} schicke $g^a =1$ oder $g^a$ mit kleiner Ordnung $\rightarrow$ Schlüssel unabhängig von Passwort $\rightarrow$ Lösung: Protokollabbruch, falls $Ord(g^{ab} < q$
+
+%%%%%%%%%%%% Seitenkanalangriffe %%%%%%%%%%%
+
+\chapter{Seitenkanalangriffe}
+
+\fixme{schreib mich ;)}
+
+%%%%%%%%%%%% Implementierungsfehler %%%%%%%%%%%%%
+
+\chapter{Implementierungsfehler}
+
+\section{in Programmen}
+
+\begin{itemize}
+	\item Stack/Heap Overflows
+	\item Integer Overflows, Signed-Unsigned-Bugs
+	\item falsche Unicodebehandlung
+	\item Ausnutzen von Race Conditions
+	\item \glqq Environment Creep\grqq\ (es war unter anderen Umständen sicher, aber die Umstände haben sich geändert)
+	\item Ändern temporärer Dateien
+\end{itemize}
+
+\section{in Webanwendungen}
+
+\begin{itemize}
+	\item SQL injection
+	\item XSS (Cross Site Scripting)
+	\item GIFAR (Datei entspricht gif- und jar-Standard)
+	\item Variablenvorbelegung bei PHP
+\end{itemize}
+
+\section{Lektion fürs Leben}
+
+\begin{itemize}
+	\item Komplexität ist ein Feind der Sicherheit.
+	\item Sicherheit komponiert nicht.
+\end{itemize}
+
+%%%%%%%%%%%% Sicherheitsbewertung/Zertifizierung %%%%%%%%%%%5
+
+\chapter{Sicherheitsbewertung/Zertifizierung}
+
+Beurteilung durch eine vertrauenswürdige Instanz (bescheinigt Eigenschaften) $\rightarrow$ meist wird allerdings nicht ein Produkt, sondern der Entwicklungsprozess zertifiziert
+
+\section{Gründe für eine Zertifizierung}
+
+\begin{itemize}
+	\item gesetzliche Bestimmungen (Datenschutz)
+	\item Werbung
+	\item überzeugt Nichtexperten
+	\item günstigere Versicherung
+	\item Vergleich von Produkten \glqq einfacher\grqq
+\end{itemize}
+
+\section{Common Criteria (ISO 15408)}
+
+Zertifizierungsstelle in Deutschland: BSI (Bundesamt für Sicherheit in der Informationstechnik)
+
+\begin{itemize}
+	\item ToE (Target of Evaluation)
+	\item Protection Profile $\rightarrow$ Forderungen an das ToE
+		\begin{itemize}
+			\item Descriptive Elements:
+				\begin{itemize}
+					\item worum geht es? (Smartcard, Firewall, ...)
+					\item was ist das Problem, das damit gelöst werden soll?
+				\end{itemize}
+			\item Rationale (Zuordnung zwischen Bedrohungen/Angriffen und Sicherheitseigenschaften):
+				\begin{itemize}
+					\item welche Betriebsumgebung?/welches Einsatzszenario?
+					\item welche Bedrohungen/Angriffe?
+					\item welche Sicherheitseigenschaften?
+				\end{itemize}
+			\item Functional Requirements: funktionale Spezifikation des ToE
+			\item Evaluation Assurance Requirements:
+				\begin{itemize}
+					\item wie/was wird evaluiert? (es gibt umfangreiche Beispielkataloge)
+					\item wie intensiv wird evaluiert?
+				\end{itemize}
+		\end{itemize}
+\end{itemize}
+
+\subsection{Evaluation Insurance Levels}
+
+numerische Bewertung der Prüfstrenge
+
+\begin{itemize}
+	\item EAL 1: funktional getestet
+	\item EAL 2: strukturell getestet
+	\item EAL 3: methodisch getestet und überprüft
+	\item EAL 4: methodisch entwickelt, getestet und durchgesehen
+	\item EAL 5: semiformal entworfen und getestet
+	\item EAL 6: semiformal verifizierter Entwurf und getestet
+	\item EAL 7: formal verifizierter Entwurf und getestet
+\end{itemize}
+
+%%%%%%%%%%%% Data Base Privacy %%%%%%%%%%%%%%%%
+
+\chapter{Data Base Privacy}
+
+\section{k-Anonymität}
+
+\fixme{Bild k-Anonymität, S. 57}\\
+
+für jede Kombination der QI in der Datenbank gibt es k Zeilen mit dieser Kombination (z.B. durch Vergröbern der QIs)
+
+\subsection{Kritik}
+
+\begin{enumerate}
+	\item nur das Ergebnis wird beurteilt, nicht der Prozess (Seitenkanäle)
+	\item komponiert nicht
+	\item Homogenitätsattacke
+\end{enumerate}
+
+\section{Differential Privacy}
+
+Datenbanken sind Mengen von Tupeln aus $\mathbb{R}^d$. Ein Release Mechanism nimmer eine Datenbank und liefert eine Zahl aus $\mathbb{R}$. Zwei Datenbanken haben \glqq Hammingabstand\grqq\ 1, wenn sie sich nur in einem Tupel unterscheiden. Für zwei beliebige Datenbanken (aus einem gegebenen Universum) mit Hammingabstand 1 soll der Release sich höchstens um $\epsilon$ unterscheiden: \glqq $\epsilon$-differentially private\grqq.\\
+
+Methode für Release: Verrauschen
+
+%%%%%%%%%%%%%% Secure Function Evaluation %%%%%%%%
+
+\chapter{Secure Function Evaluation}
+
+\section{Beispiel: Datingproblem}
+
+Alice und Bob haben ein Rendezvous, vermittelt von Datingagentur. Wie entscheiden, ob man sich wieder trifft? (peinlich, falls nur einer will...)
+
+\subsection{Lösung: Secure AND}
+
+jeder gibt geheimes Bit ein und lernt nur das AND-Ergebnis
+
+\paragraph{Realisierung}
+
+\begin{itemize}
+	\item Input Alice: Bit $a$
+	\item Input Bob: Bit $b$
+\end{itemize}
+
+\begin{enumerate}
+	\item Alice generiert Signaturkey $x$ und sendet Verifikationskey $y$ an Bob
+	\item Alice generiert $(e,d,N)$ und sendet $(e,N)$ an Bob
+	\item Bob wählt $s$, berechnet $r_b:= Enc(s)$, $r_{1-b} := N-b$ und sendet $(r_0, r_1)$ an Alice
+	\item Alice sendet $c_0 = sign(0) + Dec(r_0)$ und $c_1 = sign(a + Dec(r_1))$ an Bob
+	\item Bob berechnet $sign(ab) = c_b - s$ und teilt Alice das Ergebnis mit
+\end{enumerate}
+
+Wofür Signieren? $\rightarrow$ sonst kann Bob immer $b = 1$ wählen und Alice über das Ergebnis belügen (und $a$ herausfinden).\\ Wenn Alice nur eine Signatur richtig berechnet, hängt es von $b$ ab, ob das Protokoll regulär durchgeht. $\rightarrow$ Lösung: ZK-Beweis\\
+
+Achtung: Signatur darf keinen Subliminal Channel haben
+
+\section{allgemeine Secure Function Evaluation}
+
+\subsection{Baustein: \glqq oblivious transfer\grqq\ (OT)}
+
+\begin{itemize}
+	\item Input Alice: Strings $a_0$, $a_1$
+	\item Input Bob: Bit $b$
+	\item Output Alice: nichts
+	\item Output Bob: $a_b$
+	\item Alice lernt nichts über $b$
+	\item Bob lernt nichts über $a_0$ oder nichts über $a_1$
+\end{itemize}
+
+\subsection{Realisierung}
+
+\begin{enumerate}
+	\item Alice generiert $(e,d,N)$ und sendet $(e,N)$ an Bob
+	\item Bob wählt $s$, berechnet $r_b = Enc(s)$, $r_{1-b} = N-b$ und sendet $(r_0, r_1)$ an Alice
+	\item Alice sendet $c_0 = a_0 + Dec(r_0)$ und $c_1 = a_1 + Dec(r_1)$ an Bob
+	\item Bob berechnet $a_b = c_b - s$
+\end{enumerate}
+
+\subsection{Realisierung mit Funktion $f$}
+
+hier ist der Input von Bob ein String $b$
+
+\begin{itemize}
+	\item Alice stellt Wertetabelle $F$ für $f(a, \cdot)$ auf
+	\item Für jedes Bit von $b$ sendet Alice zwei Zufallswerte $k_0$, $k_1$ via OT an Bob; es bezeichne $(k_0^i, k_1^i)$ das zu $b_i$ gehörige Tupel. Bob lernt jeweils $k_{b_i}^i$.
+	\item Alice verschlüsselt $F$ zeilenweise; die zu $b$ zugehörige Zeile von F ist verschlüsselt mit dem XOR über $k_{b_i}^i$.
+	\item Alice sendet die verschlüsselten Zeilen an Bob.
+	\item Bob kann genau die zu $b$ gehörige Zeile entschlüsseln und lernt $f(a,b)$.
+\end{itemize}
+
+\paragraph{Probleme:}
+
+\begin{enumerate}
+	\item Wie sicherstellen, dass Alice die richtige Funktion $f$ codiert? $\rightarrow$ ZK-Beweis
+	\item Wie sicherstellen, dass Bob über das Ergebnis nicht lügen kann? $\rightarrow$ Signaturen
+	\item Tabelle $F$ ist exponentiell groß in $\left|b\right|$ $\rightarrow$ \glqq Yao's Garbled Circuits\grqq
+\end{enumerate}
+
+\subsection{Yao's Garbled Circuits}
+
+\begin{itemize}
+	\item Zerlege Schaltkreise von $f$ in einzelne Gatter und wende obiges Protokoll auf jedes einzelne Gatter an.
+	\item Bob darf keine Zwischenergebnisse lernen, deshalb werden Gatterergebnisse direkt durch entsprechende Schlüssel ersetzt, statt die Schlüssel via OT zu übertragen (natürlich nur für Gatter, deren Ergebnis nicht Teil der Ausgabe des Schaltkreises ist).
+	\item Bob weiß nicht mehr, welche Zeile einer Tabelle für ein Gatter innerhalb des Schaltkreises er entschlüsseln muss; deshalb werden verschlüsselte Nullstrings an jede Tabellenzeile angehängt, Bob entschlüsselt immer die ganze Tabelle und verwirft \glqq falsche\grqq\ Zeilen.
+	\item Bob kann noch aus der Position der \glqq richtigen\grqq\ Zeile einers Gatters die Eingangsbelegung erkennen; daher werden jeweils die Zeilen einer Tabelle zufällig permutiert.
+\end{itemize}
 		
 %%%%%%%%%%%%%% Mathematisches %%%%%%%%%%%%%%%%%%%%
 
