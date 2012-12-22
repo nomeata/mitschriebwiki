@@ -978,6 +978,8 @@ $\Lambda (M) := \bigoplus_{n\geq 0} \Lambda^n(M)$ die \emp{äußere Algebra}\ind
   \end{enumerate}
 \end{DefBem}
 
+Wie man an dieser Definition sieht, hängt der Begriff einer "Derivation" nicht nur von $A$, sondern auch vom Grundring $R$ ab. Wenn der Grundring nicht aus dem Kontext heraus klar ist (z. B. wenn zwei verschiedene Grundringe möglich sind), werden wir diese Abhängigkeit explizit machen, indem wir von "$R$-linearen Derivationen" statt einfach nur von "Derivationen" sprechen.
+
 \begin{nnBsp}
   \begin{enumerate}
   \item[1.)] $A = R[X], d = \frac{d}{dX}$ ist eine $R$-Derivation $d: A \to
@@ -1038,9 +1040,9 @@ in jeden $A$-Modul $M$. Insbesondere gilt also stets $\delta\left(1\right) = 0$.
 
 \begin{PropDef} \label{1.21}
   Der Funktor $M \mapsto \mbox{Der}_R(A,M)$ ist ,,darstellbar``, d.h. es gibt
-  einen $A$-Modul $\Omega_{A/R}$ und eine $R$-lineare Derivation $d: A \to \Omega_{A/R}$ mit
+  einen $A$-Modul $\Omega_{A/R}$ und eine ($R$-lineare) Derivation $d: A \to \Omega_{A/R}$ mit
   folgender UAE:\\
-  Zu jedem $A$-Modul $M$ und jeder Derivation $\delta: A \to M$
+  Zu jedem $A$-Modul $M$ und jeder ($R$-linearen) Derivation $\delta: A \to M$
   existiert genau eine $A$-lineare Abbildung $\varphi: \Omega_{A/R} \to M$ mit
   $\delta = \varphi \circ d$.
   \[
@@ -1229,7 +1231,7 @@ Damit ist $\Kern(\beta) \subseteq \Bild(\alpha)$ nachgewiesen.
 
 Sei $A$ eine (kommutative) $R$-Algebra.
 
-Setze $\Omega_A := \Omega_{A/R}$. Dies ist ein $A$-Modul. Für jedes $i\geq 0$ setze $\Omega^i_A := \Lambda^i\Omega_A$ (wobei $\Lambda^i \Omega_A$ die $i$-te äußere Potenz des $A$-Moduls -- nicht des $R$-Moduls -- $\Omega_A$ bedeutet).
+Setze $\Omega_A := \Omega_{A/R}$ (definiert nach \myref{Definition}{1.21}). Dies ist ein $A$-Modul. Für jedes $i\geq 0$ setze $\Omega^i_A := \Lambda^i\Omega_A$ (wobei $\Lambda^i \Omega_A$ die $i$-te äußere Potenz des $A$-Moduls -- nicht des $R$-Moduls -- $\Omega_A$ bedeutet). Sei auch die Derivation $d : A \to \Omega_A$ definiert wie in \myref{Definition}{1.21}.
 
 \begin{SatzDef}
 \begin{enumerate}
@@ -1243,7 +1245,7 @@ Setze $\Omega_A := \Omega_{A/R}$. Dies ist ein $A$-Modul. Für jedes $i\geq 0$ s
 \item[b)]
 Die Sequenz
 $$A \overset{d_0}{\rightarrow} \Omega_A \overset{d_1}{\rightarrow} \Omega^2_A \overset{d_2}{\rightarrow} \cdots \overset{d_{n-1}}{\rightarrow} \Omega^n_A  \overset{d_n}{\rightarrow} \cdots$$
-heißt \emp{de Rham-Komplex}\index{de Rahm-Komplex} zu $A$, und wird mit $\Omega^\bullet_A$ bezeichnet.
+heißt \emp{de Rham-Komplex}\index{de Rham-Komplex} zu $A$, und wird mit $\Omega^\bullet_A$ bezeichnet.
 
 \item[c)]
 Für jedes $i\geq 0$ hei\ss t $H_{dR}^i(A)\defeqr \FakRaum{\Kern(d_i)}{\Bild(d_{i-1})}$ ($R$-Modul)
@@ -1256,21 +1258,25 @@ der $i$-te de Rahm-Kohomologie-Modul von $A$. Dabei sei $d_{-1}=0$, d.h. $H_{dR}
 
 Dann ist $\Omega^k_A$ freier $A$-Modul mit Basis $d X_{i_1} \wedge \cdots \wedge d X_{i_k}$, $1 \leq i_1 < \cdots < i_k \leq n$.
 
-Für $f \in A$ ist $df = d_A f = d_0 f = \sum_{i=1}^n \partial_i f d X_i$
+Für jedes $f \in A$ ist $df = d_A f = \sum_{i=1}^n \frac{\partial f}{\partial X_i}dX_i = \sum_{i=1}^n \partial_i f d X_i$.
 
-\textbf{Existenz der Folge $\left(d_i\right)_{i\geq 0}$:}
+\textbf{Existenz der Folge $\left(d_i\right)_{i\geq 0}$:} Erstmal läßt sich $d_0$ definieren durch $d_0=d$. Damit ist (iii) erfüllt, und (i) gilt für $i=0$ weil $d$ eine Derivation ist.
 
-Setze: $d_1(\sum_{i=1}^n f_i d X_i) = \sum_{i=1}^n d f_i \wedge d X_i \in \Omega^2_A$
+Nun definieren wir $d_1$ durch $d_1(\sum_{i=1}^n f_i d X_i) = \sum_{i=1}^n d f_i \wedge d X_i \in \Omega^2_A$ für alle $f_1,f_2,...,f_n\in A$.
 
-konkretes Beispiel: $d_1(f_1 dX_1 + f_2 dX_2)$
+Konkretes Beispiel: $d_1(f_1 dX_1 + f_2 dX_2)$
 
-$= (\frac{\partial f_1}{\partial x_1} dX_1 + \frac{\partial f_1}{\partial x_2} dX_2) \wedge dX_1 + (\frac{\partial f_2}{\partial x_1} dX_1 + \frac{\partial f_2}{\partial x_2} dX_2) \wedge dX_2 = (\frac{\partial f_2}{\partial x_1} - \frac{\partial f_1}{\partial x_2}) dX_1 \wedge dX_2$
+$= (\frac{\partial f_1}{\partial X_1} dX_1 + \frac{\partial f_1}{\partial X_2} dX_2) \wedge dX_1 + (\frac{\partial f_2}{\partial X_1} dX_1 + \frac{\partial f_2}{\partial X_2} dX_2) \wedge dX_2 = (\frac{\partial f_2}{\partial X_1} - \frac{\partial f_1}{\partial X_2}) dX_1 \wedge dX_2$
 
-Erklärung: $dX_1 \wedge dX_1 = 0$, $dX_2 \wedge dX_1 = - dX_1 \wedge dX_2$
+(denn $dX_1 \wedge dX_1 = 0$, $dX_2 \wedge dX_2 = 0$ und $dX_2 \wedge dX_1 = - dX_1 \wedge dX_2$).
 
-allgemein setze $d_k$:
+Allgemein definieren wir $d_k$ für jedes $k\geq 0$ durch:
 
 $d_k(\displaystyle\sum_{1 \leq i_1 < \cdots < i_k \leq n} f_{i_1 \ldots i_k} dX_{i_1} \wedge \cdots \wedge dX_{i_k}) = \sum_{1 \leq i_1 < \cdots < i_k \leq n} d(f_{i_1 \ldots i_k}) \wedge dX_{i_1} \wedge \cdots \wedge dX_{i_k}$
+
+für alle Tupel $\left(f_{i_1 \ldots i_k}\right)_{1 \leq i_1 < \cdots < i_k \leq n}$ von Elementen von $A$.
+
+Diese Definition von $d_k$ stimmt in den Fällen $k=0,1,2$ überein mit den oben gegebenen Definitionen von $d_0,d_1,d_2$.
 
 Diese $d_k$ erfüllen (i):
 
