@@ -1,0 +1,684 @@
+%%
+%% Skript Angewandte Differentialgeometrie im Sommersemester 2013
+%% Zur Vorlesung von Dr. Grensing am KIT in Karlsruhe
+%%
+
+\documentclass[paper=A4, twoside, chapterprefix=true, bibliography=totoc, headsepline]{scrbook}
+
+%========================================================================================================================
+%	P R AE A M B E L
+%========================================================================================================================
+
+% Meta-Daten fuer Latexki
+\usepackage{latexki}
+\lecturer{Dr. Sebastian Grensing}
+\semester{Sommersemester 13}
+\scriptstate{current}
+
+% Abstand zwischen zwei Textbloecken
+\setlength\parskip{\smallskipamount}
+
+% Nummerierung der Paragraphen anpassen (sonst kommt etwas wie "Definition 2.9.1" heraus)
+\renewcommand{\thesection}{\arabic{section}}
+
+% Aendert die Kapitelbeschriftung in der Kopfzeile der linken Seiten
+\renewcommand*{\chaptermarkformat}{\chapappifchapterprefix{\ }\thechapter:\enskip}
+\renewcommand*{\sectionmarkformat}{\thesection\autodot\enskip}
+
+% Einheitliche Schriftart (KOMA Script verwendet fuer einige Ueberschriften eine serifenlose Schrift, mischt also
+% Schriftarten. Ich habe mir die Argumente dafuer durchgelsen und war nicht ueberzeugt. Wenn jemand, der mehr als
+% ich von der Materie versteht, anderer Meinung ist kann er diese Zeilen hier einfach auskommentieren)
+\setkomafont{chapter}{\Huge\bfseries\rmfamily}
+\setkomafont{chapterentry}{\bfseries\rmfamily}
+\setkomafont{disposition}{\bfseries\rmfamily}
+\setkomafont{descriptionlabel}{\bfseries\rmfamily}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\usepackage[ngerman]{babel}
+\usepackage[top=2.5cm, bottom=3cm, left=2.5cm, right=4.5cm]{geometry}
+
+\usepackage{fancyhdr} % erlaubt mehr Optionen in Kopf- und Fusszeile
+\usepackage{xcolor} % Farben
+\usepackage{marginnote} % Randnotizen
+\usepackage{enumitem} % Fuer mehr Einstellungmoeglichkeiten bei Aufzaehlungen
+\usepackage{xifthen} % Erlaubt die Verwendung von if-then-else Befehlen im Code
+\usepackage{index} % Index erzeugen
+\newindex{default}{idx}{ind}{Stichwortverzeichnis}
+\usepackage{xspace} % intelligende Leerzeichen bei Macros
+\usepackage[normalem]{ulem} % unterstreichen von Text
+\usepackage{cancel} % schraeg durchstreichen von Text
+\usepackage{units} % schoenere Schreibweise fuer Einheiten mit Bruechen, laedt auch das nicefrac Paket
+
+\renewcommand{\CancelColor}{\color{gray}} % Farbe zum schraegen Druchstreichen in grau
+
+\definecolor{rltred}{rgb}{0.75,0,0}
+\definecolor{rltgreen}{rgb}{0,0.5,0}
+\definecolor{rltblue}{rgb}{0,0,0.75}
+
+%sichere Fraben, die sich auch bei einem SW-Druck unterscheiden lassen (Platzhalter momentan)
+\definecolor{color1}{cmyk}{1,0,0,0} %cyan
+\definecolor{color2}{rgb}{0,1,0} %green
+
+\usepackage[hyperindex=true]{hyperref} % Verweise als Hyperlinks
+\hypersetup{
+	pdftitle={Angewandte Differentialgeometrie Dr. Grensing},
+	pdfsubject={Angewandte Differentialgeometrie Geometrie},
+	pdfkeywords={Angewandte Differentialgeometrie Grensing},
+	pdfproducer={pdfLaTeX},
+	pdfpagemode={UseOutlines},
+	colorlinks=true,
+	bookmarksopen=true,
+	bookmarksnumbered=true,
+	urlcolor=rltblue,
+	filecolor=rltgreen,
+	linkcolor=rltblue,
+	backref=true,
+	pagebackref=true,
+	pdfpagemode=None,
+	citecolor=rltblue
+}
+
+% vertausche die Theta, Phi, Rho und Epsilon mit ihren "var" Versionen
+%\newcommand{\swapcmd}[2]{
+%	\let\temp\#1
+%	\left\#1\#2
+%	\let\#2\temp
+%}
+\let\temp\phi
+\let\phi\varphi
+\let\varphi\temp
+
+\let\temp\theta
+\let\theta\vartheta
+\let\vartheta\temp
+
+\let\temp\epsilon
+\let\epsilon\varepsilon
+\let\varepsilon\temp
+
+\let\temp\rho
+\let\rho\varrho
+\let\varrho\temp
+
+
+%%
+%% Fuer Zeichnungen in TikZ
+%%
+
+\usepackage{tikz}
+\usepackage{float} % Floater Elemente
+%\usepackage{transparent}
+%\usepackage{wrapfig}
+\usetikzlibrary{matrix,arrows,calc,intersections, through, positioning, patterns, decorations.text, decorations.pathmorphing, decorations.markings, decorations.pathreplacing}
+
+% neue Befehle fuer haeufig benutzte TikZ Formen; erstes Argument steht fuer die Position, Zweites fuer die Groesse
+\newcommand{\tikzrichtung}[3][1]{ % zeichnet eine rote Linie von einem Punkt in eine Richtung mit rotem Knoten am Ende
+	\draw[red] #2 -- ($#2 + #1*#3$) circle(0.05);
+}
+
+\newcommand{\tikzgitter}[3][0.25]{ %Hilfsgitter, das optionale Argument steht fuer die kleine Maschenweite, die Grosse ist doppelt so gross
+	\draw[step=#1,gray!15] #2 grid #3;
+	\draw[step=2*#1,gray!30] #2 grid #3;
+	\fill (0,0) circle(0.1); 
+}
+
+\newcommand{\tikzschnuller}[2][1]{
+	% definiere die Knoten relativ zum ersten Knoten skaliert mit dem Faktor
+	\coordinate (schnuller1) at #2; \coordinate (schnuller2) at ($(schnuller1)+#1*(-1.75,-0.75)$); \coordinate (schnuller3) at ($(schnuller1)+#1*(-2.5,-2.25)$); \coordinate (schnuller4) at ($(schnuller1)+#1*(0,-2)$); \coordinate (schnuller5) at ($(schnuller1)+#1*(1.75,-0.25)$);
+    %\fill (schnuller1) circle (0.05) (schnuller2) circle (0.05) (schnuller3) circle (0.05) (schnuller4) circle (0.05) (schnuller5) circle (0.05);
+    
+    % die Richtungsvektoren der Bezier Tangenten fuer die einzelnen Knoten (der Erste und der letzte haben keine Tangente)
+    \coordinate (ctrls1) at ($#1*(1.25,0.25)$); \coordinate (ctrls2) at ($-0.5*(ctrls1)$); \coordinate (ctrls4) at ($#1*(1,-1)$); \coordinate (ctrls3) at ($-0.5*(ctrls4)$); \coordinate (ctrls6) at ($#1*(1,1.5)$); \coordinate (ctrls5) at ($-0		.33*(ctrls6)$);
+	% die eigentlichen Tangenten
+    \coordinate (tang1) at ($(schnuller2)+(ctrls1)$); \coordinate (tang2) at ($(schnuller2)+(ctrls2)$); \coordinate (tang3) at ($(schnuller3)+(ctrls3)$); \coordinate (tang4) at ($(schnuller3)+(ctrls4)$); \coordinate (tang5) at ($(schnuller4)+(ctrls5)$); \coordinate (tang6) at ($(schnuller4)+(ctrls6)$);
+    %\fill[red] (tang1) circle (0.05); \fill[red] (tang2) circle (0.05); \fill[red] (tang3) circle (0.05); \fill[red] (tang4) circle (0.05); \fill[red] (tang5) circle (0.05); \fill[red] (tang6) circle (0.05);
+    %\draw[red] (tang1) -- (tang2); \draw[red] (tang3) -- (tang4); \draw[red] (tang5) -- (tang6);
+	
+	\draw (schnuller1) ..controls(schnuller1) and (tang1).. (schnuller2) ..controls(tang2) and (tang3).. (schnuller3) ..controls(tang4) and (tang5).. (schnuller4) ..controls(tang6) and (schnuller5).. (schnuller5);
+	
+	% zeichne nun das Loch in der Mitte
+	\def\angle{20} % Rotationswinkel
+	\coordinate (c) at ($#2+#1*(-1.25,-1.25)$); % Mittelpunkt der Ellipse die den unteren Bogen bildet
+	\begin{scope}
+		\clip[rotate=\angle] ($(c)-#1*(1,0.6)$) rectangle ($(c)+#1*(1,-0.1)$);
+		\path[draw,rotate=\angle,name path=l] (c) ellipse(#1*1 and #1*0.5);
+	\end{scope}
+	\path[name path=u,rotate=\angle] ($(c)-#1*(0,0.5)$) ellipse(#1*0.75 and #1*0.5);
+	\path[name intersections={of=u and l}];
+	\begin{scope}
+		\clip[rotate=\angle] (intersection-1) rectangle ($(intersection-2)+#1*(0,0.5)$);
+		\draw[rotate=\angle] ($(c)-#1*(0,0.5)$) ellipse(#1*0.75 and #1*0.5);
+	\end{scope}		
+}
+
+\newcommand{\tikzsegel}[2][1]{
+	% definiere die Knoten relativ zum ersten Knoten skaliert mit dem Faktor
+	\coordinate (segel1) at #2; \coordinate (segel2) at ($(segel1)+#1*(4,1.5)$); \coordinate (segel3) at ($(segel1)+#1*(2,-0.5)$);
+	%\fill (segel1) circle (0.05) (segel2) circle (0.05) (segel3) circle (0.05);
+	
+	% die Richtungsvektoren der Bezier Tangenten fuer die einzelnen Knoten (der Erste und der letzte haben keine Tangente)
+	\coordinate (ctrls1) at ($#1*(0.75,1.5)$); \coordinate (ctrls2) at ($#1*(-0.75,0.25)$); \coordinate (ctrls3) at ($#1*(-0.5,-0.25)$); \coordinate (ctrls4) at ($#1*(0.25,1)$); \coordinate (ctrls5) at ($#1*(-0.375,0.375)$); \coordinate (ctrls6) at ($#1*(0.75,0.125)$);
+	% die eigentlichen Tangenten
+	\coordinate (tang1) at ($(segel1)+(ctrls1)$); \coordinate (tang2) at ($(segel2)+(ctrls2)$); \coordinate (tang3) at ($(segel2)+(ctrls3)$); \coordinate (tang4) at ($(segel3)+(ctrls4)$); \coordinate (tang5) at ($(segel3)+(ctrls5)$); \coordinate (tang6) at ($(segel1)+(ctrls6)$);
+%	\fill[red] (tang1) circle (0.05); \fill[red] (tang2) circle (0.05); \fill[red] (tang3) circle (0.05); \fill[red] (tang4) circle (0.05); \fill[red] (tang5) circle (0.05); \fill[red] (tang6) circle (0.05);
+ %   \draw[red] (tang1) -- (segel1) -- (tang6); \draw[red] (tang2) -- (segel2) -- (tang3); \draw[red] (tang4) -- (segel3) -- (tang5);
+	
+	\draw (segel1) ..controls(tang1) and (tang2).. (segel2) ..controls(tang3) and (tang4).. (segel3) ..controls(tang5) and (tang6).. (segel1) --cycle;
+}
+
+\newcommand{\tikztorus}[2][1]{
+%	\tikzgitter{(-6,-1)}{(6,5)}
+	% zuerst die aeussere Ellipse
+	\draw[] #2  ellipse (#1*2 and #1*1);
+	
+	% dann das Loch
+	\begin{scope}
+		\clip ($#2 - #1*(1, 0.5)$) rectangle ($#2 + #1*(1, 1)$);
+		\path[draw,name path=gkreis] ($#2 + #1*(0,0.75)$) ellipse (#1*1.25 and #1*1);
+	\end{scope}
+	\path[name path=kkreis] ($#2 - #1*(0,0.5)$) ellipse (#1*1 and #1*0.75);
+	\path[name intersections={of=gkreis and kkreis}];
+	\begin{scope}
+		\clip (intersection-1) rectangle ($(intersection-2)+(0,0.5)$);
+		\draw ($#2 - #1*(0,0.5)$) ellipse (#1*1 and #1*0.75);
+	\end{scope}
+	
+	% definiere Werte auf die wir in der restlichen Zeichnung zurueckgreifen koennen
+	\def\torusbreite{#1*2}
+	\def\torushoehe{#1*1}
+	\def\torusdicke{#1*0.75}
+	\coordinate (torusUntenLoch) at ($#2 - #1*(0,0.25)$);
+	\coordinate (torusUnten) at ($#2 - #1*(0,1)$);
+}
+
+\usepackage[toc]{glossaries} % Symbolverzeichnis
+\glossarystyle{treehypergroup}
+\makeglossaries
+
+% Mathe Pakete
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{wasysym} % noch mehr symbole
+\usepackage{stmaryrd}
+\usepackage{bm} % fette Mathe Zeichen
+\usepackage{mathtools} % zusaetzliche Mathe Befehle (zusaetzlich zu AMS Math)
+\usepackage[hyperref,amsmath,thmmarks,thref]{ntheorem}
+
+% --- Mathe Symbole ---
+
+% canonic sets
+\DeclareMathOperator{\C}{\mathbb{C}}
+\DeclareMathOperator{\F}{\mathbb{F}}
+\DeclareMathOperator{\K}{\mathbb{K}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\Q}{\mathbb{Q}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\RP}{\mathbb{RP}} % real projection plane
+\DeclareMathOperator{\Tor}{\mathbb{T}} % torus
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\B}{\mathbb{B}} % unit ball
+
+% Redeclare \P (Prim or Propability) and put the old, reversed "breakline P" in \BreakLineP
+\let\BreakLineP\P
+\renewcommand{\P}{\ensuremath{\mathbb{P}}}
+% das ungarische H umdefinieren
+\let\umlautsH\H % long Hungarian umlaut (double acute)
+\renewcommand{\H}{\ensuremath{\mathbb{H}}}
+% das Paragraphenzeichen umdefinieren
+\let\ParagraphS\S
+\renewcommand{\S}{\mathbb{S}}
+
+
+%  geschwungene Buchstaben
+\DeclareMathOperator{\calD}{\mathcal{D}}
+\DeclareMathOperator{\calI}{\mathcal{I}}
+\DeclareMathOperator{\calJ}{\mathcal{J}}
+\DeclareMathOperator{\calL}{\mathcal{L}}
+\DeclareMathOperator{\calT}{\mathcal{T}}
+\DeclareMathOperator{\calV}{\mathcal{V}}
+
+% common mathematical operators and sets
+\DeclareMathOperator{\aff}{aff} % affine Huelle
+\DeclareMathOperator{\cs}{cs} % allgemeiner Cosinus
+\DeclareMathOperator{\ct}{ct} % allgemeiner Cotangens
+\DeclareMathOperator{\diam}{diam} % diameter
+\DeclareMathOperator{\dist}{dist} % distance
+\DeclareMathOperator{\dR}{dR} % deRahm
+\DeclareMathOperator{\eukl}{eukl} % euklidisch
+\DeclareMathOperator{\ggT}{ggT} % goesster gemeinsamer Teiler
+\DeclareMathOperator{\id}{id} % identity
+\DeclareMathOperator{\inh}{inh} % Inhalt
+\DeclareMathOperator{\grad}{grad} % Gradient
+\DeclareMathOperator{\kgV}{kgV} % kleinstes gemeinsames Vielfaches
+\DeclareMathOperator{\mmod}{mod} % modulo
+\DeclareMathOperator{\mspan}{span} % Lineare Huelle
+\DeclareMathOperator{\n}{n} % Umlaufzahl
+\DeclareMathOperator{\offen}{offen}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\res}{res} % Residuum
+\DeclareMathOperator{\rg}{rg} % rank (i)
+\DeclareMathOperator{\ric}{ric} % Ricci Tensor
+\DeclareMathOperator{\scal}{scal} % Skalarkruemmung
+\DeclareMathOperator{\sgn}{sgn} % Signum
+\DeclareMathOperator{\sn}{sn} % allgemeiner Sinus
+\DeclareMathOperator{\spur}{spur} % Spur
+\DeclareMathOperator{\supp}{supp} % support
+\DeclareMathOperator{\sternf}{sternf}
+\DeclareMathOperator{\tr}{tr} % Spur
+
+\DeclareMathOperator{\Abb}{Abb} % maps
+\DeclareMathOperator{\Aut}{Aut} % automorphisms
+\DeclareMathOperator{\Bild}{Bild}
+\DeclareMathOperator{\CAT}{CAT}
+\DeclareMathOperator{\Charakteristik}{char}
+\DeclareMathOperator{\Charakt}{char}
+\DeclareMathOperator{\D}{D} % Jacobi matrix or derivative
+\DeclareMathOperator{\Diff}{Diff}
+\DeclareMathOperator{\End}{End} % endomorphisms
+\DeclareMathOperator{\Gl}{GL} % general linear group
+\DeclareMathOperator{\GL}{GL} % general linear group
+\DeclareMathOperator{\Gr}{Gr}
+\DeclareMathOperator{\Graph}{Graph}
+\DeclareMathOperator{\Hh}{H} % Hessesche
+\DeclareMathOperator{\Hom}{Hom} % homomorphisms
+\DeclareMathOperator{\Id}{id} % identity
+\DeclareMathOperator{\Ind}{Ind} % Index
+\DeclareMathOperator{\Inn}{Inn} % Untergruppe der inneren Automorphismen
+\DeclareMathOperator{\Iso}{Iso}
+\DeclareMathOperator{\Kern}{Kern}
+\DeclareMathOperator{\Oo}{O} % Matrizen sie mit ihrer Transponierten multipiziert die Einheitsmatrix ergeben
+\DeclareMathOperator{\Relation}{\scriptstyle\mathrm{R}} % custom Relation
+\DeclareMathOperator{\Ric}{Ric} % Ricci Tensor field
+\DeclareMathOperator{\Rang}{Rang} % rank (ii)
+\DeclareMathOperator{\SL}{SL} % Matrizen mit Deteminante 1
+\DeclareMathOperator{\Stab}{Stab} % Stabilisator
+\DeclareMathOperator{\Sym}{Sym} % symmetric group
+\DeclareMathOperator{\T}{T} % tangent bundle
+
+\newcommand{\Zentrum}[1]{\ensuremath{\mathrm Z(#1)}} % Zentrum einer Gruppe
+\newcommand{\Ordnung}[1][]{ % Ordnung einer Gruppe
+  \ifthenelse{\isempty{#1}}{
+    \#
+  }{
+    \left|#1\right|
+  }
+}
+
+% X als Malzeichen und andere Operatorzeichen
+\newcommand{\dop}{\mathrm{d}}
+\newcommand{\X}{\times}
+\newcommand{\tensor}{\otimes}
+\newcommand{\ii}{{\mathrm i}}
+
+%Realteil und Imaginaerteil
+\renewcommand{\Re}{\ensuremath{\operatorname{Re}}}
+\renewcommand{\Im}{\ensuremath{\operatorname{Im}}}
+
+% stellt einen gro"sen vertikalen Strich an einen Term, nuetzlich in Bruechen
+\newcommand{\bigvert}[1]{\left. #1 \right|}
+
+% Differentialoperatoren als Br"uche
+\newcommand{\difffrac}[3][]{\ifthenelse{\isempty{#1}}{\frac{\dop #2}{\dop #3}}{\left. \frac{\dop #2}{\dop #3} \right|_{#1}}}
+\newcommand{\pdifffrac}[3][]{\ifthenelse{\isempty{#1}}{\frac{\partial #2}{\partial #3}}{\left. \frac{\partial #2}{\partial #3} \right|_{#1}}}
+
+% ein schoener aussehender Faktorraum anstatt einfach nur A/B
+\newcommand{\FakRaum}[2]{
+	\raisebox{0.7ex}{\ensuremath{#1}}
+	\ensuremath{\mkern-3mu}\big/\ensuremath{\mkern-3mu}
+	\raisebox{-0.6ex}{\ensuremath{#2}}}
+\newcommand{\smallFakRaum}[2]{
+	\scriptsize{\raisebox{0.7ex}{\ensuremath{#1}}
+	\ensuremath{\mkern-3mu}\ / \ensuremath{\mkern-3mu}
+	\raisebox{-0.6ex}{\ensuremath{#2}}}}
+
+% quotient space or group
+\newcommand{\modulo}[1]{\ensuremath{/_{\displaystyle #1}}}
+
+% declaring Index for group theory
+\newcommand{\Index}[2]{\ensuremath{(#1 \SlimDdot #2)}}
+
+
+% Theoremartige Umgebungen
+\theoremstyle{break}
+\newtheorem{Dfn}{Definition}[chapter]
+\newtheorem{Satz}[Dfn]{Satz}
+\newtheorem{Lemma}[Dfn]{Lemma}
+\newtheorem{Kor}[Dfn]{Korollar}
+\newtheorem{Prop}[Dfn]{Proposition}
+\theorembodyfont{\normalfont}
+\newtheorem{Bsp}[Dfn]{Beispiel}
+\newtheorem{Bspe}[Dfn]{Beispiele}
+\newtheorem{Bem}[Dfn]{Bemerkung}
+
+\theoremstyle{nonumberbreak}
+\newtheorem{dfn}{Definition}
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{kor}{Korollar}
+\newtheorem{prop}{Proposition}
+
+\newtheorem{bsp}{Beispiel}
+\newtheorem{bspe}{Beispiele}
+\newtheorem{bem}{Bemerkung}
+
+\theoremsymbol{\ensuremath{\Box}}
+\theorembodyfont{\normalfont}
+\newtheorem{bew}{Beweis}
+
+\theoremsymbol{}
+\theoremstyle{emptybreak}
+\newtheorem{emptythm}{}% druckt nur den optionalen Namen aus
+
+\theoremstyle{break}
+\newtheorem{Aufg}{Aufgabe}
+\newtheorem{Loes}{L\"osung}
+
+% changing enumerations
+\setlist[enumerate]{label=(\arabic*), itemsep=0cm, leftmargin=1cm}
+\setlist[itemize]{itemsep=0cm}
+
+% set line distances
+\linespread{1.1}
+
+% Add a ':' for mathmode with tiny whitespaces around
+\newcommand{\SlimDdot}{\ensuremath{\mathrm{:}}}
+
+% indexing support
+
+% Print and index given text
+% usage: \CmIndex{[(optionally put another text for the index in here)]}{(text to print and add to index)}
+\newcommand{\CmIndex}[2][]{\ifthenelse{\isempty{#1}}{\index{#2}}{\index{#1}}#2}
+
+% Highlight(bold) and index the given text
+% usage: \CmMark[(optionally put another text for the index in here)]{(text to highlight and add to index)}
+\newcommand{\CmMark}[2][]{\textbf{\CmIndex[#1]{#2}}}
+
+\parindent0pt % der Einschub bei neuem Absatz
+
+% Befehl fuer Anfuerungszeichen unten und oben
+\newcommand{\quot}[1]{\textrm{\glqq}{#1}\textrm{\grqq}}
+
+%========================================================================================================================
+%	G L O S S A R
+%========================================================================================================================
+
+
+%========================================================================================================================
+%	I N F O R M A T I O N E N	Z U M	S K R I P T
+%========================================================================================================================
+
+\subject{inoffizielles Skript}
+\title{Angewandte Differentialgeometrie}
+\subtitle{Gehalten von Dr. S. Grensing im Sommersemester 2013}
+\author{getippt von Aleksandar Sandic\thanks{\href{mailto:aleksandar.sandic@student.kit.edu}{Aleksandar.Sandic@student.kit.edu}}}
+
+%========================================================================================================================
+%	I N H A L T
+%========================================================================================================================
+\begin{document}
+\maketitle
+
+% Inhaltsverzeichnis
+\pdfbookmark[1]{Inhaltsverzeichnis}{contents}
+\setlength\parskip{0.6pt}
+\tableofcontents
+
+\chapter*{Vorwort}
+\addcontentsline{toc}{chapter}{Vorwort}
+
+\section*{\"Uber dieses Skript}
+Dies ist eine Mitschrieb der Vorlesung \quot{Angewandte Differentialgeometrie} von Dr. S. Grensing, gehalten im Sommersemester 2013 am Karlsruher Institut f"ur Technologie.
+Dr. Grensing ist nicht f"ur den Inhalt verantwortlich und es besteht weder eine Garantie f"ur Vollst"andigkeit, noch Korrektheit der enthaltenen Aussagen.
+
+\section*{Wer}
+Das Skript wurde in von Aleksandar Sandic getippt.
+Bei Anmerkungen bzw. beim Auffinden von Fehlern schickt bitte eine E-Mail an
+\begin{center}
+  \href{mailto:aleksandar.sandic@student.kit.edu}{aleksandar.sandic@student.kit.edu}
+\end{center}
+
+\section*{Wo}
+Link zur Vorlesung: \url{http://www.math.kit.edu/iag5/lehre/angdifgeo2013s/de}\\
+Link zum Skript: -fehlt-\\
+Link zum Mitschiebwiki: \url{http://mitschriebwiki.nomeata.de/}
+
+\section*{To Do}\begin{itemize}
+\item die Vorlesung l"auft noch
+\end{itemize}
+
+%========================================================================================================================
+%	V O R L E S U N G
+%========================================================================================================================
+
+%-------------------------- Kapitel 1 --------------------------
+% Vorlesung vom 16. 4.
+\chapter{R\"auber und Gendarm}
+
+\section{Metrische R\"aume mit oberen Kr\"ummungsschranken}
+
+Es sei $(X, d)$ ein metrischer Raum. Ein Weg $c: \calI \to X$ hei"st \CmMark[Geod\"atische!minimierende]{(minimierende) Geod"atische}, wenn $d(c(t), c(t')) = (t - t')$ f"ur alle $t, t' \in \calI$ gilt.
+Der Raum $X$ hei"st \CmMark[Raum!geod\"atischer]{geod"atischer Raum}, wenn f"ur alle $x, y \in X$ eine Geod"atische von $x$ nach $y$ existiert, beziehungsweise \CmMark[Raum!$R$-geod\"atischer]{$\bm{R}$-geod"atisch}, wenn dies f"ur $d(x, y) \le R$ gilt.
+Ist $c: [a, b] \to X$ ein Weg so hei"st er \CmMark[Weg!rektifizierbarer]{rektifizierbar}, falls seine L"ange \marginnote{\begin{tikzpicture}[font=\scriptsize,scale=0.5,baseline=0]
+%\tikzgitter{(-4,-1)}{(4,3)}
+	\coordinate (1) at (-3,-0.5); \coordinate (2) at (3,2.5);
+	\coordinate (ctrl1) at (1,2.5); \coordinate (ctrl2) at (-0.5,-2);
+	\draw (1) ..controls($(1) + (ctrl1)$) and ($(2) + (ctrl2)$).. coordinate[pos=0.1](a) coordinate[pos=0.5](b) coordinate[pos=0.75](c) coordinate[pos=0.95](d) node[pos=0.65,below]{$c$} (2);
+	\draw[dashed] (a) node[left]{$c(t_i)$} -- node[below]{$d_i$} (b) node[above]{$c(t_{i+1})$};
+	\draw[decorate,decoration={brace}] (c) -- node[above left]{$d_n$} (d);
+\end{tikzpicture}}
+\begin{align*}
+	\calL(c) = \sup \left\{ \sum d(c(t_i), c(t_{i+1})) \mid t_1 < \ldots t_n, t_i \in \calI \right\}
+\end{align*}
+endlich ist.
+Es gilt $d(c(a), c(b)) \le \calL(c)$.
+Die Kurvenl"ange ist invariant unter monotonen Reparametrisierungen.
+Die L"angenfunktion $t \mapsto \calL(c|_{[a,t]})$ ist monoton wachsend; insbesondere besitzt jede Kurve eine Bogenl"angenparametrisierung.
+Der Raum $(X, d)$ hei"st \CmMark[Raum!L\"angen-]{L"angenraum} (oder $d$ \CmMark[Metrik!innere]{innere Metrik}), falls die Metrik
+\begin{align*}
+	\overline{d}(x, y) = \inf \{ \calL(c) \mid c: \calI \to X \text{ rektif'barer Weg}, c(0) = x, c(1) = y\}
+\end{align*}
+mit $d$ "ubereinstimmt.
+
+\begin{bspe}\begin{enumerate}[label=\arabic*), leftmargin=*]
+\item
+	$\R^n$ mit der euklidischen Metrik ist ein geod"atischer Raum und ein L"angenraum.
+\item
+	Jede Riemannsche Mannigfaltigkeit ist ein L"angenraum (Beweis zur "Ubung).
+\item
+	Ist $(X, d)$ ein metrischer Raum, so folgt dass $(X, \overline d)$ eine L"angenmetrik ist, das heißt $\overline{\overline{d}} = \overline{d}$ (das iterieren der Konstruktion liefert keine neue Metrik).
+\item
+	Jeder geod"atische Raum ist ein L"angenraum.
+	Es gilt stets $d \le \overline{d}$.
+	Sind $x, y \in X$ und ist $\gamma : [a, b] \to X$ eine Geod"atische von $x$ nach $y$, so gilt:
+	\begin{align*}
+		\calL(\gamma) &= \sup \left\{ \sum d(\gamma(t_i), \gamma(t_{i+1})) \right\} \\
+		&= \sup \left\{ \sum (t_{i+1} - t_i) \right\} \\
+		&= t - a = d(x, y). \shortintertext{Also}
+		\overline{d}(x, y) &= \inf_c \calL(c) \le \calL(\gamma) = d(x, y)
+	\end{align*}
+\item
+	$\R^2 \setminus \{0\}$ ist ein L"angenraum (bez"uglich der euklidischen Metrik), aber kein geod"atischer Raum.
+	\begin{center}
+		\begin{tikzpicture}[font=\scriptsize]
+			%\tikzgitter{(-4,-1)}{(4,3)}
+			\draw[->] (-1.5,0) -- (1.5,0);
+			\draw[->] (0,-0.5) -- (0,1.5);
+			\fill (-1,0) circle(0.05) node[below]{$-1$} (1,0) circle(0.05) node[below]{$1$};
+			\draw (-1,0) to[out=20,in=160] (1,0);
+		\filldraw[fill=white] (0,0) circle(0.05);
+		\end{tikzpicture}\\
+		Es gibt keine kürzeste Verbindung
+	\end{center}
+\end{enumerate}\end{bspe}
+
+\begin{satz}[von Hopf-Rinow; Chom-Vossen 1935]
+Es sei $X$ ein lokalkompakter L"angenraum. Dann sind die folgenden Aussagen "aquivalent:
+\begin{enumerate}[label=(\roman*), widest=iii]
+\item
+	$X$ ist vollst"andig
+\item
+	$X$ ist \CmMark[vollst\"andig!geod\"atisch]{geod"atisch vollst"andig}, das hei"st jede Geod"atische $c: [0,1) \to X$ kann in $1$ fortgesetzt werden.
+\item
+	Beschr"ankte abgeschlossene Mengen sind kompakt.
+\end{enumerate}
+\end{satz}
+
+Jede der obigen Aussagen impliziert, dass $X$ ein geod"atischer Raum ist.
+\begin{center}\begin{tikzpicture}[font=\scriptsize]
+	%\tikzgitter{(-4,-1)}{(4,3)}
+	\coordinate (x) at (-2.5,-0.5); \coordinate (y) at (2.5,1.5);
+	\foreach \i/\j in {40/180, 55/170, 70/160, 85/150} {
+		\draw (x) ..controls($(x)+(\i:2.5)$) and ($(y)+(\j:2.5)$).. (y);
+	}
+	\fill (x) circle(0.05)node[below]{$x$} (y) circle(0.05)node[right]{$y$};
+\end{tikzpicture}\\
+Kanten $e_n$ der L"ange $1+\frac{1}{n}$ $\leadsto$ Es gibt keine Kurve der L"ange $1$\end{center}
+Es bezeichne $M_\kappa^2$ die (eindeutigen) 2-dimensionalen, einfachzusammenh"angenden Riemannschen Mannigfaltigkeiten mit der Schnittkr"ummung $\sec \equiv \kappa$, und $D_\kappa$ ihren Durchmesser:
+\begin{align*}
+	M_\kappa^2 &= \begin{cases}
+		\S_{\frac{1}{\sqrt{\kappa}}}^2 & ,\kappa > 0 \\
+		\R^2 & ,\kappa = 0 \\
+		\H_{\frac{1}{\sqrt{\kappa}}}^2 & ,\kappa < 0
+	\end{cases} \\
+	D_\kappa &= \begin{cases}
+		\frac{\pi}{\sqrt{\kappa}} & ,\kappa > 0 \\
+		\infty & ,\kappa \le 0
+	\end{cases} \shortintertext{wobei}
+	\H_{\frac{1}{\sqrt{\kappa}}}^2 &= \left\{ x \in \R^3 \mid x_1^2 + x_2^2 - x_3^2 = -\frac{1}{\kappa} \right\}.
+\end{align*}
+Es sei $X$ ein metrischer Raum. Ein \CmMark[Dreieck!geod"atisches]{geod"atisches Dreieck} $\Delta(x, y, z)$ besteht aus Geod"atischen $c_{xy} = \overline{xy}$, $c_{yz} = \overline{yz}$ und $c_{zx} = \overline{zx}$ zwischen den Punkten $x$, $y$ und $z$.
+Ein Vergleichsdreieck in $M_\kappa^2$ ist ein geod"atisches Dreieck $\overline\Delta(\overline{x}, \overline{y}, \overline{z})$ mit gleichen Kantenl"angen wie das urspr"ungliche Dreieck.
+Ein solches Vergleichsdrieck existiert eindeutig, falls der Umfang $d(x, y) + d(y, z) + d(z, x) \le 2 D_\kappa$ ist.
+Ein Punkt $\overline p \in \overline\Delta(\overline{x}, \overline{y}, \overline{z})$ hei"st \CmMark[Punkt!Vergleichs-]{Vergleichspunkt} zu $p \in \Delta(x, y, z)$, $p \in \overline{xy}$, falls $\overline{d}(\overline{x}, \overline{p}) = d(x, p)$.
+Das Dreieck $\Delta(x, y, z)$ erf"ullt die \CmMark[CAT(k)-Ungleichung@$\CAT(\kappa)$-Ungleichung]{$\bm{\CAT(\kappa)}$-Ungleichung}, wenn f"ur alle $p, q \in \Delta(x, y, z)$ mit vergleichpunkten $\overline{p}, \overline{q}$ gilt:
+\begin{align*}
+	d(p, q) \le \overline{d}(\overline{p}, \overline{q})
+\end{align*}
+\begin{center}\begin{tikzpicture}[font=\scriptsize]
+	%\tikzgitter{(-4,-1)}{(4,3)}
+	\coordinate (yShift) at (3,0.25); \coordinate (zShift) at (2,2);
+	\coordinate (x) at (-3.5,0); \coordinate (y) at ($(x)+(yShift)$); \coordinate (z) at ($(x)+(zShift)$);
+	\coordinate (x') at ($(x)+(4.5,0)$); \coordinate (y') at ($(x')+(yShift)$); \coordinate (z') at ($(x')+(zShift)$);
+	\draw (x) to[out=20,in=170] coordinate[pos=0.5] (p) (y) to[out=135,in=270] (z) to[out=240,in=35] coordinate[pos=0.5] (q) (x) -- cycle;
+	\fill (x) circle(0.05)node[below]{$x$} (y) circle(0.05)node[right]{$y$} (z) circle(0.05)node[above]{$z$};
+	\fill (p) circle(0.05) (q) circle(0.05);
+	\draw[dashed] (p) node[below]{$p$} -- (q) node[above]{$q$};
+	\node at ($(x)+(3,1.5)$){$\subseteq X$};
+	
+	\draw (x') --coordinate[pos=0.5] (p') (y') -- (z') --coordinate[pos=0.5] (q') (x') -- cycle;
+	\fill (x') circle(0.05)node[below]{$\overline x$} (y') circle(0.05)node[right]{$\overline y$} (z') circle(0.05)node[above]{$\overline z$};
+	\fill (p') circle(0.05) (q') circle(0.05);
+	\draw[dashed] (p') node[below]{$\overline p$} -- (q') node[above]{$\overline q$};
+	\node at ($(x')+(3,1.5)$){$\subseteq \R^2$};
+\end{tikzpicture}\end{center}
+Der Raum $X$ besitzt die obere Kr"ummungsschranke $\kappa$, wenn f"ur alle $x \in X$ eine geod"atische Umgebung existiert, in der alle Dreiecke die $\CAT(\kappa)$-Ungleichung erfüllen. F"ur $\kappa = 0$ hei"st $X$ \CmMark[ger\"ummt!nicht-positiv]{nicht-positiv gekr"ummt}. Erf"ullt $X$ global die $\CAT(\kappa)$-Ungleichung, so hei"st $X$ \CmMark[Raum!$\CAT(\kappa)$-]{$\bm{\CAT(\kappa)}$-Raum}.
+
+\begin{bspe}\begin{enumerate}[label=\arabic*)]
+\item
+	$\R^2$ ist $\CAT(0)$, $M^2 = \FakRaum{\R^2}{\Z^2}$ ist nichtpositiv gekr"ummt.
+\item
+	$\S^1$ ist $\CAT(1)$.
+\item
+	$\R^2 \setminus Q_1$, $Q_1 = \{ x_1 > 0, x_2 > 0 \}$, mit der induzierten L"angenmetrik ist $\CAT(0)$.
+	\begin{center}\begin{tikzpicture}[font=\scriptsize]
+		%\tikzgitter{(-4,-1)}{(4,3)}
+		\coordinate (x) at (-2,-1); \coordinate (y) at (1.5,-0.5); \coordinate (z) at (-0.5,1);
+		
+		\draw (x) -- (y) -- (0,0) -- (z) -- (x) -- cycle;
+		\fill (x) circle(0.05)node[below]{$x$} (y) circle(0.05)node[below]{$y$} (z) circle(0.05)node[above]{$z$};z
+		
+		\fill[fill=gray!30,fill opacity=0.5] (0,0) rectangle(2.4,1.4);
+		\node at (1,0.75) {$Q_1$};
+		\draw[->] (-2.5,0) -- (2.5,0);\draw[->] (0,-1.5) -- (0,1.5);
+	\end{tikzpicture}\end{center}
+\item
+	$(M, g)$ Riemannsche Manngifaltigkeit, Schnittkr"ummung $\sec_g \le \kappa$, vollst"andig. nach dem Satz von Topogonov hat $M$ die obere Kr"ummungsschranke $\kappa$.
+\end{enumerate}\end{bspe}
+
+\begin{emptythm}[Eigenschaften von $\CAT(\kappa)$-R"aumen]\begin{itemize}
+\item
+	Geod"atische der L"ange $< D_\kappa$ sind eindeutig.
+\item
+	B"alle vom Radius $< \frac{1}{2} D_\kappa$ sind konvex und zusammenziehbar.
+\item
+	$\CAT(0)$-R"aume sind zusammenziehbar.
+\end{itemize}\end{emptythm}
+
+\begin{emptythm}[Charakterisierung von $\CAT(\kappa)$-R"aumen]
+F"ur jedes geod"atische Dreieck $\Delta(x, y, z)$ vom Umfang $< 2 D_\kappa$ und Punkte $p \in \overline{xy}$ und $q \in \overline{xz}$ gilt f"ur Vergleichsdreiecke $\overline\Delta(\overline{x}, \overline{y}, \overline{z})$ und $\overline\Delta(\overline{x}, \overline{p}, \overline{q})$:
+\begin{align*}
+	\varangle_{\overline{x}} (\overline{p}, \overline{q}) \le \varangle_{\overline{x}} (\overline{y}, \overline{z}) \tag{in $M_\kappa^2$}
+\end{align*}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1.5]
+	%\tikzgitter{(-4,-1)}{(4,3)}
+	\coordinate (yShift) at (3,0.25); \coordinate (zShift) at (2,2);
+	\coordinate (x) at (-3.5,0); \coordinate (y) at ($(x)+(yShift)$); \coordinate (z) at ($(x)+(zShift)$);
+	\coordinate (x') at ($(x)+(4.5,0)$); \coordinate (y') at ($(x')+(yShift)$); \coordinate (z') at ($(x')+(zShift)$);
+	\draw (x) to[out=20,in=170] coordinate[pos=0.5] (p) (y) to[out=135,in=270] (z) to[out=240,in=35] coordinate[pos=0.5] (q) (x) -- cycle;
+	\fill (x) circle(0.05)node[below]{$x$} (y) circle(0.05)node[right]{$y$} (z) circle(0.05)node[above]{$z$};
+	\fill (p) circle(0.05) (q) circle(0.05);
+	\draw (p) node[below]{$p$} -- (q) node[above]{$q$};
+	
+	\fill (x') circle(0.05)node[below]{$\overline x$} (y') circle(0.05)node[right]{$\overline y$} (z') circle(0.05)node[above]{$\overline z$};
+	\coordinate (p') at ($(x')+(15:2)$); \coordinate (q') at ($(x')+(35:1.75)$);
+	\fill (p') circle(0.05)node[right]{$\overline p$} (q') circle(0.05)node[above]{$\overline q$};
+	\node at ($(x')+(3,1.5)$){$\Delta(\overline{x},\overline{y},\overline{z})$};
+	\node at ($(x')+(22:2.3)$){$\overline{\Delta}(\overline{x},\overline{p},\overline{q},)$};
+
+	\draw[clip] (x') -- (y') -- (z') -- (x') -- cycle;
+	\draw (x') circle(1.25);
+	\draw[clip] (x') -- (p') -- (q') -- (x') -- cycle;
+	\draw (x') circle(1);
+\end{tikzpicture}\end{center}
+Ist $X$ ein $\CAT(\kappa)$-Raum und sind $c_1, c_2$ Geod"atische mit gleichem Startpunkt $c_1(0) = c_2(0) = x$ so ist der Winkel $\varangle_{\overline{x}} (\overline{c_1(s)}, \overline{c_2(t)})$ monoton wachsend in $s$ und $t$.
+Damit ist der Winkel
+\begin{align*}
+	\varangle(c_1, c_2) = \lim_{\mathclap{s,t \to 0}} \varangle_{\overline{x}} (\overline{c_1(s)}, \overline{c_2(t)}) 
+	= \lim_{\mathclap{t \to 0}} \varangle_{\overline{x}} (\overline{c_1(t)}, \overline{c_2(t)})
+\end{align*}
+wohldefiniert.
+\end{emptythm}
+
+\begin{satz}[von Hadamart-Cartan; Alexander-Bishop 1990]
+Es sei $X$ ein vollst"andiger metrischer Raum mit der oberen Kr"ummungsschranke $\kappa \le 0$. Dann ist seine universelle "Uberlagerung $\tilde X$ (bez"uglich der induzierten Metrik) (global) $\CAT(\kappa)$.
+\end{satz}
+
+%========================================================================================================================
+%	A N H A N G
+%========================================================================================================================
+
+\appendix
+
+%========================================================================================================================
+%	UE B U N G
+%========================================================================================================================
+
+% Die Benennung der "section" so aendern, dass "\"Ubung 123 vom " am Anfang steht
+% Der Code ist fast genau der vom Anfang der Praeambel, dort steht die Erklaerung
+\renewcommand*{\othersectionlevelsformat}[3]{\ifstr{#1}{section}{\"Ubung\ #3\ vom\ }{#3\autodot\enskip}}
+
+% Das Format der "section" in Kopfzeile der rechten Seiten
+\renewcommand*{\sectionmarkformat}{\"Ubung \thesection\autodot\ vom\enskip}
+
+%========================================================================================================================
+%	S T I C H W O R T V E R Z E I C H N I S
+%========================================================================================================================
+
+\addcontentsline{toc}{chapter}{Stichwortverzeichnis} % <- damit es auch im Inhaltsverzeichnis erscheint
+\printindex
+
+%========================================================================================================================
+%	G L O S S A R
+%========================================================================================================================
+
+
+
+%========================================================================================================================
+%	L I T E R A T U R V E R Z E I C H N I S
+%========================================================================================================================
+\bibliographystyle{plain}
+
+\end{document}
