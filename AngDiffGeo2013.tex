@@ -1055,7 +1055,26 @@ Es gilt:
 
 \begin{emptythm}[Modifikation: \Spheres]
 Wir betrachten das \textsc{Lion and Man} Problem: ein Mensch versucht einem L"owen zu entkommen.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\draw (-0.5,0) -- (4,0);
+	\draw (0,-0.5) -- (0,3);
+	
+	\coordinate (m) at (1,0.5); \coordinate (m') at ($(m)+(130:0.5)$); \coordinate (l) at (1.5,1);
+	
+	\fill (m)circle(0.05)node[below]{Man} (m')circle(0.05) (l)circle(0.05)node[right]{Lion};
+	\draw[->] (m) -- (m');
+	\path (m) --coordinate[pos=5](z) (l);
+	\draw[dashed] (m) -- (z);
+	\draw[dashed] (m') --coordinate[pos=0.1] (l') node[above]{$\calL^{t+1}$} (z);
+	\draw[->] (l) -- (l');
+	
+	\begin{scope}
+		\clip (0.5,2.5) rectangle (3,0);
+		\node[draw] at (z) [circle through={(l)}] {};
+	\end{scope}
+\end{tikzpicture}\end{center}
 Der L"owe w"ahlt einen Punkt, so dass er zwischen den Menschen und dem Punkt steht.
 Als Abgrenzung dient im Gegensatz zu \Planes keine Hyperebene, sondern eine Sph"are durch den Punkt und die Position des L"owen.
 \end{emptythm}
@@ -1063,12 +1082,42 @@ Als Abgrenzung dient im Gegensatz zu \Planes keine Hyperebene, sondern eine Sph"
 \begin{emptythm}[\Spheres]\begin{itemize}
 \item
 	\emph{Initialisierung:} W"ahle Punkte $p_k$ auf Geraden durch $E$ und $P_k$ so, dass $P_k \in \overline{p_k E}$ gilt und die Komponente von $\R^n \setminus \B_{d(p_k, P_k)}(p_k)$, welche $E$ enth"alt, beschrieben ist.
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+		%\tikzgitter{(-4,-4)}{(4,4)}
+		
+		\coordinate (e) at (0,0);
+		\fill (e) circle(0.05) node[below]{$E$};
+		\coordinate (z1) at (-1,-3); \coordinate (z2) at (2.5,-1.75); \coordinate (z3) at (3,1.5); \coordinate (z4) at (-0.25,3); \coordinate (z5) at (-3,0.25);
+		
+		\def\radius{2}
+		\begin{scope}
+		\clip (e) circle(2.25);
+			\foreach \i in {1,2,3,4,5}{
+				\draw[name path=kreis] (z\i) circle(\radius) (z\i) circle(0.1);
+				\path[name path=direkt] (z\i) -- (e);
+				\path[name intersections={of=kreis and direkt}];
+				\coordinate (p\i) at (intersection-1);
+				\draw[dashed] ($(p\i)!2cm!90:(e)$) -- ($(p\i)!-2cm!90:(e)$);
+			}
+		\end{scope}
+		\fill (p1)circle(0.05)node[below]{$P_1$} (p2)circle(0.05)node[below right]{$P_2$} (p3)circle(0.05)node[right]{$P_3$} (p4)circle(0.05)node[above]{$P_4$} (p5)circle(0.05)node[left]{$P_5$};
+		\draw[dashed] (e) -- (z3)node[right]{$p_3$};
+	\end{tikzpicture}\end{center}
 \item
 	$P_k^{t+1} = P_k^{t+1}(p_k, P_k^t, E^{t+1})$
 \item
 	$P_k^{t+1} \in \overline{p_k E^{t+1}}$ mit $d(P_k^t, P_k^{t+1}) = 1$ und $d(P_k^{t+1}, E^{t+1})$ minimal.
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+		%\tikzgitter{(-4,-4)}{(4,4)}
+		
+		\draw (0,0) --coordinate[pos=0.5](p) coordinate[pos=0.9](e) (3,0.25);
+		\draw[dashed] (0,0) --coordinate[pos=0.65](p') coordinate[pos=0.85](e') (3,1);
+		
+		\draw[->] (p)node[below]{$P_k^t$} --node[right]{$1$} (p')node[above left]{$P_k^{t+1}$};
+		\draw[->] (e)node[below]{$E^t$} --node[right]{$r$} (e')node[above]{$E^{t+1}$};
+		
+		\fill (p)circle(0.05) (e)circle(0.05);
+	\end{tikzpicture}\end{center}
 \end{itemize}\end{emptythm}
 
 \begin{satz}
@@ -1080,7 +1129,24 @@ Wir betrachten in dem folgenden Bild den Unterschied zwischen \Planes und \Spher
 \begin{center}\textcolor{red}{[BILD]} \\
 $\Rightarrow d(D^{t+1}, E^{t+1} < d(Q, E^{t+1}$\end{center}
 Sei $R^t = \conv(p_1, \ldots, p_N) \setminus \bigcup_{k=1}^N \B_{d(p_k, P_k^t)}(p_k)$ der zum Zeitpunkt $t$ von den Sph"aren eingeschlossene Bereich.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(4,4)}
+	
+	\node (e) at (0,0) {$R^t$};
+	\coordinate (z1) at (-1,-3); \coordinate (z2) at (2.5,-1.75); \coordinate (z3) at (3,1.5); \coordinate (z4) at (-0.25,3); \coordinate (z5) at (-3,0.25);
+	
+	\def\radius{2}
+	\begin{scope}
+	\clip (e) circle(2.25);
+		\foreach \i in {1,2,3,4,5}{
+			\draw[name path=kreis] (z\i) circle(\radius) (z\i) circle(0.1);
+			\path[name path=direkt] (z\i) -- (e);
+			\path[name intersections={of=kreis and direkt}];
+			\coordinate (p\i) at (intersection-1);
+		}
+	\end{scope}
+	\fill (p1)circle(0.05)node[below]{$P_1^t$} (p2)circle(0.05)node[below right]{$P_2^t$} (p3)circle(0.05)node[right]{$P_3^t$} (p4)circle(0.05)node[above]{$P_4^t$} (p5)circle(0.05)node[left]{$P_5^t$};
+\end{tikzpicture}\end{center}
 Wie f"ur \Planes zeigt man: Es existiert ein $\epsilon > 0$, so dass f"ur alle Punkte $x \in R^t$ und Vektoren $v \in \S^{n-1}$ ein $k \le N$ und ein $v_k = \normVek{P_k - x}$ mit $\langle v_k(x), v \rangle \ge d_{\min} > 0$ existieren.
 Es sei $v = \normVek{E^{t+1} - E^t}$ und $v_k = v_k(E^t)$.
 Dann folgt wie f"ur \Planes:
