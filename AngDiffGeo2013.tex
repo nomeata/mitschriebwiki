@@ -210,6 +210,7 @@
 % --- Mathe Symbole ---
 
 % canonic sets
+\DeclareMathOperator{\B}{\mathbb{B}} % unit ball
 \DeclareMathOperator{\C}{\mathbb{C}}
 \DeclareMathOperator{\F}{\mathbb{F}}
 \DeclareMathOperator{\K}{\mathbb{K}}
@@ -219,7 +220,6 @@
 \DeclareMathOperator{\RP}{\mathbb{RP}} % real projection plane
 \DeclareMathOperator{\Tor}{\mathbb{T}} % torus
 \DeclareMathOperator{\Z}{\mathbb{Z}}
-\DeclareMathOperator{\B}{\mathbb{B}} % unit ball
 
 % Redeclare \P (Prim or Propability) and put the old, reversed "breakline P" in \BreakLineP
 \let\BreakLineP\P
@@ -242,6 +242,8 @@
 
 % common mathematical operators and sets
 \DeclareMathOperator{\aff}{aff} % affine Huelle
+\DeclareMathOperator{\conv}{conv} % konvexe Huelle
+\DeclareMathOperator{\convo}{\stackrel{\circ}{\conv}} % konvexe Huelle
 \DeclareMathOperator{\cs}{cs} % allgemeiner Cosinus
 \DeclareMathOperator{\ct}{ct} % allgemeiner Cotangens
 \DeclareMathOperator{\diam}{diam} % diameter
@@ -312,6 +314,7 @@
 \newcommand{\X}{\times}
 \newcommand{\tensor}{\otimes}
 \newcommand{\ii}{{\mathrm i}}
+\newcommand{\normVek}[1]{\frac{#1}{\|#1\|}} % Bruch mit Eintrag im Zahler und dessen Norm im Nenner, gedacht fuer normierte Vektoren
 
 %Realteil und Imaginaerteil
 \renewcommand{\Re}{\ensuremath{\operatorname{Re}}}
@@ -339,6 +342,12 @@
 
 % declaring Index for group theory
 \newcommand{\Index}[2]{\ensuremath{(#1 \SlimDdot #2)}}
+
+% Woerter in Kapitaelchenschrift
+\newcommand{\kapit}[1]{\textsc{#1}\xspace} % \textsc fueg keinen Abstand nach dem Wort ein, also baue ich einen neuen Befehl mit \xspace am Ende
+\newcommand{\Greedy}{\kapit{Greedy}}
+\newcommand{\Planes}{\kapit{Planes}}
+\newcommand{\Spheres}{\kapit{Spheres}}
 
 
 % Theoremartige Umgebungen
@@ -844,10 +853,10 @@ Die Verfolger gewinnen, wenn f"ur jedes $C > 1$ ein $t \in N$ existiert, so dass
 \end{emptythm}
 
 \begin{satz}
-Auf jedem Kompaktum $D \subseteq \R^n$ ist \quot{\CmMark{Greedy}} stets erfolgreich (mit mindestens einem Verfolger).
+Auf jedem Kompaktum $D \subseteq \R^n$ ist \quot{\index{Greedy@\Greedy}\Greedy} stets erfolgreich (mit mindestens einem Verfolger).
 \end{satz}
 
-\begin{emptythm}[Greedy]
+\begin{emptythm}[\Greedy]
 Der Verfolger bewegt sich um die Distanz $1$ auf der Strecke $\overline{P^t E^t}$:
 \begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
 	%\tikzgitter{(-4,-4)}{(4,4)}
@@ -860,7 +869,7 @@ Der Verfolger bewegt sich um die Distanz $1$ auf der Strecke $\overline{P^t E^t}
 \end{emptythm}
 
 \begin{bewSkiz}[allgemein sp"ater]
-Skizze zum Greedy Algorithmus:
+Skizze zum \Greedy Algorithmus:
 \begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
 	%\tikzgitter{(-4,-4)}{(4,4)}
 	\coordinate (1) at (-2.5,-0.5); \coordinate (2) at (2,1.5);
@@ -880,6 +889,100 @@ $d^{t+1} \le 1 + (d^t - 1) = d^t \Rightarrow \lim_{t \to \infty} d^t =: d^\infty
 \end{center}
 Angenommen der Fl"uchtige w"urde entkommen. Dann w"are $d^\infty > 1$ und damit der Winkel $\alpha^t \xrightarrow{t \to \infty} 0$, das bedeutet $D$ w"urde beliebig lange Geradensegmente enthalten, w"are also nicht kompakt.
 Das ist ein Widerspruch zur Voraussetzung.
+\end{bewSkiz}
+
+\begin{emptythm}[Mehrere Verfolger in $\R^n$]
+Wann ist ein Entkommen bei mehreren Verfolgern "uberhaupt m"oglich? Wir schauen uns die folgende Zeichnung an:
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Sei $C^t = \conv(P_1^t, \ldots, P_N^t)$ die konvexe H"ulle zum Zeitpunkt $t$.
+Es gibt eine trennende Hyperebene, wenn $E \notin \convo(P_1^t, \ldots, P_N^t)$, wobei $\convo$ das Innere der konvexen H"ulle bezeichnet, und dann ist ein Entkommen m"oglich.
+Es stellt sich die Frage, ob die Umkehrung auch zutrifft, also ob nie ein Entkommen m"oglich ist, wenn $E \in \convo(P_1, \ldots, P_N)$.
+Bei \Greedy ist das nicht der Fall, der Beweis ist dem Leser zur "Ubung "uberlassen.
+Wir weden uns nun also einen neuen Algorithmus anschauen.
+\end{emptythm}
+
+\begin{emptythm}[\Planes]
+Die idee hinter dem \Planes Algorithmus ist den Bereich um die Verfolger durch Hyperebenen einzugrenzen und systematisch zu verkleinern.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{itemize}
+\item
+	$P_k^{t+1} = P_k^{t+1}(P_k^t, E^t, E^{t+1})$
+\item
+	Gerade $\calL_k^{t+1}$ parallel zu $\overline{E^tP_k^t}$ durch $E^{t+1}$
+	\begin{center}\textcolor{red}{[BILD]}\end{center}
+\item
+	$P_k^{t+1} \in \calL_k^{t+1}$ mit $d(P_k^t, P_k^{t+1}) = 1$ und $d(_k^{t+1}, E^{t+1})$ minimal
+\end{itemize}
+\end{emptythm}
+
+\begin{satz}[Kopperty-Ravishankar '05]
+Es sei $D = \R^n$. Falls $E \in \convo(P_1, \ldots, P_N)$ gilt, so ist \Planes erfolgreich.
+\end{satz}
+
+\begin{bew}
+Zun"achst stellen wir mit der folgenden Zeichnung einige Vor"uberlegungen an:
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Falls $\theta \le \frac{\pi}{2}$ gilt $r \cos \theta \ge 0$ und damit folgt $d^t - d^{t+1} \ge 0$. Im Fall $\theta > \frac{\pi}{2}$ gilt $r \cos \theta = -r \sqrt{1 - \sin^2 \theta}$ und damit folgt dann
+\begin{align*}
+	d^t - d^{t+1} = \sqrt{1 - r \sin^2 \theta} - r \sqrt{1 - \sin^2 \theta} \overset{r \le 1}{\ge} (1 - r) \sqrt{1 - \sin^2 \theta} \ge 0.
+\end{align*}
+Es bezeichne $v_k := \normVek{P_K^0 - E^0}$ den Einheitsvektor in Richtung $\overline{E^0P_k^0}$.
+Da $E \in \convo(P_1, \ldots, P_N)$ gilt, existiert ein $\epsilon > 0$ mit der Sph"are $\B_\epsilon \subseteq \convo(v_1, \ldots, v_N)$.
+Ohne Einschr"ankung kann man annehmen, dass die $v_1, \ldots, v_{n+1}$ in allgemeiner Lage sind und dass $B_\epsilon(0) \subseteq \convo(v_1, \ldots, v_{n+1})$, sowie $E = 0$ ist.
+F"ur ein $v \in \S^{n-1}$ existieren $\lambda_1, \ldots, \lambda_{n+1} \in (0,1)$ mit $\epsilon v = \sum_{k=1}^{n+1} \lambda_k v_k$ und es folgt
+\begin{align*}
+	\epsilon = \epsilon \|v\|^2 = \langle v, \epsilon v \rangle = \sum \lambda_k \langle v, v_k \rangle.
+\end{align*}
+man findet also ein $k$, so dass $\langle v, v_k \rangle \ge \frac{\epsilon}{n+1} = d_{\min} > 0$ gilt.
+Es seien $v = \normVek{E^{t+1} - E^t}$ und $k = k(v)$ wie oben. Dann gilt $\cos \theta_k^t = \langle v, v_k \rangle \ge d_{\min}$.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Es gilt:
+\begin{align*}
+	d^t - d^{t+1} &= \sqrt{1 - r^2 \sin^2 \theta_k^t} + r \cos \theta_k^t \\
+		&\ge \sqrt{1 - r^2} + r \cos \theta_k^t \\
+		&= \sqrt{1 - r^2} - \cos \theta_k^t (1 - r) + \cos \theta_k^t \\
+		&\ge \sqrt{1 - r} (\sqrt{1 + r} - \sqrt{1 - r}) + \cos \theta_k^t \\
+		&\ge \langle v, v_k \rangle \ge d_{\min} > 0
+	\shortintertext{und}
+	d^{t+1} &= \sum_k d_k^{t+1} \le \left( \sum d_k^t \right) - d_{\min} \le \ldots \le \sum_k d_k^0 - t d_{\min}
+\end{align*}
+\end{bew}
+
+\begin{emptythm}[Modifikation: \Spheres]
+Wir betrachten das \textsc{Lion and Man} Problem: ein Mensch versucht einem L"owen zu entkommen.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Der L"owe w"ahlt einen Punkt, so dass er zwischen den Menschen und dem Punkt steht.
+Als Abgrenzung dient im Gegensatz zu \Planes keine Hyperebene, sondern eine Sph"are durch den Punkt und die Position des L"owen.
+\end{emptythm}
+
+\begin{emptythm}[\Spheres]\begin{itemize}
+\item
+	\emph{Initialisierung:} W"ahle Punkte $p_k$ auf Geraden durch $E$ und $P_k$ so, dass $P_k \in \overline{p_k E}$ gilt und die Komponente von $\R^n \setminus \B_{d(p_k, P_k)}(p_k)$, welche $E$ enth"alt, beschrieben ist.
+	\begin{center}\textcolor{red}{[BILD]}\end{center}
+\item
+	$P_k^{t+1} = P_k^{t+1}(p_k, P_k^t, E^{t+1})$
+\item
+	$P_k^{t+1} \in \overline{p_k E^{t+1}}$ mit $d(P_k^t, P_k^{t+1}) = 1$ und $d(P_k^{t+1}, E^{t+1})$ minimal.
+	\begin{center}\textcolor{red}{[BILD]}\end{center}
+\end{itemize}\end{emptythm}
+
+\begin{satz}
+Es sei $D= \R^n$. Falls $E \in \convo(P_1, \ldots, P_N)$ gilt, so ist \Spheres erfolgreich.
+\end{satz}
+
+\begin{bewSkiz}
+Wir betrachten in dem folgenden Bild den Unterschied zwischen \Planes und \Spheres
+\begin{center}\textcolor{red}{[BILD]} \\
+$\Rightarrow d(D^{t+1}, E^{t+1} < d(Q, E^{t+1}$\end{center}
+Sei $R^t = \conv(p_1, \ldots, p_N) \setminus \bigcup_{k=1}^N \B_{d(p_k, P_k^t)}(p_k)$ der zum Zeitpunkt $t$ von den Sph"aren eingeschlossene Bereich.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Wie f"ur \Planes zeigt man: Es existiert ein $\epsilon > 0$, so dass f"ur alle Punkte $x \in R^t$ und Vektoren $v \in \S^{n-1}$ ein $k \le N$ und ein $v_k = \normVek{P_k - x}$ mit $\langle v_k(x), v \rangle \ge d_{\min} > 0$ existieren.
+Es sei $v = \normVek{E^{t+1} - E^t}$ und $v_k = v_k(E^t)$.
+Dann folgt wie f"ur \Planes:
+\begin{align*}
+	\underbrace{d(P^t, E_k^t)}_{=d^t} - d(Q, E^{t+1}) \ge \langle v_k, v \rangle \ge d_{\min} > 0
+\end{align*}
+Daraus folgt dann $d_k^t - d_k^{t+1} \ge d_{\min}$.
 \end{bewSkiz}
 
 %========================================================================================================================
