@@ -893,7 +893,28 @@ Das ist ein Widerspruch zur Voraussetzung.
 
 \begin{emptythm}[Mehrere Verfolger in $\R^n$]
 Wann ist ein Entkommen bei mehreren Verfolgern "uberhaupt m"oglich? Wir schauen uns die folgende Zeichnung an:
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\coordinate (1) at (-1,0.5); \coordinate (2) at (-1,-1); \coordinate (3) at (-2,0);
+	\coordinate (4) at (-2,-1.25); \coordinate (5) at (-2,1); \coordinate (6) at (-3.5,-0.25);
+	\coordinate (e) at (0.1,0);
+	
+	\foreach \i in {1,2,...,6}{
+		\fill (\i)circle(0.05)node[below]{$P_{\i}$};
+		\draw[->] (\i) -- ($(\i)!1cm!(e)$);
+	}
+	\fill (e)circle(0.05)node[below]{$E$};
+	\foreach \i in {0,1,2}{
+		\draw[->] ($(e)+(\i,0)$) -- ++(1,0);
+	}
+	
+	\foreach \i in {-0.5,0.25,1,1.75}{
+		\draw[dashed,opacity=0.5] (\i,-2) -- (\i,2);
+	}
+	
+	\node at (0.75,1) {Hyperebenen};
+\end{tikzpicture}\end{center}
 Sei $C^t = \conv(P_1^t, \ldots, P_N^t)$ die konvexe H"ulle zum Zeitpunkt $t$.
 Es gibt eine trennende Hyperebene, wenn $E \notin \convo(P_1^t, \ldots, P_N^t)$, wobei $\convo$ das Innere der konvexen H"ulle bezeichnet, und dann ist ein Entkommen m"oglich.
 Es stellt sich die Frage, ob die Umkehrung auch zutrifft, also ob nie ein Entkommen m"oglich ist, wenn $E \in \convo(P_1, \ldots, P_N)$.
@@ -903,13 +924,60 @@ Wir weden uns nun also einen neuen Algorithmus anschauen.
 
 \begin{emptythm}[\Planes]
 Die idee hinter dem \Planes Algorithmus ist den Bereich um die Verfolger durch Hyperebenen einzugrenzen und systematisch zu verkleinern.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\coordinate (e) at (0,0);
+	\def\clipRadius{2}
+	\fill (e)circle(0.05) node[below left]{$E^0$};
+	\coordinate (1) at (1.25,-0.5); \coordinate (2) at (1.5,1.5); \coordinate (3) at (-0.5,1.25);
+	\coordinate (4) at (-1.5,-0.25); \coordinate (5) at (-0.25,-1);
+	
+	\begin{scope}
+		\clip (0,0.25) ellipse(2.3 and 2.2);
+		\foreach \i in {1,2,3,4,5}{
+			\fill (\i) circle(0.05);
+			\draw[dashed] (\i) -- (e);
+			\draw ($(\i)!\clipRadius!90:(e)$) -- ($(\i)!-\clipRadius!90:(e)$);
+			\begin{scope}
+				\clip (e) -- (\i) -- ($(\i)!\clipRadius!90:(e)$) -- (e);
+				\draw (\i) circle(0.35);
+				\fill ($(\i)!0.2cm!45:(e)$)circle(0.03);
+			\end{scope}
+		}
+	\end{scope}
+	\draw[dashed] (1)node[right]{$P_1$} -- (2)node[above right]{$P_2$} -- (3)node[above]{$P_3$} -- (4)node[left]{$P_4$} -- (5)node[below]{$P_5$} -- cycle;
+\end{tikzpicture}\end{center}
 \begin{itemize}
 \item
 	$P_k^{t+1} = P_k^{t+1}(P_k^t, E^t, E^{t+1})$
 \item
 	Gerade $\calL_k^{t+1}$ parallel zu $\overline{E^tP_k^t}$ durch $E^{t+1}$
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		
+		\def\angle{25}
+		\draw[dashed] (-1.5,0.5) --coordinate[pos=0.2](p) coordinate[pos=0.8](e) +(\angle:3.5);
+		\draw[dashed,name path=gerade] (-2,-0.75) --node[pos=0.2,below]{$\calL_k^{t+1}$} +(\angle:6);
+		
+		\draw ($(p)!-2cm!90:(e)$) -- ($(p)!0.75cm!90:(e)$);
+		
+		\fill (p) circle(0.05)node[left]{$P_k^t$} (e) circle(0.05)node[above]{$E^t$};
+		\draw[->] ($(p)!0.3cm!90:(e)$) -- ($($(p)!0.3cm!90:(e)$)!0.5cm!90:(p)$);
+		
+		\path[name path=flucht] (e) -- ($(e)!2cm!90:(p)$);
+		\path[name intersections={of=flucht and gerade}];
+		\coordinate (e') at (intersection-1);
+		
+		\draw[->] (e) --node[right]{$r$} (e');
+		
+		\path[name path=kreis] (p) circle(1.25);
+		\path[name intersections={of=kreis and gerade}];
+		\coordinate (p') at (intersection-2);
+		\fill (p') circle(0.05) node[right]{$P_k^{t+1}$};
+		\draw[->] (p) --node[above]{$1$} (p');
+		\draw ($(p')!-1cm!90:(e')$) -- ($(p')!1.75cm!90:(e')$);
+	\end{tikzpicture}\end{center}
 \item
 	$P_k^{t+1} \in \calL_k^{t+1}$ mit $d(P_k^t, P_k^{t+1}) = 1$ und $d(_k^{t+1}, E^{t+1})$ minimal
 \end{itemize}
@@ -921,7 +989,36 @@ Es sei $D = \R^n$. Falls $E \in \convo(P_1, \ldots, P_N)$ gilt, so ist \Planes e
 
 \begin{bew}
 Zun"achst stellen wir mit der folgenden Zeichnung einige Vor"uberlegungen an:
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=2]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\draw (-2.25,0.5) --node[above]{$d^t$} (2,0.5);
+	\draw (-2.25,-0.5) --node[below]{$d^{t+1}$} (2,-0.5);
+	
+	\coordinate (p) at (-1.75,0.5); \coordinate (e) at (1,0.5); \coordinate (e') at (1.5,-0.5);
+	\coordinate (1) at (-1.75,-0.5); \coordinate (2) at (-1.25,-0.5); \coordinate (3) at (-0.5,-0.5);
+	
+	\fill (p) circle(0.05)node[above]{$P^t$} (e) circle(0.05)node[above]{$E^t$} (e') circle(0.05)node[below]{$E^{t+1}$};
+	\fill (1) circle(0.05) (2) circle(0.05) (3) circle(0.05);
+	
+	\draw (e) --node[right]{$r$} (e') (p) --node[right]{$1$} (3) (p) --node[pos=0.7,right]{$r$} (2);
+	\draw[dashed] ($(p)+(0,0.2)$) --node[left,pos=0.6]{$a = r \sin \theta$} ($(1)-(0,0.2)$);
+	
+	\draw[decorate,decoration={brace,mirror}] (1) --node[below]{$-r \cos \theta$} (2);
+	\draw[decorate,decoration={brace,mirror}] (2) --node[below]{$d^t-d^{t+1}$} (3);
+	\draw[decorate,decoration={brace,mirror}] ([yshift=-7]1) --node[below]{$b$} ([yshift=-7]3);
+	
+	\begin{scope}
+		\clip(p) -- (2) -- (-2.25,-0.5) -- (-2.25,0.5) -- cycle;
+		\draw (p) circle(0.25);
+		\node at ($(p)+(225:0.3)$) {$\theta$};
+	\end{scope}
+	\begin{scope}
+		\clip(e) -- (e') -- (3) -- (p) -- cycle;
+		\draw (e) circle(0.25);
+		\node at ($(e)+(225:0.3)$) {$\theta$};
+	\end{scope}
+\end{tikzpicture}\end{center}
 Falls $\theta \le \frac{\pi}{2}$ gilt $r \cos \theta \ge 0$ und damit folgt $d^t - d^{t+1} \ge 0$. Im Fall $\theta > \frac{\pi}{2}$ gilt $r \cos \theta = -r \sqrt{1 - \sin^2 \theta}$ und damit folgt dann
 \begin{align*}
 	d^t - d^{t+1} = \sqrt{1 - r \sin^2 \theta} - r \sqrt{1 - \sin^2 \theta} \overset{r \le 1}{\ge} (1 - r) \sqrt{1 - \sin^2 \theta} \ge 0.
@@ -935,7 +1032,15 @@ F"ur ein $v \in \S^{n-1}$ existieren $\lambda_1, \ldots, \lambda_{n+1} \in (0,1)
 \end{align*}
 man findet also ein $k$, so dass $\langle v, v_k \rangle \ge \frac{\epsilon}{n+1} = d_{\min} > 0$ gilt.
 Es seien $v = \normVek{E^{t+1} - E^t}$ und $k = k(v)$ wie oben. Dann gilt $\cos \theta_k^t = \langle v, v_k \rangle \ge d_{\min}$.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\draw[->] (0,0) --coordinate[pos=0.7](1) node[above,pos=0.3]{$r$} +(20:3) node[below,pos=0.9]{$v$};
+	\draw[->] (0,0) --coordinate[pos=1.5] (2) +(350:3) node[below,pos=0.9]{$v_k$};
+	\draw[dashed] (350:3) -- (2);
+	
+	\fill (0,0) circle(0.05)node[left]{$E^t$} (1) circle(0.05)node[above]{$E^{t+1}$} (2) circle(0.05)node[right]{$P^t$};
+\end{tikzpicture}\end{center}
 Es gilt:
 \begin{align*}
 	d^t - d^{t+1} &= \sqrt{1 - r^2 \sin^2 \theta_k^t} + r \cos \theta_k^t \\
