@@ -727,9 +727,8 @@ Geod"atische Segmente in X sind immer eindeutig, wie man mit der folgenden Skizz
 	
 	\fill (x) circle(0.05) node[left]{$x$} (y) circle(0.05) node[right]{$y$};
 \end{tikzpicture}\end{center}
-Die Abstandsfunktion $c(c_1(\cdot), c_2(\cdot))$ ist konvex mit Nullstellen in $0$ und $1$, also konstant Null und damit $c_1 = c_2$.
-
-Fixiere $x_0 \in X$, und sei $c_x$ das geod"atische Segment von $x_0$ nach $x$.
+Die Abstandsfunktion $d(c_1(\cdot), c_2(\cdot))$ ist konvex mit Nullstellen in $0$ und $1$, also konstant Null und damit $c_1 = c_2$.
+Nun fixiere $x_0 \in X$, und sei $c_x$ das geod"atische Segment von $x_0$ nach $x$.
 \begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
 	%\tikzgitter{(-4,-4)}{(4,4)}
 	\coordinate (x0) at (-1.5,-0.5); \coordinate (x) at (2.5,1); \coordinate (y) at (1.5,-1);
@@ -916,14 +915,14 @@ Wann ist ein Entkommen bei mehreren Verfolgern "uberhaupt m"oglich? Wir schauen 
 	\node at (0.75,1) {Hyperebenen};
 \end{tikzpicture}\end{center}
 Sei $C^t = \conv(P_1^t, \ldots, P_N^t)$ die konvexe H"ulle zum Zeitpunkt $t$.
-Es gibt eine trennende Hyperebene, wenn $E \notin \convo(P_1^t, \ldots, P_N^t)$, wobei $\convo$ das Innere der konvexen H"ulle bezeichnet, und dann ist ein Entkommen m"oglich.
+Ein Entkommen ist m"oglich, wenn es eine trennende Hyperebene gibt, also wenn $E \notin \convo(P_1^t, \ldots, P_N^t)$, wobei $\convo$ das Innere der konvexen H"ulle bezeichnet.
 Es stellt sich die Frage, ob die Umkehrung auch zutrifft, also ob nie ein Entkommen m"oglich ist, wenn $E \in \convo(P_1, \ldots, P_N)$.
 Bei \Greedy ist das nicht der Fall, der Beweis ist dem Leser zur "Ubung "uberlassen.
 Wir weden uns nun also einen neuen Algorithmus anschauen.
 \end{emptythm}
 
 \begin{emptythm}[\Planes]
-Die idee hinter dem \Planes Algorithmus ist den Bereich um die Verfolger durch Hyperebenen einzugrenzen und systematisch zu verkleinern.
+Die idee hinter dem \Planes\index{Planes@\Planes} Algorithmus ist den Bereich um die Verfolger durch Hyperebenen einzugrenzen und systematisch zu verkleinern.
 \begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
 	%\tikzgitter{(-4,-4)}{(5,4)}
 	
@@ -1024,6 +1023,18 @@ Falls $\theta \le \frac{\pi}{2}$ gilt $r \cos \theta \ge 0$ und damit folgt $d^t
 	d^t - d^{t+1} = \sqrt{1 - r \sin^2 \theta} - r \sqrt{1 - \sin^2 \theta} \overset{r \le 1}{\ge} (1 - r) \sqrt{1 - \sin^2 \theta} \ge 0.
 \end{align*}
 Es bezeichne $v_k := \normVek{P_K^0 - E^0}$ den Einheitsvektor in Richtung $\overline{E^0P_k^0}$.
+\marginnote{\begin{tikzpicture}[font=\scriptsize,scale=0.4]
+	%\tikzgitter{(-4,-4)}{(4,4)}
+	\coordinate (e) at (0,0);
+	\fill (e) circle (0.15) node[below left]{$E$};
+	\coordinate (z1) at (250:3); \coordinate (z2) at (310:2.5); \coordinate (z3) at (20:3.25); \coordinate (z4) at (110:2.5); \coordinate (z5) at (175:3);
+	\foreach \i in {1,2,3,4,5}{
+		\draw[->] (e) -- ($(e)!1.5cm!(z\i)$);
+		\draw[dotted] ($(e)!1.5cm!(z\i)$) -- (z\i);
+		\fill (z\i)circle(0.05);
+	}
+	\path (e) --node[above]{$v_k$} ($(e)!1.5cm!(z3)$) (z3)node[right]{$P_k$};
+\end{tikzpicture}}
 Da $E \in \convo(P_1, \ldots, P_N)$ gilt, existiert ein $\epsilon > 0$ mit der Sph"are $\B_\epsilon \subseteq \convo(v_1, \ldots, v_N)$.
 Ohne Einschr"ankung kann man annehmen, dass die $v_1, \ldots, v_{n+1}$ in allgemeiner Lage sind und dass $B_\epsilon(0) \subseteq \convo(v_1, \ldots, v_{n+1})$, sowie $E = 0$ ist.
 F"ur ein $v \in \S^{n-1}$ existieren $\lambda_1, \ldots, \lambda_{n+1} \in (0,1)$ mit $\epsilon v = \sum_{k=1}^{n+1} \lambda_k v_k$ und es folgt
@@ -1053,8 +1064,8 @@ Es gilt:
 \end{align*}
 \end{bew}
 
-\begin{emptythm}[Modifikation: \Spheres]
-Wir betrachten das \textsc{Lion and Man} Problem: ein Mensch versucht einem L"owen zu entkommen.
+\begin{emptythm}[Modifikation: \Spheres]\index{Spheres@\Spheres}
+Wir betrachten das \textsc{Lion and Man}\index{Lion and Man@\textsc{Lion and Man}} Problem: ein Mensch versucht einem L"owen zu entkommen.
 \begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
 	%\tikzgitter{(-4,-4)}{(5,4)}
 	
@@ -1126,7 +1137,35 @@ Es sei $D= \R^n$. Falls $E \in \convo(P_1, \ldots, P_N)$ gilt, so ist \Spheres e
 
 \begin{bewSkiz}
 Wir betrachten in dem folgenden Bild den Unterschied zwischen \Planes und \Spheres
-\begin{center}\textcolor{red}{[BILD]} \\
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1.3]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\coordinate (p) at (-3,0); \coordinate (e) at ($(p)+(25:3.5)$); \coordinate (e') at ($(e)+(305:0.75)$);
+	
+	\draw (p)node[left]{$p_k$} --coordinate[pos=0.5](P) (e)node[above]{$E^{t}$};
+	\draw[->] (e) --node[right]{$r$} (e')node[below right]{$E^{t+1}$};
+	\draw (p) --coordinate[pos=0.5](P') ($(e')!-1cm!(p)$);
+	\draw[dashed] ($(e')+(25:1)$) --coordinate[pos=0.5](Q) ($(e')+(180+25:4)$);
+	\draw (P) -- (P') (P) -- (Q);
+	
+	\fill (p)circle(0.05) (e)circle(0.05) (P)circle(0.05)node[above]{$P_k^t$} (P')circle(0.05)node[above]{$P_k^t$} (Q)circle(0.05)node[below right]{$Q$ (Wahl nach \Planes)};
+	
+	\coordinate (p) at (3.5,0); \coordinate (e) at ($(p)+(40:3)$); \coordinate (p') at ($(p)+(5:1.5)$); \coordinate (Q) at ($(p)+(355:1.75)$);
+	
+	\draw (p)node[left]{$P_k^t$} -- (e)node[above]{$E^{t+1}$} -- (p')node[above]{$P_k^{t+1}$} -- cycle (p) -- (Q)node[below]{$Q$} -- (e) -- cycle;
+	\fill (p) circle(0.05) (p') circle(0.05) (e) circle(0.05) (Q) circle(0.05);
+	\begin{scope}
+		\clip (p) -- (e) -- (Q) -- cycle;
+		\draw (p) circle(0.7);
+		\node at ($(p)+(25:0.8)$) {$\alpha$};
+	\end{scope}
+	\begin{scope}
+		\clip (p) -- (e) -- (p') -- cycle;
+		\draw (p) circle(0.5);
+	\end{scope}
+	\node[right] (beta) at ($(p)+(0,-0.5)$) {$\beta = \varangle_{P_k^t(Q, E)}$};
+	\draw[->] (beta) -- ($(p)+(25:0.3)$);
+\end{tikzpicture} \\
 $\Rightarrow d(D^{t+1}, E^{t+1} < d(Q, E^{t+1}$\end{center}
 Sei $R^t = \conv(p_1, \ldots, p_N) \setminus \bigcup_{k=1}^N \B_{d(p_k, P_k^t)}(p_k)$ der zum Zeitpunkt $t$ von den Sph"aren eingeschlossene Bereich.
 \begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
