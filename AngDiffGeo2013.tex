@@ -348,6 +348,7 @@
 \newcommand{\Greedy}{\kapit{Greedy}}
 \newcommand{\Planes}{\kapit{Planes}}
 \newcommand{\Spheres}{\kapit{Spheres}}
+\newcommand{\RotSpheres}{\kapit{Rotating Spheres}}
 
 
 % Theoremartige Umgebungen
@@ -1194,6 +1195,85 @@ Dann folgt wie f"ur \Planes:
 \end{align*}
 Daraus folgt dann $d_k^t - d_k^{t+1} \ge d_{\min}$.
 \end{bewSkiz}
+
+% Vorlesung vom 6. 5.
+
+Unser Ziel ist es nun eine Verallgemeinerung auf beliebige konvexe Gebiete zu finden.
+Kopparty \& Ravishankar diskutieren den folgenden Fall:
+Das Spielfeld  $D$ besteht aus dem Schnitt von endlich vielen Halbr"aumen $H_l$.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Die orthogonale Projektion $F_l$ von $E$ auf den Rand von $H_l$ stell zus"atzliche (virtuelle) Verfolger dar, deren Bewegungen auf den Rand $\partial H_l$ von $H_l$ beschr"ankt sind.
+F"ur \Spheres l"asst sich zeigen, dass die den Bewegungsspielraum von $E$ einschr"ankenden B"alle \quot{monoton wachsen}. Genauer:
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Falls also $d(p_k, E_k^{t+1}) \le$ konst. f"ur alle $t \in \N$ gilt, so ist \Spheres erfolgreich.
+Dies ist "aquivalent dazu, dass $E$ im Inneren der konvexen H"ulle von $P_1, \ldots, P_k, F_1, \ldots, F_k$ liegt.
+
+Kopparty \& Ravishankar behaupten, dies sei notwendig und hinreichend f"ur den Erfolg von \Spheres.
+Bei unserer bisherigen Betrachtung unseres Algorithmus fallen zwei Probleme ins Auge:
+\begin{itemize}
+\item
+	$F_l$ liegt unter Umst"anden nicht in $D$
+\item
+	Der Algorithmus ist unter Umst"anden nicht wohldefiniert
+	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	Es werden m"oglicherweise Verfolgerpositionen au"serhalb von $D$ errechnet.
+	Das Verwerfen aller Verfolger $P_k$ mit $p_k \notin D$ f"uhrt unter Umst"anden dazu, dass alle $P_k$ verworfen werden
+	\begin{center}\textcolor{red}{[BILD]}\end{center}
+\end{itemize}
+Die folgende Bedingung ist "aquivalent zum ersten Problem:
+
+\begin{dfn}[Alexander-Bishop-Ghrist '09]
+Es sei $D \subseteq \R^n$ abgeschlossen und konvex.
+F"ur $k \le N$ bezeichne $H_k$ die abgeschlossene Halbebene, welche $E$ enth"alt und deren Rand durch $P_k$ und orthogonal zu $\overline{E P_k}$ verl"auft.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Die Konfiguration erf"ullt die Bedingung (BC), falls $D \cap \bigcap_{k \le N} H_k$ beschr"ankt ist.
+\end{dfn}
+
+Die L"osung des zweiten Problems bedarf einer Modifikation von \Spheres.
+Im zweidimensionalen Fall "andern Randkollisionen der Verfolger (heuristisch) nichts.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Im dreidimensionalen Fall sollte es m"oglich sein eine Konstellation in einem \quot{breiten und flachen} Gebiet die Verfolger in jedem Schritt zu Kollisionen zu zwingen, so dass eine Fluchtstrategie existiert.
+Zun"achst l"asst sich zeigen, dass (BC) notwendig ist:
+Falls $D \cap \bigcap_{k \le N} H_k$ beschr"ankt ist, so existiert ein Strahl $c$ mit dem Startpunkt $E$ und $c \cap H_k = \emptyset$ f"ur alle $k \in \N$.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Dann gilt $\varangle_E (c, \overline{E P_k}) > \frac{\pi}{2}$ f"ur alle $k \le N$. Somit enth"alt der Halbraum $H = \{ x \mid \langle x, \dot c \rangle \le \langle E, c \rangle \}$ alle Verfolger $P_k$ und $c$ ist eine Fluchtstrategie.
+
+\begin{emptythm}[Zur L"osung des \quot{Kollisionsproblems}]
+Modifikation von \Spheres nach (A-B-G '09) zu \RotSpheres\index{Rotating Spheres@\RotSpheres}. Die Idee besteht darin die Mittelpunkte $p_k$ in jedem Schritt so zu bewegen, dass
+\begin{itemize}
+\item
+	$P_k^{t+1} \in D$
+\item
+	(BC) erhalten bleibt
+\item
+	Die B"alle um $P_k$ hinreichend wachsen, so dass der Bewegungsspielraum von $E$ eingeschr"ankt wird.
+\end{itemize}
+\end{emptythm}
+
+\begin{emptythm}[\RotSpheres]
+\begin{itemize}
+\item
+	\emph{Initialisierung:} W"ahle Punkte $p_k^0$ auf dem Strahl von $E$ durch $P_k$ so, dass $P_k \in \overline{E p_k}$ gilt und die Komponente von $D \setminus \bigcup_{k \le N} B_{d(p_k, P_k)}(p_k)$ welche $E$ enth"alt, beschr"ankt ist. (folgt aus (BC))
+\item
+	$P_k^{t+1} = P_k^{t+1}(D, p_k^t, P_k^t, E^{t+1})$
+\item
+	$P_k{''} \in \overline{p_k^t E^{t+1}}$ mit $d(P_k^t, P'') = 1$ und $d(P'', E^{t+1})$ minimal
+	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{description}
+	\item[Falls $\bm{P'' \in D}$:]
+		$P_k^{t+1} = P{''}$, $p_k^{t+1} = p_k^t$
+	\item[Falls $\bm{P'' \notin D}$:]
+		Betrachte die Zeichnung
+		\begin{center}\textcolor{red}{[BILD]}\end{center}
+		E bezeichne $P^*$ die orthogonale Projektion von $P'$ auf $D$ und $p_k^{t+1}$ den Punkt auf dem Strahl von $E^{t+1}$ durch $P^*$ mit $d(E^{t+1}, p_k^t) = d(E^{t+1}, p_k^{t+1})$.
+		Dann sei $P_k^{t+1} = P'$ der Punkt auf $\overline{p_k^{t+1} E^{t+1}}$ mit $d(P_k^t, P_k^{t+1}) = 1$ und $d(P_k^{t+1}, E^{t+1})$ minimal.
+	\end{description}
+\end{itemize}
+\end{emptythm}
+
+\begin{satz}[A-B-G '09]
+F"ur jedes konvexe Gebiet $D$ ist \RotSpheres erfolgreich, wenn die Konfiguration $D, P_1, \ldots, P_N$ die Bedingung (BC) erf"ullt.
+\end{satz}
 
 %========================================================================================================================
 %	A N H A N G
