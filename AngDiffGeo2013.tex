@@ -1201,10 +1201,39 @@ Daraus folgt dann $d_k^t - d_k^{t+1} \ge d_{\min}$.
 Unser Ziel ist es nun eine Verallgemeinerung auf beliebige konvexe Gebiete zu finden.
 Kopparty \& Ravishankar diskutieren den folgenden Fall:
 Das Spielfeld  $D$ besteht aus dem Schnitt von endlich vielen Halbr"aumen $H_l$.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\coordinate (e) at (0,0);
+	\coordinate (1) at (130:1); \coordinate (2) at (35:1.5); \coordinate (3) at (330:1.5);
+	\coordinate (4) at (270:1); \coordinate (5) at (200:1.25);
+	
+	\draw[dashed] (e) -- (1) (e) -- (2) (e) -- (3) (e) -- (4) (e) -- (5);
+	\draw[dashed,gray] (1) -- (2) -- (3) -- (4) -- (5) -- cycle;
+	
+	\path[name path=h3] ($(5)!1cm!90:(e)$) -- ($(5)!-1cm!90:(e)$);
+	\path[name path=h2] ($(4)!1cm!90:(e)$) -- ($(4)!-1.25cm!90:(e)$);
+	\path[name path=h1] ($(3)!0.5cm!90:(e)$) -- ($(3)!-1cm!90:(e)$);
+	\path[name intersections={of=h3 and h2}];
+	\coordinate (a) at (intersection-1);
+	\path[name intersections={of=h2 and h1}];
+	\coordinate (b) at (intersection-1);
+	\draw ($(5)!1.25cm!90:(e)$) --node[pos=0.3,left]{$H_3$} (a) --node[pos=0.8,below]{$H_3$} (b) --node[pos=0.7,right]{$H_3$} ($(3)!-1.5cm!90:(e)$);
+	
+	\fill (5)circle(0.05)node[below left]{$F_3$} (4)circle(0.05)node[below]{$F_2$} (3)circle(0.05)node[below right]{$F_1$};
+	\fill (e)circle(0.05)node[above]{$E$}; \node at (-1.25,0.75) {$D$};
+\end{tikzpicture}\end{center}
 Die orthogonale Projektion $F_l$ von $E$ auf den Rand von $H_l$ stell zus"atzliche (virtuelle) Verfolger dar, deren Bewegungen auf den Rand $\partial H_l$ von $H_l$ beschr"ankt sind.
 F"ur \Spheres l"asst sich zeigen, dass die den Bewegungsspielraum von $E$ einschr"ankenden B"alle \quot{monoton wachsen}. Genauer:
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\coordinate (1) at (3,0); \coordinate (2) at (3,1);
+	\draw[dashed] (1) --coordinate[pos=0.5](3) (0,0) --coordinate[pos=0.7](4) (2);
+	\draw (3) -- (4);
+	\fill (0,0) circle(0.05)node[left]{$p_k$} (1) circle(0.05)node[right]{$E^t$} (2) circle(0.05)node[right]{$E^{t+1}$};
+	\fill (3) circle(0.05)node[below]{$P_k^t$} (4) circle(0.05)node[above]{$P_k^{t+1}$};
+\end{tikzpicture}\end{center}
 Falls also $d(p_k, E_k^{t+1}) \le$ konst. f"ur alle $t \in \N$ gilt, so ist \Spheres erfolgreich.
 Dies ist "aquivalent dazu, dass $E$ im Inneren der konvexen H"ulle von $P_1, \ldots, P_k, F_1, \ldots, F_k$ liegt.
 
@@ -1213,29 +1242,128 @@ Bei unserer bisherigen Betrachtung unseres Algorithmus fallen zwei Probleme ins 
 \begin{itemize}
 \item
 	$F_l$ liegt unter Umst"anden nicht in $D$
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		
+		\coordinate (1) at (2,0.75);
+		\draw (-2,0.5) -- (0,0);
+		\draw (1) --node[below]{$H_1$} (0,0);
+		\draw[dashed] (0,0) --coordinate[pos=0.45](2) ($(1)!2!(0,0)$);
+	
+		\draw[dashed] (2) node[below]{$F_1$} -- node[left,pos=0.3]{$H_2$} ($(2)!1.1cm!90:(0,0)$) coordinate (e);
+		\fill (e) circle(0.05) node[above]{$E$};
+		\clip (0,0) -- (2) -- (e) -- cycle;
+		\draw (2) circle(0.25);
+		\fill ($(2)+(62:0.15)$) circle(0.04);
+	\end{tikzpicture}\end{center}
 \item
 	Der Algorithmus ist unter Umst"anden nicht wohldefiniert
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		
+		\draw (-2,0) --node[below,pos=0.1]{$H_l$} (2,0);
+		\coordinate (1) at (2,-0.75);
+		\draw[->] (1) --coordinate[pos=0.5](3) ++(150:3.5)node[above]{$E^t$} -- ++(230:0.9) coordinate(2) node[left]{$E^{t+1}$};
+		\draw[dashed] (1) --coordinate[pos=0.6](4) (2);
+		\draw (3)node[above]{$P^t$} -- (4)node[below]{$P^{t+1}$};
+		\fill (3)circle(0.05) (4)circle(0.05) ($(1)+(150:3.5)$)circle(0.05);
+	\end{tikzpicture}\end{center}
 	Es werden m"oglicherweise Verfolgerpositionen au"serhalb von $D$ errechnet.
 	Das Verwerfen aller Verfolger $P_k$ mit $p_k \notin D$ f"uhrt unter Umst"anden dazu, dass alle $P_k$ verworfen werden
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		
+		\coordinate (e) at (2.85,0);
+		\draw (0,0) --coordinate[pos=0.8](1) +(10:4) (0,0) --coordinate[pos=0.8](2) +(-10:4);
+		\coordinate (3) at ($(e)!1.25cm!(1)$); \coordinate (4) at ($(e)!1.25cm!(2)$);
+		\draw[dashed] (e) -- (3) (e) -- (4);
+		\fill (e)circle(0.05)node[left]{$E$} (1)circle(0.05)node[below right]{$P_1$} (2)circle(0.05)node[above right]{$P_2$} (3)circle(0.05)node[right]{$p_1$} (4)circle(0.05)node[right]{$p_2$};
+	\end{tikzpicture}\end{center}
 \end{itemize}
 Die folgende Bedingung ist "aquivalent zum ersten Problem:
 
 \begin{dfn}[Alexander-Bishop-Ghrist '09]
 Es sei $D \subseteq \R^n$ abgeschlossen und konvex.
 F"ur $k \le N$ bezeichne $H_k$ die abgeschlossene Halbebene, welche $E$ enth"alt und deren Rand durch $P_k$ und orthogonal zu $\overline{E P_k}$ verl"auft.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=0.8]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\draw (4.5,2) ..controls(4.5,2) and (-2.5,2).. (-2.5,0) ..controls(-2.5,-2) and (4.5,-2).. (4.5,-2);
+	\coordinate (e) at (-1,0); \coordinate (p1) at ($(e)+(340:3)$); \coordinate (p2) at ($(e)+(20:2.5)$);
+	
+	\draw ($(p1)!2cm!90:(e)$) --node[right,pos=0.1]{$H_1$} ($(p1)!4cm!270:(e)$);
+	\foreach \i in {0.05, 0.1, ...,1}{
+		\path ($(p1)!2cm!90:(e)$) --coordinate[pos=\i] (pkt) ($(p1)!4cm!270:(e)$);
+		\draw[gray,opacity=0.7] (pkt) -- +(200:0.25);
+	}
+	\begin{scope}
+		\clip (e) -- (p1) -- ($(p1)!4cm!270:(e)$) -- cycle;
+		\draw (p1) circle(0.25); \fill ($(p1)+(110:0.13)$) circle(0.04);
+	\end{scope}
+	
+	\draw ($(p2)!4cm!90:(e)$) --node[right,pos=0.9]{$H_2$} ($(p2)!2cm!270:(e)$);
+	\foreach \i in {0.05, 0.1, ...,1}{
+		\path ($(p2)!4cm!90:(e)$) --coordinate[pos=\i] (pkt) ($(p2)!2cm!270:(e)$);
+		\draw[gray,opacity=0.7] (pkt) -- +(230:0.25);
+	}
+	\begin{scope}
+		\clip (e) -- (p2) -- ($(p2)!4cm!90:(e)$) -- cycle;
+		\draw (p2) circle(0.25); \fill ($(p2)+(250:0.13)$) circle(0.04);
+	\end{scope}
+	
+	\fill (e)circle(0.05)node[left]{$E$} (p1)circle(0.05)node[right]{$P_1$} (p2)circle(0.05)node[right]{$P_2$};
+	\draw[dashed] (e) -- (p1) (e) -- (p2);
+\end{tikzpicture}\end{center}
 Die Konfiguration erf"ullt die Bedingung (BC), falls $D \cap \bigcap_{k \le N} H_k$ beschr"ankt ist.
 \end{dfn}
 
 Die L"osung des zweiten Problems bedarf einer Modifikation von \Spheres.
 Im zweidimensionalen Fall "andern Randkollisionen der Verfolger (heuristisch) nichts.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\coordinate (l) at (-3,1); \coordinate (r) at (3,1);
+	\coordinate (L) at (-0.5,2); \coordinate (R) at (0.5,2);
+	\coordinate (e) at (98:1);
+	
+	\draw (l) --coordinate[pos=0.2](1) (0,0) --coordinate[pos=0.8](2) (r) (L) -- (0,0); \draw[dashed] (0,0) -- (R);
+	\fill (1)circle(0.05)node[below]{$P_2$} (2)circle(0.05)node[below]{$P_2$} (e)circle(0.05)node[left]{$E$};
+	\draw[->] (e) -- +(20:0.3) node[right]{$E'$}; \draw[->] ($(e)+(20:0.4)$) -- +(160:0.4);
+	\draw[->] ($(e)+(20:0.4)+(160:0.5)$) -- +(20:0.6);
+	
+	\begin{scope}
+		\clip (l) -- (0,0) -- (r) -- cycle;
+		\draw (0,0) circle(0.25);
+	\end{scope}
+	\node at (0.5,-0.1) {$\gg \frac{\pi}{2}$};
+	\begin{scope}
+		\clip (L) -- (0,0) -- (R) -- cycle;
+		\draw (0,0) circle(0.75);
+	\end{scope}
+	\node at (0.5,0.6) {$\ll \frac{\pi}{2}$};
+\end{tikzpicture}\end{center}
 Im dreidimensionalen Fall sollte es m"oglich sein eine Konstellation in einem \quot{breiten und flachen} Gebiet die Verfolger in jedem Schritt zu Kollisionen zu zwingen, so dass eine Fluchtstrategie existiert.
 Zun"achst l"asst sich zeigen, dass (BC) notwendig ist:
 Falls $D \cap \bigcap_{k \le N} H_k$ beschr"ankt ist, so existiert ein Strahl $c$ mit dem Startpunkt $E$ und $c \cap H_k = \emptyset$ f"ur alle $k \in \N$.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\coordinate (vec) at (10:1); \coordinate (vec') at (70:1);
+	\coordinate (1) at (-0.5,1); \coordinate (2) at ($(1)+0.5*(vec)+0.5*(vec')$);
+	
+	\draw (1) -- ++($2.25*(vec)$) -- ++(vec') -- ++($-2.25*(vec)$) --node[left]{$H_k$} ++($-1*(vec')$);
+	\draw ($(2)+3*(vec)$) -- (2) -- ++(280:1.25)coordinate (e) --node[below]{$c$} ++(10:5);
+	\fill (e)circle(0.05)node[below]{$E$};
+	\begin{scope}
+		\clip ($(2)+3*(vec)$) -- (2) -- ++(280:1.25) -- cycle;
+		\draw (2) circle(0.25); \fill ($(2)+(320:0.15)$)circle(0.03);
+	\end{scope}
+	\begin{scope}
+		\clip (2) -- ++(280:1.25) -- ++(10:5) -- cycle;
+		\draw ($(2)+(280:1.25)$) circle(0.25);
+	\end{scope}
+	\node at (0.75,0.75) {$> \frac{\pi}{2}$};
+\end{tikzpicture}\end{center}
 Dann gilt $\varangle_E (c, \overline{E P_k}) > \frac{\pi}{2}$ f"ur alle $k \le N$. Somit enth"alt der Halbraum $H = \{ x \mid \langle x, \dot c \rangle \le \langle E, c \rangle \}$ alle Verfolger $P_k$ und $c$ ist eine Fluchtstrategie.
 
 \begin{emptythm}[Zur L"osung des \quot{Kollisionsproblems}]
@@ -1258,14 +1386,56 @@ Modifikation von \Spheres nach (A-B-G '09) zu \RotSpheres\index{Rotating Spheres
 	$P_k^{t+1} = P_k^{t+1}(D, p_k^t, P_k^t, E^{t+1})$
 \item
 	$P_k{''} \in \overline{p_k^t E^{t+1}}$ mit $d(P_k^t, P'') = 1$ und $d(P'', E^{t+1})$ minimal
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		
+		\coordinate (1) at (30:2.5); \coordinate (2) at (10:4);
+		
+		\draw[dashed] (0,0)node[left]{$p_k$} -- (1)node[above]{$P^t$} (0,0) --coordinate[pos=0.8] (3) (2)node[right]{$E^{t+1}$};
+		\draw (1) -- (3)node[below]{$P{''}$};
+		\fill (0,0)circle(0.05) (1)circle(0.05) (2)circle(0.05) (3)circle(0.05);
+	\end{tikzpicture}\end{center}
 	\begin{description}
 	\item[Falls $\bm{P'' \in D}$:]
 		$P_k^{t+1} = P{''}$, $p_k^{t+1} = p_k^t$
 	\item[Falls $\bm{P'' \notin D}$:]
-		Betrachte die Zeichnung
-		\begin{center}\textcolor{red}{[BILD]}\end{center}
-		E bezeichne $P^*$ die orthogonale Projektion von $P'$ auf $D$ und $p_k^{t+1}$ den Punkt auf dem Strahl von $E^{t+1}$ durch $P^*$ mit $d(E^{t+1}, p_k^t) = d(E^{t+1}, p_k^{t+1})$.
+		Betrachte die folgende Zeichnung
+		\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+			%\tikzgitter{(-4,-4)}{(5,4)}
+			
+			\def\R{6}
+			\def\r{1}
+			\coordinate (e) at (-3,0.5); \coordinate (p') at ($(e)+(350:\R)$); \coordinate (p) at ($(e)+(335:\R)$);
+			
+			\draw[name path=gerade] (-4,0) -- (4,0);
+			\draw[dashed,name path=strich] (e)node[above]{$E^{t+1}$} -- (p)node[right]{$p^t$} (e) -- (p')node[right]{$p^{t+1}$};
+			
+			\path[name intersections={of=strich and gerade}];
+			\coordinate (P*) at (intersection-2);
+			\path[name path=senkr] (P*) -- +(0,-2);
+			\path[name intersections={of=senkr and strich}];
+			\coordinate (P'') at (intersection-1);
+			
+			\draw (P*)node[above]{$P*$} -- (P'')node[below]{$P{''}$};
+			
+			\draw let \p1=($(p)-(e)$), \n0={veclen(\x1,\y1)}, \n1={atan2(\x1,\y1)}, \p2=($(p')-(e)$), \n2={atan2(\x2,\y2)} in (p) arc[radius=\n0,start angle=\n1, end angle=\n2];
+			
+			\draw[dashed] (p) --coordinate[pos=0.7](P) ++(125:4);
+			\draw (P) node[above right]{$P^t$} -- (P'');
+			\path[name path=kreis] let \p1=($(P'')-(P)$), \n0={veclen(\x1,\y1)} in (P) circle(\n0);
+			\path[name intersections={of=strich and kreis}];
+			\coordinate (P') at (intersection-3);
+			
+			\draw let \p1=($(P'')-(P)$), \n0={veclen(\x1,\y1)}, \p2=($(P')-(P)$), \n2={atan2(\x2,\y2)} in (P')node[above]{$P'$} arc[radius=\n0,start angle=\n2,end angle=-110];
+			
+			\foreach \a in{e, p, p', P, P*, P', P''}{
+				\fill (\a) circle(0.05);
+			}
+			
+			\draw ($(P*)-(0,0.25)$) arc[radius=0.25,start angle=270, end angle=360];
+			\fill ($(P*)+(315:0.15)$) circle(0.03);
+		\end{tikzpicture}\end{center}
+		E bezeichne $P^*$ die orthogonale Projektion von $P{''}$ auf $D$ und $p_k^{t+1}$ den Punkt auf dem Strahl von $E^{t+1}$ durch $P^*$ mit $d(E^{t+1}, p_k^t) = d(E^{t+1}, p_k^{t+1})$.
 		Dann sei $P_k^{t+1} = P'$ der Punkt auf $\overline{p_k^{t+1} E^{t+1}}$ mit $d(P_k^t, P_k^{t+1}) = 1$ und $d(P_k^{t+1}, E^{t+1})$ minimal.
 	\end{description}
 \end{itemize}
