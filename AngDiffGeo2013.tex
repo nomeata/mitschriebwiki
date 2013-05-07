@@ -260,6 +260,7 @@
 \DeclareMathOperator{\n}{n} % Umlaufzahl
 \DeclareMathOperator{\offen}{offen}
 \DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\proj}{proj}
 \DeclareMathOperator{\res}{res} % Residuum
 \DeclareMathOperator{\rg}{rg} % rank (i)
 \DeclareMathOperator{\ric}{ric} % Ricci Tensor
@@ -1167,7 +1168,7 @@ Wir betrachten in dem folgenden Bild den Unterschied zwischen \Planes und \Spher
 	\node[right] (beta) at ($(p)+(0,-0.5)$) {$\beta = \varangle_{P_k^t(Q, E)}$};
 	\draw[->] (beta) -- ($(p)+(25:0.3)$);
 \end{tikzpicture} \\
-$\Rightarrow d(D^{t+1}, E^{t+1} < d(Q, E^{t+1}$\end{center}
+$\Rightarrow d(D^{t+1}, E^{t+1}) < d(Q, E^{t+1})$\end{center}
 Sei $R^t = \conv(p_1, \ldots, p_N) \setminus \bigcup_{k=1}^N \B_{d(p_k, P_k^t)}(p_k)$ der zum Zeitpunkt $t$ von den Sph"aren eingeschlossene Bereich.
 \begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
 	%\tikzgitter{(-4,-4)}{(4,4)}
@@ -1314,7 +1315,7 @@ F"ur $k \le N$ bezeichne $H_k$ die abgeschlossene Halbebene, welche $E$ enth"alt
 	\fill (e)circle(0.05)node[left]{$E$} (p1)circle(0.05)node[right]{$P_1$} (p2)circle(0.05)node[right]{$P_2$};
 	\draw[dashed] (e) -- (p1) (e) -- (p2);
 \end{tikzpicture}\end{center}
-Die Konfiguration erf"ullt die Bedingung (BC), falls $D \cap \bigcap_{k \le N} H_k$ beschr"ankt ist.
+Die Konfiguration erf"ullt die Bedingung \CmMark[BC@(BC)]{(BC)}, falls $D \cap \bigcap_{k \le N} H_k$ beschr"ankt ist.
 \end{dfn}
 
 Die L"osung des zweiten Problems bedarf einer Modifikation von \Spheres.
@@ -1444,6 +1445,106 @@ Modifikation von \Spheres nach (A-B-G '09) zu \RotSpheres\index{Rotating Spheres
 \begin{satz}[A-B-G '09]
 F"ur jedes konvexe Gebiet $D$ ist \RotSpheres erfolgreich, wenn die Konfiguration $D, P_1, \ldots, P_N$ die Bedingung (BC) erf"ullt.
 \end{satz}
+
+% Vorlesung vom 6. 5.
+
+\begin{bewSkiz}\begin{enumerate}[label=\arabic*),leftmargin=*,widest=2]
+\item
+	Es gilt $d(p_k^{t+1}, P_k^{t+1})^2 > d(p_k^t, P_k^t)^2 + 1$.
+	Setze $p=p_k^t$, $p'=p_k^{t+1}$, $P=P_k^t$, $P'=P_k^{t+1}$.
+	Wir unterscheiden nun zwei F"alle.
+	\begin{description}[leftmargin=*]
+	\item[Falls \bm{$P'' \in D$}:]
+		Es gilt
+		\begin{center}\textcolor{red}{[BILD]}\end{center}
+		$d(p,P'')^2 = d(p, P)^2 + d(P, P'')^2 - 2 d(p, P) d(P, P'') \cdot \underbrace{\cos \alpha}_{<0} > d(p, P)^2 + 1$
+	\item[Falls \bm{$P'' \notin D$}:]
+		Es gilt
+		\begin{center}\textcolor{red}{[BILD]}\end{center}
+		$P^* = \proj_D(P'') \in D$, $P'' \notin D$, $E \in D$.
+		Damit folgt f"ur den Winkel $\beta = \varangle_{P*}(E', P'') \ge \frac{\pi}{2}$ und $d(p, P'') \le d(p', P^*) \le d(p', P')$, der Rest geht weiter wie oben.
+	\end{description}
+\item
+	Setze $C^t = D \setminus \bigcup_{k \le N} B_k^t$, $B_k^t = B_{d(p_k^t, P_k^t)}(p_k^t)$.
+	\emph{Behauptung:} $\overline{C^{t+1}} \subseteq C^t$.
+	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{description}[leftmargin=*]
+	\item[Falls \bm{$p^{t+1}=p'=p=p^t$}:]
+		Aus 1) folgt $B^{t+1} \supset B^t$.
+	\item[Falls \bm{$p^{t+1}=p'\ne p=p^t$}:]
+		\begin{enumerate}[label=\roman*),leftmargin=*,widest=iii]
+			\item
+				$B^t \subseteq B''$ und $B \subseteq B^{t+1}$
+			\item
+				$B$ und $B''$ haben den gleichen Radius und $\partial B \cap \partial B'' \subseteq \partial H'$.
+				Daraus folgt
+				\begin{align*}
+					B'' \cap H' \subseteq B \cap H' = \{ x \mid d(x, p') \le d(x,p) \}
+				\end{align*}
+			\item
+				$\partial H^* \cap \partial H'$ und $\partial B'' \cap \partial H'$ werden durch $\overline{P'' P^*} \cap \partial H'$ \quot{getrennt}, damit folgt $B'' \cap H^* \subset H'$.
+		\end{enumerate}
+		Insgesamt folgt aus diesen drei Punkten:
+		\begin{align*}
+			B^t \cap D & \overset{\text{(i)}}{\subset} B'' \cap D \subseteq B'' \cap H^* \cap D \overset{\text{(iii)}}{\subseteq} B'' \cap H' \cap D \overset{\text{(ii)}}{\subset} B \cap H' \cap D \\
+			& \overset{\text{(i)}}{\subseteq} B^{t+1} \cap H' \cap D \subseteq B^{t+1} \cap D
+		\end{align*}
+		Daraus folgt $\overline{C^{t+1}} \subset C^t$.
+	\end{description}
+\item
+	Es existiert $C_1$ so, dass f"ur alle $x_k \in B_k^0 \cap D$ gilt $d(x_k, p_k^t) \subseteq C_1$.
+	Wie oben gilt $x_k \in B_k^0 \cap D \subseteq \ldots \subseteq B_k^t \cap D$.
+	Mit den Bezeichnungen wie oben sei $H_k^{t+1} = H'$ der Halbraum durch den Mittelpunkt von $\overline{p_k^t, p_k^{t+1}}$ mit $H' \perp \overline{p_k^t p_k^{t+1}}$.
+	Es gilt
+	\begin{align*}
+		x_k \in B_k^t \cap D &\subseteq B_k{''} \cap H_k^* \\
+		&\subseteq H' = \{ x \mid d(x, p^{t+1}) \le d(x, p) \}.
+	\end{align*}
+	Also gilt $d(x_k, p_k^{t+1}) \le d(x_k, p_k^t)$ und damit ist $d(x_k, p_k^t)$ uniform beschr"ankt.
+	\begin{center}\textcolor{red}{[BILD]}\end{center}
+\item
+	$E^t \in C^t \overset{(2)}{\subset} C^0$ ist beschr"ankt.
+	Damit folgt dass $d(x_k, E^t)$ uniform beschr"ankt ist durch $C_2$.
+	\begin{align*}
+		(C_1 + C_2)^2 & \overset{\mathclap{(3)}}{\underset{(4)}{\ge}} (d(x_k, p_k^t) + d(x_k, E^t))^2 \\
+		& \ge d(p_k, E^t)^2 \\
+		& \ge d(p_k, P_k^t)^2 \\
+		& \overset{(1)}{\ge} d(p_k^0, P_k^0) + t
+	\end{align*}
+\end{enumerate}\end{bewSkiz}
+
+\begin{emptythm}[Anwendung/Verallgemeinerung]
+Betrachte Gebiete $D \subseteq \R^n$, welche sich als endliche Vereinigung konvexer abgeschlossener $D_\alpha$ schreiben lassen.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Es seien $D = \bigcup_\alpha D_\alpha$ eine endliche Vereinigung abgeschlossener konvexer Gebiete $D_\alpha$.
+F"ur $E \in D$ bezeichne $E_\alpha = \proj_{D_\alpha}(E)$.
+Eine Konfiguration $D, E, \{P_k\}$ erf"ullt \CmMark[EBC@(EBC)]{(EBC)}, falls eine Partition von $\{P_k\}$ in Mengen $\{P_{\alpha i} \mid i \le N_\alpha \} \subset D_\alpha$ existiert, so dass f"ur $D_\alpha, E_\alpha, \{P_{\alpha,i}\}$ (BC) gilt.
+In diesem Fall existiert eine erfolgreiche Verfolgerstrategie.
+Die Schrittweite $\le 1$ f"ur $E$ (bez"uglich der L"angenmetrik von $D = \bigcup D_\alpha$) impliziert $d(E^t, E^{t+1}) \le 1$ in der Metrik (jedes) $\R^{n_\alpha}$.
+
+Da jedes $\proj_{D_\alpha}$ Abst"ande nicht vergr"o"sert, gilt auch f"ur alle $E_\alpha$ Schrittweite $\le 1$.
+In jedem Gebiet $D_\alpha$ gilt nach endlicher Zeit $P_{\alpha, i}^t = E_\alpha = \proj_{D_\alpha}(E)$.
+Falls $E_\alpha \ne E$, setze $P_{\alpha,i}^T = E_\alpha^T$ f"ur alle $T \ge t$.
+Nach endlicher Zeit gilt dann $P_{\alpha,i_\alpha}^t = E_\alpha^t$ f"ur alle $\alpha$ und damit ist $E^t = E_{\overline\alpha}^t$ f"ur ein $\overline\alpha$, das hei"st $P_{\overline\alpha, i_\alpha}^t = E^t$.
+\end{emptythm}
+
+\textbf{Bhadanin-Ister '12:} In jedem einfachen kompakten Polygon mit Hinternissen existiert eine erfolgreiche Verfolgerstrategie.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Bei Polygonen kann man f"ur Hindernisse eine Triangulierung w"ahlen.
+Der Nachteil dabei ist dass man einen Verfolger pro Gebiet braucht.
+Dies funktioniert auch, wenn das Gebiet in eine Richtung unbeschr"ankt ist.
+
+\begin{enumerate}[label=\Alph*),leftmargin=*,widest=B]
+\item
+	\textbf{(Aigner-Fromme '84)} Jedes $P$ kann ein geod"atisches Segment $c$ \quot{bewachen}, das hei"st $E$ wird gefangen, falls es $c$ "uberquert.
+\item
+	\textbf{(Ister et al. '05)} in jedem einfach zusammenh"angenden Polygon existiert eine erfolgreiche Strategie mit einem Verfolger.
+	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	W"ahle Kanten(z"uge) $c_1 \ni P_1$ und $c_2 \ni P_2$.
+	Setzt $c_3$ so, dass $D$ in Komponenten zerf"allt.
+	Dann ist entweder $P_1$ oder $P_2$ frei.
+	Nach endlicher Zeit liegt $E$ in einem einfach zusammenh"angenden Polygon.
+\end{enumerate}
 
 %========================================================================================================================
 %	A N H A N G
