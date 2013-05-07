@@ -1038,7 +1038,7 @@ Es bezeichne $v_k := \normVek{P_K^0 - E^0}$ den Einheitsvektor in Richtung $\ove
 	\path (e) --node[above]{$v_k$} ($(e)!1.5cm!(z3)$) (z3)node[right]{$P_k$};
 \end{tikzpicture}}
 Da $E \in \convo(P_1, \ldots, P_N)$ gilt, existiert ein $\epsilon > 0$ mit der Sph"are $\B_\epsilon \subseteq \convo(v_1, \ldots, v_N)$.
-Ohne Einschr"ankung kann man annehmen, dass die $v_1, \ldots, v_{n+1}$ in allgemeiner Lage sind und dass $B_\epsilon(0) \subseteq \convo(v_1, \ldots, v_{n+1})$, sowie $E = 0$ ist.
+Ohne Einschr"ankung kann man annehmen, dass die $v_1, \ldots, v_{n+1}$ in allgemeiner Lage sind und dass $\B_\epsilon(0) \subseteq \convo(v_1, \ldots, v_{n+1})$, sowie $E = 0$ ist.
 F"ur ein $v \in \S^{n-1}$ existieren $\lambda_1, \ldots, \lambda_{n+1} \in (0,1)$ mit $\epsilon v = \sum_{k=1}^{n+1} \lambda_k v_k$ und es folgt
 \begin{align*}
 	\epsilon = \epsilon \|v\|^2 = \langle v, \epsilon v \rangle = \sum \lambda_k \langle v, v_k \rangle.
@@ -1382,7 +1382,7 @@ Modifikation von \Spheres nach (A-B-G '09) zu \RotSpheres\index{Rotating Spheres
 \begin{emptythm}[\RotSpheres]
 \begin{itemize}
 \item
-	\emph{Initialisierung:} W"ahle Punkte $p_k^0$ auf dem Strahl von $E$ durch $P_k$ so, dass $P_k \in \overline{E p_k}$ gilt und die Komponente von $D \setminus \bigcup_{k \le N} B_{d(p_k, P_k)}(p_k)$ welche $E$ enth"alt, beschr"ankt ist. (folgt aus (BC))
+	\emph{Initialisierung:} W"ahle Punkte $p_k^0$ auf dem Strahl von $E$ durch $P_k$ so, dass $P_k \in \overline{E p_k}$ gilt und die Komponente von $D \setminus \bigcup_{k \le N} \B_{d(p_k, P_k)}(p_k)$ welche $E$ enth"alt, beschr"ankt ist. (folgt aus (BC))
 \item
 	$P_k^{t+1} = P_k^{t+1}(D, p_k^t, P_k^t, E^{t+1})$
 \item
@@ -1456,52 +1456,158 @@ F"ur jedes konvexe Gebiet $D$ ist \RotSpheres erfolgreich, wenn die Konfiguratio
 	\begin{description}[leftmargin=*]
 	\item[Falls \bm{$P'' \in D$}:]
 		Es gilt
-		\begin{center}\textcolor{red}{[BILD]}\end{center}
+		\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+			%\tikzgitter{(-4,-4)}{(5,4)}
+			
+			\draw (0,0) --coordinate[pos=0.2](P'') (3.5,0)coordinate(p)node[right]{$p$} --coordinate[pos=0.6](P) (0,1);
+			\draw (P)node[above]{$P$} --node[left]{$1$} (P'')node[below]{$P''$};
+			\draw[decorate,decoration={brace},xshift=-0.1cm] (0,0) --node[left]{$<1$} (0,1);
+			
+			\foreach \pkt in {p,P,P''}{
+				\fill (\pkt) circle(0.05);
+			}
+			
+			\clip (P'') -- (p) -- (P) -- cycle;
+			\draw (P)circle(0.25) node[shift={(0.03,-0.13)}] {$\alpha$};
+		\end{tikzpicture}\end{center}
 		$d(p,P'')^2 = d(p, P)^2 + d(P, P'')^2 - 2 d(p, P) d(P, P'') \cdot \underbrace{\cos \alpha}_{<0} > d(p, P)^2 + 1$
 	\item[Falls \bm{$P'' \notin D$}:]
 		Es gilt
-		\begin{center}\textcolor{red}{[BILD]}\end{center}
+		\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		
+		\draw (3,0)coordinate(p')node[right]{$p'$} --coordinate[pos=0.6](P') coordinate[pos=0.3](P*) (0,0)coordinate(E')node[above]{$E'$} --coordinate[pos=0.75](P'') (3,-1) coordinate (p)node[right]{$p$};
+		\draw (P')node[above]{$P'$} -- (P'')node[below]{$P''$} -- (P*)node[above,xshift=0.3cm]{$P^* \in D$};
+		\draw[dashed] (p) -- (p');
+			
+		\foreach \pkt in {p,p',P'',P',P*,E'}{
+			\fill (\pkt) circle(0.05);
+		}
+		
+		\clip (P') -- (P'') -- (P*) -- cycle;
+		\draw (P*)circle(0.25) node[shift={(-0.1,-0.15)}] {$\beta$};
+		\end{tikzpicture}\end{center}
 		$P^* = \proj_D(P'') \in D$, $P'' \notin D$, $E \in D$.
 		Damit folgt f"ur den Winkel $\beta = \varangle_{P*}(E', P'') \ge \frac{\pi}{2}$ und $d(p, P'') \le d(p', P^*) \le d(p', P')$, der Rest geht weiter wie oben.
 	\end{description}
 \item
-	Setze $C^t = D \setminus \bigcup_{k \le N} B_k^t$, $B_k^t = B_{d(p_k^t, P_k^t)}(p_k^t)$.
+	Setze $C^t = D \setminus \bigcup_{k \le N} \B_k^t$, $\B_k^t = \B_{d(p_k^t, P_k^t)}(p_k^t)$.
 	\emph{Behauptung:} $\overline{C^{t+1}} \subseteq C^t$.
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=0.9]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		
+		\draw[dashed,opacity=0.5,name path=hstern] (-4,0) --node[below,pos=0.95]{$H^*$} (4,0);
+		\foreach \i in {0,0.1,0.2,...,1}{
+			\path (-4,0) --coordinate[pos=\i](pkt) (4,0);
+			\draw[opacity=0.5] (pkt) -- +(45:0.25);
+		}
+		\draw[dashed,opacity=0.5,name path=hstrich] (-4,0.5)coordinate(0) --node[below,pos=0.95]{$H'$} coordinate[pos=0.85](1) (4,-1.75);
+		\foreach \i in {0,0.1,0.2,...,1}{
+			\path (-4,0.5) --coordinate[pos=\i](pkt) (4,-1.75);
+			\draw[opacity=0.5] (pkt) -- +(30:0.25);
+		}
+		\path[name intersections={of=hstern and hstrich}];
+		\coordinate (sp) at (intersection-1);
+		\node at (3.75,1) {$D$};
+		
+		\draw[name path=kasten] ($(0)!-0.2cm!90:(1)$) -- ($(1)!0.5cm!90:(0)$)coordinate(p)node[right]{$p$} -- ($(1)!-0.5cm!90:(0)$) coordinate(p')node[right]{$p'$} -- ($(0)!0.2cm!90:(1)$);
+		
+		\begin{scope}
+			\clip (0) -- (1) -- (p') -- cycle;
+			\draw (1) circle(0.25);
+			\fill ($(1)+(115:0.13)$) circle(0.03);
+		\end{scope}
+		
+		\def\rad{2.5};% um p herum 
+		\coordinate (Bt) at ($(p)+(90:\rad)$);
+		\coordinate (P) at ($(p)+(110:\rad)$);
+		\draw[gray] let \p1=($(Bt)-(p)$), \n0={atan2(\x1,\y1)} in (Bt)node[right]{$\B^t$} arc[radius=\rad,start angle=\n0,end angle=180];
+		
+		\def\rad{3.8};% um p herum 
+		\coordinate (B'') at ($(p)+(90:\rad)$);
+		\draw[name path=kreis2,gray] let \p1=($(B'')-(p)$), \n0={atan2(\x1,\y1)} in (B'')node[right]{$\B''$} arc[radius=\rad,start angle=\n0,end angle=180];
+		
+		\def\rad{3.8};% um p' herum 
+		\coordinate (B) at ($(p')+(150:\rad)$);
+		\draw[name path=kreis3,gray] let \p1=($(B)-(p')$), \n0={atan2(\x1,\y1)} in (B) arc[radius=\rad,start angle=\n0,end angle=210]node[below]{$\B''$};
+		
+		\def\rad{4.5};% um p' herum 
+		\coordinate (Bt+1) at ($(p')+(155:\rad)$);
+		\draw[name path=kreis4,gray] let \p1=($(Bt+1)-(p')$), \n0={atan2(\x1,\y1)} in (Bt+1) arc[radius=\rad,start angle=\n0,end angle=205]node[below]{$\B^{t+1}$};
+		
+		\path[name intersections={of=kreis2 and kreis3}];
+		\coordinate (2) at (intersection-1);
+		
+		\path[name intersections={of=kasten and kreis2}];
+		\coordinate (P'') at (intersection-1);
+		
+		\path[name intersections={of=kasten and kreis4}];
+		\coordinate (P') at (intersection-2);
+		
+		\path[name intersections={of=kasten and hstern}];
+		\coordinate (P*) at (intersection-2);
+		
+		\draw (P)node[above]{$P$} -- (P'')node[below]{$P''$} -- (P*)node[above]{$P^*$};
+		\node[above] at (P') {$P'$};
+		\draw[->] (-3,-0.5)node[left]{$\partial H' \cap \partial H^*$} to[out=0,in=270] ($(sp)-(0,0.07)$);
+		
+		\foreach \pkt in {2,sp,p,p',P,P',P'',P*}{
+			\fill (\pkt) circle(0.05);
+		}
+		
+		\clip (P'') -- (P*) -- (-3,0) -- cycle;
+		\draw (P*) circle(0.25);
+		\fill ($(P*)+(225:0.125)$) circle(0.03);
+	\end{tikzpicture}\end{center}
 	\begin{description}[leftmargin=*]
 	\item[Falls \bm{$p^{t+1}=p'=p=p^t$}:]
-		Aus 1) folgt $B^{t+1} \supset B^t$.
+		Aus 1) folgt $\B^{t+1} \supset \B^t$.
 	\item[Falls \bm{$p^{t+1}=p'\ne p=p^t$}:]
 		\begin{enumerate}[label=\roman*),leftmargin=*,widest=iii]
 			\item
-				$B^t \subseteq B''$ und $B \subseteq B^{t+1}$
+				$\B^t \subseteq \B''$ und $\B \subseteq \B^{t+1}$
 			\item
-				$B$ und $B''$ haben den gleichen Radius und $\partial B \cap \partial B'' \subseteq \partial H'$.
+				$\B$ und $\B''$ haben den gleichen Radius und $\partial \B \cap \partial \B'' \subseteq \partial H'$.
 				Daraus folgt
 				\begin{align*}
-					B'' \cap H' \subseteq B \cap H' = \{ x \mid d(x, p') \le d(x,p) \}
+					\B'' \cap H' \subseteq \B \cap H' = \{ x \mid d(x, p') \le d(x,p) \}
 				\end{align*}
 			\item
-				$\partial H^* \cap \partial H'$ und $\partial B'' \cap \partial H'$ werden durch $\overline{P'' P^*} \cap \partial H'$ \quot{getrennt}, damit folgt $B'' \cap H^* \subset H'$.
+				$\partial H^* \cap \partial H'$ und $\partial \B'' \cap \partial H'$ werden durch $\overline{P'' P^*} \cap \partial H'$ \quot{getrennt}, damit folgt $\B'' \cap H^* \subset H'$.
 		\end{enumerate}
 		Insgesamt folgt aus diesen drei Punkten:
 		\begin{align*}
-			B^t \cap D & \overset{\text{(i)}}{\subset} B'' \cap D \subseteq B'' \cap H^* \cap D \overset{\text{(iii)}}{\subseteq} B'' \cap H' \cap D \overset{\text{(ii)}}{\subset} B \cap H' \cap D \\
-			& \overset{\text{(i)}}{\subseteq} B^{t+1} \cap H' \cap D \subseteq B^{t+1} \cap D
+			\B^t \cap D & \overset{\text{(i)}}{\subset} \B'' \cap D \subseteq \B'' \cap H^* \cap D \overset{\text{(iii)}}{\subseteq} \B'' \cap H' \cap D \overset{\text{(ii)}}{\subset} \B \cap H' \cap D \\
+			& \overset{\text{(i)}}{\subseteq} \B^{t+1} \cap H' \cap D \subseteq \B^{t+1} \cap D
 		\end{align*}
 		Daraus folgt $\overline{C^{t+1}} \subset C^t$.
 	\end{description}
 \item
-	Es existiert $C_1$ so, dass f"ur alle $x_k \in B_k^0 \cap D$ gilt $d(x_k, p_k^t) \subseteq C_1$.
-	Wie oben gilt $x_k \in B_k^0 \cap D \subseteq \ldots \subseteq B_k^t \cap D$.
+	Es existiert $C_1$ so, dass f"ur alle $x_k \in \B_k^0 \cap D$ gilt $d(x_k, p_k^t) \subseteq C_1$.
+	Wie oben gilt $x_k \in \B_k^0 \cap D \subseteq \ldots \subseteq \B_k^t \cap D$.
 	Mit den Bezeichnungen wie oben sei $H_k^{t+1} = H'$ der Halbraum durch den Mittelpunkt von $\overline{p_k^t, p_k^{t+1}}$ mit $H' \perp \overline{p_k^t p_k^{t+1}}$.
 	Es gilt
 	\begin{align*}
-		x_k \in B_k^t \cap D &\subseteq B_k{''} \cap H_k^* \\
+		x_k \in \B_k^t \cap D &\subseteq \B_k{''} \cap H_k^* \\
 		&\subseteq H' = \{ x \mid d(x, p^{t+1}) \le d(x, p) \}.
 	\end{align*}
 	Also gilt $d(x_k, p_k^{t+1}) \le d(x_k, p_k^t)$ und damit ist $d(x_k, p_k^t)$ uniform beschr"ankt.
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=0.9]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		
+		\draw (-2,1)coordinate(1) --coordinate[pos=0.7](2) (2,-0.25)coordinate(3);
+		\foreach \i in {0.05,0.15,...,1} {
+			\path (1) --coordinate[pos=\i](0) (3);
+			\draw (0) -- +(20:0.25);
+		}
+		\node at (-1.5,1.5) {$H'=H_k^{t+1}$};
+		
+		\draw[dashed] ($(2)!1.25cm!90:(1)$) coordinate (pt) node[below]{$p^t$} -- ($(2)!-1.25cm!90:(1)$) coordinate (x) node[above]{$x$} -- +(0.25,-1)coordinate (pt+1) node[right]{$p^{t+1}$};
+		
+		\foreach \pkt in {pt,x,pt+1} {
+			\fill (\pkt) circle(0.05);
+		}
+	\end{tikzpicture}\end{center}
 \item
 	$E^t \in C^t \overset{(2)}{\subset} C^0$ ist beschr"ankt.
 	Damit folgt dass $d(x_k, E^t)$ uniform beschr"ankt ist durch $C_2$.
