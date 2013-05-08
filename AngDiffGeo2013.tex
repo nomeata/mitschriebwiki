@@ -1621,7 +1621,34 @@ F"ur jedes konvexe Gebiet $D$ ist \RotSpheres erfolgreich, wenn die Konfiguratio
 
 \begin{emptythm}[Anwendung/Verallgemeinerung]
 Betrachte Gebiete $D \subseteq \R^n$, welche sich als endliche Vereinigung konvexer abgeschlossener $D_\alpha$ schreiben lassen.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\draw (-2,0.5) -- ++(3,0.5) -- ++(-3,0.5)node[above]{$D_3$};
+	\draw (-2,-1.5)node[right]{$D_4$} ..controls(-2,-1.5) and (-0.5,0.5)..coordinate[pos=0.75](e4) (1,0.5) ..controls(2.5,0.5) and (3,-1.5).. (3,-1.5);
+	\draw (3.5,2) ..controls(3.5,2) and (0,2.5).. (0,1)coordinate (e1) ..controls(0,-2) and (3.5,0.5).. (3.5,0.5)node[right]{$D_1$};
+	\draw (0,0.5) circle(1.5); \node[above] at (0,2) {$D_2$};
+	
+	\coordinate (p) at (3,1); \node[right] at (p) {$P$};
+	\coordinate (e) at (-0.8,1.1);
+	\node[right] at (e1) {$E_1$}; \node[left] at (e) {$E=E_2=E_3$}; \node[below] at (e4) {$E_4$};
+	
+	\draw[dashed] (e1) -- (e) -- (e4);
+	
+	\begin{scope}
+		\clip (-2,-1.5) ..controls(-2,-1.5) and (-0.5,0.5).. (1,0.5) -- (e4) -- (e) -- (-2,-1.5);
+		\clip ($(e4)-(1,1)$) rectangle ($(e4)+(0,1)$);
+		\draw (e4) circle(0.25); \fill ($(e4)+(170:0.125)$) circle(0.03);
+	\end{scope}
+	\begin{scope}
+		\clip (3.5,2) ..controls(3.5,2) and (0,2.5).. (0,1) -- (e) -- cycle;
+		\draw (e1) circle(0.25); \fill ($(e1)+(120:0.125)$) circle(0.03);
+	\end{scope}
+	
+	\foreach \pkt in {e,e4,e1,p}{
+		\fill (\pkt) circle (0.05);
+	}
+\end{tikzpicture}\end{center}
 Es seien $D = \bigcup_\alpha D_\alpha$ eine endliche Vereinigung abgeschlossener konvexer Gebiete $D_\alpha$.
 F"ur $E \in D$ bezeichne $E_\alpha = \proj_{D_\alpha}(E)$.
 Eine Konfiguration $D, E, \{P_k\}$ erf"ullt \CmMark[EBC@(EBC)]{(EBC)}, falls eine Partition von $\{P_k\}$ in Mengen $\{P_{\alpha i} \mid i \le N_\alpha \} \subset D_\alpha$ existiert, so dass f"ur $D_\alpha, E_\alpha, \{P_{\alpha,i}\}$ (BC) gilt.
@@ -1635,7 +1662,19 @@ Nach endlicher Zeit gilt dann $P_{\alpha,i_\alpha}^t = E_\alpha^t$ f"ur alle $\a
 \end{emptythm}
 
 \textbf{Bhadanin-Ister '12:} In jedem einfachen kompakten Polygon mit Hinternissen existiert eine erfolgreiche Verfolgerstrategie.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=0.8]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\coordinate(1) at (-1.5,1.5); \coordinate(2) at (-3,0.5); \coordinate(3) at (-2.5,-2);
+	\coordinate(4) at (1,-2.5); \coordinate(5) at (3,-1);
+	\coordinate (a) at (-2,0); \coordinate (b) at (0,-0.25); \coordinate (c) at (-1.5,-1);
+	\coordinate (d) at (1.5,-0.75); \coordinate (e) at ($(d)+(100:1.5)$);
+	
+	\draw (1) -- (2) -- (3) -- (4) -- (5) -- +(-0.5,3) (1) -- +(0,0.5);
+	\filldraw[fill=gray,fill opacity=0.4] (a) -- (b) -- (c) -- cycle (d) -- (e) -- ($(e)!0.5cm!90:(d)$) -- ($(d)!-0.5cm!90:(e)$) -- cycle;
+	\draw[dashed] (1) -- ($(2)!1.5!(1)$) (3) -- (c) -- (4) (b) -- (d) -- (4) -- cycle (b) -- (e) (a) -- (0,2);
+	\fill (-2.25,0.5) circle(0.05) node[above right]{$E$};
+\end{tikzpicture}\end{center}
 Bei Polygonen kann man f"ur Hindernisse eine Triangulierung w"ahlen.
 Der Nachteil dabei ist dass man einen Verfolger pro Gebiet braucht.
 Dies funktioniert auch, wenn das Gebiet in eine Richtung unbeschr"ankt ist.
@@ -1645,7 +1684,18 @@ Dies funktioniert auch, wenn das Gebiet in eine Richtung unbeschr"ankt ist.
 	\textbf{(Aigner-Fromme '84)} Jedes $P$ kann ein geod"atisches Segment $c$ \quot{bewachen}, das hei"st $E$ wird gefangen, falls es $c$ "uberquert.
 \item
 	\textbf{(Ister et al. '05)} in jedem einfach zusammenh"angenden Polygon existiert eine erfolgreiche Strategie mit einem Verfolger.
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=0.75]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		
+		\coordinate (1) at (-3,0.5); \coordinate (2) at (-1,1.5); \coordinate (3) at (3.5,0.75);
+		\coordinate (4) at (3,-1); \coordinate (5) at (0,-1.5); \coordinate (6) at (-2.5,-1);
+		
+		\draw (1) -- (2) -- (3) (4) -- (5) -- (6);
+		\draw[very thick] (6) --node[left]{$c_1$} (1) (3) --node[right]{$c_2$} (4) (2) --node[left,pos=0.3]{$c_3$}coordinate[pos=0.3](a)coordinate[pos=0.7](b) (6) --node[below,pos=0.6]{$c_1'$} (0,0) -- cycle;
+		\draw[->] ($(6)!0.3!(1)$) to[out=40,in=120] ($(6)!0.3!(0,0)$);
+		\filldraw[fill=gray,fill opacity=0.5] (0,0) -- (a) -- (b) -- cycle;
+		\fill (1.5,-0.5) circle(0.05) node[above]{$E$};
+	\end{tikzpicture}\end{center}
 	W"ahle Kanten(z"uge) $c_1 \ni P_1$ und $c_2 \ni P_2$.
 	Setzt $c_3$ so, dass $D$ in Komponenten zerf"allt.
 	Dann ist entweder $P_1$ oder $P_2$ frei.
