@@ -1708,7 +1708,15 @@ Dies funktioniert auch, wenn das Gebiet in eine Richtung unbeschr"ankt ist.
 
 Im Folgenden sei das Soielfeld $D$ ein $\CAT(0)$- (beziehungsweise $\CAT(1)$-) Raum.
 Alle Resultate beziehen sich auf \Greedy mit der Schrittweise $d > 0$, das hei"st $P^{t+1} \in \overline{P^t E^t}$ mit $d(P^t, P^{t+1}) = d$.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\def\d{1.5}
+	\draw (-2.5,-0.5)coordinate(p)node[below]{$P^t$} --node[above]{$d$} ++(10:\d)coordinate(p')node[below]{$P^{t+1}$} -- ++(10:2*\d)coordinate(e)node[right]{$E^{t}$} -- ++(80:\d)coordinate(e')node[right]{$E^{t+1}$};
+	\foreach \pkt in {p, p', e, e'}{
+		\fill (\pkt)circle(0.05);
+	}
+\end{tikzpicture}\end{center}
 Wie spiegelt sich der Ausgang eines Spiels in der Geometrie der Kurven $P^t$, beziehungsweise $E^t$, wider?
 Dabei verstehen wir die Wege $P^t$, beziehungsweise $E^t$, als st"uckweise geod"atische Kurven $P = \bigcup \overline{P^t P^{t+1}}$.
 F"ur $d = 1$ ist $P$ beziehungsweise $E$ nach der Bogenl"ange parametrisiert.
@@ -1721,7 +1729,22 @@ Ist $D$ ein $\CAT(0)$-Raum, so ist $D$ genau dann kompakt, wenn $P$ stets gewinn
 Ist $D$ nicht kompakt, so existiert ein geod"atischer Strahl als Fluchtstrategie.
 
 Angenommen es existiert eine Fluchtstrategie. F"ur den Verfolgerabstand $d^t = d(P^t, E^t)$ gilt $d^{t+1} \le (d^t - d) + d = d^t$.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\def\d{1.5}
+	\draw (-2.5,-0.5)coordinate(p)node[below]{$P^t$} --node[above]{$d$} ++(10:\d)coordinate(p')node[below]{$P^{t+1}$} -- ++(10:2*\d)coordinate(e)node[right]{$E^{t}$} --node[right]{$d$} ++(80:\d)coordinate(e')node[right]{$E^{t+1}$} --node[above]{$d^{t+1}$} (p');
+	\fill[gray,opacity=0.3] (p') -- (e) -- (e') -- cycle;
+	\begin{scope}
+		\clip (p') -- (e) -- (e') -- cycle;
+		\draw (p') circle(1.5);
+		\node at ($(p')+(20:1.9)$) {$\alpha^{t+1}$};
+	\end{scope}
+	\draw[decoration={brace,mirror},decorate] ([yshift=-0.4cm]p') --node[below]{$d^t - d$} ([yshift=-0.4cm]e);
+	\foreach \pkt in {p, p', e, e'}{
+		\fill (\pkt)circle(0.05);
+	}
+\end{tikzpicture}\end{center}
 Also konvergiert $d^t$ monoton fallend gegen ein $d^\infty > d$.
 Betrachtet man den euklidischen Vergleichswinkel $\overline{\alpha}^t$ zu $\alpha^t = \varangle_{P^t}(E^{t+1}, E^t)$, so folgt
 \begin{align*}
@@ -1739,7 +1762,24 @@ Dann ist $\tau_c = \int_0^l \kappa$ die \CmMark{Totalkr\"ummung} von $c$.
 Ist $c$ nach Bogenl"ange parametrisiert, so gilt $\kappa = \| \ddot{c} \|$.
 Bezeichnet $\theta$ die Drehwinkelfunktion von $\dot{c}$, das hei"st $\dot{c}(t) = (\cos \theta(t), \sin \theta(t))$, so gilt $\|\ddot{c}\| = \| (-\theta' \sin \theta, \theta' \cos \theta) \| = | \theta' |$.
 Damit ist die Totalkr"ummung die akkumulierte Winkel"anderung von $c$.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\draw (-2.5,-2)coordinate(0)node[below]{$c(0)$} --node[right]{$c_0$} ++(60:1.75)coordinate(1) --node[above]{$c_1$} ++(10:2.5)coordinate(2) --node[left]{$c_2$} ++(60:1.75)coordinate(3);
+	\draw[dashed] (1) -- +(60:1.25) (2) -- +(10:1.25);
+	\draw (0) ..controls($(0)+(100:0.25)$) and ($(1)+(180:0.5)$).. (1) ..controls($(1)+(0:0.5)$) and ($(2)+(225:0.75)$).. (2) ..controls($(2)+(225-180:0.25)$) and ($(1.75,1.25)$).. (3) node[right]{$c$};
+	%\fill (0) circle(0.05);
+	\begin{scope}
+		\clip (1) -- (2) -- ($(1)+(60:1.25)$) -- cycle;
+		\draw (1) circle(0.5);
+		\node at ($(1)+(30:0.75)$) {$\alpha_1$};
+	\end{scope}
+	\begin{scope}
+		\clip (2) -- (3) -- ($(2)+(10:1.25)$) -- cycle;
+		\draw (2) circle(0.5);
+		\node at ($(2)+(30:0.75)$) {$\alpha_2$};
+	\end{scope}
+\end{tikzpicture}\end{center}
 ist $c_1, \ldots, c_n$ eine Polynomapproximation von $c$, so ist die Summe der Komplement"arwinkel $\alpha_i = \pi - \beta_i = \pi - \varangle(c_{i-1}, c_i)$ eine Approximation der Totalkr"ummung von $c$.
 \end{emptythm}
 
@@ -1755,7 +1795,44 @@ Im Fall von $\CAT(0)$ gilt Monotonit"at.
 \end{dfn}
 
 Ist $c$ eine Verfeinerung einer Polygonapproximation $c'$ von $\gamma$, so gilt $\tau_{c'} \le \tau_c$, wie man an der Zeichnung erkennen kann:
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1.4]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\draw (-2.5,-2)coordinate(0) -- ++(60:1.75)coordinate(1) -- ++(10:2.5)coordinate(2) --node[right]{$c$} ++(60:1.75)coordinate(3) (1) --node[left]{$c$} ++(40:1.5)coordinate(4) -- (2);
+	
+	\begin{scope}
+		\clip (0) -- (1) -- (2) -- cycle;
+		\draw (1) circle(0.2);
+		\node at ($(1)+(310:0.3)$) {$\beta_1'$};
+	\end{scope}
+	\begin{scope}
+		\clip (4) -- (2) -- (3) -- cycle;
+		\draw (2) circle(0.3);
+		\node at ($(2)+(100:0.4)$) {$\beta_2'$};
+	\end{scope}	
+	\begin{scope}
+		\clip (1) -- (4) -- (2) -- cycle;
+		\draw (1) circle(0.4);
+		\node at ($(1)+(25:0.5)$) {$\alpha_1$};
+		\draw (2) circle(0.4);
+		\node at ($(2)+(175:0.5)$) {$\alpha_2$};
+		\draw (4) circle(0.3);
+		\node at ($(4)+(270:0.4)$) {$\beta$};
+	\end{scope}
+	\begin{scope}
+		\clip (0) -- (1) -- (4) -- (3) -- ++(0,-1) -- cycle;
+		\draw (1) circle(0.6);
+		\node at ($(1)+(350:0.75)$) {$\beta_1$};
+	\end{scope}
+	\begin{scope}
+		\clip (1) -- (2) -- (3) -- cycle;
+		\draw (2) circle(0.65);
+		\node at ($(2)+(100:0.75)$) {$\beta_2$};
+	\end{scope}
+	
+	\node[right,align=left] at (1.5,0) {$\tau_{c'} = \pi - \beta_1' + \pi - \beta_2'$ \\ $\tau_c = \pi - \beta_1 + \pi - \beta_2
+$};
+\end{tikzpicture}\end{center}
 Es gilt
 \begin{align*}
 \tau_c &= \pi - \beta_1 + \pi - \beta + \pi - \beta_2 \\
@@ -1783,19 +1860,43 @@ Es sei $c$ eine nach Bogenl"ange parametrisierte Kurve in einem $\CAT(0)$-Raum. 
 \end{satz}
 
 Man kann $c|_{[0,t]}$ durch eine hinreichend feine Polynomapproximation ersetzen:
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1.0]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\def\len{1.25}
+	\draw (-3,-1.5)coordinate(0)node[below]{$c(0)$} --node[left]{$c_1$} ++(60:1.75)coordinate(1) -- ++(10:2.25)coordinate(2) -- ++(350:2)coordinate(3)node[above]{$c(t_1)$} -- ++(0:1.75)coordinate(4) -- ++(45:1)coordinate(5)node[right]{$c(t_2)$} -- ++(90:1)coordinate(6) (0) --node[below]{$\sigma_1$} (3);
+	\draw[dashed] (1) -- +(60:\len) (2) -- +(10:\len) (3) -- +(350:\len) (4) -- +(0:\len) (5) -- +(45:\len);
+	\fill[gray,opacity=0.3] (0) -- (1) -- (2) -- (3) -- cycle;
+	
+	\begin{scope}
+		\clip (1) -- ($(1)+(60:\len)$) -- (2) -- cycle;
+		\draw (1) circle(0.5);
+	\end{scope}\begin{scope}
+		\clip (2) -- ($(2)+(10:\len)$) -- (3) -- cycle;
+		\draw (2) circle(0.5);
+	\end{scope}\begin{scope}
+		\clip (3) -- ($(3)+(350:\len)$) -- (4) -- cycle;
+		\draw (3) circle(0.5);
+	\end{scope}\begin{scope}
+		\clip (4) -- ($(4)+(0:\len)$) -- (5) -- cycle;
+		\draw (4) circle(0.5);
+	\end{scope}\begin{scope}
+		\clip (5) -- ($(5)+(45:\len)$) -- (6) -- cycle;
+		\draw (5) circle(0.5);
+	\end{scope}
+	
+	\node at (-1.5,-0.5) {$\rho$};
+\end{tikzpicture}\end{center}
 W"ahle eine Partitionierung $0 = t_0 < t_1 < \ldots < t_n = t$ so, dass $c_i = c|_{[t_{i-1}, t_i]}$ eine Totalkr"ummung $\le \frac{\pi}{2}$ hat mit $n \le \frac{\tau_c(t)}{\frac{\pi}{2}} + 1$.
 Es bezeichne $\sigma_i$ die Sekante $\overline{c(t_{i-1}) c(t_i)}$ und $\rho_i$ das durch $c_i$ und $\sigma_i$ definierte Polygon.
 Jede Kurve (und insbesondere jedes Polygon) in einem $\CAT(\kappa)$-Raum l"asst sich \quot{ausf"ullen}.
 
-\begin{satz}[Rechetnyak 19689]
+\begin{satz}[Rechetnyak 1968]
 Es sei $c$ eine geschlossene Kurve in einem $\CAT(\kappa)$-Raum $X$ mit $l(c) < \frac{2\pi}{\sqrt\kappa}$.
 Dann existiert ein konvexes Gebiet $C \subseteq M_\kappa^2$ und eine Bogenl"angenparametrisierung $\overline c$ von $\partial C$, sowie eine nicht-expandierende Abbildung $\phi: C \to X$ mit $\phi \circ \overline c = c$.
 \end{satz}
 
 \begin{bewSkiz}
-Betrachte die Zeichnung:
-\begin{center}\textcolor{red}{[BILD]}\end{center}
 Man sieht leicht ein, dass falls $c|_{[a,b]}$ geod"atisch ist, so auch $\overline c|_{[a,b]}$ und dass f"ur Winkel $\beta$, beziehungsweise $\overline\beta$ solcher aufeinanderfolgender Segmente $\beta \le \overline\beta$ gilt.
 \end{bewSkiz}
 
@@ -1803,7 +1904,25 @@ Man sieht leicht ein, dass falls $c|_{[a,b]}$ geod"atisch ist, so auch $\overlin
 \item
 	Es existiert zu $\rho_i$ ein konvexes Polygon $\overline\rho_i$ mit den gleichen Seitenl"angen wie $\rho_i$.
 	Wie auch $\rho_i$ besteht $\overline\rho_i$ aus einem konvexen Polygon $\overline c_i$ mit der Totalkr"ummung $\tau_{\overline c_i} = \sum \pi - \overline\beta_i \le \sum \pi - \beta_i \le \frac{\pi}{2}$ und eine Sekante $\sigma_i$.
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1.0]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		
+		\draw (-2,-1)coordinate(0) -- ++(45:1.5)coordinate(1) --node[above]{$\overline c_i$} ++(10:3)coordinate(2) -- ++(330:1.5)coordinate(3);
+		\draw[dashed] (0) --node[below]{$\overline\sigma_i$} (3) (1) -- +(45:1)coordinate(1') (2) -- +(10:1)coordinate(2');
+		\begin{scope}
+			\clip (0) -- (1) -- (2) -- (3) -- cycle;
+			\draw (1) circle(0.25)node[xshift=0.3cm,yshift=-0.4cm]{$\overline\beta_1$} (2) circle(0.25)node[xshift=-0.3cm,yshift=-0.4cm]{$\overline\beta_2$};
+		\end{scope}
+		\begin{scope}
+			\clip(1) -- (1') -- (2) -- cycle;
+			\draw (1) circle(0.4);
+		\end{scope}
+		\begin{scope}
+			\clip(2) -- (2') -- (3) -- cycle;
+			\draw (2) circle(0.4);
+		\end{scope}
+		\node at (4,0) {$\subseteq \R^2$};
+	\end{tikzpicture}\end{center}
 	Es gilt $\frac{l(\overline c_i)}{l(\overline\sigma_i)} \le \sqrt 2$, also $\sqrt 2 \ge \frac{l(\overline c_i)}{l(\overline\sigma_i)} = \frac{l(c_i)}{l(\sigma_i)} = \frac{t_i - t_{i-1}}{l(\sigma_i)}$. Damit folgt
 	\begin{align*}
 		&t = \sum_i t_i - t_{i-1} \le \sqrt 2 \sum_{i=0}^n l(\sigma_i) \le \sqrt 2 \left( \frac{\tau_c(t)}{\frac{\pi}{2}} + 1 \right) \sup(\sigma_i) \shortintertext{also}
