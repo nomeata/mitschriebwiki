@@ -1702,6 +1702,117 @@ Dies funktioniert auch, wenn das Gebiet in eine Richtung unbeschr"ankt ist.
 	Nach endlicher Zeit liegt $E$ in einem einfach zusammenh"angenden Polygon.
 \end{enumerate}
 
+% Vorlesung vom 13. 5.
+
+\section{Geometrische Charakterisierung von Flucht- und Verfolgerkurven}
+
+Im Folgenden sei das Soielfeld $D$ ein $\CAT(0)$- (beziehungsweise $\CAT(1)$-) Raum.
+Alle Resultate beziehen sich auf \Greedy mit der Schrittweise $d > 0$, das hei"st $P^{t+1} \in \overline{P^t E^t}$ mit $d(P^t, P^{t+1}) = d$.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Wie spiegelt sich der Ausgang eines Spiels in der Geometrie der Kurven $P^t$, beziehungsweise $E^t$, wider?
+Dabei verstehen wir die Wege $P^t$, beziehungsweise $E^t$, als st"uckweise geod"atische Kurven $P = \bigcup \overline{P^t P^{t+1}}$.
+F"ur $d = 1$ ist $P$ beziehungsweise $E$ nach der Bogenl"ange parametrisiert.
+
+\begin{satz}[Alexander-Bishop-Ghrist 2010]
+Ist $D$ ein $\CAT(0)$-Raum, so ist $D$ genau dann kompakt, wenn $P$ stets gewinnt (mit einem Verfolger).
+\end{satz}
+
+\begin{bew}
+Ist $D$ nicht kompakt, so existiert ein geod"atischer Strahl als Fluchtstrategie.
+
+Angenommen es existiert eine Fluchtstrategie. F"ur den Verfolgerabstand $d^t = d(P^t, E^t)$ gilt $d^{t+1} \le (d^t - d) + d = d^t$.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Also konvergiert $d^t$ monoton fallend gegen ein $d^\infty > d$.
+Betrachtet man den euklidischen Vergleichswinkel $\overline{\alpha}^t$ zu $\alpha^t = \varangle_{P^t}(E^{t+1}, E^t)$, so folgt
+\begin{align*}
+	\cos \overline{\alpha}^{t+1} &= \frac{(d^{t+1})^2 + (d^t - d)^2 - d^2}{2d^{t+1}(d^t - d)} \\
+	&= \frac{(d^{t+1})^2 + (d^t)^2 - 2d^t}{2d^{t+1}(d^t - d)} \\
+	&\rightarrow \frac{2d^\infty(d^\infty - d)}{2d^\infty(d^\infty - d)} = 1.
+\end{align*}
+Also konvergiert $\overline{\alpha}^t$ gegen $0$.
+Da f"ur Vergleichswinkel stets $\alpha^t \le \overline{\alpha}^t$ gilt, folgt $\alpha^t \xrightarrow{t \to \infty} 0$.
+\end{bew}
+
+\begin{emptythm}[Erinnerung]
+Es sei $c$ eine regul"are ebene Kurve $c: [0, l] \to \R^2$ und $\kappa$ die Kr"ummung von $c$.
+Dann ist $\tau_c = \int_0^l \kappa$ die \CmMark{Totalkr\"ummung} von $c$.
+Ist $c$ nach Bogenl"ange parametrisiert, so gilt $\kappa = \| \ddot{c} \|$.
+Bezeichnet $\theta$ die Drehwinkelfunktion von $\dot{c}$, das hei"st $\dot{c}(t) = (\cos \theta(t), \sin \theta(t))$, so gilt $\|\ddot{c}\| = \| (-\theta' \sin \theta, \theta' \cos \theta) \| = | \theta' |$.
+Damit ist die Totalkr"ummung die akkumulierte Winkel"anderung von $c$.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+ist $c_1, \ldots, c_n$ eine Polynomapproximation von $c$, so ist die Summe der Komplement"arwinkel $\alpha_i = \pi - \beta_i = \pi - \varangle(c_{i-1}, c_i)$ eine Approximation der Totalkr"ummung von $c$.
+\end{emptythm}
+
+\begin{dfn}[Totalk"ummung]
+Es sei $c$ eine st"uckweise geod"atische Kurve in einem $\CAT(\kappa)$-Raum.
+Sind $0 = t_0 < t_1 < \ldots < t_n = l$ so, dass $c_i = c|_{[t_{i-1}, t_i]}$ geod"atisch Segmente sind, so bezeichne $\beta_i = \varangle_{c(t_i)}(c_{i-1}, c_i)$ die Innenwinkel.
+Die \CmMark{Totalkr\"ummung}  von $c$ sei $\tau_c = \sum_i \pi - \beta_i$. F"ur eine beliebige Kurve sei
+\begin{align*}
+&\tau_\gamma = \lim\sup \{\tau_c \mid c \text{ Polygonapproximation von } \gamma \} \\
+&\tau_\gamma(t) = \tau_\gamma|_{[0, t]}
+\end{align*}
+Im Fall von $\CAT(0)$ gilt Monotonit"at.
+\end{dfn}
+
+Ist $c$ eine Verfeinerung einer Polygonapproximation $c'$ von $\gamma$, so gilt $\tau_{c'} \le \tau_c$, wie man an der Zeichnung erkennen kann:
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Es gilt
+\begin{align*}
+\tau_c &= \pi - \beta_1 + \pi - \beta + \pi - \beta_2 \\
+&\ge \pi - (\beta_1' + \alpha_1) + \pi - \beta + \pi - (\beta_2' + \alpha_2) \\
+&= \underbrace{\pi - \beta_1' + \pi - \beta_2'}_{\tau_{c'}} + \pi - (\underbrace{\beta + \alpha_1 + \alpha_2}_{\le \overline\beta + \overline{\alpha_1} + \overline{\alpha_2} = \pi}) \\
+& \ge \tau_{c'}
+\end{align*}
+
+\begin{dfn}[Umfang einer Kurve]
+Es sei $c$ eine Kurve.
+Der \CmMark{Umfang} $R_c$ von $c$ ist der Radius des kleinsten Balles, der das Bild von $c$ enth"alt:
+\begin{align*}
+	R_c(t) = \inf \{ R \mid \Bild c|_{[0,t]} \subset \B_R(c(0)) \} = \sup_t \{ d(c(0), c(t)) \}
+\end{align*}
+\end{dfn}
+
+\begin{satz}[Alexander-Bishop-Ghrist 2010]
+Es sei $c$ eine nach Bogenl"ange parametrisierte Kurve in einem $\CAT(0)$-Raum. Dann gilt
+\begin{enumerate}[label=(\roman*),leftmargin=*,widest=ii]
+\item
+	Gilt $\lim\inf_{t\to\infty} \frac{\tau_c(t)}{t} = 0$, so folgt dass $c$ unbeschr"ankt ist.
+\item
+	Falls $\tau_c(t) \le \text{const} \cdot t^\lambda$ f"ur ein $\lambda  \in (0,1)$ gilt (das hei"st $\tau_c \in O(t^\lambda)$), so folgt $R_c(t) \ge \text{const} \cdot t^{1-\lambda}$ f"ur hinreichend gro"se $t$ (das hei"st $R_c \in \Omega(t^{1-\lambda})$).
+\end{enumerate}
+\end{satz}
+
+Man kann $c|_{[0,t]}$ durch eine hinreichend feine Polynomapproximation ersetzen:
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+W"ahle eine Partitionierung $0 = t_0 < t_1 < \ldots < t_n = t$ so, dass $c_i = c|_{[t_{i-1}, t_i]}$ eine Totalkr"ummung $\le \frac{\pi}{2}$ hat mit $n \le \frac{\tau_c(t)}{\frac{\pi}{2}} + 1$.
+Es bezeichne $\sigma_i$ die Sekante $\overline{c(t_{i-1}) c(t_i)}$ und $\rho_i$ das durch $c_i$ und $\sigma_i$ definierte Polygon.
+Jede Kurve (und insbesondere jedes Polygon) in einem $\CAT(\kappa)$-Raum l"asst sich \quot{ausf"ullen}.
+
+\begin{satz}[Rechetnyak 19689]
+Es sei $c$ eine geschlossene Kurve in einem $\CAT(\kappa)$-Raum $X$ mit $l(c) < \frac{2\pi}{\sqrt\kappa}$.
+Dann existiert ein konvexes Gebiet $C \subseteq M_\kappa^2$ und eine Bogenl"angenparametrisierung $\overline c$ von $\partial C$, sowie eine nicht-expandierende Abbildung $\phi: C \to X$ mit $\phi \circ \overline c = c$.
+\end{satz}
+
+\begin{bewSkiz}
+Betrachte die Zeichnung:
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Man sieht leicht ein, dass falls $c|_{[a,b]}$ geod"atisch ist, so auch $\overline c|_{[a,b]}$ und dass f"ur Winkel $\beta$, beziehungsweise $\overline\beta$ solcher aufeinanderfolgender Segmente $\beta \le \overline\beta$ gilt.
+\end{bewSkiz}
+
+\begin{bew}[zu Alexander-Bishop-Ghrist 2010]\begin{enumerate}[label=(\roman*),leftmargin=*,widest=ii]
+\item
+	Es existiert zu $\rho_i$ ein konvexes Polygon $\overline\rho_i$ mit den gleichen Seitenl"angen wie $\rho_i$.
+	Wie auch $\rho_i$ besteht $\overline\rho_i$ aus einem konvexen Polygon $\overline c_i$ mit der Totalkr"ummung $\tau_{\overline c_i} = \sum \pi - \overline\beta_i \le \sum \pi - \beta_i \le \frac{\pi}{2}$ und eine Sekante $\sigma_i$.
+	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	Es gilt $\frac{l(\overline c_i)}{l(\overline\sigma_i)} \le \sqrt 2$, also $\sqrt 2 \ge \frac{l(\overline c_i)}{l(\overline\sigma_i)} = \frac{l(c_i)}{l(\sigma_i)} = \frac{t_i - t_{i-1}}{l(\sigma_i)}$. Damit folgt
+	\begin{align*}
+		&t = \sum_i t_i - t_{i-1} \le \sqrt 2 \sum_{i=0}^n l(\sigma_i) \le \sqrt 2 \left( \frac{\tau_c(t)}{\frac{\pi}{2}} + 1 \right) \sup(\sigma_i) \shortintertext{also}
+		&\frac{\tau_c(t)}{t} \ge \frac{\pi}{2} \left( \frac{1}{\sqrt 2 \sup l(\sigma_i)} - \frac{1}{t} \right).
+	\end{align*}
+	Ist $c$ beschr"ankt, so folgt $\frac{\tau_c(t)}{t} \ge \text{const} > 0$.
+\end{enumerate}\end{bew}
+
+
 %========================================================================================================================
 %	A N H A N G
 %========================================================================================================================
