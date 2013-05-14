@@ -1956,7 +1956,27 @@ Man sieht leicht ein, dass falls $c|_{[a,b]}$ geod"atisch ist, so auch $\overlin
 
 \begin{bew}[zum Beweis des ersten Satzes]
 Es wurde bereits gezeigt, dass eine eine erfolgreiche Flucht gilt:
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\def\d{1.5}
+	\draw (-2.5,-0.5)coordinate(p)node[below]{$P_{t-1}$} -- ++(10:\d)coordinate(p')node[below]{$P_{t}$} --node[below]{$d_{t-1}-d$} ++(10:2*\d)coordinate(e)node[right]{$E_{t-1}$} --node[right]{$d$} ++(80:\d)coordinate(e')node[right]{$E_{t}$} --node[above]{$d_{t}$} (p');
+	
+	\begin{scope}
+		\clip (p') -- (e) -- (e') -- cycle;
+		\draw (p') circle(1.3);
+		\node at ($(p')+(20:1.5)$) {$\alpha_{t}$};
+	\end{scope}
+	\begin{scope}
+		\clip (p) -- (p') -- (e') -- ++(180:3) -- cycle;
+		\draw (p') circle(0.4);
+		\node at ($(p')+(90:0.6)$) {$\beta_{t}$};
+	\end{scope}
+	
+	\foreach \pkt in {p, p', e, e'}{
+		\fill (\pkt)circle(0.05);
+	}
+\end{tikzpicture}\end{center}
 Der Winkel $\alpha_t = \varangle_{P^t}(E^{t-1}, E^t)$ konvergiert f"ur $t \to \infty$ gegen $0$.
 Das liefert $\frac{\tau(t)}{t} = \frac{1}{t} \sum \pi - \beta_i = \frac{1}{t} \sum \alpha_i \xrightarrow{t \to \infty} 0$.
 Damit folgt aus Satz (i), dass die Verfolgerkurve $P$, und damit $D$ unbeschr"ankt ist.
@@ -1969,7 +1989,35 @@ Dann gilt $\tau_P \le \tau_E + \pi$.
 
 \begin{bew}
 Betrachte die folgende Zeichnung:
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\def\d{1.5}
+	\draw (-2.5,-0.5)coordinate(p)node[below]{$P_{i-1}$} -- ++(10:\d)coordinate(p')node[below]{$P_{i}$} -- ++(10:2*\d)coordinate(e)node[right]{$E_{i-1}$} -- ++(80:\d)coordinate(e')node[right]{$E_{i}$} -- ++(60:\d)coordinate(e'')node[right]{$E_{i+1}$} -- ($(p')!\d cm!(e')$)coordinate(p'')node[above left]{$P_{i+1}$} (p') -- (e');
+	
+	\begin{scope}
+		\clip (p') -- (e) -- (e') -- cycle;
+		\draw (p') circle(1.3);
+		\node at ($(p')+(20:1.5)$) {$\alpha_{i}$};
+		\draw (e) circle(0.3) node[xshift=-0.4cm,yshift=0.2cm]{$\gamma_i$};
+		\draw (e') circle(0.3) node[xshift=-0.25cm,yshift=-0.35cm]{$\delta_i$};
+	\end{scope}
+	\begin{scope}
+		\clip (p) -- (p') -- (e') -- ++(180:3) -- cycle;
+		\draw (p') circle(0.4);
+		\node at ($(p')+(90:0.6)$) {$\beta_{t}$};
+	\end{scope}
+	\begin{scope}
+		\clip (e) -- (e') -- (e'') -- ++(330:2) -- cycle;
+		\draw (e') circle(0.5)node[xshift=0.65cm,yshift=0.2cm]{$\theta_i$};
+	\end{scope}
+	
+	\foreach \pkt in {p, p',p'', e, e',e''}{
+		\fill (\pkt)circle(0.05);
+	}
+	
+	\node[align=left,font=\normalsize] at (4.5,0.5) {$\alpha_i + \gamma_i + \delta_i \le \pi$ \\ $\theta_i \le \gamma_{i+1} + \delta_i$};
+\end{tikzpicture}\end{center}
 Es gilt
 \begin{align*}
 	\tau_P(nd) &= \sum_{i=1}^{n-1} \pi - \beta_i \le \sum_{i=1}^{n-1} \alpha_i \le \sum_{i=1}^{n-1} \pi - \gamma_i - \delta_i \\
@@ -1994,7 +2042,26 @@ Dann gilt
 
 \begin{bewSkiz}
 Betrachte die Zeichnung
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\def\d{1.5}
+	\draw (-2.5,-0.5)coordinate(p)node[below]{$P_{i-1}$} to[out=5,in=200] node[below,pos=0.8]{$d_{i-1}-d$} coordinate[pos=0.35](p') ++(10:2.5*\d)coordinate(e)node[right]{$E_{i-1}$} to[out=65,in=270]node[right]{$d$} ++(80:\d)coordinate(e')node[right]{$E_{i}$} to[out=200,in=60]node[above]{$d_{i}$} (p');
+	
+	\begin{scope}
+		\clip ((-2.5,-0.5) to[out=5,in=200] ++(10:2.5*\d) to[out=65,in=270] ++(80:\d) to[out=200,in=60] (p');
+		\draw (p') circle(0.8);
+		\node at ($(p')+(25:1.0)$) {$\alpha_{i}$};
+	\end{scope}
+	\begin{scope}
+		\clip (e') to[out=200,in=60] (p') -- (p) -- ++(90:3) -- cycle;
+		\draw (p') circle(0.3);
+		\node at ($(p')+(110:0.5)$) {$\beta_{i}$};
+	\end{scope}
+	
+	\foreach \pkt in {p,p',e, e'}{
+		\fill (\pkt)circle(0.05);
+	}
+\end{tikzpicture}\end{center}
 Aus der Dreiecksungleichung folgt $d_i \le (d_{i-1} - d) + d = d_{i-1}$, also ist $d_i$ monoton fallend.
 Es gilt
 \begin{align*}
@@ -2021,8 +2088,17 @@ Aus der Cauchy-Schwarz-Ungleichung folgt
 \end{bewSkiz}
 
 \begin{bem}[zu $d_0 < \pi$]
-Betrachte $\R^2 \setminus \B_{\frac{3}{2}}(0)$
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+Betrachte das folgende Szenario in $\R^2 \setminus \B_{\frac{3}{2}}(0)$
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\def\r{1.25}
+	\def\angle{60}
+	\draw (0,0) circle(\r);
+	\draw[very thick] (90:\r)node[above]{$E_0=E_2=\ldots$} arc[radius=\r,start angle=90,end angle=90+\angle]node[left]{$\ldots=E_3=E_1$} (270:\r)node[below]{$P_0=P_2=\ldots$} arc[radius=\r,start angle=270,end angle=270+\angle]node[right]{$P_1=P_3=\ldots$};
+	\foreach \pkt in {(90:\r),(90+\angle:\r),(270:\r),(270+\angle:\r)}{
+		\fill \pkt circle(0.05);
+	}
+\end{tikzpicture}\end{center}
 $E$ und $P$ starten an gegen"uberliegenden Polen.
 Im ersten Schritt l"auft $E$ den Kreis entlang nach links, w"ahrend P nach rechts l"auft.
 Da $P$ jedes mal eine Geod"atische w"ahlt und es nun zwei kürzeste Wege gibt kann $P$ diese ungeschickte Wahl treffen.
