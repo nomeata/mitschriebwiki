@@ -78,7 +78,20 @@ $(document).ready(function() {
 
 
 
- 
+// Lecture search
+$(document).ready(function() {
+	$("input.lectureSearch").bind('input',function() {
+		var str = $("input.lectureSearch").val();
+		var words = str.split(" ");
+		$("div.lecture").each(function() {
+			$(this).show();
+			var txt = $(this).text();
+			for (var i = 0; i < words.length; i++)
+				if (txt.indexOf(words[i]) == -1)
+					$(this).hide();
+		});
+	});
+});
 
 	
 var $buoop = {
