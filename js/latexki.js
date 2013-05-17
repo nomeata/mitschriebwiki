@@ -82,13 +82,26 @@ $(document).ready(function() {
 $(document).ready(function() {
 	$("input.lectureSearch").bind('input',function() {
 		var str = $("input.lectureSearch").val();
-		var words = str.split(" ");
+		var words = str.split(" ").filter(function(n){return n});
+		console.log(words);
 		$("div.lecture").each(function() {
-			$(this).show();
-			var txt = $(this).text();
-			for (var i = 0; i < words.length; i++)
-				if (txt.indexOf(words[i]) == -1)
-					$(this).hide();
+			var div = this;
+			$(div).show();
+			$(div).unhighlight();
+			for (var i = 0; i < words.length; i++) {
+				var txt = $("h3, span.lecturer, span.semester", div).text().toLowerCase();
+				if (txt.indexOf(words[i].toLowerCase()) == -1)
+					$(div).hide();
+			}
+			if ($(div).is(':visible'))
+				$("h3, span.lecturer, span.semester", div).highlight(words);
+		});
+		// Now see which h2 need to be shown. 
+		$("h2").each(function(){
+			if ($(this).nextUntil("h2").filter(":visible").filter(":not(span)").length)
+				$(this).show();
+			else
+				$(this).hide();
 		});
 	});
 });
