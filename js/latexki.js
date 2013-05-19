@@ -80,7 +80,7 @@ $(document).ready(function() {
 
 // Lecture search
 $(document).ready(function() {
-	$("input.lectureSearch").bind('input',function() {
+	$("input.lectureSearch").show().bind('input',function() {
 		var str = $("input.lectureSearch").val();
 		var words = str.split(" ").filter(function(n){return n});
 		console.log(words);
