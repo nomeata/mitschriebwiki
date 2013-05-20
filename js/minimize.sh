@@ -7,6 +7,7 @@ for file in  \
 	js/jquery-1.7.2.min.js \
 	js/jquery-ui-1.8.21.custom.min.js \
 	js/jquery.toc.js \
+	js/jquery.highlight.js \
 	js/SocialSharePrivacy/jquery.socialshareprivacy.js \
 	js/SocialSharePrivacy/jquery.socialshareprivacy.facebook.js \
 	js/SocialSharePrivacy/jquery.socialshareprivacy.twitter.js \
