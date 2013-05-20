@@ -83,7 +83,6 @@ $(document).ready(function() {
 	$("input.lectureSearch").show().bind('input',function() {
 		var str = $("input.lectureSearch").val();
 		var words = str.split(" ").filter(function(n){return n});
-		console.log(words);
 		$("div.lecture").each(function() {
 			var div = this;
 			$(div).show();
