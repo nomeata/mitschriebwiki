@@ -234,11 +234,17 @@
 
 %  geschwungene Buchstaben
 \DeclareMathOperator{\calD}{\mathcal{D}}
+\DeclareMathOperator{\calE}{\mathcal{E}}
+\DeclareMathOperator{\calG}{\mathcal{G}}
 \DeclareMathOperator{\calI}{\mathcal{I}}
 \DeclareMathOperator{\calJ}{\mathcal{J}}
 \DeclareMathOperator{\calL}{\mathcal{L}}
 \DeclareMathOperator{\calT}{\mathcal{T}}
 \DeclareMathOperator{\calV}{\mathcal{V}}
+
+\newcommand{\G}{\calG}
+\newcommand{\E}{\calE}
+\newcommand{\V}{\calV}
 
 % common mathematical operators and sets
 \DeclareMathOperator{\aff}{aff} % affine Huelle
@@ -2048,7 +2054,7 @@ Betrachte die Zeichnung
 	\draw (-2.5,-0.5)coordinate(p)node[below]{$P_{i-1}$} to[out=5,in=200] node[below,pos=0.8]{$d_{i-1}-d$} coordinate[pos=0.35](p') ++(10:2.5*\d)coordinate(e)node[right]{$E_{i-1}$} to[out=65,in=270]node[right]{$d$} ++(80:\d)coordinate(e')node[right]{$E_{i}$} to[out=200,in=60]node[above]{$d_{i}$} (p');
 	
 	\begin{scope}
-		\clip ((-2.5,-0.5) to[out=5,in=200] ++(10:2.5*\d) to[out=65,in=270] ++(80:\d) to[out=200,in=60] (p');
+		\clip (-2.5,-0.5) to[out=5,in=200] ++(10:2.5*\d) to[out=65,in=270] ++(80:\d) to[out=200,in=60] (p');
 		\draw (p') circle(0.8);
 		\node at ($(p')+(25:1.0)$) {$\alpha_{i}$};
 	\end{scope}
@@ -2133,6 +2139,92 @@ Daraus folgt
 	R_E(t) = \sup \{ d(E_0, E_t) \} \ge \ldots \ge \const \cdot R_P(t) \ge \const \sqrt t
 \end{align*}
 \end{bew}
+
+%-------------------------- Kapitel 2 --------------------------
+% Vorlesung vom 21. 5.
+
+\chapter{Bewegungsplanung \& Konfigurationsr\"aume}
+
+Als Motivation f"ur das folgende Kapitel k"onnen wir uns beispielsweise die Bewegungssteuerung gleichartiger Automaten, beziehungsweise Fahrzeuge, in einer Umgebung, etwa in der euklidischen Ebene $\R^2$ oder der Ebene $\R^2 \setminus \bigcup_{i \le k} I_i$ mit Hindernissen, anschauen.
+
+Unser Ziel ist es, bestimmte Positionen oder Zyklen von Bewegungen, zum Beispiel zur Steuerung von Fahrzeugen in einer Lagerhalle, zu finden.
+Als Einschr"ankung w"ahlen wir dabei das Umfahren von Hindernissen.
+
+Wir modellieren das Problem, so dass $x_i$ die Position des $i$-ten Automaten mit $x_i \notin O_i$ beschreibt, und Kollisionsfreiheit, das hei"st $x_i \ne x_j$ f"ur $i \ne j$.
+Wir setzen
+\begin{align*}
+	X = \bigtimes_{i=1}^{n} (\R^2 \setminus \bigcup_k O_k ) \setminus \Delta && \Delta = \{(x_1, \ldots, x_n) \in \R^{2n} \mid x_i = x_j, i \ne j \}
+\end{align*}
+
+Wir werden uns auf Graphen beschr"anken, das ist zum Einen motiviert durch Anwendung (Schienensysteme), und zum Anderen durch Methodik (lokale Kollisionsvermeidung).
+
+Es sei $X$ ein topologischer Raum. Die \CmMark[Diagonale!verallgemeinerte]{verallgemeinerte Diagonale} von $X^n$ ist $\Delta = \Delta_n(X) = \{(x_1, \ldots, x_n) \in X^n \mid \exists i \ne j : x_i = x_j \}$.
+Der Raum
+\begin{align*}
+	F_NX = X^n \setminus \Delta_n(X)
+\end{align*}
+hei"st der \CmMark{Konfigurationsraum} von $X$.
+
+\begin{bsp}
+$F_2\R^2 = \R^3 \X \S^1$ (Beweis zur "Ubung)
+\end{bsp}
+
+Die symmetrische Fruppe $S_n$ wirkt frei auf $F_nX$.
+Dann hei"st der Quotient $C_nX = \FakRaum{F_nX}{S_n}$ der \CmMark[Konfigurationsraum!ungeordneter]{(ungeordnete) Konfigurationsraum} von $X$.
+Die Fundamentalgruppe $\pi_1(C_nX)$ hei"st die $n$-te \CmMark{Zopfgruppe} von $X$.
+Die klassischen Zopfgruppen sind $B_n = \pi_1(C_n\R^2)$:
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{align*}
+	[x_1, x_2, \ldots, x_n] = [x_2, x_1, \ldots, x_n]
+\end{align*}
+Darstellung von $B_1$:
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Erzeuger: $g_i$, $i \le n-1$, Relationen:
+\begin{itemize}
+\item
+	$g_i g_j = g_j g_i$, $|i-j| \ge 2$
+	\begin{center}\textcolor{red}{[BILD]}\end{center}
+\item
+	$g_i g_{i+1} g_i = g_{i+1} g_i g_{i+1}$
+	\begin{center}\textcolor{red}{[BILD]}\end{center}
+\end{itemize}
+
+Ein \CmMark{Graph} $\calG$ besteht aus einer nichtleeren \CmMark[Ecke]{Eckenmenge} $\calV = \calV\calG$, einer \CmMark[Kante]{Kantenmenge} $\calE = \calG\calE$ und (surjektiven) \CmMark[Randabbildung]{Randabbildungen} $\partial^{\pm}: \calE \to \calV$.
+Zur Notation der \CmMark[Kante!Orientierung]{Kantenorientierung} sei $\tilde{\E} = \E \X \{+1, -1\}$ mit den Randabbildungen
+\begin{align*}
+	e^+ = (e,1) \mapsto \partial^\pm e && \text{und} && e^- = (e,-1) \mapsto \partial^\mp e.
+\end{align*}
+Dann gilt f"ur die Kanteninversion $\overline{e}^{\pm} \to e^{\mp}$, $\partial^+ \overline{e} = \partial^- e$ und $\partial^- \overline e = \partial^+ e$.
+Es bezeichne $|e|$ stets die unorientierte Kante $e$.
+
+\begin{bsp}
+\textcolor{red}{[BILD]}
+\end{bsp}
+
+Der \CmMark[Grad!einer Ecke]{Grad} $\deg v$ einer Ecke ist die Zahl, wie oft $v$ als Ecke einer Kante vorkommt.
+Eine Ecke mit Grad $\ge 3$ hei"st \CmMark[Ecke!essentielle]{essentiell}, mit Grad 1 hei"st die \CmMark[Ecke!freie]{frei}.
+
+Die geometrische Realisierung $|\G|$ eines Graphen $\G$ erh"alt man durch das Verkleben von (Einheits-) Intervallen zu jeder Kante entsprechender Randabbildungen.
+Man kann sich, aus topologischer Sicht, auf Graphen beschr"anken, deren Ecke entweder frei oder essentiell ist.
+Jede essentielle Ecke $v$ besitzt eine Umgebung $U$, so dass $U \setminus \{v\}$ in $\G$ in mindestens drei Zusammenhangskomponenten zerf"allt.
+
+\begin{bsp}
+Wir betrachten nun speziell $F_2Y$.
+Die Position zweier Punkte $x$ und $y$ auf benachbarten Kanten ist durch ein Einheitsquadrat parametrisiert.
+Die Achsen sind f"ur ihre jeweiligen Punkte zugelassene Positionen, solange nicht beide Punkte null sind, da es dann zu einer Kollision k"ame.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Sechs dieser Parameterbereiche werden entlang der Kanten $x \equiv 0 = v$ beziehungsweise $y \equiv 0 = v$ miteinander verklebt
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Liegen zwei Punkte $x$ und $y$ auf einer Kante, so sind ihre Koordinaten durch ein \quot{halbes} Quadrat parametrisiert.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+F"ur $C_2Y$ ergibt sich dann
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+\end{bsp}
+
+\begin{satz}[Swiatowski 2001]
+Es sei $\G$ ein endlicher Graph.
+Dann existiert ein $\CAT(0)$-Kubenkomplex $K_n\G \hookrightarrow C_n\G$, welcher ein Deformationsretrakt von $C_n\G$ ist.
+\end{satz}
 
 
 %========================================================================================================================
