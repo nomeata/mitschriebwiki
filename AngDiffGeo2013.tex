@@ -2151,6 +2151,18 @@ Unser Ziel ist es, bestimmte Positionen oder Zyklen von Bewegungen, zum Beispiel
 Als Einschr"ankung w"ahlen wir dabei das Umfahren von Hindernissen.
 
 Wir modellieren das Problem, so dass $x_i$ die Position des $i$-ten Automaten mit $x_i \notin O_i$ beschreibt, und Kollisionsfreiheit, das hei"st $x_i \ne x_j$ f"ur $i \ne j$.
+\marginnote{\begin{tikzpicture}[font=\scriptsize,scale=0.8]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	\draw (-1.75,0.5) -- (-0.5,0.5) -- (-0.5,1.75) (-1.75,-0.5) -- (-0.5,-0.5) -- (-0.5,-1.75) (1.75,0.5) -- (0.5,0.5) -- (0.5,1.75) (1.75,-0.5) -- (0.5,-0.5) -- (0.5,-1.75);
+	\fill[gray,opacity=0.5] (-1.75,0.5) -- (-0.5,0.5) -- (-0.5,1.75) -- (-1.75,1.75) (1.75,0.5) -- (0.5,0.5) -- (0.5,1.75) -- (1.75,1.75) (-1.75,-0.5) -- (-0.5,-0.5) -- (-0.5,-1.75) -- (-1.75,-1.75) (1.75,-0.5) -- (0.5,-0.5) -- (0.5,-1.75) -- (1.75,-1.75);
+	\def\rad{0.2}
+	\def\x{0.15}
+	\def\y{1.2}
+	\draw[->] (-\x,\y) -- (-\x,\rad) arc[radius=\rad,start angle=90,end angle=270] -- (-\x,-\y);
+	\draw[->] (\x,-\y) -- (\x,-\rad) arc[radius=\rad,start angle=270,end angle=450] -- (\x,\y);
+	\fill[fill=gray] (-\x,\y) circle[radius=\rad] (\x,-\y) circle[radius=\rad];
+\end{tikzpicture}\\
+\scriptsize{lokale Kollisionsvermeidung}}
 Wir setzen
 \begin{align*}
 	X = \times_{i=1}^{n} (\R^2 \setminus \bigcup_k O_k ) \setminus \Delta && \Delta = \{(x_1, \ldots, x_n) \in \R^{2n} \mid x_i = x_j, i \ne j \}
@@ -2173,23 +2185,152 @@ Die symmetrische Fruppe $S_n$ wirkt frei auf $F_nX$.
 Dann hei"st der Quotient $C_nX = \FakRaum{F_nX}{S_n}$ der \CmMark[Konfigurationsraum!ungeordneter]{(ungeordnete) Konfigurationsraum} von $X$.
 Die Fundamentalgruppe $\pi_1(C_nX)$ hei"st die $n$-te \CmMark{Zopfgruppe} von $X$.
 Die klassischen Zopfgruppen sind $B_n = \pi_1(C_n\R^2)$:
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=0.8]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	\def\angle{0}
+	\def\Dist{2}
+	\def\dist{2}
+	\def\hor{0.75}
+	
+	\coordinate (1) at (0,1.5); \coordinate (2) at ($(1)-(0,\Dist)$);
+	\coordinate (x1) at ($(1)+(0.25,-0.75)$); \coordinate (x2) at ($(x1)+(\hor,0)$); \coordinate (x3) at ($(x2)+(\hor,0)$);
+	\coordinate (x4) at ($(x3)+(\hor,0)$); \coordinate (x5) at ($(x4)+(\hor,0)$); \coordinate (x6) at ($(x5)+(\hor,0)$);
+	\foreach \i in {1,2,3,4,5,6}{
+		\coordinate (x\i') at ($(x\i)-(0,\dist)$);
+	}
+	
+	\draw (x2) to[out=270+\angle,in=90+\angle] (x1');
+	\draw[preaction={draw=white,line width=0.1cm}] (x1) to[out=270+\angle,in=90+\angle] (x2');
+	\draw (x3) -- (x3');
+	\draw (x6) to[out=270+\angle,in=90+\angle] (x4');
+	\draw[preaction={draw=white,line width=0.1cm}] (x4) to[out=270+\angle,in=90+\angle] (x5') (x5) to[out=270+\angle,in=90+\angle] (x6');
+	
+	\draw (1) -- ++(-1,-1.5) -- ++(6,0) (2) -- ++(-1,-1.5) -- ++(6,0);
+	
+	\coordinate (temp) at (x1'); \coordinate (x1') at (x2'); \coordinate (x2') at (temp);
+	\foreach \i in {1,2,3}{
+		\fill (x\i) circle(0.05) node[above]{$x_{\i}$};
+		\fill (x\i') circle(0.05) node[below]{$x_{\i}$};
+	}
+	\foreach \i in {4,5,6}{
+		\fill (x\i) circle(0.05);
+		\fill (x\i') circle(0.05);
+	}
+	\fill (x6) circle(0.05) node[above]{$x_{n}$};
+\end{tikzpicture}\end{center}
 \begin{align*}
 	[x_1, x_2, \ldots, x_n] = [x_2, x_1, \ldots, x_n]
 \end{align*}
 Darstellung von $B_1$:
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0,scale=0.8]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	\def\angle{0}
+	\def\Dist{2}
+	\def\dist{2}
+	\def\hor{0.75}
+	
+	\coordinate (1) at (0,1.5); \coordinate (2) at ($(1)-(0,\Dist)$);
+	\coordinate (x1) at ($(1)+(0.25,-0.75)$); \coordinate (x2) at ($(x1)+(2*\hor,0)$); \coordinate (x3) at ($(x2)+(\hor,0)$);
+	\node at ($(x1)+(\hor,0)$) {$\cdots$}; \node at ($(x3)+(\hor,0)$) {$\cdots$};
+	\foreach \i in {1,2,3}{
+		\coordinate (x\i') at ($(x\i)-(0,\dist)$);
+	}
+	
+	\draw (x1)node[above]{$x_{1}$} -- (x1')node[below]{$x_{1}$};
+	\draw (x3)node[above]{$x_{i+1}$} to[out=270+\angle,in=90+\angle] (x2');
+	\draw[preaction={draw=white,line width=0.1cm}] (x2)node[above]{$x_{i}$} to[out=270+\angle,in=90+\angle] (x3');
+
+	\draw (1) -- ++(-1,-1.5) -- ++(6,0) (2) -- ++(-1,-1.5) -- ++(6,0);
+	
+	\foreach \i in {1,2,3}{
+		\fill (x\i) circle(0.05);
+		\fill (x\i') circle(0.05);
+	}
+\end{tikzpicture}\end{center}
 Erzeuger: $g_i$, $i \le n-1$, Relationen:
 \begin{itemize}
 \item
 	$g_i g_j = g_j g_i$, $|i-j| \ge 2$
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+			%\tikzgitter{(-4,-4)}{(5,4)}
+			\def\angle{0}
+			\def\x{0.25}
+			\def\y{0.75}
+			\coordinate (1) at (-\x,\y); \coordinate (2) at (\x,0); \coordinate (3) at (\x,\y); \coordinate (4) at (-\x,0);
+			\draw (3) to[out=270+\angle,in=90+\angle] (4) -- ++(0,-\y);
+			\draw[preaction={draw=white,line width=0.1cm}] (1)node[left]{$i$} to[out=270+\angle,in=90+\angle] (2) -- ++(0,-\y);
+		\end{tikzpicture}
+		$\cdots$
+		\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+			%\tikzgitter{(-4,-4)}{(5,4)}
+			\def\angle{0}
+			\def\x{0.25}
+			\def\y{0.75}
+			\coordinate (1) at (-\x,-\y); \coordinate (2) at (\x,0); \coordinate (3) at (\x,-\y); \coordinate (4) at (-\x,0);
+			\draw[preaction={draw=white,line width=0.1cm}] (1) to[out=90+\angle,in=270+\angle] (2) -- ++(0,\y);
+			\draw[preaction={draw=white,line width=0.1cm}] (3) to[out=90+\angle,in=270+\angle] (4) -- ++(0,\y)node[left]{$j$};
+		\end{tikzpicture}
+		=
+		\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+			%\tikzgitter{(-4,-4)}{(5,4)}
+			\def\angle{0}
+			\def\x{0.25}
+			\def\y{0.75}
+			\coordinate (1) at (-\x,-\y); \coordinate (2) at (\x,0); \coordinate (3) at (\x,-\y); \coordinate (4) at (-\x,0);
+			\draw[preaction={draw=white,line width=0.1cm}] (1) to[out=90+\angle,in=270+\angle] (2) -- ++(0,\y);
+			\draw[preaction={draw=white,line width=0.1cm}] (3) to[out=90+\angle,in=270+\angle] (4) -- ++(0,\y)node[left]{$i$};
+		\end{tikzpicture}
+		$\cdots$
+		\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+			%\tikzgitter{(-4,-4)}{(5,4)}
+			\def\angle{0}
+			\def\x{0.25}
+			\def\y{0.75}
+			\coordinate (1) at (-\x,\y); \coordinate (2) at (\x,0); \coordinate (3) at (\x,\y); \coordinate (4) at (-\x,0);
+			\draw (3) to[out=270+\angle,in=90+\angle] (4) -- ++(0,-\y);
+			\draw[preaction={draw=white,line width=0.1cm}] (1)node[left]{$j$} to[out=270+\angle,in=90+\angle] (2) -- ++(0,-\y);
+		\end{tikzpicture}
+	\end{center}
 \item
 	$g_i g_{i+1} g_i = g_{i+1} g_i g_{i+1}$
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}
+	\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=-0.5cm]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		\def\angle{0}
+		\def\x{0.75}
+		\def\y{1}
+			
+		\coordinate (1) at (-\x,\y); \coordinate (2) at (-\x,0); \coordinate (3) at (-\x,-\y); \coordinate (4) at (-\x,-2*\y);
+		\coordinate (6) at (0,\y); \coordinate (7) at (0,0); \coordinate (8) at (0,-\y); \coordinate (9) at (0,-2*\y);
+		\coordinate (11) at (\x,\y); \coordinate (12) at (\x,0); \coordinate (13) at (\x,-\y); \coordinate (14) at (\x,-2*\y);
+		
+		\draw[preaction={draw=white,line width=0.1cm}] (11) to[out=270+\angle,in=90+\angle] (12) to[out=270+\angle,in=90+\angle] (8) to[out=270+\angle,in=90+\angle] (4);
+		\draw[preaction={draw=white,line width=0.1cm}] (6)node[above]{$i+1$} to[out=270+\angle,in=90+\angle] (2) to[out=270+\angle,in=90+\angle] (3) to[out=270+\angle,in=90+\angle] (9);
+		\draw[preaction={draw=white,line width=0.1cm}] (1)node[above]{$i$} to[out=270+\angle,in=90+\angle] (7) to[out=270+\angle,in=90+\angle] (13) to[out=270+\angle,in=90+\angle] (14);
+	\end{tikzpicture}
+	=
+	\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=-0.5cm]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		\def\angle{0}
+		\def\x{0.75}
+		\def\y{1}
+			
+		\coordinate (1) at (-\x,\y); \coordinate (2) at (-\x,0); \coordinate (3) at (-\x,-\y); \coordinate (4) at (-\x,-2*\y);
+		\coordinate (6) at (0,\y); \coordinate (7) at (0,0); \coordinate (8) at (0,-\y); \coordinate (9) at (0,-2*\y);
+		\coordinate (11) at (\x,\y); \coordinate (12) at (\x,0); \coordinate (13) at (\x,-\y); \coordinate (14) at (\x,-2*\y);
+		
+		\draw[preaction={draw=white,line width=0.1cm}] (11) to[out=270+\angle,in=90+\angle] (7) to[out=270+\angle,in=90+\angle] (3) to[out=270+\angle,in=90+\angle] (4);
+		\draw[preaction={draw=white,line width=0.1cm}] (6)node[above]{$i+1$} to[out=270+\angle,in=90+\angle] (12) to[out=270+\angle,in=90+\angle] (13) to[out=270+\angle,in=90+\angle] (9);
+		\draw[preaction={draw=white,line width=0.1cm}] (1) to[out=270+\angle,in=90+\angle] (2) to[out=270+\angle,in=90+\angle] (8) to[out=270+\angle,in=90+\angle] (14);
+	\end{tikzpicture}
+	\end{center}
 \end{itemize}
 
 Ein \CmMark{Graph} $\calG$ besteht aus einer nichtleeren \CmMark[Ecke]{Eckenmenge} $\calV = \calV\calG$, einer \CmMark[Kante]{Kantenmenge} $\calE = \calG\calE$ und (surjektiven) \CmMark[Randabbildung]{Randabbildungen} $\partial^{\pm}: \calE \to \calV$.
+\marginnote{\begin{tikzpicture}[font=\scriptsize,scale=0.8]
+	\draw[decoration={markings,mark=at position 0.6 with{\arrow{>}}},postaction={decorate}] (0,0)coordinate(v)node[below]{$v=\partial^-e$} --node[below,pos=0.6]{$e$} (30:2)coordinate(w)node[above]{$w=\partial^+e$};
+	\fill (v)circle[radius=0.05] (w)circle[radius=0.05];
+\end{tikzpicture}}
 Zur Notation der \CmMark[Kante!Orientierung]{Kantenorientierung} sei $\tilde{\E} = \E \X \{+1, -1\}$ mit den Randabbildungen
 \begin{align*}
 	e^+ = (e,1) \mapsto \partial^\pm e && \text{und} && e^- = (e,-1) \mapsto \partial^\mp e.
