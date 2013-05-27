@@ -2391,7 +2391,7 @@ $Q =$
 \end{bsp}
 
 Der \CmMark[Grad!einer Ecke]{Grad} $\deg v$ einer Ecke ist die Zahl, wie oft $v$ als Ecke einer Kante vorkommt.
-Eine Ecke mit Grad $\ge 3$ hei"st \CmMark[Ecke!essentielle]{essentiell}, mit Grad 1 hei"st die \CmMark[Ecke!freie]{frei}.
+Eine Ecke mit Grad $\ge 3$ hei"st \CmMark[Ecke!essentielle]{essentiell}, mit Grad 1 hei"st sie \CmMark[Ecke!freie]{frei}.
 
 Die geometrische Realisierung $|\G|$ eines Graphen $\G$ erh"alt man durch das Verkleben von (Einheits-) Intervallen zu jeder Kante entsprechender Randabbildungen.
 Man kann sich, aus topologischer Sicht, auf Graphen beschr"anken, deren Ecke entweder frei oder essentiell ist.
@@ -2469,15 +2469,15 @@ F"ur $C_2Y$ ergibt sich dann
 \begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
 	%\tikzgitter{(-4,-4)}{(4,4)}
 	\def\angle{55}
-	\def\r{1.25}
-	\def\R{2.5}
+	\def\x{2}
+	\def\y{1}
 	\coordinate (o) at (0,0);
-	\coordinate (w1) at (1.5,0); \coordinate (w2) at (-0.5,1); \coordinate (w3) at (-1,-0.5);
+	\coordinate (w1) at (\x,0); \coordinate (w2) at (-\y,\y); \coordinate (w3) at (-\y,-\y);
 	
 	\foreach \i in {1,2,3} {
 		\draw (o) -- (w\i);
 	}
-	\draw (w1) -- ++(-0.5,1) -- (w2) -- ++(-1,-0.5) -- (w3) -- ++(2,0) -- cycle;
+	\draw (w1) -- ++(-\y,\y) -- (w2) -- ++(-\y,-\y) -- (w3) -- ++(\x,0) -- cycle;
 	\foreach \i in {1,2,3} {
 		\draw (w\i) -- ++(0,1.25) coordinate(pkt);
 		\draw[dashed] (pkt) -- (o);
@@ -2501,7 +2501,25 @@ Die Konstruktion basiert darauf, die Verteilung von Punkten auf Ecken, beziehung
 \begin{emptythm}[Ansatz (Abrams 2000)]
 Wie erh"alt man die Zellenstruktur beziehungsweise die Kombinatorik von $|\G|^n = \{ \sigma = \sigma_1 \X \ldots \X \sigma_n \mid \sigma \text{ Zelle von } \G \}$ in $C_n\G$?
 Man erh"alt $F_n\G$ durch das \quot{L"oschen} der verallgemeinerten Diagonale.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=1.5cm]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	\def\len{1}
+	
+	\foreach \i in {0, 1, 2, 3}{
+		\draw (0,\i*\len) -- (3*\len,\i*\len) (\i*\len,0) -- (\i*\len,3*\len);
+	}
+	\fill[gray,opacity=0.3] (2*\len,0) rectangle (3*\len,\len) (0,3*\len) rectangle (\len,2*\len);
+	\draw[dashed] (0,0) -- (3*\len,3*\len);
+	\foreach \x / \y in {1/0,2/0,3/0,2/1,3/1,3/2}{
+		\fill (\x*\len,\y*\len) circle(0.05) (\y*\len,\x*\len) circle(0.05);
+	}
+	\foreach \x / \y / \z / \w in {1/0/3/0,2/1/3/1,2/0/2/1,3/0/3/2} {
+		\draw[thick] (\x*\len,\y*\len) -- (\z*\len,\w*\len) (\y*\len,\x*\len) -- (\w*\len,\z*\len);
+	}
+	\foreach \x / \y in {0/1,1/2,2/3} {
+		\draw[pattern=north west lines,opacity=0.3] (\x*\len,\x*\len) rectangle (\y*\len,\y*\len);
+	}
+\end{tikzpicture} $|\G|^2$\end{center}
 \end{emptythm}
 
 \begin{emptythm}[Analogon]
@@ -2513,11 +2531,61 @@ Dies sind genau die $n$-Tupel von Punkten, welche paarweise durch eine (offene) 
 
 \begin{bsp}
 $\G = Y$: 1-Zellen der Form $v \X e$, wobei $e$ eine der Ecke $v$ gegen"uberliegende Kante ist.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\marginnote{\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	\def\angle{120}
+	\def\len{1}
+	\draw (0,0)node[left]{$v$} --node[right]{$e_2$}node[pos=0.4]{$\X$} (30:\len)node[above]{$v_2$} (0,0) --node[above]{$e_3$} (30+\angle:\len)node[above]{$v_3$} (0,0) --node[right]{$e_1$} (30+2*\angle:\len)node[below]{$v_1$};
+	\foreach \pkt in {(0,0),(30:\len),(30+\angle:\len),(30+2*\angle:\len)} {
+		\fill \pkt circle(0.05);
+	}
+\end{tikzpicture}}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\coordinate (0) at (-3,1.5);
+	\coordinate (1) at ($(0)+(0.5,-1)$); \coordinate (2) at ($(0)+(1,0)$); \coordinate (3) at ($(0)+(-0.5,1)$); \coordinate (4) at ($(0)+(-2.5,0.5)$);
+	\draw ($(1)!0.6!(2)$) -- (2)node[right]{$v_1 \X v_2$} --node[right]{$v_1 \X e_2$} (3)node[right]{$v_1 \X v$} -- ($(3)!0.4!(4)$);
+	\draw[dashed] (1) -- (2) (3) -- (4);
+	
+	\foreach \pkt in {(2),(3)} {
+		\fill \pkt circle(0.05);
+	}
+	
+	\def\len{1}
+	
+	\foreach \i in {0, 1, 2, 3}{
+		\draw (0,\i*\len) -- (3*\len,\i*\len) (\i*\len,0) -- (\i*\len,3*\len);
+	}
+	\fill[gray,opacity=0.3] (2*\len,0) rectangle (3*\len,\len);
+	\foreach \i in {0,1,2} {
+		\path (\i*\len,\i*\len) --coordinate[pos=0.25](a)coordinate[pos=0.5](b)coordinate[pos=0.75](c) (\i*\len+\len,\i*\len+\len);
+		\draw[->] (a) -- +(315:0.25);
+		\draw[->] (b) -- +(315:0.5);
+		\draw[->] (c) -- +(315:0.25);
+	}
+	\foreach \pkt in {([xshift=0.05cm,yshift=-0.05cm]\len,\len),([xshift=0.05cm,yshift=-0.05cm]2*\len,2*\len)} {
+		\foreach \angl / \dist in {285/0.9,305/1.1,325/1.1,345/0.9} {
+			\draw[->] \pkt -- +(\angl:\dist);
+		}
+	}
+	\draw[dashed] (0,0) -- (3*\len,3*\len);
+	\foreach \x / \y in {1/0,2/0,3/0,2/1,3/1,3/2}{
+		\fill (\x*\len,\y*\len) circle(0.05);
+	}
+	\foreach \x / \y / \z / \w in {1/0/3/0,2/1/3/1,2/0/2/1,3/0/3/2} {
+		\draw[thick] (\x*\len,\y*\len) -- (\z*\len,\w*\len);
+	}
+\end{tikzpicture}\end{center}
 \end{bsp}
 
 Anschlie"send l"asst sich der kombinatorische Konfigurationsraum auf $C_n\G$ retraktieren.
-Leider erh"alt man im Allgemeinen \emph{nicht} die Topologie von $C_n\G$: Beispiel \textcolor{red}{[BILD]} $\leadsto v \X w$.
+Leider erh"alt man im Allgemeinen \emph{nicht} die Topologie von $C_n\G$: Beispiel \begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	\def\angle{15}
+	\draw (-0.5,0)node[left]{$v$} to[out=\angle,in=180-\angle]node[above]{$e_2$} (0.5,0)node[right]{$v$} (-0.5,0) to[out=360-\angle,in=180+\angle]node[below]{$e_1$} (0.5,0);
+	\fill (-0.5,0) circle(0.05) (0.5,0) circle(0.05);
+\end{tikzpicture} $\leadsto v \X w$.
 Es gilt zumindest
 
 \begin{satz}[Abtrams 2000]
@@ -2526,7 +2594,81 @@ Ist $\G$ ein einfacher Graph, das hei"st enth"alt keine Schleifen der L"ange $\l
 
 \begin{bsp}
 $\pi_1(C_2, Y)$
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\def\angle{55}
+	\def\x{2}
+	\def\y{1}
+	\coordinate (o) at (0,0);
+	\coordinate (w1) at (\x,0); \coordinate (w2) at (-\y,\y); \coordinate (w3) at (-\y,-\y);
+	
+	\foreach \i in {1,2,3} {
+		\draw (o) -- (w\i);
+	}
+	\draw (w1) -- ++(-\y,\y) -- (w2) -- ++(-\y,-\y) -- (w3) -- ++(\x,0) -- cycle;
+	
+	\foreach \i in {1,2,3} {
+		\draw (w\i) -- ++(0,1.25) coordinate(pkt);
+		\draw[dashed] (pkt) -- (o);
+	}
+	
+	\draw[decoration={markings,mark=at position 0.0 with{\arrow{>}}},postaction={decorate}] ($(o)-(0,0.5)$) ..controls +(0.25,0) and +(0,-0.25)..coordinate[pos=0.5](a)coordinate[pos=0.7](b) ($(o)+(0.5,0)$) ..controls+(0,0.25) and +(0.25,0).. ($(o)+(0,0.5)$) ..controls+(-0.25,0) and +(0,0.25).. ($(o)-(0.5,0)$) ..controls+(0,-0.25) and +(-0.25,0).. ($(o)+(0,-0.5)$);
+	
+	\fill (a) circle(0.05);
+	
+	\filldraw[fill=white] (o) circle(0.05);
+	
+	\node at (-2*\y,\y) {$C_2Y$};
+	\node (a) at ($(o)-(-1,1.5)$) {Erzeuger von $\pi_1(C_2Y) = \Z$};
+	\draw[->] (a) to[out=80,in=0] ([xshift=0.1cm]b); 
+\end{tikzpicture}
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	\def\frac{0.7}
+	
+	\coordinate (o) at (-2,1.25);
+	\coordinate (1) at ($(o) + (30:1)$); \coordinate (2) at ($(o) + (150:1)$); \coordinate (3) at ($(o) + (270:1)$);
+	\draw (o) --coordinate[pos=\frac](a) (1) (o) -- (2) (o) --coordinate[pos=\frac](b) (3);
+	\draw[->] (a) -- +(210:0.4);
+	\foreach \pkt in {(a),(b)} { \fill \pkt circle(0.05);}
+	
+	\coordinate (o) at (0,1.25);
+	\coordinate (1) at ($(o) + (30:1)$); \coordinate (2) at ($(o) + (150:1)$); \coordinate (3) at ($(o) + (270:1)$);
+	\draw (o) --coordinate[pos=0](a) (1) (o) -- (2) (o) --coordinate[pos=\frac](b) (3);
+	\draw[->] (a) -- +(150:0.4);
+	\foreach \pkt in {(a),(b)} { \fill \pkt circle(0.05);}
+	
+	\coordinate (o) at (2,1.25);
+	\coordinate (1) at ($(o) + (30:1)$); \coordinate (2) at ($(o) + (150:1)$); \coordinate (3) at ($(o) + (270:1)$);
+	\draw (o) -- (1) (o) --coordinate[pos=\frac](a) (2) (o) --coordinate[pos=\frac](b) (3);
+	\draw[->] (b) -- +(90:0.4);
+	\foreach \pkt in {(a),(b)} { \fill \pkt circle(0.05);}
+	
+	\coordinate (o) at (-3,-0.75);
+	\coordinate (1) at ($(o) + (30:1)$); \coordinate (2) at ($(o) + (150:1)$); \coordinate (3) at ($(o) + (270:1)$);
+	\draw (o) -- (1) (o) --coordinate[pos=\frac](a) (2) (o) --coordinate[pos=0](b) (3);
+	\draw[->] (b) -- +(30:0.4);
+	\foreach \pkt in {(a),(b)} { \fill \pkt circle(0.05);}
+	
+	\coordinate (o) at (-1,-0.75);
+	\coordinate (1) at ($(o) + (30:1)$); \coordinate (2) at ($(o) + (150:1)$); \coordinate (3) at ($(o) + (270:1)$);
+	\draw (o) --coordinate[pos=\frac](b) (1) (o) --coordinate[pos=\frac](a) (2) (o) -- (3);
+	\draw[->] (a) -- +(330:0.4);
+	\foreach \pkt in {(a),(b)} { \fill \pkt circle(0.05);}
+	
+	\coordinate (o) at (1,-0.75);
+	\coordinate (1) at ($(o) + (30:1)$); \coordinate (2) at ($(o) + (150:1)$); \coordinate (3) at ($(o) + (270:1)$);
+	\draw (o) --coordinate[pos=\frac](b) (1) (o) --coordinate[pos=0](a) (2) (o) -- (3);
+	\draw[->] (a) -- +(270:0.4);
+	\foreach \pkt in {(a),(b)} { \fill \pkt circle(0.05);}
+	
+	\coordinate (o) at (3,-0.75);
+	\coordinate (1) at ($(o) + (30:1)$); \coordinate (2) at ($(o) + (150:1)$); \coordinate (3) at ($(o) + (270:1)$);
+	\draw (o) --coordinate[pos=\frac](b) (1) (o) -- (2) (o) --coordinate[pos=\frac](a) (3);
+	%\draw[->] (a) -- +(270:0.4);
+	\foreach \pkt in {(a),(b)} { \fill \pkt circle(0.05);}
+\end{tikzpicture}\end{center}
 \end{bsp}
 
 \begin{dfn}[Swiatowski]
@@ -2558,9 +2700,48 @@ Es bezeichne $\prec$ die davon erzeugte partielle Ordnung auf $P_n\G = \dot\cup 
 \end{dfn}
 
 0-Skelett: Paare $(f, \emptyset)$ mit $f: \E \cup \calB \to \N_0$, $\sum_{|a| \in \E \cup \calB} f(|a|) = n$, $f$ \quot{z"ahlt} wieviele Punkte auf einer Kante beziehungsweise essentiellen Ecke sitzen.
-\begin{center}\textcolor{red}{[BILD]} $\sim (f,\emptyset)$ mit $f(e) = 2$, $f(v) = f(w) = 0$\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\coordinate (v) at (0,1); \coordinate (w) at (0,-1);
+	
+	\draw[decoration={markings,mark=at position 0.5 with{\arrow{>}}},postaction={decorate}] (v)node[right]{$v$} --node[right]{$e$}node[pos=0.25]{$\X$} node[pos=0.75]{$\X$} (w)node[right]{$w$};
+	\draw (v) -- +(45:0.5) (v) -- +(135:0.5) (w) -- +(225:0.5) (w) -- +(270:0.5) (w) -- +(315:0.5);
+	\foreach \pkt in {(v),(w)} { \fill \pkt circle(0.05);}
+\end{tikzpicture}
+$\sim (f,\emptyset)$ mit $f(e) = 2$, $f(v) = f(w) = 0$\hspace{1cm} $\tau_0 = (f, \emptyset)$\end{center}
 Zwei solche 0-Zellen sind durch eine Kante (1-Zelle) verbunden, wenn einer der Punkte das Innere einer Kante durch eine essentielle Ecke betritt oder verl"asst.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\coordinate (v) at (0,1); \coordinate (w) at (0,-1);
+	
+	\draw[decoration={markings,mark=at position 0.5 with{\arrow{>}}},postaction={decorate}] (v)node[right]{$v$} --node[right]{$e$}node[pos=0.25]{$\X$} node[pos=0.75]{$\X$} (w)node[right]{$w$};
+	
+	\foreach \pkt in {(v),(w)} { \fill \pkt circle(0.05);}
+\end{tikzpicture}
+$\leftrightsquigarrow$
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	
+	\coordinate (v) at (0,1); \coordinate (w) at (0,-1);
+	
+	\draw[decoration={markings,mark=at position 0.5 with{\arrow{>}}},postaction={decorate}] (v)node[right]{$v$} --node[right]{$e$}node[pos=0.25]{$\X$} node[pos=1]{$\X$} (w)node[right]{$w$};
+	
+	\foreach \pkt in {(v),(w)} { \fill \pkt circle(0.05);}
+	
+	\node[align=left,font=\normalsize] at (1.5,0) {$\tau_1 = (g, \emptyset)$ \\ $g([e|) = 1$ \\ $g(w) = 1$};
+\end{tikzpicture}
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	\draw (-1.5,0)node[above]{$\tau_0$}[fill]circle(0.05) -- (1.5,0)node[above]{$\tau_1$}[fill]circle(0.05);
+\end{tikzpicture}
+\hspace{1cm}
+$\sigma = (h, \{e\})$
+\end{center}
+$h(|e|) = 1 \xRightarrow{\text{(b)}} \tau_0 \prec \sigma$,
+$h(w) = 0 \xRightarrow{\text{(a)}} \tau_1 \prec \sigma$
+$(h(v) = 0)$
+
 Die h"oherdimensionalen Zellen bestehen aus $k$-Tupeln von unabh"angigen Z"ugen wie oben.
 Ist $\sigma = (g, \{e_1, \ldots, e_k\})$ eine $k$-Zelle in $K_n\G$, so besitzt $\sigma$ genau $2k$ Facetten der Kodimension 1:
 \begin{align*}
