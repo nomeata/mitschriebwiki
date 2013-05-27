@@ -1,3 +1,6 @@
+% !TEX TS-program = pdflatexmk
+% das oben sorgt dafuer dass die dflatexmk engine fuer das Setzten verwendet wird
+
 %%
 %% Skript Angewandte Differentialgeometrie im Sommersemester 2013
 %% Zur Vorlesung von Dr. Grensing am KIT in Karlsruhe
@@ -233,6 +236,7 @@
 
 
 %  geschwungene Buchstaben
+\DeclareMathOperator{\calB}{\mathcal{B}}
 \DeclareMathOperator{\calD}{\mathcal{D}}
 \DeclareMathOperator{\calE}{\mathcal{E}}
 \DeclareMathOperator{\calG}{\mathcal{G}}
@@ -2485,8 +2489,87 @@ F"ur $C_2Y$ ergibt sich dann
 
 \begin{satz}[Swiatowski 2001]
 Es sei $\G$ ein endlicher Graph.
-Dann existiert ein $\CAT(0)$-Kubenkomplex $K_n\G \hookrightarrow C_n\G$, welcher ein Deformationsretrakt von $C_n\G$ ist.
+Dann existiert ein nichtpositiv gekr"ummter-Kuben"-kom"-plex $K_n\G \hookrightarrow C_n\G = \FakRaum{F_n\calG}{S_n}$, sodass $K_n\calG$ ein Deformationsretrakt von $C_n\G$ ist.
+Es gilt $\dim K_n\calG = \min \{n, b\}$, wobei $b$ die Anzahl der essentiellen Ecken von $\G$ ist.
 \end{satz}
+
+% Vorlesung vom 21. 5.
+
+Die Fundamentalgruppe $\pi_1(C_n\G)$ enth"alt eine frei abelsche Untergruppe vom Rang $\min\{b, \lfloor \frac{n}{2} \rfloor\}$.
+Die Konstruktion basiert darauf, die Verteilung von Punkten auf Ecken, beziehungsweise Kanten, beziehungsweise die "Uberg"ange zwischen solchen Zust"anden zu beschreiben.
+
+\begin{emptythm}[Ansatz (Abrams 2000)]
+Wie erh"alt man die Zellenstruktur beziehungsweise die Kombinatorik von $|\G|^n = \{ \sigma = \sigma_1 \X \ldots \X \sigma_n \mid \sigma \text{ Zelle von } \G \}$ in $C_n\G$?
+Man erh"alt $F_n\G$ durch das \quot{L"oschen} der verallgemeinerten Diagonale.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+\end{emptythm}
+
+\begin{emptythm}[Analogon]
+$|\G|^n$ ist ein Zellkomplex mit Zellen $\sigma = \sigma_1 \X \ldots \X \sigma_n$.
+Die kombinatorische Diagonale von $|\G|^n$ besteht aus Zellen der Form $\sigma = \sigma_1 \X \ldots \X \sigma_n$ mit $\partial\sigma_i \cap \partial\sigma_j \ne \emptyset$ f"ur ein $i \ne j$.
+Betrachten den kombinatorischen Konfigurationsraum mit Zellen $\sigma = \sigma_1 \X \ldots \X \sigma_n$ mit $\partial\sigma_i \cap \partial\sigma_j = \emptyset$ f"ur alle $i \ne j$.
+Dies sind genau die $n$-Tupel von Punkten, welche paarweise durch eine (offene) Kante getrennt sind.
+\end{emptythm}
+
+\begin{bsp}
+$\G = Y$: 1-Zellen der Form $v \X e$, wobei $e$ eine der Ecke $v$ gegen"uberliegende Kante ist.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+\end{bsp}
+
+Anschlie"send l"asst sich der kombinatorische Konfigurationsraum auf $C_n\G$ retraktieren.
+Leider erh"alt man im Allgemeinen \emph{nicht} die Topologie von $C_n\G$: Beispiel \textcolor{red}{[BILD]} $\leadsto v \X w$.
+Es gilt zumindest
+
+\begin{satz}[Abtrams 2000]
+Ist $\G$ ein einfacher Graph, das hei"st enth"alt keine Schleifen der L"ange $\le 2$, so ist sein kombinatorischer Konfigurationsraum auf zwei Punkten ein Deformationsretrakt von $C_2\G$.
+\end{satz}
+
+\begin{bsp}
+$\pi_1(C_2, Y)$
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+\end{bsp}
+
+\begin{dfn}[Swiatowski]
+Es sei $\G$ ein endlicher Graph, dessen nichtessentialle Ecken frei sind, mit Kanten $\E$ und Ecken $\V$.
+Es bezeichne $\calB$ die Menge der essentiellen Ecken.
+Es sei $P_n^{(k)}\G$ die Menge der Paare $(f, S)$ mit
+\begin{enumerate}[label=(\roman*)]
+\item
+	$f: \E \cup \calB \to \N_0$ eine Abbildung
+\item
+	$S= \{ e_1, \ldots, e_k \}$ paarweise verschiedene orientierte Kanten
+\item
+	$v_{e_i} = \partial^+e_i \in \calB$ und $v_{e_i} \ne v_{e_j}$ f"ur $i \ne j$
+\item
+	$f(v) \in \{0, 1\}$ f"ur alle $v \in \calB$ und $f(v_{e_i}) = 0$ f"ur alle $i \le k$
+\item
+	$\sum_{|a| \in \E \cup \calB} f(|a|) = n - k$.
+\end{enumerate}
+Es gelte dabe $(f,S) \prec (g, S \dot\cup \{e\})$ mit $e \notin S$, falls entweder
+\begin{enumerate}[label=(\alph*)]
+\item $f(v_e) = g(v_e) + 1 (=1)$ und sonst $f(a) = g(a)$
+\end{enumerate}
+oder
+\begin{enumerate}[label=(\alph*)]
+\item[(b)] $f(|e|) = g(|e|) + 1$ und sonst $f(a) = g(a)$
+\end{enumerate}
+gilt.
+Es bezeichne $\prec$ die davon erzeugte partielle Ordnung auf $P_n\G = \dot\cup P_n^{(k)}\calG$ und $K_n\G$ seine geometrische Realisierung.
+\end{dfn}
+
+0-Skelett: Paare $(f, \emptyset)$ mit $f: \E \cup \calB \to \N_0$, $\sum_{|a| \in \E \cup \calB} f(|a|) = n$, $f$ \quot{z"ahlt} wieviele Punkte auf einer Kante beziehungsweise essentiellen Ecke sitzen.
+\begin{center}\textcolor{red}{[BILD]} $\sim (f,\emptyset)$ mit $f(e) = 2$, $f(v) = f(w) = 0$\end{center}
+Zwei solche 0-Zellen sind durch eine Kante (1-Zelle) verbunden, wenn einer der Punkte das Innere einer Kante durch eine essentielle Ecke betritt oder verl"asst.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Die h"oherdimensionalen Zellen bestehen aus $k$-Tupeln von unabh"angigen Z"ugen wie oben.
+Ist $\sigma = (g, \{e_1, \ldots, e_k\})$ eine $k$-Zelle in $K_n\G$, so besitzt $\sigma$ genau $2k$ Facetten der Kodimension 1:
+\begin{align*}
+	\partial_{e_i}^\pm \sigma = ( g_i^\pm, \{e_1, \ldots, \hat{e_i}, \ldots, e_k \})
+\end{align*}
+mit $g_i^+(v_{e_i}) = 1$, beziehungsweise $g_i^-(|e_i|) = g(|e_i|) + 1$.
+Damit ist $K_n\G$ ein Kubenkomplex: Jede Menge $\{ \tau \mid \tau \prec \sigma \}$ ist ein W"urfel.
+
+
 
 
 %========================================================================================================================
