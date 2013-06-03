@@ -461,7 +461,7 @@ Dr. Grensing ist nicht f"ur den Inhalt verantwortlich und es besteht weder eine 
 Das Skript wurde in von Aleksandar Sandic getippt.
 Bei Anmerkungen bzw. beim Auffinden von Fehlern korrigierte bitte die entsprechende Stelle in Wiki oder schickt eine E-Mail an
 \begin{center}
-  \href{mailto:aleksandar.sandic@student.kit.edu}{aleksandar.sandic@student.kit.edu}
+	\href{mailto:aleksandar.sandic@student.kit.edu}{aleksandar.sandic@student.kit.edu}
 \end{center}
 
 \section*{Wo}
@@ -554,9 +554,7 @@ Jede der obigen Aussagen impliziert, dass $X$ ein geod"atischer Raum ist.
 \begin{center}\begin{tikzpicture}[font=\scriptsize]
 	%\tikzgitter{(-4,-1)}{(4,3)}
 	\coordinate (x) at (-2.5,-0.5); \coordinate (y) at (2.5,1.5);
-	\foreach \i/\j in {40/180, 55/170, 70/160, 85/150} {
-		\draw (x) ..controls($(x)+(\i:2.5)$) and ($(y)+(\j:2.5)$).. (y);
-	}
+	\foreach \i in {20,30,40,50} { \draw (x) to[relative,out=\i,in=180-\i] (y); }
 	\fill (x) circle(0.05)node[below]{$x$} (y) circle(0.05)node[right]{$y$};
 \end{tikzpicture}\\
 Kanten $e_n$ der L"ange $1+\frac{1}{n}$ $\leadsto$ Es gibt keine Kurve der L"ange $1$\end{center}
@@ -2913,9 +2911,28 @@ $X$ hei"st \CmMark[MkPolyederkomplex@$M_\kappa$-Polyederkomplex]{$\bm{M_\kappa}$
 \begin{enumerate}[label=(\roman*)]
 \item
 	Ist $\tau \le \sigma_i$ eine Seite, so ist $\pi|_{\mathring\tau}$ injektiv.
+	\marginnote{\tiny{$\mathring\tau$ offenes Inneres von $\tau$}}
 \item
 	Sind $x_1 \in \sigma_1$ und $x_2 \in \sigma_2$ mit $\pi|_{\sigma_1}(x_1) = \pi|_{\sigma_2}(x_2)$, so existiert eine Isometrie $\phi: \supp(x_1) \to \supp(x_2)$ mit $\pi|_{\sigma_1}(y) = \pi|_{\sigma_2}(\phi(y))$ f"ur alle $y \in \supp(x_1)$; wobei $\supp(x_i)$ die eindeutige Seite $\tau < \sigma_i$ mit $\mathring\tau \ni x_i$ ist.
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		
+		\coordinate (o) at (-2.5,0);
+		\coordinate (1) at ($(o) + (2,0.25)$);
+		\coordinate (2) at ($(o) + (1.5,1.25)$);
+	
+		\draw (o) -- (1) -- (2) --coordinate[pos=0.6](x)node[left]{$x$} (o) -- cycle;
+		\node at ($($(1)!0.5!(2)$)!0.25!(o)$) {$\sigma_i$};
+		\foreach \a in {o, 2, x} { \fill (\a) circle(0.05);}
+		
+		\coordinate (o) at (1,0);
+		\coordinate (1) at ($(o) + (2,0.25)$);
+		\coordinate (2) at ($(o) + (1.5,1.25)$);
+	
+		\draw (2) --node[left]{$\supp(x) =$} (o);
+		\draw[dashed] (o) -- (1) -- (2);
+		\foreach \a in {o, 2} { \fill (\a) circle(0.05);}
+	\end{tikzpicture}\end{center}
 \end{enumerate}
 \end{dfn}
 
@@ -2923,13 +2940,31 @@ Ein $M_\kappa$-Polyederkomplex ist im Allgemeinen \emph{kein} simplizialer Kompl
 \begin{enumerate}[label=(\arabic*)]
 \item
 	2-Torus:
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		
+		\draw[->] (-0.5,0) --node[above]{$\pi$}node[below]{$\sim$} (0.5,0);
+		\tikztorus[0.5]{(2,0)}
+		
+		\def\len{0.75}
+		\coordinate (o) at (-1 - \len,0);
+		\draw[decoration={markings,mark=at position 0.6 with{\arrow{>}},mark=at position 0.4 with{\arrow{>}}},postaction={decorate}] ($(o)+(\len,-\len)$) -- ($(o)+(\len,\len)$);
+		\draw[decoration={markings,mark=at position 0.6 with{\arrow{>}},mark=at position 0.4 with{\arrow{>}}},postaction={decorate}] ($(o)+(-\len,-\len)$) -- ($(o)+(-\len,\len)$);
+		\draw[decoration={markings,mark=at position 0.5 with{\arrow{>}}},postaction={decorate}] ($(o)+(-\len,-\len)$) -- ($(o)+(\len,-\len)$);
+		\draw[decoration={markings,mark=at position 0.5 with{\arrow{>}}},postaction={decorate}] ($(o)+(-\len,\len)$) -- ($(o)+(\len,\len)$);
+	\end{tikzpicture}\end{center}
 	$\sigma = [0,1]^2$ einziger Polyeder, $\sim$ Kantenidentifikation (wie "ublich)
 	
 	\emph{Kein} simplizialer Komplex, denn $\pi|_\sigma$ ist nicht injektiv
 \item
 	Digon: zwei (maximale) Polyeder $e_1 \cong e_2 \cong [0,1]$, $\sim =$ Identifikation der Randpunkte
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		\path (0,0)coordinate(v)node[left]{$v$} -- +(15:2)coordinate(w)node[right]{$w$};
+		\draw (v) to[relative,out=30,in=150] node[above]{$e_1$} (w);
+		\draw (v) to[relative,out=330,in=210] node[below]{$e_2$} (w);
+		\foreach \x in {v,w} {\fill (\x) circle(0.05);}
+	\end{tikzpicture}\end{center}
 	\begin{enumerate}[label=(\roman*)]
 	\item
 		$\pi|_{e_i}$ ist injektiv.
@@ -2945,9 +2980,46 @@ Ist $\sigma \subset K_n\G$ ein 1-W"urfel, das hei"s $\sigma = (f, \{e\})$, so gi
 Es gibt Digone in $K_n\G$:
 Es gelte $n \ge 1$ und $\G$ enthalte eine Schleife.
 betrachte die folgenden Konfigurationen:
-\begin{center}\textcolor{red}{[BILD]} und \textcolor{red}{[BILD]} bzw. \textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	\def\rad{0.5}
+	\draw (0,0) circle(\rad) (0,-\rad) -- +(0,-0.75);
+	\fill (0,-\rad) circle(0.05) node[below right]{$v$};
+	\node[right] at (\rad,0) {$e$};
+	\node at (0,\rad) {$\X$};
+	\node at (0,-\rad) {$\X$};
+\end{tikzpicture}
+und
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	\def\rad{0.5}
+	\draw (0,0) circle(\rad) (0,-\rad) -- +(0,-0.75);
+	\fill (0,-\rad) circle(0.05);
+	\node at (0,\rad) {$\X$};
+	\node at (250:\rad) {$\X$};
+\end{tikzpicture}
+bzw.
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	\def\rad{0.5}
+	\draw (0,0) circle(\rad) (0,-\rad) -- +(0,-0.75);
+	\fill (0,-\rad) circle(0.05);
+	\node at (0,\rad) {$\X$};
+	\node at (290:\rad) {$\X$};
+\end{tikzpicture}\end{center}
 Es gelte $v_e = v = v_{\overline e}$, damit existieren zwei Intervalle in $K_n\G$, welche das Verlassen der orientierten Kante $e$ parametrisieren:
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+
+	\path (0,0)coordinate(v)node[left]{$(h,\emptyset)$} -- +(20:4)coordinate(w)node[right]{$(g,\emptyset)$};
+	\draw (v) to[relative,out=30,in=150] node[above left]{$(f,\{e\})$} (w);
+	\draw (v) to[relative,out=330,in=210] node[below right]{$(f,\{\overline{e}\})$} (w);
+	\foreach \x in {v,w} {\fill (\x) circle(0.05);}
+	
+	\node[align=left] at ($(v)-(3,0)$) {$h(v) = h(v_e) = h(v_{\overline{e}}) = 1$ \\ $h(|e|) = h(|\overline{e}|) = 1$};
+	\node[align=left] at ($(w)+(3,0)$) {$g(v) = g(v_e) = g(v_{\overline{e}}) = 1$ \\ $g(|e|) = g(|\overline{e}|) = 1$};
+	\node[align=left] at ($(w)+(2.5,-1.5)$) {$f(|e|) = 1 = h(|\overline e|)$ \textcolor{gray}{(def. Digon in $K_n\G$)} \\ $f(v_e) = 0$};
+\end{tikzpicture}\end{center}
 Jeder h"oherdimensionale W"urfel in $K_n\G$ ist eindeutig durch seine Kodimension-1-Seiten bestimmt:
 Es seien $(g, S)$ und $(h, T)$ W"urfel der Dimension $\ge 2$ in $K_n\G$ mit $\{\partial_i^{\pm}(g,S)\} = \{\partial_i^{\pm}(h,T)\}$.
 Es gilt
@@ -2983,7 +3055,7 @@ Dies ist in $K_n\G$ stets positiv.
 Man kann zeigen, dass $l(s) \ge \epsilon_\sigma(x)$ f"ur jede Kette $s$ von $x$ nach $y$ gilt, also $d(x, y) > 0$.
 Man sieht leicht ein, dass $d$ eine L"angenmetrik ist.
 
-\subsection*{Geod\"azit\"at und Volls\"andigkeit}
+\subsection*{Geod\"azit\"at und Vollst\"andigkeit}
 \begin{satz}[Bridson 1991]
 Es sei $X$ ein zusammenh"angender $M_\kappa$-Polyederkomplex.
 Falls in $X$ nur endlich viele Isometrietypen von Polyedern existieren, so ist $X$ ein geod"atisch vollst"andiger metrischer Raum.
@@ -2998,7 +3070,28 @@ Betrachte straffe Ketten $s = \{ x_0, \ldots, x_k \}$.
 	Gilt $x_{i-1}x_i \in \sigma_{i-1}$ und $x_i x_{i+1} \in \sigma_i$, so sei $\overline{x_{i-1}x_{i}} \cup \overline{x_{i}x_{i+1}}$ geod"atisches Segment in $\sigma_{i-1} \cup_{\sim} \sigma_i$.
 
 	\emph{Beachte:} Das hei"st nicht, dass $\overline{x_{i-1}x_{i}} \cup \overline{x_{i}x_{i+1}}$ geod"atisch in $X$ ist, wie man an dieser Zeichnung erkennt:
-	\begin{center}\textcolor{red}{[BILD]}\end{center}
+	\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+		%\tikzgitter{(-4,-4)}{(5,4)}
+		
+		\coordinate (o) at (-1.5,0);
+		\coordinate (1) at ($(o) + (-1,-0.75)$);
+		\coordinate (2) at ($(o) + (1,-0.75)$);
+		\coordinate (3) at ($(o) + (0,1.25)$);
+		
+		\draw (o) -- (1) --coordinate[pos=0.25](a)node[left]{$\sigma_1$} (3) --coordinate[pos=0.75](b)node[right]{$\sigma_2$} (2) -- (o) (o) -- (3);
+		\draw[gray] (a)node[left]{$x_1$} -- (o)node[above right]{$x_2$} -- (b)node[right]{$x_3$};
+		\foreach \x in {a, b, o} { \fill[gray] (\x) circle(0.05); }
+		
+		\coordinate (o) at (1.5,0);
+		\coordinate (1) at ($(o) + (-1,-0.75)$);
+		\coordinate (2) at ($(o) + (1,-0.75)$);
+		\coordinate (3) at ($(o) + (0,1.25)$);
+		
+		\draw (o) -- (1) --coordinate[pos=0.25](a)node[left]{$\sigma_1$} (3) --coordinate[pos=0.75](b)node[right]{$\sigma_2$} (2) -- (o) (o) -- (3) (1) --node[below]{$\sigma_3$} (2);
+		\draw[gray] (a)node[left]{$x_1$} -- (o)node[above right]{$x_2$} -- (b)node[right]{$x_3$};
+		\draw[gray,dashed] (a) -- (b);
+		\foreach \x in {a, b, o} { \fill[gray] (\x) circle(0.05); }
+	\end{tikzpicture}\end{center}
 \end{enumerate}
 
 Es gilt $d(x, y) = \inf \{ l(s) \mid s \text{ straffe Kette von } x \text{ nach } y \}$.
