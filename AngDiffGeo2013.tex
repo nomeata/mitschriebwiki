@@ -266,6 +266,7 @@
 \DeclareMathOperator{\inh}{inh} % Inhalt
 \DeclareMathOperator{\grad}{grad} % Gradient
 \DeclareMathOperator{\kgV}{kgV} % kleinstes gemeinsames Vielfaches
+\DeclareMathOperator{\lk}{lk} % Link
 \DeclareMathOperator{\mmod}{mod} % modulo
 \DeclareMathOperator{\mspan}{span} % Lineare Huelle
 \DeclareMathOperator{\n}{n} % Umlaufzahl
@@ -3100,6 +3101,102 @@ F"ur jede L"ange $l$ existiert eine Schranke $N$, abh"angig von $l$ und den Isom
 F"ur $x, y \in X$ durchlaufen straffe Ketten hinreichend kleiner L"ange nur endlich viele \quot{Modellr"aume}, welche durch die endlichen Kombinationen der endlich vielen Isometrietypen gegeben sind.
 Jeder solche \quot{Modellraum} enh"alt eine k"urzeste Geod"atische (Moussong 1988).
 
+
+% Vorlesung vom 3. 6.
+
+\section{Nichtpositive Kr\"ummung von Kubenkomplexen}
+Das Innere der Kuben ist $\CAT(0)$, da jeder Kubus die euklidische Metrik tr"agt.
+Die K"ummung des Komplexes \quot{konzentriert} sich in den Ecken, das hei"st 0-dimensionalen W"urfeln.
+
+Zur Erinnerung: Das Komplement eines Quadranten in $\R^2$ ist $\CAT(0)$ und gegeben durch $\R^2 \setminus Q = \{ (x_1, x_2) \in \R^2 \mid x_1 \le 0, x_2 \le 0 \}$.
+\begin{center}\begin{tikzpicture}[font=\scriptsize]
+	%\tikzgitter{(-4,-1)}{(4,3)}
+	\coordinate (x) at (-2,-1); \coordinate (y) at (1.5,-0.5); \coordinate (z) at (-0.5,1);
+	
+	\draw (x) -- (y) -- (0,0) -- (z) -- (x) -- cycle;
+	\fill (x) circle(0.05)node[below]{$x$} (y) circle(0.05)node[below]{$y$} (z) circle(0.05)node[above]{$z$};z
+	
+	\fill[fill=gray!30,fill opacity=0.5] (0,0) rectangle(2.4,1.4);
+	\node at (1,0.75) {$Q$};
+	\draw[->] (-2.5,0) -- (2.5,0);\draw[->] (0,-1.5) -- (0,1.5);
+\end{tikzpicture}\end{center}
+Das Komplement eines Oktanten in $\R^3$ ist \emph{nicht} $\CAT(0)$.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Die folgenden W"urfelkomplexe sind euklidisch und $\CAT(0)$:
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Allerdings ist dies hier nicht mehr $\CAT(0)$, vergleichbar mit dem Oktanten:
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Man kann den Knoten $v$ als Spitze eines Kegels betrachten und den Link $\lk(v)$ als den Grundkreis. Je gr"o"ser Link, umso flacher der Kegel.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Es sei $v$ eine Ecke.
+Der \CmMark{Link} $\lk(v)$ ist ein abstrakter simplizialer Komplex mit einem $k$-Simplex f"ur jeden $(k+1)$-W"urfel, der $v$ enth"alt.
+F"ur $K$ sieht der Link $\lk_K(v)$ folenderma"sen aus:
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	\def\rad{0.8}
+	
+	\draw[rotate=22.5] (0:\rad) -- (45:\rad) -- (90:\rad) -- (135:\rad) -- (180:\rad) --node[below left]{$\sigma_1$} (225:\rad) --node[below]{$\sigma_2$} (270:\rad) -- (315:\rad) -- cycle;
+	\fill[rotate=22.5] (0:\rad)circle(0.05) (45:\rad)circle(0.05) (90:\rad)circle(0.05) (135:\rad)circle(0.05) (180:\rad)circle(0.05) (225:\rad)circle(0.05) (270:\rad)circle(0.05) (315:\rad)circle(0.05);
+\end{tikzpicture}\end{center}
+
+\begin{satz}[Gromovs Link-Bedingung]
+Es sei $K$ ein endlichdimensionaler Kubenkomplex.
+$K$ ist genau dann nichtpositiv gekr"ummt, wenn der Link jeder Ecke ein Fahnenkomplex ist.
+\end{satz}
+
+Ein \CmMark{Fahnenkomplex} ist ein simplizialer Komplex, in welchem jede Menge von Ecken, die paarweise durch Kanten verbunden sind, einen Simplex aufspannen.
+Ein Komplex, welcher maximal unter allen Komplexen mit dem gleichen 1-Skelett ist, ist ein Fahnenkomplex.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+
+\subsection*{Link-Bedingung in $K_n\G$}
+
+Es sei $x \in K_n\G$ eine Ecke, das hei"st $x = (f, \emptyset)$ mit $f: \E \cup \calB \to \N_0$, $\sum_{a \in \E \cup \calB} f(|a|) = n$ und $f(v) \in \{0, 1\}$ f"ur alle $v \in \calB$.
+Es gilt $\lk(x) = \{ \sigma \in K_n \mid (f, \emptyset) \prec \sigma \}$.
+Ein $\sigma = (g, S)$ enth"alt genau dann $(f, \emptyset)$, wenn gilt
+\begin{align*}
+	g(a) = \begin{cases}
+		f(a) & a \in \calB \wedge a \ne v_e, e \in S \\
+		0 & a = v_e, e \in S \\
+		f(a) + \sum_{\substack{s \in S \\ |s| = a}} (f(v_s) - 1) & a \in \E
+	\end{cases}
+\end{align*}
+Solche $\sigma = (g, S)$ sind eindeutig bestimmt duch Teilmengen $S \subset \E$, welche die folgenden Bedingungen erf"ullen:
+\begin{enumerate}[label=(\roman*)]
+\item
+	$v_e \in \calB$ f"ur alle $e \in S$
+\item
+	$v_e \ne v_{e'}$ f"ur $e, e' \in S$
+\item
+	$f(|e|) + f(v_e) \ge 1$ f"ur alle $e \in S$
+\item
+	$f(|e|) + f(v_e) + f(v_{\overline{e}}) \ge 2$
+\end{enumerate}
+Der Link von $x$ besteht aus den Teilmengen $S$, die (i) bis (iv) erf"ullen.
+Jede solche Teilmenge $S$ definiert einen $(|S| - 1)$-Simplex von $\lk(x)$.
+Die Bedingungen (i) bis (iv) gelten genau dann f"ur eine Teilmenge $S$, wenn wie f"ur alle ein- und zweielementigen Teilmengen gelte.
+
+Ist dann $(g_i, \{e_i\})_{i \le k}$ eine Menge von Ecken in $\lk(x)$, das hei"st Kanten in $K_n\G$, die $x$ enthalten, und sind diese alle durch Kanten $(h_{ij}, \{e_i, e_j\})$ verbunden, so sind (i) - (iv) f"ur $\{e_i\}$ und $\{e_i, e_j\}$ erf"ullt.
+Damit gelten die Bedingungen auch f"ur $S = \{e_1, \ldots, e_k\}$ und es existiert ein $g$ mit $(g, S) \succ x = (f, \emptyset)$; Die Kanten $(h_{ij}, \{e_i, e_j\})$ in $\lk(x)$ spannen also einen Simplex auf.
+Damit ist $\lk(x)$ ein Fahnenkomplex.
+
+Somit ist nach Gromovs Link-Bedingung $K_n\G$ nichtpositiv gekr"ummt. Das liefert uns
+\begin{itemize}
+\item
+	$\widetilde{K_n\G}$ ist (global) $\CAT(0)$
+\item
+	$\pi_k(K_n\G) = 0$ f"ur alle $k \ge 2$
+\item
+	$K_n\G \hookrightarrow C_n\G$ Deformationsretrakt $\Rightarrow \pi_*(K_n\G) = \pi_*(C_n\G)$
+\item
+	$\pi_1(C_n\G) = \pi_1(K_n\calG)$, $\pi_k(C_n\G) = 0$, $k \ge 2$
+\end{itemize}
+Sei $k = \min \{ |\calB|, \lfloor \frac{n}{2} \rfloor \}$, dann gilt $\pi_1(C_n\G) \ge \Z^k = \pi_1(T)$, ein Torus durch die Wirkung $\pi_1(C_n\G) \curvearrowright K_n\G$.
+Finde $T^k$ in $K_n\G$, das hei"st \quot{finde $\S^1$en in $K_n\G$}.
+\begin{center}\textcolor{red}{[BILD]}
+$\leftrightsquigarrow$
+\textcolor{red}{[BILD]}\end{center}
+Jede essentielle Ecke $v \in \calB$ in $\G$ hat $\deg(v) \ge 3$.
+F"ur jeden Erzeuger einer $\S^1$ in $K_n\G$ ben"otigt man \textcolor{red}{zwei Kanten} und eine essentielle Ecke von $\G$.
 
 
 
