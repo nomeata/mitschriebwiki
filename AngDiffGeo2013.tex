@@ -2138,8 +2138,7 @@ Unter denselben Voraussetzungen wie in obigem Korollar gilt $R_E(t) \ge \const$.
 Es gilt $R_P(t) \ge \const \sqrt{t}$ nach dem obigen Korollar und Satz (ii).
 Ferner gilt
 \begin{align*}
-	d(E_0, E_t) &\ge d(P_0, P_t) - d(P_t, E_t) - d(E_0,P_0) \\
-	&\ge d(P_0, P_t) - \const
+	d(E_0, E_t) &\ge d(P_0, P_t) - d(P_t, E_t) - d(E_0,P_0) \ge d(P_0, P_t) - \const
 \end{align*}
 Daraus folgt
 \begin{align*}
@@ -3201,6 +3200,11 @@ Die folgenden W"urfelkomplexe sind euklidisch und $\CAT(0)$:
 	\draw[gray,thick] (o) circle (0.5);
 	\node[right,gray] at (20:1) {$B$};
 	\node at (3,1) {\quot{$B = \text{cone}(\lk(v))$}};
+	
+	% die Sigmas
+	\node at (247.5:1) {$\sigma_2$};
+	\draw[->] (-1.75,-1)node[left]{$\sigma_1$} to[out=0,in=220] (-0.75,-0.5);
+	\draw[->] (1.75,-1)node[right]{$\sigma_3$} to[out=180,in=320] (0.5,-0.75);
 \end{tikzpicture}\end{center}
 Allerdings ist dies hier nicht mehr $\CAT(0)$, vergleichbar mit dem Oktanten:
 \begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
@@ -3353,7 +3357,38 @@ F"ur jeden Erzeuger einer $\S^1$ in $K_n\G$ ben"otigt man zwei Teilchen und eine
 
 Wir betrachten das folgende motivierende Beispiel von Chirikjiam aus den 1990er Jahren.
 In einem zweidimensionalen Modell liegen sechseckige Bausteine, angeheftet an Kanten und drehbar an Ecken.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\R{1} % Radius des grossen Hexagons
+	\def\r{\R / 1.73205050808} % Radius der kleinen Hexagone
+	
+	% Eckpunkte und kanten des grossen Hexagons
+	\coordinate (0) at (0,0); \coordinate (1) at (0:\R); \coordinate (2) at (60:\R); \coordinate (3) at (120:\R); \coordinate (4) at (180:\R); \coordinate (5) at (240:\R); \coordinate (6) at (300:\R); \coordinate (7) at (1);
+	\foreach \i / \j in {1/2,2/3,3/4,4/5,5/6,6/1} {
+		\draw[opacity=0.5] (0) -- (\i) (\i) -- (\j);
+	}
+	
+	\coordinate (p) at (3); % Zentrum des kleinen Hexagons und dessen Eckpunte
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\draw (6') -- (1') -- (2') -- (3') -- (4'); % das Hexagon zeichnen
+	
+	\coordinate (p) at (4);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\draw (1') -- (2') -- (3') -- (4') -- (5') -- (6') -- (1');
+	
+	\coordinate (p) at (0);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\draw (1') -- (2') -- (3') (4') -- (5') -- (6') -- (1');
+	
+	\coordinate (p) at (5);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\draw[dashed] (3') -- (4') -- (5') -- (6') -- (1');
+	
+	\path (0) --coordinate[pos=0.2](a) coordinate[pos=0.8](b) (5);
+	\draw[->] (a) to[relative,out=25,in=155] (b);
+	
+	\foreach \i in {0,1,...,6} {\fill (\i) circle(0.05);}
+\end{tikzpicture}\end{center}
 Es sei $\G$ ein Graph und $\A$ eine Menge.
 Ein \CmMark{Zustand} ist eine \quot{F"arbung} von $\G$ durch $\A$, das hei"st $u: \V\G \to \A$.
 
@@ -3369,11 +3404,95 @@ Ein \CmMark{Erzeuger} $\phi$ besteht aus
 	einem Paar lokaler Zust"ande $u_i^\phi: \supp \phi \to \A$, $u_0^\phi|_{\supp \phi \setminus \tr \phi} = u_1^\phi|_{\supp \phi \setminus \tr \phi}$
 \end{itemize}
 Der Erzeuger gibt uns also Aufschluss "uber die Drehung
-\begin{center}\textcolor{red}{[BILD]}
-$\leftrightsquigarrow$
-\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\R{1}
+	\def\r{\R / 1.73205050808}
+	
+	\coordinate (0) at (0,0); \coordinate (1) at (0:\R); \coordinate (2) at (60:\R); \coordinate (3) at (120:\R); \coordinate (4) at (180:\R); \coordinate (5) at (240:\R); \coordinate (6) at (300:\R); \coordinate (7) at (1);
+		
+	\coordinate (p) at (4);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\draw (1') -- (2') -- (3') -- (4') -- (5') -- (6') -- (1');
+	
+	\coordinate (p) at (0);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\draw (1') -- (2') -- (3') (4') -- (5') -- (6') -- (1');
+	
+	\coordinate (p) at (5);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\draw[dashed] (3') -- (4') -- (5') -- (6') -- (1');
+\end{tikzpicture}
+$\overset{\phi}{\leftrightsquigarrow}$
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\R{1}
+	\def\r{\R / 1.73205050808}
+	
+	\coordinate (0) at (0,0); \coordinate (1) at (0:\R); \coordinate (2) at (60:\R); \coordinate (3) at (120:\R); \coordinate (4) at (180:\R); \coordinate (5) at (240:\R); \coordinate (6) at (300:\R); \coordinate (7) at (1);
+		
+	\coordinate (p) at (4);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\draw (1') -- (2') -- (3') -- (4') -- (5') -- (6') -- (1');
+	
+	\coordinate (p) at (0);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\draw[dashed] (1') -- (2') -- (3') (5') -- (6') -- (1');
+	
+	\coordinate (p) at (5);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\draw (1') -- (2') (3') -- (4') -- (5') -- (6') -- (1');
+\end{tikzpicture}\end{center}
 Bei einer Drehung passiert ein Punkt mehrere Sechsecke, daher z"ahlen diese Sechsecke auch zum Träger
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\R{1}
+	\def\r{\R / 1.73205050808}
+	\def\a{70}
+	
+	\coordinate (0) at (0,0); \coordinate (1) at (0:\R); \coordinate (2) at (60:\R); \coordinate (3) at (120:\R); \coordinate (4) at (180:\R); \coordinate (5) at (240:\R); \coordinate (6) at (300:\R); \coordinate (7) at (1); \coordinate (8) at ($(5)+(0:\R)$); \coordinate(9) at ($(5)+(300:\R)$);
+		
+	\coordinate (p) at (4);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\fill[gray,opacity=0.5] (1') -- (2') -- (3') -- (4') -- (5') -- (6') -- cycle;
+	\draw (1') -- (2') -- (3') -- (4') -- (5') -- (6') -- (1');
+	
+	\coordinate (p) at (0);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\draw (1') -- (2') -- (3') (5') -- (6') -- (1');
+	\fill[gray,opacity=0.3] (1') -- (2') -- (3') -- (4') -- (5') -- (6') -- cycle;
+	\coordinate (a) at (1');
+	
+	\coordinate (p) at (1);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\draw (1') -- (2') -- (3') (4') -- (5') -- (6') -- (1');
+	
+	\coordinate (p) at (5);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\fill[gray,opacity=0.3] (1') -- (2') -- (3') -- (4') -- (5') -- (6') -- cycle;
+	\draw (1') -- (2') (3') -- (4') -- (5') -- (6') -- (1');
+	\coordinate (b) at (5');
+	
+	\coordinate (p) at (8);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\draw (4') -- (5') -- (6') -- (1');
+	
+	\coordinate (p) at (9);
+	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
+	\draw (3') -- (4') -- (5') -- (6') -- (1');
+	
+	\draw (a) arc[radius=2*\r,start angle=30,end angle=-90];
+	\foreach \p in {a,b} {\fill (\p) circle(0.05);}
+	
+	%die Mittelpunkte all nach rechts verschieben
+	\foreach \i in {0,1,...,9} {\coordinate (\i) at ($(\i)+(4,0)$);}
+	
+	\draw (4) --node[above]{$\supp\phi$} (0) -- (1) -- (8) -- (9) -- (5) -- (4) (0) -- (8) -- (5);
+	\draw[gray,opacity=0.3] (5) --coordinate (c) (0);
+	\foreach \i in {4,1,8,9} {\fill (\i) circle(0.05);}
+	\foreach \i in {0,5} {\fill[gray,opacity=0.3] (\i) circle(0.05);}
+	\draw[->]  (4.75,0.25)node[above]{$\tr\phi$} to[out=240,in=0] ([xshift=0.1cm]c);
+\end{tikzpicture}\end{center}
 Ein Erzeuger hei"st \CmMark[Erzeuger!zul\"assiger]{zul"assig} auf einem Zustand $u$, falls $u|_{\supp \phi} = u_0^\phi$ gilt.
 Dann sei
 \begin{align*}
@@ -3411,13 +3530,125 @@ Wir schauen uns nun ein konkretes Beispiel an.
 
 \subsection*{\quot{Diskreter} Roboterarm}
 Um die Bewegungen der Gelenke diskret zu machen legen wir ein Gitter und lassen Bewegungen von entweder $90°$ oder $180°$ zu.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
-F"ur Erzeuger, Tr"ager und Spur erh"alt man dann
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	\def\a{120}
+	\def\b{10}
+	\def\c{260}
+	\def\d{15}
+	\def\r{0.25}
+	\def\R{1}
+	
+	\draw (-1.5,0) -- (1.5,0);
+	\fill[pattern=north east lines,opacity=0.5] (-1.5,0) rectangle (1.5,-0.25);
+	\node at (0,-0.5) {nicht diskret};
+	
+	\draw (0,0)coordinate(0) -- (\a: 1.75)coordinate(1) -- ++(\b:1.5)coordinate(2) -- ++(\c:0.75)coordinate(3) -- ++(\d:1)coordinate(4);
+	
+	\foreach \x in {0,1,2,3,4} {\fill (\x) circle(0.05);}
+\end{tikzpicture}
+\hspace*{2cm}
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\shift{0.1}
+	
+	\draw[opacity=0.3] (-0.25,-0.25) grid[xstep=0.5,ystep=0.5] (2.75,2.25);
+	\node at (1,-0.5) {diskret};
+	\node[align=left,right] at (3,1) {$\G = \Z^2 \cap \R_{\ge 0}^2$ \\ $\A = \{0, 1\}$};
+	
+	\draw[preaction={draw=gray,line width=0.09cm,opacity=0.3}] (0,0)coordinate(0) -- (0.5,0)coordinate(1) -- ++(0,0.5)coordinate(2) -- ++(0.5,0)coordinate(3) -- ++(0.5,0)coordinate(4) -- ++ (0,0.5)coordinate(5) -- ++(0.5,0)coordinate(6) -- ++(0,0.5)coordinate(7) -- ++(0,0.5)coordinate(8) (1,0)coordinate(9);
+	\draw[gray,line width=0.09cm,opacity=0.3] (1) -- (9) -- (3) (7) -- +(0.5,0)coordinate(10);
+	\draw[<->,gray,opacity=0.3] ([xshift=\shift cm,yshift=-\shift cm]2) -- ([xshift=-\shift cm,yshift=\shift cm]9);
+	\draw[<->,gray,opacity=0.3] ([xshift=\shift cm,yshift=-\shift cm]8) to[out=0,in=90] ([xshift=-\shift cm,yshift=\shift cm]10);
+	
+	\foreach \i in {0,1,...,9} {\fill (\i) circle(0.05);}
+\end{tikzpicture}\end{center}
+F"ur die Erzeuger gilt
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0.5cm]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\l{1}
+	\def\L{1.5}
+	
+	\draw[gray,line width=0.09cm,opacity=0.3] (-\l,0)coordinate(1) -- (-\l,\l)coordinate(2) -- (0,\l)coordinate(3);
+	\foreach \i in {1,2,3} {\fill[gray,opacity=0.3] (\i) circle(0.05);}
+	\draw (-\l,\L) -- ++(0,-\L) -- ++(\L,0) (-\L,\l) -- ++(\L,0) -- ++(0,-\L);
+	\node[above left] at (-\l,\l) {1}; \node[below left] at (-\l,0) {1}; \node[above right] at (0,\l) {1}; \node[below right] at (0,0) {0};
+\end{tikzpicture}
+$\overset{\phi}{\leftrightsquigarrow}$
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0.5cm]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\l{1}
+	\def\L{1.5}
+	
+	\draw[gray,line width=0.09cm,opacity=0.3] (-\l,0)coordinate(1) -- (0,0)coordinate(2) -- (0,\l)coordinate(3);
+	\foreach \i in {1,2,3} {\fill[gray,opacity=0.3] (\i) circle(0.05);}
+	\draw (-\l,\L) -- ++(0,-\L) -- ++(\L,0) (-\L,\l) -- ++(\L,0) -- ++(0,-\L);
+	\node[above left] at (-\l,\l) {0}; \node[below left] at (-\l,0) {1}; \node[above right] at (0,\l) {1}; \node[below right] at (0,0) {1};
+\end{tikzpicture}
+und 
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0.5cm]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\l{1}
+	\def\L{1.5}
+	
+	\draw[gray,line width=0.09cm,opacity=0.3] (-\l,0)coordinate(1) -- (-\l,\l)coordinate(2);
+	\foreach \i in {1,2} {\fill[gray,opacity=0.3] (\i) circle(0.05);}
+	\draw (-\l,\L) -- ++(0,-\L) -- ++(\L,0) (-\L,\l) -- ++(\L,0) -- ++(0,-\L);
+	\node[above left] at (-\l,\l) {1}; \node[below left] at (-\l,0) {1}; \node[above right] at (0,\l) {0}; \node[below right] at (0,0) {0};
+\end{tikzpicture}
+$\overset{\psi}{\leftrightsquigarrow}$
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0.5cm]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\l{1}
+	\def\L{1.5}
+	
+	\draw[gray,line width=0.09cm,opacity=0.3] (-\l,0)coordinate(1) -- (0,0)coordinate(2);
+	\foreach \i in {1,2} {\fill[gray,opacity=0.3] (\i) circle(0.05);}
+	\draw (-\l,\L) -- ++(0,-\L) -- ++(\L,0) (-\L,\l) -- ++(\L,0) -- ++(0,-\L);
+	\node[above left] at (-\l,\l) {0}; \node[below left] at (-\l,0) {1}; \node[above right] at (0,\l) {0}; \node[below right] at (0,0) {1};
+\end{tikzpicture}\end{center}
+Entsprechend gilt f"ur die Tr"ager und Spuren
+\begin{center}$\supp \phi = \supp \psi =$
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0.25cm]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\l{0.5}
+	\def\L{0.75}
+	
+	\draw (-\l,\L) -- ++(0,-\L) -- ++(\L,0) (-\L,\l) -- ++(\L,0) -- ++(0,-\L);
+\end{tikzpicture}
+mit
+$\tr \phi = $
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0.25cm]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\l{0.5}
+	
+	\draw (-\l,\l) -- ++(0,-\l) -- ++(\l,0) (-\l,\l) -- ++(\l,0) -- ++(0,-\l);
+\end{tikzpicture}
+und
+$\tr \psi = $
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0.25cm]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\l{0.5}
+	
+	\draw (-\l,\l) -- ++(0,-\l) -- ++(\l,0);
+\end{tikzpicture}\end{center}
 
 \subsection*{\quot{Gest"ange} (Linkages)}
 Betrachte einen (stilisierten) Roboterarm mit zwei Gelenken, eines in $0 \in \R^2$ fixiert, und zwei Stangen fixer L"ange $l_1 > l_2$, die "uber das weitere Gelenk miteinander verbunden sind.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\marginnote{\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-4,-4)}{(5,4)}
+	\def\a{130}
+	\def\b{25}
+	\def\r{0.25}
+	\def\R{1}
+	\draw (-1.5,0) -- (1.5,0);
+	\fill[pattern=north east lines,opacity=0.5] (-1.5,0) rectangle (1.5,-0.25);
+	\draw (0,0)coordinate(0) --node[below]{$l_1$} (\a: 1.75)coordinate(1) --node[above]{$l_2$} ++(\b:1.5)coordinate(2);
+	\draw[dashed] (1) -- ++(0:1.5);
+	\draw (0:\r)node[above right]{$\theta_1$} arc[start angle=0,end angle=\a,radius=\r] ($(1)+(0:\R)$)node[above right]{$\theta_2$} arc[start angle=0,end angle=\b,radius=\R];
+	\foreach \x in {0,1,2} {\fill (\x) circle(0.05);}
+\end{tikzpicture}}
+
 Der \CmMark{Konfigurationsraum} $C$, das hei"st der Raum aller m"oglichen Positionen beider Stangen , wird durch ihre Winkel zur $x$-Achse parametrisiert, das hei"st $C = T^2 = \S^1 \X \S^1$.
 Sein \CmMark{Arbeitsbereich} $W$, das hei"st die Menge der Positionen des Endpunktes, ist ein Annulus mit "au"serem Radius $l_1 + l_2$ und innerem Radius $l_1 - l_2$.
 Das liefert die Parametrisierung
