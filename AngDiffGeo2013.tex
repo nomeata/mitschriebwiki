@@ -236,16 +236,19 @@
 
 
 %  geschwungene Buchstaben
-\DeclareMathOperator{\calB}{\mathcal{B}}
-\DeclareMathOperator{\calD}{\mathcal{D}}
-\DeclareMathOperator{\calE}{\mathcal{E}}
-\DeclareMathOperator{\calG}{\mathcal{G}}
-\DeclareMathOperator{\calI}{\mathcal{I}}
-\DeclareMathOperator{\calJ}{\mathcal{J}}
-\DeclareMathOperator{\calL}{\mathcal{L}}
-\DeclareMathOperator{\calT}{\mathcal{T}}
-\DeclareMathOperator{\calV}{\mathcal{V}}
+\DeclareMathOperator{\calA}{{\mathcal{A}}}
+\DeclareMathOperator{\calB}{{\mathcal{B}}}
+\DeclareMathOperator{\calC}{{\mathcal{C}}}
+\DeclareMathOperator{\calD}{{\mathcal{D}}}
+\DeclareMathOperator{\calE}{{\mathcal{E}}}
+\DeclareMathOperator{\calG}{{\mathcal{G}}}
+\DeclareMathOperator{\calI}{{\mathcal{I}}}
+\DeclareMathOperator{\calJ}{{\mathcal{J}}}
+\DeclareMathOperator{\calL}{{\mathcal{L}}}
+\DeclareMathOperator{\calT}{{\mathcal{T}}}
+\DeclareMathOperator{\calV}{{\mathcal{V}}}
 
+\newcommand{\A}{\calA}
 \newcommand{\E}{\calE}
 \newcommand{\G}{\calG}
 \newcommand{\V}{\calV}
@@ -359,6 +362,7 @@
 % Woerter in Kapitaelchenschrift
 \newcommand{\kapit}[1]{\textsc{#1}\xspace} % \textsc fueg keinen Abstand nach dem Wort ein, also baue ich einen neuen Befehl mit \xspace am Ende
 \newcommand{\Greedy}{\kapit{Greedy}}
+\newcommand{\LRS}{\kapit{LRS}}
 \newcommand{\Planes}{\kapit{Planes}}
 \newcommand{\Spheres}{\kapit{Spheres}}
 \newcommand{\RotSpheres}{\kapit{Rotating Spheres}}
@@ -3341,7 +3345,90 @@ $\leftrightsquigarrow$
 	\draw[->] ($(0,0)+(\a:\rr)$) arc[radius=\rr,start angle=\a,end angle=650];
 \end{tikzpicture}\end{center}
 Jede essentielle Ecke $v \in \calB$ in $\G$ hat $\deg(v) \ge 3$.
-F"ur jeden Erzeuger einer $\S^1$ in $K_n\G$ ben"otigt man \textcolor{red}{zwei Kanten} und eine essentielle Ecke von $\G$.
+F"ur jeden Erzeuger einer $\S^1$ in $K_n\G$ ben"otigt man zwei Teilchen und eine essentielle Ecke von $\G$.
+
+% Vorlesung vom 10. 6.
+
+\section{Verallgemeinerung: Lokal rekonfigurierbare R\"aume}
+
+Wir betrachten das folgende motivierende Beispiel von Chirikjiam aus den 1990er Jahren.
+In einem zweidimensionalen Modell liegen sechseckige Bausteine, angeheftet an Kanten und drehbar an Ecken.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Es sei $\G$ ein Graph und $\A$ eine Menge.
+Ein \CmMark{Zustand} ist eine \quot{F"arbung} von $\G$ durch $\A$, das hei"st $u: \V\G \to \A$.
+
+In dem obigen Beispiel ist $\G$ ein hexagonaler Graph und $\A = \{0, 1\}$.
+Ist eine Position $v \in \G$ durch ein Sechseck besetzt, so sei $u(v) = 1$, sonst $0$.
+Ein \CmMark{Erzeuger} $\phi$ besteht aus
+\begin{itemize}
+\item
+	einem Tr"ager $\supp \phi \subseteq \G$, einem Teilgraph von $\G$
+\item
+	seiner Spur $\tr \phi \subseteq \supp \phi$, einem Teilgraph von $\supp \phi$
+\item
+	einem Paar lokaler Zust"ande $u_i^\phi: \supp \phi \to \A$, $u_0^\phi|_{\supp \phi \setminus \tr \phi} = u_1^\phi|_{\supp \phi \setminus \tr \phi}$
+\end{itemize}
+Der Erzeuger gibt uns also Aufschluss "uber die Drehung
+\begin{center}\textcolor{red}{[BILD]}
+$\leftrightsquigarrow$
+\textcolor{red}{[BILD]}\end{center}
+Bei einer Drehung passiert ein Punkt mehrere Sechsecke, daher z"ahlen diese Sechsecke auch zum Träger
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Ein Erzeuger hei"st \CmMark[Erzeuger!zul\"assiger]{zul"assig} auf einem Zustand $u$, falls $u|_{\supp \phi} = u_0^\phi$ gilt.
+Dann sei
+\begin{align*}
+	\phi.u: \V\G \hookrightarrow \A && v \mapsto \begin{cases} u(v) & v \notin \supp \phi \\ u_1^\phi(v) & v \in \supp \phi	\end{cases}
+\end{align*}
+die \CmMark{Wirkung} von $\phi$ auf $u$.
+Ein \CmMark{lokal rekonfigurierbares System} (\LRS) sei eine Menge von Zust"anden und Erzeugern, welches abgeschlossen unter dieser Wirkung ist.
+Ein geeignetes geometrisches Modell von $C_n\G$ erhielt man aus den unabh"angigen Bewegungen von Punkten durch essentielle Ecken.
+
+Eine Familie von Erzeugern $\{\phi_i\}$ hei"st \CmMark[Erzeuger!kommumtativer]{kommutativ}, wenn $\tr \phi_i \cap \supp \phi_j = \emptyset$ f"ur alle $i \ne j$.
+Analog zu $C_n\G$ beziehungsweise $K_n\G$ erh"alt man so einen Kubenkomplex, ein geometrisches Modell f"ur den Zustandsraum des \LRS.
+
+Es seien $u$ und $w$ Zust"ande und $\phi_1, \ldots, \phi_k$ zul"assige kommutativ Erzeuger.
+Die Paare  $(u, \{\phi_i\})$ und $(w, \{\phi_i\})$ hei"sen \CmMark{\"aquivalent}, wenn $u|_{\V\G \setminus \bigcup_i \supp \phi_i} = w|_{\V\G \setminus \bigcup_i \supp \phi_i}$ gilt.
+
+Der \CmMark{Zusatandskomplex} eines \LRS besteht aus den "Aquivalenzklassen von Zust"anden $u$ und Erzeugern $\phi_1, \ldots, \phi_k$, seinen $k$-Kuben $[u, \{\phi_i\}]$, mit den Randabbildungen $\partial_j^-[u, \{\phi_i\}] = [u, \{\phi_i\}_{i\ne j}]$ beziehungsweise $\partial_j^+[u, \{\phi_i\}] = [\phi.u, \{\phi_i\}_{i\ne j}]$. (im Allgemeinen nicht lokal endlich)
+
+\begin{satz}[Ghrist '07?]
+Ein lokal endlicher Zustandskomplex eines \LRS ist nicht-positiv gekr"ummt.
+\end{satz}
+
+Als Konsequenz ergibt sich daraus, dass $\calC$ ein Eilenberg-McLane-Raum ist, das hei"st $\pi_k(\calC) = 0$ f"ur $k \ge 2$.
+
+\begin{itemize}
+\item
+	Jede Homotopieklasse von Wegen besitzt genau einen geod"atischen Repr"asentanten.
+\item
+	Die Fundamentalgruppe ist torsionsfrei.
+\item
+	$\pi(\calC) \hookrightarrow \G_{\calC} = <\phi_i \mid \phi_i^2 = \id, [\phi_i, \phi_j]>$, rechtwinklige Artin-Gruppe
+\end{itemize}
+
+Ein weiteres Beispiel f"ur ein \LRS ist ein diskretes Modell f"ur $C_n\G$, hom"oomorph zu $K_n\G$ (nach eventueller Unterteilung von $\G$).
+Wir schauen uns nun ein konkretes Beispiel an.
+
+\subsection*{\quot{Diskreter} Roboterarm}
+Um die Bewegungen der Gelenke diskret zu machen legen wir ein Gitter und lassen Bewegungen von entweder $90°$ oder $180°$ zu.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+F"ur Erzeuger, Tr"ager und Spur erh"alt man dann
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+
+\subsection*{\quot{Gest"ange} (Linkages)}
+Betrachte einen (stilisierten) Roboterarm mit zwei Gelenken, eines in $0 \in \R^2$ fixiert, und zwei Stangen fixer L"ange $l_1 > l_2$, die "uber das weitere Gelenk miteinander verbunden sind.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Der \CmMark{Konfigurationsraum} $C$, das hei"st der Raum aller m"oglichen Positionen beider Stangen , wird durch ihre Winkel zur $x$-Achse parametrisiert, das hei"st $C = T^2 = \S^1 \X \S^1$.
+Sein \CmMark{Arbeitsbereich} $W$, das hei"st die Menge der Positionen des Endpunktes, ist ein Annulus mit "au"serem Radius $l_1 + l_2$ und innerem Radius $l_1 - l_2$.
+Das liefert die Parametrisierung
+\begin{align*}
+	\alpha: C = T^2 \to W && (\theta_1, \theta_2) \mapsto l_1 \cdot \theta_1 + l_2 \cdot \theta_2
+\end{align*}
+
+\begin{lemma}
+Es bezeichne $\Delta$ die Diagonale in $T^2$ und $\Delta^* = \{(\theta, -\theta) \mid \theta \in \S^1\}$.
+Das Komplement $T^2 \setminus \Delta \cup \Delta^*$ besitzt zwei Komponenten, deren jede von $\alpha$ diffeomorph auf $W$ abgebildet wird.
+\end{lemma}
 
 
 
