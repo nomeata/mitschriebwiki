@@ -1,4 +1,3 @@
-% !TEX TS-program = pdflatexmk
 % das oben sorgt dafuer dass die pdflatexmk Engine fuer das Setzten verwendet wird (bei Verwendung des Editors TeXShop)
 
 %%
@@ -16,7 +15,7 @@
 \usepackage{latexki}
 \lecturer{Dr. Sebastian Grensing}
 \semester{Sommersemester 13}
-\scriptstate{current}
+\scriptstate{work-in-progress}
 
 % Abstand zwischen zwei Textbloecken
 \setlength\parskip{\smallskipamount}
@@ -3358,7 +3357,7 @@ F"ur jeden Erzeuger einer $\S^1$ in $K_n\G$ ben"otigt man zwei Teilchen und eine
 
 Wir betrachten das folgende motivierende Beispiel von Chirikjiam aus den 1990er Jahren.
 In einem zweidimensionalen Modell liegen sechseckige Bausteine, angeheftet an Kanten und drehbar an Ecken.
-\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+\begin{center}\begin{tikzpicture}
 	%\tikzgitter{(-5,-4)}{(5,4)}
 	\def\R{1} % Radius des grossen Hexagons
 	\def\r{\R / 1.73205050808} % Radius der kleinen Hexagone
@@ -3366,7 +3365,7 @@ In einem zweidimensionalen Modell liegen sechseckige Bausteine, angeheftet an Ka
 	% Eckpunkte und kanten des grossen Hexagons
 	\coordinate (0) at (0,0); \coordinate (1) at (0:\R); \coordinate (2) at (60:\R); \coordinate (3) at (120:\R); \coordinate (4) at (180:\R); \coordinate (5) at (240:\R); \coordinate (6) at (300:\R); \coordinate (7) at (1);
 	\foreach \i / \j in {1/2,2/3,3/4,4/5,5/6,6/1} {
-		\draw[opacity=0.5] (0) -- (\i) (\i) -- (\j);
+		\draw[gray,opacity=0.5] (0) -- (\i) (\i) -- (\j);
 	}
 	
 	\coordinate (p) at (3); % Zentrum des kleinen Hexagons und dessen Eckpunte
@@ -3380,13 +3379,14 @@ In einem zweidimensionalen Modell liegen sechseckige Bausteine, angeheftet an Ka
 	\coordinate (p) at (0);
 	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
 	\draw (1') -- (2') -- (3') (4') -- (5') -- (6') -- (1');
+	\coordinate (rot) at (4');
 	
 	\coordinate (p) at (5);
 	\foreach \i / \j	in {1/30,2/90,3/150,4/210,5/270,6/330} {\coordinate (\i') at ($(p)+(\j:\r)$);}
 	\draw[dashed] (3') -- (4') -- (5') -- (6') -- (1');
 	
-	\path (0) --coordinate[pos=0.2](a) coordinate[pos=0.8](b) (5);
-	\draw[->] (a) to[relative,out=25,in=155] (b);
+	\def\a{10} % Winkel um den Start- und Endpunkt verschoben sind.
+	\draw[->] ($(rot)+(30-\a:\r)$) arc[radius=\r,start angle=30-\a,end angle=-90+\a];
 	
 	\foreach \i in {0,1,...,6} {\fill (\i) circle(0.05);}
 \end{tikzpicture}\end{center}
@@ -3507,7 +3507,7 @@ Eine Familie von Erzeugern $\{\phi_i\}$ hei"st \CmMark[Erzeuger!kommumtativer]{k
 Analog zu $C_n\G$ beziehungsweise $K_n\G$ erh"alt man so einen Kubenkomplex, ein geometrisches Modell f"ur den Zustandsraum des \LRS.
 
 Es seien $u$ und $w$ Zust"ande und $\phi_1, \ldots, \phi_k$ zul"assige kommutativ Erzeuger.
-Die Paare  $(u, \{\phi_i\})$ und $(w, \{\phi_i\})$ hei"sen \CmMark{\"aquivalent}, wenn $u|_{\V\G \setminus \bigcup_i \supp \phi_i} = w|_{\V\G \setminus \bigcup_i \supp \phi_i}$ gilt.
+Die Paare  $(u, \{\phi_i\})$ und $(w, \{\phi_i\})$ hei"sen \CmMark[lokal rekonfigurierbares System!\"aquivalentes]{\"aquivalent}, wenn $u|_{\V\G \setminus \bigcup_i \supp \phi_i} = w|_{\V\G \setminus \bigcup_i \supp \phi_i}$ gilt.
 
 Der \CmMark{Zusatandskomplex} eines \LRS besteht aus den "Aquivalenzklassen von Zust"anden $u$ und Erzeugern $\phi_1, \ldots, \phi_k$, seinen $k$-Kuben $[u, \{\phi_i\}]$, mit den Randabbildungen $\partial_j^-[u, \{\phi_i\}] = [u, \{\phi_i\}_{i\ne j}]$ beziehungsweise $\partial_j^+[u, \{\phi_i\}] = [\phi.u, \{\phi_i\}_{i\ne j}]$. (im Allgemeinen nicht lokal endlich)
 
@@ -3673,7 +3673,7 @@ Das Komplement $T^2 \setminus \Delta \cup \Delta^*$ besitzt zwei Komponenten, de
 	\def\R{0.9}
 	\draw (-1.25,0) -- (2.5,0);
 	\fill[pattern=north east lines,opacity=0.5] (-1.25,0) rectangle (2.5,-0.25);
-	\draw (0,0)coordinate(0) --node[below]{$l_1$} (\a: 1.75)coordinate(1) --node[above]{$l_2$} ++(\b:1.5)coordinate(2) --node[above right]{$l_3$} ++(\c:1)coordinate(3) --node[above]{$l_4$} ++(\d:1.25)coordinate(4);
+	\draw (0,0)coordinate(0) --node[below]{$l_1$} (\a: 1.75)coordinate(1) --node[above]{$l_2$} ++(\b:1.5)coordinate(2) --node[above right]{$l_3$} ++(\c:0.75)coordinate(3) --node[above]{$l_4$} ++(\d:1.25)coordinate(4);
 	\draw[dashed] (1) -- +(0:1.25) (3) -- +(0:1.25);
 	\draw (0:\r) arc[start angle=0,end angle=\a,radius=\r] ($(1)+(0:\R)$) arc[start angle=0,end angle=\b,radius=\R] ($(3)+(0:\r)$) arc[radius=\r,start angle=0,end angle=\c-180] ($(3)+(0:\R)$) arc[radius=\R,start angle=0,end angle=\d];
 	\draw[decoration={brace,mirror},decorate] ([xshift=0.1cm,yshift=-0.05cm]0) --node[below right]{$\| \sum\limits_{i \le n} l_i \theta_i \|$} ([xshift=0.1cm,yshift=-0.05cm]4);
@@ -3800,7 +3800,7 @@ Insbesondere gilt $p_{\calJ} = p_{\calJ^c}$ f"ur ausgewogenes $\calJ$.
 
 \begin{lemma}
 Die kritischen Punkte von $f_l: W \setminus M_l \to \R$ sind genau die Konfigurationen $p_{\calJ}$ f"ur lange Teilmengen $\calJ$.
-Jder solche Punkt ist nicht-entartet und hat den Morse-Index $n - |\calJ|$.
+Jeder solche Punkt ist nicht-entartet und hat den Morse-Index $n - |\calJ|$.
 \end{lemma}
 
 
