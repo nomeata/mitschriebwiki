@@ -280,6 +280,7 @@
 \DeclareMathOperator{\ric}{ric} % Ricci Tensor
 \DeclareMathOperator{\scal}{scal} % Skalarkruemmung
 \DeclareMathOperator{\sgn}{sgn} % Signum
+\DeclareMathOperator{\sign}{sign} % Signum
 \DeclareMathOperator{\sn}{sn} % allgemeiner Sinus
 \DeclareMathOperator{\spur}{spur} % Spur
 \DeclareMathOperator{\supp}{supp} % support
@@ -2885,7 +2886,7 @@ d_e^0 = \begin{cases} 1 & n_e^C = 0 \\ \min\{ |v_e - x| \mid x \in C \cap e \set
 \end{align*}
 und die mittlere Segmentl"ange $\frac{1}{n_e^C+1}$. Setzte weiterhin
 \begin{align*}
-	t_e^C = \begin{cases}1 & \text{falls } v_e \text{ frei oder } v_e \in C \\ \min\{1, \frac{\delta_e^C}{\min\{ \delta_e^C \mid e' \ne e \wedge v_{e'} = v_e\}} & \text{sonst}\end{cases}
+	t_e^C = \begin{cases}1 & \text{falls } v_e \text{ frei oder } v_e \in C \\ \min\{1, \frac{\delta_e^C}{\min\{ \delta_e^C \mid e' \ne e \wedge v_{e'} = v_e\}} \} & \text{sonst}\end{cases}
 \end{align*}
 Definiere
 \begin{align*}
@@ -3802,6 +3803,173 @@ Insbesondere gilt $p_{\calJ} = p_{\calJ^c}$ f"ur ausgewogenes $\calJ$.
 Die kritischen Punkte von $f_l: W \setminus M_l \to \R$ sind genau die Konfigurationen $p_{\calJ}$ f"ur lange Teilmengen $\calJ$.
 Jeder solche Punkt ist nicht-entartet und hat den Morse-Index $n - |\calJ|$.
 \end{lemma}
+
+% Vorlesung vom 19. 4.
+
+Bevor wir mit dem eigentliche Beweis beginnen erinnern wir uns noch zun"achst an die Vorlesung vom letzten Semester.
+Die \CmMark{Hessesche} ist gegeben durch $H_f = \nabla^2 f$ f"ur ein $f \in C^\infty(M)$ und es gilt \textcolor{red}{(ACHTUNG, stimmt nicht mit Kapitel 9.1 der alten VL "uberein!)}
+\begin{align*}
+	H_f(X, Y) &= X(\dop f(Y)) - \dop f(\nabla_X f) = X(Y(f)) - (\nabla_Xf)(f) \\
+	&= [X, Y](f) + Y(Xf) - \underbrace{(\nabla_X Y - \nabla_YX)}_{= [X, Y]f}f - \nabla_Y X f \\
+	&= Y(X f) - \nabla_Y X f = H_f(Y, X)
+\end{align*}
+$H_f$ ist im Allgemeinen nicht $C^\infty$-linear, aber in kritischen Punkten von $f$:
+Sei $X_p \in \T_pM$, setze fort zu Vektorfeldern $X$ und $\tilde X$ auf $M$.
+Dann gilt
+\begin{align*}
+	H_f(\tilde X, Y)|_p = \tilde X_p(Y f) - (\nabla_{\tilde X_p} Y) f = X_p(Y f) - \underbrace{\dop f|_p}_{= 0} (\nabla_{\tilde X_p} Y) = X_p(Y f).
+\end{align*}
+In kritischen Punkten ist $H_f$ $C^\infty$-linear und h"angt nicht von der Wahl  des Zusammenhangs ab.
+In lokalen Koordinaten sei dann $X_p = \sum_{i \le n} \zeta^{i} \difffrac{}{x^{i}}$, $Y_p = \sum_{i \le n} \eta^{i} \difffrac{}{x^{i}}$, und $\zeta^{i}, \eta^{i}$ konstant.
+Dann folgt
+\begin{align*}
+	H_f(X_p, Y_p) &= X_p(Y f) = X_p \Big( \sum_{i \le n} \eta^{i} \pdifffrac{}{x^{i}} \Big) \\
+	&= \sum_{j \le n} \zeta^{i} \big( \underbrace{\pdifffrac{\eta^{i}}{x^{i}}}_{= 0} \pdifffrac{f}{x^{i}} + \eta^{i} \pdifffrac{^2 f}{x^{i} \partial x^{j}} \big) = \sum_{i, j \le n} \eta^{i} \zeta^j \pdifffrac{^2 f}{x^{i} \partial x^j}
+\end{align*}
+
+F"ur den beweis des Lemmas setzen wir $l = (l_1, \ldots, l_n)$ und $f_l: W \setminus M_l \to \R$ mit $[u_1, \ldots, u_n] \mapsto \| -\sum l_i u_i \|^2$.
+\marginnote{\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\a{130}
+	\def\b{40}
+	\def\c{290}
+	\def\d{20}
+	\def\r{0.25}
+	\def\R{0.9}
+	\draw (-1.25,0) -- (1.25,0);
+	\fill[pattern=north east lines,opacity=0.5] (-1.25,0) rectangle (1.25,-0.25);
+	\draw (0,0)coordinate(0) --node[below]{$l_1$} (\a: 1.75)coordinate(1) --node[above]{$l_2$} ++(\b:1.5)coordinate(2) --node[above right]{$l_3$} ++(\c:0.75)coordinate(3) --node[above]{$l_4$} ++(\d:1.25)coordinate(4);
+	\foreach \x in {0,1,2,3,4} {\fill (\x) circle(0.05);}
+\end{tikzpicture}}
+Die kritischen Punkte von $f_l$ sind genau die (kollinearen) Konfigurationen $p_{\calI}$ f"ur lange Teilmengen $\calI \subseteq \{1, \ldots, n\}$
+($\sum_{i \in \calI} l_i > \sum _{j \notin \calI} l_j$ und $p_{\calI} = (u_1, \ldots, u_2 \theta_i + 2 \sum_{i n}$ mit $u_i = 1$ f"ur $i \in \calI$, $u_i = -1$ sonst).
+Jeder solche kritische Punkt $p_{\calI}$ ist nicht ausgeartet und hat den morse-Index $n - |\calI|$.
+
+\begin{bew}[vom Lemma]
+Wir betrachten die Abbildung
+\begin{align*}
+	f_l: T^n \twoheadrightarrow W \xrightarrow{f_l} \R && (u_1, \ldots, u_n) \mapsto -\| \sum l_i u_i \|^2
+\end{align*}
+und setzen $u_i = e^{i \theta_i} = ( \cos \theta_i, \sin \theta_i)$.
+Dann gilt
+\begin{align*}
+	f_l(u) ={}& - (\sum l_i \cos \theta_i)^2 - (\sum l_i \sin \theta_i)^2 \\
+	={}& -(\sum_{i \le n} l_i^2 \cos^2 \theta_i + 2 \sum_{i \ < j} l_i l_j \cos \theta_i \cos \theta_j) \\
+	& - (\sum_{i \le n} l_i^2 \sin^2 \theta_i + 2 \sum_{i < j} l_i l_j \sin \theta_i \sin \theta_j) \\
+	={}& -(\sum l_i^2 (\cos^2 \theta_i + \sin^2 \theta_i)) - 2 \sum_{i < j} l_i l_j (\underbrace{\cos \theta_i \cos \theta_j + \sin \theta_i \sin \theta_j}_{= \cos (\theta_i - \theta_j)})
+\end{align*}
+Wie steht es nun um die kritischen Punkte? Es gilt
+\begin{align*}
+	\pdifffrac{f_l}{\theta_k} = -2 l_k \sum_{i \le n} l_i \sin (\theta_i - \theta_k) = -2 l_k \sum_{i \le n} l_i (\sin \theta_i \cos \theta_k - \cos \theta_i \sin \theta_k) = 0
+\end{align*}
+genau dann, wenn
+\begin{align*}
+	\cos \theta_k \underbrace{\sum_{i \le n} l_i \sin \theta_i}_{=: y(u)} = \sin \theta_k \underbrace{\sum_{i \le n} l_i \cos \theta_i}_{=: x(u)}
+\end{align*}
+\begin{description}
+\item[1. Fall:]
+	$x(u) = y(u) = 0 \Leftrightarrow -x^2(u) - y^2(u) = f_l(u) = 0 \Leftrightarrow u \in M_l$
+\item[2. Fall:]
+	$\tan \theta_k \equiv \frac{y(u)}{x(u)} \forall k \le n \Leftrightarrow \theta_i \in \{ \theta_1, \theta_1 + \pi, \theta_1 - \pi \} \Leftrightarrow u_i = \pm u_j \forall i, j \Leftrightarrow u$ ist kollineare Konfiguration
+\end{description}
+Es sei $\calI \subseteq \{1, \ldots, n\}$ eine lange Teilmenge, $p_{\calI} = (u_1, \ldots, u_n)$ mit $u_i = 1$ f"ur $i \in \calI$ und $u_i = -1$ f"ur $i \notin \calI$.
+Dann ist $\calL_{\calI} = \sum_{i \le n} l_i u_i > 0$ und es gilt $f_l(p_{\calI}) = - \calL_{\calI}^2$.
+Die Hessesche von $f_l$ im Punkt $p_{\calI}$ ist
+\begin{align*}
+	\pdifffrac{^2 f_l}{\theta_i \partial \theta_j} = \begin{cases}
+		-2 l_i l_j \cos (\theta_j - \theta_i) & \text{falls } i \ne j \\
+		2 l_i \sum_{ k \ne i} l_k \smash{\underbrace{\cos (\theta_i - \theta_k)}_{= u_i u_k}} & \text{falls } i = k
+	\end{cases}.
+\end{align*}
+Es gilt
+\begin{align*}
+	l_i \sum_{k \ne i} l_k u_i u_k = l_i u_i \sum_{k \ne i} l_k u_k = l_i u_i (\calL_{\calI} - l_i u_i) = l_i^2 \left(\frac{l_i \calL_i}{l_i} - 1 \right) && \text{und} && d_i = \frac{u_i \calL_{\calI}}{l_i},
+\end{align*}
+also folgt
+\begin{align*}
+	\frac{1}{2} \pdifffrac{^2 f_l}{\theta_i \partial \theta_j} = \begin{cases}
+		-l_i l_j u_i u_j = (l_i u_i) (l_j u_j) (-1) \\
+		l^2 (d_i - 1) = (l_i u_i) (l_i u_i) (d_i - 1)
+	\end{cases}.
+\end{align*}
+Wir setzen nun f"ur drei Matrizen
+\begin{align*}
+D = \begin{pmatrix}
+	d_1 & \ldots & 0 \\
+	\vdots & \ddots & \vdots \\
+	0 & \ldots & d_n
+\end{pmatrix}
+&&
+A = \begin{pmatrix}
+	1 & \ldots & 1 \\
+	\vdots & \ddots & \vdots \\
+	1 & \ldots & 1
+\end{pmatrix}
+&&
+B = \begin{pmatrix}
+	l_1 u_1 & \ldots & 0 \\
+	\vdots & \ddots & \vdots \\
+	0 & \ldots & l_n u_n
+\end{pmatrix}
+\end{align*}
+und schreiben dann
+\begin{align*}
+	\frac{1}{2} H_f(p_{\calI}) = B^T (D - A) B.
+\end{align*}
+Es gen"ugt zu zeigen, dass $D - A$ auf $\T_{[p_{\calI}]}W$ nicht ausgeartet mit Signatur $n - |\calI|$ ist:
+\begin{align*}
+	\det (D - A) = \prod_{i \le n} d_i (1 - \sum_{j \le n} \frac{1}{d_j})
+\end{align*}
+Ohne Einschr"ankung sei  $\calI = \{k, k +1, \ldots, n\}$.
+Dann gilt $u_i = 1$ und $d_i < 0$ f"ur $i < k$, dann gilt f"ur die Hauptminoren von Ordnung $l < k$
+\begin{align*}
+	\det (D - A)_{ll} = \prod_{i \le n} \underbrace{d_i \Big(\underbrace{1 - \sum_{j \le l} \frac{1}{d_j}}_{> 0}\Big)}_{< 0}.
+\end{align*}
+F"ur $l \ge k$ gilt
+\begin{align*}
+	1 - \sum_{j \le l} \frac{1}{d_j} &= 1 - \sum_{j \le l} \frac{l_{\calI}}{u_j \calL_{\calI}} = \calL_{\calI}^{-1} \Big( \calL_{\calI} - \sum_{j \le l} l_j u_j\Big) = \calL_{\calI}^{-1} \Big(\sum_{i \le n} l_i u_i - \sum_{j \le l}  l_j u_j\Big) \\
+	&= \calL_{\calI}^{-1} \Big(\underbrace{\sum_{i > l} l_i u_i}_{\ge 0}\Big)
+	\begin{cases}
+		> 0 & \text{f"ur } k \le l < n \\
+		= 0 & \text{f"ur } l = n
+	\end{cases}
+\end{align*}
+Es gilt
+\begin{align*}
+	\sign (\det (D -A)_{ll}) =
+	\begin{cases}
+		(-1)^l & \text{f"ur } l < k \\
+		(-1)^{k-1} & \text{f"ur } k \le l < k
+	\end{cases}
+\end{align*}
+und $D - A$ hat $n - |\calI|$ negative Eigenwert, $n - k = |\calI| - 1$ positive Eigenwerte und genau einen Eigenwert $0$.
+Da $f_l$ invariant unter der $\SO(2)$-Wirkung ist, gilt in $p_{\calI}$ in Richtung der Faser $H_{f_l}(p_{\calI}, p_{\calI}) = \difffrac{^2}{\lambda^2} f_l (\lambda p_{\calI}) = 0$.
+Damit ist $H_{f_l}$ auf $W$ in $[p_{\calI}]$ nicht ausgeartet und hat Signatur $n - |\calI|$.
+\end{bew}
+
+\begin{satz}
+Ist $l = (l_1, \ldots, l_n)$ \CmMark{generisch}, das heißt gilt $\sum_{i \le n} l_i u_i \ne 0$ f"ur alle $u_i \in \{1, -1\}$, so ist $M_l$ eine kompakte orientierbare $(n - 3)$-Mannigfaltigkeit ohne Rand.
+\end{satz}
+
+\begin{bew}
+Seien $l' = (l_1, \ldots, l_{n-1})$ und $f_{l'}^{-1} = (-l_n^2) = M_l$.
+Betrachte den \quot{Roboterarm} mit $(n-1)$ Segmenten und $f_{l'}: W = T^{n-2} \to \R$.
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\a{160}
+	
+	\draw (\a:1) -- +(\a+180:2);
+	\fill[pattern=north east lines,opacity=0.5] (\a:1) -- ++(\a+180:2) -- ++(\a+90:0.25) -- ++(\a:2) -- cycle;
+	
+	\draw (0,0) --node[left]{$l_1$} ++(110:1) --node[above]{$l_2$} ++(15:1.5) -- ++(250:0.75) -- ++(5:1) -- ++(260:0.5)coordinate(a);
+	\draw[dashed] (0,0) --node[below,pos=0.7]{$l_n$} (a);
+	\fill (a) circle(0.05);
+\end{tikzpicture}\end{center}
+Nach dem obigen Lemma hat $f_{l'}$ genau einen kritischen Wert $-a^2 \ne 0$, wenn eine kollineare Konfiguration $(u_1, \ldots, u_{n-1})$ existiert mit $u_i \in \{1, -1\}$, so dass $-a^2 = \| \sum _{i \le n} l_i u_i \|^2 = f_{l'}(u) \Leftrightarrow \pm a + \sum l_i u_i = 0 \Leftrightarrow (l_1, \ldots, l_{n-1}, a)$ ist nicht generisch.
+
+Das hei"st $-l_n^2$ ist ein regul"arer Wert von $f_{l'}$ und damit ist $f_{l'}^{-1} (-l_n^2) = M_l$ eine kompakte orientierbare Mannigfaltigkeit in $W \cong T^{n-2}$ der Kodimension 1.
+\end{bew}
+
 
 
 
