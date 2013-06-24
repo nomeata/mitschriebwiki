@@ -53,6 +53,7 @@
 \usepackage[normalem]{ulem} % unterstreichen von Text
 \usepackage{cancel} % schraeg durchstreichen von Text
 \usepackage{units} % schoenere Schreibweise fuer Einheiten mit Bruechen, laedt auch das nicefrac Paket
+\usepackage{arydshln} % gestrichelte Linien in Arrays
 
 \renewcommand{\CancelColor}{\color{gray}} % Farbe zum schraegen Druchstreichen in grau
 
@@ -265,6 +266,7 @@
 \DeclareMathOperator{\eukl}{eukl} % euklidisch
 \DeclareMathOperator{\ggT}{ggT} % goesster gemeinsamer Teiler
 \DeclareMathOperator{\id}{id} % identity
+\DeclareMathOperator{\ind}{ind} % Index
 \DeclareMathOperator{\inh}{inh} % Inhalt
 \DeclareMathOperator{\grad}{grad} % Gradient
 \DeclareMathOperator{\kgV}{kgV} % kleinstes gemeinsames Vielfaches
@@ -3804,7 +3806,7 @@ Die kritischen Punkte von $f_l: W \setminus M_l \to \R$ sind genau die Konfigura
 Jeder solche Punkt ist nicht-entartet und hat den Morse-Index $n - |\calJ|$.
 \end{lemma}
 
-% Vorlesung vom 19. 4.
+% Vorlesung vom 19. 6.
 
 Bevor wir mit dem eigentliche Beweis beginnen erinnern wir uns noch zun"achst an die Vorlesung vom letzten Semester.
 Die \CmMark{Hessesche} ist gegeben durch $H_f = \nabla^2 f$ f"ur ein $f \in C^\infty(M)$ und es gilt \textcolor{red}{(ACHTUNG, stimmt nicht mit Kapitel 9.1 der alten VL "uberein!)}
@@ -3970,13 +3972,86 @@ Nach dem obigen Lemma hat $f_{l'}$ genau einen kritischen Wert $-a^2 \ne 0$, wen
 Das hei"st $-l_n^2$ ist ein regul"arer Wert von $f_{l'}$ und damit ist $f_{l'}^{-1} (-l_n^2) = M_l$ eine kompakte orientierbare Mannigfaltigkeit in $W \cong T^{n-2}$ der Kodimension 1.
 \end{bew}
 
+% Vorlesung vom 24. 6.
+
+Was ist mit nicht-generischen L"angenvektoren?
+Betrachte die Urbilder von kritischen Punkten.
+
+\begin{lemma}[Morse-Lemma]
+Es sei $p$ ein nicht-entarteter kritischer Punkt von Index $k$ einer glatten Funktion $f$ auf einer Mannigfaltigkeit $M$.
+Dann existieren lokale Koordinaten $x = (x^1, \ldots, x^n)$ von $M$ um $p$ mit
+\begin{align*}
+	f = f(p) - (x^1)^2 - \ldots - (x^k)^2 + (x^{k+1})^2 + \ldots + (x^n)^2
+\end{align*}
+\end{lemma}
+
+\begin{bewSkiz}
+F"ur $f(p) = 0$ schreibe
+\begin{align*}
+	f(x) &= \int_0^1 \difffrac{(f(t x^1, \ldots, t x^n))}{t} \dop t = \sum_{i \le n} x^{i} \underbrace{\int_0^1 \pdifffrac{f}{x^{i}} (t x) \dop t}_{=: g_i(x)} \\
+	g_i(0) &= \pdifffrac{f}{x^{i}}(0) = 0
+	\shortintertext{wobei analog zu $f$ f"ur ensprechends $\tilde{g}_{ij}$}
+	g_i(x) &= \sum_{j \le n} x^j \tilde{g}_{ij}(x) \\
+	f(x) &= \sum_{i,j} x^{i} x^j \left( \frac{\tilde{g}_{ij} + \tilde{g}_{ji}}{2} \right) = \sum x^{i} x^j h_{ij}
+	\shortintertext{und dementsprechend}
+	H_f(0) = (h_{ij})_{ij}.
+\end{align*}
+\quot{Verbiege} nun die Koordinaten so, dass gilt
+\begin{align*}
+	(h_{ij}) = \left( \begin{array}{cccccc}
+		-1 & & & & & \\
+		 & \ddots & & & \sigma & \\
+		 & & -1 & & & \\
+		 \hdashline[1pt/1pt]
+		 & & & +1 & & \\
+		 & \sigma & & & \ddots & \\
+		 & & & & & +1
+	\end{array}\right)
+\end{align*}
+Lokal hat $f$ um $p$ entlang $k$ Kurven in linear unabh"angige Richtungen Maxima und entsprechend $n-k$ Minima.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Au"serdem
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Allgemein gilt $f(q) = c - (x^1)^2 - \ldots + (x^{k+1})^2 + \ldots + (x^n)^2 = c - \sum_{i \le k} (x^{i})^2 + \sum_{i > k} (x^{i})^2$, und mit $ x= (x^1, \ldots, x^k)$ und $y = (y^1, \ldots, y^{n-k}) = (x^{k+1}, \ldots, x^n)$ schreibe $ f(q) = c - \|x\|^2 + \|y\|^2$.
+Es gilt genau dann $f(q) = c$, wenn $\|x\| = \|y\|$.
+
+Dies ist genau dann der Fall, wenn entweder $x(q) = y(q) = 0$ gilt, oder $\zeta \in \S^{k-1}$, $\eta \in \S^{n-k-1}$ und $r \in \R_{> 0}$ existieren, mit $x(q) = r \zeta$ und $y(q) = r \eta$.
+Es existiert also eine Umgebung  $U$ von $p$, so dass
+\begin{align*}
+	f^-(c) \cap U \cong C(\S^{k-1} \X \S^{n-k-1}) = \FakRaum{\S^{k-1} \X \S^{n-k-1} \X [0,1]}{\S^{k-1} \X \S^{n-k-1} \X \{0\}}
+\end{align*}
+und
+\begin{align*}
+	\overline{x}(t \zeta^1, \ldots, t \zeta^k, t \eta^1, \ldots, t \eta^{n-k}) \mapsfrom [\zeta, \eta, t]
+\end{align*}
+\end{bewSkiz}
+
+Eine weitere Folgerung des Morse-Lemmas ist, dass nicht-entartete kritische Punkte stets isoliert sind.
+Eine Teilmenge $\calJ \subset \{1, \ldots, n\}$ ist genau dann \CmMark[ausgewogene Teilmenge]{ausgewogen} bez"uglich eines L"angenvektors $(l_1, \ldots, l_n)$, das hei"st $\sum_{i \in \calJ} l_i = \sum_{i \notin \calJ} l_i$, wenn entweder $\calI = \calJ$ oder sein Komplement $\calI = \calJ^c$ eine lange Teilmenge in $\{1, \ldots, n-1\}$ bez"uglich $l' = (l_1, \ldots, l_{n-1})$ ist und $f_{l'} = (p_{\calJ}) = -l_n^2$.
+
+In einer Umgebung eines kritischen Punktes ist $f_{l'}^-(-l_n^2)$ hom"oomorph zu einem Kegel "uber dem Produkt der Sp"aren der Dimensionen
+\begin{align*}
+	&& \ind(p_{\calI}) - 1 = (n-1) - |\calJ| - 1 &= n - |\calJ| - 2
+	\shortintertext{und}
+	&& (n -1) - \ind (p_{\calJ}) - 1 &= |\calJ| - 2.
+\end{align*}
+Damit gilt der folgende Satz:
+
+\begin{satz}
+Ist $l = (l_1, \ldots, l_n)$ ein nicht-generischer L"angenvektor, so ist $M_l$ kompakt und bis auf endlich viele Punkte eine $(n-3)$-Mannigfaltigkeit.
+Eine Umgebung jeder dieser unendlich vielen Singularit"aten ist hom"oomorph zu
+\begin{align*}
+	C(\S^{n - |\calJ| - 2} \X \S^{|\calJ| - 2}),
+\end{align*}
+wobei $\calJ$ eine bez"uglich $l$ ausgeartete Teilmenge ist.
+\end{satz}
 
 
 
 
 %========================================================================================================================
 %	A N H A N G
-%========================================================================================================================
+%====================================================================================================================^1==
 
 \appendix
 
