@@ -1,5 +1,3 @@
-% das oben sorgt dafuer dass die pdflatexmk Engine fuer das Setzten verwendet wird (bei Verwendung des Editors TeXShop)
-
 %%
 %% Skript Angewandte Differentialgeometrie im Sommersemester 2013
 %% Zur Vorlesung von Dr. Grensing am KIT in Karlsruhe
@@ -47,23 +45,28 @@
 \usepackage{marginnote} % Randnotizen
 \usepackage{enumitem} % Fuer mehr Einstellungmoeglichkeiten bei Aufzaehlungen
 \usepackage{xifthen} % Erlaubt die Verwendung von if-then-else Befehlen im Code
+\usepackage{xspace} % intelligente Leerzeichen bei Macros
+\usepackage{units} % schoenere Schreibweise fuer Einheiten mit Bruechen, laedt auch das nicefrac Paket
+
+% Mathe Pakete
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{wasysym} % noch mehr symbole
+\usepackage{stmaryrd}
+\usepackage{bm} % fette Mathe Zeichen
+\usepackage{mathtools} % zusaetzliche Mathe Befehle (zusaetzlich zu AMS Math)
+\usepackage[hyperref,amsmath,thmmarks,thref]{ntheorem} % Mathe Theoreme
+
 \usepackage{index} % Index erzeugen
 \newindex{default}{idx}{ind}{Stichwortverzeichnis}
-\usepackage{xspace} % intelligende Leerzeichen bei Macros
-\usepackage[normalem]{ulem} % unterstreichen von Text
-\usepackage{cancel} % schraeg durchstreichen von Text
-\usepackage{units} % schoenere Schreibweise fuer Einheiten mit Bruechen, laedt auch das nicefrac Paket
-\usepackage{arydshln} % gestrichelte Linien in Arrays
 
-\renewcommand{\CancelColor}{\color{gray}} % Farbe zum schraegen Druchstreichen in grau
+\usepackage[toc]{glossaries} % Symbolverzeichnis
+\glossarystyle{treehypergroup}
+\makeglossaries
 
 \definecolor{rltred}{rgb}{0.75,0,0}
 \definecolor{rltgreen}{rgb}{0,0.5,0}
 \definecolor{rltblue}{rgb}{0,0,0.75}
-
-%sichere Fraben, die sich auch bei einem SW-Druck unterscheiden lassen (Platzhalter momentan)
-\definecolor{color1}{cmyk}{1,0,0,0} %cyan
-\definecolor{color2}{rgb}{0,1,0} %green
 
 \usepackage[hyperindex=true]{hyperref} % Verweise als Hyperlinks
 \hypersetup{
@@ -112,10 +115,8 @@
 %%
 
 \usepackage{tikz}
-\usepackage{float} % Floater Elemente
-%\usepackage{transparent}
-%\usepackage{wrapfig}
 \usetikzlibrary{matrix,arrows,calc,intersections, through, positioning, patterns, decorations.text, decorations.pathmorphing, decorations.markings, decorations.pathreplacing}
+\usepackage{float} % Floater Elemente
 
 % neue Befehle fuer haeufig benutzte TikZ Formen; erstes Argument steht fuer die Position, Zweites fuer die Groesse
 \newcommand{\tikzrichtung}[3][1]{ % zeichnet eine rote Linie von einem Punkt in eine Richtung mit rotem Knoten am Ende
@@ -196,19 +197,6 @@
 	\coordinate (torusUntenLoch) at ($#2 - #1*(0,0.25)$);
 	\coordinate (torusUnten) at ($#2 - #1*(0,1)$);
 }
-
-\usepackage[toc]{glossaries} % Symbolverzeichnis
-\glossarystyle{treehypergroup}
-\makeglossaries
-
-% Mathe Pakete
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{wasysym} % noch mehr symbole
-\usepackage{stmaryrd}
-\usepackage{bm} % fette Mathe Zeichen
-\usepackage{mathtools} % zusaetzliche Mathe Befehle (zusaetzlich zu AMS Math)
-\usepackage[hyperref,amsmath,thmmarks,thref]{ntheorem}
 
 % --- Mathe Symbole ---
 
@@ -319,15 +307,6 @@
 \DeclareMathOperator{\Sym}{Sym} % symmetric group
 \DeclareMathOperator{\T}{T} % tangent bundle
 
-\newcommand{\Zentrum}[1]{\ensuremath{\mathrm Z(#1)}} % Zentrum einer Gruppe
-\newcommand{\Ordnung}[1][]{ % Ordnung einer Gruppe
-  \ifthenelse{\isempty{#1}}{
-    \#
-  }{
-    \left|#1\right|
-  }
-}
-
 % X als Malzeichen und andere Operatorzeichen
 \newcommand{\dop}{\mathrm{d}}
 \newcommand{\X}{\times}
@@ -355,12 +334,6 @@
 	\scriptsize{\raisebox{0.7ex}{\ensuremath{#1}}
 	\ensuremath{\mkern-3mu}\ / \ensuremath{\mkern-3mu}
 	\raisebox{-0.6ex}{\ensuremath{#2}}}}
-
-% quotient space or group
-\newcommand{\modulo}[1]{\ensuremath{/_{\displaystyle #1}}}
-
-% declaring Index for group theory
-\newcommand{\Index}[2]{\ensuremath{(#1 \SlimDdot #2)}}
 
 % Woerter in Kapitaelchenschrift
 \newcommand{\kapit}[1]{\textsc{#1}\xspace} % \textsc fueg keinen Abstand nach dem Wort ein, also baue ich einen neuen Befehl mit \xspace am Ende
@@ -418,8 +391,6 @@
 % Add a ':' for mathmode with tiny whitespaces around
 \newcommand{\SlimDdot}{\ensuremath{\mathrm{:}}}
 
-% indexing support
-
 % Print and index given text
 % usage: \CmIndex{[(optionally put another text for the index in here)]}{(text to print and add to index)}
 \newcommand{\CmIndex}[2][]{\ifthenelse{\isempty{#1}}{\index{#2}}{\index{#1}}#2}
@@ -439,7 +410,7 @@
 
 
 %========================================================================================================================
-%	I N F O R M A T I O N E N	Z U M	S K R I P T
+%	I N F O R M A T I O N E N		Z U M	S K R I P T
 %========================================================================================================================
 
 \subject{inoffizielles Skript}
@@ -4002,16 +3973,95 @@ F"ur $f(p) = 0$ schreibe
 		-1 & & & & & \\
 		 & \ddots & & & \sigma & \\
 		 & & -1 & & & \\
-		 \hdashline[1pt/1pt]
 		 & & & +1 & & \\
 		 & \sigma & & & \ddots & \\
 		 & & & & & +1
 	\end{array}\right)
 \end{align*}
 Lokal hat $f$ um $p$ entlang $k$ Kurven in linear unabh"angige Richtungen Maxima und entsprechend $n-k$ Minima.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
-Au"serdem
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\a{65}
+	
+	% Anmerkung: Die Teile der rechten und linken Parabel in der oberen Parabel sollten gestrichelt sein
+	\coordinate (p) at(0,0.5);
+	\draw (2.5,0) -- ++(-5,0) -- ++(\a:1.5);
+	
+	%obere parable
+	\draw[decoration={markings,mark=at position 0.9 with{\arrow{>}}},postaction={decorate}] ($(p)+(-0.75,1.25)$) ..controls+(0,0) and +(-0.5,0).. (p) ..controls+(0.5,0) and +(0,0)..node[right,pos=0.9]{$n-k$} ($(p)+(0.75,1.25)$);
+	
+	% untere Parabel
+	\begin{scope}
+		\clip (-1.5,0) rectangle (1.5,1);
+		\draw[dashed] ($(p)+(-0.75,-1.25)$) ..controls+(0,0) and +(-0.5,0).. (p) ..controls+(0.5,0) and +(0,0).. ($(p)+(0.75,-1.25)$);
+	\end{scope}
+	\begin{scope}
+		\clip (-1.5,0) rectangle (1.5,-3);
+		\draw[decoration={markings,mark=at position 0.9 with{\arrow{>}}},postaction={decorate}] ($(p)+(-0.75,-1.25)$) ..controls+(0,0) and +(-0.5,0).. (p) ..controls+(0.5,0) and +(0,0)..node[right,pos=0.9]{$k$} ($(p)+(0.75,-1.25)$);
+	\end{scope}
+	
+	\def\l{1.75}
+	\def\h{0.5}
+	\def\c{0.5}
+	
+	% rechte Parabel
+	\draw ($(p)+(\l,0)+(\a:\h)$)node[right]{$f \equiv f(p)$} ..controls +(0,0) and +(\a:\c).. (p) ..controls +(\a+180:\c) and +(0,0).. ($(p)+(\l,0)+(\a+180:\h)$);
+	% linke Parabel
+	\draw ($(p)+(-\l,0)+(\a:\h)$) ..controls +(0,0) and +(\a:\c).. (p) ..controls +(\a+180:\c) and +(0,0).. ($(p)+(-\l,0)+(\a+180:\h)$);
+	
+	\fill (p) circle(0.05) node[above]{$p$};
+\end{tikzpicture}
+und
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\a{25}
+	
+	\draw[->,thick] (-1.5,0) -- (2,0)node[below right]{$x^{i}, i \le k$}node[above right]{$\R^k$};
+	\draw[->,thick] (0,-2) -- (0,2)node[right]{$\R^{n-k}$};
+	\draw[->,thick] (180+\a:1.5) -- (\a:2);
+	
+	% die Striche
+	\def\w{0.75}
+	\def\h{1.75}
+	\def\p{0.2}
+	\pgfmathsetmacro{\q}{1-\p}
+	\draw (-\w,\h)node[above left]{$f \equiv 0$} --coordinate[pos=\p](1) coordinate[pos=\q](4) (\w,-\h) (\w,\h) --coordinate[pos=\p](2) coordinate[pos=\q](3) (-\w,-\h);
+	\def\a{45}
+	\def\c{0.25}
+	\foreach \i / \j in {1/2,3/4} {
+		\draw (\i) ..controls+(360-\a:\c) and +(180+\a:\c).. (\j);
+		\draw[dashed] (\i) ..controls+(\a:\c) and +(180-\a:\c).. (\j);
+	}
+	
+	% seitlich
+	\def\w{1.25}
+	\def\h{1.75}
+	\def\p{0.4}
+	\pgfmathsetmacro{\q}{1-\p}
+	\draw (-\w,\h)node[left]{$f \equiv -\epsilon$} ..controls+(0.75,-1) and +(0.75,1).. coordinate[pos=\p](1) coordinate[pos=\q](3) (-\w,-\h) (\w,\h) ..controls+(-0.75,-1) and +(-0.75,1).. coordinate[pos=\p](2) coordinate[pos=\q](4) (\w,-\h);
+	\def\a{55}
+	\def\c{0.25}
+	\foreach \i / \j in {1/2,3/4} {
+		\draw (\i) ..controls+(360-\a:\c) and +(180+\a:\c).. (\j);
+		\draw[dashed] (\i) ..controls+(\a:\c) and +(180-\a:\c).. (\j);
+	}
+	
+	% Parabeln
+	\def\w{0.7}
+	\def\h{1}
+	\def\p{0.6}
+	\def\c{0.4}
+	\pgfmathsetmacro{\q}{1-\p}
+	\coordinate (p) at (0,1); \coordinate (q) at (0,-1);
+	\draw ($(p)+(-\w,\h)$)node[above]{$f \equiv \epsilon$} ..controls+(0,0) and +(-\c,0)..coordinate[pos=\p](1) (p) ..controls+(\c,0) and +(0,0)..coordinate[pos=\q](2) ($(p)+(\w,\h)$);
+	\draw ($(q)+(-\w,-\h)$) ..controls+(0,0) and +(-\c,0)..coordinate[pos=\p](3) (q) ..controls+(\c,0) and +(0,0)..coordinate[pos=\q](4) ($(q)+(\w,-\h)$);
+	\def\a{20}
+	\def\c{0.25}
+	\foreach \i / \j in {1/2,3/4} {
+		\draw (\i) ..controls+(360-\a:\c) and +(180+\a:\c).. (\j);
+		\draw[dashed] (\i) ..controls+(\a:\c) and +(180-\a:\c).. (\j);
+	}
+\end{tikzpicture}\end{center}
 Allgemein gilt $f(q) = c - (x^1)^2 - \ldots + (x^{k+1})^2 + \ldots + (x^n)^2 = c - \sum_{i \le k} (x^{i})^2 + \sum_{i > k} (x^{i})^2$, und mit $ x= (x^1, \ldots, x^k)$ und $y = (y^1, \ldots, y^{n-k}) = (x^{k+1}, \ldots, x^n)$ schreibe $ f(q) = c - \|x\|^2 + \|y\|^2$.
 Es gilt genau dann $f(q) = c$, wenn $\|x\| = \|y\|$.
 
