@@ -3927,18 +3927,16 @@ Ist $l = (l_1, \ldots, l_n)$ \CmMark{generisch}, das heißt gilt $\sum_{i \le n}
 
 \begin{bew}
 Seien $l' = (l_1, \ldots, l_{n-1})$ und $f_{l'}^{-1} = (-l_n^2) = M_l$.
-Betrachte den \quot{Roboterarm} mit $(n-1)$ Segmenten und $f_{l'}: W = T^{n-2} \to \R$.
-\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+\marginnote{\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
 	%\tikzgitter{(-5,-4)}{(5,4)}
 	\def\a{160}
-	
 	\draw (\a:1) -- +(\a+180:2);
 	\fill[pattern=north east lines,opacity=0.5] (\a:1) -- ++(\a+180:2) -- ++(\a+90:0.25) -- ++(\a:2) -- cycle;
-	
 	\draw (0,0) --node[left]{$l_1$} ++(110:1) --node[above]{$l_2$} ++(15:1.5) -- ++(250:0.75) -- ++(5:1) -- ++(260:0.5)coordinate(a);
 	\draw[dashed] (0,0) --node[below,pos=0.7]{$l_n$} (a);
 	\fill (a) circle(0.05);
-\end{tikzpicture}\end{center}
+\end{tikzpicture}}
+Betrachte den \quot{Roboterarm} mit $(n-1)$ Segmenten und $f_{l'}: W = T^{n-2} \to \R$.
 Nach dem obigen Lemma hat $f_{l'}$ genau einen kritischen Wert $-a^2 \ne 0$, wenn eine kollineare Konfiguration $(u_1, \ldots, u_{n-1})$ existiert mit $u_i \in \{1, -1\}$, so dass $-a^2 = \| \sum _{i \le n} l_i u_i \|^2 = f_{l'}(u) \Leftrightarrow \pm a + \sum l_i u_i = 0 \Leftrightarrow (l_1, \ldots, l_{n-1}, a)$ ist nicht generisch.
 
 Das hei"st $-l_n^2$ ist ein regul"arer Wert von $f_{l'}$ und damit ist $f_{l'}^{-1} (-l_n^2) = M_l$ eine kompakte orientierbare Mannigfaltigkeit in $W \cong T^{n-2}$ der Kodimension 1.
@@ -4124,7 +4122,21 @@ Damit:
 	\underbrace{\chi^{(M_l)}}_{=2-2g} &= \sum (-1)^k \beta_k = (1 + 0 + 0) - (2 + 0 + 2) + (0 + 0 + 1) = 1 - 4 +1 = -2
 \end{align*}
 Also:
-\begin{center}$M_l = $ \textcolor{red}{[BILD]}\end{center}
+\begin{center}$M_l = $ \begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	
+	\draw (-1.5,0) ..controls +(0,0.25) and +(-0.25,0).. (-1,0.5) ..controls +(0.5,0) and +(-0.5,0).. (0,0.25) ..controls +(0.5,0) and +(-0.5,0).. (1,0.5) ..controls +(0.25,0) and +(0,0.25).. (1.5,0) ..controls +(0,-0.25) and +(0.25,0).. (1,-0.5) ..controls +(-0.5,0) and +(0.5,0).. (0,-0.25) ..controls +(-0.5,0) and +(0.5,0).. (-1,-0.5) ..controls+(-0.25,0) and +(0,-0.25).. (-1.5,0);
+	
+	\coordinate (l1) at (-0.875,0.05); \coordinate (l2) at (0.875,0.05);
+	\def\r{0.375}
+	\def\c{0.25}
+	\def\f{0.6}
+	
+	\foreach \li in {l1, l2} {
+		\draw ($(\li) - (\r,0)$) ..controls+(0,0) and +(-\c,0)..coordinate[pos=\f](pl) ($(\li)-(0,0.125)$) ..controls +(\c,0) and +(0,0)..coordinate[pos=1-\f](pr) ($(\li) + (\r,0)$);
+		\draw (pl) ..controls+(0,0) and +(-0.5*\c,0).. (\li) ..controls +(0.5*\c,0) and +(0,0).. (pr);
+	}
+\end{tikzpicture}\end{center}
 \end{bsp}
 
 \section*{Walkers Vermutung}
@@ -4145,7 +4157,27 @@ Es bezeichnen $A^{(k)} \subset A$ die Menge der L"angenvektoren $l$, welche in m
 \end{align*}
 Ein \CmMark[Stratum]{$\bm{k}$-Stratum} ist eine Zusammenhangskomponente von $A^{(k)} \setminus A^{(k-1)}$.
 Zwei L"angenvektoren liegen in demselben Stratum, falls sie die gleichen kurzen Teilmengen besitzen.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-1,-1)}{(10,4)}
+	\def\a{25} % Winkel zw. x_1 und x_2 Achse
+	\pgfmathsetmacro{\b}{\a+(90-\a)/2} % Winkel zwischen x_2 und x_3 Achse
+	
+	\draw[->,thick] (-1,0) -- (0,0) --coordinate[pos=0.6] (1) (3,0)node[below right]{$x^1$};
+	\draw[->,thick] (180+\a:1) -- (0:0) --coordinate[pos=0.6] (2) (\a:3)node[right]{$x^2$};
+	\draw[->,thick] (0,-1) -- (0,0) --coordinate[pos=0.5] (3) (0,3)node[above left]{$x^3$};
+	
+	\draw[dashed,opacity=0.75] (0:0) -- (45:4)node[right]{$H_{\{3\}} \cap \{x^2 = 0\}$} (0:0) -- (\b:3)node[left]{$H_{\{3\}} \cap \{x^1 = 0\}$};
+	
+	\draw (1) --coordinate[pos=0.5](a)node[pos=0.75,right]{$A$} (2) --coordinate[pos=0.5](b) (3) --coordinate[pos=0.5](c) (1);
+	\draw[gray] (a) -- (b) -- (c) -- cycle;
+	
+	\node at (1.75,-0.75) {$H_{\{3\}} = \{x^3 = x^1 + x^2\}$};
+	
+	% verschiebe 1, 2 und 3 um einen festen Punkt herum und zeicne das 3-Eck neu
+	\foreach \i in {1,2,3} {\coordinate (\i) at ($(5,1)+(120*\i-30:1)$);}
+	\draw (1) --coordinate[pos=0.5](a) (2) --coordinate[pos=0.5](b) (3) --coordinate[pos=0.5](c)node[pos=0.75,right]{$A$} (1);
+	\draw[gray] (a) -- (b) -- (c) -- cycle;
+\end{tikzpicture}\end{center}
 Maximale Strata, Zusammenhangskomponenten von $A^{(n-1)} \setminus A^{(n-2)}$, hei"sen \CmMark[Kammer]{Kammern}.
 Betrachte die Involution (Spiegelung an der $x$-Achse)
 \begin{align*}
