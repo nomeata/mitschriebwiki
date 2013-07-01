@@ -287,6 +287,7 @@
 \DeclareMathOperator{\Charakt}{char}
 \DeclareMathOperator{\D}{D} % Jacobi matrix or derivative
 \DeclareMathOperator{\Diff}{Diff}
+\DeclareMathOperator{\Ee}{E}
 \DeclareMathOperator{\End}{End} % endomorphisms
 \DeclareMathOperator{\Gl}{GL} % general linear group
 \DeclareMathOperator{\GL}{GL} % general linear group
@@ -303,6 +304,7 @@
 \DeclareMathOperator{\Relation}{\scriptstyle\mathrm{R}} % custom Relation
 \DeclareMathOperator{\Ric}{Ric} % Ricci Tensor field
 \DeclareMathOperator{\Rang}{Rang} % rank (ii)
+\DeclareMathOperator{\SE}{SE}
 \DeclareMathOperator{\SL}{SL} % Matrizen mit Deteminante 1
 \DeclareMathOperator{\SO}{SO} % Matrizen mit Deteminante 1
 \DeclareMathOperator{\Stab}{Stab} % Stabilisator
@@ -336,6 +338,14 @@
 	\scriptsize{\raisebox{0.7ex}{\ensuremath{#1}}
 	\ensuremath{\mkern-3mu}\ / \ensuremath{\mkern-3mu}
 	\raisebox{-0.6ex}{\ensuremath{#2}}}}
+
+% kleine Arrays fuer Matrizen im Fliesstext
+\newenvironment{smallarray}[1]
+    {\null\,\vcenter\bgroup\scriptsize
+    \renewcommand{\arraystretch}{0.7}
+    \arraycolsep=.13885em
+    \hbox\bgroup$\array{@{}#1@{}}}
+    {\endarray$\egroup\egroup\,\null}
 
 % Woerter in Kapitaelchenschrift
 \newcommand{\kapit}[1]{\textsc{#1}\xspace} % \textsc fueg keinen Abstand nach dem Wort ein, also baue ich einen neuen Befehl mit \xspace am Ende
@@ -4261,8 +4271,128 @@ Dann gilt
 	\frac{\vol(A^{(n-1)} \setminus \calN_n)}{\vol(A^{(n-1)})} \le \frac{n^6}{2^n}.
 \end{align*}
 
+\chapter{Kinematik}
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Bewegungen und Zust"ande eines (idealisierten) Roboterarmes werden durch abstandserhaltende Transformationen, das hei"st Isometrien des $\R^3$, beschrieben.
+Jede solche Transformation ist von der Gestalt
+\begin{align*}
+    \R^3 \ni x \mapsto Ax + b
+\end{align*}
+mit $A \in \Oo(3)$ und $b \in \R^3$ (wobei $\Oo(3) = \{A \in \R^3 \X \R^3 \mid A^TA = \id_{\R^3}\}$ die Menge der skalarprodukterhaltenden linearen Abbildungen ist).
+Die Hintereinanderausf"uhrung
+\begin{align*}
+    A' (Ax + b) + b' = A'Ax + A'b + b'
+\end{align*}
+ist wieder eine Isometrie des $\R^3$.
+Die Gruppe $\Ee(3)$ der euklidischen Bewegungen ist das semidirekte Produkt $\Ee(3) = \Oo(3) \X \R^3$ mit der Multiplikation
+\begin{align*}
+    (A', b') (A, b) = (AA', A'b + b').
+\end{align*}
+Die orthogonale Gruppe besitzt zwei Zusammenhangskomponenten, die orientierungserhaltenden Drehungen mit Determinante 1, $\SO(3)$, und die Spiegelungen.
+Da mechanisch keine Spiegelung realisierbar ist, betrachtet man nur die orientierungserhaltenden euklidischen Bewegungen $\SE(3) = \SO(3) \X \R$.
 
+Zur Vereinfachung der Notation betrachtet man die 4-dimensional Darstellung
+\begin{align*}
+    \SE(3) \hookrightarrow \GL_4(\R) && (A, B) \mapsto \left( \begin{array}{c|c}
+        A & b \\ \hline 0 & 1
+    \end{array} \right).
+\end{align*}
+Tats"achlich gilt
+\begin{align*}
+    \left( \begin{array}{c|c} A' & b' \\\hline 0 & 1 \end{array} \right) \left( \begin{array}{c|c} A & b \\\hline 0 & 1 \end{array} \right) = \left( \begin{array}{c|c} AA' & A'b + b' \\\hline 0 & 1 \end{array} \right)
+\end{align*}
+mit Inversem
+\begin{align*}
+    \left( \begin{array}{c|c} A & b \\\hline 0 & 1 \end{array} \right)^{-1} = \left( \begin{array}{c|c} A^T & -A^T b \\\hline 0 & 1 \end{array} \right).
+\end{align*}
+Nach einem Satz von Chasles (1832):
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Jede euklidische Bewegung kann als \quot{Schraubbewegung} aufgefasst werden:
+F"ur alle $\left( \begin{smallmatrix} A & b \\ 0 & 1 \end{smallmatrix} \right) \in \SE(3)$ existieren eine Richtung $v \in \S^2 \subset \R^3$, ein Drehwinkel $\theta$, eine Steigung $s \in \R$ und ein Translationsvektor $u \in \R^3$.
+\begin{align*}
+	\left( \begin{array}{c|c} A & b \\ \hline 0 & 1 \end{array} \right)
+	=
+	\left( \begin{array}{c|c} \id & u \\ \hline 0 & 1 \end{array} \right)
+	\underbrace{\left( \begin{array}{c|c} R(\theta, v) & \frac{\theta}{2 \pi} s v \\ \hline 0 & 1 \end{array} \right)}_{\mathclap{\text{\quot{Schraube} mit Achse } R \cdot v \text{ und Steigung } s}}
+	\left( \begin{array}{c|c} \id & -u \\ \hline 0 & 1 \end{array} \right)
+	=
+	\left( \begin{array}{c|c} R & \frac{\theta}{2 \pi} s v + (\id - R) u \\ \hline 0 & 1 \end{array} \right)
+\end{align*}
 
+Bestimmte Roboterarme, beziehungsweise Teile davon, k"onnen im Allgemeinen nur bestimmte Bewebungen ausf"uhren, zum Beispiel l"asst ein Drehgelenk keine translationen aus $\SE(3)$ zu.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Der Konfigurationsraum dieses Drehgelenkes ist anschaulich $\S^1 = \SO(2) < \SE(3)$.
+Es stellt sich also die Frag nach den Untergruppen von $\SE(3)$:
+
+Ist $G$ eine Untergruppe von $\SE(3) = \SO(3) \X \R^3$, so ist auch $G \cap \R^3 = (\{1\} \X \R^3)$ eine Untergruppe von $\R^3$, also $0$, $\R^2$, $\R^3$, $\R$, $r \Z$, $r \Z \X \R$, $r \Z \X \R^2$, $r \Z \X s \Z$, $r \Z \X s \Z \X \R$ und $r \Z \X s \Z \X t \Z$.
+Wegen
+\begin{align*}
+	\left( \begin{array}{c|c} A & b \\ \hline 0 & 1 \end{array} \right)
+	\left( \begin{array}{c|c} \id & t \\ \hline 0 & 1 \end{array} \right)
+	\left( \begin{array}{c|c} A^T & -A^T t \\ \hline 0 & 1 \end{array} \right)
+	=
+	\left( \begin{array}{c|c} \id & A (-A^T b + t) + b \\ \hline 0 & 1 \end{array} \right)
+	=
+	\left( \begin{array}{c|c} \id & A t \\ \hline 0 & 1 \end{array} \right)
+	\quot{\in} \R^3
+\end{align*}
+ist $\R^3$ ein Normalteiler in $\SE(3)$, das hei"st die Projektion $\SE(3) \twoheadrightarrow \FakRaum{\SE(3)}{\R^3} \cong \SO(3)$ ist eine Gruppenhomomorphismus und jede Untergruppe $G < \SE(3)$ projeziert auf eine Untergruppe in $\SO(3)$, also $\SO(3)$, $\SO(2)$ oder $\{1\}$.
+Welche \quot{Bausteine} ergeben Untergruppen von $\SE(3)$?
+Genau jene, f"ur welche der \quot{Faktor} in $\R^3$ normal in der Untergruppe liegt.
+\begin{description}
+\item[$\FakRaum{G}{\R^3} \cong \SO(3)$:]
+	\begin{itemize}
+	\item
+		$G \cap \R^3 = \{0\}$
+	\item
+		$G \cap \R^3 = \R^3$, denn $\SO(3)$ ist transitiv auf $S^2$.
+	\end{itemize}
+\item[$\FakRaum{G}{\R^3} \cong \SO(2)$:]
+	\begin{itemize}
+	\item
+		$G \cap \R^3 = \{0\} \Rightarrow G \cong \SO(2)$
+	\item
+		$G \cap \R^3 = \R^3$, $G \cong \SO(2) \X \R^3 = \SE(2) \X \R$
+	\item
+		$G \cap \R^2 = \R^3$, $G \cong \SO(2) \X \R^2 = \SE(2)$
+	\item
+		$G \cap \R = \R^3$, $G \cong \SO(2) \X \R$
+	\item
+		$G \cap \R^3 = s \Z$
+		\begin{align*}
+			G = \left\{ \left( \begin{array}{ccc|c}
+ 				1 & 0 & 0 & \frac{\theta}{2 \pi} s \\
+ 				0 & \cos \theta & - \sin \theta & 0 \\
+ 				0 & \sin \theta & \cos \theta & 0 \\ \hline
+ 				0 & 0 & 0 & 1
+			\end{array} \right) \right\}
+			 = H_s \cong \R
+		\end{align*}
+		\quot{Schraube} durch die $x$-Achse mit Steigung $s \in \R$.
+		Alle diese $H_s$ sind \emph{nicht} zu $\R \hookrightarrow \SE(3)$ konjugiert.
+	\item
+		$G \cap \R^3 = s \Z \X \R^2 \Rightarrow G = H_s \X \R^2$
+	\end{itemize}
+\end{description}
+
+\section*{Reuleux-Paare (1875)}
+Bewegungen, welche durch das gegeneinander Verschieben oder Verdrehen zweier gleicher Fl"achen(-stücke) im $\R^3$ entstehen.
+Diese entsprechen den Orbiten von ein- und zweidimensionalen Untergruppen von $\SE(3)$.
+\begin{center}
+Ebene
+\textcolor{red}{[BILD]}
+Sph"are
+\textcolor{red}{[BILD]}
+Zylinder
+\textcolor{red}{[BILD]}
+\\
+Rotationsf"ache (Drehbelenk)
+\textcolor{red}{[BILD]}
+Translationsfl"ache
+\textcolor{red}{[BILD]}
+Helicoid
+\textcolor{red}{[BILD]}
+\end{center}
 
 
 %========================================================================================================================
