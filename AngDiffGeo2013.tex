@@ -4271,8 +4271,19 @@ Dann gilt
 	\frac{\vol(A^{(n-1)} \setminus \calN_n)}{\vol(A^{(n-1)})} \le \frac{n^6}{2^n}.
 \end{align*}
 
+% Vorlesung vom 1. 7.
+
 \chapter{Kinematik}
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\a{25} % Winkel der x-Achse
+	\def\b{325} % Winkel des koordinatensystems
+	
+	\draw[->] (-0.5,0) -- (3,0)node[below right]{$x$}; \draw[->] (0,-0.5) -- (0,2)node[below left]{$z$}; \draw[->] (180+\a:0.5) -- (\a:2.5)node[below right]{$y$};
+	\draw (0:0) -- ++(70:1.5) -- ++(310:0.5) -- ++(40:1) +(40:0.05) circle(0.05) ++(40:0.1) -- ++(40:0.5) -- ++(300:0.5) coordinate (p);
+	\draw[->] (p) -- +(\b:0.75)node[below right]{$x'$}; \draw[->] (p) -- +(90+\b:0.75)node[above]{$z'$}; \draw[->] (p) -- +(\b+\a:0.75)node[above right]{$y'$};
+	\draw[->,gray] (0,0) --node[below,pos=0.85]{$b$} (p);
+\end{tikzpicture}\end{center}
 Bewegungen und Zust"ande eines (idealisierten) Roboterarmes werden durch abstandserhaltende Transformationen, das hei"st Isometrien des $\R^3$, beschrieben.
 Jede solche Transformation ist von der Gestalt
 \begin{align*}
@@ -4306,7 +4317,30 @@ mit Inversem
     \left( \begin{array}{c|c} A & b \\\hline 0 & 1 \end{array} \right)^{-1} = \left( \begin{array}{c|c} A^T & -A^T b \\\hline 0 & 1 \end{array} \right).
 \end{align*}
 Nach einem Satz von Chasles (1832):
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-1,-2)}{(8,4)}
+	\def\a{25} % Winkel der x-Achse
+	\def\b{325} % Winkel des koordinatensystems
+	
+	\draw[->] (-0.5,0) -- (3,0)node[below right]{$x$}; \draw[->] (0,-0.5) -- (0,2)node[below left]{$z$}; \draw[->] (180+\a:0.5) -- (\a:2.5)node[below right]{$y$};
+	
+	\path (4, -1)coordinate(0) --coordinate[pos=0.5](a) coordinate[pos=0.7](b) ++(1,3)coordinate(1);
+	\draw (0) -- (a) (b) -- (1);
+	\fill (a)circle(0.05);
+	
+	\draw[decorate,decoration={coil,amplitude=0.5cm,segment length=0.5cm,
+		/tikz/postaction={
+			decoration={
+				markings,
+				mark=at position 0.49 with \coordinate (c);,
+				mark=at position 0.757 with \coordinate (d);
+			},decorate}
+		}] ($(0)!0.1!(1)$) --coordinate[pos=0.5](c) coordinate[pos=0.7](d) ($(1)!0.1!(0)$);
+	
+	\draw[->,gray] (0,0) --node[above,pos=0.7]{$u$} ($(0,0)!0.99!(a)$);
+	\draw[->,gray] (a) --node[left]{$v$} (b);
+	\draw[decorate,decoration={brace,mirror},gray] (c) --node[right]{$s$} (d);
+\end{tikzpicture}\end{center}
 Jede euklidische Bewegung kann als \quot{Schraubbewegung} aufgefasst werden:
 F"ur alle $\left( \begin{smallmatrix} A & b \\ 0 & 1 \end{smallmatrix} \right) \in \SE(3)$ existieren eine Richtung $v \in \S^2 \subset \R^3$, ein Drehwinkel $\theta$, eine Steigung $s \in \R$ und ein Translationsvektor $u \in \R^3$.
 \begin{align*}
@@ -4319,8 +4353,17 @@ F"ur alle $\left( \begin{smallmatrix} A & b \\ 0 & 1 \end{smallmatrix} \right) \
 	\left( \begin{array}{c|c} R & \frac{\theta}{2 \pi} s v + (\id - R) u \\ \hline 0 & 1 \end{array} \right)
 \end{align*}
 
+\marginnote{\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-1,-2)}{(8,4)}
+	\draw (0,0) -- +(3.25,0) (0,0) -- +(0.5,1.5);
+	\draw (1,0.5) -- +(0,1.5) ++(0.5,0) -- ++(0,0.6875)coordinate(1) ++(0,0.125)coordinate(2) -- +(0,0.6875) ;
+	\draw +(1.5,0.5) arc[x radius=0.25,y radius=0.125,start angle=360,end angle=180] ++(0.25,1.5) ellipse[x radius=0.25,y radius=0.125];
+	\draw[dashed] (1,0.5) arc[x radius=0.25,y radius=0.125,start angle=180,end angle=0];
+	\draw (1) -- +(1,0) (2) -- +(1,0) (1)arc[x radius=0.0625,y radius=0.0625,start angle=270,end angle=90];
+	\draw[dashed] (1.25,0.125) -- +(0,2.25);
+	\draw[->] (0.75,0.5) arc[x radius=0.5,y radius=0.25,start angle=180,end angle=360];
+\end{tikzpicture}}
 Bestimmte Roboterarme, beziehungsweise Teile davon, k"onnen im Allgemeinen nur bestimmte Bewebungen ausf"uhren, zum Beispiel l"asst ein Drehgelenk keine translationen aus $\SE(3)$ zu.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
 Der Konfigurationsraum dieses Drehgelenkes ist anschaulich $\S^1 = \SO(2) < \SE(3)$.
 Es stellt sich also die Frag nach den Untergruppen von $\SE(3)$:
 
@@ -4380,18 +4423,95 @@ Bewegungen, welche durch das gegeneinander Verschieben oder Verdrehen zweier gle
 Diese entsprechen den Orbiten von ein- und zweidimensionalen Untergruppen von $\SE(3)$.
 \begin{center}
 Ebene
-\textcolor{red}{[BILD]}
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-1,-2)}{(8,4)}
+	
+	\draw (0,-0.75) -- +(3.5,0) (0,-0.75) -- +(0.5,1.5);
+	\draw[->] (0.75,-0.25) arc[radius=0.25,start angle=210,end angle=390]; \draw[->] (1.5,0.5) -- +(330:0.75); \draw[->] (2,-0.5) -- +(40:0.75);
+	\node at (3,0.5) {$\SE(2)$};
+\end{tikzpicture}
 Sph"are
-\textcolor{red}{[BILD]}
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-1,-2)}{(8,4)}
+	
+	\draw (0,0) circle(0.75) (0.75,0) arc[x radius=0.75,y radius=0.25,start angle=360,end angle=180];
+	\draw[dashed] (0.75,0) arc[x radius=0.75,y radius=0.25,start angle=0,end angle=180];
+	\node at (1,0.75) {$\SO(3)$};
+\end{tikzpicture}
 Zylinder
-\textcolor{red}{[BILD]}
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-1,-2)}{(8,4)}
+	
+	\draw (-0.25,-0.75) -- +(0,1.5) ++(0.5,0) -- +(0,1.5) ++(0,0) arc[x radius=0.25,y radius=0.125,start angle=360,end angle=180] ++(0.25,1.5) ellipse[x radius=0.25,y radius=0.125];
+	\draw[<->] (-0.5,-0.5) -- +(0,1);
+	\draw[dashed] (0.25,-0.75) arc[x radius=0.25,y radius=0.125,start angle=0,end angle=180] (0,-1) -- (0,1);
+	\draw[->] (-0.5,-0.75) arc[x radius=0.5,y radius=0.25,start angle=180,end angle=360];
+	\node at (1,0) {$\SO(2) \X \R$};
+\end{tikzpicture}
 \\
-Rotationsf"ache (Drehbelenk)
-\textcolor{red}{[BILD]}
+Rotationsf"ache (Drehgelenk)
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-3,-3)}{(3,3)}
+	
+	\draw[dashed] (0,1.25) -- (0,-1.5);
+	\draw (-0.25,1) -- (-0.25,0.75)coordinate(1) ..controls +(0,-0.5) and +(0,0.25)..coordinate(2) (-0.5,0)coordinate(3) ..controls +(0,-0.25) and +(0,0.5)..coordinate(4) (-0.25,-0.75)coordinate(5) -- (-0.25,-1);
+	\draw (0.25,1) -- (0.25,0.75)coordinate(1') ..controls +(0,-0.5) and +(0,0.25)..coordinate(2') (0.5,0)coordinate(3') ..controls +(0,-0.25) and +(0,0.5)..coordinate(4') (0.25,-0.75)coordinate(5') -- (0.25,-1);
+	
+	\foreach \i / \h in {1/0.05,2/0.08,3/0.125,4/0.08,5/0.05} {
+		\coordinate (cntr) at ($(\i)!0.5!(\i')$);
+		\draw (\i) let \p1 = ($(\i) - (\i')$) in arc[x radius={0.5*veclen(\x1,\y1)},y radius=\h cm,start angle=180,end angle=360];
+		\draw[dashed] (\i') let \p1 = ($(\i) - (\i')$) in arc[x radius={0.5*veclen(\x1,\y1)},y radius=\h cm,start angle=0,end angle=180];
+	}
+	
+	\draw[->] (-0.5,-1) arc[x radius=0.5,y radius=0.25,start angle=180,end angle=360];
+	\node[right] at (0.75,0) {$\SO(2)$};
+\end{tikzpicture}
 Translationsfl"ache
-\textcolor{red}{[BILD]}
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-3,-3)}{(3,3)}
+	\coordinate (shift) at (0.5,2);
+	\coordinate (1) at (0,-1);
+	\coordinate (2) at (0.75,-0.75);
+	\coordinate (3) at (1.00,-1.00);
+	
+	\draw (1) -- +(shift); \draw[dashed] (2) -- +(shift); \draw (3) -- +(shift);
+	\foreach \i in {0.3,0.6,0.9} {
+		\foreach \j in {1,2,3} {
+			\path (\j) --coordinate[pos=\i](\j') +(shift);
+		}
+		\draw (1') -- (2') -- (3') -- cycle;
+	}
+	\draw[<->] (1.5,0.5) --node[right]{$\R$} +($-0.4*(shift)$);
+\end{tikzpicture}
+\\
 Helicoid
-\textcolor{red}{[BILD]}
+\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-3,-3)}{(3,3)}
+	\def\a{75}
+	\def\ampl{0.6cm}
+	\def\seg{0.6cm}
+	\def\len{1.25}
+	
+	\draw (180+\a:\len) -- (\a:\len);
+	\foreach \i in {0.1,0.2,...,0.9} {}
+	\draw[decorate,decoration={coil,amplitude=\ampl,segment length=\seg}] (180+\a:\len) -- (\a:\len);
+	\foreach \i in {0.03,0.06,...,0.9} {
+		\path (180+\a:\len) --coordinate[pos=\i](n) (\a:\len);
+		\path[decorate,decoration={coil,amplitude=\ampl,segment length=\seg,
+			/tikz/postaction={
+				decoration={
+					markings,
+					mark=at position \i with \coordinate (n');,
+			},decorate}}] (180+\a:\len) -- (\a:\len);
+		\draw[gray] (n) -- (n');
+	}
+\end{tikzpicture}
+$H_s = \left\{ \left( \begin{array}{ccc|c}
+	1 & 0 & 0 & \frac{\theta}{2 \pi} s \\
+	0 & \cos \theta & - \sin \theta & 0 \\
+	0 & \sin \theta & \cos \theta & 0 \\ \hline
+	0 & 0 & 0 & 1
+\end{array} \right) \right\}$
 \end{center}
 
 
