@@ -109,68 +109,16 @@
 \let\rho\varrho
 \let\varrho\temp
 
-
-%%
-%% Fuer Zeichnungen in TikZ
-%%
-
+% Fuer Zeichnungen in TikZ
 \usepackage{tikz}
 \usetikzlibrary{matrix,arrows,calc,intersections, through, positioning, patterns, decorations.text, decorations.pathmorphing, decorations.markings, decorations.pathreplacing}
 \usepackage{float} % Floater Elemente
 
 % neue Befehle fuer haeufig benutzte TikZ Formen; erstes Argument steht fuer die Position, Zweites fuer die Groesse
-\newcommand{\tikzrichtung}[3][1]{ % zeichnet eine rote Linie von einem Punkt in eine Richtung mit rotem Knoten am Ende
-	\draw[red] #2 -- ($#2 + #1*#3$) circle(0.05);
-}
-
 \newcommand{\tikzgitter}[3][0.25]{ %Hilfsgitter, das optionale Argument steht fuer die kleine Maschenweite, die Grosse ist doppelt so gross
 	\draw[step=#1,gray!15] #2 grid #3;
 	\draw[step=2*#1,gray!30] #2 grid #3;
 	\fill (0,0) circle(0.1); 
-}
-
-\newcommand{\tikzschnuller}[2][1]{
-	% definiere die Knoten relativ zum ersten Knoten skaliert mit dem Faktor
-	\coordinate (schnuller1) at #2; \coordinate (schnuller2) at ($(schnuller1)+#1*(-1.75,-0.75)$); \coordinate (schnuller3) at ($(schnuller1)+#1*(-2.5,-2.25)$); \coordinate (schnuller4) at ($(schnuller1)+#1*(0,-2)$); \coordinate (schnuller5) at ($(schnuller1)+#1*(1.75,-0.25)$);
-    %\fill (schnuller1) circle (0.05) (schnuller2) circle (0.05) (schnuller3) circle (0.05) (schnuller4) circle (0.05) (schnuller5) circle (0.05);
-    
-    % die Richtungsvektoren der Bezier Tangenten fuer die einzelnen Knoten (der Erste und der letzte haben keine Tangente)
-    \coordinate (ctrls1) at ($#1*(1.25,0.25)$); \coordinate (ctrls2) at ($-0.5*(ctrls1)$); \coordinate (ctrls4) at ($#1*(1,-1)$); \coordinate (ctrls3) at ($-0.5*(ctrls4)$); \coordinate (ctrls6) at ($#1*(1,1.5)$); \coordinate (ctrls5) at ($-0		.33*(ctrls6)$);
-	% die eigentlichen Tangenten
-    \coordinate (tang1) at ($(schnuller2)+(ctrls1)$); \coordinate (tang2) at ($(schnuller2)+(ctrls2)$); \coordinate (tang3) at ($(schnuller3)+(ctrls3)$); \coordinate (tang4) at ($(schnuller3)+(ctrls4)$); \coordinate (tang5) at ($(schnuller4)+(ctrls5)$); \coordinate (tang6) at ($(schnuller4)+(ctrls6)$);
-    %\fill[red] (tang1) circle (0.05); \fill[red] (tang2) circle (0.05); \fill[red] (tang3) circle (0.05); \fill[red] (tang4) circle (0.05); \fill[red] (tang5) circle (0.05); \fill[red] (tang6) circle (0.05);
-    %\draw[red] (tang1) -- (tang2); \draw[red] (tang3) -- (tang4); \draw[red] (tang5) -- (tang6);
-	
-	\draw (schnuller1) ..controls(schnuller1) and (tang1).. (schnuller2) ..controls(tang2) and (tang3).. (schnuller3) ..controls(tang4) and (tang5).. (schnuller4) ..controls(tang6) and (schnuller5).. (schnuller5);
-	
-	% zeichne nun das Loch in der Mitte
-	\def\angle{20} % Rotationswinkel
-	\coordinate (c) at ($#2+#1*(-1.25,-1.25)$); % Mittelpunkt der Ellipse die den unteren Bogen bildet
-	\begin{scope}
-		\clip[rotate=\angle] ($(c)-#1*(1,0.6)$) rectangle ($(c)+#1*(1,-0.1)$);
-		\path[draw,rotate=\angle,name path=l] (c) ellipse(#1*1 and #1*0.5);
-	\end{scope}
-	\path[name path=u,rotate=\angle] ($(c)-#1*(0,0.5)$) ellipse(#1*0.75 and #1*0.5);
-	\path[name intersections={of=u and l}];
-	\begin{scope}
-		\clip[rotate=\angle] (intersection-1) rectangle ($(intersection-2)+#1*(0,0.5)$);
-		\draw[rotate=\angle] ($(c)-#1*(0,0.5)$) ellipse(#1*0.75 and #1*0.5);
-	\end{scope}		
-}
-
-\newcommand{\tikzsegel}[2][1]{
-	% definiere die Knoten relativ zum ersten Knoten skaliert mit dem Faktor
-	\coordinate (segel1) at #2; \coordinate (segel2) at ($(segel1)+#1*(4,1.5)$); \coordinate (segel3) at ($(segel1)+#1*(2,-0.5)$);
-	%\fill (segel1) circle (0.05) (segel2) circle (0.05) (segel3) circle (0.05);
-	
-	% die Richtungsvektoren der Bezier Tangenten fuer die einzelnen Knoten (der Erste und der letzte haben keine Tangente)
-	\coordinate (ctrls1) at ($#1*(0.75,1.5)$); \coordinate (ctrls2) at ($#1*(-0.75,0.25)$); \coordinate (ctrls3) at ($#1*(-0.5,-0.25)$); \coordinate (ctrls4) at ($#1*(0.25,1)$); \coordinate (ctrls5) at ($#1*(-0.375,0.375)$); \coordinate (ctrls6) at ($#1*(0.75,0.125)$);
-	% die eigentlichen Tangenten
-	\coordinate (tang1) at ($(segel1)+(ctrls1)$); \coordinate (tang2) at ($(segel2)+(ctrls2)$); \coordinate (tang3) at ($(segel2)+(ctrls3)$); \coordinate (tang4) at ($(segel3)+(ctrls4)$); \coordinate (tang5) at ($(segel3)+(ctrls5)$); \coordinate (tang6) at ($(segel1)+(ctrls6)$);
-%	\fill[red] (tang1) circle (0.05); \fill[red] (tang2) circle (0.05); \fill[red] (tang3) circle (0.05); \fill[red] (tang4) circle (0.05); \fill[red] (tang5) circle (0.05); \fill[red] (tang6) circle (0.05);
- %   \draw[red] (tang1) -- (segel1) -- (tang6); \draw[red] (tang2) -- (segel2) -- (tang3); \draw[red] (tang4) -- (segel3) -- (tang5);
-	
-	\draw (segel1) ..controls(tang1) and (tang2).. (segel2) ..controls(tang3) and (tang4).. (segel3) ..controls(tang5) and (tang6).. (segel1) --cycle;
 }
 
 \newcommand{\tikztorus}[2][1]{
@@ -223,7 +171,7 @@
 \renewcommand{\S}{\mathbb{S}}
 
 
-%  geschwungene Buchstaben
+% geschwungene Buchstaben
 \DeclareMathOperator{\calA}{{\mathcal{A}}}
 \DeclareMathOperator{\calB}{{\mathcal{B}}}
 \DeclareMathOperator{\calC}{{\mathcal{C}}}
@@ -267,6 +215,7 @@
 \DeclareMathOperator{\pr}{pr}
 \DeclareMathOperator{\proj}{proj}
 \DeclareMathOperator{\res}{res} % Residuum
+\DeclareMathOperator{\so}{so}
 \DeclareMathOperator{\rg}{rg} % rank (i)
 \DeclareMathOperator{\ric}{ric} % Ricci Tensor
 \DeclareMathOperator{\scal}{scal} % Skalarkruemmung
@@ -280,6 +229,7 @@
 \DeclareMathOperator{\vol}{vol} % Volumen
 
 \DeclareMathOperator{\Abb}{Abb} % maps
+\DeclareMathOperator{\Ad}{Ad} % maps
 \DeclareMathOperator{\Aut}{Aut} % automorphisms
 \DeclareMathOperator{\Bild}{Bild}
 \DeclareMathOperator{\CAT}{CAT}
@@ -352,22 +302,13 @@
 \newcommand{\Greedy}{\kapit{Greedy}}
 \newcommand{\LRS}{\kapit{LRS}}
 \newcommand{\Planes}{\kapit{Planes}}
+\newcommand{\Puma}{\kapit{Puma}}
 \newcommand{\Spheres}{\kapit{Spheres}}
 \newcommand{\RotSpheres}{\kapit{Rotating Spheres}}
 
 
 % Theoremartige Umgebungen
-\theoremstyle{break}
-\newtheorem{Dfn}{Definition}[chapter]
-\newtheorem{Satz}[Dfn]{Satz}
-\newtheorem{Lemma}[Dfn]{Lemma}
-\newtheorem{Kor}[Dfn]{Korollar}
-\newtheorem{Prop}[Dfn]{Proposition}
 \theorembodyfont{\normalfont}
-\newtheorem{Bsp}[Dfn]{Beispiel}
-\newtheorem{Bspe}[Dfn]{Beispiele}
-\newtheorem{Bem}[Dfn]{Bemerkung}
-
 \theoremstyle{nonumberbreak}
 \newtheorem{dfn}{Definition}
 \newtheorem{satz}{Satz}
@@ -400,9 +341,6 @@
 % set line distances
 \linespread{1.1}
 
-% Add a ':' for mathmode with tiny whitespaces around
-\newcommand{\SlimDdot}{\ensuremath{\mathrm{:}}}
-
 % Print and index given text
 % usage: \CmIndex{[(optionally put another text for the index in here)]}{(text to print and add to index)}
 \newcommand{\CmIndex}[2][]{\ifthenelse{\isempty{#1}}{\index{#2}}{\index{#1}}#2}
@@ -414,12 +352,13 @@
 \parindent0pt % der Einschub bei neuem Absatz
 
 % Befehl fuer Anfuerungszeichen unten und oben
-\newcommand{\quot}[1]{\textrm{\glqq}{#1}\textrm{\grqq}}
+\newcommand{\quot}[1]{\text{\glqq}{#1}\text{\grqq}}
 
 %========================================================================================================================
 %	G L O S S A R
 %========================================================================================================================
 
+% Glossareintraege hier
 
 %========================================================================================================================
 %	I N F O R M A T I O N E N		Z U M	S K R I P T
@@ -4149,7 +4088,7 @@ Also:
 \end{tikzpicture}\end{center}
 \end{bsp}
 
-\section*{Walkers Vermutung}
+\section{Walkers Vermutung}
 
 Welche Invarianten von $M_l$ bestimmen den L"angenvektor von $l$ (bis auf geeignete "Aquivalenz)?
 F"ur $l \in \R_{>0}^n$ und $t \in \R_{> 0}$ gilt $M_l \cong M_{tl}$.
@@ -4493,7 +4432,6 @@ Helicoid
 	\def\len{1.25}
 	
 	\draw (180+\a:\len) -- (\a:\len);
-	\foreach \i in {0.1,0.2,...,0.9} {}
 	\draw[decorate,decoration={coil,amplitude=\ampl,segment length=\seg}] (180+\a:\len) -- (\a:\len);
 	\foreach \i in {0.03,0.06,...,0.9} {
 		\path (180+\a:\len) --coordinate[pos=\i](n) (\a:\len);
@@ -4513,6 +4451,231 @@ $H_s = \left\{ \left( \begin{array}{ccc|c}
 	0 & 0 & 0 & 1
 \end{array} \right) \right\}$
 \end{center}
+
+% Vorlesung vom 8. 7.
+
+\section{Vorw\"artstransformation}
+
+Wie berechnet man zu gegebenen Winkeln, beziehungsweise Translationen, die Endpositionen eines Roboters?
+Man kann sich diese Frage etwa am \Puma\index{Puma!\Puma} (Programmable Universal Machine for Assembly) veranschaulichen:
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+Jedes Gelenk bestimmt eine Ein-Paramter-Untergruppe in $\SE(3)$, $\theta \mapsto A_i(\theta)$, wobei $A_i(\theta)$ eine Schraube in obigem Sinne ist, zum Beispiel
+\begin{align*}
+	A_i(\theta) &= \left( \begin{array}{c|c}
+		\id & u \\ \hline
+		0 & 1
+	\end{array} \right)
+	\left( \begin{array}{ccc|c}
+		1 & 0 & 0 & \\
+		0 & \cos \theta & -\sin \theta & 0 \\
+		0 & \sin \theta & \cos \theta & \\ \hline
+		 & 0 & & 1
+	\end{array} \right)
+	\left( \begin{array}{c|c}
+		\id & -u \\ \hline
+		0 & 1
+	\end{array} \right)
+	\shortintertext{oder}
+	A_i(\theta) &= \left( \begin{array}{c|c}
+		\id & \frac{\theta s}{2 \pi} \cdot v \\ \hline
+		0 & 1
+	\end{array} \right)
+\end{align*}
+f"ur eine Translation in Richtung $v$.
+Nach Wahl einer Ausgangsposition des Roboters, welche den Winkeln $\theta_1 = \theta_2 = \ldots = \theta_k = 0$ enstpricht, erh"alt man die Endposition, beziehungsweise die \CmMark{Gestalt}, durch Anwenden der Transformation $\theta = (\theta_1, \ldots, \theta_k)$.
+\begin{align*}
+	K(\theta) = A_1(\theta_1) A_2(\theta_2) \ldots A_k(\theta_k) && \mathbb{T}^k \to \SE(3)
+\end{align*}
+Es bleiben immer noch einige Fragen offen:
+\begin{enumerate}
+\item
+	Geschwindigkeiten, Beschleunigungen, etc.
+\item
+	Effizienz
+\item
+	Umkehrbarkeit der Abbildung
+\item
+	Geometrie, insbesondere in singul"aren Punkten
+\end{enumerate}
+
+\section{Linarisierung (i.e. Tangentialr\"aume)}
+
+Die Geschwindigkeit eines Werkzeugs ist gegeben durch die erste Ableitung (nach der Zeit) des Positionvektors $p(t)$ des Roboterarmes.
+Es gilt $p(t) = K(\theta_t) p_0$.
+Da jede Gestalt durch eine Transformation $g = K(\theta)$ beschrieben ist, gen"ugt es, die durch Wege $t \mapsto g_t(g p_0)$, mit $g_0 = \id$, zu beschreiben.
+Dann gilt
+\begin{align*}
+	\dot{p}(t) = \dot{g}_t (g p_0).
+\end{align*}
+Die Gruppe $\SE(3) = \so(3) \X \R^3$ ist eine Lie-Gruppe, das hei"st eine Glatte Mannigfaltigkeit und die Gruppenoperationen sind glatt bez"uglich dieser differenzierbaren Struktur.
+
+Als Untermannigfaltigkeit von $\GL(3)$ ist $\SO(3)$ durch die Gleichung $A^TA = \id$ bestimmt.
+Ist $g_t = A(t)$ ein glatter Weg durch $\id \in  \SO(3)$, so gilt
+\begin{align*}
+	0 = \difffrac[t=0]{}{t} \id = \difffrac[t=0]{}{t} \left( A(t)^T A(t) \right) = A'(0)^T \underbrace{A(0)}_{=\id} + \underbrace{A(0)^T}_{=\id} A'(0) = A'(0)^T + A'(0).
+\end{align*}
+Also gilt $A'(0) = -A'(0)^T$, das hei"st der Tangentialraum in 1 von $\SO(3)$, $\T_1 \SO(3) = \SO(3)$, besteht aus schiefsymmetrischen Matrizen.
+Ist $g_t = \left( \begin{smallmatrix} A_t & b_t \\ 0 & 1 \end{smallmatrix} \right) $ ein glatter Weg in $\SE(3)$ mit $g_0 = \id_{\R^4}$, das hei"st $A_0 = \id$, $b_0 = 0$, dann gilt
+\begin{align*}
+	g_0' &= \left( \begin{array}{c|c}
+		A_0' & b_0' \\ \hline
+		0 & 0
+	\end{array} \right)
+	=
+	\left( \begin{array}{c|c}
+		\Omega & v \\ \hline
+		0 & 0
+	\end{array} \right),
+	\intertext{wobei}
+	\Omega &=
+	\left( \begin{array}{ccc}
+		0 & -\omega_z & \omega_y \\
+		\omega_z & 0 & -\omega_x \\
+		-\omega_y & \omega_x & 0
+	\end{array} \right)
+\end{align*}
+eine schiefe Matrix ist und $v \in \R^3$.
+F"ur einen durch $x_t = g_t \cdot x_0$ parametrisierten Weg in $\R^3$ gilt dann
+\begin{align*}
+	\dot{x}_0 = \Omega x_0 + v = \omega \X x_o + v,
+\end{align*}
+wobei $\omega = (\omega_x, \omega_y, \omega_z)^T$.
+Ist $g_t$ eine Schraubbewegung, das hei"st existieren $\overline{u}, \overline{v} \in \R^3$ und $s \in \R$ mit
+\begin{align*}
+	g_t = \left(\begin{array}{c|c}
+		R(\theta_t, \overline{v}) & \frac{\theta_t s}{2 \pi} \overline v + (\id - R(\theta_t, \overline v)) \\ \hline
+		0 & 1
+	\end{array}\right),
+\end{align*}
+so gilt
+\begin{align*}
+	\Omega &= \difffrac[t=0]{}{t} (R(\theta_t, \overline v)) = \begin{pmatrix}
+		0 & -\omega_z & \omega_y \\
+		\omega_z & 0 & -\omega_x \\
+		-\omega_y & \omega_x & 0
+	\end{pmatrix}
+	\\
+	v &= \difffrac[t=0]{}{t} \left( \frac{\theta_t s}{2 \pi} \overline v + (\id \cdot R_t) \overline u \right) = \theta'_0 \cdot \frac{s}{2 \pi} \overline v - \Omega \overline u
+	\\
+	\dot{x}_0 &= \Omega x_0 + \theta'_0 \frac{s}{2 \pi} \overline v - \Omega \overline u = \underbrace{\omega x (x_0 - u)}_{\mathclap{\substack{\text{Rotations-}\\\text{geschwindigkeit}}}} + \underbrace{\theta'_0 \frac{s}{2 \pi} \overline v}_{\mathclap{\substack{\text{\quot{Vortrieb}} \\ \text{der Schraube}}}}
+\end{align*}
+wobei $\omega$ die Winkelgeschwindigkeit ist.
+\begin{center}\textcolor{red}{[BILD]}\end{center}
+
+\section*{Adjungierte Darstellung}
+
+Im Allgemeinen ist
+\begin{align*}
+	\Ad: G \to \Aut(\mathfrak g)
+	&&
+	\Ad(g): (h \mapsto g h g^{-1})_{*e}: \T_e G \cong \mathfrak g \to \T_e G = \mathfrak g.
+\end{align*}
+F"ur $SO(3)$ beziehungsweise $\so(3)$ ist die Konjugation von Metriken gegeben durch
+\begin{align*}
+	\Omega' = \Ad(R) \Omega = R \Omega R^T.
+\end{align*}
+F"ur $\SO(3)$ existiert eine Orthonormalbasis $r_1, r_2, r_3$ von $\R^3$ mit $R^T = (r_1 | r_2 | r_3)$.
+Ist dann
+\begin{align*}
+	\Omega = \begin{pmatrix}
+		0 & -\omega_z & \omega_y \\
+		\omega_z & 0 & -\omega_x \\
+		-\omega_y & \omega_x & 0
+	\end{pmatrix}
+	= \omega \X (\cdot),
+\end{align*}
+so gilt
+\begin{align*}
+	\Omega' &= R \Omega R^T = R (\omega \X r_1 | \omega \X r_2 | \omega \X r_3) \\
+	&=
+	\begin{pmatrix}
+		0 & \langle r_1, \omega \X r_2 \rangle & \\
+		 & 0 & \\
+		 & & 0
+	\end{pmatrix}
+	= \ldots =
+	\begin{pmatrix}
+		0 & -\langle r_3, \omega \rangle & \langle r_2, \omega \rangle \\
+		\langle r_3, \omega \rangle & 0 & -\langle r_1, \omega \rangle \\
+		-\langle r_2, \omega \rangle & \langle r_1, \omega \rangle & 0
+	\end{pmatrix}
+	= R \omega \X (\cdot)
+\end{align*}
+In $\SE(3)$ gilt damit
+\begin{align*}
+	\left(\begin{array}{c|c}
+		\Omega' & v' \\ \hline
+		0 & 0
+	\end{array}\right)
+	&=
+	\Ad
+	\left(\begin{array}{c|c}
+		R & \overline v \\ \hline
+		0 & 1
+	\end{array}\right)
+	\left(\begin{array}{c|c}
+		\Omega & v \\ \hline
+		0 & 0
+	\end{array}\right)
+	\\ &=
+	\left(\begin{array}{c|c}
+		R & \overline v \\ \hline
+		0 & 1
+	\end{array}\right)
+	\left(\begin{array}{c|c}
+		\Omega & v \\ \hline
+		0 & 0
+	\end{array}\right)
+	\left(\begin{array}{c|c}
+		R^T & -R^T \overline v \\ \hline
+		0 & 1
+	\end{array}\right)
+	\\ &=
+	\left(\begin{array}{c|c}
+		R \Omega R^T & R v - R \Omega R^T \overline v \\ \hline
+		0 & 0
+	\end{array}\right)
+\end{align*}
+Da $R \Omega R^T \overline v = (R \omega) \X \overline v$ gilt, folgt f"ur
+\begin{align*}
+	V = \begin{pmatrix}
+		0 & -v_z & v_y \\
+		v_z & 0 & -v_x \\
+		-v_y & v_x & 0
+	\end{pmatrix}
+\end{align*}
+mit $\overline v = (v_x, v_y, v_z)^T$ f"ur alle $x \in \R^3$:
+\begin{align*}
+	V x = -x \X \overline v,
+	\shortintertext{das hei"st}
+	-R \Omega R^T = (R \omega) \X \overline v = V R \omega.
+\end{align*}
+Stellt man ein Lie-Algebra-Element $\left( \begin{smallmatrix} \Omega & V \\ 0 & 0 \end{smallmatrix} \right)$ durch $\left( \begin{smallmatrix} \omega \\ v \end{smallmatrix} \right) \in \R^6$ dar, so gilt
+\begin{align*}
+	\begin{pmatrix}
+		\omega' \\ v
+	\end{pmatrix}
+	=
+	\Ad
+	\left(\begin{array}{c|c}
+		R & \overline v \\ \hline
+		0 & 1
+	\end{array}\right)
+	\begin{pmatrix}
+		\omega \\ v
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+		R & 0 \\
+		V R & R
+	\end{pmatrix}
+	\begin{pmatrix}
+		\omega \\ v
+	\end{pmatrix}
+\end{align*}
+
+ 
+
 
 
 %========================================================================================================================
