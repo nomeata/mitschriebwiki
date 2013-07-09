@@ -4458,7 +4458,30 @@ $H_s = \left\{ \left( \begin{array}{ccc|c}
 
 Wie berechnet man zu gegebenen Winkeln, beziehungsweise Translationen, die Endpositionen eines Roboters?
 Man kann sich diese Frage etwa am \Puma\index{Puma!\Puma} (Programmable Universal Machine for Assembly) veranschaulichen:
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-5,-4)}{(5,4)}
+	\def\r{0.15}
+	
+	\draw[->] (\r,0) arc[radius=\r,start angle=360,end angle=270] node[below]{$\theta_1$} arc[radius=\r,start angle=270,end angle=180];
+	\draw (0,0)coordinate(0) --coordinate[pos=0.8](1) +(0,2);
+	\def\a{25}
+	\draw ($(1)+(180+\a:0.5)$) coordinate(t) --coordinate[pos=0.8](2) +(\a:3);
+	\draw[->] ($(t)+(270+\a:\r)$) arc[radius=\r,start angle=270+\a,end angle=180+\a] node[left]{$\theta_2$} arc[radius=\r,start angle=180+\a,end angle=90+\a];
+	\def\a{320}
+	\draw ($(2)+(180+\a:0.5)$) coordinate(t) -- +(\a:2.5)coordinate(3);
+	\draw[->] ($(t)+(270+\a:\r)$) arc[radius=\r,start angle=270+\a,end angle=180+\a] node[left]{$\theta_3$} arc[radius=\r,start angle=180+\a,end angle=90+\a];
+	
+	\draw[->] ($(3)+(180:0.25)$) -- +(0:1.25) coordinate(t);
+	\draw[->] ($(t)+(270:\r)$) arc[radius=\r,start angle=270,end angle=360] node[right]{$\theta_4$} arc[radius=\r,start angle=360,end angle=450];
+	\draw[->] ($(3)+(225:0.25)$) -- +(45:1.25) coordinate(t);
+	\draw[->] ($(t)+(320:\r)$) arc[radius=\r,start angle=320,end angle=405] node[right]{$\theta_5$} arc[radius=\r,start angle=405,end angle=495];
+	\draw[->] ($(3)+(270:0.25)$) -- +(90:1.25) coordinate(t);
+	\draw[->] ($(t)+(0:\r)$) arc[radius=\r,start angle=0,end angle=90] node[above]{$\theta_6$} arc[radius=\r,start angle=90,end angle=180];
+	
+	\foreach \i in {0,1,2,3} {\fill (\i) circle(0.05);}
+	
+	\node at (2.5,0.25) {'72 Scheinmann, @Standford};
+\end{tikzpicture}\end{center}
 Jedes Gelenk bestimmt eine Ein-Paramter-Untergruppe in $\SE(3)$, $\theta \mapsto A_i(\theta)$, wobei $A_i(\theta)$ eine Schraube in obigem Sinne ist, zum Beispiel
 \begin{align*}
 	A_i(\theta) &= \left( \begin{array}{c|c}
@@ -4487,7 +4510,7 @@ Nach Wahl einer Ausgangsposition des Roboters, welche den Winkeln $\theta_1 = \t
 	K(\theta) = A_1(\theta_1) A_2(\theta_2) \ldots A_k(\theta_k) && \mathbb{T}^k \to \SE(3)
 \end{align*}
 Es bleiben immer noch einige Fragen offen:
-\begin{enumerate}
+\begin{itemize}
 \item
 	Geschwindigkeiten, Beschleunigungen, etc.
 \item
@@ -4496,7 +4519,7 @@ Es bleiben immer noch einige Fragen offen:
 	Umkehrbarkeit der Abbildung
 \item
 	Geometrie, insbesondere in singul"aren Punkten
-\end{enumerate}
+\end{itemize}
 
 \section{Linarisierung (i.e. Tangentialr\"aume)}
 
@@ -4560,7 +4583,50 @@ so gilt
 	\dot{x}_0 &= \Omega x_0 + \theta'_0 \frac{s}{2 \pi} \overline v - \Omega \overline u = \underbrace{\omega x (x_0 - u)}_{\mathclap{\substack{\text{Rotations-}\\\text{geschwindigkeit}}}} + \underbrace{\theta'_0 \frac{s}{2 \pi} \overline v}_{\mathclap{\substack{\text{\quot{Vortrieb}} \\ \text{der Schraube}}}}
 \end{align*}
 wobei $\omega$ die Winkelgeschwindigkeit ist.
-\begin{center}\textcolor{red}{[BILD]}\end{center}
+\begin{center}\begin{tikzpicture}[font=\scriptsize,scale=1,baseline=0]
+	%\tikzgitter{(-1,-1)}{(8,4)}
+	
+	\draw[->] (-0.5,0) -- (3,0);
+	\draw[->] (0,-0.5) -- (0,2);
+	\def\a{35}
+	\draw[->] (180+\a:0.5) -- (\a:2);
+	
+	\def\a{65}
+	\coordinate (v) at (\a:1.25);
+	\draw[->] (0,0) --node[left,pos=0.7]{$\overline v$} (v);
+	
+	\coordinate (a) at (2.5,-0.5); \coordinate (c) at ($(a)+(\a:4)$);
+	\path (a) --coordinate[pos=0.4](u) coordinate[pos=0.3](p) coordinate[pos=1](q) (c);
+	
+	\draw[thick,->] (0,0) --node[above,pos=0.7]{$\overline u$} (u);
+	\draw[thick,->] (u) --node[left,pos=0.7]{$\overline v$} ($(u)+(v)$) coordinate (b);
+	
+	\draw (a) -- (u) (b) -- (c);
+	
+	%\foreach \i in {p,q} {\fill[red] (\i) circle(0.05);}
+	\draw[decorate,decoration={coil,mirror,amplitude=0.6cm,segment length=0.7cm,aspect=0.6,
+		/tikz/postaction={
+			decoration={
+				markings,
+				mark=at position 0.46 with \coordinate (x0);,
+				mark=at position 0.64 with \coordinate (xt);
+			},decorate}
+		}] (p) -- (q);
+	\foreach \x / \l / \p in {x0/x_0/above,xt/x_t/above} {\fill (\x) circle(0.05)node[\p]{$\l$};}
+	
+	\draw[gray,thick,->] (u) --coordinate[pos=0.5](tmp) (x0);
+	\draw[gray,->] (4.5,0.5)node[right]{$(x_0 - \overline{u})$} to[out=180,in=315] (tmp);
+	
+	\def\tx{1.0}
+	\def\ty{0.5}
+	\draw[->] (x0) --node[above,pos=0.6]{$\dot{x}_0$} +(\tx,\ty);
+	
+	\draw[dashed,->] (x0) --coordinate[pos=0.5](tmp) ++(0.95*\tx,0);
+	\draw[->] (5.5,1)node[right]{$\omega \X (x_0- \overline{u})$} to[out=180,in=270] (tmp);
+	
+	\draw[dashed,->] ($(x0)+(\tx,0)$) --coordinate[pos=0.5](tmp) ++(0,0.9*\ty);
+	\draw[->] (5.5,2)node[right]{$\theta' \frac{s}{2 \pi} \overline{v}$} to[in=0,out=270] (tmp);
+\end{tikzpicture}\end{center}
 
 \section*{Adjungierte Darstellung}
 
