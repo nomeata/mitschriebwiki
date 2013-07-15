@@ -255,12 +255,14 @@
 \DeclareMathOperator{\Iso}{Iso}
 \DeclareMathOperator{\Kern}{Kern}
 \DeclareMathOperator{\Oo}{O} % Matrizen sie mit ihrer Transponierten multipiziert die Einheitsmatrix ergeben
+\DeclareMathOperator{\Pin}{Pin}
 \DeclareMathOperator{\Relation}{\scriptstyle\mathrm{R}} % custom Relation
 \DeclareMathOperator{\Ric}{Ric} % Ricci Tensor field
 \DeclareMathOperator{\Rang}{Rang} % rank (ii)
 \DeclareMathOperator{\SE}{SE}
 \DeclareMathOperator{\SL}{SL} % Matrizen mit Deteminante 1
 \DeclareMathOperator{\SO}{SO} % Matrizen mit Deteminante 1
+\DeclareMathOperator{\Spin}{Spin}
 \DeclareMathOperator{\Stab}{Stab} % Stabilisator
 \DeclareMathOperator{\Sym}{Sym} % symmetric group
 \DeclareMathOperator{\T}{T} % tangent bundle
@@ -551,7 +553,8 @@ Der Raum $X$ besitzt die obere Kr"ummungsschranke $\kappa$, wenn f"ur alle $x \i
 		\draw[->] (-2.5,0) -- (2.5,0);\draw[->] (0,-1.5) -- (0,1.5);
 	\end{tikzpicture}\end{center}
 \item
-	$(M, g)$ Riemannsche Manngifaltigkeit, Schnittkr"ummung $\sec_g \le \kappa$, vollst"andig. nach dem Satz von Topogonov hat $M$ die obere Kr"ummungsschranke $\kappa$.
+	Sei $(M, g)$ Riemannsche Manngifaltigkeit mit der Schnittkr"ummung $\sec_g \le \kappa$ und vollst"andig.
+	Nach dem Satz von Topogonov hat $M$ die obere Kr"ummungsschranke $\kappa$.
 \end{enumerate}\end{bspe}
 
 \begin{emptythm}[Eigenschaften von $\CAT(\kappa)$-R"aumen]\begin{itemize}
@@ -589,7 +592,7 @@ F"ur jedes geod"atische Dreieck $\Delta(x, y, z)$ vom Umfang $< 2 D_\kappa$ und 
 	\draw[clip] (x') -- (p') -- (q') -- (x') -- cycle;
 	\draw (x') circle(1);
 \end{tikzpicture}\end{center}
-Ist $X$ ein $\CAT(\kappa)$-Raum und sind $c_1, c_2$ Geod"atische mit gleichem Startpunkt $c_1(0) = c_2(0) = x$ so ist der Winkel $\varangle_{\overline{x}} (\overline{c_1(s)}, \overline{c_2(t)})$ monoton wachsend in $s$ und $t$.
+Ist $X$ ein $\CAT(\kappa)$-Raum und sind $c_1$ und $c_2$ Geod"atische mit gleichem Startpunkt $c_1(0) = c_2(0) = x$ so ist der Winkel $\varangle_{\overline{x}} (\overline{c_1(s)}, \overline{c_2(t)})$ monoton wachsend in $s$ und $t$.
 Damit ist der Winkel
 \begin{align*}
 	\varangle(c_1, c_2) = \lim_{\mathclap{s,t \to 0}} \varangle_{\overline{x}} (\overline{c_1(s)}, \overline{c_2(t)}) 
@@ -4878,7 +4881,7 @@ Zu $\se(3)$ betrachte die Basis
 	\left(\begin{array}{ccc|c}
 		0 & 0 & 0 & 0 \\
 		0 & 0 & 0 & 0 \\
-		0 & 0 & 0 & 10 \\ \hline
+		0 & 0 & 0 & 1 \\ \hline
 		0 & 0 & 0 & 0
 	\end{array}\right)
 \end{align*}
@@ -5018,12 +5021,153 @@ Diese Elemente bilden eine Vektorraum-Basis von $\Cl(p, q, r)$, man erh"alt eine
 \begin{align*}
 	\Cl(p, q, r) = \bigoplus_{k=0}^n V_k.
 \end{align*}
-Insbesondere gilt $\dim \Cl(p, q, r) = 1^{(p + q + r)}$.
+Insbesondere gilt $\dim \Cl(p, q, r) = 2^{(p + q + r)}$.
 Diese Vektorraum-Graduierung h"angt im Allgemeinen von der Wahl der Basis ab, allerdings ist die Zerlegung
 \begin{align*}
 	\Cl(p, q, r) = \Cl(p, q, r)^- \oplus \Cl(p, q, r)^+
 \end{align*}
 in Produkte mit einer ungeraden beziehungsweise geraden Anzahl abh"angig von der Wahl der Basis.
+Das ist eine Involution von $\Cl$ mit $e_i \mapsto e_i^* = -e_i$ und $(ab)^*  b^* a^*$.
+
+\section{Wo ist $\SO(3)$ (euklidische Bewegungen)}
+
+Betrachte $\Cl(0, n, 0)$.
+Dann liegt $\R^n$ in $\Cl(0, n, 0)$ durch
+\marginnote{\scriptsize{$\delta_{ij} = \begin{cases}
+	1 & : i = j \\
+	0 & : i \ne j
+\end{cases}
+$ Kronecker-Delta}}
+\begin{align*}
+	\begin{pmatrix}
+		x^1 \\ \vdots \\ x^n
+	\end{pmatrix}
+	\mapsto
+	x^1 e_1 + \ldots + x^n e_n &&
+	\langle x, y \rangle
+	&= - \sum_{i,j \le n} x^{i} y^j (- \delta_{ij}) \\
+	&&&= - \frac{1}{2} \sum_{i, j \le n} x^{i} y^j (e_i e_j + e_j e_i) \\
+	&&&= \frac{1}{2} (x y^* + y x^*)
+\end{align*}
+Betrachte die Gruppe
+\begin{align*}
+	\Pin(n) = \{ g \in \Cl(0, n, 0) \mid g g^* = 1, (-1)^{|g|} g \X g \in \R^n \text{ f"ur alle } x \in \R^n \subseteq \Cl \}
+\end{align*}
+Die oben bschriebene Wirkung $\Pin(n) \curvearrowright \R$ erh"alt das Skalarprodukt:
+\begin{align*}
+	{}& \frac{1}{2} \left( ( (-1)^{|g|} g x g^*) ( (-1)^{|g|} g y g )^* + ( (-1)^{|g|} g y g^* ) ( (-1)^{|g|} g x g^* )^* \right) \\
+	={}& \frac{1}{2} \left( (-1)^{|g|} g x (\underbrace{g^* g}_{=1}) y^* (-1)^{|g|} g^* + \ldots \right) \\
+	={}& g \left(  \frac{1}{2} (x y^* + y x^*) \right) g^* \\
+	={}& g g^* \langle x, y \rangle = \langle x, y \rangle
+\end{align*}
+Damit existiert ein Homomorphismus von $\Pin(n)$ nach $\mathop{O}(n)$.
+Man kann zeigen, dass dieser surjektiv ist und $\Z_2 := \FakRaum{\Z}{2 \Z}$ als Kern hat.
+Es gilt $\Pin(n) \cap \R^n = \S^{n-1}$, denn
+\begin{align*}
+	1 = v v^* = \frac{1}{2} (v v^* + v v^*) = \langle v, v \rangle = \|v\|^2
+\end{align*}
+und man rechnet schnell nach, dass $-v w v^* \in \R^n$ f"ur alle $w \in \R^n$.
+Jedes solche $v$ wirkt als Spiegelung an der Hyperebene $v^\perp$:
+\begin{align*}
+	(-1)^{|v|} v (\lambda v) v^* = - \lambda v v v^* = -\lambda v
+\end{align*}
+Ist $w \in v^\perp$, so gilt
+\begin{align*}
+	0 = \langle w, v \rangle = \frac{1}{2} (w v^* + v w^*),
+\end{align*}
+also
+\begin{align*}
+	w v^* = -v w^* = v w
+\end{align*}
+und es folgt
+\begin{align*}
+	(-1)^{|v|} v w v^* = -v v w = v^* v w = w.
+\end{align*}
+Fasst man Drehungen in $\R^n$ als Verkettung von Spiegelungen auf, so ist klar, dass die von geraden Elemente erzeugte Untergruppe
+\begin{align*}
+	\Spin(n) = \{ g \in \Cl^+(0, n, 0) \mid g g^* = 1 \text{ und } (-1)^{|g|} g x g^* \in \R^n \text{ f"ur alle } x \in \R^n \}
+\end{align*}
+gerade die zweifache "Uberlagerung von $\SO(n)$ ist.
+Wir werden uns nun im Folgenden auf den Fall $n = 3$ beschr"anken.
+Sei $g \in \Cl^+(0, 3, 0)$ mit 
+\begin{align*}
+	g &= a_0 + a_1 e_2 e_3 + a_2 e_3 e_1 + a_3 e_1 e_2
+	\shortintertext{und}
+	g^* &= a_0 + a_1(e_2 e_3)^* + a_2(e_3 e_1)^* + a_3(e_1 e_2)^* \\
+	&= a_0 + a_1 e_3^* e_2^* + a_2 e_1^* e_3^* + a_3 e_2^* e_1^* \\
+	&= a_0 + a_1 (-e_3) (-e_2) + a_1 (-e_1) (-e_3) + a_1 (-e_2) (-e_1) \\
+	&= a_0 - a_1 e_2 e_3 - a_2 e_3 e_1 - a_3 e_1 e_2
+	\shortintertext{und damit}
+	g g^* &= \ldots = a_0^2 + a_1^2 + a_2^2 + a_3^2
+\end{align*}
+und man rechnet leicht nach, dass f"ur alle $x \in \R^n$ schon  $(-1)^{|g|} g x g^* \in \R^n$ gilt,
+Danmit gilt
+\begin{align*}
+	\Spin(3) \subseteq \S^3 \subseteq \Cl^+(0, 3, 0) = [\overset{\textcolor{gray}{i}}{e_2 e_3}, \overset{\textcolor{gray}{j}}{e_3 e_1}, \overset{\textcolor{gray}{k}}{e_1 e_2}] = \H
+\end{align*}
+
+\begin{bsp}
+Die Drehung um den Winkel $\theta$ um die Achse $e_k$ wird definiert durch 
+\begin{align*}
+	g = \cos \frac{\theta}{2} + \sin \frac{\theta}{2} e_i e_j,
+\end{align*}
+wobei $k \notin \{i, j\}$ f"ur $i \ne j$ gelte.
+Damit erh"alt man
+\end{bsp}
+\begin{align*}
+	g e_k g^* &= \left( \cos \frac{\theta}{2} + \sin \frac{\theta}{2} e_i e_j \right) e_k \left( \cos \frac{\theta}{2} - \sin \frac{\theta}{2} e_i e_j \right) \\
+	&= \cos^2 \frac{\theta}{2} e_k + \cos \frac{\theta}{2} \sin \frac{\theta}{2} e_i e_j e_k - \cos \frac{\theta}{2} \sin \frac{\theta}{2} e_k e_i e_j + \sin^2 \frac{\theta}{2} e_i e_j e_k e_i e_j \\
+	&= \left( \cos \frac{\theta}{2} + \sin^2 \frac{\theta}{2} \right) e_k = e_k \\
+	g e_j g^* &= \left( \cos \frac{\theta}{2} + \sin \frac{\theta}{2} e_i e_j \right) e_k \left( \cos \frac{\theta}{2} - \sin \frac{\theta}{2} e_i e_j \right) \\
+	&= \ldots = \left( \cos^2 \frac{\theta}{2} - \sin^2 \frac{\theta}{2} \right) e_j - 2 \cos \frac{\theta}{2} \sin \frac{\theta}{2} e_i \\
+	&= \cos \theta e_j - \sin \theta e_i
+\end{align*}
+Betracht $\Spin(n) \X \R^n = \{ \quot{g + t} \}$.
+Betrachte $\Cl(0, n, 1)$ mit den Erzeugern $e_1, \ldots, e_n$ mit $e_i^2 = -1$, sowie $e$ mit $e^2 = 0$.
+$\Cl(0, n, 1)$ enth"alt mit $(x^1, \ldots, x^n)^T \mapsto 1 + (x^1 e_1 + \ldots + x^n e_n) e$ einen $\R^n$, und die Gruppe
+\begin{align*}
+	\Spin(n) \X \R^n = \{ (g + \frac{1}{2} t g e) \in \Cl(0, n, 1) \mid g \in \Spin(n), t = t^1 e_1 + \ldots + t^n e_n \}
+\end{align*}
+wirkt durch
+\begin{align*}
+	(g + \frac{1}{2} t g e) (1 + x e) (g - \frac{1}{2} t g e)^* = \ldots = 1 + (g x g^* + t) e.
+\end{align*}
+Das sind unsere gesuchten euklidischen Bewegungen.
+
+\begin{bsp}
+Ist $h = (g + \frac{1}{2} t g e)$ eine reine Drehung, also $t = 0$, so gilt
+\begin{align*}
+	h(1 + x e) h^* = g(1 + x e) g^* = g g^* + g x e g^* = 1 + (g x g^*) e
+\end{align*}
+Die letzte Gleichheit kommt daher, dass $g$ gerade ist.
+Ist $h = (1 + \frac{1}{2} t e)$ reine reine Translation, so gilt
+\begin{align*}
+	(1 + \frac{1}{2} t e) (1 + x e) (1 - \frac{1}{2} t e)^*
+	&= (1 + \frac{1}{2} t e + x e + \frac{1}{2} t e x e) \cdot (1 - \frac{1}{2} t e )^* \\
+	&= (1 + \frac{1}{2} t e + x e) (1 - \frac{1}{2} e t) \\
+	&= 1 + \frac{1}{2} t e + x e - \frac{1}{2} e t - \frac{1}{4} t e^2 t - \frac{1}{2} x e^2 t \\
+	&= 1 + t e + x e = 1 + (x + t) e
+\end{align*}
+\end{bsp}
+
+\section{Wo ist die \quot{Geometrie}?}
+Ebenen im $\R^3$ sind mit einer Einheitsnormalen $n \in \S^2 \subseteq \R^3$ und einem \quot{Abstand} $d$ gegeben durch
+\begin{align*}
+	H_{n,d} = \{ x \in \R^3 \mid \langle n, x \rangle = d \}.
+\end{align*}
+Ist $(R, v)$ eine euklidische Bewegung, so gilt
+\begin{align*}
+	(R, v) H_{n,d} = \{x \mid d = \langle n, R^T x - R^T v \rangle = \langle R n, x \rangle - \langle R n, v \rangle \} = H_{R n, d + \langle R n, v \rangle}.
+\end{align*}
+Betrachte Elemente vom Grad 1 in $\Cl(0, 3, 1)$, also $\mathbb{T} = n_x e_1 + n_y e_2 + n_z e_3 + d e$.
+F"ur $n = (n_x, x_y, x_z)^T$ gilt genau dann $\|n\| = 1$, falls $n n^* = 1$.
+Ist $h = g + \frac{1}{2} t g e$ eine euklidische Bewegung, so gilt
+\begin{align*}
+	h n h^*
+	&= \left( g + \frac{1}{2} t g e \right) \left( n + d e \right) \left( g - \frac{1}{2} t g e \right)^*
+	= \ldots \\ &= g n g^* + \left( d - \frac{1}{2} (g n g^* t + t g n g^*) \right) e
+	\quot{=} - \langle R n, v \rangle
+\end{align*}
 
 %========================================================================================================================
 %	A N H A N G
