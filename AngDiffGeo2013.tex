@@ -353,6 +353,12 @@
 
 % Glossareintraege hier
 
+% GL - Allgemeine Lineare Gruppe
+% O - Orthogonale Gruppe, Matrizen deren Transponierte die Inverse ist, haben Determinante +/-1.
+% SO - spezielle Orthogonale Gruppe, Zusammenhangskomponente von O bei denen die Determinante 1 ist.
+% E - Euklidische Gruppe
+% SE - Spezielle Euklidische Gruppe
+
 %========================================================================================================================
 %	I N F O R M A T I O N E N		Z U M	S K R I P T
 %========================================================================================================================
@@ -3161,7 +3167,7 @@ Allerdings ist dies hier nicht mehr $\CAT(0)$, vergleichbar mit dem Oktanten:
 	\draw[gray,thick] (0,0.25) to[out=10,in=230] (x);
 	\draw[gray,thick,dashed] (x) to[out=90,in=0] (0.25,0.9);
 \end{tikzpicture}}
-Man kann den Knoten $v$ als Spitze eines Kegels betrachten und den Link $\lk(v)$ als den Grundkreis. Je gr"o"ser Link, umso flacher der Kegel.
+Man kann den Knoten $v$ als Spitze eines Kegels betrachten und den Link $\lk(v)$ als den Grundkreis. Je gr"o"ser der Link, umso flacher der Kegel.
 
 Es sei $v$ eine Ecke.
 Der \defi{Link} $\lk(v)$ ist ein abstrakter simplizialer Komplex mit einem $k$-Simplex f"ur jeden $(k+1)$-W"urfel, der $v$ enth"alt.
@@ -4230,7 +4236,7 @@ Jede solche Transformation ist von der Gestalt
 \begin{align*}
     \R^3 \ni x \mapsto Ax + b
 \end{align*}
-mit $A \in \Oo(3)$ und $b \in \R^3$ (wobei $\Oo(3) = \{A \in \R^3 \X \R^3 \mid A^TA = \id_{\R^3}\}$ die Menge der skalarprodukterhaltenden linearen Abbildungen ist).
+mit $A \in \Oo(3)$ und $b \in \R^3$, wobei $\Oo(3) = \{A \in \R^{3 \X 3} \mid A^TA = \id_{\R^3}\}$ die Menge der skalarprodukterhaltenden linearen Abbildungen bezeichnet, die orthogonale Gruppe.
 Die Hintereinanderausf"uhrung
 \begin{align*}
     A' (Ax + b) + b' = A'Ax + A'b + b'
@@ -4240,12 +4246,12 @@ Die Gruppe $\Ee(3)$ der euklidischen Bewegungen ist das semidirekte Produkt $\Ee
 \begin{align*}
     (A', b') (A, b) = (AA', A'b + b').
 \end{align*}
-Die orthogonale Gruppe besitzt zwei Zusammenhangskomponenten, die orientierungserhaltenden Drehungen mit Determinante 1, $\SO(3)$, und die Spiegelungen.
+Die orthogonale Gruppe $\Oo(3)$ besitzt zwei Zusammenhangskomponenten, die orientierungserhaltenden Drehungen mit Determinante 1, also die Spezielle Orthogonale Gruppe oder Drehgruppe $\SO(3)$, und die (Dreh-)Spiegelungen.
 Da mechanisch keine Spiegelung realisierbar ist, betrachtet man nur die orientierungserhaltenden euklidischen Bewegungen $\SE(3) = \SO(3) \X \R$.
 
 Zur Vereinfachung der Notation betrachtet man die 4-dimensional Darstellung
 \begin{align*}
-    \SE(3) \hookrightarrow \GL_4(\R) && (A, B) \mapsto \left( \begin{array}{c|c}
+    \SE(3) \hookrightarrow \GL_4(\R) && (A, b) \mapsto \left( \begin{array}{c|c}
         A & b \\ \hline 0 & 1
     \end{array} \right).
 \end{align*}
@@ -4308,7 +4314,7 @@ Bestimmte Roboterarme, beziehungsweise Teile davon, k"onnen im Allgemeinen nur b
 Der Konfigurationsraum dieses Drehgelenkes ist anschaulich $\S^1 = \SO(2) < \SE(3)$.
 Es stellt sich also die Frag nach den Untergruppen von $\SE(3)$:
 
-Ist $G$ eine Untergruppe von $\SE(3) = \SO(3) \X \R^3$, so ist auch $G \cap \R^3 = (\{1\} \X \R^3)$ eine Untergruppe von $\R^3$, also $0$, $\R^2$, $\R^3$, $\R$, $r \Z$, $r \Z \X \R$, $r \Z \X \R^2$, $r \Z \X s \Z$, $r \Z \X s \Z \X \R$ und $r \Z \X s \Z \X t \Z$.
+Ist $G$ eine Untergruppe von $\SE(3) = \SO(3) \X \R^3$, so ist auch $G \cap \R^3 = (\{1\} \X \R^3)$ eine Untergruppe von $\R^3$, also $0$, $\R$, $\R^2$, $\R^3$, $r \Z$, $r \Z \X \R$, $r \Z \X \R^2$, $r \Z \X s \Z$, $r \Z \X s \Z \X \R$ und $r \Z \X s \Z \X t \Z$.
 Wegen
 \begin{align*}
 	\left( \begin{array}{c|c} A & b \\ \hline 0 & 1 \end{array} \right)
@@ -4523,7 +4529,7 @@ Es bleiben immer noch einige Fragen offen:
 	Geometrie, insbesondere in singul"aren Punkten
 \end{itemize}
 
-\section{Linarisierung (i.e. Tangentialr\"aume)}
+\section{Linarisierung (d.h. Tangentialr\"aume)}
 
 Die Geschwindigkeit eines Werkzeugs ist gegeben durch die erste Ableitung (nach der Zeit) des Positionvektors $p(t)$ des Roboterarmes.
 Es gilt $p(t) = K(\theta_t) p_0$.
@@ -4562,7 +4568,7 @@ Ist $g_t = \left( \begin{smallmatrix} A_t & b_t \\ 0 & 1 \end{smallmatrix} \righ
 eine schiefe Matrix ist und $v \in \R^3$.
 F"ur einen durch $x_t = g_t \cdot x_0$ parametrisierten Weg in $\R^3$ gilt dann
 \begin{align*}
-	\dot{x}_0 = \Omega x_0 + v = \omega \X x_o + v,
+	\dot{x}_0 = \Omega x_0 + v = \omega \X x_0 + v,
 \end{align*}
 wobei $\omega = (\omega_x, \omega_y, \omega_z)^T$.
 Ist $g_t$ eine Schraubbewegung, das hei"st existieren $\overline{u}, \overline{v} \in \R^3$ und $s \in \R$ mit
@@ -4638,7 +4644,7 @@ Im Allgemeinen ist
 	&&
 	\Ad(g): (h \mapsto g h g^{-1})_{*e}: \T_e G \cong \mathfrak g \to \T_e G = \mathfrak g.
 \end{align*}
-F"ur $SO(3)$ beziehungsweise $\so(3)$ ist die Konjugation von Metriken gegeben durch
+F"ur die Gruppe $\SO(3)$, beziehungsweise die Lie-Algebra $\so(3)$, ist die Konjugation von Metriken gegeben durch
 \begin{align*}
 	\Omega' = \Ad(R) \Omega = R \Omega R^T.
 \end{align*}
@@ -4657,9 +4663,9 @@ so gilt
 	\Omega' &= R \Omega R^T = R (\omega \X r_1 | \omega \X r_2 | \omega \X r_3) \\
 	&=
 	\begin{pmatrix}
-		0 & \langle r_1, \omega \X r_2 \rangle & \\
-		 & 0 & \\
-		 & & 0
+		0 & \langle r_1, \omega \X r_2 \rangle & \langle r_1, \omega \X r_3 \rangle \\
+		\langle r_2, \omega \X r_1 \rangle & 0 & \langle r_2, \omega \X r_3 \rangle \\
+		\langle r_3, \omega \X r_1 \rangle & \langle r_3, \omega \X r_2 \rangle & 0
 	\end{pmatrix}
 	= \ldots =
 	\begin{pmatrix}
@@ -4685,6 +4691,19 @@ In $\SE(3)$ gilt damit
 		\Omega & v \\ \hline
 		0 & 0
 	\end{array}\right)
+	=
+	\left(\begin{array}{c|c}
+		R & \overline v \\ \hline
+		0 & 1
+	\end{array}\right)
+	\left(\begin{array}{c|c}
+		\Omega & v \\ \hline
+		0 & 0
+	\end{array}\right)
+	\left(\begin{array}{c|c}
+		R & \overline v \\ \hline
+		0 & 1
+	\end{array}\right)^{-1}
 	\\ &=
 	\left(\begin{array}{c|c}
 		R & \overline v \\ \hline
@@ -4714,9 +4733,11 @@ Da $R \Omega R^T \overline v = (R \omega) \X \overline v$ gilt, folgt f"ur
 \end{align*}
 mit $\overline v = (v_x, v_y, v_z)^T$ f"ur alle $x \in \R^3$:
 \begin{align*}
-	V x = -x \X \overline v,
-	\shortintertext{das hei"st}
-	-R \Omega R^T = (R \omega) \X \overline v = V R \omega.
+	V x = -x \X \overline v = \overline v \X x,
+\end{align*}
+das hei"st
+\begin{align*}
+	-R \Omega R^T \overline v = - (R \omega) \X \overline v = V R \omega.
 \end{align*}
 Stellt man ein Lie-Algebra-Element $\left( \begin{smallmatrix} \Omega & V \\ 0 & 0 \end{smallmatrix} \right)$ durch $\left( \begin{smallmatrix} \omega \\ v \end{smallmatrix} \right) \in \R^6$ dar, so gilt
 \begin{align*}
@@ -4992,7 +5013,7 @@ Zum Beispiel findet man damit f"ur Roboter mit drei Gelenken (generisch) f"ur ei
 
 \section{Clifford Algebren}
 
-Eine (reelle) \defi{Clifford-Algebra} ist bestimmt durch die Wahl einer Basis $e_1, \ldots, e_n \in V \cong \R^n$ und Relationen
+Eine (reelle) \defi{Clifford-Algebra} ist bestimmt durch die Wahl einer Basis $e_1, \ldots, e_n \in V \cong \R^n$ und die Relationen
 \begin{itemize}
 \item
 	$e_i e_j + e_j e_i = 0$ f"ur $i \ne j$
@@ -5000,7 +5021,7 @@ Eine (reelle) \defi{Clifford-Algebra} ist bestimmt durch die Wahl einer Basis $e
 	$e_i^2 \in \{0, +1, -1\}$
 \end{itemize}
 Eine Clifford Algebra ist eindeutig bestimmt durch die Anzahlen der Basiselemente, deren Quadrate $1$, $-1$ oder $0$ ergeben.
-Man schreibt die dann als $\Cl(p, q, r)$
+Man schreibt sie dann als $\Cl(p, q, r)$
 
 \begin{bsp}
 Die Clifford-Algebra $\Cl(0, 1, 0)$ wird erzeugt von $e_1$ und $\R$ mit
@@ -5008,7 +5029,7 @@ Die Clifford-Algebra $\Cl(0, 1, 0)$ wird erzeugt von $e_1$ und $\R$ mit
 	e_1^2 = -1 && (x + y e_1) (z + w e_1) &= xz + yw e_1^2 + yz e_1 + xw e_1 \\
 	&&&= (xz - yw) + (yz + xw) e_1
 \end{align*}
-Mit einem Isomorphismus, der die Abbildungen $e \mapsto i$ und $1 \mapsto 1$ enth"alt ist die Algebra isomorph zu den komplexen Zahlen, also $\Cl(0, 1, 0) \cong \C$
+Mit einem Isomorphismus, der die Abbildungen $e_1 \mapsto i$ und $1 \mapsto 1$ enth"alt ist die Algebra isomorph zu den komplexen Zahlen, also $\Cl(0, 1, 0) \cong \C$
 \end{bsp}
 
 Jedes Monom von Erzeugern  $e_{i_1}, \ldots, e_{i_k}$ kann als Produkt von Erzeugern $e_{j_1}, \ldots, e_{j_l}$ mit $j_1 < j_2 < \ldots < j_l$ (f"ur $l \le k$) geschrieben werden.
@@ -5022,13 +5043,13 @@ Diese Vektorraum-Graduierung h"angt im Allgemeinen von der Wahl der Basis ab, al
 	\Cl(p, q, r) = \Cl(p, q, r)^- \oplus \Cl(p, q, r)^+
 \end{align*}
 in Produkte mit einer ungeraden beziehungsweise geraden Anzahl abh"angig von der Wahl der Basis.
-Das ist eine Involution von $\Cl$ mit $e_i \mapsto e_i^* = -e_i$ und $(ab)^*  b^* a^*$.
+Das ist eine Involution von $\Cl$ mit $e_i \mapsto e_i^* = -e_i$ und $(ab)^* = b^* a^*$.
 
 % Vorlesung vom 15. 7.
 
 \subsection*{Wo ist $\SO(3)$ (euklidische Bewegungen)}
 
-Betrachte $\Cl(0, n, 0)$.
+Betrachte die Clifford-Algebra $\Cl(0, n, 0)$.
 Dann liegt $\R^n$ in $\Cl(0, n, 0)$ durch
 \marginnote{\scriptsize{$\delta_{ij} = \begin{cases}
 	1 & : i = j \\
@@ -5302,8 +5323,7 @@ Damit gilt
 Dies liefert L"osungen f"ur $\sin \theta_1$, $\cos \theta_1$, $\sin \theta_5$, $\cos \theta_5$, beziehungsweise f"ur $\theta_1$ und $\theta_5$.
 Damit erh"alt man direkt eine L"osung f"ur $\theta_6$ durch (1).
 \end{bewSkiz}
-
-
+lol \index{testen}
 
 
 %========================================================================================================================
