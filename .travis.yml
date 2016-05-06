@@ -1,0 +1,48 @@
+sudo: false
+
+language: generic
+
+cache:
+  directories:
+  - $HOME/.ghc
+  - $HOME/.cabal
+
+addons:
+  apt:
+    sources:
+    - hvr-ghc
+    packages:
+    - optipng
+    - ghc-7.10.3
+    - cabal-install-1.22
+    - texlive-full
+    - texlive-latex-extra
+    - pdftk
+
+before_install:
+ - test "$TRAVIS_SECURE_ENV_VARS" = "true" && openssl aes-256-cbc -K $encrypted_68ecbf4e4574_key -iv $encrypted_68ecbf4e4574_iv -in .travisdeploykey.enc -out ~/.ssh/id_rsa -d
+ - test -e ~/.ssh/id_rsa && chmod go-rwx ~/.ssh/id_rsa
+
+ - export PATH=/opt/ghc/7.10.3/bin:/opt/cabal/1.22/bin:$PATH
+ - git clone --depth 1 https://github.com/nomeata/latexki ~/latexki
+ - cabal update
+ - cabal install safe mtl utf8-string old-time parsec
+install:
+ - cd ~/latexki; ghc --make -O latexki.hs
+
+before_script:
+ - mkdir ~/run
+ - ln -s $TRAVIS_BUILD_DIR ~/run/data
+script:
+ - cd ~/run
+ - ../latexki/latexki data .
+ - rm -rf data
+ - mkdir data
+ - git -C $TRAVIS_BUILD_DIR archive HEAD | tar -x -C data
+ - echo 'mitschriebwiki.nomeata.de' > CNAME
+ - touch .nojekyll
+
+after_success:
+ - '[ "$TRAVIS_BRANCH" = "master" -o "$TRAVIS_BRANCH" = "travis" ] && [ "$TRAVIS_SECURE_ENV_VARS" = "true" ] &&  [ "$TRAVIS_PULL_REQUEST" = "false" ] && $TRAVIS_BUILD_DIR/.deploy.sh'
+
+
