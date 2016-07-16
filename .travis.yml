@@ -21,7 +21,7 @@ addons:
     - yui-compressor
 
 before_install:
- - if  "$TRAVIS_SECURE_ENV_VARS" = "true"; then openssl aes-256-cbc -K $encrypted_68ecbf4e4574_key -iv $encrypted_68ecbf4e4574_iv -in .travisdeploykey.enc -out ~/.ssh/id_rsa -d; fi
+ - if [ "$TRAVIS_SECURE_ENV_VARS" = "true" ]; then openssl aes-256-cbc -K $encrypted_68ecbf4e4574_key -iv $encrypted_68ecbf4e4574_iv -in .travisdeploykey.enc -out ~/.ssh/id_rsa -d; fi
  - test -e ~/.ssh/id_rsa && chmod go-rwx ~/.ssh/id_rsa
 
  - export PATH=/opt/ghc/7.10.3/bin:/opt/cabal/1.22/bin:$PATH
@@ -46,6 +46,6 @@ script:
  - touch .nojekyll
 
 after_success:
- - if [ "$TRAVIS_BRANCH" = "master" -o "$TRAVIS_BRANCH" = "travis" ] && [ "$TRAVIS_SECURE_ENV_VARS" = "true" ] &&  [ "$TRAVIS_PULL_REQUEST" = "false" ]; then $TRAVIS_BUILD_DIR/.deploy.sh'; fi
+ - if [ "$TRAVIS_BRANCH" = "master" -o "$TRAVIS_BRANCH" = "travis" ] && [ "$TRAVIS_SECURE_ENV_VARS" = "true" ] &&  [ "$TRAVIS_PULL_REQUEST" = "false" ]; then $TRAVIS_BUILD_DIR/.deploy.sh; fi
 
 
