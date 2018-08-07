@@ -1,0 +1,2903 @@
+\documentclass[a4paper,11pt,twoside,openany]{scrbook}
+
+\usepackage{latexki}
+\lecturer{Prof. Dr. Weil}
+\semester{Sommersemester 2006}
+\scriptstate{complete}
+
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{ngerman}
+%\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{euscript}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+%\usepackage{pst-all}
+%\usepackage{pst-add}
+%\usepackage{multicol}
+
+\usepackage[latin1]{inputenc}
+
+%Neuer Befehl für Kommentare über Zeilen
+\newcommand{\kommentar}[1]{}
+
+%%Zahlenmengen
+%Neue Kommando-Makros
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\Z}{{\mathbb Z}}
+
+%
+\newcommand{\B}{{\mathcal B}}
+\newcommand{\K}{{\mathcal K}}
+
+%
+\newcommand{\conv}{\ensuremath{\operatorname{conv}\:}}
+\newcommand{\aff}{\ensuremath{\operatorname{aff}\:}}
+\newcommand{\exth}{\ensuremath{\operatorname{exth}\:}}
+\newcommand{\inter}{\ensuremath{\operatorname{int}\:}}
+\newcommand{\rel}{\ensuremath{\operatorname{rel}\:}}
+\newcommand{\vertic}{\ensuremath{\operatorname{vert}\:}}
+\newcommand{\dom}{\ensuremath{\operatorname{dom}\:}}
+\newcommand{\epi}{\ensuremath{\operatorname{epi}\:}}
+\newcommand{\cl}{\ensuremath{\operatorname{cl}\:}}
+\newcommand{\bd}{\ensuremath{\operatorname{bd}\:}}
+
+% Seitenraender
+%\textheight22cm
+%\textwidth14cm
+%\topmargin-0.5cm
+%\evensidemargin0,5cm
+%\oddsidemargin0,5cm
+%\headheight14pt
+
+%%Seitenformat
+% Keine Einrückung am Absatzbeginn
+\parindent0pt
+\parskip12pt
+
+\def\AA{ \mathcal{A} }
+\def\PM{ \EuScript{P} } 
+\def\EE{ \mathcal{E} }
+\def\BB{ \mathcal{B} } 
+\def\DD{ \mathcal{D} } 
+
+%Zähler für Theorem
+\newcounter{defsaco}
+\setcounter{defsaco}{1}
+%Nummerierungen
+\newtheorem{Def}{Definition}[defsaco]
+\newtheorem{Sa}[Def]{Satz}
+\newtheorem{Lem}[Def]{Lemma}
+\newtheorem{Hil}[Def]{Hilfssatz}
+\newtheorem{Kor}[Def]{Korollar}
+\theorembodyfont{\normalfont}
+\newtheorem{Bsp}{Beispiel}[chapter]
+\newtheorem{Bem}{Bemerkung}[chapter]
+
+% Kopf- und Fusszeilen
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+\fancyfoot[C]{}
+\fancyhead[LO]{\rightmark}
+
+%PS-Tricks
+\usepackage{graphicx}
+%\usepackage{pst-plot, pstricks}
+\usepackage{pst-pdf}
+\usepackage{pst-plot}
+\newpsobject{showgrid}{psgrid}{subgriddiv=1,griddots=10,gridlabels=0pt}
+
+\makeindex
+\title{Optimierungstheorie}
+\subtitle{Vorlesungsmitschrieb der Vorlesung "`Optimierungstheorie"'\\ von Prof. Dr. Weil\\ im Sommersemester 2006 an der Universit"at Karlsruhe.}
+\author{ge\TeX ed von\\
+Tobias Baust und Frank Kreimes}
+\date{Stand: \today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%Einstellungen, Titelseite, Inhaltsverzeichnis
+\renewcommand{\thepage}{\roman{page}}
+\thispagestyle{empty}
+\maketitle
+\newpage
+\thispagestyle{empty}
+\tableofcontents
+
+\framebox{\parbox{\textwidth}{
+\texttt{Hinweis:}\\Dies ist ein Mitschrieb der Vorlesung Optimierungstheorie im Sommersemester 2006 an der Universität Karlsruhe, gehalten von Prof. Dr. Weil. Der Mitschrieb wird mit dem Einverständnis von Herrn Weil zur Verfügung gestellt. Herr Weil ist für den Inhalt dieses Mitschriebs nicht verantwortlich. Der Mitschrieb erhebt außerdem weder Anspruch auf Vollständigkeit noch auf Richtigkeit!}}
+\thispagestyle{empty}
+\cleardoublepage
+
+%Einstellungen
+\renewcommand{\thepage}{\arabic{page}}
+\setcounter{page}{1}
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\thesection}{\arabic{section}}
+\setcounter{chapter}{0}
+
+
+%Beispiele
+\chapter{Beispiele}
+\section*{1 Produktionsplanung}
+Produkte $P_1,\ldots,P_n$\\
+Hilfsmitte $H_1,\ldots,H_m$\\
+Eine Einheit von $P_k$ ben"otigt $a_{jk}$ Einheiten von $H_j$. Eine Einheit von $P_k$ ergibt Gewinn $p_k$.
+
+\textbf{Ziel:} max Gesamtgewinn G
+
+Wenn $x_k$ Einheiten von $P_k$ hergestellt werden ist \[G=\sum_{k=1}^np_kx_k\]
+[G ist die Zielfunktion; $G\to\max$ ein lineares Optimierungsproblem]
+
+Restriktionen [Nebenbedingungen]:
+\[\sum_{k=1}^na_{jk}x_k\leq b_j\quad j=1,\ldots,m\ \mbox{ (Kapazit"at von $H_j$)}\]
+\[x_k\geq 0\]
+
+\section*{2 Mischungsproblem}
+Nahrungsmittel aus n Zutaten, Zutaten bestehen aus m Grundstoffen\\
+$a_{jk}$ Anteil des j-ten Grundstoffs in der k-ten Zutat\\
+Preis f"ur Zutaten: $p_1,\ldots,p_n$\\
+$b_j$ sei Mindestmenge des j-ten Grundstoffs im Nahrungsmittel
+
+\textbf{Aufgabe:} Gesamtpreis $f(x_1,\ldots,x_n)=\sum\limits_{k=1}^np_kx_k\to\mbox{minimiert}$\newline
+[lineares Optimierungsproblem]
+
+Restriktionen:
+\[\sum_{k=1}^na_{jk}x_k\geq b_j\quad j=1,\ldots,m\]
+\[x_k\geq 0\quad k=1,\ldots,n\]
+
+\section*{3 Zuordnungsproblem}
+N Posten, M Bewerber\\
+$a_{jk}$ Qualifikation des i-ten Bewerbers f"ur Posten k\\
+Variable $X_{jk}\in\{0;1\}$ (1 $B_j$ erh"alt $P_k$, 0 sonst)
+
+Gesamtqualifikation \[f(X_{11},\ldots,X_{mn})=\sum\limits_{j,k}a_{jk}X_{jk}=\max\]
+\[\sum_{j=1}^mX_{jk}\leq 1\quad k=1,\ldots,n\]
+\[\sum_{k=1}^nX_{jk}\leq 1\quad j=1,\ldots,m\]
+\[X_{jk}\geq 0\]
+[Ganzzahlige Optimierung]
+
+\section*{4 Transportproblem}
+Lager $L_1,\ldots,L_m$ mit Kapazit"aten $a_1,\ldots,a_m$\\
+Verteiler $V_1\ldots,V_n$ mit Bedarf $b_1,\ldots,b_n$\\
+Transportkosten $c_{ij}$ von $L_i$ zu $V_j$
+
+Transportplan: $X_{ij}$ Menge $L_i\to V_j$
+\[f(X_{11},\ldots,X_{mn})=\sum\limits_{i,j}c_{ij}X_{ij}=\min\]
+\[\sum_{j=1}^nX_{ij}\leq a_i\]
+\[\sum_{i=1}^mX_{ij}= b_j\]
+\[X_{ij}\geq 0\]
+[lineare Optimierung (ganzzahlige Optimierung)]
+
+\section*{5 Preiskalkulation}
+Waren $W_1,\ldots,W_n$\\
+Preis $x_1\ldots,x_n$\\
+$g_k(x_1,\ldots,x_n)$ Verkaufszahl von $W_k$
+
+Gesamterl"os:
+\[\sum_{k=1}^ng_k(x_1,\ldots,x_n)\cdot x_k=\max\]
+\[g_k(x_1,\ldots,x_n)\leq b_k\quad\mbox{(Lagerbestand)}\]
+\[x_k\geq 0\]
+[nichtlineare Optimierung]
+
+
+\newpage
+%Vorbemerkungen
+\chapter{Vorbemerkungen}
+$\R^n\ni x=(x_1,\ldots,x_n)$ (Zeilen- oder Spaltenschreibweise)\\
+verschiedene Punkte: $x^1,\ldots,x^k$\\
+Standardskalarprodukt: $\langle x,y\rangle:=x_1y_1+\ldots+x_ny_n=x^Ty$\\
+Euklidische Norm: $\|x\|=(x_1^2+\ldots+x_n^2)^\frac{1}{2}$\\
+Metrik d
+
+Notation:~~~ $x\leq y\ \Leftrightarrow\ x_i\leq y_i\quad i=1,\ldots,n$\\
+
+$M\subset\R^n$:
+\begin{description}
+\item[aff M] affine Hülle von M
+\item[int M] Inneres von M
+\item[cl M] Abschluss von M
+\item[bd M] Rand von M
+\item[dim M] Dimension von M (=dim aff M)
+\item[]
+\item[rel int M] \textit{relatives Inneres der Menge M, also das Innere in der affinen Hülle von M}
+\end{description}
+
+$f:\ \R^n\to\R$:\\
+f linear $\Leftrightarrow$ $f(\alpha x+\beta y)=\alpha f(x)+\beta f(y)$ $\forall x,y\in\R^n; \alpha,\beta\in\R$\\
+f affin $\Leftrightarrow$ $\exists \alpha\in\R$: $f-\alpha$ linear
+
+f linear $\Leftrightarrow$ $f(x)=\langle p,x\rangle,\ x\in\R^n$ f"ur ein eindeutig bestimmtes $p\in\R^n$\newline [$(\R^n)^*$"`="'$\R^n$]
+
+Schreibweise: $\{f=\alpha\}:=\{x\in\R^n:\ f(x)=\alpha\}$\\
+Hyperebene $E\subset \R^n$: $E=\{f=\alpha\}$ f"ur geeignetes lineares f und $\alpha\in\R$
+
+"Aquivalent: $E=\{\langle p,\cdot\rangle=\alpha\}$, $\alpha\in\R, p\in\R^n,p\neq0$\\
+Darstellung ist nicht eindeutig!
+
+\[\{\langle p,\cdot\rangle=\alpha\}=\{\langle\frac{p}{\|p\|},\cdot\rangle=\frac{\alpha}{\|p\|}\}=\{\langle q,\cdot\rangle=\alpha'\};\ \|q\|=1\]
+
+\cleardoublepage
+%Einstellungen
+\renewcommand{\thechapter}{\arabic{chapter}}
+\renewcommand{\thesection}{§\arabic{section}}
+\setcounter{chapter}{0}
+
+%1.Kapitel
+\chapter{Lineare Optimierung}
+%1. Paragraph
+\section{Lineare Programme}
+\begin{Def}
+Ein \textbf{lineares Programm} (kurz: LP) (im $\R^n$) ist gegeben durch eine lineare Funktion $f=\langle\cdot,p\rangle, p\in\R^n$, eine (m,n)-Matrix A (reell) und ein $b\in\R^m$.\\
+Das lineare Programm ist die Aufgabe, f zu maximieren unter den Nebenbedingungen $Ax\leq b$ und $x\geq 0$.\\
+Schreibweise:
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&f(x)&=&max\\
+(LP)&Ax&$\leq$&b\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+\end{Def}
+
+\texttt{Anmerkung:} Die Nebenbedingungen nennt man auch Restriktionen. Die Bedingung $x\geq 0$ hei"st Vorzeichenbedingung. \\
+\texttt{Beachte:} $x\geq y \Leftrightarrow -x\leq-y$; $f(x)=min \Leftrightarrow -f(x)=max$
+
+\textbf{Bemerkungen:}\\
+Es gibt verschiedene "aquivalente Formen von (LP).\\
+1) Das lineare Programm
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&f(x)&=&min\\
+(LP')&Ax&$\geq$&b\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+kann auf die Form (LP) gebracht werden, indem f,A,b durch -f,-A,-b ersetzt wird.
+
+2) Auch das lineare Programm
+\begin{center}
+\begin{tabular}{|rcl|}\hline
+f(x)&=&max\\
+Ax&$=$&b\\
+x&$\geq$&0\\\hline
+\end{tabular}
+\end{center}
+l"asst sich auf die Standardform (LP) bringen:
+\begin{eqnarray*}Ax=b &\Leftrightarrow& Ax\leq b,\ -Ax\leq -b\\
+&\Leftrightarrow& 
+\left(\begin{array}{c}
+A\\\cdots\\-A	
+\end{array}\right)x\leq \left(\begin{array}{c}
+b\\\cdots\\-b	
+\end{array}\right)
+\end{eqnarray*}
+~\\
+
+\textbf{Das geht auch umgekehrt!!}
+\[Ax\leq b\ \Leftrightarrow\ Ax+y=b, y\in\R^m,y\geq0\]
+$y_1,\ldots,y_m$ Schlupfvariable
+
+Damit ist 
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&f(x)=$\langle x,p\rangle$&=&max\\
+(LP)&Ax&$\leq$&b\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+"aquivalent zu:
+\begin{center}
+\begin{tabular}{|rcl|}\hline
+$\widetilde{f}(x,y)=\langle\left(\begin{array}{c}
+x\\y	
+\end{array}\right),\left(\begin{array}{c}
+p\\0	
+\end{array}\right)\rangle$&=&max\\
+(A $|$ $E_m$)$\cdot \left(\begin{array}{c}
+x\\y	
+\end{array}\right)$&$=$&b\\
+x,y&$\geq$&0\\\hline
+\end{tabular}
+\end{center}
+
+3) Vorzeichenbedingungen:
+
+\begin{tabular}{|rcl|}\hline
+Ax&$\leq$&b\\
+x&$\geq$&0\\\hline
+\end{tabular}
+"aquivalent zu \(\left(\begin{array}{c}
+A\\\cdots\\-E_n	
+\end{array}\right)x\leq \left(\begin{array}{c}
+b\\\cdots\\0	
+\end{array}\right)\)
+
+Vorzeichenbedingungen k"onnen o.B.d.A. eingef"uhrt werden.\\
+$x=(x_1,\ldots,x_n)\in\R^n$: f"ur $i=1,\ldots,n$
+\[x_i^+:=\max (0,x_i)\]
+\[x_i^-:=-\min (0,x_i)\]
+$\Rightarrow$ $x=x^+-x^-=(x_1^+,\ldots,x_n^+)-(x_1^-,\ldots,x_n^-)$; $x^+,x^-\geq 0$\\
+
+\begin{tabular}{|rcl|}\hline
+f(x)&=&max\\
+Ax&$\leq$&b\\\hline
+\end{tabular}
+"aquivalent zu 
+\begin{tabular}{|rcl|}\hline
+$\widetilde{f}(x^+,x^-)=f(x^+-x^-)$&=&max\\
+(A $|$ -A)$\cdot \left(\begin{array}{c}
+x^+\\x^-	
+\end{array}\right)$&$\leq$&b\\
+$x^+,x^-$&$\geq$&0\\\hline
+\end{tabular}\\[60pt]
+In (LP) [Standardform] hei"st f die Zielfunktion.\\
+Die Menge $M=\{x\in\R^n:\ Ax\leq b,\ x\geq 0\}$ hei"st zul"assiger Bereich. Jedes $x\in M$ hei"st zul"assiger Punkt. Ein $x\in M$ mit $f(x)=\max\limits_{y\in M}f(y)$ hei"st L"osung von (LP).\\
+Exisitiert eine L"osung x von (LP), so hei"st (LP) l"osbar.\\
+(LP) ist unl"osbar, wenn entweder \begin{enumerate}
+\item{$M=\varnothing$\hspace{9cm}oder}
+\item{$M\neq\varnothing$, aber f auf M nicht nach oben beschr"ankt ist.}
+\end{enumerate}
+
+\textbf{Aufgaben:}\\
+1) Wann ist (LP) l"osbar?\\
+(insbesondere ist (LP) l"osbar, wenn $M\neq\varnothing$ und f auf M nach oben beschr"ankt ist?)
+
+2) Anzahl (Struktur) der L"osungen?
+
+3) Wie finden wir L"osungen?
+ 
+
+
+%2.Paragraph
+\section{Polyedrische Mengen}
+\stepcounter{defsaco} %Befehl muss nach jedem section-Befehl kommen!!
+
+\begin{Def}												
+Eine Menge $M \subset \R^n$ heißt \textbf{konvex}
+\[\Leftrightarrow [x,y \in M, \alpha \in [0,1] \Rightarrow \alpha x + (1-\alpha)y \in M]\] 
+\end{Def}
+\newpage
+
+\textbf{Bemerkungen:}
+\begin{enumerate}
+\item M konvex $\Leftrightarrow \forall k \in \N$ folgt aus $x^1,\ensuremath{\ldots},x^k \in M , \alpha_1,\ensuremath{\ldots},\alpha_k \in [0,1]$ mit $\alpha_1+\ensuremath{\ldots}+\alpha_k =1$, dass\\
+			$x=\alpha_1x^1+\ensuremath{\ldots}+\alpha_kx^k\in M$ (x heißt \textbf{Konvexkombination} der $x^1,\ensuremath{\ldots},x^k$.)\\
+			
+			\textbf{Beweis:}\\ "`$\Leftarrow$"' Setzte $k=2$\\
+			"`$\Rightarrow$"' Vollständige Induktion nach k\\ $k=1:$ trivial\\
+			$k \rightarrow k+1(k\geq1)$:
+			\[\textnormal{Sei } x=\alpha_1x^1+\ensuremath{\ldots}+\alpha_{k+1}x^{k+1}\textnormal{ mit }x^{i}\in M, \alpha_i \in [0,1],\sum_{i=1}^{k+1}\alpha_i=1\]
+			O.B.d.A \(\alpha_1\neq1\)
+			\[\Rightarrow x=\alpha_1 x^1+(1-\alpha_1)\underbrace{(\frac{\alpha_2}{1-\alpha_1}x^2+\ensuremath{\ldots}+\frac{\alpha_{k+1}}{1-\alpha_1}x^{k+1})}_{=:y}\]
+			\[\Rightarrow \textnormal{y ist Konvexkombination von k Punkten in M.}\]
+			\[\stackrel{\textnormal{IV}}{\Rightarrow} y\in M \stackrel{\textnormal{M konvex}}{\Rightarrow} x=\alpha_1x^1+(1-\alpha_1)y\in M.\]
+\item Der Durchschnitt beliebig vieler konvexer Mengen ist wieder konvex.\\~\\~\\
+
+			\textbf{Bezeichnung:} Sei $M\subset \R^n$ beliebige Menge\\
+			\[\textnormal{Dann heißt \textbf{conv M}}:=\bigcap_{N\supset M \atop N\ konvex}N \textnormal{ die \textbf{konvexe H"ulle} von M.}\] 
+			Es gilt: conv M$=\{x=\alpha_1x^1+\ensuremath{\ldots}+\alpha_kx^k:k\in \N, x^{i}\in M, \alpha_i\in~[0,1],\\ \sum\alpha_i=1\}=:N$\\
+%anmerkung bei "welligen" unterstrichenen Wörten habe ich \emph benutzte bei "geraden"' \textbf
+
+			\textbf{Beweisskizze:} Sei N die rechte Menge\\
+			"`$\subset$"': Die Menge N ist konvex und $N\supset M \Rightarrow N\supset$ conv M.\\
+			"`$\supset$"': Sei $R\subset\R^n$ konvex, $R\supset M$ \[\stackrel{1.}{\Rightarrow} R\supset N \Rightarrow N \subset \bigcap_{R\supset M\atop R\ konvex} R= conv\ M \]		
+\end{enumerate}
+
+\textbf{Beispiel f"ur konvexe Mengen:}
+\begin{enumerate}
+\item \textbf{Strecken:}\\ $[x,y]:=\{\alpha x+(1-\alpha)y:\alpha\in [0,1]\}$ \textbf{abgeschlossene} \textbf{Strecke} (von~x nach~y)\\
+			$(x,y):=\{\alpha x+(1-\alpha)y:\alpha\in (0,1)\}$ offene Strecke\\
+			Analog halboffene Strecken $[x,y), (x,y]$
+\item \textbf{Kugeln:} $B_{\alpha}(x):=\{y\in \R^n:||y-x||\leq \alpha\}, x\in\R^n, \alpha\geq0$ \emph{abgeschlossene Kugel} mit Mittelpunkt x und Radius $\alpha$\\
+			Analog: offene Kugel
+\item Lineare und affine UR\\
+			Ist $\{f=\alpha\}$ Hyperebene, so ist \[\underbrace{\{f\leq\alpha\}}_{\textnormal{abg.  Halbraum}}\textnormal{ und } \underbrace{\{f\geq\alpha\}}_{\textnormal{abg. Halbraum}}\textnormal{ konvex }\]
+			Analog offene Halbr"aume $\{f<\alpha\},\{f>\alpha\}$\\
+			\textbf{Zur Erinnerung:} $\{f\leq\alpha\}=\{x\in\R^n:f(x)\leq\alpha\}$
+\item Endliche Durchschnitte von Halbr"aumen [\textit{ohne weitere Angabe stets abgeschlossen}] \[M=\bigcap_{i=1}^{k}\{f_i\leq\alpha_i\}\] sind konvex.\\ Ein solches M hießt \textbf{polyedrische} Menge. Ist M beschr"ankt, so heißt M (konvexes) \textbf{Polytop.}
+\end{enumerate}
+
+\textbf{Bemerkungen:}
+\begin{enumerate}
+\item Endliche Durchschnitte von polyedrischen Mengen sind polyedrisch.
+\item Ist \[ M=\bigcap_{i\in I}M_i, \textnormal{ $M_i$ polyedrisch, }|I|<\infty.\] so lassen wir $I=\varnothing$ zu und setzen dann $M=\R^n$, d.h. $\R^n$ ist polyedrisch.
+\item Der zulässige Bereich M eines (LP) ist polyedrisch:\\
+			\[M=\{Ax\leq b, x\geq 0\}\]\[b =(b_1,\ensuremath{\ldots},b_m),\ A=\left(\begin{array}{c}(\tilde a^1)^T\\\hline\vdots\\\hline(\tilde a^m)^T\end{array}\right)\]
+			\[\Rightarrow M=\bigcap_{i=1}^{m}\{\underbrace{\langle\cdot,\widetilde{a^i}\rangle}_{f_i}\leq b_i\}\cap\bigcap_{j=1}^{m}\underbrace{\{x_j\geq0\}}_{g_j(x)}\]
+\end{enumerate}
+
+\begin{Sa}
+$M\subset\R^n$ kompakt $\Rightarrow$ conv M kompakt.
+\end{Sa}
+
+\textbf{Beweis:} (nur für endliches M, allg. Fall als Übungsaufgabe mit Satz von Carathéodory)\\
+Sei $M=\{x^1,\ensuremath{\ldots},x^k\} \Rightarrow$ conv M $=\{\alpha_1x^1+\ensuremath{\ldots}+\alpha_kx^k:\alpha_i\in[0,1], \sum\alpha_i=1\}$
+conv M beschränkt: $M\subset B_{\alpha}(0) \Rightarrow \conv M\subset B_{\alpha}(0)$.\\
+conv M abgeschlossen: Seien $y^j\in \conv M$, $y^j \stackrel{j\rightarrow\infty}{\longrightarrow}y$\\
+\[y^j=\alpha_{j1}x^1+\ensuremath{\ldots}+\alpha_{jk}x^k,\ j=1,2,\ensuremath{\ldots}\]
+\[\alpha_{ji}\in [0,1], \sum_{i=1}^{k}\alpha_{ji}=1,\ j=1,2,\ensuremath{\ldots}\]
+Weil $[0,1]$ kompakt ist, ex. Teilfolge $j_r$, $r=1,2,\ensuremath{\ldots}$ und Zahlen 
+\[\alpha_1,\ensuremath{\ldots},\alpha_k\textnormal{ mit }\alpha_{j_r1}\stackrel{r\rightarrow\infty}{\rightarrow}\alpha_1,\ensuremath{\ldots},\alpha_{j_rk}\stackrel{r\rightarrow\infty}{\rightarrow}\alpha_k\]
+\[\Rightarrow \alpha_1,\ensuremath{\ldots},\alpha_k\in[0,1]\textnormal{ und }\alpha_1+\ensuremath{\ldots}+\alpha_k=1\]
+\[\Rightarrow(y^{jr}=\alpha_{j_r1}x^1+\ensuremath{\ldots}+\alpha_{j_rk}x^k)\stackrel{r\rightarrow\infty}{\rightarrow}(y=\alpha_1x^1+\ensuremath{\ldots}+\alpha_kx^k)\]
+$\Rightarrow y\in$ conv M.
+
+\begin{Sa}
+Ist $M\subset \R^n$ konvex mit dim M = n, so gilt int M $\neq \varnothing.$
+\end{Sa}
+
+\textbf{Beweis:} Wegen dim M = n existieren affin unabhängige Punkte $x^0,\ensuremath{\ldots},x^n\in M$.\\ Sei S$:=$conv$\{x^0,\ensuremath{\ldots},x^n\}$ (n-Simplex)\\
+
+\textbf{Beh.:} $y:= \frac{1}{n+1}x^0+\ensuremath{\ldots}+\frac{1}{n+1}x^n$ ist innerer Punkt von S\\($\Rightarrow$ wegen $S\subset M$ die Beh.)\\
+
+\textbf{Dazu:} $x^1-x^0,\ensuremath{\ldots},x^n-x^0$ ist Basis von $\R^n \Rightarrow$ Jedes $x\in \R^n$ hat "`Koordianten"'$(\alpha_1,\ensuremath{\ldots},\alpha_n)$ mit $x-x^0=\alpha_1(x^1-x^0)+\ensuremath{\ldots}+\alpha_n(x^n-x^0)$\\
+\[(\Rightarrow x=\alpha_0x^0+\ensuremath{\ldots}+\alpha_nx^n\textnormal{ mit }\sum_{i=0}^{n}\alpha_i=1)\] Affine Koordinaten!!!\\
+\[g:x\mapsto(\alpha_1,\ensuremath{\ldots},\alpha_n)\textnormal{ ist stetig und }g(y)=\underbrace{(\frac{1}{n+1},\ensuremath{\ldots},\frac{1}{n+1})}_{\textnormal{n Komponenten}}\]
+$\Rightarrow$ Zu jedem $\varepsilon>0$ ex. Umgebung $U^{(\varepsilon)}(y)$ mit $g(U^{(\varepsilon)})\subset(\frac{1}{n+1}-\varepsilon,\frac{1}{n+1}+\varepsilon)^n$\\
+Wähle $\varepsilon \in(0,\frac{1}{n(n+1)}) \Rightarrow U^{(\varepsilon)}\subset S$\\
+$\Rightarrow y\in\inter S$
+
+\begin{Def}
+Sei $M\subset \R^n$ abgeschlossen und konvex. Ein $x\in$ M heißt \textbf{Ecke} (oder Extremalpunkt) $:\Leftrightarrow$\\
+Aus x=$\alpha$y+$(1-\alpha)$z, y,z $\in$ M, $\alpha \in (0,1)$ folgt immer $x=y=z$\\
+\end{Def}
+
+\textbf{Beispiel:}\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Beispielbilder
+\psset{unit=1.0cm}
+\begin{pspicture}(0,0)(10,6)
+  \psline{-}(2,1)(0.5,2.5)
+  \psline{-}(3,1.5)(1.5,3)
+  
+  \psline{-}(3.5,4)(5,5.5)
+  \psline{-}(3.5,4)(4,3)
+  \psline{-}(4,3)(5,3)
+  \psline{-}(5,3)(7,4)
+  
+  \psarc(9,2){1}{0}{360}
+  
+  \rput(1.75,2){$M_1$}
+  \rput(5.5,4.5){$M_2$}
+  \rput(9,2){$M_3$}
+\end{pspicture}\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+$M_1$: keine Ecken, $\vertic M=\varnothing$\\
+$M_2$: 3 Ecken, $|\vertic M|=3$\\
+$M_3$: "`nur"' Ecken, $\vertic M=\operatorname{bd} M$
+
+Sei $\vertic M$ die Menge aller Ecken von M.\\
+
+\begin{Def}\[Sei\ M=\bigcap_{i=1}^{k}\{f_i\leq\alpha_i\}\] eine polyedrische Menge ($M\neq\R^n$). Wir setzen $M_i:=M\cap\{f_i=\alpha_i\},\\ i=1,\ensuremath{\ldots},k.$
+\end{Def}
+
+Jedes nichtleere $M_i$ und jeder nichtleere Durchschnitt der $M_i$ heißt \textbf{Seite} von M. Ist die Dimension der Seite gleich m, so sprechen wir von einer m-Seite, $m\in\{0,\ensuremath{\ldots},n-1\}$.
+
+\begin{Sa}
+Sei $M\subset\R^n$ polyedrisch. Dann gilt: $\{x\}\ 0-$Seite $ \Leftrightarrow x\in$ vert M.
+\end{Sa}
+
+\textbf{Beweis:}\[\textnormal{Sei } M=\bigcap_{i=1}^{k}\{f_i\leq \alpha_i\}\]
+"`$\Rightarrow$"' Sei $\{x\}\ 0-$Seite.\\ Angenommen $x=\alpha y+(1-\alpha)z,\ y,z\in M,\alpha \in (0,1)$. 
+Gilt $x\in \{f_i=\alpha_{i} \} \Rightarrow y,z\in\{f_i=\alpha_i\}$ 
+%Bild einfügen!
+$\Rightarrow$ y,z $\in \ 0-$Seite $\{x\}\Rightarrow y=z=x$
+
+\texttt{Anmerkung:}
+\[\{x\}=M\cap\bigcap_{j\in I}\{f_j=\alpha_j\},\ I\subset\{1,\ldots,k\}\]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Beispielbilder
+Folgendes geht nicht:\\
+\psset{unit=1.0cm}
+\begin{pspicture}(0,0)(4,4)
+  \psline{-}(1,3)(3,1)
+  
+  \rput(2.05,2.05){$\bullet x$}
+  \rput(2.5,2.5){$\bullet z$}
+  \rput(1.5,1.5){$\bullet y$}
+  \rput(1,2.5){$M$}
+\end{pspicture}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"`$\Leftarrow$"' Sei x Ecke und o.B.d.A \[ x\in \bigcap_{i=1}^{l}\{f_i=\alpha_i\}\cap\bigcap_{i=l+1}^{k}\{f_i<\alpha_i\}\subset M,\ 1\leq l\leq k\]
+\textbf{1.Fall:} l=k: \[x\in \underbrace{\bigcap_{i=1}^{k}\{f_i=\alpha_i\}}_{\textnormal{affiner UR E}}\subset M\]
+$\stackrel{x\ Ecke}{\Rightarrow}$ dim E=0
+$\Rightarrow \{x\}$ 0-Seite
+
+\textbf{2.Fall:} $l<k$: \[\textnormal{ Es existiert ein } \varepsilon>0 \textnormal{ mit } x\in B_{\varepsilon}(x)\subset \bigcap_{i=l+1}^{k}\{f_i<\alpha_i\}\]
+\[\Rightarrow x\in \underbrace{\bigcap_{i=1}^{l}\{f_i=\alpha_i\}}_{=E} \cap B_{\varepsilon}(x)\]
+$\stackrel{x\ Ecke}{\Rightarrow}$ dim E=0, d.h. E=\{x\} $\Rightarrow$ \{x\} 0-Seite.
+
+\textbf{Bemerkung:}
+Seiten einer polyedrischen Menge M sind wieder polyedrisch und es gilt 
+\[ \textnormal{bd M }=\bigcup_{m=0}^{n-1}\cup \textnormal{ F (F m-Seite von M)}\]
+\textbf{1-Seiten:}\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Beispielbilder
+\psset{unit=1.0cm}
+\begin{pspicture}(0,0)(13,3)
+  \psline{[-]}(2,1)(3.5,1)
+  \psline{-}(1,1)(4.5,1)
+  \psline{-}(5,1)(8.5,1)
+  \psline{[-}(6,1)(7.5,1)
+  \psline{-}(9,1)(12.5,1)
+  \psline{-}(5,2.5)(8.5,2.5)
+  \psline{-]}(6,2.5)(7.5,2.5)
+  
+  \rput(2.75,0.5){Strecke}
+  \rput(6.75,0.5){Extremalstrahl}
+  \rput(10.75,0.5){Gerade}
+\end{pspicture}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\textbf{Definition:}
+Die 1-Seiten von M, die Halbgeraden sind, heißen \emph{Extremalstrahlen} von M.
+
+\begin{Kor}
+Eine polyedrische Menge $M\subset \R^n$ hat nur endlich viele Ecken und Extremalstrahlen.
+\end{Kor}
+
+\begin{Sa}
+Sei $M\subset\R^n$ polyedrische Menge. $\vertic M\neq \varnothing\Leftrightarrow$ M geradenfrei.
+\end{Sa}
+
+\textbf{Beweis:}
+"`$\Rightarrow$"' Sei vert M$\neq \varnothing$, x$\in$ vert M. Angenommen es existiert Gerade g$\subset$M.\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Beispielbilder
+\psset{unit=1.0cm}
+\begin{pspicture}(0,0)(8,5)
+  \psline{-}(1,4)(7,4)
+  \psline{-}(1,1.5)(7,1.5)
+  
+  
+  \rput(4,1.5){$\bullet$}
+  \rput(4.25,1.5){x}
+  \rput(0.75,4){g}
+  \rput(0.75,1.5){g'}
+  \rput(5,3){M}
+\end{pspicture}\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+$\Rightarrow g'\subset M$ [M enthält konvexe Hülle von g und x]\\
+Widerspruch zur Eckendefinition!\\
+"`$\Leftarrow$"' Vollständige Induktion nach n (dim $\R^n$)\\ \textbf{n=0:} klar!,\\
+\textbf{n=1:} ok (s.u)\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Beispielbilder
+\psset{unit=1.0cm}
+\begin{pspicture}(0,0)(10,3)
+  \psline{[-]}(2,1.5)(4,1.5)
+  \psline{[-}(6,2)(8,2)
+  \psline{-]}(6,1)(8,1)
+  
+  \rput(5,1.5){oder}
+  \end{pspicture}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\textbf{n-1 $\rightarrow$ n:} \[\textnormal{Sei } M=\bigcap_{i=1}^k\{f_i\leq\alpha_i\}\] O.B.d.A. setzen wir voraus, dass keiner der Halbräume $\{f_i\leq\alpha_i\}$ wegelassen werden kann! d.h. für jedes $i_0 \in \{1,\ensuremath{\ldots},k\}$ gilt: \[N_{i_o} := \bigcap_{i=1\atop i\neq i_0}^{k}\{f_i\leq \alpha_i\}\supsetneq M \]
+Sei $M_{i_0}:=$M $\cap \{f_{i_0}=\alpha_{i_0}\}$\\
+Sei $x\in N_{i_0}\backslash$ M, $y\in$M
+\[ z:= \frac{\alpha_{i_0}-f_{i_0}(y)}{f_{i_0}(x)-f_{i_0}(y)}\ x+\frac{f_{i_0}(x)-\alpha_{i_0}}{f_{i_0}(x)-f_{i_0}(y)}\ y\]
+\[\Rightarrow f_{i_0}(z)=\alpha_{i_0}, \textnormal{ d.h. } z\in \underbrace{M_{i_0}}_{polyedrische\ Menge\ im\ \R^{n-1}}\subset \underbrace{\{f_{i_0}=\alpha_{i_0}\}}_{\R^{n-1}}\]
+$\Rightarrow M_{i_o}$ nichtleer, also Seite von M, polyedrisch und geradenfrei.\\
+$\stackrel{I.V.}{\Rightarrow}$ vert $M_{i_0}\neq \varnothing$. Aber: vert $M_{i_0} \subset$ vert M (Übungsaufgabe)\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Beispielbilder
+\psset{unit=1.0cm}
+\begin{pspicture}(0,0)(7,5)
+  \psline{-}(0.5,2)(4.5,4)
+  \psline{-}(1.5,3)(4.5,1.5)
+  \psline{-}(3,0.5)(4,4.5)
+  
+  \rput(2.5,2.5){$\bullet$}
+  \rput(3,3){$\bullet$}
+  \rput(2,2){$\bullet$}
+  
+  \rput(2.7,2.5){$z$}
+  \rput(3.2,3){$x$}
+  \rput(2.2,2){$y$}
+  
+  \rput(1.5,1.5){M}
+  \rput(4,3){$\longleftarrow N_{i_0}$}
+  \rput(4.5,1.25){$\{f_{i_0}=\alpha_{i_0}\}$}
+\end{pspicture}\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{Sa}
+Sei $M\subset\R^n$ nichtleer, polyedrisch und geradenfrei. Dann ist M die konvexe Hülle der Ecken und Extremalstrahlen von M.
+\end{Sa}
+\textbf{Äquivalente Aussage:}\\
+$\exth M=$ Vereinigung der Extremalstrahlen von M.\\ $M= \conv( \vertic M \cup \exth M)$
+
+\textbf{Beweis:} [\textit{korrigierte Version}]\\
+Vollständige Induktion nach n.\\
+\textbf{n=1:} ok (s.u)\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Beispielbilder
+\psset{unit=1.0cm}
+\begin{pspicture}(0,0)(10,3)
+  \psline{[-]}(2,1.5)(4,1.5)
+  \psline{[-}(5,1.5)(7,1.5)
+ 
+  \rput(3,2){M}
+  \rput(6,2){M}
+  \end{pspicture}\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\\
+\textbf{n-1 $\rightarrow$ n:} 
+O.B.d.A. dim M=n.\\ Es gilt: $M \supset \conv(\vertic M \cup \exth M)$\\
+\textbf{Beh.:} "`$\subset$"'\\
+$\operatorname{bd}M \neq \varnothing$. bd M ist nicht konvex!
+
+[Angenommen bd M konvex $\stackrel{(2.3)}{\Rightarrow}$ dim bd M $\leq$ n-1 $\Rightarrow$ aff bd M $\subset$ E Hyperebene. Nach (2.3) existiert x $\in$ int M, x$\notin$ E. Sei g Gerade $||$ E $\Rightarrow$ g $\subset$ M Wid.!]
+
+\textbf{Beh.:} M = conv bd M\\
+("`$\supset$"' klar!)\\
+"`$\subset$"': Weil bd M nichtleer und nicht-konvex ist, existieren $v,w \in \operatorname{bd} M$ mit $[v,w]\not\subset\operatorname{bd}M$.\\
+$\Rightarrow \exists y \in (v,w)$ mit y $\in$ int M\\
+Sei $x\in$ int M $\Rightarrow \exists$ r,u $\in$ bd M mit x $\in [r,u] \Rightarrow$ Beh.
+
+Also gilt M = conv bd M\\
+Sei x$\in$ bd M $\Rightarrow$ x$\in M_j$, j$\in\{1,\ensuremath{\ldots},k\}$
+\[[\textnormal{Wenn M } = \bigcap_{i=1}^{k}\{f_i\leq\alpha_i\},\ M_j = M  \cap \{f_j=\alpha_j\} ]\]
+$\Rightarrow M_j\neq\varnothing$, polyedrisch, geradenfrei.\\
+\[\stackrel{IV}{\Rightarrow} M_j=\conv(\underbrace{\vertic M_j}_{\subset \vertic M}\cup \underbrace{\exth M_j}_{\subset \exth M})\]
+$\Rightarrow M \subset \conv (\vertic M \cup \exth M)$
+
+\begin{Kor}
+Jedes Polytop M $\neq \varnothing$ ist die konvexe Hülle seiner Ecken.
+\end{Kor}
+
+\textbf{Interpretation von 2.9:} vert M =$\{x^1,\ensuremath{\ldots},x^k\}$\\
+$S_1,\ensuremath{\ldots},S_m$ Extremalstrahlen $\Rightarrow S_i=\{x^{r_i}+\alpha u^{i}:\alpha\geq0\},\ ||u^{i}||=1$\\
+$\Rightarrow$ Jedes x $\in$ M hat die Form \[ x=\alpha_1x^1+\ensuremath{\ldots}+\alpha_kx^k+\alpha_{k+1}(x^{r_1}+\gamma_1u^1)+\ensuremath{\ldots}+\alpha_{k+m}(x^{r_m}+\gamma_mu^m)\]
+mit $\alpha_i\geq0$, $\alpha_1+\ensuremath{\ldots}+\alpha_{k+m}=1$\\
+\[\Rightarrow x=\overline{\alpha_1}x^1+\ensuremath{\ldots}+\overline{\alpha_k}x^k+\beta_1u^1+\ensuremath{\ldots}+\beta_mu^m \textnormal{ mit }\overline{\alpha_i}\geq0,\ \sum\overline{\alpha_i}=1,\ \beta_j\geq0\]
+
+\textbf{Also gilt:} \[ M=\{\alpha_1x^1+\ensuremath{\ldots}+\alpha_kx^k+\beta_1u^1+\ensuremath{\ldots}+\beta_mu^m:\ \alpha_i\geq0,\ \beta_j\geq0,\ \sum\alpha_i=1\}\ (*)\]
+wobei $x^1,\ensuremath{\ldots},x^k$ Ecken von M, $k\geq1$; $u^1,\ensuremath{\ldots},u^m$ Richtungen der Extremalstrahlen von M, $m\geq 0$ mit m=0 $\Leftrightarrow$ M beschränkt.\\
+Mengen der Form $(*)$ heißen \textbf{endlich erzeugt}. Also ist eine polyedrische Menge endlich erzeugt.
+
+\textbf{Weitere Interpretation:} Sei P$:=\conv\{x^1,\ensuremath{\ldots},x^k\}$ (Polytop)
+\[ \textnormal{V}:= \{\beta_1u^1+\ensuremath{\ldots}+\beta_mu^m:\ \beta_j\geq0\}\ =:\textnormal{ pos }\{u^1,\ensuremath{\ldots},u^m\},\ ||u^j||=1\]
+$\Rightarrow$ V ist ein konvexer Kegel.
+
+\begin{Kor}
+Sei $M\neq\varnothing$, polyedrisch, geradenfrei.\\
+$\Rightarrow$ M=P+V, P=conv vert M, V=pos$\{u^1,\ensuremath{\ldots},u^m\}$\\ $u^j$ Richtungen der Extremalstrahlen von M.
+\end{Kor}
+
+Hierbei ist V=$\{0\} \Leftrightarrow$ m=0 gesetzt!
+
+
+
+%3.Paragraph%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Lösbarkeit linearer Programme}
+\stepcounter{defsaco}
+
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&f(x)=$\langle x,p\rangle$&=&max\\
+(LP)&Ax&$\leq$&b\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+M=$\{$Ax$\leq$b, x$\geq0\}\ \Rightarrow$ M polyedrisch, geradenfrei.\\
+(LP) unlösbar, falls $M=\varnothing$ oder falls $\sup\limits_{x \in \ M}\ f(x)=\infty$.
+
+\begin{Sa}
+Gegeben sei (LP) mit M$\neq \varnothing$, $f\not\equiv0$, f sei auf M nach oben beschränkt. Dann gilt:
+\begin{enumerate}
+\item (LP) ist lösbar
+\item Die Menge der Lösungen ist eine Seite von M
+\item Es existiert eine Ecke von M, die Lösung ist.
+\end{enumerate}
+\end{Sa}
+
+\textbf{Beweis:}\\
+\textbf{1.Fall:} M beschränkt $\Rightarrow$ M kompakt, also existiert $\max\limits_{x\in M} f(x)=:c$\\ (weil f stetig ist)\\
+\[\Rightarrow M\cap\underbrace{\{f=c\}}_{Hyperbene}\textnormal{ Seite des Polytops M, also auch Polytop.}\]
+$\stackrel{(2.10)}{\Longrightarrow} (b),(c)$ 
+
+\textbf{2.Fall:} M unbeschränkt $\stackrel{(2.11)}{\Longrightarrow}$\\  
+\[ M=\{\alpha_1x^1+\ensuremath{\ldots}+\alpha_kx^k+\beta_1u^1+\ensuremath{\ldots}+\beta_mu^m:\ \alpha_i\geq0,\beta_j\geq0,\ \sum\alpha_i=1\} \]
+($x^i$ Ecken und $u^j$ Richtungen der Extremalstrahlen)
+
+Sei $c:= \sup\limits_{x\in M}f(x)<\infty.$ Sei $x\in M$, x=\ensuremath{\ldots}\\
+\[\Rightarrow f(x)=\sum_{i=1}^{k}\alpha_if(x^i)\ + \ \sum_{j=1}^{m}\beta_jf(u^j)\ \leq c\]\\
+\textbf{Beh.:} $f(u^j)\leq0,\ j=1,\ensuremath{\ldots},m$\\
+\textbf{Bew.:} Wähle $\alpha_1,\ensuremath{\ldots},\alpha_k$ fest, $\beta_j>0,\ \beta_r=0,\ r=1,\ensuremath{\ldots},m,\ r\neq j$ 
+\[\textnormal{Sei } d:=\sum\alpha_if(x^i) \in \R \Rightarrow \beta_jf(u^j)\leq c-d \stackrel{\beta \rightarrow\infty}{\Rightarrow} f(u^j)\leq0.\]
+\[\textnormal{Also: } f(x)= \sum_{i=1}^{k}\alpha_if(x^i)\ +\ \underbrace{\sum_{j=1}^{m}\beta_jf(u^j)}_{\leq0}\ \leq \sum_{i=1}^{k}\alpha_if(x^i)\ \leq\max\limits_{i=1,\ensuremath{\ldots},k}f(x^i)\]
+$\Rightarrow \textnormal{(a), (c)}$
+
+(b) Sei $c:=\max\limits_{i=1,\ensuremath{\ldots},k}f(x^i) = \max\limits_{x\in M}f(x)$
+
+$\Rightarrow$ Lösungsmenge $M\cap \{f=c\}$ Seite von M.
+
+\textbf{Bemerkung:} (a) Satz gilt auch für (LP) in der Form
+
+\begin{tabular}{|rcl|}\hline
+f(x)&=&max\\
+Ax&=&b\\
+x &$\geq$&0 \\\hline
+\end{tabular}
+\ und auch für\ 
+\begin{tabular}{|rcl|}\hline
+f(x)&=&min\\
+Ax &$\geq$& b\\
+x &$\geq$&0 \\\hline
+\end{tabular}\\[60pt]
+
+Er gilt \textbf{nicht} für (LP) der Form
+\begin{tabular}{|rcl|}\hline
+f(x)&=&max\\
+Ax&$=$& b \\\hline
+\end{tabular}  !
+
+(b) Eine Satz (3.1) entsprechende Aussage wird falsch, wenn f nicht linear oder M nicht polyedrisch ist!
+
+\begin{Sa} Sei $M=\{x \in \R^n:Ax=b,\ x\geq 0\}$ (mit (m,n)-Matrix A) der zulässige Bereich eines (LP) und sei $x\in M$. Dann gilt:\\
+x Ecke von M $\Leftrightarrow$ Die Menge $\{a^j:x_j>0\}$ der Spalten $a^j$ von A, für die die Komponente $x_j$ von $x=(x_1,\ensuremath{\ldots},x_n)$ positiv ist, ist linear unabhängig.
+\end{Sa}
+
+\textbf{Beweis:} "`$\Rightarrow$"' Seinen o.B.d.A\\
+$x_1,\ensuremath{\ldots},x_k > 0$, $x_{k+1}=\ensuremath{\ldots}=x_n= 0$\\
+Wir müssen zeigen, dass $a^1,\ensuremath{\ldots},a^k$ l.u.\\
+Sei also $\alpha_1a^1+\ensuremath{\ldots}+\alpha_ka^k=0$, $\alpha_j \in \R$
+
+Angenommen $(\alpha_1,\ensuremath{\ldots},\alpha_k)\neq (0,\ensuremath{\ldots},0)$.\\
+Wähle $\varepsilon >0$ mit $x_i\pm \varepsilon \alpha_i > 0, i=1,\ensuremath{\ldots},k$\\
+Setze $y:=(x_1+\varepsilon\alpha_1,\ensuremath{\ldots},x_k+\varepsilon\alpha_k,0,\ensuremath{\ldots},0)\geq 0$\\
+$z:=(x_1-\varepsilon\alpha_1,\ensuremath{\ldots},x_k-\varepsilon\alpha_k,0,\ensuremath{\ldots},0)\geq 0$\\
+
+$\Rightarrow x\stackrel{(*)}{=}\frac{1}{2}y+\frac{1}{2}z.$ Weiter ist 
+\[Ay=Ax +\underbrace{\varepsilon \sum_{j=1}^k \alpha_j a^j}_{=0}=b\ \Rightarrow y\in M\]
+\[Az=Ax-\varepsilon \sum_{j=1}^k \alpha_j a^j=b\ \Rightarrow z\in M\]
+Widerspruch mit $(*)$ weil x Ecke!
+$\Rightarrow (\alpha_1,\ensuremath{\ldots},\alpha_k)=0$, d.h. $a^1,\ensuremath{\ldots},a^k$ l.u.
+
+"`$\Leftarrow$"' O.B.d.A. sei wieder $x_1,\ensuremath{\ldots},x_k > 0$, $x_{k+1}=\ensuremath{\ldots}=x_n= 0$\\
+Sei $a^1,\ensuremath{\ldots},a^k$ l.u.\ Sei $x=\alpha y+(1-\alpha)z$ mit $y,z \in M,\ \alpha \in (0,1)\\ \Rightarrow y\geq 0, z\geq 0$
+\[\Rightarrow y_{k+1}=\ensuremath{\ldots}=y_n=0, \ z_{n+1}=\ensuremath{\ldots}=z_n=0\]
+\[\Rightarrow \sum_{j=1}^k(y_j-z_j)a^j=Ay-Az=b-b=0\]
+\[\stackrel{a^1,\ensuremath{\ldots},a^k\ l.u.}{\Rightarrow} y_j-z_j=0,\ j=1,\ensuremath{\ldots},k\ \Rightarrow y=z=x \Rightarrow \textnormal{ x Ecke.}\]
+
+\textbf{Bemerkungen:}\\ (a) Sind x,y Ecken von M, so folgt: $\{i:x_i>0\}\neq \{i:y_i>0\}\ (x\neq y)$\\
+(b) Da insgesamt $2^n$ verschiedene Familien von Indizes aus $\{1,\ensuremath{\ldots},n\}$ existieren, gibt es (wegen (a)) maximal $2^n$ Ecken von M.
+
+\begin{Sa}[Lemma von Farkas]
+Es gilt: $M=\{Ax=b,\ x\geq0\}\neq \varnothing \Leftrightarrow$ Aus $A^Tu\geq0\ (u\in \R^m)$ folgt $\left\langle u,b \right\rangle \geq 0$
+\end{Sa}
+
+\textbf{Beweis:} "`$\Rightarrow$"' Wegen $M\neq \varnothing$ existiert $x\in M$. Sei $A^Tu\geq0 \Rightarrow\\ \left\langle u,b\right\rangle =\left\langle u,Ax\right\rangle = \underbrace{\langle A^Tu}_{\geq0},\underbrace{x\ \rangle}_{\geq0}\ \geq0$
+
+"`$\Leftarrow$"' Angenommen $M= \varnothing$\\
+Sei $N:=\{y\in \R^m:\exists x\in \R^n,\ x\geq0,\ \textnormal{mit}\ Ax=y\}\Rightarrow b\not\in N$.
+
+\textbf{Beh.:} N ist ein abgeschlossener konvexer Kegel
+
+\textbf{N konvexer Kegel:} Sei $y,y'\in N, \beta, \beta'\geq0$
+\[\Rightarrow \exists x,x'\in \R^n \textnormal{ mit }x,x'\geq0,\ Ax=y,\ Ax'=y'.\]
+\[\Rightarrow \beta x+\beta'x'\geq0, A(\beta x+\beta'x')=\beta Ax+ \beta'Ax'= \beta y+ \beta'y'\]
+$\Rightarrow \beta y+\beta'y'\in N.$
+
+\textbf{N abgeschlossen:} Sei $(y^j)_{j\in N}$ eine Folge mit $y^j\in N$ und $y^j\stackrel{j\rightarrow \infty}{\rightarrow}y\in \R^m$.
+Zu jedem $z\in M$ hat die Menge $M_z:=\{x\in \R^n:Ax=z,\ x\geq0\}$ mindestens eine und höchstens $2^n$ Ecken.\\
+$\Rightarrow$ Es existiert (nach Übergang zu Teilfolge) eine l.u. Menge $\{a^{i_1},\ensuremath{\ldots},a^{i_k}\}$ von Spalten von A mit zugehörigen Ecken 
+\[ x^j=\begin{cases}>0,&\mbox{für}\ j\in\{i_1,\ensuremath{\ldots},i_k\}\\=0,&\mbox{sonst}\end{cases}\]
+\[ \Rightarrow \sum_{r=1}^{k} x_{i_r}^ja^{i_r}= y^j,\ j=1,2,\ensuremath{\ldots}\]
+$\Rightarrow$ Für $y^j\rightarrow y$ konvergiert Lösung $x^j\rightarrow x$ mit $x\geq0$ und $Ax=y$, also folgt $y\in N.$\\
+Damit ist N abgeschlossen.
+
+Wegen $b\notin N$ existiert ein $\widehat{y}\in N$ mit $\left\| \widehat{y}-b \right\|= \inf\limits_{y\in N}\left\|y-b\right\|\ >0$\\
+Sei $\widehat{u}:=\widehat{y}-b\neq0$\\
+$\Rightarrow \left\langle \widehat{y}, \widehat{u} \right\rangle =0$ und $\left\langle y,\widehat{u} \right\rangle \geq0 \forall y\in N.$\\
+sowie $\left\langle b,\widehat{u} \right\rangle <0$
+
+\textbf{Also gilt:} $0\leq \left\langle y,\widehat{u} \right\rangle =\left\langle Ax,\widehat{u} \right\rangle=\left\langle x,A^T\widehat{u} \right\rangle$ für ein $x\geq0$ mit $Ax=y.$\\
+Jedes $x\geq0, x\in \R^n$, kommt hierbei vor, wenn y ganz N durchläuft.\\
+$\Rightarrow A^T\widehat{u}\geq0$\\
+$\stackrel{Vor.}{\Rightarrow} \left\langle \widehat{u},b \right\rangle \geq 0.$ Widerspruch!\\
+$\Rightarrow M \neq \varnothing.$
+
+
+\textbf{Bemerkung:} Lemma von Farkas kann als Alternativsatz interpretiert werden:\\
+$Ax=b,\ x\geq0$ lösbar $\Leftrightarrow A^Tu\geq0, \ \left\langle u,b\right\rangle <0$ ist nicht lösbar.
+
+\textbf{oder:} Genau eines der Systeme 
+\begin{itemize}
+\item $Ax=b,\ x\geq0\ (x\in \R^n)$
+\item $A^Tu\geq0, \langle u,b \rangle <0 \ (u\in \R^m)$
+\end{itemize}
+ist lösbar!
+
+
+
+%4.Paragraph%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Dualität}
+\stepcounter{defsaco}
+Lineares Programm -\\\emph{Primalprogramm} (PP) im $\R^n$ 
+
+\begin{tabular}{|rcl|}\hline
+$f(x)$ = $\langle x,p \rangle$ &=& max\\
+Ax &$\leq$& b\\
+x&$\geq$&0\\\hline
+\end{tabular}
+$M=\{x\in \R^n:Ax\leq b,\ x\geq0\}$
+
+\emph{Dualprogramm} (DP) im $\R^m$ 
+
+\begin{tabular}{|rcl|}\hline
+$g(u)$ = $\langle u,b \rangle$ &=&min\\
+$A^Tu$ &$\geq$& p\\
+u &$\geq$& 0\\\hline
+\end{tabular} 
+$N=\{u\in \R^m:A^Tu\geq p,\ u\geq0\}$
+
+[(DP) ist auch ein lineares Programm]
+
+\begin{Sa}[Dualitätssatz für LP]
+Seien (PP) und (DP) gegeben mit zulässigen Bereichen M bzw. N. Dann gilt:
+
+\begin{enumerate}
+\item[(a1)] Für $x\in M$ und $u\in N$ gilt: $f(x)\leq g(u)$
+\item[(a2)] Sind M, N nichtleer, so sind (PP) und (DP) lösbar.
+\item[(a3)] Sind $x\in M, u\in N$ mit $f(x)=g(u)$, so sind x und u Lösungen.
+\end{enumerate}
+(schwache Dualitätsaussagen)
+
+\begin{enumerate}
+\item[(b1)] Ist (PP) lösbar, so ist auch (DP) lösbar und $\max\limits_{x\in M}f(x)=\min\limits_{u\in N}g(u)$
+\item[(b2)] Ist (DP) lösbar, so ist auch (PP) lösbar und $\max\limits_{x\in M}f(x)=\min\limits_{u\in N}g(u)$
+\end{enumerate}
+(starke Dualitätsaussagen)
+\end{Sa}
+
+\textbf{Beweis von (a1) (a2) (a3):}\\ 
+(a1) $x\in M, u\in N \Rightarrow f(x)=\langle x,p\rangle \leq \langle x,A^Tu\rangle = \langle Ax,u\rangle \leq \langle b,u\rangle =g(u)$\\
+(a2) (a3) folgen aus (a1) und Satz 3.1
+
+\begin{Hil} Sei A eine (m,n)-Matrix. Dann existieren $x\in \R^n, u\in \R^m$ mit $Ax=~0,\ x\geq 0,\ A^Tu\geq 0$ und $x+A^Tu>0$ (alle Komponenten $>0$)
+\end{Hil}
+
+\textbf{Beweis:} Sei $k\in \{1,\ensuremath{\ldots},n\}.$ Wir betrachten für $A=(a^1\vdots\ \ensuremath{\ldots}\ \vdots a^n\}$
+\[ (*_k) \sum_{i=1,\atop i\neq k}^n x_i a^i=-a^k\ (\textnormal{im } \R^{n-1})\]
+\[x_i\geq0,\ i\neq k\]
+\[ (**_k) \langle a^i,u\rangle \geq 0,\ i=1,\ensuremath{\ldots},k,\ i\neq k\]\[\langle a^k,u\rangle >0\ (\textnormal{im }\R^m)\]
+[$(*_k)$ ist äquivalent zu $\widetilde{A}\widetilde{x}=b$ mit passendem $\widetilde{A},\widetilde{x}, b$ (...)\newline
+$(**_k)$ ist äquivalent zu $\widetilde{A}^Tu\geq0$, $\langle u,b\rangle<0$]
+
+Nach Lemma von Farkas ist genau eines der Systeme $(*_k)$ bzw $(**_k)$ lösbar!\\
+Sei $I_1:= \{k\in\{1,\ensuremath{\ldots},n\}:(*_k)$ lösbar $\}$, $I_2:=\{k\in\{1,\ensuremath{\ldots},n\}:(**_k) \textnormal{ lösbar}\}$\\
+$\Rightarrow I_1\cap I_2=\varnothing, I_1\cup I_2=\{1,\ensuremath{\ldots},n\}$\\
+Für $k\in I_1$ existiert also ein $x^k\in \R^n$ mit $x_k^k=1,\ Ax^k=0,\ x^k\geq0$\\
+Für $k\in I_2$ existiert ein $u^k\in \R^m$ mit $A^Tu^k\geq 0,\ \langle a^k,u^k\rangle>0$\\
+\[ \textnormal{Setzte } x:=\sum_{k\in I_1} x^k,\ u:=\sum_{k\in I_2}u^k\]
+Falls $I_1=\varnothing$ sei $x=0$, falls $I_2=\varnothing$ sei $u=0$ 
+\[ \Rightarrow Ax=\sum_{k\in I_1} Ax^k=0,\ x\geq0,\ A^Tu\geq0,x+A^Tu>0\]
+
+\begin{Hil} Sei B eine (n,n)-Matrix mit $B^T=-B$.\\ Dann existiert ein $y\in\R^n$ mit $By\geq0$, $y\geq0$, $y+By>0$
+\end{Hil}
+
+\textbf{Beweis:} Setze $A=(E_n \vdots -B) \Rightarrow A^T=\left(\begin{array}{lcr}E_n\\\ensuremath{\cdots}\\B\end{array}\right)$ [A (n,2n)-Matrix]
+
+$\stackrel{\textnormal{\scriptsize{Hilfssatz 4.2}}}{\Longrightarrow} \exists x\in \R^{2n},\ u\in\R^n$ mit $Ax=0,\ x\geq0,\ A^Tu\geq0,\ x+A^Tu>0$\\
+Sei $x=\left(\begin{array}{lcr}x^1\\\ensuremath{\cdots}\\x^2\end{array}\right),\ x^i\in \R^n \Rightarrow x^1-Bx^2=0,\ x^1,x^2\geq0,\ u\geq0,\ Bu\geq0$\\
+und $x^1+u>0,\ x^2+Bu>0$\\
+Setze $y=x^2+u \Rightarrow y\geq0,\ By=Bx^2+Bu=x^1+Bu\geq0$\\
+$y+By=x^2+u+Bx^2+Bu=x^2+Bu+x^1+u>0$\\[24pt]
+
+Wir wenden (4.3) an auf (Beachte: A (m,n)-Matrix)
+\[ B =\left(\begin{array}{lcr}0&-A&b\\A^T&0&-p\\-b^T&p^T&0\end{array}\right),\ B\:(m+n+1, m+n+1)-\textnormal{Matrix und } B=-B^T\]
+
+\[\stackrel{(4.3)}{\Rightarrow}\textnormal{ es existitiert }y=\left(\begin{array}{lcr}u\\\ensuremath{\cdots}\\x\\\ensuremath{\cdots}\\t\end{array}\right)\textnormal{ mit } \underbrace{y\geq0}_{1},\ \underbrace{By\geq0}_{2},\ \underbrace{y+By>0}_{3}\]
+
+1: $x\geq0,\ u\geq0,\ t\geq0$\\
+2: $-Ax+tb\geq0,\ A^Tu-tp\geq0,\ -\langle u,b\rangle+\langle x,p\rangle\geq0$\\
+3: $u-Ax+tb>0,\ x+A^Tu-tp>0,\ t-\langle u,b\rangle+ \langle x,p\rangle >0$
+
+\begin{Lem} Sei in der obigen Situation $t>0$.\\ Dann existieren Lsg. $x^0$ von (PP) und $u^0$ von (DP) mit $f(x^0)=g(u^0)$
+\end{Lem}
+
+\textbf{Beweis:} Setze $x^0=\frac{1}{t}x$, $u^0=\frac{1}{t}u$ (x und u wie oben bei 1, 2, 3)\\
+$\stackrel{1}{\Rightarrow} x^0,u^0\geq0.$\\ Aus 2 folgt: $Ax^0\leq b,\ A^Tu^0\geq p.$\\
+Also folgt: $x^0, u^0$ zulässig!\\
+Aus 2 folgt weiter: $\langle u^0,b\rangle \leq \langle x^0,p\rangle$, also $f(x^0)\geq g(u^0)$\\
+Nach den schwachen Dualitätsausagen gilt $f(x^0)\leq g(u^0)$ also $f(x^0)= g(u^0)$, somit sind $x^0, u^0$ Lösungen.
+
+\textbf{Weiter gilt:} $u^0-Ax^0+b>0,\ x^0+A^Tu^0-p>0$.
+
+\begin{Lem} Sei in der obigen Situation $t=0.$ Dann gilt:\\
+(a) Wenigstens einer der Bereiche M, N ist leer.\\
+(b) Ist $M\neq\varnothing$, so ist f auf M nicht nach oben beschränkt\\
+(c) Ist $N\neq\varnothing$, so ist g auf N nicht nach unten beschränkt
+\end{Lem}
+
+\textbf{Beweis:} (a) Angenommen es existiert $x'\in M,\ u'\in N$\\
+$\stackrel{mit\ x,u\ aus\ 1,\ 2,\ 3}{\Longrightarrow} \langle x,p\rangle \stackrel{3}{>} \langle u,b\rangle \stackrel{1}{\geq} \langle u,Ax'\rangle =\langle A^Tu,x'\rangle \stackrel{2}{\geq}0\\ \stackrel{2}{\geq}\langle u',Ax\rangle = \langle A^Tu',x\rangle \stackrel{1}{\geq} \langle p,x\rangle$ Widerspruch! $\Rightarrow$ \textbf{Beh!}\\
+(b) Sei $M\neq\varnothing,\ x'\in M,\ \varepsilon>0.$ Betrachte $x'+\varepsilon x$.\\
+$x'+\varepsilon x \stackrel{1}{\geq}0,\ A(x'+\varepsilon x)=Ax'+\varepsilon Ax \stackrel{2}{\leq} b+0=b$\\
+$\Rightarrow x'+\varepsilon x\in M \forall \varepsilon>0$\\
+\begin{eqnarray*}f(x'+\varepsilon x)&=&\langle x',p\rangle+\varepsilon\langle x,p\rangle \\&\stackrel{3}{>}&\langle x',p\rangle+\varepsilon\langle u,b\rangle\\ &\stackrel{1}{\geq}&\langle x',p\rangle+\varepsilon\langle u,Ax'\rangle\\&=&\langle x',p\rangle+\varepsilon\langle A^Tu,x'\rangle\\
+&\stackrel{2}{\geq}&\langle x',p\rangle\qquad\qquad\qquad=f(x')\end{eqnarray*}
+\(\Rightarrow \langle x,p\rangle >0 \Rightarrow f(x'+\varepsilon x) \stackrel{\varepsilon\rightarrow\infty}{\longrightarrow}+\infty\)\\
+(c) analog
+
+\texttt{Anmerkung:} Damit sind die starken Dualitätsaussagen bewiesen!
+
+\textbf{Zusammenfassung:} (Folgerungen von Farkas)\\
+Zu A, p, b existieren x, u, t mit:\\
+$x\geq0,\ u\geq0,\ t\geq0$\\
+$bt-Ax\geq0,\ A^Tu-p\geq0,\ \langle b,u\rangle\leq \langle x,p\rangle$\\
+$bt-Ax+u>0,\ A^Tu-p+x>0$
+
+\textbf{1.Fall:} t=0 $\Rightarrow$ (PP) und (DP) unlösbar!\\
+\textbf{2.Fall:} $t>0 \Rightarrow x^o:=\frac{1}{t}x,\ u^o=\frac{1}{t}u$ Lösungen.
+
+\begin{Sa} Seien $x\in \R^n,\ u\in \R^m$ zulässige Punkte von (PP) bzw (DP). Dann gilt:
+\begin{itemize}
+\item[(a)] $x,u$ Lösungen $\Leftrightarrow$ $\langle b-Ax,u\rangle =0,\langle A^Tu-p,x\rangle =0$
+\item[(b)] Es existieren Lösungen $x^0$ von (PP) und $u^0$ von (DP) mit $bt-Ax^0+u^0>0,\\ A^Tu^0-p+x^0>0$
+\end{itemize}
+\end{Sa}
+
+\textbf{Beweis:}\\
+(a)
+\begin{eqnarray*}x,u \textnormal{ Lösungen} &\stackrel{(4.1)}{\Leftrightarrow}&f(x)=g(u)\\
+&\Leftrightarrow& 0=g(u)-f(x)\\&&=\langle u,b\rangle -\langle x,p\rangle\\&&=\langle u,b\rangle -\langle Ax,u\rangle +\langle Ax,u\rangle -\langle x,p\rangle\\
+&&= \underbrace{\langle A^Tu-p,x\rangle}_{\geq0} + \underbrace{\langle b-Ax,u\rangle}_{\geq0}\\
+&\Leftrightarrow& \langle b-Ax,u\rangle =0,\ \langle A^Tu-p,x\rangle =0
+\end{eqnarray*}
+(b) Siehe Fall 2 oben!
+
+\textbf{Bemerkung:} Die Bedingungen aus (4.6)(a) heißen \textbf{Komplementaritätsbedingungen}.
+
+\textbf{Interpretation:} Sind (PP) und (DP) lösbar und x, u Lösungen, so gilt:\\
+Ist $x_i>0$, so muss in der i-ten Restriktion von DP Gleichheit gelten!\\
+Umgekehrt: Ist die i-te Restriktion von (DP) mit "`$>$"' erfüllt, dann ist $x_i=0$.\\
+Analog mit u und $Ax\leq b$ !!!
+
+\textbf{Beispiel:}
+
+(PP) \begin{tabular}{|rcl|}\hline
+$f(x)=3x_1+4x_2+3x_3$&=&max\\
+$3x_1+2x_2+x_3$&$\leq$&4 (a)\\
+$x_1+2x_2+2x_3$&$\leq$&6 (b)\\
+$x_1, x_2, x_3$&$\geq$&0 \\\hline
+\end{tabular}
+
+(DP) \begin{tabular}{|rcl|}\hline
+$g(u)=4u_1+6u_2$&=&min\\
+$3u_1+u_2$&$\geq$&3 (1)\\
+$2u_1+2u_2$&$\geq$&4 (2)\\
+$u_1+2u_2$&$\geq$&3 (3)\\
+$u_1, u_2$&$\geq$&0 \\\hline
+\end{tabular}
+
+Übungen $\Rightarrow$ \textbf{Lösung:} $u^0=(1,1)$\\
+\textbf{Folgerungen:} Es existiert Lösung $x^0$ von (PP), $x^0=(x^0_1, x^0_2 ,x^0_3)$\\
+mit: (1) mit "`$>$"', also $x^0_1=0,\ x^0_2,x^0_3>0$\\ $u^0_1>0,u^0_2>0\Rightarrow x^0$ erfüllt (a),(b) mit "`$=$"'\\
+Schließlich: $g(u^0)=f(x^0)$ :
+\[\left.\begin{array}{cccccccccc}4x^0_2+3x^0_3&=&10\\2x^0_2+x^0_3&=&4\\2x^0_2+2x^0_3&=&6\end{array}\right\}\Rightarrow x^0_2=1,\ x^0_3=2\]
+
+Wie dualisiert man andere Standard-Formen?
+
+(PP) \begin{tabular}{|rcl|}\hline
+$f(x)=\langle x,p\rangle$&=&max\\
+Ax&=&b\\
+x&$\geq$&0\\\hline
+\end{tabular}
+$\Leftrightarrow$ (PP')
+\begin{tabular}{|rcl|}\hline
+$f(x)=\langle x,p\rangle$&=&max\\
+Ax&$\leq $&b\\
+-Ax&$\leq$&-b\\
+x&$\geq$&0\\\hline
+\end{tabular} 
+\[ \left(\begin{array}{c}A\\\cdots\\-A \end{array}\right) x\leq \left(\begin{array}{c}b\\\cdots\\-b\end{array}\right) \]
+
+$\Rightarrow$ (DP') \begin{tabular}{|rcl|}\hline
+$g(u,w)=\langle \left(\begin{array}{c}u\\\cdots\\w\end{array}\right),\left(\begin{array}{c}b\\\cdots\\-b\end{array}\right)\rangle=\langle u,b\rangle -\langle w,b\rangle $ &=&min\\
+$A^Tu-A^Tw$&$\geq$&p\\
+u,w&$\geq$&0\\\hline
+\end{tabular}
+
+\[\left(\begin{array}{lrc}A^T& \vdots &-A^T\end{array}\right)\left(\begin{array}{c}u\\\cdots\\w\end{array}\right) \geq p\]
+
+$\stackrel{\widetilde{u}:=u-w}{\Leftrightarrow}$ (DP) \begin{tabular}{|rcl|}\hline 
+$\widetilde{g}(\widetilde{u})=\langle \widetilde{u},b \rangle $&=& min\\
+$A^T\widetilde{u}$&$\geq$&$ p$\\
+$\widetilde{u} $&$\in$&$ \R^m$\\\hline
+\end{tabular}\\
+
+Dualprogramm von (DP)?
+
+(PP) \begin{tabular}{|rcl|}\hline
+$f(x)=\langle x,p\rangle$&=&max\\
+Ax &$\leq$&b\\
+x&$\geq$&0\\\hline
+\end{tabular}
+
+(DP) \begin{tabular}{|rcl|}\hline
+$g(u)=\langle u,b\rangle$ &=&min\\
+$A^Tu$&$\geq$&p\\
+u&$\geq$&0\\\hline
+\end{tabular}
+$\Leftrightarrow$ (DP') \begin{tabular}{|rcl|}\hline
+$\widetilde{g}(u)=-\langle u,b\rangle=\langle u,-b\rangle$&=&max\\
+$-A^Tu$&$\leq$&-p\\
+u&$\geq$&0\\\hline
+\end{tabular}
+
+Dualprogramm von (DP'):
+
+\begin{tabular}{|rcl|}\hline
+$\widetilde{f}(x)=\langle x,-p\rangle$&=&min\\
+$(-A^T)^Tx $&$\geq$&-b\\
+x&$\geq$&0\\\hline
+\end{tabular}
+$\Leftrightarrow$ (PP) \begin{tabular}{|rcl|}\hline
+$f(x)=\langle x,p\rangle$ &=&max\\
+$Ax$&$\leq$&b\\
+x&$\geq$&0\\\hline
+\end{tabular}
+
+
+
+%5.Paragraph%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Das Simplex-Verfahren}
+\stepcounter{defsaco}
+
+Standardform für Simplex-Verfahren
+
+(LP) \begin{tabular}{|rcl|}\hline
+$f(x)=\langle x,p\rangle$&=&min\\
+Ax&=&b\\
+x&$\geq$&0\\\hline
+\end{tabular}\\
+
+O.B.d.A. setzten wir voraus: Rang A=m$<$n!!! (A(m,n)-Matirx)\\
+Nach den Sätzen 3.1 und 3.2 ist, im Fall der Lösbarkeit von (LP), immer eine Ecke x von M Lösung und die Ecken korrespondieren zu l.u. Spalten von A: $\{a^i:x_i>0\}$ l.u.\\
+\textbf{Generelle Voraussetzung:} Alle Ecken von M sind \textbf{nicht-entartet}, d.h. wenn $x\in M$ Ecke ist, gilt $|\{i\in\{1,\ensuremath{\ldots},n\}:x_i>0\}|=m$\\
+\textbf{Dann gilt:} Zu jeder Ecke von M existieren m l.u. Spalten $a^i$ von A: $a^{i_1},\ensuremath{\ldots},a^{i_m}$ die l.u. sind. Das bedeutet es existiert eine reguläre (m,m)-Matirx B\\ (aus Spalten von A) mit \[ B \left(\begin{array}{c}x_{i_1}\\ \vdots\\x_{i_m}\end{array}\right)=b, \textnormal{ also }\left(\begin{array}{c}x_{i_1}\\ \vdots\\x_{i_m}\end{array}\right)=B^{-1}b \]
+
+$\Rightarrow$ Ecke von M hat die Form \[ x=(0,\ensuremath{\ldots},0,\underbrace{x_{i_1}}_{>0},\ensuremath{\ldots},0,\underbrace{x_{i_2}}_{>0},0,\ensuremath{\ldots},0,\underbrace{x_{i_m}}_{>0},0,\ensuremath{\ldots},0)\]
+
+[$a^{i_1},\ensuremath{\ldots},a^{i_m}$] l.u., also Basis von $\R^m$\\
+$\Rightarrow$ B=$(a^{i_1}\vdots \cdots \vdots a^{i_m})$ regulär und x ist gegeben durch 
+\[ x_i \stackrel{(*)}{=} \begin{cases}(B^{-1}b)_i&\mbox{für}\ i\in\{i_1,\ensuremath{\ldots},i_m\}\\0&\mbox{sonst}\end{cases}\]
+
+$a^{i_1},\ensuremath{\ldots},a^{i_m}$ heißt \emph{Basis} (zur Ecke x)\\
+Jedes $x\in\R^n$, das durch $(*)$ gegeben ist, wobei B=$(a^{i_1}\vdots \cdots \vdots a^{i_m})$ regulär ist, heißt \textbf{Basislösung}.\\
+Basislösung x ist genau dann Ecke von M, wenn $x\ge0$ ist\\ ($\Rightarrow x_{i_j}>0,\ j=1,\ensuremath{\ldots},m$)
+
+\textbf{Eckentausch (Pivoting):}
+
+O.B.d.A. (nach Umnummerierung) sei \[ x=(\underbrace{x_1}_{>0},\ensuremath{\ldots},\underbrace{x_m}_{>0},0,\ensuremath{\ldots},0) \textnormal{ Ecke ( zur Basis } a^1,\ensuremath{\ldots},a^m\textnormal{)}\]
+Gauß-Algorithmus liefert \textbf{Tableau}
+
+\begin{tabular}{cccccccccc|c}
+$x_1$&$\cdots$&$x_k$&$\cdots$&$x_m$&$x_{m+1}$&$\cdots$&$x_l$&$\cdots$&$x_n$&b\\\hline
+1&0&$\cdots$&$\cdots$&0&$c_{1,m+1}$&$\cdots$&$\vdots$&$\cdots$&$c_{1,n}$&$c_{1,0}>0$\\
+0&$\ddots$&$\ddots$& &$\vdots$ &$\vdots$&&$\vdots$& &$\vdots$& $\vdots$\\
+$\vdots$&$\ddots$&1&$\ddots$&$\vdots$&$\vdots$&$\cdots$&\fbox{$c_{k,l}$}&$\cdots$&$\vdots$&$\vdots$\\
+$\vdots$&&$\ddots$&$\ddots$&0&$\vdots$&&$\vdots$&&$\vdots$&$\vdots$\\
+0&$\cdots$&$\cdots$&0&1&$c_{m,m+1}$&$\cdots$&$\vdots$&$\cdots$&$c_{m,m}$&$c_{m,0}>0$
+\end{tabular}
+
+Basislösung (Ecke): $(c_{1,0},\ldots,c_{m,0},0,\ldots,0)$
+
+\textbf{Frage:} Wann kann man $a^k$ in der Basis $a^1,\ensuremath{\ldots},a^m$ durch $a^l$ ersetzten\\$(k\in \{1,\ensuremath{\ldots},m\},\ l\in\{m+1,\ensuremath{\ldots},n\})$, so dass wieder Ecke entsteht?
+
+$a^1,\ensuremath{\ldots},a^{k-1},a^l,a^{k+1},\ensuremath{\ldots},a^m$ ist Basis $\Leftrightarrow c_{k,l}\neq 0.$\\
+Transformationsgleichung für das neue Tableau (\emph{Pivot-Gleichungen})
+\[(*)\left.\begin{array}{cccccccccc}&c'_{i,j} &=& c_{i,j}-c_{i,l}\frac{c_{k,j}}{c_{k,l}}, i\neq k \\&c'_{k,j}&=&\frac{c_{k,j}}{c_{k,l}}\end{array}\right\}j=0,\ensuremath{\ldots},n \]
+
+\textbf{Tableau:}\\
+\begin{tabular}{cccccccccccc|c}$x_1$&$\cdots$&$\cdots$&$x_k$&$\cdots$&$x_m$& &$x_{m+1}$&$\cdots$&$x_l$&$\cdots$&$x_n$&b\\\hline
+1& & &$c'_{1,k}$& & & &$c'_{1,m+1}$& $\cdots$&0 &$\cdots$&$c'_{1,n}$& $c'_{1,0}$\\
+&$\ddots$& &$\vdots$& & & &$\vdots$&&$\vdots$& &$\vdots$&$\vdots$\\
+& &1&$\vdots$& &0& &$\vdots$& &0& &$\vdots$&$\vdots$\\
+& & &$c'_{k,k}$& & & &$\vdots$& &1& &$\vdots$&$c_{k,0}$\\
+&0& &$\vdots$&1& & &$\vdots$& &0& &$\vdots$&$\vdots$\\
+& & &$\vdots$& &$\ddots$& &$\vdots$& &$\vdots$& &$\vdots$&$\vdots$\\
+& & &$c'_{m,k}$& & &1&$c'_{m,m+1}$&$\cdots$&0&$\cdots$&$c'_{m,m}$&$c'_{m,0}$\\
+\end{tabular}
+
+
+\textbf{Basislösung} \[(c'_{1,0},\ensuremath{\ldots},c'_{k-1,0}, 0, c'_{k+1,0},\ensuremath{\ldots}, c'_{m,0}, 0,\ensuremath{\ldots}, 0,\underbrace{c'_{k,0}}_{l-te Stelle}, 0,\ensuremath{\ldots}, 0)\]
+Basislösung ist Ecke $\Leftrightarrow\ c'_{i,0}>(\geq)0,\ i=1,\ensuremath{\ldots},m$\\
+\textbf{Dazu muß gelten:} $c_{k,l}>0$ \[ \frac{c_{k,0}}{c_{k,l}} \leq \frac{c_{i,0}}{c_{i,l}}\]
+$\forall i\neq k$ mit $c_{i,l}>0$ (für $c_{i,l}\leq 0$ ist die Bedingung automatisch erfüllt)
+\[\Leftrightarrow \frac{c_{k,0}}{c_{k,l}}=\min\limits_{i\neq k \textnormal{ mit} \atop c_{i,l}>0} \frac{c_{i,0}}{c_{i,l}}\]
+Der Tausch $a^k\leftrightarrow a^l$ liefert neue Ecke x'.\\
+$\Leftrightarrow c_{k,l}>0$ \textbf{und} $\frac{c_{k,0}}{c_{k,l}}=\min\limits_{i\neq k \atop c_{i,l}>0} \frac{c_{i,0}}{c_{i,l}}$\\
+($c_{k,l}$ \textbf{Pivot-Element})\newline
+[$\hookrightarrow$ Pivot-Spalte]
+
+\textbf{Beispiel zum Eckentausch:}  \textit{Siehe ausgeteiltes Blatt!}\\[48pt]
+
+\begin{tabular}{cccccc|c}$a^1$&$\cdots$&$a^m$&$a^{m+1}$&$\cdots$&$a^n$&b\\\hline
+1& & &$c_{1,m+1}$&$\cdots$&$c_{1,n}$&$c_{1,0}$\\
+ &$\ddots$& &$\vdots$& \fbox{$c_{k,l}$}&$\vdots$&$\vdots$\\
+ & &1&$c_{m,m+1}$&$\cdots$&$c_{m,n}$&$c_{m,0}$\\\hline
+0&$\cdots$&0&$f_{m+1}$&$\cdots$&$f_n$&$-f(x^0)=f_0$
+\end{tabular}
+
+
+\begin{Lem}
+Sei $x^0$ Ecke zur Basis $a^1,\ensuremath{\ldots},a^m$ und sei $l\in\{m+1,\ensuremath{\ldots},n\}$. Genau dann existiert ein $k\in\{1,\ensuremath{\ldots},m\}$, so dass $a^1,\ensuremath{\ldots},a^{k-1},a^l,a^{k+1},\ensuremath{\ldots},a^m$ Basis einer Ecke $x^1$ ist, wenn ein $i\in\{1,\ensuremath{\ldots},m\}$ ex mit $c_{i,l}>0$. Dabei ist k festgelegt durch 
+\[\fbox{$\frac{c_{k,0}}{c_{k,l}}=\min\limits_{c_{i,l}>0} \frac{c_{i,0}}{c_{i,l}}$}\]
+\end{Lem}
+
+$f(x)=\langle x,p\rangle,\ p=(p_1,\cdots,p_n)$\\
+Sei wieder $x^0=(c_{1,0},\ensuremath{\ldots},c_{m,0},0,\ensuremath{\ldots},0)$ Ecke (zur Basis $a^1,\ensuremath{\ldots},a^m$).\\ Sei x zulässig\\
+$\Rightarrow$ Ax=b, d.h. \[x_i+\sum_{j=m+1}^n c_{i,j}x_j=c_{i,0}\ i=1,\ensuremath{\ldots},m\]
+\[ \Rightarrow f(x)=\sum_{r=1}^nx_rp_r=\sum_{r=1}^mc_{r,0}p_r-\sum_{r=1}^m\sum_{j=m+1}^nc_{r,j}x_jp_r+\sum_{r=m+1}^nx_rp_r\]
+\[=f(x^0)+\sum_{j=m+1}^n(\underbrace{p_j-\sum_{r=1}^mc_{r,j}p_r}_{=:f_j})x_j\]
+
+\begin{Lem} 
+Sei $x^0$ Ecke zur Basis $a^1,\ensuremath{\ldots},a^m$ und $f_j=p_j-\sum_{r=1}^mc_{r,j}p_r$ $(j=m+1,\ensuremath{\ldots},n)$. Ist $f_j\geq0\forall j\in\{m+1,\ensuremath{\ldots},n\},$ so ist $x^0$ Lösung von (LP). 
+\end{Lem}
+
+Sei nun $f_l<0$, $l\in\{m+1,\ensuremath{\ldots},n\}$ und ein $c_{i,l}>0,\ i\in\{1,\ensuremath{\ldots},m\}$\\
+$\stackrel{\textnormal{\tiny{Lemma 5.1}}}{\Longrightarrow}$ Es existiert ein $k\in\{1,\ensuremath{\ldots},m\}$, so dass $x^1$ Ecke zur Basis\\ $a^1,\ensuremath{\ldots},a^{k-1},a^l,a^{k+1},\ensuremath{\ldots},a^m$ ist ($\Rightarrow x^1=c'_{k,0}>0$)
+\[\Rightarrow f(x^1)=f(x^0)+\underbrace{f_l(x_l^1)}_{<0}<f(x^0)\]
+
+\begin{Lem}
+Sei $x^0$ Ecke zur Basis $a^1,\ensuremath{\ldots},a^m$ und sei $f_l<0,\\ l\in\{m+1,\ensuremath{\ldots},n\}$, derart dass ein $i\in\{1,\ensuremath{\ldots},m\}$ existiert mit $c_{i,l}>0$. Dann existiert eine Ecke $x^1$ mit $f(x^1)<f(x^0)$.
+\end{Lem}
+
+\textbf{letzter Fall:} $f_l<0$ aber $c_{i,l}\leq 0\ \forall i\in\{1,\ensuremath{\ldots},m\}$\\
+Betrachte $x=(x_1,\ensuremath{\ldots},x_m,0,\ensuremath{\ldots},0,x_l,0,\ensuremath{\ldots}.,0)$ mit 
+\[f(x)=f(x^0)+\sum_{j=m+1}^nf_jx_j,\ f_j=p_j-\sum_{r=1}^mc_rjp_r\] mit \[x_l=\alpha>0,\ x_i=\underbrace{c_{i_0}}_{x_i^0}-\underbrace{c_{il}\cdot\alpha}_{\leq0},\ i=1,\ldots,m\]
+$\Rightarrow x\geq0, Ax=b$ 
+\[\leftrightarrow(Ax)_i=x_i+c_{i,l}\underbrace{x_l}_{\alpha}=x^0_i=b_i\]
+$\Rightarrow$ \textbf{M ist unbeschränkt!}
+
+\[\textnormal{Weiter gilt } f(x)=f(x^0)+\underbrace{f_l}_{<0}\underbrace{x_l}_{\alpha}\stackrel{\alpha\rightarrow\infty}{\longrightarrow}-\infty\]
+$\Rightarrow$ f ist auf M \textbf{nicht} nach unten beschränkt.
+
+\begin{Lem}
+Sei $x^0$ Ecke zur Basis $a^1,\ensuremath{\ldots},a^m$ und $f_l<0$, für ein \\$l\in\{m+1,\ensuremath{\ldots},n\}$. Gilt dann $c_{i,l}\leq0\ \forall i\in\{1,\ensuremath{\ldots},m\}$, so ist der zulässige Bereich M nicht beschränkt und f ist auf M nicht nach unten beschränkt. Damit ist (LP) unlösbar.
+\end{Lem}
+
+\textbf{Pivot-Transformation:}\\
+$c'_{k,j}=\frac{c_{k,j}}{c_{k,l}},\ c'_{i,j}=c_{i,j}-\frac{c_{k,j}}{c_{k,l}}c_{i,l},\ i=1,\ldots,m,\ i\ne k$, $j=0,\ldots,n$\\
+Für die neuen Größen $f_j',\ j=0,\ldots,n$ gelten die analogne Gleichungen: $f_j'=f_j-\frac{c_{k,j}}{c_{k,l}}f_l$
+
+\textbf{Beweis:} $j=0$
+\[f_0'=-f(x^1)=\underbrace{-f(x^0)}_{f_0}-\underbrace{x_l^1}_{\frac{c_{k,0}}{c_{k,l}}}f_l\ \]
+$j\in\{1,\ldots,n\}:$
+\begin{eqnarray*}f_j'&=&p_j-\sum_{r=1\atop r\ne k}^mc_{r,j}'p_r-c_{k,j}'p_l\\
+&=&p_j-\sum_{r=1}^m(c_{r,j}-\frac{c_{k,j}}{c_{k,l}}c_{r,l})p_r-\frac{c_{k,j}}{c_{k,l}}p_l\\
+&=&\underbrace{p_j-\sum_{r=1}^mc_{r,j}p_r}_{f_j}-\frac{c_{k,j}}{c_{k,l}}(\underbrace{p_l-\sum_{r=1}^mc_{r,l}p_r}_{f_l})\end{eqnarray*}
+
+\textbf{Beispiel:}
+
+($\widetilde{LP}$)
+\begin{tabular}{ccccccccc}
+$\widetilde{f}( \widetilde{x} )=\widetilde{x_1}+2\widetilde{x_2}+4\widetilde{x_3}$&=&$\max$\\
+$\widetilde{x_1}$&$\le$&2\\
+$\widetilde{x_1}+\widetilde{x_2}+2\widetilde{x_3}$&$\le$&4\\
+$3\widetilde{x_2}+4\widetilde{x_3}$&$\le$&6\\
+$\widetilde{x_1},\widetilde{x_2},\widetilde{x_3}$&$\ge$&0
+\end{tabular}
+($\widetilde{A}\widetilde{x}\le b$)
+
+(LP)
+\begin{tabular}{cccccccccccccc}
+$f(x_1,\ldots,x_6)=-x_4-2x_5-4x_6$&=&$\min$&$\quad p=(0,0,0,-1,-2,-4)$\\
+$x_1+x_4$&=&2\\
+$x_2+x_4+x_5+2x_6$&=&4&$(E_3\vdots\widetilde{A})x=Ax=~b$\\
+$x_3+3x_5+4x_6$&=&6\\
+$x_1,x_2,x_3,x_4,x_5,x_6$&$\ge$&0
+\end{tabular}
+
+
+\begin{tabular}{cccccc|cc}
+$a^1$&$a^2$&$a^3$&$a^4$&$a^5$&$a^6$&b\\\hline
+1&0&0&1&0&0&2\\
+0&1&0&1&1&2&4&2\\
+0&0&1&0&3&$\fbox{4}$&6&$\frac{3}{2}$\\\hline
+0&0&0&-1&-2&-4&0\\
+\end{tabular}Ausgangsecke $x^0=(2,4,6,0,0,0)$
+\[f_j=p_j-\sum_{i=1}^mc_{i,j}p_i\]
+
+\begin{tabular}{cccccc|cc}
+$a^1$&$a^2$&$a^3$&$a^4$&$a^5$&$a^6$&b\\\hline
+1&0&0&1&0&0&2&2\\
+0&1&$-\frac{1}{2}$&$\fbox{1}$&$-\frac{1}{2}$&0&1&1\\
+0&0&$\frac{1}{4}$&0&$\frac{3}{4}$&1&$\frac{3}{2}$\\\hline
+0&0&1&-1&1&0&6\\
+\end{tabular} Ecke (2,1,0,0,0,$\frac{3}{2}$)
+
+\begin{tabular}{cccccc|cc}
+$a^1$&$a^2$&$a^3$&$a^4$&$a^5$&$a^6$&b\\\hline
+1&-1&$\frac{1}{2}$&0&$\frac{1}{2}$&0&1\\
+0&1&$-\frac{1}{2}$&1&$-\frac{1}{2}$&0&1&\\
+0&0&$\frac{1}{4}$&0&$\frac{3}{4}$&1&$\frac{3}{2}$\\\hline
+0&1&$\frac{1}{2}$&0&$\frac{1}{2}$&0&7\\
+\end{tabular}Ecke (1,0,0,1,0,$\frac{3}{2}$) 
+
+Ecke (1,0,0,1,0,$\frac{3}{2}$) Lösung. von (LP) mit $f_{min}=-7$\\
+$\Rightarrow (1,0,\frac{3}{2})$ ist Lösung von ($\widetilde{LP}$) mit $\widetilde{f}_{max}=7$
+
+\textbf{Auffinden der ersten Ecke:}
+
+\textbf{Einfacher Fall:}\\
+(LP)\begin{tabular}{|rclc|}
+\hline$f(x)$&=&min (oder max)&\\
+Ax&$\le$&b& mit $b\geq0$!\\
+x&$\ge$&0&\\\hline
+\end{tabular}
+
+($\widetilde{LP}$)
+\begin{tabular}{|rcl|}
+\hline $\widetilde{f}(y,x)=\langle \left(\begin{array}{c}y\\x\end{array}\right),\left(\begin{array}{c}0\\p\end{array}\right)\rangle$&=&$f(x)$=min\\
+y+Ax&=&b\\
+y,x&$\ge$&0\\\hline
+\end{tabular} 
+
+\textbf{Dann gilt:} (b,0) ist Ausgangsecke von ($\widetilde{LP}$). ($\widetilde{LP}$) liefert auch sofort das erste Tableau mit $f_{m+1}=p_1,\ldots,f_{m+n}=p_n$.\\
+Ist ($y^0,x^0$) Lösung von ($\widetilde{LP}$), so ist $x^0$ Lösung von (LP).
+
+\textbf{Allgemeiner Fall: 2-Phasen-Methode}
+
+Sei (LP) 
+\begin{tabular}{|rcl|}\hline
+$f(x)$&=&min\\
+Ax&=&b\\
+x&$\ge$&0\\\hline
+\end{tabular}\\
+mit zulässigem Bereich M.\\
+O.B.d.A. kann $b\ge0$ vorausgesetzt werden!!!
+
+($\widetilde{LP}$) 
+\begin{tabular}{|rcl|}\hline
+$\widetilde{f}(y,x)=y_1+\ldots+y_m$&=&min\\
+y+Ax&=&b\\
+y,x&$\ge$&0\\\hline
+\end{tabular}\\
+mit zulässigem Bereich $\widetilde{M}$
+
+\begin{Sa}
+\begin{itemize}
+ \item[(a)]($\widetilde{LP}$) ist lösbar.
+ \item[(b)]$\widetilde{f}_{min}>0\Leftrightarrow M=\varnothing$
+ \item[(c)]Ist $\widetilde{f}_{min}=0$ und (0,x) Ecke von $\widetilde{M}$, dann ist x Ecke von M.
+\end{itemize}
+\end{Sa}
+
+\textbf{Beweis:} (a) Es gilt $\widetilde{f}\ge 0$ auf $\widetilde{M}$ und $(b,0)\in\widetilde{M} \stackrel{(3.1)}{\Longrightarrow}$ Beh.\\
+(b) "`$\Rightarrow$"' Annahme: $M\ne \varnothing$, d.h. $\exists x\in M \Rightarrow (0,x)\in \widetilde{M}$ und $\widetilde{f}(0,x)=0 \stackrel{(a)}{\Longrightarrow} \widetilde{f}_{min}=0$ Widerspruch!\\
+"`$\Leftarrow$"' Angenommen $\widetilde{f}_{min}=0 \stackrel{(c)}{\Longrightarrow}$ $\exists$ Ecke x von M $\Rightarrow$ $M\ne \varnothing$ Widerspruch!\\
+(c)$\widetilde{f}_{min}=0$ und (0,x) Ecke (also auch Lösung von ($\widetilde{LP}$)) $\stackrel{(3.2)}{\Longrightarrow}$ Die Spalten von $(E_m\vdots A)$, die zu i mit $x_i>0$ gehören sind l.u. (das sind alles Spalten von A)\\ $\stackrel{(3.2)}{\Longrightarrow}$ x Ecke von M.  
+
+\textbf{Beispiel:}
+
+(LP)
+\begin{tabular}{|rcl|}\hline
+$f$&=&min\\
+$2x_1+x_2+2x_3$&=&4\\
+$3x_1+3x_2+x_3$&=&3\\
+$x_1,x_2,x_3$&$\ge$&0\\\hline
+\end{tabular}\
+($\widetilde{LP}$)
+\begin{tabular}{|rcl|}\hline
+$\widetilde{f}(y,x)=y_1+y_2$&=&min\\
+$y_1+2x_1+x_2+2x_3$&=&4\\
+$y_2+3x_1+3x_2+x_3$&=&3\\
+$y_1,y_2,x_1,x_2,x_3$&$\ge$&0\\\hline
+\end{tabular}\\
+Ausgangsecke: (4,3,0,0,0)
+
+\begin{tabular}{ccccc|cc}
+$a_1$&$a_2$&$a_3$&$a_4$&$a_5$&b&\\\hline
+1&0&2&1&2&4&2\\
+0&1&$\fbox{3}$&3&1&3&1\\\hline
+0&0&-5&-4&-3&-7\\\hline\hline
+1&$-\frac{2}{3}$&0&-1&$\fbox{$\frac{4}{3}$}$&2\\
+0&$\frac{1}{3}$&1&1&$\frac{1}{3}$&1\\\hline
+0&$\frac{5}{3}$&0&1&$-\frac{4}{3}$&-2\\\hline\hline
+$\frac{3}{4}$&$-\frac{1}{2}$&0&$-\frac{3}{4}$&1&$\frac{3}{2}$\\
+$-\frac{1}{4}$&$\frac{1}{2}$&1&$\frac{5}{4}$&0&$\frac{1}{2}$\\\hline
+1&1&0&0&0&0
+\end{tabular}\\
+$\Rightarrow$ Lösung von ($\widetilde{LP}$) ist (0,0,$\frac{1}{2}$,0,$\frac{3}{2}$)\\
+$\Rightarrow$ ($\frac{1}{2}$,0,$\frac{3}{2}$) ist Ecke von (LP)
+
+\texttt{Anmerkung:} Wir erhalten auch gleich das Ausgangstableau für (LP). [...]\\[24pt]
+
+\textbf{Bemerkung:} \textit{Beachte auch ausgeteiltes Blatt zum Simplex-Verfahren!}
+
+%6.Paragraph%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Spezielle Lineare Programme}
+\stepcounter{defsaco}
+Transportprobleme\\
+Zuordnungsprobleme\\
+Netzwerkflussprobleme
+\subsection*{Transportprobleme}
+Lager $L_1,\ldots,L_m$ mit Beständen $a_1,\ldots,a_m$\\
+Verteiler $V_1\ldots,V_n$ mit Bedarf $b_1,\ldots,b_n$\\
+$c_{ij}$ Transportkosten (pro Einheit) von $L_i$ zu $V_j$\\
+$x_{ij}$ Menge, die von $L_i$ nach $V_j$ transportiert wird.
+
+Voraussetzung
+\[\sum_{i=1}^ma_i=\sum_{j=1}^nb_j\]
+
+\begin{center}
+(TP)\begin{tabular}{|rcl|}\hline
+$f(x_{11},x_{12},\ldots,x_{mn})=\sum_{i=1}^m\sum_{j=1}^nc_{ij}x_{ij}$&=&min\\
+$\sum_{j=1}^nx_{ij}$&=&$a_i,\quad i=1,\ldots,m$\\
+$\sum_{i=1}^mx_{ij}$&=&$b_i,\quad j=1,\ldots,n$\\
+$x_{ij}$&$\geq$&0\\\hline
+\end{tabular}
+\end{center}
+
+Allgemeiner wäre:
+\begin{eqnarray*}
+\sum_{i=1}^ma_i&\geq&\sum_{j=1}^nb_j\quad (1)\\
+\sum_jx_{ij}&\leq&a_i\ \ \qquad (2)\\
+\sum_ix_{ij}&\geq&b_j\ \ \qquad (3)
+\end{eqnarray*}
+Zu (3): $\geq$ unsinnig (unnötige Kosten) $\Rightarrow$ "`="'\\
+Zu (1): Fiktiven Verteiler einführen
+
+$V_{n+1}$ mit Bedarf 
+\[b_{n+1}=\sum_{i=1}^ma_i-\sum_{j=1}^nb_j\]
+Kosten $c_{i\:n+1}=0\ \forall i$\\
+$\Rightarrow \sum a_i=\sum b_j$
+
+Ist $x=(\ldots)$ Lösung des neuen Problems, so gilt:
+\[\sum_{i=1}^m\sum_{j=1}^{n+1}x_{ij}\begin{matrix}\not\leq\\=\end{matrix}\sum_{i=1}^ma_i=\sum_{j=1}^{n+1}b_j=\sum_{j=1}^{n+1}\sum_{i=1}^mx_{ij}\]
+[Also in (2) auch "`="' $\Rightarrow$ Transformation möglich]
+
+\texttt{Anmerkung:} Steht in (1) "`$\leq$"' wird ein fiktives Lager mit dem Restbedarf als Bestand und Transportkosten 0 eingeführt.
+
+Kurzform von (TP):\\
+\begin{tabular}{rcl@{,$\quad$}l}
+f(x)&=&min&$x=(x_{11},x_{12},\ldots,x_{mn})\in\R^{mn}$\\
+Ax&=&b&$b=(a_1,\ldots,a_m,b_1,\ldots,b_n)\in\R^{m+n}$
+\end{tabular}
+\[A=\begin{pmatrix} 1&\ldots&1&&&&&&&\\ &&&1&\ldots&1&&&&\\ &&&&&&\ddots&&&\\ &&&&&&&1&\ldots&1\\
+1&&&1&&&&1&&\\ &\ddots&&&\ddots&&\cdots&&\ddots&\\ &&1&&&1&&&&1
+\end{pmatrix}\]
+(m+n,m$\cdot$n)-Matrix [bestehend aus oben angedeuteten Blöcken, z.B. unten m Einheitsmatrizen $E_n$]
+
+\begin{Sa}
+\begin{itemize}
+\item[(a)] Gilt $a_i,b_j\geq0\ \forall i,j$, so ist (TP) lösbar
+\item[(b)] Gilt $a_i,b_j\in\N_0$, so ist auch jede Ecke, die Lösung von (TP) ist, im $\N_0^{m\cdot n}$
+\end{itemize}
+\end{Sa} 
+
+\begin{Hil}
+Rang A = m+n-1
+\end{Hil}
+
+\textbf{Beweis:}\\
+Seien $z^i,\ i=1,\ldots,m+n$ die Zeilen von A.\\
+$\Rightarrow \sum_{i=1}^mz^i=\sum_{i=m+1}^{m+n}z^i$\\
+$\Rightarrow$ Rang A $\leq$ m+n-1\footnote{$m+n\leq mn$ (zumindest für $m,n\geq 2$)}
+
+Sei
+\[\tilde A=\begin{pmatrix}z^1\\\vdots\\z^{m+n-1}\end{pmatrix}\]
+$\underline{\textnormal{Beh.:}}$ Rang $\widetilde{A}$ = m+n-1\\
+Dazu sei $s^{ij}$ die $[(i-1)\cdot n+j]$-te Spalte von $\widetilde{A}$.
+
+Sei $\widetilde{\widetilde{A}}=(s^{1n}|s^{2n}|\cdots|s^{mn}|s^{11}|\cdots|s^{1\:n-1})$.\\
+$\Rightarrow \widetilde{\widetilde{A}}\ (m+n-1,m+n-1)$-Matrix
+\[\widetilde{\widetilde{A}}=\begin{pmatrix}1&&&1&\ldots&1\\ &\ddots&&&&\\ &&1&&&\\ &&&1&&\\ &&&&\ddots&\\ &&&&&1\end{pmatrix}\]
+$\Rightarrow \det \widetilde{\widetilde{A}}=1$ $\Rightarrow \widetilde{\widetilde{A}}$ regulär $\Rightarrow$ Rang $\widetilde{\widetilde{A}}=m+n-1$ $\Rightarrow$ Rang $\widetilde{A}=m+n-1$\\
+$\Rightarrow$ Rang A = m+n-1.
+
+\begin{Hil}
+Sei B quadratische Untermatrix von A $\Rightarrow \det B\in\{0,1,-1\}$
+\end{Hil}
+
+\textbf{Beweis:}\\
+Sei B (k,k)-Matrix. Vollständige Induktion nach k.\\
+\textbf{k=1:} ok\\
+\textbf{k $\to$ k+1:} Sei B (k+1,k+1)-Matrix  (in A).\\
+$\Rightarrow$ Jede Spalte von B enthält höchstens 2 Einsen
+\begin{description}
+\item[1. Fall:] Es existiert eine Spalte mit keiner Eins $\Rightarrow \det B=0$
+\item[2. Fall:] Alle Spalten haben genau 2 Einsen.\\
+Seien $\tilde z^1,\ldots,\tilde z^r$ die Zeilen von B, die von dem Block $z^1,\ldots, z^m$ kommen. Weiter seien $\tilde z^{r+1},\ldots,\tilde z^{k+1}$ die Zeilen von B, die von $z^{m+1},\ldots,z^{m+n}$ kommen. 
+\[\Rightarrow \sum_{i=1}^r\tilde z^i=\sum_{i=r+1}^{k+1}\tilde z^i[=(1,\ldots,1)]\]
+$\Rightarrow \det B=0$
+\item[3.Fall:] Es existiert eine Spalte mit genau einer Eins.\\
+Entwicklung nach dieser Spalte liefert $|\det B|=1\cdot|\det B_{ij}|$ [$B_{ij}$ (k,k)-Matrix, enstanden aus B. (\ensuremath{\ldots})]\\
+IV $\Rightarrow |\det B_{ij}|\in\{0,1\}$
+\end{description}
+
+\textbf{Beweis von (6.1):}\\
+(a) Für $x\in M$ gilt
+\[0\leq x_{ij}\leq a_i\leq c\quad\forall i,j\]
+$\Rightarrow$ M kompakt
+
+Weiter ist x mit 
+\[x_{ij}=\frac{a_ib_j}{\sum_ia_i},\quad i,j=\ldots\]
+zulässig. $\Rightarrow$ Beh.\newline [Beachte: $\sum a_i=\sum b_j$]
+
+(b) Sei x Ecke von M.\\
+Sei $\widetilde{A}$ wie oben und $\widetilde{b}=(a_1,\ldots,a_m,b_1,\ldots,b_{n-1})$.\\
+$\Rightarrow \widetilde{A}x=\widetilde{b},\ x\geq 0$ (Bereich M)
+
+Sei $x=(\tilde x_1,\ldots,\tilde x_{mn})$ [neue Nummerierung!] und seien $\tilde x_{i_1},\ldots,\tilde x_{i_k}>0$ (und = 0 sonst).\\
+$\Rightarrow$ Die Spalten $\tilde a^{i_1},\ldots,\tilde a^{i_k}$ sind l.u.
+
+Ergänze mit Spalten $\tilde a^{i_{k+1}},\ldots,\tilde a^{i_{m+n-1}}$ von $\widetilde{A}$ zu regulärer Matrix $\widetilde{\widetilde{A}}$.
+
+$\widetilde{\widetilde{A}}x'=\widetilde{b}$ hat eine eindeutige Lösung x' und die positiven Einträge von x' sind genau die Zahlen $\tilde x_{i_1},\ldots,\tilde x_{i_k}$.
+
+\textsc{Cramersche Regel}
+\[\tilde x_{i_l}=\frac{\det \widetilde{\widetilde{A_{i_l}}}}{\det \widetilde{\widetilde{A}}}\]
+[$\widetilde{\widetilde{A_{il}}}$ ist $\widetilde{\widetilde{A}}$ mit l-ter Spalte ersetzt durch b]
+
+Entwicklung nach der l-ten Spalte ergibt $\det \widetilde{\widetilde{A_{i_l}}}\in\Z$ nach Hilfssatz (6.3).\\
+Weiter gilt $\det \widetilde{\widetilde{A}}\in\{-1,1\}$ $\Rightarrow x_{i_l}\in\Z$ $\stackrel{x_{i_l}\geq 0}{\Longrightarrow} x_{i_l}\in\N_0$ 
+
+\textbf{Beispiel:} \textit{Siehe ausgeteilte Blätter!}
+
+\subsection*{Zuordnungsprobleme}
+N Posten, M Bewerber\\
+$a_{ij}$ Qualifikation von Bewerber i für Posten j
+
+O.B.d.A. M=N\\
+(\begin{tabular}{rcccl}
+falls&$N>M$&$\Rightarrow$&N-M&Scheinbewerber mit Qualifikation 0\\
+&$M>N$&&M-N&Scheinposten
+\end{tabular})
+\begin{center}
+(ZP)\begin{tabular}{|rcl|}\hline
+$f(x_{11},\ldots,x_{NN})=\sum_{j,k=1}^Na_{jk}x_{jk}$&=&max\\
+$\sum_{k=1}^Nx_{jk}$&=&$1,\quad j=1,\ldots,N$\\
+$\sum_{j=1}^Nx_{jk}$&=&$1,\quad k=1,\ldots,N$\\
+$x_{jk}$&$\geq$&$0,\quad j,k=1,\ldots,N$\\\hline
+\end{tabular} 
+\end{center}
+$(x_{11},\ldots, x_{NN})\in\R^{N^2}$; 2 N Nebenbedingungen
+
+[Sei $x=(x_{11},x_{12},\ldots,x_{1N},x_{21},\ldots)$, dann lautet die Matrix A von (ZP) in der Kurzform $f(x)=max, Ax=b, x\geq 0$:]
+\[\begin{pmatrix} 1&\ldots&1&&&&&&&\\ &&&1&\ldots&1&&&&\\ &&&&&&\ddots&&&\\ &&&&&&&1&\ldots&1\\
+1&&&1&&&&1&&\\ &\ddots&&&\ddots&&\cdots&&\ddots&\\ &&1&&&1&&&&1
+\end{pmatrix}\]
+[(N+N,N$\cdot$N)-Matrix]
+
+\begin{Sa}
+Das Zuordnungsproblem (ZP) besitzt eine Lösung $x=(x_{11},\ldots,x_{NN})$ mit $x_{ij}\in\{0,1\}$.
+\end{Sa}
+
+\texttt{Anmerkung:} Das Zuordnungsproblem ist ein spezielles Transportproblem. Dementsprechend folgt Satz (6.4) aus Satz (6.1).
+
+\subsection*{Netzwerkflußprobleme}
+Netzwerk $(\mathcal{K},\mathcal{B})$ mit endlicher Knotenmenge $\mathcal{K}=\{1,\ldots,k\}$ und Bogenmenge $\mathcal{B}\subset\mathcal{K}\times\mathcal{K}$ (gerichtet).
+
+Anfangsknoten (Quelle) 1, Endknoten (Senke) k\\
+Aus 1 führen nur Bögen hinaus, in k führen nur Bögen hinein.
+
+Zu jedem Bogen $(i,j)\in\mathcal{B}$ sei eine Kapazität $c_{ij}\geq 0$ gegeben.\\
+Fluß ist eine Funktion $(i,j)\mapsto x_{ij}$ auf $\mathcal{B}$ mit $0\leq x_{ij}\leq c_{ij}\ (\ast)$  und 
+\[\sum_{i=1}^kx_{ij}=\sum_{r=1}^kx_{jr},\ j=1,\ldots,k\quad(\ast\ast)\]
+(Konservativitätsbedingungen)
+
+Dazu wird  $(i,j)\mapsto x_{ij}$ als Funktion auf $\mathcal{K}\times\mathcal{K}$ angesehen, in dem $c_{ij}=0$ gesetzt wird, falls $(i,j)\not\in\mathcal{B}$.\\
+Weiter wird ein fiktiver Bogen $(k,1)$ eingeführt mit \[c_{k1}>\sum_{(i,j)\in\mathcal{B}}c_{ij}\]
+Formal ist Netzwerkflußproblem gegeben durch (k,k)-Matrix $C=((c_{ij}))$.\\
+Ein Fluß $((x_{ij}))$ heißt zulässig, wenn $(\ast)$ und $(\ast\ast)$ erfüllt sind.
+
+\textbf{Problem:} Finde zulässigen Fluß, der maximal ist, d.h. $x_{k1}=max$ erfüllt.
+
+Lösung mit \textbf{Markierungsverfahren}!\\
+Algorithmus geht aus von einem zulässigen Fluß $((x_{ij}))$.\\
+Wir setzen $c_{ij}\in\N_0$ (und damit $x_{ij}\in\N_0$) voraus.
+
+Zunächst wird 1 mit Marke k versehen.
+\begin{description}
+\item[Schritt 1:] Wähle $(i,j)\in\mathcal{B}$ mit: i markiert, j unmarkiert und $x_{ij}<c_{ij}$. Existiert dies, so markiere j mit Marke i.
+\item[Schritt 2:] Wähle $(i,j)\in\mathcal{B}$ mit j markiert und i unmarkiert und $x_{ij}>0$. Existiert dies, so markiere i mit Marke j.
+\end{description}
+Wiederhole beide Schritte, bis entweder keine Markierung mehr möglich ist oder k markiert ist.
+
+\texttt{Anmerkung:} Schritt 1 sucht Bögen, deren Kapazizät noch nicht ausgeschöpft ist, Schritt 2 sucht Bögen, bei denen man den Fluss verringern kann. [...]\\
+Die Schritte müssen nicht notwendigerweise abwechselnd ausgeführt werden!\\
+Als Startfluss kann der triviale Fluss $X\equiv 0$ verwendet werden, durch scharfes Hinsehen kann man aber oft einen besseren Startfluss finden. (Man kann auch direkt den maximalen Fluss vermuten und mit dem Markierungsverfahren dann zeigen, dass er tatsächlich maximal ist.)\\
+
+\begin{Sa}
+Sei $(\K,\B)$ ein Netzwerk mit ganzzahligen Kapazitäten und sei $X=((x_{ij}))$ ein zulässiger ganzzahliger Fluss. Wird beim Markierungsverfahren der Knoten k markiert, so existiert ein zuläsiger Fluss $\tilde X$ mit $\tilde x_{k1}=x_{k1}+1$.
+\end{Sa}
+
+\textbf{Beweis:}\\
+Es existiert eine Kette von Knoten $1,i_1,\ldots,i_r,k$ so, dass 
+\[\left.\begin{array}{c@{\textnormal{ die Marke }}c@{\textnormal{ hat}}l}
+i_1&1&\\ i_2&i_1&\\\vdots&\vdots&\\ i_r&i_{r-1}&\\k&i_r&\end{array}\right\}
+\Rightarrow \begin{array}{c}
+\textnormal{Bogen }(1,i_1) \\ \\\textnormal{Bogen }(i_m,i_{m+1}) \textnormal{ oder }\textnormal{Bogen } (i_{m+1},i_m)\\ \\\textnormal{Bogen }(i_r,k)\end{array}\]
+Wir setzen $\tilde x_{ij}:=x_{ij} \forall \textnormal{ Bögen }(i,j),$ die nicht in der obigen Kette vorkommen.
+\begin{eqnarray*}
+\tilde x_{k1}&:=&x_{k1}+1\\
+\tilde x_{1i_1}&:=&x_{1i_1}+1\\
+\tilde x_{i_rk}&:=&x_{i_rk}+1\\
+\tilde x_{i_mi_{m+1}}&:=&x_{i_mi_{m+1}}+1\quad\textnormal{falls }(i_m,i_{m+1})\in\B\\
+\tilde x_{i_{m+1}i_m}&:=&x_{i_{m+1}i_m}-1\quad\textnormal{falls }(i_{m+1},i_m)\in\B
+\end{eqnarray*}
+$\Rightarrow \tilde X\geq 0$ und $\tilde x_{ij}\leq c_{ij}\ \forall i,j$
+
+Konservativitätsbedingungen:\\
+Klar für Knoten 1 und k. Für $i_m$ folgen die Bedingungen aus
+\[\begin{array}{c|c|c|c|c}
+i_{m-1}&&i_m&&i_{m+1}\\\hline
+&\stackrel{+1}{\longrightarrow}&&\stackrel{+1}{\longrightarrow}&\\
+&\stackrel{+1}{\longrightarrow}&&\stackrel{-1}{\longleftarrow}&\\
+&\stackrel{-1}{\longleftarrow}&&\stackrel{-1}{\longleftarrow}&\\
+&\stackrel{-1}{\longleftarrow}&&\stackrel{+1}{\longrightarrow}&
+\end{array}\]
+$\Rightarrow \tilde X$ ist zulässiger Fluß
+
+\begin{Sa}
+Sei $(\K,\B)$ Netzwerk mit ganzzahligen Kapazitäten und sei $\hat X=((\hat x_{ij}))$ ein zulässiger ganzzahliger Fluss. Endet das Markierungsverfahren ohne dass der Knoten k markiert ist, so ist der Fluss $\hat X$ maximal.
+\end{Sa}
+
+\begin{Def}
+Sei $(\K,\B)$ ein Netzwerk mit Kapazitäten $((c_{ij}))$. Eine Zerlegung $\K=\K_1\cup\K_1,\ \K_1\cap\K_2=\varnothing$ mit $1\in\K_1,k\in\K_2$ heißt \textbf{Schnitt}. Die Größe \[k(\K_1,\K_2):=\sum_{i\in\K_1 \atop j\in\K_2}c_{ij}\]
+heißt \textbf{Schnittkapazität}.
+\end{Def}
+
+\textbf{Beweis von (6.6):}\\
+Zu dem Netzwerk gehört das LP
+\[\textnormal{(LP)}\begin{array}{rcl}
+x_{k1}&=&\max\\
+\sum_{r=1}^kx_{sr}-\sum_{l=1}^kx_{ls}&=&0\quad s=1,\ldots,k\\
+x_{ij}&\leq&c_{ij}\quad\forall i,j\\
+x_{ij}&\geq&0\quad\forall i,j\end{array}\]
+Wir stellen (DP) auf: Variable $u=(u_1,\ldots,u_k)\in\R^k$, $v=((v_{ij}))\in\R^{k^2}$.
+\[\textnormal{(DP)}\begin{array}{rcl}
+g(u,v)=\sum_{i,j=1}^kc_{ij}v_{ij}&=&\min\\
+u_i-u_j+v_{ij}&\geq&0\quad (i,j)\neq(k,1)\\
+u_k-u_1+v_{k1}&\geq&1\\
+v_{ij}&\geq&0\quad i,j=1,\ldots,k\end{array}\]
+Nun sei $(\K_1,\K_2)$ ein Schnitt. Wir setzen
+\[u_i:=\begin{cases} 0, & \mbox{falls }i\in\K_1 \\ 1, & \mbox{falls }i\in\K_2 \end{cases},\quad i=1,\ldots,k\]
+\[v_{ij}:=\begin{cases} 1, & \mbox{falls }u_j-u_i=1 \\ 0, & \mbox{sonst } \end{cases}\]
+($\Rightarrow v_{k1}=0$)
+
+$\Rightarrow (u,v)$ zulässig für (DP)!!!
+
+Nun betrachten wir das Markierungsverfahren, das geendet hat, ohne dass k markiert wurde.\\
+Sei $\hat \K_1$ die Menge der markierten Knoten, $\hat \K_2$ die Menge der unmarkierten Knoten.
+
+$\Rightarrow (\hat\K_1,\hat\K_2)$ Schnitt, zugehöriger Punkt $(\hat u, \hat v)$.\\
+\textbf{Beh.:} $\hat x$ Lösung von (LP), $(\hat u, \hat v)$ Lösung von (DP)
+
+Nach Satz 4.4 müssen die Komplementaritätsbedingungen erfüllt sein.\\
+Nach Aufgabe 14 haben sie die Form:
+\begin{eqnarray*}
+x_{ij}(u_i-u_j+v_{ij})&=&0\quad \forall (i,j)\neq(k,1)\\
+(\ast\ast)\ x_{k1}(u_k-u_1+v_{k1}-1)&=&0\\
+(\ast)\ v_{ij}(c_{ij}-x_{ij})&=&0\quad\forall (i,j)
+\end{eqnarray*}
+Diese sind für $\hat x, (\hat u, \hat v)$ erfüllt!
+
+\begin{itemize}
+\item[($\ast$):] $v_{ij}=0 \Rightarrow$ ok\\
+$v_{ij}\neq 0\Rightarrow v_{ij}=1\Rightarrow j\in\K_2,i\in\K_1\Rightarrow$ i markiert, j unmarkiert $\Rightarrow x_{ij}=c_{ij}\Rightarrow$ ok
+\item[($\ast\ast$):] trivial
+\end{itemize}
+
+\begin{Kor}[Satz von Ford-Fulkerson]
+In einem Netzwerk ist der maximale Fluß gleich der minimalen Schnittkapazität.
+\end{Kor}
+
+\texttt{Anmerkung:} Dies war nur ein kleiner Ausschnitt des Repertoires an Netzwerken!
+
+\textbf{Beispiel:} [Bilder siehe Seite 45]
+
+Startfluss: $X\equiv 0$ [siehe Abbildung]
+
+Markierungsverfahren mit Tabelle
+
+Markierung:
+\begin{tabular}{cccccc}
+1&2&3&4&5&6\\\cline{1-6}
+6& & & & & \\
+ &1&1&1& & \\
+ & & & &2&2
+\end{tabular}
+
+Kette: 1$\stackrel{+3}{\longrightarrow}$2$\stackrel{+3}{\longrightarrow}$6\\
+$\Rightarrow$ neuer Fluß [...]\\
+
+Markierung: 
+\begin{tabular}{cccccc}
+1&2&3&4&5&6\\\cline{1-6}
+6& & & & & \\
+ &1&1&1& & \\
+ & & & &2&4
+\end{tabular}
+
+Kette: 1$\stackrel{+3}{\longrightarrow}$4$\stackrel{+3}{\longrightarrow}$6\\
+$\Rightarrow$ neuer Fluß [...]\\
+
+
+Markierung:
+\begin{tabular}{cccccc}
+1&2&3&4&5&6\\\cline{1-6}
+6& & & & & \\
+ &1&1& & & \\
+ & & &3&3& \\
+ & & & & &5
+\end{tabular}
+
+Kette:  1$\stackrel{+4}{\longrightarrow}$3$\stackrel{+4}{\longrightarrow}$5$\stackrel{+4}{\longrightarrow}$6\\
+$\Rightarrow$ neuer Fluß [...]\\
+
+Markierung:
+\begin{tabular}{cccccc}
+1&2&3&4&5&6\\\cline{1-6}
+6& & & & & \\
+ &1& & & & \\
+ & & & &2& \\
+ & &5&5& & \\
+ & & & & &4
+\end{tabular}
+
+Kette: 1$\stackrel{+1}{\longrightarrow}$2$\stackrel{+1}{\longrightarrow}$5$\stackrel{+1}{\longrightarrow}$4$\stackrel{+1}{\longrightarrow}$6\\
+$\Rightarrow$ neuer Fluß [...]\\
+
+Markierung:
+\begin{tabular}{cccccc}
+1&2&3&4&5&6\\\cline{1-6}
+6& & & & & \\
+ &1& & & & \\
+ & & & &2& \\
+ & &5& & & \\
+ & & &3& & \\
+ & & & & &4
+\end{tabular}
+
+Kette: 1$\stackrel{+1}{\longrightarrow}$2$\stackrel{+1}{\longrightarrow}$5$\stackrel{-1}{\longleftarrow}$3$\stackrel{+1}{\longrightarrow}$4$\stackrel{+1}{\longrightarrow}$6\\
+$\Rightarrow$ neuer Fluß [siehe Abbildung]\\
+
+Markierung:
+\begin{tabular}{cccccc}
+1&2&3&4&5&6\\\cline{1-6}
+6& & & & & 
+\end{tabular}\\
+$\Rightarrow$ Fluß ist maximal!\\
+
+Geamtfluß = 12\\
+Entspricht Schnittkapazität von $(\{1\},\{2,3,4,5,6\})$. 
+
+\begin{figure}[p]
+\includegraphics[scale=0.7]{OptTheoGrafik12.eps}
+\caption{Netzwerk vor Markierungsverfahren}
+\vspace{2cm}
+\includegraphics[scale=0.7]{OptTheoGrafik22.eps}
+\caption{Netzwerk nach Markierungsverfahren}
+\end{figure}
+
+\newpage
+%7.Paragraph%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Ausflug in die Spieltheorie}
+\stepcounter{defsaco}
+2-Personen-Nullsummenspiel:\\
+2 Spieler mit Aktionen 
+\[\left.\begin{matrix}P_1:&a_1,\ldots,a_n\\P_2:&b_1,\ldots,b_m\end{matrix}\right\}\Rightarrow \textnormal{Auszahlung (an \ensuremath{P_2}) }a_{ij}\in\R\]
+2-Personen-Nullsummenspiel ist gegeben durch Matrix $A=((a_{ij}))$ (m,n)-Matrix (Matrix-Spiel).
+[$a_{ij}$ $\rightarrow i \triangleright P_2, j\triangleright P_1$]
+
+\textbf{Beispiel: (Knobeln) }$\\$
+\begin{tabular}{l|c|c|c}
+$\atop P_2$~~$P_1\atop $&Stein&Schere&Papier\\\hline
+Stein&0&1&-1\\\hline
+Schere&-1&0&1\\\hline
+Papier&1&-1&0
+\end{tabular}\\
+
+\textbf{Beispiel 2:}$\\$
+\begin{tabular}{l|c|c|c}
+$\atop P_2$~~$P_1\atop $&Karo As&Pik As&Pik 2\\\hline
+Karo As&1&-1&-2\\\hline
+Pik As&-1&1&1\\\hline
+Karo 2&2&-1&0
+\end{tabular}\newline
+[$P_2$ gewinnt bei gleichen Farben, $P_1$ bei verschiedenen Farben]\\
+
+\textbf{Definition:}
+Eine \textbf{Strategie} von $P_1$ (bzw. $P_2$) ist ein Tupel $x=(x_1,\ldots,x_n)$ (bzw. $y=(y_1,\ldots,y_m)$) mit $x_i\geq 0$ und $\sum_{i=1}^nx_i=1$ (bzw. $y_j\geq 0$, $\sum_{j=1}^my_j=1$).\newline
+[Wahrscheinlichkeitsvektor]
+
+Man sagt auch \textbf{gemischte Strategie} und bezeichnet mit \[x=(0,\ldots,0,\underbrace{1}_{\textnormal{i-te Stelle}},0,\ldots,0),\ i=1,\ldots,n\]
+die \textbf{reinen Strategien}.
+
+\[\Phi(x,y)=y^TAx=\sum_{i=1}^m\sum_{j=1}^n\alpha_{ij}y_ix_j\]
+erwartete Gewinn von $P_2$.
+
+Ziel für $P_2$: Maximiere $\Phi(x,y)$\\
+Ziel für $P_1$: Minimiere $\Phi(x,y)$
+
+Sei $e=(1,\ldots,1)$ (jeweils mit passender Dimension).\\
+$\Rightarrow$ Optimierungsproblem für $P_1$:
+\begin{center}
+($P_1$) \begin{tabular}{l}
+$\textnormal{Minimiere } \max\limits_{y\geq0\atop \langle e,y\rangle=1}\Phi(x,y)$\\
+unter $x\geq0, \langle e,x\rangle=1$\end{tabular}
+\end{center}
+
+\begin{center}
+($P_2$) \begin{tabular}{l}
+$\textnormal{Maximiere } \min\limits_{x\geq0\atop \langle e,x\rangle=1}\Phi(x,y)$\\
+unter $y\geq0, \langle e,y\rangle=1$\end{tabular}
+\end{center}
+
+\textbf{Äquivalente Probleme}\\
+
+($\widetilde{P_1}$) \begin{tabular}{c}
+$\textnormal{Minimiere } f(x_0,x_1,\ldots,x_n)=x_0\in\R$ unter\\
+$x=(x_1,\ldots,x_n)\geq0$\\
+$\langle e,x\rangle=1$\\
+$y^TAx-x_0\leq 0\quad\forall y\geq0, \langle e,y\rangle=1$
+\end{tabular}\\
+
+(semi-finites LP) [$\infty$ Nebenbedingungen]
+
+$(\widetilde{P_2})$ analog
+
+\begin{Lem}
+Sei A (m,n)-Matrix.
+\begin{itemize}
+\item[a)] Für festes $x\in\R^n$ gilt:
+\[\max_{y\geq0\atop\langle y,e\rangle=1}y^TAx=\max_{i=1,\ldots,m}(Ax)_i\]
+\item[b)] Für festes $y\in\R^m$ gilt:
+\[\min_{x\geq0\atop\langle x,e\rangle=1}y^TAx=\min_{j=1,\ldots,n}(A^Ty)_j\]
+\end{itemize}
+\end{Lem}
+
+\textbf{Beweis:}\\
+(a) Die Aufgabe $f(y)=y^TAx=\max$ unter den Nebenbedingungen $\langle y,e\rangle=1,y\geq 0$ ist (für festes x) ein LP mit zulässigem Bereich $M=\{\langle x,e\rangle=1,x\geq0\}\subset\R^n$.\\
+$\Rightarrow$ M Simplex mit Ecken $e_1,\ldots,e_n$ ($e_i$ i-ter Einheitsvektor)\\
+$\Rightarrow$ Das LP ist lösbar (weil $M\neq\varnothing$ und M kompakt) und eine Ecke ist Lösung.\\
+$\Rightarrow$ Beh.
+
+(b) analog\\[48pt]
+
+$\Rightarrow (P_1) \leftrightarrow \textnormal{Minimiere }\max\limits_{i=1,\ldots,m}(Ax)_i$ unter Nebenbedingungen $\langle x,e\rangle=1,x\geq0$.
+
+Aus (7.1) folgt, dass ($P_1$) und ($\widetilde{P_1}$) äquivalent sind zu (${P_1}^*$)
+\begin{center}
+(${P_1}^*$)\begin{tabular}{c|rcl|}\cline{2-4}
+&$f(x_0,x_1,\ldots,x_n)=x_0$&=&min\\
+&$\langle x,e\rangle$&=&1\\
+&$-x_0e+Ax$&$\leq$&0~~~m Bedingungen\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}$\quad\leftarrow$ (LP)
+\end{center}
+
+\texttt{Anmerkung:} $x_0=\max\limits_{y\geq0\atop \langle e,y\rangle=1}y^TAx$, also muss gelten $x_0\geq (Ax)_i,\ i=1,\ldots,m$. Dies ist äquivalent zu \[x_0e=\begin{pmatrix}x_0\\\vdots\\x_0\end{pmatrix}\geq Ax\]
+
+Analog sind ($P_2$) und ($\widetilde{P_2}$) äquivalent zu 
+\begin{center}
+(${P_2}^*$)\begin{tabular}{c|rcl|}\cline{2-4}
+&$g(y_0,y_1,\ldots,y_m)=y_0$&=&max\\
+&$\langle y,e\rangle$&=&1\\
+&$-y_0e+A^Ty$&$\geq$&0~~~n Bedingungen\\
+&y&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+
+Wir schreiben (${P_1}^*$) und (${P_2}^*$) um, um zu sehen, dass sie dual zueinander sind:
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+&$f(x_0,x_1,\ldots,x_n)=-x_0$&=&max\\
+&$\langle x,-e\rangle$&=&-1\\
+&$-x_0e+Ax$&$\leq$&0\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+&$g(y_0,y_1,\ldots,y_m)=-y_0$&=&min\\
+&$\langle y,-e\rangle$&=&-1\\
+&$-y_0e+A^Ty$&$\geq$&0\\
+&y&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+$\Rightarrow ({P_1}^*) \textnormal{und} ({P_2}^*)$ sind dual zueinander.
+
+Außerdem besitzen (${P_1}^*$) und (${P_2}^*$) zulässige Punkte:
+\[x=(x_1,\ldots,x_n)=(\frac1n,\ldots,\frac1n)\quad\textnormal{und }x_0=\max_{i=1,\ldots,m}(Ax)_i\]
+\[y=(y_1,\ldots,y_m)=(\frac1m,\ldots,\frac1m)\quad\textnormal{und }y_0=\min_{j=1,\ldots,n}(A^Ty)_j\]
+$\stackrel{\textnormal{\scriptsize{Dualitätssatz}}}{\Longrightarrow}$ (${P_1}^*$) und (${P_2}^*$) lösbar und gleicher Optimalwert.\\
+Weil (${P_1}^*$) äquivalent zu ($P_1$) und (${P_2}^*$) äquivalent zu ($P_2$) ist, folgt:
+
+\begin{Sa}[Hauptsatz für Matrixspiele]
+Sei A (m,n)-Matrix. Dann gilt:
+\[\min_{x\geq0\atop \langle x,e\rangle=1}\max_{y\geq0\atop \langle y,e\rangle=1}y^TAx=\max_{y\geq0\atop \langle y,e\rangle=1}\min_{x\geq0\atop \langle x,e\rangle=1}y^TAx\]
+\end{Sa}
+
+
+
+\begin{Kor}[Gleichgewichtssatz von Nash]$\\$
+Jedes 2-Personen-Nullsummenspiel besitzt einen Gleichgewichtspunkt in gemischten Strategien, d.h.
+\[\exists \hat x\in\R^n,\hat y\in\R^m,\ \hat x,\hat y\geq0,\langle\hat x,e\rangle=1,\langle\hat y,e\rangle=1\]
+mit
+\[\Phi(\hat x,y)\leq\Phi(\hat x,\hat y)\leq\Phi(x,\hat y)\]
+für alle $x,y\geq0, \langle x,e\rangle=1,\langle y,e\rangle=1$\newline
+[$(\hat x,\hat y)$ heißt auch Sattelpunkt. Die Begriffe Gleichgewichtspunkt und Sattelpunkt werden in der Spieletheorie synonym benutzt.]
+\end{Kor}
+
+
+\textbf{Definition:} Die Zahl $v:=\Phi(\hat x,\hat y)$ heißt der \textbf{Wert} des Spiels. Das Spiel heißt \textbf{fair}, wenn $v=0$ ist.
+
+\textbf{Definition:} Das Spiel heißt \textbf{symmetrisch}, wenn $A=-A^T$ (A schiefsymmetrisch).
+
+\begin{Sa}
+Ein symmetrisches Spiel ist fair. Beide Spieler besitzen die gleichen optimalen Strategien.
+\end{Sa}
+
+\textbf{Beweis:}
+\begin{eqnarray*}v&=&\min_x \max_y y^TAx\\&=&\min_x \max_y (-x^TAy)\\&=&-\max_x \min_y x^TAy\\&\stackrel{m=n}{=}&- \max_y \min_xy^TAx\quad=-v\end{eqnarray*}
+$\Rightarrow v=0$\newline
+[$y^TAx=-y^TA^Tx=-x^TAy$]
+
+Seien $\hat x,\hat y$ optimale Strategien von $P_1,P_2$. ($\Rightarrow \hat x$ zulässig für $P_2$, $\hat y$ zulässig für $P_1$)\\
+Sei x zulässig (für $P_1,P_2$) $\Rightarrow$
+\[x^TA\hat y\leq \hat x^TA\hat y=-v=0=v=\hat y^TA\hat x\leq \hat y^TAx\]
+$\Rightarrow$ Die zulässigen Strategien $\hat x$ für $P_2$ und $\hat y$ für $P_1$ liefern Zielfunktionswert $\hat x^TA\hat y=0$\\
+$\Rightarrow$ beides Lösungen
+
+\textbf{Beispiel: (Knobeln) }$\\$
+\begin{tabular}{l|c|c|c}
+$\atop P_2$~~$P_1\atop$&Stein&Schere&Papier\\\hline
+Stein&0&1&-1\\\hline
+Schere&-1&0&1\\\hline
+Papier&1&-1&0
+\end{tabular}\\
+
+$\Rightarrow v=0$, fair\\
+Optimale Strategien $\hat x=(\frac13,\frac13,\frac13)=\hat y$ [weil $\hat y^TA\hat x=0$]
+
+\textbf{Allgemeines Vorgehen:} \textit{vgl. ausgeteiltes Blatt}\\
+Addiere \[c\begin{pmatrix}1&\cdots&1\\\vdots&&\vdots\\1&\cdots&1\end{pmatrix}\]
+zu A, $c>0$, so dass $A>0$ $\Rightarrow$ Wert $\tilde v\geq 0$.
+\[\tilde v=\max \min \underbrace{y^T(A+c\begin{pmatrix}1&\cdots&1\\\vdots&&\vdots\\1&\cdots&1\end{pmatrix})x}_{=y^TAx+c}=v+c\]
+...
+
+\textbf{Beispiel:} \textit{vgl. ausgeteiltes Blatt}
+\[\begin{pmatrix}1&-1&-2\\-1&1&1\\2&-1&0\end{pmatrix}\stackrel{\textnormal{addiere 3}}{\longrightarrow}\begin{pmatrix}4&2&1\\2&4&4\\5&2&3\end{pmatrix}\]
+[Wert v $\rightarrow$ Wert $v+3$]
+
+\[({P_1}^*)\begin{array}{rclc}
+f(x_0,x_1,x_2,x_3)=x_0&=&\min&\\
+x&\geq&0&\\
+x_1+x_2+x_3&=&1&\\
+4x_1+2x_2+x_3&\leq&x_0&(1)\\
+2x_1+4x_2+4x_3&\leq&x_0&(2)\\
+5x_1+2x_2+3_3&\leq&x_0&(3)\end{array}\]
+(1) folgt aus (3) und kann gestrichen werden!\\ Setze
+\[\overline{x_i}=\frac{x_i}{x_0},\ \frac{1}{x_0}=\overline{x_1}+\overline{x_2}+\overline{x_3}\]
+
+\[({P_1}^*)\begin{array}{rcl}
+\overline{f}(x_0,x_1,x_2,x_3)=\frac{1}{x_0}&=&\max\\
+\overline{g}(\overline{x_1},\overline{x_2},\overline{x_3})=\overline{x_1}+\overline{x_2}+\overline{x_3}&=&\max\\
+2\overline{x_1}+4\overline{x_2}+4\overline{x_3}&\leq&1\\
+5\overline{x_1}+2\overline{x_2}+3\overline{x_3}&\leq&1\end{array}\]
+[$x_0$ entspricht dem Wert und ist $>0$]
+
+$\Rightarrow$ Lösung $(\frac{2}{16},\frac{3}{16},0)$\\
+
+\textit{Rest siehe ausgeteiltes Blatt!}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Neues Kapitel%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Konvexe Optimierung}
+\setcounter{section}{7}
+\section{Konvexe Funktionen}
+\stepcounter{defsaco}
+Betrachte Funktionen 
+\[f:\R^n\rightarrow(-\infty,\infty] \]
+\[g:\R^n\rightarrow[-\infty,\infty) \]
+
+\emph{Rechenregeln} für $\pm\infty$
+\[
+\begin{array}{rccl}
+\infty+\alpha&=&\infty& \forall \alpha\in(-\infty,\infty]\\
+\alpha-\infty&=&-\infty& \forall\alpha\in[-\infty,\infty)\\
+\alpha\cdot\infty&=&\infty& \forall\alpha\in(0,\infty]\\
+(-\alpha)\cdot\infty&=&-\infty& \forall\alpha\in(0,\infty]\\
+0\cdot\infty&:=&0
+\end{array}
+\]
+
+\begin{Def}
+$f:\R^n\rightarrow(-\infty,\infty]$ heißt konvex $:\Leftrightarrow \forall x,y\in\R^n \ \forall \alpha\in[0,1]:f(\alpha x+(1-\alpha)y)\le \alpha f(x)+(1-\alpha)f(y)$
+\end{Def}
+\newpage
+n=1\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Beispielbilder
+\psset{unit=1.0cm}
+\begin{pspicture}(-1.5,-1.5)(6.5,6.5)
+	\psline{->}(-1.2,0)(6.2,0)
+	\psline{->}(0,-1.2)(0,6.2)
+  
+  \psplot[plotstyle=curve]{1}{5}{0.5 x 2 sub x 2 sub mul mul 1 add}
+  
+\end{pspicture}\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\[A\subset\R^n, f:A\rightarrow\R \textnormal{ konvex }:\Leftrightarrow \widetilde{f}:\R^n\rightarrow(-\infty,\infty]\]
+\[ \textnormal{ mit } \widetilde{f}(x)=\begin{cases}f(x)&;x\in A\\\infty&;x\notin A\end{cases}\ \textnormal{ ist konvex}\]
+
+\textbf{Bemerkungen:}
+\begin{enumerate}
+\item $f:\ \R^n\to[-\infty,\infty)$ heißt konkav $:\Leftrightarrow$ $-f$ ist konvex.\\
+f ist affin linear $\Leftrightarrow$ f konkav + konvex $\Leftrightarrow$ $f(\alpha x+(1-\alpha)y)= \alpha f(x)+(1-\alpha)f(y)\ \forall\alpha\in[0,1]$\\
+denn:\\
+"`$\Rightarrow$"' klar\\
+"`$\Leftarrow$"' $f(0)=:\gamma(\neq\pm\infty)$\\
+$g(x):=f(x)-\gamma\ \Rightarrow\ g(0)=0$,\\
+$g(0)=f(0)-\gamma=f(\frac12(-x)+\frac12 x)-\gamma=\frac12 f(-x)+\frac12 f(x)-\gamma=0\ \Rightarrow g(x)=g(-x)$\\
+$\alpha\in(0,1)\Rightarrow g(\alpha x)=f(\alpha x)-\gamma=\alpha f(x)+(1-\alpha)f(0)-\gamma=\alpha(f(x)-\gamma)=\alpha g(x)$\\
+$\Rightarrow g(x)=g(\frac1n nx)=\frac1n g(nx)\ \Rightarrow g(nx)=ng(x)$\\
+$\Rightarrow g(\alpha x)=\alpha g(x)\ \forall\alpha\in\R^+$\\
+$\stackrel{g(-x)=-g(x)}{\Longrightarrow} g(\alpha x)=\alpha g(x)\ \forall\alpha$\\
+
+$g(x+y)=g(\frac12 (2x)+\frac12 (2y))=\frac12 g(2x)+\frac12 g(2y)=g(x)+g(y)$
+\item Die Menge $\dom f=\{x\in\R^n:\ f(x)<\infty\}$ heißt der Endlichkeitsbereich von f.\\
+f konvex $\Rightarrow \dom f$ konvex
+
+$x,y\in\dom f\Rightarrow f(\alpha x+(1-\alpha)y)\stackrel{\textnormal{f konvex}}{\leq}\alpha f(x)+(1-\alpha)f(y)<\infty$
+\item Für $f:\ \R^n\to(-\infty,\infty]$ heißt $\epi f:=\{(x,r)\in\R^n\times\R:\ f(x)\leq r\}$ \textbf{Epigraph} von f.
+
+Es gilt: f konvex $\Leftrightarrow \epi f$ konvex
+
+"`$\Rightarrow$"' $(x,r),(y,s)\in\epi f \Rightarrow \alpha(x,r)+(1-\alpha)(y-s)=(\alpha x+(1-\alpha)y,\alpha r+(1-\alpha)s)\  (\alpha\in[0,1])$\\
+f konvex $\Rightarrow f(\alpha x+(1-\alpha)y)\leq\alpha\underbrace{f(x)}_{\leq r}+(1-\alpha)\underbrace{f(y)}_{\leq s}$\\
+$\Rightarrow$ Beh.\\
+"`$\Leftarrow$"' $\forall x,y\in\R^n,\alpha\in[0,1]$:\\
+$(x,f(x)),(y,f(y))\in\epi f\stackrel{\epi f\textnormal{ konvex}}{\Rightarrow}(\alpha x+(1-\alpha)y,\alpha f(x)+(1-\alpha)f(y))\in\epi f$\\
+$\Rightarrow f(\alpha x+(1-\alpha)y)\leq\alpha f(x)+(1-\alpha)f(y)$
+\item f konvex $\Rightarrow\ \forall x^1,\ldots,x^k\in\R^n\ \forall\alpha_1,\ldots,\alpha_k\in\R$ mit $\alpha_i\ge 0,\sum\alpha_i=1$ gilt:
+\[f(\alpha_1x^1+\ldots+\alpha_kx^k)\leq\alpha_1f(x^1)+\ldots+\alpha_kf(x^k)\]
+Beweis mit vollständiger Induktion:\\
+k=2: Definition konvex\\
+$k-1\to k$: $\alpha=\sum_{i=1}^{k-1}\alpha_i\ \Rightarrow \alpha_k=1-\alpha,\alpha\in[0,1]$ $\Rightarrow$
+\begin{eqnarray*}
+f(\alpha_1x^1+\ldots+\alpha_kx^k)&=&f(\alpha(\frac{\alpha_1}{\alpha}x^1+\ldots+\frac{\alpha_{k-1}}{\alpha}x^{k-1})+\alpha_kx^k)\\
+&\stackrel{\textnormal{f konvex}}{\leq}&\alpha f(\frac{\alpha_1}{\alpha}x^1+\ldots+\frac{\alpha_{k-1}}{\alpha}x^{k-1})+\alpha_kf(x^k)\\
+&\stackrel{IV}{\leq}&\alpha(\frac{\alpha_1}{\alpha}f(x^1)+\ldots+\frac{\alpha_{k-1}}{\alpha}f(x^{k-1})+\alpha_kf(x^k)
+\end{eqnarray*}
+\item f,g konvex $\Rightarrow$ $f+g$ konvex, $\alpha f$ konvex für $\alpha\geq0$
+\end{enumerate} 
+
+\begin{Hil}
+$f:\ \R^n\to(-\infty,\infty]$ konvex, $\varnothing\neq M\subset\R^n$ Polytop mit $M\subset\dom f$ $\Rightarrow$ f nimmt sein Maximum auf M an (in einer Ecke von M)
+\end{Hil}
+
+\textbf{Beweis}\\
+M Polytop $\stackrel{(2.10)}{\Rightarrow} M=\conv\vertic M$.\\
+Sei $\vertic M=\{x^1,\ldots,x^k\}$.\\
+$x\in M\Rightarrow x=\alpha_1x^1+\ldots+\alpha_kx^k,\alpha_i\geq 1,\sum\alpha_i=1$.\\
+Sei $c=\max\limits_{i=1,\ldots,n}f(x^i)$.
+\[\Rightarrow f(x)\leq\sum_{i=1}^k\alpha_if(x^i)\leq\sum_{i=1}^k\alpha_ic=c\]
+
+\begin{Sa}
+$f:\ \R^n\to(-\infty,\infty]$ konvex. $x\in\inter\dom f\Rightarrow$ f stetig in x
+\end{Sa}
+
+\textbf{Beweis:}\\
+Zu zeigen: $\forall \varepsilon>0\exists\delta>0:\ \forall y\in\R^n:\ \|y-x\|<\delta\Rightarrow |f(x)-f(y)|\leq\varepsilon$
+
+Sei $\varepsilon>0$ vorgegeben.\\
+$x\in\inter\dom f\Rightarrow\exists$ Polytop M (sogar Simplex) mit $x\in\inter M\subset M\subset\inter\dom f$.\\
+$U:=\{x\in\R^n:\ \|x\|<\tilde\delta\} \Rightarrow \exists$ offene Kugel $B=x+U$ mit Mittelpunkt x und $B\subset\inter M$.\\
+Es gilt: $f(x)\leq c$ (8.2)\\
+$\Rightarrow c-f(x)\geq0\Rightarrow\exists\alpha\in(0,1):\ \alpha\cdot(c-f(x)\leq\varepsilon$
+
+Sei $\delta=\alpha\tilde\delta$.\\
+Sei $\|x-y\|<\delta=\alpha\tilde\delta\Rightarrow y=x+\alpha u,u\in U$.\\
+$\Rightarrow y=(1-\alpha)x+\alpha(x+u)$\[\Rightarrow f(y)\stackrel{\textnormal{f konvex}}{\leq} (1-\alpha)f(x)+\alpha\underbrace{f(\underbrace{x+u}_{\in B\subset M})}_{\leq c,\textnormal{ da }f(z)\leq c\ \forall z\in M}\]
+$f(y)-f(x)\leq\alpha(c-f(x))\leq\varepsilon$
+
+Es ist $x=\frac{1}{1+\alpha}(x+\alpha u)+(1-\frac{1}{1+\alpha})(x-u)$. (Konvexkombination!)
+\begin{eqnarray*}
+\stackrel{\textnormal{f konvex}}{\Rightarrow}f(x)&\leq&\frac{1}{1+\alpha}f(\underbrace{x+\alpha u}_{y})+\frac{\alpha}{1+\alpha}\underbrace{f(\underbrace{x-u}_{\in B\subset M})}_{\leq c}\\&\leq&\frac{1}{1+\alpha}f(y)+\frac{\alpha c}{1+\alpha}\end{eqnarray*}
+$\Rightarrow (1+\alpha)f(x)\leq f(y)+\alpha c$\\$\Rightarrow f(x)-f(y)\leq\alpha(c-f(x))\leq \varepsilon$
+
+$\Rightarrow |f(y)-f(x)|\leq\varepsilon$.\\
+\newpage
+\fbox{n=1}
+\begin{Sa}
+$f:\ \R^n\to(-\infty,\infty]$ konvex und $x\in\inter\dom f$. Dann existieren in x die rechte\footnote{von rechts, rechtsseitig} (obere) Ableitung $f^+(x)$ und die linke\footnote{von links, linksseitig} (untere) Ableitung $f^-(x)$ und es ist $f^-(x)\leq f^+(x)$.\\
+Für $x<y,x,y\in\inter\dom f$ gilt
+\[f^-(x)\leq f^+(x)\leq f^-(y)\leq f^+(y)\]
+$f^+$ ist rechtsseitig stetig, $f^-$ ist linksseitig stetig.
+\end{Sa}
+
+\textbf{Beweis:} Sei $a<b<c$.
+\[\Rightarrow b=\underbrace{\frac{c-b}{c-a}}_{\in(0,1)}a+\underbrace{\frac{b-a}{c-a}}_{\in(0,1)}c\]
+\[\stackrel{\textnormal{f konvex}}{\Rightarrow} f(b)\leq \frac{c-b}{c-a}f(a)+\frac{b-a}{c-a}f(c)\quad(\#)\]
+$(\#)-f(a)$:
+\[f(b)-f(a)\leq \frac{a-b}{c-a}f(a)+\frac{b-a}{c-a}f(c)=\frac{b-a}{c-a}(f(c)-f(a))\]
+\[\Rightarrow \frac{f(b)-f(a)}{b-a}\leq\frac{f(c)-f(a)}{c-a}\quad(\ast)\]
+$(\#)-f(c)$:
+\[\Rightarrow\textnormal{analog: }\  \frac{f(c)-f(a)}{c-a}\leq\frac{f(c)-f(b)}{c-b}\quad(\ast\ast)\]
+$(\ast),(\ast\ast)\Rightarrow (\ast\ast\ast):$
+\[\frac{f(b)-f(a)}{b-a}\leq\frac{f(c)-f(b)}{c-b}\]
+
+Sei $0<h<k$.\\
+Wir wählen spezielle a,b,c.
+
+(i) $a=x, b=x+h, c=x+k$
+\[\stackrel{(\ast)}{\Rightarrow} \frac{f(x+h)-f(x)}{h}\leq\frac{f(x+k)-f(x)}{k}\]
+(ii) $a=x-k, b=x-h, c=x$
+\[\stackrel{(\ast\ast)}{\Rightarrow} \frac{f(x)-f(x-k)}{k}\leq\frac{f(x)-f(x-h)}{h}\]
+\[\Rightarrow \frac{f(x-k)-f(x)}{-k}\leq\frac{f(x-h)-f(x)}{-h}\]
+(iii) $a=x-h, b=x, c=x+k$
+\[\stackrel{(\ast\ast\ast)}{\Rightarrow} \frac{f(x)-f(x-h)}{h}\leq\frac{f(x+k)-f(x)}{k}\]
+\[\Rightarrow\frac{f(x-h)-f(x)}{-h}\leq\frac{f(x+k)-f(x)}{k}\]
+Aus (i),(ii),(iii) folgt:\\
+Es existiert $f^-(x),f^+(x)$ und es ist $f^-(x)\leq f^+(x)$.
+
+Seien $a,b,c,d\in\inter\dom f$ und $a<b<c<d$.\\
+Aus $(\ast\ast\ast)$ folgt
+\[\frac{f(a)-f(b)}{a-b}\leq\frac{f(b)-f(c)}{b-c}\leq\frac{f(c)-f(d)}{c-d}\]
+Für $a=x, b=x+h, c=y-k, d=y$
+\[\Rightarrow \frac{f(x)-f(x+h)}{-h}\leq\frac{f(y-k)-f(y)}{-k}\]
+\[\begin{array}{lccc}
+\Rightarrow&\frac{f(x+h)-f(x)}{h}&\leq&\frac{f(y-k)-f(y)}{-k}\\
+&\downarrow&&\downarrow\\
+&f^+(x)&\leq&f^-(x)\end{array}\]
+
+Stetigkeit von $f^+(x)$\\
+Es ist 
+\[f^+(x)\leq f^+(y)\leq \frac{f(y+h)-f(y)}{h}\ \forall h>0\]
+\[\Rightarrow f^+(x)\leq\lim_{y\searrow x}f^+(y)\leq\lim_{y\searrow x}\frac{f(y+h)-f(y)}{h}\stackrel{\textnormal{f stetig}}{\leq}\frac{f(x+h)-f(x)}{h}\to f^+(x)\]
+$\Rightarrow\lim\limits_{y\searrow x}f^+(y)=f^+(x)$\\$\Rightarrow f^+$ rechtsseitig stetig.
+
+Analog: $f^-$ linksseitig stetig.
+
+[$\searrow$: von oben]\\
+
+\begin{Sa}
+$f:\ \R\to\R$ differenzierbar. Dann gilt: f konvex $\Leftrightarrow$ f' monoton wachsend
+\end{Sa}
+
+\textbf{Beweis:}\\
+"`$\Rightarrow$"' $x<y\stackrel{(8.4)}{\Rightarrow}f'(x)<f'(y)$\\
+"`$\Leftarrow$"' Seien $x,y\in\R, x<y,\alpha\in[0,1].\ z=\alpha x+(1-\alpha)y$.\\
+Nach Mittelwertsatz existiert $\vartheta_1\in[x,\alpha x+(1-\alpha)y],\vartheta_2\in[\alpha x+(1-\alpha)y,y]$ mit
+\[f'(\vartheta_1)=\frac{f(\alpha x+(1-\alpha)y)-f(x)}{(1-\alpha)(y-x)}\]
+\[f'(\vartheta_2)=\frac{f(y)-f(\alpha x+(1-\alpha)y)}{\alpha(x-y)}\]
+$\stackrel{\textnormal{Vor.}}{\Rightarrow} f'(\vartheta_1)\leq f'(\vartheta_2)$\\
+$\Rightarrow \alpha (f(\alpha x+(1-\alpha)y)-f(x))\leq(1-\alpha)(f(y)-f(\alpha x+(1-\alpha)y))$\\
+$\Rightarrow -\alpha f(x)\leq (1-\alpha)f(y)-f(\alpha x+(1-\alpha)y)$\\
+$\Rightarrow f(\alpha x+(1-\alpha)y)\leq\alpha f(x)+(1-\alpha)f(y)$\\
+$\Rightarrow$ f konvex\\
+
+\begin{Kor}
+$f:\ \R\to\R$ zweimal differenzierbar. Dann gilt: f konvex $\Leftrightarrow$ $f''\geq0$
+\end{Kor}
+
+\fbox{$n>1$}\\
+$f:\ \R^n\to\R$
+
+\textbf{Richtungsableitung} von f in $x\in\R^n$ in Richtung $u\neq0,u\in\R^n$:
+\[f'(x;u)=\lim_{t\searrow0}\frac{f(x+tu)-f(x)}{t}\]
+$u=e_i$
+\[f'(x;e_i)=\frac{\partial f}{\partial x_i}(x)=f_i(x)\]
+
+\[\nabla f(x):=\begin{pmatrix}f_1(x)\\\vdots\\f_n(x)\end{pmatrix}=\begin{pmatrix}\frac{\partial f}{\partial x_1}(x)\\\vdots\\\frac{\partial f}{\partial x_n}(x)\end{pmatrix}=\operatorname{grad}f(x)\]
+f zweimal partiell differenzierbar, so existiert \textbf{Hesse-Matrix}
+\[\nabla^2 f(x):=((f_{ij}(x)))_{n\times n}=((\frac{\partial^2 f}{\partial x_i\partial x_j}))_{n\times n}\]
+
+\begin{Sa}
+Sei $f:\ \R^n\to(-\infty,\infty]$ konvex und $x\in\inter\dom f$ $\Rightarrow$ in x existieren \textbf{alle} Richtungsableitungen $f'(x;u),u\in\R^n,u\neq0$.
+\end{Sa}
+
+\textbf{Beweis:} Sei $g(t):=f(x+tu), t\in\R$.\\
+g konvex, da 
+\begin{eqnarray*}
+g(\alpha t+(1-\alpha)s)&=&f(x+(\alpha t+(1-\alpha)s)u)\\
+&=&f(\alpha(x+tu)+(1-\alpha)(x+su))\\
+&\stackrel{\textnormal{f konvex}}{\leq}& \alpha\underbrace{f(x+tu)}_{g(t)}+(1-\alpha)\underbrace{f(x+su)}_{g(s)}\end{eqnarray*}
+$\stackrel{(8.4)}{\Rightarrow}\exists g^+(0)$\\
+Wegen
+\[g^+(0)=\lim_{t\searrow0}\frac{g(t)-g(0)}{t}=f'(x;u)\]
+gilt die Behauptung.
+
+\begin{Sa}
+Sei $f:\ \R^n\to\R$ differenzierbar. Dann gilt:
+\[f \textnormal{ konvex}\Leftrightarrow\forall y,x\in\R^n: f(y)-f(x)\geq\langle y-x,\nabla f(x)\rangle\]
+\end{Sa}
+
+\textbf{Beweis:}\\
+"`$\Rightarrow$"' Sei $g(t)=f(x+t(y-x))$. $g'(t)=\langle\nabla f(x+t(y-x)),y-x\rangle$.\\
+f konvex+differenzierbar $\Rightarrow$ g konvex und differenzierbar $\Rightarrow$ $g'(t)$ monoton wachsend
+\[\Rightarrow f(y)-f(x)=g(1)-g(0)=g'(\vartheta)\geq g'(0)=\langle\nabla f(x),y-x\rangle\]
+($0\leq\vartheta\leq1$)\\[6pt]
+"`$\Leftarrow$"' Seien $x,y\in\R^n$ und $z=\alpha x+(1-\alpha)y\ [\alpha\in(0,1)]$. Aus der Voraussetzung folgt:
+\[f(x)-f(z)\ge \langle x-z,\nabla f(z)\rangle\quad (1)\]
+\[f(y)-f(z)\ge \langle y-z,\nabla f(z)\rangle\quad (2)\]
+$\alpha\cdot(1)+(1-\alpha)\cdot(2)\stackrel{(\ldots)}{\Rightarrow}$
+\[\alpha f(x)+(1-\alpha)f(y)-f(z)\ge\langle \alpha x+(1-\alpha)y-z,\nabla f(z)\rangle=0\]
+$\Rightarrow f(z)=f(\alpha x+(1-\alpha)y)\le \alpha f(x)+(1-\alpha)f(y)$\newline
+[$x+(1-\alpha)y-z=0$]\\[24pt]
+
+Hesse-Matrix: $\nabla^2 f(x):=((f_{ij}(x)))$\\
+Sind 2. partielle Ableitungen stetig $\Rightarrow f_{ij}=f_{ji}$, d.h. $\nabla^2 f(x)$ ist symmetrisch.
+
+$\nabla^2 f(x)$ heißt \textbf{positiv semi-definit} $\Leftrightarrow \forall y\in\R^n:$\[ y^T\nabla^2 f(x)y=\langle y,\nabla^2 f(x)\cdot y\rangle\geq0\]
+
+\begin{Sa}
+Sei $f:\ \R^n\to\R$ zweimal stetig partiell differenzierbar. Dann gilt: f konvex $\Leftrightarrow \nabla^2f(x)$ ist positiv semi-definit für alle $x\in\R^n$
+\end{Sa}
+
+\textbf{Beweis:}
+\[g(t)=g^{(\lambda,u)}(t)=f(\lambda+tu),\ x,u\in\R^n, u\neq 0\]
+f konvex und zweimal stetig partiell differenzierbar $\Leftrightarrow$ g konvex und zweimal differenzierbar\\
+wegen 
+\[g^{(x,u)}(s)=g^{(x+su,u)}(0)\]
+Also f konvex $\Leftrightarrow (g^{(x,u)})''(0)\geq 0$
+\begin{eqnarray*}
+0&\leq&g''(0) \\
+&=&\lim_{t\searrow0}\frac{g'(t)-g'(0)}{t}\\
+&=&\lim_{t\searrow0}\frac{\langle u,\nabla f(x+tu)\rangle-\langle u,\nabla f(x)\rangle}{t}\\
+&=&\lim_{t\searrow0}\sum_{i=1}^nu_i\frac{f_i(x+tu)-f_i(x)}{t}\\
+&=&\sum_{i=1}^nu_i\lim_{t\searrow0}\frac{f_i(x+tu)-f_i(x)}{t}\\
+&=&\sum_{i=1}^nu_i\langle \nabla f_i(x),u\rangle\\
+&=&\sum_{i,j=1}^n\underbrace{u_if_{ij}(x)u_j}_{u^T\nabla^2f(x)u}\end{eqnarray*}
+[$u=(u_1,\ldots,u_n)^T$]
+
+\begin{Sa}
+Sei $f:\ \R^n\to(-\infty,\infty]$ konvex und $x\in\dom f$ ein lokales Minimum (d.h. es existiert eine Umgebung $U(x)$ von x mit $f(x)\leq f(y)\ \forall y\in U(x)$).\\
+Dann ist x globales Minimum, d.h. es gilt $f(x)\leq f(y)\ \forall y\in\R^n$.
+\end{Sa}
+
+\textbf{Beweis:} O.B.d.A. sei $U(x)=B(x)$ die [abgeschlossene] Kugel vom Radius $r>0$ um den Punkt x.\\
+Sei $z\in\R^n\backslash B(x)$. Sei 
+\[y=\frac{r}{\|z-x\|}z+(1-\frac{r}{\|z-x\|})x\]
+$\Rightarrow \|y-x\|=\frac{r}{\|z-x\|}\|z-x\|=r$, d.h. $y\in B(x)$.\\
+$\Rightarrow$
+\[f(x)\leq f(y)\leq \frac{r}{\|z-x\|}f(z)+(1-\frac{r}{\|z-x\|})f(x)\]
+$\Rightarrow f(x)\leq f(z)$.
+
+%9. Paragraph%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Trennungssätze}
+\stepcounter{defsaco}
+
+Seien $A,B\subset\R^n$ konvexe Mengen und $H=\{f=\alpha\}$ eine Hyperebene.\\
+H \textbf{trennt} A und B, wenn $A\subset\{f\leq\alpha\},B\subset\{f\geq\alpha\}$ oder umgekehrt.
+
+Vorbemerkungen zu topologischen Eigenschaften von konvexen Mengen (im $\R^n$):
+\begin{itemize}
+\item[a)] $M\subset \R^n$ konvex $\Rightarrow \cl M, \rel\inter M$ konvex\\
+Denn:\\
+$x,y\in\cl M$, $z=\alpha x+(1-\alpha)y$; $\exists x^i,y^i\in M: x^i\to x, y^i\to y$\\
+$z^i=\alpha x^i+(1-\alpha)y^i\ \in M$ $\Rightarrow z\in\cl M\ (z^i\to z)$\\[12pt]
+$x,y\in\rel\inter M$; $B(x),B(y)$ Kugeln in $\aff M$ mit $B(x),B(y)\subset M$; $z=\alpha x+(1-\alpha)y$\\
+Sei $B(z)=\alpha B(x)+(1-\alpha)B(y) \Rightarrow B(z)$ Kugel um z und $B(z)\subset M$ $\Rightarrow z\in\rel\inter M$
+\item[b)] Sei $M\subset \R^n$ konvex, $x\in\cl M$, $y\in\rel\inter M$ $\Rightarrow [y,x)\subset\rel\inter M$\\
+Denn:\\
+Sei $B(y)\subset M$ Kugel um y und $x^i$ Folge in M mit $x^i\to x$.\\
+Sei $z=\alpha y+(1-\alpha)x,\alpha>0$.\\
+Sei $y^i$ so, dass $z=\alpha y^i+(1-\alpha)x^i$. Für großes i existiert Kugel $B(y^i)\subset B(y)\subset M$ $\Rightarrow B_i(z)=(1-\alpha)x^i+\alpha B(y^i)\subset M$ $\Rightarrow z\in\rel\inter M$
+\item[c)] $M\subset \R^n$ konvex $\Rightarrow$ $\cl M\stackrel{(1)}{=}\cl(\rel\inter M)$, $\rel\inter M\stackrel{(2)}{=}\rel\inter(\cl M)$\\
+Denn:\\
+(1) "`$\supset$"': klar\\
+"`$\subset$"': Sei $x\in\cl M$. Sei $y\in\rel\inter M$ (existiert nach Satz (2.3)). $\stackrel{(b)}{\Rightarrow} [y,x)\in\rel\inter M$ $\Rightarrow x\in\cl(\rel\inter M)$\\[12pt]
+(2) "`$\subset$"': klar\\
+"`$\supset$"': Sei $x\in\rel\inter(\cl M)$. $\exists$ Umgebung (in $\aff M$) $U(x)\subset\cl M$.\\
+Sei $y\in\rel\inter M$ (existiert nach Satz (2.3)) und $z\in U(x)$ so, dass $x\in(z,y]$. $\Rightarrow z\in\cl M,y\in\rel\inter M$ $\stackrel{(b)}{\Rightarrow} x\in\rel\inter M$
+\end{itemize}
+
+\texttt{Anmerkung:} Man kann sich die Aussagen bzw. die Beweise gut veranschaulichen. Hier allerdings ohne Bilder.\\
+$\alpha x+(1-\alpha)y$ (o.ä.) bezeichnet hier immer eine Konvexkombination, d.h. $\alpha\in[0,1]$.\\
+
+\begin{Hil}
+Sei $C\subset\R^n$ konvex und relativ offen, $C\neq\varnothing$ und $0\not\in C$. Dann existiert eine Hyperebene $H=\{f=0\}$ mit $H\cap C=\varnothing$. (Genauer: $C\subset\{f>0\}$)
+\end{Hil}
+
+\textbf{Beweis:}
+\begin{description}
+\item[1. Fall: $0\not\in\cl C$]~\\
+$\Rightarrow \exists x\in\cl C:\ [\|x-0\|=]\|x\|\leq\|y\|\ \forall y\in\cl C$\\
+Sei $H=\{f=0\}$ die Hyperebene durch 0 senkrecht zu x. $\Rightarrow$ (weil C konvex ist) $C\subset \{f>0\}$ (oder $C\subset\{f<0\}$).
+
+\texttt{Anmerkung:} $f=0\Leftrightarrow -f=0$, $f<0\Leftrightarrow -f>0$ (d.h. die Behauptung gilt auch, wenn $C\subset\{f<0\}$)\\
+Angenommen es existiert ein $y\in C: y\in\{f\geq0\}$, dann ergibt sich (weil C konvex ist und damit $[y,x]\in C$) ein Widerspruch zur Wahl von x, denn man könnte einen Punkt finden, der "`näher"' am Nullpunkt ist, also eine kleinere Norm hat. (...)
+\item[2. Fall: $0\in\cl C, \aff C=\R^n$]~\\
+($\Rightarrow$ C offen) $\Rightarrow$ 0 ist Randpunkt von C\\
+Sei $x^i\to0, x^i\not\in \cl C$. $\stackrel{\textnormal{1. Fall}}{\Rightarrow} \exists H_i=\{f_i=\alpha_i\}$ mit $x^i\in\{f_i=\alpha_i\}, C\subset\{f_i\geq\alpha_i\}$. (Anwendung von 1. Fall auf 0 und $C-x^i$.)\newline
+[$\widetilde{H_i}=\{\widetilde{f_i}=0\}, C-x^i\subset\{\widetilde{f_i}>0\} \Rightarrow C\subset\{f_i\geq\alpha_i\}, \alpha_i=\widetilde{f_i}(x^i)$]
+
+Sei $f_i=\langle\cdot,u^i\rangle,\|u^i\|=1$ (o.B.d.A.).\\
+Weil $\{\|\cdot\|=1\}$ kompakt ist, existiert Teilfolge, die konvergiert: $u^i\to u,\|u\|=1$ (o.B.d.A.).\\
+Sei $H=\{f=\langle\cdot,u\rangle=0\}$.\\
+$\Rightarrow$ Jedes $y\in C$ erfüllt
+\[\begin{array}{rcccl} f_i(y)=&\langle y,u^i\rangle&>&\alpha_i=\langle x^i,u^i\rangle\\
+&\downarrow&&\downarrow&(i\to\infty)\\
+&\langle y,u\rangle&&0\end{array}\]
+$\Rightarrow \langle y,u\rangle\geq 0$, d.h. $C\subset\{f\geq 0\}\stackrel{\textnormal{C offen}}{\Rightarrow} C\subset\{f>0\}$
+\item[3. Fall: $0\in\cl C, \aff C\neq\R^n$]~\\
+$\stackrel{\textnormal{2. Fall}}{\Rightarrow} \exists$ Hyperebene $\widetilde{H}=\{\widetilde{f}=0\}$ in $\aff C=L\ni 0$ mit $C\subset\{\widetilde{f}>0\}$.\\
+Setze $H=\widetilde{H}\oplus L^\bot$.
+\end{description}
+
+\begin{Sa}[Trennungssatz]
+Seien $A,B\subset\R^n$ nichtleer und konvex mit $\rel\inter A\cap\rel\inter B=\varnothing$. Dann existiert eine Hyperebene H, die A und B trennt.
+\end{Sa}
+
+\textbf{Beweis:}\\
+Sei $C:=A-B$. [d.h. $z\in C\Leftrightarrow\exists x\in A,y\in B: z=x-y$]\\
+$\Rightarrow$ C konvex
+
+\textbf{Zwischenbehauptung:} $\rel\inter C\subset\rel\inter A-\rel\inter B$\\
+\textbf{Beweis:} $\varphi:\ \R^n\times\R^n\to\R^n,(x,y)\mapsto x-y$ stetig\\
+$C=\varphi(A\times B)$\\
+$\widetilde{C}:=\varphi(\rel\inter(A\times B))$ $\Rightarrow \varphi^{-1}(\cl \widetilde{C})$ ist abgeschlossen.
+
+Weil $\rel\inter(A\times B)\subset\varphi^{-1}(\cl\widetilde{C})$ gilt, folgt
+\[\cl(\underbrace{A\times B}_{\textnormal{konvex}})=\cl\ \rel\inter(A\times B)\subset\varphi^{-1}(\cl \widetilde{C})\]
+$\Rightarrow$\fbox{$\varphi(\cl(A\times B))\subset\cl \widetilde{C}$}
+
+$\Rightarrow \cl\widetilde{C}=\cl\varphi(\rel\inter(A\times B))\supset\varphi(\cl(A\times B))\supset\varphi(A\times B)\supset\varphi(\rel\inter(A\times B))$\\
+$\Rightarrow \cl\varphi(\rel\inter(A\times B))=\cl\varphi(\rel\inter A\times\rel\inter B)=\cl\varphi(A\times B)$\\
+$\Rightarrow \rel\inter\varphi(A\times B)=\rel\inter\varphi(\rel\inter A\times\rel\inter B)$\\
+$\Rightarrow \rel\inter C=\rel\inter(\rel\inter A-\rel\inter B)\subset \rel\inter A-\rel\inter B$
+
+\texttt{Anmerkung:} Bei diesem Beweis der Zwischenbehauptung wurden mehrfach die in den Vorbemerkungen genannten Beziehungen ausgenutzt.\\
+
+Wegen $\rel\inter A\cap\rel\inter B=\varnothing \Rightarrow 0\not\in\rel\inter A-\rel\inter B$, also $0\not\in \rel\inter C$ (relativ offen und konvex und $\neq\varnothing$).\\
+$\stackrel{(9.1)}{\Rightarrow}$ Es existiert Hyperebene $H=\{f=0\}$ mit $\rel\inter C\subset\{f>0\}$\\
+$\Rightarrow C\subset\{f\geq0\}\Rightarrow f(x)\geq f(y)\ \forall x\in A,y\in B$ [$f(x-y)=f(x)-f(y)\geq0$]
+
+Setze $\alpha=\inf\limits_{x\in A}f(x) \Rightarrow$
+\[A\subset\{f\geq\alpha\}\]
+\[B\subset\{f\leq\alpha\}\]
+$\Rightarrow \widetilde{H}=\{f=\alpha\}$ trennt A und B.
+
+%10. Paragraph%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Konvexe Programme}
+\stepcounter{defsaco}
+
+\begin{Def}
+Ein \textbf{konvexes Programm} (KP) ist gegeben durch konvexe Funktionen $f,g_1,\ldots,g_m:\ \R^n\to\R,\ m\in\N$. (KP) ist die Aufgabe, $f(x)$ zu minimieren unter den Nebenbedingungen $g_i(x)\leq 0, i=1,\ldots,m$ und $x\geq 0$.\\
+\textbf{Schreibweise}:
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&f(x)&=&min\\
+(KP)&g(x)&$\leq$&0\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+$g:\ \R^n\to\R^m$, $g(x):=(g_1(x),\ldots,g_m(x))$
+\end{Def}
+
+\textbf{Bemerkungen:}\\
+(a) Andere Versionen:
+\begin{center}
+$(\ast)$\begin{tabular}{c|rcl|}\cline{2-4}
+&f(x)&=&min\\
+&g(x)&$\leq$&0\\\cline{2-4}
+\end{tabular}\\[12pt]
+
+$(\ast\ast)$\begin{tabular}{c|rcl|}\cline{2-4}
+&f(x)&=&min\\
+&g(x)&$\leq$&0\\
+&h(x)&=&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+[$h=(h_1,\ldots,h_k), h_i:\ \R^n\to\R$ affin linear]
+
+(KP) Spezialfall von $(\ast)$:\\
+$g_{m+1}(x)=-x_1,\ldots,g_{m+n}(x)=-x_n \Rightarrow$
+\[[x\geq0\Leftrightarrow g_{m+1}(x)\leq0,\ldots,g_{m+n}(x)\leq0]\]
+$(\ast)$ lässt sich in (KP) überführen:
+\[x_i\leftrightarrow x_i^+-x_i^-,\ i=1,\ldots,n,\:x_i^+,x_i^-\geq0\]
+$\Rightarrow \widetilde{g}_j (x_1^+,x_1^-,\ldots,x_n^+,x_n^-)=g_j(x_1^+-x_1^-,\ldots,x_n^+-x_n^-)$ ist konvex, $j=1,\ldots m$\\
+
+$(\ast)$ ist Spezialfall von $(\ast\ast)$:
+\[h=0\]
+$(\ast\ast)$ lässt sich in $(\ast)$ überführen:
+\[h(x)=0\Leftrightarrow h(x)\leq0,-h(x)\leq0\]
+(und $h, -h$ konvex)\\
+
+(b) Jedes (LP) ist ein (KP).
+
+(c) Ein wichtiger Spezialfall von (KP) ist das \textbf{quadratische Programm}:
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&$f(x)=\langle x,p\rangle+\langle Cx,x\rangle$&=&min\\
+(QP)&Ax&=&b\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+mit $p\in\R^n$, C positiv semi-definite (n,n)-Matrix.\newline
+[Es existieren äquivalente andere Formen.]
+
+\textbf{Beachte:} 
+\[f \textnormal{ konvex} \Leftrightarrow \underbrace{\nabla^2f(x)}_{=2C}\textnormal{ positiv semi-definit}\Leftrightarrow C \textnormal{ positiv semi-definit}\]
+~\\
+
+\textbf{Definition:}\\
+Zu (KP) sei $M=\{g(x)\leq0,\ x\geq0\}$ der \textbf{zulässige Bereich}. Jedes $x\in M$ heißt \textbf{zulässiger Punkt}. Ein $x\in M$ mit $f(x)=\min\limits_{y\in M}f(y)$ heißt \textbf{Lösung} von (KP).
+
+\begin{Sa}
+Sei (KP) gegeben. Der zulässige Bereich M ist konvex und abgeschlossen. Die Menge der Lösungen ist abgeschlossen und konvex.
+\end{Sa}
+
+\textbf{Beweis:}\\
+$M=\{g_j(x)\leq0,j=1,\ldots,m,\ x\geq0\}$\\
+Nach (8.3) ist $g_j$ stetig, also $\{g_j(x)\leq0\}$ abgeschlossen. $\{g_j(x)\leq0\}$ ist auch konvex:
+\[g_j(\alpha x+(1-\alpha)y)\leq \alpha\underbrace{g_j(x)}_{\leq 0}+(1-\alpha)\underbrace{g_j(y)}_{\leq 0}\leq 0,\quad 0\leq\alpha\leq1\]
+
+$L=\{x:\ f(x)=\min\limits_{y\in M}f(y)\}$ Lösungsmenge [$L\subset M$!]\\
+$\Rightarrow$ L abgeschlossen, weil f stetig ist. L konvex:
+\[f(\underbrace{\alpha x+(1-\alpha)y}_{\in M})\leq \alpha\underbrace{f(x)}_{=\min f }+(1-\alpha)\underbrace{f(y)}_{=\min f}\leq \min f\]
+$\Rightarrow f(\alpha x+(1-\alpha)y)=\min f$ !!! [$x,y\in L$]\\
+
+\textbf{Bemerkung:} f kann auf M nach unten beschränkt sein, ohne dass das Minimum existiert.\\
+\textbf{Beispiel:} $f(x)=\frac 1x, x\geq0$; $\ g(x)=1-x, x\in\R$
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&f(x)&=&min\\
+(KP)&g(x)&$\leq$&0\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+$\Rightarrow M=\{x\geq 1 \}\Rightarrow f>0$ auf M $\Rightarrow \inf f=0$ [aber $f(x)\neq 0\ \forall x\in M$]\\
+
+\textbf{Definiton:} Zu
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&f(x)&=&min\\
+(KP)&g(x)&$\leq$&0\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+sei 
+\[\Phi:\ \R^n\times\R^m\to\R, \Phi(x,u):=f(x)+\langle u,g(x)\rangle=f(x)+\sum_{i=1}^mu_ig_i(x)\]
+die Lagrange-Funktion.\\
+Ein Paar $(x^0,u^0)\in\R^n\times\R^m, x^0\geq0,u^0\geq0$ heißt \textbf{Sattelpunkt} von $\Phi$ in $\{x\geq 0,u\geq0\}$, wenn gilt:
+\[\Phi(x^0,u)\stackrel{(1)}{\leq}\Phi(x^0,u^0)\stackrel{(2)}{\leq}\Phi(x,u^0)\ \ \forall x\geq0,u\geq0\]
+~\\
+
+\begin{Sa}
+Existiert zu $x^0\geq0$ ein $u^0\geq0$ so, dass $(x^0,u^0)$ Sattelpunkt von $\Phi$ ist, so ist $x^0$ Lösung von (KP).
+\end{Sa}
+
+\textbf{Beweis:}\\
+$(1)\Rightarrow \langle u,g(x^0)\rangle\le \langle u^0,g(x^0)\rangle \ \forall u\ge0.$\\
+$\Rightarrow g(x^0)\le0$ (also $x^0$ zulässig) und $\langle u^0,g(x^0)\rangle=0$
+
+\texttt{Anmerkung:} Weil $\langle u,g(x^0)\rangle$ nach oben beschränkt ist, muss $\langle u,g(x^0)\rangle\leq 0$ sein und damit $g(x^0)\leq 0$, da die Ungleichungen jeweils für alle $u\geq 0$ gelten.\\[12pt]
+
+$(2)\Rightarrow f(x^0)+\underbrace{\langle u^0,g(x^0)\rangle}_{=0}\le f(x)+\langle u^0,\underbrace{g(x)}_{\le0\textnormal{ für x zul.}}\rangle\ \forall x\ge0$\\
+$\Rightarrow \forall$ \textbf{ x zulässig: }$f(x^0)\le f(x)  \Rightarrow x^0$ Lösung.
+
+\textbf{Bemerkung:} Beim Beweis wurde die Konvexität \textbf{nicht} benutzt, nur die Sattelpunkts-Eigenschaft. (10.3) gilt also allgemein für Optimierungs-Probleme der Form:
+\begin{center}
+\begin{tabular}{|rcl|}\cline{1-3}
+f(x)&=&min\\
+g(x)&$\leq$&0\\
+x&$\geq$&0\\\cline{1-3}
+\end{tabular}\ $g=(g_1,\ldots,g_m)$
+\end{center}
+
+\textbf{Beispiel:} Sei 
+\begin{center}(KP) 
+\begin{tabular}{|rcl|}\hline
+$f(x)=-x$&=&min\\
+$g(x)=x^2$&$\leq$&0\\
+$x$&$\geq$&0\\\hline
+\end{tabular}
+\end{center}
+n=1,\ m=1 $\Rightarrow M=\{0\} \Rightarrow f_{min}=0, x^0=0$
+
+Angenommen $(x^0,u^0)$ Sattelpunkt $\Rightarrow x^0=0$\\
+$\Rightarrow \Phi(x,u)=-x+ux^2,\ \Phi(x^0,u^0)=0$
+\[\Rightarrow \underbrace{\Phi(x^0,u^0)}_{=0}\le \Phi(x,u^0)=-x+u^0x^2\ \forall x\ge0\]
+$\Rightarrow u^0x\ge1\ \forall x>0$ Widerspruch!!!
+
+\textbf{Konsequenz:}\\ Zusatzbedingung!
+
+\textbf{Slater-Bedingung:}\\
+Es existiert ein $x\in M$ (zulässig) mit $g(x)<0$ (d.h. $g_i(x)<0, i=1,\ldots,m$)\\
+
+%11.Paragraph%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sattelpunktsätze}
+\stepcounter{defsaco}
+\texttt{Anmerkung:} \\
+\(\Phi(\cdot,u) \textnormal{ konvex für } u\ge0 \textnormal{ (fest)}\)\\
+\(\Phi(x,\cdot) \textnormal{ linear}\)
+
+\begin{Sa}[Sattelpunktsatz für (LP)]
+Gegeben sei
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&f(x)&=&max\\
+(LP)&Ax&$\leq$&b\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+Genau dann ist $x^0\ge0$ Lösung von (LP), wenn ein $u^0\ge0$ existiert, so dass $(x^0,u^0)$ Sattelpunkt ist von $\Phi$:
+\[\Phi(x,u)\stackrel{NR}{:=}f(x)+g(u)-\langle Ax,u\rangle\]
+d.h. $\Phi(x,u^0)\le \Phi(x^0,u^0)\le \Phi(x^0,u)\ \ \forall x\ge0,u\ge0$
+\end{Sa}
+
+\texttt{Nebenrechnung:}\\
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&g(u)&=&min\\
+(DP)&$A^Tu$&$\ge$&p\\
+&u&$\geq$&0\\\cline{2-4}
+\end{tabular}\\
+$f(x)=\langle x,p\rangle,\ g(u)=\langle u,b\rangle$\\
+\(\Phi(x,u)=g(u)+\langle p-A^Tu,x\rangle =f(x)+g(u)-\langle Ax,u\rangle=f(x)+\langle b-Ax,u\rangle\ \)
+
+\textbf{Beweis:}\\
+"`$\Leftarrow$"': Sei $(x^0,u^0)$ Sattelpunkt.\\
+$\Phi(x,u^0)\le\Phi(x^0,u^0)\ \ \forall x\ge0$
+\[\Rightarrow \langle p-A^Tu^0,x\rangle\le\langle p-A^Tu^0,x^0\rangle\ \ \forall x\ge0\]
+\[\Rightarrow p-A^Tu^0\le0,\ \langle p-A^Tu^0,x^0\rangle=0\quad(*) \]
+
+\(\Phi(x^0,u^0)\le\Phi(x^0,u)\ \ \forall u\ge0\)
+\[\stackrel{\textnormal{analog}}{\Rightarrow}b-Ax^0\ge0,\ \langle b-Ax^0,u^0\rangle =0\quad(**)\]
+\[ (4.1)+(4.4)\stackrel{(*),(**)}{\Longrightarrow}x^0,u^0\textnormal{ Lösung von (LP)+(DP)}\]
+
+"`$\Rightarrow$"': Nun sei $x^0\ge0$ Lösung von (LP).\\
+$\stackrel{(4.1)}{\Rightarrow}$ Es existiert $u^0\ge0$ Lösung von (DP).\\
+$\stackrel{(4.4)}{\Rightarrow}$ Komplementaritätsbedingung erfüllt:
+\[\langle x^0,p-A^Tu^0\rangle=0\]\[\langle u^0,b-Ax^0\rangle=0\]
+\[\Rightarrow \Phi(\underbrace{x}_{\ge0},u^0)= g(u^0)+\langle \underbrace{p-A^Tu^0}_{\le0},\underbrace{x}_{\ge0}\rangle\le g(u^0)\]
+\[=\Phi(x^0,u^0)=f(x^0)\le f(x^0)+\langle \underbrace{b-Ax^0}_{\ge 0},\underbrace{u}_{\ge0}\rangle =\Phi(x^0,u)\]
+
+\begin{Sa}[Sattelpunktsatz von Kuhn-Tucker] %%%%%%%%%%%%%%%% 11.07.06%%%%%%%%%%%%%%%%%%%%%%%%%
+Gegeben sei (KP), die Slater-Bedingung (S) sei erfüllt. Dann gilt:\\Ist $x^0$ Lösung von (KP), so existiert ein $u^0\ge0$ derart, dass $(x^0,u^0)$ Sattelpunkt von $\Phi$ in $\{x\ge0,u\ge0\}$ ist.
+\end{Sa}
+
+\textbf{Beweis:} Seien $A,B\subset\R^{m+1}$.
+\[A:=\{(y_0,\ldots,y_m):\ \exists x\geq0\textnormal{ mit }f(x)\leq y_0,g_j(x)\leq y_j, j=1,\ldots,m\}\]
+\[B:=\{(y_0,\ldots,y_m):\ y_0<f(x^0),y_j<0, j=1,\ldots,m\}\]
+$\Rightarrow A,B\neq\varnothing,$ A,B konvex, B offen, $A\cap B=\varnothing$
+
+[Denn: Sei $(y_0,\ldots,y_m)\in A\cap B$.\\
+$\Rightarrow \exists x\geq0:\ f(x)\leq y_0\le f(x^0), g_j(x)\leq y_j<0, j=1,\ldots,m$\\
+$\Rightarrow x\in M$ mit $f(x)<f(x^0)$. Widerspruch!]
+
+Also folgt aus (10.2) die Existenz einer Hyperebene $H=\{\langle\cdot,v\rangle=\alpha\},$\\$ v\in\R^{m+1},v\neq0,\alpha\in\R$ mit
+\[(\ast)\langle y,v\rangle\le\alpha\leq\langle\widetilde{y},v\rangle\ \ \forall y\in B,\widetilde{y}\in A\]
+$v=(v_0,\ldots,v_m)$
+
+Aus $(\ast)$ folgt $v\geq 0$.\newline
+[Denn: $y=(-1+f(x^0),-1,\ldots,-1,\underbrace{\beta}_{\textnormal{j-te Stelle},\beta\to-\infty},-1,\ldots,-1)\in B$;\\
+y in $(\ast) \Rightarrow v_j\beta+\textnormal{const}<\alpha$\\
+Der linke Term ist nach oben beschr"ankt. Mit $\beta\to-\infty$ ergibt sich damit $v_j\geq0$.]
+
+Sei $x\geq0$. $\Rightarrow$
+\[y=(f(x^0),0,\ldots,0)\in\cl B\]
+\[\widetilde{y}=(f(x),g_1(x),\ldots,g_m(x))\in A\]
+
+\[\stackrel{(\ast)}{\Rightarrow} v_0f(x^0)\leq\alpha\leq v_0f(x)+\sum_{j=1}^mv_jg_j(x)\ \forall x\geq 0\]
+
+\textbf{Beh.:} $v_0>0$\\
+\textbf{Angenommen} $v_0=0 \Rightarrow$
+\[\sum_{j=1}^mv_jg_j(x)\geq 0\ \forall x\geq0\]
+Wegen $v\neq 0$ ist ein $v_j\neq0$. Nach (S) existiert ein $x\geq0$ mit $g_j(x)<0, j=1,\ldots,m$. \textbf{Widerspruch!}
+
+Setze $u^0=\frac{1}{v^0}(v_1,\ldots,v_m) \Rightarrow$
+\[f(x^0)\leq\underbrace{f(x)+\langle u^0,g(x)\rangle}_{\Phi(x,u^0)}\ \forall x\geq0\]
+
+Sei $x=x^0 \Rightarrow$
+\[f(x^0)\leq f(x^0)+\langle u^0,g(x^0)\rangle\]
+also $\langle u^0,g(x^0)\rangle\geq 0$.
+\[\Rightarrow \langle\underbrace{u^0}_{\geq0},\underbrace{g(x^0)}_{\leq 0}\rangle=0\]
+$\Rightarrow \Phi(x^0,u^0)=f(x^0)$\\
+$\Rightarrow \Phi(x^0,u^0)\leq\Phi(x,u^0)\ \forall x\geq0$
+
+\[\Phi(x^0,u)=f(x^0)+\underbrace{\langle u,g(x^0)\rangle}_{\leq0}\leq f(x^0)=\Phi(x^0,u^0)\ \forall u\geq0\]
+~\\[24pt]
+
+Nun seien $f,g_1,\ldots,g_m$ stetig partiell differenzierbar. Sei
+\[\nabla_x \Phi:=\left(\frac{\partial\Phi}{\partial x_1},\ldots,\frac{\partial\Phi}{\partial x_n}\right)[=\left(\Phi_{x_1},\ldots,\Phi_{x_n}\right)]\]
+\[\nabla_u \Phi:=\left(\frac{\partial\Phi}{\partial u_1},\ldots,\frac{\partial\Phi}{\partial u_m}\right)[=\left(\Phi_{u_1},\ldots,\Phi_{u_m}\right)]\]
+
+\begin{Sa}[Lokale Kuhn-Tucker-Bedingung]
+Gegeben sei (KP) mit stetig partiell differenzierbaren Funktionen $f,g_1,\ldots,g_m$. Die Slater-Bedingung (S) sei erfüllt.\\
+Sei $x^0\geq0$. Dann sind äquivalent:
+\begin{itemize}
+\item[(a)]$x^0$ ist Lösung von (KP)
+\item[(b)]$\exists u^0\geq0:$
+\[\nabla_x\Phi(x^0,u^0)\geq0,\ \langle\nabla_x\Phi(x^0,u^0),x^0\rangle=0\]
+\[\nabla_u\Phi(x^0,u^0)\leq0,\ \langle\nabla_u\Phi(x^0,u^0),u^0\rangle=0\]
+\item[(c)]$\exists u^0\geq0:$
+\[\nabla f(x^0)+\sum_{j=1}^mu_j^0\nabla g_j(x^0)\geq0\]
+\[\langle \nabla f(x^0)+\sum_{j=1}^mu_j^0\nabla g_j(x^0),x^0\rangle=0\]
+\[g(x^0)\leq0\]
+\[\langle g(x^0),u^0\rangle=0\]
+\end{itemize}
+\end{Sa}
+
+\textbf{Beweis:} (b)$\Leftrightarrow$(c):\[\nabla_x\Phi(\cdot,u)=\nabla f+\sum_{j=1}^mu_j\nabla g_j\]
+\[\nabla_u\Phi(x,\cdot)=g(x)\]
+
+(a)$\Leftrightarrow$(b): Nach (11.2) [und Paragraph 10] ist (a) äquivalent zu (a'):
+\[\exists u^0\ge0 \textnormal{ mit }\Phi(x^0,u)\le\Phi(x^0,u^0)\le\Phi(x,u^0)\ \ \forall x\ge0,u\ge0\]
+
+(a')$\Rightarrow$(b):
+\[\frac{\Phi(x^0+hy,u^0)-\Phi(x^0,u^0)}{h}\ge0 \textnormal{  falls } \left.\begin{array}{c}x^0+hy\ge0\\h>0\end{array}\right\}\Rightarrow x^0+h'y\ge0\ \forall h'\le h\]
+$\Rightarrow \Phi'(x^0,u^0;y)\ge0\ \ \forall y\in\R^n$ mit $x^0+hy\ge0$ für \textbf{ein }$h>0.$\\
+$\Rightarrow y=e_1,\ldots,e_m$ liefert \[\Phi_{x_i}(x^0,u^0)\ge0,\ i=1,\ldots,m \textnormal{ und }\Phi_{x_i}(x^0,u^0)=0, \textnormal{ falls }x^0_i>0\]
+$\Rightarrow \nabla_x\Phi(x^0,u^0)\ge0$ und $\langle \nabla_x\Phi(x^0,u^0),x^0\rangle=0$\\
+
+Analog für $\nabla_u\Phi(x^0,u^0)$
+
+(b)$\Rightarrow$(a'):\\
+$\Phi(\cdot,u^0)$ ist konvex\\
+\[\stackrel{(9.8)}{\Rightarrow}\Phi(x,u^0)\ge\Phi(x^0,u^0)+\langle x-x^0,\nabla_x\Phi(x^0,u^0)\rangle\ \ \forall x\ge0\]
+\[\Rightarrow \Phi(x,u^0)\ge\Phi(x^0,u^0)+\langle \underbrace{x}_{\ge0},\underbrace{\nabla_x\Phi(x^0,u^0)}_{\ge0}\rangle \ge\Phi(x^0,u^0) \ \forall x\ge0\]
+
+\textbf{Analog:}
+\begin{eqnarray*}
+\Phi(x^0,u)&=&\Phi(x^0,u^0)+\langle u-u^0,\nabla_u\Phi(x^0,u^0)\rangle\\ 
+&=&\Phi(x^0,u^0)+\langle\underbrace{u}_{\ge0},\underbrace{\nabla_u\Phi(x^0,u^0)}_{\le0}\rangle\\&\leq&\Phi(x^0,u^0)\ \ \forall u\ge0\end{eqnarray*}
+[weil $\Phi(x^0,\cdot)$ affin-linear ist!]
+
+\textbf{Bemerkungen:}\\
+(a)\textbf{Anwendung:} (KP) mit (S)\\
+Finde zulässigen Punkt $x^1\ge0$\[\Rightarrow f(x^1)\ge f(\underbrace{x^0}_{\textnormal{Lösung}})\]
+Wähle $u^1\ge0$ und bestimme \[\min\limits_{x\ge0}(f(x^1)+\langle u^1,g(x)\rangle)=:\alpha\]
+\[\Rightarrow \alpha \le f(x^0)+\langle \underbrace{u^1}_{\ge0},\underbrace{g(x^0)}_{\le0}\rangle \le f(x^0)\]
+[$\Rightarrow$ unter Schranke für $f(x^0)$]
+
+(b) Die Slater-Bedingung erlaubt keine Nebenbedinungen der Form $h(x)~=~0\\ (h=(h_1,\ldots,h_k),\ h_i$ affin-linear).
+
+Beispielsweise sind LP und QP nicht durch die Sätze 11.2 und 11.3 erfasst!\\
+Allgemein gilt ein Sattelpunktsatz (und entsprechende lokale Kuhn-Tucker-Bedingung) für konvexe Programme der Form
+
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&f(x)&=&min\\
+(KP)&g(x)&$\leq$&0\\
+&h(x)&=&0\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular} \ \
+$f,g_1,\ldots,g_m$ konvex,\ $h_1,\ldots,h_k$ affin
+
+Hierbei lautet die Slater-Bedingung (S):
+\[\exists x\in M \textnormal{ (d.h. }x\ge0, h(x)=0\textnormal{) mit }g(x)<0\]
+
+Lagrange Funktion ist hier:
+\[ \Phi(\underbrace{x}_{\R^n},\underbrace{u}_{\R^m},\underbrace{v}_{\R^k})=f(x)+\langle u,g(x)\rangle+\langle v,h(x)\rangle\]
+Die Sattelpunkt-Bedingung muss dann in $\{x\ge0, u\ge0, v$ beliebig $\}$ erfüllt sein.\newline
+[\texttt{Anmerkung:} Im Sattelpunktssatz $(u^0,v^0)$ statt $u^0$.]\\
+
+Wir betrachten Speziallfall $m=0$
+
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&f(x)&=&min\\
+(KP)&h(x)&=&0\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}\\
+($\Rightarrow$ speziell: (LP),(QP))\\
+Kein (S)!!
+
+\textbf{Voraussetzung:}\\f konvex, $h(x)=\widetilde{A}x-b$, $\widetilde{A}$ (n,k)-Matrix mit Rang $\widetilde{A}=k<n$.
+
+Zu jedem $i\in\{1,\ldots,n\}$ existiert ein zulässiges $x^{(i)}$ mit $x^{(i)}_i>0 \Rightarrow \exists \widetilde{x}\in M$ mit $\widetilde{x}>0.$
+\[\Phi(x,u)=f(x)+\langle u,h(x)\rangle\ \ ,x\ge0,\ u\in\R^k\]
+
+\begin{Sa}
+$x^0\ge0$ ist Lösung von (KP)$\Leftrightarrow \exists u^0\in\R^k$, so dass $(x^0,u^0)$ Sattelpunkt der Lagrange-Funktion ist in $\{x\ge0, u\in\R^k\}$, d.h. \[\Phi(x^0,u)\le\Phi(x^0,u^0)\le\Phi(x,u^0) \forall x\ge0, u\in\R^k\]
+[Obige Voraussetzungen sollen gelten!]
+\end{Sa}
+
+\textbf{Beweis:}\\
+"'$\Rightarrow$"': Setze \[\Psi(\underbrace{x}_{\R^n},\underbrace{u}_{\R^k},\underbrace{v}_{\R^n})=f(x)+\langle u,h(x)\rangle -\langle v,x\rangle \]
+Sei \[A:=\{(\alpha,y,z)\in\R^{1+k+n}:\exists x\in\R^n \textnormal{ mit } f(x)\le\alpha,\ h(x)=y,\ x\ge-z\}\]
+\[B:=\{(\overline{\alpha},\overline{y},\overline{z})\in\R^{1+k+n}:\overline{\alpha}<f(x^0),\ \overline{y}=0,\ \overline{z}<0\}\]
+$\Rightarrow$ A,B konvex, $A\cap B=\varnothing$\newline
+[\textbf{Angenommen} $(\alpha,y,z)\in A\cap B$\\$\Rightarrow \exists x$ mit $f(x)\le\alpha<f(x^0), h(x)=y=0,\ x\ge-z>0$\\$\Rightarrow x\in M$ und $f(x)<f(x^0)$ Widerspruch!]
+
+\textbf{Trennungssatz:} $\exists H=\{\langle \cdot,w\rangle=\beta\}$ mit $w\neq0$,
+\[\langle (\overline{\alpha},\overline{y},\overline{z}),w\rangle \le\beta\le \langle (\alpha,y,z),w\rangle\ \ \forall (\overline{\alpha},\overline{y},\overline{z})\in B, (\alpha,y,z)\in A\]
+Sei $w=(w_0,w^1,w^2), \ \ w_0\in\R,\ w^1\in\R^k,\ w^2\in\R^n$.
+\[\Rightarrow \overline{\alpha}w_0+\underbrace{\langle \overline{y},w^1\rangle}_{=0}+\langle \overline{z},w^2\rangle \le \beta\ \ \forall\:\overline{z}<0\:\forall\:\overline{\alpha}<f(x^0)\]
+$\Rightarrow$ \fbox{$w_0\ge0, w^2\ge0$}
+
+\textbf{Behauptung:} $w_0>0$.
+
+\textbf{Angenommen:} $w_0=0$.\\
+\textbf{1.Fall:} $w^2=0$\\
+$\Rightarrow \langle y,w^1\rangle\ge \beta\ \forall(\alpha,y,z)\in A$\\
+$\Rightarrow \langle h(x),w^1\rangle\ge\beta\ \forall x\in\R^n$\\
+$\Rightarrow \langle \tilde Ax,w^1\rangle\ge\beta+\langle b,w^1\rangle\ \forall x\in\R^n$\\
+$\Rightarrow \langle \tilde Ax,w^1\rangle =0\ \forall x\in\R^n$\\
+$\Rightarrow \tilde A^Tw^1=0$\\
+$\stackrel{\textnormal{Rang }A=k}{\Longrightarrow} w^1=0$ Widerspruch zu $(w_0,w^1,w^2)\ne0$
+
+\textbf{2.Fall:} $w^2\ne0$\\
+$\Rightarrow$ Nach Voraussetzung existiert ein zulässiges $\widetilde{x}$ mit $\widetilde{x}>0$
+\[\Rightarrow\left.\begin{array}{ccc}(f(\widetilde{x}),0,-\widetilde{x})\in A&\Rightarrow& -\langle\underbrace{\widetilde{x},w^2}_{>0}\rangle\ge\beta\\(f(x^0),0,0)\in \bd B&\Rightarrow& 0\le\beta\end{array}\right\}\textnormal{ Widerspruch!}\]
+~\\
+
+Setze $u^0:=\frac{1}{w_0}w^1, \ \ v^0:=\frac{1}{w_0}w^2$\\
+$\Rightarrow u^0\in\R^k,\ \ v^0\in\R^n,\ \ v^0\ge0$\\
+$\Rightarrow \Psi(x^0,u^0,v^0)=f(x^0)+\langle u^0,\underbrace{h(x^0)}_{=0}\rangle-\langle \underbrace{v^0,x^0}_{?}\rangle$
+\[\left.\begin{array}{ccc}(f(x^0),0,0)\in \bd B&\Rightarrow& f(x^0)w_0\le\beta\\(f(x^0),0,-x^0)\in A&\Rightarrow&f(x^0)w_0-\langle x^0,w^2\rangle \ge\beta\end{array}\right\}\langle \underbrace{x^0}_{\ge0},\underbrace{w^2}_{\ge0}\rangle\le0\]
+$\Rightarrow \langle x^0,w^2\rangle=0 \Rightarrow \fbox{$\langle v^0,x^0\rangle=0$}$
+\[\Rightarrow f(x^0)=\Psi(x^0,u^0,v^0)\le f(x)+\langle u^0,h(x)\rangle-\langle\underbrace{v^0,x}_{\ge0}\rangle\ \ \forall x\ge0\]
+Weil $(f(x),h(x),-x)\in A$, also 
+\[f(x)w_0+\langle h(x),w^1\rangle-\langle x,w^2\rangle \ge\beta\ge f(x^0)w_0\]
+\[f(x)+\langle h(x),u^0\rangle-\langle x,v^0\rangle\ge f(x^0)\]
+$\Rightarrow \Phi(x^0,u^0)=f(x^0)=\Psi(x^0,u^0,v^0)\le\Psi(x,u^0,v^0)\le \Phi(x,u^0)\ \ \ \forall x\ge0$\\
+Weiter gilt:\[\Phi(x^0,u)=f(x^0)+\langle \underbrace{u,h(x^0)}_{=0}\rangle=f(x^0)=\Phi(x^0,u^0)\]
+Also gilt für $x^0,u^0:$
+\[\Phi(x^0,u)=f(x^0)=\Phi(x^0,u^0)\le\Phi(x,u^0)\ \forall x\ge0\ \forall u\in~\R^n\]
+
+"`$\Leftarrow$"': Folgt aus Satz 10.3\\[6pt]
+
+Lokale Kuhn-Tucker-Bedingung für (KP):
+\begin{center}
+\begin{tabular}{|rcl|}\cline{1-3}
+f(x)&=&min\\
+h(x)&=&0\\
+x&$\geq$&0\\\cline{1-3}
+\end{tabular}\ f stetig partiell differenzierbar.
+\end{center}
+
+$h_j(x)=(\widetilde{A}x-b_j)\Rightarrow \nabla h_j(x)=$j-te Zeile von $\widetilde{A}$\\
+\[\Rightarrow \sum_{j=1}^ku_j\nabla h_j(x)=\widetilde{A}^Tu\]
+
+\begin{Sa}[Lokale Kuhn-Tucker-Bedingung für affine Restriktionen]
+Für $x^0\ge 0$ sind äquivalent:
+\begin{enumerate}
+\item[(a)] $x^0$ ist Lösung von (KP)
+\item[(b)]$\exists u^0 \in\R^k$ mit $\nabla_x\Phi(x^0,u^0)\ge0,\langle \nabla_x\Phi(x^0,u^0),x^0\rangle=0, \nabla_u\Phi(x^0,u^0)=~0$
+\item[(c)]$\exists u^0 \in\R^k$ mit $\nabla f(x^0)+\widetilde{A}^Tu^0>0, \langle\nabla f(x^0)+\widetilde{A}^Tu^0,x^0\rangle=0, h(x^0)=0$
+\end{enumerate}
+\end{Sa}
+
+\textbf{Beispiele:}\\
+(a) (LP) $f(x)=\langle x,p\rangle$ [$\nabla f(\cdot)=p$]
+\begin{center}
+$\Rightarrow$ (DP)\begin{tabular}{c|rcl|}\cline{2-4}
+&$g(u)=\langle u,b\rangle$&=&max\\
+&$A^Tu$&$\leq$&p\\\cline{2-4}
+\end{tabular}\end{center} 
+
+Hier besagt (11.5):
+\[x^0\ge0 \textnormal{ Lösung }\Leftrightarrow \exists u^0\in\R^k:p+A^Tu^0\ge0, \langle x^0,p+A^Tu^0\rangle=0, Ax^0=b\]
+\begin{center}\fbox{$\stackrel{u^1=-u^0}{\Leftrightarrow}$}\end{center}
+$x^0\geq0 \textnormal{ Lösung }\Leftrightarrow x^0 \textnormal{ zulässig für (LP) und es existiert }$
+\[u^1\in\R^k\textnormal{ zulässig für (DP) mit }\underbrace{\langle x^0,p-A^Tu^1\rangle=0}_{\textnormal{Komplementaritätsbed.}}\]
+
+Dies ist Satz (4.4) (Variante).
+
+(b) (QP) $f(x)=\langle x,p\rangle+\langle x,Cx\rangle$\\ $\Rightarrow \nabla f(x)=p+2Cx$
+
+Hier besagt (11.5):\\
+$x^0\ge0$ Lösung von (QP)\\
+$\Leftrightarrow \exists u^0\in\R^k$ mit $\underbrace{p+2Cx^0+A^Tu^0}_{w^0}\ge0, \langle x^0,p+2Cx^0+A^Tu^0\rangle=0, Ax^0=b$\\
+$\Leftrightarrow \exists (u^0,w^0), u^0\in\R^k,w^0\ge0$ mit $Ax^0=b, 2Cx^0+A^Tu^0-w^0=-p$ \textnormal{und} $\langle w^0,x^0\rangle=0.$
+
+
+%12. Paragraph%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Dualität}
+\stepcounter{defsaco}
+
+Sei\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&f(x)&=&min\\
+(KP)&g(x)&$\leq$&0\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}\end{center}
+$g=(g_1,\ldots,g_m)$
+
+\textbf{Dualprogramm} (DP)\\
+$\Phi(x,u)=f(x)+\langle u,g(u)\rangle$\\
+\[\vartheta(u):=\inf_{x\ge0}\Phi(x,u),\ \ u\in\R^m\]
+$\Rightarrow \vartheta:\R^m\rightarrow [-\infty,\infty)$ \textbf{konkav}
+
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&$\vartheta(u)$&=&max\\
+(DP)&u&$\in$&$\dom \vartheta$\\
+&u&$\geq$&0\\\cline{2-4}
+\end{tabular} $\longleftarrow$ konvexe Menge
+\end{center}
+
+\textbf{Bemerkungen:}\\
+(a) Für (KP) \begin{tabular}{|rcl|}\cline{1-3}
+f(x)&=&min\\
+g(x)&$\leq$&0\\\cline{1-3}
+\end{tabular}
+
+ist (DP) wie oben, aber $\vartheta(u)=\inf\limits_{x\in\R^n}\Phi(x,u).$
+
+(b)\begin{center}
+\begin{tabular}{c|rcl|c}\cline{2-4}
+~~~&$f(x)=\langle x,-p\rangle$&=&min&($\langle x,p\rangle=\max$)\\
+(LP)&Ax-b&$\leq$&0\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+
+$\Rightarrow \vartheta(u)=\inf\limits_{x\ge0}\{\langle x,A^Tu-p\rangle-\langle b,u\rangle\}$\\
+\[=\begin{cases}-\infty~~~~ \mbox{ ,falls } A^Tu\not\ge p\\-\langle b,u\rangle\mbox{ ,falls } A^Tu\ge p\end{cases}\]
+$\Rightarrow \dom\vartheta=\{A^Tu\ge p\}$
+
+\begin{center}
+\begin{tabular}{c|rcl|c}\cline{2-4}
+~~~&$-\langle b,u\rangle$&=&max&$\leftrightarrow \underbrace{\langle b,u\rangle}_{g(u)}=\min$\\
+$\Rightarrow$ (DP)&$A^Tu$&$\geq$&p\\
+&u&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+
+\begin{Sa}
+Für (KP) und (DP) gilt:
+\begin{enumerate}
+\item[(a)] Ist x zulässig für (KP) und u zulässig für (DP), so ist $\vartheta(u)\le f(x)$.
+\item[(b)] Ist $x^0$ Lösung von (KP) und die Slater-Bedingung (S) erfüllt, so existiert eine Lösung $u^0$ von (DP) und es gilt $f(x^0)=\Phi(x^0,u^0)=\vartheta(u^0).$
+\end{enumerate}
+\end{Sa}
+
+\textbf{Beweis:}\\
+(a) $f(x)\ge f(x)+\underbrace{\langle u,g(x)\rangle}_{\le0}=\Phi(x,u)\ge\vartheta(u)$
+
+(b) Nach Kuhn-Tucker existiert $u^0\ge0$ mit
+\[\Phi(x^0,u)\le \underbrace{\Phi(x^0,u^0)}_{=f(x^0)}\le \Phi(x,u^0)\ \ \forall x\ge0,u\ge0\]
+$\Rightarrow f(x^0)=\Phi(x^0,u^0)\le \vartheta(u^0)=\inf\limits_{x\ge0}\Phi(x,u^0)$\\
+Außerdem folgt\\
+\[\underbrace{\inf_{x\ge0}\Phi(x,u)}_{\vartheta(u)}\le \Phi(x^0,u)\le\Phi(x^0,u^0)\leq\vartheta(u^0)\]
+$\Rightarrow \vartheta(u)\le \vartheta(u^0)\ \ \forall u\ge0$\\
+$\Rightarrow u^0$ Lösung von (DP)
+
+\textbf{Bemerkung:} Ohne die Slater-Bedingung ist der Satz falsch! Umkehrung gilt im allgemeinen nicht, d.h. aus (DP) lösbar folgt nicht, dass (KP) lösbar ist!
+
+\begin{Sa}
+Sei $f(x)=\langle x,p\rangle+\langle x,Cx\rangle$ mit $p\in\R^n$, C positiv semi-definit und $M\subset\R^n$ sei polyedrisch. Ist f auf M nach unten beschränkt, so nimmt f auf M sein Minimum an.
+\end{Sa}
+
+\textbf{Beweis:}\\
+Nur im Fall $M=\R^n$ (nur dieser Fall wird in 12.3 benutzt!).\\
+Für $k\in\N$ betrachten wir\\
+\begin{center}$(KP)_k$
+\begin{tabular}{|rcl|c}\cline{1-3}
+f(x)=$\langle x,Cx\rangle+\langle p,x\rangle$&=&min\\
+$\sum x_i^2$&$\leq$&$k^2$&$\leftrightarrow \|x\|\le k$\\\cline{1-3}
+\end{tabular}
+\end{center}
+$(KP)_k$ ist lösbar, sei $x^k\in\R^n$ eine Lösung.\\
+$x^k=\beta_kz^k,~~\|z^k\|=1,~~\beta_k\in\R,~~\beta_k\ge0.$
+
+$k\rightarrow \infty:$
+
+\textbf{1.Fall:} $\beta_k$ bleibt beschränkt\\
+$\Rightarrow \exists$ Teilfolge $\beta_{k_j}\rightarrow \beta\ge0,~~z^{k_j}\rightarrow z,~~\|z\|=1$\\
+$\Rightarrow$ Sei $x^0=\beta z=\lim\limits_{j\rightarrow\infty}x^{k_j}$.
+
+Sei $\varepsilon>0:$
+\begin{eqnarray*}
+\Rightarrow f(x^0)=\lim\limits_{j\rightarrow\infty}f(x^{k_j})&\le& f(x^{k_j})+\varepsilon~~\forall j\ge j_0(\varepsilon)\\
+&\le&f(x)+\varepsilon~~\forall x\in\{\|x\|\le k_j\}~~\forall j\ge j_0\end{eqnarray*}
+$\stackrel{\varepsilon\to0}{\Rightarrow} f(x^0)\le f(x)~~\forall x\in\R^n$\\
+$\Rightarrow$ Behauptung.
+
+\textbf{2.Fall:} $\beta_k\rightarrow\infty.$\\
+O.B.d.A. $z^k\rightarrow z,\|z\|=1$.\footnote{Beachte, dass die $z^k$ Einheitsvektoren sind und die Einheitssphäre kompakt ist!}\\
+\[\Rightarrow\underbrace{f(x^k)}_{\rightarrow \inf\limits_{x\in\R^n}f(x)=\alpha\in\R}=\underbrace{\beta_k^2}_{\rightarrow \infty}\langle z^k,Cz^k\rangle+\underbrace{\beta_k}_{\rightarrow \infty}\langle z^k,p\rangle\]
+\[\Rightarrow \langle z^k,Cz^k\rangle \rightarrow 0=\underbrace{\langle z,Cz\rangle}_{\Rightarrow Cz=0},~\langle z^k,p\rangle\rightarrow 0=\langle z,p\rangle\]
+Lokale Kuhn-Tucker-Bedingung: $\exists u^k\in\R$ mit
+\[2Cx^k+p+2x^k\ge 0\]
+\[\langle x^k,2Cx^k+p+2x^k\rangle=0\]
+\[\sum(x_i^k)^2\le k^2\]
+\[u^k(\sum(x_i^k)^2-k^2)=0\]
+$\Rightarrow u^k=0$ oder $\|x^k\|=k$
+
+Setze $\overline{x}=x^k+z\Rightarrow \|\overline{x}\|\le \underbrace{\|x^k\|}_{\leq 1}+1$\\
+\[\Rightarrow f(\overline{x})=\langle x^k,Cx^k\rangle+\langle x^k,p\rangle+2\underbrace{\langle x^k,Cz\rangle}_{=0}+\underbrace{\langle z,Cz\rangle}_{=0}+\underbrace{\langle z,p\rangle}_{=0}=f(x^k)\]
+$(\overline{x},u^k)$ löst die lokalen Kuhn-Tucker-Bedingungen für $(KP)_{k+1}$\\$\Rightarrow f(\overline{x})=f(x^{k+1})=f(x^k)$\\
+$\Rightarrow f(\overline{x})=f(x^k)=f(x^{k+1})=\ldots=f(x^{k+r}),~~r=1,2,\ldots$\\
+\begin{eqnarray*}
+f(\overline{x})&=&\min\limits_{\|x\|\le k}f(x)~\forall k\\
+&=&\min\limits_{x\in\R^n}f(x).
+\end{eqnarray*}
+\begin{Sa}[Dualitätssatz für (QP)]
+Sei\begin{center} (QP)
+\begin{tabular}{|rcl|}\cline{1-3}
+$f(x)=\langle p,x\rangle+\langle x,Cx\rangle$&=&min\\
+Ax&$\leq$&b\\\cline{1-3}
+\end{tabular}\end{center}
+
+Dann ist \begin{center}(DP) \begin{tabular}{|rcl|}\cline{1-3}
+$\vartheta(u)$&=&max\\
+u&$\in$&$\dom \vartheta$\\
+u&$\ge$&0\\\cline{1-3}
+\end{tabular}\end{center}
+\[\vartheta(u)=\inf_{x\in\R^n}\Phi(x,u)=\inf_{x\in\R^n}\{f(x)+\langle u,Ax-b\rangle\}\]
+Es gilt:\\
+(QP) ist lösbar $\Leftrightarrow$ (DP) ist lösbar.\\ Sind $x^0,u^0$ Lösungen, so gilt $f(x^0)=\Phi(x^0,u^0)=\vartheta(u^0)$.
+\end{Sa}
+
+\textbf{Beweis:}\\
+"`$\Rightarrow$"': Sei $x^0$ Lösung von (QP).\\
+$\stackrel{(11.2)}{\Rightarrow} \exists u^0\ge0$ mit $(x^0,u^0)$ Sattelpunkt von $\Phi$ in $\{x\in\R^n, u\ge0\}$\\
+$\Rightarrow f(x^0)=\Phi(x^0,u^0)\le\Phi(x,u^0)\ \ \forall x\in\R^n$\\
+$\Rightarrow f(x^0)=\Phi(x^0,u^0)=\vartheta(u^0)$
+
+Weiter ist \[\vartheta(u)\le \Phi(x^0,u)\le\Phi(x^0,u^0)\ \ \forall u\ge0\] also $\vartheta(u)\le\vartheta(u^0)~~\forall u$ zulässig
+
+"`$\Leftarrow$"': Sei DP lösbar mit Lösung $u^0$.\\ Nach Satz 12.2 existiert dazu ein $x^0$ mit 
+\begin{eqnarray*}
+-\infty<\vartheta(u^0)&=&\inf_{x\in\R^n}\Phi(x,u^0)\\&=&\Phi(x^0,u^0)\\
+&\ge&\vartheta(u)\\&=&\inf_{x\in\R^n}\Phi(x,u)\\
+&\stackrel{\textnormal{ Satz }(12.2)}{=}&\Phi(x_u,u)~~\forall u\textnormal{ zulässig}\\
+&\stackrel{\Phi(\cdot,u)\textnormal{ konvex}}{\geq}&\underbrace{\Phi(x,u)+\langle x_u-x,\nabla_x\Phi(x,u)\rangle}_{=\Phi(x,u),\textnormal{ falls }\nabla_x\Phi(x,u)=0}~~\forall x\in\R^n
+\end{eqnarray*}
+$\Rightarrow (x^0,u^0)$ Lösung von 
+
+\begin{center}
+\begin{tabular}{|rcl|c}\cline{1-3}
+$\Phi(x,u$)&=&max\\
+$\nabla_x\Phi(x,u)$&$=$&0&$\leftrightarrow p+2Cx+A^Tu=0~(*)$\\
+$x$&$\in$&$\R^n$\\$u$&$\ge$&$0$\\\cline{1-3}
+\end{tabular}
+\end{center}
+$\Phi(x,u)=\langle x,p\rangle+\langle x,Cx\rangle+\langle u,Ax-b\rangle$
+
+$\Phi(x,u)=\langle x,p+Cx+A^Tu\rangle-\langle u,b\rangle$\\
+$\stackrel{(*)}{\Rightarrow}$
+\[\begin{array}{cc|rcl|}\cline{3-5}
+\widetilde{\widetilde{f}}(x,u)=-\langle x,Cx\rangle-\langle u,b\rangle=\max&\leftrightarrow& \widetilde{f}(x,u)=\langle x,Cx\rangle+\langle u,b\rangle&=&\min\\
+&&p+2Cx+A^Tu&=&0\\
+&(KP)&x&\in&\R^n\\&&u&\ge&0\\\cline{3-5}\end{array}\]
+
+$\stackrel{(11.5)}{\Rightarrow} \exists v^0\in\R^n$ mit 
+\[\nabla_x\widetilde{\Phi}(x^0,u^0,v^0)=0\]
+\[\nabla_u\widetilde{\Phi}(x^0,u^0,v^0)\ge0\]
+\[\langle \nabla_u\widetilde{\Phi}(x^0,u^0,v^0),u^0\rangle=0\]
+\[\nabla_v\widetilde{\Phi}(x^0,u^0,v^0)=0\]
+[$\widetilde{\Phi}(x,u,\underbrace{v}_{\in\R^n})=f(x,u)+\langle v,p+2Cx+A^Tu\rangle$]
+
+$\Rightarrow$
+\[2Cx^0+2Cv^0=0\]
+\[b+Av^0\ge0\]\[\langle u^0,b+Av^0\rangle=0\]
+\[p+A^Tu^0+2Cx^0=0\]
+
+Setze $\widetilde{x}=-v^0\in\R^n.$\\
+\textbf{Behauptung:} $\widetilde{x}$ ist Lösung von (QP)\\
+\textbf{Denn:} $C\widetilde{x}=Cx^0,~~A\widetilde{x}\le b,~~\langle u^0,b-A\widetilde{x}\rangle=0$, $p+A^Tu^0+2C\widetilde{x}=0$\\
+$\Rightarrow (\widetilde{x},u^0)$ und $v^0$ erfüllen die lokalen Kuhn-Tucker-Bedingungen (von oben) für (KP), außerdem ist $(\widetilde{x},u^0)$ zulässig für (KP).\\
+$\stackrel{(11.5)}{\Rightarrow} (\widetilde{x},u^0)$ Lösung von (KP).
+\[\Rightarrow \Phi(\widetilde{x},u^0)=\langle \widetilde{x},p\rangle +\langle \widetilde{x},C\widetilde{x}\rangle+\underbrace{\langle u^0,A\widetilde{x}-b\rangle}_{=0}=f(\widetilde{x})\]
+Aber
+\begin{eqnarray*}
+\Phi(\widetilde{x},u^0)&=&\underbrace{\langle \widetilde{x},p+A^Tu^0+C\widetilde{x}\rangle}_{=-\langle \widetilde{x},C\widetilde{x}\rangle}-\langle u^0,b\rangle\\
+&=&-\langle\widetilde{x},C\widetilde{x}\rangle-\langle u^0,b\rangle\\
+&=&-\langle x^0,Cx^0\rangle-\langle u^0,b^0\rangle\\
+&=&\Phi(x^0,u^0)\end{eqnarray*}
+Nach Satz 12.1(a) ist $f(x)\ge\vartheta(u^0)~~\forall$ zulässigen x von (QP)\\
+$\Rightarrow f(x)\ge\Phi(x^0,u^0)=\Phi(\widetilde{x},u^0)=f(\widetilde{x})~~\forall$ zulässigen x von (QP)\\
+$\Rightarrow f(x)\ge f(\widetilde{x})~~\forall$ zulässigen x!!\\
+$\Rightarrow \widetilde{x}$ Lösung von (QP).
+
+\end{document}
+
+%%%Code für LP%%%
+%\begin{center}
+%\begin{tabular}{c|rcl|}\cline{2-4}
+%~~~&f(x)&=&max\\
+%(LP)&Ax&$\leq$&b\\
+%&x&$\geq$&0\\\cline{2-4}
+%\end{tabular}
+%\end{center}

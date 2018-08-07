@@ -1,0 +1,3026 @@
+\documentclass[a4paper,11pt]{scrbook}
+
+\usepackage{latexki}
+\lecturer{Prof. Dr. Bäuerle}
+\semester{Wintersemester 06/07}
+\scriptstate{complete}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+%\usepackage{amsthm}
+\usepackage{ngerman}
+%\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{euscript}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage{mathtools}
+\usepackage[arrow, matrix, curve]{xy}
+%\usepackage{pst-all}
+%\usepackage{pst-add}
+%\usepackage{multicol}
+
+% Auf unstable tut nur noch [utf8] Gibts wen für den nur [utf8x] tut? 
+\usepackage[utf8]{inputenc}
+
+%%Zahlenmengen
+%Neue Kommando-Makros
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\Z}{{\mathbb Z}}
+%\newcommand{\ind}{1\hspace{-0,9ex}\raisebox{-0,2ex}{1}}
+\newcommand{\ind}{\text{\bf{1}}}
+\newcommand{\id}{\text{\bf{id}}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\diag}{\ensuremath{\,\text{diag}}}
+\newcommand{\Pfs}{\ensuremath{\ P-\text{f.s.}\ }}
+
+% Seitenraender
+\textheight22cm
+\textwidth14cm
+\topmargin-0.5cm
+\evensidemargin0,5cm
+\oddsidemargin0,5cm
+\headheight14pt
+
+%%Seitenformat
+% Keine Einrückung am Absatzbeginn
+\parindent0pt
+
+\DeclareMathOperator{\unif}{Unif}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\sgn}{sgn}
+
+
+\def\AA{ \mathcal{A} }
+\def\PM{ \EuScript{P} } 
+\def\EE{ \mathcal{E} }
+\def\FF{ \mathfrak{F} }
+\def\BB{ \mathfrak{B} } 
+\def\DD{ \mathcal{D} } 
+\def\NN{ \mathcal{N} } 
+
+% Komische Symbole
+\def\folgt{\ensuremath{\implies}}
+\newcommand{\folgtnach}[1]{\ensuremath{\DOTSB\;\xRightarrow{\text{#1}}\;}}
+\def\equizu{\ensuremath{\iff}}
+\def\d{\mbox{d}}
+\def\fs{\stackrel{f.s.}{\rightarrow }}
+\def\wto{\stackrel{w}{\rightarrow}}
+\def\dto{\stackrel{d}{\rightarrow}}
+\def\bewhin{\textquotedblleft\ensuremath{\Rightarrow}\textquotedblright: } %Hinrichtung eines Beweises
+\def\bewrueck{\textquotedblleft\ensuremath{\Leftarrow}\textquotedblright: } %Rueckrichtung eines Beweises
+
+%Nummerierungen
+\newtheorem{Def}{Definition}[chapter]
+%Def ohne Nummer
+\newtheorem*{DefON}{Definition}
+\newtheorem{Sa}{Satz}[chapter]
+%Satz ohne Nummer
+\newtheorem*{SaON}{Satz}
+\newtheorem{Lem}{Lemma}[chapter]
+%Lemma ohne Nummer
+\newtheorem*{LemON}{Lemma}
+\newtheorem{Kor}{Korollar}[chapter]
+\theorembodyfont{\normalfont}
+\newtheorem{Bsp}{Beispiel}[chapter]
+%Bsp ohne Nummer
+\newtheorem*{BspON}{Beispiel}
+\newtheorem{Bem}{Bemerkung}[chapter]
+%Bem ohne Nummer
+\newtheorem*{BemON}{Bemerkung}
+\theoremsymbol{\ensuremath{_\blacksquare}}
+\theoremstyle{nonumberplain}
+\newtheorem{Bew}{Beweis}
+
+% Kopf- und Fusszeilen
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+\fancyfoot[C]{}
+\fancyhead[LO]{\rightmark}
+
+\renewcommand{\indexname}{Stichwortverzeichnis}
+
+\makeindex
+\title{Stochastik II}
+\author{Prof. Dr. Bäuerle}
+\date{Im Wintersemester 06/07}
+\publishers{Das Team von \texttt{http://mitschriebwiki.nomeata.de/}}
+
+\uppertitleback{
+Dieses Dokument ist eine pers"onliche Vorlesungsmitschrift der \\
+Vorlesung Stochastik II im Wintersemester 2006/07 bei Prof. Dr. B"auerle. \\
+\\
+Das latexki-Team gibt keine Garantie f"ur die \\
+Richtigkeit oder Vollst"andigkeit des Inhaltes und "ubernimmt keine\\
+Verantwortung f"ur etwaige Fehler.\\
+Auch ist Frau B"auerle nicht verantwortlich für den Inhalt dieses Skriptes.
+}
+
+
+\begin{document}
+
+\thispagestyle{empty}
+\maketitle
+
+\thispagestyle{empty}
+\tableofcontents
+\thispagestyle{empty}
+
+\chapter{Maß-Integral und Erwartungswert}
+%\setcounter{page}{1}
+Stochastik I: Ein Wahrscheinlichkeitsraum $(\Omega, \AA, P)$ bestehend aus:
+\begin{enumerate}
+\item [(i)] $\Omega\ne\emptyset$ bel. Menge, der Ergebnisraum
+\item [(ii)] $\AA \subset\PM(\Omega)$ eine $\sigma$-Algebra, d.h.
+\begin{itemize}
+\item $\Omega\in\AA$
+\item $A\in\AA\folgt A^c\in\AA$
+\item $A_1, A_2,\ldots\in\AA\folgt\bigcup^\infty_{i=1}A_i\in\AA$
+\end{itemize}
+\item [(iii)] $P:\AA\rightarrow[0,1]$ ein Wahrscheinlichkeitsmaß, d.h.
+\begin{itemize}
+\item $P(\Omega)=1$
+\item $A_1, A_2, \ldots\in\AA$, paarweise disjunkt $\folgt P(\sum_{i=1}^\infty A_i) = \sum_{i=1}^\infty P(A_i)$ ($\sigma$-Additivität)
+\end{itemize}
+\end{enumerate}
+
+Statt das Wahrscheinlichkeitsmaßes $P$ betrachten wir jetzt eine allgemeine Funktion $\mu:\AA\rightarrow\R_+ \cup \{\infty\}$, die beliebige positive Werte annehmen kann.
+
+\begin{DefON}$\\$
+Sei $(\Omega, \AA)$ ein messbarer Raum. Eine Abbildung $\mu:\AA\rightarrow\R_+\cup\{\infty\}$ heißt \textbf{Maß}\index{Mass@Maß} auf $(\Omega, \AA)$, wenn $\mu(\emptyset)=0$ und $\mu(\sum_{i=1}^\infty A_i) = \sum_{i=1}^\infty \mu(A_i)$ für alle paarweise disjunkten Ereignisse $A_1, A_2, \ldots, (\Omega, \AA, \mu)$  heißt \textbf{Maßraum}.\index{Massraum@Maßraum}
+\end{DefON}
+
+\begin{BemON}$\\$
+Da $\mu(A)=\infty$ möglich, definieren wir: $a+\infty=\infty\ \forall a\in\R\cup\{\infty\}$.
+\end{BemON}
+
+\begin{DefON}$\\$
+Sei $\mu$ ein Maß auf $(\Omega, \AA)$.
+\begin{enumerate}
+\item $\mu$ heißt \textbf{endlich}\index{Mass@Maß!endlich}, falls $\mu(\Omega)<\infty$,
+\item $\mu$ heißt \textbf{$\sigma$-endlich}\index{Mass@Maß!$\sigma$-endlich}, falls $\exists$ eine Folge $(A_i), i\in\N, A_i\in\AA$ mit $\bigcup_{i=1}^\infty A_i = \Omega$ und $\mu(A_i)<\infty\ \forall i\in\N$.
+\end{enumerate}
+\end{DefON}
+
+\begin{Bsp} \label{Bsp1.1}$\\$
+\begin{enumerate}
+\item [a)] Sei $(\Omega, \AA)$ ein messbarer Raum, $\omega \in\Omega$ fest.
+$$\delta_\omega(A):=
+\begin{cases}
+1, & \omega\in A\\
+0, & \text{sonst}
+\end{cases}$$
+für $A\in\AA$ definiert ein Maß.\\
+$\delta_\omega$ heißt \textbf{Einpunktmaß}\index{Einpunktmass@Einpunktmaß} oder \textbf{Dirac-Maß}\index{Dirac-Mass@Dirac-Maß} im Punkt $\omega$. Da $\delta_\omega(\Omega)=1$ ist $\delta_\omega$ sogar ein Wahrscheinlichkeitsmaß.
+\item [b)] $\mu:=\sum_{\omega\in\Omega} \delta_\omega$ ist das \textbf{abzählende Maß}\index{abzahlendes Mass@abzählendes Maß} auf $\Omega$.\\
+(Falls $|A|<\infty:\mu(A)=|A|$ Anzahl der Elemente in $A$.)\\
+\begin{tabular}[t]{rcl}
+$\mu$ ist endlich & $\Leftrightarrow$ & $\Omega$ ist endlich,\\
+$\mu$ ist $\sigma$-endlich & $\Leftrightarrow$ & $\Omega$ ist abzählbar.\\
+\end{tabular}
+\item[c)]
+Sei $\Omega=\R$, $\AA=\BB(\R)$ Borelsche $\sigma$-Algebra.
+$$\BB(\R)=\sigma(\underbrace{\{(a,b], -\infty<a<b<\infty\}}_{=:\varepsilon\ \text{Erzeuger}})=\sigma(\varepsilon):=\bigcap_{\AA\ \sigma\text{-Algebra}, \varepsilon\subset\AA} \AA$$
+Sei $a, b\in\R$ mit $a<b$. Durch $\lambda((a,b]):=b-a$ wird auf $(\R,\BB(\R))$ ein Maß definiert, das sogenannte \textbf{Lebesgue-Maß}\index{Lebesgue-Mass@Lebesgue-Maß}. Die Eindeutigkeit von $\lambda$ folgt aus dem \textbf{Eindeutigkeitssatz für Maße}\index{Eindeutigkeitssatz fuer Masse@Eindeutigkeitssatz für Maße}:\\
+Sei $\AA=\sigma(\varepsilon)$ und $\varepsilon$ durchschnittsstabil (d.h.: $A,B\in\varepsilon\folgt A\cap B\in\varepsilon$). Weiter seien $\mu_1, \mu_2$ Maße auf $\AA$ mit $\mu_1(A)=\mu_2(A)\ \forall A\in\varepsilon$. $\exists$ eine Folge $(A_n)_{n\in\N}\subset\varepsilon$ mit $A_n\uparrow\Omega$ und $\mu_1(A_n)=\mu_2(A_n)<\infty\ \forall n$, so gilt $\mu_1=\mu_2$.\\
+Eine nichttriviale Aufgabe ist es hier zu zeigen, dass $\lambda$ auf ganz $\BB(\R)$ zu einem Maß fortgesetzt werden kann. (gezeigt von Carath\'eodory; s. z.B. Henze, Bauer)\\
+Bei $\Omega=\bar{\R}=\R\cup\{\infty,-\infty\}$, ist $\BB(\bar{\R}):=\{B\subset\bar{\R}|B\cap\R\in\BB(\R)\} = \{B, B\cup\{\infty\}, B\cup\{-\infty\}, B\cup\{\infty,-\infty\}|B\in\BB(\R)\}$ eine $\sigma$-Algebra (analog $\BB((-\infty,\infty))$ und $\bar{\lambda}(B)=\lambda(B)\ \forall B\in\BB(\R)$ und $\bar{\lambda}(\{\infty\})=\bar{\lambda}(\{-\infty\})=0$\\
+$\lambda$ ist \underline{nicht} endlich, da $\lambda((-\infty, a])=\sum_{n=1}^\infty \underbrace{\lambda((a-n, a-n+1])}_{=1}=\infty$, aber $\sigma$-endlich, da $\bigcup_{n=1}^\infty (-n, n] = \R, \lambda((-n, n])<\infty\ \forall n\in\N$.
+
+%%%
+% 2-Vorlesung
+%%%
+
+\item[d)] Seien $\mu_n$ Maße, $n\in\N$, so ist
+$$\mu:=\sum_{n=1}^\infty b_n\mu_n$$
+wieder ein Maß.\\
+\textbf{Konvention:} $a\cdot\infty=\infty\cdot a=\infty, a>0, 0\cdot\infty=0$\\
+Spezialfall: $\mu_n=\delta_{\omega_n}(\omega_n\in\Omega), b\ge 0, \sum_{n=1}^\infty b_n = 1$
+$$\mu = \sum_{n=1}^\infty b_n\delta_{\omega_n}$$
+ist dann ein diskretes, auf $\{\omega_1, \omega_2, \ldots\}$ konzentriertes Wahrscheinlichkeitsmaß.
+\item[e)] Sei $G:\R\to\R$ wachsend und rechtsseitig stetig (Eine Funktion mit diesen Eigenschaften heißt \textbf{maßdefinierende Funktion}\index{massdefinierende Funktion@maßdefinierende Funktion}. Gilt zusätzlich $\lim_{x\to\infty}G(x)=1, \lim_{x\to -\infty}G(x)=0$, dann ist $G$ eine Verteilungsfunktion.)
+$$\mu_G ((a,b]) := G(b)-G(a)$$
+für $a,b\in\R, a\le b$ definiert $\mu_G$ ein Maß auf $(\R, \BB(\R))$, das sogenannte \textbf{Lebesgue-Stieltjes-Maß}\index{Mass@Maß!Lebesgue-Stieltjes}\index{Lebesgue-Stieltjes-Mass@Lebesgue-Stieltjes-Maß} zu $G$. (Fortsetzungsproblem analog zu c) )\\
+Ist $G$ eine Verteilungsfunktion mit $G(x)=\int^x_{-\infty} f(y)\d  y$ mit 
+$$f\ge 0: \int_{-\infty}^\infty f(y)\d y=1,$$
+so ist $\mu_G((a,b])=\int_a^bf(y)\d y$ ein Wahrscheinlichkeitsmaß mit Dichte $f$.
+\end{enumerate}
+\end{Bsp}
+
+\begin{BemON}$\\$
+Viele der in Stochastik I für Wahrscheinlichkeitsmaße besprochene Eigenschaften gelten auch für allgemeine Maße $\mu$, z.B. $\mu$ ist stetig von unten, d.h.
+$$\underbrace{A_n\uparrow}_{A_n\subset A_{n+1}} \mbox{mit} \bigcup_{i=1}^\infty A_i = A \folgt \mu(A)=\lim_{n\to\infty}(A_n)$$
+Bei der Stetigkeit von oben brauchen wir eine Zusatzbedingung:
+$$\underbrace{A_n\downarrow}_{A_n\supset A_{n+1}} \mbox{mit} \bigcap^\infty_{k=1}A_k = A, \underline{\mu(A_n)<\infty}\folgt \mu(A)=\lim_{n\to\infty}\mu(A_n)$$
+\end{BemON}
+\begin{BspON}$\\$
+Lebesgue-Maß: $A_n=(-\infty,-n]\downarrow, \emptyset=\bigcap_{n=1}^\infty(-\infty,-n], \lim_{n\to\infty}\lambda((-\infty,-n])=\infty\ne 0=\lambda(\emptyset)$
+\end{BspON}
+
+\begin{DefON}$\\$
+Seien $(\Omega, \AA)$ und $(\Omega', \AA')$ zwei meßbare Räume. Eine Abbildung $f:\Omega\to\Omega'$ heißt \textbf{$(\AA, \AA')$-messbar}, falls
+$$f^{-1}(A')\in\AA,\ \forall A'\in\AA'$$
+$f$ mit dieser Eigenschaft heißt \textbf{Zufallsgröße}\index{Zufallsgroesse@Zufallsgröße}. Ist $\Omega'=\R,$ dann \textbf{Zufallsvariable}\index{Zufallsvariable}.
+\end{DefON}
+
+Im Folgenden sei $(\Omega, \AA, \mu)$ ein Maßraum. Ziel ist es, möglichst vielen Funktionen $f:\Omega\to\bar\R$ ein Integral bezüglich $\mu$ zuzuordnen. Die Konstruktion erfolgt in drei Schritten:
+\begin{enumerate}
+\item[1.)] Sei $\EE:=\{f:\Omega\to\R|f\ge 0, f \mbox{ ist $\AA$-messbar}, f(\Omega) \mbox{ endlich} \}$ die Menge der \textbf{Elementarfunktionen}\index{Elementarfunktion} auf $\Omega$.\\
+Ist $f(\Omega)=\{\alpha_1,\ldots,\alpha_n\}, \alpha_j\ge 0,$ so gilt:
+$$f=\sum^n_{j=1}\alpha_j \ind_{A_j}$$
+mit $A_j:=f^{-1}(\{\alpha_j\})$ und $\Omega=\sum^n_{j=1}A_j.$ Eine Darstellung von $f$ mit dieser Eigenschaft heißt "`Normaldarstellung"' von $f$. \\
+Normaldarstellung ist nicht eindeutig.
+\begin{DefON}$\\$
+Ist $f$ eine Elementarfunktion mit Normaldarstellung $f=\sum_{j=1}^n\alpha_j \ind_{A_j},$ so heißt $\int f\d \mu:=\sum_{j=1}^n\alpha_j\mu(A_j)$ das \textbf{$\mu$-Integral}\index{$\mu$-Integral} von $f.$ Schreibweise $\int f\d \mu = \mu(f).$
+\end{DefON}
+
+\begin{Lem}[Unabhängigkeit des Integrals von der Normaldarstellung]\label{Lem1.1}$\\$
+Für zwei Normaldarstellungen
+$$f=\sum_{j=1}^n\alpha_j \ind_{A_j} = \sum_{i=1}^m\beta_i \ind_{B_i}$$
+einer Funktion $f\in\EE$ gilt:
+$$\sum_{j=1}^n\alpha_j\mu(A_j)=\sum_{i=1}^m\beta_i\mu(B_i)$$
+\end{Lem}
+\begin{Bew}$\\$
+$$\mbox{Voraussetzung } \folgt\Omega=\sum_{j=1}^n A_j=\sum_{i=1}^m B_i$$
+\begin{eqnarray*}
+\folgt \mu(A_j) & \stackrel{\sigma-\mbox{Add.}}{=} & \sum_{i=1}^m \mu(A_j\cap B_i)\\
+\mu(B_i) & = & \sum_{i=1}^n \mu(A_j\cap B_i)
+\end{eqnarray*}
+$$\mu(A_j\cap B_i)\ne 0\folgt A_j\cap B_i\ne \emptyset \folgt\alpha_j=\beta_i$$
+Insgesamt:
+\begin{eqnarray*}
+\sum_{j=1}^n\alpha_j\mu(A_j) & = & \sum_{j=1}^n\sum_{i=1}^m\underbrace{\alpha_j}_{\beta_i}\mu(A_j\cap B_i)\\
+& = & \sum_{i=1}^m\beta_i\mu(B_i)
+\end{eqnarray*}
+\end{Bew}
+
+\begin{Lem} [Eigenschaften des $\mu$-Integrals] \label{Lem1.2}$\\$
+\begin{enumerate}
+\item[a)] $\int \ind_A\d \mu=\mu(A)$ für $A\in\AA$
+\item[b)] $\int (\alpha f)\d \mu=\alpha\int f\d \mu$ für $f\in\EE, \alpha\ge 0$
+\item[c)] $\int (f+g)\d \mu = \int f\d \mu + \int g\d \mu$ für $f, g\in\EE$
+\item[d)] $f\le g\folgt\int f\d \mu\le\int g\d \mu$ für $f,g\in\EE$
+\end{enumerate}
+\end{Lem}
+\begin{Bew}$\\$
+a), b) klar\\
+\begin{enumerate}
+\item[c)] Sei $f=\sum_{j=1}^n\alpha_j \ind_{A_j}, g=\sum_{i=1}^m\beta_i \ind_{B_i}$\\
+\begin{eqnarray*}
+\folgt f & = & \sum_{j=1}^n\sum_{i=1}^m\alpha_j \ind_{A_j\cap B_i}\\
+g &=& \sum_{i=1}^m\sum_{j=1}^n\beta_i \ind_{B_i\cap A_j}\\
+\mbox{also } f+g &=& \sum_{j=1}^n\sum_{i=1}^m(\alpha_j+\beta_i) \ind_{A_j\cap B_i}\\
+\folgt \mu(f+g) &=& \sum_{j=1}^n\sum_{i=1}^m(\alpha_j+\beta_i)\mu(A_j\cap B_i)\\
+&=& \sum_{j=1}^n\alpha_j\sum_{i=1}^m\mu(A_j\cap B_i)+\sum_{i=1}^m\beta_i\underbrace{\sum_{j=1}^n\mu(A_j\cap B_i)}_{=\mu(B_i)}\\
+&=& \mu(f)+\mu(g)
+\end{eqnarray*}
+\item[d)] folgt mit gleicher Darstellung wie in c)
+\end{enumerate}
+\end{Bew}
+
+\begin{BemON}$\\$
+\begin{enumerate}
+\item[a)] Ist $f=\sum_{j=1}^n\alpha_j \ind_{A_j}\in\EE,$ aber nicht notwendig eine Normaldarstellung, so folgt aus Lemma \ref{Lem1.2} c) $\int f\d \mu = \sum_{j=1}^n\alpha_j\mu(A_j)$
+\item[b)] Ist $(\Omega, \AA, P)$ ein Wahrscheinlichkeitsraum und $X:\Omega\to\R_+$ eine Zufallsvariable mit endlich vielen Werten $\{x_1, \ldots, x_n\},$ so gilt:
+\begin{eqnarray*}
+\int X\d P &=&\sum_{j=1}^n x_j P(X^{-1}(\{x_j\}))\\
+&=&\sum_{j=1}^n x_j P^X(\{x_j\})
+\end{eqnarray*}
+($A_j=X^{-1}(\{x_j\})$)\\
+Also: $\int X\d P=EX$
+\end{enumerate}
+\end{BemON}
+\item[2.)] Sei $\EE^+:=\{f:\Omega\to\bar\R|f\ge 0, f\mbox{ ist } \AA\mbox{-messbar}\}.$ Wichtig: Elemente von $\EE^+$ kann man beliebig gut duch Elemente aus $\EE$ approximieren.
+\begin{Sa} \label{Sa1.1}$\\$
+Zu jedem $f\in\EE^+$ gibt es eine wachsende Folge $(u_n)_{n\in\N}$ aus $\EE$ mit $u_n\uparrow f$, d.h. $u_n\le u_{n+1}$ und $\lim_{n\to\infty} u_n=f$ (jeweils punktweise).
+\end{Sa}
+\begin{Bew}$\\$
+Sei $\alpha_n:\bar\R\to[0,\infty]$ gegeben durch:
+$$\alpha_n(x):=
+\begin{cases}
+0, &\mbox{falls } x<0\\
+\frac{j}{2^n}, &\mbox{falls } \frac{j}{2^n}\le x<\frac{j+1}{2^n}, j=0, 1, \ldots, n2^n-1\\
+n, &\mbox{falls } x\ge n
+\end{cases}$$
+(Hier fehlt ein Bild)\\
+$\alpha_n$ ist $\BB$-messbar. $\alpha_n\uparrow$ und $\lim_{n\to\infty}\alpha_n(x)=x$ für $n\to\infty.$ Sei $u_n:=\alpha_n\circ f.$ Dann gilt $u_n\in\EE$ und $u_n\uparrow f$.
+\end{Bew}
+
+\begin{BemON}$\\$
+Ist $f$ beschränkt, so konvergiert die Folge $(u_n)$ gleichmäßig gegen $f$, d.h. $\lim_{n\to\infty}\sup_{\omega\in\Omega}|f(\omega)-u_n(\omega)| = 0.$
+\end{BemON}
+
+\begin{DefON}$\\$
+Sei $f\in\EE^+$ und $(u_n)$ eine wachsende Folge aus $\EE$ mit $\lim_{n\to\infty}u_n = f.$ Dann heißt
+$$\int f\d \mu := \lim_{n\to\infty}\int u_n\d \mu$$
+das \textbf{$\mu$-Integral von $f$}\index{$\mu$-Integral}. Wir zeigen, dass $\int f\d \mu$ wohldefiniert ist.
+\end{DefON}
+
+\begin{Lem} \label{Lem1.3}$\\$
+Sind $(u_n)$ und $(v_n)$ wachsende Folgen aus $\EE$ mit $\lim_{n\to\infty}u_n = \lim_{n\to\infty}v_n$, so gilt:
+$$\lim_{n\to\infty}\int u_n\d \mu = \lim_{n\to\infty}\int v_n\d \mu$$
+\end{Lem}
+\begin{Bew}$\\$
+Wir zeigen zunächst: $\lim_{n\to\infty} u_n\ge v$ mit $v\in\EE\folgt\mu(v)\le\lim_{n\to\infty}\mu(u_n)$\\
+Denn: Sei $v=\sum_{j=1}^m\alpha_j \ind_{A_j}\ (\alpha_j\ge 0, A_j\in\AA)$ und $0<c<1$ beliebig. Sei $B_n:=\{\omega|u_n(\omega)\ge c v(\omega)\}\in\AA.$ Da $u_n\ge cv \ind_{B_n}$ folgt: $$\mu(u_n)\ge c\mu(v \ind_{B_n})\ (*)$$
+Nach Voraussetzung: $v\le\lim_{n\to\infty}u_n, u_n\uparrow\folgt B_n\uparrow\Omega, A_j\cap B_n\uparrow A_j$\\
+\begin{eqnarray*}
+\folgt\mu(v)&=&\sum_{j=1}^m\alpha_j\mu(A_j)=\lim_{n\to\infty}\sum_{j=1}^m\alpha_j\mu(A_j\cap B_n)\\
+&=&\lim_{n\to\infty}\mu(v \ind_{B_n})
+\end{eqnarray*}
+Nehme $\lim_{n\to\infty}$ in $(*)$:$\lim_{n\to\infty}\mu(u_n)\ge c\mu(v).$ Da $c<1$ beliebig war, folgt die Behauptung.\\
+Jetzt zur eigentlichen Aussage: Es gilt: $v_k\le\lim_{n\to\infty}u_n, u_k\le\lim_{n\to\infty}v_n\folgtnach{Hilfsaussage}\mu(v_k)\le\lim_{n\to\infty}\mu(u_n), \mu(u_k)\le\lim_{n\to\infty}\mu(v_n),\ \forall k\in\N.$\\
+$\lim_{k\to\infty}$ bei beiden Ungleichungen$\folgt$ Behauptung.
+\end{Bew}
+
+\begin{BemON}$\\$
+\begin{enumerate}
+\item[a)] Die letzten beiden Definitionen sind verträglich
+\item[b)] Die Eigenschaften von Lemma 1.2 gelten weiter.
+\end{enumerate}
+\end{BemON}
+
+\item[3.)] $f:\Omega\to\bar\R$ ist $\AA$-messbar (ohne Vorzeichenbeschränkung). $f^+:=\max\{0, f\}, f^-:=-\min\{0,f\}, f=f^+-f^-, |f|=f^++f^-$
+\begin{DefON}$\\$
+Eine $\AA$-messbare Funktion $f:\Omega\to\bar\R$ heißt $\mu$-integrierbar, falls $\int f^+\d \mu<\infty, \int f^-\d \mu<\infty.$ In diesem Fall heißt $\int f\d \mu=\mu(f)=\int f^+\d \mu-\int f^-\d \mu$ das \textbf{$\mu$-Integral von $f$}\index{$\mu$-Integral}.\\
+Schreibweise: $\int f\d\mu = \int f(\omega)\mu(\d\omega) = \int_\Omega f\d\mu; \int_A f\d \mu := \int f\cdot \ind_A\d \mu$
+\end{DefON}
+
+\begin{BemON}
+\begin{enumerate}
+\item[a)] Die letzten beiden Definitionen sind verträglich
+\item[b)] Falls mindestens einer der Werte $\int f^+\d \mu, \int f^-\d \mu$ endlich ist, so heißt $f$ \textbf{quasi-integrierbar}\index{quasi-integrierbar}.
+\item[c)] Ist $(\Omega, \AA, P)$ ein Wahrscheinlichkeitsraum, $X:\Omega\to\R$ eine Zufallsvariable, so gilt: $EX$ existiert $\equizu X$ ist $P$-integrierbar. In diesem Fall: $EX = \int X\d P$
+\item[d)] Offenbar gilt: $f$ ist integrierbar $\equizu |f|$ ist integrierbar
+\end{enumerate}
+\end{BemON}
+\end{enumerate}
+
+\begin{Sa}[Eigenschaften des $\mu$-Integrals]\label{Sa1.2} $\\$
+Es seien $f,g:\Omega\to\bar\R$ $\mu$-integrierbar und $c\in\R$. Dann gilt:
+\begin{enumerate}
+\item[a)] $cf$ und $f+g$ sind $\mu$-integrierbar und 
+\begin{eqnarray*}
+\int cf\d \mu&=&c\int f\d \mu\\
+\int(f+g)\d \mu&=&\int f\d \mu + \int g\d \mu
+\end{eqnarray*}
+\item[b)] $f\le g\folgt \int f\d \mu\le\int g\d \mu$
+\item[c)] $|\int f\d \mu|\le\int|f|\d \mu$
+\end{enumerate}
+\end{Sa}
+\begin{Bew}
+\begin{enumerate}
+\item[a)]
+\begin{enumerate}
+\item[$\alpha$)] Sei $c\ge 0$ (analog $c\le 0$): $(cf)^+=cf^+, (cf)^-=cf^-$\\
+Also ist $cf$ integrierbar: $\folgtnach{Satz \ref{Sa1.1}}\exists u_n^+\uparrow f^+, u_n^+\in\EE$
+\begin{eqnarray*}
+\int cf^+\d \mu &=& \lim_{n\to\infty}\int cu_n^+\d \mu\\
+&=& c\lim_{n\to\infty}\int u_n^+\d \mu\\
+&=& c\int f^+\d \mu
+\end{eqnarray*}
+Analog $f^-.$
+\item[$\beta$)] $|f+g|\le |f|+|g|\folgt f+g$ $\mu$-integrierbar.\\
+Sei zunächst $f,g\in\EE^+\folgtnach{Satz \ref{Sa1.1}}\exists u_n\uparrow f, v_n\uparrow g, u_n, v_n\in\EE\folgt u_n+v_n\uparrow f+g, u_n+v_n\in\EE$\\
+Mit Lemma 1.2 folgt:
+\begin{eqnarray*}
+\int(f+g)\d \mu &=& \lim_{n\to\infty}\int(u_n+v_n)\d \mu\\
+&=& \lim_{n\to\infty}(\int u_n\d \mu+\int v_n\d \mu)\\
+&=& \lim_{n\to\infty}\int u_n\d \mu+\lim_{n\to\infty}\int v_n\d \mu\\
+&=& \int f\d \mu + \int g\d \mu
+\end{eqnarray*}
+Sei jetzt $f, g$ beliebig\\
+$(f+g)^+ -(f+g)^-= f+g=f^+-f^-+g^+-g^-\folgt (f+g)^++f^-+g^-=(f+g)^-+f^++g^+\folgtnach{s.o.}\int (f+g)^+\d \mu+\int f^-\d \mu+\int g^-\d \mu=\int (f+g)^-\d \mu+\int f^+\d \mu +\int g^+\d \mu$\\
+$\folgt\int(f+g)\d \mu=\int(f+g)^+\d \mu-\int(f+g)^-\d \mu=\int f^+\d \mu - \int f^-\d \mu + \int g^+\d \mu -\int g\d \mu=\int f\d \mu + \int g\d \mu$
+\end{enumerate}
+\item[b)] vergleiche Übung
+\item[c)] $f\le|f|, -f\le|f|\folgtnach{b) mit $g=|f|$}$ Behauptung
+\end{enumerate}
+\end{Bew}
+
+\begin{BemON} Ist $\mu=\lambda$ das Lebesgue-Maß, so heißt $\int f\d \mu=\int f\d \lambda$ Lebesgue-Integral.
+\end{BemON}
+
+\begin{Bsp} \label{Bsp1.2}
+\begin{enumerate}
+\item[a)] Sei $\delta_\omega$ das Dirac-Maß, $f:\Omega\to\bar\R$ ist $\delta_\omega$-integrierbar falls $f(\omega)<\infty$ und dann gilt
+$$\int f\d \delta_\omega=f(\omega)$$
+Denn: Sei $f\in\EE\folgt f=\sum_{j=1}^n \alpha_j \ind_{A_j}\folgt \int f\d\delta_\omega=\sum_{j=1}^n\alpha_j\delta_\omega(A_j)=\alpha_k\cdot 1=f(\omega)$\\
+$f\in\EE^+:u_n\uparrow f, \int u_n\d\delta_\omega=u_n(\omega)\uparrow f(\omega)$\\
+$f$ allgemein $\folgt f=f^+-f^-$
+\item[b)] Sei $(\mu_n)$ eine Folge von Maßen und $\mu=\sum_{n=1}^\infty\mu_n.$ Für $f:\Omega\to\bar\R$ gilt:
+\begin{center}
+$f$ ist $\mu$-integrierbar$\equizu\sum_{n=1}^\infty\int |f|\d\mu_n<\infty$\\
+$\int f\d\mu = \sum_{n=1}^\infty\int f\d\mu_n$ (vergleiche Übung)
+\end{center}
+Spezialfall: $(\Omega, \AA)=(\N,\PM(\N)), \mu=\sum_{n=1}^\infty\delta_n$ (Zählmaß auf $\N$)\\
+$f$ ist $\mu$-integrierbar$\equizu\sum_{n=1}^\infty|f(n)|<\infty,$ dann $\int f\d\mu=\sum_{n=1}^\infty f(n).$\\
+Summation ist ein Spezialfall von Integration. 
+Sei $\Omega=\{\omega_1, \omega_2, \ldots\}, \AA=\PM(\Omega). \mu=P:=\sum_{n=1}^\infty p_n\delta_{\omega_n}$ mit $p_n\ge 0, \sum_{n=1}^\infty p_n=1$ (Wahrscheinlichkeitsmaß).\\
+Sei $X:\Omega\to\bar\R$ eine Zufallsvariable:
+$$EX \text{ existiert} \equizu \sum_{n=1}^\infty|X(\omega_n)|p_n<\infty\equizu X \text{ist} P\text{-integrierbar}$$
+$$EX = \sum_{n=1}^\infty X(\omega_n)P_n=\sum_{n=1}^\infty X(\omega_n)P(\{\omega_n\})=\int X\d P$$
+\item[c)] Sei $\Omega=[a,b]$ und $\AA=\BB_{[a,b]}=\{A\cap [a,b]|A\in\BB\}$ (Spur von $\BB$ auf $[a,b]$)\\
+$\mu(A):=\lambda(A)\ \forall A\in\AA.$ Ist $f:\Omega\to\R$ messbar und $f$ Riemann-integrierbar, so ist $f$ auch $\mu$-integrierbar und es gilt:
+$$\int f\d\mu=\int f(x)\d x$$
+(Hier fehlt ein Bild zur Veranschaulichung)\\
+Das Lebesgue-Integral ist eine Erweiterung des Riemann-Integrals:\\
+Sei $f=\ind_{\Q\cap [0,1]}$. $f$ ist nicht Riemann-integrierbar. Da $f\in\EE$ gilt:
+$$\int f\d\lambda=0\cdot\lambda(\Q^c\cap[0,1])+1\cdot\lambda(\Q\cap[0,1])=0$$
+Das letzte Gleichheitszeichen gilt wegen:
+\begin{enumerate}
+\item[(i)] $\lambda(\{a\})=0,$ da $\{a\}=\cap_{n=1}^\infty[a,a+\frac{1}{n})$
+\item[(ii)] $\lambda(\sum_{i=1}^\infty\{a_i\})=\sum_{i=1}^\infty\lambda(\{a_i\})=0$
+\end{enumerate}
+Vorsicht bei uneigentlichen Riemann-Integralen! $\int_0^\infty\frac{\sin x}{x}\d x$ ist Riemann-integrierbar, aber nicht Lebesgue-integrierbar.
+\end{enumerate}
+\end{Bsp}
+
+\chapter{Eigenschaften des Maß-Integrals}
+\section{Konvergenzsätze}
+Im Folgenden sei $(\Omega, \AA, \mu)$ ein Maßraum und $f, f_1, f_2, \ldots:\Omega\to\bar\R$ messbare Funktionen.
+\begin{Sa} [Satz von Beppo Levi, Satz von der monotonen Konvergenz]\label{Sa2.1}$\\$
+Sind $f, f_1, f_2,\ldots\ge 0$ mit $f_n\uparrow f$, so gilt 
+$$\lim_{n\to\infty}\int f_n\d\mu=\int f\d\mu.$$
+\end{Sa}
+\begin{Bew} $\forall f_n\ \exists(u_{nm})_{m\in\N}\subset\EE$ mit $u_{nm}\uparrow f_n$ für $m\to\infty.$ Sei $h_m:=\max\{u_{1m},\ldots,u_{mm}\}\folgt h_m\uparrow$ und $(h_m)\subset\EE.$ Außerdem: $u_{nm}\le h_m$ für $n\le m.$\\
+Also: $f_n=\sup_{m\in\N}u_{nm}=\sup_{m\ge n}u_{nm}\le\sup_{m\in\N}h_m$ und $h_m\le f_m\le f.$ Insgesamt: $h_m\uparrow f$ und $\lim_{m\to\infty}\int h_m\d\mu=\int f\d\mu.$ Mit $\int h_m\d\mu\le\int f_m\d\mu\le\int f\d\mu$ folgt die Behauptung.
+\end{Bew}
+
+Im Folgenden sei $(\Omega, \AA, \mu)$ ein Maßraum und $f_1, f_2, f_3, \ldots:\Omega\to\bar\R$ messbare Funktionen.
+
+\begin{Sa} [Lemma von Fatou]\index{Lemma!von Fatou}\label{Sa2.2} $\\$
+Gilt $f_n\ge 0, n\in\N,$ so folgt
+$$\int\liminf_{n\to\infty} f_n\d\mu \le \liminf_{n\to\infty}\int f_n\d\mu$$
+\end{Sa}
+\begin{Bew} Sei $g_n:=\inf_{m\ge n} f_m, f:=\liminf_{n\to\infty} f_n,$ so gilt $g_n\uparrow f$ und mit Satz \ref{Sa2.1} $\int\liminf_{n\to\infty} f_n\d\mu=\lim_{n\to\infty}\int g_n\d\mu = \liminf_{n\to\infty}\int g_n\d\mu\le \liminf_{n\to\infty}\int f_n\d\mu$
+\end{Bew}
+
+\begin{Sa} [Satz von Lebesgue oder Satz von der majorisierten Konvergenz]\index{Satz!von Lebesgue}\index{Satz!von der majorisierten Konvergenz}\label{Sa2.3} $\\$
+Es gelte $\lim_{n\to\infty} f_n(\omega)=f(\omega)\ \forall\omega\in\Omega.$ Existert eine $\mu$-integrierbare Funktion $g:\Omega\to\R$ mit der Eigenschaft $|f_n(\omega)|\le g(\omega)\ \forall\omega\in\Omega, \ \forall n\in\N,$ so folgt:
+$$\lim_{n\to\infty}\int f_n\d\mu = \int f\d\mu$$
+\end{Sa}
+\begin{Bew} Sei $g_n:=|f_n - f|, h:=|f|+g.$ Wegen $|h|\le 2g$ ist $h$ $\mu$-integrierbar. Außerdem gilt
+\begin{eqnarray*}
+h-g_n &=& |f| + g - |f_n - f| \ge |f|+g-|f_n|-|f|\\
+&=& g-|f_n|\ge 0
+\end{eqnarray*}
+wegen $g_n\to 0$ gilt $h-g_n\to h,$ also folgt mit Satz \ref{Sa2.2}
+\begin{eqnarray*}
+\int h\d\mu &=&\int \liminf_{n\to\infty}(h-g_n)\d\mu\\
+&\le&\liminf_{n\to\infty}\int(h-g_n)\d\mu\\
+&=&\underbrace{\int h\d\mu}_{<\infty} - \limsup_{n\to\infty}\int g_n\d\mu
+\end{eqnarray*}
+$\folgt \limsup_{n\to\infty}\int g_n\d\mu\le 0$ Wegen $g_n\ge 0$ bedeutet dies:
+$$\lim_{n\to\infty}\int|f_n - f|\d\mu = \lim_{n\to\infty}\int g_n\d\mu = 0$$
+und damit
+$$|\int f_n\d\mu - \int f\d\mu| = |\int(f_n-f)\d\mu| \le \int|f_n-f|\d\mu\to 0$$ 
+\end{Bew}
+
+\begin{Bem} Für Wahrscheinlichkeitsmaße lautet Satz \ref{Sa2.3}:\\ %TODO label
+Ist $(X_n)_{n\in\N}$ eine Folge von Zufallsvariablen, so dass $X_n\fs X$ ($X$ ist dann automatisch wieder eine Zufallsvariable) und es gibt eine Zufallsvariable $Y$ mit $|X_n|\le Y\ \forall n\in\N$ und $EY<\infty,$ so gilt $\lim_{n\to\infty} EX_n = EX.$\\
+Oft kommt man mit einer Majorante der Form $Y\equiv c, c\in\R$ zum Ziel.
+\end{Bem}
+
+\section{Verhalten bei Transformationen}
+Es sei $(\Omega, \AA, \mu)$ ein Maßraum und $(\Omega', \AA')$ ein messbarer Raum und $T:\Omega\to\Omega'$ eine $(\AA, \AA')$-messbare Abbildung. Aus Stochastik 1 ist bekannt (vgl. \S 5.2, Verteilung), dass durch
+$$\mu^T:\AA'\to[0,\infty], \mu^T(A'):=\mu(\underbrace{T^{-1}(A')}_{\in\AA})=\mu(\{\omega\in\Omega|T(\omega)\in A'\})$$
+ein Maß auf $(\Omega', \AA')$ definiert wird (Maßtransport)\index{Masstransport@Maßtransport}. $\mu^T$ heißt \textbf{Bildmaß}\index{Bildmass@Bildmaß} von $\mu$ unter der Tranformation $T.$\\
+Ist $X=T$ eine Zufallsgröße auf einem Wahrscheinlichkeitsraum $(\Omega, \AA, P)$ mit Werten in $(\Omega', \AA')$, so nennt man $\mu^T=P^X$ die Verteilung von $X$. Sei nun weiter $f:\Omega'\to\R$ messbar.\\
+\begin{center}
+Skizze:
+\begin{xy}
+  \xymatrix{
+      (\Omega,\AA) \ar[r]^T \ar[rd]_{f\circ T} & (\Omega',\AA') \ar[d]^f  \\
+                             & (\R,\BB)
+  }
+\end{xy}
+\end{center}
+
+\begin{Sa} [Integration bezüglich des Bildmaßes, Transformationssatz] \index{Satz!Integration bezuglich des Bildmasses@Integration bezüglich des Bildmaßes}\index{Transformationssatz}\index{Satz!Transformations-}\label{Sa2.4}$\\$ %TODO label überprüfen
+Mit den obigen Bezeichnungen und Voraussetzungen gilt: $f$ ist genau dann $\mu^T$-integrierbar, wenn $f\circ T$ $\mu$-integrierbar ist.\\
+Dann gilt:
+$$\int f\d\mu^T = \int(f\circ T)\d\mu$$
+\end{Sa}
+\begin{Bew} $\\$
+\begin{enumerate}
+\item[(i)] Falls $f = \ind_A, (A\in\AA)$ gilt
+\begin{eqnarray*}
+\int f\d\mu^T &=& \mu^T(A)\\
+&=&\mu(T^{-1}(A))\\
+&=&\int \ind_{T^{-1}(A)}\d\mu\\
+&=&\int \ind_A\circ T\d\mu\\
+&=&\int f\circ T\d\mu
+\end{eqnarray*}
+wegen Satz \ref{Sa1.2}(a) folgt damit die Aussage für $f\in\EE$
+\item[(ii)] Sei jetzt $f\ge 0\folgt\ \exists(u_n)_{n\in\N}\subset\EE$ mit $u_n\uparrow f$ und $\int f\d\mu^T = \lim_{n\to\infty}\int u_n\d\mu^T$. Offenbar gilt $u_n\circ T\in\EE, (u_n\circ T)\uparrow (f\circ T)$\\
+Also folgt:
+\begin{eqnarray*}
+\int f\d\mu^T &=& \lim_{n\to\infty}\int u_n\d\mu^T\\
+&\stackrel{(i)}{=}&\lim_{n\to\infty}\int(u_n\circ T)\d\mu\\
+&=&\int (f\circ T)\d\mu
+\end{eqnarray*}
+\item[(iii)] Ist $f:\Omega'\to\R$ eine beliebige $(\AA',\BB)$-messbare Abbildung so gilt
+\begin{eqnarray*}
+\int f^+\d\mu^T<\infty &\equizu& \int f^+\circ T\d\mu < \infty\\
+\int f^-\d\mu^T<\infty &\equizu& \int f^-\circ T\d\mu < \infty
+\end{eqnarray*}
+Da $(f\circ T)^+ = f^+\circ T, (f\circ T)^- = f^-\circ T,$ folgt $f$ $\mu^T$-integrierbar $\equizu f\circ T$ $\mu$-integrierbar
+\begin{eqnarray*}
+\int f\d\mu^T&=&\int f^+\d\mu^T - \int f^-\d\mu^T\\
+&\stackrel{(ii)}{=}&\int f^+\circ T\d\mu - \int f^-\circ T\d\mu\\
+&=& \int(f\circ T)^+\d\mu - \int(f\circ T)^-\d\mu\\
+&=& \int f\circ T\d\mu.
+\end{eqnarray*}
+\end{enumerate}
+\end{Bew}
+
+\begin{Bem} Das Beweisverfahren (zuerst für $f\in\EE$ (bzw. $f=\ind_A$), dann für $f\in\EE^+,$ dann für $f$ beliebig) heißt \textbf{algebraische Induktion}\index{algebraische Induktion} und wird häufig verwendet. %TODO label
+\end{Bem}
+
+\section{Nullmengen und Maße mit Dichten}
+Im Folgenden sei $(\Omega, \AA, \mu)$ ein Maßraum.
+\begin{Def} $N\in\AA$ heißt $\mu$-Nullmenge\index{$\mu$-Nullmenge}\index{Nullmenge}, falls $\mu(N) = 0.$ %TODO label
+\end{Def}
+
+\begin{Def} %TODO label
+Ist $(A)$ eine Aussage, die von $\omega\in\Omega$ abhängt, so sagen wir, dass $(A)$ \textbf{$\mu$-fast überall}\index{$\mu$-fast uberall@$\mu$-fast überall}\index{fast uberall@fast überall} ($\mu$-f.ü.) gilt, wenn $(A)$ wahr ist $\forall\omega$ außerhalb einer $\mu$-Nullmenge. Ist $\mu=P$ ein Wahrscheinlichkeitsmaß, so sagt man $P$-fast-überall oder $P$-fast sicher (P-f.s.)
+\end{Def}
+
+\begin{Sa}\label{Sa2.5}$\\$ 
+$f,g:\Omega\to\R$ seien $(\AA, \BB)$ messbar.
+\begin{enumerate}
+\item[a)] Sei $f\ge 0$. Dann gilt: $\int f\d\mu=0\equizu f=0, \mu$-f.ü.
+\item[b)] Ist $f$ $\mu$-integrierbar und gilt $f=g$ $\mu$-f.ü., so ist auch $g$ $\mu$-integrierbar mit $\int f\d\mu = \int g\d\mu.$
+\end{enumerate}
+\end{Sa}
+
+\begin{Bew}$\\$
+\begin{enumerate}
+\item[a)] Sei $N := \{\omega \in \Omega |f(\omega)\neq 0\}$. $N \in \AA$, da $f$ messbar.
+\begin{enumerate}
+\item[(i)] Annahme: $\int f\d\mu = 0$. \\
+Sei $A_n := \{\omega \in \Omega | f(\omega) \ge \frac{1}{n}\} \folgt A_n \uparrow N$ und $\mu(N) = \lim_{n\to\infty}(\mu(A_n))$. Außerdem gilt $0 = \int f\d\mu \ge \int\frac{1}{n}\cdot \ind_{A_n} \d\mu = \frac{1}{n}\cdot\mu(A_n) \ge 0$ \\
+$\folgt \mu(A_n) = 0$ $\forall n\in\N \folgt \mu(N) = 0$, also $f=0$ $\mu$-f.ü.
+\item[(ii)] Annahme: $N$ ist $\mu$-Nullmenge. \\
+Sei $g \in \EE$, $g(\Omega)=\{\alpha_1$, $\dots$, $\alpha_n\}$, $g \le f.$ \\
+$\folgt g=\sum_{j=1}^n \alpha_j \circ \ind_{A_j}$. \\
+Falls $\alpha_j > 0 \folgt A_j \subset N \folgt \int g\d\mu=0 \folgtnach{L.\ref{Lem1.3}} \int f\d\mu=0$.
+\end{enumerate}
+\item[b)] Seien zunächst $f,g \ge 0$, $N:=\{f\neq g\} \folgtnach{a)}$ \\
+\begin{eqnarray*}
+\int f\d\mu &=& \int_N f\d\mu + \int_{N^C} f\d\mu \\
+ &=& 0 + \int_{N^C} g\d\mu \\
+ &=& \int_N g\d\mu + \int_{N^C} g\d\mu \\
+ &=& \int g\d\mu \\
+\end{eqnarray*}
+Insbesondere: $\int f\d\mu < \infty \equizu \int g\d\mu < \infty$. \\
+Seien nun $f,g$ beliebig. Wegen $\{f^+ = g^+\}\supset\{f=g\}\subset\{f^- = g^-\}$ gilt auch $f^+ = g^+$ und $f^- = g^-$ $\mu$-f.ü. und mit dem vorigen Teil folgt die Behauptung.
+\end{enumerate}
+\end{Bew}
+
+\begin{Bem} %TODO label
+Im Folgenden sei $L^1(\Omega, \AA, \mu):=\{f:\Omega\to\R$ $|$ $f$ ist messbar und $\mu$-integrierbar$\}$ (ist ein Vektorraum) und wir definieren \\
+$f \sim_{\mu} g :\equizu f=g$ $\mu$-f.ü. und $\sim_{\mu}$ ist Äquivalenzrelation auf $\{f:\Omega\to\R$ $|$ $f$ ist messbar$\}$. Sei $f^{[\mu]}$ die Äquivalenzklasse zu $f$. \\
+Mit Satz \ref{Sa2.5}: Entweder alle oder keines der Elemente in $f^{[\mu]}$ ist $\mu$-integrierbar und die Integrale sind ggfs. gleich. Außerdem gilt: \\
+$f_1 \in f^{[\mu]}$, $g_1 \in g^{[\mu]} \folgt f_1 + g_1 \in (f+g)^{[\mu]}$. \\
+$\folgt$ Man kann zum Raum der Äquivalenzklassen übergehen: $L^1(\Omega,\AA,\mu)/\sim_{\mu}$ \\
+Mit $||f^{[\mu]}||_1 := \int|f|\d\mu$ ist eine Norm definiert; sie ist wohldefiniert, da $\int f_1\d\mu = \int f_2\d\mu$ $\forall f_1,f_2 \in f^{[\mu]}$. \\
+Wichtig: $f \mapsto \int|f|\d\mu =: ||f||$ ist auf $L^1(\Omega,\AA,\mu)$ keine Norm, da $||f|| = 0 \folgt f\equiv 0$ im Allgemeinen falsch ist!
+\end{Bem}
+
+\begin{Sa} \label{Sa2.6}%TODO label überprüfen
+$(L^1(\Omega,\AA,\mu)/\sim_{\mu}, ||\cdot||_1)$ ist ein Banachraum.
+\end{Sa}
+
+\begin{Def} %TODO label
+Es seien $\mu, \nu$ Maße auf dem messbaren Raum $(\Omega,\AA)$. Gilt dann $\mu(A)=0 \folgt \nu(A) = 0$ $\forall$ $A\in\AA$, so heißt $\nu$ \textbf{$\mu$-stetig}\index{$\mu$-stetig}, in Zeichen $\nu \ll \mu$. Man sagt auch, dass $\mu$ das Maß $\nu$ dominiert.
+\end{Def}
+
+\begin{Sa}und Definition\label{Sa2.7}\\ %TODO label überprüfen
+Sei $(\Omega,\AA,\mu)$ ein Maßraum und $f:\Omega\to\R_+$ $(\AA, \BB)$-messbar. Dann wird durch $\nu:\AA\to\R_+\cup\{\infty\}$, $\nu(A):=\int_A f\d\mu$ ein Maß auf $(\Omega,\AA)$ definiert. Man nennt $\nu$ das \textbf{Maß mit der Dichte $f$}\index{Mass mit Dichte@Maß mit Dichte} bzgl. $\mu$ und f eine \textbf{$\mu$-Dichte}\index{$\mu$-Dichte} von $\nu$. Schreibweise: $f=\frac{\d\nu}{\d\mu}$
+\end{Sa}
+
+\begin{Bew}
+Wir weisen nach, dass $\nu$ ein Maß ist: \\
+$\nu \ge 0$ ist klar, da $f$ nach $\R_+$ abbildet; \\
+\begin{enumerate}
+\item[(i)] $\mu(\emptyset) = \int f\cdot \ind_{\emptyset}\d\mu = 0$.
+\item[(ii)] Seien $A_1,A_2,\dots$ paarweise disjunkt und $A=\sum_{n=1}^{\infty}A_n$. \\
+Wegen $f\cdot \ind_{\sum_{k=1}^{n}A_k} \uparrow f\cdot \ind_A$ folgt mit Satz \ref{Sa2.1}: \\
+\begin{eqnarray*}
+\nu(\sum_{n=1}^{\infty}A_n) &=& \int f\cdot \ind_A\d\mu \\
+ &=& \lim_{n\to\infty}(\int f\cdot \underbrace{\ind_{\sum_{k=1}^{n}A_k}}_{=\sum_{k=1}^n \ind_{A_k}}\d\mu) \\
+ &=& \lim_{n\to\infty}(\int \sum_{k=1}^n f\cdot \ind_{A_k} \d\mu) \\
+ &=& \lim_{n\to\infty}(\sum_{k=1}^{n}(\underbrace{\int f\cdot \ind_{A_k}\d\mu}_{=\nu(A_k)})) \\
+ &=& \sum_{k=1}^{\infty}\nu(A_k)
+\end{eqnarray*}
+\end{enumerate}
+\end{Bew}
+
+\begin{Sa}[Satz von Radon-Nikodym]\index{Satz!von Radon-Nikodym}\label{Sa2.8} $\\$
+Seien $\mu,\nu$ Maße auf dem messbaren Raum $(\Omega,\AA)$, $\mu$ sei $\sigma$-endlich. Dann gilt: \\
+$\nu$ ist genau dann $\mu$-stetig, wenn $\nu$ eine Dichte bzgl. $\mu$ hat.
+\end{Sa}
+
+\begin{Bew}
+$\nu$ hat Dichte bzgl. $\mu \folgt \nu(A)=\int_A f\d\mu=\int f\cdot \ind_A\d\mu \folgtnach{S.\ref{Sa2.5}a)}\nu\ll\mu$. \\
+Die andere Richtung siehe z.B. Henze, Stochastik II.
+\end{Bew}
+
+\begin{Sa} \label{Sa2.9}
+Seien $\mu$ und $\nu$ Maße auf $(\Omega,\AA)$, $\nu$ habe $\mu$-Dichte $f$. Dann gilt für alle $(\AA,\BB)$-messbaren Abbildungen $g:\Omega\to\R$: \\
+g ist genau dann $\nu$-integrierbar, wenn $g\cdot f$ $\mu$-integrierbar ist und in diesem Fall ist $\int g\d\nu = \int g\cdot f\d\mu$.
+\end{Sa}
+
+\begin{Bew}
+Übung.
+\end{Bew}
+
+\begin{Bem} %TODO label
+Merkregel: $\int g\d\nu=\int g\cdot\frac{\d\nu}{\d\mu}\d\mu$.
+\end{Bem}
+
+\begin{Bsp} \label{Bsp2.1}
+Sei $\mu=\lambda$ das Lebesgue-Maß und $\nu=P^X$ die Verteilung einer Zufallsvariablen $X$. Ist $X$ absolutstetig, so gilt (Stochastik I): \\
+\begin{displaymath}P^X (B)=\int_B f_X (x)\d x\end{displaymath} mit $f_X:\R\to\R_+\cup\{\infty\}$ und \\
+\begin{displaymath}EX=\int_{\Omega}X\d P =\int_{\R}xP^X(\d x) =\int_{\R}x\cdot f_X (x)\d x.\end{displaymath} mit den Sätzen 2.4 und 2.9.
+\end{Bsp}
+
+\section{Ungleichungen und Räume integrierbarer Funktionen}
+Hier stellen wir einige Hilfsmittel für später zusammen. Der folgende Satz behandelt den Spezialfall von Wahrscheinlichkeitsmaßen.
+
+\begin{Sa} \label{Sa2.10}
+Es sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum, $X:\Omega\to\R$ eine Zufallsvariable und $\gamma>0$. Dann gilt: \\
+\begin{displaymath}P(|X|\ge a)\le\frac{1}{a^\gamma}\cdot E|X|^\gamma \quad\forall a>0.\end{displaymath}
+Existiert die Varianz von X, so gilt:
+\begin{displaymath}P(|X-EX|\ge a)\le\frac{1}{a^2}\cdot \var(X) \quad\forall a>0.\end{displaymath}
+(Ungleichung von Tschebyschef, siehe Abschnitt 7.6, Stochastik I)
+\end{Sa}
+
+%%%%% Vorlesung 13.11.2006
+
+\begin{Bew} $\\$
+Sei $Y:\Omega\to\R$ definiert durch: 
+$$Y(\omega)=
+\begin{cases}
+a, & \text{falls } |X(\omega)|\ge a\\
+0, & \text{sonst}
+\end{cases} $$
+\begin{eqnarray*}
+&\folgt& |Y| \le |X|\\
+&\folgt& |Y|^\gamma \le |X|^\gamma\quad\forall\gamma> 0\\
+&\folgt& a^\gamma P(|X|\ge a) = a^\gamma P(|Y|\ge a) = E|Y|^\gamma \le E|X|^\gamma
+\end{eqnarray*}
+Für Teil 2 setze $\tilde X:=X-EX$ und $\gamma=2.$
+\end{Bew}
+
+Sei $I\subset\R$ ein offenes Intervall und $\Phi:I\to\R$ eine konvexe Funktion\index{konvex}, d.h.
+$$\Phi(\alpha x+(1-\alpha)y)\le\alpha\Phi(x)+(1-\alpha)\Phi(y)\quad \forall x, y\in I,\ \forall\alpha\in[0,1]$$
+Außerdem gilt $\forall y\in I, \exists m\in\R$, mit
+$$\Phi(x)\ge\Phi(y)+m(x-y)$$
+
+\begin{Sa} [Jensensche Ungleichung]\label{Sa2.11}\index{Jensensche Ungleichung}\index{Ungleichung!Jensensche} $\\$
+Es seien $I\subset\R$ ein offenes Intervall, $\Phi:I\to\R$ konvex und $X$ eine Zufallsvariable mit $E|X|<\infty, E|\Phi(X)|<\infty$ und $P(X\in I)=1.$ Dann gilt:
+$$EX\in I \text{ und } \Phi(EX)\le E\Phi(X)$$
+\end{Sa}
+\begin{Bew} $\\$
+Falls $I=(-\infty,\infty)$ ist automatisch $EX\in I.$ Ist $X<a$ P-f.s. so gilt: $EX\le Ea=a.$ Falls $E(a-X)=0$ folgt, da $a-X\ge 0\folgtnach{Satz \ref{Sa2.5}} X=a$ P-f.s. Widerspruch!\\
+D.h., falls $I=(\cdot, a)\subset(-\infty, a)\folgt EX<a.$ Analog untere Schranke $\folgt EX\in I.$\\
+Mit der Vorüberlegung folgt $(y=EX, x=X(\omega))$
+$$\Phi(X)\ge\Phi(EX)+m(X-EX)\quad\text{P-f.s.}$$
+für ein $m\in\R.$ Erwartungswert auf beiden Seiten führt zur Behauptung (Nullmengen können wir vernachlässigen).
+\end{Bew}
+
+\begin{Bsp} \label{Bsp2.2}$\\$
+Für $\Phi(x)=|x|, \Phi(x) = x^2$ folgt: $|EX|\le E|X|, (EX)^2\le EX^2.$ ($\folgt EX^2-(EX)^2=\var X\ge 0$)\\
+\end{Bsp}
+
+Im Folgenden sei $(\Omega, \AA, \mu)$ wieder ein Maßraum.
+
+\begin{DefON}$\\$
+Eine messbare Funktion $f:\Omega\to\R$ heißt \textbf{$p$-fach $\mu$-integrierbar}\index{$p$-fach $\mu$-integrierbar}\index{$\mu$-integrierbar!$p$-fach}, wenn $\int |f|^p\d\mu< \infty$ mit $p>0.$ 
+$$L^p(\Omega, \AA, \mu):=\{ f:\Omega\to\R|\int|f|^p\d\mu <\infty\}$$
+$$||f||_p=\left(\int|f|^p\d\mu\right)^{\frac{1}{p}}$$
+Wie im vorigen Abschnitt ist $L^p$ bzw. $L^p(\Omega,\AA,\mu)/\sim_\mu$ ein Vektorraum über $\R$ und $||f||_p$ auf den Äquivalenzklassen eine Norm.
+\end{DefON}
+
+\begin{Sa} \label{Sa2.12}$\\$
+\begin{enumerate}
+\item[a)] (Höldersche Ungleichung)\index{Holdersche Ungleichung@Höldersche Ungleichung}\index{Ungleichung!Holdersche@Höldersche} Es seien $p>1, f\in L^p(\Omega,\AA,\mu), g\in L^q(\Omega,\AA,\mu),$ wobei $\frac{1}{p}+\frac{1}{q}=1.$ Dann folgt: $f\cdot g\in L^1(\Omega,\AA,\mu)$ und es gilt:
+$$||f\cdot g||_1\le||f||_p \cdot||g||_q$$
+\item[b)] (Minkowskische Ungleichung)\index{Minkowskische Ungleichung}\index{Ungleichung!Minkowskische} Es seien $p\ge 1$ und $f,g\in L^p(\Omega,\AA,\mu).$ Dann folgt $f+g\in L^p(\Omega,\AA,\mu)$ und es gilt:
+$$||f+g||_p\le ||f||_p + ||g||_p$$
+\end{enumerate}
+\end{Sa}
+\begin{Bew} $\\$
+\begin{enumerate}
+\item[a)] Falls $\int |f|^p\d\mu = 0\folgtnach{Satz \ref{Sa2.5}} f=0$ $\mu$-f.s. und die Ungleichung ist richtig. Sei also $||f||_p > 0$ und $||g||_q>0$ (gleiches Argument). $x\mapsto\log x$ ist konkav, d.h. es gilt: $\alpha\log(a)+(1-\alpha)\log(b)\le\log(\alpha a+(1+\alpha)b)\ \forall a,b>0, 0<\alpha<1.$ $\exp(\cdot)$ auf beiden Seiten:
+$$a^\alpha b^{1-\alpha}\le\alpha a+(1-\alpha)b\quad \forall a,b\ge 0, 0<\alpha<1$$
+Setze $a:=\frac{|f(\omega)|^p}{||f||^p_p}, b:=\frac{|g(\omega)|^q}{||g||_q^q}, \alpha=\frac 1 p$ ($\omega$ beliebig)
+\begin{eqnarray*}
+\folgt &\frac{|f(\omega)|\cdot|g(\omega)|}{||f||_p\cdot||g||_q} &\le \frac 1 p \frac{|f(\omega)|^p}{||f||_p^p} + \frac 1 q \frac{|g(\omega)|^q}{||g||_q^q}\\
+\folgt  &|f(\omega)|\cdot|g(\omega)| &\le \frac 1 p |f(\omega)|^p||f||_p^{1-p}||g||_q + \frac 1 q |g(\omega)|^q||g||_q^{1-q}||f||_p\\
+\folgtnach{Int. über $\omega$} & ||f\cdot g||_1 & \le \frac 1 p ||f||_p^p||f||_p^{1-p}||g||_q + \frac 1 q ||g||_q^q||g||_q^{1-q}||f||_p\\
+ & &= \frac 1 p ||f||_p||g||_q + \frac 1 q ||g||_q ||f||_p\\
+\folgt & \text{Behauptung}
+\end{eqnarray*}
+\item[b)] Wegen $|f+g|\le|f|+|g|$ gilt $||f+g||_p\le|| |f| + |g| ||_p.$ Also genügt es die Ungleichung für $f+g\ge 0$ zu beweisen. Falls $p=1$ folgt $||f+g||_1=\int (f+g)\d\mu=\int f\d\mu + \int g\d\mu = ||f||_1 + ||g||_1.$ Sei also $p>1.$ Mit $(f+g)^p\le(2\cdot\max\{f,g\})^p\le 2^p(|f|^p + |g|^p)\folgt (f+g)\in L^p,$ also $||f+g||_p<\infty.$ Sei $q:=\frac{1}{1-\frac 1 p}.$ Anwendung von Teil a) liefert:
+\begin{eqnarray*}
+||f+g||_p^p & =& \int f(f+g)^{p-1}\d\mu + \int g(f+g)^{p-1}\d\mu\\
+&\stackrel{\text{a)}}{\le}&(||f||_p + ||g||_p)||(f+g)^{p-1}||_q\quad (*)
+\end{eqnarray*}
+Wegen  $(p-1)q = p$ gilt:
+$$ ||(f+g)^{p-1}||_q = \left(\int (f+g)^{(p-1)q}\d\mu\right)^{\frac 1 q} = ||f + g||_p^{\frac p q} = ||f + g||_p^{p-1}$$
+Falls $||f+g||_p = 0$ ist die Ungleichung richtig. Sei also $||f+g||_p>0.$ Nehme $(*)$ und teile durch $||f+g||_p^{p-1}$ auf beiden Seiten $\folgt$ Behauptung.
+\end{enumerate}
+\end{Bew}
+
+\begin{BemON} $\\$
+Falls $p=q=2, \Omega=\{1,\ldots,n\}, \AA = \PM(\Omega),\mu = \sum_{k=1}^n\delta_k, f(i)=a_i, g(i) = b_i,$ bekommt man:
+$$\sum_{i=1}^n a_i b_i\le\left(\sum_{i=1}^n a_i^2\right)^{\frac 1 2} \cdot \left(\sum_{i=1}^n b_i^2\right)^{\frac 1 2}$$
+In diesem Fall ist Satz \ref{Sa2.12} a) die Cauchy-Schwarz-Ungleichung.\\
+Lineare Algebra: $|\langle a, b\rangle|\le ||a||\cdot||b||\quad\forall a, b \in\R^n$. Das motiviert
+\end{BemON}
+
+\begin{Sa} \label{Sa2.14} $\\$
+Es sei $(\Omega, \AA, \mu)$ ein Maßraum und $L^2(\Omega, \AA, \mu)/\sim_\mu$ der Raum der $\sim_{\mu}$-Äquivalenzklassen quadratisch $\mu$-integrierbarer Funktion $f:\Omega\to\R$. \\
+Dann ist $\langle f, g\rangle := \int f\cdot g\d\mu$ hierauf ein Skalarprodukt, durch den $L^2(\Omega, \AA, \mu)/\sim_{\mu}$ zu einem Hilbertraum wird.
+\end{Sa}
+\begin{Bew}siehe Henze, Stochastik II \end{Bew}
+
+\begin{BemON}$\\$
+\begin{enumerate}
+\item[a)] $(L^p(\Omega, \AA, \mu)/\sim_{\mu},||\cdot||_p)$ ist ein Banachraum für $p\ge 1$.
+\item[b)] Ist $\Phi :L^p(\Omega, \AA, \mu)\to\R$ stetig und linear, so existiert ein $g\in L^q(\Omega, \AA, \mu)$ mit $\Phi (f)=\int f\cdot g\d\mu\quad\forall f\in L^p(\Omega, \AA, \mu)$.
+\end{enumerate}
+\end{BemON}
+
+\chapter{Produktmaße und Unabhängigkeit}
+\section{Der allgemeine Fall}
+Im Folgenden sei $I \neq\emptyset$ eine beliebige Indexmenge. $\forall i\in I$ sei $(\Omega_i,\AA_i)$ ein messbarer Raum. Weiter sei $\Omega := \times_{i\in I} \Omega_i$ ein neuer Ergebnisraum. Wir definieren die \textbf{Projektion}\index{Projektion} auf die i-te Koordinate $\Pi_i:\Omega\to\Omega_i$ durch $\Pi_i(\omega)=\omega_i$.
+
+\begin{DefON} Die \textbf{Produkt-$\sigma$-Algebra}\index{Produkt-$\sigma$-Algebra}\index{$\sigma$-Algebra!Produkt-} $\AA:=\bigotimes_{i\in I}\AA_i$ ist die kleinste $\sigma$-Algebra mit der Eigenschaft, dass für alle $i\in I$ die Abbildung $\Pi_i$ $(\AA,\AA_i)$-messbar ist. Genauer: \\
+\begin{displaymath}
+\AA := \sigma \left( \bigcup_{i\in I} \left\{ \Pi^{-1}_i(A_i) | A_i \in \AA_i\right\}\right)
+\end{displaymath}
+\end{DefON}
+
+\begin{BemON} Sei $J\subset I$, $\Pi_J:\Omega\to\times_{i\in J}\Omega_i$, $\Pi_J(\omega)(j)=\omega_j$ ($j\in J)$ die Projektion auf die $J$-Koordinaten, so bildet \\
+\begin{displaymath}
+\left\{\Pi_J^{-1}\left(A_J\right) | A_J \in \bigotimes_{i\in J} \AA_i, J\subset I, J\text{ endlich}\right\}
+\end{displaymath}
+ein durchschnittstabiles Erzeugendensystem von $\AA$. Man nennt diese Mengen auch \textbf{Zylindermengen}\index{Zylindermengen} mit endlicher Basis.
+\begin{displaymath}
+\left( A_J=A_{i_1}\times\dots\times A_{i_{|J|}}, \Pi_J^{-1}\left( A_J\right)=\bigcap_{k=1}^{|J|}\Pi_{i_k}^{-1}\left( A_{i_k}\right)\right)
+\end{displaymath}
+\end{BemON}
+
+\begin{Bsp} \label{Bsp3.1} Ist $I=\{1,\dots,n\}$ endlich, so ist (vgl. Stochastik I, §8): \\
+\begin{displaymath}
+\AA=\bigotimes_{i=1}^n\AA_i=\sigma\left(\left\{A_1\times\dots\times A_n | A_i\in\AA_i\text{, }i\in\left\{1,\dots,n\right\}\right\}\right)
+\end{displaymath}
+Wir betrachten zunächst den Fall $|I|=2$. Gegeben seien zwei Maßräume $(\Omega_1,\AA_1,\mu_1)$ und $(\Omega_2,\AA_2,\mu_2)$. Weiter sei $\Omega=\Omega_1\times\Omega_2$, $\AA=\AA_1\otimes\AA_2$. Wir müssen nun ein Produktmaß konstruieren.
+\end{Bsp}
+
+\begin{Lem} \label{Lem3.1}Für alle $A\in\AA$, $\omega_1\in\Omega_1$, $\omega_2\in\Omega_2$ gilt: \\
+\begin{eqnarray*}
+A_{\omega_1} &:=& \left\{\omega_2\in\Omega_2|\left(\omega_1,\omega_2\right)\in A\right\}\in\AA_2 \text{ und} \\
+A_{\omega_2} &:=& \left\{\omega_1\in\Omega_1|\left(\omega_1,\omega_2\right)\in A\right\}\in\AA_1 \text{.} \\
+\end{eqnarray*}
+$A_{\omega_i}$ heißt $\omega_i$-Schnitt von $A$ für $i=1,2$. \\
+\quad\\
+- hier fehlt eine Skizze - \\ %Fehlt: Skizze
+\quad\\
+\end{Lem}
+\begin{Bew} Sei $\omega_1\in\Omega_1$. Dann ist $\AA':=\{A\in\AA|A_{\omega_1}\in\AA_2\}\subset\AA$, also die Menge der Mengen, für die das Lemma gilt, eine $\sigma$-Algebra, denn:
+\begin{enumerate}
+\item[(i)] \begin{displaymath} \Omega_{\omega_1}=\Omega_2\in\AA_2\quad\folgt\quad\Omega\in\AA' \end{displaymath}
+\item[(ii)]\begin{eqnarray*}
+\left(\Omega\backslash A\right)_{\omega_1} &=& \left\{\omega_2|\left(\omega_1,\omega_2\right)\notin A\right\} \\
+ &=& \left\{\omega_2|\left(\omega_1,\omega_2\right)\in A\right\}^C \\
+ &=& \Omega_2\backslash\underbrace{A_{\omega_1}}_{\in\AA_2}\in\AA_2 \\
+\end{eqnarray*} $\folgt (\Omega\backslash A)_{\omega_1}\in\AA'$.
+\item[(iii)]\begin{displaymath}
+\left(\bigcup_{n=1}^{\infty}A_n\right)_{\omega_1} = \bigcup_{n=1}^{\infty}\left( A_n\right)_{\omega_1}\in\AA_2 \folgt \left(\bigcup_{n=1}^{\infty}A_n\right)_{\omega_1}\in\AA' $$\\$$
+\text{Wegen }\left(A_1\times A_2\right)_{\omega_1}= 
+\begin{cases}
+A_2 & ,\omega_1\in A_1 \\
+\emptyset & ,\omega_1\notin A_1 \\
+\end{cases}
+\in\AA_2 \text{ gilt:}$$\\$$
+\sigma\left(\left\{A_1\times A_2|A_1\in\AA_1\text{, }A_2\in\AA_2\right\}\right)\subset\AA'\text{, also gilt }\AA=\AA'
+\end{displaymath}
+mit der Voraussetzung von oben. Aus Symmetriegründen gilt die entsprechende Aussage auch für $A_{\omega_2}$, $\omega_2\in\Omega_2$.
+\end{enumerate}
+\end{Bew}
+
+\begin{Lem} \label{Lem3.2}Die Maße $\mu_1$, $\mu_2$ seien $\sigma$-endlich. Dann gilt für alle $A\in\AA$: \\
+\begin{eqnarray*}
+\omega_1 & \mapsto & \mu_2(A_{\omega_1}) \text{ ist } (\AA_1,\BB_{(-\infty,\infty]})\text{-messbar,} \\
+\omega_2 & \mapsto & \mu_1(A_{\omega_2}) \text{ ist } (\AA_2,\BB_{(-\infty,\infty]})\text{-messbar.} \\
+\end{eqnarray*}
+\end{Lem}
+\begin{Bew} $\mu_2$ $\sigma$-endlich $\folgt \exists (B_n)_{n\in\N}\subset\AA_2$ mit $B_n\uparrow\Omega_2$ und $\mu_2(B_n)<\infty\quad\forall n\in\N$. Setze $f_A(\omega_1):=\mu_2(A_{\omega_1}), f_{A,n}(\omega_1):=\mu_2(A_{\omega_1}\cap B_n)$. Sei $\mathcal{D}:=\{D\in\AA|f_{D,n}\text{ ist }(\AA_1,\BB)\text{-messbar}\}$ für ein festes n. Dann gilt: \\
+\begin{enumerate}
+\item[(i)] $f_{\Omega,n}=\mu_2(\Omega_2\cap B_n)=\mu_2(B_n)$
+\item[(ii)] $f_{D^C,n}=\mu_2(B_n) - f_{D,n}$, also $D\in\mathcal{D}\folgt D^C\in\mathcal{D}$
+\item[(iii)] $f_{\sum_{i=1}^{\infty}D_i,n} = \sum_{i=1}^{\infty}f_{D_i,n}$, also $D_i\in\mathcal{D}\folgt\sum_{i=1}^{\infty}D_i\in\mathcal{D}$
+\end{enumerate}
+Damit ist $\mathcal{D}$ ein Dynkin-System (vgl. Stochastik 1). \\
+Wegen $f_{A_1\times A_2,n}(\omega_1) = \mu_2(A_2\cap B_n)\cdot \ind_{A_1}(\omega_1)$ ist $f_{A_1\times A_2,n}$ für $A_1\in\AA_1$, $A_2\in\AA_2$ messbar und daher $A_1\times A_2\in\mathcal{D}$. \\
+$\mathcal{D}$ enthält also das durchnittstabile Erzeugendensystem von $\AA$. \\
+$\folgtnach{St.1, S.4.3}\mathcal{D}=\AA \quad\folgt\quad f_{A,n}$ ist $(\AA_1,\BB)$-messbar $\forall A\in\AA$, $n\in\N$. \\
+Wegen $f_A=\sup_{n\in\N}\{f_{A,n}\}$ folgt die Behauptung.
+\end{Bew}
+
+\begin{Def} und Satz: \label{Def3.1}\\
+Sind $\mu_1$, $\mu_2$ $\sigma$-endlich, so existiert genau ein Maß $\mu$ auf $\AA_1\otimes\AA_2$ mit $\mu(A_1\times A_2)=\mu_1(A_1)\cdot\mu_2(A_2)\ \forall A_1\in\AA_1,\forall A_2\in\AA_2$. $\mu$ heißt \textbf{Produktmaß}\index{Produktmaß}\index{Maß!Produkt-} von $\mu_1$ und $\mu_2$, Schreibweise: $\mu=\mu_1\otimes\mu_2$. Für $\mu$ gilt\footnote{Anmerkung: $\int_\Omega f\d\mu=\int f(\omega)\,\mu(\d\omega)$}: \\
+\begin{displaymath}
+\mu(A) = \int\mu_2(A_{\omega_1})\,\mu_1(\d\omega_1) = \int\mu_1(A_{\omega_2})\,\mu_2(\d\omega_2)\quad\forall A\in\AA
+\end{displaymath}
+Schließlich ist $\mu$ auch $\sigma$-endlich.
+\end{Def}
+\begin{Bew} Es seien wieder $f_A(\omega_1)=\mu_2(A_{\omega_1})$. Seien $A_n\in\AA, n\in\N, A_n$ paarweise disjunkt und $\sum_{n=1}^{\infty}A_n=A$. Es folgt:
+\begin{eqnarray*}
+\int f_A\d\mu_1 &\stackrel{\text{stetig von unten}}{=}& \int\lim_{n\to\infty}\left( f_{\sum_{i=1}^n A_i}\right)\d\mu_1 \\
+ &\stackrel{\text{monotone Konvergenz}}{=}& \lim_{n\to\infty}\left(\int f_{\sum_{i=1}^n A_i}\d\mu_1\right) \\
+ &=& \lim_{n\to\infty}\left(\sum_{i=1}^n\left(\int f_{A_i}\d\mu_1\right)\right) \\
+ &=& \sum_{i=1}^{\infty}\left(\int f_{A_i}\d\mu_1\right) \\
+\end{eqnarray*}
+Außerdem ist $\int f_{\emptyset}\d\mu_1=\int 0\d\mu_1=0$. \\
+Also ist $\Pi: \AA\to\left[0,\infty\right],\,\Pi(A):=\int f_A\d\mu_1$ ein Maß auf $\AA$. Nach Konstruktion gilt: \\
+$\Pi(A_1\times A_2)=\int \mu_2(A_2)\cdot \ind_{A_1}\d\mu_1=\mu_2(A_2)\cdot\mu_1(A_1)$. \\
+Analog ist $\Pi'(A):=\int\mu_1(A_{\omega_2})\cdot\mu_2(\d\mu_2)$ ein Maß mit $\Pi'(A_1\times A_2)=\mu_1(A_1)\cdot\mu_2(A_2)$, d.h. $\Pi$ und $\Pi'$ stimmen auf dem durchschnittstabilen Erzeuger $\{A_1\times A_2|A_i\in\AA_i\}$ überein. Der Eindeutigkeitssatz für Maße (vgl. Übung) liefert $\Pi=\Pi' =: \mu$ auf ganz $\AA$. $\sigma$-Endlichkeit ist klar.
+\end{Bew}
+
+Wie integriert man bzgl. $\mu_1\otimes\mu_2$? \\
+Ist $f:\Omega\to\R$ eine Abbildung, so sei
+\begin{eqnarray*}
+f_{\omega_1}: & \Omega_2\to\R, & f_{\omega_1}\left(\omega_2\right):=f\left(\omega_1,\omega_2\right), \\
+f_{\omega_2}: & \Omega_1\to\R, & f_{\omega_2}\left(\omega_1\right):=f\left(\omega_1,\omega_2\right). \\
+\end{eqnarray*}
+
+\begin{Lem} \label{Lem3.3} Ist $f(\AA,\BB)$-messbar, so ist $f_{\omega_1}$ $(\AA_2,\BB)$-messbar $\forall\omega_1\in\Omega_1$ und $f_{\omega_2}$ ist $(\AA_1,\BB)$-messbar $\forall\omega_2\in\Omega_2$.
+\end{Lem}
+\begin{Bew}
+\begin{eqnarray*}
+f_{\omega_1}^{-1}\left(B\right) &=& \left\{\omega_2\in\Omega_2|f\left(\omega_1,\omega_2\right)\in B\right\} \\
+ &=& \left(\left\{\omega\in\Omega|f\left(\omega\right)\in B\right\}\right)_{\omega_1} \\
+ &=& \left(\underbrace{f^{-1}\left(B\right)}_{\in\AA}\right)_{\omega_1}\in\AA_2\quad\forall B\in\BB\text{.}
+\end{eqnarray*}
+\end{Bew}
+
+\begin{Sa} [Satz von Fubini, Teil I, auch: Satz von Tonelli] \label{Sa3.2} $\\$ %TODO label überprüfen!
+Es seinen $\mu_1$ und $\mu_2$ $\sigma$-endlich sowie $f:\Omega\to\R_+$ $(\AA,\BB)$-messbar\footnote{Dass hier $f\ge 0$ gilt, ist wesentlich für Fubini I; den allgemeinen Fall behandelt Fubini II.}. Dann ist
+\begin{eqnarray*}
+\omega_1 & \mapsto & \int f_{\omega_1}\d\mu_2 \ \ (\AA_1,\BB_{(-\infty,\infty]})\text{-messbar und} \\
+\omega_2 & \mapsto & \int f_{\omega_2}\d\mu_1 \ \ (\AA_2,\BB_{(-\infty,\infty]})\text{-messbar und es gilt:} \\
+\end{eqnarray*}
+\begin{displaymath}
+\int f\d\left(\mu_1\otimes\mu_2\right) = \int\left(\int f_{\omega_2}\d\mu_1\right)\mu_2\left(\d\omega_2\right) = \int\left(\int f_{\omega_1}\d\mu_2\right)\mu_1\left(\d\omega_1\right).
+\end{displaymath}
+\end{Sa}
+\begin{Bew} mit algebraischer Induktion.
+\begin{enumerate}
+\item[(1)] Falls $f=\sum_{i=1}^n \alpha_i \ind_{A_i}$ erhält man mit $(\ind_A)_{\omega_2}(\omega_1) = \ind_{A_{\omega_2}}(\omega_1)$ die Beziehung
+\begin{displaymath}
+\int f_{\omega_2}\d\mu_1 \stackrel{lin.}{=} \sum_{i=1}^n\alpha_i \int \ind_{\left(A_i\right)_{\omega_2}}\d\mu_1 = \sum_{i=1}^n\alpha_i \mu_1\left(\left(A_i\right)_{\omega_2}\right) $$\\$$
+\folgtnach{L.\ref{Lem3.2}}\omega_2\mapsto\int f_{\omega_2}\d\mu_1 \text{ist messbar.} $$\\$$
+\folgt \int\left(\int f_{\omega_2}\d\mu_1\right)\mu_2\left(\d\omega_2\right) = \sum_{i=1}^n\alpha_i\int\mu_1\left(\left(A_i\right)_{\omega_2}\right)\mu_2\d\left(\omega_2\right) $$\\$$
+\stackrel{D.\ref{Def3.1}}{=}\sum_{i=1}^n\alpha_i\cdot\mu_1\otimes\mu_2\left(A_i\right) = \int f\d\left(\mu_1\otimes\mu_2\right).
+\end{displaymath}
+\item[(2)] $f\ge 0,\ f\ (\AA,\BB)$-messbar. \\
+$\folgt\exists (u_n)_{n\in\N} \subset\EE$ mit $u_n\uparrow f$ und $\int f\d\mu = \lim_{n\to\infty}(\int u_n\d\mu)$. \\
+Wegen $(u_n)_{\omega_2}\uparrow f_{\omega_2}$ und $g_n(\omega_2) := \int(u_n)_{\omega_2}\d\mu_1 \uparrow \int f_{\omega_2}\d\mu_1 \forall\ \omega_2\in\Omega_2$ ist nach Schritt 1 $\int g_n(\omega_2)\mu_2(\d\omega_2) = \int u_n\d(\mu_1\otimes\mu_2)$. Mit dem Satz von der monotonen Konvergenz folgt:
+\begin{eqnarray*}
+\int\left(\int f_{\omega_2}\d\mu_1\right)\mu_2\left(\d\omega_2\right) &=& \lim_{n\to\infty}\left(\int g_n\d\mu_2\right) \\
+ &=& \lim_{n\to\infty}\left(\int u_n\d\left(\mu_1\otimes\mu_2\right)\right) \\
+ &=& \int f\d\left(\mu_1\otimes\mu_2\right).\\
+\end{eqnarray*}
+\end{enumerate}
+Wiederhole die Schritte mit $\omega_2$ statt mit $\omega_1$ und erhalte den Rest der Behauptung.
+\end{Bew}
+
+Bevor wir den Satz von Fubini für allgemeine $f$ beweisen, benötigen wir folgende Überlegung:
+\begin{Bem} Ist $(\Omega,\AA,\mu)$ Maßraum, $A\in\AA$ mit $\mu(A^C)=0$, $f:A\to\R$, so nennen wir $f$ $(\AA,\BB)$-messbar, $\mu$-integrierbar, etc., wenn dies auf die folgende Fortsetzung $\bar{f}$ von $f$ zutrifft: \\
+$\bar{f}:\Omega\to\R,\ \bar{f}(\omega):=\begin{cases}
+f(\omega) & \omega\in A \\
+0 & \text{sonst}
+\end{cases}$\quad und schreiben dann $\int f\d\mu$ statt $\int\bar{f}\d\mu$.
+\end{Bem}
+
+\begin{Sa} [Satz von Fubini, Teil II] $\\$ %TODO label
+Es seien $\mu_1$ und $\mu_2$ $\sigma$-endlich, $f:\Omega\to\R$ $(\mu_1\otimes\mu_2)$-integrierbar. \\ Dann sind $\mu_1$-fast alle $f_{\omega_1}$ $\mu_2$-integrierbar und $\mu_2$-fast alle $f_{\omega_2}$ $\mu_1$-integrierbar. \\
+Weiter sind die Integrale \\
+$$\omega_1\mapsto\int f_{\omega_1}\d\mu_2$$ und $$\omega_2\mapsto\int f_{\omega_2}\d\mu_1$$ als Funktionen von $\omega_1$ bzw. $\omega_2$ im obigen Sinne $\mu_1$- bzw. $\mu_2$-integrierbar und es gilt:
+\begin{displaymath}
+\int f\d\left(\mu_1\otimes\mu_2\right) = \int\left(\int f_{\omega_2}\d\mu_1\right)\mu_2\left(\d\omega_2\right) = \int\left(\int f_{\omega_1}\d\mu_2\right)\mu_1\left(\d\omega_1\right)
+\end{displaymath}
+\end{Sa}
+\begin{Bew} \quad\\
+Es gilt $|f|_{\omega_1} = |f_{\omega_1}|$, $f_{\omega_1}^+ = (f_{\omega_1})^+$ und $f_{\omega_1}^- = (f_{\omega_1})^-$. \\
+Also folgt aus Satz \ref{Sa3.2}.:
+\begin{eqnarray*}
+\int|f|\d\mu & = & \int\left(\int|f_{\omega_1}|\d\mu_2\right)\mu_1\left(\d\omega_1\right) < \infty \text{ (das ist die Voraussetzung)} \\
+ & \folgt & \mu_1\left(\left\{\omega_1|\int|f_{\omega_1}|\d\mu_2=\infty\right\}\right)=0 \\
+ & \folgt & f_{\omega_1} \text{ ist } \mu_1 \text{-f.ü. } \mu_2 \text{-integrierbar.} \\
+\end{eqnarray*}
+Satz \ref{Sa3.2}. angewandt auf $f_{\omega_1}^+$ und $f_{\omega_1}^-$ ergibt, dass 
+\begin{displaymath}
+\omega_1\mapsto\int f_{\omega_1}\d\omega_2 = \left(\int f_{\omega_1}^+\d\mu_2\ -\ \int f_{\omega_1}^-\d\mu_2\right)
+\end{displaymath}
+$(\AA,\BB)$-messbar ist (auf einer $\mu_1$-Nullmenge könnte \textquotedblleft$\infty - \infty$\textquotedblright stehen und die Funktion wäre dort nicht definiert, siehe hierzu aber die vorstehende Bemerkung) und
+\begin{eqnarray*}
+\int\left(\int f_{\omega_1}\d\mu_2\right)\mu_1\left(\d\omega_1\right) &=& \int\left(\int f_{\omega_1}^+\d\mu_2\ -\ \int f_{\omega_1}^-\d\mu_2\right)\mu_1\left(\d\omega_1\right) \\
+ & = & \int f^+\d\mu\ -\ \int f^-\d\mu \\
+ & = & \int f\d\mu. \\
+\end{eqnarray*}
+Der Rest folgt mit dem Symmetrieargument.
+\end{Bew}
+
+\begin{Bem} $\\$ %TODO label
+\begin{enumerate}
+\item[a)] Der Satz von Fubini läßt sich wie folgt schreiben:
+\begin{eqnarray*}
+\int f\d\left(\mu_1\otimes\mu_2\right) & = & \int\int f\left(\omega_1,\omega_2\right)\mu_1\left(\d\omega_1\right)\mu_2\left(\d\omega_2\right) \\
+ & = & \int\int f\left(\omega_1,\omega_2\right)\mu_2\left(\d\omega_2\right)\mu_1\left(\d\omega_1\right) \\
+\end{eqnarray*}
+Die Integrationsreihenfolge spielt also keine Rolle.
+\item[b)] Sind messbare Räume $(\Omega_i,\AA_i)\ (i\in I)$ gegeben mit $|I|$ endlich und $|I|>2$, so erhält man ein Maß $\mu:=\bigotimes_{i\in I}\mu_i$ auf der Produkt-$\sigma$-Algebra durch schrittweises Ausführen von Produkten mit 2 Faktoren. Insbesondere gilt auf Rechteckmengen $A_1\times\dots\times A_n$ mit $A_i\in\AA_i\ (i=1,\dots,n)$:
+$$\mu(A_1\times\dots\times A_n) = \Pi_{i=1}^n\mu_i(A_i).$$
+Da die Rechteckmengen ein durchschnittstabiler Erzeuger von $\AA$ sind, folgt wegen der Eindeutigkeit von $\mu$: \\
+$$(\mu_1\otimes\mu_2)\otimes\mu_3 = \mu_1\otimes(\mu_2\otimes\mu_3)\text{\quad(Assoziativität des Maßprodukts)}$$
+\end{enumerate}
+\end{Bem}
+
+%%Bernhard
+%Satz 3.4
+\begin{Sa} \label{Sa3.4} $\\$
+Auf $(\Omega,\AA)$ existiert genau ein Wahrscheinlichkeitsma"s $P:= \otimes_{i \in I} P_i$ 
+mit
+$$P^{\Pi_J} = \bigotimes_{i \in J}P_i \quad \forall\, J \subset I, J \text{endlich}.$$
+\end{Sa}
+
+\begin{Bew}
+Siehe z.B. Bauer, Henze, Stochastik II S.8.13.
+\end{Bew}
+
+\[
+\begin{array}{ccc}
+\mu & & \mu^T \\
+(\Omega,\AA) & \stackrel{T}{\longrightarrow} & (\Omega',\AA') \\
+P & & P^{\Pi_J} \\
+(\Omega,\AA) & \stackrel{\Pi_J}{\longrightarrow} & (\times_{i \in J} 
+\Omega_i, \otimes_{i \in J} \AA_i)
+\end{array}
+\]
+z.B. $P((\times_{i \in J} A_i)\ \times\ (\times_{j \notin J} \Omega_j)) = 
+\prod_{i \in J} P_i(A_i), \ A = \times_{i \in J} A_i$
+
+%%FRAGE
+\begin{DefON}
+Sei $(\Omega, \AA, P)$ ein Wahrscheinlichkeitsraum und $(\Omega_i', \AA_i')$ ein messbarer 
+Raum $\ \forall i \in I$. $X_i: \Omega \rightarrow \Omega_i'$ seien 
+Zufallsgr"o"sen. Die Familie $(X_i)_{i \in I}$ hei"st 
+\textbf{stochastisch unabh"angig}\index{stochastisch unabhängig}\index{unabhängig!stochastisch} genau dann, wenn $\ \forall J \subset 
+I, J$ endlich und $\ \forall A_j' \in \AA_j', j \in J$
+\[
+\underbrace{P( \cap_{j \in J} \{ X_j \in A_j'\} )}_{P^X(\times_{j \in 
+J}A_j' \times \times_{i \notin J} \Omega_i)} = \prod_{j \in J} 
+\underbrace{P(X_j \in A_j')}_{P^{X_j}(A_j')}
+\]
+\end{DefON}
+
+\begin{BemON}
+Bei der "Uberpr"ufung der Bedingung kann man sich auf $A_j \in 
+\EE_j$ beschr"anken, wobei $\EE_j$ ein durchschnittsstabiler 
+Erzeuger von $\AA_j$ ist.
+\end{BemON}
+
+%%FRAGE
+In der Situation der vorigen Definition gilt f"ur $\Omega' := \times_{i \in I} \Omega_i, \AA' := \otimes_{i \in I} \AA_i$:
+\[
+X: \Omega \rightarrow \Omega',\ (X(\omega))(i) := X_i(\omega), \ 
+\forall\, i \in I, \omega \in \Omega
+\]
+ist $(\AA,\AA')$-messbar (vgl. "U 2.1), d.h. $X$ transportiert $P$ zu einem 
+Wahrscheinlichkeitsmaß $P^X$ auf $(\Omega', \AA').$ $P^X$ nennt man auch \textbf{gemeinsame 
+Verteilung}\index{gemeinsame Verteilung}\index{Verteilung!gemeinsame} der Zufallsgr"o"sen $X_i, i \in I$.
+
+\begin{Sa} \label{Sa3.5} $\\$
+Die Familie $X = (X_i)_{i \in I}$ ist genau dann unabh"angig, wenn
+\[
+P^X = \otimes_{i \in I} P^{X_i}
+\]
+\end{Sa}
+
+\begin{Bew}
+Folgt aus der Definition und S.\ref{Sa3.4}.
+\end{Bew}
+
+\begin{BemON} $$\\$$
+\begin{enumerate}
+\item[(i)] Unabhängigkeit der $(X_i)_{i \in I}$ ist "aquivalent dazu, dass jede 
+endliche Teilfamilie $(X_i)_{i \in J}, J \subset I$, ($J$ endlich), 
+unabh"angig ist.
+\item[(ii)] Sei $\Omega_i' = \R, X  = (X_1,\dots,X_d)$ ein Zufallsvektor 
+und $x = (x_1,\dots,x_d) \in \R^d.\ F_X(x_1,\dots,x_d) = 
+P^X((-\infty,x_1] \times \cdots \times (-\infty,x_d]) = P(X_1 \leq x_1, 
+\dots , X_d \leq x_d)$ ist die gemeinsame Verteilungsfunktion. Da $\EE 
+= \{ (-\infty,x]: x \in \R^d\}$ durchschnittsstabiler Erzeuger von 
+$\BB^d$ ist, sind \\
+$X_1, \dots , X_d$ unabh"angig $\Longleftrightarrow F_X(x_1,\dots,x_d) = F_{X_1}(x_1) \cdots F_{X_d}(x_d) \ \forall\, x \in \R^d$. \\
+Falls Dichten existieren: \\
+$X_1,\dots,X_d$ unabh"angig $\Longleftrightarrow f_X(x_1,\dots,x_d) = f_{X_1}(x_1) \cdots f_{X_d}(x_d) \ \forall\, x \in \R^d$
+\item[(iii)] Als Wahrscheinlichkeitsraum für das Experiment \textquotedblleft$\infty-$oft M"unze werfen\textquotedblright kann man z.B. $\Omega = \{ 0,1 \}^{\N}, \AA = \otimes_{i \in \N} \PM(\{0,1 \}), P = \otimes_{i \in \N} ( \frac12(\delta_0 + \delta_1))$ w"ahlen. S.\ref{Sa3.4} impliziert, dass es zu jedem vorgegebenen Wahrscheinlichkeitsma"s eine Folge von unabh"angigen und indentisch verteilten Zufallsvektoren gibt. Man kann beim M"unzexperiment auch $([0,1), \BB_{[0,1)}, \lambda_{[0,1)}), X_n(\omega) = \lfloor 2^n \cdot \omega \rfloor \bmod 2$ w"ahlen. (vgl. Bsp 13.2 St I)
+\end{enumerate}
+\end{BemON}
+
+%3.2, weiß nicht ob \subsection der richtige Befehl ist...
+\section{Reellwertige Abbildungen, Rechnen mit Verteilungen}
+Wir betrachten den Spezialfall $(\Omega_i, \AA_i, \mu_i) = (\R, \BB, \lambda)$ f"ur $i = 1, \dots , d$. Hier folgt: $\Omega = \R^d, \AA = \otimes_{i=1}^d \AA_i = \sigma(\{ (a_1,b_1] \times \cdots \times (a_d,b_d] : a_i \leq b_i,\ a_i, b_i \in \R,\ i = 1, \dots, d\}) = \BB^d. $$\\$$
+P = \lambda^d, \lambda^d((a_1,b_1] \times \cdots \times (a_d,b_d]) = \prod_{i=1}^d (b_i - a_i) \hat=$ Volumen. Was passiert, wenn $(a,b]$ mit einer Abbildung $\Psi$ transformiert wird?
+
+\begin{Sa} [Transformationssatz f"ur das $d-$dimensionale Lebesgue-Ma"s]\index{Satz!Transformationssatz}\label{Sa3.6} $\\$
+Es seien $U,V \subset \R^d$ offen und $\Psi: U \rightarrow V$ eine bijektive, stetig differenzierbare Abbildung. Gilt dann $\det(\Psi')(x) \not= 0 \ \forall\, x \in U$, so hat das Bildma"s der Einschr"ankung von $\lambda^d$ auf $U$ unter $\Psi$ bzgl. der Einschr"ankung von $\lambda^d$ auf $V$ die Dichte
+\[
+\frac{d(\lambda_U^d)^{\Psi}}{d \lambda_V^d} (y) = \frac1{|\det
+\Psi' (\Psi^{-1}(y))|} \ \forall\, y \in V.
+\]
+\end{Sa}
+
+\begin{Bew}
+Henze, Stochastik II.
+\end{Bew}
+
+\begin{BemON} $\\$
+\begin{enumerate}
+\item[(a)] Unter den Voraussetzungen von S.\ref{Sa3.6} ist auch $\Psi^{-1}$ stetig differenzierbar und die Kettenregel liefert:
+$$\det(\Psi'(\Psi^{-1})(y)) \cdot \det((\Psi^{-1})')(y) = 1.$$
+Es gilt also 
+$$\frac{d(\lambda_U^d)^{\Psi}}{d \lambda_V^d} (y) = |\det(\Psi^{-1})'(y)| \ \forall\, y \in V.$$
+\item[(b)] Mit S.\ref{Sa2.4} gilt:
+$$\int_U f(\Psi(x))\d x \stackrel{S.\ref{Sa2.4}}{=} \int_V f(y)\d(\lambda_U^d)^{\Psi} = \int_V f(y)\ |\det(\Psi^{-1})'(y)|\ \d y$$ bzw. 
+$$\int_U g(x) \d x = \int_V g(\Psi^{-1}(y))\ |\det(\Psi^{-1})'(y)|\ \d y$$
+\end{enumerate}
+\end{BemON}
+
+%Beispiel 3.2.
+\begin{Bsp} \label{Bsp3.2}
+Transformation auf Polarkoordinaten\\
+Hier: d=2. $U = \{ (x_1,x_2) \in \R^2: x_1 > 0 \text{ oder } x_2 \not= 0 
+\}, \ V = (0,\infty) \times (-\pi,\pi),\ \Psi: U \rightarrow V, (x_1,x_2) 
+\stackrel{\Psi}{\longrightarrow} (r, \Phi)$ bijektiv. $(\Psi^{-1})_1 (r, 
+\Phi) = r \cos \Phi, (\Psi^{-1})_2 (r, \Phi) = r \sin \Phi$.
+$$\folgt (\Psi^{-1})'(r,\Phi) = \left( \begin{array}{cc}
+\cos \Phi & -r \sin \Phi \\
+\sin \Phi & r \cos \Phi
+\end{array} \right)$$
+$$\folgt \frac{\d(\lambda_U^d)^{\Psi}}{\d(\lambda_V^d)} = r \cos^2 \Phi + r \sin^2 \Phi = r \ \forall\, (r,\Phi) \in V.$$ Wir bekommen:
+$$\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} g(x_1,x_2) \d x_1 \d x_2 = \int_{-\pi}^{\pi} \int_0^{\infty} r \cdot g(r \cos \Phi, r \sin \Phi) \d r\d\Phi$$
+\end{Bsp}
+
+%%%%%%
+
+Im Folgenden sei $X=(X_1, \ldots, X_d):\Omega\to\R^d$ ein Zufallsvektor.
+
+\begin{Sa} [Transformationssatz für Wahrscheinlichkeitsdichten]\index{Satz!Transformations-}\label{Sa3.7}$\\$
+Es seien $U$ und $V$ offene Teilmengen von $\R^d$ und $\Psi:U\to V$ eine bijektive, stetige und differenzierbare Abbildung mit der Eigenschaft
+$$\det\Psi'(x)\ne 0\quad\forall x\in U.$$
+Ist dann $X$ ein Zufallsvektor auf $(\Omega, \AA, P)$ mit $P(X\in U)=1$ und Dichte $f_X,$ so ist auch $Y:=\Psi(X)$ absolutstetig und eine Dichte $f_Y$ von $Y$ auf $V$ ist gegeben durch
+$$f_Y(y)=|\det(\Psi^{-1})'(y)|f_X(\Psi^{-1}(y))\quad \forall y\in V$$
+\end{Sa}
+\begin{Bew} Seien $A\subset V, A\in\BB^d.$ Mit Satz \ref{Sa3.6} folgt:
+\begin{eqnarray*}
+P(Y\in A) &=& P(X\in\Psi^{-1}(A))\\
+&=& \int_U \ind_{\Psi^{-1}(A)}(x)f_X(x)\d x\\
+&=& \int_V \ind_{\Psi^{-1}(A)}(\Psi^{-1}(y))f_X(\Psi^{-1}(y))\cdot|\det(\Psi^{-1})'(y)|\d y\\
+&=& \int_A |\det(\Psi^{-1})'(y)|f_X(\Psi^{-1}(y))\d y\\
+\end{eqnarray*}
+\end{Bew}
+
+\begin{Bsp} (Box-Muller-Algorithmus zur Erzeugung von $N(0,1)$-verteilten Zufallsvariablen) \label{Bsp3.3}\\
+Seien $U_1, U_2 \sim U(0,1)$ und unabhängig. Definiere:
+$$X_1:=\sqrt{-2\log(U_1)}\cos(2\pi U_2)=\Psi_1(U_1,U_2)$$
+$$X_2:=\sqrt{-2\log(U_1)}\sin(2\pi U_2)=\Psi_2(U_1,U_2)$$
+Dann sind $X_1, X_2\sim N(0,1)$ und unabhängig. Beweis mit Satz \ref{Sa3.7}. Sei $U=(0,1)^2$
+\begin{eqnarray*}
+&V&=\{(X_1,X_2)\in\R^2|X_1 < 0 \text{ oder } X_2\ne 0\}\\
+&\Psi'(u)&=\left(
+\begin{array}{*{2}{c}}
+-(-2\log(u_1))^{-\frac 1 2}\frac{\cos(2\pi u_2)}{u_1} & -(-2\log u_1)^{\frac 1 2} 2\pi\sin(2\pi u_2)\\
+-(-2\log(u_1))^{-\frac 1 2}\frac{\sin(2\pi u_2)}{u_1} & (-2\log u_1)^{\frac 1 2} 2\pi\cos(2\pi u_2)\\
+\end{array}
+\right)\\
+\folgt & \det\Psi'&=-\frac{2\pi}{u_1} \text{ und }\\
+& u_1&=e^{-\frac 1 2 (x_1^2 + x_2^2)}\\
+\folgt & f_X(x) &= \frac{1}{|\det\Psi'(\Psi^{-1}(x))|}\cdot 1\\
+& &=\frac{1}{2\pi} e^{-\frac 1 2 (x_1^2 + x_2^2)}\\
+& &=\frac{1}{\sqrt{2\pi}}e^{-\frac 1 2 x_1^2}\cdot \frac{1}{\sqrt{2\pi}}e^{-\frac 1 2 x_2^2}\\
+\folgt & \text{Behauptung}
+\end{eqnarray*}
+\end{Bsp}
+
+\begin{Sa} \label{Sa3.8} $\\$
+Sind $X$ und $Y$ unabhängige Zufallsvariablen mit Dichten $f_X$ und $f_Y$, so ist auch die Zufallsvariable $Z:=X+Y$ absolutstetig und eine zugehörige Dichte ist gegeben durch: \index{Faltung}
+$$f_Z(z)=\int f_X(x)\cdot f_Y(z-x)\d x\quad\text{"`Faltung"'}$$
+\end{Sa}
+\begin{Bew} Verwende Satz \ref{Sa3.7} mit $\Psi:\R^2\to\R^2, \Psi(x, y)=(x, x+y)$ ($\Psi^{-1}(x,z)=(x, z-x)$)
+$$\folgt f_{X,Z}(x,z)=f_{X,Y}(x, z-x)=f_X(x)\cdot f_Y(z-x)$$
+Die "`Randdichte"' \index{Randdichte} $f_Z$ bekommt man durch Integration über $x$.
+\end{Bew}
+
+\begin{Bsp} \label{Bsp3.4}
+\begin{enumerate}
+\item[a)]Sind die Zufallsvariablen $X_1, \ldots, X_d$ unabhängig und $X_i\sim \exp(\lambda), i=1,\ldots, d,\lambda>0$, so hat $X_1+\ldots+X_d$ die Dichte
+$$f_{X_1+\ldots+X_d}(z)=\frac{\lambda^d}{(d-1)!}z^{d-1}e^{-\lambda z}\ind_{[0,\infty)}(z)$$
+($\rightarrow$ Gamma-Verteilung bzw. Erlang-Verteilung)\index{Gamma-Verteilung}\index{Verteilung!Gamma-}\index{Erlang-Verteilung}\index{Verteilung!Erlang-}
+\item[b)] Sind $X_1,\ldots, X_d$ unabhängig und $X_i\sim N(\mu_i, \sigma_i^2), a_i\in\R, i=1,\ldots, d$ so gilt falls $\sum a_i^2\ne 0$
+$$\sum_{i=1}^d a_i X_i\sim N(\sum_{i=1}^d a_i\mu_i, \sum_{i=1}^d a_i^2\sigma_i^2)$$
+\end{enumerate}
+\end{Bsp}
+
+\begin{Bsp} \label{Bsp3.5} (Gemeinsame Verteilung der Ordnungsstatistiken)\\
+Es seien $X_1,\ldots,X_d$ unabhängige und identisch verteilte Zufallsvariablen mit Dichte $f$. Weiter sei $(X_{1:d}, \ldots, X_{d:d})$ eine Permutation von $X_1, \ldots,X_d,$ so dass
+$$X_{1:d}<\ldots<X_{d:d}$$
+$X_{r:d}$ heißt \textbf{$r$-te Ordnungsstatistik} \index{Ordnungsstatistik} von $X$.\\
+Sei $S_d$ die Menge der Permutationen der Zahlen $1,\ldots, d.$ Dann gilt für $\pi\in S_d:$
+$$(X_{1:d},\ldots,X_{d:d})=(X_{\pi(1)},\ldots, X_{\pi(d)}), \text{ falls } X_{\pi(1)}<\ldots<X_{\pi(d)}$$
+Für jede messbare Funktion $g:\R^d\to\R$ gilt:
+$$g(X_{1:d},\ldots,X_{d:d})=\sum_{\pi\in S_d}g(X_{\pi(1)},\ldots,X_{\pi(d)})\cdot\ind_{[X_{\pi(1)}<\ldots<X_{\pi(d)}]}$$
+Es gilt:
+$$f_{X_{\pi(1)},\ldots,X_{\pi(d)}}(x_1,\ldots,x_d)=\prod_{i=1}^d f(x_i) = f_X(x)$$
+Also folgt:
+\begin{eqnarray*}
+Eg(X_{1:d},\ldots,X_{d:d})&=&\sum_{\pi\in S_d}\int_{x_1<\ldots<x_d} g(x)\prod_{i=1}^d f(x_i)\d x_1\ldots\d x_d\\
+&=&d!\int_{\R^d}g(x)\prod_{i=1}^d f(x_i)\ind_{[x_1<\ldots<x_d]}(x)\d x_1\ldots\d x_d\\
+\end{eqnarray*}
+Sei $g(x)=\ind_B(x)$ mit $B\in\BB^d$, dann folgt:
+$$f_{X_{1:d},\ldots,X_{d:d}}(x_1,\ldots,x_d)=d!\prod_{i=1}^d f(x_i)\ind_{[x_1<\ldots <x_d]}(x)$$
+\underline{Konkrete Anwendung:}\\
+Gegeben 12 Trinkgläser. Lebensdauer unabhängig $\exp(\lambda)$-verteilt. Nach der vorigen Überlegung gilt
+\begin{eqnarray*}
+&f_{(X_{1:d},\ldots,X_{d:d})}(x)&=\begin{cases}
+d!\lambda^d e^{-\lambda(x_1+\ldots+x_d)} &,\text{falls } x_1<\ldots<x_d\\
+0&,\text{sonst}
+\end{cases}\\
+\folgt&f_{(X_{1:d},X_{2:d})}(x)&=\begin{cases}
+d(d-1)\lambda^2 e^{-(d-2)\lambda x_2} e^{-\lambda(x_1+x_2)} &,\text{falls } x_1<x_2\\
+0&,\text{sonst}
+\end{cases}\\
+\folgtnach{Satz \ref{Sa3.7}}&f_{(X_{2:d}-X_{1:d},X_{1:d})}(y_1,y_2)&=\begin{cases}
+d(d-1)\lambda^2 e^{-d\lambda y_2} e^{-(d-1)\lambda y_1} &,\text{falls } y_1,y_2>0\\
+0&,\text{sonst}
+\end{cases}\\
+% stimmt das hier: frage nochmal nach dem Index von f
+%% so stimmts
+\folgt&f_{X_{2:d}-X_{1:d}}(y_1)&=\begin{cases}
+(d-1)\lambda e^{-(d-1)\lambda y_1} &,\text{falls } y_1>0\\
+0&,\text{sonst}
+\end{cases}\\
+&f_{X_{1:d}}(y_2)&=\begin{cases}
+d\lambda e^{-d\lambda y_2} &,\text{falls } y_2>0\\
+0&,\text{sonst}
+\end{cases}\\
+\end{eqnarray*}
+also $X_{1:d}\sim\exp(\lambda d), X_{2:d}-X_{1:d}\sim\exp(\lambda(d-1))$ und unabhängig.
+$$\folgt X_{k:d}-X_{(k-1):d}\sim\exp((d-k+1)\lambda)$$
+Es folgt:
+\begin{eqnarray*}
+&E[X_{k:d}-X_{(k-1):d}]&=\frac{1}{(d-k+1)\lambda}\\
+\folgt & \frac{E[X_{d:d}-X_{(d-1):d}]}{EX_{d:d}} &=\frac{\frac 1 \lambda}{\sum_{k=1}^d\frac{1}{(d-k+1)\lambda}}\\
+& &=\left(\sum_{k=1}^d\frac 1 k\right)^{-1}\\
+& &=(\log d)^{-1}+O(1)
+\end{eqnarray*}
+Für $d=12: 0.32$
+\end{Bsp}
+
+%Stochastik vom Mo, 04.12.2006 [bernhard]
+
+%Chapter 4!
+\chapter{Das starke Gesetz der gro"sen Zahlen}
+
+%Satz 4.1
+\begin{Sa}[Borel-Cantelli Lemma]\index{Lemma!Borel-Cantelli}\index{Borel-Cantelli Lemma} \label{Sa4.1}
+Sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum und $(A_n)_{n \in \N} \subset \AA$ eine Folge von Ereignissen.
+\[
+\limsup_{n \rightarrow \infty} A_n := \bigcap_{n=1}^{\infty} \bigcup_{k=n}^{\infty} A_k
+\]
+ist das Ereignis, dass unendlich viele der $A_n$'s eintreten.
+\begin{enumerate}
+\item[a)] Dann gilt: 
+\[
+\sum_{n=1}^{\infty} P(A_n) < \infty \Longrightarrow P(\limsup_{n \rightarrow \infty} A_n) = 0.
+\]
+
+\item[b)] Sind die Ereignisse $A_n,\ n \in \N$ stochastisch unabh"angig, so gilt:
+\[
+\sum_{n=1}^{\infty} P(A_n) = \infty \Longrightarrow P(\limsup_{n \rightarrow \infty}A_n) = 1.
+\]
+\end{enumerate}
+\end{Sa}
+
+\begin{Bew} $\\$
+\begin{enumerate}
+\item[a)] Sei $B_n := \bigcup_{k=n}^{\infty} A_k,\ n \in \N \Rightarrow P(B_n) \leq \sum_{k=n}^{\infty} P(A_k) \stackrel{n \rightarrow \infty}{\longrightarrow} 0$.\\
+Da $B_n \downarrow \bigcap_{n=1}^{\infty} B_n$ folgt:
+\[
+P(\limsup_{n \rightarrow \infty}A_n) = P(\bigcap_{n=1}^{\infty} B_n) = \lim_{n \rightarrow \infty} P(B_n) = 0.
+\]
+
+\item[b)] Sei $P_n := P(A_n),\ n \in \N. (A_n)$ stoch. unabh $\Rightarrow (A_n^c)$ stoch unabh. Es gilt:
+\begin{eqnarray*}
+0 \leq P(\bigcap_{n=1}^{\infty} A_k^c) & \stackrel{\text{stetig von oben}}{=} & \lim_{N \rightarrow \infty} P(\bigcap_{n=1}^{N} A_k^c) \\
+& \stackrel{\text{unabh.}}{=} & \lim_{N \rightarrow \infty} \prod_{k=1}^{N} (1-P_k)\\
+& \leq & \lim_{N \rightarrow \infty} \exp(-\sum_{k=1}^{N} P_k) \stackrel{\text{nach Vor.}}{=} 0 
+\end{eqnarray*}
+Somit:
+\[
+0 \leq P( (\limsup_{n \rightarrow \infty} A_n)^c) = P(\bigcup_{n=1}^{\infty} \bigcap_{k=n}^{\infty} A_k^c) \leq \sum_{n=1}^{\infty} P( \bigcap_{k=n}^{\infty} A_k^c) = 0
+\]
+\end{enumerate}
+\end{Bew}
+
+\begin{DefON}
+Es seien $X,X_1,X_2,\dots$ ZV auf einem W'Raum $(\Omega,\AA,P)$.\\
+$X_n$ konvergiert P-fast sicher gegen $X,\ (X_n \fs X)$ wenn gilt:
+\[
+P \left( \{ \omega \in \Omega \, | \, \lim_{n \rightarrow \infty} X_n(\omega) = X(\omega) \} \right) = 1.
+\]
+\end{DefON}
+
+\begin{BemON}
+$\{ \lim_{n \rightarrow \infty} X_n(\omega) = X(\omega) \} \in \AA$, denn:
+\begin{enumerate}
+\item[(i)] $\sup_{n \geq 1} X_n$ ist $\AA$-messbar, da $\{ \sup_{n \geq 1} X_n \leq a \} = \bigcap_{n=1}^{\infty} \underbrace{\{ X_n \leq a \}}_{\in \AA} \in \AA.$\\
+$\inf\limits_{n \geq 1} X_n = - \sup\limits_{n \geq 1} (-X_n)$ ist $\AA$-mb. $\Rightarrow \limsup\limits_{n \rightarrow \infty} X_n = \inf\limits_{n \geq 1} \sup\limits_{k \geq n} X_k, \liminf\limits_{n \rightarrow \infty} X_n\ \AA$-messbar.
+\item[(ii)] $\{ \lim_{n \rightarrow \infty} X_n = X \} = (\liminf\limits_{n \rightarrow \infty} (X_n-X))^{-1}(\{0\}) \cap(\limsup\limits_{n \rightarrow \infty} (X_n-X))^{-1}(\{0\}) \in \AA$
+\end{enumerate}
+\end{BemON}
+
+Im Folgenden sei $(X_n)_{n \in \N}$ eine Folge von ZV auf einem W'Raum $(\Omega,\AA,P)$. Starke Gesetz der gro"sen Zahlen sind Resultate der Form
+\[
+\frac1{a_n} \left( \sum_{i = 1}^{n} X_i -b_n \right) \fs 0
+\]
+wobei $(a_n)_{n \in \N}, (b_n)_{n \in \N} \subset \R$. Der wichtigste Satz ist hier:
+
+%Satz 4.2
+\begin{Sa}[Starkes Gesetz der gro"sen Zahlen] \label{Sa4.2}
+Ist $(X_n)_{n \in \N}$ eine Folge von u.i.v. ZV mit $E|X_1| < \infty$, so gilt:
+\[
+\frac1{n} \underbrace{\sum_{n=1}^n X_i}_{=s_n} \fs EX_1.
+\]
+\end{Sa}
+
+%Für manche eine Mühe, für andere der wohl längste Beweis der Welt
+\begin{Bew}
+Sei zun"achst $X_k \geq 0\ \forall\, k \in \N$ und $Y_k := X_k \cdot \ind_{[X_k \leq k]}\ (Y_k$ entsteht aus $X_k$ durch Abschneiden bei $k)$. Sei $S_n^{\ast} := \sum_{k=1}^n Y_k\ EY_k = E[X_k \cdot \ind_{[X_k \leq k]}] = E\left[X_1 \cdot \ind_{[X_1 \leq k]}\right] \stackrel{k \rightarrow \infty}{\longrightarrow} EX_1$ mit S.\ref{Sa2.1} (Monotone Konvergenz).\\
+Aus der Analysis: Sei $(a_n)_{n \in \N} \subset \R$
+\[
+\lim_{n \rightarrow \infty} a_n = a \Rightarrow \lim_{n \rightarrow \infty} \frac1{n} \sum_{k=1}^n a_k = a.
+\]
+Damit folgt:
+\[
+\lim_{n \rightarrow \infty} \frac1{n} E S_n^{\ast} = \lim_{n \rightarrow \infty} \frac1{n} \sum_{k=1}^n E Y_k = E X_1.
+\]
+Die $Y_n$'s sind wieder unabhängig und es gilt:
+\[
+\var(S_n^{\ast}) = \sum_{k=1}^n \var(Y_k) \leq \sum_{k=1}^n EY_k^2 \leq \sum_{k=1}^n E[X_k^2 \cdot \ind_{[X_k \leq n]}] = n \cdot E[X_1^2 \cdot \ind_{[0,n]}(X_1)] \ (\ast)
+\]
+Sei $\alpha > 1$ und $m_n := \lfloor \alpha^n \rfloor \ \forall\, n \in \N$. F"ur $x > 0$ sei $\Psi(x) := \sum_{n = N(x)}^{\infty} \frac1{m_n}$ mit $N(x) := \min\{ n \, | \, m_n \geq x \}$
+
+F"ur beliebige $z \geq 1$ gilt: $\lfloor z \rfloor \geq \frac{z}2$ und somit $\frac1{m_n} = \frac1{\lfloor \alpha^n \rfloor} \leq \frac2{\alpha^n}$ und $\alpha^{N(x)} \geq \lfloor \alpha^{N(x)} \rfloor = m_{N(x)} \geq x$. Mit $k := \frac{2\alpha}{\alpha-1}$ gilt:
+\[
+\Psi(x) = \sum_{n=N(x)}^{\infty} \frac1{m_n} \leq 2 \cdot \sum_{n=N(x)}^{\infty} \frac1{\alpha^n} = 2 \cdot \alpha^{-N(x)} \cdot \frac1{1-\frac1{\alpha}} \leq \frac{k}{x} \ (\ast \ast)
+\]
+
+Die Ungleichung von Tschebyscheff liefert $\forall\, \eps > 0:$
+\begin{eqnarray*}
+\sum_{n=1}^{\infty} P\left( \frac1{m_n} | S_{m_n}^{\ast} - E S_{m_n}^{\ast} | > \eps \right) & \stackrel{(\ast)}{\leq} & \sum_{n=1}^{\infty} \frac1{\eps^2 m_n} E[X_1^2 \cdot \ind_{[0,m_n]}(X_1)] \\
+& \stackrel{\text{S.\ref{Sa2.1}}}{=} & \frac1{\eps^2} E[X_1^2 \sum_{n=1}^{\infty} \frac1{m_n} \cdot \ind_{[0,m_x]}(X_1)]\\
+& = & \frac1{\eps^2} E[X_1^2 \Psi(X_1)] \stackrel{(\ast \ast)}{\leq} \frac{k}{\eps^2} EX_1
+\end{eqnarray*}
+
+$\stackrel{\text{"Ub}}{\Longrightarrow} \frac1{m_n} (S_{m_n}^{\ast}-ES_{m_n}^{\ast}) \fs 0 \stackrel{\text{"Ub}}{\Longrightarrow} \frac1{m_n} S_{m_n}^{\ast} \fs EX_1.$\\
+\\
+N"achstes Ziel: $\ast$ weg bekommen.\\
+Es gilt:
+\begin{eqnarray*}
+\sum_{n=1}^{\infty} P(X_n \not= Y_n) & = & \sum_{n=1}^{\infty} P(X_1 > n) \\
+& \leq & \int_{[0,\infty]} P(X_1>x) \ind(x) \stackrel{\text{Bsp \ref{Bsp3.1}}}{=} EX_1 < \infty.
+\end{eqnarray*}
+$\stackrel{S.\ref{Sa4.1} a)}{\Longrightarrow} P(\underbrace{\{ \omega \in \Omega \, | \, X_n(\omega) \not= Y_n(\omega) \text{ f"ur unendlich viele }n \}}_{=:N_0}) = 0\\
+\forall\, \omega \not\in N_0\, \exists\, k(\omega) \in \N$ mit $X_n(\omega) = Y_n(\omega) \ \forall\, n \geq k(\omega).$\\
+Auf $N_0^C$ gilt also: \\
+$$\frac{1}{n}(S_n(\omega)-S_n^*(\omega)) = \frac{1}{n}(\sum_{i=1}^{k(\omega)}X_i(\omega)-Y_i(\omega))\stackrel{n\to\infty}{\to}0 $$\\$$
+\folgt\frac{1}{n}(S_n-S_n^*)\fs 0\ \folgt\frac{1}{m_n}S_{m_n}\fs EX_1\quad(\Delta)$$ \\
+Jetzt muss die Einschr"ankung auf die Teilfolge $(m_n)_{n\in\N}$ weg. \\
+Da $S_n\geq0$, gilt f"ur $m_n\leq k\leq m_{n+1}$:
+$$\frac{m_n}{m_{n+1}}\cdot\frac{S_{m_n}}{m_n} \leq \frac{S_k}{k} \leq \frac{m_{n+1}}{m_n}\cdot\frac{S_{m_{n+1}}}{m_{n+1}}$$
+Da $\frac{m_{n+1}}{m_n}\stackrel{n\to\infty}{\to}\alpha$ folgt mit $(\Delta)$:
+$$\frac{1}{\alpha}EX_1 \leq \liminf_{k\to\infty}(\frac{S_k}{k}) \leq \limsup_{k\to\infty}(\frac{S_k}{k}) \leq \alpha EX_1\quad P\text{-f.s.}$$ \\
+Sei $N_\alpha$ die Ausnahmemenge zu $\alpha$ in der Konvergenz ($\Delta$). Da $\alpha > 1$ beliebig, gilt auf $(\underbrace{\bigcup_{j=1}^{\infty}N_{1+\frac{1}{j}}}_{P\text{-Nullmenge}})^C$:
+$$EX_1 \leq \liminf_{k\to\infty}(\frac{S_k}{k}) \leq \limsup_{k\to\infty}(\frac{S_k}{k}) \leq EX_1 $$\\$$
+\folgt \overline{X_n}:=\frac{1}{n}S_n\fs EX_1$$
+Jetzt muss noch die Bedingung $X_k \geq 0$ weg. Es folgt:
+$$\overline{X_n} = \frac{1}{n}\sum_{k=1}^n X_k^+\ - \ \frac{1}{n}\sum_{k=1}^n X_k^- \fs EX_1^+\ -\ EX_1^- = EX_1.$$\ 
+\end{Bew}
+
+%Beispiel 4.1
+\begin{Bsp}[Wiederholte Spiele] \label{Bsp4.2} $\\$
+Gegeben 2 Spieler. Spieler A erzielt in Runde $n$ $X_n$ Punkte und Spieler B $Y_n$ Punkte. Die Zufallsvariablen seien alle unabh"angig und identisch verteilt. Es sei $D_n:=X_n-Y_n$. Spieler A gewinnt Runde $n$, falls $D_n>0$. \\
+Sei $p_n = P(\sum_{k=1}^n D_k > 0)$ die Wahrscheinlichkeit, dass Spieler A nach $n$ Runden mehr Punkte hat. Es gilt nach S.\ref{Sa4.2}:
+$$\frac{1}{n}\sum_{k=1}^n\ind_{[D_k > 0]}\ \fs\ E\left[\ind_{[D_1 > 0]}\right] = p_1.$$
+Ist $p_1>\frac{1}{2}$, so gewinnt Spieler A langfristig mehr Runden als B. Dies gilt jedoch nicht, wenn die Punkte addiert werden! Beispiel dazu:
+$$X_k :=
+\begin{cases}
+n+1, & \text{mit Wahrscheinlichkeit }p_1 \\
+0, & \text{mit Wahrscheinlichkeit }1-p_1
+\end{cases},\quad Y_k \equiv n \text{ mit Wahrscheinlichkeit }1$$
+Sei $p_1=0,999,\ n=1000.\ \folgt\ p_{1000}=(0,999)^{1000} \approx 0,37$
+\end{Bsp}
+
+\chapter{Zentraler Grenzwertsatz von Lindeberg-L\'evy}
+\section{Charakteristische Funktionen}
+\begin{DefON} $\\$
+Es sei $X$ Zufallsvariable auf einem Wahrscheinlichkeitsraum $(\Omega,\AA,P)$. Dann hei"st
+$$\phi_X(t) := Ee^{itX} = E\cos(tX) + iE\sin(tX)$$
+die \textbf{charakteristische Funktion}\index{charakteristische Funktion} zu $X$.
+\end{DefON}
+
+\begin{BemON} $\\$
+Ist $X$ diskret mit Werten $x_1,x_2,\dots$, so gilt:
+$$\phi_X(t) = \sum_{k=1}^{\infty}e^{itx_k}\cdot P(X=x_k)$$
+Ist $X$ absolutstetig mit Dichte $f$, so gilt:
+$$\phi_X(t) = \int_{-\infty}^{\infty}e^{itx}f(x)\d x\quad\text{(Fourier-Transformation)}$$
+\end{BemON}
+
+%Beispiel 5.1
+\begin{Bsp} \label{Bsp5.1} $\\$
+\begin{enumerate}
+\item[a)] $X\sim B(n,p)$
+$$\phi_X(t) = \sum_{k=0}^n e^{itk}\binom{n}{k}p^k(1-p)^{n-k} $$
+$$= \sum_{k=0}^n\binom{n}{k}(pe^{it})^k(1-p)^{n-k} = (1-p+pe^{it})^n$$
+\item[b)] $X\sim U(0,1)$ \\
+$\phi_X(0) = 1 \text{ und f"ur }t\neq 0: $
+$$\phi_X(t) = \int_0^1 e^{itx}\cdot 1\d x = \int_0^1\cos(tx)\d x + i\int_0^1\sin(tx)\d x $$
+$$= \frac{1}{t}\sin(t) - \frac{i}{t}\cos(t) + \frac{i}{t} = \frac{1}{it}(e^{it}-1)$$
+\item[c)]$X\sim N(0,1)$
+$$\phi_X(t) = e^{-\frac{t^2}{2}}\quad\text{vgl. Stochastik 1}$$
+\end{enumerate}
+\end{Bsp}
+
+%Satz 5.1
+\begin{Sa} \label{Sa5.1}
+Sind $X,Y$ unabh"angige Zufallsvariablen mit charakteristischen Funktionen $\phi_X$ und $\phi_Y$, so gilt f"ur die charakteristische Funktion $\phi_{X+Y}$ der Faltung:
+$$\phi_{X+Y}(t) = \phi_X(t)\cdot\phi_Y(t)\quad\forall t\in\R$$
+\end{Sa}
+\begin{Bew} vgl. Stochastik 1, Satz 12.2.
+\end{Bew}
+
+%FRAGE: Wie trenne ich die Nummerierung von Lemma und Satz, damit 5.1 "doppelt" vorkommen kann?
+%Lemma 5.1
+\begin{Lem} \label{Lem5.1}
+F"ur alle $m\in\N, t\in\R$ gilt:
+$$\left|e^{it}-\sum_{k=0}^{m-1}\frac{(it)^k}{k!}\right| \leq \min\left\{\frac{|t|^m}{m!}, \frac{2|t|^{m-1}}{(m-1)!}\right\}$$
+\end{Lem}
+\begin{Bew} vgl. Stochastik 1, Satz 13.2.
+\end{Bew}
+
+\section{Umkehrs"atze}
+Wir werden sehen, dass eine Verteilung eindeutig durch ihre charakteristische Funktion festgelegt ist. Hat man z.B. gezeigt, dass $X$ die charakteristische Funktion $(1-p+pe^{it})^n$ hat, so ist $X\sim B(n,p)$. \\
+Aus der Analysis ist die Integralsinusfunktion bekannt:
+$$Si:\R_+\to\R_+,\ Si(x):=\int_0^x\frac{\sin(y)}{y}\d y\quad\forall x>0$$
+Es gilt: $\lim_{x\to\infty}(Si(x))=\frac{\pi}{2}$
+
+%Satz 5.2
+\begin{Sa} \label{Sa5.2} $\\$
+Es sei $X$ Zufallsvariable mit charakteristischer Funktion $\phi_X$. Dann gilt f"ur alle $-\infty<a<b<\infty$:
+$$\frac{1}{2}P(X=a) + P(a<X<b) + \frac{1}{2}P(X=b) = \lim_{T\to\infty}\left(\frac{1}{2\pi}\int_{-T}^T\frac{e^{-ita}-e^{-itb}}{it}\phi_X(t)\d t\right)$$
+\end{Sa}
+\begin{Bew} $\\$
+Sei $I(T):=\frac{1}{2\pi}\int_{-T}^T\frac{e^{-ita}-e^{-itb}}{it}\phi_X(t)\d t$. Definiere $\psi:\R\times[-T,T]\to\C$ durch
+$$\psi(t,x):=
+\begin{cases}
+\frac{e^{-it(a-x)}-e^{-it(b-x)}}{it}, & t\neq 0 \\
+b-a, & t=0
+\end{cases}$$
+Mit Lemma \ref{Lem5.1} folgt, dass $\psi$ stetig ist und wegen
+$$\left|\frac{e^{-ita}-e^{-itb}}{it}\right| = \left|\int_a^b e^{ity}\d y\right| \leq b-a$$
+ist $|\psi| \leq b-a$, also ist $\psi$ $P^X\otimes\lambda_{[-T,T]}$-integrierbar. Mit Satz \ref{Sa3.2} (Fubini I) folgt:
+$$I(T) = \frac{1}{2\pi}\int_{-T}^T\frac{e^{-ita}-e^{-itb}}{it}\left(\int e^{itx}P^X(\d x)\right)\d t$$
+$$ = \frac{1}{2\pi}\int\underbrace{\int_{-T}^T\frac{1}{it}\left(e^{-it(a-x)}-e^{-it(b-x)}\right)\d t}_{=:\psi_{a,b,T}(x)} P^X(\d x)$$
+\underline{Inneres Integral:} \\
+Da $t\mapsto\frac{\cos(t(x-a))}{it}$ punktsymmetrisch ist, gilt:
+$$\psi_{a,b,T}(x) = 2\cdot\int_0^T\frac{1}{t}\sin\left(\left(x-a\right)t\right)\d t - 2\cdot\int_0^T\frac{1}{t}\sin\left(\left(x-b\right)t\right)\d t$$
+Es gilt weiterhin:
+$$c\cdot\int_0^T\frac{1}{c\cdot t}\sin(ct)\d t = \sgn(c)\cdot Si(T|c|)
+\quad\text{mit} \sgn(c) = \begin{cases}
+1, &c>0\\
+0, &c=0\\
+-1, &c<0\\
+\end{cases}$$
+$$\folgt\psi_{a,b,T}(x)=2\cdot \sgn(x-a)Si(T|x-a|)-2\cdot \sgn(x-b)Si(T|x-b|)$$
+$$\folgt\psi_{a,b}(x) := \lim_{T\to\infty}\left(\psi_{a,b,T}\left(x\right)\right) =
+\begin{cases}
+0, & x<a \text{ oder } x>b \\
+\pi, & x=a \text{ oder } x=b \\
+2\pi, & a<x<b
+\end{cases}$$
+
+%%%%%% Vorlesung 11.12.2006
+
+$\folgt (\psi_{a,b,T})_{T\ge 0}$ besitzt eine (konstante) integrierbare Majorante. Mit dem Satz über die majorisierte Konvergenz gilt:
+\begin{eqnarray*}
+\lim_{T\to\infty} I(T) &=& \frac {1}{2\pi}\int \psi_{a,b}(x)P^X(\d x)\\
+&=& \frac 1 2 P(X=a) + \frac 1 2 P(X=b) + P(a < X < b)\\
+\end{eqnarray*}
+\end{Bew}
+
+\begin{Kor} \label{Kor5.1} $\\$
+Sind $X$ und $Y$ Zufallsvariablen mit derselben charakteristischen Funktion, so haben $X$ und $Y$ dieselbe Verteilung.
+\end{Kor}
+\begin{Bew}
+Sei $D=A(X)\cup A(Y)$ mit $A(X)=\{x\in\R|P(X=x)>0\}$, analog $A(Y).$ $A(X)$ ist abzählbar, da
+$A(X) = \bigcup^\infty_{n=1}\{x\in\R|P(X=x)\ge\frac 1 n\}$ und
+$\left|\{x\in\R|P(X=x) \ge \frac 1 n\}\right|\le n \folgt D$ abzählbar
+$$\DD := \{(a,b)| -\infty < a \le b < \infty, a, b\notin D\}$$
+ist ein durchschnittstabiles Erzeugendensystem von $\BB(\R).$ $\folgtnach{Sa\ref{Sa5.2}} P^X$ und $P^Y$ stimmen auf $\DD$ überein $\folgtnach{Eindeutigkeitssatz}$ Behauptung.
+\end{Bew}
+
+\begin{Sa} \label{Sa5.3} $\\$
+Sei $X$ eine Zufallsvariable mit charakteristischer Funktion $\phi.$ Gilt $\int |\phi(t)|\d t<\infty,$ so hat $X$ eine stetige Dichte $f$, die gegeben ist durch
+$$ f(x) = \frac 1 {2\pi} \int e^{-itx}\phi(x)\d t\quad\forall x\in\R$$
+\end{Sa}
+\begin{Bew} Wie in Beweis von Satz \ref{Sa5.2} gilt:
+$$\left|\frac{e^{-ita} - e^{-itb}}{it}\right|\le|b-a|\quad (*)$$
+Da $\phi$ $\lambda$-integrierbar ist, ist $|b-a||\phi|$ eine integrierbare Majorante für diesen Ausdruck in Satz \ref{Sa5.2}. Es folgt:
+$$\frac 1 2 P(X=a) + P(a<X<b) + \frac 1 2 P(X=b) = \frac 1 {2\pi} \int\frac{e^{-ita}-e^{-itb}}{it}\phi(t)\d t$$
+\begin{eqnarray*}
+\folgt & P(a<X<b) & \le \frac 1 {2\pi}|b-a|\underbrace{\int|\phi(t)|\d t}_{<\infty}\\
+\folgt & P(X=x) &=\lim_{n\to\infty} P(x-\frac 1 n < X < x + \frac 1 n)\\
+&&=0\\
+\end{eqnarray*}
+Ist $F$ die Verteilungsfunktion von $X$, so gilt:
+$$F(b)-F(a) = \frac 1 {2\pi}\int \frac{e^{-ita} - e^{-itb}}{it}\phi(t)\d t\quad \forall a < b$$
+Wegen $(*)$ kann man  den Satz von der majorisierten Konvergenz anwenden und bekommt:
+\begin{eqnarray*}
+\lim_{h\downarrow 0}\frac{F(x+h)-F(x)}{h} &=& \frac 1 {2\pi}\int e^{-itx}\lim_{h\downarrow 0}\frac{1-e^{-ith}}{ith}\phi(t)\d t\\
+&=& \frac 1 {2\pi}\int e^{-itx}\phi(t)\d t\\
+&=:& f(x)\\
+\end{eqnarray*}
+Außerdem folgt $x\mapsto f(x)$ ist stetig.
+\end{Bew}
+
+\section{Verteilungskonvergenz}
+
+\begin{DefON} $\\$
+\begin{enumerate}
+\item[a)] Gegeben sei der messbare Raum $(\R,\BB)$ mit Wahrscheinlichkeitsmaßen $P, P_1, P_2, \ldots$ und zugehörigen Verteilungsfunktionen $F, F_1, F_2,\ldots$\\ \textbf{$P_n$ konvergiert schwach}\index{schwache Konvergenz}\index{Konvergenz!schwache} gegen $P$ ($P_n\stackrel{w}{\to}P$), wenn $\lim_{n\to\infty}F_n(x) = F(x)\ \forall x\in\R$ an denen $F$ stetig ist.
+\item[b)] Seien $X, X_1, X_2,\ldots$ Zufallsvariablen auf (unter Umständen verschiedenen) Wahrscheinlichkeitsräumen $(\Omega, \AA, P), (\Omega_1, \AA_1, P_1),\ldots$\\
+\textbf{$X_n$ konvergiert in Verteilung}\index{Konvergenz!in Verteilung} gegen $X$ ($X_n\stackrel{d}{\to}X$), wenn $P^{X_n}\stackrel{w}{\to}P^X.$
+\end{enumerate}
+\end{DefON}
+
+\begin{Bsp} \label{Bsp5.2}
+Konvergenz in Verteilung  bzw. schwache Konvergenz ist schwächer als f.s.-Kovergenz.\\
+Sei z.B. $X\sim N(0,1)$ und $X_{2n}=X, X_{2n+1}=-X\ \forall n\in\N. \folgt P^{X_n} \equiv P^X = N(0,1)$ und $(X_n)$ konvergiert in Verteilung (gegen $X$) jedoch $X_n\not\stackrel{f.s.}{\to}X$
+\end{Bsp}
+Jedoch gilt folgender nützlicher Satz:
+\begin{Sa}[Darstellungssatz von Skorohod]\index{Darstellungssatz von Skorohod}\label{Sa5.4} $\\$
+Es seien $X, X_1, X_2, \ldots$ Zufallsvariablen mit $X_n\dto X.$ Dann existiert ein Wahrscheinlichkeitsraum $(\Omega, \AA, P)$ und hierauf Zufallsvariablen $X', X_1', X_2', \ldots$ mit $X'\stackrel{d}{=}X, X_n'\stackrel{d}{=}X_n\ \forall n\in\N$ derart, dass $X_n'\fs X'$.
+\end{Sa}
+\begin{Bew} Es seien $F, F_1, F_2, \ldots$ die Verteilungsfunktionen zu $X, X_1, X_2, \ldots$ und $(\Omega, \AA, P) = \left((0,1), \BB_{(0,1)}, \lambda_{(0,1)}\right).$ Weiter sei $F^{-1}:(0,1)\to\R, F^{-1}(y):=\inf\{x\in\R|F(x)\ge y\}$ die Quantilsfunktion zu $F,$ analog (Quantilsfunktion) $F^{-1}_n, n\in\N.$ Setze $X':= F^{-1},\ X_n':= F_n^{-1}.$\\
+Satz 5.7 (Stoch 1) $\folgt X'\stackrel{d}{=}X, X_n'\stackrel{d}{=}X_n, n\in\N$ ($P(X'\le x) = P(F^{-1}(\omega)\le x)=\underbrace{P(\omega\le F(x))}_{=\lambda(0,1)}=F(x)$ )\\
+Es bleibt also zu zeigen , dass für $P$-fast alle $\omega\in\Omega:\lim_{n\to\infty}X_n'(\omega) = X'(\omega).$\\
+Sei $\omega\in (0,1).$ Da $X$ nur abzählbar viele Atome hat (vgl. Beweis von Korollar \ref{Kor5.1}) existiert zu $\eps > 0$ ein $x\in\R$ mit $X'(\omega)-\eps < x < X'(\omega)$ und $P(X=x) = 0.$\\
+Es gilt (Lemma 5.6, Stoch 1): $\forall y\in(0,1), x\in\R:$
+$$y\le F(x) \equizu F^{-1}(y)\le x$$
+Hier: $\omega\le F(x) \equizu F^{-1}(\omega) = X'(\omega)\le x.$ Wegen $X'(\omega)> x$ folgt $F(x)<\omega.$ Da $F_n(x)\to F(x)$ für $n\to\infty$ nach Voraussetzung, $\exists n_0\in\N,$ so dass $\forall n\ge n_0: F_n(x)<\omega.$ Also $X_n'>x.$\\
+Mit $\eps\downarrow 0$ folgt:\\
+$$\liminf_{n\to\infty}X_n'(\omega)\ge X'(\omega)\quad \forall \omega\in\Omega.$$
+Ist $\omega'>\omega$ und $\eps > 0,$ so $\exists$ ein $x$ mit $X'(\omega')<x<X'(\omega')+\eps$ und $P(X=x)=0.$ Da $F$ rechtsseitig stetig, folgt $F(F^{-1}(y))\ge y\ \forall y\in(0,1),$ also mit der Monotonie von $F:\omega<\omega'\le F(X'(\omega'))\le F(x).$\\
+Wegen $F_n(x)\to F(x)$ ($n\to\infty$), $\exists n_0\in\N$ sodass $\omega\le F_n(x)$ (d.h. $X_n'(\omega)\le x$) $\forall n\ge n_0$ gilt mit $\eps\downarrow 0$ ergibt das
+$$\limsup_{n\to\infty}X_n'(\omega)\le X'(\omega')\quad \forall\omega'>\omega.$$
+\end{Bew}
+
+%% Vorlesung 14.12.2006 %%
+%Satz 5.5
+\begin{Sa}\label{Sa5.5}
+Es sei $C_b(\R)$ die Menge aller stetigen und beschränkten Funktionen, $h:\R\to\R$. Dann gilt:
+$$X_n\stackrel{d}{\to}X \equizu Eh(X_n)\to Eh(X)\quad\forall h\in C_b(\R)$$
+\end{Sa}
+\begin{Bew} $\\$
+\bewhin Nach Satz \ref{Sa5.4} existieren ein Wahrscheinlichkeitsraum $(\Omega,\AA,P)$ und Zufallsvariablen $X'\stackrel{d}{=}X,\ X_n'\stackrel{d}{=}X_n\quad\forall n\in\N$ mit $X_n'\fs X'$. Es folgt:
+$$\lim_{n\to\infty}\left(Eh\left(X_n\right)\right) = \lim_{n\to\infty}\left(Eh\left(X_n'\right)\right) \stackrel{\text{h stetig}, X_n'\fs X'}{=} Eh\left(X'\right) = Eh\left(X\right).$$
+\bewrueck Für $a,b\in\R, a<b$ sei $h_{a,b}:\R\to\R$ definiert durch
+$$h_{a,b}\left(x\right):=\begin{cases}
+1 &, x\leq a \\
+\frac{b-x}{b-a} &,a<x<b \\
+0 &,x\geq b
+\end{cases}$$
+%FEHLT: Skizze
+$h_{a,b}$ ist stetig und beschränkt. Seien $F, F_n$ die Verteilungsfunktionen zu $X, X_n\quad\forall n\in\N$. Dann gilt $\forall y>x$:
+$$F_n\left(x\right) = E\left[\ind_{(-\infty,x)}\left(X_n\right)\right] \leq E\left[h_{x,y}\left(X_n\right)\right] \stackrel{n\to\infty}{\to} E\left[h_{x,y}\left(X\right)\right],$$
+$$E\left[h_{x,y}\left(X\right)\right] \leq E\left[\ind_{(-\infty,y)}\left(X\right)\right] = F\left(y\right).$$
+Also folgt da $F$ rechtsseitig stetig ist mit $y\downarrow x$:
+$$\limsup_{n\to\infty}\left(F_n\left(x\right)\right) \leq F\left(x\right)\quad\forall x\in\R$$
+Analog erhält man für $y<x$:
+$$F_n\left(x\right) \geq E\left[h_{y,x}\left(X_n\right)\right] \stackrel{n\to\infty}{\rightarrow} E\left[h_{y,x}\left(X\right)\right] \geq F\left(y\right)$$
+Mit $y\uparrow x$: $\liminf_{n\to\infty}(F_n(x)) \geq F(x-) \quad\forall x\in\R$. \\
+Ist $F$ in $x$ stetig, so gilt $F(x-) = F(x)$ und somit $F_n(X) \stackrel{n\to\infty}{\rightarrow}F(x)$.
+\end{Bew}
+
+%Satz 5.6 (Continuous Mapping Thoerem)
+\begin{Sa}[\textquotedblleft Continuous Mapping Theorem\textquotedblright] \label{Sa5.6} \index{Continuous Mapping Theorem} $\\$
+Es seien $X,X_1,X_2,\dots$ Zufallsvariablen mit $X_n\dto X$. Weiter sei $f:\R\to\R$ eine Borel-messbare Funktion mit $P(X\in\{x\in\R\ |\ f\text{ nicht stetig in }x\})=0$. \\
+Dann gilt auch $f(X_n)\dto f(X)$ für $n\to\infty$.
+\end{Sa}
+\begin{Bew}
+Übung.
+\end{Bew}
+
+%Satz 5.7 (Satz von Helly)
+\begin{Sa}[Satz von Helly\footnote{Eduard Helly (1884-1943), österreichischer Mathematiker, hauptsächlich Funktionalanalysis}] \label{Sa5.7} \index{Satz!von Helly}$\\$
+Zu jeder Folge $(F_n)_{n\in\N}$ von Verteilungsfunktionen existieren eine Teilfolge $(F_{n_k})_{k\in\N}$ und eine schwach monoton wachsende, rechtsseitig stetige Funktion $G:\R\to[0,1]$, sodass $\lim_{k\to\infty}(F_{n_k}(x)) = G(x) \quad\forall x\in\R$, an denen $G$ stetig ist.
+\end{Sa}
+\begin{Bew}[Skizze] $\\$
+Für $x\in\R$ ist $(F_n(x))_{n\in\N} \subset [0,1]\quad\folgtnach{Bolzano-Weierstraß}\exists$ Häufungspunkt. Sei $(r_k)_{k\in\N}$ eine Abzählung von $\Q$. Wähle Teilfolgen $(F_{n_{k,j}})_{j\in\N}$ mit $F_{n_{k,j}} \stackrel{j\to\infty}{\rightarrow} G_0(r_k)$, wobei $(n_{k+1,j})_{j\in\N}$ eine Teilfolge von $(n_{k,j})_{j\in\N}$ ist. (Definition der Funktion $f_0$ auf $\Q$) \\
+Für die Diagonalfolge $(n_{j,j})_{j\in\N}$ gil dann: $F_{n_{j,j}} \rightarrow G_0$ auf $\Q$. Sei $G_0$ auf ganz $\R$ durch $G(x) := \inf\{G_0(r)\ |\ r\in\Q, r>x\}$ fortgesetzt. \\
+Rest: $\epsilon-\delta$-Argumente.
+\end{Bew}
+
+\begin{BemON}
+$G$ aus Satz \ref{Sa5.7} muß keine Verteilungsfunktion sein. \\
+Beispiel: $F_n := \ind_{[n,\infty]} \folgt G\equiv 0$
+\end{BemON}
+
+\begin{DefON}
+Eine Familie $\PM$ von Wahrscheinlichkeitsmaßen auf $(\R,\BB)$ heißt \textbf{straff}\index{straff}\index{Wahrscheinlichkeitsmaß!straffes}, wenn $\forall \epsilon>0 \ \exists$ kompaktes Intervall $[a,b] \subset \R$ mit:
+$$P\left(\left[a,b\right]\right) \geq 1-\epsilon \quad\forall P\in\PM$$
+\end{DefON}
+
+\begin{BemON} $\\$
+\begin{enumerate}
+\item[(i)] Ist $\PM$ straff, so auch jedes $\PM' \subset \PM$.
+\item[(ii)] Sind alle $\PM_i$ mit $i\in\{1,\dots,,n\}$ straff, so auch $\bigcup_{i=1}^n\PM_i$.
+\item[(iii)] Ist $|\PM| = 1$, so ist $\PM$ straff.
+\end{enumerate}
+\end{BemON}
+
+%Satz 5.8
+\begin{Sa}
+Ist $\{P_n\ |\ n\in\N\}$ eine straffe Familie von Wahrscheinlichkeitsmaßen auf $(\R,\BB)$, so existieren eine Teilfolge $(P_{n_k})_{k\in\N}$ von $(P_n)_{n\in\N}$ und ein Wahrscheinlichkeitsmaß $P$ derart, dass $P_{n_k} \wto P$ für $k\to\infty$.
+\end{Sa}
+\begin{Bew}
+Sei $F_n$ die Verteilungsfunktion zu $P_n \ \forall n\in\N$. \\
+$\folgtnach{Satz \ref{Sa5.7}} \exists$ Folge $(n_k)_{k\in\N}$ mit $F_{n_k}(x) \to G(x)$ für $k\to\infty \ \forall x\in\R$ mit $G$ stetig in $x$; $G$ ist wachsend und rechtsseitig stetig. \\
+Bleibt zu zeigen: $G$ ist Verteilungsfunktion, also $\lim_{x\to -\infty}(G(x)) = 0$ und $\lim_{x\to\infty}(G(x)) = 1$. Ist dann $P$ das Wahrscheinlichkeitsmaß zu $G$, so folgt $P_{n_k} \wto P$. \\
+Sei also $\epsilon>0$. Da $\{P_n\ |\ n\in\N\}$ straff ist $\folgt \exists a,b\in\R$ mit $P_n([a,b]) \geq 1-\epsilon \ \forall n\in\N. \folgt F_n(a) \leq \epsilon \ \forall n\in\N$. \\
+$G$ hat höchstens abzählbar viele Unstetigkeitsstellen. $\folgt \ \exists c<a$, in dem $G$ stetig. $\folgt G(c) = \lim_{k\to\infty}(F_{n_k}(c)) \leq \epsilon \ \folgt G(x) \leq \epsilon \ \forall x\leq c$. \\
+Also: $\forall \epsilon>0 \quad\exists c\in\R: \quad\forall x\leq c$ gilt $0 \leq G(x) \leq \epsilon \quad\folgt \lim_{x\to -\infty}(G(x)) = 0$ und $\lim_{x\to\infty}(G(x)) = 1$.
+\end{Bew}
+
+%Satz 5.9 (Stetigkeitssatz für charakteristische Funktionen)
+\begin{Sa}[Stetigkeitssatz für charakteristische Funktionen] \index{Stetigkeitssatz für charakteristische Funktionen} \label{Sa5.9} $\\$
+Es seien $X,X_1,X_2,\dots$ Zufallsvariablen, $\phi,\phi_1,\phi_2,\dots$ die zugehörigen charakteristischen Funktionen. Dann gilt:
+$$X_n \dto X \quad\equizu\quad \phi_n(t) \to \phi(t) \quad\forall t\in\R$$
+\end{Sa}
+\begin{Bew} $\\$
+\bewhin Sei $t\in\R.\ x\mapsto\cos(tx),\ x\mapsto\sin(tx)$ sind stetig und beschränkt. \\
+$\folgtnach{Satz \ref{Sa5.5}} \phi_n(t) = E\cos(tX_n) + iE\sin(tX_n) \rightarrow E\cos(tX) + iE\sin(tX) = \phi(t)$.
+
+%Ab hier Bernhard vom 18.12.2006
+\bewrueck Wir zeigen zun"achst: $\{ P^{X_n}, n \in \N \}$ ist straff. $\C$-wertige Version von Fubini II liefert $\forall\, \delta > 0$.
+\begin{eqnarray*}
+\frac1{\delta} \int_{-\delta}^{\delta} (1-\varphi_n(t)) \d t & = & \int (\frac1{\delta} \int_{-\delta}^{\delta} (1-e^{itx}) \d t) P^{X_n} (\d x)\\
+& = & 2 \int \underbrace{(1- \frac{\sin(\delta x)}{\delta x})}_{\geq 0} P^{X_n} (\d x) \\
+& \geq & 2 \int_{|x| \geq \frac2{\delta}} \underbrace{(1- \frac1{|\delta x|})}_{\geq \frac12} P^{X_n} (\d x) \\
+& \geq & P^{X_n} ( [-\frac2{\delta},\frac2{\delta}]^C )
+\end{eqnarray*}
+
+Sei $\eps > 0$. Da $\varphi$ in 0 stetig und $\varphi(0) = 1, \ \exists\, \delta > 0:$
+\[
+|1 - \varphi(t)| \leq \frac{\eps}4 \quad \forall\, |t| \leq \delta
+\]
+$\Rightarrow |\frac1{\delta} \int_{-\delta}^{\delta} (1-\varphi(t)) \d t| \leq \frac1{\delta} 2\delta \frac{\eps}4 = \frac{\eps}2$.
+Da $|\varphi_n| \leq 1$ folgt mit majorisierter Konvergenz:
+\[
+\int_{-\delta}^{\delta} (1- \varphi_n(t))\d t \stackrel{n \rightarrow \infty}{\rightarrow} \int_{-\delta}^{\delta} (1- \varphi(t)) \d t
+\]
+$\Rightarrow \exists\, n_0 \in \N$, so dass $\frac1{\delta} \int_{-\delta}^{\delta} (1- \varphi_n(t))\d t \leq \eps \ \forall n \geq n_0. \Rightarrow P^{X_n} ( [-\frac2{\delta},\frac2{\delta}] ) \geq 1-\eps \ \forall n \geq n_0$.\\
+Au"serdem: $\forall\, n \in \{1,\dots,n_0 -1\} \ \exists\, a_n > 0$ mit $P^{X_n}( [-a_n,a_n] ) \geq 1-\eps$ da $P^{X_n}( [-m,m] ) \rightarrow 1$ f"ur $m \rightarrow \infty$.\\
+Insgesammt: Sei $a := \max \{a_1,\dots,a_{n_0 -1}, \frac2{\delta} \} \Rightarrow P^{X_n} ( [-a,a] ) \geq 1-\eps \ \forall n \in \N \Rightarrow \{ P^{X_n}, n \in N \}$ ist straff.\\
+
+\textbf{Annahme:} $X_n \dto X$ gilt nicht.\\
+$\Rightarrow \exists\, x \in \R$ mit $P(X=x) = 0$ und $P(X_n \leq x) \not\rightarrow P(X \leq x), n \rightarrow \infty$.\\
+d.h. $\exists\, \eps > 0$ und eine Teilfolge $(X_{n_k})_{k \in \N}$ mit $|P(X_{n_k} \leq x) - P(X \leq x)| \geq \eps \ \forall\, k \in \N \ (\ast)$.\\
+$\{ P^{X_{n_k}}, k \in \N \}$ ist ebenfalls straff $\stackrel{S.5.8}{\Rightarrow} \exists$ Teilfolge $(X_{n_{k_j}})_{j \in \N}$ und ein W'ma"s $P_0$ mit $P^{X_{n_{k_j}}} \wto P_0$.\\
+Sei $\varphi_0$ charakteristische Funktion zu $P_0$. Also folgt mit der Hinrichtung: $\varphi_{n_{k_j}} (t) \rightarrow \varphi_0(t) = \varphi(t) \stackrel{Kor.5.1}{\Rightarrow} P_0 = P^X$, also $X_{n_{k_j}} \dto X$ und damit $P(X_{n_{k_j}} \leq x) \rightarrow P(X \leq x)$. Wid zu $(\ast)$.
+\end{Bew}
+
+Wir ben"otigen noch folgendes technisches Hilfslemma:
+%Lemma 5.10
+\begin{Lem} \label{Lem5.10} $\\$
+F"ur alle $z_1,\dots,z_n,w_1,\dots,w_n \in \{ z \in \C | |z| \leq 1 \}$ gilt:
+\[
+|\prod_{k=1}^n z_k - \prod_{k=1}^n w_k| \leq \sum_{k=1}^n |z_k-w_k|
+\]
+\end{Lem}
+
+\begin{Bew}
+\begin{eqnarray*}
+|\prod_{k=1}^n z_k - \prod_{k=1}^n w_k| & \leq &| \prod_{k=1}^n z_k -w_1 \prod_{k=2}^n z_k| + |w_1 \prod_{k=2}^n z_k - w_1 w_2 \prod_{k=3}^n z_k| + \cdots + |w_1 \dots w_{n-1} z_n - \prod_{k=1}^n w_k|\\
+& = & |z_1 - w_1| \underbrace{|\prod_{k=2}^n z_k|}_{\leq 1} + |z_2 - w_2| \underbrace{|w_1 \prod_{k=3}^n z_k|}_{\leq 1} + \cdots + |z_n - w_n| \underbrace{|\prod_{k=1}^{n-1} w_k|}_{\leq 1}
+\end{eqnarray*}
+\end{Bew}
+
+Hauptsatz des Abschnitts:
+%Satz 5.11
+\begin{Sa}[Zentraler Grenzwertsatz von Lindeberg-L\'evy] \index{Zentraler Grenzwertsatz von Lindeberg-L\'evy} \label{Sa5.11} $\\$
+F"ur jedes $n \in \N$ seien $X_{nk}, k=1,\dots,r_n$ unabhängige Zufallsvariablen (nicht notwendig identisch verteilt) auf einem Wahrscheinlichkeitsraum $(\Omega_n,\AA_n,P_n)$ mit $\var(X_{nk}) = \sigma_{nk}^2 < \infty$ und $EX_{nk} = \mu_{nk} < \infty$. Es sei $s_n^2 := \sum_{k=1}^{r_n} \sigma_{nk}^2 > 0$. Ist dann f"ur alle $\eps > 0$ die \textbf{Lindeberg-Bedingung}\index{Lindeberg-Bedingung}
+\[
+(L) \quad \lim_{n \rightarrow \infty} \frac1{s_n^2} \sum_{k=1}^{r_n} \int_{|X_{nk}-\mu_{nk}| > \eps s_n} (X_{nk} - \mu_{nk})^2 \d P_n = 0
+\]
+erf"ullt, so gilt mit $n \rightarrow \infty$:
+\[
+\frac1{s_n} \sum_{k=1}^{r_n} (X_{nk}-\mu_{nk}) \dto Z\ , \ Z \sim N(0,1)
+\]
+\end{Sa}
+
+%Beweis bitte hier einfügen!
+
+\begin{Bem}
+\begin{enumerate}
+\item[1.] Die Lindeberg-Bedingung schlie"st einen dominierenden Einfluss eines einzelnen Summanden $X_{nk}$ auf die $X_{n1} + \cdots + X_{nr_n}$ aus. Insbesondere gilt:
+\[
+\max\{ \sigma_{nk}^2 | 1 \leq k \leq r_n \} = o(s_n^2) \text{ f"ur } n \rightarrow \infty
+\]
+
+\item[2.] Der ZGWS hat eine lange \glqq Verbesserungsgeschichte\grqq hinter sich. Gelegentlich ist die Lyapunov-Bedingung einfacher zu verwenden:
+\[
+\lim_{n \rightarrow \infty} \frac1{s_n^{2+\delta}} \sum_{k=1}^{r_n} E(|X_{nk} - \mu_{nk}|^{2 + \delta}) = 0 \text{ f"ur ein } \delta > 0
+\]
+
+\item[3.] Der Satz liefert eine Begr"undung f"ur die "`Allgegenwart"' der Normalverteilung.
+\end{enumerate}
+\end{Bem}
+
+Ein wichtiger Spezialfall ist
+%Satz 5.12
+\begin{Sa}[ZGWS St. I] \label{Sa5.12} $\\$
+Es seien $Y_1,Y_2,\dots$ u.i.v. ZV mit $EY_1 = \mu < \infty$ und $0 < \var(Y_1) = \sigma^2 < \infty$. Dann gilt:
+\[
+\frac{Y_1 + \cdots Y_n - n \mu}{\sqrt{n} \sigma} \dto Z \sim N(0,1)
+\]
+\end{Sa}
+
+\begin{Bew}
+Sei $X_{nk} := Y_k, r_n = n, (\Omega_n,\AA_n,P_n) = (\Omega,\AA,P)$. Es gilt: $s_n^2 = n \sigma^2$ und
+\[
+\frac1{s_n^2} \sum_{k=1}^{r_n} \int_{|X_{nk}- \mu_{nk}| > \eps s_n} (X_{nk} - \mu_{nk})^2 \d P_n = \frac1{\sigma^2} \int_{|Y_1-\mu_1| > \eps \sqrt{n} \sigma} (Y_1-\mu_1)^2 \d P =: I_n
+\]
+Da $z_n := \ind_{(\eps \sqrt{n} \sigma, \infty)} (|Y_1 - \mu_1|) (Y_1-\mu_1)^2 \leq (Y_1 - \mu_1)^2$ und $\lim_{n \rightarrow \infty} z_n = 0$ folgt mit majorisierter Konvergenz, dass $\lim_{n \rightarrow \infty} I_n = 0$. Also ist die Lindeberg-Bedingung erf"ullt und die Behauptung folgt mit Satz \ref{Sa5.11}.
+\end{Bew}
+
+\begin{Bew}
+Beweis von Satz \ref{Sa5.11} \\
+O.B.d.A: $\mu_{nk}=0$ und $s_n=1$. Anderfalls ersetze $X_{nk}$ durch $\frac{X_{nk}-\mu_{nk}}{s_n}.$\\
+\textbf{Idee:} Verwende S.\ref{Sa5.9}: Sei $\varphi_{nk}$ die charakteristische Funktion von $X_{nk}$ und $\varphi_{s_n}$ die von $\sum_{n=1}^{r_n} X_{nk}: \varphi_{s_n}(t) = \prod_{k=1}^{r_n} \varphi_{nk}(t) \rightarrow \varphi_z(t) = e^{-\frac{t^2}{2}}$ \\
+Zu zeigen:
+$$\prod^{r_n}_{k=1}\phi_{n_k}(t)\to\phi_z(t)=e^{-\frac {t^2} 2}\quad\forall t\in\R$$
+Mit Lemma \ref{Lem5.1} ($m=3$):
+\begin{eqnarray*}
+\left| e^{itx} - (1+itx-\frac 1 2 t^2 x^2)\right| &\le&\min\{\frac{|tx|^3}{3!}, |tx|^2\}\quad\forall x\in\R\\
+&\le&\min\{|tx|^3, |tx|^2\}
+\end{eqnarray*}
+Integral über $x$ liefert (beachte: $EX=0$)
+$$\left|\phi_{n_k}(t) - ( 1- \frac 1 2 t^2\sigma_{n_k}^2)\right|\le E\min\{|tX_{n_k}|^2, |tX_{n_k}|^3\} =: M_{n_k}$$
+Sei $\eps>0$ beliebig. Es gilt
+\begin{eqnarray*}
+M_{n_k} &\le& \int_{|X_{n_k}|\le\eps}|tX_{n_k}|^3\d P_n + \int_{|X_{n_k}|>\eps}|tX_{n_k}|^2\d P_n\\
+&\le& |t|^3\eps\sigma_{n_k}^2 + t^2\int_{|X_{n_k}|>\eps}X_{n_k}^2\d P_n
+\end{eqnarray*}
+$$\folgt\sum_{k=1}^{r_n}M_{n_k}\le|t|^3\eps + t^2\sum_{k=1}^{r_n}\int_{|X_{n_k}|>\eps}X_{n_k}^2\d P_n \stackrel{n\to\infty}{\to}\eps|t|^3 + 0 \quad\text{folgt mit }(L)$$
+Mit $\eps\downarrow 0$ folgt:
+$$\lim_{n\to\infty}\sum_{k=1}^{r_n}\left|\phi_{n_k}(t)-(1-\frac 1 2 t^2\sigma_{n_k}^2)\right| = 0 \quad\forall t\in\R\quad (1)$$
+Behauptung: $\lim_{n\to\infty}\left|\prod_{k_n}^{r_n}\phi_{n_k}(t) - \prod_{k=1}^{r_n}(1-\frac 1 2 t^2\sigma_{n_k}^2)\right|=0\quad\forall t\in\R\quad (2)$\\
+Beweis: $\forall\eps>0$ gilt:
+$$\sigma_{n_k}^2\le\int_{|X_{n_k}|>\eps}X_{n_k}^2\d P_n + \eps^2$$
+\begin{eqnarray*}
+&\folgt& \limsup_{n\to\infty}\max\{\sigma_{n_k}^2|1\le k\le r_n\} \\
+&\le&\lim_{n\to\infty}\left(\eps^2+\sum_{k=1}^{r_n}\int_{|X_{n_k}|>\eps}X_{n_k}^2\d P_n\right)\\
+&\stackrel{(L)}{=}&\eps^2 + 0
+\end{eqnarray*}
+Mit $\eps\downarrow 0:$
+$$\lim_{n\to\infty}\max\{\sigma_{n_k}^2|1\le k\le r_n\} = 0\quad (3)$$
+\begin{tabular}[b]{rp{0.8\textwidth}}
+$\folgt$ & $\forall t\in\R, \exists n_0\in\N,$ so dass $\forall n\ge n_0: |1-\frac 1 2 t^2\sigma_{n_k}^2|\le 1\quad \forall k\in\{1,\ldots, r_n\}$\\
+$\folgt$ & Für $n\ge n_0$ läßt sich das $\prod$ in $(2)$ nach Lemma \ref{Lem5.10} durch die Summe in $(1)$ abschätzen, d.h. $(1)\folgt(2)$\\
+\end{tabular}\\
+Es bleibt zu zeigen:
+$$\lim_{n\to\infty}|\underbrace{\prod_{k=1}^{r_n}\exp(-\frac 1 2 t^2\sigma_{n_k}^2)}_{=e^{-\frac 1 2 t^2}} - \prod_{k=1}^{r_n}(1-\frac 1 2 t^2 \sigma_{n_k}^2)| = 0 \quad\forall t\in\R$$
+Behauptung fogt mit Lemma \ref{Lem5.10} falls
+$$\lim_{n\to\infty}\sum_{k=1}^{r_n}\left|\exp(-\frac 1 2 t^2\sigma_{n_k}^2) - 1 + \frac 1 2 t^2\sigma_{n_k}^2\right| = 0\quad (4)$$
+Für $x\in\R$ mit $|x|\le\frac 1 2$ gilt $|e^x-1-x|\le\frac 1 2 \sum_{j=2}^\infty |x|^j\le x^2$
+$$\folgt \sum_{k=1}^{r_n}|\exp(\underbrace{-\frac 1 2 t^2\sigma_{n_k}^2}_{=x}) - 1 + \frac 1 2 t^2\sigma_{n_k}^2|\le \frac 1 4 t^4\sum_{k=1}^{r_n}\sigma_{n_k}^4$$
+Wegen $\sum_{k=1}^{r_n}\sigma_{n_k}^4\le\max\{\sigma_{n_k}^2|1\le k\le r_n\} \cdot\underbrace{\sum_{k=1}^{r_n}\sigma_{n_k}^2}_{=1}\stackrel{n\to\infty, (3)}{\to}0$\\
+Also $(3)\folgt(4)$
+\end{Bew}
+
+\begin{Bsp}[Rekorde]\label{Bsp5.3}$\\$
+Sei $(\Omega, \AA, P)$ ein Wahrscheinlichkeitsraum und $X_1, X_2,\ldots$ eine Folge von unabhängigen identisch  verteilten Zufallsvariablen darauf mit absolutstetiger Verteilungsfunktion $F.$ Setze:
+$$R_n := \begin{cases}
+1, &\text{falls } X_n>X_i, i=1,\ldots, n-1\\
+0, &\text{sonst}
+\end{cases}$$
+$R_n = 1 \equizu$ $n$-ter Versuch ist ein Rekord. $F$ stetig $\folgt P(X_i = X_j) = 0\ \forall i\not =j$
+\begin{eqnarray*}
+\folgt & A & :=\{\omega\in\Omega|\exists i\not =j, X_i(\omega) = X_j(\omega)\}\\
+&& = \bigcup_{i,j\in\N, i\not=j}\{X_i = X_j\}\\
+\folgt & P(A) & =0
+\end{eqnarray*}
+Sei $S_n$ die Menge der Permutationen der Zahlen $1,\ldots,n.$ Sei $\Psi_n:\Omega\to S_n$ gegeben durch
+$$\Psi_n = \pi\equizu X_{\pi(1)}<X_{\pi(2)}<\cdots<X_{\pi(n)}$$
+$\Psi_n$ ist messbar, da $\Psi^{-1}(\{\pi\})=\bigcap_{i=1}^n\{\underbrace{X_{\pi(i)}<X_{\pi(i+1)}}_{\in\AA}\}.$ Beispiel \ref{Bsp3.5} $\folgt (X_{\pi(1)},\ldots,X_{\pi(n)}) \stackrel{d}{=}(X_1,\ldots, X_n)\ \forall\pi\in S_n.$\\
+Ist $B:=\{(x_1, \ldots, x_n)\in\R^n|x_1<\cdots<x_n\}$ so gilt:
+\begin{eqnarray*}
+P(\Psi_n=\pi) &=& P((X_{\pi(1)},\ldots,X_{\pi(n)})\in B)\\
+&=&P((X_1,\ldots,X_n)\in B)\\
+&=&P(\Psi_n = \id)\quad\text{unanhängig von }\pi
+\end{eqnarray*}
+\begin{tabular}[b]{rp{0.8\textwidth}}
+$\folgt$ & $P(\Psi_n=\pi)=\frac 1 {n!}\ \forall\pi\in S_n$ und\\
+&$P(R_n = 1) = P(\Psi_n\in\{\pi\in S_n|\pi(n)=n\}) = \frac 1 n$\\
+$\folgt$ & $R_n\sim B(1,\frac 1 n)$ sind also nicht identisch verteilt
+\end{tabular}\\
+Wegen $\{R_{n+1}=1\}\cap\{\Psi_n=\pi\}=\{\Psi_{n+1}=\tilde\pi\}$ mit
+$$\tilde\pi (i) = \begin{cases}
+\pi(i) &, i\le n\\
+n+1 &, i=n+1
+\end{cases}$$
+folgt:
+$$P(\Psi_n=\pi, R_{n+1}=1) = \frac 1 {(n+1)!} = \underbrace{P(\Psi_n=\pi)}_{=\frac 1 {n!}} \underbrace{P(R_{n+1} = 1)}_{\frac 1 {n+1}}\quad\forall\pi\in S_n$$
+\begin{tabular}[b]{rp{0.8\textwidth}}
+$\folgt$ & $\Psi_n$ und $R_{n+1}$ sind unabhängig\\
+$\folgt$ & Da $(R_1, \ldots, R_n) = G(\Psi_n)$ sind $R_{n+1}$ und $(R_1,\ldots,R_n)$ unabhängig\\
+$\folgt$& $P(R_{i_1}=j_1,\ldots,R_{i_n}=j_n) =$\\
+&$P(R_{i_1}=j_1,\ldots,R_{i_{n-1}}=j_{n-1})\cdot P(R_{i_n}=j_n) = \ldots$\\
+&$P(R_{i_1}=j_1)\cdot\ldots\cdot P(R_{i_n} = j_n)$ für $i_1<i_2<\ldots<i_n, j_1,\ldots,j_n\in\{0,1\}.$\\
+$\folgt$ & die Zufallsvariablen $(R_n)_{n\in\N}$ sind unabhängig
+\end{tabular}\\
+Wie viele Rekorde gibt es unter den ersten $n$ Versuchen?
+$$S_n:=\sum_{i=1}^n R_i$$
+Es gilt:
+$$ES_n = \sum_{k=1}^n ER_k = \sum_{k=1}^n \frac 1 k$$
+$$\var(S_n) = \sum_{k=1}^n\var(R_k) = \sum_{k=1}^n\frac 1 k (1 - \frac 1 k ) = \sum_{k=1}^n\frac 1 k - \sum_{k=1}^n \frac 1 {k^2}$$
+Insbesondere:
+$$\frac{ES_n}{\log n}\stackrel{n\to\infty}{\to}1,\quad\frac{\var(S_n)}{\log n}\stackrel{n\to\infty}{\to}1$$
+Mit dem zentralen Genzwertsatz (ZGWS) bekommen wir genauere Aussagen: Sei $X_{n_k} = R_k, r_n = n \folgt s_n = \left(\var(S_n)\right)^{\frac 1 2}$\\
+Überprüfen der Lyapunov-Bedingung ($\delta = 1$):
+$$E|R_k - \underbrace{ER_k}_{= \frac 1 k}|^3 = \underbrace{P(R_k=1)}_{=\frac 1 k}(1-\frac 1 k )^3 + \underbrace{P(R_k = 0)}_{=\frac {k-1} k}\left(\frac 1 k\right)^3\le\frac 2 k$$
+$$\folgt 0\le\frac 1 {s_n^3}\sum_{k=1}^n E|R_k-ER_k|^3\le\frac 1 {s_n^3}\sum_{k=1}^n\frac 2 k\to 0 \text{ für } n\to\infty$$
+Der Zentrale Grenzwertsatz (Satz \ref{Sa5.11}) liefert $$\frac{S_n - ES_n}{\sqrt{Var (S_n)}} \dto Z\sim N(0,1)$$ bzw. $$\frac{S_n - \log(n)}{\sqrt{\log(n)}} \dto Z\sim N(0,1)$$
+Also für große n: $P(\log(n) - 1,96\sqrt{\log(n)} \leq S_n \leq \log(n) + 1,96\sqrt{\log(n)}) \approx P(-1,96 \leq Z \leq 1,96) = 0,9$.
+\end{Bsp}
+
+%Vorlesung vom Montag, 8. Januar (curry)
+%Beispiel 5.4
+\begin{Bsp}(G. Polya, 1930: Eine Wahrscheinlichkeitsaufgabe zur Kundenwerbung, oder: \textquotedblleft Coupon Collector's Problem\textquotedblright) \label{Bsp5.4} \\
+Urne mit $n$ verschiedenen Kugeln, Ziehen mit Zurücklegen \\
+$S_n =$ Anzahl der Züge, bis $r_n = [\phi \cdot n],\ 0<\phi<1$ verschiedene Kugeln gezogen werden. Es sei $X_{nk} =$ Anzahl der bis zum Erhalt einer neuen Kugel nötigen Züge, wenn bereits $k-1$ verschiedene Kugeln gezogen (und zurückgelegt) wurden. $X_{n1} := 1$. \\
+$X_{nk} \sim Geo(\frac{n-k+1}{n})$, d.h. $P(X_{nk} = j) = (\frac{k-1}{n})^{j-1}\cdot\frac{n-k+1}{n},\ j=1,2,\dots$. \\
+Falls $Y \sim Geo(p),\ p\in(0,1]$ mit $Y \equiv 1$ bei $p=1$, gilt: \\
+$EY = \frac{1}{p},\ \var(Y) = \frac{1-p}{p^2},\ EY^4\leq\frac{24}{p^4}$ \\
+Für $S_n = X_{n1} + \dots + X_{nr_n}$ erhalten wir $\mu_n := ES_n = \sum_{k=1}^{r_n}\frac{n}{n-k+1}$ und $s_n^2 = \var(S_n) = \sum_{k=1}^{r_n}\frac{\frac{k-1}{n}}{(\frac{n-k+1}{n})^2} = n\sum_{k=1}^{r_n}\frac{k-1}{(n-k+1)^2}$. \\
+Wir prüfen die Lyapunov-Bedingung mit $\delta = 2$:
+Für $Y \sim Geo(p)$ gilt: $$E(Y-\frac{1}{p})^4 \leq E(\max\{Y,\frac{1}{p}\})^4 \leq EY^4 + \frac{1}{p^4} \leq \frac{25}{p^4}.$$
+Insbesondere ist damit $$\sum_{k=1}^{r_n}E|X_{nk}-\mu_{nk}|^4 \leq 25\cdot\sum_{k=1}^{r_n}\frac{1}{(1-\frac{(k-1)}{n})^4} \leq 25\cdot[\phi \cdot n]\cdot\frac{1}{(1-\phi)^4} = O(n).$$
+Wegen $s_n^2 \geq n\cdot\frac{1}{n^2}\sum_{k=1}^{r_n}(k-1) = \frac{1}{n}\cdot\frac 1 2 (r_n - 1)\cdot r_n \geq \frac{1}{2n}(\phi n - 1)\phi n = \Theta(n)$ folgt damit
+$$\lim_{n\to\infty}(\frac{1}{s_n^{2+2}}\sum_{k=1}^{r_n}E|X_{nk}-\mu_{nk}|^{2+2}) = 0.$$
+Also folgt mit dem Zentralen Grenzwertsatz: $$\frac{S_n - ES_n}{\sqrt{\var (S_n)}} \dto Z\sim N(0,1)$$
+Weiter gilt: $\frac{1}{n}ES_n = \sum_{k=1}^{r_n}\frac{1}{n}\cdot\frac{1}{1-\frac{k-1}{n}} = \int_0^{\frac{r_n}{n}}\frac{1}{1-\frac{nx}{n}}\d x + O(\frac 1 n) = \int_0^{\frac{r_n}{n}}\frac{1}{1-x}\d x + O(\frac{1}{n}) = \int_0^\phi \frac{1}{1-x}\d x + O(\frac{1}{n}) = -\log(1-\phi) + O(\frac{1}{n})$. \\
+Analog: $\lim_{n\to\infty}(\frac{1}{n}\var(S_n^2)) = \int_0^\phi\frac{x}{(1-x)^2}\d x = \frac{\phi}{1-\phi} + \log(1-\phi).$ \\
+Mit $a(\phi) = -\log(1-\phi),\ b(\phi) := \sqrt{\frac{\phi}{1-\phi} + \log(1-\phi)}$ folgt:
+$$\frac{S_n - a(\phi)n}{b(\phi)\sqrt{n}} \dto Z \sim N(0,1)$$
+\end{Bsp}
+
+\begin{BspON}[Numerisches Beispiel] $\\$
+Wie groß muss ihr Bekanntenkreis sein, damit mit einer Wahrscheinlichkeit von mindestens 0,95 an 180 Tagen im Jahr Geburtstag gefeiert werden kann? \\
+Also: $n=365,\ \phi=\frac{180}{365},\ S_n \leq k\ \equizu\ \underbrace{\frac{S_n - a(\phi)n}{b(\phi)\sqrt{n}}}_{\approx Z} \leq \frac{k-a(\phi)n}{(b(\phi)\sqrt{n}}$ \\
+$\Phi(\underbrace{\frac{k-a(\phi)n}{b(\phi)\sqrt{n}}}_{=1,645}) \geq 0,95\ \equizu\ k \geq a(\phi)n + 1,645\cdot b(\phi)\sqrt{n}\quad\folgt k \geq 266$. \\
+Für $\phi = 1$ kann man den Zentralen Grenzwertsatz nicht mehr anwenden: \\
+$r_n = n,\ \var(S_n) = n\sum_{k=1}^n\frac{k-1}{(n-k+1)^2} = n\sum_{k=1}^n\frac{n-k}{k^2} = n^2\sum_{k=1}^n\frac{1}{k^2} - n\sum_{k=1}^n\frac{1}{k} = n^2\cdot\frac{\pi^2}{6} + o(n^2).$ \\
+$\var(X_{n,n}) = \frac{1-\frac{1}{n}}{\frac{1}{n^2}} = n^2 + o(n^2)$
+$\folgt$ bei großem $n$ steckt etwa $\frac{6}{\pi^2} \approx 0,61$ der Variabilität der Summe im letzten Summanden. Wir können jetzt eine andere Skalierung finden, allerdings ist die Grenzverteilung dann keine Normalverteilung mehr! \\
+Sei $A_{m,i}$ das Ereignis, dass die Kugel $i$ in den ersten $m$ Ziehungen nicht auftaucht $\folgt \{S_n > m\} = \bigcup_{i=1}^n A_{m,i}.$ \\
+($S_n$ ist die Anzahl der Züge, bis alle $n$ verschiedenen Kugeln mindestens einmal gezogen worden sind) \\
+Mit der Siebformel: 
+$$P(S_n > m) = \sum_{k=1}^n (-1)^{k+1}\sum_{1 \leq i_1 < i_2 < \dots < i_k \leq n}P(\bigcap_{l=1}^k A_{m,i_l}) = \sum_{k=1}^{n-1} (-1)^{k+1} \binom n k (1-\frac{k}{n})^m$$
+Sei $c\in\R$ fest, $m_n = [n\log(n) + cn]$. Für $x > -1$ gilt $\log(1+x) \leq x$. Damit:
+$\log\left(\binom n k \left(1-\frac{k}{n}\right)^{m_n}\right) \leq k\log\left(n\right) - \log\left(k!\right) + \log\left(1-\frac{k}{n}\right)\left(n\log\left(n\right) + cn - 1\right)
+\stackrel{\text{s.o.}}{\leq} k\log\left(n\right) - \log\left(k!\right) - \frac{k}{n}\left(n\log\left(n\right) + cn - 1\right) \leq -ck + \frac k n - \log\left(k!\right)$
+$$\folgt \left|\left(-1\right)^{k+1}\binom n k \left(1 - \frac{k}{n}\right)^{m_n}\right| \leq \frac{1}{k!}\exp(\frac k n -ck) \quad\forall c\in\R.$$
+$$\text{Ähnlich: } \lim_{n\to\infty}\left(-1\right)^{k+1}\binom n k \left(1 - \frac{k}{n}\right)^{m_n} = \left(-1\right)^{k+1}\frac{1}{k!}e^{-ck} \quad\forall k\in\N.$$
+Insgesamt:
+\begin{eqnarray*}
+\lim_{n\to\infty}\left(P\left(\frac{S_n - n\log\left(n\right)}{n} > c\right)\right) &=& \lim_{n\to\infty}\left(P\left(S_n > m_n\right)\right) \\
+&=& \lim_{n\to\infty}\left(\sum_{k=1}^{n-1}\left(-1\right)^{k+1}\binom n k \left(1 - \frac{k}{n}\right)^{m_n}\right) \\
+&=& \lim_{n\to\infty}\left(\sum_{k=1}^{\infty}\left(-1\right)^{k+1}\binom n k \left(1 - \frac{k}{n}\right)^{m_n}\right) \\
+&\stackrel{\text{maj. Konv.}}{=}& \sum_{k=1}^{\infty}\lim_{n\to\infty}\left(\left(-1\right)^{k+1}\binom n k \left(1 - \frac{k}{n}\right)^{m_n}\right) \\
+&=& \sum_{k=1}^{\infty}\frac{\left(-1\right)^{k+1}}{k!}\left(e^{-c}\right)^k \\
+&=& 1 - e^{-e^{-c}} \\
+\end{eqnarray*}
+Das Wahrscheinlichkeitsmaß auf $(\R,\BB)$ mit der Verteilungsfunktion $F(x) = e^{-e^{-x}} \ \forall x\in\R$ heißt \textbf{Gumbel-Verteilung}\index{Gumbelverteilung}\index{Verteilung!Gumbel}. \\
+Also gilt:
+$$\frac{S_n - n\log(n)}{n} \dto Z \sim Gumbel.$$
+\end{BspON}
+
+\begin{BspON}[Variation des numerischen Beispiels von oben] $\\$
+Der Bekanntenkreis soll jetzt so groß sein, dass mit einer Wahrscheinlichkeit von mindestens 0,95 täglich gefeiert werden kann. \\
+$\folgt k \geq 365\cdot\log(365)\cdot 365\cdot 2,97 \approx 3237,51$ (?)
+\end{BspON}
+
+%Vorlesung vom 11.01.2007 [curry]
+\chapter{Zentraler Grenzwertsatz in $\R^n$}
+\begin{DefON} Es sei $X = (X_1,\dots,X_d)^T$ ein Zufallsvektor.
+\begin{enumerate}
+\item[a)] Ist $EX_i < \infty,\ i=1,\dots,d$, so heißt $EX := (EX_1,\dots,EX_d)$ \textbf{Erwartungswert}\index{Erwartungswert (Zufallsvektor)} von $X$.
+\item[b)] Ist $EX_i^2 < \infty,\ i=1,\dots,d$, so heißt die $d\times d$-Matrix $Cov(X) = (Cov(X_i,X_j))_{i,j=1,\dots,d}$ \textbf{Kovarianzmatrix}\index{Kovarianzmatrix} von X. \\
+Beachte: Die Kovarianzmatrix ist symmetrisch, da $Cov(X_i,X_j) = Cov(X_j,X_i)$, und in der Diagonale steht die Varianz, denn $Cov(X_i,X_i) = \var(X_i)$, jeweils für $i,j=1,\dots,d$.
+\end{enumerate}
+\end{DefON}
+
+\begin{BemON}
+\begin{enumerate}
+\item[a)] Es gelten folgende Rechenregeln: Sei $A\in\R^{s\times d}, b\in\R^s$ \\
+$E(AX + b) = AEX + b$ \\
+$Cov (AX + b) = A\cdot Cov(X)A^T$
+\item[b)] Die 2. Rechenregel impliziert, dass Kovarianzmatrizen stets positiv semidefinit sind.
+\end{enumerate}
+\end{BemON}
+
+\begin{DefON} Es sei $X=(X_1,\dots,X_d)^T$ ein Zufallsvektor. Dann ist
+$$\phi_X: \R^d\to\C,\ \phi_X(t) = Ee^{it^T X}$$
+die \textbf{charakteristische Funktion}\index{charakteristische Funktion (Zufallsvektor)} zu X.
+\end{DefON}
+
+\begin{BemON} $\\$
+\begin{enumerate}
+\item[a)] Es gilt für Zufallsvektoren $X,Y$: \\
+$$X \stackrel{d}{=} Y \quad\equizu\quad \phi_X(t) = \phi_Y(t) \quad\forall t\in\R^d \quad\equizu\quad t^TX \stackrel{d}{=} t^TY \quad\forall t\in\R^d$$
+\item[b)] Die \textbf{Verteilungskonvergenz}\index{Verteilungskonvergenz} für Zufallsvektoren sei definiert durch \\
+$X_n \dto X \quad:\equizu\quad Eh(X_n) \to Eh(X) \quad\forall h\in\C_b(\R^d).$ (vgl. Satz \ref{Sa5.5}) \\
+Auch hier gelten \\
+$X_n \dto X \quad\equizu\quad \phi_n(t) \to \phi(t) \quad\forall t\in\R^d.$ (vgl. Satz \ref{Sa5.9}) \\
+und das \textquotedblleft Continous Mapping Theorem\textquotedblright. (vgl. Satz \ref{Sa5.6})
+\end{enumerate}
+\end{BemON}
+
+%Satz 6.1
+\begin{Sa}[Cramér-Wold-Technik] \label{Sa6.1} $\\$
+Es seien $X,X_1,X_2,\dots$ $d$-dimensionale Zufallsvektoren. Dann gilt:
+$$X_n \dto X \quad\equizu\quad c^T X_n \dto c^T X \quad\forall c\in\R^d$$
+\end{Sa}
+\begin{Bew} $\\$
+\bewhin folgt aus dem \textquotedblleft Continous Mapping Theorem\textquotedblright mit $h(x) := c^T x$. \\
+\bewrueck $c^T X_n \dto c^T X \quad\forall c\in\R^d \folgtnach{S.\ref{Sa5.9}} Ee^{itc^T X_n} \to Ee^{itc^T X} (n\to\infty) \quad\forall t\in\R,\ \forall c\in\R^d.$ \\
+$\folgt \phi_n(c) \to \phi(c) \quad\forall c\in\R^d \quad\folgt X_n \dto X.$
+\end{Bew}
+
+\section{Mehrdimensionale Normalverteilung}
+\begin{DefON} $\\$
+Der Zufallsvektor $X = (X_1,\dots,X_n)^T$ besitzt eine \textbf{$d$-dimensionale Normalverteilung}\index{$d$-dimensionale Normalverteilung}\index{Normalverteilung!$d$-dimensionale}, falls $c^T X$ eine eindimensionale Normalverteilung besitzt $\forall c\in\R^d$
+\end{DefON}
+
+\begin{BemON} $\\$
+$X$ habe eine $d$-dimensionale Normalverteilung. \\
+Setze $c := e_i$ (Einheitsvektor) für ein $i\in\{1,\dots,d\} \quad\folgt X_i$ ist normalverteilt.
+$\folgt \exists EX_i = \mu_i;\ \var(X_i) < \infty;\ EX_i^2 < \infty \quad\folgt Cov(X_i,X_j) \stackrel{C.S.U.}{<} \infty.$ \\
+Sei $\Sigma := Cov (X).$ Weiter gilt: $E(c^T X) = c^T \mu;\ \var(c^T X) = c^T \Sigma c.$ \\
+$\folgt c^T X \sim N(c^T \mu, c^T \Sigma c) \folgtnach{St.1, Bsp.12.3} \phi_{c^T X}(t) = Ee^{itc^T X} = e^{ic^T \mu t - \frac{1}{2}c^T \Sigma ct^2} \quad\forall t\in\R.$ \\
+$\folgt \phi_X(t) = Ee^{it^T X} = \phi_{t^T X}(1) = e^{it^T \mu - \frac{1}{2}t^T \Sigma t},\ t\in\R.$\\
+Wegen obiger Bemerkung, Teil a) folgt: \\
+Die Normalverteilung ist durch $\mu$ und $\Sigma$ festgelegt. Schreibweise: $X \sim N_d(\mu,\Sigma)$
+\end{BemON}
+
+%Lemma 6.2 (Achtung: In diesem Abschnitt werden Sätze und Lemmata gemeinsam fortlaufend nummeriert)
+\begin{Lem} \label{Lem6.2}
+Sei $X \sim N_d(\mu,\Sigma),\ A\in\R^{s\times d},\ b\in\R^s$. Dann gilt: \\
+$Y := AX + b \sim N_s(A\mu + b,A\Sigma A^T)$
+\end{Lem}
+\begin{Bew}
+\begin{eqnarray*}
+\phi_Y(t) &=& Ee^{it^T (AX+b)} \\
+&=& e^{it^T b} Ee^{it^T AX} \\
+&=& e^{it^T b}\phi_X(A^T t) \\
+&=& e^{it^T (b+A\mu) - \frac{1}{2}t^T (A\Sigma A^T)t} \\
+\end{eqnarray*}
+\end{Bew}
+
+%Satz 6.3
+\begin{Sa}[Existenzsatz] \label{Sa6.3}$\\$
+Sei $\mu\in\R^d$ und $\Sigma\in\R^{d\times d}$ eine beliebige symmetrische, positiv semidefinite Matrix. Dann existiert ein $d$-dimensionaler Zufallsvektor $X$ mit $X \sim N_d(\mu,\Sigma)$.
+\end{Sa}
+\begin{Bew} $\\$
+Sei $Y = (Y_1,\dots,Y_d)$, wobei $Y_1,\dots,Y_d$ unabhängig und $Y_k \sim N(0,1),\ k=1,\dots,d$. Die Existenz dieser Konstruktion ist mit Satz \ref{Sa3.4} gegeben. Da $c^T Y \sim N(0,c^T c)$, ist $Y \sim N_d(0,I_d)$\footnote{das ist die $d$-dimensionale Standardnormalverteilung} \\
+$\Sigma$ positiv semidefinit $\folgt \Sigma = AA^T$ mit einem $A\in\R^{d\times d} \folgtnach{L.\ref{Lem6.2}} X := AY + \mu \sim N_d(\mu,\Sigma).$
+\end{Bew}
+
+
+%Ab hier Bernhard, 15.01.2007
+%Satz 6.4
+\begin{Sa} \label{Sa6.4}
+Sei $X \sim N_d(\mu,\Sigma)$ und $\Sigma$ nicht singul"ar. Dann besitzt $X$ eine Dichte der Form
+\[
+f(x) = \frac1{(2\pi)^{\frac{d}2} |\det \Sigma|^{\frac12}} exp(-\frac12 (x-\mu)^T \Sigma^{-1}(x-\mu)),\ x \in \R^d
+\]
+\end{Sa}
+
+\begin{Bew}
+Sei $\Sigma = AA^T$ und $X = A \cdot Y + \mu$ mit $Y \sim N_d(0,I_d)$.\\
+Dichte von $Y$:
+\[
+f_Y (y_1,\dots,y_d) = \prod_{j=1}^d \frac1{\sqrt{2\pi}} e^{-\frac12 y_j^2} = \frac1{(2\pi)^{\frac{d}2}} exp(-\frac12 y^Ty)
+\]
+Sei $\Psi(y) = Ay + \mu.\ \Psi$ ist bijektiv, $\Sigma$ regul"ar.
+\[
+\folgtnach{Satz \ref{Sa3.7}}{\Rightarrow} f_X(x) = \frac1{|\det A|} \cdot f_X(A^{-1}(x-\mu))
+\]
+Beachte: $\det \Sigma = (\det A)^2,\ \Sigma^{-1} = (A^{-1})^T (A^{-1})$.
+\end{Bew}
+
+
+\begin{BemON}
+Ist $\det \Sigma = 0 \Rightarrow \exists\, a \in \R^d,\ a \not= 0$ mit $a^T \Sigma a = 0 \Rightarrow \var(a^T X) = 0.$\\
+$N(\mu,\Sigma)$ ist dann auf $H = \{ x \in \R^d\ |\ a^T x = a^T \mu \}$ konzentriert, d.h. $P^X(H) = 1$. Wegen $\lambda^d(H) = 0$ folgt mit dem Satz von Radon-Nikodym: $\not\exists$ Dichte.
+\end{BemON}
+
+
+%6.2
+\section{Zentraler Grenzwertsatz in $\R^d$}
+
+%Satz 6.5
+\begin{Sa} \label{Sa6.5}
+Es sei $(X_n)_{n \in \N}$ eine Folge von unabh. u. identisch verteilen $d$-dim Zufallsvektoren mit Erwartungsvektor $\mu$ und Kovarianzmatrix $\Sigma$. Dann gilt f"ur $\overline{X}_n = \frac1{n} \sum_{i=1}^n X_i$:
+\[
+\sqrt{n} (\overline{X_n} - \mu) \dto Z,\ Z \sim N_d(0,\Sigma).
+\]
+\end{Sa}
+
+\begin{Bew}
+Sei $Z_n := \sqrt{n} (\overline{X_n} - \mu)$.\\
+Nach Satz \ref{Sa6.1} ist z.z. $c^T Z_n \dto c^TZ\ \forall\, c \in \R^d$.\\
+Wegen $\var(c^T Z_n) = \frac1{n} \sum_{i=1}^n \var(c^T X_i) = c^T \Sigma c,\ Ec^T Z_n = 0$ k"onnen wir o.B.d.A. $c^T \Sigma c> 0$ annehmen (andernfalls ist $c^T Z_n \equiv 0$).
+\begin{eqnarray*}
+1-\text{dim ZGWS}: & & \frac{c^T Z_n}{\sqrt{c^T \Sigma c}} = \frac{\sum_{j=1}^n c^T X_j - n c^T \mu}{\sqrt{n c^T \Sigma c}} \dto Z_0, \ Z_0 \sim N(0,1) \\
+& \Rightarrow & c^T Z_n \dto \sqrt{c^T \Sigma c} \cdot Z_0 \sim N(0,c^T \Sigma c)
+\end{eqnarray*}
+\end{Bew}
+
+
+%Beispiel 6.1
+\begin{Bsp}[$\chi^2$-Anpassungstest] \label{Bsp6.1}
+Es seien $X_1,X_2$ unabh. u. identisch verteilte, $d$-dim. Zufallsvektoren mit
+\[
+P(X_1 = e_k) = p_k,\ k=1,\dots,d,\ \sum_{k=1}^d p_k = 1.
+\]
+Dann hat $S_n = \sum_{k=1}^n X_k$ eine Multinomialverteilung (vgl. Sto. I) mit Z"ahldichte:
+\[
+P(S_n = (k_1,\dots,k_d)) = \frac{n!}{k_1! \cdot \cdots \cdot k_d!}p_1^{k_1} \cdot \cdots \cdot p_d^{k_d}
+\]
+f"ur $k_1,\dots,k_d \in \N_0,\ k_1 + \cdots k_d = n$.\\
+Weiter gilt: $EX_1 = p := (p_1,\dots,p_d)^T,\ \cov (X_1) = \Sigma$ mit
+\[
+(\Sigma)_{ij} = \begin{cases}
+p_i(1-p_i), & i = j \\
+-p_ip_j, & i \not= j
+\end{cases}
+\Rightarrow \Sigma = \diag(p) - pp^T.
+\]
+ZGWS (Satz \ref{Sa6.5}):
+\[
+\frac1{\sqrt{n}} (S_n - np) \dto Z,\ Z \sim N_d(0,\Sigma)
+\]
+Anmerkung: Wir kennen $p_1,\dots,p_d$ nicht, nur die Realisierungen von $X_1,\dots,X_n$. Betrachte die Testgr"o"se $T_n := \sum_{i=1}^d \frac1{np_i} (S_{n,i} - n p_i)^2$.\\
+Aufgabe: Zu $(p_1,\dots,p_d),\ X,n$ gegeben, bestimme $c_{\alpha}$ mit $P(T_n > c_{\alpha}) = \alpha$. Also: Bestimme Verteilung von $T_n$.\\
+L"osung: Approximativ. Sei $h: \R^d \rightarrow \R,\ h(x_1,\dots,x_d) := \sum_{j=1}^d \frac{x_j^2}{p_j}$.
+\[
+h \text{ stetig } \folgtnach{Cont. mapping}{\Rightarrow} T_n =  h(\frac1{\sqrt{n}}(S_n - np)) \dto h(Z),\ Z \sim N_d (0,\Sigma)
+\]
+Welche Verteilung hat $h(Z)$?\\
+Sei $\tilde{Z} = \diag (\frac1{\sqrt{p_1}},\dots,\frac1{\sqrt{p_d}}) \cdot Z.\ \folgtnach{Lemma \ref{Lem6.2}}{\Rightarrow} \tilde{Z} \sim N_d(0,\tilde{\Sigma})$ wobei
+\begin{eqnarray*}
+\tilde{\Sigma} & = & \diag (\frac1{\sqrt{p_1}},\dots,\frac1{\sqrt{p_d}}) \cdot (\diag (p)-pp^T) \cdot \diag (\frac1{\sqrt{p_1}},\dots,\frac1{\sqrt{p_d}}) \\
+& = & I_d - \underbrace{(\sqrt{p_1},\dots,\sqrt{p_d})^T}_{=: r} \cdot (\sqrt{p_1},\dots,\sqrt{p_d}) \\
+& = & I_d - rr^T
+\end{eqnarray*}
+
+Es gilt: $\|r\| = 1\ \Rightarrow \exists$ orthogonale Matrix $A = (r, \ast) \in \R^{d \times d}$. Sei $Y := A^T \tilde{Z} \Rightarrow Y \sim N_d(0, \Sigma_Y)$, wobei $\Sigma_Y = A^T \tilde{\Sigma} A = I_d - \diag(1,0,\dots,0) = \diag (0,1,\dots,1)$.\\
+$\Rightarrow Y^T Y \stackrel{d}{=} \sum_{i=1}^{d-1} W_i^2,\ W_i \sim N(0,1)$ unabh. $\Rightarrow h(Z) = \tilde{Z}^T \tilde{Z} = Y^T Y \sim \chi_{d-1}^2,\ \text{Chi}^2$-Verteilung mit $d-1$ Freiheitsgraden.\\
+\textbf{Zahlenbeispiel:}\\
+W"urfel wird 189 mal geworfen.\\
+Ergebnis
+\begin{tabular}{|c|c|c|c|c|c|}
+1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+30 & 37 & 26 & 29 & 29 & 38
+\end{tabular}\\
+Ist der W"urfel fair?\\
+D.h. $p_1 = \dots = p_6 = \frac16$.\\
+$T_n = 3,37,\ d-1 = 5,\ \alpha = 0,05,\ p = (\frac16,\dots,\frac16)$\\
+$P(T_n > c_{\alpha}) \stackrel{!}{=} 0,05 \ \Leftrightarrow 1 - F_{\xi_5^2}(c_{\alpha}) \stackrel{!}{=} 0,05 \Rightarrow c_{\alpha} = 11,1$. d.h. Nullhypothese "`W"urfel fair"' kann nicht abgelehnt werden.
+\end{Bsp}
+
+%Paragraph 7
+\chapter{Bedingte Erwartungswerte und Bedingte Verteilungen}
+Sei $(\Omega,\AA,P)$ ein W'Raum, $(\Omega',\AA')$ ein Messraum, $Y: \Omega \rightarrow \Omega'$ sei $(\AA,\AA')$-messbar und nehme die Werte $y_1,\dots,y_n \in \Omega'$ an. $Y^{-1}(y_k) = \{ \omega \in \Omega\ |\ Y(\omega) = y_k \} =: A_k \Rightarrow \Omega = A_1 + \cdots + A_n$ und $\sigma(Y) = \{ \sum_{k \in I} A_k\ |\ I \subset \{1,\dots,n\} \}$.
+
+\begin{DefON}
+Sei $X: \Omega \rightarrow \R$ eine ZV mit $E|X| < \infty$. Dann ist der bedingte Erwartungswert von $X$ unter der Bedingung $Y = y_k$ defniniert durch:
+\[
+E[X | Y = y_k ] := \frac1{P(A_k)} \int_{A_k} X dP, \quad k = 1,\dots,n
+\]
+\end{DefON}
+
+%%%%%%%%%%%%%%%%%%%%
+% Martin - Stochastik II 18.1.2006
+
+Falls $X$ diskret mit $x_1, \ldots, x_m$:
+\begin{eqnarray*}
+E[X|Y=y_k] &=& \frac 1 {P(Y=y_k)} \sum_{j=1}^m x_j\cdot P(X=x_j, Y=y_k)\\
+&=& \sum_{j=1}^m x_j\cdot P(X=x_j|Y=y_k)
+\end{eqnarray*}
+
+\begin{DefON} Der \textbf{bedingte Erwartungswert von $X$ gegeben $Y$} \index{bedingter Erwartungswert}\index{Erwartungswert!bedingt} ist $E[X|Y]:\Omega\to\R$ mit 
+$$E[X|Y](\omega):=\sum_{k=1}^n E[X|Y=y_k]\cdot \ind_{[Y=y_k]}(\omega)$$
+\end{DefON}
+
+\begin{BemON}\begin{enumerate}
+\item[a)] Offenbar ist $E[X|Y]$ $(\sigma(Y),\BB)$-messbar.
+\item[b)] Sei $Z:=E[X|Y].$ Dann gilt
+\begin{eqnarray*}
+\int_{A_k} Z\d P &=& \int_\Omega \ind_{A_k} Z\d P\\
+&=&E[X,Y=y_k]\cdot P(A_k)\\
+&=& \int_{A_k}X\d P
+\end{eqnarray*}
+Wegen der Struktur von $\sigma(Y)$ folgt auch
+$$\int_A Z\d P = \int_{A}X\d P\quad\forall A\in\sigma(Y)$$
+\item[c)] $E[X|Y] = g(Y)$ mit
+$$g(y)=\sum_{k=1}^n E[X|Y=y_k]\cdot\ind_{\{y_k\}}(y)$$
+\item[d)] Offenbar hängt die Definition von $E[X|Y]$ nur davom ab, auf welchen Mengen $A_k$ $Y$ die verschiedenen Werte annimmt, nicht aber welche Werte das genau sind.\\
+Deshalb schreibt man auch:
+$$E[X|Y]=E[X|\sigma(Y)]$$
+\end{enumerate}
+\end{BemON}
+
+\begin{Bsp}\label{Bsp7.1} Sei $([0,1), \BB_{[0,1)}, \underbrace{\lambda_{[0,1)}}_{=:P}), X(\omega) = \omega$\\
+- Hier fehlt ein Bild -\\
+$$A_k=\left[\frac {k-1} n\right., \left.\frac k n\right), k = 1, \ldots, n,\quad \FF:=\left\{\sum_{k\in I} A_k| I\subset\{1,\ldots, n\}\right\}$$
+\begin{eqnarray*}
+E[X, A_k] &=& \frac 1 {P(A_k)} \int_{A_k}\omega P(\d\omega)\\
+&=& n\int_{\frac {k-1} n}^{\frac k n} \omega\d\omega\\
+&=& \frac 1 2 \frac {2k-1} n
+\end{eqnarray*}
+$E[X, \FF]$ ist also eine "`Approximation"' oder "`Vergröberung"' von $X.$ Bezüglich einer beliebigen Sub-$\sigma$-Algebra $\FF\subset\AA$ wird der bedingte Erwartungswert wie folgt definiert:
+\end{Bsp}
+
+\begin{DefON} Sei $X$ eine Zufallsvariable mit $E|X|<\infty$ und $\FF\subset\AA$ eine Sub-$\sigma$-Algebra von $\AA.$ Dann heißt $Z:\Omega\to\R$ \textbf{eine Version des bedingten Erwartungswertes $E[X|\FF]$ von $X$}\index{bedingter Erwartungswert}\index{Erwartungswert!Version des bedingten} unter $\FF,$ wenn gilt
+\begin{enumerate}
+\item[(i)] $Z$ ist $\FF$-messbar
+\item[(ii)] $\int_A Z\d P = \int_A X\d P\quad\forall A\in\FF$
+\end{enumerate}
+\end{DefON}
+
+\begin{Sa}\label{Sa7.1} $\\$
+Der bedingte Erwartungswert existiert und ist bis auf Nullmengen eindeutig.
+\end{Sa}
+\begin{Bew} Sei $X\ge 0$. Durch
+$$Q(A):=\int_A X(\omega)P(\d\omega)\quad\forall A\in\FF$$
+wird ein Maß auf $(\Omega, \FF)$ definiert (Satz \ref{Sa2.7}).\\
+Sei $P_\FF$ die Einschränkung von $P$ auf $\FF.$ Offenbar $Q\ll P_\FF.$ Satz von Radon-Nikodym $\folgt Q$ besitzt eine Dichte $Z$ bzgl. $P_\FF$ und $Z$ ist nach Definition $\FF$-messbar.\\
+Falls $X$ beliebig: $X = X^+ - X^-$\\
+P-f.s. Eindeutigkeit: Seien $Z, \tilde Z$ Versionen von $E[X, \FF].$
+$$\folgt \int_A (Z-\tilde Z)\d P = 0 \quad\forall A\in\FF$$
+Wegen $\{Z>\tilde Z\} \in\FF, \{Z<\tilde Z\}\in\FF$ folgt:
+$$E|Z-\tilde Z| = \int_{\{Z>\tilde Z\}}(Z-\tilde Z)\d P - \int_{\{Z<\tilde Z\}}(Z-\tilde Z)\d P = 0$$
+$\folgt Z = \tilde Z$ P-f.s.
+\end{Bew}
+
+\begin{BemON} Der bedingte Erwartungswert ist also eigentlich die Äquivalenzklasse
+$$E[X|\FF] = \left\{Z\in L^1(\Omega, \FF, P)|\int_A Z\d P = \int_A X\d P\ \forall A\in\FF\right\}$$
+Ein Element davon nennt man "`Version"'. Oft wird $E[X|\FF]$ mit einer Version identifiziert.
+\end{BemON}
+
+\begin{DefON} Sei $A\in\FF.$ Eine Version von $E[\ind_A|\FF]$ bezeichnet man als \textbf{Version der bedingten Wahrscheinlichkeit $P(A|\FF).$}
+\end{DefON}
+
+\begin{BemON} Es gilt für $B\in\FF:$
+$$\int_B P(A|\FF)\d P \stackrel{(ii)}{=} \int_B \ind_A\d P = P(A\cap B)$$
+\end{BemON}
+
+\begin{Sa}\label{Sa7.2} $\\$
+Sei $X\in L^2(\Omega, \AA, P)$ mit $||X||^2 = EX^2.$ Dann gilt:
+$$||X-E[X|\FF]||^2 = \inf\left\{||X-Y||^2|Y\in L^2(\Omega, \FF, P)\right\}$$
+\end{Sa}
+\begin{Bew} siehe Henze Stochastik II, S.214
+\end{Bew}
+
+\begin{Sa}[Rechenregeln für bedingte Erwartungswerte] \label{Sa7.3} $\\$
+Es seien $X, Y\in L^1(\Omega, \AA, P), \FF, \FF_1, \FF_2$ Sub-$\sigma$-Algebren von $\AA.$ Dann gilt:
+\begin{enumerate}
+\item[a)] $E[aX + bY|\FF] = aE[X|\FF] + bE[Y|\FF]$ P-f.s. $a, b\in\R$
+\item[b)] $E[E[X|Y]] = EX$
+\item[c)] $X\le Y \folgt E[X|\FF]\le E[Y|\FF]$ P-f.s.
+\item[d)] Für $\FF_1\subset\FF_2$ gilt $E[E[X|\FF_2]|\FF_1] = E[X|\FF_1]$\\
+          Für $\FF_1\supset\FF_2$ gilt $E[E[X|\FF_2]|\FF_1] = E[X|\FF_2]$
+\item[e)] Falls $Y$ $\FF$-messbar und $EXY<\infty$ gilt:
+$$E[XY|\FF] = YE[X|\FF]$$
+\item[f)] Falls $X$ von $\FF$ unabhängig ist (d.h. falls die $X$ und $\ind_A\ \forall A\in\FF$ unabhängig sind), dann gilt:
+$$E[X|\FF] = EX$$
+\end{enumerate}
+\end{Sa}
+
+\begin{BemON} Aus Satz \ref{Sa7.3} bekommt man:
+\begin{enumerate}
+\item[1.] $X\equiv c\in\R \folgtnach{f)}E[c|\FF] = c$
+\item[2.] $\FF = \{\emptyset, \Omega\} \folgtnach{f)}E[X|\FF] = EX$
+\item[3.] $X$ $\FF$-messbar $\folgtnach{e)} E[X|\FF] = X$
+\item[4.] $X\ge 0\folgtnach{c)} E[X|\FF] \ge 0$ P-f.s.
+\end{enumerate}
+\end{BemON}
+
+%%%%%%
+% Vorlesung 22.1.2006 - mrtrac
+
+\begin{Bew} von Satz \ref{Sa7.3}:
+\begin{itemize}
+\item[a)]
+\begin{eqnarray*}
+\int_A E[aX+bY|\FF]\d P &=& \int_A aX+bY\d P \\
+&\stackrel{\text{Linearität}}{=}& a\int_A X\d P + b\int_A Y\d P \\
+&=& a\int_A E[X|\FF]\d P + b\int_A E[Y|\FF]\d P \\
+&=& \int_A \left(aE[X|\FF] + bE[Y|\FF]\right)\d P \quad\forall A\in\FF
+\end{eqnarray*}
+$\folgt$ Behauptung, da $aE[X|\FF] + bE[Y|\FF]$ $\FF$-messbar und Radon-Nikodym-Dichte $P$-f.s. eindeutig.
+\item[b)]
+$$E[E[X|\FF]] = \int_\Omega E[X|\FF]\d P = \int_\Omega X\d P = EX$$
+\item[c)]
+\begin{eqnarray*}
+A&:=&\left\{\omega\in\Omega\left| E[X|\FF](\omega)>E[Y|\FF](\omega)\right.\right\}\in\FF\\
+&=& \bigcup_{n\in\N}\underbrace{\left\{\omega\in\Omega\left|E[X|\FF](\omega)>E[Y|\FF](\omega)+\frac 1 n\right.\right\}}_{A_n}
+\end{eqnarray*}
+Annahme: $P(A)>0 \folgt\exists n\in\N$ mit $P(A_n) > 0$
+\begin{eqnarray*}
+\folgt 0 &\le& \int_{A_n}(Y-X)\d P\\
+&=&\int_{A_n}E[Y|\FF]\d P - \int_{A_n} E[X|\FF]\d P \\
+&=&\int_{A_n}\left(E[Y|\FF]-E[X|\FF]\right)\d P\\
+&\le& -\frac 1 n \cdot P(A_n)\\
+&<& 0 \quad\text{Widerspruch!}
+\end{eqnarray*}
+\item[d)] Z.z. Für $\FF_1\subset\FF_2$ gilt: $E[E[X|\FF_2]|\FF_1] = E[X|\FF_1].$ Sei $A\in\FF_1\folgt A\in\FF_2$ und
+$$\int_A E[X|\FF_1]\d P = \int_A X\d P = \int_A E[X|\FF_2]\d P = \int_A E[E[X|\FF_2]|\FF_1] \d P$$
+$\folgt$ Behauptung, da Radon-Nikodym-Dichte eindeutig.\\
+Für $\FF_1\supset\FF_2$ ähnlich.
+\item[e)] Mit algebraischer Induktion:
+\begin{itemize}
+\item Sei $Y = \ind_B, B\in\FF$ und $A\in\FF$ beliebig.
+$$\int_A Y\cdot E[X|\FF]\d P = \int_{A\cap B} E[X|\FF]\d P = \int_{A\cap B} X\d P = \int_A YX\d P$$
+Außerdem ist $Y\cdot E[X|\FF]$ $\FF$-messbar $\folgt$ Behauptung, da Radon-Nikodym-Dichte $P$-f.s. eindeutig.
+\item Linearität des Integrals + Teil a) $\folgt$ Aussage für $Y\in\EE. Y\ge 0:$ Bedingte Version des Satzes von der monotonen Konvergenz ($\rightarrow$ Übung).
+\item Dann $Y = Y^+ - Y^-$
+\end{itemize}
+\item[f)]
+\begin{eqnarray*}
+\int_A E[X|\FF]\d P &=& \int_A X\d P\\
+&=& \int_\Omega\ind_A X\d P\\
+&\stackrel{\text{unabh.}}{=}& \int \ind_A\d P\cdot\underbrace{\int X\d P}_{=EX}\\
+&=&\int_A EX\d P
+\end{eqnarray*}
+$\folgt$ Behauptung, da $EX$ $\FF$-messbar.
+\end{itemize}
+\end{Bew}
+
+\begin{Sa}[Faktorisierungssatz]\label{Sa7.4} \index{Faktorisierungssatz}\index{Satz!Faktorisierungs-}$\\$
+Es seien $(\Omega, \AA), (\Omega', \AA')$ Messräume und $Y:\Omega\to\Omega'$ ein Zufallsgröße. Ist $X:\Omega\to\R$ eine $(\sigma(Y),\BB)$-messbare Zufallsvariable. Dann gibt es eine $\BB$-messbare Funktion $g:\Omega'\to\R$ mit
+$$X = g\circ Y.$$
+\end{Sa}
+\begin{Bew} Algebraische Induktion:
+\begin{itemize}
+\item[(i)] Sei $X = \sum_{j=1}^n a_j\ind_{A_j} \in\EE$ mit $a_j\ge 0, A_j\in\sigma(Y).$\\
+\begin{tabular}[b]{rp{0.8\textwidth}}
+$\folgt$ & $A_j = Y^{-1}(A_j'), A_j'\in\AA'.$ Wähle $g = \sum_{j=1}^n a_j\ind_{A_j'}$\\
+$\folgt$ & $X = g\circ Y$\\
+$\folgt$ & Behauptung\\
+\end{tabular}
+\item[(ii)] Sei $X\ge 0$ und $(\sigma(Y), \BB)$-messbar. $\folgt\exists (X_n)\subset \EE, 0\le X_n\uparrow X$ und wegen (i) $\exists(\AA', \BB)$-messbare Funktion $g_n$ mit $X_n = g_n\circ Y, n\in\N.$
+$$\folgt X = \sup_{n\in\N} X_n = \sup_{n\in\N}(g_n\circ Y) = (\sup_{n\in\N} g_n)\circ Y$$
+Wähle also $g = \sup_{n\in\N} g_n$
+\item[(iii)] $X = X^+ - X^- \folgtnach{(ii)} X = g_1\circ Y - g_2\circ Y.$
+Wähle $g = g_1 - g_2.$
+\end{itemize}
+\end{Bew}
+
+\begin{BemON}
+Statt $E[X|\sigma(Y)]$ schreiben wir auch $E[X|Y]$ und wegen Satz \ref{Sa7.4} $\exists g:\Omega'\to\R$ $(\AA', \BB)$-messbar mit $E[X|Y] = g\circ Y$ $P$-f.s.. Die Funktion $g$ ist $P^Y$-f.s. eindeutig.
+\end{BemON}
+
+\begin{DefON}
+Ist $E[X|Y] = g\circ Y$ wie oben, so heißt $E[X|Y=y] = g(y)$ (ein) \textbf{bedingter Erwartungswert von $X$ unter der Bedingung $Y=y$.}\index{Erwartungswert!bedingt}\index{bedingter Erwartungswert}
+\end{DefON}
+
+\begin{Sa} \label{Sa7.5} $\\$
+Für alle $A'\in\AA'$ gilt: $$\int_{A'} E[X|Y=y]P^Y(\d y) = \int_{Y^{-1}(A')} X\d P$$
+\end{Sa}
+\begin{Bew}
+$$\int_{A'} E[X|Y=y] P^Y(\d y) = \int_{A'} g\d P^Y \stackrel{\text{Sa. \ref{Sa2.4}}}{=} \int_{Y^{-1}(A')} g\circ Y\d P = \int_{Y^{-1}(A')} X\d P.$$
+\end{Bew}
+
+\begin{BemON}
+Für $A\in\AA$ heißt $P(A|Y=y) := E[\ind_A|Y=y]$ (eine) \textbf{bedingte Wahrscheinlichkeit von $A$ unter der Bedingung $Y=y.$} Bedingte Wahrscheinlichkeiten treten oft bei gekoppelten Zufallsexperimenten auf. Die folgende Sichtweise ist konstruktiver:
+\end{BemON}
+
+\begin{DefON}
+Es seien $(\Omega_1, \AA_1), (\Omega_2, \AA_2)$ messbare Räume. Eine Abbildung $Q:\Omega_1\times\AA_2\to[0,1]$ mit
+\begin{itemize}
+\item[(i)] $\omega_1 \mapsto Q(\omega_1, A_2)$ ist $\AA_1$-messbar $\ \forall A_2\in\AA.$
+\item[(ii)] $A_2\mapsto Q(\omega_1, A_2)$ ist ein Wahrscheinlichkeitsmaß auf $(\Omega_2, \AA_2)\ \forall\omega_1\in\Omega_1$
+\end{itemize}
+nennt man \textbf{Übergangskern}\index{Uebergangskern@Übergangskern} oder \textbf{Kern}\index{Kern} von $(\Omega_1, \AA_1)$ nach $(\Omega_2, \AA_2).$
+\end{DefON}
+
+\begin{Sa} \label{Sa7.6} $\\$
+Es seien $(\Omega_1, \AA_1, P_1)$ ein Wahrscheinlichkeitsraum, $(\Omega_2, \AA_2)$ ein Messraum und $Q$ ein Übergangskern von $(\Omega_1, \AA_1)$ nach $(\Omega_2, \AA_2).$ Dann wird durch
+$$P(A):=\int_{\Omega_1}\left(\int_{\Omega_2}\ind_A(\omega_1, \omega_2)Q(\omega_1, \d\omega_2)\right)P_1(\d\omega_1)$$
+ein Wahrscheinlichkeitsmaß $P =: P_1 \otimes Q$ auf $\AA_1\otimes\AA_2$ definiert. $P$ heißt \textbf{Koppelung}\index{Koppelung} und ist das einzige Wahrscheinlichkeitsmaß auf $\AA_1\otimes \AA_2$ mit der Eigenschaft
+$$P(A_1\times A_2) = \int_{A_1} Q(\omega_1, A_2)P_1(\d\omega_1)\quad(*)$$
+\end{Sa}
+%Vorlesung 25. Januar 2007, curry
+\begin{Bew} $\\$
+\begin{enumerate}
+\item[1.] Ähnlich wie in §3 zeigt man: für $f:\Omega_1\times\Omega_2\to\R_+$, $f$  $(\AA_1\otimes\AA_2)$-messbar ist $\omega_1\mapsto\int_{\Omega_2}f(\omega_1,\omega_2)Q(\omega_1,\d\omega_2)$ $\AA_1$-messbar.
+\item[2.] Für $A=A_1\times A_2$ ist $\ind_A(\omega_1,\omega_2) = \ind_{A_1}(\omega_1)\ind_{A_2}(\omega_2)\quad\folgt(*)$.
+\item[3.] $P(\Omega_1\times\Omega_2) = 1$ wegen (*). $P \geq 0$ ist klar.
+\begin{eqnarray*}
+P\left(\sum_{n=1}^{\infty}A_n\right) &=& \int_{\Omega_1}\left(\int_{\Omega_2}\underbrace{\ind_{\sum_{n=1}^{\infty}}\left(\omega_1,\omega_2\right)}_{=\sum_{n=1}^{\infty}\ind_{A_n}\left(\omega_1,\omega_2\right)}Q\left(\omega_1,\d\omega_2\right)\right)P_1\left(\d\omega_1\right) \\
+&=& \sum_{n=1}^{\infty}\left(\int_{\Omega_1}\left(\int_{\Omega_2}\ind_{A_n}\left(\omega_1,\omega_2\right)Q\left(\omega_1,\d\omega_2\right)\right)P_1\left(\d\omega_1\right)\right) \\
+&=& \sum_{n=1}^{\infty}P(A_n). \\
+\end{eqnarray*}
+\item[4.] Eindeutigkeitssatz für Maße.
+\end{enumerate}
+\end{Bew}
+
+%Satz 7.7
+\begin{Sa} \label{Sa7.7}
+Es seien $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum, $(\Omega_1,\AA_1)$ ein messbarer Raum, $Y:\Omega\to\Omega_1$ $(\AA,\AA_1)$-messbar und $X$ ein d-dimensionaler Zufallsvektor. \\
+Dann existiert ein Kern $Q$ von $(\Omega_1,\AA_1)$ nach $(\R^d,\BB^d)$ derart, dass 
+$$P^{X,Y} = P^Y\otimes Q.$$
+$Q$ ist eine Version der bedingten Verteilung von $X$ unter $Y$. Schreibweise: 
+$$Q(y,\cdot) = P^X(\cdot|Y=y).$$
+\end{Sa}
+\begin{Bew}- ohne Beweis -
+\end{Bew}
+
+\begin{BemON}
+Für $A\in\AA, B\in\BB^d$ gilt:
+$$P\left(X\in B,Y\in A\right) = \int_A Q\left(y,B\right)P^Y\d y = \int_A P^X\left(B|Y=y\right)P^Y\left(\d y\right)$$
+\end{BemON}
+
+%Satz 7.8
+\begin{Sa} \label{Sa7.8} $\\$
+Es seien $\mu$ und $\nu$ $\sigma$-endliche Maße auf $\AA_1$ bzw. $\BB^d$. $P^{(Y,X)}$ besitze eine Dichte $f$ bezüglich $\mu\otimes\nu$. Es sei $f_Y(y) := \int_{\R^d}f(x,y)\nu(\d x)$ die (Rand-)Dichte von $P^Y$ bzgl. $\mu$. \\
+Weiterhin sei
+$$f(x|y) := \frac{f(x,y)}{f_Y(y)}\quad \text{und}\quad \frac{0}{0} := 0.$$
+So wird durch 
+$$P^X(B|Y=y) := \int_B f(x|y)\nu(\d x)\quad\forall B\in\BB^d,\,y\in\Omega_1$$
+eine bedingte Verteilung von $X$ unter der Bedingung $Y=y$ definiert. \\
+$f(\cdot|y)$ heißt \textbf{bedingte $\nu$-Dichte von $X$ unter der Bedingung $Y=y$}\index{bedingte Dichte}\label{Dichte!bedingte}.
+\end{Sa}
+\begin{Bew} $\\$
+$y \mapsto \int_B f(x|y)\nu(\d x)$ ist messbar $\forall B\in\BB^d$ (Satz von Tonelli), \\
+$B \mapsto \int_B f(x|y)\nu(\d x)$ ist ein Wahrscheinlichkeitsmaß $\forall y\in\Omega_1$. \\
+Für $A\in\AA_1,B\in\BB^d$ gilt:
+\begin{eqnarray*}
+P^{(Y,X)}(A\times B) &=& \int_{A\times B} f\d(\mu\otimes\nu) \\
+&=& \int_A\left(\int_B f\left(x,y\right)\nu\left(\d x\right)\right)\mu\left(\d y\right) \\
+&=& \int_A\left(\int_B f\left(x|y\right)\nu\left(\d x\right)\right)f_Y\left(y\right)\mu\left(\d y\right) \\
+&\stackrel{!}{=}& \int_A P^X\left(B|Y=y\right)\underbrace{P^Y\left(\d y\right)}_{=f_Y\left(y\right)\mu\left(\d y\right)} \\
+\end{eqnarray*}
+\end{Bew}
+
+%Satz 7.9
+\begin{Sa} \label{Sa7.9} $\\$
+Es seien $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum, $Y:\Omega\to\R^d$ ein Zufallsvektor und $X$ eine Zufallsvariable mit $E|X| < \infty$. Dann ist
+$$h\left(y\right) := \int_{\R}xP^X\left(\d x|Y=y\right)$$
+ein bedingter Erwartungswert von $X$ unter der Bedingung $Y=y$.
+\end{Sa}
+\begin{Bew}
+Nach \ref{Sa7.5}:
+$$\int_B E\left[X|Y=y\right]P^Y\left(\d y\right) = \int_{Y^{-1}\left(B\right)}X\d P.$$
+Für $B\in\BB^d$ und $T(Y,X) := X\cdot(\ind_B \circ Y)$ gilt:
+\begin{eqnarray*}
+\int_{Y^{-1}\left(B\right)}X\d P &=& \int T\left(Y,X\right)\d P \\
+&\stackrel{\ref{Sa2.4}}{=}& \int T\left(y,x\right)P^{(Y,X)}\left(\d y,\d x\right) \\
+&=& \int x\ind_B\left(y\right)P^{(Y,X)}\left(\d y,\d x\right) \\
+&=& \int_B\left(\int_{\R}xP^X\left(\d x|Y=y\right)\right)P^Y\left(\d y\right) \\
+\end{eqnarray*}
+$\folgtnach{\ref{Sa7.5}}$Beh.
+\end{Bew}
+
+%Beispiel 7.2
+\begin{Bsp} \label{Bsp7.2} $\\$
+$U$ und $V$ seien unabhängig und $U(0,1)$-verteilt und entsprechen den zufälligen Seitenlängen eines Rechtecks. Es sei $X$ = Flächeninhalt des Rechtecks und $Y$ = Umfang des Rechtecks. Klar: $X$ und $Y$ sind nicht unabhängig. \\
+Weiter ist $f_{U,V}(u,v) = 
+\begin{cases}
+1 & 0<u<1 \text{ und } 0<v<1 \\
+0 & \text{sonst} \\
+\end{cases}$ die gemeinsame Dichte von $U$ und $V$. \\
+$\folgt$(Transformationssatz für Dichten) $f_{X,Y}(x,y) = \frac{2}{\sqrt{y^2-16x}}$ für $0<x<1$ und $4\sqrt{x}<y<2+2x$; $f_X(x) = -\log{x}$ für $0<x<1$. \\
+$\folgt f(y|x) = -\frac{2}{\log{x}\sqrt{y^2-16x}}$ für $4\sqrt{x}<y<2+2+x$. \\
+$\folgt E[Y|X=x] = \int y\cdot f(y|x)\d y = -\frac{4(1-x)}{\log{x}}$.
+\end{Bsp}
+
+%Beispiel 7.3
+\begin{Bsp}[Buffonsches Nadelproblem] \label{Bsp7.3} $\\$
+Wir werfen eine Nadel der Länge 1 zufällig auf einen unendlich langen Streifen der Breite 1. Wie groß ist die Wahrscheinlichkeit, dass die Nadel mindestens eine Wand des Korridors schneidet? \\
+$X$ = Abstand der Nadelmitte von der linken Wand \\
+$Y$ = Winkel der Nadel zum Lot \\
+Annahme: $X \sim U(0,1),\ Y \sim U(-\frac{\pi}{2},\frac{\pi}{2})$ und $X,\,Y$ unabhängig. \\
+$A$ = Nadel schneidet die Wand = $\{\omega\ |\ (X,Y)(\omega)\in B\}$ mit \\
+$B = \{(x,y)\ |\ |y|<\frac{\pi}{2},\,x\in[0,\frac{1}{2}\cos{y}]\cup[1-\frac{1}{2}\cos{y},1]\}$ \\
+- hier fehlt eine Skizze - \\
+Es ergibt sich:
+\begin{eqnarray*}
+P\left(A\right) &=& P^{X,Y}\left(B\right) \\
+&=& \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}}\int_0^1\ind_B\left(x,y\right)\,P^X\left(\d x|Y=y\right)\,P^Y\left(\d y\right) \\
+&=& \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}}P^X\left([0,\frac{\cos{y}}{2}]\cup[1-\frac{\cos{y}}{2},1]\ |\ Y=y\right)\,P^Y\left(\d y\right) \\
+&=& \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}}\cos{y}\cdot\frac{1}{\pi}\d y \\
+&=& \frac{2}{\pi} \\
+\end{eqnarray*}
+So läßt sich zum Beispiel auch $\pi$ näherungsweise bestimmen.
+\end{Bsp}
+
+% Vorlesung - mrtrac
+
+\chapter{Martingale und Stoppzeiten}
+\begin{DefON}
+Sei $I\ne \emptyset$ eine beliebige Indexmenge und $(\Omega, \AA, P)$ ein Wahrscheinlichkeitsraum.
+\begin{itemize}
+\item[a)] Eine Familie von Zufallsvariablen $(X_t)_{t\in I}$ auf $(\Omega, \AA, P)$ heißt \textbf{stochastischer Prozess}\index{stochastischer Prozess} ($I\subset\R$)
+\item[b)] Eine Familie von $\sigma$-Algebren $(\FF_t)_{t\in I}$, mit $\FF_t\subset\AA$ und $\FF_s\subset\FF_t,$ für $s\le t$ heißt \textbf{Filtration}\index{Filtration}.
+Ein stochastischer Prozess $(X_t)_{t\in I}$ heißt \textbf{$(\FF_t)_{t\in I}$-adaptiert}\index{adaptiert}, falls $X_t$ $\FF_t$-messbar $\forall t\in I.$
+\end{itemize}
+\end{DefON}
+
+\begin{BemON} Oft wird $\FF_t := \sigma(\{X_s, s\le t\})$ gewählt. Dann ist $(\FF_t)_{t\in I}$ eine Filtration und $X_t$ ist $\FF_t$-messbar.
+\end{BemON}
+
+\begin{DefON}
+Gegeben sei ein Wahrscheinlichkeitsraum $(\Omega, \AA, P), I\subset\R,$ eine Filtration $(\FF_t)_{t\in I}$ und ein dazu adaptierter stochastischer Prozess $(X_t)_{t\in I}.$ Ist $E|X_t|<\infty\ \forall t\in I,$ so heißt $(X_t)_{t\in I}$ ein \textbf{$(\FF_t)_{t\in I}$-Martingal}\index{Martingal}, falls $E[X_t|\FF_s] = X_s\ \forall s, t\in I, s\le t.$\\
+Ist $X_s\le E[X_t|\FF_s]$ bzw. $X_s\ge E[X_t|\FF_s],$ so nennt man $(X_t)_{t\in I}$ ein \textbf{$(\FF_t)_{t\in I}$-Submartingal}\index{Submartingal}\index{Martingal!Sub-} bzw. \textbf{$(\FF_t)_{t\in I}$-Supermartigal}\index{Supermartingal}\index{Martingal!Super-}.
+\end{DefON}
+
+\begin{BemON}
+\begin{itemize}
+\item[a)] Beim Martingal gilt: $EX_s = E\left[E\left[X_t\left|\FF_s\right.\right]\right] = EX_t\ \forall t\in I$, d.h. der Erwartungswert ist konstant (wachsend beim Submartingal, fallend beim Supermartingal).
+\item[b)] Ist $I = \N,$ so genügt z.z.:
+$$E[X_{t+1}|\FF_t] = X_t\ \forall t\in\N$$
+\item[c)] Ist $(F_t)_{t\in I}$ die natürliche Filtration, so sagt man oft nur $(X_t)_{t\in I}$ ist ein Martingal.
+\end{itemize}
+\end{BemON}
+
+\begin{Bsp} \label{Bsp8.1}
+Sei $I=\N, (X_n)_{n\in\N}$ eine Folge von unabhängigen und identisch verteilten Zufallsvariablen mit Erwartungswert $\mu$. Sei $S_n:=\sum_{k=1}^n X_k\ \forall n\in\N$ und $\FF_n:=\sigma(S_1,\ldots, S_n).$ Dann gilt $\forall n\in\N: E[S_{n+1}|\FF_n] = E[S_n|\FF_n] + E[X_{n+1}|\FF_n] = S_n + \mu.$\\
+Also: \begin{tabular}[t]{rcp{0.8\textwidth}}
+$\mu = 0$ & $\folgt$ & $(S_n)$ ist Martingal\\
+$\mu \le 0$ & $\folgt$ & $(S_n)$ ist Supermartingal\\
+$\mu \ge 0$ & $\folgt$ & $(S_n)$ ist Submartingal\\
+\end{tabular}
+\end{Bsp}
+
+\begin{Bsp} \label{Bsp8.2}
+Sei $(\FF_t)_{t\in I}$ eine Filtration und $X$ eine Zufallsvariable mit $E|X|<\infty.$ Sei $X_t:=E[X|\FF_t].$ dann ist $(X_t)_{t\in I}$ $(\FF_t)_{t\in I}$-adaptiert und $\forall s, t\in I, s\le t:$
+$$E[X_t|\FF_s] = E\left[E\left[X|\FF_t\right]|\FF_s\right] \stackrel{S.\ref{Sa7.3} a)}{=} E[X|\FF_s] = X_s$$
+$\folgt (X_t)_{t\in I}$ ist ein $(\FF_t)_{t\in I}$-Martingal.
+\end{Bsp}
+
+\begin{Sa} \label{Sa8.1} $\\$
+Ist $(X_t)_{t\in I}$ ein $(\FF_t)_{t\in I}$-Martingal und $\Phi:\R\to\R$ eine konvexe Funktion mit $E|\Phi(X_t)|<\infty\ \forall t\in I,$ so ist $(\Phi(X_t))_{t\in T}$ ein $(\FF_t)_{t\in I}$-Submartingal.
+\end{Sa}
+\begin{Bew} Sei $s,t\in I, s\le t: E[\Phi(X_t)|\FF_s]\stackrel{Jensen}{\ge}\Phi(\underbrace{E[X_t|\FF_s]}_{=X_s})$
+\end{Bew}
+
+Im Folgenden: $I=\{1,2,\ldots, n\}$ und $X^*:=\max_{1\le i\le n} X_i$
+
+\begin{Sa}[Submartingal-Ungleichung von Doob] \label{Sa8.2} \index{Submartingal-Ungleichung}\index{Ungleichung!Submartingal-}\index{Satz!von Doob} $\\$
+Ist $(X_i)_{i=1,\ldots,n}$ ein $(\FF_i)_{i=1,\ldots,n}$-Submartingal, so gilt $\forall c>0:$
+$$c\cdot P(X^*>c)\le\int_{\{X^*>c\}} X_n\d P \le EX_n^+$$
+\end{Sa}
+\begin{Bew}
+Sei $A:=\{X^*>c\}, A_i:=\{X_1\le c, \ldots, X_{i-1}\le c, X_i>c\}, i=1, \ldots, n$\\
+\begin{tabular}[t]{rp{0.9\textwidth}}
+$\folgt$ & $A=A_1 + \ldots + A_n, A_i\in\FF_i$ und $X_i>c$ auf $A_i, i=1,\ldots, n.$\\
+$\folgt$ & $\int_{A_i} X_n\d P\stackrel{bed. EW}{=}\int_{A_i} E[X_n|\FF_i]\d P\stackrel{Sub-M.}{\ge}\int_{A_i} X_i\d P\ge c P(A_i), i=1,\ldots, n$\\
+\end{tabular}\\
+Summation über $i=1,\ldots,n \folgt$ 1. Ungleichung\\
+2. Ungleichung: $X_n\cdot \ind_A\le X_n^+$
+\end{Bew}
+
+\begin{Sa}[$L^p$-Ungleichung von Doob]\label{Sa8.3}\index{$L^p$-Ungleichung}\index{Ungleichung!$L^p$-}\index{Satz!von Doob} $\\$
+Es sei $p>1$ und $(X_i)_{i=1,\ldots,n}$ ein nicht-negatives $(\FF_i)_{i=1,\ldots,n}$-Submartingal mit der Eigenschaft $\sup_{i=1,\ldots,n}EX_i^p<\infty.$ Dann gilt:
+$$E(X^*)^p\le\left(\frac p {p-1}\right)^p EX_n^p$$
+\end{Sa}
+\begin{Bew}
+\begin{eqnarray*}
+E(X^*)^p &=& E\int_0^{X^*} p\cdot y^{p-1}\d y \\
+&=& E\int_0^\infty p\cdot y^{p-1}\ind_{[X^*\ge y]}\d y\\
+&\stackrel{\text{Fubini}}{=}&\int_0^\infty py^{p-1}\cdot P(X^*\ge y)\d y\\
+&\stackrel{S.\ref{Sa8.2}}{\le}& \int_0^\infty p\cdot y^{p-2} E\left[X_n\cdot\ind_{[X^*\ge y]}\right]\d y\\
+&\stackrel{\text{Fubini}}{=} & E\left[X_n\int_0^{X^*}py^{p-2}\d y\right] \\
+&=& \frac p {p-1} E\left[X_n(X^*)^{p-1}\right]\\
+&\stackrel{\text{Hölder}}{\le} & \frac p {p-1}\left(EX_n^p\right)^{\frac 1 p}\left(E\left(\left(X^*\right)^{p-1}\right)^q\right)^{\frac 1 q}\\
+&=& \frac p {p-1} \left(EX_n^p\right)^{\frac 1 p} \cdot \left( E\left(X^*\right)^p\right)^{1-\frac 1 p}\\
+\end{eqnarray*}
+Teile Ungleichung durch $\left(E\left(X^*\right)^p\right)^{1-\frac 1 p}$ (falls $E(X^*)^p=0$ ist Aussage richtig) und nehme $p$-te Potenz $\folgt$ Behauptung.
+\end{Bew}
+
+\begin{BemON}
+\begin{itemize}
+\item[a)] Ist $\frac 1 p + \frac 1 q = 1,$ so lässt sich Satz \ref{Sa8.3} schreiben als $||X^*||_p\le q\cdot ||X_n||_p$
+\item[b)] Ein stochastischer Prozess $(X_t)_{t\in I}$ mit $\sup_{t\in I}||X_t||_p<\infty$ heißt \textbf{$L^p$-beschränkt}\index{beschränkt!$L^p$-}.
+\item[c)] Ist $(X_i)_{i=1,\ldots,n}$ ein Martingal, so ist $(|X_i|)_{i=1,\ldots,n}$ ein nicht negatives Submartingal (Satz \ref{Sa8.1})
+\end{itemize}
+\end{BemON}
+
+\begin{Bsp} \label{Bsp8.3}
+Sei $(\Omega, \AA, P)$ ein Wahrscheinlichkeitsraum und $(X_n)_{n\in\N_0}$ ein stochastischer Prozess. Interpretation von $(X_n)$:\\
+\begin{tabular}[b]{rcl}
+$X_0$ & $\equiv$ & Anfangskapital des Spielers\\
+$X_n - X_{n-1}$ & $\equiv$ & Gewinnn pro gesetzter Geldeinheit in der $n$-ten Runde
+\end{tabular}\\
+Wird immer eine Geldeinheit pro Runde gesetzt, so ist also $X_n=X_0 + \sum_{k=1}^n (X_k - X_{k-1})$ das Kapital des Spielers nach $n$ Runden. Es sei
+$$\FF_n = \sigma(X_0, X_1-X_0, \ldots, X_n - X_{n-1}) = \sigma(X_0, X_1, \ldots, X_n)$$
+Das entspricht der Information nach $n$ Runden.
+$$\folgt E[X_{n+1}-X_n|\FF_n] = E[X_{n+1}|\FF_n] - X_n$$
+Das entspricht dem erwarteten Gewinn pro gesetzter Geldeinheit bei Kenntnis des bisherigen Spielverlaufs.\\
+Offfenbar gilt:
+\begin{tabular}[t]{rcp{0.8\textwidth}}
+$X$ Martingal &$\equizu$& Spiel fair\\
+$X$ Supermartingal &$\equizu$& Spiel nachteilig\\
+$X$ Submartingal &$\equizu$& Spiel vorteilhaft\\
+\end{tabular}
+
+\end{Bsp}
+
+%Vorlesung vom 1. Februar, curry
+%Beispiel 8.3
+\begin{Bsp} \label{Bsp8.3} $\\$
+$X_n - X_{n-1}$ sei der Gewinn pro gesetzter Geldeinheit (GE) in der $n$-ten Runde. \\
+Jetzt: In Runde $n$ werden $c_n$ GE gesetzt mit $c_n$ $\FF_{n-1}$-messbar. \\
+$\FF_n = \sigma(X_0,X_1-X_0,\dots,X_n-X_{n-1})$, d.h. $(c_n)_{n\in\N}$ ist vorhersagbar. \\
+Kapital nach $n$ Spielen:
+$$X_0 + \sum_{k=1}^n c_k(X_k-X_{k-1})$$
+\end{Bsp}
+
+%Satz 8.4
+\begin{Sa} \label{Sa8.4} $\\$
+Es seien $(c_n)_{n\in\N}$ ein vorhersagbarer Prozess und $X = (X_n)_{n\in\N}$ ein Prozess mit $E|c_n(X_n-X_{n-1})| < \infty \quad\forall n\in\N$. Wir setzen
+$$Y_n := X_0 + \sum_{k=1}^n c_k(X_k-X_{k-1}),\ Y = (Y_n)_{n\in\N}.$$
+Dann gilt:
+\begin{enumerate}
+\item[a)] Ist $X$ ein Martingal, so auch $Y$.
+\item[b)] Ist $X$ ein Sub- bzw. Supermartingal und $c_n \geq 0 \quad\forall n$, so ist auch $Y$ ein Sub- bzw. Supermartingal.
+\end{enumerate}
+\end{Sa}
+\begin{Bew} 
+$$E[Y_{n+1}-Y_n | \FF_n] = E[c_{n+1}(X_{n+1}-X_n) | \FF_n] \stackrel{c_{n+1} \FF_n-m.b.}{=} c_{n+1}\cdot E[X_{n+1}-X_n | \FF_n].$$
+\end{Bew}
+
+\begin{DefON} $\\$
+Eine Abbildung $\tau:\Omega\to\N_0\cup\{\infty\}$ heißt \textbf{Stoppzeit}\index{Stoppzeit} bezüglich einer Filtration $(\FF_n)_{n\in\N}$, wenn
+$$\{\tau \leq n\} \in \FF_n \quad\forall n\in\N_0.$$
+\end{DefON}
+
+\begin{BemON} $\\$
+\begin{enumerate}
+\item[a)] Stoppzeiten kann man analog für $\tau:\Omega\to\R_+\cup\{\infty\}$ definieren.
+\item[b)] $\tau:\Omega\to\N_0\cup\{\infty\}$ ist Stoppzeit $\equizu$ $\{\tau=n\} \in \FF_n \quad\forall n\in\N_0$. (Übung)
+\end{enumerate}
+\end{BemON}
+
+%Beispiel 8.4
+\begin{Bsp} \label{Bsp8.4} $\\$
+\begin{enumerate}
+\item[a)] $\tau \equiv n_0$ ist Stoppzeit, da \\
+$\{\tau \leq n\} = \begin{cases}
+\Omega & n \geq n_0 \\
+\emptyset & n < n_0 \\
+\end{cases} \quad\in\FF_n$
+\item[b)] Sei $(X_n)_{n\in\N_0}$ ein zu $(\FF_n)_{n\in\N_0}$ adaptierter rellwertiger Prozess und $A\in\BB$. Sei $\tau_A:\Omega\to\N\cup\{\infty\}$ definiert durch
+$$\tau_A\left(\omega\right) := \inf\left\{n\in\N_0\ |\ X_n\left(\omega\right)\in A\right\}\quad\left(\inf\left\{\emptyset\right\} := \infty\right)$$
+$\tau_A$ heißt \textbf{Eintrittszeit}\index{Eintrittszeit} in $A$. \\
+$\tau_A$ ist Stoppzeit, da
+$$\left\{\tau_A \leq n\right\} = \bigcup_{i=1}^n\underbrace{\left\{X_i\in A\right\}}_{\in\FF_i} \in \FF_n.$$
+\end{enumerate}
+\end{Bsp}
+
+%Lemma 8.1
+\begin{Lem} \label{Lem8.1} $\\$
+\begin{enumerate}
+\item[a)] Für eine Stoppzeit ist
+$$\FF_{\tau} := \left\{A\in\AA\ |\ A \cap \left\{\tau \leq n\right\} \in \FF_n\quad\forall n\in\N_0\right\}$$
+eine $\sigma$-Algebra, die \textbf{$\sigma$-Algebra der $\tau$-Vergangenheit}\index{$\sigma$-Algebra!der $\tau$-Vergangenheit}.
+\item[b)] Sind $\tau_1,\,\tau_2$ Stoppzeiten mit $\tau_1 \leq \tau_2$, so gilt $\FF_{\tau_1} \subset \FF_{\tau_2}$.
+\item[c)] Ist $\tau$ eine Stoppzeit, so ist $X_{\tau}^*:\Omega\to\R$ mit 
+$$X_{\tau}^*\left(\omega\right) := \begin{cases}
+X_{\tau(\omega)}(\omega) & \text{wenn }\tau(\omega) < \infty \\
+0 & \text{sonst} \\
+\end{cases}\quad \FF_{\tau}\text{-messbar}$$
+\end{enumerate}
+\end{Lem}
+\begin{Bew} $\\$
+\begin{enumerate}
+\item[a)] Übung.
+\item[b)] Sei $A\in\FF_{\tau_1}$ beliebig. $\forall n\in\N$ gilt:
+$$\{\tau_2 \leq n\} \subset \{\tau_1 \leq n\} \quad\folgt\quad A\cap\{\tau_2 \leq n\} = \underbrace{A\cap\{\tau_1 \leq n\}}_{\in\FF_n} \cap \underbrace{\{\tau_2 \leq n\}}_{\in\FF_n} \in\FF_n.$$
+$\folgt$ Beh.
+\item[c)] zu zeigen: $\{X_{\tau}^* \in A\} \in \FF_{\tau} \quad\forall A\in\BB$ \\
+zeige also: $\{X_{\tau}^* \in A\} \cap \{\tau \leq n\} \in\FF_n \quad\forall n\in\N_0$ \\
+Es gilt: 
+$$\{X_{\tau}^* \in A\} \cap \{\tau \leq n\} = \bigcup_{k=0}^n \underbrace{\{X_k \in A\}}_{\in\FF_k} \cap \underbrace{\{\tau = k\}}_{\in\FF_k} \in\FF_k,$$
+$$\text{da } \{\tau = k\} = \underbrace{\{\tau \leq k\}}_{\in\FF_k} \cap \underbrace{\{\tau \leq k-1\}^C}_{\in\FF_k} \in \FF_k.$$
+$\folgt$ Beh.
+\end{enumerate}
+\end{Bew}
+
+\begin{BemON} $\\$
+\begin{enumerate}
+\item[a)] $\FF_{\tau} \equiv$ Information, die bis zur zufälligen Zeit $\tau$ vorhanden ist.
+\item[b)] Falls $\tau$
+%?
+$P$-f.s. endlich, schreibt man $X_{\tau}$ statt $X_{\tau}^*$.
+\item[c)] Ist $\tau$ eine Stoppzeit und $(X_n)_{n\in\N_0}$ ein stochastischer Prozess, so ist $X^{\tau} = (X_n^{\tau})_{n\in\N_0}$ mit $X_n^{\tau} := X_{\tau\wedge n} \quad\forall n\in\N_0$ der \textbf{gestoppte Prozess}\index{gestoppter Prozess}\index{Prozess!gestoppter}. \\
+Da $\tau\wedge n$ eine Stoppzeit ist, ist wegen Lemma \ref{Lem8.1}c) $X_{\tau\wedge n}$ $\FF_{\tau\wedge n}$-messbar und $(X_n^{\tau})$ ist $(\FF_{\tau\wedge n})$-adaptiert.
+\end{enumerate}
+\end{BemON}
+
+%Satz 8.5
+\begin{Sa} \label{Sa8.5} $\\$
+Ist $X$ ein (Sub-, Super-) Martingal und ist $\tau$ eine Stoppzeit, so ist auch $X^{\tau}$ ein (Sub-, Super-) Martingal.
+\end{Sa}
+\begin{Bew} $\\$
+Sei $c_n := \ind_{\{\tau \geq n\}} \folgt \{\tau \geq n\} = \{\tau \leq n-1\}^C \in \FF_{n-1}.$ \\
+$\folgt (c_n)_{n\in\N_0}$ ist vorhersagbar. Da $X_0 + \sum_{k=1}^n c_k(X_k - X_{k-1}) = X_{\tau\wedge n}$, folgt die Behauptung mit Satz \ref{Sa8.4}.
+\end{Bew}
+
+\begin{BemON} $\\$
+Ist $X$ ein Martingal, so auch $X^{\tau}$ und damit gilt $EX_{\tau\wedge n} = EX_0$. \\
+Betrachte Bsp \ref{Bsp8.3} mit $\tau := \inf\{k\in\N_0\ |\ X_k \geq X_0 + c\}$ und $c_n := \ind_{\{\tau \geq n\}}$: \\
+Solange $c$ nicht erreicht ist, wird eine Geldeinheit gesetzt, danach aufgehört. Spielt man maximal n-mal, so ist $X_{\tau\wedge n}$ das Kapital am Ende. Im Mittel kann man das Kapital bei einem fairen Spiel nicht erhöhen.
+\end{BemON}
+
+%Beispiel 8.5
+\begin{Bsp}[Kartenspiel] \label{Bsp8.5} $\\$
+Sei
+\begin{itemize}
+\item $S_0$ die Anzahl der schwarzen Karten und
+\item $R_0$ die Anzahl der roten Karten und
+\item $N := S_0 + R_0$ die Gesamtzahl an Karten.
+\item $(R_n,S_n)$ die Anzahl der roten / schwarzen Karten im Stapel, nachdem $n$ Karten aufgedeckt wurden.
+\item $Z_n$ die Farbe der $n$-ten aufgedeckten Karte.
+\item $\FF_n = \sigma(Z_1,\dots,Z_n)$ und
+\item $X_n := \frac{S_n - R_n}{S_n + R_n}$.
+\end{itemize}
+Behauptung: $(X_n)$ ist $(\FF_n)$-Martingal!
+\begin{eqnarray*}
+E\left[X_{n+1}\,|\,\FF_n\right] &=& E\left[\frac{S_{n+1} - R_{n+1}}{S_{n+1} + R_{n+1}}\,|\,Z_1,\dots,Z_n\right] \\
+&=& \frac{S_n}{S_n + R_n}\left[ \frac{S_n - 1 - R_n}{S_n - 1 + R_n} \right] + \frac{R_n}{S_n + R_n}\left[ \frac{S_n - R_n + 1}{S_n + R_n - 1} \right] \\
+&=& \frac{(R_n + S_n - 1)(S_n - R_n)}{(S_n + R_n)(S_n + R_n - 1)} \\
+&=& \frac{S_n - R_n}{S_n + R_n} \\
+\end{eqnarray*}
+Sei $\tau$ eine Stoppzeit ($\leq N$). Erwarteter Gewinn:
+$$E\left[ \ind_{\left[Z_{\tau + 1} = \text{ schwarz} \right]} - \ind_{\left[Z_{\tau + 1} = \text{ rot} \right]} \right]$$
+$$= E\left[ \sum_{k=1}^N\left( \ind_{\left[Z_{k + 1} = \text{ schwarz} \right]} - \ind_{\left[Z_{k + 1} = \text{ rot} \right]}\right) \,\ind_{\left[\tau = k\right]} \right]$$
+$$= \sum_{k=1}^N E\left[ E\left[ \left( \ind_{\left[Z_{k + 1} = \text{ schwarz} \right]} - \ind_{\left[Z_{k + 1} = \text{ rot} \right]}\right) \,\ind_{\left[\tau = k\right]}\ |\ \FF_k\right] \right]$$
+$$= \sum_{k=1}^N E\left[ \ind_{\left[\tau = k\right]} \underbrace{E\left[ \ind_{\left[Z_{k + 1} = \text{ schwarz} \right]} - \ind_{\left[Z_{k + 1} = \text{ rot} \right]} \ |\ \FF_k \right]}_{= \frac{S_k - R_k}{S_k + R_k} = X_k} \right]$$
+$$= E\left[ X_{\tau} \right] = EX_0 = \frac{S_0 - R_0}{S_0 + R_0}$$
+\end{Bsp}
+
+%Ab hier Bernhard vom 05.02.2007
+
+%Beispiel 8.6
+$EX_{\tau} = EX_0$ gilt nur unter einer Bedingung, wie dieses Beispiel zeigt.
+
+\begin{Bsp} \label{Bsp8.6}
+Sei $(Y_n)_{n \in \N}$ eine Folge von u.i.v. ZVen mit
+\[
+P(Y_n = -1) = P(Y_n = 1) = \frac12, \quad X_0 \equiv 0
+\]
+$Y_n$ = Ergebnis M"unzwurf in Runde $n$.\\
+Der Spieler setzt $2^{n-1}$ GE in der $n$-ten Runde, bei Gewinn erh"alt er $2^n$ GE, d.h. $Y_n \cdot 2^{n-1}$ ist der Geldzu-/abgang in der $n$-ten Runde.\\
+Kapital nach $n$ Runden:
+\[
+X_n := \sum_{i=1}^n 2^{i-1}Y_i
+\]
+Sei $\FF_n := \sigma(X_0,\dots,X_n)$ und $\tau := \inf\{n \in \N\ |\ Y_n = 1\}$ d.h. gestoppt wird, wenn erstmals $Y_n = 1$ ($\rightarrow$ Martingalstrategie). $(X_n)_{n \in \N}$ ist ein $(\FF_n)_{n \in \N}$-Martingal (s. Bsp. \ref{Bsp8.1}).\\
+Es gilt:
+
+\[
+P(\tau > k) = \left( \frac12 \right)^k \ \forall\, k \in \N \Rightarrow P(\tau < \infty) = 1
+\]
+und
+\[
+X_{\tau} = \sum_{k=1}^{\infty} X_k \ind_{\tau = k} = \sum_{k=1}^{\infty} \underbrace{\left( - \sum_{i=1}^{k-1} 2^{i-1} + 2^{k-1} \right)}_{= 1} \ind_{\tau = k} \equiv 1
+\]
+Also ist hier $EX_{\tau} = 1 \not= EX_0 = 0$.\\
+Vorsicht  bei der Nachahmung!\\
+Das ben"otigte Kapital betr"agt $-X_{\tau-1}$ GE und
+\begin{eqnarray*}
+E(-X_{\tau-1}) & = & E \left( \sum_{k=1}^{\tau-1} 2^{k-1} \right) \\
+& = & E \left( \sum_{k=1}^{\infty} 2^{k-1} \ind_{[\tau > k]} \right) \\
+& = & \sum_{k=1}^{\infty} 2^{k-1} \underbrace{P(\tau > k)}_{= 2^{-k}} = \infty
+\end{eqnarray*}
+\end{Bsp}
+
+%Satz 8.6
+\begin{Sa}[Optional Stopping Theorem OST] \label{Sa8.6} \index{OST} \index{Optional Stopping Threorem} \index{Theorem!Optional Stopping-}$\\$
+Es sei $X = (X_n)_{n \in \N}$ ein Supermartingal und $\tau$ eine Stoppzeit. Jede der folgenden Bedingungen impliziert, dass $E|X_{\tau}| < \infty$ und $EX_{\tau} \leq EX_1$ gilt:
+\begin{enumerate}
+\item $\tau$ ist f.s. beschr"ankt, also $P(\tau < c) = 1$ f"ur ein $c \in \R$.
+
+\item $\tau$ ist f.s. endlich und $X$ ist f.s. beschr"ankt, d.h. $P(\tau < \infty) = 1$ und es gibt ein $c\in\R$ mit $P(|X_n|\le c)=1\ \forall n\in\N_0.$
+
+\item $E\tau < \infty$ und $X$ hat f.s. beschr"ankte Zuw"achse, d.h. $\exists\, c \in \R$ mit $P(|X_n-X_{n-1}|~\leq c) = 1 \ \forall\, n \in \N.$
+
+\item $P(\tau < \infty) = 1, E|X_{\tau}| < \infty$ und $\int_{\{\tau > n\}} |X_n|dP \rightarrow 0$ f"ur $n \rightarrow \infty$.
+\end{enumerate}
+Ist eine dieser Bedingungen erf"ullt und $X$ ein Martingal, so gilt: $EX_{\tau} = EX_1$.
+\end{Sa}
+
+\begin{Bew}
+
+\begin{enumerate}
+\item Ist klar, da hier $X_{\tau} = X_{\tau \wedge n}$ f"ur ein $n \in \N$ gro"s ($n > c$). Die Behauptung folgt aus Satz \ref{Sa8.5}.
+
+\item Satz \ref{Sa8.5} und majorisierte Konvergenz.
+
+\item Verwende $|X_1| + c(\tau - 1)$ als integrierbare Majorante.
+
+\item Wir zeigen die Aussage f"ur $X$ ist Martingal:
+\begin{eqnarray*}
+|EX_{\tau} - EX_{\tau \wedge n}| & = & |\int X_{\tau}dP - \int_{\{\tau \leq n\}} X_{\tau} dP - \int_{\{\tau > n\}} X_n dP| \\
+& \leq & | \int_{\{\tau > n\}} X_{\tau} dP| + |\int_{\{\tau > n\}} X_n dP| \\
+& \leq & \underbrace{\int_{\{\tau > n\}} |X_{\tau}| dP}_{\rightarrow 0 (n \rightarrow \infty)} + \underbrace{ \int_{\{\tau > n\}} |X_n| dP}_{\rightarrow 0 (n \rightarrow \infty)} \rightarrow 0 \ (n \rightarrow \infty)
+\end{eqnarray*}
+\end{enumerate}
+\end{Bew}
+
+%Beispiel 8.7
+\begin{Bsp}[Ruinspiel, vgl. Stochastik I, Bsp 10.4] \label{Bsp8.7}
+Spieler I besitze $n$ GE ($n \in \N$), Spieler II $N-n$ GE ($N-n \in \N$). Pro Runde gewinnt Spieler I von Spieler II 1 GE mit W'keit $p$ und verliert eine GE an Spieler II mit W'keit $1-p$. Spielrunden sind unabh"angig. Seien $(Y_n)_{n \in \N}$ u.i.v. ZV mit
+\[
+P(Y_n = 1) = p,\ P(Y_n = -1) = 1-p.
+\]
+$X_n := \sum\limits_{k=1}^n Y_k$ ist dann der Gewinn (Verlust) von Spieler I nach $n$ Runden.\\
+Sei
+\[
+\tau := \inf\{ n \in \N\ |\ X_n = N-n \text{ oder } X_n = -n \}
+\]
+
+$P(X_{\tau} = -n)$ = Ruinwahrscheinlichkeit von Spieler I.\\
+Sei $\mu = EY_1 = 2p -1$. Nach Beispiel \ref{Bsp8.1} $\mu = 0 \Rightarrow (X_n)$ Martingal. $\mu \leq 0 \Rightarrow (X_n)$ Supermartingal. $\mu \geq 0 \Rightarrow (X_n)$ Submartingal.\\
+\textbf{Behauptung:} $\exists\, a > 0, 0 < \gamma < 1$, sodass $P(\tau > j) \leq a \gamma^j \ \forall\, j \in \N$.\\
+\textbf{Beweis:} Sei $k \in \N$.
+\begin{eqnarray*}
+P(\tau > Nk) & \leq & P\left( (Y_1,\dots,Y_n) \not= (1,\dots,1) , \right. \\
+& & \left. (Y_{N+1},\dots,Y_{2N}) \not= (1,\dots,1) , \dots, (Y_{(k-1)N+1},\dots,Y_{kN}) \not= (1,\dots,1) \right) \\
+& \stackrel{(Y_n) \text{ unabh.}}{=} & \prod_{v = 0}^{k-1} P\left( (Y_{vN+1},\dots,Y_{(v+1)N}) \not= (1,\dots,1) \right)\\
+& = & (1-p^N)^k
+\end{eqnarray*}
+F"ur $j > N$ gilt:
+\[
+P(\tau > j) \leq P( \tau > \lfloor \frac{j}{N} \rfloor N) \leq (1-p^N)^{\lfloor \frac{j}{N} \rfloor} \leq \underbrace{\left( (1-p^N)^{\frac1{N}} \right)^j}_{=: \gamma^j} \underbrace{(1-p^N)^{-1}}_{=: a}
+\]
+\hfill $\blacksquare$ \\
+Also folgt: $P(\tau < \infty) = 1, E\tau = \sum\limits_{j=1}^{\infty} P(\tau \geq j) < \infty$ und $1 = P(\tau < \infty) = P(X_{\tau} = N-n) + P(X_{\tau} = -n)$.\\
+Sei nun $M_n := \sum\limits_{k=1}^n (Y_k - \underbrace{EY_k}_{=\mu}), n \in \N_0, M_0 = 0$ und $\FF_n := \sigma(Y_1,\dots,Y_n)$.\\
+Dann ist $(M_n)_{n \in \N_0}$ ein $(\FF_n)$-Martingal. Das OST ist anwendbar, da (iii) erf"ullt ist.
+\begin{eqnarray*}
+\Rightarrow 0 & = & EM_{\tau} = P(X_{\tau} = N-n) (N-n-E\tau \mu) + P(X_{\tau} = -n)(-n-E\tau \mu) \\
+& = & P(X_{\tau} = N-n)(N-n) - P(X_{\tau} = -n)n -E\tau \mu.
+\end{eqnarray*}
+
+\begin{enumerate}
+\item[Fall 1:] $\mu = 0$ (d.h. $p = \frac12$, faires Spiel)
+\[
+\Rightarrow 0 = (1-P(X_{\tau} = -n))(N-n) - P(X_{\tau} = -n)n \Rightarrow P(X_{\tau} = -n) = \frac{N-n}{N}
+\]
+
+%Vorlesung vom 8. Febuar 2007, curry
+\item[Fall 2:] $p \neq \frac12$ \\
+Sei $\Theta := \log(\frac{1-p}{p}) \neq 0$ und $L_0 := 1$, $L_n := \prod_{k=1}^n e^{\Theta Y_k} = e^{\Theta X_n}$. \\
+$(L_n)_{n\in\N}$ ist ein $(\FF_n)_{n\in\N}$-Martingal, da
+$$E\left[L_{n+1}\ |\ \FF_n\right] = \prod_{k=1}^n e^{\Theta Y_k} \cdot \underbrace{E\left[ e^{\Theta Y_{n+1}} \right]}_{pe^{\Theta} + (1-p)e^{-\Theta} = 1} = L_n$$
+Das Optional Stopping Theorem \ref{Sa8.6} ist anwendbar, da (iv) erfüllt \\
+$E|L_{\tau}| = Ee^{\Theta X_{\tau}} \leq e^{|\Theta|N} < \infty$ und
+$$\int_{\left\{ \tau > n \right\}} |L_n| \d P \leq e^{|\Theta|N} \underbrace{P\left( \tau > n \right)}_{\to 0\ (n\to\infty)}$$
+$\folgt 1 = EL_0 = EL_{\tau} = P(X_{\tau} = N-n)e^{\Theta(N-n)} + P(X_{\tau} = -n)e^{-\Theta n}$ \\
+$\folgt 1 = (1 - P(X_{\tau} = -n))\cdot(\frac{1-p}{p})^{N-n} + P(X_{\tau} = -n)(\frac{p}{1-p})^n$ \\
+$\folgt P(X_{\tau} = -n) = \frac{\phi^N - \phi^n}{\phi^N - 1},\ \phi = \frac{1-p}{p}$
+\end{enumerate}
+\end{Bsp}
+
+\underline{Optimales Stoppen} \\
+Sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum und $X = (X_n)_{n=1,\dots,N}$ ein stochastischer Prozess adaptiert an eine Filtration $(\FF_n)_{n=1,\dots,N}$. Es sei $E|X_k| < \infty \quad\forall k=1,\dots,N$. \\
+Betrachte das Optimierungsproblem
+$$v := \sup_{\tau\text{ ist Stoppzeit }\leq N} \left\{ EX_{\tau} \right\} = EX_{\tau_0}$$
+$v$ = maximaler Wert, \\
+$\tau_0$ = optimale Stoppzeit (falls existent). Wegen
+$$E|X_{\tau}| = \sum_{n=1}^N E\left( |X_n|\cdot\ind_{\left\{ \tau = n \right\}} \right) \leq \sum_{n=1}^N E|X_n| < \infty$$
+nach Voraussetzung ist $v < \infty$. Ist $(X_n)_{n=1,\dots,N}$ ein $(\FF_n)_{n=1,\dots,N}$ Supermartingal, so folgt mit Satz \ref{Sa8.6}: $EX_1 \geq EX_{\tau} \quad\forall$ Stoppzeiten $\tau \leq N$. \\
+Also: $\tau_0 \equiv 1$ ist optimal (sofort aufhören).
+
+\begin{DefON} $\\$
+Der Prozess $Z = (Z_n)_{n=1,\dots,N}$ mit
+$$Z_N := X_N,\ Z_n := \max\left\{ X_n,\,E\left[ Z_{n+1}\,|\,\FF_n \right] \right\},\ n=N-1,\dots,1$$
+heißt \textbf{Snell-Einhüllende}\index{Snell-Einhüllende} von $X$.
+\end{DefON}
+
+%Satz 8.7
+\begin{Sa} \label{Sa8.7} Mit den obigen Bezeichnungen gilt:
+\begin{enumerate}
+\item[a)] $Z$ ist ein $(\FF_n)_{n=1,\dots,N}$-Supermartingal mit $Z_n \geq X_n$ für $n=1,\dots,N$.
+\item[b)] $Z$ ist das kleinste $(\FF_n)$-Supermartingal, welches $X$ dominiert, d.h. ist $(Y_n)_{n=1,\dots,N}$ ein weiteres $(\FF_n)$-Supermartingal mit $Y_n \geq X_n,\,n=1,\dots,N$ so gilt: $Y_n \geq Z_n$ für $n=1,\dots,N$.
+\end{enumerate}
+\end{Sa}
+\begin{Bew} $\\$
+\begin{enumerate}
+\item[a)] Aus der Definition: $Z_n \geq X_n \ \forall n,\ Z_n \geq E[Z_{n+1}\,|\,\FF_n]$, also $(Z_n)$ Supermartingal.
+\item[b)] Rückwärtsinduktion: \\
+($n=N$): $Y_N \geq X_N = Z_N$ \\
+($n\to n-1$): $Y_{n-1} \stackrel{Y\text{ Supermartingal}}{\geq} E\left[ Y_n\,|\,\FF_{n-1} \right] \stackrel{\text{I.H.}}{\geq} E\left[ Z_n\,|\,\FF_{n-1} \right]$ und $Y_{n-1} \geq X_{n-1}$ \\
+$\folgt Y_{n-1} \geq \max\{X_{n-1}, E[Z_{n}\,|\,\FF_{n-1}]\} = Z_{n-1}$
+\end{enumerate}
+\end{Bew}
+
+%Satz 8.8
+\begin{Sa} \label{Sa8.8} $\\$
+Mit den obigen Bezeichnungen und $\tau_0 = \min\{n\in\{1,\dots,N\}\,|\,X_n = Z_n\}$ gilt:
+\begin{enumerate}
+\item[a)] $\tau_0$ ist eine Stoppzeit.
+\item[b)] $(Z_n^{\tau_0})_{n=1,\dots,N}$ ist ein $(\FF_n)_{n=1,\dots,N}$-Martingal.
+\item[c)] $EX_{\tau_0} = \sup_{\tau\text{ Stoppzeit}}\{EX_{\tau}\}$
+\end{enumerate}
+\end{Sa}
+\begin{Bew} $\\$
+\begin{enumerate}
+\item[a)] Wegen $Z_N = X_N$ ist $\tau_0 \leq N$. Es gilt:
+$$\left\{ \tau_0 \leq n \right\} = \bigcup_{i=1}^n \underbrace{\left\{ Z_i = X_i \right\}}_{\in\FF_i} \in \FF_n$$
+\item[b)] Es gilt:
+$$\underbrace{Z_{n+1}^{\tau_0}}_{=Z_{(n+1) \wedge \tau_0}} - \underbrace{Z_n^{\tau_0}}_{=Z_{n \wedge \tau_0}} = \ind_{\{\tau_0 \geq n+1\}} \left( Z_{n+1} - E\left[ Z_{n+1}\,|\,\FF_n \right] \right)\ (*)$$
+da
+\begin{enumerate}
+\item[Fall 1:] $\tau_0 \geq n+1$ \\
+linke Seite = $Z_{n+1} - Z_n$, \\
+rechte Seite = $Z_{n+1} - \underbrace{E[Z_{n+1}\,|\,\FF_n]}_{=Z_n}$, da $X_n < Z_n$ auf $\{\tau_0 \geq n+1\}$. (stimmt)
+\item[Fall 2:] $\tau_0 \leq n$ \\
+$0=0$ (stimmt)
+\end{enumerate}
+Wende nun $E[\,\cdot\,|\,\FF_n]$ auf (*) an: \\
+Da $\{\tau_0 \geq n+1\} = \{\tau_0 \leq n\}^C \in\FF_n$ folgt
+$$E\left[ Z_{n+1}^{\tau_0} - Z_n^{\tau_0}\,|\,\FF_n \right] = \ind_{\left\{ \tau_0 \geq n+1 \right\}} E\left[ Z_{n+1} - E\left[ Z_{n+1}\,|\,\FF_n \right]\,|\,\FF_n \right] = 0$$
+$\folgt (Z_n^{\tau_0})$ ist $(\FF_n)$-Martingal.
+\item[c)] Wegen b) und Satz \ref{Sa8.6}:
+$$EZ_1 = EZ_1^{\tau_0} = EZ_N^{\tau_0} = EZ_{\tau_0} = EX_{\tau_0}$$
+Für eine beliebige Stoppzeit $\tau$ gilt: \\
+$EZ_1 \geq EZ_{\tau}$, da $Z$ Supermartingal. Und weiterhin: \\
+$EX_{\tau_0} = EZ_1 \geq EZ_1 \geq EZ_{\tau} \geq EX_{\tau} \quad\folgt$ Beh.
+\end{enumerate}
+\end{Bew}
+
+
+%Vorlesung vom Mo,12.02.2007 %Bernhard
+
+%Beispiel 8.8
+\begin{Bsp}[Das Sekret"arinnenproblem] \label{Bsp8.8}
+
+$N$ Bewerber(innen) um eine Stelle stellen sich nacheinander vor. Nach jedem Interview muss entschieden werden, ob die Person die Stelle bekommt.\\
+Annahme: Die Bewerber lassen sie linear anordnen und erscheinen in beliebiger Reihenfolge. ($N!$ m"ogliche Reihenfolgen)\\
+Welche Strategie maximiert die Wahrscheinlichkeit, dass die beste Person die Stelle bekommt?
+\begin{enumerate}
+\item[$\bullet$] $A_n$ = absoluter Rang des $n$-ten Kandianten unter allen $N$.
+
+\item[$\bullet$] $R_n$ = dessen relativer Rang unter den ersten $N$. $R_n = \{1 \leq m \leq n\ |\ A_m \leq A_n\}$.
+\end{enumerate}
+
+Es gibt eine Bijektion zwischen den $A$-Werten und den $R$-Werten. Somit gilt $\forall\, r_1,\dots,r_N$, $1 \leq r_i \leq i$, $1 \leq i \leq N$:
+\[
+P(R_1 = r_1,\dots,R_N = r_N) = \frac1{N!}
+\]
+Bestimme Randverteilungen:
+\[
+P(R_n = l) = \frac1{n}\ \text{ f"ur } l = 1,\dots,n\ \ \forall\, n \in \{1,\dots,N\}
+\]
+und $R_1,\dots,R_N$ unabh"angig. Sei nun
+\[
+\overline{X}_n := \begin{cases}
+1, & A_n = 1 \\
+0, & \text{sonst}
+\end{cases},\ \FF_n = \sigma(R_1,\dots,R_n)
+\]
+und $X_n = E[\overline{X}_n|\FF_n]$. $(X_n)$ ist $(\FF_n)$-adaptiert. $P(\overline{X}_{\tau} = 1) \rightarrow \max$.
+\begin{eqnarray*}
+P(\overline{X}_{\tau} = 1) & = & \sum_{n=1}^N P(\overline{X}_n = 1,\ \tau=n) = \sum_{n=1}^N E \ind_{[\tau=n,\ \overline{X}_n=1]} \\
+& = & \sum_{n=1}^N \int_{\{\tau=n\}} \overline{X}_n dP = \sum_{n=1}^N \int_{\{\tau=n\}} \underbrace{E[\overline{X}_n|\FF_n]}_{=X_n} dP \\
+& = & EX_{\tau}
+\end{eqnarray*}
+
+Also maximiere $EX_{\tau}$ mit Satz \ref{Sa8.8}.
+\begin{eqnarray*}
+P(R_1 = r_1,\dots,R_{n-1} = r_{n-1}, A_n = 1) & = & P(R_1 = r_1,\dots,R_{n-1}=r_{n-1}, R_n = 1, R_{n+1}>1,\dots,R_N>1) \\
+& = & \frac1{N!} \cdot 1 \cdot \cdots \cdot 1 \cdot n \cdot (n+1) \cdot \cdots \cdot (N-1) = \frac{n}{N} \cdot \frac1{n!}
+\end{eqnarray*}
+\begin{eqnarray*}
+\Rightarrow P(A_n = 1\ |\ R_1 = r_1,\dots,R_{n-1} = r_{n-1},R_n = 1) & = & \frac{P(R_1=r_1,\dots,R_{n-1}=r_{n-1},R_n=1,A_n=1)}{P(R_1=r_1,\dots,R_{n-1}=r_{n-1},R_n=1)} \\
+& = & \frac{\frac{n}{N} \cdot \frac1{n!}}{\frac1{n!}} = \frac{n}{N}
+\end{eqnarray*}
+\[
+\Rightarrow X_n = E[\ind_{\{1\}}(A_n)|\FF_n] = \begin{cases}
+\frac{n}{N}, & \text{falls } R_n = 1 \\
+0, & \text{sonst}
+\end{cases} \quad (\ast)
+\]
+\textbf{Behauptung:} $\exists\, (c_n)_{n=1,\dots,N} \subset \R$, $c_n\downarrow$, $c_N = \frac1{N}$ und $E[Z_n|\FF_{n-1}] \equiv c_n$ f"ur $n=1,\dots,N$, wobei $Z$ die Snell-Einh"ullende von $X$ ist.\\
+\textbf{Beweis:} R"uchw"artsinduktion:
+\begin{enumerate}
+\item[$n=N$:]
+\begin{eqnarray*}
+E[Z_N|\FF_{N-1}] & = & E[X_N|\FF_{N-1}] \stackrel{A_N=R_N}{=} E[\ind_{\{1\}}(R_N)|\FF_{N-1}] \\
+& \stackrel{R_N,\FF_N \text{ unabh.}}{=} & P(R_N = 1) = \frac1{N} = c_N.
+\end{eqnarray*}
+
+\item[$n+1 \leadsto n$:]
+\begin{eqnarray*}
+E[Z_n|\FF_{n-1}] & = & E[\max\{X_n\ E[Z_{n+1}|\FF_n]\}|\FF_{n-1}] \\
+& \stackrel{(\ast)}{=} & E[\max\{\frac{n}{N} \cdot \ind_{\{1\}}(R_n), c_{n+1}\}|\FF_{n-1}] \\
+& = & E[\ind_{\{1\}}(R_n) \cdot \max\{ \frac{n}{N}, c_{n+1}\} + (1-\ind_{\{1\}}(R_n))c_{n+1} | \FF_{n-1}] \\
+& \stackrel{R_n,\FF_{n-1} \text{ unabh.}}{=} & P(R_n=1) \cdot \max\{\frac{n}{N}, c_{n+1}\} + (1-P(R_n=1))\cdot c_{n+1} \\
+& = & \frac1{n} \max\{\frac{n}{N}, c_{n+1}\} + (1-\frac1{n})c_{n+1}
+\end{eqnarray*}
+\[
+\Rightarrow c_n = c_{n+1} + \underbrace{ \max\{ \frac1{N}, \frac{c_{n+1}}{n}\} - \frac{c_{n+1}}{n} }_{\geq 0} \Rightarrow c_n \geq c_{n+1}
+\]
+\end{enumerate}
+
+$\tau^{\ast} := \inf\{ n\ |\ Z_n = X_n\}$\\
+Stoppregel nach Satz \ref{Sa8.8}: $\tau^{\ast} = \min \{n\ |\ X_n = Z_n\}$.
+\begin{enumerate}
+\item[$\bullet$] gestoppt wird vor $N$ nur, wenn $R_n=1$.
+
+\item[$\bullet$] die Werte $X_n \not= 0$ sind wachsend.
+
+\item[$\bullet$] die Werte $E[Z_{n+1} | \FF_n] = c_{n+1}$ fallend.
+\begin{eqnarray*}
+\tau^{\ast} & = & \min\{ 1 \leq n \leq N-1\ |\ R_n = 1,\, \frac{n}{N} \geq c_{n+1}\} \wedge N \\
+& = & \min\{ n \geq k_n\ |\ R_n = 1 \} \wedge N.
+\end{eqnarray*}
+\end{enumerate}
+
+Wir bestimmen jetzt noch $k_N$.\\
+Sei $\tau_{k} := \inf\{ n \geq k\ |\ R_n=1\} \wedge N$. Bestimme $EX_{\tau_k}$.\\
+$k_N$ ist dann der $k$-Wert, bei dem $EX_{\tau_k}$ maximal ist. Es gilt
+\begin{eqnarray*}
+EX_{\tau_k} & = & \sum_{l=k}^N E[X_l \cdot 1_{\{l\}} (\tau_k)] \\
+& = & \sum_{l=k}^N \frac{l}{N} \underbrace{ P(R_m>1 \text{ f"ur } m=k,\dots,l-1,R_l = 1) }_{=P(\tau_k = l)} \\
+& = & \sum_{l=k}^N \frac{l}{N} \underbrace{ \left( \prod_{m=k}^{l-1} \frac{m-1}{m} \right)}_{=P(R_m>1)} \cdot \underbrace{\frac1{l}}_{=P(R_l=1)} \\
+& \stackrel{\text{Teleskop. Prod.}}{=} & \frac{k-1}{N} \sum_{l=k}^N \frac1{l-1}
+\end{eqnarray*}
+$\Phi(k) := \frac{k-1}{N} \sum_{l=k}^N \frac1{l-1}$ wird maximal in $k_N := \inf\{ k\ |\ \frac1{k} + \frac1{k+1} + \cdots + \frac1{N-1} \leq 1\}$. Beachte: $\lim_{N \rightarrow \infty} \frac{k_N} = \frac1{e}$.\\
+Bei einem gro"sen Bewerberkreis wird man etwa $37$ Prozent der Bewerber passieren lassen und dann den ersten nehmen, der besser als alle vorangegangenen ist.
+\end{Bsp}
+
+
+%Chapter 9
+\chapter{Konvergenzs"atze f"ur Martingale}
+Im Folgenden sei $(\Omega,\AA,P)$ ein W'Raum, $(\FF_n)_{n \in \N}$ eine Filtration und $\FF_{\infty} := \sigma(\cup_{n \in \N} \FF_n)$.
+
+\begin{Def}
+Sei $X_1,\dots,X_n$ eine Folge von ZV und $-\infty < a < b < \infty$.\\
+$U_n[a,b]$ sei die \textbf{Anzahl der aufsteigenden "Uberschreitungen} des Intervalls $[a,b]$ durch $X_1,\dots,X_n$ also
+\[
+U_n[a,b] = \max\{ k \leq \lfloor \frac{n}2 \rfloor\ |\ \exists \text{ Indizes } 1 \leq i_1 < \dots < i_{2k} \leq n \text{ mit } X_{i_{2j-1}} \leq a,\, b \leq X_{i_{2j}} \text{ f"ur } j = 1,\dots,k \}
+\]
+\end{Def}
+
+\begin{Bem}
+Wegen
+\[
+\{U_n[a,b] \geq k\} = \bigcup_{1\leq i_1<\dots<i_{2k}\leq n} \ \bigcap_{j=1}^k \{ X_{i_{2j-1}} \leq a \} \cap \{X_{i_{2j}} \geq b\} \in \FF_n
+\]
+ist $U_n[a,b]$ eine ZV.
+\end{Bem}
+
+
+%Vorlesung vom 15. Februar 2007, curry
+%Lemma 9.1
+\begin{Lem} \label{Lem9.1} 
+Sei $(X_n)_{n\in\N}$ ein Supermartingal. Dann gilt:
+$$EU_n\left[a,b\right] \leq \frac{1}{b-a}E(X_n - a)^{-}$$
+\end{Lem}
+\begin{Bew} $\\$
+Sei $p:= \lfloor \frac{n}{2} \rfloor +1,\ \tau_0 \equiv 1$ und für $k=1,\dots,p$: \\
+$\tau_{2k-1} := \min\{j \geq \tau_{2k-2}\ |\ X_j \leq a\} \wedge n$ \\
+$\tau_{2k} := \min\{j \geq \tau_{2k-1}\ |\ X_j \geq b\} \wedge n$ \\
+Die $(\tau_k)$ sind Stoppzeiten mit $1 \leq \tau_1 \leq \tau_2 \leq \dots \leq \tau_{2p} = n$ und \\
+falls $\tau_{2k-1} < n$, ist $\tau_{2k-1} < \tau_{2k}$. \\
+Sei $k_0 := U_n[a,b]$, d.h.
+$X_{\tau_{2k}} - X_{\tau_{2k-1}} \geq b-a$ für $k=1,\dots,k_0$ \\
+$X_{\tau_{2k_0+2}} - X_{\tau_{2k_0+1}} \neq 0 \folgt X_{\tau_{2k_0+1}} \leq a,\ X_{\tau_{2k_0+2}} = X_n$ \\
+$\folgt X_{\tau_{2k_0+2}} - X_{\tau_{2k_0+1}} \geq X_n - a \geq \min\{X_n-a,0\} = -(X_n - a)^{-}$ \\
+$\folgt \sum_{k=1}^p (X_{\tau_{2k}} - X_{\tau_{2k-1}}) \geq (b-a) \cdot U_n[a,b] - (X_n-a)^{-}$ \\
+Wir zeigen jetzt: $E(X_{\tau_{2k}} - X_{\tau_{2k-1}}) \leq 0$. \\
+Sei $c_j := \ind_{\{\tau_{2k-1} < j \leq \tau_{2k}\}}$. $(c_j)_{j\geq 2}$ ist vorhersehbar. \\
+$\{c_j = 1\} = \{ \tau_{2k-1} \leq j-1 \} \cap \{ \tau_{2k} \leq j-1 \}^C\ \in\FF_{j-1}$ \\
+Sei $Y_n = X_1 + \sum_{j=2}^n c_j(X_j-X_{j-1}),\,n\in\N;\ Y_1 := X_1.$ \\
+$\folgtnach{Satz \ref{Sa8.4}} (Y_n)$ ist ein Supermartingal. \\
+\begin{eqnarray*}
+\folgt EY_n &=& E]X_1 + \sum_{j=1}^n c_j(X_j - X_{j-1})] \\
+&=& EX_1 + \underbrace{E[X_{\tau_{2k}} - X_{\tau_{2k-1}}]}_{\leq 0} \\
+&\leq& EY_1 = EX_1 \\
+\end{eqnarray*}
+$\folgt$ Beh.
+\end{Bew}
+
+%Satz 9.1
+\begin{Sa}[Vorwärtskonvergenzsatz von Doob] \label{Sa9.1} $\\$
+Sei $(X_n)_{n\in\N}$ ein $(\FF_n)_{n\in\N}$-Supermartingal mit der Eigenschaft $\sup_{n\in\N}\{E|X_n|\} < \infty$. \\
+Dann existiert eine $\FF_{\infty}$\footnote{$\FF_{\infty} = \sigma(\cup_{n\in\N} \FF_n)$} -messbare Zufallsvariable $X_{\infty}$ mit $E|X_{\infty}| < \infty$ und $\lim_{n\to\infty} X_n = X_{\infty}\Pfs$
+\end{Sa}
+\begin{Bew} $\\$
+Sei $N := \{\omega \in \Omega\ |\ \liminf_{n\to\infty}\{ X_n(\omega) \} < \limsup_{n\to\infty}\{ X_n(\omega) \} \}$ und \\
+$U_{\infty}[a,b] := \lim_{n\to\infty}\{ U_n[a,b] \}$ (existiert, da $ U_n[a,b]$ wachsend) \\
+$\folgt N = \cup_{a,b\in\Q,\,a<b} \{ \omega\in\Omega\ |\ U_{\infty}[a,b](\omega) = \infty \}$ \\
+$\folgtnach{Lemma \ref{Lem9.1}} (b-a)EU_n[a,b] \leq E(X_n-a)^{-} \leq |a| + E|X_n| \quad\forall n\in\N$ \\
+Mit der Voraussetzung und monotoner Konvergenz: $EU_{\infty}[a,b] < \infty$. \\
+$\folgt P(U_{\infty}[a,b] = \infty) = 0 \quad\folgt P(N) = 0$, da $N$ abzählbare Vereinigung von $P$-Nullmengen. Außerdem: $N\in\FF_{\infty}$. \\
+Sei $\tilde{X}_{\infty}(\omega) :=
+\begin{cases}
+\lim_{n\to\infty} \{ X_n(\omega) \} & \omega\in N^C (\text{ evtl. } \tilde{X}_{\infty}(\omega) = \infty)\\
+0 & \omega\in N
+\end{cases}$ \\
+\begin{eqnarray*}
+\folgt E\left|\tilde{X}_{\infty}\right| &=& E\left[ \liminf_{n\to\infty} \left\{|X_n|\right\} \right] \\
+&\stackrel{\text{Lem. von Fatou}}{\leq}& \limsup_{n\to\infty} \left\{ E|X_n| \right\} \\
+&\leq& \sup_{n\in\N} \left\{ E|X_n| \right\} \\
+&<& \infty \\
+\end{eqnarray*}
+Sei $\tilde{N} := \{ \omega\in\Omega\ |\ \tilde{X}_{\infty} \in \{-\infty,\infty\} \} \quad\folgt P(\tilde{n}) = 0$ \\
+$folgt X_{\infty} := \tilde{X}_{\infty}\cdot\ind_{\tilde{N}^C}$ erfüllt die Bedingung.
+\end{Bew}
+
+\begin{BemON} $\\$
+\begin{enumerate}
+\item[(i)] $(X_n)_{n\in\N}$ mit der Eigenschaft $\sup_{n\in\N} \{E|X_n|\} < \infty$ heißt \textbf{$L^1$-beschränkt}\index{$L^1$-beschränkt}\index{beschränkt!$L^1$-}.
+\item[(ii)] Bei Supermartingalen folgt die $L^1$-Beschränktheit aus $\sup_{n\in\N} \{EX_n^{-}\} < \infty$, also z.B. falls $X_n \geq 0$.
+\end{enumerate}
+\end{BemON}
+
+%Beispiel 9.1
+\begin{Bsp}[Verzweigungsprozesse] \label{Bsp9.1} $\\$
+Es sei $\{ Y_{nk}\,|\,n,k\in\N \}$ eine Familie von unabhängigen und identisch verteilten $\N_0$-wertigen Zufallsvariablen.
+$$P_j := P(Y_{nk} = j) \quad\forall j\in\N_0$$
+Sei $(Z_n)$ definiert durch
+$$Z_1 := 1,\ Z_{n+1} := \sum_{k=1}^{Z_n} Y_{nk} \quad\forall n\in\N_0 \text{ und } \mu := \sum_{k=1}^{\infty} kp_k < \infty$$
+$$\FF_n = \sigma(\{ Y_{mk}\ |\ k\in\N,\ m \leq n-1 \})$$
+Es gilt: 
+\begin{eqnarray*}
+E\left[ Z_{n+1}\,|\,\FF_n \right] &=& E\left[ \sum_{k=1}^{Z_n} Y_{nk}\,|\,\FF_n \right] \\
+&=& E\left[ \sum_{l=0}^{\infty}\left( \sum_{k=1}^{l} Y_{nk} \right)\cdot\ind_{\left\{ Z_n = l \right\}}\,|\,\FF_n \right] \\
+&=& \sum_{l=0}^{\infty} \underbrace{E\left[ \sum_{k=1}^l Y_{nk}\,|\,\FF_n \right]}_{= E\left[ \sum_{k=1}^l Y_{nk} \right]}\cdot\ind_{\left\{ Z_n = l \right\}} \\
+&=& \sum_{l=0}^{\infty} l\cdot\mu\cdot\ind_{\left\{ Z_n = l \right\}} = \mu\cdot Z_n \\
+\end{eqnarray*}
+Sei $X_n := \frac{Z_n}{\mu^n} \folgt (X_k)_{k\in\N}$ ist ein $(\FF_n)_{n\in\N}$-Martingal. \\
+Insbesondere gilt:
+$$EZ_n = \mu^n \cdot EX_n = \mu^n EX_1 = \mu^{n-1}EZ_1 = \mu^{n-1} \quad(*) $$
+$(X_n)_{n\in\N}$ ist $L^1$-beschränkt, da $E|X_n| = EX_n = \frac{1}{\mu} \quad\forall n\in\N$. \\
+$\folgtnach{Satz \ref{Sa9.1}} \exists X_{\infty}$ mit $X_n \to X_{\infty}\Pfs$. \\
+\underline{Falls $\mu < 1$:} $\folgtnach{(*)} P(Z_n \geq \epsilon) \to 0\ (n\to\infty) \quad\folgt X_{\infty} \equiv 0$ \\
+\underline{Falls $\mu = 1$:} $X_n$ ganzzahlig $\folgt$ Folge irgendwann konstant. Wenn $P_1 \neq 1 \quad\folgt X_{\infty} \equiv 0$ \\
+\underline{Falls $\mu > 1$:} $X_{\infty}$ ist nicht degeneriert. $P(X_{\infty} = 0)$ ist Lösung von $g(z) = z$, wobei $g$ erzeugende Funktion von $Y$ ist.
+\end{Bsp}
+
+
+\newpage
+\renewcommand{\indexname}{Stichwortverzeichnis}
+
+\printindex
+\end{document}

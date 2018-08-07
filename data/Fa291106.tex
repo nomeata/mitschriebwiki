@@ -1,0 +1,211 @@
+\documentclass[a4paper,11pt]{book}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{ngerman}
+%\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{euscript}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage{mathtools}
+\usepackage[arrow, matrix, curve]{xy}
+%\usepackage{pst-all}
+%\usepackage{pst-add}
+%\usepackage{multicol}
+
+\usepackage[latin1]{inputenc}
+
+%%Zahlenmengen
+%Neue Kommando-Makros
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\K}{{\mathbb K}}
+\newcommand{\sL}{{\mathcal L}}
+\newcommand{\sn}[1]{||#1||_{\infty}}
+\newcommand{\eps}{{\varepsilon}}
+\newcommand{\begriff}[1]{\textbf{#1}} %das sollte man noch ändern!
+\newcommand{\eb}{\begin{flushright} \rule{1ex}{1ex} \end{flushright}}
+\newcommand{\ind}{1\hspace{-0,9ex}\raisebox{-0,2ex}{1}}
+
+
+% Seitenraender
+\textheight22cm
+\textwidth14cm
+\topmargin-0.5cm
+\evensidemargin0,5cm
+\oddsidemargin0,5cm
+\headheight14pt
+
+%%Seitenformat
+% Keine Einrückung am Absatzbeginn
+\parindent0pt
+
+\DeclareMathOperator{\unif}{Unif}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
+
+
+\def\AA{ \mathcal{A} }
+\def\PM{ \EuScript{P} } 
+\def\EE{ \mathcal{E} }
+\def\BB{ \mathfrak{B} } 
+\def\DD{ \mathcal{D} } 
+\def\NN{ \mathcal{N} } 
+
+% Komische Symbole
+\def\folgt{\ensuremath{\implies}}
+\newcommand{\folgtnach}[1]{\ensuremath{\DOTSB\;\xRightarrow{\text{#1}}\;}}
+\def\equizu{\ensuremath{\iff}}
+\def\d{\mbox{d}}
+\def\fs{\stackrel{f.s.}{\rightarrow }}
+
+%Nummerierungen
+\newtheorem{Def}{Definition}[chapter]
+\newtheorem*{DefNO}{Definition}
+\newtheorem{Sa}[Def]{Satz}
+\newtheorem{Lem}[Def]{Lemma}
+\newtheorem{Kor}[Def]{Korollar}
+\theorembodyfont{\normalfont}
+\newtheorem{Bsp}[Def]{Beispiel}
+\newtheorem{Bem}[Def]{Bemerkung}
+\theoremsymbol{\ensuremath{_\blacksquare}}
+\theoremstyle{nonumberplain}
+\newtheorem{Bew}{Beweis}
+\setcounter{chapter}{1}
+\setcounter{Def}{65}
+
+% Kopf- und Fusszeilen
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+\fancyfoot[C]{}
+\fancyhead[LO]{\rightmark}
+
+\title{29.11.06}
+\author{Das \texttt{latexki}-Team\\[8 cm]}
+
+\date{Stand: \today}
+\begin{document}
+
+\maketitle
+%FA VL Mi, 29Nov2006
+
+%Bsp 1.65
+\begin{Bsp}
+\textbf{Integraloperatoren}\\
+Sei $X = C([0,1])$ und $k \in C([0,1]^2)$. Sei $f \in X$. Setze $(Tf)(t) = \int_0^1 k(t,s)f(s) ds$ f"ur $t \in [0,1]$. Sei $t_n \rightarrow t$ in $[0,1].\ |Tf(t_n)-Tf(t)| \leq \int_0^1 |k(t_n,s)-k(t,s)||f(s)|ds \leq \int_0^1 \sn{f} \sup_{s \in [0,1]} |k(t_n,s)-k(t,s)| \rightarrow 0 \ (n \rightarrow \infty)$. Da $k$ glm stetig $\Rightarrow Tf \in X$. Klar: $T: X \rightarrow X$ ist linear
+\[
+\sn{Tf} \leq \underbrace{ \sup_{t \in [0,1]^2} \int_0^1 |k(t,s)|\d s \sn{f}}_{=: \kappa \leq \sn{k} < \infty}
+\]
+$\Rightarrow T \in B(X), ||T|| \leq \kappa$.\\
+\emph{Beh:} $||T|| = \kappa$.\\
+\emph{Bew:} $\exists\, t_0 \in [0,1]$ mit $\kappa = \int_0^1 |k(t_0,s)|\d s$. Setze $f_n(s) = \frac{\overline{k(t_0,s)}}{|k(t_0,s)| + \frac1{n}} \ ,s \in [0,1]$ f"ur $n \in \N \Rightarrow f_n \in X, \sn{f_n} \leq 1 \Rightarrow ||T|| \geq \sn{Tf_n} \geq |Tf(t_0)| = \int_0^1 \underbrace{\frac{|k(t_0,s)|^2}{|k(t_0,s)| + \frac1{n}}}_{\leq |k(t_0,s)|} ds \rightarrow \kappa \ (n \rightarrow \infty) \stackrel{\lim_{n \rightarrow \infty}}{\Longrightarrow} ||T|| \geq \kappa.$ \eb
+Fast genau so zeigt man, dass $(Tf)(t) = \int_0^t k(t,s)f(s) \d s \ ,t \in [0,1],\ f\in X$ einen Operator $T \in B(X)$ mit
+\[
+||T|| = \sup_{t \in [0,1]} \int_0^t |k(t,s)|\d s \quad \mbox{ definiert.}
+\]
+\end{Bsp}
+
+
+%Bsp 1.66
+\begin{Bsp}
+\textbf{Differentialoperatoren}
+\begin{enumerate}
+\item[a)] $X = C^1([0,1])$ mit $||f||_{C^1} = \sn{f} + \sn{f'} \ ,\ Y = C([0,1])$. Setze $Df = f'$ f"ur $f \in X \Rightarrow$ Klar: $D: X \rightarrow Y$ ist linear. Ferner: $\sn{Df} = \sn{f'} \leq ||f||_{C^1} \Rightarrow D \in B(X,Y)$ mit $||D|| \leq 1.$\\
+\emph{Beh:} $||D|| = 1$.\\
+\emph{Bew:} W"ahle $f_n(t) = \frac1{n} \sin(n-1)t,\ n \geq 3, t \in [0,1] \Rightarrow f_n \in X, \sn{f_n} = \frac1{n}, \ \sn{f_n'} = 1 - \frac1{n} \Rightarrow ||f_n||_{C^1} = 1$ und $||D|| \geq ||Df_n||_{C^1} = 1 - \frac1{n} \stackrel{\sup_n}{\Rightarrow} ||D|| \geq 1$.\eb
+Beachte: $f_n \rightarrow 0$ bzgl $\sn{\cdot}$ oder $\sn{Df_n} \rightarrow 1 \ (n \rightarrow \infty)$, also: $D: (X, \sn{\cdot}) \rightarrow (Y, \sn{\cdot})$ ist unstetig.
+\item[b)] Sei $X = C_b^2(\R^d) = \{ f \in C^2(\R^d): ||f||_{C_b^2} = \sn{f} + \sum_{k=1}^d \sn{\partial_k f} + \sum_{k,l=1}^d \sn{\partial_k \partial_l f} < \infty \}$ \ (mit $\partial_k =\frac{\partial}{\partial x_k}),\ Y = C_b(\R^d)$.\\
+\textbf{Laplace Operator}\\
+$\Delta f = \partial_1^2 f + \cdots + \partial_d^2 f \Rightarrow \Delta \in B(X,Y),\ ||\Delta|| \leq 1$.
+\end{enumerate}
+\end{Bsp}
+
+%Bsp 1.67
+\begin{Bsp}
+\textbf{Stetige Linearformen}
+\begin{enumerate}
+\item[a)] $X = C([0,1]),\ Y = \K,\ f \in X$
+\begin{enumerate}
+\item[(i)] $\varphi(f) = f(t_0)$ f"ur ein festes $t_0 \in [0,1]$ \ (Punktauswertung).\ $\Rightarrow \varphi: X \rightarrow \C$ ist linear. $|\varphi(f)| \leq \sn{f} \Rightarrow \varphi \in X^{\ast},\ ||\varphi||_{X^{\ast}} \leq 1$.\\
+Ferner: $||\varphi|| \geq |\varphi(\ind)| = 1 \Rightarrow || \varphi || = 1 \ (\sn{\ind} = 1)$
+\item[(ii)] Sei $g \in L^1([0,1])$ fest gew"ahlt. Setze $\varphi(f) = \int_0^1 f(t)g(t) \d t$. Klar: $\varphi: X \rightarrow \C$ ist linear und $|\varphi(f)| \leq \sn{f} \int_0^1 |g(t)| \d t \Rightarrow \varphi \in X^{\ast}$ mit $||\varphi||_{X^{\ast}} \leq ||g||_1$ wie in Bsp 1.65 sieht man, dass $||\varphi|| = ||g||_1$
+\end{enumerate}
+\item[b)] Sei $X = L^p(A),\ 1 \leq p \leq \infty$ f"ur ein $A \in \sL_d$. Sei $g \in L^{p'}(A)$ fest. Setze $\varphi(f) = \int_A f(x)g(x)\d x$ H"older: $\varphi(f) \leq ||f||_p ||g||_p \Rightarrow \varphi(f) \in \C$ f"ur alle $f \in X$ und $\varphi \in X^{\ast}$ mit $||\varphi|| \leq ||g||_{p'}$. Sp"ater: $||\varphi|| = ||g||_{p'}$
+\end{enumerate}
+\end{Bsp}
+
+%Bsp 1.68
+\begin{Bsp}
+\textbf{Folgenr"aume}\\
+Sei $T \in B(X,Y)$ mit $X \in \{ c_0, l^p, 1 \leq p < \infty \}$ und $Y \in \{ c_0, l^p, 1 \leq p \leq \infty \}$. Setze $a_{k,l} = (Te_l)_k$ f"ur $k,l \in \N \Rightarrow a_{k,l} \in \C$, bilde $A = [a_{k,l}]_{k,l \in \N}$. Sei $x \in X$. Setze $v_n = (x_1,x_2,\dots,x_n,0,0,\dots) \in c_{\infty}$ f"ur $n \in \N \Rightarrow v_n \rightarrow x$ in $X \ (n \rightarrow \infty)$, da $p < \infty$ \ (Satz 1.27)\\
+$(Tv_n)_k = (\sum_{j=1}^n T(x_j e_j))_k = \sum_{j=1}^n a_{k,l} x_j = (Av_n)_k$ \ (Matrizenmultiplikation)\\
+T stetig $\Rightarrow Tv_n \rightarrow Tx$ in $Y \Rightarrow (Tx)_k = \lim_{n \rightarrow \infty} (Tv_n)_k = \sum_{l=1}^{\infty} a_{k,l} x_l \ (\ast)$ insbesondere existiert die Reihe. Umbekehrt: Sei $T$ durch $(\ast)$ gegeben. Unter welchen Bed ist $T \in B(X,Y)$ wobei nun $X,Y \in \{c_0,c,l^p,1 \leq p < \infty\}$ ?
+\begin{enumerate}
+\item[a)] Sei $X = Y = l^1,\ a_{kl} \in \C \ (k,l \in \N)$ mit $\alpha := sup_{l \in \N} \sum_{k=1}^{\infty} |a_{kl}| < \infty$ \ (Spaltensummennorm)\\
+Sei $x \in l^1.$ Dann existiert $(\ast)$ da $|a_{kl}| \leq \alpha < \infty \ \forall\, k,l \in \N$. Sei $N \in \N.$ Dann: $\sum_{k=1}^N |(Tx)_k| \leq \sum_{k=1}^N \sum_{l=1}^{\infty} |a_{kl}| |x_l| = \sum_{l=1}^{\infty} (\sum_{k=1}^N |a_{kl}|)|x_l| \leq \alpha \sum_{l=1}^{\infty} |x_l| = \alpha ||x||_1$ wobei $T$ durch $(\ast)$ gegeben ist. Mit $\sup_N$ folgt $Tx \in l^1$. Klar: $T:l^1 \rightarrow l^1$ ist linear, und $||T|| \leq \alpha$, also $T \in B(l^1)$.\\
+\emph{Beh:} $||T|| = \alpha$\\
+\emph{Bew:} Klar: $\alpha = 0.$  Wenn $\alpha > 0$, dann w"ahle $\eps \in (0,\alpha)$. Dann ex $j \in \N$ mit: $\sum_{k=1}^{\infty} |a_{kl}| \geq \alpha - \eps$. Ferner: $||T|| \geq ||Te_j||_1 = \sum_{k=1}^{\infty} |a_{kl}| \geq \alpha - \eps$ mit $\eps \rightarrow 0$ folgt Beh. \eb
+\item[b)] F"ur $x \in X \in \{ c_0,c,l^p,1\leq p < \infty\}$ setze $Rx = (0,x_1,x_2,\dots), Lx = (x_2,x_3,\dots)$. Klar: $Rx,Lx \in X, R:X \rightarrow X, L:X \rightarrow X$ sind linear. Ferner. $||Rx||_p = ||x||_p \ (1 \leq p \leq \infty) \ ||Lx||_p \leq ||x_p||,\ Le_2 = e_1 \Rightarrow R,L \in B(X)$ mit Norm $=1.$ Beachte: $LRx = x,\ RLx = (0,x_2,x_3,\dots) \Rightarrow R$ ist injektiv, nicht surjektiv, L ist surjektiv, nicht injektiv.\\
+Matrizendarstellung:
+\[
+R \equiv \left[ \begin{array}{cccc}
+0 & 0 & 0 & \ldots \\
+1 & 0 & 0 & \ldots \\
+0 & 1 & 0 & \ldots \\
+\vdots & \vdots & \vdots & \ddots \\
+\end{array} \right]
+\]
+\[
+L \equiv \left[ \begin{array}{cccc}
+0 & 1 & 0 & \ldots \\
+0 & 0 & 1 & \ldots \\
+0 & 0 & 0 & \ldots \\
+\vdots & \vdots & \vdots & \ddots \\
+\end{array} \right]
+\]
+\end{enumerate}
+\end{Bsp}
+
+%Def 1.69
+\begin{Def}
+Seien $X,Y$ nVr. Eine injektive stetige lineare Abb $T: X \rightarrow Y$ hei"st \begriff{Einbettung}. Man schreibt dann $X \hookrightarrow Y$. Wenn $T \in B(X,y)$ bijektiv und $T^{-1}: Y \rightarrow X$ stetig, dann hei"st $T$ \begriff{Isomorphismus} und man schreibt $X \cong Y$. Eine lineare Abbildung $T: X \rightarrow Y$ mit $||Tx|| = ||x||$, hei"st \begriff{Isometrie}.
+\end{Def}
+
+%Bem 1.70
+\begin{Bem}
+Wenn $T$ eine Isometrie ist, so ist $T$ stetig und injektiv. Ferner ist $T^{-1}$ auf $R(T) = TX = \{ y = Tx, x \in X \}$ eine Isometrie.\\
+\emph{Beh:}Wenn $X$ ein BR ist, dann ist $R(T)$ abgeschlossen.\\
+\emph{Bew:}\\
+Sei $y_n = Tx_n \rightarrow y$ in $Y \ (n \rightarrow \infty) \Rightarrow ||y_n - y_m|| = ||Tx_n - Tx_m|| \rightarrow 0 \ (n,m \rightarrow \infty) \ \exists\, x = \lim_{n \rightarrow \infty} x_n \in X$. Da $T$ stetig: $Tx = y$ \eb
+\end{Bem}
+
+%Bsp 1.71
+\begin{Bsp}
+\begin{enumerate}
+\item[a)] Sei $Y \subseteq X$ ein UVR. Seien $||\cdot||_Y$ Norm auf $Y$ und $||\cdot||_X$ Norm auf $X$. Dann: $I: (Y,||\cdot||_Y) \rightarrow (X,||\cdot||_X)$ ist stetig (d.h. eine Einbettung) $\Longleftrightarrow ||y||_X \leq c ||y||_Y \ \forall\, y \in Y$. Dann hei"st $||\cdot||_Y$ feiner als $||\cdot||_X$ und $||\cdot||_X$ gr"ober als $||\cdot||_Y$.\\
+Beispiel: $l^p \hookrightarrow l^q,\ 1 \leq p \leq q \leq \infty. C^{\alpha}([0,1]) \hookrightarrow C([0,1)]),\ \alpha \in (0,1)$
+
+\item[b)] Sei $U \subseteq \R^d$ offen und beschr"ankt. Setze $K = \overline{U}$. Sei $1 \leq p < \infty$. Definiere $J: C(K) \rightarrow l^p(K)$ durch $Jf = f+N_K$. Beachte: $f$ ist messbar, da stetig und $||f + N_k||_p = ||f||_p \leq (\lambda(k))^{\frac1{p}} \sn{f} \Rightarrow Jf \in L^p(K)$.\\
+\emph{Beh:} $J$ ist injektiv.\\
+\emph{Bew:} Sei $Jf = 0$, also $\ \exists$ NM $N$ mit $f(x) = 0$ f"ur $x \in K \backslash N$. Da $\lambda(B(x,\eps)) > 0$ \ f"ur $\eps > 0$ folgt, dass $N^0$ leer ist, also ist $K \backslash N$ dicht in $K$ und somit $f = 0$, da $f$ stetig. \eb
+Folgerung: Sei $\hat{f} = f + N_K \in L^p(A)$. Nach Satz 1.44 gibt es $f_n \in C(K)$ mit $f_n \rightarrow f$ bzgl $||\cdot||_p$. Wie in Bsp 1.55 erh"alt man Polynom $g_n$ mit $\sn{g_n - f_n} \leq \frac1{n} \Rightarrow ||g_n-f_n||_p \leq \frac{c}{n} \Rightarrow g_n \rightarrow f$ in $\sL^p(K) \Rightarrow Jg_n \rightarrow \hat{f}$ in $L^p(K)\ (n \rightarrow \infty) \ \Rightarrow L^p(K),\ 1 \leq p < \infty$ ist seperabel. $(L(K) \hookrightarrow L^p(K)$ gilt f"ur $p \in [1,\infty])$
+
+\item[c)] Sei $X=C^1[0,1], T=C[0,1]$, dann hat $D \in B(X,Y),\ Df = f'$ die Inverse $D^{-1}g(t) = g(0) + \int_0^t g'(s)\d s$ wobei $D^{-1} \in B(Y,X)$, also $X \cong Y \Rightarrow$ BR Struktur ist gleich. Aber $D$ kann andere Strukturen ver"andern. z.B. $f \leq g \not\Rightarrow f' \leq g'$.
+
+\item[d)] \emph{Beh:} $c \cong c_0$\\
+\emph{Bew:} Sei $l(x) := \lim_{n \rightarrow \infty} x_n,\ x \in c.$ "Ub: $l \in c^{\ast}$. 1.68 b) $\Rightarrow R \in B(c), L \in B(c_0)$. Setze $Tx := Rx - l(x) \cdot \ind = (-l(x), x_1-l(x), \dots )$\ f"ur $x \in c \Longrightarrow  T \in B(c,c_0). \ Sx := Lx - x_1 \cdot \ind = (x_2-x_1, x_3-x_1, \dots )$\ f"ur $x \in c_0.\ S \in B(c_0,c)$. Einsetzen: $ST = I_c,\ TS = I_{c_0}$ \eb
+\emph{Bem:} $T$ ist keine Isometrie. Betrachte $x = (2,1,1,\dots) \Rightarrow x \in c \ \sn{x}=2;\ Tx = (-1,1,0,0,\dots) \Rightarrow \sn{Tx}=1$.
+
+\item[e)] \emph{Beh:}Alle endlichdimensionalen nVR $(d < \infty)$ sind isomorph zu $(\K^d,||\cdot||_2)$.\\
+\emph{Bew:} W"ahle eine feste Basis $B$ von $X$. Sei $\overline{x} \in \K^d$ der eindeutig bestimmte Koeffizientenvektor von $x$ bzgl. $B$. Setze $T: X \rightarrow \K^d,\ x \rightarrow \overline{x} \Longrightarrow T$ ist linear und bijektiv. $T$ ist Isometrie bzgl. $|||v||| = ||T^{-1}v||_X,\ v \in \K^d \Longrightarrow T^{-1}$ ist Isometrie (Bem 1.70). Nach Satz 1.22 ist $|||\cdot|||$ "aquivalent zu $||\cdot||_2$, also sind $T$ und $T^{-1}$ bzgl. $||\cdot||_X, ||\cdot||_2$ stetig. \eb
+\end{enumerate}
+\end{Bsp}
+\end{document}

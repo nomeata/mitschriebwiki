@@ -1,0 +1,1756 @@
+\documentclass[a4paper,11pt,twoside,titlepage]{article}
+
+\usepackage{latexki}
+\lecturer{Herr Hoffmann}
+\semester{Sommersemester 2006}
+\scriptstate{complete}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{ngerman}
+%\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{euscript}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+%\usepackage{pst-all}
+%\usepackage{pst-add}
+%\usepackage{multicol}
+%\usepackage{hhline}
+
+\usepackage[utf8]{inputenc}
+
+%Neuer Befehl für Kommentare über Zeilen
+\newcommand{\kommentar}[1]{}
+
+%PS-Tricks
+\usepackage{pst-plot, pstricks}
+\usepackage{pst-pdf}
+\usepackage{pst-plot}
+\newpsobject{showgrid}{psgrid}{subgriddiv=1,griddots=10,gridlabels=0pt}
+
+%%Zahlenmengen
+%Neue Kommando-Makros
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\K}{{\mathcal K}}
+\newcommand{\B}{{\mathcal B}}
+
+%Neue Kommandos
+\newcommand{\conv}{{\operatorname{conv}\:}}
+\newcommand{\aff}{{\operatorname{aff}\:}}
+\newcommand{\exth}{{\operatorname{exth}\:}}
+\newcommand{\inter}{{\operatorname{int}\:}}
+\newcommand{\rel}{{\operatorname{rel}\:}}
+\newcommand{\vertic}{{\operatorname{vert}\:}}
+\newcommand{\epi}{{\operatorname{epi}\:}}
+\newcommand{\cl}{{\operatorname{cl}\:}}
+
+
+% Seitenraender
+\textheight22cm
+\textwidth14cm
+\topmargin-0.5cm
+\evensidemargin0,5cm
+\oddsidemargin0,5cm
+\headheight14pt
+
+%%Seitenformat
+% Keine Einrückung am Absatzbeginn
+\parindent0pt
+\parskip12pt
+
+\def\AA{ \mathcal{A} }
+\def\PM{ \EuScript{P} } 
+\def\CC{ \mathcal{C} }
+\def\BB{ \mathcal{B} } 
+\def\DD{ \mathcal{D} } 
+
+
+% Kopf- und Fusszeilen
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+\fancyfoot[C]{}
+\fancyhead[LO]{\rightmark}
+
+\makeindex
+\title{Übungen zur Optimierungstheorie}
+\date{Sommersemester 2006}
+\author{ge\TeX ed von\\Tobias Baust und Frank Kreimes}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%Einstellungen, Titelseite, Inhaltsverzeichnis
+%\renewcommand{\thepage}{\roman{page}}
+%\thispagestyle{empty}
+\maketitle
+%\newpage
+\thispagestyle{empty}
+\tableofcontents
+\framebox{\parbox{\textwidth}{
+\texttt{Hinweis:}\\Dies ist ein Mitschrieb der Übungen zur Optimierungstheorie im Sommersemester 2006, gehalten von Herrn Hoffmann. Die Lösungen werden mit dem Einverständnis von Herrn Hoffmann zur Verfügung gestellt. Herr Hoffmann ist für den Inhalt dieses Mitschriebs nicht verantwortlich. Die Lösungen erheben außerdem weder Anspruch auf Vollständigkeit noch auf
+ Richtigkeit!}}
+\thispagestyle{empty}
+\cleardoublepage
+
+%Einstellungen
+\renewcommand{\thepage}{\arabic{page}}
+\setcounter{page}{1}
+\renewcommand{\thesection}{\arabic{section}}
+
+%1.Übung
+\section{Übung vom 28.04.}
+\textbf{n=2}
+
+Gegeben ist ein (LP) der Form:
+\begin{eqnarray*}
+f(x)=\langle x,p\rangle&=&\max\\
+A\cdot x&\leq&b\\
+x&\geq&0
+\end{eqnarray*}
+
+Jede der Ungleichungen $a_{i1}x_1+a_{i2}x_2\leq b_i,\ i\in\{1,\ldots,m\}$ beschreibt eine Halbebene im $\R^2$.\\
+Der zulässige Bereich M ist Schnitt von m Halbebenen.
+
+Ist $f(x)=\langle p,x\rangle$ die Zielfunktion (wir nehmen o.B.d.A. an, dass $f\not\equiv0$, also $p\neq0$), dann ist die Menge \[\{f=\alpha\},\ \alpha\in\R\mbox{~fest}\] (also die Menge aller Punkte $x\in\R^2$ mit $f(x)=\alpha$) eine Gerade mit Normalenvektor $\frac{p}{\|p\|}$.
+
+\textbf{Beispiel:}
+\begin{eqnarray*}
+f(x_1,x_2)=-4x_1-6x_2&=&\max\\
+-3x_1-x_2&\leq&-3\\
+-2x_1-2x_2&\leq&-4\\
+-x_1-2x_2&\leq&-3\\
+x_1,x_2&\geq&0
+\end{eqnarray*}
+Um den zulässigen Bereich skizzieren zu können, stellen wir zunächst die Gleichungen der 3 Geraden auf, die ihn begrenzen:
+\begin{eqnarray}
+-3x_1-x_2=-3&\Leftrightarrow&x_2=3-3x_1\\
+-2x_1-2x_2=-4&\Leftrightarrow&x_2=2-x_1\\
+-x_1-2x_2=-3&\Leftrightarrow&x_2=\frac{3}{2}-\frac{1}{2}x_1
+\end{eqnarray}
+Hinzu kommen noch die Vorzeichenbedingungen $x_1=0$, $x_2=0$.
+
+Der Punkt (0,0) erfüllt keine der Bedingungen (1),(2),(3) (mit "`$\leq$"'), d.h. der zulässige Bereich ist Schnitt der Halbebenen, in denen (0,0) nicht liegt.
+
+Die Ecken des zulässigen Bereichs sind (0,3), ($\frac{1}{2}$,$\frac{3}{2}$), (1,1) und (3,0).\\
+Verschieben der Geraden $\{\langle p,\cdot\rangle=\alpha\}$ mit $p=
+\begin{pmatrix}
+	-4\\-6
+\end{pmatrix}$
+zeigt, dass (1,1) Lösung des LP mit $f(1,1)=-10$ ist.\\[24pt]
+\texttt{Anmerkung:}\\
+$-4x_1-6x_2=\alpha\quad\Leftrightarrow\quad x_2=-\frac{2}{3}x_1-\frac{\alpha}{6}$\\
+Gerade in Richtung des Normalenvektors (hier nach links unten) verschieben.
+
+\textit{Hier ohne Schaubilder!}
+\newpage
+
+%2. Übung
+\section{Übung vom 05.05.}
+\subsection*{1. Aufgabe}
+i) neue Zielfunktion: $-x_1+x_2+2x_3=\max$\\
+ii) Nebenbedingungen: Einführen von Schlupfvariablen
+\begin{eqnarray*}
+2x_1-x_2+3x_3+y_1&=&1,\quad y_1\geq0\\
+x_1-x_3+y_2&=&1,\quad y_2\geq0
+\end{eqnarray*}
+iii) Vorzeichenbedingung:
+\begin{eqnarray*}
+x_2=x_2^+-x_2^-,&\quad&x_2^+\geq0,\ x_2^-\geq0\\
+x_3=x_3^+-x_3^-,&\quad&x_3^+\geq0,\ x_3^-\geq0
+\end{eqnarray*}
+
+Insgesamt erhalten wir:
+\begin{eqnarray*}
+-x_1+x_2^+-x_2^-+2x_3^+-2x_3^-&=&\max\\
+\left(
+\begin{array}{ccccccc}
+2&-1&1&3&-3&1&0\\
+1&0&0&-1&1&0&1\\
+3&1&-1&-2&2&0&0	
+\end{array}\right)
+\left(
+\begin{array}{c}
+x_1\\x_2^+\\x_2^-\\x_3^+\\x_3^-\\y_1\\y_2
+\end{array}\right)
+&=&
+\left(
+\begin{array}{c}
+1\\1\\5
+\end{array}\right)\\
+x_1,x_2^+,x_2^-,x_3^+,x_3^-,y_1,y_2&\geq&0
+\end{eqnarray*}
+
+\subsection*{2. Aufgabe}
+Die Nebenbedingung $x_1-2x_2+x_3=1\quad\Leftrightarrow\quad x_3=1-x_1+2x_2$ ermöglicht es, $x_3$ zu ersetzen.
+
+Als Zielfunktion ergibt sich dadurch $-x_1+(4-\beta)x_2-2+2x_1-4x_2$.\\
+Die Lösungsmenge ändert sich nicht, wenn wir den konstanten Term streichen.
+
+Als neues LP erhalten wir dann (...):
+\setcounter{equation}{0}
+\begin{eqnarray}
+\widetilde{f}(x)=-x_1+\beta x_2&=&\max\nonumber\\
+2x_1-3x_2&\leq&5\\
+-x_1&\leq&2\\
+-x_1+x_2&\leq&1\\
+x_1-2x_2&\leq&1\\
+x_1,x_2&\geq&0\nonumber
+\end{eqnarray}
+[$p=\left(\begin{array}{c}
+-1\\\beta
+\end{array}\right)$]
+
+\texttt{Beachte:} Das (LP) wurde direkt in Standardform übergeführt! Die vierte Nebenbedingung ergibt sich aus der alten vierten Nebenbedingung.
+
+Wir bestimmen wieder die notwendigen Geradengeichungen:
+\setcounter{equation}{0}
+\begin{eqnarray}
+x_2&=&\frac{2}{3}x_1-\frac{5}{3}\\
+x_1&=&-2\\
+x_2&=&x_1+1\\
+x_2&=&\frac{1}{2}x_1-\frac{1}{2}
+\end{eqnarray}
+
+Um eine L"osung zu finden, müssen wir die Gerade \[\{\langle\left(\begin{array}{c}
+-1\\\beta
+\end{array}\right),\cdot\rangle=\alpha\}\]
+in Richtung $\left(\begin{array}{c}
+-1\\\beta
+\end{array}\right)$ auf den zulässigen Bereich verschieben.
+
+\texttt{Anmerkung:} Hätten wir das (LP) nicht umgeformt und in der alten Form stehen lassen, so wäre der Normalenvektor -p und wir hätten zum minimieren in die Gegenrichtung (also wieder p) verschieben müssen.
+
+\begin{description}
+\item[1. Fall: $\beta<0$]~\\ $\Rightarrow$ Lösung unseres Problems ist der Punkt (0,0).\\
+$\Rightarrow$ Lösung des ursprünglichen (LP) ist $\left(\begin{array}{c}
+0\\0\\1
+\end{array}\right)$
+\item[2. Fall: $\beta=0$]~\\ $\Rightarrow$ Lösung ist die Menge $\{(1-\alpha)\left(\begin{array}{c}
+0\\1
+\end{array}\right):\ \alpha\in[0,1]\}$.\\
+$\Rightarrow$ Lösung des ursprünglichen (LP) ist $\{\alpha\left(\begin{array}{c}
+0\\0\\1
+\end{array}\right)+(1-\alpha)\left(\begin{array}{c}
+0\\1\\3
+\end{array}\right):\ \alpha\in[0,1]\}$
+\item[3. Fall: $0<\beta<1$]~\\ $\Rightarrow$ Die Lösung ist (0,1).\\
+$\Rightarrow$ Die Lösung des ursprünglichen Problems ist $\left(\begin{array}{c}
+0\\1\\3
+\end{array}\right)$
+\item[4. Fall: $\beta=1$]~\\ $\Rightarrow$ Die Lösung ist die Menge $\{\left(\begin{array}{c}
+0\\1
+\end{array}\right)+\alpha\left(\begin{array}{c}
+1\\1
+\end{array}\right):\ \alpha\geq0\}$.\\
+$\Rightarrow$ Die Lösung des ursprünglichen Problems ist $\{\left(\begin{array}{c}
+0\\1\\3
+\end{array}\right)+\alpha\left(\begin{array}{c}
+1\\1\\1\end{array}\right):\ \alpha\geq0\}$
+\item[5. Fall: $\beta>1$]~\\ $\Rightarrow$ keine Lösung 
+\end{description}
+
+(...)\\
+\textit{Hier ohne Schaubilder!}
+
+\subsection*{3. Aufgabe}
+$A=\{x^1,\ldots,x^k\}\subset\R^n$, $k\geq n+2$\\
+\textbf{Gesucht:} $A_1,A_2\subset A$ mit $A_1\cap A_2=\varnothing$, $A_1\cup A_2=A$ und $\conv\:A_1\cap \conv\:A_2\neq\varnothing$
+
+\textbf{Beweis:}\\
+Wir betrachten das homogene LGS ($\ast$)
+\begin{eqnarray*}
+\alpha_1x^1+\ldots+\alpha_kx^k&=&0\\
+\alpha_1+\ldots+\alpha_k&=&0
+\end{eqnarray*}
+in $\alpha_1,\ldots,\alpha_k$ (d.h. $\alpha_1,\ldots,\alpha_k$ sind die Unbekannten).
+
+Das homogene LGS besteht aus n+1 Gleichungen und $k\geq n+2$ Unbekannten.\\
+Also existiert eine nichttriviale (d.h. von 0 verschiedene Lösung) $\alpha_1^*,\ldots,\alpha_k^*$.
+
+Wir setzen $I_+:=\{i\in\{1,\ldots,k\}:\ \alpha_i^*\geq0\}$, $I_-:=\{i\in\{1,\ldots,k\}:\ \alpha_i^*<0\}$.\\
+Dann gilt: $I_+\cap I_-=\varnothing$, $I_+\cup I_-=\{1,\ldots,k\}$, $I_+\neq\varnothing\neq I_-$.
+
+Weiter definieren wir $A_+:=\{x^i:\ i\in I_+\}$, $A_-:=\{x^i:\ i\in I_-\}$.\\
+Es gilt: $A_+\cap A_-=\varnothing$, $A_+\cup A_-=A$
+
+Da $\alpha_1^*,\ldots,\alpha_k^*$ Lösung des LGS ($\ast$) ist, gilt:
+\[\sum_{i\in I_+}\alpha_i^*x^i=\sum_{i\in I_-}-\alpha_i^*x^i\]
+
+\[\alpha^*:=\sum_{i\in I_+}\alpha_i^*=-\sum_{i\in I_-}\alpha_i^*\]
+Insbesondere gilt: $\alpha^*>0$.\\
+Division durch $\alpha^*$ liefert:
+\[\underbrace{\sum_{i\in I_+}\frac{\alpha_i^*}{\alpha^*}x^i}_{\in \conv\:A_+}=\underbrace{\sum_{i\in I_-}\frac{-\alpha_i^*}{\alpha^*}x^i}_{\in \conv\:A_-}\]
+
+Also gilt: $\conv\:A_+\cap \conv\:A_-\neq\varnothing$
+
+\subsection*{4. Aufgabe}
+Sei $x\in \conv M \Rightarrow x=\sum\limits_{i=1}^k\alpha_ia^i$ mit $a^i\in M, \alpha_i\geq0, \sum\limits_{i=1}^k\alpha_i=1$ und $k\in\N$.\\
+Wir nehmen an, k ist minimal. (Insbesondere $\alpha_i>0$ für $i=1,\ldots,k$.)
+
+Wir zeigen, dass $a^1,\ldots,a^k$ affin unabhängig sind.
+\begin{description}
+\item[1. Fall:] $\dim \aff\{a^1,\ldots,a^k\}=n$\\
+\textbf{zu zeigen:} $k\leq n+1$\\
+\textbf{Annahme:} $k\geq n+2$\\
+Aufgabe 3 $\Rightarrow \exists$ Indexmengen $I_1,I_2$ nichtleer, disjunkt und $I_1\cup I_2=\{1,\ldots,k\}$ und Zahlen $\beta_1,\ldots,\beta_k\geq 0$ mit 
+\[\sum_{i\in I_1}\beta_i=1=\sum_{i\in I_2}\beta_i\qquad\mbox{und}\qquad\sum_{i\in I_1}\beta_ia^i=\sum_{i\in I_2}\beta_i\alpha^i=:y\]
+
+Für $\gamma>0$ beliebig gilt nun:
+\[x=x+\gamma y-\gamma y=\sum_{i\in I_1}(\alpha_i+\gamma\beta_i)a^i+\sum_{i\in I_2}(\alpha_i-\gamma\beta_i)a^i\]
+
+Es gilt:
+\[\sum_{i\in I_1}(\alpha_i+\gamma\beta_i)+\sum_{i\in I_2}(\alpha_i-\gamma\beta_i)=1+\gamma-\gamma=1\]
+
+Wir setzen $\gamma=\frac{\alpha_{i_0}}{\beta_{i_0}}$ mit $\frac{\alpha_{i_0}}{\beta_{i_0}}=\min\limits_{i\in I_2}\frac{\alpha_i}{\beta_i}$.\\
+Dann gilt: $\alpha_i-\gamma\beta_i\geq0$ für alle $i\in I_2$ und $\alpha_{i_0}-\gamma\beta_{i_0}=0$.
+
+Also ist x Konvexkombination von (k-1) Punkten. \textbf{Widerspruch zur Vorraussetzung!}\\
+Also gilt $k\leq n+1$.
+
+\item[2. Fall:] $\dim \aff\{a^1,\ldots,a^k\}<n$\\
+Betrachte die Menge $\widetilde{M}=M\cap \aff\{a^1,\ldots,a^k\}$ und wende Fall 1 auf $\widetilde{M}$ und $\aff\{a^1,\ldots,a^k\}$ an.
+\end{description}
+
+\newpage
+%3. Übung
+\section{Übung vom 12.05.}
+\subsection*{5. Aufgabe}
+(a) Es seien \[M=\bigcap_{i=1}^k\{f_i\leq\alpha_i\}=\bigcap_{i=1}^m\{g_i\leq\beta_i\}\] zwei Darstellungen von M. Es sei weiter $i\in\{1,\ldots,k\}$ mit \[F:=M\cap\{f_i=\alpha_i\}\neq\varnothing\]
+
+\textbf{Behauptung:} $\exists J\subset\{1,\ldots,m\},\:J\neq\varnothing$ [mit $F=M\cap\bigcap_{j\in J}\{g_j=\beta_j\}$]
+
+$F\neq\varnothing$, also besitzt F relativ innere Punkte, d.h. es existiert ein $\alpha>0$ mit \[B:=\underbrace{B_\alpha(x)}_{\textnormal{Kugel um x mit Radius \ensuremath{\alpha}}}\cap \aff\!F\subset F\] wobei $x\in \rel\:\inter F$ sein soll.
+
+Wir definieren \[J:=\{i\in\{1,\ldots,k\}|\:g_j(x)=\beta_j\}\]
+Weil $x\in F\subset\{f_i=\alpha_i\}$, gilt $x\not\in \inter M$. Also gilt: $\exists j\in\{1,\ldots,k\}:\ g_j(x)=\beta_j$, somit ist $J\neq\varnothing$.\\
+Wir setzen \[\tilde F:=M\cap\bigcap_{j\in J}\{g_j=\beta_j\}\]
+
+\textit{z.z.:} $\tilde F=F$\\
+"`$\supset$"': Sei $j\in J$ und $z\in\R^n$ so, dass $x+z\in B$. Dann gilt:
+\[x+z\in B\subset F\subset \{g_j\leq\beta_j\}\]
+\[x-z\in B\subset F\subset \{g_j\leq\beta_j\}\]
+Somit:
+\[g_j(x+z)=g_j(x)+g_j(z)=\beta_j+g_j(z)\leq\beta_j\]
+\[g_j(x-z)=g_j(x)-g_j(z)=\beta_j-g_j(z)\leq\beta_j\]
+$\Rightarrow g_j(z)=0$
+
+Es gilt: $B\subset\{g_j=\beta_j\}$ für alle $j\in J$
+\[\left.\begin{array}{rcl}F&\subset&\aff F=\aff B\subset\bigcap_{j\in J}\{g_j=\beta_j\}\\F&\subset&M\end{array}\right\}\Rightarrow F\subset \tilde F\]
+
+"`$\subset$"': Sei $y\in\tilde F$ und x wie zuvor.\\
+Der Strahl $h:=\{y+\beta(x-y)|\:\beta\geq0\}$ erfüllt $h\subset\{g_j=\beta_j\}\ \forall j\in J$.
+
+Weil $g_j(x)<\beta_j\ \forall j\not\in J$ liegt $x\in \inter\bigcap_{j\not\in J}\{g_j=\beta_j\}$.\\
+Damit existiert aber ein $z\in h\cap M$ mit $x\in[y,z]$.
+
+Es gilt $f_i(x)=\alpha_i$ und $f_i(y)\leq\alpha_i$ und $f_i(z)\leq\alpha_i$, sowie $f_i(\alpha y+(1-\alpha)z)=f(x)$ für ein $\alpha\in(0,1)$.
+
+$\alpha_i=f_i(x)=\alpha f_i(y)+(1-\alpha)f_i(z)$ $\Rightarrow f_i(y)=\alpha_i,\:f_i(z)=\alpha_i$ $\Rightarrow y\in F$
+
+(b) Falls $M=\R^n$, so hat M keine Seiten.\\
+Es sei also \[M=\bigcap_{i=1}^k\{f_i\leq\alpha_i\},\ k\geq1\qquad(\ast)\]
+
+Ist $F=M\cap\{f_{i_0}=\alpha_{i_0}\}$ für ein $i_o\in\{1,\ldots,k\}$, so gilt $F=M\cap\{f_{i_0}\leq\alpha_{i_0}\}\cap\{f_{i_0}\geq\alpha_{i_0}\}$ und F ist polyedrisch nach Definition.
+
+Jeder andere Seitentyp ist nicht-leerer Schnit solcher Mengen, also auch polyedrisch.
+
+(c) Es sei M in der Form $(\ast)$ gegeben und $F=M\cap\bigcap_{i\in I}\{f_{i}=\alpha_{i}\}=M\cap\bigcap_{i\in I}\{f_{i}\leq\alpha_{i}\}\cap\bigcap_{i\in I}\{f_{i}\geq\alpha_{i}\}$ mit $\varnothing\neq I\subset\{1,\ldots, k\}$. $(\ast\ast)$
+
+Für jede Seite F' von F gilt also 
+\[F'=F\cap\bigcap_{j\in J}\{f_j=\alpha_j\}=M\cap\bigcap_{i\in I\cup J}\{f_i=\alpha_i\}\]
+mit $J\subset\{1,\ldots,k\}$.\\
+Also ist F' Seite von M.
+
+(d) Es seien F',F Seiten von M, $F'\subset F$. Dann existieren $I,I'\subset\{1,\ldots,k\}$ mit
+\[F=\underbrace{\bigcap_{i=1}^k\{f_i\leq\alpha_i\}}_{=M}\cap\bigcap_{i\in I}\{f_i=\alpha_i\}\]
+\[F'=M\cap\bigcap_{i\in I'}\{f_i=\alpha_i\}\]
+
+Es gilt:
+\[F'=F\cap F'=M\cap\bigcap_{i\in I}\{f_i=\alpha_i\}\cap\bigcap_{i\in I'}\{f_i=\alpha_i\}=F\cap\bigcap_{i\in I,I'}\{f_i=\alpha_i\}\]
+
+\subsection*{6. Aufgabe}
+"`(i)$\Rightarrow$(ii)"': Es sei s Extremalstrahl, d.h.
+\[s=M\cap\bigcap_{i\in I}\{f_i=\alpha_i\}\ \textnormal{ mit }\ I\subset\{1,\ldots,k\}\]
+($M=\bigcap\limits_{i=1}^k\{f_i\leq\alpha_i\}$)
+
+Weiter sei $x\in s$ und $y,z\in M$ mit $x=\alpha y+(1-\alpha)z$.\\
+Für $i\in I$ gilt: $\alpha_i=f_i(x)=\alpha \underbrace{f_i(y)}_{\leq\alpha_i}+(1-\alpha)\underbrace{f_i(z)}_{\leq\alpha_i}$ $\Rightarrow f_i(y)=\alpha_i,\:f_i(z)=\alpha_i$\\
+$\Rightarrow y,z\in s$
+
+"`(ii)$\Rightarrow$(i)"': Wir definieren \[I:=\{i\in\{1,\ldots,k\}|\:s\subset\{f_i=\alpha_i\}\}\]
+und \[F:=M\cap\bigcap_{i\in I}\{f_i=\alpha_i\}\]
+
+\textbf{z.z.:} $I\neq\varnothing$, $F=s$
+
+Falls $I=\varnothing$, dann existiert $x\in s$ mit $x\in\bigcap_{i=1}^k\{f_i<\alpha_i\}=\inter M$.\\
+Dann existieren aber $y,z\in M$ mit $y,z\not\in s$ und $x\in[y,z]$, was ein Widerspruch zur Voraussetzung ist.
+
+Also $I\neq\varnothing$.\\
+Nach Definition von F ist $s\subset F$ klar.
+
+\textbf{z.z.:} $F\subset s$
+
+Sei $y\in F$ und $x=x^0+u^0$ (wobei $s=\{x^0+\beta u^0|\:\beta\geq 0\}$).\\
+Wir betrachten den Strahl
+\[h:=\{y+\beta(x-y)|\:\beta\geq0\}\]
+Für $i\in I$ gilt: $h\subset\{f_i=\alpha_i\}$, also $h\subset\bigcap_{i\in I}\{f_i=\alpha_i\}$.\\
+Wie zuvor: $f_i(x)<\alpha_i\ \forall i\not\in I$.
+
+Also gilt $x\in\bigcap_{i\not\in I}\{f_i<\alpha_i\}$.\\
+Damit existiert aber ein $z\in h$ mit $z\neq x$ und $x\in[y,z]$. Wegen (ii) folgt daraus, dass $y,z\in s$.
+
+Also gilt $F\subset s$.
+
+\subsection*{7. Aufgabe}
+$M\subset\R^n$ mit M nichtleer, geradenfrei, polyedrisch
+
+"`$\Rightarrow$"': (Sei M ein Kegel.)\\
+$M\neq\varnothing$, M polyedrisch, M geradenfrei $\Rightarrow \vertic M \neq\varnothing$\\
+
+Sei $x\in \vertic M$.\\
+Falls $x\neq0$, so gilt $0\in M,\:2x\in M$ und es gilt $x\in[0,2x]$. \textbf{Widerspruch zu x Ecke!}\\
+Also muss $x=0$ sein. [\textit{Also: $\vertic M=\{0\}$}]
+
+"`$\Rightarrow$"': Sei $\vertic M=\{0\}$.\\
+Nach Vorlesung: ($\ast$) $M=\conv\{\{0\}\cup \exth M\}$ \newline
+[$\exth$ ist die Vereinigung aller Extremalstrahlen]
+
+Ist $M=\{0\}$, so ist M Kegel. Also gelte nun $\exth M \neq\varnothing$.\\
+Es sei $s\in \exth M$, also $s=\{x^0+\beta u^0|\:\beta\geq0\},\ x^0\in\R^n,\:u^0\in S^{n-1}$.\newline
+[$S^{n-1}=\{u\in\R^n:\ \|u\|=1\}$ Einheitssphäre]
+\begin{eqnarray*}
+x^0\in \vertic s&\Rightarrow&x^0 \textnormal{ ist 0-Seite von s}\\
+&\stackrel{\textnormal{\scriptsize{Aufgabe 5}}}{\Rightarrow}&x^0 \textnormal{ ist 0-Seite von M}\\
+&\Rightarrow&x^0\in \vertic M\\
+&\Rightarrow&x^0=0\end{eqnarray*}
+D.h. jeder Extremalstrahl ist von der Form $\{\beta u^0|\:\beta\geq0\}$ für ein $u^0\in S^{n-1}$.
+
+Seien $u^1,\ldots,u^k\in S^{n-1}$ die Richtungen der Extremalstrahlen. Dann gilt:
+\[M=\conv\left\{\{0\}\cup\bigcup_{i=1}^k\{\beta u^i|\: \beta\geq 0\}\right\}\]
+und man rechnet einfach nach, dass M Kegel ist.
+
+\subsection*{8. Aufgabe}
+O.E. $y^i\neq 0$ für $i=1,\ldots,m$.
+
+Wir definieren $M:=\conv\{y^1,\ldots,y^m\}$.\\
+Dann gilt: $0\not\in M$. Denn andernfalls:
+\[0=\beta_1y^1+\ldots+\beta_my^m\quad\textnormal{mit }\beta_i\geq0\textnormal{ und }\sum_{i=1}^m\beta_i=1\]
+
+\[\stackrel{\textnormal{\scriptsize{O.E. \ensuremath{\beta_1>0}}}}{\Rightarrow}y^1=-(\underbrace{\alpha_2}_{=\frac{\beta_2}{\beta_1}}y^2+\ldots+\underbrace{\alpha_m}_{=\frac{\beta_m}{\beta_1}}y^m)\quad\textnormal{mit }\alpha_i\geq0\]
+Also gilt $-y^1\in V$ $\Rightarrow$ Gerade, die von $y^1$ und $-y^1$ aufgespannt wird, liegt auch in V. \textbf{Widerspruch!}
+
+
+Es sei $x_0\in M$ mit $\|x_0\|=\min_{x\in M}\|x\|$.\\
+Wir definieren $f:=\langle\cdot,x_0\rangle$.\\
+Dann gilt: $f(z)\geq0\ \forall z\in M$. Ansonsten Widerspruch zur Wahl von $x_0$!$^{(1)}$
+
+$V=\bigcup_{\alpha\geq0}\alpha M\subset\{f\geq0\}$ und $V\backslash\{0\}\subset\{f>0\}$ und wir haben die Behauptung.
+
+\texttt{Anmerkung (1):} Man kann sich das anschaulich klar machen. Im zweidimensionalen zeichne die Gerade $\{f=0\}$. Sei $z\in M$ in der Halbebene, in der $x_0$ nicht liegt, z.B. $z\in \{f<0\}$ (dann $f(z)<0$). $[z,x_0]\subset M$ und schon findet man einen Punkt der näher am Nullpunkt ist als $x_0$. [...] 
+
+\subsection*{Zusatzaufgabe}
+Musterlösung online.
+
+
+\newpage
+%4. Übung
+\section{Übung vom 19.05.}
+\subsection*{9. Aufgabe}
+\textbf{Gegeben:} $A\in\R^{m\times n}$, Rang $A\leq k$ und ein LP
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+&f&=&max\\
+&Ax&$=$&b\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+
+\textbf{zu zeigen:} Existiert ein zulässiger Punkt x, so gibt es auch einen zulässigen Punkt y mit höchstens n+1 positiven Komponenten und $f(x)=f(y)$.
+
+\textbf{Beweis:}\\
+Es sei x ein zulässiger Punkt von (LP) und $f=\langle p,\cdot\rangle,\:p\in\R^n$.\\
+Wir setzen
+\[\tilde A:=\begin{pmatrix} A  \\\hline p^T \end{pmatrix}\in\R^{(m+1)\times n},\ \tilde b:=\begin{pmatrix} b\\\hline f(x)\end{pmatrix}\in\R^{m+1}\]
+und $\widetilde{M}:=\{y\in\R^n|\tilde Ay=\tilde b,\:y\geq0\}$.
+$\widetilde{M}\neq\varnothing$ (da $x\in\widetilde{M}$), polyedrisch und geradenfrei (wegen der Vorzeichenbedingung).
+
+$\stackrel{\mbox{\scriptsize{Satz d. V.}}}{\Rightarrow}$ $\widetilde{M}$ besitzt eine Ecke, wir bezeichnen diese als y\\
+$\stackrel{\mbox{\scriptsize{Satz d. V.}}}{\Rightarrow}$ mit $\tilde A=(a^1|\ldots|a^n)$ ist $\{a^i|\:y_i>0\}$ l.u.
+
+Aus der Voraussetzung ergibt sich Rang $\tilde A\leq$ Rang $A+1\leq k+1$.\\
+Dann folgt $|\{a^i|\:y_i>0\}|\leq k+1$ (weil die Menge l.u. sein soll), und wir erhalten: Höchstens k+1 der $y_i$ können echt größer als Null sein.
+
+Für y gilt: $Ay=b$, $f(y)=f(x)$, $y\geq 0$ (da y zulässiger Punkt ist)
+
+Und wir haben die Aufgabe gelöst. :)
+
+
+\subsection*{10. Aufgabe}
+(a) \begin{eqnarray*}
+Ax=0,x\geq0,x\neq0 \textnormal{ lösbar}&\Leftrightarrow&\begin{pmatrix}&-A&\\\hline1&\cdots&1\end{pmatrix}\tilde x=\begin{pmatrix}0\\\vdots\\0\\\hline1\end{pmatrix}, \tilde x\geq 0 \textnormal{ lösbar}\\
+&\stackrel{\textnormal{\scriptsize{Farkas}}}{\Leftrightarrow}&\left(\begin{array}{c|c}&1\\-A^T&\vdots\\&1\end{array}\right)u\geq0, \langle\begin{pmatrix}0\\\vdots\\0\\\hline1\end{pmatrix},u\rangle <0 \textnormal{ unlösbar}\\
+&\stackrel{\textnormal{\scriptsize{NR}}}{\Leftrightarrow}&A^T\tilde u\leq\begin{pmatrix}t\\\vdots\\t\end{pmatrix} \textnormal{ für alle \ensuremath{t<0} unlösbar}\\
+&\Leftrightarrow&A^T\tilde u<0 \textnormal{ unlösbar}
+\end{eqnarray*}
+
+NR:\\
+$A=(a_1|\ldots|a_n), u=\left(\frac{\tilde u}{t}\right)$\\
+Dann folgt (aus der ersten "`Ungleichung"'): für $i=1,\ldots,n$
+\[-a_i^T\cdot\tilde u+t\geq 0\ \Leftrightarrow\ a_i^T\tilde u\leq t\]
+[\textit{Die nächste Zeile folgt dann, wenn man noch die zweite "`Ungleichung"' beachtet.}]
+
+(b) Es sei $A=(a^1|\ldots|a^n)$.
+\begin{eqnarray*}
+&&[A^Tu\leq0,A^Tu\neq 0 \textnormal{ lösbar}\Leftrightarrow Ax=0,x>0 \textnormal{ unlösbar}]\\
+&\Leftrightarrow&[A^Tu\leq0,A^Tu\neq 0 \textnormal{ unlösbar}\Leftrightarrow Ax=0,x>0 \textnormal{ lösbar}]
+\end{eqnarray*}
+
+$A^Tu\leq 0$, $A^Tu\neq 0$ unlösbar\\
+$\Leftrightarrow$ $A^Tu\leq 0$ und ($\langle a^1,u\rangle<0$ oder $\ldots$ oder $\langle a^n,u\rangle<0$) unlösbar\\
+$\Leftrightarrow$ Keines der folgenden Systeme ist lösbar für $i=1,\ldots,n$:
+\begin{center}
+\begin{tabular}{|rcl|}\hline
+$-A^Tu$&$\geq$&0\\
+$\langle a^i,u\rangle$&$<$&0\\\hline
+\end{tabular}
+\end{center}
+$\stackrel{\textnormal{\scriptsize{Farkas}}}{\Leftrightarrow}$ Jedes der folgenden Systeme ist lösbar ($i=1,\ldots,n$): 
+\begin{center}
+\begin{tabular}{|rcl|}\hline
+-Ax&=&$a^i$\\
+x&$\geq$&0\\\hline
+\end{tabular}
+\end{center}
+$\stackrel{\textnormal{\scriptsize{NR}}}{\Leftrightarrow}$ $Ax=0$, $x>0$ lösbar
+
+NR:\\
+(i) Seien die Systeme 
+\begin{center}
+\begin{tabular}{|rcl|}\hline
+-Ax&=&$a^i$\\
+x&$\geq$&0\\\hline
+\end{tabular}
+\end{center}
+$i=1,\ldots,n$ lösbar und sei $x^i$ eine entsprechende Lösung.
+\[x:=x^1+\ldots+x^n+\begin{pmatrix}1\\\vdots\\1\end{pmatrix}>0\]
+Dann gilt: $Ax=-a^1-\ldots-a^n+a^1+\ldots+a^n=0$
+
+(ii) Sei $x>0$ eine Lösung von $Ax=0$ mit $x=(x_1,\ldots,x_n)$.
+\[Ax=0\ \Leftrightarrow\ x_1a^1+\ldots+x_na^n=0\quad(\ast)\]
+
+Sei $i\in\{1,\ldots,n\}$.\\
+Aus $(\ast)$ erhalten wir
+\[\sum_{j=1\atop j\neq i}^n\frac{x_j}{x_i}a^j=-a^i\]
+Wir setzen 
+\[x^i:=(\frac{x_1}{x_i},\ldots,\frac{x_{i-1}}{x_i},0,\frac{x_{i+1}}{x_i},\ldots,\frac{x_n}{x_i})\geq0\]
+und es gilt: $Ax^i=-a^i$ $\Leftrightarrow$ $-Ax^i=a^i$
+
+\subsection*{11. Aufgabe}
+V sei ein endlich erzeugter Kegel, d.h. es existieren $y^1,\ldots,y^k\in\S^{n-1}$ mit $V=\{\alpha_1y^1+\ldots+\alpha_ky^k|\:\alpha_i\geq 0\}$\newline
+[$S^{n-1}=\{u\in\R^n:\ \|u\|=1\}$ Einheitssphäre]
+a) \begin{eqnarray*}
+V^\circ&=&\{x\in\R^n:\ \langle x,\alpha_1y^1+\ldots+\alpha_ky^k\rangle\leq0\ \textnormal{ für alle }\alpha_i\geq0\}\\
+&=&\{x\in\R^n:\ \langle x,y^i\rangle\leq 0\ \textnormal{ für }i=1,\ldots,k\}\\
+&=&\bigcap_{i=1}^k\{\langle\cdot,y^i\rangle\leq0\}\qquad\qquad(+)
+\end{eqnarray*}
+$V^\circ$ ist nicht leer ($0\in V^\circ$), polyedrisch und ein Kegel.
+
+Wir definieren
+\[L:=\bigcup_{g \textnormal{ Gerade}\atop g\subset V^\circ}g\]
+Dann ist L ein linearer Unterraum.\\
+($\forall x,y\in V^\circ:\ x+y\in V^\circ$, da $x+y=2(\frac{1}{2}x+\frac{1}{2}y)\in V^\circ$) ($\ast$)\\
+L ist endlich erzeugt.
+
+Wir definieren weiter: $U:=V^\circ\cap L^\bot$.\\
+Dann gilt: U ist nicht leer, polyedrisch und geradenfrei. Damit ist U endlich erzeugt (Satz der Vorlesung).
+
+Noch zu zeigen: $V^\circ=L+U$ (dann ist $V^\circ$ endlich erzeugt)
+
+Klar: $L+U\subset V^\circ$ wegen (+)\\
+Sei also $x\in V^\circ$ und $z:=p_{L^\bot}(x)$ \textit{(Orthogonalprojektion)}.\\
+Dann gilt: $z-x\in L$ und $z=\underbrace{x}_{\in V^\circ}+\underbrace{(z-x)}_{\in V^\circ}\in V^\circ$ wegen ($\ast$)
+
+Dann ist $z\in U$ und $x=\underbrace{z}_{\in U}+\underbrace{(x-z)}_{\in L}\in U+L$
+
+b) Es gilt $V=\{\alpha_1y^1+\ldots+\alpha_ky^k|\:\alpha_i\geq 0\}$ und $A=(y^1|\ldots|y^k)$.
+\begin{eqnarray*}
+b\in V^{\circ\circ}&\Leftrightarrow&\langle b,z\rangle\leq 0 \textnormal{ für alle \ensuremath{z\in V^\circ}}\\
+&\Leftrightarrow&[\langle z,y^i\rangle\leq 0 \textnormal{ für } i=1,\ldots,k\ \Rightarrow\ \langle b,z\rangle\leq 0 ]\\
+&\stackrel{u:=-z}{\Leftrightarrow}&[A^Tu\geq0\ \Rightarrow\ \langle b,u\rangle\geq 0]\\
+&\stackrel{\textnormal{\scriptsize{Farkas}}}{\Leftrightarrow}&\exists x\geq0, x=(x_1,\ldots,x_k):\ Ax=b\\
+&\Leftrightarrow&\exists x_1,\ldots,x_k\geq0:\ b=x_1y^1+\ldots+x_ky^k\\
+&\Leftrightarrow&b\in V
+\end{eqnarray*}
+
+\subsection*{12. Aufgabe}
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&f(x)=$\langle x,p\rangle$&=&max\\
+(PP)&Ax&$\leq$&b\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&g(u)=$\langle u,b\rangle$&=&min\\
+(DP)&$A^Tu$&$\geq$&p\\
+&u&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+Wählt man 
+\[A=\begin{pmatrix} 1&-1  \\ -1&1 \end{pmatrix},\ b=\begin{pmatrix} 0\\-1\end{pmatrix},\ p=\begin{pmatrix}0\\1\end{pmatrix}\]
+so sind (PP) und (DP) beide nicht lösbar. 
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&f(x)=$x_2$&=&max\\
+(PP)&$x_1-x_2$&$\leq$&0\\
+&$-x_1+x_2$&$\leq$&-1\\
+&x&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~~~&g(u)=$-u_2$&=&min\\
+(DP)&$u_1-u_2$&$\geq$&0\\
+&$-u_1+u_2$&$\geq$&1\\
+&u&$\geq$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+
+\textbf{Anmerkung:} Beide haben keine zulässigen Punkte. Die beiden Nebenbedingungen schließen sich jeweils gegenseitig aus.
+
+
+\newpage
+%5. Übung
+\section{Übung vom 26.05.}
+Musterlösungen online.
+
+\newpage
+%6. Übung
+\section{Übung vom 02.06.}
+\subsection*{17. Aufgabe}
+Es sei $A\in\R^{m\times n}$, $b\in\R^m$, $M:=\{x\in\R^n|\:Ax=b,\!x\geq 0\}$.
+
+$M\neq\varnothing$
+
+~~~$\Leftrightarrow$ 
+\begin{tabular}{|rcl|c}\cline{1-3}
+f(x)=$\langle0,x\rangle$&=&max\\
+Ax&$=$&b&~(PP)\\
+x&$\geq$&0\\\cline{1-3}
+\end{tabular} ist lösbar mit Maximalwert 0
+
+~~~$\stackrel{\textnormal{\scriptsize{A14, Dualitätssatz}}}{\Leftrightarrow}$ 
+\begin{tabular}{|rcl|}\hline
+$\langle b,v\rangle$&=&min\\
+$A^Tv$&$\geq$&0\\\hline
+\end{tabular} (DP)    ist lösbar mit Minimalwert 0
+
+~~~$\Leftrightarrow$ 
+\begin{tabular}{|rcl|}\cline{1-3}
+$\langle b,v\rangle$&=&min\\
+$A^Tv$&$\geq$&0\\\hline
+\end{tabular} (DP)    wird durch v=0 gelöst
+
+~~~$\Leftrightarrow$ [$\forall v\in\R^m:\ A^Tv\geq0\ \ \Rightarrow\ \ \langle b,v\rangle\geq\langle b,0\rangle=0$]
+
+
+\subsection*{18. Aufgabe}
+a) Es sei $f_i=\langle y^i,\cdot\rangle$ mit $\|y^i\|=1$ für $i=1,\ldots,k$.\\
+Für $\varrho\in[0,\infty)$ und $z\in\R^n$:
+\[\underbrace{B_\varrho(z)}_{\textnormal{Kugel um z mit Radius \ensuremath{\varrho}}}\subset\{f_i\leq\alpha_i\}\ \Leftrightarrow\ z+\varrho y^i\in\{f_i\leq\alpha_i\}\]
+
+Also ist $B_\varrho(z)\subset M\ \Leftrightarrow\ \alpha_i\geq\langle z+\varrho y^i,y^i\rangle=\langle z,y^i\rangle+\varrho$ ($i=1,\ldots,k$)\newline
+[Beachte: $\langle z+\varrho y^i,y^i\rangle=f_i(z+\varrho y^i)$; $\|y^i\|=1$]
+
+Unser gesuchtes LP ist:
+\begin{center}
+\begin{tabular}{|rcl|}\hline
+$f(\varrho,z)=\varrho$&=&max\\
+$\langle z+\varrho y^i,y^i\rangle$&$\leq$&$\alpha_i$\\
+$\varrho$&$\geq$&0\\\hline
+\end{tabular} für $i=1,\ldots,k$
+\end{center}
+Wir setzen $z=z^1-z^2$, dann ergibt sich:
+\begin{center}
+\begin{tabular}{|rcl|}\hline
+$f(\varrho,z^1,z^2)=\varrho$&=&max\\
+$\begin{pmatrix}1&{y^1}^T&-{y^1}^T\\\vdots&&\\1&{y^k}^T&-{y^k}^T\end{pmatrix}
+\begin{pmatrix}\varrho\\z^1\\z^2\end{pmatrix}$&$\leq$&$\begin{pmatrix}\alpha_1\\\vdots\\\alpha_k\end{pmatrix}$\\
+$\varrho$&$\geq$&0\\
+$z^1,z^2$&$\geq$&0\\\hline
+\end{tabular} (PP)
+\end{center}
+[Bemerkung: $z^1$ soll alle positiven Komponeneten von z und sonst nur 0 enthalten, $z^2$ alle negativen Komponenten und sonst nur 0. (Im Prinzip: $z^1=z^+$, $z^2=z^-$)]
+
+Als duales Programm erhalten wir:
+\begin{center}
+\begin{tabular}{|rcl|}\hline
+$g(v)=\sum_{i=1}^kv_i\alpha_i$&=&min\\
+$\begin{pmatrix}1&\cdots&1\\y^1&\cdots&y^k\\y^k&\cdots&-y^k\end{pmatrix}
+v$&$\geq$&$\begin{pmatrix}1\\0\\\vdots\\0\end{pmatrix}$\\
+v&$\geq$&0\\\hline
+\end{tabular} $\Leftrightarrow$
+\begin{tabular}{|rcl|}\hline
+$g(v)=\sum_{i=1}^kv_i\alpha_i$&=&min\\
+$\sum_{i=1}^kv_i$&$\geq$&1\\
+$\sum_{i=1}^kv_iy^i$&=&0\\
+v&$\geq$&0\\\hline
+\end{tabular}
+\end{center}
+
+b) \begin{eqnarray*}
+\varrho(M)\textnormal{ ist endlich}&\Leftrightarrow&\textnormal{(PP) ist lösbar}\\
+&\stackrel{\textnormal{\scriptsize{Dualitätssatz}}}{\Leftrightarrow}&\textnormal{(PP) und (DP) besitzen besitzen zulässigen Punkt}\\
+&\stackrel{(\ast)}{\Leftrightarrow}&\textnormal{(DP) besitzt zulässigen Punkt}\\
+&\Leftrightarrow&\exists v_1,\ldots,v_k\geq0:\ \sum_{i=1}^kv_i=1,\sum_{i=1}^kv_iy^i=0\\
+&\Leftrightarrow&0\in \conv\{y^1,\ldots,y^k\}\end{eqnarray*} 
+
+($\ast$) (PP) besitzt den zulässigen Punkt $(\varrho, z^1,z^2)=(0,0,0)$ [Beachte: alle $\alpha_i\geq0$]
+
+\subsection*{19. Aufgabe}
+(a) Sei $x=(x_1,\ldots,x_6)$ mit $x_4=x_5=x_6=0$.
+\[\begin{pmatrix}1&2&-2\\0&-2&1\\8&-5&0\end{pmatrix}\begin{pmatrix}x_1\\x_2\\x_3\end{pmatrix}=\begin{pmatrix}6\\-3\\22\end{pmatrix}\ \stackrel{\textnormal{\scriptsize{Gauß}}}{\sim>}\ 
+\begin{pmatrix}1&0&0\\0&1&0\\0&0&1\end{pmatrix}\begin{pmatrix}x_1\\x_2\\x_3\end{pmatrix}=\begin{pmatrix}4\\2\\1\end{pmatrix}\]
+Also: $x^0=(4,2,1,0,0,0)$ ist einziger Punkt mit $Ax=b$ und $x_4=x_5=x_6=0$. $x^0\in M$; $a^1,a^2,a^3$ sind l.u. $\Rightarrow$ $x^0$ ist Ecke von M.
+
+(b) Wir betrachten:
+\[\begin{pmatrix}1&1&2\\-1&1&1\\3&2&-1\end{pmatrix}\begin{pmatrix}x_4\\x_5\\x_6\end{pmatrix}=\begin{pmatrix}6\\-3\\22\end{pmatrix}\ \stackrel{\textnormal{\scriptsize{Gauß}}}{\sim>}\ 
+\begin{pmatrix}1&0&0\\0&1&0\\0&0&1\end{pmatrix}\begin{pmatrix}x_4\\x_5\\x_6\end{pmatrix}=\begin{pmatrix}5\\3\\-1\end{pmatrix}\]
+Es gibt keine zulässigen Punkte mit $x_1=x_2=x_3=0$.
+
+
+\subsection*{20. Aufgabe}
+(a)(i) Weil $b\geq0$ ist, gilt $(0,b)\in M'$.
+\[Ax+y=b\ \Leftrightarrow\ (A|E_m)\begin{pmatrix}x\\y\end{pmatrix}=b\]
+Die Spalten von $E_m$ sind l.u. $\Rightarrow$ $(0,b)$ ist Ecke.
+
+(ii) Es sei (x,y) Ecke von M'.\\
+\textbf{Beh.:} x ist Ecke von M
+
+Es seien $x^1,x^2\in M$ und $\alpha\in(0,1):\ x=\alpha x^1+(1-\alpha)x^2$.\\
+Wir setzen $y^1=b-Ax^1$ und $y^2=b-Ax^2$. Es gilt:
+\begin{itemize}
+\item{$y^1,y^2\geq0$}
+\item{$(x^1,y^1),(x^2,y^2)\in M'$}
+\item{$$\alpha\begin{pmatrix}x^1\\y^1\end{pmatrix}+(1-\alpha)\begin{pmatrix}x^2\\y^2\end{pmatrix}=\begin{pmatrix}x\\\alpha(b-Ax^1)+(1-\alpha)(b-Ax^2)\end{pmatrix}=\begin{pmatrix}x\\b-Ax\end{pmatrix}=\begin{pmatrix}x\\y\end{pmatrix}$$}
+\end{itemize}
+
+Da (x,y) Ecke von M' ist, ist dies äquivalent zu
+\[\begin{pmatrix}x\\y\end{pmatrix}=\begin{pmatrix}x^1\\y^1\end{pmatrix}=\begin{pmatrix}x^2\\y^2\end{pmatrix}\]
+$\Rightarrow$ $x=x^1=x^2$
+
+Also ist x Ecke von M.
+
+(b) \texttt{Anmerkung:} Wir führen die Schlupfvariablen $y_1,y_2,y_3$ ein und betrachten M'. Wir wissen aus (a)(i), dass (0,b) Ecke von M' ist. Hieraus folgt das erste Tableau. Dann führen wir einen Eckentausch durch, wobei wir hier die Pivot-Spalte frei wählen können und deswegen eine einfache Spalte aussuchen. Ziel ist es, eine Ecke von M' zu bekommen, bei der drei der ersten 5 Komponenten von 0 verschieden sind. Nach (a)(ii) sind die ersten 5 Komponenten der Ecke von M' nämlich Ecke von M. Diese ist dann nicht entartet.
+
+\begin{tabular}{ccccc@{~~~~~}ccc|c@{~~~}c}
+$x_1$&$x_2$&$x_3$&$x_4$&$x_5$&$y_1$&$y_2$&$y_3$&4&\\\hline
+2&1&1&1&-2&1&0&0&4&$\frac{4}{1}$\\
+1&-4&\fbox{1}&-2&-3&0&1&0&2&\fbox{$\frac{2}{1}$}\\
+2&5&1&-4&6&0&0&1&3&$\frac{3}{1}$\\\hline
+1&5&0&3&1&1&-1&0&2&$\frac{2}{1}$\\
+1&-4&1&-2&-3&0&1&0&2&$\frac{2}{1}$\\
+\fbox{1}&9&0&-2&9&0&-1&1&1&$\frac{1}{1}$\\\hline
+0&-4&0&\fbox{5}&-8&1&0&-1&1\\
+0&-13&1&0&-12&0&2&-1&1\\
+1&9&0&-2&9&0&-1&1&1\\\hline
+0&$-\frac{4}{5}$&0&1&$-\frac{8}{5}$&$\frac{1}{5}$&0&$-\frac{1}{5}$&$\frac{1}{5}$\\
+0&-13&1&0&-12&0&2&-1&1\\
+1&$\frac{37}{5}$&0&0&$\frac{29}{5}$&$\frac{2}{5}$&-1&$\frac{3}{5}$&$\frac{7}{5}$
+\end{tabular}
+
+Die Ecken (x,y) von M' sind nach jeweils einem Schritt (0,0,2,0,0, 2,0,1), (1,0,1,0,0, 1,0,0) bzw. ($\frac{7}{5}$,0,1,$\frac{1}{5}$,0, 0,0,0).\\
+Aus (a)(ii) folgt, dass ($\frac{7}{5}$,0,1,$\frac{1}{5}$,0) Ecke von M ist, und diese Ecke ist nicht entartet.
+
+
+
+\newpage
+%7.Übung
+\section{Übung vom 09.06.}
+\subsection*{21. Aufgabe}
+Musterlösung online.
+
+\subsection*{22. Aufgabe}
+\[\left(\begin{array}{ccccc|c}
+1&2&1&1&-2&4\\
+1&1&-4&-2&-3&2\\
+1&2&5&-4&6&3
+\end{array}\right)
+\ \stackrel{\textnormal{\scriptsize{Gauß}}}{\sim>}\ 
+\left(\begin{array}{ccccc|c}
+1&0&-13&0&-12&1\\
+0&1&\frac{37}{5}&0&\frac{29}{5}&\frac{7}{5}\\
+0&0&-\frac{4}{5}&1&-\frac{8}{5}&\frac{1}{5}
+\end{array}\right)\]
+Also ist $x^0$ Ecke.
+
+Wir lösen:
+\begin{center}
+\begin{tabular}{|rcl|}\hline
+$\tilde f(x)=-3x_1-5x_2-4x_3-5x_4-6x_5$&=&min\\
+$\left(\begin{array}{ccccc}
+1&0&-13&0&-12\\
+0&1&\frac{37}{5}&0&\frac{29}{5}\\
+0&0&-\frac{4}{5}&1&-\frac{8}{5}
+\end{array}\right)\begin{pmatrix}x_1\\x_2\\x_3\\x_4\\x_5\end{pmatrix}$&=&$\begin{pmatrix}1\\ \frac{7}{5}\\ \frac{1}{5}\end{pmatrix}$\\
+$x_1,\ldots,x_5$&$\geq$&0\\\hline
+\end{tabular}
+\end{center}
+
+\begin{tabular}{ccccc|c}
+$x_1$&$x_2$&$x_3$&$x_4$&$x_5$&\\\hline
+1&0&-13&0&-12&1\\[6pt]
+0&1&$\frac{37}{5}$&0&$\frac{29}{5}$&$\frac{7}{5}$\\[6pt]
+0&0&$-\frac{4}{5}$&1&$-\frac{8}{5}$&$\frac{1}{5}$\\[6pt]\hline
+0&0&-10&0&-21&11\\\hline\hline 
+1&$\frac{60}{29}$&$\frac{67}{29}$&0&0&$\frac{113}{29}$\\[6pt]
+0&$\frac{5}{29}$&$\frac{37}{29}$&0&1&$\frac{7}{29}$\\[6pt]
+0&$\frac{8}{29}$&$\frac{36}{29}$&1&0&$\frac{17}{29}$\\[6pt]\hline
+0&$\frac{105}{29}$&$\frac{487}{29}$&0&0&$\frac{466}{29}$
+\end{tabular}
+
+Also ist $x^1=(\frac{113}{29},0,0,\frac{17}{29},\frac{7}{29})$ Lösung mit $f(x^1)=\frac{466}{29}$.
+
+
+\subsection*{23. Aufgabe}
+\textbf{Phase I:} Wir lösen
+\begin{center}
+\begin{tabular}{|rcl|}\hline
+$g(x,y)=y_1+y_2+y_3$&=&min\\
+$-x_1+2x_2+x_3+x_4+y_1$&=&0\\
+$3x_1-2x_2+2x_3+3x_4+y_2$&=&9\\
+$2x_1-x_2+x_3-x_4+y_3$&=&6\\
+$x_1,x_2,x_3,x_4,y_1,y_2,y_3$&$\geq$&0\\\hline
+\end{tabular}
+\end{center}
+%%%%auskommentiertes Tableau 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\kommentar{
+\begin{tabular}{ccc@{~~~~~}cccc|c}
+$y_1$&$y_2$&$y_3$&$x_1$&$x_2$&$x_3$&$x_4$&\\\hline
+1&0&0&-1&2&1&1&0\\
+0&1&0&3&-2&2&3&9\\
+0&0&1&2&-1&1&-1&6\\\hline
+0&0&0&-4&1&-4&-3&-15\\\hline\hline 
+1&0&0&-1&2&1&1&0\\
+-2&1&0&\fbox{5}&-6&0&1&9\\
+-1&0&1&3&-3&0&-2&6\\\hline
+4&0&0&-8&9&0&1&-15\\\hline\hline 
+$\frac{3}{5}$&$\frac{1}{5}$&0&0&$\frac{4}{5}$&1&$\frac{6}{5}$&$\frac{9}{5}$\\
+$-\frac{2}{5}$&$\frac{1}{5}$&0&1&$-\frac{6}{5}$&0&$\frac{1}{5}$&$\frac{9}{5}$\\
+$\frac{1}{5}$&$-\frac{3}{5}$&1&0&\fbox{$\frac{3}{5}$}&0&$-\frac{9}{5}$&$\frac{3}{5}$\\\hline
+$\frac{4}{5}$&$\frac{8}{5}$&0&0&$-\frac{3}{5}$&0&$\frac{9}{5}$&$-\frac{3}{5}$\\\hline\hline
+$\frac{1}{3}$&1&$-\frac{4}{3}$&0&0&1&$\frac{18}{5}$&1\\
+0&$-\frac{13}{25}$&2&1&0&0&$-\frac{17}{5}$&3\\
+5&-1&$\frac{5}{3}$&0&1&0&-3&1\\\hline
+1&1&1&0&0&0&0&0
+\end{tabular}
+}
+%%%Kommentar Ende
+%%%%%%%%%%%%%%%%%
+\begin{tabular}{ccc@{~~~~~}cccc|c}
+$y_1$&$y_2$&$y_3$&$x_1$&$x_2$&$x_3$&$x_4$&\\\hline
+1&0&0&-1&2&1&1&0\\
+0&1&0&3&-2&2&3&9\\
+0&0&1&2&-1&1&-1&6\\\hline
+0&0&0&-4&1&-4&-3&-15\\\hline\hline 
+1&0&0&-1&2&1&1&0\\
+-2&1&0&\fbox{5}&-6&0&1&9\\
+-1&0&1&3&-3&0&-2&6\\\hline
+4&0&0&-8&9&0&1&-15\\\hline\hline 
+$\frac{3}{5}$&$\frac{1}{5}$&0&0&$\frac{4}{5}$&1&$\frac{6}{5}$&$\frac{9}{5}$\\
+$-\frac{2}{5}$&$\frac{1}{5}$&0&1&$-\frac{6}{5}$&0&$\frac{1}{5}$&$\frac{9}{5}$\\
+$\frac{1}{5}$&$-\frac{3}{5}$&1&0&\fbox{$\frac{3}{5}$}&0&$-\frac{13}{5}$&$\frac{3}{5}$\\\hline
+$\frac{4}{5}$&$\frac{8}{5}$&0&0&$-\frac{3}{5}$&0&$\frac{13}{5}$&$-\frac{3}{5}$\\\hline\hline 
+$\frac{1}{3}$&1&$-\frac{4}{3}$&0&0&1&$\frac{14}{3}$&1\\
+0&-1&2&1&0&0&-5&3\\
+$\frac{1}{3}$&-1&$\frac{5}{3}$&0&1&0&$-\frac{13}{3}$&1\\\hline
+1&1&1&0&0&0&0&0
+\end{tabular}
+
+$x^0=(3,1,1,0)$ ist Ecke.
+
+\textbf{Phase II:}
+\begin{center}
+\begin{tabular}{|rcl|}\hline
+$f(x)=3x_1+x_2-3x_3-x_4$&=&min\\
+$x_3+\frac{14}{3}x_4$&=&1\\
+$x_1-5x_4$&=&3\\
+$x_2-\frac{13}{3}x_4$&=&1\\
+$x_1,x_2,x_3,x_4$&$\geq$&0\\\hline
+\end{tabular}
+\end{center}
+\begin{tabular}{cccc|c}
+$x_1$&$x_2$&$x_3$&$x_4$&\\\hline
+0&0&1&$\frac{14}{3}$&1\\
+1&0&0&-5&3\\
+0&1&0&$-\frac{13}{3}$&1\\\hline
+0&0&0&$\frac{97}{3}$&-7
+\end{tabular}
+
+Damit ist $x^0$ Lösung.
+
+\subsection*{24. Aufgabe}
+a) Wie in Aufgabe 20(a) zeigt man:\\
+Wenn (x,y) Ecke von M' ist, dann ist x Ecke von M.
+
+Sei $b_1=\max\limits_{i=1,\ldots,n}b_i$.
+\[\begin{array}{cccccccc|c}
+x_1&\ldots&x_n&y_1&&\ldots&&y_m&\\\hline
+a_{11}&\ldots&a_{1n}&-1&0&\cdots&\cdots&0&b_1\\
+\vdots&&\vdots&0&\ddots&\ddots&&\vdots&\vdots\\
+\vdots&&\vdots&\vdots&\ddots&\ddots&\ddots&\vdots&\vdots\\
+\vdots&&\vdots&\vdots&&\ddots&\ddots&0&\vdots\\
+a_{m1}&\ldots&a_{mn}&0&\cdots&\cdots&0&-1&b_m
+\end{array}\]
+
+\[\begin{array}{cccccccc|c}
+x_1&\ldots&x_n&y_1&&\ldots&&y_m&\\\hline
+a_{11}&\cdots&a_{1n}&-1&0&\cdots&\cdots&0&b_1\\
+a_{11}-a_{21}&\cdots&a_{1n}-a_{2n}&-1&1&0&\cdots&0&b_1-b_2\\
+\vdots&&\vdots&\vdots&0&\ddots&\ddots&\vdots&\vdots\\
+\vdots&&\vdots&\vdots&\vdots&\ddots&\ddots&0&\vdots\\
+a_{11}-a_{m1}&\ldots&a_{1n}-a_{mn}&-1&0&\cdots&0&1&b_1-b_m
+\end{array}\]
+
+Idee wie bei 2-Phasen-Methode: Wir betrachten
+\begin{center}
+\begin{tabular}{|rcl|}\hline
+$g(x_1,\ldots,x_n,y_1,\ldots,y_m,z)=z$&=&min\\
+$\left(\begin{array}{ccc}
+a_{11}&\ldots&a_{1n}\\
+a_{11}-a_{21}&\ldots&a_{1n}-a_{2n}\\
+\vdots&&\vdots\\
+a_{11}-a_{m1}&\ldots&a_{1n}-a_{mn}
+\end{array}\right)\begin{pmatrix}x_1\\\vdots\\\vdots\\x_n\end{pmatrix}-\begin{pmatrix}y_1\\\vdots\\\vdots\\y_1\end{pmatrix}+\begin{pmatrix}z\\y_2\\\vdots\\y_m\end{pmatrix}$&=&$\begin{pmatrix}b_1\\b_1-b_2\\\vdots\\b_1-b_m\end{pmatrix}$\\
+$x_1,\ldots,x_n,y_1,\ldots,y_m,z$&$\geq$&0\\\hline
+\end{tabular}
+\end{center}
+Dieses LP ist lösbar, da
+\[(x_1,\ldots,x_n,y_1,y_2,\ldots,y_m,z)=(0,\ldots,0,0,b_1-b_2,\ldots,b_1-b_m,b_1)\]
+im zulässigen Bereich liegt und g auf dem zulässigen Bereich nach unten beschränkt ist.
+
+\begin{description}
+\item[1. Fall:] Das Minimum ist echt größer als Null.\\
+$\Rightarrow M'=\varnothing\ \Rightarrow M=\varnothing$\\
+$\Rightarrow$ ursprüngliches Problem nicht lösbar
+\item[2. Fall:] Das Minimum is gleich 0, d.h. es gibt eine Ecke der Form $$(x_1,\ldots,x_n,y_1,\ldots,y_m,\underbrace{0}_{z})$$
+Dann ist $(x_1,\ldots,x_n,y_1,\ldots,y_m)$ Ecke von M' und $(x_1,\ldots,x_n)$ Ecke von M.
+\end{description}
+
+b)\\
+\begin{tabular}{cccccc|c}
+$x_1$&$x_2$&$x_3$&$y_1$&$y_2$&$y_3$&\\\hline
+2&1&1&-1&0&0&4\\
+1&2&1&0&-1&0&5\\
+3&2&2&0&0&-1&6
+\end{tabular}~~~$\sim>$
+
+[Beachte: $b_3=\max\limits_{i=1,2,3}b_i$ !]\\
+%%%%%%%%%auskommentiertes Tablau
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\kommentar{
+\begin{tabular}{cccccc@{~~~~~}c|c}
+$x_1$&$x_2$&$x_3$&$y_1$&$y_2$&$y_3$&z&\\\hline
+1&1&1&1&0&-1&0&2\\
+2&0&\fbox{1}&0&1&-1&0&1\\
+3&2&2&0&0&-1&1&6\\\hline
+-3&-2&-2&0&0&1&0&-6\\\hline\hline
+-1&\fbox{1}&0&1&0&0&0&1\\
+2&0&1&0&1&-1&0&1\\
+-1&2&0&0&-2&1&1&4\\\hline
+1&-2&0&0&2&-1&0&-4\\\hline\hline
+-1&1&0&1&0&0&0&1\\
+2&0&1&0&1&-1&0&1\\
+1&0&0&-2&-2&\fbox{1}&1&4\\\hline
+-1&0&0&2&2&-1&0&-4\\\hline\hline
+-1&1&0&1&0&0&0&1\\
+3&0&1&-2&-1&0&1&5\\
+1&0&0&-2&-2&1&1&4\\\hline
+0&0&0&0&0&0&1&0
+\end{tabular}
+
+$x^0=(0,1,5)$ ist Ecke unseres zuläsigen Bereichs.
+}
+%%%%%%%%%%%%%%%%%%%%%Kommentar Ende
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tabular}{cccccc@{~~~~~}c|c}
+$x_1$&$x_2$&$x_3$&$y_1$&$y_2$&$y_3$&z&\\\hline
+1&1&1&1&0&-1&0&2\\
+2&0&\fbox{1}&0&1&-1&0&1\\
+3&2&2&0&0&-1&1&6\\\hline
+-3&-2&-2&0&0&1&0&-6\\\hline\hline
+-1&\fbox{1}&0&1&-1&0&0&1\\
+2&0&1&0&1&-1&0&1\\
+-1&2&0&0&-2&1&1&4\\\hline
+1&-2&0&0&2&-1&0&-4\\\hline\hline
+-1&1&0&1&-1&0&0&1\\
+2&0&1&0&1&-1&0&1\\
+1&0&0&-2&0&\fbox{1}&1&2\\\hline
+-1&0&0&2&0&-1&0&-2\\\hline\hline
+-1&1&0&1&-1&0&0&1\\
+3&0&1&-2&1&0&1&3\\
+1&0&0&-2&0&1&1&2\\\hline
+0&0&0&0&0&0&1&0
+\end{tabular}
+
+$\Rightarrow x^0=(0,1,\mathbf{3})$ ist Ecke unseres zuläsigen Bereichs.
+
+\texttt{Anmerkung:} Korrigierte Tableaus! (Tableaus aus der Übung falsch!)
+
+\newpage
+%8.Übung
+\section{Übung vom 16.06.}
+Musterlösungen online.
+
+\newpage
+%9.Übung
+\section{Übung vom 23.06.}
+
+\subsection*{29. Aufgabe}
+
+\textbf{Gegeben:} Bewerber $B_1,\ldots,B_m$; Posten $P_1,\ldots,P_n$\\
+Wir definieren
+\[ \alpha_{i,j}:=\begin{cases}1, &B_i\mbox{ ist für }P_j \mbox{ geeignet}\\0,&\mbox{sonst}\end{cases} \]
+\[ x_{i,j}:=\begin{cases}1, &B_i\mbox{ erhält } P_j\\0,&\mbox{sonst}\end{cases} \]
+
+Das Zuordungsproblem hat die Form
+
+\begin{center}
+(ZP)\begin{tabular}{|rcl|}\hline
+$f(x)$=$\sum\limits_{i,j}\alpha_{i,j}x_{i,j}$&=&max\\
+$\sum\limits_{j=1}^nx_{i,j}$&$\le$&1 $\ i=1,\ldots,m$ \\
+$\sum\limits_{i=1}^mx_{i,j}$&$\le$&1 $\ j=1,\ldots,n$\\
+$x_{i,j}$&$\le$&0\ $\forall i,j$\\\hline
+\end{tabular}
+\end{center}
+
+Wir definieren ein Netzwerk (NW):
+\begin{eqnarray*} \K&:=&\{B_i|\ i=1,\ldots,m\}\cup\{P_j|\ j=1,\ldots,n\}\cup\{Q\}\cup\{S\} \\
+\B&:=&\{(Q,B_i)|\ i=1,\ldots,m\}\cup\{(B_i,P_j)|\ i=1,\ldots,m; j=1,\ldots,n\}\\&&\cup\{(P_j,S)|\ j=1,\ldots,n\} \end{eqnarray*}
+Auf dem Bogen $(Q,B_i)$, $(P_j,S)$ seien die Kapazitäten jeweils 1, auf den Bögen $(B_i,P_j)$ seien sie gerade $\alpha_{i,j}$.
+
+Für jeden Fluss von (NW) gilt:
+\[(*)\ \forall i :\sum_{j=1}^n\underbrace{y_{i,j}}_{\textnormal{Fluss von }B_i \textnormal{ zu } P_j} =\ y_{Q,i};\qquad\forall j:\sum_{i=1}^my_{i,j}=y_{j,S} \]
+\textbf{1.} Es sei y zulässiger Fluss in (NW). Mit $(*)$ folgt für y:
+\[\sum_{j=1}^ny_{i,j}=y_{Q,i}\le1,\ \ \sum_{i=1}^my_{i,j}=y_{j,S}\le 1.\]
+Da $y_{i,j}\ge 0$ ist, ist y auch zulässig in (ZP).\\
+
+Es sei x zulässig in (ZP). Aufgrund der Nebenbedingungen von (ZP) erfüllen die $x_{i,j}$ auch $(*)$.
+
+Wir setzen \[y_{i,j}:=\alpha_{i,j}x_{i,j}  \textnormal{ für }i=1,\ldots,m,\ j=1,\ldots,n\]
+Dann gilt:
+\[x_{i,j}\le1 \Rightarrow y_{i,j}\le \underbrace{\alpha_{i,j}}_{\textnormal{Kapazität des Bogens }B_i\textnormal{ zu } P_j}\cdot1\]
+Setzen wir weiter
+\[y_{Q,i}=\sum_{j=1}^ny_{i,j} \textnormal{ und } y_{j,S}=\sum_{i=1}^my_{i,j}\]
+für $i=1,\ldots,m$ und $j=1,\ldots,n$, so ist $(*)$ erfüllt, y ist also zulässig in (NW).
+
+\textbf{2.} Es sei y zulässiger Fluss, $y_{S,Q}$ ist zu maximieren. Weiter sei x der zu y gehörende Punkt in (ZP). Dann gilt:
+\[ f(x)=\sum_{i,j}\underbrace{\alpha_{i,j}x_{i,j}}_{=\alpha_{i,j}y_{i,j}=y_{i,j}}=\sum_i\left(\sum_jy_{i,j}\right) \stackrel{(*)}{=}\sum_{i=1}^ny_{Q,i}=y_{S,Q} \]
+
+\subsection*{30. Aufgabe}
+
+Als (NW) erhalten wir:
+
+%\begin{center}
+%\textit{ Auf dem lkwiki mangels pstricks-Unterstützung durch pdflatex ist das Schaubild deaktiviert}
+%\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Beispielbilder
+  \psset{unit=1.0cm}
+  \begin{pspicture}(0,0)(10,5)
+    \psline{->}(1,2.5)(3,1) \psline{->}(6,1)(8,2.5)
+    \psline{->}(1,2.5)(3,2) \psline{->}(6,2)(8,2.5)
+    \psline{->}(1,2.5)(3,3) \psline{->}(6,3)(8,2.5)
+    \psline{->}(1,2.5)(3,4) \psline{->}(6,4)(8,2.5)
+    
+    \psline{->}(3,4)(6,4) \psline{->}(3,4)(6,3)
+    \psline{->}(3,3)(6,3) \psline{->}(3,2)(6,2)
+    \psline{->}(3,2)(6,2) \psline{->}(3,1)(6,2)
+    \psline{->}(3,1)(6,1) \psline{->}(3,1)(6,4)
+   
+    \rput(2.3,1.8){1} 
+    \rput(2.3,2.4){1}
+    \rput(2.3,3.1){1}
+    \rput(2.3,3.8){1}
+    
+    \rput(6.8,1.8){1} 
+    \rput(6.8,2.4){1}
+    \rput(6.8,3.1){1}
+    \rput(6.8,3.8){1}
+    
+    \rput(4.5,1.2){1} 
+    \rput(4.5,2.2){1}
+    \rput(4.5,3.2){1}
+    \rput(4.5,4.2){1}
+   
+    \rput(3,1){$\bullet$} \rput(3,1.3){Avarell}
+    \rput(3,2){$\bullet$} \rput(3,2.3){William}
+    \rput(3,3){$\bullet$} \rput(3,3.3){Jack}
+    \rput(3,4){$\bullet$} \rput(3,4.3){Joe}
+    \rput(6,1){$\bullet$} \rput(6,1.3){Braten}
+    \rput(6,2){$\bullet$} \rput(6,2.3){Whiskey}
+    \rput(6,3){$\bullet$} \rput(6,3.3){Sparschwein}
+    \rput(6,4){$\bullet$} \rput(6,4.3){Revolver}
+    \rput(8,2.5){$\bullet$} \rput(0.8,2.5){Q}
+    \rput(1,2.5){$\bullet$} \rput(8.2,2.5){S}
+    \end{pspicture}
+%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\\
+
+\texttt{Anmerkung:} Jeder Bogen hat Kapazität 1!!
+
+Das ist ein maximaler Fluss in (NW), also eine Lösung unseres Zuordnungsproblems (ZP) und die Lösung ist eindeutig.
+
+[...]
+
+\subsection*{31. Aufgabe}
+
+Wir wählen $A,B\in G$ beliebig und betrachten das (zunächst ungerichtete) Netzwerk mit Anfang A, Ende B und die zughörigen Kanten aus G. Die Kapazität setzen wir überall auf 1. Außerdem ersetzen wir jede ungerichtete Kante durch zwei gerichtete \textit{(jeweils mit gleicher Kapazität wie die alte Kante)}.\\
+Jeder disjunkte Kantenzug von A nach B ermöglicht den Transport einer Einheit von A nach B und umgekehrt. Die Behauptung folgt also, falls der maximale Fluss größer als m+1 ist.\\
+Nach dem Satz von Ford-Fulkerson ist dies äquivalent dazu, dass die minimale Schnittkapazität mindestens m+1 ist.
+
+Es sei ($\K_1,\K_2)$ ein beliebiger Schnitt unseres Netzwerkes mit $A\in \K_1$, $B\in \K_2$. Die Schnittkapazität ist dann
+\[k(\K_1,\K_2)=\sum_{i,j\in\CC \atop i\in\K_1,j\in\K_2}c_{i,j}=\#\{(i,j)\in\underbrace{\CC}_{\textnormal{Kantenmenge}}|\ i\in\K_1, j\in\K_2\} \]
+\textbf{Annahme:} $k(\K_1,\K_2)\le m$\\
+Dann gibt es nur m Kanten, die Punkte aus $\K_1$ mit Punkten aus $\K_2$ verbinden. Wenn diese m Kanten entfernt werden, kann kein Punkt aus $\K_1$ mit keinem Punkt aus $\K_2$ mehr verbunden werden. Dies gilt insbesondere für A und B. Also ist der ursprüngliche Graph nicht m-zusammenhängend. Widerspruch!
+
+Also ist $k(\K_1,\K_2)\ge m+1$. Dies gilt auch für die minimale Schnittkapazität. Also folgt die Behauptung.
+
+\subsection*{32. Aufgabe}
+\texttt{Anmerkung:} Eigener Lösungsweg, eventuelle Abweichungen vom vorgestellten\\ Lösungsweg in der Übung!
+
+Startfluss $X\equiv0$
+
+Durch scharfes Hinsehen zunächst (auch mit Markierungsverfahren möglich):\\
+1$\stackrel{+2}{\longrightarrow}$2$\stackrel{+2}{\longrightarrow}$6\\
+1$\stackrel{+2}{\longrightarrow}$3$\stackrel{+2}{\longrightarrow}$5$\stackrel{+2}{\longrightarrow}$6\\
+1$\stackrel{+1}{\longrightarrow}$4$\stackrel{+1}{\longrightarrow}$6
+
+Markierungsverfahren:
+
+
+\begin{tabular}{cccccc}
+1&2&3&4&5&6\\\cline{1-6}
+6& &1 &1 & & \\
+ & & & &4 &5 \\
+\end{tabular}
+$\Longrightarrow$ 1$\stackrel{+2}{\longrightarrow}$4$\stackrel{+2}{\longrightarrow}$5$\stackrel{+2}{\longrightarrow}$6
+
+\begin{tabular}{cccccc}
+1&2&3&4&5&6\\\cline{1-6}
+6& &1 & & & \\
+ & 3& & & &2 \\
+\end{tabular}
+$\Longrightarrow$ 1$\stackrel{+2}{\longrightarrow}$3$\stackrel{+2}{\longrightarrow}$2$\stackrel{+2}{\longrightarrow}$6
+
+\begin{tabular}{cccccc}
+1&2&3&4&5&6\\\cline{1-6}
+6& &1 & & & \\
+ & & & 3&4 &5 \\
+\end{tabular}
+$\Longrightarrow$ 1$\stackrel{+1}{\longrightarrow}$3$\stackrel{+1}{\longrightarrow}$4$\stackrel{+1}{\longrightarrow}$5$\stackrel{+1}{\longrightarrow}$6
+
+\begin{tabular}{cccccc}
+1&2&3&4&5&6\\\cline{1-6}
+6& &1 & & & \\
+ & & & 3& & \\
+\end{tabular}
+$\Rightarrow$ Der Algorithmus ist am Ende, weil 6 nicht markiert wurde. 
+
+Damit ist dies ein maximaler Fluss im Netzwerk:
+\[\widehat{X}=\left(\begin{array}{cccccc}0&2&4&3&0&0\\0&0&0&0&0&4\\0&2&0&1&2&0\\0&0&0&0&3&1\\0&0&0&0&0&5\\0&0&0&0&0&0\end{array}\right) \textnormal{ mit }i\stackrel{\widehat{x}_{i,j}}{\longrightarrow}j\ \ i,j=1,\cdots,6\]
+	
+[...]
+
+\newpage
+%10.Übung
+\section{Übung vom 30.06.}
+
+\subsection*{33. Aufgabe}
+a) Aus Vorlesung wissen wir:
+\begin{itemize}
+\item Wert des Spiels ist 0.
+\item Optimale Strategien sind für beide Spieler gleich.
+\end{itemize}
+\[ D:=\{x\in\R^n|\ \sum_{i=1}^nx_i=1,\ x\ge0\} \textnormal{ sei die Strategiemenge beider Spieler.} \]
+\textbf{z.z.:} Für $x^0\in D$ gilt: $x^0$ ist optimal für $P_1\Leftrightarrow Cx^0\le0$\\
+
+\textbf{Beweis:} 
+\begin{eqnarray*}
+x^0 \textnormal{ ist optimal für } P_1 &\Leftrightarrow& x^0 \textnormal{ ist optimal für }P_1 \textnormal{ und } P_2\\
+\ &\Leftrightarrow& (x^0,x^0)\textnormal{ ist Sattelpunkt}\\
+\ &\stackrel{\textnormal{(Def.!!)}}{\Leftrightarrow}& y^TCx^0\le {x^0}^T Cx^0\le {x^0}^T C x\textnormal{ für } x,y\in D\\
+\ &\Leftrightarrow& x^TC x^0\le 0,\ 0\le({x^0}^TC x)^T\ \textnormal{ für alle } x\in D\\
+\ &\Leftrightarrow& x^TC x^0\le 0 \textnormal{ für alle } x\in D\\
+\ &\Leftrightarrow& C\cdot x^0\le 0
+\end{eqnarray*}
+
+b)
+\[
+\begin{array}{ccc|cccccc}
+ & &P_1$ zeigt$&1&2&3&1&2&3\\
+ & &P_1$ sagt$&$gerade$&$gerade$&$gerade$&$ungerade$&$ungerade$&$ungerade$\\
+P_2$ zeigt$&P_2$ sagt$& \\\hline
+1&$gerade$&&0&3&0&-2&0&-4\\
+2&$gerade$&&-3&0&-5&0&4&0\\
+3&$gerade$&&0&5&0&-4&0&-6\\
+1&$ungerade$&&2&0&4&0&-3&0\\
+2&$ungerade$&&0&-4&0&3&0&5\\
+3&$ungerade$&&4&0&6&0&-5&0\\
+\end{array}
+\]
+
+Wir such nun $x\in\R^n$ mit $x\ge0$, $\sum\limits_{i=1}^nx_i=1$, $Cx\le 0$.
+Dies liefert:
+\[
+\begin{array}{crcl}
+(1)& 3x_2-2x_4-4x_6&\le&0\\
+(2)& 5x_2-4x_4-6x_6&\le&0\\
+(3)& -4x_2+3x_4+5x_6&\le&0\\
+(4)& -3x_1-5x_3+4x_5&\le&0\\
+(5)& 2x_1+4x_3-3x_5&\le&0\\
+(6)& 4x_1+6x_3-5x_5&\le&0
+\end{array}
+\]
+
+\textbf{Lösung:}\\
+"`~$\frac{1}{2}((1)+(2))$~"': $4x_2-3x_4-5x_6 \le 0\ \stackrel{(3)}{\Rightarrow}4x_2-3x_4-5x_6=0.$\\
+"`~$(2)+2\cdot(3)$~"': $-3x_2+2x_4+4x_6\le 0\ \stackrel{(1)}{\Rightarrow}-3x_2+2x_4+4x_6=0$
+
+Gauß liefert. $(x_2,x_4,x_6)=\alpha(2,1,1)$ mit $\alpha \ge 0$
+
+Analog zeigt man für (4),(5),(6)\\
+\[(x_1,x_3,x_5)=\beta(1,1,2) \mbox{ mit }\beta\ge0\]
+Mit $\sum\limits_{i=1}^6x_i=1=4(\alpha+\beta),$ d.h. $\beta=\frac{1}{4}-\alpha$ und $\alpha\in(0,\frac{1}{4})$.
+
+Insgesamt: Die optimale Strategie für jeden Spieler ist von der Form:
+\[x^0=\alpha\cdot\left(\begin{array}{c}0\\2\\0\\1\\0\\1\end{array}\right)+(\frac{1}{4}-\alpha)\cdot\left(\begin{array}{c}1\\0\\1\\0\\2\\0\end{array}\right)\textnormal{ mit } 0\le \alpha \le \frac{1}{4}\]
+
+\subsection*{34. Aufgabe}
+
+1) Auszahlungsmatrix modifizieren um echt positive Einträge zu erhalten.\\
+Dies liefert:
+\[\widetilde{C}= \left(\begin{array}{ccc}4&2&1\\2&4&4\\5&2&1\end{array}\right) \]
+
+2) Aus der Vorlesung wissen wir, dass\\
+\begin{center}
+\begin{tabular}{c|crcl|}\cline{2-5}
+&$f(x)=x_1+x_2+x_3$&=&max&\\
+($\overline{P_1}$)& $\widetilde{C}x$&$\leq$&$\left(\begin{array}{c}1\\1\\1\end{array}\right)$ &\\&$x$&$\geq$&0&\\\cline{2-5}
+\end{tabular}
+\end{center}
+\begin{center}
+$\Leftrightarrow$
+\end{center}
+\begin{center}
+\begin{tabular}{c|crcl|}\cline{2-5}
+&$\widetilde{f}(x)=-x_1-x_2-x_3$&=&min&\\
+$(P_1)$&$\left(\begin{array}{c}z_1\\z_2\\z_3\end{array}\right)+C\left(\begin{array}{c}x_1\\x_2\\x_3\end{array}\right)$&=&$\left(\begin{array}{c}1\\1\\1\end{array}\right)$&\\
+&$z_1,z_2,z_3,x_1,x_2,x_3$&$\geq$&0&\\\cline{2-5}
+\end{tabular}
+\end{center}
+Das Simplex-Verfahren liefert eine Lösung von ($P_1$) und damit auch von ($\overline{P_1}$), nämlich:
+\[x'=(\frac{1}{6},0,\frac{1}{6})\mbox{ mit }f(x')=\frac{1}{3}\]
+Der Wert des Spiels mit Auszahlungsmatrix $\widetilde{C}$ ist damit 3. Damit ist der Wert des ursprünglichen Spiels 0.
+
+Eine optimale Strategie für Spieler $P_1$ ist nach Vorlesung dann\\
+\[x=\frac{1}{f(x')}x'=(\frac{1}{2},0,\frac{1}{2})\]
+
+Das Dualprogramm liefert eine optimale Strategie für $P_2$, z.B. \[y=(0,\frac{2}{3},\frac{1}{3})\]
+
+\subsection*{35. Aufgabe}
+
+a) O.E.: i=m.\\
+Es gelte also für $C=\left(\begin{array}{c}\underline{c^1}\\ \vdots\\ \overline{c^m}\end{array}\right)$:
+\[c^m\ \le \sum_{j=1}^{m-1}\alpha_jc^j \textnormal{ mit } \alpha_j\ge 0\textnormal{ und }\sum_{j=1}^{m-1}\alpha_j=1.\]
+Es sei $\widetilde{\phi}$ erwarteter Gewinn des Spiels mit Auszahlungsmatrix $\widetilde{C}=C^{(m)}$.\\
+$\widetilde{y^0}$ sei optimale Strategie für Spiel mit Matrix $\widetilde{C}$.\\
+Nach Vorlesung existiert optimale Strategie $\widetilde{x^0}$ für Spieler $P_1$ und es gilt:
+\[\widetilde{\phi}(\widetilde{y},\widetilde{x^0})\ \le\widetilde{\phi}(\widetilde{y^0},\widetilde{x^0})\ \le\widetilde{\phi}(\widetilde{y^0},\widetilde{x})\textnormal{ für alle Strategien } \widetilde{y},\widetilde{x}.\]
+Wir wollen zeigen :$y^0=(\widetilde{y^0},0)$ ist optimale Strategie des ursprünglichen Spiels.
+
+\textbf{z.z.:}
+\[\phi(y,\widetilde{x^0})\ \stackrel{(**)}{\le} \phi(y^0,\widetilde{x^0})\ \stackrel{(*)}{\le} \phi(y^0,x)\textnormal{ für alle Strategien } x,y.\]
+Dabei ist $\phi$ der erwartete Gewinn bzgl. des ursprünglichen Spiels.
+
+\textbf{Beweis:}\\
+$(*)$ gilt, da wir uns nach Konstruktion von $y^0$ in der Situation des modifizierten Spiels befinden.
+
+zu $(**)$: Für alle Strategien y von $P_2$ gilt:
+\begin{eqnarray*}\phi(y,\widetilde{x^0})=\langle y,C\widetilde{x^0}\rangle&=&\langle C^Ty,\widetilde{x^0}\rangle\\
+&=&\langle y_1c^1+\ldots+y_mc^m, \widetilde{x^0}\rangle \\
+&\stackrel{Vor.}{\le}&\langle y_1c^1+\ldots+y_{m-1}c^{m-1}+y_m\sum_{i=1}^{m-1}\alpha_ic^i,\widetilde{x^0}\rangle\\
+&=&\langle \underbrace{(y_1+\alpha_1y_m)}_{\widetilde{y_1}}c^1+\ldots+\underbrace{(y_{m-1}+\alpha_{m-1}y_m)}_{\widetilde{y_{m-1}}}c^{m-1},\widetilde{x^0}\rangle\\ 
+&=&\langle \widetilde{C}^T \widetilde{y},\widetilde{x^0}\rangle\\&=&\langle \widetilde{y},\widetilde{C}\widetilde{x^0} \rangle\\ &=&\widetilde{\phi}(\widetilde{y},\widetilde{x^0}) \\
+&\le&\widetilde{\phi}(\widetilde{y^0},\widetilde{x^0})\\&=&\phi(y^0,\widetilde{x^0})\end{eqnarray*}
+$\widetilde{y}=(\widetilde{y_1},\ldots,\widetilde{y}_{m-1})$
+
+
+b) Es sei $C^{(j)}$ die Matrix, die aus C entsteht, wenn man die j-te \textbf{Spalte} streicht. Dann gilt: Ist die j-te Spalte von C \textbf{größer oder gleich} einer Konvexkombination der übrigen Spalten, so ergibt jede optimale Strategie $(x_1,\ldots,x_{j-1},x_{j+1},\ldots,x_n)$ von $P_1$ bzgl. $C^{(j)}$ eine optimale Strategie $(x_1,\ldots,x_{j-1},0,x_{j+1},\ldots,x_n)$ von $P_1$ bzgl. C.
+
+\subsection*{36. Aufgabe}
+
+\begin{tabular}{c|ccc}
+&A&B&C\\\hline
+1&6&1&5\\
+2&3&8&-2\\
+3&9&5&1\\
+4&5&7&-3\\
+\end{tabular}
+
+Nach Aufgabe 35(b) wird die 1.Spalte gestrichen. (Betrachte Spalte C!)\\
+\begin{tabular}{c|cc}
+&B&C\\\hline
+1&1&5\\
+2&8&-2\\
+3&5&1\\
+4&7&-3\\
+\end{tabular}
+
+Nach Aufgabe 35(a) wird die letzte Zeile gestrichen. (Betrachte Zeile 2!)\\
+\begin{tabular}{c|cc}
+&B&C\\\hline
+1&1&5\\
+2&8&-2\\
+3&5&1\\
+\end{tabular}
+
+\[\textnormal{Und wir erhalten } C=\left(\begin{array}{cc}1&5\\8&-2\\5&1\end{array}\right)\]
+Hier gilt: 3.Zeile=$\frac{3}{7}$(1.Zeile)+$\frac{4}{7}$(2.Zeile) (Deshalb streichen wir die 3.Zeile!)\\
+Wir addieren noch 3 und erhalten dann
+\[\widetilde{C}=\left(\begin{array}{cc}4&8\\11&1\end{array}\right) \]
+
+Aus der Vorlesung wissen wir nun, dass das
+\begin{center}
+\begin{tabular}{c|rcl|}\cline{2-4}
+~&$-x_1-x_2$&=&min\\
+(LP)&$4x_1+8x_2+z_1$&=&1\\
+&$11x_1+x_2+z_2$&=&1\\
+&$x_1,x_2,z_1,z_2$&$\ge$&0\\\cline{2-4}
+\end{tabular}
+\end{center}
+eine optimale Strategie für Spieler 1 liefert.\\ Lösung von (LP) ist $x'=(\frac{1}{12},\frac{1}{12})$ mit $f(x')=-\frac{1}{6}$.
+
+Das ursprüngliche Spiel hat den Wert 3 und eine optimale Strategie für $P_1$ ist $x^0=~(0,\frac{1}{2},\frac{1}{2})$.\\
+Das Dualprogramm von (LP) liefert für Spieler 2 die Strategie $y^0=(\frac{5}{7},\frac{2}{7},0,0)$
+
+
+\newpage
+%11.Übung
+\section{Übung vom 07.07.}
+
+\subsection*{37. Aufgabe}
+Es bezeichne (i) die Strategie "`i Mann gehen über den Strand, der Rest über das Hinkelsteinfeld"'.
+\[\begin{array}{c|cccc}
+&\multicolumn{4}{l}{\textnormal{Gallier}}\\
+\textnormal{Römer}&(0)&(1)&\ldots&(n)\\\hline
+(0)&1&0&\cdots&0\\
+(1)&1&\ddots&\ddots&\vdots\\
+\vdots&0&\ddots&\ddots&0\\
+(n)&\vdots&\ddots&\ddots&1\\
+(n+1)&0&\cdots&0&1
+\end{array}\]
+Man rechnet einfach nach:\\
+Der Wert des Spiels w ist echt größer als 0.
+
+Damit sind die Strategien für Römer und Gallier Lösungen von linearen Programmen.\\
+Für die Gallier
+\[(DP)\begin{array}{rcl}
+g(x)=\sum_{j=0}^nx_j&=&\max\\
+x_0&\leq&1\\
+x_0+x_1&\leq&1\\
+&\vdots&\\
+x_{n-1}+x_n&\leq&1\\
+x_n&\leq&1\\
+x_0,\ldots,x_n&\geq&0
+\end{array}\]
+Für die Römer
+\[(PP)\begin{array}{rcl}
+f(y)=\sum_{j=0}^{n+1}y_j&=&\min\\
+y_0+y_1&\geq&1\\
+&\vdots&\\
+y_n+y_{n+1}&\leq&1\\
+y_1,\ldots,y_{n+1}&\geq&0
+\end{array}\]
+
+Summe der Nebenbedingungen in (DP) liefert:
+\[2\cdot g(x)\leq n+2\Leftrightarrow g(x)\leq\frac{n+2}{2}\]
+
+\textbf{n gerade:} Wir suchen nun einen zulässigen Punkt x' mit
+\[g(x')=\frac{n+2}{2}\]
+Fangen wir mit $x_0'=1$ an, so liefern die Nebenbedingungen den Vektor
+\[x'=(1,0,1,0,\ldots,1,0,1)\]
+Der Punkt ist zulässig und optimal, also
+\[x^0=\frac{1}{g(x')}x'=(\frac{2}{n+2},0,\frac{2}{n+2},0,\ldots,\frac{2}{n+2},0,\frac{2}{n+2})\]
+eine optimale Strategie.
+
+Der Wert des Spiels ist $\frac{n+2}{2}$.
+
+Wählen wir $y'=(\frac 12,\frac 12,\ldots,\frac 12)$, so ist dies zulässiger Punkt von (PP) und es gilt $f(y')=g(x')$.\\
+Dann ist 
+\[y^0=(\frac{1}{n+2},\ldots,\frac{1}{n+2})\]
+optimale Strategie.
+
+\textbf{n ungerade:} \[g(x)\leq\frac{n+1}{2}\]
+Setzen wir $x'=(\frac 12,\ldots,\frac 12)$, so gilt:
+\[g(x')=\frac{n+1}{2}\]
+Damit ist
+\[x^0=(\frac{1}{n+1},\ldots,\frac{1}{n+1})\]
+optimale Strategie und der Wert des Spiels ist $\frac{2}{n+1}$.
+
+Ebenfalls ist $y'=(0,1,\ldots,0,1,0)$ Lösung von (PP). Damit ist 
+\[y^0=(0,\frac{2}{n+1},\ldots,0,\frac{2}{n+1},0)\]
+optimale Strategie.\\[12pt]
+
+Für den Wert $w_n$ gilt:
+\[\begin{array}{c|ccccc}
+n&1&2&3&4&5\\\hline
+w_n&1&\frac 12&\frac 12&\frac13&\frac13\end{array}\]
+Ab $n\geq4$ sind die Chancen für die Gallier besser.
+
+\subsection*{38. Aufgabe}
+\textbf{Hilfsmittel: Satz von der monotonen Konvergenz}
+
+Es seien $a,b\in\R, a<b$. Weiter seien $g_n:\ [a,b]\to\R$ mit 
+\begin{itemize}
+\item $g_n(x)\to g(x)$ für alle $x\in[a,b]$
+\item $g_n\leq g_{n+1}\ \textnormal{ für alle }n\in\N\ \textnormal{oder}$\\
+$g_n\geq g_{n+1}\ \textnormal{ für alle }n\in\N$
+\end{itemize}
+Dann gilt:
+\[\int_a^bg_n(x)dx\stackrel{n\to\infty}{\to}\int_a^bg(x)dx\]
+~\\[12pt]
+
+Es sei nun $f:\ \R\to\R$ konvex.\\
+Dann gilt:
+\begin{itemize}
+\item[(i)] Die Folge \[g_n(t):=\frac{f(t+\frac 1n)-f(t)}{\frac 1n}\]
+ist monoton fallend in n (gemäß Vorlesung) und konvergiert punktweise gegen $f^+(t)$.
+\item[(ii)] $t\mapsto g_n(t)$ ist Riemann-integrierbar, da f stetig ist.\\
+f' ist monoton wachsend und damit auch Riemann-integrierbar.
+\item[(iii)] f besitzt eine Stammfunkton F.
+\end{itemize}
+Es sei o.E. $x>0$.
+\begin{eqnarray*}
+\int_0^xf^+(t)dt&=&\int_0^x\lim_{n\to\infty}g_n(t)dt\\
+&\stackrel{\textnormal{Hilfsmittel}}{=}&\lim_{n\to\infty}\int_0^xg_n(t)dt\\
+&=&\lim_{n\to\infty}\frac{\int_0^xf(t+\frac 1n)dt-\int_0^xf(t)dt}{\frac 1n}\\
+&=&\lim_{n\to\infty}\frac{F(x+\frac 1n)-F(0+\frac 1n)-(F(x)-F(0))}{\frac 1n}\\
+&=&\lim_{n\to\infty}\frac{(F(x+\frac 1n)-F(x))-(F(0+\frac 1n)-F(0))}{\frac 1n}\\
+&=&F'(x)-F'(0)\\
+&=&f(x)-f(0)
+\end{eqnarray*}
+Ersetzt man $f(t+\frac 1n)$ durch $f(t-\frac 1n)$, erhält man die Aussage für $f^-$.
+
+
+\subsection*{39. Aufgabe}
+(a) Die Menge $\partial f(x)$ kann man schreiben als:
+\[\partial f(x)=\bigcap_{y\in\R^n}\{v\in\R^n:\ \langle v,\underbrace{y-x}_{\textnormal{fest}}\rangle\leq\underbrace{f(y)}_{\textnormal{fest}}-\underbrace{f(x)}_{\textnormal{fest}}\}\]
+Als Schnitt von konvexen, abgeschlossenen Mengen ist $\partial f(x)$ also selbst abgeschlossen und konvex.
+
+Es sei $v\in\partial f(x)$ und $y:=x+\frac{v}{\|v\|}$.\\
+Dann gilt:
+\begin{eqnarray*}
+\|v\|&=&\langle v,(x+\frac{v}{\|v\|}-x)\rangle\\
+&\stackrel{v\in\partial f(x)}{\leq}&f(x+\frac{v}{\|v\|})-f(x)\\
+&\leq&\max_{z\in S^{n-1}}f(x+z)-f(x)\\
+&\leq& R\qquad\textnormal{ für ein \ensuremath{R>0}}
+\end{eqnarray*}
+[$S^{n-1}=\{u\in\R^n:\ \|u\|=1\}$ Einheitssphäre]
+
+Also ist $\partial f(x)\subseteq R\cdot B^n$ und damit beschränkt.\newline
+[$B^n$ ist die n-dimensionale Einheitskugel.]
+
+(b) Es gilt:
+\begin{eqnarray*}
+v\in\partial f(x)&\Leftrightarrow&\forall y\in\R^n:\ \langle v,y-x\rangle\leq f(y)-f(x)\\
+&\Leftrightarrow&\forall u\in\R^n,u\neq0,t>0:\ \langle v,tu\rangle\leq f(x+tu)-f(x)\\
+&\Leftrightarrow&\forall u\in\R^n,u\neq0,t>0:\ \langle v,u\rangle\leq \frac{f(x+tu)-f(x)}{t}\\
+&\Leftrightarrow&\forall u\in\R^n,u\neq0:\ \langle v,u\rangle\leq f'(x;u)
+\end{eqnarray*}
+
+(c) Ist f differenzierbar, so gilt: $f'(x;u)=\langle\nabla f(x),u\rangle$.
+\begin{eqnarray*}
+v\in\partial f(x)&\stackrel{(b)}{\Leftrightarrow}&\forall u\in\R^n,u\neq0:\ \langle v,u\rangle\leq \underbrace{\langle\nabla f(x),u\rangle}_{f'(x;u)}\\
+&\Leftrightarrow&\forall u\in\R^n,u\neq0:\ \langle v-\nabla f(x),u\rangle\leq 0\\
+&\stackrel{(\ast)}{\Leftrightarrow}&\forall u\in\R^n,u\neq0:\ \langle v-\nabla f(x),u\rangle=0\\
+&\Leftrightarrow& v=\nabla f(x)
+\end{eqnarray*}
+
+\texttt{Anmerkung:} ($\ast$) Umformung ok, weil die Ungleichung für alle $u\in\R^n, u\neq 0$ gilt (also zu $u^0\neq0$ auch für $-u^0\neq0$).
+
+\subsection*{40. Aufgabe}
+\begin{eqnarray*}
+f \textnormal{ konvex}&\Leftrightarrow&\forall z,u\in\R^n:\ g(t):=f(z+tu) \textnormal{ ist konvex in t}\\
+&\Leftrightarrow&\forall z,u\in\R^n:\ g'(t)=\langle\nabla f(z+tu),u\rangle \textnormal{ ist monoton wachsend in t}\\
+&\Leftrightarrow&\forall z,u\in\R^n,\:t_1<t_2:\ \langle\nabla f(z+t_1u),u\rangle\leq\langle\nabla f(z+t_2u),u\rangle\\
+&\Leftrightarrow&\forall z,u\in\R^n,\:t_1<t_2:\ \langle\nabla f(z+t_1u)-\nabla f(z+t_2u),u\rangle\leq0\\
+&\Leftrightarrow&\forall z,u\in\R^n,\:t_1<t_2:\ \langle\nabla f(z+t_1u)-\nabla f(z+t_2u),\underbrace{(t_1-t_2)}_{<0}u\rangle\geq0\\
+&\stackrel{\ast}{\Leftrightarrow}&\forall x,y\in\R^n:\ \langle\nabla f(y)-\nabla f(x),y-x\rangle\geq0
+\end{eqnarray*}
+$(\ast):\ u:=y-x, z:=x, t_1=0, t_2=1$ [einsetzen und umformen]
+
+\texttt{Anmerkung:} f differenzierbar $\Leftrightarrow$ g differenzierbar (...)
+
+\newpage
+%12.Übung
+\section{Übung vom 14.07.}
+
+\subsection*{41. Aufgabe}
+Es sei $\widetilde{f}(x):=\sup\{g(x):\ g:\ \R^n\to\R\textnormal{ affin},g\le f\}$.\\
+Klar: $\widetilde{f}\leq f$ (nach Definition)
+
+\textbf{z.z.:} $\widetilde{f}\geq f$\\
+\textbf{Bew.:} Annahme: Es existiert ein $x^0\in\R^n$ mit $\widetilde{f}(x^0)<f(x^0)$\\
+Dann gilt
+\[z:=(x^0,\frac{\widetilde{f}(x^0)+f(x^0)}{2})\in\R^{n+1}\]
+und liegt nicht in $\epi f$.
+
+Nach dem Trennungssatz aus der Vorlesung existiert eine Hyperebene\\ $H=\{h=\alpha\}\subset\R^{n+1}$ mit 
+\[h(z)\leq\alpha\textnormal{ und }\epi f\subset\{h\geq\alpha\}\]
+Wir schreiben nun h in der Form
+\[h((\underbrace{x}_{\in\R^n},x_{n+1}))=\langle u,x\rangle+x_{n+1}\cdot u_{n+1}\]
+Es gilt:
+\begin{eqnarray*}
+(i)&&h((x^0,\frac{\widetilde{f}(x^0)+f(x^0)}{2}))=\langle u,x^0\rangle +\frac{\widetilde{f}(x^0)+f(x^0)}{2}u_{n+1}\leq\alpha\\
+(ii)&&h((x,r))=\langle u,x\rangle+r\cdot u_{n+1}\geq\alpha\ \forall x\in\R^n, r\geq f(x)
+\end{eqnarray*}
+Nun gilt $u_{n+1}\geq 0$ wegen (ii).\\
+Annahme: $u_{n+1}=0$\\
+Dann: $\langle u,x\rangle=\langle u,x\rangle +f(x)\cdot u_{n+1}\stackrel{(ii)}{\geq}\alpha\geq\langle u,x^0\rangle+\frac{\widetilde{f}(x^0)+f(x^0)}{2}\cdot u_{n+1}=\langle u,x^0\rangle$ Widerspruch (mit $x=x^0-u$; Kette gilt $\forall x\in\R^n$)!
+
+Also gilt $u_{n+1}>0$.\\
+Nach (ii) gilt für jedes $x\in\R^n$:
+\[\langle u,x \rangle+f(x)\cdot u_{n+1}\geq\alpha\]
+\[\Rightarrow f(x)\geq \frac{\alpha}{u_{n+1}}-\langle \frac{1}{u_{n+1}}\cdot u,x\rangle=:g(x)\]
+g ist affin, $g\le f$ und nach (i) gilt:
+\[g(x^0)=\frac{\alpha}{u_{n+1}}-\langle \frac{1}{u_{n+1}}\cdot u,x^0\rangle\stackrel{(i)}{\geq}\frac{1}{u_{n+1}}\left(\frac{\widetilde{f}(x^0)+f(x^0)}{2}\cdot u_{n+1}\right)>\widetilde{f}(x^0)\]
+Widerspruch zur Konstruktion von $\widetilde{f}$.
+
+\subsection*{42. Aufgabe}
+Es sei $x^0$ Lösung von (KP).\\
+\textbf{z.z.:}
+\[x \textnormal{ ist Lösung}\Leftrightarrow\left\{\begin{array}{cl}(i)&\nabla f(x)=\nabla f(x^0)\\
+(ii)&\langle x^0-x,\nabla f(x^0)\rangle=0\end{array}\right.\]
+
+"`$\Leftarrow$"' Da f konvex ist, gilt:
+\[f(x^0)-f(x)\stackrel{\textnormal{Vorl.}}{\geq}\langle x^0-x,\nabla f(x)\rangle\stackrel{(i)}{=}\langle x^0-x,\nabla f(x^0)\rangle\stackrel{(ii)}{=}0\]
+D.h. $f(x)=f(x^0)$, weil $x^0$ Lösung ist.
+
+"`$\Rightarrow$"' Es sei $\alpha\in[0,1]$.
+\begin{eqnarray*}
+f(x^0)&\stackrel{x^0\textnormal{ Lsg.}}{\leq}&f(\alpha x+(1-\alpha)x^0)\\
+&\stackrel{f \textnormal{ konvex}}{\leq}&\alpha f(x)+(1-\alpha)f(x^0)\\
+&\stackrel{x\textnormal{ Lsg.}}{=}&\alpha f(x^0)+(1-\alpha)f(x^0)\\
+&=&f(x^0)\end{eqnarray*}
+Also ist f konstant auf der Verbindungsstrecke von x und $x^0$.\\
+Daraus folgt (ii), da f an der Stelle $x^0$ in Richtung $x-x^0$ konstant ist.
+
+Es fehlt noch (i).\\Dazu definieren wir $h:\ \R^n\to\R$,
+\[y\mapsto f(y)-\langle y-x^0,\nabla f(x^0)\rangle\]
+Es gilt:
+\begin{itemize}
+\item{h ist konvex, stetig differenzierbar und
+\[\nabla h(y)=\nabla f(y)-\nabla f(x^0)\]
+[Ableitung der linearen Funktion $\langle y-x^0,\nabla f(x^0)\rangle$ ist $\nabla f(x^0)$.]}
+\item{ $h(x)=f(x)=f(x^0)$\newline [wegen (ii) und x Lösung]}
+\end{itemize}
+
+\textbf{Annahme: }$\nabla h(x)=\nabla f(x)-\nabla f(x^0)\neq 0$\\
+Wir betrachten die Abbildung $g:\ \R\to\R,\ \lambda\mapsto h(x+\lambda w)$ mit $w=\nabla h(x)$.\\
+Es gilt:
+\begin{itemize}
+\item{$g'(\lambda)=\langle \nabla h(x+\lambda w),w\rangle$}
+\item{$g'(0)=\|h'(x)\|^2>0$}
+\end{itemize}
+Da g' stetig ist, existiert $\delta>0$, so dass g auf $[-\delta,\delta]$ streng monoton wachsend ist. D.h. $g(0)>g(-\delta)$.
+
+$\Rightarrow h(x)>h(x-\delta w)=f(x-\delta w)-\langle(x-\delta w)-x^0,\nabla f(x^0)\rangle$\\
+$\stackrel{h(x)=f(x^0)}{\Rightarrow}f(x-\delta w)-f(x^0)<\langle(x-\delta w)-x^0,\nabla f(x^0)\rangle$
+
+Widerspruch zu f konvex.\newline
+[Für konvexe Funktionen gilt: $f(y)-f(x)\geq \langle y-x,\nabla f(x)\rangle$]
+
+\subsection*{43. Aufgabe}
+Es sei $x^0$ zulässig.\\
+\textbf{z.z.:}
+\[x^0 \textnormal{ ist keine Lösung} \Leftrightarrow \exists v\in\R^n,\|v\|=1:\left\{\begin{array}{c}(i)\\(ii)\end{array}\right.\]
+(i): $\sup\{\alpha\geq0:\ x^0+\alpha v\in M\}>0$\\
+(ii): $\langle v,\nabla f(x^0)\rangle <0$
+
+"`$\Rightarrow$"' $x^0$ ist keine Lösung und $M\neq\varnothing$, also existiert $x\in M$ mit $f(x)<f(x^0)$.\\
+Wir setzen 
+\[v:=\frac{x-x^0}{\|x-x^0\|}\]
+Dann gilt:
+\[\sup\{\alpha\geq0:\ x^0+\alpha v\in M\}\geq\|x-x^0\|\]
+D.h. (i) gilt.
+\[\langle v,\nabla f(x^0)\rangle=\frac{1}{\|x-x^0\|}\langle x-x^0,\nabla f(x^0)\rangle\leq \frac{1}{\|x-x^0\|}(\underbrace{f(x)-f(x^0)}_{<0})<0\]
+Also gilt (ii).
+
+"`$\Leftarrow$"' Es sei v so, dass (i) und (ii) erfüllt sind.\\
+Wegen (ii) existiert ein $\tilde\alpha>0$ mit
+\[\langle v,\nabla f(x^0+\alpha v)\rangle <0\ \ \forall\alpha\in[0,\tilde\alpha],\]
+da $\alpha\mapsto\langle v,\nabla f(x^0+\alpha v)\rangle$ stetig ist.
+
+O.E.: $\tilde\alpha\leq\sup\{\alpha\geq0:\ x^0+\alpha v\in M\}$.\\
+Es gilt:
+\[f(x^0)-f(x^0+\tilde\alpha v)\geq\langle(x^0-(x^0+\tilde\alpha v)),\nabla f(x^0+\tilde\alpha v)\rangle\]
+\[\Leftrightarrow f(x^0)\geq f(x^0+\tilde\alpha v)\underbrace{-\underbrace{\tilde\alpha}_{>0}\underbrace{\langle v,\nabla f(x^0+\tilde\alpha v)\rangle}_{<0}}_{>0}\]
+$\Rightarrow f(x^0)>f(x^0+\tilde\alpha v)$\\
+$\Rightarrow x^0$ keine Lösung.
+
+\subsection*{44. Aufgabe}
+(a) \textbf{z.z.:} $(SB)\Leftrightarrow(SB^*)$
+
+"`$\Rightarrow$"' Setze $x^i:=x$ für $i=1,\ldots,m$.\\
+"`$\Leftarrow$"' Wir setzen 
+\[x:=\frac 1m \sum_{i=1}^mx^i\]
+\[g_j(x)\leq\frac 1m \sum_{i=1}^mg_j(x^i)\leq\frac 1mg_j(x^j)\stackrel{\textnormal{Vor.}}{<}0\]
+für $j=1,\ldots,m$.\newline
+[$g_j(x^i)\leq 0$ für jedes $x^i$, weil die $x^i$ zulässig sein sollen.]
+
+(b) \textbf{z.z.:} $(SB)\Leftrightarrow(K)$
+
+"`$\Rightarrow$"' Es sei $u\in\R^m,u\ge0,u\neq0$, d.h. es existiert $j\in\{1,\ldots,m\}$ mit $u_j>0$.\\
+Nach Voraussetzung existiert ein $x\ge0$ mit $g_i(x)<0$ für $i=1,\ldots,m$.
+\[\langle u,g(x)\rangle =\sum_{i=1}^mu_ig_i(x)\leq \underbrace{u_j}_{>0}\underbrace{g_j(x)}_{<0}<0\]
+
+"`$\Leftarrow$"' Es seien
+\[A=\conv \{g(x): x\geq 0\}\subset\R^m\]
+\[B=\{v\in\R^m:\ v<0\}\]
+A,B sind nichtleer und konvex.\\
+Falls $A\cap B\neq\varnothing$, dann existiert ein $z<0$ mit $z\in A$, d.h. es existieren $x^1,\ldots,x^k\in\R^n,x^1,\ldots,x^k\geq0,\alpha_1,\ldots,\alpha_k\geq0$ mit $\sum\limits_{i=1}^k\alpha_i=1$:
+\[\sum_{i=1}^k\alpha_ig(x^i)=z\]
+
+Wir definieren: 
+\[x=\sum_{i=1}^k\alpha_ix^i\]
+Es gilt:
+\begin{itemize}
+\item{$x\geq0$}
+\item{$g(x)\leq \sum\limits_{i=1}^k\alpha_ig(x^i)=z<0$}
+\end{itemize}
+
+\textbf{Annahme:} $A\cap B=\varnothing$\\
+Dann existiert Hyperebene $H=\{\langle u^0,\cdot\rangle=\alpha\},u^0\neq 0,\alpha\in\R$, die A und B trennt, d.h.
+\[A\subset\{\langle u^0,\cdot\rangle\geq\alpha\}\textnormal{ und }B\subset\{\langle u^0,\cdot\rangle\leq\alpha\}\]
+Da $0\in\cl B$ ist, muss $\alpha\geq 0$ sein.\\
+Es sei $i\in\{1,\ldots,m\}$ und $k\in\N$.
+\[v^i:=(0,\ldots,0,\underbrace{-k}_{\textnormal{i-te Stelle}},0,\ldots,0)\in B\subset\{\langle u^0,\cdot\rangle\leq\alpha\}\]
+\[\langle v^i,u^0\rangle=-k\cdot u_i^0\leq\alpha\]
+$\stackrel{i\in\{1,\ldots,m\}\textnormal{ bel.}}{\Longrightarrow} u^0\geq 0$
+
+Wir haben nun: $\forall x\in\R^n,x\ge0$ ist
+\[g(x)\in A\subset\{\langle u^0,\cdot\rangle\geq\alpha\}\]
+d.h.
+\[\langle u^0,g(x)\rangle\geq\alpha\geq0\ \forall x\in\R^n\]
+Widerspruch zu (K)!
+
+
+\newpage
+%13.Übung
+\section{Übung vom 21.07.}
+
+\subsection*{45. Aufgabe}
+a) Es sei $D:=\{(x,y)\in\R^2:\ x>-1,y>-1\}$.\\
+Die partiellen Ableitungen 2. Ordnung von f sind:
+\begin{eqnarray*}
+f_{11}&=&-a(a-1)(x+1)^{a-2}(y+1)^{b}\\
+f_{22}&=&-b(b-1)(x+1)^{a}(y+1)^{b-2}\\
+f_{12}=f_{21}&=&-ab(x+1)^{a-1}(y+1)^{b-1}\end{eqnarray*}
+Es gilt nach Vorlesung:
+\begin{eqnarray*}f\textnormal{ ist auf D konvex}&\Leftrightarrow&A:=((f_{ij}))\textnormal{ ist positiv semi-definit}\\
+&\stackrel{(\ast)}{\Leftrightarrow}&\textnormal{EW von A sind größergleich Null}\\
+&\Leftrightarrow&\operatorname{Spur}A\geq0 \textnormal{ und }\det A\geq0\\
+&\Leftrightarrow& f_{11}+f_{22}\geq0,f_{11}f_{22}-f_{12}^2\geq0\\
+&\Leftrightarrow&f_{11}\geq0,f_{22}\geq0,f_{11}f_{22}\geq f_{12}^2
+\end{eqnarray*}
+[$(\ast)$: A symmetrisch $\Rightarrow$ A diagonalisierbar]
+\begin{itemize}
+\item{$f_{11}\geq0\Leftrightarrow-a(a-1)\geq0\Leftrightarrow a\leq1$}
+\item{$f_{22}\geq0\Leftrightarrow b\leq1$}
+\item{$f_{11}f_{22}\geq f_{12}^2\Leftrightarrow ab(a-1)(b-1)\geq a^2b^2\Leftrightarrow a+b\leq1$}
+\end{itemize}
+Also ist f auf D konvex genau dann, wenn $a+b\leq 1$. [Beachte: $a,b>0$]
+
+b) Es liegt ein konvexes Optimierungsproblem vor.\\
+$(x^0,y^0)>0$ und zulässig.
+
+Wir definieren $g(x,y)=x+2y-2$.\\
+Wir zeigen nun: Es existiert ein $u^0\geq0$, so dass $(x^0,y^0,u^0)$ ein Sattelpunkt von
+\[\Phi(x,y,u)=f(x,y)+u\cdot g(x,y)\]
+ist.
+
+Die Slater-Bedingung (S) ist erfüllt (z.B. durch (0,0)).\\
+Also ist $(x^0,y^0)$ genau dann Lösung, wenn ein $u^0\geq 0$ existiert mit
+\[\Phi(x^0,y^0,u)\leq \Phi(x^0,y^0,u^0)\leq \Phi(x,y,u^0)\ \ \textnormal{für }x,y,u\geq0\]
+Man rechnet nach: $g(x^0,y^0)=0$.\\
+Also ist die linke Ungleichung immer erfüllt.
+
+Wir definieren $h(x,y):=\Phi(x,y,u^0)$ mit $u^0$ fest.\\
+Es gilt: h ist konvex und differenzierbar in D.
+
+Damit gilt:
+\[h(x,y)-h(x^0,y^0)\geq\langle(x,y)-(x^0,y^0),\nabla h(x^0,y^0)\rangle\]
+[$x,y\in D$ beliebig]
+
+D.h.: Ist $\nabla h(x^0,y^0)=0$, so ist $(x^0,y^0)$ Minimum von h auf D.\\
+Es gilt:
+\begin{eqnarray*}
+\nabla h(x^0,y^0)=0&\Leftrightarrow&f_1(x^0,y^0)+u^0=0\\
+&&f_2(x^0,y^0)+2u^0=0\end{eqnarray*}
+\[f_1(x^0,u^0)=-a^a(\frac b2)^b(\frac{5}{a+b})^{a+b-1}\stackrel{!}{=}-u^0\]
+\[f_2(x^0,u^0)=2\cdot(-a^a(\frac b2)^b(\frac{5}{a+b})^{a+b-1})\stackrel{!}{=}-2u^0\]
+Setzen wir
+\[u^0=a^a(\frac b2)^b(\frac{5}{a+b})^{a+b-1}\]
+so ist $\nabla h(x^0,y^0)=0$.\\
+Damit ist $(x^0,y^0,u^0)$ ein Sattelpunkt von $\Phi$, also $(x^0,y^0)$ Lösung von (KP).
+
+\subsection*{46. Aufgabe}
+$\nabla f(x)=p+2Cx$\\
+Nach Vorlesung gilt:\\
+$x^0\geq0\textnormal{ ist Lösung von (QP) }\Leftrightarrow \exists u^0\geq0:$
+\[\begin{array}{clcl}(i)&\nabla f(x^0)+A^Tu^0&\geq&0\\&\langle \nabla f(x^0)+A^Tu^0,x^0\rangle&=&0\\
+(ii)&Ax^0&=&b\end{array}\]
+Setzen wir $\nabla f(x)=p+2Cx$ ein, so erhalten wir:
+
+$x^0\geq0\textnormal{ ist Lösung von (QP) }\Leftrightarrow \exists u^0\geq0,w^0\geq0:$
+\[\begin{array}{clcl}(i)&2Cx^0+A^Tu^0-w^0&=&-p\\&\langle w^0,x^0\rangle&=&0\\
+(ii)&Ax^0&=&b\end{array}\]
+
+Und wir haben die Aufgabe gezeigt!\newline
+[$w^0=\nabla f(x^0)+A^Tu^0$ Schlupfvariable]
+
+\subsection*{47. Aufgabe}
+Musterlösung online!
+
+
+\newpage
+%14.Übung
+\section{Übung vom 28.07.}
+
+\subsection*{48. Aufgabe} 
+Existiert nicht!
+
+\subsection*{49. Aufgabe}
+Musterlösung online!
+
+\subsection*{50. Aufgabe}
+Entspricht Aufgabe 5b der Klausur vom Herbst 2003.\newline
+[Klausur mit Lösung online!]
+
+\end{document}
+
+
+%%%Code für LP%%%
+%\begin{center}
+%\begin{tabular}{c|rcl|}\cline{2-4}
+%~~~&f(x)&=&max\\
+%(LP)&Ax&$\leq$&b\\
+%&x&$\geq$&0\\\cline{2-4}
+%\end{tabular}
+%\end{center}

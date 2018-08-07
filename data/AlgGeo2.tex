@@ -1,0 +1,2347 @@
+\documentclass[a4paper,oneside]{scrbook}
+
+% Meta-Daten für Latexki
+\usepackage{latexki}
+\lecturer{Prof. Dr. F. Herrlich}
+\semester{Sommersemester 2009}
+\scriptstate{complete}
+
+
+% Deutsche Sprache
+%\usepackage{ngerman}
+\usepackage[ngerman]{babel}
+
+% Verschiebt \sections auf die naechste seite falls sie zu tief sind. Muss vor
+% hyperref kommen.
+% Deaktiviert; da es nicht kompiliert
+% \usepackage[nobottomtitles]{titlesec}
+
+% Schicke Schrift
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usetikzlibrary{matrix,arrows}
+
+% schmaler rand
+\usepackage{geometry}
+\geometry{a4paper,tmargin=2cm,lmargin=2cm,rmargin=2cm}
+\setlength\parskip{\smallskipamount}
+\setlength\parindent{0pt}
+\tolerance=900
+
+% Vokabelliste erzeugen
+\usepackage{index}
+\newindex{default}{idx}{ind}{Vokabeln}
+
+% links
+\usepackage{color}
+\usepackage[hyperfigures=true,pdftex]{hyperref}
+
+\definecolor{rltred}{rgb}{0.75,0,0}
+\definecolor{rltgreen}{rgb}{0,0.5,0}
+\definecolor{rltblue}{rgb}{0,0,0.75}
+
+\hypersetup{
+  pdftitle={Algebraische Geometrie II Prof. Herrlich},
+  pdfsubject={Algebraische Geometrie II},
+  pdfkeywords={Algebraische Geometrie Herrlich},
+  pdfproducer={pdfLaTeX},
+  pdfpagemode={UseOutlines},
+  colorlinks=true,
+  bookmarksopen=true,
+  bookmarksnumbered=true,
+  urlcolor=rltblue,
+  filecolor=rltgreen,
+  linkcolor=rltblue,
+  backref=true,
+  pagebackref=true,
+%  pdfpagemode=None
+}
+
+% Mathe-Pakete
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{stmaryrd}
+
+% Verschiedene items in enumerate Umgebungen
+\usepackage{enumerate}
+
+% Für Diagramme
+%\usepackage[arrow,matrix,curve]{xy}
+
+\usepackage{etex}
+\usepackage{pictex}
+\usepackage{graphicx}
+
+% Theorem-Umgebung
+\usepackage[hyperref,amsmath,thmmarks,thref]{ntheorem}
+
+% keine kursiv schrift in theorems
+\theorembodyfont{}
+
+
+% Theoreme definieren
+\theoremstyle{break}
+    \newtheorem{Satz}{Satz}
+    \newtheorem{SatzDef}[Satz]{Satz + Definition}
+    \newtheorem{Def}{Definition}[section]
+    \newtheorem{DefBem}[Def]{Definition + Bemerkung}
+    \newtheorem{ErinnDefBem}[Def]{Erinnerung / Definition + Bemerkung}
+    \newtheorem{ErinnDef}[Def]{Erinnerung / Definition}
+    \newtheorem{DefSatz}[Def]{Definition + Satz}
+    \newtheorem{Bem}[Def]{Bemerkung}
+    \newtheorem{BemDef}[Def]{Bemerkung + Definition}
+    \newtheorem{Prop}[Def]{Proposition}
+    \newtheorem{PropDef}[Def]{Proposition + Definition}
+    \newtheorem{Folg}[Def]{Folgerung}
+    \newtheorem{Bsp}[Def]{Beispiele}
+    \newtheorem{DefProp}[Def]{Definition + Proposition}
+    \newtheorem{anBew}[Def]{Beweis}
+    \newtheorem{Kor}[Def]{Korollar}
+    \newtheorem{Lemma}{Lemma}
+\theoremstyle{nonumberbreak}
+    \newtheorem{nnBem}{Bemerkung}
+    \newtheorem{nnBsp}{Beispiele}
+    \newtheorem{nnSatz}{Satz}
+    \newtheorem{nnFolg}{Folgerung}
+    \newtheorem{Beo}{Beobachtung}
+    \newtheorem{Eri}{Erinnerung}
+    \newtheorem{Beh}{Behauptung}
+\theoremstyle{nonumberplain}
+\theoremsymbol{\ensuremath{\Box}}
+    \newtheorem{Bew}{Beweis}
+
+\theoremstyle{break}
+\theoremsymbol{}
+\theoremseparator{}
+\theoremprework{\medskip\hrule}
+\theorempostwork{\hrule\medskip}
+\theorembodyfont{\small}
+\newtheorem{anmerkung}{Anmerkung}
+
+
+%Aufzählungstypen
+\newenvironment{aaufz}
+             {\renewcommand{\labelenumi}{\alph{enumi})}              
+             \renewcommand{\labelenumii}{\alph{enumii})}
+                \begin{enumerate}}
+               {\end{enumerate}}
+
+\newenvironment{iaufz}            
+							{\renewcommand{\labelenumi}{(\roman{enumi})}            
+							\renewcommand{\labelenumii}{(\roman{enumii})}
+                \begin{enumerate}}
+               {\end{enumerate}}
+               
+\newenvironment{1aufz}             
+							{\renewcommand{\labelenumi}{\arabic{enumi}.)}               
+							\renewcommand{\labelenumii}{\arabic{enumii}.)}
+                \begin{enumerate}}
+               {\end{enumerate}}
+
+
+%Selbstdefinierter Schnickschnack
+\newcommand{\emp}[1]{\textbf{\emph{#1}}}
+\newcommand{\begriff}[1]{{\index{#1}}\emp{#1}}
+\newcommand{\defeqr}[0]{\mathrel{\mathop:}=}
+\newcommand{\defeql}[0]{=\mathrel{\mathop:}}
+
+\newcommand{\folgtnach}[1]{\ensuremath{\DOTSB\;\xRightarrow{\text{#1}}\;}}
+\newcommand{\folgtwegen}[1]{\ensuremath{\DOTSB\;\stackrel{#1}{\Rightarrow}\;}}
+\newcommand{\equizunach}[1]{\ensuremath{\DOTSB\;\xLeftrightarrow{\text{#1}}\;}}
+\newcommand{\equizuwegen}[1]{\ensuremath{\DOTSB\;\xLeftrightarrow{#1}\;}}
+\newcommand{\tonach}[1]{\ensuremath{\DOTSB\;\xrightarrow{\text{#1}}\;}}
+\newcommand{\towegen}[1]{\ensuremath{\DOTSB\;\xrightarrow{#1}\;}}
+\newcommand{\tomit}[1]{\ensuremath{\DOTSB\;\xrightarrow{#1}\;}}
+\newcommand{\gleichnach}[1]{\ensuremath{\DOTSB\;\stackrel{\text{#1}}{=}\;}}
+\newcommand{\gleichwegen}[1]{\ensuremath{\DOTSB\;\stackrel{#1}{=}\;}}
+
+\newcommand{\Abb}[5]{\ensuremath{#1:\begin{array}{ccc} #2 & \longrightarrow & #3 \\ #4 & \longmapsto & #5 \end{array}}}
+
+
+\newcommand{\myref}[2]{%
+\hyperref[#2]{#1~\ref*{#2}}%
+}
+
+\newcommand{\Ob}{% objects
+	\ensuremath{\operatorname{Ob}}%
+}
+
+\newcommand{\Mor}{% morphisms
+	\ensuremath{\operatorname{Mor}}%
+}
+
+\newcommand{\Off}{% open subseteqs
+	\ensuremath{\operatorname{Off}}%
+}
+
+\newcommand{\Cat}[1]{% category
+	\ensuremath{\underline{#1}}%
+}
+
+\newcommand{\mono}{% monomorphism
+	\ensuremath{\hookrightarrow}%
+}
+
+\newcommand{\epi}{% epimorphism
+	\ensuremath{\twoheadrightarrow}%
+}
+
+\renewcommand{\emptyset}{% empty set
+	\ensuremath{\varnothing}%
+}
+
+\newcommand{\RR}{% real numbers
+	\ensuremath{\mathbb{R}}%
+}
+
+\newcommand{\CC}{% complex numbers
+	\ensuremath{\mathbb{C}}%
+}
+
+\newcommand{\NN}{% natural numbers
+	\ensuremath{\mathbb{N}}%
+}
+
+\newcommand{\ZZ}{% integers
+	\ensuremath{\mathbb{Z}}%
+}
+
+\renewcommand{\phi}{% use the nice phi
+	\ensuremath{\varphi}%
+}
+
+\renewcommand{\theta}{% use the nice theta
+	\ensuremath{\vartheta}%
+}
+
+\newcommand{\directlim}{% more intuitive name
+	\ensuremath{\varinjlim}%
+}
+
+\renewcommand{\ker}{% kern of a morphism
+	\ensuremath{\operatorname{Kern}}%
+}
+
+\newcommand{\img}{% image of a morphism
+	\ensuremath{\operatorname{Bild}}%
+}
+
+\newcommand{\define}{% nice Def symbol
+	\ensuremath{\mathrel{\mathop:}=}%
+}
+
+\newcommand{\todo}[1]{% TODO macro
+	\marginpar{ {\Large \textbf{TODO}}\\#1}%
+}
+
+\newcommand{\Spec}{% Spectrum of a ring
+	\ensuremath{\operatorname{Spec}}%
+}
+
+\newcommand{\Proj}{% Projective spectrum of a ring
+	\ensuremath{\operatorname{Proj}}%
+}
+
+\newcommand{\HomSheaf}{% Hom-Sheaf
+	\ensuremath{\operatorname{\mathcal H\emph{om}}}%
+}
+
+\newcommand{\closure}[1]{% closure of a set U subseteq X
+	\ensuremath{\overline{#1}}%
+}
+
+\newcommand{\rad}[1]{% radical of an ideal
+	\ensuremath{\sqrt{#1}}%
+}
+
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Quot}{Quot}
+
+\DeclareMathOperator{\Kern}{Kern}
+\DeclareMathOperator{\Bild}{Bild}
+\DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\Rat}{Rat}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Rg}{Rg}
+\DeclareMathOperator{\height}{ht}
+\DeclareMathOperator{\trdeg}{trdeg}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\ord}{ord}
+
+
+\newcommand{\FakRaum}[2]{
+  \raisebox{0.7ex}{\ensuremath{#1}}
+  \ensuremath{\mkern-3mu}\big/\ensuremath{\mkern-3mu}
+  \raisebox{-0.6ex}{\ensuremath{#2}}} 
+
+\renewcommand{\labelenumi}{\theenumi}    
+\renewcommand{\theenumi}{(\alph{enumi})}
+
+\newcommand{\ilim}{\mathop{\varprojlim}\limits}
+
+\renewcommand{\OE}{O\!\!E~}
+\newcommand{\nsubset}{\subset\!\!\!\!\!/~}
+
+% Weniger Abstand nach der Ueberschrift des Inhaltsverzeichnisses
+\makeatletter
+\let\@my@starttoc\@starttoc
+\renewcommand*{\@starttoc}[1]{%
+  \addvspace{-1.5em}%
+  \@my@starttoc{#1}%
+}
+\makeatother
+
+% Einige Anstrengungen, um den § vor die Section-Nummer zu stellen
+% \renewcommand{\thesection} allein führt zu einem Konflikt mit ntheorem-hyper
+\makeatletter
+\def\@seccntformat#1{\@ifundefined{#1@cntformat}%
+{\csname the#1\endcsname\quad}% default
+{\csname #1@cntformat\endcsname}% individual control
+}
+\def\section@cntformat{§\@arabic\c@section\quad}
+\makeatother
+\setcounter{secnumdepth}{-1}
+\title{Algebraische Geometrie II}
+\subtitle{Sommersemester 2009\\ Prof. Dr. F. Herrlich}
+\author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
+
+\begin{document}
+\maketitle
+
+% Inhaltsverzeichnis
+\pdfbookmark[1]{Inhaltsverzeichnis}{contents}
+\setlength\parskip{0.6pt}
+\tableofcontents
+
+% Liste der benannten Saetze
+\section*{Benannte Sätze}
+\pdfbookmark[1]{Benannte Sätze}{contents}
+
+\theoremlisttype{optname}
+\listtheorems{Satz,SatzDef,Def,DefBem,BemDef,Prop,PropDef,Bsp,DefProp}
+
+\setlength\parskip{\smallskipamount}
+
+\chapter{Vorwort}
+\setcounter{secnumdepth}{2}
+\section*{Über dieses Skriptum}
+Dies ist ein Mitschrieb der Vorlesung \glqq Algebraische Geometrie II\grqq\ von Prof. Dr. F. Herrlich im
+Sommersemester 09 an der Universität Karlsruhe.
+Die Mitschriebe der Vorlesung werden mit ausdrücklicher Genehmigung von Prof. Dr. F. Herrlich hier veröffentlicht,
+Prof. Dr. F. Herrlich ist für  den Inhalt nicht verantwortlich.
+\section*{Wer}
+Getippt wurde das Skriptum soweit von \dots.
+
+\section*{Wo}
+Alle Kapitel inklusive \LaTeX-Quellen können unter \url{http://mitschriebwiki.nomeata.de} abgerufen werden.
+Dort ist ein von Joachim Breitner programmiertes \emph{Wiki}, basierend auf \url{http://latexki.nomeata.de} installiert. 
+Das heißt, jeder kann Fehler nachbessern und sich an der Entwicklung
+beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
+
+\chapter{Schemata}
+
+%% -- CHAPTER 1: SHEAVES ----------------------------------------------------------------------------------------------------------
+\section{Garben}
+
+%%% - Definition: presheaf -------------------------------------------------------------------------------------------------------
+\begin{Def}[Prägarbe]
+	\label{def:presheaf}
+	Sei $X$ ein topologischer Raum, $\Off(X)$ die Menge der offenenen Teilmengen von $X$ und $\mathcal{C}$ eine Kategorie.
+	Eine \emph{Prägarbe} auf $X$ mit Werten in $\mathcal{C}$ ist ein kontravarianter Funktor
+	\[ \mathcal{F}\colon \Cat{\Off}(X) \to \mathcal{C} \]
+	wobei $\Cat{\Off}(X)$ die Kategorie mit den Objekten $\Off(X)$ und den Morphismen 
+	\[
+	 \Mor(U,U') = \begin{cases}  i\colon U \mono U' & \text{falls } U \subseteq U'\\%
+	\emptyset & \text{sonst}%
+	\end{cases}
+	\]
+	ist.
+	Für $U \subseteq U'$ heißt $\rho_{U}^{U'} = \mathcal{F}( U \mono U' )$ \emph{Restriktionsmorphismus}.
+	Ist $U \subseteq U'$ und $f \in \mathcal{F}(U')$, so schreibt man statt $\rho_{U}^{U'}(f)$ auch $f\restriction U$.
+\end{Def}
+%%% - End Definition: presheaf ---------------------------------------------------------------------------------------------------
+
+
+
+%%% - Definition: sheaf ----------------------------------------------------------------------------------------------------------
+\begin{Def}[Garbe]
+	\label{def:sheaf}
+	Eine Prägarbe $\mathcal{F}$ auf $X$ heißt \emph{Garbe}, falls folgende Bedingung erfüllt ist:
+
+	Ist $U \subseteq X$ offen, $(U_i)_{i\in I}$ eine offene Überdeckung von $U$ und ist für jedes $i\in I$ ein $s_i \in \mathcal{F}(U_i)$ gegeben, so dass $s_i\restriction U_i \cap U_j = s_j \restriction U_i \cap U_j$ für alle $i,j \in I$, dann gibt es genau ein $s \in \mathcal{F}(U)$, so dass für alle $i\in I$ gilt: $s\restriction U_i = s_i$.
+\end{Def}
+%%% - End Definition: sheaf ------------------------------------------------------------------------------------------------------
+
+
+
+%%% - Example: sheaves/presheaves -------------------------------------------------------------------------------------------------
+\begin{Bsp}
+	\begin{enumerate}
+		\item Sei $X$ quasi-projektive Varietät, $\mathcal{O}_X(U)$ der Ring der regulären Funktionen auf $U$,
+		dann ist $\mathcal{O}_X$ Garbe auf $X$.
+		\item Sei $X$ ein topologischer Raum, $\mathcal{C}(U)$ die Menge der stetigen Funktionen $f\colon X \to \RR$.
+		$\mathcal{C}$ ist Garbe von Ringen auf $X$.
+		Ist $X$ eine differenzierbare Mannigfaltigkeit, dann sind auch $\mathcal{C}^{\infty}(U)$ und $\mathcal{C}^{k}(U)$ Garben von Ringen auf $X$.
+		\item Sei $X$ ein topologischer Raum, $G$ eine (abelsche) Gruppe. Definiere $\mathcal{G}(U) = G$ für jedes offene $U \subseteq X$ 
+		und wähle als Restriktionsmorphismen $\rho_{U}^{U'} = \id_G$ für alle $U\subseteq U'$.
+
+		$\mathcal{G}$ ist offenbar Prägarbe, muss aber nicht zwingend Garbe sein. Gibt es in $X$ disjunkte offene Mengen $U_1,U_2$, dann ist $U = U_1 \cup U_2$ offen und $\{ U_1, U_2 \}$ ist eine Überdeckung von $U$. Jedoch gibt es für $g_1 \in \mathcal{G}(U_1), g_2 \in \mathcal{G}(U_2)$ mit $g_1 \neq g_2$ kein $g \in \mathcal{G}(U)$, so dass $g\restriction U_1 = g_1$ und $g\restriction U_2 = g_2$.
+
+		$\mathcal{G}$ kann zur Garbe gemacht werden, indem man $\mathcal{G}(U) = G^{ \text{ \#Zsh.-komp. von }U}$ setzt.
+	\end{enumerate}
+\end{Bsp}
+%%% - End Example: sheaves/presheaves ---------------------------------------------------------------------------------------------
+
+
+
+%%% - Remark: F(0) ----------------------------------------------------------------------------------------------------------------
+\begin{Bem}\label{rem:sheaf_0}
+	Ist $\mathcal{F}$ Garbe von abelschen Gruppen auf $X$, so ist $\mathcal{F}(\emptyset) = 0$.
+\end{Bem}
+\begin{Bew}
+	Sei $G = \mathcal{F}(\emptyset)$. Offenbar kann $\emptyset$ durch eine leere Überdeckung von offenen Teilmengen überdeckt werden.
+	Für jedes $g \in G$ und jedes $i\in I$ gilt also $g\restriction U_i = g_i$. Da $\mathcal{F}$ eine Garbe ist, kann es also nur
+	ein $g \in G$ geben und somit ist $G = 0$.
+\end{Bew}
+%%% - End Remark: F(0) ------------------------------------------------------------------------------------------------------------
+
+
+
+
+%%% - Definition: (pre-) sheaf morphisms -----------------------------------------------------------------------------------------
+\begin{Def}[Morphismen von Prägarben]
+	\label{def:sheaf_morphism}
+	Sei $X$ ein topologischer Raum und $\mathcal{F}, \mathcal{G}$ Prägarben auf $X$ mit Werten in $\mathcal{C}$.
+	Ein Morphismus $\phi\colon \mathcal{F} \to \mathcal{G}$ ist eine natürliche Transformation von $\mathcal{F}$ nach $\mathcal{G}$, d.h.
+	für jedes offene $U \subseteq X$ ist ein Morphismus $\phi_U\colon \mathcal{F}(U) \to \mathcal{G}(U)$ gegeben, so dass folgendes Diagramm für alle $U,U'$ mit $U \subseteq U'$ kommutiert:
+	\begin{center}
+	\begin{tikzpicture}
+		\matrix (m) [matrix of math nodes, row sep=3em,
+		column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+		{
+			\mathcal{F}(U')	&	\mathcal{F}(U)	\\
+			\mathcal{G}(U')	&	\mathcal{G}(U)	\\
+		};
+		\path[->, font=\scriptsize]
+		(m-1-1) edge node[auto] {$\rho_{U}^{U'}$}	(m-1-2)
+				edge node[auto] {$\phi_{U'}$}		(m-2-1)
+		(m-2-1) edge node[auto] {$\rho_{U}^{U'}$}	(m-2-2)
+		(m-1-2) edge node[auto] {$\phi_{U}$}		(m-2-2);
+	\end{tikzpicture}
+	\end{center}
+
+\end{Def}
+%%% - End Definition (pre-) sheaf morphisms --------------------------------------------------------------------------------------
+
+
+
+Im Folgenden ist mit einer Garbe auf $X$ immer eine Garbe von abelschen Gruppen gemeint.
+
+
+
+%%% - Definition: stalk / germ ----------------------------------------------------------------------------------------------------
+\begin{Def}[Halm und Keim]
+	\label{def:stalk_germ}
+	Sei $X$ ein topologischer Raum, $x\in X$ und $\mathcal{F}$ eine Prägarbe auf $X$.
+	\begin{enumerate}[(a)]
+		\item \[\mathcal{F}_{x} = \directlim_{x\in U \in \Off(X)} \mathcal{F}(U)\] 
+		heißt \emph{Halm} von $\mathcal{F}$ in $x$. Dabei ist
+		\[ \directlim \mathcal{F}(U) = \left\{ (U,f)\ |\ U \in \Off(X), x \in U, f \in \mathcal{F}(U) \right\} \big/ \sim \]
+		mit $(U,f) \sim (U',f') :\Leftrightarrow $ es gibt eine offene Menge $U'' \subseteq U \cap U'$, so dass $x \in U''$ und $f \restriction U'' = f'\restriction U''$.
+		\item Für eine offene Menge $U \subseteq X$ mit $x\in U$ sei
+		\[ \mathcal{F}(U) \to \mathcal{F}_{x},\ f \mapsto [ (U,f) ]_{\sim} =: f_x \]
+		der natürliche Morphismus. $f_x$ heißt \emph{Keim} von $f$ in $x$.
+	\end{enumerate}
+\end{Def}
+%%% - End Definition: stalk / germ ------------------------------------------------------------------------------------------------
+
+
+
+%%% Remark: local 0 <-> global 0 --------------------------------------------------------------------------------------------------
+\begin{Bem}\label{bem:local=0_iff_global=0}
+	Sei $\mathcal{F}$ eine Garbe auf $X$, $U \subseteq X$ eine offene Teilmenge und $f\in \mathcal{F}(U)$. Dann gilt:
+	\[ f = 0 \Leftrightarrow f_x = 0 \text{ für alle } x \in U \]
+\end{Bem}
+\begin{Bew}
+	\begin{description}
+		\item["`$\Rightarrow$"':] Ist $f = 0$, dann ist offenbar $f_x = 0$ für alle $x \in U$.
+		\item["`$\Leftarrow$"':] Sei $f_x = 0$ für alle $x \in U$. Dann gibt es für jedes $x\in U$ eine offene Umgebung $U_x$ von $x$, so dass $( U_x,0) \in f_x$ und damit insbesondere $(U_x,0 ) \sim (U,f)$. Die $U_x$ überdecken $U$ und daher gibt es genau ein $g \in \mathcal{F}(U)$ mit $g \restriction U_x = 0$ für jedes $x\in X$ $\Rightarrow 0 = g = f$.
+	\end{description}
+\end{Bew}
+%%% End Remark: local 0 <-> global 0 -----------------------------------------------------------------------------------------------
+
+
+
+%%% Example: local 0 <-> global 0 ONLY for sheaves ---------------------------------------------------------------------------------
+Das folgende Beispiel zeigt, dass die Aussage aus Bemerkung~\ref{bem:local=0_iff_global=0} für Prägarben nicht unbedingt gilt.
+\begin{Bsp}
+	Sei $X$ ein topologischer Raum, so dass jedes $x \in X$ eine offene Umgebung $U \neq X$ besitzt.
+	\[ \mathcal{F}(U) = \begin{cases}%
+	\ZZ	& U = X\\%
+	0	& \text{sonst}%
+	\end{cases}
+	\]
+	mit den natürlichen Restriktionsmorphismen ist eine Prägarbe von abelschen Gruppen auf $X$.
+	Für alle $x\in X$ ist $\mathcal{F}_x = 0$, also ist auch für jedes $f \in \mathcal{F}(X)$ und jedes $x\in X$ $f_x = 0$ -- auch wenn $f \neq 0$.
+\end{Bsp}
+%%% End Example: local 0 <-> global 0 ONLY for sheaves -----------------------------------------------------------------------------
+
+
+
+%%% Remark: sheaf morphism -> stalk morphism ----------------------------------------------------------------------------------------
+\begin{Bem}
+	\label{rem:sheaf_morphism:induces_stalk_morphism}
+	Jeder Morphismus $\phi\colon \mathcal{F} \to \mathcal{G}$ von Prägarben induziert für jedes $x\in X$ einen natürlichen Morphismus $\phi_x\colon \mathcal{F}_x \to \mathcal{G}_x$. 
+\end{Bem}
+\begin{Bew}
+	Sei $x\in X$. Definiere
+	\[ \phi_x\colon \mathcal{F}_x \to \mathcal{G}_x,\ [ (U,f) ]_{\sim} \mapsto [ (U,\phi_{U}(f) ]_{\sim} \]
+	Für $(U,f) \sim (U',f')$ ist $f\restriction U'' = f'\restriction U''$ für ein geeignetes $U''$ und daher
+	\[ \phi_{U'}( f' ) \restriction U'' = \phi_{U''}( f' \restriction U'' ) = \phi_{U''}( f \restriction U'' ) = \phi_{U}( f ) \restriction U'' \]
+	Somit ist auch $(U , \phi_{U}(f)) \sim (U', \phi_{U'}(f'))$ und $\phi_x$ ist wohldefiniert.
+\end{Bew}
+%%% End Remark: sheaf morphism -> stalk morphism -------------------------------------------------------------------------------------
+
+
+
+%%% Remark: sheaf morphism epi/mono/iso <-> stalk morphism epi/mono/ist --------------------------------------------------------------
+\begin{Bem}\label{bem:sheaf_morphism:epi_mono_iso_stalk_morphism}
+	Seien $\mathcal{F}, \mathcal{G}$ Garben abelscher Gruppen, $\phi\colon \mathcal{F} \to \mathcal{G}$ ein Morphismus. Dann gilt:\\
+	{%
+	\centering
+		\begin{tabular}{clcl}
+		(a)	& $\forall U \in \Off(X)\colon\phi_U$ ist injektiv		& $\Longleftrightarrow$ & $\forall x \in X\colon \phi_x$ ist injektiv.\\
+		(b) & $\forall U \in \Off(X)\colon\phi_U$ ist surjektiv		& $\Longrightarrow$		& $\forall x \in X\colon \phi_x$ ist surjektiv.\\
+		(c) & $\forall U \in \Off(X)\colon\phi_U$ ist Isomorphismus	& $\Longleftrightarrow$	& $\forall x \in X\colon \phi_x$ ist Isomorphismus.
+		\end{tabular}
+	}
+\end{Bem}
+\begin{Bew}
+	\begin{enumerate}[(a)]
+	\item
+		\begin{description}
+			\item[ "`$\Rightarrow$"':] Seien $x \in X$ und  $f_x \in \mathcal{F}_x$ mit $\phi_x(f_x) = 0$.
+				Dann ist $[ (U, \phi_U(f) ) ]_{\sim} = 0$ für einen Repräsentanten $(U,f)$ von $f_x$.
+				Ohne Einschränkung ist $\phi_U(f) = 0$ und nach Vorraussetzung somit auch $f = 0$ $\Rightarrow f_x = 0$.
+			\item["`$\Leftarrow$"':] Seien $U \in \Off(X)$ und $f \in \mathcal{F}(U)$ mit $\phi_{U}(f) = 0$.
+				Für alle $x\in U$ ist dann $\phi_x(f_x) = 0$ und somit auch $f_x = 0$.
+				Nach Bemerkung~\ref{bem:local=0_iff_global=0} ist $f = 0$.
+		\end{description}
+
+	\item Sei $g_x \in \mathcal{G}_x$ für ein $x \in X$ und sei $(U,g)$ ein Repräsentant von $g_x$.
+		Nach Vorraussetzung gibt es ein $f \in \mathcal{F}(U)$, so dass $\phi_U(f) = g$. Insgesamt ist dann $\phi_x(f_x) = g_x$.
+	\item 
+		\begin{description}
+			\item[ "`$\Rightarrow$"':] Folgt aus (a) und (b).
+			\item[ "`$\Leftarrow$"':] Nach (a) ist $\phi_{U}$ injektiv und es bleibt nur zu zeigen, dass $\phi_{U}$ surjektiv ist.
+				Sei also $ g\in \mathcal{G}(U)$.
+				Für jedes $x \in U$ sei $f_x = \phi_x^{-1}(g_x)$ und $(U^{(x)}, f^{(x)} )$ ein Repräsentant von $f_x$.
+				Offenbar ist $\left(  U^{(x)} \right)_{x \in U}$ eine offene Überdeckung von $U$.
+				Weiterhin kann man die $U^{(x)}$ klein genug wählen, so dass $\phi_{U^{(x)}}( f^{(x)} ) = g \restriction U^{(x)}$.
+				Dann ist $f^{(x)} = \phi_{U^{(x)}}^{-1}( g \restriction U^{(x)} )$ und für alle $x,x' \in U$ gilt:
+				\[ f^{(x)}\restriction U^{(x)} \cap U^{(x')} = \phi_{U^{(x)} \cap U^{(x')}}^{-1}( g \restriction U^{(x)} \cap U^{(x')} ) = f^{(x')} \restriction U^{(x)} \cap U^{(x')} \]
+				Da $\mathcal{F}$ Garbe ist, gibt es genau ein $f \in \mathcal{F}(U)$ mit $f \restriction U^{(x)} = f^{(x)}$ für alle $x \in U$. Offenbar ist dann $\phi_U(f) \restriction U^{(x)} = g \restriction U^{(x)}$ für jedes $x \in U$ und somit auch $\phi_U(f) = g$.
+		\end{description}
+	\end{enumerate}
+\end{Bew}
+%%% End Remark: sheaf morphism epi/mono/iso <-> stalk morphism epi/mono/ist ----------------------------------------------------------
+
+
+
+%%% Example: All stalk morphisms epi, but sheaf morphism not epi ---------------------------------------------------------------------
+Das folgende Beispiel zeigt, dass die Aussage (b) aus Bemerkung~\ref{bem:sheaf_morphism:epi_mono_iso_stalk_morphism} keine Äquivalenz ist.
+\begin{Bsp}
+	Sei $X = \CC \setminus \{0\}$ und $\mathcal{F}$ die Garbe der invertierbaren, holomorphen Funktionen.
+	Weiter sei $\phi\colon \mathcal{F} \to \mathcal{F}$ durch $f \mapsto f^2$ gegeben. Dann ist $\phi_x$ für jedes $x \in X$ surjektiv, $\phi_X$ hingegen nicht.
+\end{Bsp}
+%%% End Example: All stalk morphisms epi, but sheaf morphism not epi -----------------------------------------------------------------
+
+
+
+%%% Definition: Associated Sheaf -----------------------------------------------------------------------------------------------------
+\begin{BemDef}[Assoziierte Garbe]\label{def:associated_sheaf}
+	Sei $X$ ein topologischer Raum, $\mathcal{F}$ eine Prägarbe von abelschen Gruppen auf $X$.
+	\begin{enumerate}[(a)]
+		\item Es gibt genau eine Garbe $\mathcal{F}^+$ auf $X$ und einen Morphismus $\theta\colon \mathcal{F} \to \mathcal{F}^+$, so dass
+			$\theta_x\colon \mathcal{F}_x \to \mathcal{F}^+_x$ für jedes $x \in X$ ein Isomorphismus ist.
+		\item $\mathcal{F}^+$ heißt die zu $\mathcal{F}$ \emph{assoziierte Garbe}.
+		\item Zu jeder Garbe $\mathcal{G}$ auf $X$ und jedem Morphismus $\phi\colon \mathcal{F} \to \mathcal{G}$ von Prägarben gibt es genau einen Morphismus $\phi^+\colon \mathcal{F}^+ \to \mathcal{G}$, so dass folgendes Diagramm kommutiert:
+		\begin{center}
+		\begin{tikzpicture}
+			\matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+			{ 
+				\mathcal{F}	&	& \mathcal{F}^{+}	\\
+					&	\mathcal{G}	&				\\
+			};
+			\path[->,font=\scriptsize]
+			(m-1-1) edge node[auto] {$ \theta $}	(m-1-3)	
+					edge node[auto] {$ \phi $}		(m-2-2)
+			(m-1-3) edge node[auto] {$\exists!\ \phi^+$ } (m-2-2);
+		\end{tikzpicture}
+		\end{center}
+	\end{enumerate}
+\end{BemDef}
+\begin{Bew}
+\begin{enumerate}[(a)]
+	\item
+	Für jede offene Menge $U \subseteq X$ sei
+	\begin{align*}
+	 \mathcal{F}^+(U) = \bigg\{ s\colon U \to \bigcup^{\centerdot}_{x \in U} \mathcal{F}_x\ \Big|\
+			&\forall x \in U \text{ ist }  s(x) \in \mathcal{F}_x \text{ und } \exists \text{ Umgebung } U_x \text{ von } x\\
+			&\text{ und ein } f \in \mathcal{F}(U_x) \text{ mit } s(y) = f_y \text{ für jedes } y \in U_x 
+			& \bigg\}
+	\end{align*}
+	\end{enumerate}
+	Dann ist $\mathcal{F}^+$ zusammen mit den offensichtlichen Restriktionen Garbe auf $X$.
+	Weiter ist $\theta: \mathcal{F} \to \mathcal{F}^+,\ \theta_U(f) = ( x \mapsto f_x )$ ein Morphismus und $\theta_x$ ist Isomorphismus für
+	jedes $x \in X$. Die Eindeutigkeit von $\mathcal{F}^+$ und $\theta$ folgt aus (c).
+	\item[(c)]\todo{Beweis klarer machen!}
+	Sei $\phi\colon \mathcal{F} \to \mathcal{G}$ ein Morphismus von Prägarben.
+	Ist $s \in \mathcal{F}^+(U)$, dann ist $(U_x)_{x \in U}$ eine offene Überdeckung von $U$.
+	Für $x,x' \in U$ gibt es $f^{(x)} \in \mathcal{F}(U_x)$ und $f^{(x')} \in \mathcal{F}(U_{x'})$, so dass 
+	$s(y) = f^{(z)}_{y}$ für jedes $y \in U_z$ und $z \in \{x,x'\}$.
+	Daher ist $f^{(x)}_{y} = f^{(x')}_{y}$ für jedes $y \in U_{x} \cap U_{x'}$ und für jedes $y \in U_{x}\cap U_{x'}$ gibt es eine Umgebung $U'$ von $y$, so dass
+	$f^{(x)} \restriction U' = f^{(x')}\restriction U'$.
+	Weil die $U'$ eine Überdeckung von $U_{x}\cap U_{x'}$ sind, ist $f^{(x)} \restriction U_{x} \cap U_{x'} = f^{(x')} \restriction U_{x} \cap U_{x'}$ und insbesondere
+	$\phi_{U_x}( f^{(x)} )\restriction U_{x}\cap U_{x'} = \phi_{U_{x'}}( f^{(x')} ) \restriction U_{x} \cap U_{x'}$.
+	Da $\mathcal{G}$ eine Garbe ist, gibt es ein eindeutig bestimmtes $g \in \mathcal{G}(U)$, so dass $g \restriction U_x = \phi_{U_x}( f^{(x)} )$.
+	Definiert man nun $\phi^+(s) = g$, dann ist offenbar $\phi = \phi^+ \circ \theta$ und $\phi^+$ ist eindeutig.
+\end{Bew}
+%%% End Definition: Associated Sheaf -------------------------------------------------------------------------------------------------
+
+
+
+%%% Definition: Kern/Image of Sheaf morphisms ----------------------------------------------------------------------------------------
+\begin{BemDef}[Kern, Bild, Mono- und Epimorphismen]
+	\label{def:sheaf_morphism:kern_image}
+	Sei $\phi\colon \mathcal{F} \to \mathcal{G}$ ein Morphismus von Garben auf $X$.
+	\begin{enumerate}[(a)]
+		\item $\ker(\phi)$ mit $\ker(\phi)(U) = \ker(\phi_U)$ ist Garbe.
+		\item $\img(\phi)$ sei die zu $U \mapsto \img(\phi_U)$ assoziierte Garbe.
+		\item $\phi$ heißt \emph{Monomorphismus}, falls $\ker(\phi) = 0$.
+		\item $\phi$ heißt \emph{Epimorphismus}, falls $\img(\phi) = \mathcal{G}$.
+	\end{enumerate}
+\end{BemDef}
+%%% End Definition Kern/Image of Sheaf morphisms -------------------------------------------------------------------------------------
+
+
+
+%%% Definition: Quotient Sheaf -------------------------------------------------------------------------------------------------------
+\begin{Def}[Quotientengarbe]
+	\label{def:quotient_sheaf}
+	Seien $\mathcal{G} \mono \mathcal{F}$ Garben von abelschen Gruppen auf $X$. Die zur Prägarbe $U \mapsto \mathcal{F}(U) \big/ \mathcal{G}(U)$ assoziierte Garbe heißt \emph{Quotientengarbe} von $\mathcal{F}$ nach $\mathcal{G}$.
+\end{Def}
+%%% End Definition Quotient Sheaf ----------------------------------------------------------------------------------------------------
+
+
+
+%%% Example: Quotient Sheaf ----------------------------------------------------------------------------------------------------------
+\begin{Bsp}
+	Sei $\mathcal{F} = \mathcal{C}_x$ die Garbe der stetigen Funktionen von $S^1$ nach $\RR$ und $\mathcal{G}$ die konstante Garbe zu $\ZZ$ auf $S^1$.
+	In Abbildung~\ref{fig:quotient_sheave} ist eine Überlagerung von $S^1$ durch $U_1,U_2$ zu sehen, so dass $U_1 \cap U_2 = D_1 \overset{\centerdot}{\cup} D_2$ für zwei offene Mengen $D_1,D_2$.
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}
+			\draw (0,0) circle (2cm);
+			\draw[red, very thick] (-10:2.1cm) arc(-10:190:2.1cm);
+			\draw[blue, very thick] (-190:2.2cm) arc(-190:10:2.2cm);
+			\draw[very thick] (10:2.3cm) arc(10:-10:2.3cm);
+			\draw[very thick] (170:2.3cm) arc(170:190:2.3cm);
+			\path	node at (0,-2.5cm) {$U_2$}
+					node at (0,2.5cm) {$U_1$}
+					node at (0,0) {$S^1$}
+					node at (2.6cm,0) {$D_2$}
+					node at (-2.6cm,0) {$D_1$};
+		\end{tikzpicture}
+		\caption{Überlagerung von $S^1$ durch $U_1$ (rot) und $U_2$ (blau)}
+		\label{fig:quotient_sheave}
+        \end{figure}
+
+	Seien nun $0 = f_1 \in \mathcal{F}(U_1)$ und $f_2 \in \mathcal{F}(U_2)$ mit $f_2 \restriction D_1 = 0$ und $f_2 \restriction D_2 = 1$.
+	Dann ist $f_2 - f_1 \in \mathcal{G}( U_1 \cap U_2 )$ und daher $\bar{f_1} = \bar{f_2}$ in $\mathcal{F}\big/\mathcal{G}(S^1)$.
+\end{Bsp}
+%%% End Example: Quotient Sheaf ------------------------------------------------------------------------------------------------------
+
+
+
+%%% Definition: Direct and inverse image Sheaf  --------------------------------------------------------------------------------------
+\begin{BemDef}[Direkte und inverse Bildgarbe]
+	\label{def:image_sheaf}
+	Sei $f: X \to Y$ stetig.
+	\begin{enumerate}[(a)]
+		\item Sei $\mathcal{F}$ Garbe auf $X$, dann ist die Prägarbe $U \mapsto \mathcal{F}( f^{-1}(U) )$ auf $Y$ eine Garbe.
+		Sie heißt die \emph{direkte Bildgarbe} und wird mit $f_{*}\mathcal{F}$ bezeichnet.
+		\item Sei $\mathcal{G}$ Garbe auf $Y$, dann heißt die zur Prägarbe 
+		\[ U \mapsto \directlim_{\substack{V \subseteq Y\text{ offen}\\f(U) \subseteq V}} \mathcal{G}(V) \]
+		assoziierte Garbe $f^{-1}\mathcal{G}$ \emph{inverse Bildgarbe} zu $\mathcal{G}$.
+		\item $f_{*}$ und $f^{-1}$ sind kovariante Funktoren
+		\item $f^{-1}$ ist linksadjungiert zu $f_{*}$, d.h. es gibt natürliche Bijektionen
+		\[ \Hom(f^{-1}\mathcal{G}, \mathcal{F}) \to \Hom( \mathcal{G}, f_{*}\mathcal{F} ) \]
+	\end{enumerate}
+\end{BemDef}
+\begin{Bew}
+	\begin{enumerate}[(a)]
+		\item Da $\mathcal{F}$ Garbe auf $X$ und $f^{-1}(U)$ offen ist für jedes $U \subseteq Y$, ist $f_{*}\mathcal{F}$ Garbe auf $Y$.
+		\item[(c)] Offensichtlich.
+		\item[(d)] Es sollen natürliche Bijektionen 
+		$ \Hom(f^{-1}\mathcal{G}, \mathcal{F}) \to \Hom( \mathcal{G}, f_{*}\mathcal{F} ) $
+		konstruiert werden.
+
+		\minisec{Der Weg von $\Hom( f^{-1}\mathcal{G}, \mathcal{F} )$ nach $\Hom( \mathcal{G}, f_{*}\mathcal{F} )$}
+		Jedes $\alpha \in \Hom( f^{-1}\mathcal{G}, \mathcal{F} )$ induziert einen Morphismus
+		$ f_{*}(\alpha)\colon f_{*}f^{-1}\mathcal{G} \to f_{*}\mathcal{F}$.\\
+		$f_{*}(\alpha)$ kann fortgesetzt werden zu einem Morphismus
+		\[ \mathcal{G} \xrightarrow{\psi_{\mathcal{G}}} f_{*}f^{-1} \mathcal{G} \xrightarrow{f_{*}(\alpha)} f_{*}\mathcal{F} \]
+		Dazu ist folgende Konstruktion nötig:
+		Die universelle Eigenschaft des direkten Limes liefert einen natürlichen Morphismus
+		\[ \mathcal{G}(V) \to \directlim_{ f(f^{-1}(V)) \subseteq W \subseteq V } \mathcal{G}(W) 
+							= \directlim_{f(f^{-1}(V)) \subseteq W } \mathcal{G}(W)
+		\]
+		Dabei beruht die Gleichheit der direkten Limetes darauf, dass $f(f^{-1}(V)) \subseteq V$ und somit ohne Einschränkung jedes $W \supset f(f^{-1}(V))$ mit $V$ geschnitten werden kann.
+		Nun ist $f^{-1} \mathcal{G}$ die zu 
+		\[ V \mapsto \directlim_{f(V) \subseteq W} \mathcal{G}( W ) \]
+		assoziierte Garbe und man erhält
+		$ \psi_{\mathcal{G}}(V)\colon \mathcal{G}(V) \to f^{-1} \mathcal{G}( f^{-1}(V) ) = f_{*} f^{-1} \mathcal{G}(V) $
+
+		\minisec{Der Weg von $\Hom( \mathcal{G}, f_{*}\mathcal{F} )$ nach $\Hom( f^{-1}\mathcal{G}, \mathcal{F} )$}
+		Jedes $\beta \in \Hom( \mathcal{G}, f_{*}\mathcal{F} )$ induziert einen Morphismus
+		$ f^{-1}(\beta)\colon f^{-1} \mathcal{G} \to f^{-1}f_{*}\mathcal{F} $\\
+		Auch $f^{-1}(\beta)$ lässt sich fortsetzen zu
+		\[ 
+			f^{-1}\mathcal{G} \xrightarrow{f^{-1}(\beta)} f^{-1}f_{*}\mathcal{F} \xrightarrow{\phi_{\mathcal{F}}} \mathcal{F} 
+		\]
+		$f^{-1}f_{*}\mathcal{F}$ ist die zu 
+		\[ 
+				U \mapsto \directlim_{f(U) \subseteq V } f_{*}\mathcal{F}(V) 
+					= \directlim_{f(U) \subseteq V } \mathcal{F}(f^{-1}(V))
+		\]
+		assoziierte Garbe und daher reicht es für jedes $U$ einen Morphismus 
+		\[ 
+			\chi_{\mathcal{F}}(U)\colon \directlim_{f(U) \subseteq V} \mathcal{F}(f^{-1}(V)) \to \mathcal{F}(U) 
+		\]
+		zu konstruieren. Für jedes $V$ mit $f(U) \subseteq V$ ist $U \subseteq f^{-1}(V)$, also gibt es Restriktionsmorphismen
+		$\mathcal{F}(f^{-1}(V)) \to \mathcal{F}(U)$. Die universelle Eigenschaft des direkten Limes liefert nun einen eindeutigen
+		Morphismus $\chi_{\mathcal{F}}(U)$ der wiederum $\phi_{\mathcal{F}}(U)$ induziert.
+		\minisec{Die beiden Konstruktionen sind zueinander invers}
+		Das ist so.
+	\end{enumerate}
+\end{Bew}
+%%% Definition: Direct and inverse image Sheaf  --------------------------------------------------------------------------------------
+
+
+
+
+%%% Remark: Sheaves as left-exact functors --------------------------------------------------------------------------------------------
+\begin{Bem}
+	Sei $X$ topologischer Raum, $U \subseteq X$ offen. Dann ist $\mathcal{F} \mapsto \mathcal{F}(U)$ linksexakter, kovarianter Funktor.
+\end{Bem}
+\begin{Bew}
+	\todo{Beweis klarer machen}
+	Ist $\phi\colon \mathcal{F} \to \mathcal{G}$ Morphismus, so ist $\phi_{U}\colon \mathcal{F}(U) \to \mathcal{G}(U)$ der zugehörige Morphismus.
+	Sei nun 
+	\[
+		0 \rightarrow \mathcal{F}' \xrightarrow{\phi} \mathcal{F} \xrightarrow{\psi} \mathcal{F}'' \rightarrow 0 
+	\]
+	eine kurze exakte Sequenz von Garben. Nach Definition ist $\mathcal{F} \mapsto \mathcal{F}(U)$ linksexakt, falls
+	\[
+		0 \rightarrow \mathcal{F}'(U) \xrightarrow{\phi_{U}} \mathcal{F}(U) \xrightarrow{\psi_{U}} \mathcal{F}''(U)
+	\]
+	exakt ist.
+
+	Nach Definition~\ref{def:sheaf_morphism:kern_image} und Bemerkung~\ref{bem:sheaf_morphism:epi_mono_iso_stalk_morphism} ist
+	\[
+		0 \rightarrow \mathcal{F}'_x \rightarrow \mathcal{F}_x \rightarrow \mathcal{F}''_x \rightarrow 0 
+	\]
+	exakt für jedes $x\in X$.
+	Wiederum nach Bemerkung \ref{bem:sheaf_morphism:epi_mono_iso_stalk_morphism} ist
+	\[
+		0 \rightarrow \mathcal{F}'(U) \rightarrow \mathcal{F}(U) \rightarrow \mathcal{F}''(U)
+	\]
+	exakt.
+\end{Bew}
+%%% End Remark: Sheaves as left-exact functors -----------------------------------------------------------------------------------------
+
+%% -- CHAPTER 2: Affine Schemes ----------------------------------------------------------------------------------------------------------
+\section{Affine Schemata}
+
+
+%%% Definition: Spectrum, Zariski-Topology -----------------------------------------------------------------------------------------------
+\begin{BemDef}[Spektrum, Zariski-Topologie und Verschwindungsideal]
+
+	\label{def:spectrum}
+	\label{def:zariski_topology}
+
+	Sei $R$ ein Ring.
+	\begin{enumerate}[(a)]
+		\item $\Spec R = \left\{ \mathfrak{p} \subseteq R\ |\ \mathfrak{p} \text{ Primideal}\right\}$ heißt \emph{Spektrum} von $R$.
+		\item Für $I \subseteq R$ sei $V\left(I\right) = \left\{ \mathfrak{p} \in \Spec R\ |\ I \subseteq \mathfrak{p} \right\}$. 
+		
+		Es gilt $V\left( I \right) = V( ( I ) )$.
+		\item $\left\{ V\left(I\right)\ |\  I \text{ ist Ideal in } R\right\}$ sind abgeschlossene Mengen einer Topologie auf $\Spec R$, der \emph{Zariski-Topologie}.
+		\item Für $Z \subseteq \Spec R$ sei $I\left(Z\right) = \bigcap_{\mathfrak{p} \in Z} \mathfrak{p}$ das \emph{Verschwindungsideal} von $Z$.
+	\end{enumerate}
+\end{BemDef}
+%%% End Definition: Spectrum, Zariski-Topology --------------------------------------------------------------------------------------------
+
+
+
+%%% Anmerkung: subset, I, V
+\begin{anmerkung}
+	\begin{enumerate}[(a)]
+		\item Ist $A \subseteq B \subseteq \Spec R$, dann ist $I\left(A\right) \supseteq I(B)$.
+		\item Ist $I \subseteq J \subseteq R$, dann ist $V\left(I\right) \supseteq V(J)$.
+	\end{enumerate}
+	\begin{Bew}
+		\begin{enumerate}[(a)]
+			\item Ist $A \subseteq B$, dann ist
+				\[ 
+					I\left(A\right) = \bigcap_{\mathfrak{p}\in A} \mathfrak{p} 
+					\overset{A \subseteq B}{\supseteq} 
+					\bigcap_{\mathfrak{p} \in B} \mathfrak{p} = I\left(B\right)
+				\]
+			\item Ist $I \subseteq J$, dann ist
+				\[
+					V\left(I\right) = \left\{ \mathfrak{p}\ |\ I \subseteq \mathfrak{p} \right\} 
+					\overset{I \subseteq J}{\supseteq}
+					\left\{ \mathfrak{p}\ |\ J \subseteq \mathfrak{p} \right\}
+					= V\left(J\right)
+				\]
+		\end{enumerate}
+	\end{Bew}
+\end{anmerkung}
+%%% End Anmerkung
+
+
+
+
+
+
+%%% Remark: 'Inverse' I\left(V(I\right)), V(I(V)) ----------------------------------------------------------------------------------------------------
+\begin{Bem}
+	\begin{enumerate}[(a)]
+		\item $V\left( I\left(Z\right) \right) = \closure{Z}$
+		\item $I\left( V\left(I\right) \right) = \rad{I}$
+	\end{enumerate}
+\end{Bem}
+\begin{Bew}
+	\begin{enumerate}[(a)]
+		\item 
+			\begin{description}
+				\item["`$\supset$"':] Nach Definition ist $V\left( I\left(Z\right) \right)$ abgeschlossen und daher gilt $\closure{Z} \subseteq V\left(I\left(Z\right)\right)$.
+				\item["`$\subseteq$"':] 
+					Nach Definition ist
+					\[
+					\closure{Z} = \bigcap_{\substack{I \text{ Ideal}\\
+						Z \subseteq V\left(I\right)}} V(I)
+					\]
+					Aus $Z \subseteq V\left(I\right)$ folgt $I \subseteq \mathfrak{p}$ für alle $\mathfrak{p} \in Z$. Somit ist
+					\[
+					I \subseteq \bigcap_{\mathfrak{p} \in Z} \mathfrak{p} = I\left(Z\right)
+					\]
+					und deshalb $V\left(I\right) \supset V(I(Z))$.
+			\end{description}
+		\item
+			\[ I\left(V\left(I\right)\right)	= \bigcap_{\mathfrak{p} \in V\left(I\right)} \mathfrak{p} 
+						= \bigcap_{ \substack{ \mathfrak{p} \text{ Primideal}\\
+							I \subseteq \mathfrak{p}}} \mathfrak{p}
+						= \rad{I}
+			\]
+	\end{enumerate}
+\end{Bew}
+%%% End remark: 'Inverse' I\left(V(I\right)), V(I(V)) ------------------------------------------------------------------------------------------------
+
+
+
+
+%%% Anmerkung Ideal Kalkül und ``Varietäten''
+\begin{anmerkung}
+	\begin{enumerate}[(a)]
+		\item Sind $\left(I_j\right)_{j \in J}$ Ideale, dann ist
+			\[
+				\bigcap_{j\in J} V\left(I_j\right) = V\left( \sum_{j\in J} I_j \right)
+			\]
+		\item Sind $I_1, I_2$ Ideale, dann ist
+			\[
+				V\left(I_1\right) \cup V\left(I_2\right) = V\left( I_1 \cdot I_2 \right) = V\left( I_1 \cap I_2 \right)
+			\]
+	\end{enumerate}
+	\begin{Bew}
+		\begin{enumerate}[(a)]
+			\item 
+				\begin{description}
+					\item[``$\subseteq$'':]
+						Ist $\mathfrak{p} \in \bigcap V\left(I_j\right)$, dann ist $I_j \subseteq \mathfrak{p}$ für jedes $j \in J$.
+						Also ist auch $\sum I_j \subseteq \mathfrak{p}$ und somit $\mathfrak{p} \in V\left( \sum I_j \right)$.
+					\item[``$\supseteq$'':]
+						Ist $\mathfrak{p} \in V\left( \sum I_j \right)$, dann ist $I_j \subseteq \sum I_j \subseteq \mathfrak{p}$ für jedes $j \in J$ und
+						somit ist $\mathfrak{p} \in \bigcap V\left(I_j\right)$.
+				\end{description}
+			\item
+				\begin{description}
+					\item[``$\subseteq$'':]
+						Ist $\mathfrak{p} \in V\left(I_1\right) \cup V(I_2)$, dann ist $I_1 \subseteq \mathfrak{p}$ oder $I_2 \subseteq \mathfrak{p}$.
+						Auf jeden Fall ist aber $I_1 \cdot I_2 \subseteq \mathfrak{p}$ und $I_1 \cap I_2 \subseteq \mathfrak{p}$ und somit
+						$V\left(I_1\right) \cup V(I_1) \subseteq V\left(I_1 \cdot I_2\right)$ und 
+						$V(I_1) \cup V\left(I_2\right) \subseteq V\left( I_1 \cap I_2 \right)$.
+					\item[``$\supseteq$'':]
+						Es gilt: $I_1 \cdot I_2 \subseteq I_1 \cap I_2$ und somit 
+						$V\left(I_1 \cdot I_2\right) \supseteq V\left(I_1 \cap I_2\right)$. Also
+						genügt es zu zeigen, dass $V\left(I_1 \cdot I_2 \right) \subseteq V\left(I_1\right) \cup V\left(I_2\right)$.
+
+						Ist also $\mathfrak{p} \in V\left(I_1 \cdot I_2\right)$, dann ist $I_1 \cdot I_2 \subseteq \mathfrak{p}$.
+						Angenommen $I_2 \nsubseteq \mathfrak{p}$. Dann gibt es ein $a \in I_2$, so dass $a \notin \mathfrak{p}$.
+						Nach Vorraussetzung ist aber $aI_1 \subseteq \mathfrak{p}$ und somit ist auch $I_1 \subseteq \mathfrak{p}$,
+						insbesondere also $\mathfrak{p} \in V\left(I_1\right)$.
+				\end{description}
+		\end{enumerate}
+	\end{Bew}
+\end{anmerkung}
+%%% End Anmerkung Kalkül der Ideal <-> ``Varietäten''
+
+
+
+
+%%% Remark: V irreducible iff I\left(V\right) prime --------------------------------------------------------------------------------------------------
+\begin{Bem}\label{bem:irreducible-prime_ideal}
+	Sei $\emptyset \neq V \subseteq \Spec R$ abgeschlossen. $I\left(V\right)$ ist ein Primideal, genau dann wenn $V$ irreduzibel ist.
+\end{Bem}
+\begin{Bew}
+	\begin{description}
+		\item["`$\Leftarrow$"':]
+			Sei $V \subseteq \Spec R$ abgeschlossen, dann gibt es ein Ideal $I \subseteq R$, so dass $V = V\left(I\right)$.
+			Seien nun $a,b \in R$ mit $ab \in I\left(V\right)$.
+			Nach Definition ist
+			\[ I\left(V\right) = \bigcap_{I \subseteq \mathfrak{p} } \mathfrak{p} \]
+			und daher ist für jedes Primideal $\mathfrak{p}$ mit $I \subseteq \mathfrak{p}$ offenbar $a \in \mathfrak{p}$ oder $b\in \mathfrak{p}$.
+			Definiere nun $V_a = \left\{ \mathfrak{p}\ |\ \mathfrak{p} \text{ Primideal mit } I \subseteq \mathfrak{p} \text{ und } a \in \mathfrak{p} \right\}$ und $V_b$ analog.
+			Offenbar ist $V = V_a \cup V_b$ und $V_a, V_b$ sind abgeschlossen.
+			Da $V$ irreduzibel ist, kann man ohne Einschränkung $V_a = V$ annehmen. Dann ist aber offenbar auch $a \in I\left(V\right)$.
+		\item["`$\Rightarrow$"':]
+			Sei $V \subseteq \Spec R$ abgeschlossen, so dass $I(V)$ Primideal ist und 
+			seien $V_1 = V\left(I_1\right)$ und $V_2 = V\left(I_2\right)$ abgeschlossene Mengen mit $V = V_1 \cup V_2$.
+			Ohne Einschränkung sind $I_1,I_2$ Radikalideale, da 
+			$V( \rad{I_i} ) = V( I( V_i ) ) = \closure{V_i} = V_i$ für $i \in \{1,2\}$
+
+			Dann ist 
+			$ V = V(I_1) \cup V(I_2) = V( I_1 \cap I_2 ) $.
+			Da $I_1, I_2$ Radikalideale sind, ist $I_1 \cap I_2$ Radikalideal und daher ist 
+			$I_1 \cap I_2 =\rad{I_1 \cap I_2} = I(V)$ ein Primideal.
+
+			Ist nun $I_2 \nsubseteq I_1$, dann gibt es ein $b \in I_2 \setminus I_1$.
+			Für jedes $a \in I_1$ ist $ab \in I_1 \cap I_2$ und daher $a \in I_1 \cap I_2$ oder $b \in I_1 \cap I_2$.
+			Da $b$ aber aus $I_2 \setminus I_1$ gewählt war, muss $a \in I_1 \cap I_2$ und somit 
+			$I_1 \subseteq I_1 \cap I_2$ sein.
+
+			Somit ist aber $V_1 = V(I_1) \supseteq V(I_1 \cap I_2) = V$ 
+			$\quad\Rightarrow V_1 = V$
+	\end{description}
+\end{Bew}
+%%% End remark: V irreducible iff I\left(V\right) prime ----------------------------------------------------------------------------------------------
+
+
+
+%%% Proposition: Ring-Morphism -> continouus f --------------------------------------------------------------------------------------------
+\begin{Prop}
+	Jeder Morphismus $\alpha\colon R \to R'$ von Ringen induziert durch $f_{ \alpha} \left(\mathfrak{p} \right) = \alpha^{-1}( \mathfrak{p} )$
+	eine stetige Abbildung $f_{\alpha}\colon \Spec R' \to \Spec R$.
+\end{Prop}
+\begin{Bew}
+	$\alpha^{-1}\left( \mathfrak{p} \right)$ ist Primideal. Ist $V(I) \subseteq \Spec R$ abgeschlossen, dann ist
+	$f_{\alpha}^{-1}\left( V\left(I\right) \right) = V\left( \alpha\left( I \right) \right)$
+\end{Bew}
+%%% End Proposition Ring Morphism -> continouus f ----------------------------------------------------------------------------------------
+
+
+
+%%% Remark: affine Varieties/Spectrum ----------------------------------------------------------------------------------------------------
+\begin{Bem}
+	Sei $k$ algebraisch abgeschlossen, $V \subseteq \mathbb{A}^{n}\left(k\right)$ affine Varietät.
+	Dann ist 
+	\[ m\colon V \to \Spec k[V],\ x \mapsto m_x \] 
+	stetig und injektiv.
+\end{Bem}
+\begin{Bew}
+	Die maximalen Ideale in $k[V]$ entsprechen bijektiv den Punkten in $V$. Also ist $m$ injektiv.
+	Sei nun $V\left(I\right) \subseteq \Spec k[V]$ abgeschlossen, dann ist
+	\begin{align*}
+		m^{-1}\left( V(I\right)) &= \left\{ x \in V\ |\ m_x \in V\left(I\right) \right\}	\\
+					&= \left\{ x \in V\ |\ I \subseteq m_x \right\} \\
+					&= \left\{ x \in V\ |\ f\left(x\right) = 0 \text{ für alle } x\in I \right\} \\
+					&= V\left(I\right) \text{ im Sinne von affinen Varietäten}
+	\end{align*}
+\end{Bew}
+%%% End remark: affine Varieties/Spectrum -----------------------------------------------------------------------------------------------
+
+
+
+%%% Definition: Generic Point -----------------------------------------------------------------------------------------------------------
+\begin{BemDef}[Generischer Punkt]
+	\begin{enumerate}[(a)]
+		\item Ein Punkt $x$ in einem topologischen Raum $X$ heißt \emph{generisch}, falls $\closure{ \left\{x\right\} } = X$.
+		\item Jede abgeschlossene, irreduzible Teilmenge von $\Spec R$ ($R$ ein Ring) besitzt genau einen generischen Punkt.
+		\item Die maximalen, irreduziblen Teilmengen von $\Spec R$ entsprechen bijektiv den minimalen Primidealen in $R$.
+	\end{enumerate}
+\end{BemDef}
+\begin{Bew}
+	\begin{enumerate}[(a)]
+		\item[(b)] Sei $V = V\left(I\right) \subseteq \Spec R$ abgeschlossen und irreduzibel.
+		Nach Bemerkung~\ref{bem:irreducible-prime_ideal} ist $I\left(V\right) = \rad{I}$ ein Primideal.
+		Es ist $I \subseteq \rad{I}$ und somit auch $\rad{I} \in V$. 
+		Ist $W = V\left(J\right)$ eine abgeschlossene Menge mit $\rad{I} \in W$, dann ist $J \subseteq \rad{I}$ und für jedes
+		Primideal $\mathfrak{p}$ mit $I \subseteq \mathfrak{p}$ ist $J \subseteq \rad{I} \subseteq \mathfrak{p}$
+		$\Rightarrow \closure{ \left\{ \rad{I} \right\} } = V$.
+		\item[(c)] Folgt aus Bemerkung~\ref{bem:irreducible-prime_ideal}.
+	\end{enumerate}
+\end{Bew}
+%%% End Definition: Generic Point ------------------------------------------------------------------------------------------------------
+
+
+
+%%% Remark: Basis of Z-Topology --------------------------------------------------------------------------------------------------------
+\begin{BemDef}
+	Für jedes $f \in R$ ist $D\left(f\right) = \Spec R \setminus V(f) = \left\{ \mathfrak{p} \in \Spec R\ |\ f \notin \mathfrak{p} \right\}$
+	offen in $\Spec R$.
+	$\left\{ D\left(f\right)\ |\ f \in R \right\}$ ist eine Basis der Zariski-Topologie auf $\Spec R$.
+\end{BemDef}
+\begin{Bew}
+	Sei $U \subseteq \Spec R$ offen und $\mathfrak{p} \in U$.
+	$V = \Spec R \setminus U$ ist abgeschlossen, also $V = V\left(I\right)$ für ein Ideal $I \subseteq R$.
+	Für jedes $f \in I$ gilt $V\left(I\right) \subseteq V\left(f\right)$, also $D\left(f\right) \subseteq U$.
+	Nun ist $\mathfrak{p} \in U = \left\{ \mathfrak{q}\ |\ I \nsubseteq \mathfrak{q} \right\}$, also gibt es ein $f \in I$, so dass $f \notin \mathfrak{p}$ und somit ist $\mathfrak{p} \in D\left(f\right)$.
+\end{Bew}
+%%% End remark: Basis of Z-Topology ---------------------------------------------------------------------------------------------------
+
+
+
+%%% Anmerkung: Ohne Einschränkung
+\begin{anmerkung}
+	Ist $\left(U_i\right)_{i \in I}$ eine offene Überdeckung von $A \subseteq X$, dann kann man ohne Einschränkung annehmen, dass
+	$U_i = D\left(f_i\right)$ für geeignete $f_i \in R$.
+	\begin{Bew}
+		Die $D\left(f\right)$ mit $f \in R$ bilden eine Basis der Topologie, also ist jedes $U_i$ Vereinigung von $D\left(f\right)$'s, woraus die Behauptung folgt.
+	\end{Bew}
+\end{anmerkung}
+%%% End Anmerkung: Ohne Einschränkung
+
+
+
+%%% Remark: Spec is quasi-compact -----------------------------------------------------------------------------------------------------
+\begin{Bem}
+	$\Spec R$ ist quasi-kompakt.
+\end{Bem}
+\begin{Bew}
+	Sei $\left(U_i\right)_{i\in I}$ offene Überdeckung von $\Spec R$. 
+	Ohne Einschränkung sei $U_i = D\left(f_i\right)$ für geeignetes $f_i \in R$.
+	Dann gilt:
+	\begin{align*}
+		\bigcup_{i \in I} D\left(f_i\right) = \Spec R	& \Leftrightarrow \bigcap_{i\in I} V\left(f_i\right) = \emptyset \\
+			& \Leftrightarrow \left( \sum_{i\in I} \left(f_i\right) \right) = R
+	\end{align*}
+	und daher gilt für geeignete $a_j$ und eine endliche Menge $J\subseteq I$:
+	\[ 1 = \sum_{j \in J} a_j f_j \]
+	bzw.
+	\[ \bigcup_{j \in J} D\left(f_j\right) = \Spec R \]
+\end{Bew}
+%%% End Remark: Spec is quasi-compact ----------------------------------------------------------------------------------------------------
+
+
+
+%%% Remark: D\left(f\right) is quasi-compact ----------------------------------------------------------------------------------------------------
+\begin{Bem}
+	Für jedes $f \in R$ ist $D\left(f\right) \subseteq \Spec R$ quasi-kompakt bzgl. der induzierten Topologie.
+\end{Bem}
+\begin{Bew}
+	Sei $\left(U_i\right)_{i \in I}$ offene Überdeckung von $\Spec R$.
+	Ohne Einschränkung sei $U_i = D\left(f_i\right) \cap D\left(f\right)$ für geeignetes $f_i \in R$.
+	Dann gilt:
+	\begin{align*}
+		\bigcup_{i \in I} \left( D\left(f_i\right) \cap D\left(f\right) \right) = D\left(f\right) 
+			& \Leftrightarrow \bigcup_{i \in I} D\left(f_i\right) \supseteq D\left(f\right) \\
+			& \Leftrightarrow \bigcap_{i \in I} V\left(f_i\right) \subseteq V\left(f\right)\\
+			& \Leftrightarrow \sum_{i \in I} \left(f_i\right) \supseteq \left(f\right)
+	\end{align*}
+	und daher gilt für geeignete $a_j$ und eine endliche Menge $J \subseteq I$:
+	\[ f = \sum_{j \in J} a_j f_j \]
+	bzw.
+	\[ \bigcup_{j \in J} D\left(f_j\right) \supseteq  D\left(f\right) \]
+\end{Bew}
+%%% End Remark: D\left(f\right) is quasi-compact ------------------------------------------------------------------------------------------------
+
+
+
+%%% Example: Spec R does not suffice ----------------------------------------------------------------------------------------------------
+\begin{Bsp}
+	Dieses Beispiel soll zeigen, dass $\Spec R$ alleine nicht ausreichend ist und so die folgende Definition motivieren.
+	Seien $k$ ein Körper und $R = k[\varepsilon] \big/ \left(\varepsilon^2\right)$.
+	Dann ist $\Spec R = \left\{ \left( \varepsilon \right) \right\}$ und
+	\[ \alpha\colon R \to k,\ \varepsilon \mapsto 0 \]
+	ist ein $k$-Algebra-Homomorphismus. $\alpha$ induziert eine stetige Abbildung $f_\alpha$. 
+	Aus offensichtlichen Gründen ist $f_{\alpha}\colon \Spec k \to \Spec R$ sogar ein Homöomorphismus.
+
+	Fazit: $\Spec R$ besitzt zu wenig Information über $R$.
+\end{Bsp}
+%%% End Example: Spec R does not suffice ------------------------------------------------------------------------------------------------
+
+
+
+%%% Definition: Affine Scheme -----------------------------------------------------------------------------------------------------------
+\begin{BemDef}[Strukturgarbe und affines Schema]
+	\label{defbem:structure_germ}
+	Sei $R$ ein Ring, $X = \Spec R$.
+	\begin{enumerate}[(a)]
+		\item Für $U \subseteq X$ offen sei
+		\begin{align*}
+			\mathcal{O}_X\left(U\right) = 
+				\bigg\{ s\colon U \to \bigcup_{ \mathfrak{p} \in U }^{\centerdot} R_{\mathfrak{p}}\ \bigg|\
+					& \text{Für alle } \mathfrak{p} \in U \text{ ist } s\left(\mathfrak{p}\right) \in R_{\mathfrak{p}}\\
+					& \text{und es gibt eine Umgebung } U_{\mathfrak{p}} \text{ von } \mathfrak{p}
+					\text{ sowie } f,g \in R\\ 
+					& \text{so dass für alle } \mathfrak{q} \in U_{\mathfrak{p}}\colon g \notin \mathfrak{q} 
+					\text{ und } s\left(\mathfrak{q}\right) = \frac{f}{g}
+					& \bigg\}
+		\end{align*}
+		\item $\mathcal{O}_X$ ist eine Garbe von Ringen auf $X$. Sie heißt \emph{Strukturgarbe} von $\Spec R$.
+		\item $\left(X, \mathcal{O}_X\right)$ heißt \emph{affines Schema}.
+	\end{enumerate}
+\end{BemDef}
+%%% End Definition: Affine Scheme -------------------------------------------------------------------------------------------------------
+
+
+
+%%% Proposition: Scheme does what it should ---------------------------------------------------------------------------------------------
+\begin{Prop}
+  \label{prop:2.10}
+	Sei $\left(X = \Spec R, \mathcal{O}_X\right)$ ein affines Schema. Dann gilt:
+	\begin{enumerate}[(a)]
+		\item Für jedes $\mathfrak{p} \in X$ ist $\mathcal{O}_{X,\mathfrak{p}} \cong R_{\mathfrak{p}}$
+		\item Für jedes $f \in R$ ist $\mathcal{O}_{X}\left(D(f\right)) \cong R_{f}$
+	\end{enumerate}
+\end{Prop}
+\begin{Bew}
+	\begin{enumerate}[(a)]
+		\item
+			Definiere $\psi\colon \mathcal{O}_{X,\mathfrak{p}} \to R_{\mathfrak{p}}$ durch $[\left(U,s\right)]_{\sim} \mapsto s( \mathfrak{p} )$.
+
+			\minisec{$\psi$ ist wohldefinierter Ringhomomorphismus}
+			
+			\minisec{$\psi$ ist surjektiv}
+				Sei $\frac{a}{f} \in R_{\mathfrak{p}}$ mit $a \in R, f \in R\setminus \mathfrak{p}$.
+				Es ist $\mathfrak{p} \in U$ für $U = D\left(f\right)$.
+				Für ein $\mathfrak{q} \in U$ definiere $s\left( \mathfrak{q} \right) = \frac{a}{f} \in R_{\mathfrak{q}}$.
+
+				$\Rightarrow \psi\left( [ \left(U,s\right) ]_{\sim} \right) = \frac{a}{f}$, 
+				wobei $[ \left(U,s\right) ]_{\sim} \in \mathcal{O}_{X,\mathfrak{p}}$.
+
+			\minisec{$\psi$ ist injektiv}
+				Sei $[\left(U,s\right)]_{\sim} \in \mathcal{O}_{X,\mathfrak{p}}$ mit $\psi( [(U,s)]_{\sim} ) = 0$, also 
+				$s \left( \mathfrak{p} \right) = 0$ in $R_{\mathfrak{p}}$.
+				Ohne Einschränkung gilt $s\left(\mathfrak{q}\right) = \frac{a}{f}$ für alle $\mathfrak{q} \in U$ und geeignete $a \in R, f \in R \setminus \bigcup_{\mathfrak{q} \in U}\mathfrak{q}$.\\
+				$s\left(\mathfrak{p}\right) = 0$ in $R_{\mathfrak{p}}$ bedeutet, dass es ein $h \in R \setminus \mathfrak{p}$ mit
+				$ h a = 0$ gibt.
+				$U' = U \cap D\left(h\right)$ ist eine offene Umgebung von $\mathfrak{p}$ mit $h \notin \mathfrak{q}$ für alle $\mathfrak{q} \in U'$.
+				Also ist $\frac{a}{f} = 0$ in $R_{\mathfrak{q}}$ für alle $\mathfrak{q} \in U'$.
+
+				$\Rightarrow \left(U,s\right) \sim (U',s) \sim 0$
+		\item
+			Definiere $\phi\colon R_{f} \to \mathcal{O}_{X}\left(D(f\right))$ durch $\frac{a}{f^n} \mapsto ( \mathfrak{p} \mapsto \frac{a}{f^n} )$.
+
+			\minisec{$\phi$ ist wohldefinierter Ringhomomorphismus}
+
+			\minisec{$\phi$ ist injektiv}
+				Sei $\phi\left( \frac{a}{f^n} \right) = 0$.
+				Dann ist für jedes $\mathfrak{p} \in D\left(f\right)$ offenbar $\frac{a}{f^n} = 0$ in $R_{\mathfrak{p}}$.
+				Also gibt es $h_{\mathfrak{p}} \in R \setminus \mathfrak{p}$, so dass $h_{\mathfrak{p}} a = 0$.
+				Sei nun $\mathfrak{a} = \left\{ r \in R\ |\ r\cdot a = 0 \right\}$ der \emph{Annihilator} von $a$.
+				$\mathfrak{a}$ ist ein Ideal und $\mathfrak{a} \nsubseteq \mathfrak{p}$ für alle $\mathfrak{p} \in D\left(f\right)$,
+				da alle $h_{\mathfrak{p}} \in \mathfrak{a}$.
+				Somit ist $V\left(\mathfrak{a}\right) \cap D(f) = \emptyset$, also $V(\mathfrak{a}) \subseteq V(f)$.
+				Dann ist aber $f \in I\left(V(f\right)) \subseteq I(V(\mathfrak{a})) = \rad{\mathfrak{a}}$.
+				Also gibt es ein $n\in \NN$, so dass $f^n \in \mathfrak{a}$, also ist $\frac{a}{f^n} = 0$ in $R_f$.
+
+			\minisec{$\phi$ ist surjektiv}
+				Sei $s \in \mathcal{O}_{X}\left(D(f\right))$.
+				Für jedes $\mathfrak{p} \in D\left(f\right)$ gibt es eine Umgebung $U_{\mathfrak{p}}$ von $\mathfrak{p}$ und 
+				$a,h \in R$, so dass für alle $\mathfrak{q} \in U_{\mathfrak{p}}$ gilt:
+				$h \notin \mathfrak{q}$ und 
+				$s\left(\mathfrak{q}\right) = a/h$.
+
+				$D\left(f\right)$ ist quasi-kompakt und die $U_{\mathfrak{p}}$ überdecken $D(f)$, also muss es endlich viele 
+				$\mathfrak{p}_1,\dots,\mathfrak{p}_n$ geben, so dass $U_i = U_{\mathfrak{p}_i}$ für $i \in \{1,\dots,n\}$
+				eine Überdeckung von $D(f)$ ist.
+				Seien $a_1,\dots,a_n,h_1,\dots,h_n \in R$, so dass für alle $\mathfrak{q} \in U_i$ gilt:
+				$h_i \notin \mathfrak{q}$ und $s\left(\mathfrak{q}\right) = a_i/h_i$.
+				Ohne Einschränkung kann man $U_i = D\left(h_i\right)$ annehmen und erhält
+				\[
+					V\left(f\right) \supseteq \Spec R \setminus \bigcup_{i = 1}^{n} D(h_i) = \bigcap_{i = 1}^{n} V(h_i)
+				\]
+				Insbesondere gilt dann
+				\[
+					f \in I\left(V(f\right) ) \subseteq I\left( \bigcap_{i = 1}^{n} V(h_i) \right) 
+						= I(V( h_1,\dots,h_n ) ) = \rad{ (h_1,\dots,h_n) }
+				\]
+				Somit gibt es ein $n \in \NN$ und $b_i \in R$, so dass $f^n = \sum_{i = 1}^{n} b_i h_i$.
+				Wählt man nun $a = \sum_{i=1}^{n} b_i a_i$, dann gilt:
+				\[
+					a_j f^m = \sum_{i=1}^{n} b_i a_j h_i \overset{\text{Einschub}}{=} \sum_{i=1}^{n} b_i a_i h_j = a h_j
+				\]
+				und somit $a_j/h_j = a/f^m \Longrightarrow \phi\left( a/f^m \right) = s$
+{
+	\medskip\hrule
+				\minisec{Einschub}
+				{ \small
+				Ohne Einschränkung gilt $ a_i h_j = a_j h_i$ in $R$ \\
+				Auf $U_i \cap U_j$ gilt $\frac{a_i}{h_i} = \frac{a_j}{h_j}$, also gibt es ein $y_{i,j} \in R$, so dass
+					$y_{i,j} \notin \mathfrak{q}$ für jedes $\mathfrak{q} \in U_i \cup U_j$.
+				\[
+					y_{i,j} a_i h_j = y_{i,j} a_j h_i
+				\]
+				Wählt man nun 
+				\[
+					a_i' = a_i\prod_{j} y_{i,j} \text{ und }h_i' = h_i \prod_{j} y_{i,j}
+				\]
+				dann ist offenbar $a_i'/h_i' = a_i/h_i$ und
+				\[
+					a_i' h_j'	= y_{i,j} a_i h_j \prod_{ k \neq j} y_{i,k} \prod_{k } y_{j,k} 
+								= y_{i,j} a_j h_i \prod_{ k \neq j} y_{i,k} \prod_{k } y_{j,k} 
+								= a_j' h_i'
+				\]
+				}
+	\hrule \medskip
+}
+	\end{enumerate}
+\end{Bew}
+
+\begin{Bsp}
+ Sei R ein diskreter Bewertungsring. Dann gilt:
+	\begin{enumerate}[(a)]
+		\item $\Spec R = \{(0), \mathfrak m\}$
+		\item offene Mengen sind: $\emptyset, \Spec R, \{(0)\}$
+		\item $\mathcal{O}_{X}\left( \{(0)\} \right) = R_{(0)}=Quot(R)=:K$
+		\item $\{(0)\}=D(f)$ für $0 \neq f \notin \mathfrak m$
+		\item $\mathcal{O}_{\Spec R}\left( \Spec R \right)= \mathcal{O}_{\Spec R,\mathfrak m}=R_\mathfrak{m} = R$
+		\item $\mathcal{O}_{\Spec R}\left( \{(0)\}\right)= \mathcal{O}_{\Spec R,(0)}=K$
+	\end{enumerate}
+\end{Bsp}
+
+\section{Die Kategorie der Schemata}
+
+\begin{Def}
+	\begin{enumerate}[(a)]
+		\item Ein \emph{geringter Raum} ist ein Paar $\left( X, \mathcal{O}_X \right)$ mit einem topologischen Raum $X$ und einer Garbe von Ringen $\mathcal{O}_X$ auf $X$.
+		\item Ein geringter Raum $\left( X, \mathcal{O}_X \right)$ heißt \emph{lokal geringt}, wenn $\mathcal{O}_{X,x}$ für jedes $x \in X$ ein lokaler Ring ist.
+	\end{enumerate}
+\end{Def}
+
+\begin{Bsp}
+ Für $X=\Spec R$ und $\mathcal{O}_X =\mathcal{O}_{\Spec R}$ die Strukturgarbe aus \ref{defbem:structure_germ} ist $\left( \Spec R,\mathcal{O}_{\Spec R} \right)$ lokal geringter Raum.
+\end{Bsp}
+
+\begin{Def}
+	\begin{enumerate}[(a)]
+		\item Ein Morphismus zwischen lokal geringten Räumen $\left( X, \mathcal{O}_X \right)$ und $\left( Y, \mathcal{O}_Y \right)$ ist ein Paar $\left( f, f^\sharp \right)$, wobei $f : X \rightarrow Y$ eine stetige Abbildung und $f^\sharp: \mathcal{O}_Y \rightarrow f_* \mathcal{O}_X$ ein Homomorphismus von Garben auf $X$ ist.
+		\item Sind $\left( X, \mathcal{O}_X \right)$ und $\left( Y, \mathcal{O}_Y \right)$ lokal geringte Räume, so ist ein Morphismus $\left( f, f^\sharp \right) :\left( X, \mathcal{O}_X \right) \rightarrow \left( Y, \mathcal{O}_Y \right) $ ein Morphismus von lokal geringten Räumen, wenn für jedes $x \in X$ gilt: Die induzierte Abbildung $f^\sharp_x: \mathcal{O}_{Y,f(x)} \rightarrow  \mathcal{O}_{X,x}$ ist ein lokaler Homomorphismus (das heißt $f^\sharp_x \left( \mathfrak{m}_{f(x)}\right) \subseteq \mathfrak{m}_x$).
+	\end{enumerate}
+\end{Def}
+
+\begin{Bsp}
+	Sei $R$ ein lokaler nullteilerfreier Ring, $K=Quot(R)$ und $i: R \hookrightarrow K$ sei kein lokaler Homomorphismus. Aber $i$ induziert einen Morphismus lokal geringter Räume zwischen $X=\Spec K$ und $Y= \Spec R$ durch $f: X \rightarrow Y, (0) \mapsto (0)$ und $f^\sharp:\mathcal{O}_{\Spec R} \rightarrow f_* \mathcal{O}_{\Spec K} $ gegeben durch i. Es gilt für alle offenen $U \neq \emptyset$: $f_* \mathcal{O}_{\Spec K} \left( U \right) = \mathcal{O}_{\Spec K} \left( f^{-1}(U) \right) = \mathcal{O}_{\Spec K} \left( (0) \right) = K$ und $\mathcal{O}_{\Spec R}(U)=R'$ für $R \subseteq R' \subseteq K$
+\end{Bsp}
+
+\begin{Prop}
+\label{prop:3.3}
+ Die Kategorie der affinen Schemata ist äquivalent zur Kategorie der Ringe.
+\end{Prop}
+\begin{Bew}
+	Für Objekte ist dies klar, denn $\mathcal{O}_{\Spec R}\left(\Spec R\right) = R$. \\
+	Ist $\left( f, f^\sharp \right): \left( \Spec R,\mathcal{O}_{\Spec R} \right)  \rightarrow \left( \Spec R',\mathcal{O}_{\Spec R'} \right)$ ein Morphismus affiner Schemata, so ist $f^\sharp: R' =\mathcal{O}_{\Spec R'}\left(\Spec R'\right) \rightarrow  f_* \mathcal{O}_{\Spec R}\left(\Spec R'\right)=\mathcal{O}_{\Spec R}\left(f^{-1} (\Spec R)\right) = R$ ein Ringhomomorphismus $R' \rightarrow R$. \\
+	Sei umgekehrt $\alpha : R' \rightarrow R$ ein Ringhomomorphismus. Dann wird durch $\alpha$ induziert: 
+	\begin{itemize}
+		\item $f_\alpha : \Spec R' \rightarrow R, \mathfrak{p} \mapsto \alpha^{-1}(\mathfrak{p})$  (stetig)
+		\item $f_\alpha^\sharp: \mathcal{O}_{\Spec R} \rightarrow (f_\alpha)_* \mathcal{O}_{\Spec R'}$ induziert durch $\frac{a}{b} \mapsto \frac{\alpha(a)}{\alpha(b)}$, $a,b \in R, b \notin \dots$ 
+	\end{itemize}
+	Auf den Halmen induziert $f_\alpha^\sharp$ die Abbildung $\alpha':= (f_\alpha^\sharp)_{\mathfrak{p}'}: R_{f^{-1}(\mathfrak{p})} = \mathcal{O}_{\Spec R, f_\alpha(\mathfrak{p}')} \rightarrow  \mathcal{O}_{\Spec R', \mathfrak{p}'}= R'_{\mathfrak{p}'}$
+	Es ist $\alpha' (\alpha'^{-1} (\mathfrak{p}') ) \subseteq \mathfrak{p}'$
+\end{Bew}
+
+\begin{Bem}
+	Ist $\left( X, \mathcal{O}_X \right)$ Schema und $U \subseteq X$ offen, so ist $\left( U, \mathcal{O}_X \restriction U \right)$ auch ein Schema, offenes Unterschema genannt.
+\end{Bem}
+\begin{Bew}
+ Sei $(U_i)_{i \in I}$ Überdeckung von $X$ durch affine Schemata. Dann ist $(U \cap U_i)_{i \in I}$ offene Überdeckung von $U$. (Achtung: i. A. ist $(U \cap U_i)$ kein affines Schema) Aber $(U \cap U_i)$ ist Vereinigung von $D(f_{ij})$ für geeignete $f_{ij} \in R_i$. Es gilt $D(f_{ij})$ ist affines Schema und $\mathcal{O}_{\Spec R} \restriction D(f_{ij}) \cong \mathcal{O}_{\Spec R_{f_{ij}}}$
+\end{Bew}
+
+
+\begin{Bem}
+	Aus zwei Schemata kann man durch Verkleben längs isomorpher Unterschemata ein neues Schema erhalten.
+	Genauer: Seien $X_1,X_2$ Schemata $\emptyset \neq U_i \subseteq X_i$ offene Unterschemata und $\varphi: \left( U_1, \mathcal{O}_{X_1} \restriction U_1 \right) \rightarrow \left( U_2, \mathcal{O}_{X_2} \restriction U_2 \right)$ ein Isomorphismus von Schemata. Sei $\sim$ die Äquivalenzrelation, die durch $x \sim \varphi (x)$ erzeugt wird. Dann ist $X=(U_1 \dot\cup U_2)_\sim $ topologischer Raum versehen mit der Quotiententopologie. Für $U \subseteq X$ offen sei $\mathcal{O}_X(U):=\left\lbrace  (s_1,s_2) \in \mathcal{O}_X(U^1) \times \mathcal{O}_X(U^2) | s_1 \restriction U^1 \cap \varphi^{-1}(U^2) = \varphi^\sharp_{\varphi(U^1) \cap U^2}(s_2 \restriction \varphi(U^1) \cap U^2) \right\rbrace$ wobei $U^1=(U \cap X_1), U^2=(U \cap X_2)$.
+\end{Bem}
+
+\begin{Bsp}
+ Sei $X_1 = X_2 = \mathbb{A}^1_k:=\Spec k[T]$ und 
+ $U_1=U_2=\mathbb{A}^1 \setminus \{0\} = \Spec k[T] \setminus \{(T)\}$ sowie $\varphi_1 : U_1 \rightarrow U_2, \varphi_1 = \id$ und $\varphi_1: U_1 \rightarrow U_2, \varphi_2(T) = \frac{1}{T} $.\\ BILDER EINFÜGEN WENN DIE JEMAND MITGESCHRIEBEN HAT
+\end{Bsp}
+
+\begin{Prop}
+\label{prop:3.7}
+	Sei $\left(X, \mathcal{O}_X \right)$ ein Schema und $R$ ein Ring. Dann ist die Zuordnung $Mor(X, \Spec R) \rightarrow Hom(R, \mathcal{O}_X(X)), (\varphi, \varphi^\sharp) \mapsto \varphi^\sharp_{\Spec R}$ bijektiv.
+\end{Prop}
+\begin{Bew}
+	Definiere Umkehrabbildung: Sei $\alpha : R \rightarrow \mathcal{O}_X(X)$ ein Ringhomomorphismus. Für $x \in X$ sei $\mathcal{O}_{X,x}$ der Halm und $\mathfrak{m}_x$ das maximale Ideal in $\mathcal{O}_{X,x}$.Weiter sei $\alpha_x: R \stackrel{\alpha}\rightarrow \mathcal{O}_{X}(X) \rightarrow \mathcal{O}_{X,x}$. Setze $\varphi_\alpha(x):=\alpha^{-1}_x(\mathfrak{m}_x)$. Es gilt $\varphi_\alpha : X \rightarrow \Spec R $ ist stetig (Übung). Der Garbenhomomorphismus $\varphi_\alpha^\sharp : \mathcal{O}_{\Spec R} \rightarrow \mathcal{O}_{X,x}$ wird definiert durch $\frac{a}{b} \mapsto \frac{\alpha(a)}{\alpha(b)}$.
+\end{Bew}
+
+\begin{Def}
+	Sei $S$ ein Schema.
+	\begin{enumerate}[(a)]
+		\item Ein $S$-Schema ist ein Schema $(X,\mathcal{O}_X)$ zusammen mit einem Morphismus $\varphi: X \rightarrow S$.
+		\item Ein Morphismus von $S$-Schemata $(X,\varphi)$ und $(Y,\psi)$ ist ein Schema-Morphismus $f: X  \rightarrow Y$ mit $\varphi = \psi \circ f$.
+\begin{center}
+	\begin{tikzpicture}
+		\matrix (m) [matrix of math nodes, row sep=3em,
+		column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+		{
+			X	&	Y	\\
+			S	&	\\
+		};
+		\path[->, font=\scriptsize]
+		(m-1-1) edge node[auto] {$f$}	(m-1-2)
+				edge node[auto,swap] {$\varphi$}		(m-2-1)
+		(m-1-2) edge node[auto] {$\psi$}		(m-2-1);
+	\end{tikzpicture}
+	\end{center}
+
+	\end{enumerate}
+\end{Def}
+
+\begin{Prop}
+	\label{faithful_functor_k-variety_k-scheme}
+	Sei $k$ algebraisch abgeschlossener Körper. Die Zuordnung $V \rightarrow \Spec k[V]$ ($V$ affine Varietät über $k$) induziert einen volltreuen Funktor $t$ von der Kategorie der $k$-Varietäten in die Kategorie der $k$-Schemata.
+\end{Prop}
+\begin{Bew}
+	$V \mapsto k[V]$ ist Äquivalenz von Kategorien (Algebraische Geometrie I Satz???). $k[V] \mapsto \Spec k[V]$ ist Äquivalenz von Kategorien. Das heißt, wie haben eine Äquivalenz von Kategorien $k$-Algebren $\rightarrow$ affine $k$-Varietäten $\rightarrow$ affine Schemata. Die Behauptung folgt durch Verkleben.
+\end{Bew}
+
+\section{Projektive Schemata}
+
+\begin{DefBem}
+	Sei $S = \bigoplus_{d \geq 0} S_d$ graduierter Ring, $S^+:=\bigoplus_{d > 0} S_d$
+	\begin{enumerate}[(a)]
+		\item  $\Proj S := \left\lbrace \mathfrak{p} \subseteq \Proj S: \mathfrak{p} \text{ homogenes Primideal }, S^+ \nsubseteq \mathfrak{p} \right\rbrace $ heißt \emph{homogenes Spektrum} von $S$.
+		\item Für ein homogenes Ideal $\mathfrak a$ in $S$ sei $V(\mathfrak{a}) := \{\mathfrak{p} \in \Proj S : \mathfrak{a \subseteq p} \}$. Die $V(\mathfrak{a})$ bilden die abgeschlossenen Teilmengen einer Topologie auf $\Proj S$.
+		\item Für homogenes $f \in S$ sei $D_+(f):=\{\mathfrak{p} \in \Proj S : f \in \mathfrak p\} = \Proj S \setminus V(f)$. Die $D_+(f)$ bilden eine Basis der Zariski-Topologie auf $\Proj S$.
+		\item Für $\mathfrak{p} \in \Proj S$ sei $S_{(\mathfrak{p})}:= \left\lbrace \frac{a}{b} \in S_{\mathfrak{p}}:a,b \text{ homogen vom gleichen Grad}  \right\rbrace $. $S_{(\mathfrak{p})}$ ist lokaler Ring mit maximalem Ideal $\mathfrak{p}S_{(\mathfrak{p})} := \left\lbrace \frac{a}{b} \in S_{(\mathfrak{p})} : a \in \mathfrak{p} \right\rbrace $
+		\item  Für $U \subseteq \Proj S$ offen sei 
+			\begin{align*}
+			\mathcal{O}_{\Proj S}\left(U\right) = 
+				\bigg\{ s\colon U \to \bigcup_{ \mathfrak{p} \in U }^{\centerdot} S_{\mathfrak{p}}\ \bigg|\
+					& \text{Für alle } \mathfrak{p} \in U \text{ ist } s\left(\mathfrak{p}\right) \in S_{(\mathfrak{p})}\\
+					& \text{und es gibt eine Umgebung } U_{(\mathfrak{p})} \text{ von } \mathfrak{p}
+					\text{ sowie } a,b \in S \\ 
+					& \text{homogen vom gleichen Grad, so dass für alle } \mathfrak{q} \in U_{(\mathfrak{p})}\colon b \notin \mathfrak{q} \\
+					& \text{ und } s\left(\mathfrak{q}\right) = \frac{a}{b}
+					& \bigg\}
+		\end{align*}
+		\item $(\Proj S, \mathcal{O}_{\Proj S})$ ist lokal geringter Raum mit $\mathcal{O}_{\Proj S, \mathfrak{p}} = S_{(\mathfrak p)}$
+		\item \begin{align*} (\Proj S, \mathcal{O}_{\Proj S})  \text{ ist Schema, wobei } \Proj S = \bigg\{\bigcup^{\centerdot}_{ f  \in S, f \text{ homogen} }D_+(f) \bigg\} \text{ und }D_+(f) \cong \Proj S_{(f)}.
+		       \end{align*}
+
+	\end{enumerate}
+\end{DefBem}
+\begin{Bew}
+ Sei $S$ graduierter Ring. $\Proj{S} = \left\lbrace \mathfrak{p} \text{ homogenes Primideal, } S_+ \not\subset \mathfrak{p} \right\rbrace$ und \\
+$S_{(\mathfrak{p})}=\left\lbrace \frac{a}{b}: a,b \text{ homogen vom gleichen Grad, } b \notin \mathfrak{p} \right\rbrace $ \\
+sowie $S_{(f)}=\left\lbrace \frac{a}{f^n}: a \text{ homogen vom Grad } n \cdot~ deg(f) \right\rbrace $
+\begin{enumerate}[(g)]
+ \item $(\Proj S, \mathcal{O}_{\Proj S})$ ist Schema. Genauer $D_+(f) \cong \Spec{\mathfrak{p} S_{(f)}}$.  
+\end{enumerate}
+
+\end{Bew}
+
+\begin{DefBem}
+	\begin{enumerate}[(a)]
+		\item Ein Schema $(X,\mathcal{O}_X)$ heißt projektiv, wenn es einen graduierten Ring $S$ gibt, so dass $(X,\mathcal{O}_X) \cong (\Proj S, \mathcal{O}_{\Proj S})$  gilt.
+		\item Ist $R$ ein Ring, so heißt $\mathbb{P}^n_R = \Proj {R[X_0,\dots X_n]}$ der n-dimensionale projektive Raum über R.
+		\item Sei $k$ ein Körper und $X=\mathbb{P}^1_k$. Dann ist $\mathcal{O}_X(X)=k$.
+	\end{enumerate}
+\end{DefBem}
+\begin{Bew}
+	\begin{enumerate}[(c)]
+		\item
+			\begin{align*}
+			 X = \bigcup_{i=1}^n D_+(X_i), \mathcal{O}_X(X_i)=k[\frac{X_0}{X_i},\dots,\frac{X_{i-1}}{X_i}, \frac{X_{i+1}}{X_i}, \dots \frac{X_n}{X_i} ] \Rightarrow \mathcal{O}_X(X) = \bigcap_{i=1}^n \mathcal{O}_X(X_i)=k
+			\end{align*}
+ 
+	\end{enumerate}
+\end{Bew}
+
+\begin{Bem}
+	Sei $k$ algebraisch abgeschlossener Körper, $V/k$ eine projektive Varietät und $S=k[V]$ ein homogener Koordinatenring von V. Dann ist $t(V) \cong \Proj S$ ($t$ wie in \ref{faithful_functor_k-variety_k-scheme}).
+\end{Bem}
+\begin{Bew}
+	Für homogenes $f \in S_+$ ist $D_+(f) \cong \Spec{S_{(f)}}$. Außerdem wissen wir aus der Algebraischen Geometrie 1, dass $\mathcal{O}_V(D(f))=S_{(f)} \Rightarrow D_+(f)=t(D(f))$.
+	Die Behauptung folgt durch Verkleben.
+\end{Bew}
+
+\begin{DefBem}
+\label{defbem:4.4}
+Sei $X$ ein Schema und $x \in X$:
+\begin{enumerate}[(a)]
+	\item $\kappa(x):=\mathcal{O}_{X,x}/m_x$ heißt Restklassenkörper von $X$ in $x$.
+	\item Sei $f: X \rightarrow Y$ ein Morphismus von Schemata und $y=f(x)$, dann induziert $f$ einen Körperhomomorphismus $\kappa(y) \hookrightarrow \kappa(x)$.
+	\item Sei $k$ ein Körper. Genau dann gibt es einen Morphismus $\iota: \Spec k \rightarrow X$ mit $\iota(0) = x$, wenn $\kappa(x)$ isomorph zu einem Teilkörper von $k$ ist.
+	\item $x$ (beziehungsweise genauer $\iota$) heißt $k$-wertiger Punkt von $X$.
+\end{enumerate}
+\end{DefBem}
+\begin{Bew}
+	\begin{enumerate}
+		\item[(b)] $f$ induziert $f^\sharp_x: \mathcal{O}_{Y,y} \rightarrow \mathcal{O}_{X,x}$ mit $f^\sharp_x(m_y) \subseteq m_x$. Die Behauptung folgt aus dem Homomorphiesatz.
+		\item[(c)] Sei $U = \Spec R$ affine Umgebung von $x$: $\iota$ ist äquivalent zu dem Ringhomomorphismus $\alpha: R \rightarrow k $ mit $\alpha(m_x)=(0)$ $\Leftrightarrow$ $\alpha$ faktorisiert über $\kappa(x)$.
+% $R \rightarrow \kappa(x) \rightarrow k$
+	\end{enumerate}
+\end{Bew}
+
+\section{Faserprodukte}
+
+Sei $S$ ein Schema und $X,Y$ $S$-Schemata. Dann heißt das Produkt über $X$ und $Y$ in der Kategorie der $S$-Schemata Faserprodukt von $X$ und $Y$, geschrieben $X \times_S Y$.
+
+\begin{Bem}
+	Das Faserprodukt $X \times_S Y$ ist ein $S$-Schema zusammen mit $S$-Morphismen $pr_X: X \times_S Y \rightarrow X$ und $pr_Y: X \times_S Y \rightarrow Y$, so dass für jedes $S$-Schema $Z$ und alle $S$-Schemamorphismen $f: Z \rightarrow X, g: Z \rightarrow Y$ genau ein $S$-Schemamorphismus $h: Z \rightarrow X \times_S Y$ existiert mit $f=pr_X \circ h, g = pr_Y \circ h$.
+
+\begin{center}
+\begin{tikzpicture}
+			\matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+			{ 
+				& Z & \\
+				&	X \times_S Y	&	\\
+				X & & Y \\
+				& S & \\
+			};
+			\path[->,font=\scriptsize]
+			(m-1-2) edge[densely dotted] node[auto] {$ \exists h $}	(m-2-2)	
+					edge[bend right=30] node[auto,swap] {$ f $}		(m-3-1)
+					edge[bend left=30] node[auto] {$ g $}		(m-3-3)
+			(m-2-2) edge node[auto,swap] {$pr_X$} (m-3-1)
+					edge node[auto] {$pr_Y$} (m-3-3)
+			(m-3-1) edge node[auto,swap] {} (m-4-2)
+			(m-3-3) edge node[auto,swap] {} (m-4-2);
+			
+		\end{tikzpicture}
+\end{center}
+
+\end{Bem}
+
+\begin{Satz}
+\label{satz:1}
+  Das Faserprodukt $X\times_S Y$ existiert für alle $S$-Schemata $X,Y$.
+\end{Satz}
+
+\begin{Bew}
+  Seien zunächst $X,Y$ und $Z$ affin: $X=\Spec A,Y=\Spec B$ und $S=\Spec R$. Nach Voraussetzung sind $A$ und $B$ $R$-Algebren.
+  Die UAE des Tensorprodukts $A\otimes_R B$ besagt: \\
+  $\Spec(A\otimes_R B)$ erfüllt die UAE des Faserprodukts für jedes affine Schema $Z$. \\
+  Noch zu zeigen: die UAE ist auch für beliebige $Z$ erfüllt. 
+  Nach Proposition \ref{prop:3.7} entspricht $f:Z\to X$ einem $R$-Algebrenhomomorphismus $\varphi_1:A\to\mathcal O_Z(Z)$,
+  ebenso gehört zu $g$ ein $\varphi_2:B\to\mathcal O_Z(Z)$. $\varphi_1$ und $\varphi_2$ induzieren einen $R$-Algebrenhomomorphismus
+  $\varphi:A\otimes_R B\to\mathcal O_Z(Z)$. Nach Proposition \ref{prop:3.7} induziert $\varphi$ einen Schemamorphismus $h:Z\to\Spec(A\otimes_R B)$. \\
+  Für den allgemeinen Fall sei $S_i$ eine affine Überdeckung von $S$
+  \begin{align*}
+    S=\bigcup S_i \text{, mit } S_i=\Spec R_i
+  \end{align*}
+  Seien $X_i=p_X^{-1}(S_i), Y_i=p_Y^{-1}$ auch affin überdeckt:
+  \begin{align*}
+     X_i&=\bigcup X_{ij}\text{, mit } X_{ij}=\Spec A_{ij} \\
+      Y_i&=\bigcup Y_{ik}\text{, mit } Y_{ij}=\Spec B_{ik}
+  \end{align*}
+  Nach dem affinen Fall oben existieren die Faserprodukte $X_{ij}\times_{S_i} Y_{ik}$ für alle $i,j,k$.
+  \begin{Beh}[1]
+    Sei $T$ ein Schema, $V,W$ $T$-Schemata, $(V_l)$ offene Überdeckung von $V$, dann gilt:
+    \begin{align*}
+      \text{Existiert $V_l\times_T W$ für jedes $l$, so existiert auch $V\times_T W$}
+    \end{align*}
+    
+  \end{Beh}
+  Wende diese Behauptung an auf 
+  \begin{align*}
+    T=S_i,~ V=X_i,~ V_l=X_{il},~ W=Y_{ik}
+  \end{align*}
+  womit $X_i\times_{S_i} Y_{ik}$ für alle $i,k$ existiert. Damit lässt sich die Behauptung auf
+  \begin{align*}
+    T=S_i,~ V_l=Y_{il},~ V=Y_i,~ W=X_i
+  \end{align*}
+  anwenden. Dies zeigt die Existenz von $X_i\times_{S_i}Y_i$ für alle $i$.
+  \begin{Beh}[2]
+    Für jedes $i$ gilt
+    \begin{align*}
+      X_i\times_{S_i}Y_i\cong X_i\times_S Y
+    \end{align*}
+  \end{Beh}
+  Daraus folgt der Satz aus Behauptung (1) mit
+  \begin{align*}
+    T=S,~ V=X,~ V_l=X_l,~ W=Y
+  \end{align*}
+\end{Bew}
+\begin{Bew}[Behauptung (1)]
+  Idee: Verklebe die $V_l\times_T W$! \\
+  Für Indizes $l,m$ seien
+  \begin{align*}
+    U_{lm}&\defeqr pr_l^{-1}(V_l\cap V_m)\subseteq V_l\times_T W \\
+    \text{ und } U_{ml}&\defeqr pr_m^{-1}(V_l\cap V_m)\subseteq V_m\times_T W
+  \end{align*}
+  Es gilt: $U_{lm}=(V_l\cap V_m)\times_T W$, weil in der Situation
+  \begin{center}
+    \begin{tikzpicture}
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+      { 
+        & Z & \\
+        &	V_l \times_T W	&	\\
+        V_l\cap V_m & V_l  & W \\
+        & T & \\
+      };
+      \path[->,font=\scriptsize]
+      (m-1-2) edge[densely dotted] node[auto] {$ \exists h $}	(m-2-2)	
+       edge[bend right=30] node[auto,swap] {$ f $}		(m-3-1)
+       edge[bend left=30] node[auto] {$ g $}		(m-3-3)
+      (m-2-2) edge node[auto,swap] {$pr_l$} (m-3-2)
+       edge node[auto,swap] {} (m-3-3)
+      (m-3-1) edge node[auto,swap] {} (m-4-2)
+      (m-3-2) edge node[auto,swap] {} (m-4-2)
+      (m-3-3) edge node[auto,swap] {} (m-4-2);
+      \path[right hook->] 
+      (m-3-1) edge node[auto,swap] {} (m-3-2);
+      
+    \end{tikzpicture}
+  \end{center}
+  gilt:
+  \begin{align*}
+    h(z)\subseteq pr_l^{-1}(f(z))\subseteq pr_l^{-1}(V_l\cap V_m)=U_{lm}
+  \end{align*}
+  Also ist $U_{lm}$ Faserprodukt von $V_l\cap V_m$ und $W$. Genauso: $U_{ml}$ ist Faserprodukt von $V_l\cap V_m$ und $W$.
+  Die UAE liefert einen eindeutigen Isomorphismus $U_{lm}\to U_{ml}$. Verklebe die $V_l\times_T W$ längs der $U_{lm}$ zu einem
+  Schema $\tilde{V}$. \\ 
+  Noch zu zeigen: $\tilde{V}$ erfüllt die UAE von $V\times_T W$.
+  Seien $Z$ ein $T$-Schema, $f:Z\to V$ und $g:Z\to W$ $T$-Morphismen. Sei $Z_l\defeqr f^{-1}(V_l)$. \\
+  Nach Voraussetzung existiert für jedes $l$ genau ein $h_l:Z_l\to V_l\times_T W\hookrightarrow \tilde{V}$, mit $\dots$ \\
+  Die $h_l$ bestimmen einen eindeutigen Morphismus $h:Z\to \tilde{V}$.
+\end{Bew}
+\begin{Bew}[Behauptung (2)]
+  \emph{Der Beweis war Übungsaufgabe} \\
+  Zu zeigen:\\
+  $X_i\times_{S_i}Y_i$ ist ein Faserprodukt von $X_i$ und $Y$ über $S_i$. \\
+  Sei $Z$ ein $S$-Schema mit $S$-Morphismen $f:Z\to X_i$ und $g:Z\to Y$.
+  Weil
+  \begin{center}
+    \begin{tikzpicture}
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+      { 
+        & Z & \\
+        & &	\\
+        X_i & & Y \\
+        & S & \\
+      };
+      \path[->,font=\scriptsize]
+      (m-1-2) 	edge[bend right=30] node[auto,swap] {$ f $}		(m-3-1)
+       edge[bend left=30] node[auto] {$ g $}		(m-3-3)
+      (m-3-1) edge node[auto,swap] {$p_i$} (m-4-2)
+      (m-3-3) edge node[auto] {$p$} (m-4-2);
+      
+    \end{tikzpicture}
+  \end{center}
+  kommutiert, gilt:
+  \begin{align*}
+    p_i(X_i)\subseteq S_i \Rightarrow (p\circ g)(Y)\subseteq S_i \Rightarrow  \Bild g\subseteq Y_i
+  \end{align*}
+  Damit faktorisiert das eindeutige $h$ der UAE vom Faserprodukt $X_i\times_{S_i}Y_i$ $f$ und $g$. Also
+  ist $X_i\times_{S_i}Y_i$ Faserprodukt von $X_i$ und $Y$ über $S$.
+\end{Bew}
+
+\begin{Bem}
+  \label{bem:5.2}
+  Seien $X,Y$ $S$-Schemata. Dann ist die Abbildung
+  \begin{align*}
+    \Abb{F}{X\times_S Y}{\{(x,y)\in X\times Y:p_X(x)=p_Y(y)\}}{z}{(pr_X(z),pr_Y(z))}
+  \end{align*}
+  stetig und surjektiv.
+\end{Bem}
+
+\begin{Bew}
+  Stetig: Klar. \\
+  surjektiv: \\
+  Seien $x\in X, y\in Y$ mit $p_X(x)=p_Y(y)\defeql s\in S$. Seien weiter $\kappa\defeqr\kappa(s),\kappa(x),\kappa(y)$ die Restklassenkörper.
+  Dann ist $\kappa\subseteq\kappa(x), \kappa\subseteq\kappa(y)$. \\
+  Sei $K/k$ eine Körpererweiterung mit $\kappa(x)\subseteq K, \kappa(y)\subseteq K$ und $Z\defeqr\Spec K$.
+  Nach \ref{defbem:4.4} gibt es einen Morphismen $f:Z\to X$ und $g:Z\to Y$ mit $f(0)=x,g(0)=y$. $f$ und $g$ sind $S$-Morphismen.
+  Also gibt es ein $h:Z\to X\times_S Y$ mit $pr_X(h(0))=x$ und $pr_Y(h(0))=y$. Daraus folgt: $F(h(0))=(x,y)$.
+\end{Bew}
+
+\begin{DefBem}
+  \label{defbem:5.3}
+  \begin{enumerate}
+  \item Für $y\in Y$ heißt $X_y\defeqr f^{-1}(y)=X\times_Y\Spec(\kappa(y))$ \emph{Faser} von $f$ über $y$.
+  \item $pr_X:X_y\to X$ ist injektiv, das heißt
+    \begin{align*}
+      X_y\to \{x\in X:f(x)=y\}
+    \end{align*}
+    ist bijektiv.
+  \item Ist $y$ ein abgeschlossener Punkt, so ist $X_y$ abgeschlossen in $X$. 
+  \end{enumerate}
+\end{DefBem}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item[(c)] Klar.
+  \item[(b)] Für $z_1,z_2\in X_y$ mit $pr_X(z_1)=pr_X(z_2)\defeql x$ gilt $f(x)=y$.\\
+    Seien $Z\defeqr\Spec\kappa(x)$ und $\varphi:Z\to X$ mit $\varphi(0)=x$. Sei weiter $\psi:Z\to\Spec\kappa(y)$
+    der von $f$ induzierte Morphismus. \\
+    Nach \ref{defbem:4.4} (b) gibt es Morphismen $h_i:Z\to X_y$
+    mit $h_i(0)=z_i$ für $i\in\{1,2\}$. \\
+    Es ist $pr_X\circ h_i=\varphi$, woraus mit der UAE des Faserprodukts $X_y$ folgt: $h_1=h_2$, also $z_1=z_2$.
+  \end{enumerate}
+\end{Bew}
+
+\begin{nnBsp}
+  Sei
+  \begin{align*}
+    \Abb{f}{\mathbb A_k^1}{\mathbb A_k^1}{x}{x^2}
+  \end{align*}
+  Dann ist $f^{-1}(0)=\Spec(k[X]\otimes_{k[X]}k)\cong\Spec(\FakRaum{k[X]}{(X^2)})$.
+\end{nnBsp}
+
+\begin{DefBem}
+  \label{defbem:5.4}
+  Sei $g:S^\prime\to S$ ein Morphismus.
+  \begin{enumerate}
+  \item Ist $f:X\to S$ ein $S$-Schema, so ist $X^\prime\defeqr X\times_S S^\prime$ ein $S^\prime$-Schema mit
+    $f^\prime:X^\prime\to S^\prime$ und $f^\prime=pr_{S^\prime}$. \\
+    \begin{center}
+      \begin{tikzpicture}
+        \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+        { 
+          X^\prime & X \\
+          S^\prime & S \\
+        };
+        \path[->,font=\scriptsize]
+        (m-1-1) edge node[auto,swap] {$g^\prime$} (m-1-2)
+        (m-1-1) edge node[auto,swap] {$f^\prime$} (m-2-1)
+        (m-1-2) edge node[auto,swap] {$f$} (m-2-2)
+        (m-2-1) edge node[auto,swap] {$g$} (m-2-2);
+      \end{tikzpicture}
+    \end{center}
+    $X^\prime$ heißt das durch \emph{Basiswechsel} $g$ aus $X$ hervorgegangene Schema.
+  \item Basiswechsel ist ein kovarianter Funktor $\underline{S-Sch}\to \underline{S-Sch}$.
+  \item Basiswechsel ist transitiv:
+    \begin{align*}
+      X^{\prime\prime}=(X\times_S S^\prime)\times_{S^\prime} S^{\prime\prime}\cong X\times_S S^{\prime\prime}
+    \end{align*}
+  \end{enumerate}
+\end{DefBem}
+
+\begin{Def}
+  \label{def:5.5}
+  Ein Schema $(X,\mathcal O_X)$ heißt \emph{lokal noethersch}, wenn es eine offene Überdeckung von $X$
+  durch affine Schemata $U_i=\Spec R_i$ gibt, sodass jedes $R_i$ noetherscher Ring ist. \\
+  $(X,\mathcal O_X)$ heißt \emph{noethersch}, wenn es eine endliche solche Überdeckung gibt.
+\end{Def}
+
+\begin{Prop}
+  \label{prop:5.6}
+  \begin{enumerate}
+  \item Ein affines Schema $X=\Spec R$ ist genau dann noethersch, wenn $R$ noethersch ist.
+  \item Ein Schema $(X,\mathcal O_X)$ ist genau dann lokal noethersch, wenn für jedes offene affine 
+    $U=\Spec R$ gilt: $R$ ist noethersch.
+  \end{enumerate}
+\end{Prop}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item[(a)] ``$\Leftarrow$'' Klar. \\
+  ``$\Rightarrow$'' folgt aus (b) ``$\Rightarrow$''.
+  \item[(b)] ``$\Leftarrow$'' Klar. \\
+    ``$\Rightarrow$'': \\
+    Sei $U=\Spec R\subseteq X$ offen und $(U_i)_{i\in\mathcal I}$ eine offene Überdeckung von $X$ mit $U_i=\Spec R_i$, $R_i$ noethersch.
+    Dann folgt: $U_i\cap U$ ist offen in $U_i$, also $U_i\cap U=\bigcup D(f_{ij})$ für geeignete $f_{ij}\in R_i$. \\
+    Nach Proposition \ref{prop:2.10} (b) ist $D(f_{ij})=\Spec R_{ij}$ mit $R_{ij}=(R_i)_{f_{ij}}$. Damit sind die $R_{ij}$ auch noethersch.
+    $D(f_{ij})$ ist auch offen in $U$, wird also überdeckt von $D(g_{ijk})$ mit $g_{ijk}\in R$. $D(f_{ij})\hookrightarrow U$ induziert,
+    vermöge Einschränkungen, einen Schemamorphismus $\Spec R\to\Spec R_{ij}$ und damit auch einen Ringhomomorphismus $\varphi_{ij}:R\to R_{ij}$.
+    % ich (felix), habe hier noch eine Erklärung für R_{g_{ijk}}\cong (R_{ij})_{\varphi(g_{ijk})} eingebaut (weil ich das so nicht einsehen konnte)
+    Es gilt $ R_{g_{ijk}}\cong (R_{ij})_{\varphi(g_{ijk})}$, weil die Einschränkung hier die Identität ist. $(R_{ij})_{\varphi(g_{ijk})}$ ist noethersch,
+    also auch $ R_{g_{ijk}}$. \\
+    Dies liefert eine Überdeckung $U=\bigcup_{i\in \mathcal I}D(h_i)$, wobei für jedes $i\in\mathcal I$ gilt: $R_{h_i}$ ist noethersch.
+    Wegen $\bigcup D(h_i)=U$, gilt $\sum_{i\in\mathcal I}(h_i)=R$ und damit
+    \begin{align*}
+      1=\sum^n_{i=1}a_i h_i\text{, mit } a_i\in R
+    \end{align*}
+    Sei nun $I_1\subseteq I_2\subseteq\dots$ eine aufsteigende Kette von Idealen in $R$.
+    Für $i=1,\dots,n$ wird 
+    \begin{align*}
+      \varphi_i(I_1)\cdot R_{h_i}\subseteq\varphi_i(I_2)\cdot R_{h_i}\subseteq\dots
+    \end{align*}
+    stationär (wobei $\varphi_i:R\to R_{h_i}$ der natürliche Homomorphismus $a\mapsto \frac{a}{1}$ sei).
+    Es genügt also zu zeigen:
+    \begin{Beh}
+      Für jedes Ideal $I$ in $R$ gilt:
+      \begin{align*}
+        I=\bigcap_{i=1}^n\varphi_i^{-1}(\varphi_i(I)\cdot R_{h_i})
+      \end{align*}
+    \end{Beh}
+  \end{enumerate}
+\end{Bew}
+
+\begin{Bew}[der Behauptung]
+  \begin{enumerate}
+  \item[``$\subseteq$''] Klar.
+  \item[``$\supseteq$''] Sei $b\in\bigcap_{i=1}^n\varphi_i^{-1}(\varphi_i(I)\cdot R_{h_i})$, 
+    dann gibt es für jedes $i$ ein $b_i\in I$ und $k_i\in\mathbb N$ mit
+    \begin{align*}
+      \frac{b}{1}=\frac{b_i}{h_i^{k_i}}\text{ in } R_{h_i}
+    \end{align*}
+    Also existiert $m_i\geq 0$ mit $h_i^{m_i}(bh_i^{k_i}-b_i)=0$ in $R$
+    \begin{align*}
+      \Rightarrow h_i^{k_i+m_i}b=h_i^{m_i}b_i\in I
+    \end{align*}
+    Die $h_i^{k_i+m_i}$ erzeugen $R$, denn: \\
+    Sei $\mathfrak J=(h_1^{k_1+m_1},\dots,h_n^{k_n+m_n})$, dann ist nach Definition der $h_i$ $\sqrt\mathfrak J=R$, also $\mathfrak J=R$. \\
+    $\Rightarrow$ es existieren $a_i$, sodass $\sum a_ih_i^{k_i+m_i}=1$. \\
+    $\Rightarrow$ $b\in I$.
+  \end{enumerate}
+\end{Bew}
+
+\chapter{Morphismen von Schemata}
+\setcounter{section}{5}
+\section{Einbettungen}
+\begin{Def}
+  \label{def:6.1}
+  Sei $i:(Y,\mathcal O)\to(X,\mathcal O_X)$ ein Morphismus von Schemata.
+  \begin{enumerate}
+  \item $i$ heißt \emph{offene Einbettung}, wenn $i$ ein Isomorphismus auf ein offenes Unterschema von $X$ ist.
+  \item $i$ heißt \emph{abgeschlossene Einbettung}, wenn $i$ ein Homöomorphismus auf eine abgeschlossene Teilmenge $Z\defeqr i(Y)$ von $X$ ist und
+    $i^\sharp:\mathcal O_X\to i_\ast\mathcal O_Y$ surjektiv ist.
+    $(Z, i_\ast\mathcal O)$ heißt dann \emph{abgeschlossenes Unterschema} von $X$.
+  \end{enumerate}
+\end{Def}
+
+\begin{Bsp}
+  \begin{enumerate}
+  \item Sei $X=\Spec R$ affin. Die abgeschlossenen Teilmengen von $X$ sind die $V(I)$, ($I\subseteq R$ Ideal).
+    $V(I)$ wird zum abgeschlossenen Unterschema durch die Schemastruktur als $\Spec (\FakRaum{R}{I})$.
+    Die abgeschlossene Einbettung $\Spec (\FakRaum{R}{I})\to\Spec R$ wird induziert von der Restklassenabbildung $R\to\FakRaum{R}{I}$.
+    \textbf{Warnung:} $V(I)=V(I^2)$, aber $\FakRaum{R}{I}=\FakRaum{R}{I^2}$ gilt im Allgemeinen \textbf{nicht}!
+  \item Seien $k$ ein Körper, $R=k[X,Y]$ und $I=(X^2,XY)\subsetneq(X)$. Es gilt $V(I)=V(X)$ ($y$-Achse). \\
+    In $V(I)$ ist außerhalb von $0=(0,0)=V(X,Y)$, also auf 
+    \begin{align*}
+      D(Y)=\Spec\left(\FakRaum{k[X,Y]}{I}\right)_Y=\Spec(k[Y]_Y)
+    \end{align*}
+    das abgeschlossene Unterschema $V(I)$, also $\Spec(\FakRaum{R}{I})$, isomorph zu $\Spec(\FakRaum{R}{(X)})$. ? \\
+    Aber: $\mathcal O_{\Spec(\FakRaum{R}{I}),0}$ enthält ein nilpotentes Element, nämlich $X$.
+  \end{enumerate}
+\end{Bsp}
+
+\begin{ErinnDef}
+  \label{erinndef:6.3}
+  (Übungblatt 3, Aufgabe 1) \\
+  Ein Schema $(X,\mathcal O_X)$ heißt reduziert, wenn für jedes $x\in X$ der Halm $\mathcal O_{X,x}$ ein reduzierter Ring ist. \\
+  Äquivalent: Für jedes offene $U\subseteq X$ ist $\mathcal O_X(U)$ ein reduzierter Ring.
+\end{ErinnDef}
+
+
+
+\begin{Prop}
+  \label{prop:6.4}
+  Zu jedem Schema $(X,\mathcal O_X)$ gibt es ein eindeutiges abgeschlossenes Unterschema $X_{red}$ von $X$, das folgende UAE erfüllt: \\
+  Ist $f:Y\to X$ ein Morphismus von einem reduzierten Schema $Y$, so gibt es genau einen Morphismus $\tilde{f}:Y\to X_{red}$ mit 
+  \begin{center}
+    \begin{tikzpicture}
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+      { 
+        Y & X \\
+         & X_{red} \\
+      };
+      \path[->,font=\scriptsize]
+      (m-1-1) edge node[auto] {$f$} (m-1-2)
+      (m-1-1) edge node[auto,swap] {$\tilde{f}$} (m-2-2)
+      (m-2-2) edge node[auto,swap] {$i$} (m-1-2);
+    \end{tikzpicture}
+  \end{center}
+  $f=i\circ\tilde{f}$. Dabei ist $X=X_{red}$ (gleich als topologische Räume).
+\end{Prop}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item[(1)]   Sei $X=\Spec R$ affin. Setze $X_{red}\defeqr\Spec(\FakRaum{R}{\sqrt{(0)}})$, dann ist $X_{red}$ 
+    ein reduziertes abgeschlossenes Unterschema. \\
+    UAE: Sei $Y$ reduziert, $f:Y\to X$ ein Morphismus mit zugehörigem Ringhomomorphismus $\alpha_f:R\to\mathcal O_Y(Y)$. \\
+    Zu zeigen: $\sqrt{(0)}\subseteq\Kern(\alpha_f)$ \\
+    Sei also $a\in\sqrt{(0)}$, also $a^n=0$ für $n\geq 1$. Daraus folgt: $(\alpha_f(a))^n=0$. Und weil $Y$ reduziert ist: $\alpha_f(a)=0$.
+  \item[(2)] Allgemeiner Fall: \\
+    Benutze:
+    \begin{align*}
+      \left( \FakRaum{R}{\sqrt{(0)}}\right)_f\cong\FakRaum{R_f}{\sqrt{(0)}}
+    \end{align*}
+  \end{enumerate}
+\end{Bew}
+
+\begin{Folg}
+  \label{folg:6.5}
+  Zu jedem abgeschlossenen Unterschema $Z$ von $X$ gibt es ein eindeutig bestimmtes reduziertes Unterschema $Z_{red}$
+  (die ``reduzierte induzierte Struktur'').
+\end{Folg}
+
+\section{Separierte Morphismen}
+\begin{Def}
+  \label{def:7.1}
+  \begin{enumerate}
+  \item Ein Morphismus $f:X\to S$ von Schemata heißt \emph{separiert},  wenn der ``Diagonalmorphismus'' $\Delta_f:X\to X\times_S X$ 
+    eine abgeschlossene Einbettung ist.
+    \begin{center}
+      \begin{tikzpicture}
+        \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+        { 
+          & X & \\
+          &	X \times_S X	&	\\
+          X & & X \\
+          & S & \\
+        };
+        \path[->,font=\scriptsize]
+        (m-1-2) edge[densely dotted] node[auto] {$ \Delta_f $}	(m-2-2)	
+        edge[bend right=30] node[auto,swap] {$ \id $}		(m-3-1)
+        edge[bend left=30] node[auto] {$ \id $}		(m-3-3)
+        (m-2-2) edge node[auto,swap] {} (m-3-1)
+        edge node[auto] {} (m-3-3)
+        (m-3-1) edge node[auto,swap] {$f$} (m-4-2)
+        (m-3-3) edge node[auto,swap] {$f$} (m-4-2);
+        
+      \end{tikzpicture}
+    \end{center}
+  \item $X$ heißt \emph{separiert}, wenn $X\to \Spec \mathbb Z$ separiert ist.
+  \end{enumerate}
+\end{Def}
+
+\begin{nnBsp}
+  Sei $X$ die affine Gerade mit doppeltem Nullpunkt. $X$ ist nicht separiert (über $k$): \\
+  Seien also $S=\Spec k, U=\mathbb A_k^1\backslash\{(0,0)\}=\Spec(k[X]_X)$ und $X$ die Verklebung von $\mathbb A_k^1$ mit sich selbst längs $U$. 
+  Es ist
+  \begin{align*}
+    & U\times_S U=\mathbb A_k^2-\text{``Achsenkreuz''} \\
+    & \Delta=\Delta_f(X)=\{(u,u):u\in U\}\cup\{(0_1,0_1),(0_2,0_2)\}
+  \end{align*}
+  Es gilt
+  \begin{align*}
+    \bar{\Delta}=\Delta\cup\{(0_1,0_2),(0_2,0_1)\}
+  \end{align*}
+  denn: jede Umgebung von $(0_1,0_2)$ enthält Punkte von $\Delta$!
+\end{nnBsp}
+
+\begin{Bem}
+  \label{bem:7.2}
+  Jeder Morphismus von affinen Schemata ist separiert.
+\end{Bem}
+
+\begin{Bew}
+  Sei $X=\Spec B, Y=\Spec A, f:X\to Y, \alpha:A\to B$, $\alpha$ der Ringhomomorphismus zu $f$.
+  Dann ist $X\times_YX=\Spec(B\otimes_A B)$. $\Delta$ wird induziert von
+  \begin{align*}
+    \Abb{\mu}{B\otimes_A B}{B}{b_1\otimes b_2}{b_1\cdot b_2}
+  \end{align*}
+  $\mu$ ist surjektiv, also ist $\Delta$ abgeschlossen. (Das ist so, weil ein surjektiver Ringhomomorphismus
+  Primideale auf Primideale abbildet und deswegen alle Primideale, die
+  \begin{align*}
+    \bigcap_{\mathfrak p\text{ Primideal }}\mu^{-1}(\mathfrak p)
+  \end{align*}
+  enthalten, schon Urbilder von Primidealen waren.)
+\end{Bew}
+
+\begin{Bem}
+  \label{bem:7.3}
+  Seien $f,g:X\to Y$ Morphismen von $S$-Schemata. Ist $Y$ über $S$ separiert, so ist
+  \begin{align*}
+    E(f,g)\defeqr\{x\in X:f(x)=g(x)\}
+  \end{align*}
+  abgeschlossen in $X$.
+\end{Bem}
+
+\begin{Bew}
+  Sei $h:X\to Y\times_S Y$ der von $f$ und $g$ induzierte Morphismus.
+  \begin{center}
+    \begin{tikzpicture}
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+      { 
+        & X & \\
+        &	Y \times_S Y	&	\\
+        Y & & Y \\
+        & S & \\
+      };
+      \path[->,font=\scriptsize]
+      (m-1-2) edge[densely dotted] node[auto] {$h$}	(m-2-2)	
+      edge[bend right=30] node[auto,swap] {$f$}		(m-3-1)
+      edge[bend left=30] node[auto] {$g$}		(m-3-3)
+      (m-2-2) edge node[auto,swap] {} (m-3-1)
+      edge node[auto] {} (m-3-3)
+      (m-3-1) edge node[auto,swap] {$p$} (m-4-2)
+      (m-3-3) edge node[auto,swap] {} (m-4-2);
+      
+    \end{tikzpicture}
+  \end{center}
+  Dann ist $E(f,g)=h^{-1}(\Delta)$, ($\Delta=\Delta_p(Y)$). Also ist $E(f,g)$ abgeschlossen.
+\end{Bew}
+
+\begin{Prop}
+  \label{prop:7.4}
+  Seien $(X,\mathcal O_X)$ ein Schema, $R$ ein diskreter Bewertungsring, $K=\Quot(R)$, $T=\Spec R$. 
+  Dann gibt es eine natürliche Bijektion
+  \begin{align*}
+    \Hom(T,X)\longrightarrow \{ & (x_0,x_1,i):x_0,x_1\in X\text{ mit } x_0\in\overline{\{x_1\}}, i:\kappa(x_1)\to K\text{ Körperhomomorphismus} \\
+    & \text{ mit } i(\mathcal O_{Z,x_0})\subseteq R\text{ und } i(m_{Z,x_0})=m_R\cap i(\mathcal O_{Z,x_0})\},
+  \end{align*}
+  wobei $Z=\overline{\{x_1\}}_{red}$ sei. Dann ist $\mathcal O_{Z,x_1}=\kappa(x_1)=\FakRaum{\mathcal O_{X,x_1}}{m_{x_1}}$.
+\end{Prop}
+
+\begin{Bew}
+  Für $f:T\to X$ sei $x_0\defeqr f(m_R), x_1=f(0), i=f_{x_1}^\sharp$. Da $T$ reduziert ist, ``ist'' $f$ ein Morphismus nach $Z$:
+  \begin{center}
+    \begin{tikzpicture}
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+      { 
+        T & X \\
+        & Z\\
+      };
+      \path[->,font=\scriptsize]
+      (m-1-1) edge node[auto] {$f$}	(m-1-2)	
+      edge node[auto,swap] {$f$}	(m-2-2);
+      \path[right hook->,font=\scriptsize]
+      (m-2-2) edge node[auto,swap] {} (m-1-2);
+    \end{tikzpicture}
+  \end{center}
+  $f^\sharp$ induziert also einen Morphismus
+  \begin{align*}
+    \mathcal O_{Z,x_0}\longrightarrow\mathcal O_{T,m}=R
+  \end{align*}
+  mit $f^\sharp(m_{Z,x_0})\subseteq m$. \\
+  Umgekehrt induziert jedes $i:\mathcal O_{Z,x_0}\hookrightarrow R$ einen Morphismus
+  \begin{align*}
+    \Spec R=T\to\Spec(\mathcal O_{Z,x_0})\to Z\to X
+  \end{align*}
+\end{Bew}
+
+\begin{Satz}
+  \label{satz:2}
+  Sei $f:X\to Y$ ein Morphismus noetherscher Schemata. $f$ ist genau dann separiert, wenn es zu jedem ``Bewertungsdiagramm''
+
+   \begin{center}
+    \begin{tikzpicture}
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+      { 
+        U & X\\
+        T & Y\\
+      };
+      \path[->,font=\scriptsize]
+      (m-1-1) edge node[auto] {}	(m-1-2)	
+      edge node[auto,swap] {}	(m-2-1)
+      (m-1-2) edge node[auto] {$f$} (m-2-2)
+      (m-2-1) edge node[auto,swap] {} (m-2-2)
+      (m-2-1) edge[densely dotted] node[auto,swap] {$h$} (m-1-2);
+    \end{tikzpicture}
+  \end{center}
+  ($T=\Spec R$, $R$ diskreter Bewertungsring, $U=\Spec K$, $K=\Quot R$) \\
+  höchstens einen Morphismus $h:T\to X$ gibt, der das Diagramm kommutativ macht. 
+\end{Satz}
+
+\begin{nnBsp}
+  Seien $X$ die affine Gerade mit doppeltem Nullpunkt, $Y=\Spec k$ für einen Körper $k$, $R=k[X]_{(X)}$, $K=k(X)$.
+  Sei weiter $X^\prime=\Spec k[X]$, dann existiert ein Morphismus, der das Bewertungsdiagramm kommutativ macht:
+   \begin{center}
+    \begin{tikzpicture}
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+      { 
+        K & k[X]\\
+        k[X]_{(X)} & k\\
+      };
+      \path[->,font=\scriptsize]
+      (m-2-2) edge node[auto] {}	(m-2-1)	
+      edge node[auto,swap] {}	(m-1-2)
+      (m-1-2) edge node[auto] {} (m-1-1)
+      (m-2-1) edge node[auto,swap] {} (m-1-1)
+      (m-1-2) edge[densely dotted] node[auto,swap] {$h^\sharp$} (m-2-1);
+    \end{tikzpicture}
+  \end{center}
+  Also gibt es für beide offenen Teile von $X$, die gleich $\mathbb A_k^1$ sind, je eine Fortsetzung.
+\end{nnBsp}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item[``$\Rightarrow$'']
+    Sei ein Bewertungsdiagramm (mit den üblichen Bezeichnungen) gegeben. Zwei $h_1,h_2:T\to X$ Fortsetzungen von
+    $h_0:U\to X$, induzieren einen Morphismus $h$:
+    \begin{center}
+      \begin{tikzpicture}
+        \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+        { 
+          & T & \\
+          &	X \times_Y X	&	\\
+          X & & X \\
+          & Y & \\
+        };
+        \path[->,font=\scriptsize]
+        (m-1-2) edge[densely dotted] node[auto] {$h$}	(m-2-2)	
+        edge[bend right=30] node[auto,swap] {$h_1$}		(m-3-1)
+        edge[bend left=30] node[auto] {$h_2$}		(m-3-3)
+        (m-2-2) edge node[auto,swap] {} (m-3-1)
+        edge node[auto] {} (m-3-3)
+        (m-3-1) edge node[auto,swap] {$f$} (m-4-2)
+        (m-3-3) edge node[auto] {$f$} (m-4-2);
+      \end{tikzpicture}
+    \end{center}
+    Es ist $h_1(0)=h_0(0)=h_2(0)$
+    \begin{align*}
+      \Rightarrow & h(0)\in\Delta=\Delta_f(X) \Rightarrow h(m)\in\overline{\{h(0)\}}\subseteq\Delta \\
+      \Rightarrow & h_1(m)=h_2(m)
+    \end{align*}
+  \item[``$\Leftarrow$''] Nach Übungsblatt 6, Aufgabe 1 genügt es zu zeigen: $\Delta$ ist abgeschlossen in $X\times_Y X$.
+    \begin{Beh}[1]
+      Ist für jedes $x_1\in\Delta$ auch $\overline{\{x_1\}}\subseteq\Delta$, so ist $\Delta$ abgeschlossen.
+    \end{Beh}
+    Seien also $x_1\in\Delta, x_0\in\overline{\{x_1\}}, Z\defeqr\overline{\{x_1\}}_{red}, \mathcal O\defeqr\mathcal O_{Z,x_0}, K=\mathcal O_{Z,y_1}=\kappa(x_1)$
+    \begin{Beh}[2]
+      Es gibt einen diskreten Bewertungsring $R\subseteq K$, der $\mathcal O$ dominiert, das heißt $\mathcal O\subseteq R$ 
+      und $m_{\mathcal O}=m_R\cap\mathcal O$.
+    \end{Beh}
+    Dann gibt es nach Proposition \ref{prop:7.4} einen Morphismus $h:T=\Spec R\to X\times_Y X$ mit $h(0)=x_1$ und $h(m)=x_0$.
+    Für $h_i=pr_i\circ h$, $i=1,2$, ist $f\circ h_1=f\circ h_2$, $h_i:T\to X$. \\
+    Da $x_1\in \Delta$, ist $h_1(0)=h_2(0)$. Mit $h_0\defeqr h\vert U$ folgt: $h_1=h_2\Rightarrow h(m)\in\Delta$.
+  \end{enumerate}
+\end{Bew}
+
+\begin{Bew}[2]
+  $m=m_{\mathcal O}$ ist endlich erzeugt, etwa $m=(x_1,\dots,x_n)$. Sei $\mathcal O^\prime=\mathcal O[\frac{X_2}{X_1},\dots,\frac{X_n}{X_1}]$
+  und $I=X_1\cdot\mathcal O^\prime$. (\OE $I\neq\mathcal O^\prime$) \\
+  Krullscherr Hauptidealsatz: es gibt ein Primideal $\mathfrak p\subseteq\mathcal O^\prime$ der Höhe 1 mit $I\subseteq\mathfrak p$
+  (Eisenbud Theorem 10.1) \\
+  $\mathcal O^\prime_{\mathfrak p}$ ist ein noetherscher lokaler Ring der Dimension 1. Sei $\tilde{\mathcal O}$ der ganze Abschluss von
+  $\mathcal O^\prime_{\mathfrak p}$ in $K$. \\
+  $\Rightarrow\tilde{\mathcal O}$ ist normal, $\dim\tilde{\mathcal O}=1$, \OE$\tilde{\mathcal O}$ lokal, $\tilde{\mathcal O}$ ist noethersch
+  (Satz von Krull-Akizuki, Eisenbud Theorem 11.13) \\
+  $\Rightarrow\tilde{\mathcal O}$ ist diskreter Bewertungsring. Es gilt: \\
+  $m_{\tilde{\mathcal O}}\cap\mathcal O\subseteq m_{\mathcal O}$: Klar. \\
+  $m_{\tilde{\mathcal O}}\cap\mathcal O\supseteq m_{\mathcal O}$, weil $X_1,\dots,X_n\in I$.
+\end{Bew}
+Behauptung 1 ist (für $f=\Delta$) ein Spezialfall von 
+\begin{Prop}
+  \label{prop:7.5}
+  Sei $f:W\to X$ Morphismus noetherscher Schemata. Dann gilt: 
+  \begin{align*}
+     & f(W) \text{ ist abgeschlossen }  \\
+     \Leftrightarrow & f(W) \text{ ist abgeschlossen unter Spezialisierung: Für } x_1\in f(W)\text{ und } x_0\in\overline{\{x_1\}}\text{ ist } x_0\in f(W).
+  \end{align*}
+\end{Prop}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item[``$\Rightarrow$''] Klar.
+  \item[``$\Leftarrow$''] Sei $Y=\overline{f(W)}$ (als abgeschlossenes Unterschema mit reduzierter Struktur) \\
+    Sei $y\in Y$; zu zeigen: $y\in f(W)$. \\
+    \OE $Y=\Spec A$ affin, sei $B=\mathcal O_W(W)$. $f$ wird also induziert von $\alpha:A\to B$ und $\alpha$ ist injektiv, weil $f$ dominant ist
+    (AG I, Proposition 6.8 (b) ). Sei $y^\prime\subseteq y$ ein minimales Primideal, dann gilt $y\in\overline{\{y^\prime\}}$.
+    Also genügt es zu zeigen: $y^\prime\in f(W)$ (das ist die Voraussetzung) \\
+    Es gilt $f^{-1}(y^\prime)=\Spec(\underbrace{B\otimes_A\kappa(y^\prime)}_{\defeql R})$.  Zu zeigen: $R\neq\{0\}$ \\
+    Es ist $\kappa(y^\prime)=\FakRaum{A_{y^\prime}}{y^\prime A_{y^\prime}}$ und $A_{y^\prime}$ ist ein Körper, weil $A$ reduziert ist. ?
+    Damit gilt: $R=B\otimes_A A_{y^\prime}$. Weiter gilt: $A\subseteq B\Rightarrow A\otimes_A A_{y^\prime}\subseteq B\otimes_A A_{y^\prime}=R$.
+    Und $A_{y^\prime}$ ist ein flacher $A$-Modul, weil er eine Lokalisierung ist.
+  \end{enumerate}
+\end{Bew}
+
+\begin{nnBsp}
+  $A=\FakRaum{k[X,Y]}{(X\cdot Y)}$, $y^\prime=(X)\Rightarrow A_{y^\prime}=k(Y)$.
+\end{nnBsp}
+
+\begin{Folg}
+  \label{folg:7.6}
+  Für noethersche Schemata gilt:
+  \begin{enumerate}
+  \item Affine und abgeschlossene Einbettungen sind separiert.
+  \item Die Komposition separierter Morphismen ist separiert.
+  \item ``separiert'' ist stabil unter Basiswechsel.
+  \item $g\circ f$ separiert $\Rightarrow$ $f$ separiert.
+  \item ``separiert'' ist lokal bezüglich der Basis, das heißt: \\ $f:X\to Y$ separiert $\Leftrightarrow$ es existiert 
+    eine offene Überdeckung $(U_i)$ von $Y$, sodass 
+    \begin{align*}
+      f\vert f^{-1}(U_i):f^{-1}(U_i)\to U_i \text{ separiert }
+    \end{align*}
+  \end{enumerate}
+\end{Folg}
+
+\begin{Bew}
+  Übung!
+\end{Bew}
+
+\section{Eigentliche Morphismen}
+
+\begin{Def}
+  \label{def:8.1}
+  Sei $f:X\to Y$ ein Morphismus von Schemata.
+  \begin{enumerate}
+  \item $f$ heißt \emph{lokal von endlichem Typ}, wenn es eine offene Überdeckung $(U_i)_{i\in\mathcal I}$, mit $U_i=\Spec A_i$, von $Y$ gibt
+    und für jedes $i\in\mathcal I$ eine offene Überdeckung $(U_{ij})_{j\in\mathcal J_i}$, mit $U_{ij}=\Spec B_{ij}$, von $f^{-1}(U_i)$ existiert, 
+    sodass für alle $i,j$ $B_{ij}$ vermöge $f^\sharp$ zu einer endlich erzeugten $A_i$-Algebra wird.
+  \item $f$ heißt \emph{von endlichem Typ}, wenn in (a) alle $J_i$ endlich gewählt werden können.
+  \item $f$ heißt \emph{endlich}, wenn in (a) jedes $J_i$ einelementig gewählt werden kann (also $f^{-1}(U_i)\defeql\Spec B_i$)
+    und $B_i$ ein endlich erzeugter $A_i$-\emph{Modul} ist.
+  \end{enumerate}
+\end{Def}
+
+\begin{Bem}
+  \label{bem:8.2}
+  In Definition \ref{def:8.1} kann ``es gibt eine offene affine Überdeckung'' ersetzt werden durch ``für jedes offene affine $U\subseteq Y$ gilt''.
+\end{Bem}
+
+\begin{Bew}
+ (a) Übungsblatt 5, Aufgabe 2, (b) und (c) analog.
+\end{Bew}
+
+\begin{Bem}
+  \label{bem:8.3}
+  Ist $f:X\to Y$ endlich, so ist $f^{-1}(y)$ für jedes $y\in Y$ eine endliche Menge.
+\end{Bem}
+
+\begin{Bew}
+  Sei \OE $Y=\Spec A$ affin. Dann ist auch $X=\Spec B$ affin. Es ist $f^{-1}(y)=\Spec(B\otimes_A\kappa(y))$.
+  $B\otimes_A\kappa(y)$ ist eine $\kappa(y)$-Algebra und, da $B$ ein endlich erzeugter $A$-Modul ist, ist $B\otimes_A\kappa(y)$ ein 
+  endlich dimensionaler $\kappa(y)$-Vektorraum. Es ist $\dim(B\otimes_A\kappa(y))=0$ (?), also $\Spec (B\otimes_A\kappa(y))$ endlich.
+\end{Bew}
+
+\begin{Def}
+  \label{def:8.4}
+  Ein Morphismus $f:X\to Y$ heißt \emph{eigentlich}, wenn er von endlichem Typ, separiert und universell abgeschlossen ist,
+  das heißt für jeden Basiswechsel 
+  \begin{center}
+    \begin{tikzpicture}
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+      { 
+        X\times_Y Y^\prime & X \\
+        Y^\prime & Y\\
+      };
+      \path[->,font=\scriptsize]
+      (m-1-1) edge node[auto,swap] {$f^\prime$} (m-2-1)
+      edge node[auto] {} (m-1-2)
+      (m-2-1) edge node[auto,swap] {} (m-2-2)
+      (m-1-2) edge node[auto,swap] {$f$} (m-2-2);
+    \end{tikzpicture}
+  \end{center}
+  ist $f^\prime$ abgeschlossen.
+\end{Def}
+
+\begin{nnBsp}
+  $f:\mathbb A_k^1\to\Spec k$ ist abgeschlossen. Basiswechsel:
+  \begin{center}
+    \begin{tikzpicture}
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+      { 
+        \mathbb A_k^2 & \mathbb A_k^1 \\
+        \mathbb A_k^1 & \Spec k\\
+      };
+      \path[->,font=\scriptsize]
+      (m-1-1) edge node[auto,swap] {$f^\prime$} (m-2-1)
+      edge node[auto] {} (m-1-2)
+      (m-2-1) edge node[auto,swap] {} (m-2-2)
+      (m-1-2) edge node[auto,swap] {$f$} (m-2-2);
+    \end{tikzpicture}
+  \end{center}
+  $f^\prime$ ist nicht abgeschlossen, denn: \\
+  $V=V(XY-1)$ ist abgeschlossene Teilmenge von $\mathbb A_k^2$, aber $f^\prime(V)=\mathbb A_k^1-\{0\}$ ist nicht abgeschlossen.
+\end{nnBsp}
+
+\begin{Satz}
+  \label{satz:3}
+  Seien $X,Y$ noethersche Schemata, $f:X\to Y$ ein Morphismus von endlichem Typ. $f$ ist genau dann eigentlich, wenn es zu jedem Bewertungsdidagramm
+  \begin{center}
+    \begin{tikzpicture}
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=2.5em, text height=1.5ex, text depth=0.25ex]
+      { 
+        U & X\\
+        T & Y\\
+      };
+      \path[->,font=\scriptsize]
+      (m-1-1) edge node[auto] {$\varphi$} (m-1-2)	
+      edge node[auto,swap] {}	(m-2-1)
+      (m-1-2) edge node[auto] {$f$} (m-2-2)
+      (m-2-1) edge node[auto,swap] {} (m-2-2)
+      (m-2-1) edge[densely dotted] node[auto,swap] {$h$} (m-1-2);
+    \end{tikzpicture}
+  \end{center}
+  genau eine Fortsetzung $h$ gibt.
+\end{Satz}
+
+%HIER FEHLT NOCH WAS
+
+\chapter{Kohomologie von Garben}
+\setcounter{section}{8}
+\section{$\mathcal O_X$-Modulgarben}
+\begin{Def}
+  Sei $(X,\mathcal O_X)$ ein lokal geringter Raum, $\mathcal F$ eine Garbe von abelschen Gruppen auf $X$. 
+  $\mathcal F$ heißt \begriff{$\mathcal O_X$-Modulgarbe}, wenn gilt:
+  \begin{iaufz}
+  \item Für jedes offene $U\subseteq X$ ist $\mathcal F(U)$ ein $\mathcal O_X$-Modul
+  \item Für $U^\prime\subseteq U\subseteq X$ offen ist $\mathcal F(U)\to\mathcal F(U^\prime)$
+    ein $\mathcal O_X(U)$-Modulhomomorphismus, wobei $\mathcal F(U^\prime)$ durch den Ringhomomorphismus
+     $\mathcal O_X(U)\to\mathcal O_X(U^\prime)$ zum $\mathcal O_X(U)$-Modul wird.
+  \end{iaufz}
+\end{Def}
+
+\begin{Bem}
+  \label{bem:9.2}
+  Die $\mathcal O_X$-Modulgarben bilden mit den $\mathcal O_X$-linearen Abbildungen eine Kategorie \Cat{\mathcal O_X-Mod}.
+\end{Bem}
+
+\begin{nnBsp}
+  Sei $X$ eine nichtsinguläre Kurve über einem algebraisch abgeschlossenen Körper $k$
+  und $D=\sum_{P\in X}n_PP$ ein Divisor auf $X$. \\
+  Für offenes $U\subseteq X$ sei
+  \begin{align*}
+    \mathcal L(D)(U)\defeqr & \{f\in k(X):\operatorname{div} f\vert U+D\vert U \geq 0\} \\
+    =& \{f\in k(X):\forall P\in U:\ord_P(f)+n_P\geq 0\}
+  \end{align*}
+  $\mathcal L(D)$ ist eine $\mathcal O_X$-Modulgarbe, denn $\operatorname{div}(f\cdot g)=\operatorname{div}(f)+\operatorname{div}(g)$.
+\end{nnBsp}
+
+\begin{DefBem}
+  \label{defbem:9.3}
+  Seien $\mathcal F,\mathcal G$ $\mathcal O_X$-Modulgarben.
+  \begin{enumerate}
+  \item $\mathcal F\otimes_{\mathcal O_X}\mathcal G$ sei die zu $U\mapsto \mathcal F(U)\otimes_{\mathcal O_X(U)}\mathcal G(U)$ assoziierte Garbe.
+  \item Für offenes $U\subseteq X$ sei 
+    \begin{align*}
+      \HomSheaf(\mathcal F,\mathcal G)(U)\defeqr\Hom_{\mathcal O_X\vert U}(\mathcal F\vert U,\mathcal G\vert U)
+    \end{align*}
+  \end{enumerate}
+  $\mathcal F\otimes\mathcal G$ und $\HomSheaf(\mathcal F,\mathcal G)$ sind $\mathcal O_X$-Modulgarben.
+\end{DefBem}
+
+\begin{DefBem}
+  \label{defbem:9.4}
+  Sei $f:X\to Y$ ein Morphismus von lokalgeringten Räumen.
+  \begin{enumerate}
+  \item Für jede $\mathcal O_X$-Modulgarbe $\mathcal F$ ist $f_\ast\mathcal F$ eine $\mathcal O_Y$-Modulgarbe auf $Y$.
+  \item Für jede $\mathcal O_Y$-Modulgarbe $\mathcal G$ ist $f^{-1}\mathcal G$ eine $f^{-1}\mathcal O_Y$-Modulgarbe und
+    \begin{align*}
+      f^\ast\mathcal G\defeqr f^{-1}\mathcal G\otimes_{f^{-1} \mathcal O_Y}\mathcal O_X
+    \end{align*}
+    eine $\mathcal O_X$-Modulgarbe.
+  \end{enumerate}
+\end{DefBem}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item Für offenes $U\subseteq Y$ ist $f_\ast \mathcal F(U)=\mathcal F(f^{-1}(U))$ ein $\mathcal O_X(f^{-1}(U))$-Modul.
+    $f^\sharp_U$ ist ein Ringhomomorphismus $\mathcal O_Y(U)\to\mathcal O_X(f^{-1}(U))$. Dadurch wird $f_\ast\mathcal F(U)$
+    zu einem $\mathcal O_Y(U)$-Modul.
+  \item Den Garbenhomomorphismus $f^{-1}\mathcal O_Y\to\mathcal O_X$ erhält man aus $f^\sharp:\mathcal O_Y\to f_\ast\mathcal O_X$
+    \begin{align*}
+      f^{-1}(f^\sharp):f^{-1}\mathcal O_Y\to f^{-1}f_\ast\mathcal O_X\to\mathcal O_X
+    \end{align*}
+    den hinteren Morphismus liefert \ref{def:image_sheaf} (d).
+  \end{enumerate}
+\end{Bew}
+
+\section{Quasikohärente $\mathcal O_X$-Modulgarben}
+\begin{DefBem}
+  \label{defbem:10.1}
+  Sei $X=\Spec R$ ein affines Schema, $M$ ein $R$-Modul. Für offenes $U\subseteq X$ sei
+  \begin{align*}
+    \widetilde{M}(U)\defeqr\{s:U\to\bigcup_{\mathfrak p\in U}M_{\mathfrak p}:~ &\text{für jedes $\mathfrak p\in U$ gibt es eine Umgebung $U_{\mathfrak p}$} \\
+    &\text{und Elemente $m_{\mathfrak p}\in M$, $f_{\mathfrak p}\in R-\mathfrak q$, sodass } \\
+    & \text{für alle $\mathfrak q\in U_{\mathfrak p}$ gilt: $s(\mathfrak q)=\frac{m_{\mathfrak p}}{f_{\mathfrak p}}\in M_{\mathfrak p}$}\}
+  \end{align*}
+  wobei $M_{\mathfrak p}=M\otimes_RR_{\mathfrak p}$ ist.
+\end{DefBem}
+
+\begin{Prop}
+  \label{prop:10.2}
+  Seien $X=\Spec R, M,\widetilde{M}$ wie in 10.1.
+  \begin{enumerate}
+  \item Für jedes $\mathfrak p\in X$ ist $\widetilde{M}_{\mathfrak p}\cong M_{\mathfrak p}$.
+  \item Für jedes $f\in R$ ist $\widetilde{M}(D(f))\cong M_f$ (insbesondere $\widetilde{M}(X)\cong M$).
+  \end{enumerate}
+\end{Prop}
+
+\begin{Bew}
+  Wie für $\mathcal O_X$.
+\end{Bew}
+
+\begin{Bem}
+  \label{bem:10.3}
+  $M\mapsto \widetilde{M}$ ist ein exakter, volltreuer Funktor $\Cat{R-Mod}\to\Cat{\mathcal O_X-Mod}$, denn: \\
+  Lokalisieren ist exakt, da $R_{\mathfrak p}$ flacher $R$-Modul ist (was Tensorieren exakt macht).
+\end{Bem}
+
+\begin{Bem}
+  \label{bem:10.4}
+  \begin{enumerate}
+  \item $\widetilde{M\otimes_RN}\cong\widetilde{M}\otimes_{\mathcal O_X}\widetilde{N}$
+  \item $\widetilde{\bigotimes M_i}\cong\bigotimes\widetilde{M_i}$
+  \end{enumerate}
+\end{Bem}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item $(M\otimes_RN)\otimes_RR_{\mathfrak p}\cong (M\otimes_RR_{\mathfrak p})\otimes_{R_{\mathfrak p}}(N\otimes_RR_{\mathfrak p})$
+  \end{enumerate}
+\end{Bew}
+
+\begin{Bem}
+  \label{bem:10.5}
+  Sei $f:X\to Y$ ein Morphismus, $X=\Spec R, Y=\Spec R^\prime, \alpha: R^\prime\to R$ der zugehörige Ringhomomorphismus.
+  \begin{enumerate}
+  \item Für jeden $R$-Modul $M$ ist $f_\ast\widetilde{M}\cong \widetilde{_\alpha M}$ ($_\alpha M$ sei $M$ aufgefasst als $R^\prime$-Modul über $\alpha$).
+  \item Für jeden $R^\prime$-Modul $N$ ist $f^\ast\widetilde{N}=\widetilde{N\otimes_{R^\prime}R}$
+  \end{enumerate}
+\end{Bem}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item
+    \begin{align*}
+      f_\ast\widetilde{M}(U)=&\widetilde{M}(f^{-1}(U))\text{ als $\mathcal O_Y(U)$-Modul} \\
+      =& _\alpha \widetilde{M}(U) 
+    \end{align*}
+  \item $f^\ast\widetilde{N}(X)=(f^{-1}\widetilde{N}\otimes_{f^{-1}\mathcal O_Y}\mathcal O_X)(X)=N\otimes_{R^\prime}R$
+  \end{enumerate}
+\end{Bew}
+
+\begin{Def}
+  \label{def:10.6}
+  Sei $(X,\mathcal O_X)$ ein Schema, $\mathcal F$ eine $\mathcal O_X$-Modulgarbe.
+  \begin{enumerate}
+  \item $\mathcal F$ heißt \begriff{quasi-kohärent}, wenn es eine offene affine Überdeckung $(U_i=\Spec R_i)_{i \in I}$
+    von $X$ und $R_i$-Moduln $M_i$ gibt, sodass 
+    \begin{align*}
+      \mathcal F\vert U_i\cong\widetilde{M_i}
+    \end{align*}
+    für alle $i \in I$ gilt.
+  \item $\mathcal F$ heißt \begriff{kohärent}, wenn in (a) jedes $M_i$ endlich erzeugbarer $R_i$-Modul ist.
+  \end{enumerate}
+\end{Def}
+
+\begin{Prop}
+  \label{prop:10.7}
+  Eine $\mathcal O_X$-Modulgarbe $\mathcal F$ auf einem Schema $X$ ist genau dann quasi-kohärent, wenn für jedes offene affine 
+  $U=\Spec R\subseteq X$ ein $R$-Modul $M$ existiert mit $\mathcal F\vert U\cong \widetilde{M}$.
+\end{Prop}
+
+\begin{Bew}
+  1. Schritt: Sei $X$ \OE affin, denn: \\
+    Sei $U=\Spec R\subseteq X$ offen und affin, $(U_i=\Spec R_i)$ die gegebene Überdeckung von $X$.
+    $(U\cap U_i)$ ist eine offene Überdeckung von $U$. Überdecke $U\cap U_i$ durch $D(f_{ij}), f_{ij}\in R_i$.
+    Dann gilt:
+    \begin{align*}
+      \mathcal F\vert D(f_{ij})=(\mathcal F\vert U)\vert D(f_{ij})=\widetilde{M_i}\vert D(f_{ij}) =\widetilde{(M_i)_{f_{ij}}}
+    \end{align*} \\
+2. Schritt: FEHLT NOCH
+\end{Bew}
+
+
+\appendix
+
+\def\indexspace{\par\medskip}
+\printindex[default][\phantomsection\addcontentsline{toc}{chapter}{Vokabeln}\vspace{-1.2em}]
+
+\end{document}

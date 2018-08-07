@@ -1,0 +1,184 @@
+\documentclass[a4paper,11pt]{book}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{ngerman}
+%\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{euscript}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage{mathtools}
+\usepackage[arrow, matrix, curve]{xy}
+%\usepackage{pst-all}
+%\usepackage{pst-add}
+%\usepackage{multicol}
+
+\usepackage[latin1]{inputenc}
+
+%%Zahlenmengen
+%Neue Kommando-Makros
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\K}{{\mathbb K}}
+\newcommand{\sn}[1]{||#1||_{\infty}}
+\newcommand{\ssl}{{\mathcal{l}}}
+\newcommand{\ssL}{{\mathcal{L}}}
+
+% Seitenraender
+\textheight22cm
+\textwidth14cm
+\topmargin-0.5cm
+\evensidemargin0,5cm
+\oddsidemargin0,5cm
+\headheight14pt
+
+%%Seitenformat
+% Keine Einrückung am Absatzbeginn
+\parindent0pt
+
+\DeclareMathOperator{\unif}{Unif}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
+
+
+\def\AA{ \mathcal{A} }
+\def\PM{ \EuScript{P} } 
+\def\EE{ \mathcal{E} }
+\def\BB{ \mathfrak{B} } 
+\def\DD{ \mathcal{D} } 
+\def\NN{ \mathcal{N} } 
+\def\KK{ \mathcal{K} }  
+
+% Komische Symbole
+\def\folgt{\ensuremath{\implies}}
+\newcommand{\folgtnach}[1]{\ensuremath{\DOTSB\;\xRightarrow{\text{#1}}\;}}
+\def\equizu{\ensuremath{\iff}}
+\def\d{\mbox{d}}
+\def\fs{\stackrel{f.s.}{\rightarrow }}
+
+%Nummerierungen
+\newtheorem{Def}{Definition}[chapter]
+\newtheorem*{DefNO}{Definition}
+\newtheorem{Sa}[Def]{Satz}
+\newtheorem{Lem}[Def]{Lemma}
+\newtheorem{Kor}[Def]{Korollar}
+\theorembodyfont{\normalfont}
+\newtheorem{Bsp}[Def]{Beispiel}
+\newtheorem{Bem}[Def]{Bemerkung}
+\theoremsymbol{\ensuremath{_\blacksquare}}
+\theoremstyle{nonumberplain}
+\newtheorem{Bew}[Def]{Beweis}
+\setcounter{chapter}{0}
+\setcounter{Def}{0}
+
+% Kopf- und Fusszeilen
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+\fancyfoot[C]{}
+\fancyhead[LO]{\rightmark}
+
+\title{Funktionalanalysis - Prof. Dr. Schnaubelt\\
+		im Wintersemester 06/07}
+\author{Das \texttt{latexki}-Team\\[8 cm]}
+
+\date{Stand: \today}
+\begin{document}
+
+\maketitle
+
+\chapter{Banachr"aume und lineare Operatoren}
+
+\section{Banachr"aume und metrische R"aume}
+
+Es sei $X$ ein VR "uber $\mathbb{K}\in \{\mathbb{R},\mathbb{C}\}$, wobei $X={0}$ solange nichts anderes gesagt wird.
+\begin{Def}%1.1
+Eine Halbnorm $p$ auf $X$ ist eine Abb. $p:X\rightarrow\mathbb{R}_{+}^{0}$ mit
+	\begin{enumerate}
+		\item [(a)] $p(\alpha x) = |\alpha|p(x) \qquad\qquad\forall 
+		x\in\mathbb{K},x\in X$ (Homogenit"at)
+		\item [(b)] $p(x+y)\leq p(x)+p(y) \qquad\forall x,y\in X$ 
+		($\triangle$-Ungleichung)
+		\item [(c)] $p(x)=0 \folgt x=0$ \qquad\qquad$\forall x\in X$ (Definitheit)
+	
+	\end{enumerate}
+so hei\ss t $p$ \underline{Norm} und $(X,p)$ \underline{normierter VR} (nVR).
+Man schreibt meist $||x||=p(x)$ und $p$
+\end{Def}
+\begin{Bem}$\\$
+	\begin{enumerate}
+	\item [(a)] 	Es gilt: $\mid ||x||-||y|| \mid \leq ||x-y||$
+	\item [(b)] 	$||x|| =$ ''L"ange'' von $x$\\
+					$\triangle$-Ungl. $=$ Hier gehört eine kleine Zeichung rein!
+	\item [(c)] 1.1 a) $\folgt p(0)=p(0\cdot 0)=0\cdot p(0)=0$
+	
+	\end{enumerate}
+\end{Bem}
+\begin{Def}%1.2
+	Eine Folge $(x_{n})_{n\in \mathbb{N}} \subseteq X$ konvergiert gegen $x\in X$, wenn 
+	\begin{enumerate}
+	\item [(1.1)] $\forall \epsilon >0\quad \exists N_{\epsilon} \in \mathbb{N}\quad ||x_{n}-x||  \leq \epsilon \quad \forall n \geq N_{\epsilon}$ $(x_{n})$ ist eine Cauchy-folge (CF) in $X$, wenn
+	\item [(1.2)] $\forall \epsilon >0 \quad \exists N_{\epsilon} \in \mathbb{N}\quad ||x_{n}-x_{m}|| \leq \epsilon \quad \forall n,m \geq N_{\epsilon}$
+	\item [] Ein nVR $(X,||\cdot||)$ heisst \underline{Banachraum}, wenn er \underline{vollst"andig} ist, d.h. jede Cauchy-Folge hat einen Grenzwert. Wenn die Norm klar ist, so schreibt man $X$ statt $(X,||\cdot||)$.
+
+	\end{enumerate}
+\end{Def}
+\begin{Bem}$\\$
+	\begin{enumerate}
+	\item [(a)] Eine konvergente Folge ist CF, da
+			\begin{displaymath}
+				||x_{n}-x_{m}|| \leq ||x_{n}-x|| + ||x-x_{m}|| \leq 2\epsilon \quad \forall n,m \geq N_{\epsilon}, N_{\epsilon} \textrm{ aus (1.1)}
+			\end{displaymath}
+	\item [(b)] Wenn $x_{n} \rightarrow x$ und $x_{n} \rightarrow y$ in $X$ $(n\rightarrow \infty)$, so gilt $x=y$, wegen Def. 1.1 c) und
+			\begin{displaymath}
+				||x-y|| \leq ||x-x_{n}|| + ||x_{n}-y|| \leq 2\epsilon\quad \textrm{f"ur}\quad n\geq \max\{N_{\epsilon}(x),N_{\epsilon}(y)\}.
+			\end{displaymath}
+			(wobei $N_{\epsilon}(x),N_{\epsilon}(y)$ aus (1.1)), hier ist $\epsilon >0$ beliebig\\ $\folgt ||x-y||=0 \folgtnach{1.1c)} x=y$
+	\item [(c)] CF und konvergente Folgen $(x_{n})_{n\in \mathbb{N}}$ sind beschr"ankt, d.h. $\sup\limits_{n\in\mathbb{N}}||x_{n}|| < \infty$
+	\end{enumerate}
+\end{Bem}
+\begin{Bew}
+Nach (1.2) \quad $\exists N\in\mathbb{N}$ mit $||x_{n}-x_{N}||\leq 1 \quad\forall n\geq N.$
+\begin{displaymath}
+ \folgt ||x_{n}||\leq ||x_{n}-x_{N}||+||x_{N}||\leq 1+||x_{N}|| \quad\forall n\geq N.
+\end{displaymath}
+\qquad Ferner:\qquad $||x_{n}|| \leq \max\{||x_{1}||,...,||x_{N}||\}$ f"ur $n=1,...,N$
+\end{Bew}
+\begin{Bsp}$\\$%1.3
+	\begin{enumerate}
+	\item [(a)] $X=\K^{d}$ mit $||x||_{p} = (\sum\limits_{k=1}^{d}|x_{k}|^{p})^{\frac{1}{p}}$, $1\leq p\leq \infty$\\
+	$||x||_{\infty} = \max\limits_{k=1...d}|x|_{k}$, wobei $x=(x_{1},...x_{d})\in\K^{d}.\\
+	(X,||\cdot||_{p}||)$ ist BR f"ur $1\leq p\leq\infty$ (BR = Banachraum).
+	\item [(b)] $X=C([0,1])=\{f:[0,1]\rightarrow \K :\textrm{f stetig}\}\\$
+	Dabei sind $f+g, \alpha f$ f"ur $f,g\in X,\alpha\in\K$
+		\begin{eqnarray}
+    		\textrm{gegeben durch: }(f+g)(t)&=&f(t)+g(t) \nonumber\\
+			(\alpha f)(t)&=&\alpha f(t),\quad t\in [0,1] \nonumber
+		\end{eqnarray}
+	Bekannt ist: $X$ ist VR.\\
+	Supremumsnorm f"ur $f\in X : ||f||_{\infty} = \sup\limits_{t\in [0,1]}|f(t)| \quad(=\max\limits_{t\in [0,1]}|f(t)|).$\\
+	Klar: $\sn{f} \in [0,\infty)$, $||f||_{\infty} =0 \folgt f=0$
+		\begin{eqnarray}
+			\sn{\alpha f} &=& \sup\limits_{t\in [0,1]} |\alpha f(t)|=|\alpha||f(t)|=|\alpha|\sn{f}\nonumber \\
+			\sn{f+g} &=& \sup\limits_{t\in [0,1]} |f(t)+g(t)|\leq \sup\limits_{t\in [0,1]} |f(t)|+|g(t)| \leq \sn{f}+\sn{g} \nonumber
+		\end{eqnarray}
+$\folgt (X,\sn{\cdot})$ ist nVR.\\
+Sei $(f_{n})_{n\in \N}$ eine CF in $(X,\sn{\cdot})\\ \folgt |f_{n}(t)-f_{m}(t)|\leq \sn{f_{n}(t)-f_{m}(t)}\leq \varepsilon \quad \forall n,m\geq N_{\varepsilon}$, wobei $\varepsilon > 0$ bel., gilt f"ur alle $t\in [0,1].\qquad(\ast)$\\
+$\folgt (f_{n}(t))_{n\in\N}$ ist CF in $\K \folgtnach{$\K$ vollst.} \exists f(t)=\lim\limits_{n\rightarrow\infty}f_{n}(t), \quad t\in [0,1].$\\
+Sei $t\in [0,1]$, $\varepsilon >0, N_{\varepsilon}$ aus $(\ast)$, $n\geq N_{\varepsilon}$\\
+$|f(t)-f_{n}(t)|=\lim\limits_{m\rightarrow\infty}|f_{m}(t)-f_{n}(t)|\leq \lim\limits_{m\rightarrow\infty}\sn{f_{m}(t)-f_{n}(t)} \leq \varepsilon$\\
+Da $N_{\varepsilon}$ \underline{unabh"angig} von $t$, gilt $\sn{f-f_{n}} \leq\varepsilon \quad \forall n\geq N_{\varepsilon}.$\\
+D.h.: $f_{n}\rightarrow f$ glm. in $t\in [0,1]$. z.Z. bleibt Stetigkeit von f.
+	\end{enumerate}
+\item[(c)] Haben $f_n \in X=$C$([0,1]) $\\
+$f:\; [0,1] \rightarrow \mathbb{K} $ mit $ \forall \varepsilon >0 \, \exists \,N_\epsilon \in \mathbb{N}: \quad ||f_n-f||_{\infty}\leq \varepsilon \, \forall n \geq N_\varepsilon$ \\
+Sei $\varepsilon >0$ und $t,s \in [0,1]$ gegeben, w"ahle $n= N_\varepsilon$. Dann $\exists \delta = \delta (n) = \delta (\varepsilon)$, so dass: $|f_n(t)-f_n(s)|\leq \varepsilon$ wenn $|t-s|\leq \delta \; (f_n$ glm. st"atig) 
+\end{Bsp}
+\end{document}

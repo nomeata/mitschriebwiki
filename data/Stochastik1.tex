@@ -1,0 +1,2902 @@
+\documentclass[a4paper,11pt]{book}
+
+\usepackage{latexki}
+
+\lecturer{Prof. Dr. Bäuerle}
+\semester{Wintersemester 05/06}
+\scriptstate{complete}
+
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{ngerman}
+%\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{euscript}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage{mathtools}
+%\usepackage{pst-all}
+%\usepackage{pst-add}
+%\usepackage{multicol}
+
+\usepackage[utf8]{inputenc}
+
+%%Zahlenmengen
+%Neue Kommando-Makros
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\Z}{{\mathbb Z}}
+% Seitenraender
+\textheight22cm
+\textwidth14cm
+\topmargin-0.5cm
+\evensidemargin0,5cm
+\oddsidemargin0,5cm
+\headheight14pt
+
+%%Seitenformat
+% Keine Einrückung am Absatzbeginn
+\parindent0pt
+
+\DeclareMathOperator{\unif}{Unif}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
+
+
+\def\AA{ \mathcal{A} }
+\def\PM{ \EuScript{P} } 
+\def\EE{ \mathcal{E} }
+\def\BB{ \mathfrak{B} } 
+\def\DD{ \mathcal{D} } 
+\def\NN{ \mathcal{N} } 
+
+%Nummerierungen
+\newtheorem{Def}{Definition}[chapter]
+\newtheorem{Sa}{Satz}[chapter]
+\newtheorem{Lem}[Sa]{Lemma}
+\newtheorem{Kor}[Sa]{Korollar}
+\theorembodyfont{\normalfont}
+\newtheorem{Bsp}{Beispiel}[chapter]
+\newtheorem{Bem}{Bemerkung}[chapter]
+\theoremsymbol{\ensuremath{_\blacksquare}}
+\theoremstyle{nonumberplain}
+\newtheorem{Bew}{Beweis}
+
+% Kopf- und Fusszeilen
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+\fancyfoot[C]{}
+\fancyhead[LO]{\rightmark}
+
+\renewcommand{\indexname}{Stichwortverzeichnis}
+
+\makeindex
+\title{Stochastik I}
+\author{Matthias Hahne und das \texttt{latexki}-Team\\[8 cm]
+Dieses Dokument ist eine pers"onliche Vorlesungsmitschrift der \\
+Vorlesung Stochastik I im Sommersemester 2005 bei Prof. Dr. B"auerle. \\
+\\
+Diese Version des Skriptes ist angepasst an die Vorlesung von Prof.\\
+Dr. Bäuerle im Wintersemester 05/06 an der Universität Karlsruhe.\\
+Koordiniert wurde diese Arbeit über \url{http://mitschriebwiki.nomeata.de/},\\
+einem \LaTeX-Wiki von Joachim Breitner.\\
+\\
+Weder Matthias Hahne noch das latexki-Team geben eine Garantie f"ur die \\
+Richtigkeit oder Vollst"andigkeit des Inhaltes und "ubernehmen keine\\
+Verantwortung f"ur etwaige Fehler.
+}
+\date{Stand: \today}
+
+
+\begin{document}
+
+\thispagestyle{empty}
+\maketitle
+\newpage
+\thispagestyle{empty}
+\tableofcontents
+\thispagestyle{empty}
+
+\chapter{Ereignisse und Wahrscheinlichkeiten}
+% Kapitel-Anfang
+
+\setcounter{page}{1}
+In der Stochastik werden zufallsabh"angige Ph"anomene mathematisch modelliert und analysiert. (z.B. w"urfeln)\\
+$\Omega$ = Ergebnisraum (z.B. $\Omega = \{1,2,3,4,5,6\}$)\\
+$A\subset \Omega$ Ereignis (z.B. A=\{2,4,6\} $\hat{=}$  gerade Zahl f"allt)\\
+Ist $\omega \in \Omega$, so hei"st $\{\omega\}$ Elementarereignis
+
+\begin{Bsp}$\\$
+\begin{itemize}
+	\item[a)] Zuerst wird eine M"unze geworfen. F"allt Kopf, wird mit einem W"urfel geworfen, f"allt Zahl so wird nochmal mit der M"unze geworfen.\\
+	$\Omega = \{K1,K2,K3,K4,K5,K6,ZZ,ZK\}$
+	\item[b)] Rotierender Zeiger \\ 	%Zeichnung fehlt
+	 $\Theta = 2\pi x$, $0\leq x < 1$ sei der Winkel beim Stillstand \\
+	 $\Omega = [0,1)$ \\
+	 $A = (0,\frac{1}{4})$ ist das Ereignis: ``Zeiger stoppt im I. Quadranten``				
+\end{itemize}
+\end{Bsp}
+Verkn"upfungen von Ereignissen werden durch mengentheoretische Operationen beschrieben.
+\begin{Def}$\\$
+\begin{itemize}
+	\item[a)] Seien $A,B \subset \Omega$ Ereignisse. So hei"st \\
+	$A\cap B = AB = \{\omega \in \Omega | \omega \in A$ \underline{und} $\omega \in B\} = \{\omega\in \Omega | \omega\in A, \omega\in B\}$ \textbf{Durchschnitt von $A$ und $B$}\index{Durchschnitt von $A$ und $B$}. \\
+	$A\cup B = \{\omega\in \Omega | \omega\in A$ \underline{oder} $\omega\in B\}$ \textbf{Vereinigung von $A$ und $B$}\index{Vereinigung von $A$ und $B$}.\\ 
+	Sind $A$ und $B$ disjunkt, dh. $A\cap B$ = $\emptyset$ dann schreiben wir auch $A+B$ \\
+	$A\backslash B$ = $\{\omega \in \Omega | \omega\in A, \omega\notin B\}$ \\
+	Gesprochen: $A$ ohne $B$. Spezialfall $A$ = $\Omega$ Dann ist $\Omega \backslash B$ = $B^c$ \\
+	$B^c$ hei"st \textbf{Komplement von $B$}\index{Komplement von $B$}. \\
+	\item[b)] Sind $\Omega_{1},\Omega_{2},\ldots,\Omega_{n}$ Ergebnisr"aume, so ist \\
+	$\Omega_{1}\times \Omega_{2}\times \cdots \times \Omega_{n}$ = $\{(a_{1},\ldots,a_{n})|a_{i} \in \Omega_{i}, i = 1,\ldots,n\}$ das \textbf{Kartesische Produkt}\index{Kartesische Produkt}.  
+\end{itemize}
+\end{Def}
+
+\begin{Bsp}
+2x w"urfeln \\
+$\Omega$ = $\{(i,j) \in \{1 \ldots 6\}\}$ \\
+A = Erster W"urfel ist eine 6 = $\{(6,1),(6,2),(6,3),(6,4),(6,5),(6,6)\}$ = $\{(6,j)|j\in \{1 \ldots6\}\}$ \\
+B = Augensumme ist max 4 = $\{(i,j)| i+j \leq 4\}$ = \{(1,1),(1,2),(1,3),(2,2),(3,1)\}\\
+$A\cap B$ = $\emptyset$ \\
+$B^c$ = Augensumme ist mindestens 5 
+\end{Bsp}
+
+Mit $\PM(\Omega)$ bezeichnen wir die \textbf{Potenzmenge von $\Omega$}\index{Potenzmenge von $\Omega$}, d.h. die Menge aller Teilmengen von $\Omega$. (dazu geh"oren auch $\Omega$ und $\emptyset$). Wir wollen nun Ereignissen Wahrscheinlichkeiten zuordnen. \\
+Es sei $\AA \subset \PM (\Omega)$ die Menge aller Mengen (Ereignisse) denen wir Wahrscheinlichkeiten zuordnen wollen. Um eine sinnvolle math. Theorie zu bekommen, k"onnen wir im Allgemeinen nicht $\AA=B\backslash\Omega$ w"ahlen. Jedoch sollte das Mengensystem $\AA$ gewisse Eigenschaften haben.
+
+\begin{Def}$\\$
+\begin{itemize}
+	\item [a)] $\AA\subset\PM(\Omega)$ hei"st \textbf{Algebra "uber $\Omega$}\index{Algebra "uber $\Omega$}, falls gilt:
+			\begin{itemize}
+				\item[(i)] $\Omega \in \AA$ 
+				\item[(ii)] $A \in \AA \Rightarrow A^c \in \AA$
+				\item[(iii)] $A_1,A_2 \in \AA \Rightarrow A_1\cup A_2 \in \AA$ 
+			\end{itemize}
+	\item [b)] $\AA\subset\PM(\Omega)$ hei"st \textbf{$\sigma$-Algebra "uber $\Omega$}\index{$\sigma$-Algebra "uber $\Omega$}, falls $\AA$ eine Algebra ist und 
+	\begin{itemize}
+	\item [(iv)] $A_1,A_2,\ldots \in \AA \Rightarrow \bigcup_{i=1}^{\infty} A_i \in \AA$
+	\end{itemize}
+\end{itemize}
+\end{Def}
+
+\begin{Bem}$\\$
+\begin{itemize}
+	\item [a)] Das Paar ($\Omega,\AA$) mit $\AA$ $\sigma$-Algebra "uber $\Omega$ hei"st \textbf{Messraum}\index{Messraum}
+	\item [b)] $\PM(\Omega)$ ist stets eine $\sigma$-Algebra. Ist $\Omega$ endlich oder abz"ahlbar unendlich, so kann $\AA = \PM(\Omega)$ gew"ahlt werden. Ist $\Omega$ nicht abz"ahlbar (siehe Beispiel 1.1), so muss eine kleinere $\sigma$-Algebra betrachtet werden. (Kapitel 4). 
+	\end{itemize}
+\end{Bem}
+Wir wollen noch die folgenden Mengenverkn"upfungen betrachten.
+
+\begin{Def}
+Seien $A_1,A_2,\ldots \subset \Omega$ Dann hei"st \\
+\[ \limsup_{n\to\infty} A_n = \limsup_{n\to\infty} A_n := \bigcap_{k=1}^{\infty} \bigcup_{n=k}^{\infty} A_n \] der \textbf{Limes Superior} der Folge $\{A_n\} $ und \\
+\[ \liminf_{n\to\infty} A_n = \liminf_{n\to\infty} A_n := \bigcup_{k=1}^{\infty} \bigcap_{n=k}^{\infty} A_n \] hei"st der \textbf{Limes Inferior} der Folge $\{A_n\}$
+\end{Def}
+
+\begin{Bem}
+Es gilt: \\
+\[\omega \in \limsup_{n\to\infty} A_n \Leftrightarrow \forall \, k \in \N \,\, \exists n \geq k : w \in A_n\\
+\Leftrightarrow |\{n \in \N| \omega\in A_n \}| = \infty\]
+\[\limsup_{n\to\infty}A_n \textnormal{ist das Ereignis ``unendlich viele $A_n$’s treten ein``}\]
+\[\omega \in \liminf_{n\to\infty} A_n \Leftrightarrow \exists\, k \in \N\,\textnormal{,so dass} \,\,\forall\, n \geq k \,\,\omega\in A_n\]
+\[\liminf_{n\to\infty} A_n \textnormal{ist also das Ereignis ``alle bis auf endlich viele der $A_n$’s treffen ein!``}\]
+\end{Bem}
+
+\begin{Lem}
+Seien $A_1,A_2, \ldots, \subset \Omega$.
+\begin{itemize}
+	\item [a)] Falls $\{A_n\}$ wachsend ist, d.h. $A_1 \subset A_2 \subset \ldots$, dann gilt: \\
+ \[\limsup_{n\to\infty} A_n = \liminf_{n\to\infty} A_n = \bigcup_{n=1}^{\infty}A_n\] 
+ \item [b)] Falls $\{A_n\}$ fallend ist, d.h. $A_1 \supset A_2 \supset \ldots$, dann gilt: \\ 
+ \[\limsup_{n\to\infty} A_n = \liminf_{n\to\infty} A_n = \bigcap_{n=1}^{\infty}A_n\]
+ \end{itemize}
+\end{Lem}
+ 
+\begin{Bem}$\\$
+\begin{itemize}
+	\item [a)] F"ur $A_1 \subset A_2 \subset A_3 \subset \ldots$ schreiben wir $A_n \uparrow$, f"ur $A_1 \supset A_2 \supset \ldots$ schreiben wir $A_n \downarrow$
+	\item [b)] Falls \[\limsup_{n\to\infty} A_n = \liminf_{n\to\infty} A_n \,\,\textnormal{schreiben wir kurz:}\,\, \lim_{n\to\infty} A_n\]
+\end{itemize}
+\end{Bem}
+
+\begin{Bew}
+\begin{itemize}
+	\item [a)] Sei \[A:=\bigcup_{n=1}^{\infty}A_n\]\\
+	Es gilt \[\bigcup_{n=k}^{\infty}A_n = A \quad\forall \, k \in \N \Rightarrow \limsup_{n\to\infty} A_n = A\] \\
+	Andererseits: \[\bigcap_{n=k}^{\infty}A_n = A_k\,\, \textnormal{, d.h.}\, \liminf_{n\to\infty} A_n = A\] 
+	\item [b)] analog
+\end{itemize}
+\end{Bew}
+
+Ereignissen ordnen wir jetzt Zahlen zwischen 0 und 1 zu, die wir als Wahrscheinlichkeiten interpretieren. Damit dies sinnvoll ist, soll die Zuordnung gewissen \textsc{Axiomen} gen"ugen.
+
+\begin{Def}[Axiomensystem von Kolmogorov 1933]$\\$
+Gegeben sei ein Messraum $(\Omega,\AA)$. Eine Abbildung $P: A \rightarrow [0,1]$ hei"st Wahrscheinlichkeitsma"s\index{Wahrscheinlichkeitsma"s} auf $\AA$, falls
+\begin{itemize}
+	\item [(i)] $P(\Omega) = 1$ ``Normiertheit``
+	\item [(ii)] \[P(\sum_{i=1}^{\infty} A_i) = \sum_{i=1}^{\infty} P(A_i) \,\quad\forall\,\textnormal{paarweise disjunkten}\, A_1,A_2,\ldots \in \AA\] 
+(d.h. $A_i\cap A_j = \emptyset\quad\forall i\neq j$) ``$\sigma-Additivit"at$``
+\end{itemize}
+($\Omega,\AA,P$) hei"st \textbf{Wahrscheinlichkeitsraum}\index{Wahrscheinlichkeitsraum}.
+\end{Def}
+
+\begin{Bsp}$\\$
+Ist $\Omega \neq \emptyset$ eine endliche Menge und $\AA = P(\Omega)$, so wird durch $P(A) = \frac{|A|}{|\Omega|} \,\forall A \subset \Omega$ ein Wahrscheinlichkeitsma"s auf ($\Omega,\AA$) definiert. \\
+($\Omega,\AA,P$) nennt man Laplace`schen Wahrscheinlichkeitsraum. Jedes Elementarereignis hat hier die gleiche Wahrscheinlichkeit $\frac{1}{|\Omega|}$.\\
+Wir betrachten den gleichzeitigen Wurf zweier W"urfel. Wie gro"s ist die Wahrscheinlichkeit, dass die Augensumme 11 bzw. 12 ist? \\
+2 W"urfel \\
+$\Omega = \{(i,j) | i,j = \{1 \ldots 6\}\}$ \\
+$|\Omega| = 36$ \\
+A = Augensumme 11 \\
+B = Augensumme 12 \\
+P(A) = P(\{(5,6),(6,5)\}) = $\frac{2}{36}$\\
+P(B) = P(\{(6,6)\}) = $\frac{1}{36}$
+\end{Bsp}
+
+\begin{Sa}$\\$
+Sei ($\Omega,\AA,P$) ein Wahrscheinlichkeitsraum und $A,B,A_1,A_2,\ldots \in \AA$. Dann gilt:
+\begin{itemize}
+	\item [a)] $P(A^c)=1-P(A)$
+	\item [b)] Monotonie: $A\subset B \Rightarrow P(A)\leq P(B)$
+	\item [c)] \[\textnormal{Endliche Additivit"at} P(\sum_{k=1}^{n} A_k) = \sum_{k=1}^{n} (P(A_k))\,\textnormal{f"ur paarweise disjunkte}\, A_1 \ldots A_n\]
+	\item [d)] $P(A\cup B)= P(A)+P(B)-P(\overbrace{A\cap B}^{=AB})$
+	\item [e)] Boole`sche Ungleichung: \[P(\bigcup_{k=1}^{n}A_k)\leq \sum_{k=1}^{n}P(A_k)\qquad \forall\, n \in \N\]
+\end{itemize}
+\end{Sa}
+
+\begin{Bew}
+\begin{itemize}
+	\item [a)] Es gilt: \\
+				$1=P(\Omega)=P(A+A^c)=P(A+A^c+\emptyset+\emptyset \ldots) \stackrel{(ii)}{=} P(A)+P(A^c)+P(\emptyset)+P(\emptyset) \ldots$ \\
+				 \underline{$\Rightarrow P(\emptyset)= 0$} und $P(A^c) = 1 - P(A)$
+	\item [b)] $P(B)=P(A+B\backslash A)=P(A) + \underbrace{P(\overbrace{B\backslash A}^{=B\cap A^c \in \AA})}_{\geq 0} \geq P(A)$
+	\item [c)] Setze $A_{n+1}=A_{n+2}=\cdots=\emptyset$ und verwende die $\sigma-Additivit"at$.
+	\item [d)] Es gilt: $A\cup B = A+B\backslash A \Rightarrow P(A\cup B) = P(A)+P(B\backslash A)$ \\
+	$B = B\backslash A + A\cap B \Rightarrow P(B)=P(B\backslash A)+ P(\overbrace{A\cap B}^{=AB})$\\
+	Es folgt: $P(A\cup B)=P(A)+P(B)-P(AB)$
+	\item [e)] F"ur n=2  folgt die Aussage aus Teil d), da $P(AB)\geq 0$ \\
+	Induktion: $n\rightarrow n+1$:
+	\[P(\bigcup_{k=1}^{n+1}A_k)=P(\bigcup_{k=1}^{n}A_k \cup A_{n+1})\leq P(\bigcup_{k=1}^{n}A_k)+P(A_{n+1}) \leq \sum_{k=1}^{n}P(A_k)+P(A_{n+1})\]
+\end{itemize}
+\end{Bew}
+
+\begin{Sa}[Siebformel]\index{Siebformel}$\\$
+Sei ($\Omega,\AA,P$) ein Wahrscheinlichkeitsraum, dann gilt f"ur $A_1 \ldots A_n \in \AA$: \\
+\[P(\bigcup_{k=1}^{n}A_k)= \sum_{k=1}^{n}(-1)^{k-1}\cdot\sum_{1\leq i_1\leq i_2 \cdots \leq i_k\leq n} P(A_{i1}\cap \cdots \cap A_{ik})\]
+\end{Sa}
+
+\begin{Bem}$\\$
+\begin{itemize}
+	\item [a)] Die Formel ist auch unter dem Namen: Formel von Poincare-Sylvester oder Formel des Ein- und Ausschlie"sens bekannt.
+	\item [b)] n=2 $P(A_1 \cup A_2) = P(A_1)+P(A_2)-P(A_1\cap A_2)$
+\end{itemize}
+\end{Bem}
+
+Die $\sigma$-Additivit"at ist "aquivalent zu einer gewissen Stetigkeit des Wahrscheinlichkeitsma"ses.
+
+\begin{Sa}
+Sei ($\Omega,\AA$) ein Messraum und sei $P:\AA\rightarrow [0,1]$ eine beliebige additive Mengenfunktion, d.h. $P(A+B)=P(A)+P(B)$ gelte f"ur disjunkte $A,B \in \AA$. Au"serdem sei $P(\Omega)=1$. Dann sind die folgenden Aussagen "aquivalent:
+\begin{itemize}
+	\item [a)] $P$ ist $\sigma$-additiv (und damit ein Wahrscheinlichkeitsma"s)
+	\item [b)] $P$ ist stetig von unten, d.h. f"ur $A_n \in \AA$ mit $A_n \uparrow$ gilt: \\
+	\[\lim_{n\to\infty} P(A_n) = P(\lim_{n\to\infty} A_n)\]
+	\item [c)] $P$ ist stetig von oben, d.h. f"ur $A_n \in \AA$ mit $A_n \downarrow$ gilt: \\
+	\[\lim_{n\to\infty} P(A_n) = P(\lim_{n\to\infty} A_n)\]
+	\item [d)] $P$ ist stetig in $\emptyset$, d.h. f"ur $A_n \in \AA$ mit $A_n \downarrow \emptyset$ gilt: \\
+	\[\lim_{n\to\infty} P(A_n)=0\]
+	\end{itemize}
+\end{Sa}
+
+\begin{Bew}
+\begin{description}
+	\item[$a)\Rightarrow b)$] Es sei $A_0 := \emptyset$. Dann gilt:
+	\[P(\lim_{n\to\infty} A_n) \stackrel{L.1.1}{=} P(\bigcup_{k=1}^{\infty}A_k)= P(\sum_{k=1}^{\infty}(A_k \backslash A_{k-1})) = \sum_{k=1}^{\infty}P(A_k\backslash A_{k-1}) =\]
+\[ =\lim_{n\to\infty} \sum_{k=1}^{\infty}P(A_k\backslash A_{k-1}) = \lim_{n\to\infty} P(A_n)\]
+	\item[$b)\Rightarrow c)$] $A_n \downarrow \Rightarrow A_n^c \uparrow$ und \\
+	\[\lim_{n\to\infty} P(A_n) = \lim_{n\to\infty} 1-P(A_n^c) = 1-\lim_{n\to\infty} P(A_n^c)\stackrel{b)}{=} 1-P(\bigcup_{n=1}^{\infty}A_n^c) \stackrel{\textnormal{d`Morgan}}{=} P(\bigcap_{n=1}^{\infty}A_n)\]
+	 Mit Lemma 1.1 folgt die Behauptung
+	\item[$c)\Rightarrow d)$] klar (d) Spezialfall von c))
+	\item[$d)\Rightarrow a)$] Seien $A_1,A_2,\ldots \in \AA$ paarweise disjunkt. Dann gilt \\
+	\[\bigcup_{k=n+1}^{\infty} A_k \downarrow\emptyset\qquad \textnormal{f"ur}\, n\rightarrow \infty\] Also 
+	\[P(\sum_{k=1}^{\infty} A_k) = P(\sum_{k=1}^{n} A_k +\sum_{k=n+1}^{\infty} A_k) \stackrel{\textnormal{ P endl. Add.}}{=} \sum_{k=1}^{n} P(A_k) + P(\sum_{k=n+1}^{\infty} A_k)\]
+	F"ur $n\rightarrow \infty$ gilt: $P(\underbrace{\sum_{k=n+1}^{\infty}A_k}_{B_n}) \rightarrow 0$ und die Behauptung folgt.
+\end{description}
+\end{Bew}
+
+\chapter{Kombinatorik und Urnenmodelle}
+In diesem Abschnitt nehmen wir an, dass ($\Omega,\AA,P$) ein Laplace`scher Wahrscheinlichkeitsraum ist (vgl. Bsp.1.3), d.h. $\Omega$ ist endlich, $\AA = P(\Omega)$ und $P(A)=\frac{|A|}{|\Omega|} \forall A \subset \Omega$. F"ur reale Vorg"ange muss zun"achst der ``richtige`` Wahrscheinlichkeitsraum gefunden werden.
+
+\begin{Bsp}
+Ein Ehepaar hat zwei Kinder. Wie gro"s ist die Wahrscheinlichkeit, dass die Kinder unterschiedliches Geschlecht haben.\\
+$\Omega=\{MM,MJ,JM,JJ\}$\\
+$A=\{MJ,JM\} \Rightarrow P(A)=\frac{1}{2}$\\
+Ist der Wahrscheinlichkeitsraum aufgestellt, so m"ussen zur Bestimmung der Wahrscheinlichkeit P(A) ``nur`` die Elemente in $A$ (und $\Omega$) gez"ahlt werden.
+\end{Bsp}
+
+\section{Permutationen}
+Gegeben seien $n$ verschiedene Objekte. Eine Permutation der Objekte ist eine beliebige Anordnung darstellen (in Reihe)
+
+\begin{Bsp}
+Gegeben seien a,b,c. M"ogliche Permutationen\\
+abc, acb, bac, bca, cab, cba
+\end{Bsp}
+\begin{Lem}$\\$
+Die Anzahl der Permutationen von $n$ verschiedenen Objekten ist $n! = n\cdot (n-1) \cdots 1$
+\end{Lem}
+
+\begin{Bew}
+F"ur den ersten Platz hat man $n$ M"oglichkeiten, f"ur den zweiten Platz $(n-1)$ etc.
+\end{Bew}
+
+\begin{Bem}
+Gegeben seien $n$ Objekte, die nicht alle verschieden sind. Es seien $n_1$ vom Typ 1, $n_2$ vom Typ 2, $\ldots$, $n_k$ vom Typ $k$ \\
+Also: $n_1+\cdots +n_k=n$
+\end{Bem}
+
+\begin{Lem}
+Die Anzahl der Permutationen von $n$ Objekten mit jeweils $n_1,n_2,\ldots,n_k$ gleichen Objekten ist $\frac{n!}{n_1!\cdot n_2!\cdots n_k!}$
+\end{Lem}
+
+\begin{Bsp}
+Eine Schachtel enth"alt 10 Gl"uhbirnen 5 rote, 2 gelbe, 3 blaue. Die Gl"uhbirnen werden nacheinander zuf"allig in eine Lichterkette geschraubt. Wie gro"s ist die Wahrscheinlichkeit, dass zuerst die roten, dann die gelben und zuletzt die blauen Gl"uhbirnen aufgeh"angt werden?\\
+Antwort: $\frac{5!\cdot 2!\cdot 3!}{10!}$
+\end{Bsp}
+
+\begin{Bew}[von Lemma 2.2]
+Zun"achst nummerieren wir die gleichen Objekte durch, um sie zu unterscheiden. Dann gibt es nach Lemma 2.1 $n!$ m"ogliche Permutationen. Zu einer Klasse $K_i$ fassen wir die Permutationen zusammen, bei denen die Elemente vom Typ $i$ die Pl"atze tauschen.\\
+Da $|K_i|=n_i!$ folgt die Behauptung.
+\end{Bew}
+
+\section{Urnenmodelle}
+Gegeben sei eine Urne mit $n$ Objekten, nummeriert mit $1,2,\ldots,n$. $k$ Objekte werden zuf"allig gezogen.
+
+\begin{itemize}
+	\item [A] Ziehen mit Zur"ucklegen, mit Ber"ucksichtigung der Reihenfolge. \\
+Formal k"onnen die Ergebnisse dieser Ziehung durch folgende Menge beschrieben werden:\\
+	$M_n^k :=\{(i_1,\ldots,i_k)|i_\nu \in \{1,\ldots,n\}, \nu=1,\ldots,k\}=\{1,\ldots,n\}^k$ \\
+	Die Elemente von $M_n^k$ nennt man k-Permutationen von $\{1,\ldots,n\}$ mit Wiederholung.
+	\begin{Sa}
+ $|M_n^k|=n^k$ 
+ \end{Sa}
+ \begin{Bsp}Wie viele verschiedene 3-stellige Zahlen kann man mit den Ziffern $1,2,\ldots,9$ bilden?\\
+	Anwort: $9^3=729$
+	\end{Bsp}
+	\item [B] Ziehen ohne Zur"ucklegen, mit Ber"ucksichtigung der Reihenfolge. \\
+Ergebnisse werden beschrieben durch: \\
+	$M_B=\{(i_1,\ldots,i_k)=M_n^k| i_\nu \neq i_\mu$ f"ur $\nu \neq \mu $\}\\
+	Die Elemente von $M_B$ nennt man die k-Permutationen von $\{1,\ldots,n\}$ ohne Wiederholung.
+	\begin{Sa} 
+	$|M_B|=\frac{n!}{(n-k)!}$
+	\end{Sa}
+	\begin{Bew}
+	Beim ersten Zug gibt es $n$ M"oglichkeiten.\\
+	Beim zweiten Zug gibt es $(n-1)$ M"oglichkeiten.\\
+	$\vdots$\\
+	Beim k-ten Zug gibt es $(n-k+1)$ M"oglichkeiten.\\
+	Insgesamt also $n\cdot(n-1)\cdot\cdots\cdot(n-k+1)=\frac{n!}{(n-k)!}$
+	\end{Bew}
+	\begin{Bsp}
+	Wieviele 3-stellige Zahlen mit verschiedenen Ziffern $1-9$ gibt es?\\
+	Antwort: $9\cdot8\cdot7=504$
+	\end{Bsp}
+	\item [C] Ziehen ohne Zur"ucklegen, ohne Ber"ucksichtigung der Reihenfolge.\\
+ Ergebnisse werden beschrieben durch: \\
+	$M_C=\{(i_1,\ldots,i_k) \in M_n^k| i_1<i_2<\cdots<i_k\}$\\
+	Die Elemente von $M_C$ nennt man k-Kombinationen von $\{1,\ldots,n\}$ ohne Wiederholung.
+	\begin{Sa}
+	$|M_C|$=$n\choose k$=$\frac{n!}{k!\cdot(n-k)!}$
+	\end{Sa}
+	\begin{Bew} Ber"ucksichtigt man die Reihenfolge, so kann jedes Element aus $M_C$ auf $k!$ verschiedene Arten dargestellt werden. Also gilt der Zusammenhang: $|M_C|\cdot k!=|M_B| \Rightarrow |M_C|=\frac{n!}{k!\cdot(n-k)!}$
+	\end{Bew}
+	\begin{Bsp}[Lotto: 6 aus 49]
+	Es gibt $\binom{49}{6}=13983816$ verschiedene Ziehungsergebnisse
+	\end{Bsp}
+	\item [D] Ziehen mit Zur"ucklegen ohne Ber"ucksichtigung der Reihenfolge.\\
+ Ergebnisse werden beschrieben durch:\\
+	$M_D=\{(i_1,\ldots,i_k)= M_n^k| i_1\leq i_2\leq\cdots\leq i_k\}$\\
+	Die Elemente von $M_D$ nennt man k-Kombinationen von $\{1,\ldots,n\}$ mit Wiederholung.
+	\begin{Sa}
+	$|M_D|$=$n+k-1\choose k$
+	\end{Sa}
+	\begin{Bew} Wir betrachten folgende Abbildung f:\\
+	Sei $(i_1,\ldots,i_k)$ mit $i_1\leq i_2\leq\cdots\leq i_k$ ein Element aus $M_D$. Dieses wird abgebildet auf $f((i_1,\ldots,i_k))=(i_1,i_2+1,i_3+2,\ldots,i_k+k-1)=(j_1,\ldots,j_k)$\\
+	offenbar gilt $1\leq j_1<j_2<\cdots <j_k\leq n+k-1$\\
+	$f:M_D\rightarrow \{(j_1,\ldots,j_k)\leq M_{n+k-1}^k |j_1<j_2<\cdots <j_k\}=: M^*$
+	ist bijektiv da durch $i_\nu=j_\nu-\nu+1$ die Umkehrabbildung gegeben ist.\\
+	Die Anzahl der Elemente in den Mengen $M_D$ und $M^*$ ist also gleich $\Rightarrow |M_D|$=$n+k-1\choose k$
+	\end{Bew}
+	\begin{Bem}
+	F"ur $|M_D|$ gibt es auch eine weitere Interpretation:\\
+	$n+k-1\choose k$ ist die Anzahl der M"oglichkeiten $k$ Objekte auf $n$ F"acher aufzuteilen (wobei Mehrfachbelegungen m"oglich sind).
+	\end{Bem}
+	\begin{Bsp}
+	Wie viele M"oglichkeiten gibt es eine nat"urliche Zahl $k$ als Summe von $n$ nicht negativen, ganzen Zahlen zu schreiben?\\
+	$k=5, n=2 \quad \Rightarrow\{(0+5),(5+0),(1+4),(4+1),(2+3),(3+2)\}$\\ 
+	Antwort:$n+k-1\choose k$=$\binom{6}{5}=6$
+	\end{Bsp}
+	\end{itemize}
+	Zusammenfassung:\\
+	\begin{tabular}[t]{|c|c|c|c} 
+	\hline
+ Anzahl der M"oglichkeiten bei &  & \\
+ Ziehung vom Umfang & mit Zur"ucklegen & ohne Zur"ucklegen \\
+ $k$ aus $\{1\ldots n\}$     &          &   	\\ \hline
+                    &          &  $n\cdot (n-1)\cdot\cdots\cdot (n-k+1)$    \\
+ mit Reihenfolge    & $n^{k}$ & $=\frac{n!}{(n-k)!}$        	\\ 
+				    &          &  		\\ \hline
+                    &          &        \\
+ ohne Reihenfolge   &  $n+k-1 \choose k$ &  $\frac{n!}{(n-k)!k!} ={n\choose k}$     	\\ 
+				    &          &  		\\ \hline
+						 
+\end{tabular}
+
+\section{Weitere Beispiele}
+
+\begin{Bsp}$\\$
+\begin{enumerate}
+	\item Das Geburtstagsproblem\\
+	Im H"orsaal seien $n$ Studenten. Wie gro"s ist die Wahrscheinlichkeit, dass mindestens 2 davon am gleichen Tag Geburtstag haben? Wir machen folgende Annahmen:
+	\begin{itemize}
+	\item den 29.Februar ber"ucksichtigen wir nicht
+	\item die Wahrscheinlichkeit an einem bestimmten Tag Geburtstag zu haben ist f"ur alle Tage gleich
+	\item keine Zwillinge 
+	\end{itemize}
+Es gilt: $\Omega=\{(i_1,\ldots,i_n)|i_\nu \in\{1,\ldots,365\}, \nu=1,\ldots,n\}=\{1,\ldots,365\}^n$\\
+Also gilt: $|\Omega|=365^n$\\
+Sei $A$ das Ereignis, dass mindestens 2 Studenten am gleichen Tag Geburtstag haben. Es gilt $P(A)=\frac{|A|}{|\Omega|}=1-\frac{|A^c|}{|\Omega|}$ wobei $A^c$ das Ereignis ist, dass alle Studenten an verschiedenen Tagen Geburtstag haben:\\
+$A^c=\{(i_1,\ldots,i_n) \in \Omega| i_\nu \neq i_\mu$ f"ur $\nu \neq \mu$\}\\
+Somit (Typ B) gilt: $|A^c|=\frac{365!}{(365-n)!}$ und die Wahrscheinlichkeit ist damit $P(A)=1-\frac{365!}{(365-n)!\cdot365^n}$ $(n\leq 365)$\\
+F"ur $n=23$: $P(A)\geq 0,5$\\
+F"ur $n=50$: $P(A)\approx 0,97$\\
+Offenbar ist die Wahrscheinlichkeit wachsend in $n$.
+\item Das Aufzugsproblem\\
+Ein Aufzug f"ahrt mit 7 Personen im Erdgeschoss los. Auf der Fahrt zur obersten Etage (5.Stock) steigen alle Fahrg"aste aus.
+\begin{itemize}
+	\item [a)] Wie viele M"oglichkeiten gibt es die Personen abzusetzen, wenn wir sie nicht unterscheiden wollen?
+	\item [b)] Wie viele M"oglichkeiten gibt es die Personen abzusetzen, wenn sie aus 5 Frauen und 2 M"annern bestehen und wir M"anner und Frauen unterscheiden m"ochten?
+\end{itemize}
+Antwort:
+\begin{itemize}
+	\item [a)] Es handelt sich um Typ D. $\Rightarrow$ Wir haben $n=5$ Stockwerke (=F"acher) auf die wir $k=7$ Peronen (=Objekte) verteilen.\\
+	$n+k-1\choose k$=$5+7-1\choose 7$=$11\choose 7$=330 M"oglichkeiten
+	\item [b)] Hier rechnen wir die M"oglichkeiten f"ur M"anner und Frauen getrennt aus und multiplizieren sie dann.\\
+	Frauen: $5+5-1\choose 5$=$9\choose 5$=126 \\
+	M"anner: $5+2-1\choose 2$=$6\choose 2$=15\\
+	Insgesamt gibt es also $126\cdot15=1890$ M"oglichkeiten.
+\end{itemize}
+\item Absolute Permutation\\
+Es sei $S_n$ die Menge aller Permutationen der Zahlen $\{1 \ldots n\}$. Eine Permutation hei"st \underline{absolut}, falls sie keine einzige Zahl fest l"asst.\\
+Wie gro"s ist die Wahrscheinlichkeit, dass eine absolute Permutation auftritt, wenn alle Permutationen gleich wahrscheinlich sind?\\
+Es sei Abs die Menge aller absoluten Permutationen und $A_k$ die Menge aller Permutationen, die die Zahl $k$ festhalten, $k=1\ldots n$.\\
+Dann ist $(Abs)^c=\bigcup_{k=1}^n A_k$. \\
+Es sei \[\overline{S_k}:= \sum_{1\leq i_1<\cdots<i_k\leq n} P(A_{i_1}\cap\cdots\cap A_{i_k})\]
+Mit der Siebformel (Satz 1.3) folgt:
+\[P(Abs)=1-P(Abs^c)=1-\sum_{k=1}^n (-1)^{k-1}\cdot \overline{S_n}\]
+Die Menge $A_{i_1}\cap\cdots\cap A_{i_k}$ ist die Menge aller Permutationen, die die Zahlen $i_1\ldots i_k$ festhalten. Also ist \\
+$P(A_{i_1}\cap\cdots\cap A_{i_k})=\frac{(n-k)!}{n!}$\\
+\underline{Wichtig:} Die letzte Wahrscheinlichkeit h"angt nur von $k$ ab, nicht von der konkreten Wahl der $i_\mu$\\
+In diesem Spezialfall gilt mit Typ C (Lotto):
+\[\overline{S_k}=\frac{(n-k)!}{n!}\cdot|M_C|=\frac{(n-k)!}{n!}\cdot \binom{n}{k}=\frac{(n-k)!}{n!}\cdot\frac{n!}{k!\cdot(n-k)!}=\frac{1}{k!}\]
+Also: \[P(Abs)=1+\sum_{k=1}^n (-1)^k\cdot\frac{1}{k!}=1+\sum_{k=1}^n\frac{(-1)^k}{k!}=\sum_{k=0}^n\frac{(-1)^k}{k!} (0!:=1)\]
+Insbesondere: \[\lim_{n\to\infty}P(Abs_{(n)})=\sum_{k=0}^\infty \frac{(-1)^k}{k!}=e^{-1}=\frac{1}{e}\]
+\end{enumerate}
+\end{Bsp}
+
+%Kapitel-Ende
+\chapter{Bedingte Wahrscheinlichkeiten und Unabh"angigkeiten}
+Wie k"onnen wir Teilinformationen "uber den Ausgang eines Zufallsexperimentes nutzen?
+
+\begin{Bsp}
+Es werden zwei W"urfel geworfen. Wir erhalten die Information, dass die Augensumme mindestens 10 ist. Wie gro"s ist die Wahrscheinlichkeit, dass mind. einer der W"urfel 6 zeigt?\\
+Aufgrund der Vorinformation wissen wir, dass das Ergebnis des Experiments in der Menge\\
+$B=\{(4,6),(6,4),(5,5),(5,6),(6,5),(6,6)$\}\\
+liegt. In nur einem Fall (5,5) ist keine 6 dabei.\\
+Wir definieren die folgenden Ereignisse:\\
+A = mindestens einer der W"urfel zeigt 6\\
+B = die Augensumme ist mindestens 10\\
+Die gesuchte Wahrscheinlichkeit sollte also wie folgt sein:
+$$\frac{|A\cap B|}{|B|}=\frac{5}{6}=\frac{P(A\cap B)}{P(B)}$$
+\end{Bsp}
+
+\begin{Def}
+Seien $A,B\in \AA$ Ereignisse mit $P(B)>0$. Dann hei"st 
+\[P(A|B)=\frac{P(A\cap B)}{P(B)}\]
+die \textbf{bedingte Wahrscheinlichkeit von $A$ unter Bedingung $B$}\index{bedingte Wahrscheinlichkeit}.
+\end{Def}
+
+\begin{Bem}
+Bezeichnen wir $P_B(A):=P(A|B)$, so ist $(B,\AA_B,P_B)$ wieder ein Wahrscheinlichkeitsraum.
+\end{Bem}
+Oft ist die bedingte Wahrscheinlichkeit $P(A|B)$ gegeben und man muss $P(A\cap B)$ bestimmen. Also $P(A\cap B)=P(A|B)\cdot P(B)$\\
+Durch vollst"andige Induktion nach $n$ erh"alt man:
+
+\begin{Sa}[Multiplikationssatz]\index{Multiplikationssatz}$\\$
+Seien $A_1,\ldots,A_n \in \AA$ Ereignisse mit $P(A_1\cap\cdots\cap A_n)>0$. Dann gilt \\
+$P(A_1\cap\cdots\cap A_n)= \prod_{k=1}^nP(A_k|A_1\cap\cdots\cap A_{k-1})$ mit $A_0=\Omega$\\
+also $P(A_1|A_0)=P(A_1)$.
+\end{Sa}
+
+\begin{Bsp}
+Von einem Kartenspiel mit 32 Blatt, wovon 4 Asse sind, bekommt jeder von 3 Spielern 10 Karten. Wie gro"s ist die Wahrscheinlichkeit, dass jeder der 3 Spieler genau ein As erh"alt?\\
+Es sei $A_i$ das Ereignis, dass Spieler $i$ genau ein As erh"alt. $i=1,2,3$\\
+Gesucht ist die Wahrscheinlichkeit $P(A_1\cap A_2\cap A_3)$. Es gilt:\\
+$P(A_1\cdot A_2\cdot A_3)=P(A_1)\cdot P(A_2|A_1)\cdot P(A_3|A_2\cdot A_1)$\\
+$P(A_1)=\frac{{4\choose 1}\cdot {28\choose 9}}{{32\choose 10}}$,
+$P(A_2|A_1)=\frac{{3\choose1}\cdot {19\choose 9}}{{22\choose 10}}$, $P(A_3|A_2\cdot A_1)=\frac{{2 \choose 1}\cdot {10\choose 9}}{{12\choose 10}}$\\
+Satz 3.1 $\Rightarrow P(A_1\cdot A_2\cdot A_3)=0,0556$
+\end{Bsp}
+
+\begin{Sa}
+Es seien $B_1,B_2,\ldots \in \AA$ eine \textbf{Ereignispartition} von $\Omega$, d.h.
+\begin{itemize}
+	\item [(i)] $B_i\cap B_j=\emptyset$ f"ur $i\neq j$
+	\item [(ii)] \[\sum_{i=1}^\infty B_i = \Omega\]
+	\item [(iii)] $P(B_i)>0 \quad\forall\, i=1,2,\ldots$
+\end{itemize}
+Dann folgt:
+\begin{itemize}
+	\item [a)] \textbf{Satz von der totalen Wahrscheinlichkeit}\index{Satz von der totalen W'keit}\\
+	F"ur jedes Ereignis $A\in \AA$ gilt:\\
+	\[P(A)=\sum_{j=1}^\infty P(B_j)\cdot P(A|B_j)\]
+	\item [b)] \textbf{Formel von Bayes}\index{Formel von Bayes}\\
+	F"ur jedes Ereignis $A \in \AA$ mit $P(A)>0$ gilt:
+	\[P(B_k|A)=\frac{P(B_k)\cdot P(A|B_k)}{\sum_{j=1}^\infty P(B_j)\cdot P(A|B_j)}\]
+\end{itemize}
+\end{Sa}
+
+\begin{Bew}
+\begin{itemize}
+	\item [a)] \[P(A)=P(A\cap\Omega) \cdot P(A\cap\sum_{j=1}^\infty B_j)= P(\sum_{j=1}^\infty A\cap B_j)=\sum_{j=1}^\infty P(A\cap B_j)\]
+\[\stackrel{\textnormal{Def. bed. W`keit}}{=}\sum_{j=1}^\infty P(A|B_j)\cdot P(B_j)\]
+	\item [b)] \[P(B_k|A)=\frac{P(B_k\cap A)}{P(A)}=\frac{P(B_k)\cdot P(A|B_k)}{P(A)}\]
+	Einsetzen von a) liefert die Behauptung
+\end{itemize}
+\end{Bew}
+
+\begin{Bsp}
+Bei einer bin"aren "Ubertragung von Nachrichten werden durch St"orung 5\% der gesendeten Nullen zu Einsen und 3\% der gesendeten Einsen zu Nullen verf"alscht. Das Verh"altnis der gesendeten Nullen zu den gesendeten Einsen betrage 3:5. Wie gro"s ist die Wahrscheinlichkeit, dass eine empfangene Null richtig ist?\\
+Es sei $\Omega=\{(i,j)|i,j\in\{0,1\}\}$\\
+1.Komponente = gesendetes Signal; 2. Komponente = empfangenes Signal\\
+Wir betrachten die folgenden Ereignisse:\\
+$S_0=$ ``eine Null wird gesendet``\\
+$S_1=$ ``eine Eins wird gesendet``\\
+$E_0=$ ``eine Null wird empfangen``\\
+Bekannt sind: $P(E_0|S_0)=0.95$ $P(E_0|S_1)=0.03$ $P(S_0)=\frac{3}{8}$ $P(S_1)=\frac{5}{8}$\\
+Au"serdem ist $\Omega=S_0+S_1$. Damit folgt:
+\[P(S_0|E_0)=\frac{{P(S_0)}\cdot {P(E_0|S_0)}}{{P(S_0)}\cdot {P(E_0|S_0)}+{P(S_1)}\cdot {P(E_0|S_1)}}=0.95\]
+\newline
+Falls $P(A|B)=P(A)$, so hei"st das, dass ``das Eintreten des Ereignisses $B$ keinen Einfluss auf das Eintreten von $A$ hat`` Wegen der Definition der bedingten Wahrscheinlichkeit ist dies "aquivalent zu $P(A\cap B)=P(A)\cdot P(B)$
+\end{Bsp}
+
+\begin{Def}$\\$
+\begin{itemize}
+	\item [a)] Zwei Ereignisse $A,B \in \AA$ hei"sen \textbf{unabh"angig}\index{Unabh"angigkeit von Ereignissen}, falls $P(A\cap B)=P(A) \cdot P(B)$
+	\item [b)] Die Ereignisse $A_1,\ldots,A_n \in A$ hei"sen \textbf{unabh"angig}, falls f"ur alle $k=1,\ldots,n$ und f"ur alle k-Tupel, $1\leq i_1<i_2<\cdots<i_k\leq n$ stets gilt:
+	\[P(\bigcap_{j=1}^kA_{i_j})=\prod_{j=1}^kP(A_{i_j})\]
+\end{itemize}
+\end{Def}
+
+\begin{Bem}$\\$
+\begin{itemize}
+	\item [a)] Teilsysteme von unabh"angigen Ereignissen sind unabh"anigig
+	\item [b)] Der Begriff der Unabh"angigkeit wird auch f"ur unendliche Folgen von Ereignissen ben"otigt. Man sagt $A_1,A_2,\ldots \in A$ sind unabh"angige Ereignisse, falls f"ur jede endliche Teilfolge $\{i_1,i_2,\ldots,i_k\}\subset \{1,2,\ldots\}$ die Ereignisse $A_{i_1},\ldots,A_{i_k}$ unabh"angig sind im Sinne von Teil b).
+\end{itemize}
+\end{Bem}
+
+\begin{Bsp}
+Eine faire M"unze wird 2$\times$ geworfen\\
+$\Omega=\{KK,KZ,ZK,ZZ\}$\\
+Es sei $A_1=\{KK,KZ\}$ ``Kopf im ersten Wurf``\\
+$A_2=\{KK,ZK\}$ ``Kopf im zweiten Wurf``\\
+$A_3=\{KZ,ZK\}$ ``Resultate verschieden``\\
+Es gilt: $P(A_1\cap A_2)=\frac{1}{4}=\frac{1}{2}\cdot\frac{1}{2}=P(A_1)\cdot P(A_2)$\\
+$P(A_1\cap A_3)=P(A_1)\cdot P(A_3)$,$P(A_2\cap A_3)=P(A_2)\cdot P(A_3)$\\
+Aber: $P(A_1\cap A_2\cap A_3)=P(\emptyset)=0\neq P(A_1)\cdot P(A_2)\cdot P(A_3)$\\
+Damit sind $A_1,A_2,A_3$ \underline{nicht} unabh"angig.
+\end{Bsp}
+
+
+\chapter{Allgemeine Wahrscheinlichkeitsr"aume}
+Ist $\Omega$ endlich oder abz"ahlbar unendlich, so kann $\AA=\PM(\Omega)$ gew"ahlt werden. Was machen wir z.B. bei $\Omega=[0,1)$ im Beispiel des rotierenden Zeigers 1.1.b)?\\
+$\PM([0,1))$ ist zwar eine $\sigma$-Algebra, f"ur eine vernünftige Theorie jedoch zu gro"s, wie die folgende "Uberlegung zeigt.\\
+Ist der Zeiger fair, so sollte f"ur $[a,b)\subset [0,1)$ gelten:\\
+$P([a,b))=b-a$ \\
+Bzw. $\forall A\subset[0,1)$ und $\forall x\in [0,1)$:\\
+$P(x+A)=P(A)$ (*)\\
+wobei $x+A=\{x+y \mod 1|y\in A\}$ $(\Rightarrow$ $P$ "andert sich nicht bei Verschiebung des Intervalls)\\
+P ist also eine Gleichverteilung auf $[0,1)$. Es gilt jedoch:\\
+
+\begin{Sa}
+Ein Wahrscheinlichkeitsma"s auf (der Potenzmenge) $\PM([0,1))$ mit der Eigenschaft (*) existiert \underline{nicht}.
+\end{Sa}
+\begin{Bew}
+Betrachte folgende "Aquivalenzrelation auf $[0,1)$: $x\sim y\Leftrightarrow x-y \in \Q$\\
+Die "Aquivalenzklassen bilden eine Partition des $[0,1)$\\
+Auswahlaxiom: Aus jeder Klasse wird ein Element genommen und in eine Menge $A$ gesteckt.\\
+Es gilt nun:
+\begin{itemize}
+	\item [(i)] $(x+A)\cap(y+A)=\emptyset\qquad \forall\, x,y\in\Q\cap[0,1), x\neq y$
+	\item [(ii)] $\bigcup_{x\in\Q\cap[0,1)}(x+A)=[0,1)$
+\end{itemize}
+\begin{itemize}
+	\item zu (i)\\
+	Annahme: $\,\exists a,b\in A$ und $x,y\in\Q\,\cap\,[0,1),x\neq y$ mit $(a+x)\mod 1=(b+y)\mod 1$. Da $0<|x-y|<1$ folgt $a\neq b$\\
+	Wegen $a-b=y-x (\pm 1)\in\Q$ w"urde a,b in der gleichen Klasse liegen. Widerspruch.
+	\item zu (ii)\\
+	$``\subset``$: ist klar\\
+	$``\supset``$: Sei $z\in [0,1) \Rightarrow \exists\, a\in A$ mit $a\sim z$, d.h. $x:=z-a \in\Q$ und $-1<x<1$\\
+	Falls $x<0$ ersetze $x$ durch $x+1$ $(z=(x+1)+amod1)$\\
+\end{itemize}
+	Sei jetzt $P$ ein Wahrscheinlichkeitsma"s auf $\PM([0,1))$ mit (*). Dann gilt:\\
+	\[1\stackrel{\textnormal{Normiertheit}}{=}P([0,1))\stackrel{(i),(ii)}{=}P(\sum_{x\in\Q\cap[0,1)}(x+A))\stackrel{\sigma\textnormal{-Add}}{=}\sum_{x\in\Q\cap[0,1)}P(x+A)\stackrel{(*)}{=}\sum_{x\in\Q\cap[0,1)}P(A)\]
+$\Rightarrow$ Widerspruch
+\end{Bew}
+
+\begin{Def}$\\$
+Es sei $\Omega\neq\emptyset$ und $\EE\subset\PM(\Omega)$. Dann hei"st
+\[\sigma(\EE):=\bigcap_{\AA\supset\EE,\,\AA\ \sigma\text{-Algebra}}\AA\]
+die von $\EE$ erzeugte $\sigma$-Algebra. $\EE$ hei"st \textbf{Erzeugendensystem}\index{Erzeugendensystem}.
+\end{Def}
+
+\begin{Bem}$\\$
+\begin{itemize}
+        \item [a)] $\sigma(\EE)$ ist die kleinste $\sigma$-Algebra, die $\EE$ enthält.
+	\item [b)] Der Durchschnitt von beliebig vielen $\sigma$-Algebren "uber $\Omega$ ist wieder eine $\sigma$-Algebra $(\rightarrow{"Ubung})$
+	\item [c)] $\sigma(\EE)\neq\emptyset$, da $\PM(\Omega)>\EE$ und $\sigma$-Algebra ist.
+\end{itemize}
+\end{Bem}
+Wir definieren jetzt eine $\sigma$-Algebra auf $\R$.
+
+\begin{Def}
+Es sei $\EE:=\{(a,b], -\infty<a<b<\infty\}$ Dann hei"st $\BB=\BB(\R)=\sigma(\EE)$ \textbf{Borelsche $\sigma$-Algebra}\index{Borelsche $\sigma$-Algebra} oder $\sigma$-Algebra der Borelschen Mengen von $\R$
+\end{Def}
+
+\begin{Bem}$\\$
+\begin{itemize}
+	\item [a)] Es gilt auch\\
+	$\BB=\sigma(\{(-\infty,a],a\in\R\})=\sigma(\{F\subset\R|F$ abgeschlossen\})\\
+	$=\sigma(\{U\subset\R|U$ offen\})\\
+	zur letzten Gleichung: $\BB=\sigma(U\subset\R|U$ offen\})
+	\begin{itemize}
+	\item [(i)] $\BB\supset \sigma (\{U\subset\R| U\text{ offen}\})$, da sei $U\subset\R$ offen $\forall x\in U\ \exists (a,b]\subset U$ mit $x\in(a,b], a,b\in \Q$\\
+	also $U=\bigcup_{\{(a,b)\in \Q^2|(a,b]\subset U\}}(a,b] \in \BB$
+	\item[(ii)] ``$\subset$`` $(a,b]=\bigcap_{n=1}^\infty(a,b+\frac{1}{n}) \in \sigma(\{U\subset \R|U$ offen\})
+	\end{itemize}
+	\item [b)]Sei $A\subset \R, A\neq \emptyset$ Dann ist\\
+	$\BB_A:=\{B\cap A|B\in \BB\}$ eine $\sigma$-Algebra "uber A
+\end{itemize}
+\end{Bem}
+
+\begin{Sa}
+Es gibt ein Wahrscheinlichkeitsma"s $P$ auf $([0,1),\BB_{[0,1)})$ mit der Eigenschaft $P(A)=P(A+x) \forall A\in \BB_{[0,1)}, \forall x \in [0,1)$\\
+Insbesondere gilt: $$P([a,b])=b-a \ \forall 0\leq a<b<1$$
+\end{Sa}
+
+\begin{Bem}
+P hei"st Gleichverteilung auf dem Einheitsintervall.\\
+Sei $x\in [0,1)$ Wegen $P(\{x\})=\lim_{n\to\infty} P([x,x+\frac{1}{n}))=\lim_{n\to\infty}\frac{1}{n}=0$\\
+gilt $P([a,b])=P([a,b))$ f"ur $a,b\in[0,1]$\\
+Ist das Wahrscheinlichkeitsma"s aus Satz 4.2 eindeutig?
+\end{Bem}
+
+\begin{Def}
+Sei $\Omega\neq\emptyset$ $\DD\subset \PM(\Omega)$ hei"st \textbf{Dynkin-System}\index{Dynkin-System}, falls gilt:
+\begin{itemize}
+	\item [(i)] $\Omega\in\DD$
+	\item [(ii)] $A\in\DD \Rightarrow A^c\in\DD$
+	\item [(iii)] $A_1, A_2,\ldots \in \DD$ mit $A_i \cap A_j=\emptyset$ f"ur $i\neq j \Rightarrow \sum_{i=1}^\infty A_i \in \DD$
+\end{itemize}
+\end{Def}
+
+\begin{Bem}
+Der Durchschnitt von beliebig vielen Dynkin-Systemen ist wieder ein Dynkin-System. Es sei\\
+\[\delta(\EE):=\bigcap_{\DD\supset\EE, \DD Dynkin-System}\DD\]
+das von $\EE$ erzeugte Dynkin-System.
+\end{Bem}
+
+\begin{Def}
+Ein Mengensystem $\EE$ hei"st \textbf{durchschnittsstabil}\index{durchschnittsstabil} ($\cap$-stabil),\\
+ falls $A,B\in \EE \Rightarrow A\cap B\in \EE$
+\end{Def}
+
+\begin{Sa}[Satz "uber monotone Klassen]\index{Satz "uber monotone Klassen}$\\$
+Ist $\EE$ ein $\cap$-stabiles Mengensystem, so gilt $\delta(\EE)=\sigma(\EE)$
+\end{Sa}
+
+\begin{Sa}
+\label{satz:4.4}
+Sei $\AA$ eine $\sigma$-Algebra mit $\cap$-stabilem Erzeuger $\EE$. Sind $P$ und $Q$ Wahrscheinlichkeitsma"se auf $\AA$ mit der Eigenschaft $P(E)=Q(E) \,\,\forall\, E\in\EE$,\\
+so gilt: $P(A)=Q(A)\; \forall A\in \AA$.
+\end{Sa}
+
+\begin{Bew}
+Sei $\DD:=\{A\in\AA|P(A)=Q(A)\}$ Nach Voraussetzung ist $\EE\subset\DD$. Wegen den Eigenschaften von Wahrscheinlichkeitsma"sen ist $\DD$ ein Dynkin-System.\\
+Satz 4.3 $\DD\supset\delta(\EE)=\sigma(\EE)=\AA$
+\end{Bew}
+
+\begin{Bem}
+$\EE:=\{[a,b)|0\leq a<b<1\}$ ist ein Erzeugendensystem von $\BB_{[0,1)}$. Offenbar ist $\EE$ durchschnittsstabil.\\
+Also ist $P$ aus Satz 4.3 eindeutig.
+\end{Bem}
+
+\chapter{Zufallsvariable, Verteilung, Verteilungsfunktion}
+\section {Zufallsvariable}
+Sei $(\Omega,\AA,P)$ ein beliebiger Wahrscheinlichkeitsraum. H"aufig interessiert nicht $\omega$ selbst, sondern eine Kennzahl $X(\omega)$, d.h. wir betrachten eine Abbildung $\omega\mapsto X(\omega)$
+
+\begin{Bsp}
+2$\times$ w"urfeln\\
+$\Omega=\{(i,j)|i,j\in\{1,2\ldots,6\}\}$\\
+$X(\omega)=X((i,j))=i+j$ ``Augensumme``\\
+\end{Bsp}
+
+Sei $X:\Omega\rightarrow\R$ Wir m"ochten jetzt dem Ereignis $X\in B = \{\omega \in \Omega | X(\omega)\in B\}, B\subset\R$ eine Wahrscheinlichkeit zuordnen.\\
+Also muss $\{\omega|X(\omega)\in B\}\in\AA$ sein.
+
+\begin{Def}
+Sei $(\Omega,\AA)$ ein beliebiger Messraum. Eine Abbildung $X:\Omega \rightarrow \R$ hei"st Zufallsvariable\index{Zufallsvariable}, falls\\
+$X^{-1}(B)=\{\omega\in\Omega|X(\omega)\in B\}\in \AA, \quad \forall\, B\in \BB$\\
+Diese Bedingung nennt man auch $(\AA,\BB)$-Messbarkeit von $X$.\\
+\end{Def}
+
+\begin{Sa}$\\$
+Eine Abbildung $X:\Omega \rightarrow \R$ ist genau dann \textbf{Zufallsvariable}, wenn
+\[X^{-1}((-\infty,a])=\{\omega|X(\omega)\leq a\} =: \{X \in B\} =: (X\in B) \in \AA,\qquad \forall\, a\in \R\]
+\end{Sa}
+
+\begin{Bew}
+\begin{itemize}
+	\item [``$\Rightarrow$``] Sei $X$ Zufallsvariable. $(-\infty,a]\in \BB \Rightarrow$ Behauptung
+	\item [``$\Leftarrow$``] $X^{-1}((-\infty,a])\in\AA$\\
+	Definiere $\AA_0=\{B\subset\R|X^{-1}(B)\in\AA\}$. $\AA_0$ ist eine $\sigma$-Algebra "uber $\R$:
+	\begin{itemize}
+	\item [(i)] $X^{-1}(\R)=\Omega\in\AA \Rightarrow \R \in\AA_0$
+	\item [(ii)] $X^{-1}(B^c)=\{\omega|X(\omega)\notin B\}=\{\omega|X(\omega)\in B\}^c=(X^{-1}(B))^c$\\
+	Also $B\subset \AA_0 \Rightarrow B^c \subset \AA_0$
+	\item [(iii)] \[X^{-1}(\bigcup_{n=1}^\infty B_n)=\bigcup_{n=1}^\infty X^{-1}(B_n)\]
+	\end{itemize}
+	Nach Voraussetzung ist $\EE=\{(-\infty,a],a\in\R\}\subset\AA_0 \Rightarrow \AA_0 \supset \sigma(\EE) = \BB \Rightarrow$ Behauptung
+\end{itemize}
+\end{Bew}
+
+\begin{Bem}$\\$
+\begin{itemize}
+	\item [a)] Satz 5.1 bleibt richtig, wenn wir $\EE=\{(-\infty,a],a\in\R\}$ durch ein anderes Erzeugendensystem von $\BB$ ersetzen.
+	\item [b)] Bei Anwendungen ist oft $(\Omega,\AA)=(\R,\BB)$
+\end{itemize}
+\end{Bem}
+Wann ist eine Abbildung $X:\R\rightarrow\R$ messbar (ZV)?
+\begin{Sa}
+Sei $(\R,\BB)$ gegeben, $X:\R\rightarrow\R$ ist z.B. messbar, falls $X$ stetig oder (schwach) monoton wachsend oder fallend.\\
+\end{Sa}
+
+\begin{Bew}
+Sei $X$ stetig. Dann ist $X^{-1}(U)$ offen, falls $U$ offen. \\
+Sei $X$ wachsend $\Rightarrow\{\omega\in\R|X(\omega)\leq a\}$ ist von der Gestalt $(-\infty,b)\in\BB$ oder $(-\infty,b]\in\BB$
+\end{Bew}
+
+\begin{Bem}
+Es sei $X(\omega)=c\ \forall \omega\in\Omega$, $c\in\R$. Dann ist $X$ eine Zufallsvariable.
+\end{Bem}
+
+\begin{Sa}
+Seien $X:\Omega\rightarrow\R$ und $Y:\R\rightarrow\R$ Zufallsvariablen, dann ist $Y\circ X:\Omega\rightarrow\R$ wieder eine Zufallsvariable.
+\end{Sa}
+
+\begin{Sa}
+Sei $(\Omega,\AA)$ ein Messraum und X,Y Zufallsvariablen darauf.
+\begin{itemize}
+	\item [a)] $\{X<Y\}=\{\omega\in\Omega|X(\omega)<Y(\omega)\}$,$\{X\leq Y\},\{X=Y\}\in\AA$
+	\item [b)]Sind $\alpha,\beta\in\R$, so sind\\
+	$\alpha X+\beta, X+Y,X\cdot Y, X\wedge Y=\min\{X,Y\}, X\vee Y=\max\{X,Y\}$\\
+	Zufallsvariablen	
+	\item [c)] Ist $(X_n)_{n\in\N}$ eine Folge von Zufallsvariablen, so sind auch \\
+	$\sup_{n\in\N}X_n,\inf_{n\in\N}X_n,\limsup_{n\to\infty}X_n,\liminf_{n\to\infty}X_n$\\
+	Zufallsvariablen, falls sie $\R$-wertig sind.\\
+	Gilt $X_n(\omega)\rightarrow X(\omega) \forall \omega\in\Omega$, so ist auch $X$ eine Zufallsvariable.
+\end{itemize}
+\end{Sa}
+
+\begin{Bew}
+\begin{itemize}
+	\item [a)] $\{X<Y\}=\bigcup_{q\in\Q}\{\underbrace{X<q}_{\in\AA}\}\cap\{\underbrace{Y>q}_{\in\AA}\}$\\
+	$\{X\leq Y\}=\{X>Y\}^c\in\AA$,$\{X=Y\}=\{X\leq Y\}\cap\{X\geq Y\}\in\AA$
+	\item [b)]
+	\begin{itemize}
+	\item [(i)] $x\mapsto \alpha x+\beta$ ist stetig
+	\item [(ii)] $\{X+Y\leq a\}=\{X\leq a-Y\}=\{X\leq a-Y\}\in\AA$$\,\forall a\in\R$, da $a-Y$ Zufallsvariable + Teil a)
+	\item [(iii)] $X\cdot Y=\frac{1}{4}((X+Y)^2-(X-Y)^2)$
+	\item [(iv)] $\{X\vee Y\leq a\}=\{X\leq a\}\cap\{Y\leq a\}\in\AA$
+	\end{itemize}
+	\item [c)] $\{\sup_{n\in\N}X_n\leq a\}=\bigcap_{n=1}^\infty\{X_n\leq a\}\in\AA$ \\
+	$\inf_{n\in\N}X_n=-\sup_{n\in\N}(-X_n)$\\
+	$\limsup_{n\to\infty}X_n=\inf_{n\in\N}\sup_{m\geq n}X_m$\\
+	$\liminf_{n\to\infty}X_n=\sup_{n\in\N}\inf_{m\geq n}X_m$\\
+	Im Falle der Konvergenz ist $X=\limsup_{n\to\infty}X_n$
+\end{itemize}
+\end{Bew}
+
+\begin{Bem}
+Teil c) ist ohne Einschr"ankung g"ultig, wenn man $\overline{\R}=\R\cup\{-\infty\}\cup\{+\infty\}$ betrachtet und $\BB$ zu $\BB(\overline{\R})=\sigma(\BB\cup\{\{-\infty\},\{+\infty\}\})$ erweitert.
+\end{Bem}
+
+\section{Verteilungen}
+\begin{Def}$\\$
+Es sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum und $X:\Omega\rightarrow\R$ eine Zufallsvariable. Die \textbf{Verteilung}\index{Verteilung} der Zufallsvariablen ist die Mengenfunktion $P_X:\BB\rightarrow[0,1]$ mit\\
+$P_X(B)=P(\{\omega\in\Omega|X(\omega)\in B\})\quad \forall B\in\BB$
+\end{Def}
+
+\begin{Bem}$\\$
+\begin{itemize}
+	\item [a)] $P_X$ ist ein Wahrscheinlichkeitsma"s auf dem Messraum $(\R,\BB)$, denn:
+	\begin{itemize}
+	\item $P_X(\R)=P(\Omega)=1$ (Normiertheit)
+	\item F"ur $B_1,B_2,\ldots \in\BB$ paarweise disjunkt gilt: ($\sigma$-Additivit"at)\\
+	\[P_X(\sum_{i=1}^\infty B_i)=P(X^{-1}(\sum_{i=1}^\infty B_i))=P(\sum_{i=1}^\infty X^{-1}(B_i))=\sum_{i=1}^\infty P(X^{-1}(B_i))=\sum_{i=1}^\infty P_X(B_i)\]
+	\end{itemize}
+	\item [b)] Die Abbildung $P\rightarrow P_X$ nennt man \textbf{Ma"stransport} vom Messraum $(\Omega,\AA)$ in den Messraum $(\R,\BB)$
+\end{itemize}
+\end{Bem}
+
+\section{Verteilungsfunktion}
+Eine Verteilung $P_X: \BB\rightarrow[0,1]$ kann durch eine ``einfachere`` Funktion $F_X:\R\rightarrow[0,1]$ beschrieben werden.
+
+\begin{Def}
+Es sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum und $X:\Omega\rightarrow\R$ eine Zufallsvariable. Die Funktion $F_X:\R\rightarrow[0,1]$ mit\\
+$F_X(x)=P(X\leq x)=P(\{\omega\in\Omega|X(\omega)\leq x\})=P_X((-\infty,x])$ hei"st \textbf{Verteilungsfunktion}\index{Verteilungsfunktion} von $X$.
+\end{Def}
+
+\begin{Bem}
+Da die Mengen $(-\infty,x],x\in\R$ einen $\cap$-stabilen Erzeuger von $\BB$ bilden, wird $P_X$ durch $F_X$ eindeutig festgelegt (siehe Satz \ref{satz:4.4})
+\end{Bem}
+
+\begin{Sa}$\\$
+Sei $X:\Omega\rightarrow\R$ eine Zufallsvariable und $F_X:\R\rightarrow[0,1]$ ihre Verteilungsfunktion. Dann gilt:
+\begin{itemize}
+	\item [a)] \[\lim_{x\to-\infty} F_X(x)=0,\qquad \lim_{x\to\infty} F_X(x)=1\]
+	\item [b)] $F_X$ ist (schwach) monoton wachsend.
+	\item [c)] $F_X$ ist rechtsseitig stetig.
+\end{itemize}
+\end{Sa}
+
+\begin{Bew}
+\begin{itemize}
+	\item [b)] folgt aus der Monotonie von $P_X$
+	\item [a)] Sei $(x_n)$ eine reellwertige Folge mit $\lim_{n\to\infty}x_n=-\infty$\\
+	Setze $y_n:=\sup_{m\geq n}x_m$ Dann gilt $y_n \downarrow -\infty$, also $(-\infty,y_n]\downarrow \emptyset$\\
+	Da $P_X$ stetig in $\emptyset$ ist (Satz 1.4) folgt:\\
+	$0\leq F_X(x_n)=P_X((-\infty,x_n])\leq P_X((-\infty,y_n]) \rightarrow 0$ f"ur $n\rightarrow \infty$\\
+	Andere Grenzwertaussage mit Stetigkeit von unten von $P_X$
+	\item [c)] Sei $x\in\R,x_n\geq x \, \forall n\in\N$ und $\lim_{x\to\infty}x_n=x$\\
+	Setze $y_n=\sup_{m\geq n}x_m$, also $y_n \downarrow x$ und \\
+	$F_X(x)=P_X((-\infty,x])\leq P_X((-\infty,x_n])=F_X(x_n)\leq$\\
+	$\leq P_X((-\infty,y_n])\stackrel{n \rightarrow \infty}{\longrightarrow}
+	P_X((-\infty,x])=F_X(x)$ \\
+	weil $P_X$ stetig von oben.
+\end{itemize}
+Umgekehrt gibt es zu jeder Funktion $F:\R\rightarrow[0,1]$ mit den Eigenschaften a),b),c) aus Satz 5.5 eine Zufallsvariable X, so dass $F=F_X$.
+\end{Bew}
+
+\begin{Def}$\\$
+Es sei $F:\R\rightarrow[0,1]$ eine Funktion mit den Eigenschaften a),b),c) aus Satz 5.5.\\
+Die \textbf{Quantilfunktion}\index{Quantilfunktion} $F^{-1}$ zu $F$ ist: 
+\[F^{-1}(0,1)\rightarrow\R,\quad F^{-1}(y)=\inf\{x\in\R|F(x)>y\}\]
+\end{Def}
+
+\begin{Bem}$\\$
+\begin{itemize}
+	\item [a)] Ist $F$ stetig und streng monoton wachsend, so ist $F^{-1}$ die "ubliche Umkehrfunktion.
+	\item [b)] F"ur $0<\alpha<1$ hei"st $F_X^{-1}(x)$ $\alpha$-Quantil zu X
+\end{itemize}
+\end{Bem}
+
+\begin{Lem}$\\$
+\[y\leq F(x)\Leftrightarrow F^{-1}(y)\leq x, \quad \forall\, y\in (0,1),x\in\R\]
+\end{Lem}
+%\newpage
+\begin{Bew}
+\begin{itemize}
+	\item [``$\Rightarrow$``] Definition von $F^{-1}$
+	\item [``$\Leftarrow$``] $F(x)<y \Rightarrow F(x+\frac{1}{n})<y$ f"ur ein $n\in\N$ ($F$ ist rechtsseitig stetig)
+	\begin{itemize}
+	\item [$\Rightarrow$] $F^{-1}(y)\geq x+\frac{1}{n}$ ($F$ monoton wachsend)
+	\item [$\Rightarrow$] $F^{-1}(y)>x$
+	\end{itemize}
+\end{itemize}
+\end{Bew}
+
+\begin{Sa}$\\$
+Es sei $F:\R\rightarrow[0,1]$ eine Funktion mit den Eigenschaften a),b),c) aus Satz 5.5. Dann gibt es einen Wahrscheinlichkeitsraum $(\Omega,\AA,P)$ und eine Zufallsvariable $X:\Omega\rightarrow\R$ mit Verteilungsfunktion $F$.\\
+\end{Sa}
+
+\begin{Bew}
+W"ahle $\Omega=[0,1), \AA=\BB_{[0,1)}, P=\unif[0,1)$ (Gleichverteilung). \\Definiere $X:\Omega\rightarrow\R$ durch $X(\omega):=F^{-1}(\omega)$\\
+Offenbar ist $F^{-1}$ monoton wachsend, also $X$ eine Zufallsvariable und \\
+$F_X(x)=P(X<x)=P(\{\omega\in\Omega|F^{-1}(\omega)\leq x\})\stackrel{L.5.6}{=}P(\{\omega\in\Omega|\omega\leq F(x)\})=P([0,F(x)])=F(x)$
+\end{Bew}
+
+\chapter{Einige Verteilungen}
+Im folgenden sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum
+
+\begin{Def}
+Eine Zufallsvariable $X:\Omega\rightarrow\R$ bzw. ihre Verteilung hei"sen \textbf{diskret}\index{diskrete Verteilungen}\index{diskret} falls es eine endliche oder abz"ahlbare Menge $C\subset\R$ gibt, so dass $P(X\in C)=1$. O.B.d.A. sei $C=\{x_1,x_2,\ldots\}$ (x verschieden). Die Folge $\{p_X(k)\}_{k\in\N}$ mit $p_X(k)=P(X=x_k)$ hei"st \textbf{Z"ahldichte}\index{Z"ahldichte von X} (oder Wahrscheinlichkeitsfunktion) von $X$ 
+\end{Def}
+
+\begin{Bem}$\\$
+\begin{itemize}
+	\item [a)]F"ur eine Z"ahldichte $\{p_X(k)\}_{k\in\N}$ gilt $p_X(k)\geq 0 \quad \forall k\in\N$ und $\sum_{k=1}^\infty p_X(k)=1$
+	\item [b)] Die Verteilung von $X$ wird durch die Z"ahldichte bestimmt, denn $\forall B\in\BB$ gilt: \\
+	\[P_X(B)=P_X(B\cap C)=P_X(\sum_{k|x_k\in B}\{x_k\})=\sum_{k|x_k\in B}p_X(k)\]
+\end{itemize}
+\end{Bem}
+
+\section{Wichtige diskrete Verteilungen}
+\subsection{Binomialverteilungen}
+Eine diskrete Zufallsvariable $X$ hei"st \textbf{binomialverteilt}\index{diskrete Verteilungen!binomialverteilt}, mit Parameter $n\in\N$ und $p\in[0,1]$ (kurz $X\sim B(n,p)$) falls\\
+$p_X(k)=P(X=k)$=$n\choose k$ $p^k(1-p)^{n-k}$ f"ur $k=0,1,\ldots,n$
+
+\begin{Bsp}
+Eine M"unze wird n-mal geworfen\\
+$\Omega=\{(\omega_1,\ldots,\omega_n)|\omega_i\in \{K,Z\}, i=1,\ldots,n\}=\{K,Z\}^n$\\
+Es sei $X:\Omega\rightarrow\{0,1,2,\ldots,n\}$ mit $X(\omega)=\sum_{i=1}^n 1_{\{\omega_i=K\}}$ die Anzahl der Kopf-W"urfe in der Folge. Weiter seien die Ereignisse $A_i=\{\omega|\omega_i=K\}$=\{i-ter Wurf Kopf\}, $i=1,\ldots,n$ unabh"angig und $P(A_i)=p , i=1,\ldots,n$ Dann gilt:
+\begin{eqnarray*}
+P(X=k) & = & P(\sum_{1\leq i_1<\cdots <i_k\leq n}A_{i_1}\cap\cdots\cap A_{i_k}\bigcap_{j\notin \{i_1,\ldots,i_k\}} A_j^c) \\
+& = & \sum_{1\leq i_1<\cdots <i_k\leq n}P(A_{i_1}\cap\cdots\cap A_{i_k} \bigcap_{j\notin \{i_1,\ldots,i_k\}}A_j^c) \\
+& = & \sum_{1\leq i_1<\cdots <i_k\leq n} \underbrace{\underbrace{P(A_{i_1})}_{=p} \cdot \cdots \cdot \underbrace{P(A_{i_k})}_{=p}}_{=p^k} \cdot \underbrace{\prod_{j\notin \{i_1,\ldots,i_k\}} \underbrace{P(A_j^c)}_{=1-p}}_{=(1-p)^{n-k}} \\
+& = &\binom{n}{k} p^k(1-p)^{n-k}
+\end{eqnarray*}
+Die Verteilungsfunktion $F_X$ ist hier\\
+\[F_X(x)=\sum_{k\leq x} \binom{n}{k} p^k(1-p)^{n-k} , x\in\R\]\\
+\\
+hier fehlt ein Bild\\
+\\
+Es gilt $P(X=x)=F_X(x)-F_X(x^-), x\in\R$
+\end{Bsp}
+
+\subsection{Hypergeometrische Verteilung}
+Eine Urne enth"alt $r$ rote und $s$ schwarze Kugeln, $r+s=n$. Es werden $m$ Kugeln ohne Zur"ucklegen gezogen. $X(\omega)$ sei die Anzahl der gezogenen roten Kugeln. Dann gilt:
+\[P(X=k)=\frac{\binom{r}{k}\binom{n-r}{m-k}}{\binom{n}{m}}\]
+$X$ nimmt die Werte $k=\max\{0,m-s\},\ldots,\min\{r,m\}$ an und $X$ hei"st \textbf{hypergeometrisch verteilt}\index{diskrete Verteilungen!hypergeometrisch} mit Parameter $r,n,m \in \N$
+
+\subsection{Geometrische Verteilung}
+Eine diskrete Zufallsvariable $X$ hei"st \textbf{geometrisch verteilt}\index{diskrete Verteilungen!geometrisch} mit Parameter $p\in (0,1)$, falls\\
+$P(X=k)=(1-p)^{k-1}p$ f"ur $k=1,2,3,\ldots$
+
+\begin{Bsp}
+Wir w"urfeln bis erstmals eine 6 f"allt. $X(\omega)$ sei die Anzahl der ben"otigten W"urfe. Dann gilt:
+\[P(X=k)=P(\text{Wurf $1$ bis $k-1$ keine $6$, dann 6})=\frac{5^{k-1}\cdot 1}{6^k}=\frac{1}{6}(\frac{5}{6})^{k-1}\]
+\end{Bsp}
+
+\subsection{Poisson-Verteilung}
+Eine diskrete Zufallsvariable $X$ hei"st \textbf{Poisson-verteilt}\index{diskrete Verteilungen!Poisson - verteilt} mit Parameter $\lambda >0$ wenn:\\
+$P(X=k)=e^{-\lambda}\frac{\lambda^k}{k!}$ f"ur $k=0,1,2\ldots$\\
+Die Poisson-Verteilung kann man auffassen als Approximation der Binomialverteilung bei gro"sem $n$ und kleinem $p$. Es gilt:
+
+\begin{Sa}
+Sei $\lambda>0$ und $p_n:=\frac{\lambda}{n}<1$. Dann gilt:
+\[ \lim_{n\to\infty}\binom{n}{k}p_n^k(1-p_n)^{n-k}=e^{-\lambda}\frac{\lambda^k}{k!}\]
+\end{Sa}
+
+\begin{Bew}
+\begin{eqnarray*}
+\binom{n}{k}p_n^k(1-p_n)^{n-k} & = & \binom{n}{k}\left(\frac{\lambda}{n}\right)^k\left(1-\frac{\lambda}{n}\right)^{n-k} \\
+ & =&  \frac{\lambda^k}{k!}\cdot\frac{n!}{\underbrace{(n-k)!n^k}_{\to 1}}\cdot \frac{\overbrace{(1-\frac{\lambda}{n})^n}^{\to e^{-\lambda}}}{\underbrace{(1-\frac{\lambda}{n})^k}_{\to 1}} \\
+  & \xrightarrow{n\to\infty} & \frac{\lambda^k}{k!}e^{-\lambda} 
+\end{eqnarray*}
+\end{Bew}
+\textbf{Wichtiges Beispiel:}\\
+Eine Versicherung hat ein Portfolio von $n$ Risiken ($n$ gro"s). Die Wahrscheinlichkeit, dass ein Risiko in einem bestimmten Zeitraum einen Schaden liefert sei $p_n=\frac{\lambda}{n}$. Dann ist $X=\textnormal{Anzahl der Risiken, die einen Schaden liefern}\sim B(n,p_n)$, also $X$ in etwa Poisson-verteilt.
+
+\subsection{Diskrete Gleichverteilung}
+Eine diskrete Zuvallsvariable $X$ hei"st \textbf{gleichverteilt}\index{diskrete Verteilungen!gleichverteilt} auf $\{x_1,\ldots,x_m\}\subset \R$, falls:\\
+$P(X=x_i)=\frac{1}{m}$ f"ur $i=1,\ldots,m$
+
+\section{Wichtige stetige Verteilungen}
+
+\begin{Def}
+Eine Zufallsvariable $X:\Omega \rightarrow \R$ bzw. ihre Verteilung hei"sen \textbf{absolutstetig}\index{absolutstetig}, falls die Verteilungsfunktion $F_X$ von $X$ die folgende Darstellung besitzt:
+\[F_X(x)=\int_{-\infty}^x f_X(y)dy \qquad \forall x\in\R\]
+wobei $f_X:\R\rightarrow [0,\infty)$ die \textbf{Dichte}\index{Dichte von $X$} von $X$ ist.
+\end{Def}
+
+\begin{Bem}$\ $\\
+\begin{itemize}
+\item [a)] Jede integrierbare Funktion $f_X:\R\rightarrow [0,\infty)$ mit der Eigenschaft 
+\[\int_{-\infty}^\infty f_X(y)dy = 1 \quad\textnormal{definiert durch}\quad F_X(x)=\int_{-\infty}^x f_X(y)dy\]
+ist eine Verteilungsfunktion.
+\item[b)] Die Dichte ist das stetige Analogon zur Z"ahldichte. Es gilt:\\
+$P_X(B)=P(x\in B)=\int_B f_X(y)dy \qquad \forall\,B\in\BB$\\
+da $P_X$ eine Verteilung ist (nachrechnen!) und auf $\{(-\infty,b],b\in\R\}$ mit $F_X$ "ubereinstimmt.\\
+$f_X$ kann aber Werte gr"o"ser als 1 annehmen.
+\item[c)] Bei einer absolutstetigen Zufallsvariable gilt $P(X=x)=0\quad \forall\,x\in\R$ und $F_X(x)$ ist stetig. Ist $f_X(x)$ stetig, so ist $F_X$ differenzierbar und es gilt:\\ $F_X'(x)=f_X(x)$. Im Allgemeinen ist $F_X$ aber \underline{nicht} differenzierbar.
+\end{itemize}
+\end{Bem}
+
+\subsection{Gleichverteilung}
+Eine Zufallsvariable $X$ hei"st \textbf{gleichverteilt}\index{stetige Verteilungen!gleichverteilt} auf dem Intervall $(a,b),\,a<b$ (Schreibweise: $X\sim U(a,b)$ bzw. $\unif(a,b)$), falls die Dichte von $X$ gegeben ist durch:
+\[f(x)=
+\begin{cases}
+\frac{1}{b-a}, & \text{f"ur } a<x<b\\
+0, & \text{sonst}
+\end{cases}
+\]
+Die Verteilungsfunktion ist gegeben durch:
+\[F_X(x)=\begin{cases}
+ 0, & \text{falls } x\leq a\\
+ \int_a^x \frac{1}{b-a}dy = \frac{x-a}{b-a}, & \text{falls }x\leq b\\
+  1, & \text{falls } x\geq b
+\end{cases}
+\]
+
+\subsection{Exponentialverteilt}
+Eine Zufallsvariable $X$ hei"st \textbf{exponentialverteilt}\index{stetige Verteilungen!exponentialverteilt} mit Parameter $\lambda>0\,(X\sim \exp(\lambda))$, falls die Dichte von $X$ gegeben ist durch:
+\[f(x)=
+\begin{cases}
+\lambda e^{-\lambda x}, & x\geq 0\\
+0, & \text{sonst}
+\end{cases}
+\]
+F"ur die Verteilungsfunktion gilt:
+\[F_X(x)=
+\begin{cases}
+0, & x\leq 0\\
+\int_0^x\lambda e^{-\lambda y}dy = 1-e^{-\lambda x}, & x\geq 0
+\end{cases}
+\]
+
+Die Exponentialverteilung wird oft zur Beschreibung von Lebens- oder Zeitdauern verwendet und besitzt die Eigenschaft der "`Ged"achtnislosigkeit"', d.h. f"ur zwei Zeitpunkte $0<s<t$ gilt:\\
+\begin{multline*}
+P(X\geq t|X\geq s)=\frac{P(X\geq t,X\geq s)}{P(X\geq s)}= \frac{P(X\geq t)}{P(X\geq s)}
+\\ =\frac{1-F_X(t)}{1-F_X(s)} = \frac{e^{-\lambda t}}{e^{-\lambda s}}=e^{-\lambda (t-s)}=P(X\geq t-s)
+\end{multline*}
+
+\subsection{Normalverteilung}
+Eine Zufallsvariable $X$ hei"st \textbf{normalverteilt}\index{stetige Verteilungen!normalverteilt} mit Parameter $\mu \in \R$ und $\sigma^2 >0$ (Schreibweise $X\sim \NN(\mu,\sigma^2)$) falls die Dichte von $X$ gegeben ist durch:
+\begin{align*}
+f(x)&=\frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac12\frac{(x-\mu)^2}{\sigma^2})\quad,x\in\R\\
+    &=:\varphi_{\mu,\sigma^2}(x)
+\end{align*}
+Ist $\mu = 0$ und $\sigma^2=1$ so nennt man $X$ \textbf{standard normalverteilt}\index{standard normalverteilt}. Die Verteilungsfunktion wird hier h"aufig mit $\Phi$ bezeichnet, also:
+\[\Phi(x)=\int_{-\infty}^x\frac{1}{\sqrt{2\pi}}\exp(-\frac{1}{2}y^2)\,dy\]
+% \newpage
+\begin{Lem}
+Es gilt:
+\begin{itemize}
+\item [a)] $\lim_{x\to\infty}\Phi(x)=1$
+\item [b)] $\Phi(x)=1-\Phi(-x)\quad,\forall\,x\in\R$
+\item [c)] $X\sim N(\mu,\sigma^2),$ $a\neq 0$, $b\in\R \rightarrow aX+b \sim N(a\mu+b,a^2\sigma^2)$
+\end{itemize}
+\end{Lem}
+\begin{Bew}
+\begin{itemize}
+\item [a)] ($\frac{1}{\sqrt{2\pi}}$ ist Konstante und wird hier weggelassen; Trick: wir quadrieren)
+\[(\int_{-\infty}^{\infty}\exp(-\frac{1}{2}y^2)\,dy)^2=\int_{-\infty}^{\infty}\!\int_{-\infty}^{\infty}\exp(-\frac{1}{2}(x^2+y^2))\,dx dy=\int_0^{2\pi}\!\int_0^\infty re^{-\frac{r^2}{2}}\,dr d\varphi =\]
+\[=\int_0^{2\pi}-e^\frac{r^2}{2}\Bigr|_0^\infty d\varphi = 2\pi \]
+\item [b)] es gilt $\varphi_{0,1}(x)=\varphi_{0,1}(-x)$
+\item [c)] sei $Y=aX+b$. Es gilt:
+\begin{eqnarray*}
+P(Y\leq y)=P(X\leq \frac{y-b}{a}) & = & \int_{-\infty}^{\frac{y-b}{a}}\frac{1}{\sqrt{2\pi}\sigma}\,\exp(-\frac{1}{2}\frac{(x-\mu )^2}{\sigma^2})\,dx \\
+& = & \int_{-\infty}^{y}\frac{1}{\sqrt{2\pi}\sigma}\,\exp(-\frac{1}{2}\frac{(x'-b-a\mu )^2}{a^2\sigma^2})\frac{1}{a}\,dx'\\
+& \Rightarrow & Y\sim \NN(a\mu +b,a^2\sigma^2)
+\end{eqnarray*}
+\end{itemize}
+\end{Bew}
+
+\chapter[Erwartungswert und Varianz]{Erwartungswert und Varianz von Zufallsvariablen}
+Im Folgenden sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum. Der Erwartungswert von $X$ ist ein Lebesgue-Integral (allerdings allgemeiner als in Analysis II). Zunächst wird der Erwartungswert für sogenannte Elementare Zufallsvariablen definiert.
+
+\begin{Def}
+Eine Zufallsvariable $X:\Omega\to\R$ heißt \textbf{elementar}\index{Elementare Zufallsvariable}, falls sie eine Darstellung
+\[ X(\omega) = \sum_{i=1}^m \alpha_i \cdot 1_{A_i}(\omega) \]
+besitzt, mit $A_i \in \AA$, $\alpha_i\in\R_+$,$m\in\N$. $M^E$ sei die Menge aller elementaren Zufallsvariablen auf dem Warscheinlichkeitsraum.
+
+Für $X\in M^E$ sei das Integral von $X$ bezüglich $P$ definiert durch $\int X d P := \int_{i=1}^n \alpha_i P(A_i)$
+\end{Def}
+
+\begin{Bem}
+\begin{itemize}
+\item[a)] $\int X d P$ ist unabhängig von der gewählten Darstellung von $X$ (vgl. Analysis II)
+\item[b)] Sei $X$ eine diskrete Zufallsvariable. Wir führen das Zufallsexperiment $n$-mal druch ($n$ groß). Welchen Wert erhält man im Mittel für $X$? Der Wert $x_k$ tritt bei dem Experiment $n_k$-mal auf ($\sum_{k=0}^\infty n_k = n$). Mittelwert: $\frac1n\sum_{k=0}^\infty n_k x_k$
+\end{itemize}
+\end{Bem}
+
+Jetzt wird der Integralbegriff erweitert. Sei $M^+ := \{X:\Omega->\R_+| X\text{ ist Zufallsvariable}\}$. Für $X\in M^+$ betrachte die Folge $ (X_n)_{n\in\N} $ mit 
+\[X_n:= \sum_{i=0}^{n-2^n} \frac i {2^n} 1_{A_i^n}\text{ mit }A_i^n = \begin{cases} \{\frac{i}{2^n} \le X \le \frac{i+1}{2^n}\} &\text{, falls } i=0,1,\ldots,n\cdot 2^n-1 \\ \{X\ge 1\} & \text{, falls } i = n\cdot 2^n \end{cases} \]
+Offenbar ist $X_n\in M^E$ und $x_n(\omega) \le x_{n+1}(\omega) \ \forall \omega \in\Omega$. Außerdem gilt $X_n(\omega)\uparrow X(\omega)$ punktweise $\forall \omega\in\Omega$.
+\[ \int X d P := \lim_{n\to\infty} \int X_n d P\,.\]
+
+\begin{Bem}
+\begin{itemize}
+\item[a)] Der Grenzwert existiert wegen der Monotonie
+\item[b)] Der Grenzwert ist unabhängig von der gewählten Folge $(X_n)_{x\in\N}$: Sei $(Y_n)_{n\in\N}$ eine weitere Folge elementarer Zufallsvariablen, die monoton wachsend gegen $X$ konvergiert, so gilt $\lim_{n\to\infty} \int X_ndP = \lim_{n\to\infty}Y_ndP$ (vergleiche Analysis II).
+\end{itemize}
+\end{Bem}
+
+Für eine beliebige Zufallsvariable $X:\Omega\to\R$ gilt: $X=X^+-X^-$ wobei $X^+ = \max\{X,0\}$ und $X^- = -\min\{X,0\}$, also $X^+,X^-\in M^+$.
+
+Wir definieren durch \[\int X d P = \int X^+dP - \int X^-dP =: \int_{\Omega} X(\omega) d P(\omega) =: EX \] den \textbf{Erwartungswert}\label{Erwartungswert} von $X$. $X$ heißt integrierbar, falls $\int X^+dP<\infty$ und $\int X^-dP<\infty$, d.h. wenn $\int |X|dP<\infty$
+
+\begin{Bem}
+\begin{itemize}
+\item[a)] Für $A\in\AA$ sei $\int XdP := \int_{\Omega} X1_AdP$
+\item[b)] In Stochastik II wird das Thema weiter vertieft.
+\end{itemize}
+\end{Bem}
+
+
+\begin{Sa}$\\$
+Es seien X,Y Zufallsvariablen mit existierendem Erwartungswert und $a,b\in\R$
+\begin{itemize}
+\item [a)] Dann existiert auch $E(aX+bY)$ und es gilt:\\
+\[E(aX+bY)=aEX+bEY \qquad \text{"`Linearit"at"'}\]
+\item [b)] Gilt $X\leq Y$, d.h. $X(\omega)\leq Y(\omega)\quad \forall\,\omega\in\Omega$, so folgt: \[EX\leq EY \qquad \text{"`Monotonie"'}\]
+\end{itemize}
+\end{Sa}
+
+\begin{Bew} vgl. Analysis II
+\end{Bew}
+
+\begin{Sa}
+Sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum und $X:\Omega\to\R$ eine Zufallsvariable mit Verteiltung $P_X$. $g:\R\to\R$ sei messbar (Zufallsvariable). Dann ist (im Falle der Existenz):
+\[ Eg(X) = \int_\Omega g(X)dP = \int_\R gdP_X \]
+\end{Sa}
+
+\begin{Bew}
+Sei nunächst $g\in M^E$, also $g(\omega) = \sum_{i=0}^m \alpha_i 1_{B_i}(\omega)$ für $m\in\N, \alpha \in \R_+, B_i \in \BB$ somit $g(X) = \sum_{i=1}^m \alpha_i \cdot 1_{A_i}$, $A_i=X^{-1}(B_i)$ und $\int_\Omega g(x)dP = \sum_{i=1}^m \alpha_i\cdot P(A_i) = \sum_{i=1}^m \alpha_i P_X(B_i)= \int_\R gdP_X$.
+
+Falls $g\ge 0$, wähle $\{g_n\} \subset M^E$ mit $g_n\uparrow g$. Die Gleichung gilt für jedes $g_n$, Grenzübergang liefert die Gleichheit für $g$. Falls $g$ beliebig, betrachte $g=g^+-g^-$ $\Rightarrow$ Behauptung.
+\end{Bew}
+
+Wir unterscheiden jetzt die beiden Fälle dass $X$ diskret bzw. absolutstetig ist. Hier ergeben sich relativ einfache Formeln.
+
+\begin{Sa}
+Sei $X$ eine diskrete Zufallsvariable mit Werten $x_0,x_1,x_2,\dots$ und Zähldichte $\{P_X^{(k)}\}_{k\in\N_0}$. $g:\R\to\R$ sei messbar. Dann existiert $Eg(X)$, falls $\sum_{k=0}^\infty |g(x_k)| P_X(k) < \infty$ und es gilt: \[Eg(X) = \sum_{k=0}^\infty g(x_k)P_X(k)\]
+\end{Sa}
+
+\begin{Bew}
+Sei zunächst $g\in M^E$, also $g=\sum_{i=1}^m \alpha_i 1_{B_i}$ für $m\in\N,\alpha_i\in\R_+, B_i \in \BB$. Es gilt (vgl. Beweis vorher): $Eg(X) = \sum_{i=0}^m \alpha_i P_X(B_i) = \sum_{i=1}^m \alpha_i \left( \sum_{x_k\in B_i} P_X(k) \right) = \sum_{i=1}^m \alpha_i \sum_{k=0}^\infty 1_{B_i}(x_k) P_X(k) = \sum_{k=0}^\infty \underbrace{\sum_{i=1}^m \alpha_i 1_{B_i}(x_k) P_X(k)}_{=g(x_k)} = \sum_{k=0}^\infty g(x_k)P_X(k) $. Allgemeines $g$ wie im Beweis von Satz 7.2
+\end{Bew}
+
+\begin{Bsp}
+Sei $X\sim B(n,p)$ (binomialverteilt). Dann gilt:
+\[ P_X(k)=\binom{n}{k}p^k(1-p)^{n-k} \quad k=0,1,\ldots,n \]
+Also folgt:
+\[EX=\sum_{k=0}^{n}k\binom{n}{k}p^k(1-p)^{n-k}=np\sum_{k=1}^{n}\binom{n-1}{k-1}p^{k-1}(1-p)^{(n-1)-(k-1)}=\]
+\[=np\underbrace{\sum_{k=0}^{n-1}\binom{n-1}{k}p^k(1-p)^{(n-1)-k}}_{=(p+(1-p))^{n-1}=1}=np\]
+\end{Bsp}
+
+\begin{Sa}
+Sei nun $X:\Omega\rightarrow \R$ eine absolut stetige Zufallsvariable mit Dichte $f_X$. $g:\R\to\R$ sei messbar. Dann existiert $Eg(X)$, falls $\int_{-\infty}^\infty |g(x)|f_X(x)dx < \infty$ und es gilt:
+\[ Eg(X) = \int_{-\infty}^\infty g(x) f_X (x)dx \]
+\end{Sa}
+
+\begin{Bew} ähnlich wie in Satz 7.3 \end{Bew}
+
+\begin{Bsp}
+Sei $X\sim N(\mu,\sigma^2)$ ($X$ normalverteilt). Also ist
+\[f_X(x)=\frac{1}{\sqrt{2\pi}\sigma}\, \exp(-\frac12\frac{(x-\mu)^2}{\sigma^2})\]
+Es folgt:
+\begin{align*}EX &= \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^\infty x\,\exp(-\frac{(x-\mu)^2}{2\sigma^2})\,dx
+= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty (\sigma u+\mu)\exp(-\frac{1}{2}u^2)\,du \\
+&=\frac{1}{\sqrt{2\pi}}\underbrace{\int_{-\infty}^\infty \sigma u\, \exp(-\frac{1}{2}u^2)\,du}_{=0\text{ wg. Symmetrie}} + \mu \underbrace{\frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty \exp(-\frac{1}{2}u^2)\,du}_{=1\text{, da Dichte}} = \mu
+\end{align*}
+\end{Bsp}
+
+\begin{Def}
+Sei $X$ eine Zufallsvariable
+\begin{itemize}
+\item [a)] Ist $k\in \N$ und existiert $E|X|^k$, dann hei"st $EX^k$, \textbf{k-tes Moment von X}\index{k-tes Moment von X} und $E(X-EX)^k$, \textbf{k-tes zentriertes Moment von X}\index{k-tes zentriertes Moment von X}
+\item [b)] Das zweite zentrierte Moment hei"st auch \textbf{Varianz}\index{Varianz} von $X$.\\
+Wir schreiben: $\var(X)=E(X-EX)^2$\\
+$\sigma(X):=\sqrt{\var(X)}$ hei"st \textbf{Standardabweichung}\index{Standardabweichung}
+\end{itemize}
+\end{Def}
+
+\begin{Bem}
+Die Varianz misst die mittlere quadratische Abweichung der Zufallsvariable $X$ von ihrem Mittelwert. $\sigma(X)$ hat die gleiche Dimension wie $X$.
+\end{Bem}
+
+
+\begin{Sa}
+Sei $X$ eine Zufallsvariable. Falls die entsprechenden Gr"o"sen existieren, gilt:
+\begin{itemize}
+\item [a)] $\var(X)=EX^2-(EX)^2$
+\item [b)] $\var(aX+b)=a^2 \var(X)$ für $a,b\in\R$
+\item [c)] $\var(X)\geq 0$ und $\var(X)=0 \Leftrightarrow P(X=c)=1$ f"ur ein $c\in\R$
+\end{itemize}
+\end{Sa}
+
+\begin{Bew}
+\begin{itemize}
+\item [a)] $\var(X)=E(X^2-2XEX+(EX)^2)\stackrel{\text{Satz 7.2a}}{=} EX^2-2(EX)^2+(EX)^2 = EX^2-(EX)^2$
+\item [b)] Wir verwenden a): $\var(aX+b)=E(aX+b)^2-(aEX+b)^2=$\\$=E(a^2X^2+2abX+b^2)-a^2(EX)^2-2abEX-b^2 =$\\
+$=a^2EX^2+2abEX+b^2-a^2(EX)^2-2abEX-b^2=$\\
+$=a^2(EX^2-(EX)^2)= a^2\var(X)$
+\item [c)] Da $0\leq (X-EX)^2 \stackrel{\text{7.2b}}{\Rightarrow } \var(X)\geq 0$\\
+Ist $X$ diskret, so gilt: $\var(X)=\sum_{k=1}^\infty (x_k-EX)^2 P(X=x_k)$\\
+$\var(X)=0 \Leftrightarrow X$ nimmt nur den Wert $x_1= EX$ $(x_k=EX \, \forall\, k\in\N)$ an.\\
+Analog im stetigen Fall.
+\end{itemize}
+\end{Bew}
+
+\begin{Bsp}
+Sei $X\sim N(\mu,\sigma^2)$\\
+Bsp. 7.2 $\Rightarrow EX = \mu$\\
+\[\textnormal{Also:}\quad \var(X)=\frac{1}{\sqrt{2\pi}\sigma} \int_{-\infty}^{\infty}(x-\mu)^2 \exp(-\frac{(x-\mu)^2}{2\sigma^2})dx=\cdots=\sigma^2\]
+($\rightarrow$ "Ubung)
+\end{Bsp}
+Die folgende Ungleichung ist wegen ihrer Allgemeinheit n"utzlich:
+\begin{Sa}[Tschebyscheff-Ungleichung]$\\$
+Sei $X$ eine Zufallsvariable mit $E|X|<\infty$ und $\varepsilon >0$. Dann gilt:
+\[P(|X-EX|\geq \varepsilon )\leq \frac{1}{\varepsilon^2} \var(X)\]
+\end{Sa}
+
+\textbf{Beweis}\\
+Betrachte:
+\[g:\R\rightarrow \{0,1\}\qquad g(x)=\left\{\begin{array}{r@{\quad,\quad}l}
+1 & \textnormal{falls}\quad |x-EX|\geq \varepsilon \\
+0 & \textnormal{sonst}
+\end{array}
+\right.\]
+\[\textnormal{und}\quad h:\R \rightarrow \R \qquad h(x)=\frac{1}{\varepsilon^2}(x-EX)^2\]
+Offenbar gilt $g(x)\leq h(x)\,\forall\,x\in\R$ Also folgt $g(X)\leq h(X)$ und mit Satz 7.2 b
+\[P(|X-EX|\geq \varepsilon )=Eg(X)\leq Eh(X)=\frac{1}{\varepsilon^2}\var(X)\] 
+
+\chapter{Zufallsvektoren}
+\section{Mehrstufige Zufallsexperimente}
+\label{sec:8.1}
+Oft besteht ein Zufallsexperiment aus einer Reihe von Vorg"angen. Sei $(\Omega_i,\AA_i,P_i)$ ein Wahrscheinlichkeitsraum f"ur die Vorg"ange $i=1,\ldots,n$.\\
+F"ur das Gesamtexperiment w"ahlen wir dann:\\
+$\Omega=\Omega_1\times \cdots \times \Omega_n$\\
+$\AA := \AA_1\otimes \cdots \otimes \AA_n$\\
+wobei $\AA$ die sogenannte \textbf{Produkt-$\sigma$-Algebra}\index{Produkt-$\sigma$-Algebra} ist, d.h.\\
+$\AA=\sigma(\{A_1\times \cdots \times A_n | A_i\in \AA_i, i=1\ldots n\})$
+
+\begin{Bem}$\\$
+\begin{itemize}
+\item [a)] $A_1\times \cdots \times A_n$ nennt man \textbf{Rechteckmengen}\index{Rechteckmengen}.
+\item [b)] Ist $\AA_1=\cdots=\AA_n=\BB=\BB(\R)$, so gilt:\\
+$\BB(\R^n):=\underbrace{\BB\otimes \cdots \otimes \BB}_{n-mal} = \sigma(\{(-\infty,x_1]\times\cdots\times(-\infty,x_n]|x_i\in\R, i = 1,\ldots,n\})$ %\neq \BB\times \cdots \times \BB = \BB^n$\\
+\end{itemize}
+Sei $P$ nun ein Wahrscheinlichkeitsma"s auf $(\Omega,\AA)$. F"ur $A_i\in\AA_i$ wird durch \\
+$Q_i(A_i):=P(\Omega_1\times \cdots\times \Omega_{i-1}\times A_i\times \Omega_{i+1}\times \cdots\times \Omega_n)$\\
+auf $(\Omega_i,A_i)$ wieder ein Wahrscheinlichkeitsma"s definiert, die sogenannte \textbf{Randverteilung (Marginalverteilung)}\index{Randverteilung}\index{Marginalverteilung}, denn:
+\begin{itemize}
+\item [(i)] $Q_i(\Omega_i)=P(\Omega)=1$
+\item [(ii)] \[Q_i(\sum_{j=1}^{\infty} A_i^{(j)})=P(\Omega_1\times \cdots\times \Omega_{i-1}\times \sum_{j=1}^\infty A_i^{(j)} \times \Omega_{i+1}\times \cdots\times \Omega_n)=\]
+\[=P(\sum_{j=1}^\infty (\Omega_1\times \cdots\times \Omega_{i-1}\times A_i^{(j)} \times \Omega_{i+1}\times \cdots\times \Omega_n)=\sum_{j=1}^\infty Q_i(A_i^{(j)})\]
+\end{itemize}
+Damit $P$ sinnvoll ist, sollte gelten $Q_i(A_i)=P_i(A_i)\quad\forall\,A_i\in\AA, i=1\ldots n$
+\end{Bem}
+\section{Zufallsvariablen}
+Gegeben sei ein Wahrscheinlichkeitsraum $(\Omega,\AA,P)$. Wir betrachten jetzt mehrere Zufallsvariablen.
+
+\begin{Bsp}
+n-mal w"urfeln $\Omega=\{1,\ldots,6\}^n \quad \AA=P(\Omega) \quad P(A)=\frac{|A|}{|\Omega|}$
+\[X(\omega)=X((\omega_1,\ldots,\omega_n))= \max_{i=1,\ldots,n}\, \omega_i\]
+\[Y(\omega)=Y((\omega_1,\ldots,\omega_n))= \min_{i=1,\ldots,n}\, \omega_i\]
+$P(X=3,Y=3)=P(\{3,\ldots,3\})=\frac{1}{6^n}$
+\end{Bsp}
+
+\begin{Def}
+Sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum \\
+und $X_1,\ldots,X_n : \Omega\rightarrow \R$ Zufallsvariablen.
+\begin{itemize}
+\item [a)] $X=(X_1,\ldots,X_n) : \Omega\rightarrow \R^n$ hei"st \textbf{Zufallsvektor}\index{Zufallsvektor}
+\item [b)] Die \textbf{(gemeinsame) Verteilung} von $X$ ist gegeben durch:
+\[P_X:\BB(\R^n)\rightarrow [0,1) \quad P_X(B):=P(\{\omega\in\Omega | X(\omega)\in B\}),B\in\BB(\R^n)\]  
+\item [c)] Die (gemeinsame) \textbf{Verteilungsfunktion} $F_X:\R^n\rightarrow [0,1]$ ist definiert durch:\\
+$F_X(x_1,\ldots,x_n)=P(X_1\leq x_1,\ldots, X_n\leq x_n)$
+\end{itemize}
+\end{Def}
+
+\begin{Bem}
+Wie im Fall $n=1$ ist $P_X$ durch $F_X$ bestimmt.
+\end{Bem}
+
+\begin{Def}
+Sei $X=(X_1,\ldots,X_n):\Omega\rightarrow \R^n$ ein Zufallsvektor.
+\begin{itemize}
+\item [a)] $X$ hei"st \textbf{diskret}, falls es eine endliche oder abz"ahlbare Menge $C=\{x_1,x_2,\ldots\}\subset \R^n$ gibt, so dass $P(X\in C)=1$. Die Folge $\{p_X(k)\}_{k\in\N}$ mit $p_X(k)=P(X=x_k)$ hei"st \textbf{(gemeinsame) Z"ahldichte}\index{Z"ahldichte (gemeinsame)}.
+\item [b)] $X$ hei"st \textbf{absolutstetig}\index{absolutstetig}, falls es eine integrierbare Funktion $f_X:\R^n\rightarrow [0,\infty)$ (die gemeinsame Dichte) gibt mit:
+\[F_X(x_1,\ldots,x_n)=\int_{-\infty}^{x_n}\ldots \int_{-\infty}^{x_1}f_X(y_1,\ldots ,y_n)dy_1\ldots dy_n\]
+\end{itemize}
+\end{Def}
+
+\begin{Bem}$\\$
+\begin{itemize}
+\item [a)] Ist $X=(X_1,\ldots, X_n)$ diskret bzw. stetig, so sind auch $X_1\ldots X_n$ selbst diskret bzw. stetig und wir k"onnen die \textbf{Rand-(Marginal) Z"ahldichte (Dichte)}\index{Rand-(Marginal) Z"ahldichte} bestimmen:
+\[P(X_i=x_i)=P(\{\omega | X(\omega)\in C, X_i(\omega_i)=x_i\})=\sum_{\substack{y\in C\\  y_i=x_i}} P(X=y)\]
+\[f_{X_i}(x_i)=\underbrace{\int_{-\infty}^\infty \ldots \int_{-\infty}^\infty}_{(n-1)mal} f_X(y_1,\ldots ,y_{i-1},x_i,y_{i+1},\ldots ,y_n)dy_1\ldots dy_{i-1}dy_{i+1}\ldots dy_n\]
+\[\textnormal{denn:}\quad F_{X_i}(x_i)=P(X_i\leq x_i)=\lim_{\substack{x_j\to\infty\\ (i\neq j)}} \underbrace{P(X_1\leq x_1, \ldots , X_n\leq x_n)}_{=F_X(x_1, \ldots ,x_n)} = \int_{-\infty}^{x_i}f_{X_i}(u)du \]
+\item [b)] Ist $X$ absolutstetig mit Dichte $f_X$, so ist die Verteilung von $X$ gegeben durch:
+\[P_X(B):=\int_B f_X(y)dy \qquad \forall\,B\in\BB(\R^n)\]
+\end{itemize}
+\end{Bem}
+
+\begin{Bsp}[Multinomialverteilung]
+Ein Experiment (z.B. Würfeln) hat $r$ mögliche Ausgänge $E_1,\ldots,E_r$ mit jeweiliger Wahrscheinlichkeit $p_1,\ldots,p_r$, wobei $p_1+\cdots+p_r=1$.
+\[ \Omega=\{\omega=(\omega_1,\ldots,\omega_n) | w_i\in\{E_1,\ldots,E_r\}\},\quad \AA = \sigma(\Omega)\]
+$X_i(\omega)$ sei die Anzahl der $E_i$-Ausgänge, $P(\{\omega_1,\ldots,\omega_n\}):= p_1^{X_1(\omega)}\cdot \cdots \cdot p_r^{X_r(\omega)} $
+
+Sei nun $k_1,\ldots,k_n\in\N_0$ mit $k_1+\cdots+k_n=n$.
+\begin{eqnarray*}
+P(X_1=k_1,\ldots,X_n=k_n) & = & p_1^{k_1}\cdots p_r^{k_r} \cdot \text{ Anzahl der $\omega_i$, bei denen $k_i$ Komponenten} \\
+ & & \text{den Wert $E_i$ haben, $i=1\ldots r$}\\
+ & = & p_1^{k_1}\cdots p_r^{k_r} \cdot \frac{n!}{k_1!\cdots k_n!}
+\end{eqnarray*}
+Dies ist die Zähldichte der \textbf{Multinomialverteilung}\index{Multinomialverteilung} ($M(n,r,p_1,\ldots,p_r)$.
+\end{Bsp}
+
+\begin{Bem}
+\begin{enumerate}
+\item[a)] Für $r=2$ erhalten wir die Binomialverteilung, also $M(n,2,p,1-p)=B(n,p)$.
+\item[b)] Die eindimensionalen Randverteilungen einer Multinomialverteilung sind binomialverteilt.
+\end{enumerate}
+\end{Bem}
+
+\begin{Bsp}
+Der Zufallsvektor $X=(X_1,X_2)$ hat eine \textbf{bivariate Normalverteilung}\index{bivariate Normalverteilung}, falls $X$ absolut stetig ist mit Dichte
+\[f_X(x_1,x_2)=\frac{1}{2\pi(|\Sigma |)^{\frac{1}{2}}}\, \exp\left(-\frac{1}{2}(\underline{x}-\underline{\mu})^\top \Sigma^{-1}(\underline{x}-\underline{\mu})\right)\]
+\[\text{wobei:}\quad \underline{\mu}=(\mu_1,\mu_2)^\top \in \R^2, \; \Sigma = 
+\begin{pmatrix}
+\sigma_1^2 & \sigma_{12} \\
+\sigma_{12}  & \sigma_2^2
+\end{pmatrix}
+,\; \sigma_1^2>0, |\sigma_{12}|<\sigma_1 \sigma_2\]
+Schreibweise: $X\sim N(\underline{\mu},\Sigma )$
+\end{Bsp}
+
+\begin{Bsp}
+\label{bsp:8.3}
+Gegeben sei $X=(X_1,X_2)$ mit Dichte
+\[f_{(X_1,X_2)}(x_1,x_2)=\begin{cases}4x_1x_2 & \text{f"ur } 0\leq x_1,\;x_2\leq 1 \\0 & \text{sonst}\end{cases}\]
+Test: ($f_{(X_1,X_2)}$ Dichte)\\
+\[\int_0^1\int_0^1 4x_1x_2\;dx_1dx_2=\int_0^1 2x_2\left[x_1^2\right]_0^1\;dx_2=x_2^2\Bigr|_0^1=1\]
+Randdichte von $X_1$:\\
+\[f_{X_1}(x_1)=\int_0^1 4x_1x_2\,dx_2=2x_1\left[x_2^2\right]_0^1=2x_1
+\qquad \text{f"ur } 0\leq x_1\leq 1\]
+\begin{align*}
+P(X_1\leq 2X_2)&=P\bigl((X_1,X_2)\in B\bigr)\\
+&=\int_0^{\frac{1}{2}}\int_0^{2t_2}4t_1t_2\;dt_1dt_2+\int_{\frac{1}{2}}^1\int_0^1 4t_1t_2\;dt_1dt_2\\
+&=\int_0^{\frac{1}{2}}2t_2\left[t_1^2\right]_0^{2t_2}\;dt_2 + \int_{\frac{1}{2}}^1 2t_2\left[t_1^2\right]\;dt_2\\
+&= 2\left[t_2^4\right]_0^{\frac{1}{2}} + \left[t_2^2\right]_{\frac{1}{2}}^1 = \frac{7}{8}\end{align*}
+\end{Bsp}
+
+
+\chapter{Unabh"angige Zufallsvariablen}
+Die Unabh"angigkeit von Zufallsvariablen wird auf die Unabh"angigkeit von Ereignissen zur"uckgef"uhrt. Im Folgenden sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum.
+
+\begin{Def}$\\$
+\begin{enumerate}[a)]
+\item Zufallsvariablen $X_1,\ldots,X_n :\Omega\rightarrow \R$ hei"sen \textbf{unabh"angig}\index{unabh"angige Zufallsvariable}, falls:
+\[F_{X_1,\ldots,X_n}(x_1,\ldots,x_n)=\prod_{i=1}^n F_{X_i}(x_i),\ \text{d.h.}\]
+\[P(\underbrace{X_1\leq x_1,\ldots ,X_n\leq x_n}_{A_1\cap\cdots\cap A_n})=\prod_{i=1}^n P(\underbrace{X_i\leq x_i}_{A_i}) \qquad \forall\,(x_1,\ldots ,x_n)\in\R^n\]
+\item Sei $X_1,X_2,\ldots$ eine (unendliche) Folge von Zufallsvariablen. $X_1,X_2,\ldots$ hei"sen unabh"angig, falls jede endliche Teilfolge $X_{i_1},\ldots ,X_{i_k}$ aus unabh"angigen Zufallsvariablen besteht.
+\end{enumerate}
+\end{Def}
+
+\begin{Sa}
+Die Zufallsvariablen $X_1,\ldots ,X_n :\Omega\rightarrow \R$ sind genau dann unabh"angig, wenn $\forall\,B_1,\ldots ,B_n\in\BB$ gilt:
+\[P(X_1\in B_1, \ldots ,X_n\in B_n)=\prod_{i=1}^n P(X_i\in B_i) \textnormal{ bzw. } P_X(B_1\times \cdots \times B_n)=\prod_{i=1}^n P_{X_i}(B_i)\]
+d.h. die gemeinsame Verteilung ist das Produkt der einzelnen Randverteilungen.
+\end{Sa}
+
+\textbf{Beweis}
+\begin{itemize}
+\item [``$\Leftarrow$``] setze $B_i=(-\infty,x_i],\quad i=1,\ldots ,n$
+\item [``$\Rightarrow$``] Folgt aus Satz \ref{satz:4.4} und "Ubung $(\{(-\infty,x_i]\times\cdots\times(-\infty ,x_n]\, ,x_i\in\R\cup \{\infty\}\})$ ist ein $\cap$-stabiler Erzeuger von $\BB(\R^n)$ 
+\end{itemize}
+
+\begin{Bsp}
+Wir betrachten die mehrstufigen Zufallsexperimente aus \S
+\ref{sec:8.1}. Es sei $\Omega,\AA$ wie in \S \ref{sec:8.1} und 
+\[P(A_1\times\cdots\times A_n)=P_1(A_1)\cdots P_n(A_n)\text{ für }
+A_i\in\AA_i \quad i=1,\ldots ,n\]
+das sogenannte Produktma"s.
+
+Durch die Festlegung auf den Rechteckmengen ist es auf ganz $\AA$
+eindeutig bestimmt (Satz \ref{satz:4.4}). Weiter sei $X_i(\omega)=X_i\bigl((\omega_1,\ldots ,\omega_n)\bigr)=\omega_i$ die $i$-te Projektion, $i=1,\ldots ,n$. Dann sind $X_1,\ldots ,X_n$ unabh"angig, da
+\begin{align*}P(X_1\in A_1,\ldots ,X_n\in A_n)&=P(A_1\times\cdots\times A_n) = \prod_{i=1}^n P_i(A_i) \\
+%=\prod_{i=1}^n P_i(X_i\in A_i)\\
+&=\prod_{i=1}^n P(\Omega_1\times\cdots\times\Omega_{i-1}\times A_i \times \Omega_{i+1}\times \cdots\times \Omega_n) \\
+&=\prod_{i=1}^n P(X_i\in A)\end{align*}
+\end{Bsp}
+
+\begin{Sa}
+Sei $X=(X_1,\ldots ,X_n)$ ein Zufallsvektor.
+\begin{enumerate}[a)]
+\item Ist $X$ diskret mit $P(X\in C)=1$, $C\in\R^n$ abz"ahlbar, dann sind $X_1,\ldots ,X_n$ unabh"angig, genau dann wenn:
+\[P(X_1=x_1,\ldots ,X_n=x_n)=\prod_{i=1}^n P(X_i=x_i) \quad\forall\,(x_1,\ldots ,x_n)\in\R^n\]
+\item Ist $X$ absolut stetig, so sind $X_1,\ldots ,X_n$ unabh"angig, genau dann wenn 
+\[f_X(x_1,\ldots ,x_n)=\prod_{i=1}^n f_{X_i}(x_i)\quad\forall\,(x_1,\ldots ,x_n)\in\R\backslash B\] wobei $B$ ``eine kleinere Menge`` ist (vom Lebesgue-Ma"s 0). D.h. die gemeinsame Dichte ist das Produkt der Randdichten. 
+\end{enumerate}
+\end{Sa}
+
+% \textbf{Beweis}
+% \begin{enumerate}[a)]
+% \item
+% \begin{itemize}
+% \item [$``\Rightarrow ``$] setze $B_i=\{x_i\} \quad i=1,\ldots ,n$
+% \item [$``\Leftarrow ``$] Es gilt:
+% \[P(X_1\in B_1,\ldots ,X_n\in B_n)= \sum_{(x_1,\ldots ,x_n)\in B_1\times\cdots\times B_n \cap \tilde C =c_1\times\cdots\times c_n>c} P(X_1=x_1,\ldots ,X_n=x_n)\]
+% \[=\sum_{x_i\in B_i\cap C_i}\sum_{x_n\in B_n\cap C_n} P(X_1=x_1)\ldots P(X_n=x_n)=\prod_{i=1}^n P(X_i\in B_i)\]
+% \end{itemize}
+% \item [b)] "ahnlich
+% \end{enumerate}
+ 
+\begin{Bsp}
+Sei $X=(X_1,X_2)$ ein absolutstetiger Zufallsvektor mit Dichte
+\[f_{X_1,X_2}(x_1,x_2)=\frac{1}{2\pi\sqrt{1-\varrho^2}}\,\exp\left(-\frac{1}{2}\frac{x_1^2-2\varrho
+    x_1x_2+x_2^2}{1-\varrho^2}\right)\; x_1,x_2\in\R 
+\text{ für } \varrho\in[0,1)\]
+Dies ist ein Spezialfall von Beispiel \ref{bsp:8.3} mit
+$\sigma_1=\sigma_2=1,\,\sigma_{12}=\varrho,\,\mu_1=\mu_2=0$
+
+Randdichte $f_{X_1}(x_1)$ von $X_1$:
+\begin{align*}
+f_{X_1}(x_1) &= \int_{-\infty}^\infty f_{X_1,X_2}(x_1,x_2)\, dx_2 \\
+ &=\frac{1}{2\pi\sqrt{1-\varrho^2}}\,\exp\left(-\frac{1}{2}\frac{x_1^2\left(1-\varrho^2\right)}{1-\varrho^2}\right) \int_{-\infty}^\infty \exp\left(-\frac{1}{2}\frac{(x_2-\varrho x_1)^2}{1-\varrho^2}\right)\; dx_2 \\
+ &=\frac{1}{2\pi}\, \exp\left(-\frac{1}{2}x_1^2\right) \cdot 
+\underbrace{\int_{-\infty}^\infty e^{-\frac{1}{2}u^2}\,du}_{=\sqrt{2\pi}}\\
+&=\frac{1}{\sqrt{2\pi}}\, \exp\left(-\frac{1}{2}x_1^2\right)\quad
+\bigl(\text{also } X_1\sim N(0,1)\bigr)\end{align*}
+\[\text{Analog:}\quad f_{X_2}(x_2)=\frac{1}{\sqrt{2\pi}}\,
+\exp\left(-\frac{1}{2}x_2^2\right) \quad (\text{also } X_2\sim N(0,1))\]
+das heißt die Randverteilungen sind für alle $\varrho$ Standardverteilungen. $X_1,X_2$ sind unabhängig $\Leftrightarrow$ $\varrho = 0$. Für $\varrho\ne0$: $f_{X_1,X_2}(x_1,x_2) = f_{X_1}(x_1)f_{X_2}(x_2)$
+\end{Bsp}
+
+\begin{Bem}
+Sind $X_1,\ldots ,X_n$ unabh"angige Zufallsvariablen und $n_1+\cdots +n_k=n \quad n_i\in\N$ $\varphi_i\in\R^{n_i}\rightarrow \R$ messbar, $i=1,\ldots ,k$, dann sind auch die Zufallsvariablen\\
+$\varphi_1(X_1,\ldots ,X_{n_1}),\varphi_2(X_{n_1+1},\ldots ,X_{n_1+n_2}),\ldots ,\varphi_k(X_{n_1+\cdots+n_{k-1}+1},\ldots ,X_n)$ unabh"angig. 
+\end{Bem}
+
+\begin{Bsp}
+Es gibt 2 Spieler. Spieler 1 denkt sich zwei Zahlen $a,b\in\R$ aus. Eine faire M"unze entscheidet, ob $a$ oder $b$ aufgedeckt wird. Spieler 2 muss raten, ob die verdeckte Zahl gr"o"ser oder kleiner als die aufgedeckte Zahl ist.\\
+Intuition: Wahrscheinlichkeit richtig zu raten $=\frac{1}{2}$\\
+Es geht besser: Spieler 2 generiert eine Zahl $c$ zuf"allig $C\sim N(0,1)$\\
+Entscheidung: $c$ und die aufgedeckte Zahl werden verglichen.\\
+\textbf{Mathematisches Modell:}\\
+$(\Omega_1,\AA_1,P_1)$ mit $\Omega_1=\{a,b\},\AA_1=\PM(\Omega), P_1(\{a\})=P_1(\{b\})=\frac{1}{2}$\\
+Sei $M:\Omega_1\rightarrow \{a,b\},\, M(a)=a,\,M(b)=b$ die Zufallsvariablen, die das Ergebnis des M"unzwurfes beschreibt.\\
+$(\Omega_2,\AA_2,P_2)$ mit $\Omega_2=\R,\AA_2=\BB, P_2(B)=\int_B \varphi_{0,1}(x)\,dx$\\
+$C: \Omega_2\to \mathbb{R}$, $C(\omega) = \omega$. \\
+Wichtig: $M$ und $C$ sind unabhängig.
+Sei o.B.d.A. $a<b$. Wir betrachten den Produktraum mit dem Produktma"s\\
+$P=P_1\otimes P_2$. Es sei $G$ das Ereignis, dass Spieler 2 richtig r"at.
+\[P(G|M=a)=\frac{P(G,M=a)}{P(M=a)}=\frac{P(C>a,M=a)}{P(M=a)}\stackrel{C,M \text{ unabh.}}{=}\frac{P(C>a)P(M=a)}{P(M=a)}\]
+\[\text{Analog: } P(G|M=b) = P(C\le b) \]
+\[P(G)=P(G|M=a)\frac{1}{2}+P(G|M=b)\frac{1}{2}=\frac{1}{2}(P(c>a)+P(c\leq b))=\]
+\[=\frac{1}{2}(1-\Phi (a)+\Phi (b))=\frac{1}{2}(1+ \underbrace{\Phi (b)-\Phi (a)}_{>0})>\frac{1}{2}\] 
+\end{Bsp}
+
+\begin{Sa}
+Sei $X=(X_1,X_2):\Omega\rightarrow \R^2$ ein absolutstetiger Zufallsvektor mit gemeinsamer Dichte $f_X$. Dann ist auch die Zufallsvariable $X_1+X_2$ absolutstetig und ihre Dichte ist gegeben durch:
+\[f_{X_1+X_2}(x)=\int_{-\infty}^\infty f_X(y,x-y)\,dy \qquad \forall\,x\in\R\]
+Falls die Zufallsvariable $X_1$ und $X_2$ unabh"angig sind, gilt insbesondere die sog. \textbf{Faltungsformel}\index{Faltung!Faltungsformel}
+\[f_{X_1+X_2}(x)=\int_{-\infty}^\infty f_{X_1}(y)\cdot f_{X_2}(x-y)\,dy \qquad \forall\,x\in\R\] 
+\end{Sa}
+
+\begin{Bem}$\\$
+%\begin{itemize}
+%\item [a)] Eine analoge Formel gilt im diskreten Fall.
+%\item [b)]
+Sind $X$ und $Y$ unabh"angig, so schreibt man
+\[P_{X+Y}=P_X * P_Y\]
+und nennt $P_X * P_Y$ \textbf{Faltung}\index{Faltung}
+%\end{itemize}
+\end{Bem}
+
+\textbf{Beweis}\\
+Zwischen Verteilungsfunktion und Dichte gibt es eine eindeutige Zuordnung. Also gen"ugt es zu zeigen:
+\[P(X_1+X_2\leq z)=\int_{-\infty}^z\int_{-\infty}^\infty f_X(y,x-y)\,dydx \]
+\begin{align*}
+\int_{-\infty}^z\int_{-\infty}^\infty f_X(y,x-y)\,dydx
+&= \int_{-\infty}^\infty \int_{-\infty}^z f_X(y,x-y)\,dxdy \\
+&=\int_{-\infty}^\infty \int_{-\infty}^{z-y} f_X(y,u)\,dudx \\
+&= \int_{\{(u,y)\in\R^2|u+y\leq z\}} f_X(y,u)\,dudy\\
+&= P_X(\{(u,y)\in\R^2|u+y\leq z\}) = P(X_1+X_2\leq z)
+\end{align*}
+Die Faltungsformel ergibt sich mit Satz 9.1.b).
+
+\begin{Bsp}
+Ist $X_1\sim N(\mu_1,\sigma_1^2),\,X_2\sim N(\mu_2,\sigma_2^2)$ und $X_1,X_2$ unabh"angig so gilt:
+\[X_1+X_2\sim N(\mu_1+\mu_2, \sigma_1^2+\sigma_2^2)\]
+d.h. die Normalverteilung ist \textbf{faltungsstabil}\index{Faltung!faltungsstabil}.
+\end{Bsp}
+
+\begin{Sa}
+Seien $X,Y:\Omega\rightarrow \R$ unabh"angige Zufallsvariablen mit existierenden Erwartungswerten, so existiert auch der Erwartungswert von $X\cdot Y$ und es gilt:
+\[ EX\cdot Y = EX\cdot EY \]
+\end{Sa}
+
+\textbf{Beweis}\\
+%Es sei $n=2$ (Rest folgt mit vollst"andiger Induktion, Bem. + Satz 9.1),\\
+%$X_1=X,X_2=Y$.
+Wir betrachten f"ur den Beweis nur den Fall, dass (X,Y) diskret ist. (Z"ahldichte)
+\begin{align*}
+\sum_{k=1}^\infty\sum_{j=1}^\infty |x_ky_j| P(X=x_k, Y=y_j)
+&=\sum_{k=1}^\infty\sum_{j=1}^\infty |x_ky_j|P(X=x_k)P(Y=y_j) \\
+&=\underbrace{(\sum_{k=1}^\infty |x_k| P(X=x_k))}_{<\infty\textnormal{ nach Vor.}}\underbrace{(\sum_{j=1}^\infty |y_j| P(Y=y_j))}_{<\infty\textnormal{ nach Vor.}}< \infty
+\end{align*}
+Also existiert EXY. Gleiche Rechnung ohne Betragsstriche ergibt $EXY=EX\cdot EY$.\\
+Im Allgemeinen folgt die Existenz von EXY nicht aus der Existenz von EX und EY.
+
+\begin{Sa}[Cauchy-Schwarz-Ungleichung]\index{Cauchy-Schwarz-Ungleichung}
+Es seien $X,Y:\Omega\to\R$ Zufallsvariablen mit existierendem zweiten Moment, so existiert auch EXY und es gilt:
+\[(EXY)^2\leq EX^2EY^2\]
+\end{Sa}
+
+\textbf{Beweis}\\
+Es gilt: $|X\cdot Y(\omega)|=|X(\omega)||Y(\omega)|\stackrel{da(X-Y)^2>0}{\leq}X^2(\omega)+Y^2(\omega)\quad \forall\,\omega\in\Omega$\\
+Aus der Voraussetzung und Satz 7.2.b) folgt die Existenz von EXY. Au"serdem folgt mit Satz 7.2 die Existenz von $E(X+aY)^2\quad \forall\,a\in\R$\\
+Es gilt: $0\leq E(X+aY)^2=EX^2+a^2EY^2+2aEXY \quad \forall\, a\in\R$
+\begin{itemize}
+\item [1.Fall:] $EY^2=0 \Rightarrow EXY=0$, da die rechte Seite eine Gerade in $a$ ist.\\
+$\Rightarrow $ Ungleichung gilt.
+\item [2.Fall:] $EY^2\neq 0$: Rechte Seite wird minimal bei $a^*=-\frac{EXY}{EY^2}$ \\
+Minimal-Stelle einsetzen ergibt: $\frac{1}{EY^2}(EX^2EY^2-(EXY)^2)\geq 0$\\
+$\Rightarrow $ Ungleichung gilt.
+\end{itemize}
+
+\begin{Def}
+Es seien $X$,$Y$ Zufallsvariablen mit $EX^2<\infty$, $EY^2<\infty$.
+\begin{itemize}
+\item [a)] Dann hei"st $\cov (X,Y):=E[(X-EX)(Y-EY)]$ die \textbf{Kovarianz}\index{Kovarianz} von $X$ und $Y$. Ist $\cov (X,Y)=0$, so nennt man $X$ und $Y$ \textbf{unkorreliert}.
+\item [b)] Ist $\var(X)\cdot \var(Y)>0$, so hei"st
+\[\varrho(X,Y):=\frac{\cov (X,Y)}{\sqrt{\var(X)\var(Y)}}\]
+der \textbf{Korrelationskoeffizient}\index{Korrelationskoeffizient} von $X$ und $Y$.
+\end{itemize}
+\end{Def}
+
+\begin{Sa}
+Seien $X$,$Y$ Zufallsvariablen mit $EX^2<\infty$, $EY^2<\infty$. Dann gilt:
+\begin{itemize}
+\item [a)] $\cov (X,Y)=EXY-EX\cdot EY$
+\item [b)] Sind $X$ und $Y$ unabh"angig, so auch unkorreliert.
+\item [c)] Ist $\varrho (X,Y)$ erf"ullt, so gilt: $-1\leq \varrho (X,Y)\leq 1$
+\end{itemize}
+\end{Sa}
+
+\textbf{Beweis}
+\begin{itemize}
+\item [a)] Es gilt: $\cov (X,Y)=E[XY-XEY-YEX+EX\cdot EY]=EXY-EXEY$
+\item [b)] folgt aus a) und Satz 9.4
+\item [c)] Mit Satz 9.5 folgt:
+\[\var(X)\var(Y)\varrho^2(X,Y)=(E[(X-EX) (Y-EY)])^2\leq E(X-EX)^2E(Y-EY)^2\]
+\[=\var(X)\var(Y)\]
+\end{itemize}
+\newpage
+\begin{Bem}$\\$
+\begin{itemize}
+\item [a)] Der Korrelationskoeffizient ist ein Ma"s f"ur die lineare Abh"angigkeit der zwei Zufallsvariablen. Betrachte den Extremfall $Y=aX+b$ mit $a\neq 0, \, b\in\R$ gilt\\
+$\cov (X,Y)=E[(X-EX)(aX+b-aEX-b)]=a \var(X)$. und 
+\[\varrho(X,Y)=\frac{a\var(X)}{\sqrt{a^2\var^2(X)}}=\begin{cases}1 &
+  \text{falls } a>0 \\-1 & \text{falls } a<0\end{cases}\]
+\item [b)] Es gibt Zufallsvariablen, die unkorreliert, aber nicht stochastisch unabh"angig sind.\\
+Es sei z.B. $\Omega=\{\omega_1,\omega_2,\omega_3\}$
+\[\begin{matrix}
+\omega   & P(\{\omega\}) & X(\omega) & Y(\omega) & X(\omega)\cdot Y(\omega) \\
+\omega_1 & \frac{1}{3}   & 0         &  -1       & 0 \\  
+\omega_2 & \frac{1}{3}   & 1		 &	0        & 0 \\
+\omega_3 & \frac{1}{3}   & 0         &  1        & 0
+\end{matrix}\]
+Es gilt: $\cov (X,Y)=0-0=0$ unkorreliert, aber $P(X=0,Y=1)=\frac{1}{3}$\\
+$P(X=0)P(Y=1)=\frac{2}{3}\cdot\frac{1}{3}=\frac{2}{9}\neq \frac{1}{3}= P(X=0, Y=1)$ sind \underline{nicht} unabh"angig.
+\item [c)] Es gilt: $\cov (X,X)=\var(X),\,\cov (X,Y)=\cov (Y,X)$
+\end{itemize}
+\end{Bem}
+
+\begin{Sa}$\\$
+Seien $X_1,\ldots ,X_n$ Zufallsvariablen mit existierendem zweiten Moment, so gilt:
+\[\var(X_1+\cdots +X_n)=\sum_{i=1}^n \var(X_1)+2\sum_{\mathclap{1\leq i,j\leq n}} \cov (X_i,X_j)\]
+Sind die Zufallsvariablen unabh"angig (oder unkorreliert), so gilt:
+\[\var(X_1+\cdots +X_n)=\sum_{i=1}^n \var(X_i)\]
+\end{Sa}
+
+\textbf{Beweis}\\
+Mit Satz 7.2 gilt:
+\[\var(X_1+\cdots +X_n)=E\left(\sum_{i=1}^n(X_i-EX_i)\right)^2=E\sum_{\mathclap{1\leq i,j\leq n}}(X_i-EX_i)(X_j-EX_j)\]
+\[=\sum_{\mathclap{1\leq i,j \leq n}}^n \cov (X_i,X_j) = \sum_{i=1}^n \var(X_i)+2\sum_{\mathclap{1\leq i<j\leq n}} \cov (X_i,X_j)\]
+Der zweite Teil aus Satz 9.6 b)
+
+\begin{Def}$\\$
+Sei $X=(X_1,\ldots ,X_n)$ ein Zufallsvektor mit $EX_i^2<\infty,\ \forall\, i=1,\ldots ,n$
+\begin{itemize}
+\item [a)] $EX=(EX_1,\ldots ,EX_n)$ hei"st \textbf{Erwartungswertvektor von X}\index{Erwartungswertvektor von X}. 
+\item [b)] Die $n\times n$-Matrix 
+$\quad \cov X=\left(\cov (X_i,X_j)\right)_{1\le i,j\le n}$\\
+hei"st \textbf{Kovarianzmatrix von X}\index{Kovarianzmatrix von X}.
+\end{itemize}
+\end{Def}
+
+\chapter{Erzeugende Funktionen}
+In diesem Kapitel sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum und $X:\Omega\rightarrow \N_0$ eine diskrete Zufallsvariable mit  Z"ahldichte $\{p_X(k)\}_{k\in\N_0}$, also $p_X(k)=P(X=k)\, ,k\in\N_0$
+
+\begin{Def}$\\$
+Sei $X:\Omega\to\N_0$ eine Zufallsvariable mit Z"ahldichte $\{p_X(k)\}_{k\in\N_0}$. Die Funktion $g_X:[-1,1]\to\R$ mit
+\[g_X(s)=\sum_{k=0}^\infty p_X(k)s^k=Es^X\]
+hei"st \textbf{erzeugende Funktion von X}\index{erzeugende Funktion von X}.
+\end{Def}
+
+\begin{Bem}$\\$
+\begin{itemize}
+\item [a)] $g_X(s)$ ist wohldefiniert f"ur $|s|\leq 1$, da 
+\[\sum_{k=0}^\infty p_X(k)|s|^k\leq \sum_{k=0}^\infty p_X(k)=1\]
+Insbesondere: $g_X(1)=1$
+\item [b)] $g_X^{(n)}(s)$ ist wohldefiniert f"ur $s\in (-1,1)$
+\item [c)] Es gilt:
+\[p_X(k)=\frac{g_X^{(k)}(0)}{k!} \quad \textnormal{f"ur}\,k\in\N_0\]
+\end{itemize}
+Es sei $g_X(s^-)=\lim_{z\uparrow s} g_X(z)$  "`linksseitiger Grenzwert"'
+\end{Bem}
+
+\begin{Sa}$\\$
+Besitzt die $\N_0$-wertige Zufallsvariable $X$ die erzeugende Funktion $g_X$, so gilt:
+\begin{itemize}
+\item [a)] $EX=g'_X(1^-)$, falls EX existiert
+\item [b)] $\var(X)=g''_X(1^-)+g'_X(1^-)-(g'_X(1^-))^2$ falls $\var(X)$ existiert.
+\end{itemize}
+\end{Sa}
+
+\textbf{Beweis}
+\begin{itemize}
+\item [a)] \[g'_X(s)=\sum_{k=1}^\infty p_X(k) k\cdot s^{k-1} \stackrel{s\to 1}{\to}
+\sum_{k=1}^\infty p_X(k)k=EX\]
+\item [b)] "ahnlich
+\end{itemize}
+
+\begin{Bsp}$\\$
+Sei $X\sim B(n,p),\,n\in\N,\,p\in (0,1)$
+\[ P(X=k)=\binom{n}{k}p^k(1-p)^{n-k},\quad k=0,1,\ldots ,n\]
+Es gilt: \\
+$g_X(s)=\sum_{k=0}^n\binom{n}{k}p^k(1-p)^{n-k}\cdot s^k=(sp+1-p)^n$\\
+$g'_X(s)=n(sp+1-p)^{n-1}p$\\
+$g''_X(s)=n(n-1)(sp+1-p)^{n-2}p^2$\\
+\newline
+Also:\\
+$EX=g'_X(1^-)=np$\\
+$\var(X)=n(n-1)p^2+np-(np)^2=n^2p^2-np^2+np-n^2p^2=np(1-p)$
+\end{Bsp}
+
+\begin{Sa}[Eindeutigkeitssatz f"ur erzeugende Funktionen]$\\$
+Sind $X$ und $Y$ zwei diskrete Zufallsvariablen mit Werten in $\N_0$, Z"ahldichten\\ $\{p_X(k)\}_{k\in\N_0},\,\{p_Y(k)\}_{k\in\N_0}$ und erzeugenden Funktionen $g_X(s)$, $g_Y(s)$, so gilt:
+\[p_X(k)=p_Y(k)\quad \forall\, k\in\N_0 \Longleftrightarrow  g_X(s)-g_Y(s)\quad \forall\, s\in [-1,1]\]
+\end{Sa}
+
+\textbf{Beweis}\\
+Identit"atssatz f"ur Potenzreihen.
+
+\begin{Sa}$\\$
+Sind $X$ und $Y$ zwei unabh"angige, diskrete Zufallsvariablen mit Werten in $\N_0$, dann gilt:
+\[g_{X+Y}(s)=g_X(s)\cdot g_Y(s)\qquad \forall\, s\in [-1,1]\]
+\end{Sa}
+\textbf{Beweis}\\
+F"ur $s\in [-1,1]$ gilt:
+\begin{eqnarray*}
+g_{X+Y}(s) & = & \sum_{k=0}^\infty s^k\cdot P(X+Y=k)=\sum_{k=0}^\infty \overbrace{s^k}^{=s^is^{k-i}}\sum_{i=0}^k\underbrace{P(X=i, Y=k-i)}_{\stackrel{X,Y \textnormal{unabh.}}{=}P(X=i)\cdot P(Y=k-i)} \\
+& = & \sum_{k=0}^\infty \sum_{i=0}^k s^i P(X=i)s^{k-i}P(Y=k-i) \\
+& = & (\sum_{i=0}^\infty s^i P(X=i))\cdot (\sum_{j=0}^\infty s^j P(Y=j)) \\
+& = & g_X(s)\cdot g_Y(s)
+\end{eqnarray*}
+
+\begin{Bsp}$\\$
+Es sei $X\sim B(n,p),\, Y\sim B(m,p)$, $X$ und $Y$ unabh"angig.\\
+Mit Beispiel 10.1 gilt: $g_X(s)=(sp+1-p)^n,\,g_Y(s)=(sp+1-p)^m$\\
+\newline
+Also folgt mit Satz 10.3:
+\[ g_{X+Y}(s)=(sp+1-p)^{n+m} \Rightarrow X+Y \sim B(n+m,p)\]
+Insbesondere ist $X=\sum_{i=1}^n X_i$, wobei $X_1,\ldots ,X_n$ unabh"angig und identisch verteilt mit $X_i\sim B(1,p)$
+\end{Bsp}
+
+\begin{Bsp}[Ruinspiel]
+\begin{itemize}
+\item Spieler I besitzt $n$ Euro
+\item Spieler II besitzt $(N-n)$ Euro
+\item Pro Runde: Spieler I gewinnt von Spieler II einen Euro mit Wahrscheinlichkeit $p$, sonst verliert er einen Euro an Spieler II
+\item Die Runden sind unabhängig
+\item Gespielt wird bis ein Spieler pleite ist
+\end{itemize}
+Wie groß ist die Wahrscheinlichkeit, dass Spieler I gewinnt? Sei dabei $N\in\N$ fest. Wir definieren die Ereignisse $A_n =$ Spieler I gewinnt bei Anfangskapital $n$ und $B =$ Spieler I gewinnt die erste Runde. Mit dem Satz der totalen Wahrscheinlichkeit ergibt sich:
+\[ P(A_n) = P(A_n|B)\cdot P(B) + P(A_n|B^c)\cdot P(B^c) \text{ für } 0<n<N \]
+Sei $p_n := P(A_n)$: $p_n = p_{n+1}\cdot p  + p_{n-1}\cdot (1-p), \ 0<n<N$ und $p_0=0$ und $p_N=1$. Die ist eine sogenannte Differenzengleichung. Sei $\rho := \frac{1-p}p$ und $\rho \ne 1$ (d.h. $p\ne\frac12$).
+\begin{align*}
+p_{n+1} &= (1+\rho)p_n - \rho p_{n-1}, \ n=1,2,\ldots \\
+s^{n+1}p_{n+1} &= (1+\rho)s^{n+1}p_n - \rho s^{n+1}p_{n-1}, \ n=1,2,\ldots 
+\end{align*}
+Sei $\hat g (s) = \sum_{n=0}^\infty p_n s^n$. Dann folgt:
+\begin{align*}
+\hat g(s) -p_1\cdot s &= (1+\rho)s \hat g(s) - \rho s^2 \hat g(s) \\
+\Rightarrow \hat g(s) &= \frac{p_1\cdot s}{1-(1+\rho)s+\rho s^2} = \frac{p_1}{\rho-1}\left(\frac1{1-\rho s} - \frac1{1-s}\right) \\
+&= \frac{p_1}{\rho-1}\left( \sum_{k=0}^\infty (\rho s)^k - \sum_{k=0}^{\infty}s^k\right) \\
+\Rightarrow p_n &= \frac{p_1}{s-1} (\rho^n-1)
+\end{align*}
+Randbedingung: $p_N=1$ ergibt $p_1=\frac{\rho-1}{\rho^N-1}$. Insgesamt:
+\[ p_n = \frac{\rho^n-1}{\rho^N-1}, \ n=0,1\ldots \]
+Bei $\rho=1$:
+\[ p_n = \frac n N, \ n=1,2\ldots \]
+\end{Bsp}
+
+\chapter{Konvergenzbegriffe f"ur Zufallsvariablen}
+Sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum und $X_1,X_2,\ldots \Omega\to\R$ Zufallsvariablen. ``Konvergenz`` der Folge $\{X_n\}$ kann man auf verschiedene Weise definieren.
+
+\begin{Def}$\\$
+\begin{itemize}
+\item [a)] $X_n$ konvergiert \textbf{P-fast sicher (P-f.s.)}\index{konvergiert!P-fast sicher} gegen X\\
+Schreibweise: $X_n\stackrel{fs}{\rightarrow}X$, wenn gilt: 
+\[P(\{\omega\in\Omega | \lim_{n\to\infty} X_n(\omega)=X(\omega)\})=1\]
+\item [b)] $X_n$ konvergiert \textbf{in Wahrscheinlichkeit}\index{konvergiert!in Wahrscheinlichkeit} (stochastisch) gegen X\\
+Schreibweise: $X_n\stackrel{P}{\rightarrow }X$, wenn gilt:
+\[\lim_{n\to\infty}P(\{\omega\in\Omega \Bigr| |X_n(\omega)-X(\omega)|\geq \varepsilon \})=0 \quad \forall\,\varepsilon >0\]
+\item [c)] $X_n$ konvergiert \textbf{in Verteilung}\index{konvergiert!in Verteilung} gegen X\\
+Schreibweise: $X_n\stackrel{d}{\rightarrow }X$, wenn gilt:
+\[\lim_{n\to\infty} F_{X_n}(x)=F_X(x)\quad \forall\,x\in\R\quad\textnormal{an denen}\,F_X(x)\,\textnormal{stetig ist}\]
+\end{itemize}
+\end{Def} 
+
+\begin{Bsp}$\\$
+Sei $X_1,X_2,\ldots$ eine Folge von unabh"angigen, identisch verteilten (u.i.v.) Zufallsvariablen mit $P(X_n=1)=P(X_n=-1)=\frac{1}{2}\quad (\Rightarrow EX_n=0)$\\
+Mit der Ungleichung von Tschebyscheff (Satz 7.4) folgt:
+\[P(|\frac{1}{k}\sum_{i=1}^n X_i-0|\geq \varepsilon )\leq \frac{E((\frac{1}{k}\sum_{i=1}^n X_i)^2)}{\varepsilon^2}=\frac{1}{n^2}\cdot \frac{n}{\varepsilon^2}=\frac{1}{n\varepsilon^2}\stackrel{n\to\infty}{\to} 0 \]
+Also:
+\[\frac{1}{n}\sum_{i=1}^n X_i\stackrel{P}{\rightarrow}0\] 
+\end{Bsp}
+
+\begin{Sa}$\\$
+Fast sichere Konvergenz impliziert die Konvergenz in Wahrscheinlichkeit.
+\end{Sa}
+
+\textbf{Beweis}\\
+Sei $X_n\stackrel{fs}{\rightarrow}X$ und $N:=\{\omega\in\Omega | X_n(\omega)\not\rightarrow X(\omega)\}$ also $P(N)=0$\\
+Sei $\varepsilon >0$ und f"ur $n\in\N$
+\[A_n=\{\omega\in\Omega \Bigr| \sup_{m\geq n} |X_m(\omega)-X(\omega)|\geq \varepsilon \}\]
+Es gilt $A_n \downarrow$ und $\omega \in A_n \,\forall\, n\in\N \Rightarrow \forall\, n\in\N, \, \exists\, m\geq n: |X_m(\omega)-X(\omega)|\geq \frac{\varepsilon }{2}$\\
+Also:
+\[A_n \downarrow \bigcap_{m=1}^\infty A_m =: N_\varepsilon \subset \{ \limsup_{n\to\infty} |X_n-X|\geq \frac{\varepsilon}{2}\} \subset N\]
+Da $P$ stetig von oben folgt:\\
+$0\leq P(|X_n-X| \geq \varepsilon) \leq P(A_n) \stackrel{n\to\infty}{\rightarrow}P(N_\varepsilon)\leq P(N)=0$     
+
+\begin{Bem}$\\$
+Die Umkehrung von Satz 11.1 gilt nicht.\\
+Sei $(\Omega,\AA,P)=([0,1),\BB_{[0,1)},\textnormal{Unif}(0,1))$\\
+
+(Hier fehlen Skizzen, die $X_1,X_2,\ldots$ beschreiben.)
+
+Offenbar $P(\{\omega\in\Omega |\lim_{n\to\infty}X_n(\omega)\, \textnormal{existiert}\})=0$\\
+aber $P(\{\omega\in\Omega \Bigr| |X_n(\omega)-0|\geq \varepsilon \})=P(X_n=1)\rightarrow 0$ f"ur $n\to\infty$\\
+Das hei"st : $X_n\stackrel{P}{\rightarrow}0$ aber $X_n\stackrel{fs}{\not\rightarrow}0$
+\end{Bem}
+
+\begin{Sa}$\\$
+Konvergenz in Wahrscheinlichkeit impliziert Konvergenz in Verteilung.
+\end{Sa}
+
+\textbf{Beweis}\\
+Vorüberlegung: $P(A)=P(AB)+P(AB^c)\leq P(AB)+P(B^c)$\\
+$\Rightarrow P(AB)\geq P(A)-P(B^c) \quad (*)$\\
+Sei $X_n\stackrel{P}{\rightarrow}X$. Für alle $x\in\R$ gilt:\\
+$\{\omega | X_n(\omega)\leq x\}\supset \{\omega | X(\omega)\leq x-\varepsilon , |X_n(\omega)-X(\omega)|<\varepsilon \},\quad \varepsilon >0$\\
+da $X_n=X+X_n-X\leq X+|X_n-X|\leq x-\varepsilon +\varepsilon =x$\\
+\newline
+Also:
+\begin{align*}
+F_{X_n}(x)=P(X_n\leq x)&\geq P(\underbrace{X\leq x-\varepsilon}_{A} , \underbrace{|X_n-X|<\varepsilon}_{B})\\
+\Rightarrow F_{X_n}(x) &\stackrel{(*)}{\geq} \underbrace{P(X\leq x-\varepsilon)}_{F_X(x-\varepsilon)} -P(|X_n-X|\geq \varepsilon )
+\end{align*}
+Andererseits:
+\begin{align*}
+F_{X_n}(x)&=P(X_n\leq x) \\
+&=P(X_n\leq x, |X_n-X|<\varepsilon )+P(X_n\leq x, |X_n-X|\geq \varepsilon )\\
+&\leq \underbrace{P(X\leq x+\varepsilon)}_{=F_X(x+\varepsilon)} +P(|X_n-X|\geq \varepsilon)
+\end{align*}
+Insgesamt:
+\[ F_X(x-\varepsilon)-P(|X_n-X|\geq \varepsilon) \leq F_{X_n}(x) \leq F_X(x+\varepsilon)+P(|X_n-X|\geq \varepsilon)\]
+Mit $n\to\infty$ folgt:
+\[F_X(x-\varepsilon) - 0 \leq \liminf_{n\to\infty} F_{X_n}(x)\leq \limsup_{n\to\infty} F_{X_n}(x) \leq F_X(x+\varepsilon)+0 \]
+
+
+Mit $\varepsilon \to 0$ ($x$ ist Stetigkeitsstelle von $F_X$) folgt die Behauptung.
+
+\begin{Bem}$\\$
+Die Umkehrung von Satz 11.2 gilt nicht:\\
+$\Omega=\{\omega_1,\omega_2\},\quad\AA=\PM(\Omega),\quad P(\{\omega_1\})=P(\{\omega_2\})=\frac{1}{2}$\\ 
+$X(\omega)=1,\quad X(\omega_2)=-1$. Also:
+\[P(X\leq x)=F_X(x) =\left\{\begin{array}{r@{,\quad}l}
+0 & x<-1 \\
+\frac{1}{2} & -1 \leq x<1 \\
+1 & x\geq 1
+\end{array}\right\} = F_{-X}(x)\]
+Sei $X_n:=(-1)^nX \Rightarrow F_{X_n}=F_X \Rightarrow X_n\stackrel{d}{\rightarrow} X$\\
+Aber $(X_n)$ konvergiert nicht in Wahrscheinlichkeit.
+\[X_{2n}=X\stackrel{P}{\rightarrow}X ,\quad X_{2n+1}=-X\stackrel{P}{\rightarrow}-X \quad\textnormal{und}\quad P(X=-X)=0\]
+\end{Bem}
+Insgesamt:
+\begin{center}
+\boxed{X_n\stackrel{fs}{\rightarrow} X \;\Rightarrow\; X_n\stackrel{P}{\rightarrow}X \;\Rightarrow\; X_n \stackrel{d}{\rightarrow} X}
+\end{center}
+
+\begin{Lem}$\\$
+Konvergenz in Verteilung gegen eine Konstante $c\in\R$ impliziert Konvergenz in Wahrscheinlichekeit, das hei"st:
+\[X_n\stackrel{d}{\rightarrow} c \; \Rightarrow \; X_n\stackrel{P}{\rightarrow} c\]
+\end{Lem}
+
+\textbf{Beweis}\\
+"Ubung
+
+\chapter{Charakteristische Funktionen}
+In \S 10 haben wir f"ur diskrete Zufallsvariablen die erzeugende Funktion betrachtet. Jetzt betrachten wir eine andere Transformierte, die f"ur beliebige Zufallsvariablen $X$ definiert ist. Im Folgenden sei $(\Omega,\AA,P)$ ein Wahrscheinlichkeitsraum.
+
+\begin{Def}$\\$
+Es sei $X$ eine Zufallsvariable. Dann hei"st $\varphi_X:\R\rightarrow \C$
+\[\varphi_X(t):= Ee^{itX}\]
+die \textbf{charakteristische Funktion zu X}\index{charakteristische Funktion zu X} 
+\end{Def}
+
+\begin{Bem}$\\$
+\begin{itemize}
+\item [a)] Man kann im Reellen rechnen.\\
+$Ee^{itX}=E\cos(tX)+iE\sin(tX)$\\
+Insbesondere existieren die Erwartungswerte ohne weitere Bedingung.
+\item [b)] $\varphi_X(t)$ h"angt nur von der Verteilung von $X$ ab 
+\item [c)] Ist $X$ diskret, so gilt: $\varphi_X(t)=g_X(e^{it})$ 
+\item [d)] Ist $X$ absolutstetig, so gilt: $\varphi_X(t) = \int_{-\infty}^\infty e^{itx} f_X(x) dx$ (Fourier-Transformierte von $f_X$)
+\end{itemize}
+\end{Bem}
+
+\begin{Bsp}$\\$
+Es sei $X\equiv \mu \in \R$ Dann ist $\varphi_X(t)=Ee^{it\mu}=e^{it\mu}$ 
+\end{Bsp}
+
+\begin{Bsp}$\\$
+Es sei $X\sim N(0,1)$ Also:\\
+\begin{align*}
+\varphi_X(t) & = Ee^{itX}= Ecos(tX)+iEsin(tX) \\
+&=\int_{-\infty}^\infty e^{itx} \cdot \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}\,dx \\
+&= \int_{-\infty}^\infty cos(tx)\frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}\,dx + i\underbrace{\int_{-\infty}^\infty sin(tx)\frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}\,dx}_{=0}\\
+&=\int_{-\infty}^\infty -x sin(tx)\frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}\,dx \underbrace{=\cdots =}_{\text{part. Integration}} -\int_{-\infty}^\infty tcos(tx)\frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}\,dx = -t\varphi_X(t)
+\end{align*}
+und $\varphi_X(0)=1\quad$ L"osung der Dgl. $\varphi_X(t)=e^{-\frac{t^2}{2}}$  
+\end{Bsp}
+
+\begin{Sa}$\\$
+Es sei $\varphi_X$ die charakteristische Funktion einer Zufallsvariablen $X$. Dann gilt:
+\begin{itemize}
+\item [a)] $\varphi_X(0)=1$
+\item [b)] $|\varphi_X(t)|\leq 1\qquad \forall\, t\in\R$
+\item [c)] F"ur $a,b\in\R$ gilt: $\qquad\varphi_{aX+b}(t)=e^{ibt}\varphi_X(at)$
+%\item [d)] $\varphi_X(t)$ ist gleichm"a"sig stetig auf $\R$
+\end{itemize}
+\end{Sa}
+
+\textbf{Beweis}
+\begin{itemize}
+\item [a)] $\varphi_X(0)=Ee^{i0X}=1$
+\item [b)] $|\varphi_X(t)|\leq E|e^{itX}|=1$
+\item [c)] $\varphi_{aX+b}(t)=Ee^{it(aX+b)}=e^{itb}\overbrace{Ee^{itaX}}^{=\varphi_X(at)}$
+%\item [d)] F"ur alle $t\in\R$ und $h>0$ gilt:
+%\[|\varphi_X(t+h)-\varphi_X(t)|=\underbrace{|Ee^{i(t+h)X}-Ee^{itX}|}_{=Ee^{itX}(e^{ihX}-1)}\leq E|e^{itX}(e^{ihX}-1)|=\]
+%\[ = E|e^{ihX}-1|\qquad \textnormal{unabh"angig von t !} \]
+%\[\Rightarrow \sup_{t\in\R}|\varphi_X(t+h)-\varphi_X(t)|\leq E|e^{ihX}-1|\leq E|cos(hX)-1|+E|sin(hX)|\stackrel{h\to 0}{\rightarrow}0 \]
+%(Achtung: Vertauschung von $\lim$ und $E$ hier m"oglich $\Rightarrow$ Stochastik II)
+\end{itemize}
+
+\begin{Bsp}$\\$
+Es sei $X\sim N(\mu,\sigma^2)$\\
+Es gilt: $\mu+\sigma Z \sim N(\mu,\sigma^2)$, falls $Z\sim N(0,1)$ (Lemma 6.1)
+\[\textnormal{Also:}\qquad \varphi_X(t)=\varphi_{\mu+\sigma Z}(t)\stackrel{\text{Satz 12.1 c)}}{=} e^{i\mu t}e^{-\frac{\sigma^2t^2}{2}}\]
+\end{Bsp}
+
+\begin{Sa}$\\$
+Sind $X_1,\ldots,X_n$ unabh"angige Zufallsvariablen mit charakteristischen Funktionen $\varphi_{X_1},\ldots ,\varphi_{X_n}$ so gilt f"ur die charakteristische Funktion $\varphi_{\sum_{i=1}^n X_i}$ von $\sum_{i=1}^n X_i$:
+\[\varphi_{\sum_{i=1}^n X_i}(t)=\prod_{i=1}^n \varphi_{X_i}(t),\qquad  \forall\, t\in\R\]
+\end{Sa}
+
+\textbf{Beweis}\\
+\[\varphi_{X+Y}(t)=Ee^{it(X+Y)}=E(e^{itX}e^{itY})\stackrel{X,Y\text{ unabh.}}{=} Ee^{itX} \cdot Ee^{itY}= \varphi_X(t) \cdot \varphi_Y(t)\]
+
+\begin{Sa}$\\$
+Falls $E|X|^n<\infty,\,n\in\N$, so ist $\varphi_X$ n-mal differenzierbar und es gilt:
+\[\varphi_X^{(n)}(0)=i^nEX^n\qquad \textnormal{(n-te Moment)}\]
+\end{Sa}
+
+\textbf{Beweis}\\
+Man darf $E$ (= Integral) und Differentiation vertauschen.\\
+($\rightarrow$ Majorisierte Konvergenz Stochastik II)
+\[\varphi_X^{(n)}(t)= \frac{d^n}{(dt)^n} Ee^{itX}=E\left(\frac{d^n}{(dt)^n}e^{itX}\right)=E((iX)^n e^{itX}) = i^nEX^ne^{itX} \]
+$\Rightarrow \varphi_X^{(n)}(0)= i^nEX^n$
+
+\begin{Bsp}$\\$
+Sei $X\sim N(\mu,\sigma^2) \quad E|X|^n<\infty \quad \forall\,n\in\N$
+\[\text{Beispiel 12.3} \quad \Rightarrow\, \varphi_X(t)=e^{i\mu t}e^{-\frac{\sigma^2t^2}{2}}\]
+\[\stackrel{\text{Satz 12.2}}{\substack{\Longrightarrow \\ (n=1)}} EX=\frac{1}{i}(\varphi_X^i(0))=\frac{1}{i}((i\mu -\sigma^2t)e^{i\mu t-\frac{\sigma^2t^2}{2}}\Bigr|_{t=0}=\mu\]
+\end{Bsp}
+
+\begin{Sa}[Eindeutigkeitssatz f"ur charakteristische Funktionen]\index{Eindeutigkeitssatz f"ur char. Funkt.}$\\$
+Sind $X$ und $Y$ Zufallsvariablen mit derselben charakteristischen Funktion, so haben $X$ und $Y$ dieselbe Verteilung.
+\end{Sa}
+
+\textbf{Beweis}\\
+Siehe zum Beispiel: Hesse Seite 94
+
+\begin{Bsp}$\\$
+Es seien $X_1\sim N(\mu_1,\sigma_1^2),\,X_2\sim N(\mu_2,\sigma_2^2),\,X_1,X_2$ unabh"angig.
+\[\textnormal{Beispiel 12.3} \quad \Rightarrow\, \varphi_{X_1}(t)=e^{it\mu_1}e^{-\frac{\sigma_1^2t^2}{2}} \qquad \textnormal{(entsprechend f"ur $X_2$)}\]
+\[\textnormal{Satz 12.2:}\quad \varphi_{X_1+X_2}(t)=\varphi_{X_1}(t)\cdot \varphi_{X_2}(t)= e^{it(\mu_1+\mu_2)}\cdot e^{-\frac{(\sigma_1^2+\sigma_2^2)t^2}{2}}\]
+$\stackrel{Satz 12.4}{\Longrightarrow} X_1+X_2\sim N(\mu_1+\mu_2, \sigma_1^2+\sigma_2^2)$ (vgl. Beispiel 9.4 bzw. "Ubung) 
+\end{Bsp}
+
+\begin{Sa}[Stetigkeitssatz bei charakteristischen Funktionen]\index{Stetigkeitssatz bei char. Funkt.}$\\$
+Es sei $(X_n)$ eine Folge von Zufallsvariablen mit zugeh"origen Verteilungsfunktionen $F_{X_n}(x)$ und charakteristischen Funktionen $\varphi_{X_n}(t)$. Folgende Aussagen sind "aquivalent:
+\begin{itemize}
+\item [a)] $X_n\stackrel{d}{\rightarrow}X$
+\item [b)] $\varphi_{X_n}(t)\rightarrow \varphi(t)\qquad \forall\, t\in\R$ und $\varphi$ ist stetig in 0.
+\end{itemize}
+In diesem Fall ist $\varphi$ die charakteristische Funktion von $X$.
+\end{Sa}
+
+\textbf{ohne Beweis}
+
+\chapter{Grenzwerts"atze}
+\section{Schwache Gesetze der gro"sen Zahlen}
+\begin{Sa}[Tschebyscheffs schwaches Gesetz der gro"sen Zahlen]\index{Tscheby. schw. Gesetz der gr. Zahlen}$\\$
+Es seien $X_1,X_2,\ldots$ unabh"angig und identisch verteilte Zufallsvariablen mit $EX_i=\mu$ und $\var(X_i) < \infty $. Dann gilt:
+\[\frac{X_1+\cdots +X_n}{n}\stackrel{P}{\rightarrow }\mu\]
+\end{Sa}
+
+\textbf{Beweis}\\
+Mit der Ungleichung von Tschebyscheff (Satz 7.4) folgt:
+\[P(\Bigr|\frac{X_1+\cdots +X_n}{n}-\mu\Bigr|\geq \varepsilon )\leq \frac{\var(\frac{X_1+\cdots +X_n}{n})}{\varepsilon^2}\stackrel{Satz 9.6}{=}\frac{\frac{1}{n^2}\var(X_1+\cdots +X_n)}{\varepsilon^2}=\]
+\[=\frac{\var(X_1)}{n\cdot \varepsilon^2} \rightarrow 0 \quad \textnormal{f"ur}\quad n\to\infty\]
+$\Rightarrow $ Behauptung\\
+\newline
+Die Bedingung $\var(X_i)<\infty$ soll weg. Zur Vorbereitung brauchen wir einige Ergebnisse aus der Analysis.
+\begin{Lem}
+F"ur alle $m\in\N$ und $t\in\R$ gilt:
+\[\Bigr|e^{it}-\sum_{k=0}^{m-1}\frac{(it)^k}{k!}\Bigr|\leq \frac{|t|^m}{m!}\]
+\end{Lem}
+
+\textbf{Beweis}\\
+Es gen"ugt $t\geq 0$ zu betrachten, da $|z|=|\overline{z}|$\\
+F"ur $e^{it}$ gilt die folgende Taylorentwicklung mit Integraldarstellung des Restgliedes (Beweis durch Induktion nach $m$): 
+\[e^{it}=\sum_{k=0}^{m-1}\frac{(it)^k}{k!}+i^m\int_0^t \frac{(t-u)^{m-1}}{(m-1)!}e^{iu}\,du\]
+\[\Rightarrow \Bigr|e^{it}-\sum_{k=0}^{m-1}\frac{(it)^k}{k!}\Bigr|=\Bigr|\underbrace{i^m}_{|\cdot|=1}\int_0^t \frac{(t-u)^{m-1}}{(m-1)!}\underbrace{e^{iu}}_{|\cdot|=1}\,du \Bigr|\leq \int_0^t \frac{(t-u)^{m-1}}{(m-1)!}\,du =\]
+\[= -\frac {(t-u)^m}{m!}\Bigr|_0^t=\frac{t^m}{m!}\]
+
+\begin{Lem}$\\$
+Sei $X$ eine Zufallsvariable mit existierendem Erwartungswert $EX=\mu$ und $\varphi_X(t)$ die zugeh"orige charakteristische Funktion. Dann gilt $\forall\, t\in\R$:
+\[\varphi_X\left(\frac{t}{n}\right)=1+i\mu\left(\frac{t}{n}\right)+o_t\left(\frac{1}{n}\right)\] 
+\end{Lem}
+
+\textbf{Beweis}
+\[\textnormal{Zu zeigen:}\quad \forall\,t\in\R \,\textnormal{gilt:} \left[\varphi_X\left(\frac{t}{n}\right)-\left(1+i\mu\frac{t}{n}\right)\right]\cdot n \rightarrow 0 \quad \textnormal{f"ur}\, n\to\infty\]
+\[n\cdot \left[\varphi_X\left(\frac{t}{n}\right)-\left(1+i\mu\frac{t}{n}\right)\right]=E\underbrace{\left[n\cdot\left(e^{i\frac{t}{n}X}-1-\frac{itX}{n}\right)\right]}_{=: Y_n}\] 
+
+Lemma 13.2 mit $m=2$:
+\[|Y_n|\leq n\cdot \frac{|\frac{t}{n}X|^2}{2!}=\frac{t^2X^2}{2!n} \stackrel{f.s.}{\rightarrow } 0 \quad\textnormal{f"ur}\, n\to\infty\]
+Limes und $E$ kann man hier vertauschen ($\rightarrow$ majorisierte Konvergenz)\\
+$\Rightarrow$ Behauptung
+
+\begin{Lem}$\\$
+Sei $z\in\C$ fest $\{\eta_n\}_{n\in\N} \quad \eta_n\in\C$ und $\eta_n\to 0$. Dann gilt:
+\[\lim_{n\to\infty}\left(1+\frac{z}{n}+\frac{\eta_n}{n}\right)^n=e^z\]
+\end{Lem}
+
+\textbf{Beweis}
+\begin{itemize}
+\item [1.Fall:] $z=0$\\
+Zu zeigen: $(1+\frac{\eta_n}{n})^n \to 1\quad$ f"ur $n\to\infty$
+\[\Bigr|(1+\frac{\eta_n}{n})^n-1\Bigr|=\Bigr|\sum_{k=1}^n\binom{n}{k}(\frac{\eta_n}{n})^k\Bigr|\leq \sum_{k=1}^n\binom{n}{k}\left(\frac{|\eta_n|}{n}\right)^k = \left(1+\frac{|\eta_n|}{n}\right)^n-1\]
+\[\stackrel{\textnormal{MWS}}{\substack{\leq \\ f(x)=(1+x)^n}} \frac{|\eta_n|}{n} n(1+\vartheta)^{n-1}\leq |\eta_n|\left(1+\frac{|\eta_n|}{n}\right)^n\leq |\eta_n|\left(1+\frac{1}{n}\right)^n \leq \underbrace{|\eta_n|\cdot e}_{\to 0 \textnormal{f"ur}\,n\to\infty}\]
+\item [2.Fall:] $z\neq 0$
+\[\left(1+\frac{z}{n}+\frac{\eta_n}{n}\right)^n=\left(1+\frac{z}{n}\right)^n \left(\frac{1+\frac{z}{n}+\frac{\eta_n}{n}}{1+\frac{z}{n}}\right)^n=\underbrace{\left(1+\frac{z}{n}\right)^n}_{\to \varepsilon^z\text{ für }n\to\infty}\cdot \underbrace{\left(1+\frac{\varepsilon_n}{n}\right)^n}_{\substack{\to 1\text{ f"ur } n\to\infty \\ (\text{Fall 1})}}\]
+mit $\varepsilon_n\to 0$ f"ur $n\to\infty$  
+\end{itemize}
+
+\begin{Sa}[Khinchins schwaches Gesetz der gro"sen Zahlen, 1929\index{Khinchins schw. Gesetz der gr. Zahlen}]$\\$
+Es seien $X_1,X_2,\ldots$ unabh"angig und identisch verteilte Zufallsvariablen\\
+mit $E|X_i|<\infty,\,EX_i=\mu$. Dann gilt:
+\[\frac{X_1+\cdots +X_n}{n}\stackrel{P}{\rightarrow}\mu\]
+\end{Sa}
+
+\textbf{Beweis}\\
+Da $\mu\in\R$ konstant, gen"ugt wegen Lemma 11.3 zu zeigen $\frac{X_1+\cdots +X_n}{n}\stackrel{d}{\rightarrow}\mu$
+\[\text{Satz 12.5}\Rightarrow \textnormal{zu zeigen ist:}\quad \varphi_{\frac{X_1+\cdots +X_n}{n}}(t)\rightarrow \varphi_\mu(t)\stackrel{\text{Bsp. 12.1}}{=}e^{it\mu}\]
+Also:
+\[\varphi_{\frac{X_1+\cdots +X_n}{n}}(t)\stackrel{\text{Satz 12.1c)}}{=}\varphi_{X_1+\cdots +X_n}\left(\frac{t}{n}\right)\stackrel{\text{Satz 12.2}}{=}\prod_{k=1}^n\varphi_{X_k}(\frac{t}{n})=\left(\varphi_{X_1}(\frac{t}{n})\right)^n\]
+\[\stackrel{\text{Lem. 13.3}}{=}\left(1+\frac{i\mu t}{n} +o_t(\frac{1}{n})\right)^n \stackrel{\text{Lem. 13.4}}{\longrightarrow} e^{it\mu}\]
+
+\section{Das starke Gesetz der gro"sen Zahlen}
+\begin{Sa}[Kolmogorovs starkes Gesetz der gro"sen Zahlen\index{Kolmogorovs st. Gesetz der gr. Zahlen}]$\\$
+Es seien $X_1,X_2,\ldots$ unabh"angig und identisch verteilte Zufallsvariablen\\
+mit $E|X_i|<\infty,\,EX_i=\mu$. Dann gilt: 
+\[\frac{X_1+\cdots +X_n}{n}\stackrel{f.s.}{\rightarrow}\mu\]
+\end{Sa}
+
+\textbf{ohne Beweis}
+
+\begin{Bsp}[Monte-Carlo-Simulation\index{Monte-Carlo-Simulation}]$\\$
+Es sei $f:[0,1]\to\R_+$ eine stetige Funktion. $M:=\max_{x\in[0,1]}f(x)$. Wir wollen $\int_0^1f(x)\,dx$ numerisch (n"aherungsweise) berechnen.\\
+Dazu $U_1,V_1,U_2,V_2\ldots$ eine Folge von unabh"angigen Zufallsvariablen, wobei \\
+die $(U_i)$ identisch verteilt sind mit $U_i\sim U(0,1)$ und\\
+die $(V_i)$ identisch verteilt sind mit $V_i\sim U(0,M)$. Wir setzen
+\[I_k =\left\{\begin{array}{r@{\quad,\quad}l}
+1 & \textnormal{falls} \quad f(U_k)>V_k\\
+0 & \textnormal{falls} \quad f(U_k)\leq V_k
+\end{array}\right.\]
+Dann gilt: $I_1,I_2,\ldots$ sind unabh"angig und identisch verteilte Zufallsvariablen mit
+\[EI_k=P(f(U_k)>V_k)=P\left((U_k,V_k)\in G\right)=\int_0^1\int_0^{f(x)} \frac{1}{M}\cdot 1\,dydx=\frac{1}{M}\int_0^1f(x)\,dx\]
+\[\textnormal{Satz 13.6:}\qquad \frac{1}{n}\sum_{k=1}^n I_k\stackrel{f.s.}{\rightarrow}\frac{1}{M}\int_0^1f(x)\,dx\qquad \textnormal{f"ur} \, n\to\infty\]
+\end{Bsp}
+
+\begin{Bsp}[Normale Zahlen]$\\$
+Es sei $\Omega=[0,1)$ und $\omega\in\Omega$. Wir betrachten die Dualbruchzerlegung von $\omega$: das hei"st
+\[\omega=\sum_{k=1}^\infty a_k\cdot \frac{1}{2^k}\qquad a_k\in\{0,1\}\]
+$\omega$ hei"st normal, falls die Werte 0 und 1 asymptotisch gleich h"aufig auftreten.\\
+Wie viele $\omega\in\Omega$ sind normal?\\
+\newline
+Sei $\AA = \BB_{[0,1)}$ und definiere die Zufallsvariablen $X_1,X_2$. $\Omega\to\{0,1\}$ durch\\
+$X_n(\omega)=a_n$ f"ur $n\in\N$ (Beachte $X_n$ ist Zufallsvariable)\\
+Weiter sei:\\
+$A_n(x_1,\ldots,x_n):=\{\omega\in\Omega | X_1(\omega)=x_1,\ldots ,X_n(\omega)=x_n\}\\
+=\{\omega\in\Omega | \frac{x_1}{2}+\frac{x_2}{2^2}+\cdots +\frac{x_n}{2^n}\leq \omega < \frac{x_1}{2}+\cdots +\frac{x_n}{2^n}+\frac{1}{2^n}\}$ f"ur $x_1,\ldots,x_n \in\{0,1\}$ fest.\\
+Wir nehmen an, dass P=unif(0,1), das hei"st $P([a,b))=b-a$ f"ur $0\leq a<b<1$.\\
+Also $P(A_n(x_1,\ldots,x_n))=\frac{1}{2^n}$\\
+$\Rightarrow P(X_1=0)=P(A_1(0))=\frac{1}{2}=P(X_1=1)$\\
+$P(X_2=0)=P(X_2=0, X_1=0)+P(X_2=0, X_1=1)=$\\
+$=P(A_2(0,0))+P(A_2(1,0))=\frac{1}{4}+\frac{1}{4}=\frac{1}{2}$\\
+und $P(X_2=1)=\frac{1}{2}$\\
+$P(X_1=x_1, X_2=x_2)=\frac{1}{4}=P(X_1=x_1) P(X_2=x_2)$ f"ur $x_1,x_2\in \{0,1\}$\\
+\newline
+Also sind die Zufallsvariablen $X_1,X_2,\ldots$ unabh"angig und identisch verteilt \\
+mit $P(X_k=0)=P(X_k=1)=\frac{1}{2}$ und $EX_k=\frac{1}{2}$\\
+\newline
+Nach Satz 13.6 gilt:
+\[ \frac{1}{n}\sum_{k=1}^n X_k \stackrel{f.s.}{\rightarrow} \frac{1}{2} \quad \textnormal{f"ur}\quad n\to\infty\]
+das hei"st fast alle Zahlen des Intervalls $[0,1)$ bis auf eine Menge $A\subset [0,1)$ mit $P(A)=0$ sind ``normal``
+\end{Bsp}
+
+\section{Der zentrale Grenzwertsatz}
+Betrachte die Situation aus Satz 13.1:\\
+Seien $X_1,X_2,\ldots$ unabh"angig und identisch verteilte Zufallsvariablen,\\
+$EX_i=\mu, \var(X_i)<\infty$\\
+Dann gilt:
+\[P\left(\Bigr|\frac{X_1+\cdots +X_n}{n}-\mu\Bigr| \geq \varepsilon\right)\leq \frac{\var(X_1)}{n\cdot\varepsilon^2}\]
+Setze $\varepsilon = \hat\varepsilon \cdot n^{-\frac{1}{2}+\delta}$ mit $\delta >0$
+\[P\left(\Bigr|\frac{X_1+\cdots +X_n}{n}-\mu\Bigr|\geq \frac{\hat\varepsilon}{n^{\frac{1}{2}-\delta}}\right)\leq \frac{\var(X_1)}{n\cdot\hat\varepsilon^2 n^{-1+2\delta}}=\frac{\var(X_1)}{\hat\varepsilon^2 n^{2\delta}}\]
+\[\textnormal{Also f"ur}\quad \delta>0: n^{\frac{1}{2}-\delta}\left(\frac{X_1+\cdots +X_n}{n}-\mu\right)\stackrel{P}{\rightarrow} 0\]
+Was ist mit $\delta=0$?
+
+\begin{Sa}[Zentraler Grenzwertsatz\index{Zentraler Grenzwertsatz}]$\\$
+Es seien $X_1,X_2,\ldots$ unabh"angig und identisch verteilte Zufallsvariablen mit $EX_i=\mu$ und $0<\var(X_i)=\sigma^2<\infty$. Dann gilt:
+\[\frac{X_1+\cdots +X_n -n\mu}{\sqrt{n}\sigma}\stackrel{d}{\rightarrow}X\sim N(0,1)\, ,\textnormal{also}\]
+\[P\left(\frac{X_1+\cdots +X_n -n\mu}{\sqrt{n}\sigma}\leq x \right) \rightarrow \Phi(x) \quad\textnormal{f"ur} \, n\to\infty \quad ,\forall\,x\in\R\]
+\end{Sa}
+
+\textbf{Beweis}\\
+Betrachte zun"achst den Fall $\mu=0, \sigma=1$
+\[\textnormal{zu zeigen:}\quad \frac{X_1+\cdots +X_n}{\sqrt{n}}\stackrel{d}{\rightarrow}X\sim N(0,1)\]
+%\[\textnormal{Satz 12.5 zu zeigen:}\qquad \varphi_{\frac{X_1+\cdots +X_n}{\sqrt{n}}}(t)\rightarrow \varphi_X(t)\stackrel{\textnormal{Bsp 12.2}}{=} e^{-\frac{t^2}{2}}\]
+\[\varphi_{\frac{X_1+\cdots +X_n}{\sqrt{n}}}(t)\stackrel{\textnormal{Satz 12.1c)}}{=}\varphi_{X_1+\cdots +X_n}(\frac{t}{\sqrt{n}})\stackrel{\textnormal{Satz 12.2}}{=}\left(\varphi_{X_1}(\frac{t}{\sqrt{n}})\right)^n=\]
+\[\stackrel{\textnormal{vgl.L.13.3}}{=}\left(1+\underbrace{\frac{it\mu}{\sqrt{n}}}_{=0}+\frac{(it)^2}{2n}\underbrace{EX^2}_{=1}+o(\frac{1}{n})\right)^n=\left(1-\frac{t^2}{2n}+o(\frac{1}{n})\right)^n \xrightarrow{\textnormal{nach Lem. 13.4}} e^{-\frac{t^2}{2}}\]
+\newline
+Allgemeiner Fall:\\
+Setze $Y_n=\frac{X_n-\mu}{\sigma}$\\
+Also $Y_1,Y_2,\ldots$ unabh"angig und identisch verteilt mit $EY_1=0, \var(Y_n)=1$\\
+Wende jetzt Spezialfall an:
+\[\frac{X_1+\cdots +X_n - n\mu}{\sqrt{n}\sigma}=\frac{Y_1+\cdots +Y_n}{\sqrt{n}}\stackrel{d}{\rightarrow} X\sim N(0,1)\]
+
+\begin{Kor}$\\$
+Unter den Voraussetzungen des ZGWS gilt f"ur feste $\alpha,\beta \in\R, \alpha <\beta $:
+\[P\left(\alpha \leq \underbrace{\frac{X_1+\cdots +X_n-n\mu}{\sqrt{n}\sigma}}_{=: T_n}\leq \beta \right)\rightarrow \Phi(\beta)-\Phi(\alpha)=\frac{1}{\sqrt{2\pi}} \int_\alpha^\beta e^{-\frac{t^2}{2}}\,dt\]
+\end{Kor}
+
+\begin{Bew}
+Sei $\varepsilon > 0$.
+\[ \underbrace{ F_{T_n}(\beta) - F_{T_n}(\alpha)}_{\stackrel{n\to\infty}\to \Phi(\beta) - \Phi(\alpha)} \le
+   P(\alpha\le T_n\le \beta) \le
+   \underbrace{F_{T_n}(\beta) - F_{T_n}(\alpha-\varepsilon)}_{\stackrel{n\to\infty}\to \Phi(\beta) - \Phi(\alpha-\varepsilon)}
+\]
+Mit $\varepsilon \to 0$ folgt daraus die Behauptung.
+\end{Bew}
+
+\begin{Sa}
+Sind die Zufallsvariablen $X_1,X_2$ unabhängig und identisch verteilt mit $EX_1=\mu$ sowie $|\mu|_3 = E|X_1-\mu|^3$, so gilt:
+\[ \sup_{x\in\R} |F_{T_n}(x) - \Phi(x) | \le \frac{|\mu|_3}{\sigma^3\sqrt{n}} \]
+\end{Sa}
+
+\begin{Bsp}$\\$
+Es seien $X_1,X_2,\ldots$ unabh"angig und identisch verteilte Zufallsvariablen mit\\
+$X_n\sim B(1,p)$. Also $EX_n=p, \var(X_n)=p(1-p), \,0<p<1$\\
+Sei $S_n=X_1+\cdots +X_n$, dann gilt nach dem ZGWS:
+\[\lim_{n\to\infty}P\left(\frac{S_n-np}{\sqrt{np(1-p)}}\leq x \right)=\Phi(x)\]
+Umgeformt ergibt das:
+\[\lim_{n\to\infty}P(S_n\leq np+x\sqrt{np(1-p)})=\Phi(x)\]
+Da $S_n\sim B(n,p)$ hei"st das:
+\[\lim_{n\to\infty}\sum_{k\leq np+x\sqrt{np(1-p)}}\binom{n}{k}p^k(1-p)^{n-k}=\Phi(x)\]
+Diese Version nennt man auch \textbf{Grenzwertsatz von DeMoivre Laplace}.\index{Grenzwertsatz von DeMoivre Laplace}
+\end{Bsp}
+
+\begin{Bsp}[Wahlumfrage]$\\$
+Wir wollen den Anteil $p$ der Anh"anger der Partei A unter den Wahlberechtigten ermitteln. Dazu nehmen wir eine Stichprobe $X_1,\ldots ,X_n$, wobei:
+\[X_i =\left\{\begin{array}{r@{\quad,\quad}l}
+1 & \textnormal{falls Person $i$ Partei A w"ahlt} \\
+0 & \textnormal{falls Person $i$ Partei A nicht w"ahlt} 
+\end{array}\right.\quad i=1,\dots,n\]
+Sei $S_n:=X_1+\cdots +X_n$. Wir sch"atzen $\hat{p}=\frac{S_n}{n}$\\
+Wie gro"s muss der Stichprobenumfang $n$ mindestens gew"ahlt werden, damit der Sch"atzfehler $|\hat{p}-p|$ mit einer Wahrscheinlichkeit von mindestens 0.95 nicht gr"o"ser als 0.02 ist?\\
+Also gesucht ist die kleinste Zahl $n\in\N$ mit
+\[P(|\frac{S_n}{n}-p|\leq 0.02)\geq 0.95 \Leftrightarrow P\left(\bigr|\frac{S_n-np}{\sqrt{np(1-p)}}\bigr|\leq \frac{0.02\sqrt{n}}{\sqrt{p(1-p)}}\right)\geq 0.95\]
+Wegen $p(1-p)=\frac{1}{4}-(p-\frac{1}{2})^2\leq\frac{1}{4}\quad \forall\,p\in[0,1]$ folgt:
+\[P\left(\bigr|\frac{S_n-np}{\sqrt{np(1-p)}}\bigr|\leq \frac{0.02\sqrt{n}}{\sqrt{p(1-p)}}\right)\geq P\left(\bigr|\frac{S_n-np}{\sqrt{np(1-p)}}\bigr|\leq 0.04\sqrt{n}\right) \]
+F"ur $n$ gro"s ist etwa $\frac{S_n-np}{\sqrt{np(1-p)}} \sim N(0,1)$
+\[\Rightarrow P\left(\bigr|\frac{S_n-np}{\sqrt{np(1-p)}}\bigr|\leq 0.04\sqrt{n}\right)\approx \Phi(0.04\sqrt{n})-\Phi(-0.04\sqrt{n})=2\Phi(0.04\sqrt{n})-1=0.95\]
+\[\Rightarrow n=(25 \Phi^{-1}(0.975))^2=2401\]
+\end{Bsp}
+
+\chapter{Parametersch"atzung}
+\textbf{Modell}\\
+Es sei $\{P_\theta | \theta\in\Theta \}$, $\Theta\subset \R^m$ eine Familie von Verteilungen auf $\chi $ (sog. Stichprobenraum), $x=(x_1,\ldots ,x_n)$ sei eine Realisierung der Zufallsstichprobe $X=(X_1,\ldots ,X_n)$ zu einer Verteilung $P\in \{P_\theta | \theta\in\Theta \}$, wobei der wahre Parameter $\theta$ unbekannt ist.\\
+\newline
+\textbf{Problem}\\
+Schätze unbekanntes $\theta$ aus der konkreten Realisierung von $X$.
+
+\begin{Def}$\\$
+Seien $X_1,\ldots ,X_n$ unabh"angig und identisch verteilte Zufallsvariablen mit Verteilung $P$. \\
+Dann hei"st der Zufallsvektor $(X_1,\ldots ,X_n)$ \textbf{Zufallsstichprobe zur Verteilung $P$}\index{Zufallsstichprobe}. Eine Realisierung $(x_1,\ldots,x_n)$ von $(X_1,\ldots,X_n)$ nennt man \textbf{Stichprobe}\index{Stichprobe}.
+\end{Def}
+
+\begin{Bsp}$\\$
+Gegeben sei ein W"urfel, den wir n-mal werfen d"urfen. Aus der Beobachtung ist die Wahrscheinlichkeit zu sch"atzen eine 6 zu w"urfeln.\\
+Modell: $\chi = \{0,1\}$: 0 $\hat=$ keine 6 gewürftelt, 1 $\hat=$ 6 gewürfelt.\\
+$P_{\theta} = B(1,\theta)$, $\Theta=[0,1]$
+\end{Bsp}
+
+\begin{Def}
+Eine messbare Abbildug $T:\chi^n \to \tilde\Theta$, $\tilde\Theta \supset \Theta$, heißt \textbf{Schätzer}\index{Schätzer} für $\theta$.
+\end{Def}
+
+\begin{Bsp}%$\\$
+\begin{itemize}
+\item [a)] Die Statistik $\overline{X}=\frac{1}{n}(X_1+\cdots +X_n)$ hei"st \textbf{Stichprobenmittel}\index{Stichprobenmittel}
+\item [b)] Die Statistik $S^2=\frac{1}{n-1}\sum_{i=1}^n(X_i-\overline{X})^2$ hei"st \textbf{Stichprobenvarianz}\index{Stichprobenvarianz}
+\end{itemize}
+\end{Bsp}
+
+\begin{Bsp}[Sch"atzung eines Fischbestandes]$\\$
+Teich enth"alt unbekannte Zahl $N=\theta$ von Fischen\\
+$r$ Fische werden gefangen, (rot) markiert und wieder ausgesetzt.\\
+In einem zweiten Zug werden $m$ Fische gefangen $x$ davon seien markiert.\\
+Wie gro"s ist $N$?\\
+\newline
+\textbf{Modell}\\
+Urne mit $N=\theta$ Kugeln, $r$ rot, $N-r =: s$ schwarz\\
+$m$ Kugeln werden ohne Zur"ucklegen gezogen. Die Zufallsvariable $X$ beschreibe die Anzalh der roten unter den gezogenen Kugeln.\\
+\textbf{Also}\\
+$\chi=\N_0$, $P_\theta\sim\text{Hypergeom.}(\theta,r,m)$, $\Theta=\N$. Beachte: $n=1$
+\end{Bsp}
+ 
+\section{Maximum-Likelihood-Methode}
+\textbf{Idee:}\\
+Wir w"ahlen f"ur $\theta$ den Wert, unter dem die Wahrscheinlichkeit, dass die konkrete Stichprobe vorliegt maximiert wird.\\
+Im folgenden sei $P_\theta$ diskret mit Z"ahldichte $p(x;\theta)$ oder stetig mit Dichte $f(x;\theta)$
+
+\begin{Def}$\\$
+Gegeben sei eine Stichprobe $x=(x_1,\ldots ,x_n)$. Dann hei"st die Funktion
+\[ L_x(\theta) := f(x_1;\theta) \cdot \cdots \cdot f(x_n; \theta) \quad \textnormal{bzw.}\quad L_x(\theta) := \underbrace{p(x_1;\theta) \cdot \cdots \cdot p(x_n; \theta)}_{P_\theta(X_1,\ldots ,X_n)=(x_1,\ldots ,x_n)}\]
+die \textbf{Likelihood-Funktion}\index{Likelihood-Funktion} der Stichprobe.\\
+Eine Funktion $\hat{\theta}_{\textnormal{ML}}(x)$ hei"st \textbf{Maximum-Likelihood Sch"atzer (MLS)}\index{Maximum-Likelihood Sch"atzer (MLS)}, falls 
+\[L_x(\hat{\theta}_{\text{ML}}(x))= \sup_{\theta\in\Theta} L_x(\theta)\]
+%$g(\hat{\theta}_{\textnormal{ML}}(x))$ ist dann ein MLS von $g(\theta)$.
+\end{Def}
+
+\begin{Bem}$\\$
+\begin{itemize}
+\item[a)] Ist $P_\theta$ diskret, so gilt: 
+\[ L_X(\theta) = p(x_1;\theta) \cdots p(x_n;\theta) = P_\theta(X_1=x_1) \cdots P_\theta(X_n=x_n) \stackrel{X\text{ unabhängig}}= P_\theta(X=x) \]
+\item[b)] Der MLS $\hat{\theta}_{\textnormal{ML}}(x)$ ist nicht immer eindeutig.
+\end{itemize}
+\end{Bem}
+
+\begin{Bsp}[vgl. Beispiel 14.3]$\\$
+$n=1$
+\[\textnormal{Likelihood-Funktion:}\quad L_x(\theta)=\frac{\binom{r}{x} \binom{\theta - r}{k-x}}{\binom{\theta}{k}}\]
+F"ur welches $\theta$ ist $L_x(\theta)$ maximal?\\
+Betrachte:
+\[\frac{L_x(\theta)}{L_x(\theta-1)}=\frac{\binom{r}{x} \binom{\theta - r}{m-x}\binom{\theta -1}{m}}{\binom{\theta}{m}\binom{r}{x}\binom{\theta -1-r}{m-x}}=\frac{(\theta -r)(\theta -m)}{\theta (\theta -r-m+x)}\]
+\[L_x(\theta)>L_x(\theta -1) \Leftrightarrow (\theta -r)(\theta -m)>\theta(\theta -r-m+x) \Leftrightarrow mr > \theta x \Leftrightarrow \theta < \frac{mr}{x} \]
+Also ist $L_x(\theta)$ maximal f"ur $\hat\theta(x)=\lfloor\frac{mr}{x}\rfloor$\\
+% $(\lfloor t \rfloor = \text{gr"o"ste ganze Zahl} \, \leq t)$\\
+
+$\hat\theta(x)$ ist eindeutig, falls $\frac{mr}{x}\not\in \N$\\
+Falls $\frac{mr}{x}\in \N$ sind $\hat\theta_1(x)=\frac{mr}{x}$ und $\hat\theta_2(x)=\frac{mr}{x}-1$ MLS
+\end{Bsp}
+
+\begin{Bsp}[Sch"atzung einer Erfolgswahrscheinlichkeit]$\\$
+Aus $n$ Bernoulli-Experimenten liegen $x$ Erfolge vor, gesucht ist die Erfolgswahrscheinlichkeit: 
+
+Modell: $\chi = \N$, $n=1$, $P_\theta = B(m,\theta)$, $\Theta=(0,1)$.
+
+\[\textnormal{Likelihood-Funktion:}\quad L_x(\theta)=\binom{m}{x}\theta^x (1-\theta)^{m-x} \quad ,\theta\in [0,1]\]
+Statt $L_x(\theta)$ ist es oft einfacher, $\log(L_x(\theta))$ zu maximieren, die sogenannte \textbf{Log-Likelihoodfunktion}\index{Log-Likelihoodfunktion}
+\[\log(L_x(\theta))=\log\binom{m}{x}+x\log\theta +(m-x)\log(1-\theta)\]
+\[\frac{\partial}{\partial\theta}\log(L_x(\theta))=\frac{x}{\theta}-\frac{(m-x)}{1-\theta}=0 \quad \Leftrightarrow \quad \theta = \frac{x}{m}\]
+$\theta$ ist tats"achlich Maximum-Stelle, dass hei"st $\hat{\theta}_{\textnormal{ML}}(x)=\frac{x}{m}$
+\end{Bsp}
+
+\section{Momentenmethode}
+\textbf{Idee:}\\
+Die ersten Momente von $P_\theta$ sollten mit den empirischen Momenten "ubereinstimmen. Aus diesen Gleichungssystemen bestimmen wir den Sch"atzer.\\
+Es sei $X\sim P_\theta$. Dann ist das $k$-te Moment 
+\[\mu_k=\mu_k(\theta)=E_\theta X^k \quad ,\,k=1,2,\ldots\]
+Wir betrachten nun die \textbf{empirischen Momente}\index{empirischen Momente} zur Stichprobe $x=(x_1,\ldots ,x_n)$.
+\[\overline{x_k}:=\frac{1}{n} \sum_{i=1}^n x_i^k\]
+Es soll nun gelten: $\qquad \mu_k(\theta)=\overline{x_k} \quad k=1,2,\ldots,m$.
+Aufgelöst nach $\theta$ ergibt sich dann der Momentenschätzer 
+$\qquad\hat\theta_{\textnormal{MM}}(x) \in \Theta$.
+
+\begin{Bsp}$\\$
+$P_\theta = N(\mu,\sigma^2), \,\theta=(\mu,\sigma^2),\, m=2$
+\begin{itemize}
+\item [(1)] $\mu_1 = \mu = E_\theta X = \overline{x} = \frac{1}{n} \sum_{i=1}^n x_i$
+\item [(2)] $\mu_2 = E_\theta X^2 = \var_\theta(X) + (E_\theta X)^2 = \sigma^2 + \mu^2 = \frac{1}{n} \sum_{i=1}^n x_i^2$
+\end{itemize}
+Aus (1) folgt: $\hat\mu(x) = \frac{1}{n} \sum_{i=1}^n x_i = \overline{x}$\\
+Aus (2) folgt: $\hat\sigma^2(x)=\frac{1}{n} \sum_{i=1}^n x_i^2 - (\overline{x})^2 = \frac{1}{n} \sum_{i=1}^n (x_i - \overline{x})^2$
+\end{Bsp}
+
+\section[Wünschenswerte Eigenschaften]{W"unschenswerte Eigenschaften von Punktsch"atzern}
+Im folgenden sei $X=(X_1,\ldots ,X_n)$ eine Zufallsstichprobe zur Verteilung $P_\theta$ und $T: \chi \to \tilde\Theta$ ein Schätzer von $\theta$. Mit $E_\theta$ bezeichnen wir den Erwartungswert bez"uglich $P_\theta$.
+
+\begin{Def}$\\$
+\begin{itemize}
+\item [a)] Der Sch"atzer $T$ hei"st \textbf{erwartungstreu}\index{erwartungstreu} (unbiased), falls \[E_\theta T(X_1,\ldots ,X_n)=\theta \qquad \forall \, \theta\in\Theta\]
+\item [b)] \textbf{$b_T(\theta)$}$:=E_\theta T(X_1,\ldots ,X_n)-\theta$ hei"st \textbf{Verzerrung}\index{Verzerrung} (Bias) des Sch"atzers $T$. Ein erwartungstreuer Sch"atzer ist unverzerrt.
+\end{itemize}
+\end{Def}  
+
+\begin{Bsp}[vgl. Bsp.14.6]$\\$
+%\[\hat\mu(X)= \frac{1}{n} \sum_{i=1}^n X_i \quad \textnormal{ist erwartungstreu, da} \quad E_\mu \left(\frac{1}{n} \sum_{i=1}^n X_i\right) = \frac{1}{n} \sum_{i=1}^n \underbrace{E_\mu X_i}_{\mu} = \mu \]
+%$\hat\sigma^2(X)$ ist nicht erwartungstreu ! Ein erwartungstreuer Sch"atzer von $\sigma^2$ ist 
+%\[S^2=\frac{1}{n-1} \sum_{i=1}^n (X_i-\overline{X})^2\]
+\begin{itemize}
+\item $T(x) = \overline x = \frac1n \sum_{i=1}^n x_i$ ist ein erwartungstreuer Schätzer für $\theta = E_\theta X_i$, denn $E_\theta (T(X)) = E_\theta \left(\frac{1}{n} \sum_{i=1}^n X_i\right) = \frac{1}{n} \sum_{i=1}^n E_\theta X_i = \theta$
+\item Ein erwartungstreuer Sch"atzer für $\theta = \var_\theta(X_i)$ ist 
+$[S^2(x)=\frac{1}{n-1} \sum_{i=1}^n (x_i-\overline{x})^2$
+\end{itemize}
+\end{Bsp}
+
+\begin{Def}$\\$
+Sei $T$ ein Sch"atzer f"ur $\theta$ Dann hei"st 
+\[\textnormal{\textbf{MSE(T)}}:= E_\theta [(T(X_1,\ldots ,X_n)-\theta)^2]\]
+(mittlerer) \textbf{quadratischer Fehler}\index{quadratischer Fehler} (``mean-squared-error``)
+\end{Def}
+
+\begin{Bsp}$\\$
+Sei $P_\theta = U(0,\theta)$, $\Theta=\R$, $\chi = \R_+$ und $X=(X_1,\ldots ,X_n)$ eine Zufallsstichprobe zur Verteilung $U(0,\theta)$
+
+\textbf{Momentenmethode:} $\overline x = E_\theta X_i = \frac\theta2 \Rightarrow \hat\theta_{\text{MM}} = 2\cdot \overline x $\\
+\textbf{Maximum-Likelihood-Methode:}\\
+\[f(x,\theta)=\begin{cases}\frac{1}{\theta}, & 0\leq x\leq \theta \\ 0, & \text{sonst}\end{cases}\]
+\[\Rightarrow L_x(\theta) = L_{(x_1,\ldots,x_n)}(\theta) = f(x_1;\theta)\cdot \cdots \cdot f(x_n;\theta) =\begin{cases}\frac{1}{\theta^n}, & 0\leq x_1,\ldots ,x_n \leq \theta\\
+0, & \textnormal{sonst} 
+\end{cases}\]
+Maximiere $L_x(\theta)$ in $\theta$: $\hat\theta_{\textnormal{ML}}(x)=\max(x_1,\ldots ,x_n)$\\
+Welcher Sch"atzer ist besser?
+\[E_\theta[\hat\theta_{\textnormal{MM}}(X)]=2 E_\theta \overline{X}=\theta \quad \textnormal{, also ist $\hat\theta_{\textnormal{MM}}$ erwartungstreu}\]
+Verteilungsfunktion von $\hat\theta_{\text{ML}}(X)$ ist
+\[F_\theta(x)=P_\theta(\max(X_1,\ldots ,X_n)\leq x)=P_\theta(X_1\leq x,\ldots ,X_n\leq x)\]
+\[= P_\theta(X_1\leq x)\cdot\cdots\cdot P_\theta(X_n\leq x) =\left(\frac{x}{\theta}\right)^n \qquad \textnormal{,falls}\quad 0\leq x\leq \theta\]
+Also Dichte von $\hat\theta_{\text{ML}}(X)$:
+\[f_{\hat\theta_{\text{ML}}}(x) =\left\{\begin{array}{r@{\quad,\quad}l}
+\frac{n}{\theta}(\frac{x}{\theta})^{n-1} & \textnormal{falls} \quad 0\leq x \leq \theta\\
+0 & \textnormal{sonst} 
+\end{array}\right.\]
+und
+\[E_\theta[\hat\theta_{\textnormal{ML}}(X)]=\int_0^\theta xf_{\hat\theta_{\text{ML}}}(x)\,dx = \int_0^\theta n \left(\frac{x}{\theta}\right)^n\, dx = \frac{n}{n+1} \theta \]
+also \underline{nicht} erwartungstreu.\\
+\newline
+Aber:
+\[\textnormal{MSE}(\hat\theta_{\textnormal{MM}}(X))=E_\theta \left([2\frac{1}{n}\sum_{i=1}^n X_i-\theta ]^2\right)=\frac{\theta^2}{3n}\]
+\[\textnormal{MSE}(\hat\theta_{\textnormal{ML}}(X))= E_\theta([\max(X_1,\ldots ,X_n)-\theta]^2)=\frac{2\theta^2}{(n+2)(n+1)}\]
+\[\frac{\textnormal{MSE}(\hat\theta_{\textnormal{MM}}(X))}{\textnormal{MSE}(\hat\theta_{\textnormal{ML}}(X))}= \frac{2}{3}\frac{n}{(n+2)(n+1)}\qquad \textnormal{\textbf{relative Effizienz}}\]
+Bei gro"sem $n$ ist $\textnormal{MSE}(\hat\theta_{\textnormal{ML}}(X))$ kleiner als $\textnormal{MSE}(\hat\theta_{\textnormal{MM}}(X))$.
+\end{Bsp}
+
+\begin{Bem}$\\$
+Falls $T$ erwartungstreu ist, gilt $MSE(T)=\var_\theta(T)$\\
+%``Gute`` Sch"atzer sollten erwartungstreu sein und / oder m"oglichst kleine Varianz haben.\\
+\end{Bem}
+
+F"ur $\var_\theta(T)$ kann man die folgende untere Absch"atzung angeben.
+
+\begin{Sa}[Ungleichung von Rao-Cram\'{e}r\index{Ungleichung von Rao-Cram\'{e}r}]$\\$
+Sei $X=(X_1,\ldots ,X_n)$ eine Zufallsstichprobe zur Verteilung $P_\theta$. $T$ sei ein Sch"atzer f"ur $\theta$. Dann gilt:
+\[ \var_\theta(T(X))\geq \frac{(1+\frac{\partial}{\partial\theta}b_T(\theta))^2}{E_\theta[(\frac{\partial}{\partial\theta} \log L_X(\theta))^2]}\]
+\end{Sa}
+
+\begin{Bem}$\\$
+\begin{itemize}
+\item [(i)] $I(\theta):= E_\theta[(\frac{\partial}{\partial\theta} \log L_X(\theta))^2]$ hei"st \textbf{Fisher-Information}\index{Fisher-Information}
+\item [(ii)] Ist $T$ erwartungstreu, so ist $b_T(\theta)=0$ und $\var_\theta(T(X))\geq \frac{1}{I(\theta)}$
+\end{itemize}
+\end{Bem}
+
+\textbf{Beweis}\\
+Wir nehmen an, dass $L_x(\theta)>0 \ \forall\,x\in \chi^n\ \forall\theta\in\Theta$, $\Theta$ sei ein offenes Intervall in $\R$ und $P_\theta$ sei diskret. Es gilt:
+\[\frac{\partial}{\partial\theta} \log L_x(\theta)=\frac{L'_x(\theta)}{L_x(\theta)}\]
+Weiter gilt:
+\begin{itemize}
+\item [(1)] $\sum_{x\in\chi^n} L_x(\theta)=\sum_{x\in\chi^n}P_\theta(X=x)=1$
+\item [(2)] $\theta + b_T(\theta)=E_\theta T(X)=\sum_{x\in\chi^n} T(x) \cdot L_x(\theta)$
+\end{itemize}
+
+Wir differenzieren (1) und (2) nach $\theta$, und nehmen an, dass wir $\frac\partial{\partial\theta}$ und $\sum$ vertauschen könne.
+\begin{description}
+\item [(1')] \[0=\sum_{x\in\chi^n} L'_x(\theta)=\sum_{x\in\chi^n}\frac{\partial}{\partial\theta} \log(L_x(\theta)) \cdot L_x(\theta)=E_\theta \left[\frac{\partial}{\partial\theta} \log L_X(\theta)\right]\]
+\item [(2')] \[1+b'_T(\theta)=\sum_{x\in\chi^n} T(x) L'_x(\theta)\]
+\[\sum_{x\in\chi^n} T(x)\frac{\partial}{\partial\theta}\log(L_x(\theta)) \cdot L_x(\theta)=E_\theta \left[T(X)\cdot\frac{\partial}{\partial\theta} \log L_X(\theta)\right]\]
+%Multipliziere (1') mit $E_\theta T$ und subtrahiere sie dann von (2'):
+\item[(2') - (1')$E_{\theta}T(X)$]
+\[1+b'_T(\theta)=E_\theta [(T(X)- E_\theta T(X))\frac{\partial}{\partial\theta} \log L_X(\theta)]\]
+\end{description}
+Mit der Ungleichung von Cauchy-Schwarz folgt:
+\[\left(1+b'_T(\theta)\right)^2=\left(E_\theta [(T(X)- E_\theta T(X))\frac{\partial}{\partial\theta} \log L_X(\theta)]\right)^2\]
+\[\leq E_\theta [(T(X)-E_\theta T(X))^2]\cdot E_\theta \left[\frac{\partial}{\partial\theta} \log L_X(\theta)^2\right]= \textnormal{Var}_\theta T \cdot I(\theta)\]
+
+\chapter{Konfidenzintervalle}
+\begin{Def}$\\$
+Sei $\alpha \in (0,1)$ fest vorgegeben. Ein Intervall der Form $[L(x),U(x)]$ mit messbaren Funktionen $L,U: \chi^n\to \Theta\subset\R$ heißt  \textbf{$(1-\alpha)$-Konfidenzintervall}\index{$(1-\alpha)$-Konfidenzintervall}, falls  $L(x)\le U(x) \ \forall x\in\chi^n$ und $P_\theta (L\leq U)=1$ mit $P_\theta (L\leq \theta \leq U)=1-\alpha$
+\end{Def}
+
+\begin{Bem}$\\$
+\begin{itemize}
+\item [(i)] Sowohl Lage als auch L"ange des Konfidenzintervalls hängen von der konkreten Stichprobe ab.
+\item [(ii)] Sei zum Beispiel $\alpha=0.05$, dann enth"alt das Konfidenzintervall in $95\symbol{37}$ der F"alle den wahren Parameter.
+\end{itemize}
+\end{Bem}
+
+\begin{Bsp}$\\$
+Es sei $P_\theta = N(\theta,\sigma^2)$, $\sigma^2$ bekannt. Stichprobe $X$ vom Umfang $n$. \\
+Bestimme $(1-\alpha)$-Konfidenzintervall f"ur $\theta$.\\
+Sei \[ z:=\frac{\overline{X}-\theta}{\sigma}\,.\]
+Unter $P_\theta$ gilt: $z \sim N(0,1)$, (wegen Lemma 6.2, Bsp. 9.4). Wichtig: die Verteilung von $z$ unter $P_\theta$ hängt nicht mehr von $\theta$ ab.
+\[\Phi(c)-\Phi(-c)=P_\theta(-c\leq z\leq c)=P_\theta (\underbrace{X-\frac{c}{\sqrt{n}}\sigma}_{L(X)}\leq \theta\leq \underbrace{\overline{X}+\frac{c}{\sqrt{n}}\sigma}_{U(X)})\stackrel{!}{=}1-\alpha \]
+\[ 1-\alpha = \Phi(c) - \Phi(-c) = \Phi(c) - (1-\Phi(c)) = 2\Phi(c) - 1\Rightarrow \Phi(c) = 1-\frac\alpha2\]
+Mit $z_\alpha$ bezeichnen wir im Folgenden das $\alpha$-Quantil der Standardnormalverteilung. Also: $\Phi(z_\alpha) = \alpha$. Wegen Symmetrie gilt: $z_{\alpha}=-z_{1-\alpha}$\\
+$\Rightarrow = z_{1-\frac\alpha2}$. Ein $(1-\alpha)$-Konfidenzintervall ist also:
+\[\left[\overline{x}-\frac{z_{1-\frac{\alpha}{2}}}{\sqrt{n}}\sigma, \,\overline{x}+\frac{z_{1-\frac{\alpha}{2}}}{\sqrt{n}}\sigma \right]\]
+Die ist ein Sonderfall. Die L"ange des Konfidenzintervalls: $2 \cdot \frac{z_{1-\frac{\alpha}{2}}}{\sqrt{n}}\sigma$ und hängt nicht vom Zufall ab.
+\end{Bsp}
+
+\begin{Bsp}
+Es sei $P_\theta=B(m,\theta)$, $\Theta= [0,1]$, $\chi=\N_0$, $n=1$
+\[\text{Beispiel 13.4:}\quad P_\theta\left(\frac{X-m\theta}{\sqrt{m\theta(1-\theta)}}\leq x\right)\approx \Phi(x)\]
+Dann gilt: 
+\[P_\theta\left(-c \leq \frac{X-m\theta}{\sqrt{m\theta(1-\theta)}}\leq c\right)\approx \Phi(c)-\Phi(-c) \stackrel{!}{=} 1-\alpha \Rightarrow c = z_{1-\frac\alpha2}\]
+Wir versuchen auf die Darstellung $L(x) \le \theta \le U(x)$ zu kommen:
+\begin{align*}
+-c\leq \frac{X-m\theta}{\sqrt{m\theta(1-\theta)}}\leq c &\Leftrightarrow |X-m\theta|\leq c\sqrt{m\theta(1-\theta)}\\
+&\Leftrightarrow (X-m\theta)^2\leq c^2 m \theta(1-\theta)\\
+&\Leftrightarrow \theta^2(c^2+m)-\theta(2x+c^2)+\frac{x^2}{m}\leq 0 
+\end{align*}
+Nullstellen der Parabel in $\theta$:
+\[\theta_{1/2}=\frac{1}{m+c^2}\left(x+\frac{c^2}{2} \pm c\sqrt{\frac{X(m-X)}{m}+\frac{c^2}{4} }\right)\]
+Das hei"st:
+\[L(x)=\frac{1}{m+(z_{\frac{\alpha}{2}})^2}\left(x+\frac{(z_{\frac{\alpha}{2}})^2}{2} + z_{\frac{\alpha}{2}}\sqrt{\frac{x(m-x)}{m}+\frac{(z_{\frac{\alpha}{2}})^2}{4} }\right)\]
+\[U(X)=\frac{1}{m+(z_{\frac{\alpha}{2}})^2}\left(x+\frac{(z_{\frac{\alpha}{2}})^2}{2} - z_{\frac{\alpha}{2}}\sqrt{\frac{x(m-x)}{m}+\frac{(z_{\frac{\alpha}{2}})^2}{4} }\right)\]
+In einer Klinik gab es im letzten Jahr 87827 Geburten, davon 45195 Jungen.\\
+Gesucht: 0.99 - Konfidenzintervall f"ur die Wahrscheinlichkeit, dass ein Neugeborenes m"annlich ist.\\
+Hier: $m=87827, \quad x=45195, \quad \alpha=0,01$
+\[z_{\frac{\alpha}{2}}= z_{0,005} = -z_{0,995} = -z_{1-\frac{\alpha}{2}}=-2,576\]
+\[\text{Einsetzen:} \ [0,51091, 0,51961] \]
+\end{Bsp}
+
+\chapter{Testtheorie}
+\section[Einführung]{Einführung}
+$\{P_\theta |\theta\in \Theta\}$,\\
+$x=(x_1,\ldots,x_n)$ ist Realisierung von der Zufallsstichprobe $X=(X_1,\dots,X_n)$ zur Verteilung $P_\theta$.\\
+$\Theta=\Theta_0+\Theta_1$, $\theta$ ist nicht bekannt.\\
+Wir müssen entscheiden, ob eher $\theta \in \Theta_0$ oder $\theta \in \Theta_1$.\\
+
+D.h. wir wägen die Hypothese $H_0:$ $\theta\in\Theta_0$ \\
+gegen die Alternative $H_1:$ $\theta\in\Theta_1$\\
+ab.\\
+
+Falls $\Theta\subset\mathbb{R}$, können folgende typische Fragestellungen auftreten. (sei $\theta_0\in\Theta$)\\
+\[H_0:\theta\leq \theta_0 \quad\textnormal{vs}\quad H_1:\theta >\theta_0\]
+ein sogenannter \textbf{einseitiges Testproblem}\index{einseitiges Testproblem}.\\
+\[H_0:\theta=\theta_0 \quad\textnormal{vs}\quad H_1:\theta\neq\theta_0 \]
+ein sogenanntes \textbf{zweiseitiges Testproblem}\index{zweiseitiges Testproblem}.\\
+
+\begin{Bsp}$\\$
+\begin{itemize}
+\item [a)] Einseitiger Test:\\
+ISt der Schadstoffgehalt im Nahrungsmittel der $\nleq$ der zulässigen Grenze $\theta_0$?
+\item [b)] Zweiseitiger Test:\\
+H"alt die Abf"ullanlage  das Sollgewicht $\theta_0$ ein?
+\end{itemize}
+\end{Bsp}
+
+Aufgabe:\\
+Bestimme $R\subset \R^n=\chi^n$, so dass $H_0$ verworfen wird, falls die Stichprobe $x\in R$. $R$ hei"st \textbf{kritischer Bereich}\index{kritischer Bereich}.\\
+Folgende Entscheidungen sin möglich:
+\\$0=H_0$ wird nicht verworfen.
+\\$1=H_0$ wird verworfen.\\
+
+
+\begin{Def}$\\$
+Gegeben sei ein Testproblem $H_0$ vs $H_1$.
+\begin{itemize}
+\item [a)] Sei $x\in\chi^n$ eine Stichprobe. Eine Funktion $\varphi : \chi^n\rightarrow \{0,1\}$ hei"st \textbf{Test} oder \textbf{Testverfahren}. Es gilt: $R=\{x\in\chi^n | \varphi(x)=1\}$ 
+\item [b)] Einen \textbf{Fehler erster Art}\index{Fehler!1.Art} macht man, wenn man zu Unrecht $H_0$ ablehnt. Einen \textbf{Fehler zweiter Art}\index{Fehler!2.Art} macht man, wenn man zu Unrecht $H_0$ annimmt.
+\item [c)] Sei $\varphi$ ein Test. Die Funktion $\beta : \Theta\rightarrow [0,1]$ definiert durch:
+\[\beta(\theta)=P_\theta(X\in R)=P_\theta(\varphi(x)=1)\] 
+hei"st \textbf{G"utefunktion}\index{G"utefunktion}. F"ur $\theta\in\Theta_1$ hei"st $\beta(\theta)$ \textbf{Macht des Test}\index{Macht des Test}.
+\end{itemize}
+\end{Def}
+
+\begin{Bem}$\\$
+	\begin{tabular}[t]{|c|c|c|c} 
+	\hline
+ Entscheidung & $H_0$ & $H_1$\\
+ & & \\
+ ``wahr``     &          &   	\\ \hline
+                    &          &      \\
+ $H_0$    & \textnormal{ok} & \textnormal{Fehler 1.Art}        	\\ 
+		&          &  		\\ \hline
+        &          &        \\
+ $H_1$    &  \textnormal{Fehler 2.Art} &  \textnormal{ok}     	\\ 
+		&          &  		\\ \hline
+\end{tabular}
+\end{Bem}
+\vfill
+
+\begin{Def}$\\$
+Gegeben sei ein Test.\\
+Wir sagen, dass der Test \textbf{Niveau (Signifikanzniveau)}\index{Niveau (Signifikanzniveau)} $\alpha$ hat, falls $\forall$ $\theta\in\Theta_0$ gilt: $\beta(\theta)\leq\alpha$, d.h. die Wahrscheinlichkeit für einen Fehler erster Art ist maximal $\alpha$.
+
+\end{Def}
+
+\section[Tests unter Normalverteilungsannahme]{Tests unter Normalverteilungsannahme}
+
+\textbf{Test auf den Mittelwert bei bekannter Varianz}\\
+ 
+$X=(X_1,...,X_n), X_i\sim P_\mu=N(\mu,\sigma_0^2), \sigma_0$ sei bekannt, $\mu\in\Theta=\mathbb{R}$.\\
+
+Testproblem:
+\[H_0: \mu\leq \mu_0 \quad\textnormal{vs}\quad H_1: \mu > \mu_0=1000\]
+mit $\mu_0\in\mathbb{R}$ gegeben.\\
+
+Sinnvoller Test:
+\[\varphi(x)=\varphi(x_1,\ldots ,x_n) =\left\{\begin{array}{r@{\quad,\quad}l}
+1 & \textnormal{falls} \quad \overline{x}\leq c\\
+0 & \textnormal{falls} \quad \overline{x}\> c
+\end{array}\right. \textnormal{, } \overline{x}=\frac{1}{n}\sum_{i=1}^n X_i\]
+$c\in\mathbb{R}$ ist jetzt noch zu bestimmen und zwar so, dass der Test das Niceau $\alpha$ erhält.\\
+
+Bestimmung der Gütefunktion: \\ betrachte $\sqrt{n}$ $\frac{\overline{x}-\mu}{\sigma_0}$\\
+\[P_\mu\left(\sqrt{n} \frac{\overline{X}-\mu}{\sigma_0}\leq x\right)=\Phi(x), \textnormal{(siehe Lemma 6.2}\]
+
+\[\beta_c(\mu)=P_\mu(\overline{X}>c)=P_\mu\left(\sqrt{n}\frac{\overline{X}-\mu}{\sigma_0}>\sqrt{n}\frac{c-\mu}{\sigma_0}\right)=1-\Phi\left(\sqrt{n}\frac{c-\mu}{\sigma_0}\right)\]
+
+Einstellen des Testniveaus: $\beta_c(\mu)\leq\alpha$ $\forall$ $\mu\leq\mu_0$\\
+Es gilt:
+
+\[\begin{array}{r@{\quad,\quad}l}
+ \mu \mapsto \beta_c(\mu) & \textnormal{wachsend} \quad \textnormal{f"ur festes}\quad c\in\R \\
+\, c \mapsto \beta_c(\mu) & \textnormal{fallend} \quad \textnormal{f"ur festes} \quad\mu\in\R
+\end{array}\]
+\\
+deswegen genügt: $\beta_c(\mu_0)\leq\alpha$\\
+
+
+\[\beta_c(\mu_0)\leq\alpha \Leftrightarrow 1-\Phi\underbrace{\left(\sqrt{n}\frac{c-\mu_0}{\sigma_0}\right)}_{=z_{1-\alpha}} \leq\alpha \Leftrightarrow c\geq\frac{z_{1-\alpha}\,\sigma_0}{\sqrt{n}}+\mu_0 =: c^* \] 
+
+
+\begin{Def}$\\$
+Gegeben sei ein Testproblem zum Niveau und $D_\alpha$ eine Menge von Tests zum Niveau $\alpha$.\\
+$\varphi^*\in D_\alpha$ hei"st \textbf{gleichmä"sig bester Test}\index{gleichmä"sig bester Test} in $ D_\alpha$, falls
+\[\forall\,\theta\in\Theta_1: \beta^*(\theta)=P_\theta(\varphi^*(x)=1)=\max_{\varphi\in D_\alpha} P_\theta(\varphi(x)=1) \]  
+\end{Def}
+
+Zur"uck zum Beispiel:\\
+sei $D_\alpha$ die Menge aller Tests der Form\\
+
+\[\varphi(x)=\left\{\begin{array}{r@{\quad,\quad}l}
+0 & \textnormal{falls} \quad \overline{x}\leq c\\
+1 & \textnormal{falls} \quad \overline{x}\> c
+\end{array}\right. \textnormal{und } c\geq c^*\]
+
+I.A. findet man keinen gleichmä"sig besten Test.
+
+\[\varphi(x)=\left\{\begin{array}{r@{\quad,\quad}l}
+0 & \textnormal{falls} \quad \overline{x}\leq c^*\\
+1 & \textnormal{falls} \quad \overline{x}\> c^*
+\end{array}\right.\]
+
+ist gleichmä"sig bester Test in $D_\alpha$, denn:
+\[\beta_c^*(\mu_0)=\alpha\\
+\beta_{c^*+h}(\mu)=\beta_c^*(\mu-h)\leq\beta_c^*(\mu) \textnormal{  } \forall \textnormal{ } \mu\in\R, h\geq0\]
+\\
+
+
+\begin{Bem}[Wahl der Nullhypothese]\index{Wahl der Nullhypothese}$\\$
+Wird $H_0$ verworfen, so hat man eine Sicherheitswahrscheinlichkeit von $1-\alpha$ f"ur die Alternative. M"ochte man sich zum Beispiel f"ur $\theta < \theta_0$ entscheiden, sollte man die Nullhypothese $H_0: \theta \geq \theta_0$ w"ahlen.
+\end{Bem}
+
+
+\begin{Def}$\\$
+Seien $X_0,X_1,\ldots ,X_r$ unabhängig und identisch verteilte ZV mit $X_i\sim N(0,1), r\in \N$. Dann hei"st die Verteilung von
+\begin{itemize}
+\item [a)] \[\sum_{i=1}^r X_i^2\]
+eine \textbf{$\chi^2$-Verteilung}\index{$\chi^2$-Verteilung} mit $r$ Freiheitsgraden (Schreibweise: $\chi_r^2$) 
+\item [b)] \[\frac{X_0}{\sqrt{\frac{1}{r} \sum_{i=1}^r X_i^2}}\]
+eine \textbf{t-Verteilung}\index{t-Verteilung} mit $r$ Freiheitsgraden (Schreibweise: $t_r$)
+\end{itemize}
+\end{Def}
+
+\begin{Sa}$\\$
+Es sei $X=(X_1,\ldots ,X_n)$ eine Zufallsstichprobe zur $N(\mu,\sigma^2)$-Verteilung. 
+Dann gilt:\\
+\[S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i-\overline{X})^2 \textnormal{ und } \overline{X}=\frac{1}{n}\sum_{i=1}^n X_i \textnormal{ unabh"angig und }\]
+\[ \overline{X}\sim N(\mu,\frac{\sigma^2}{n}) \textnormal{ und} \frac{(n-1)S^2}{\sigma^2}\sim X_{n-1}^2\]
+\end{Sa}
+
+\begin{Bew}
+Es sei $Y_i:= \frac{X_i-\mu}{\sigma}$ $i=1,\dots,n$\\
+Vor. $\Rightarrow$ $Y_1,\dots,Y_n$ unabhängig und identisch verteilt mit $Y_i\sim N(0,1)$\\
+Sei $Y=(Y_1,\dots,Y_n).$\\
+\[f_y(y_1,\dots,y_n)=(\frac{1}{\sqrt{2\pi}})^n e^{-\frac{1}{2} \sum_{i=1}^n Y_i^2}\]
+Sei jetzt $a\in\mathbb{R}^{n\times n}$ eine orthogonale Matrix (d.h. $A^{-1}=A^T$) mit 
+\[a_{nj}=\frac{1}{\sqrt{n}} \textnormal{ , } j=1,\dots,n\]
+
+Sei $Z:=A\cdot Y$ und $a,b\in\mathbb{R}^n$ mit $a_i\leq b_i$\\
+\[P(Z\in\underbrace{(a,b]}_{=(a_1,b_1]\times\cdots\times (a_n,b_n]})=P(Y\in A^{-1} (a,b])\]
+\[=\int_{A^{-1}(a,b]} f_y(y_1,\dots,y_n) dy_1 \cdots dy_n\]
+\[ \stackrel{\text{\tiny Substitutionsregel}}{=} \int_{(a,b]} f_y(z_1,\dots,z_n) dz_1 \cdots dz_n\] 
+\[ = P(Y\in(a,b]) \textnormal{ (wegen } \|y\|^2=\|Ay\|^2, detA=1 ) \]
+$\Rightarrow$ $Z \stackrel{\text{\tiny d}}{=} Y$ und $Z_1,\ldots,Z_n$ unabhängig.
+\begin{align*}
+Z_n &= \frac1{\sqrt n} \sum_{i=1}^n Y_i  = \sqrt{n} \cdot \overline Y = \frac{\sqrt{n}}\sigma (\overline{X}-\mu) \\
+(n-1) S^2(x) &= \sum_{i=1}^n (X_i - \overline X)^2 = \sigma^2(n-1) S^2(Y)=\sigma^2\sum_{i=1}^n (Y_i - \overline Y)^2 \\
+&= \sigma^2 \sum_{i=i}^n (Y_i^2 - 2Y_i\overline Y + \overline Y^2) = \sigma^2 \left(\sum_{i=1}^n Y_i^2 - n\overline Y^2\right) \\
+&=\sigma^2(\underbrace{\|Y\|^2}_{=\|Z\|^2} - Z_n^2) = \sigma^2(Z_1^2 + \cdots + z_{n+1}^2)
+\end{align*}
+$\overline X$ und $S^2(X)$ sind unbhängig, da $\overline X$ nur von $Z_n$ und $S^2(x)$ nur von $Z_1,\ldots,Z_{n-1}$ abhängt. $\overline X \sim N(\mu,\frac{\sigma^2}{n})$ klar und $\frac{(n-1)S^(X)}{\sigma^2} = (n-1)S^2(Y) = Z_1^2 + \cdot + Z_{n-1}^2 \sim \chi^2_{n-1}$ nach Definition der $\chi^2$-Verteilun.
+\end{Bew}
+
+\begin{Kor}
+Unter der Voraussetzung von Satz 16.1 gilt:
+\[\sqrt{n}\cdot\frac{(\overline{X}-\mu)}{S}\sim t_{n-1}\]
+\end{Kor}
+
+\begin{Bew}
+Weil $\overline{X}$ und $S^2(X)$ unabh"angig sind, sind auch die Zufallsvariablen \[\sqrt{n}\left(\frac{\overline{X}-\mu}{\sigma}\right) \text{ und } \sqrt{\frac{1}{(n-1)}\frac{(n-1) S^2(X)}{\sigma^2}} \text{ unabh"angig.}\]
+Also gilt:
+\[\frac{\sqrt{n}(X-\mu )}{S(X)}=\frac{\overbrace{\sqrt{n}\cdot \frac{\overline{X}-\mu}{\sigma}}^{\sim N(0,1)}}{\sqrt{\frac{1}{n-1}\underbrace{\frac{(n-1) S^2(X)}{\sigma^2}}_{\sim \chi_{n-1}^2}}}\sim t_{n-1} \]
+
+\section[Mittelwert bei unbekannter Varianz]{Test auf den Mittelwert bei unbekannter Varianz}
+$P_{\mu,\sigma^2} = N(\mu,\sigma^2)$, $\theta=(\mu,\sigma^2)\in \Theta = \R\times\R_+$. $\sigma^2$ ist hier nicht bekannt!
+
+\textbf{Einseitiges Testproblem:} $H_0: \mu\leq \mu_0$ vs $H_1: \mu > \mu_0$ für ein festes $\mu_0\in\R$
+
+Sei $X=(X_1,\ldots,X_n)$ eine Zufallsstichprobe zu $P_{\mu,\sigma^2}$. Dann gilt: $\sqrt{n}\,\frac{\overline{X}-\mu}{S}\sim t_{n-1}$
+
+Als Test verwenden wir:
+
+\[\varphi(x)=\varphi(x_1,\ldots,x_n)=\begin{cases}
+1, & \text{falls } \overline x \le \frac1{\sqrt{n}}\overbrace{t_{n-1}(1-\alpha)}^{(1-\alpha) \text{-Quantil der }t_{n-1}\text{-Verteilung}}S(x)+\mu_0 \\
+%\cdot\frac{\overline{X}-\mu}{S(x)}> t_{n-1}(1-\alpha) \,(= \textnormal{($1-\alpha$) Quantil der $t_{n-1}$-Verteilung}) \\
+0, & \text{falls } \overline x  > \ \cdots
+\end{cases}\]
+Der Test $\varphi$ hält das Niveau $\alpha$ ein: Sei $\mu\leq \mu_0$
+\begin{align*}
+\beta_{\varphi}(\mu) &= P_{\mu,\sigma^2}\left(\sqrt{n}\cdot\frac{\overline{X}-\mu_0}{S(X)}> t_{n-1}(\alpha -1)\right) \\
+& \leq P_{\mu,\sigma^2}\left(\sqrt{n}\cdot\frac{\overline{X}-\mu}{S(X)}> t_{n-1}(\alpha -1)\right) \\
+&=1-P_{\mu,\sigma^2}\left(\sqrt{n}\cdot\frac{\overline{X}-\mu}{S(X)}\leq t_{n-1}(\alpha -1)\right)= 1-(1-\alpha)=\alpha 
+\end{align*}
+
+\textbf{Zweiseitiges Testproblem:} $H_0: \mu = \mu_0 \quad \textnormal{vs}\quad H_1: \mu \neq \mu_0$\\
+Der zugehörige Test ist:
+\[\varphi(x)=\varphi(x_1,\ldots,x_n)
+\begin{cases}
+0, &\text{falls }  \sqrt{n}\,\bigl|\frac{\overline{x}-\mu_0}{S(x)}\bigr| \le t_{n-1}(1-\frac{\alpha}{2}) \\
+1, &\text{falls } \sqrt{n}\,\bigl|\frac{\overline{x}-\mu_0}{S(x)}\bigr| > t_{n-1}(1-\frac{\alpha}{2}) 
+\end{cases}
+\textnormal{hat Niveau}\,\alpha \]
+\end{Bew}
+
+\begin{Bsp}[Zweiseitiger t-Test\index{Zweiseitiger t-Test}]
+\emph{Dieses Beispiel wurde nur in der Hannoverschen Vorlesung gezeigt.}
+
+Einer fr"uheren Untersuchung zur Folge sind Jungen einer bestimmten Altersgruppe im Mittel $\sigma_0=150cm$ gro"s. Ein Hersteller f"ur Kinderbekleidung m"ochte feststellen, ob sich seit der letzten Untersuchung eine Ver"anderung ergeben hat. Dazu wird die Gr"o"se von $n=49$ zuf"allig ausgesuchten Jungen des entsprechenden Alters gemessen:\\
+Es ergibt sich: $\overline{X}=147$ und $S^2=\frac{1}{(49-1)}\sum_{i=1}^{49} (X_i-\overline{X})^2=36$.\\
+Als Niveau wird $\alpha=0.05$ gew"ahlt.\\
+Annahme: K"orpergr"o"se normalverteilt $N(\theta,\sigma^2)$
+\[H_0: \theta = \theta_0 \quad \textnormal{vs}\quad H_1: \theta \neq \theta_0\]
+\[\sqrt{n}\,\bigr|\frac{\overline{X}-\theta_0}{S}\bigr|=\bigr|\frac{147-150}{6}\bigr|\cdot 7= 3,5\]
+Aus Tabelle: $t_{48}(1-\frac{\alpha}{2})=t_{48}(0.975)\approx 2.01$\\
+Ablehnung von $H_0$ ist auf dem Niveau $\alpha=0.05$ gesichert.\\
+Bemerkung:\\
+Die angegebenen t-Tests sind unverf"alscht und trennscharf in Menge der unverf"alschten Tests. 
+\end{Bsp}
+
+\section{Test auf die Varianz}
+$P_{\mu,\sigma^2} = N(\mu,\sigma^2)$, $\theta=(\mu,\sigma^2)\in \Theta = \R\times\R_+$. wie gehabt.
+
+\textbf{Testproblem:} $H_0: \sigma^2\leq \sigma_0^2\text{ vs. }H_1:  \sigma^2>\sigma_0^2$
+
+Nach Satz 16.1 gilt:
+\[P_{\mu,\sigma^2}(\frac{(n-1)S(X)^2}{\sigma_0}\le x) = F_{\chi^2_{n-1}}(x)\]
+
+Als Test verwenden wir:
+\[\varphi(x)=\varphi(x_1.\ldots,x_n)=
+\begin{cases}
+0, & \text{falls }\frac{(n-1)S(x)^2}{\sigma_0}\le \chi_{n-1}^2(1-\alpha)  \\
+1, & \text{falls }\frac{(n-1)S(x)^2}{\sigma_0}> \chi_{n-1}^2(1-\alpha) 
+\end{cases}\]
+
+Berechnung des Testniveaus: Sei $\sigma^2\leq \sigma_0^2$
+\[P_{\mu,\sigma^2}\left(\frac{(n-1)S(X)^2}{\sigma_0}> \chi_{n-1}^2(1-\alpha)\right)\leq P_{\mu,\sigma^2}\left(\frac{(n-1)S(X)^2}{\sigma}> \chi_{n-1}^2(1-\alpha)\right)=1-(1-\alpha)=\alpha\]
+
+%\textbf{Zweiseitiges Testproblem:} $H_0: \sigma^2 = \sigma_0^2\text{ vs. } H_1: \sigma^2 \neq\sigma_0^2$
+%\[\varphi(X)=\left\{\begin{array}{r@{\quad,\quad}l}
+%1 & \frac{(n-1)S^2}{\sigma_0^2}< \chi_{n-1}^2(\frac{\alpha}{2})\quad\textnormal{oder}\quad\frac{(n-1)S^2}{\sigma_0^2}> \chi_{n-1}^2(1-\frac{\alpha}{2})\\
+%0 & \textnormal{sonst}
+%\end{array}\right.\]
+%ist ein Test zum Niveau $\alpha$
+
+\chapter[Das Lemma von Neyman-Pearson]{Randomisierte Tests und das Lemma von Neyman-Pearson}
+Wir betrachten folgendes Testproblem:
+Sei $X\sim B(5,\theta)$ mit $\theta\in\Theta = \{\frac{1}{2},\frac{3}{4}\}$
+\[H_0: \theta=\frac{1}{2}\text{ vs. }H_1: \theta=\frac{3}{4}\]
+Wir wollen einen Test der Form 
+\[ \varphi(x) = 
+\begin{cases}
+0, & x\le c \\
+1, & x > c
+\end{cases}\]
+der das Niveau $\alpha=0,05$ einhält.
+\[\beta{(\frac12)} = P_{\frac{1}{2}}(X>c) \stackrel{!}\le 5 \]
+\begin{align*}
+P_{\frac12}(X=5) &= \left(\frac{1}{2}\right)^5  &= \frac{1}{32} < 0,05 \\
+P_{\frac{1}{2}}(X\in\{4,5\}) &= \left(\frac{1}{2}\right)^5 + \binom{5}{4} \cdot \left(\frac{1}{2}\right)^5  &= \frac{6}{32} > 0,05
+\end{align*}
+Das heißt der Test
+\[\varphi(x)=
+\begin{cases}
+0, & \text{falls } x\leq 4  \\
+1, & \text{falls } x = 5
+\end{cases}\]
+hält das Niveau $\sigma$ ein. Leider wird das Signifikanzvieau nicht voll ausgeschöpft. $\Rightarrow$ mache bei $x=4$ ein zusätzliches Experiment.
+
+\begin{Def}$\\$
+Eine %messbare
+Funktion $\varphi:\chi^n\to [0,1]$, die angibt mit welcher Wahrscheinlichkeit $\varphi(x)$ die Hypothese $H_0$ abgelehnt wird, heißt \textbf{randomisierter Test}\index{randomisierter Test}. Die G"utefunktion wird jetzt definiert durch
+\[\beta(\theta) := E_\theta\,\varphi(X)\,. \]
+\end{Def}
+
+\begin{Bem}$\\$
+Die bisher betrachteten nicht randomisierten Tests sind ein Spezialfall:
+\begin{align*}
+\varphi(x) &=\begin{cases}
+0, & x\not\in R \\
+1, & x\in R 
+\end{cases}\\
+\intertext{Die Definition der Gütefunktion stimmt mit der bisherigen überein:}
+\beta(\theta) &= E_\theta\,\varphi(X) = P_\theta(X\in R)
+\end{align*}
+\end{Bem}
+
+Im Beispiel: Wir lehnen $H_0$ jetzt auch im Falle $x=4$ mit einer Wahrscheinlichekit $p$ ab:
+\[
+\varphi(x)=\begin{cases}
+1, & x = 5  \\
+\gamma, & x = 4 \\
+0, & x\in \{0,1,2,3\}
+\end{cases}\]
+$\gamma$ ist so zu bestimmen, dass der Test Niveau $\alpha = 0,05$ hat.
+\[0,05\stackrel!=\beta\left(\frac{1}{2}\right)=E_{\frac{1}{2}} \varphi(x)= 1\cdot \frac{1}{32} + \gamma \binom{5}{4}\frac{1}{32} 
+\Rightarrow \gamma=\frac{3}{25}\]
+\newline
+Im Folgenden betrachten wir den Spezialfall $\Theta = \{\theta_0,\theta_1\}$
+\[H_0: \theta = \theta_0 \quad \textnormal{vs}\quad H_1: \theta = \theta_1 \]
+%(Man spricht hier von einfachen Hypothesen\index{einfachen Hypothesen})\\
+%
+%Zur Erinnerung:
+%\[L_x(\theta)=\underbrace{f(x_1;\theta)\cdot\cdots\cdot f(x_n;\theta)}_{\textnormal{stetiger Fall}} \quad\textnormal{bzw.}\quad L_x(\theta) = \underbrace{p(x_1;\theta)\cdot\cdots\cdot p(x_n;\theta )}_{\textnormal{diskreter Fall}} \]
+
+\begin{Def}$\\$
+Ein randomisierter Test $\varphi^*:\chi^n\to[0,1]$ hei"st \textbf{Neyman-Pearson-Test}\index{Neyman-Pearson-Test}, wenn eine Konstante $c^*\in [0,\infty)$  und eine Funktioon $\gamma:\chi^n \to [0,1]$ gibt mit
+\[\varphi^*(x)=
+\begin{cases}
+1 & \textnormal{falls } L_x(\theta_1) > c^* L_x(\theta_0)  \\
+\gamma(x) & \textnormal{falls } L_x(\theta_1) = c^* L_x(\theta_0)  \\
+0 & \textnormal{falls } L_x(\theta_1) < c^* L_x(\theta_0)  
+\end{cases}\]
+\end{Def}
+
+\begin{Sa}[Lemma von Neyman-Pearson]\index{Lemma von Neyman-Pearson}$\\$
+\begin{itemize}
+\item [a)] Ist $\varphi^*$ ein Neyman-Pearson-Test mit $\alpha = \beta_{\varphi^*}(\theta_0)$. Dann ist $\varphi^*$ trennscharf unter allen Tests zum gleichen Niveau $\alpha$, dass hei"st er hat den kleinsten Fehler zweiter Art. %$(\beta_{\varphi^*}(\theta_1)\geq \beta_{\varphi}(\theta_1))$
+\item [b)] F"ur jedes $\alpha\in (0,1)$ existiert ein Neyman-Pearson-Test $\varphi^*$ zum Niveau $\alpha$. Dabei kann $\gamma(x)\equiv \gamma$ gew"ahlt werden.
+\end{itemize}
+\end{Sa}
+\textbf{Beweis}
+\begin{itemize}
+\item [a)] Sei $\varphi$ ein weiterer Test zum Niveau $\alpha$. 
+Zu zeigen: $ 1- \beta_{\varphi^*}(\theta_1)\leq 1- \beta_{\varphi}(\theta_1)$\\
+Sei
+\[A:=\{x\in\chi^n| \varphi^*(x)>\varphi(x)\}\text{ und } B:=\{x\in\chi^n| \varphi^*(x)< \varphi(x)\} \]
+Es gilt:
+\begin{align*}
+x\in A &\Rightarrow  \varphi^*(x) > 0 &&\Rightarrow L_x(\theta_1) \geq c^* L_x(\theta_0) \\
+x\in B &\Rightarrow  \varphi^*(x) < 1 &&\Rightarrow L_x(\theta_1) \leq c^* L_x(\theta_0)
+\end{align*}
+Also (wir betrachten nur den diskreten Fall):
+\begin{align*}
+\beta_{\varphi^*}(\theta_1)-\beta_{\varphi}(\theta_1)
+& = \sum_{x\in\chi^n}\left(\varphi^*(x)-\varphi(x)\right) L_x(\theta_1)\\
+& = \sum_{x\in A}\left(\varphi^*(x)-\varphi(x)\right) L_x(\theta_1) +  \sum_{x\in B}\left(\varphi^*(x)-\varphi(x)\right) L_x(\theta_1)\\
+& \geq  \sum_{x\in A} \left(\varphi^*(x)-\varphi(x)\right) c^* L_x(\theta_0) + \sum_{x\in B} \left(\varphi^*(x)-\varphi(x)\right) c^* L_x(\theta_0)\\
+& =  c^* \sum_{x\in\chi^n} \left(\varphi^*(x)-\varphi(x)\right) = c^* \left( \underbrace{\beta_{\varphi^*}(\theta_0)}_{=\alpha}-\underbrace{\beta_{\varphi}(\theta_0)}_{\leq \alpha}\right)\geq 0
+\end{align*}
+\item [b)] F"ur $c\geq 0$ sei
+\[\alpha(c):= P_{\theta_0}\left(\frac{L_X(\theta_1)}{L_X (\theta_0)}>c \right)\text{ sowie } \alpha(c^-):= P_{\theta_0}\left(\frac{L_X(\theta_1)}{L_X (\theta_0)}\geq c \right) \]
+Sei $c^* := \inf\{c|\alpha(c) \le \alpha\}$. Dann gilt: $\alpha(c^*) \ge \alpha \ge \alpha(c^*)$.
+
+Sei außerdem 
+\[\gamma^* = \begin{cases}
+0,& \text{falls } \alpha(c^*-) = \alpha(c^*)\\
+\frac{\alpha-\alpha(c^*)}{\alpha(c^*-) \alpha(c^*)},&\text{falls } \alpha(c^*-) > \alpha(c^*)
+\end{cases}\]
+
+Dann gilt:
+\begin{align*}
+\beta_{\varphi^*}(\theta_0) & = E_{\theta_0}\varphi^*(X) \\
+& = P_{\theta_0}\left(\frac{L_X(\theta_1)}{L_X(\theta_0)}> c^* \right)+ \gamma^* \,P_{\theta_0}\left(\frac{L_X(\theta_1)}{L_X(\theta_0)} = c^* \right) + 0 \\
+& = \alpha(c^*) + \gamma^*(\alpha(c^{*-})-\alpha(c^*)) \\
+& = \alpha
+\end{align*}
+\end{itemize}
+
+\begin{Bsp}$\\$
+Es sei $P_\theta \sim \text{Exp}(\theta)$ und $\Theta = \{\theta_0, \theta_1\}$ mit $\theta0<\theta_1$. Es ist 
+\[L_x(\theta)=\theta^n e^{-\theta \sum_{i=1}^n X_i} = \theta^n e^{-\theta n \overline{X}} \]
+Betrachte
+\[ c^* < q(x) = \frac{L_X(\theta_1)}{L_x(\theta_0)} = \left(\frac{\theta_1}{\theta_0}\right)^n e^{n\overline x (\theta_0-\theta_1)} =: q^*(\overline x) \]
+$q^*(\overline x)$ ist fallen in $\overline x$. Also ist der zughörige Neyman-Pearson-Test äquivalent zu:
+\[\varphi(x)=\begin{cases}
+1, & \text{falls } \overline{X} < c^* \quad (\Leftrightarrow q(x) > \tilde{c})\\
+\gamma^*, & \text{falls } \overline{X} = c^* \quad (\Leftrightarrow q(x)=\tilde{c})\\
+0, & \text{falls } \overline{X} > c^* \quad (\Leftrightarrow q(x) < \tilde{c}) 
+\end{cases}\]
+$\alpha(c)=P_{\theta_0}(\overline{X}<c)=P_{\theta_0}(\sum_{i=1}^n X_i< nc)$\\
+Es ist $\sum_{i=1}^n X_i\sim \Gamma (n,\theta_0)$ für $\theta\in\Theta$. Offenbar ist $\alpha(c) = P_{\theta_0}(\overline x < c)$ stetig in $c$ und damit $\gamma^*=0$. $c$ ist so zu wählen, dass
+\[P_{\theta_0}\left(\sum_{i=1}^n X_i< nc^*\right)\stackrel{!}{=}\alpha \]
+%WICHTIG: $\gamma^*$ und $c^*$ h"angen nicht von $\theta_1$ ab.\\
+\end{Bsp}
+
+Wir betrachten jetzt wieder den Fall:
+\[H_0:\theta \leq \theta_0 \text{ vs. } H_1:\theta > \theta_0\]
+Im allgemeinen k"onnen wir hier nicht wie vorher einen trennscharfen Test konstruieren. Es gibt aber Spezielf"alle wo das klappt.
+
+\begin{Def}$\\$
+$\{f(x,\theta),\,\theta\in\Theta\}$ bzw. $\{p(x,\theta),\,\theta\in\Theta\}$ hei"st \textbf{Familie von (Z"ahl-)Dichten mit monotonen Dichtequotienten}, falls es eine messbare Funktion $T:\chi^n\to\R$ gibt, so dass
+\[q(x)=\frac{L_x(\theta_1)}{L_x(\theta_0)}=q^*(T(X_1,\ldots ,X_n))\]
+und $q^*$ eine monotone Funktion in $T(x_1,\ldots,x_n)=T(x)$ ist $\forall \theta_0 < \theta_1$
+\end{Def}
+
+\begin{Bsp}[vgl. Beispiel 15.3]$\\$
+Die Familie der Exponentialverteilungen erf"ullt die Bedingung mit $T(x)=\overline{x}$.
+\end{Bsp}
+
+\begin{Sa}$\\$
+\begin{itemize}
+\item [a)] Sei $x\in\chi^n$ eine Zufallsstichprobe zu einer Verteilung mit monoton nicht fallendem Dichtequotienten in $T(x)$ Jeder Test der Form:
+\[\varphi(x)=\begin{cases}
+1, & T(x) > t_0\\
+\gamma, & T(x) = t_0 \\
+0, & T(x) < t_0 
+\end{cases}\]
+ist gleichmäßig bester Test  f"ur das Testproblem 
+\[H_0:\theta \leq \theta_0\text{ vs. } H_1:\theta > \theta_0\]
+zum Niveau
+\[\alpha = E_{\theta_0}(\varphi(X))=\sup_{\theta\leq \theta_0} E_\theta(\varphi(X))\]
+\item [b)] F"ur jedes $\alpha\in (0,1)$ und $\theta_0\in\Theta$ existiert ein Test wie in a) beschrieben.
+\end{itemize}
+\end{Sa}
+
+\chapter{Likelihood-Quotienten Test}
+Gegeben sei ein allgemeines Testproblem:
+\[H_0:\theta\in\Theta_0\text{ vs. } H_1:\theta\in\Theta_1\]
+
+\begin{Def}
+Der \textbf{Likelihood-Quotient}\index{Likelihood-Quotient} ist definiert durch:
+\[q(x)=\frac{\sup_{\theta\in\Theta_0}L_x(\theta)}{\sup_{\theta\in\Theta_1}L_x(\theta)}\]
+
+Ein Test der Form:
+\[\varphi(x)=\begin{cases}
+0, & q(x) > c_0 \\
+\gamma, & q(x) = c_0\\
+1, & q(x) < c_0
+\end{cases}\]
+hei"st \textbf{Likelihood-Quotienten Test}\index{Likelihood-Quotienten Test}.
+\end{Def}
+
+\begin{Bem}$\\$
+Der Neyman-Pearson-Test ist ein spezieller Likelihood-Quotienten-Test.
+\end{Bem}
+
+\begin{Bsp}
+$P_{\mu,\sigma^2}  = N(\mu,\sigma^2)$, $X=(X_1,\ldots,X_n)$ Zufallsstichprobe zu $N(\mu,\sigma^2)$. $\theta = (\mu,\sigma^2) \in \Theta = \R\times\R_+$.
+
+Testproblem: 
+\[H_0:\mu=\mu_0\text{ vs. } H_1:\mu \ne\mu_0\]
+\[\Theta_0 = \{(\mu,\sigma^2) | \mu = \mu_0, \sigma^2 \in \R_+\}\]
+\[\Theta_1 = \{(\mu,\sigma^2) | \mu \ne \mu_0, \sigma^2 \in \R_+\}\]
+
+Likelihood-Quotient:
+\[ \sup_{\theta\in\Theta_0} L_x(\theta) = \sup_{\sigma^2} \frac1{{(2\pi\sigma^2)}^{\frac n2}} \exp\left(-\frac1{2\sigma^2} \sum_{i=1}^n (x_i - \mu_0)^2\right) \]
+Der Maximum-Likelihood-Schätzer für $\sigma^2$ (bei bekanntem $\mu=\mu_0$) ist:
+\[ \hat\sigma^2_{\text{ML}} = \frac1n \sum_{i=1}^n(x_i-\mu_0)^2 \]
+\begin{align*}
+\Rightarrow \sup_{\theta\in\Theta_0} L_x(\theta) &= \frac{n^{\frac n2}}{(2\pi)^{\frac n2} \left(\sum_{i=1}^n(x_i-\mu_0)^2 \right)^{\frac n2}}e^{-\frac n2} \\
+\intertext{Analog:}
+\sup_{\theta\in\Theta_1} L_x(\theta) &= \frac{n^{\frac n2}}{(2\pi)^{\frac n2} \left(\sum_{i=1}^n(x_i-\overline x)^2 \right)^{\frac n2}}e^{-\frac n2} \\
+\Rightarrow q(x) &= \left(\frac{\sum_{i=1}^n (x_i - \overline x)^2}{\sum_{i=1}^n (x_i - \mu-0)^2}\right)^{\frac n2} \\
+&= (1+n\cdot T^*(x))^{-\frac n2}\text{ mit } T^*(x) = \frac{(\overline x - \mu_0)^2}{\sum_{i=1}^n(x_i- \overline x)^2} 
+\end{align*}
+$q(x)$ ist fallend in $T^*(x)$, das heißt der kritische Bereich ist:
+\begin{align*}
+\{x | q(x) < c_0\} &= \{ x| T^*(x) > c'\}
+= \{x| \frac{u(\overline x - \mu_0)^2}{\frac1{n-1}\sum_{i=1}^n(x_i-\overline x)^2} > c'\}\\
+&= \{x| \left| \sqrt{n}\cdot\frac{\overline x - \mu_0}{S(x)}\right| > \sqrt{n(n-1)c'}\}
+\end{align*}
+Der Likelihood-Quotiententest ist also äquivalent zu folgendem Test:
+\[ \varphi(x) = \begin{cases}
+0, & \text{falls } \left|\sqrt n\cdot \frac{\overline x - \mu-0}{S(x)}\right| \le \sqrt{n(n+1)c'} \\
+1, & \text{falls } \left|\sqrt n\cdot \frac{\overline x - \mu-0}{S(x)}\right| > \sqrt{n(n+1)c'} 
+\end{cases} \]
+Beachte:\[\sqrt n \cdot \frac{\overline X - \mu-0}{S(x)} \sim t_{n-1}\]
+
+Einstellen des Testniveaus:
+\begin{align*}
+\beta(\mu_0) = E_{\mu_0} \varphi(X) &= P_{\mu_0}\left( \underbrace{\left| \sqrt{n} \cdot \frac{\overline X-\mu_0}{S(X)}\right|}_{=:z} > \underbrace{\sqrt{n(n-1)c'}}_{=:\tilde c} \right) \stackrel{!}= \alpha \\
+&= P_{\mu_0}(z<-\tilde c) + P_{\mu_0}(z> \tilde c)\text{, } z \sim t_{n-1}
+\intertext{Wichtig: Die Dichte der $t_{n-1}$-Verteilung ist symetisch zu 0}
+&= 2(1-F_{t_{n-1}}(2)) \stackrel!= \alpha\\
+&\Rightarrow \tilde c = t_{n-1}(1-\frac\alpha2)
+\end{align*}
+
+
+\end{Bsp}
+
+
+%\chapter{Stichwortverzeichnis}
+%\newpage
+%\addcontentsline{toc}{chapter}{\indexname}
+\printindex
+%\include{\jobname.ind}
+%\makeatletter
+%Gruppenkopf
+%\newcommand*{\heading}[1]{%
+%		\rule[-3pt]{\linewidth}{0.5pt}} %Linie "uber Textbreite
+%	\textsf{\textbf{\Large #1}}\hfil\nopagebreak\vspace{4pt}}
+%zweispaltige theindex-Umgebung
+%\renewenvironment{theindex}{%
+%	\setlength{\columnseprule}{0.4pt}
+%	\setlength{\columnsep}{2em}
+%	\begin{multicols}{2}[\chapter*{\indexname}]
+%	\parindent\z@
+%	\parskip\z@ \plus .3\p@\relax
+%	\let\item\@idxitem}%
+%{\end{multicols}\clearpage}
+%\makeatother
+
+\end{document}

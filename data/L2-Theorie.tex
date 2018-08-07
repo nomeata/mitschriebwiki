@@ -1,0 +1,250 @@
+\documentclass{article}
+\newcounter{chapter}
+\usepackage{ana}
+\def\ie{\rm i}
+
+%
+% © 2006 Christian Schulz
+% Bitte keine Änderungen vornehmen, alle Rechte vorbehalten. (soll heißen: frag halt bevor ihr es irgendwie verwendet)
+% Frei nach Rudin aus dem Proseminar Fouriertransformation an der Uni Karlsruhe SS 06
+
+%\email{yochris@gmx.de}
+\title{$L^2$-Theorie}
+\author{Christian Schulz}
+\begin{document}
+\maketitle
+
+In diesem Papier, wird die Fortsetzung der Fouriertransformation auf $L^2$ erarbeitet. 
+\begin{motivation}
+Für Funktionen $f \in L^2(\MdR^n)$ muss das Fouriertransformationsintegral \\ \\
+\centerline{$\int_{\MdR^n}f(t) e^{-iw \cdot t} dt$} \\ \\
+nicht existieren. Um eine Fouriertransformation für Funktionen $f \in  L^2(\MdR^n)$ zu definieren müssen wir anders vorgehen.
+Die Idee ist klassische Analysis. Wir nehmen zunächst eine dichte Menge $X$ ($\emptyset \neq X \subset L^2(\MdR^n)$) auf der die
+Fouriertransformation definiert ist. Dann folgt mit dem Fortsetzungssatz für stetige Abbildungen die eindeutige Existenz auf $L^2(\MdR^n)$. \\
+\end{motivation}
+
+\begin{definition}
+\begin{liste}
+\item Das $n$-Tupel $\alpha = (\alpha_1, \dots, \alpha_n)$ wird im folgenden als \emph{Multi-Index} bezeichnet.
+\item $|\alpha| = \sum \alpha_i$ wird als \emph{Ordnung} bezeichnet.
+\item Für $ t \in \MdR^n$ sei $t^{\alpha} := \prod t_i^{\alpha_i}$.
+\item $D^{\alpha} = \prod (\frac{\partial}{\partial x_i})^{\alpha_i}$
+\item $D_{\alpha} = \ie^{-|\alpha|}D^{\alpha} =\prod (\frac{1}{i} \frac{\partial}{\partial x_i})^{\alpha_i}$
+\item $P(\xi) := \sum c_{\alpha} \xi^{\alpha} = \sum c_{\alpha} \xi_1^{\alpha_1} \cdots \xi_n^{\alpha_n}$
+\item $P(D) := \sum c_{\alpha} D_{\alpha}$, $P(-D) := \sum (-1)^{|\alpha|} c_{\alpha} D_{\alpha} $
+\item $e_t(x) := e^{\ie t \cdot x} = e^{ \ie( t_1x_1 + \cdots + t_1x_n ) }$ $\forall t,x \in \MdR^n$
+\item $dm_n(x) := (2\pi)^{-\frac{n}{2}} dx$
+\item $(\tau_x f)(y) := f(y-x)$  $(x,y \in \MdR^n)$
+\end{liste}
+\end{definition}
+
+\begin{beispiel}
+In obiger Definition folgt: $\forall t,x \in \MdR^n : P(D)e_t = P(t)e_t$ \\
+\begin{beweis} 
+Seien $t, x \in \MdR^n$ bel. $\Rightarrow$
+ $P(D)e_t = \sum c_{\alpha} D_{\alpha} e_t(x)$ \\
+                                       $ = \sum c_{\alpha} (\frac{1}{\ie})^{|\alpha|} D^{\alpha} e^{ \ie( t_1x_1 + \cdots + t_1x_n ) }$ \\
+                                       $ = \sum c_{\alpha} (\frac{1}{\ie})^{|\alpha|} \ie^{| \alpha |} t_1^{\alpha_1} \cdots t_n^{\alpha_n} e_t(x)$
+                                       $ = \sum c_{\alpha} t^{\alpha} e_t(x) = P(t)e_t  $
+\end{beweis}
+\end{beispiel}
+
+\begin{beispiel}
+Der Ausdruck Fouriertransformation wird für die Abbildung benutzt, die $f$ auf $\hat{f}$ abbildet. Dabei sei angemerkt, dass gilt \\ \\
+\centerline{$\widehat{f}(t) = \int_{\MdR^n}f e_{-t} dm_n = (f * e_t)(0)$ }
+\end{beispiel}
+
+\begin{definition} [Schnell fallende Funktionen]
+Sei $\mathcal{S} := \{f \in C^{\infty}(\MdR^n) | \sup_{|\alpha| \leq N} \sup _{x \in \MdR^n} (1+ |x|^2)^N |(D_{\alpha}f)(x)| < \infty, N \in \MdN_0  \}$
+der \emph{Raum der schnell fallenden Funktionen} ( $|x|^2 = \sum x_i^2$ ).
+\end{definition}
+
+\begin{bemerkung}
+Mit anderen Worten gilt für alle $f \in \mathcal{S}$, dass $P D_\alpha f$ eine beschränkte Funktion auf $\MdR^n$ ist und zwar für 
+jedes Polynom $P$ und jeden Multi-Index $\alpha$.
+\end{bemerkung}
+\begin{folgerung}
+$\mathcal{S}$ ist ein Vektorraum.   
+\end{folgerung}
+
+\begin{beweis}
+Sei $\psi, \phi \in \mathcal{S}$ und $\delta := \sup_{|\alpha| \leq N} \sup _{x \in \MdR^n} (1+ |x|^2)^N |(D_{\alpha} \psi)(x)|$,
+$\widetilde{\delta} := \sup_{|\alpha| \leq N} \sup _{x \in \MdR^n} (1+ |x|^2)^N |(D_{\alpha} \phi)(x)| 
+\Rightarrow \forall \alpha \in \MdR : 
+\sup_{|\widetilde{\alpha}| \leq N} \sup _{x \in \MdR^n} (1+ |x|^2)^N |(D_{\widetilde{\alpha}} (\alpha\psi + \phi))(x)| 
+\leq \alpha\delta+\widetilde{\delta} \leq \max\{|\alpha|,1\}\max\{\delta, \widetilde{\delta}\} =: \gamma$
+\end{beweis}
+
+\begin{beispiel}
+$ \phi(x) := e^{-x^2}, \phi \in \mathcal{S}$.
+\end{beispiel}
+
+\begin{beweis}
+Es gilt $\phi'(x)= -2xe^{-x^2}, \phi''(x)= 2xe^{-x^2}(2x^2-1), ...$ 
+es folgt per Induktion, dass $ \phi^{(n)}(x)=p(x)*e^{-x^2}$ (p Polynom) $\forall n \in \MdN_0.$ 
+Da $\lim_{x \to \frac{+}{}\infty} \phi^{(n)}(x) = 0$ gilt folgt, dass $\widetilde{p}\phi^{(n)}$ beschränkt ist, wobei
+$\widetilde{p}$ ein bel. Polynom ist.
+\end{beweis}
+
+
+\begin{satz}
+\begin{liste} 
+\item $\mathcal{S}$ ist ein Fréchet Raum.
+\item Sei $P$ ein Polynom, $g \in \mathcal{S}$, und $\alpha$ ein Multi-Index. Dann sind folgende Abbildungen stetig und linear: \\
+$T_1: \mathcal{S} \to \mathcal{S}, f \mapsto Pf$ \\
+$T_2: \mathcal{S} \to \mathcal{S}, f \mapsto gf$ \\
+$T_3: \mathcal{S} \to \mathcal{S}, f \mapsto D_\alpha f$
+
+\item Sei $f \in \mathcal{S}$ und  $P$ ein Polynom, dann gilt \\ \\
+\centerline{$(P(D)f)^{\widehat{ }} = P \widehat{f}$ und $(Pf)^{\widehat{ }} = P(-D) \widehat{f}$.}
+\item Die Fouriertransformation ist eine stetige Abbildung von $\mathcal{S}$ in $\mathcal{S}$.
+\end{liste}
+\end{satz}
+\begin{beweis}
+	\begin{liste}
+		\item Sei $(f_i)_{i \in \MdN}$ eine Cauchyfolge in $\mathcal{S}$. 
+		      D.h. $\forall \epsilon > 0$ $\exists n_0 \in \MdN : || f_m - f_n || < \epsilon$ $\forall n > m \geq n_0.$
+		      Für jedes Paar von Multi-Indizes $\alpha$, $\beta$ konvergiert die Funktion $x^{\beta}D^{\alpha}f_i(x)$ 
+		      (gleichmäßig auf $\MdR^n$) gegen die beschränkte Funktion $g_{\alpha \beta}$ (für $i \to \infty$) $\Rightarrow$ \\
+		      \centerline{ $g_{\alpha \beta} = x^{\beta} D^{\alpha} g_{00}(x)$} \\ \\
+		      und damit folgt $f_i \to g_{00}$ $\Rightarrow \mathcal{S}$ ist vollständig.
+		\item Sei $f \in \mathcal{S}$. Dann ist offensichtlich $D_{\alpha} f \in \mathcal{S}$, $Pf \in \mathcal{S}$ und $gf \in \mathcal{S}$. 
+			  Die Stetigkeit der drei Abbildungen folgt aus dem \emph{closed graph theorem}.
+		\item Sei $f \in \mathcal{S} \Rightarrow P(D)f \in \mathcal{S}$ und \\ \\
+		      \centerline{$(P(D)f)*e_t = f * P(D) e_t = f * P(t) e_t = P(t)[f*e_t]$}. \\ \\
+		      Wenn man diese Funktionen nun im Ursprung des $\MdR^n$ auswertet, liefert uns das den ersten Teil von (3). Nämlich: \\ \\
+		      \centerline{$(P(D)f)^{\widehat{}}(t) = P(t)f^{\widehat{}}(t)$} \\ \\ 
+		      Sei $\widetilde{t} := (t_1 + \epsilon,..., t_n), t := (t_1,..., t_n), x \in \MdR^n$ \\
+   		      $h(x) := e_{-\widetilde{t}}(x) - e_{-t}(x)$  = $
+		      e^{-\ie((t_1+\epsilon)x_n+\cdots+t_nx_n)} - e^{-\ie(t_1x_1+\cdots+t_nx_n)}$ \\ $ = 
+		      (e^{-\ie \epsilon x_1}-1)e_{-t}(x)$  \\ \\
+		      Sei weiterhin $\gamma(x_1,\epsilon) := \frac{e^{-\ie\epsilon x_1}-1}{\ie\epsilon x_1} = \frac{h(x)}{\ie\epsilon x_1 e_{-t}(x)}$  . \\ \\
+		      Betrachte \\ $\lim_{\epsilon \to 0} \gamma(x_1,\epsilon) $ 
+		      $ = \lim_{\epsilon \to 0} \frac{e^{-\ie\epsilon x_1}-1}{\ie\epsilon x_1}$ 
+			  $ = \lim_{\epsilon \to 0} -e^{-\ie\epsilon x_1} = -1$ \\ \\
+		      Nun gilt: \\ \\ $\frac{\widehat{f}(\widetilde{t})-\widehat{f}(t)}{\ie\epsilon}$ 
+		      $ = \int_{\MdR^n} f(x)\frac{h(x)}{\ie\epsilon} d m_n $
+		      $ = \int_{\MdR^n} x_1 f(x)\frac{h(x)}{\ie\epsilon x_1 e_{-t}(x)} e_{-t}(x) d m_n $
+		      $ = \int_{\MdR^n} x_1 f(x) \gamma(x_1, \epsilon) e_{-t}(x) d m_n $ \\ \\
+		      Da $ x_1 f \in L^1$ folgt für $\epsilon \to 0$ mit dem Satz von der dominierenden Konvergenz \\ \\
+			  \centerline{$- \frac{1}{\ie}\frac{\partial}{\partial t_1} \widehat{f} = \int_{\MdR^n} x_1 f(x)e_{-t}(x) d m_n $} \\ \\
+			  und damit der zweite Teil der Behauptung für den Fall $P(x) = x_1$. Der allgemeine Fall folgt durch Iteration. 	      
+		\item Sei $f \in \mathcal{S}$ und $g(x) = \underbrace{(-1)^{|\alpha|}x^{\alpha}}_{:= \widetilde{P}(x)}f(x) \Rightarrow g \in \mathcal{S}$. 
+		      Nun folgt mit (3), dass $\widehat{g} = D_{\alpha} \widehat{f}$, denn \\ \\
+		      \centerline{$\widehat{g} = \widehat{\widetilde{P}f} = \widetilde{P}(-D) \widehat{f} = D_{\alpha} \widehat{f}$} \\
+		       und $P \widehat{g} = (P(D)g)^{\widehat{}}$, welche
+		      eine beschränkte Funktion ist, da $P(D)g \in L^1(\MdR^n)$ . Das beweist, dass $\widehat{f} \in \mathcal{S}$.
+		      Wenn $f_i \to f$ in $\mathcal{S}$ dann folgt $f_i \to f$ in $L^1(\MdR^n)$. Schließlich folgt nun direkt 
+		      $\widehat{f}_i \to \widehat{f}$ $\forall t \in \MdR^n$.  Die Stetigkeit der Abbildung $f \to \widehat{f}$ von 
+			  $\mathcal{S}$ nach $\mathcal{S}$, folgt wieder aus dem closed graph theorem.
+		    
+	\end{liste}
+\end{beweis}
+
+\begin{satz}
+\begin{liste}
+\item $(\tau_x f)^{\widehat{}} = e_{-x} \widehat{f}$
+\item Sei $\lambda > 0$ und $h(x) = f(x / \lambda) \Rightarrow \widehat{h}(t) = \lambda^n\widehat{f}(\lambda t)$
+\end{liste}
+\end{satz}
+\begin{satz} [Das Inversionstheorem]
+\begin{liste}
+\item $g \in \mathcal{S} \Rightarrow$ $g(x) = \int_{\MdR^n} \widehat{g} e_x dm_n$ $(x \in \MdR^n)$
+\item Die Fouriertransformation ist eine stetige, lineare, 1-zu-1 Abbildung von $\mathcal{S}$ auf $\mathcal{S}$, dessen Inverse ebenfalls stetig ist.
+\item $ f \in L^1(\MdR^n)$, $\widehat{f} \in L^1(\MdR^n)$, $f_0(x) = \int_{\MdR^n} \widehat{f}e_x dm_n$ $(x \in \MdR^n)$ $ \Rightarrow$  \\
+	  $f(x) = f_0(x)$ fast überall $(x \in \MdR^n)$
+\end{liste}
+\end{satz}
+\begin{beweis}
+\begin{liste}
+\item Zunächst gilt die Identität \\ \\
+      \centerline{$\int_{\MdR^n} \widehat{f} g dm_n = \int_{\MdR^n} f \widehat{g} dm_n$} \\ \\
+      Sei nun $g \in \mathcal{S}, \phi \in \mathcal{S}, \lambda > 0$ und $f(x) = \phi(x/\lambda)$. Dann gilt \\ \\
+      $\Gamma(\lambda) := \int_{\MdR^n} g(\frac{t}{\lambda}) \widehat{\phi}(t) dm_n(t) = 
+       \int_{\MdR^n} \widehat{g}(\frac{t}{\lambda}) \phi(t) dm_n(t) = 
+       \int_{\MdR^n} \lambda^n \widehat{g}(\lambda t) \phi(t) dm_n(t)$ \\ \\
+      Nun führt man eine Substitution durch mit $\gamma(t) = \frac{y}{\lambda}$. Es gilt $\gamma(\MdR^n) = \MdR^n$ und 
+      $det(\gamma'(t)) = \frac{1}{\lambda^n} $ \\ \\
+      $\Rightarrow \Gamma(\lambda) = \int_{\MdR^n} \widehat{g}(y) \phi(\frac{y}{\lambda}) dm_n(y) \\ \\
+      \Rightarrow \int_{\MdR^n} g(\frac{t}{\lambda}) \widehat{\phi}(t) dm_n(t) = 
+      \int_{\MdR^n} \widehat{g}(y) \phi(\frac{y}{\lambda}) dm_n(y)$ \\ \\
+      Nun konvergiert für $\lambda \to \infty$, $g(\frac{t}{\lambda}) \to g(0)$ und $\phi(\frac{y}{\lambda}) \to \phi(0)$ beschränkt. \\
+	  Satz von der dominierenden Konvergenz $\Rightarrow$ \\ \\
+	  \centerline{$g(0) \int_{\MdR^n} \widehat{\phi}(t) dm_n(t) = 
+       \phi(0) \int_{\MdR^n} \widehat{g}(y) dm_n(t)	$} \\ \\
+      Sei nun $\phi(x) = e^{-\frac{1}{2}|x|^2}$. Dann gilt die Behauptung für den Fall $x = 0$, denn\\ \\
+      $g(0) = g(0) \underbrace{\int_{\MdR^n} \widehat{\phi}(t) dm_n(t)}_{=1} = 
+      \underbrace{\phi(0)}_{=1} \int_{\MdR^n} \widehat{g}(y) dm_n(y)	= \int_{\MdR^n} \widehat{g}(y) \underbrace{e_0}_{=1} dm_n(y)$. \\ 
+      Der allgemeine Fall folgt direkt, denn \\ \\
+      \centerline{ $g(x) = (\tau_{-x} g)(0) = \int_{\MdR^n} \widehat{\tau_{-x} g} dm_n = \int_{\MdR^n} \widehat{g} e_x dm_n$}
+\item Sei vorrübergehend $\phi g = \widehat{g}$. Die Inversionsformel (1) liefert uns schon, dass $\phi$ eine 1-zu-1 Abbildung ist, da offensichtlich 
+	  $\widehat{g} = 0 \Rightarrow g = 0.$ 
+	  Es zeigt sich weiterhin, dass $\phi^2 g = \check{g}$, wobei $\check{g} = g(-x)$. Denn \\ \\ 
+	  \centerline{$\phi^2 g = \phi \widehat{g} = \int_{\MdR^n} \widehat{g} e_{-t} dm_n = g(-t)$} \\ \\
+	  Nun folgt $\phi^4 g = g$ und damit, dass $\phi$ $\mathcal{S}$ komplett auf $\mathcal{S}$ abbildet. 
+	  Die Stetigkeit von $\phi$ wurde schon in Satz 1.2.4 bewiesen. Da $\phi ^ {-1} = \phi^3$ gilt, folgt auch die Stetigkeit von
+	  $\phi^{-1}$.
+\item Es gilt zunächst für $g \in \mathcal{S}$\\ \\
+	  $ \int_{\MdR^n} f_0 \widehat{g} d m_n = \int_{\MdR^n} \int_{\MdR^n} \widehat{f} e_x d m_n \widehat{g} d m_n =
+	  \int_{\MdR^n} \widehat{f} \int_{\MdR^n} \widehat{g} e_x d m_n d m_n = \int_{\MdR^n} \widehat{f} g d m_n =
+	  \int_{\MdR^n} f \widehat{g} d m_n$ \\ \\ Also: \\ \\
+	 \centerline{$ \int_{\MdR^n} f_0 \widehat{g}$  $d m_n = \int_{\MdR^n} f \widehat{g}$ $ d m_n$} \\ \\
+	 Aus (2) folgt, dass mit $\widehat{g}$ alle schnell fallenden Funktionen abgedeckt werden. Da $\mathcal{D}(\MdR^n) \subset \mathcal{S}$ folgt
+	 \\ \\
+	 \centerline{$\int_{\MdR^n} (f_0-f) \phi$ $d m_n = 0 \quad \forall \phi \in \mathcal{D}(\MdR^n)$} \\ \\ 
+	 und (durch eine Approximation (Übung)) damit gilt diese Identität für jede stetige Funktion $\phi$ mit kompakten Träger.
+	 Es folgt fast überall $f_0-f = 0$.
+
+
+      
+\end{liste}
+\end{beweis}
+
+\begin{satz} [Plancherel Theorem]
+Es existiert eine Isometrie $\Psi: L^2(\MdR^n) \to L^2(\MdR^n)$, welche eindeutig festgelegt ist durch \\
+\centerline{ $\Psi f = \widehat{f} \quad \forall f \in \mathcal{S}$}
+\end{satz}
+
+\begin{bemerkung}
+Man beachte, dass die Gleichheit $\Psi f = \widehat{f}$ erweitert wird von $\mathcal{S}$ zu $L^1(\MdR^n) \cap L^2(\MdR^n)$, 
+da $\mathcal{S}$ sowohl dicht in $L^2$ als auch in $L^1$ liegt. Das liefert uns die Übereinstimmung: das Gebiet von $\Psi$ ist $L^2$. 
+$\widehat{f}$ wurde schon definiert für $f \in L^1(\MdR^n)$ und $\Psi f = \widehat{f}$, falls beide Definitionen anwendbar sind. Daher 
+erweitert $\Psi$ die Fouriertransformation von $L^1(\MdR^n) \cap L^2(\MdR^n)$ zu $L^2(\MdR^n)$. Diese Erweiterung nennt man
+immer noch Fouriertransformation, und die Notation $\widehat{f}$ wird beibehalten.
+\end{bemerkung}
+\begin{beweis}
+Es sei $f, g \in \mathcal{S}$, dann liefert uns das Inversionstheorem \\ \\
+\centerline{$\int_{\MdR^n} f \bar{g}$ $d m_n$ = 
+            $\int_{\MdR^n} \bar{g}(x) $ $d m_n(x)$ $\int_{\MdR^n} \widehat{f}(t) e^{ix \cdot t} $ $d m_n(t)$ } 
+\centerline{= $\int_{\MdR^n} \widehat{f}(t) $ $d m_n(t)$ $\int_{\MdR^n} \bar{g}(x) e^{ix \cdot t} $ $d m_n(x)$} \\ \\
+Das letzte innere Integral ist das komplex Konjugierte von $\widehat{g}(t)$. \\ Das liefert uns die Parseval Formel \\ \\
+\centerline{$\int_{\MdR^n} f \bar{g}$ $d m_n = \int_{\MdR^n} \widehat{f} \bar{\widehat{g}}$ $d m_n$  $(f,g \in \mathcal{S})$} \\ \\
+Wir spezialisieren nun $g = f$, dann folgt \\ \\
+\centerline{$|| f ||_2 = ||\widehat{f}||_2 \quad f \in \mathcal{S}$}. \\ \\ 
+Nun folgt, da $\mathcal{S}$ dicht in $L^2(\MdR^n)$ liegt, dass die Abbildung $f \to \widehat{f}$ eine Isometrie 
+(relativ zur Metric in $L^2$) von $\mathcal{S} \to \mathcal{S}$ ist. Mit dem Satz über die eindeutige Fortsetzung folgt, 
+dass $\psi: L^2(\MdR^n) \to L^2(\MdR^n)$ eine linieare Isometrie von $L^2(\MdR^n)$ nach $L^2(\MdR^n)$ ist.
+
+\end{beweis}
+
+Appendix:
+
+\begin{satz}[Exkurs: Closed Graph Theorem]
+Es gelte:
+\begin{liste}
+\item X und Y sind F-Räume
+\item $\Psi: X \to Y$ sei linear
+\item $G = \{(x, \Psi x) | x \in X \}$ ist abgeschlossen in $X \times Y$ 
+\end{liste} 
+Dann ist $\Psi$ stetig.
+\end{satz}
+
+\begin{satz}[Exkurs: Eindeutige stetige Fortsetzung]
+Sei $X,Y $ metrische Räume und $A$ sei dicht in $X$, $f: A \to Y$ sei gleichmäßig stetig. Dann gilt: 
+\begin{liste}
+\item $f$ hat eine eindeutige stetige Fortsetzung $F: X \to Y$
+\item $f$ ist Isometrie $\Rightarrow$ $F$ ist Isometrie und $F(X)$ ist abgeschlossen in $Y$.
+\end{liste} 
+\end{satz}
+
+\end{document}

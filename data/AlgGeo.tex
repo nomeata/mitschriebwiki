@@ -1,0 +1,2744 @@
+\documentclass[a4paper,12pt]{scrreprt}
+\usepackage{etex}
+
+% Meta-Daten für Latexki
+\usepackage{latexki}
+\lecturer{Prof. Dr. F. Herrlich}
+\semester{Wintersemester 08/09}
+\scriptstate{complete}
+
+% Deutsche Sprache
+\usepackage{ngerman}
+
+% Verschiebt \sections auf die naechste seite falls sie zu tief sind. Muss vor
+% hyperref kommen.
+% Deaktiviert; da es nicht kompiliert
+% \usepackage[nobottomtitles]{titlesec}
+
+% Schicke Schrift
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{tikz}
+
+% schmaler rand
+\usepackage{geometry}
+\geometry{a4paper,tmargin=2cm,lmargin=2cm,rmargin=2cm}
+
+\setlength\parskip{\smallskipamount}
+\setlength\parindent{0pt}
+\tolerance=900
+
+% Vokabelliste erzeugen
+\usepackage{index}
+\newindex{default}{idx}{ind}{Vokabeln}
+
+% links
+\usepackage{color}
+\usepackage{hyperref}
+
+\definecolor{rltred}{rgb}{0.75,0,0}
+\definecolor{rltgreen}{rgb}{0,0.5,0}
+\definecolor{rltblue}{rgb}{0,0,0.75}
+
+\hypersetup{
+  pdftitle={Algebraische Geometrie Prof. Herrlich},
+  pdfsubject={Algebraische Geometrie},
+  pdfkeywords={Algebraische Geometrie Herrlich},
+  pdfproducer={pdfLaTeX},
+  pdfpagemode={UseOutlines},
+  colorlinks=true,
+  bookmarksopen=true,
+  bookmarksnumbered=true,
+  urlcolor=rltblue,
+  filecolor=rltgreen,
+  linkcolor=rltblue,
+  backref=true,
+  pagebackref=true,
+  pdfpagemode=None
+}
+
+% Mathe-Pakete
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{stmaryrd}
+
+% Verschiedene items in enumerate Umgebungen
+\usepackage{enumitem}
+
+% Für Diagramme
+\usepackage[arrow,matrix,curve]{xy}
+
+\usepackage{etex}
+\usepackage{pictex}
+\usepackage{graphicx}
+
+% Theorem-Umgebung
+\usepackage[hyperref,amsmath,thmmarks,thref]{ntheorem}
+
+% keine kursiv schrift in theorems
+\theorembodyfont{}
+
+
+% Theoreme definieren
+\theoremstyle{break}
+    \newtheorem{Satz}{Satz}
+    \newtheorem{SatzDef}[Satz]{Satz + Definition}
+    \newtheorem{Def}{Definition}[section]
+    \newtheorem{DefBem}[Def]{Definition + Bemerkung}
+    \newtheorem{ErinnDefBem}[Def]{Erinnerung / Definition + Bemerkung}
+    \newtheorem{ErinnDef}[Def]{Erinnerung / Definition}
+    \newtheorem{DefSatz}[Def]{Definition + Satz}
+    \newtheorem{Bem}[Def]{Bemerkung}
+    \newtheorem{BemDef}[Def]{Bemerkung + Definition}
+    \newtheorem{Prop}[Def]{Proposition}
+    \newtheorem{PropDef}[Def]{Proposition + Definition}
+    \newtheorem{Folg}[Def]{Folgerung}
+    \newtheorem{Bsp}[Def]{Beispiele}
+    \newtheorem{DefProp}[Def]{Definition + Proposition}
+    \newtheorem{anBew}[Def]{Beweis}
+    \newtheorem{Kor}[Def]{Korollar}
+    \newtheorem{Lemma}{Lemma}
+\theoremstyle{nonumberbreak}
+    \newtheorem{nnBem}{Bemerkung}
+    \newtheorem{nnBsp}{Beispiele}
+    \newtheorem{nnSatz}{Satz}
+    \newtheorem{nnFolg}{Folgerung}
+    \newtheorem{Beo}{Beobachtung}
+    \newtheorem{Eri}{Erinnerung}
+    \newtheorem{Beh}{Behauptung}
+\theoremstyle{nonumberplain}
+\theoremsymbol{\ensuremath{\Box}}
+    \newtheorem{Bew}{Beweis}
+
+\newcommand{\emp}[1]{\textbf{\emph{#1}}}
+\newcommand{\begriff}[1]{{\index{#1}}\emp{#1}}
+\newcommand{\defeqr}[0]{\mathrel{\mathop:}=}
+\newcommand{\defeql}[0]{=\mathrel{\mathop:}}
+
+\newcommand{\folgtnach}[1]{\ensuremath{\DOTSB\;\xRightarrow{\text{#1}}\;}}
+\newcommand{\folgtwegen}[1]{\ensuremath{\DOTSB\;\stackrel{#1}{\Rightarrow}\;}}
+\newcommand{\equizunach}[1]{\ensuremath{\DOTSB\;\xLeftrightarrow{\text{#1}}\;}}
+\newcommand{\equizuwegen}[1]{\ensuremath{\DOTSB\;\xLeftrightarrow{#1}\;}}
+\newcommand{\tonach}[1]{\ensuremath{\DOTSB\;\xrightarrow{\text{#1}}\;}}
+\newcommand{\towegen}[1]{\ensuremath{\DOTSB\;\xrightarrow{#1}\;}}
+\newcommand{\tomit}[1]{\ensuremath{\DOTSB\;\xrightarrow{#1}\;}}
+\newcommand{\gleichnach}[1]{\ensuremath{\DOTSB\;\stackrel{\text{#1}}{=}\;}}
+\newcommand{\gleichwegen}[1]{\ensuremath{\DOTSB\;\stackrel{#1}{=}\;}}
+
+\newcommand{\Abb}[5]{\ensuremath{#1:\begin{array}{ccc} #2 & \longrightarrow & #3 \\ #4 & \longmapsto & #5 \end{array}}}
+
+
+\newcommand{\myref}[2]{%
+\hyperref[#2]{#1~\ref*{#2}}%
+}
+
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Quot}{Quot}
+\DeclareMathOperator{\Rang}{Rang}
+
+\DeclareMathOperator{\Kern}{Kern}
+\DeclareMathOperator{\Bild}{Bild}
+\DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\Rat}{Rat}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Rg}{Rg}
+\DeclareMathOperator{\height}{ht}
+\DeclareMathOperator{\trdeg}{trdeg}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\ord}{ord}
+
+
+\newcommand{\FakRaum}[2]{
+  \raisebox{0.7ex}{\ensuremath{#1}}
+  \ensuremath{\mkern-3mu}\big/\ensuremath{\mkern-3mu}
+  \raisebox{-0.6ex}{\ensuremath{#2}}} 
+
+\renewcommand{\labelenumi}{\theenumi}    
+\renewcommand{\theenumi}{(\alph{enumi})}
+
+\newcommand{\ilim}{\mathop{\varprojlim}\limits}
+
+\renewcommand{\OE}{O\!\!E~}
+\newcommand{\nsubset}{\subset\!\!\!\!\!/~}
+
+% Weniger Abstand nach der Ueberschrift des Inhaltsverzeichnisses
+\makeatletter
+\let\@my@starttoc\@starttoc
+\renewcommand*{\@starttoc}[1]{%
+  \addvspace{-1.5em}%
+  \@my@starttoc{#1}%
+}
+\makeatother
+
+% Einige Anstrengungen, um den § vor die Section-Nummer zu stellen
+% \renewcommand{\thesection} allein führt zu einem Konflikt mit ntheorem-hyper
+\makeatletter
+\def\@seccntformat#1{\@ifundefined{#1@cntformat}%
+{\csname the#1\endcsname\quad}% default
+{\csname #1@cntformat\endcsname}% individual control
+}
+\def\section@cntformat{§\@arabic\c@section\quad}
+\makeatother
+\setcounter{secnumdepth}{-1}
+\title{Algebraische Geometrie}
+\date{Wintersemester 2008/2009}
+\author{Prof. Dr. F. Herrlich}
+\publishers{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
+
+\begin{document}
+\maketitle
+
+% Inhaltsverzeichnis
+\pdfbookmark[1]{Inhaltsverzeichnis}{contents}
+\setlength\parskip{0.6pt}
+\tableofcontents
+
+% Liste der benannten Saetze
+\section*{Benannte Sätze}
+\pdfbookmark[1]{Benannte Sätze}{contents}
+
+\theoremlisttype{optname}
+\listtheorems{Satz,SatzDef,Def,DefBem,BemDef,Prop,PropDef,Bsp,DefProp}
+
+\setlength\parskip{\smallskipamount}
+
+\chapter{Vorwort}
+\setcounter{secnumdepth}{2}
+\section*{Über dieses Skriptum}
+Dies ist ein Mitschrieb der Vorlesung \glqq Algebraische Geometrie\grqq\ von Prof. Dr. F. Herrlich im
+Wintersemester 08/09 an der Universität Karlsruhe.
+Die Mitschriebe der Vorlesung werden mit ausdrücklicher Genehmigung von Prof. Dr. F. Herrlich hier veröffentlicht,
+Prof. Dr. F. Herrlich ist für  den Inhalt nicht verantwortlich.
+\section*{Wer}
+Getippt wurde das Skriptum soweit von Diego De Filippi, Felix Wellen, Tobias Columbus und Andreas Schatz, die Wiki-Technik ist von Joachim Breitner.
+
+\section*{Wo}
+Alle Kapitel inklusive \LaTeX-Quellen können unter \url{http://mitschriebwiki.nomeata.de} abgerufen werden.
+Dort ist ein von Joachim Breitner programmiertes \emph{Wiki}, basierend auf \url{http://latexki.nomeata.de} installiert. 
+Das heißt, jeder kann Fehler nachbessern und sich an der Entwicklung
+beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
+
+
+\chapter{Affine Varietäten}
+\section{Der Polynomring}
+Sei $k$ ein Körper, $k[X_1,\dots,X_n]$, $n\geq 0$ der Polynomring über $k$ in $n$ Variablen.
+\subsection*{Universelle Abbildungseigenschaft (UAE) des Polynomrings}
+Ist $A$ eine $k$-Algebra und sind $a_1,\dots,a_n\in A$, so gibt es genau einen $k$-Algebra-Homomorphismus $f: k[X_1,\dots,X_n] \rightarrow A$ mit $f(X_i)=a_i$ für $i= 1,\dots,n$.\\
+\underline{Folgerung}: Jede endlich erzeugte $k$-Algebra ist Faktorring eines Polynomrings.
+\subsection*{$n=1$, also $k[X]$}
+Euklidischer Algorithmus: Zu $f,g\in k[X], g\neq 0$ gibt es $q,r \in k[X]$ mit $f=qg+r$ und $deg(r)<deg(g)$ oder $r=0$.\\
+\underline{Folgerung}: $k[X]$ ist Hauptidealring.
+\subsection*{Eindeutige Primfaktorzerlegung}
+$k[X_1,\dots,X_n]$ ist faktorieller Ring.\\
+\underline{Folgerung}: Jedes irreduzible Polynom erzeugt ein Primideal.
+\subsection*{Hilbertscher Basissatz}
+$k[X_1,\dots,X_n]$ ist noethersch, d.h.\\
+$\bullet$ Jedes Ideal ist endlich erzeugbar.\\
+$\bullet$ Jede aufsteigende Kette von Idealen wird stationär.
+\section{Die Zariski-Topologie}
+Sei $k$ ein algebraisch abgeschlossener Körper.
+\begin{Def}
+\label{def:2.1}
+Eine Teilmenge $V\subseteq k^n$ heißt \begriff{affine Varietät}, wenn es eine Menge von Polynomen $F \subseteq k[X_1,\dots,X_n]$ gibt, so dass 
+$V(F)=V= \{x= (x_1,\dots,x_n)\in k^n: f(x)=0 \textrm{~für~alle~} f \in F\}$.
+\end{Def}
+\begin{nnBsp}
+1) $n=1:~~V\subseteq k$ affine Varietät $\Leftrightarrow V$ endlich oder $V=k$ \\
+2) $f\in k[X_1,\dots,X_n]$ linear (d.h. $deg(f)=1$) $\Rightarrow V(f)$ ist affine Hyperebene.\\
+$f_1,\dots,f_r$ linear $\Rightarrow V(f_1,\dots,f_r)$ ist affiner Unterraum. (Jeder affine Unterraum lässt sich so beschreiben.)\\
+3) Quadriken sind affine Varietäten.\\
+4) Lemniskate
+$$C=\{P(x,y) \in \mathbb{R}^2: d(P,P_1)=d(P,P_2)=c\}$$
+für Punkte $P_1P_2\in k^2, c>0$.\\
+Für $P_1(-1,0)$ und $P_2(1,0)$ ist $C=V(f)$ mit $f=((x+1)^2+y^2)((x-1)^2+y^2)-1$.
+Dies ist aber keine affine Varietät, da das in $\mathbb{C}^2$ nicht klappt.
+\end{nnBsp}
+\begin{Bem}
+\label{bem:2.2}
+(i) Für $F_1 \subseteq F_2 \subseteq k[X_1,\dots,X_n]$ ist $V(F_1)\supseteq V(F_2)$.\\
+(ii) $V(f_1\cdot f_2)= V(f_1)\cup V(f_2)$ und $V(f_1,f_2)= V(f_1)\cap V(f_2)$\\
+(iii) $V(F)=V((F))$ für das von $F$ erzeugte Ideal $(F)\subset k[X_1,\dots,X_n]$\\
+(iv) $V(F)=V(\sqrt{(F)})$ für das von $F$ erzeugte Radikalideal
+$$\sqrt{(F)}=\{g\in k[X_1,\dots,X_n]: \exists d>0 ~ \text{mit}~ g^d \in (F) \}$$
+(v) Zu jeder affinen Varietät $V\subseteq k^n$ gibt es endlich viele Polynome $f_1,\dots,f_r$, so dass \\ $V=V(f_1,\dots,f_r)$, da jedes Ideal in $k[X_1,\dots,X_n]$ endlich erzeugbar ist.
+\end{Bem}
+\begin{Bew}
+(iii) "' $\subseteq$"' Sei $x\in V(F), g\in (F)$. Schreibe $g=a_1f_1+\dots+a_rf_r$ mit $f_i \in F, a_i \in k[X_1,\dots,X_n]$, dann ist $g(x)=a_1(x)f_1(x)+\dots+a_r(x)f_r(x)=0$.
+\end{Bew}
+\begin{Def}
+(i) Für eine Teilmenge $V\subseteq k^n$ heißt
+$I(V):=\{f\in k[X_1,\dots,X_n]: f(x)=0 \text{ für alle } x \in V\}$
+das \begriff{Verschwindungsideal}.\\
+(ii) $A(V):= k[X_1,\dots,X_n]/I(V)$ heißt \begriff{affiner Koordinatenring} von $V$.\\
+Für $f,g\in k[X_1,\dots,X_n]$ gilt: $f|_V = g|_V\Leftrightarrow f-g \in I(V)$
+\end{Def}
+\begin{Bem}
+\label{bem:2.4}
+Für jede Teilmenge $V\subseteq k^n$ gilt:\\
+(i) $I(V)$ ist Radikalideal,\\
+(ii) $V\subseteq V(I(V))$,\\
+(iii) $V(I(V))$ ist die kleinste Varietät, die $V$ umfasst. Schreibweise: $V(I(V))\defeql\overline{V}$.\\
+(iv) Sind $V_1, V_2$ affine Varietäten, so gilt:
+$$V_1\subseteq V_2 \Leftrightarrow I(V_1)\supseteq I(V_2)$$
+\end{Bem}
+\begin{Bew}
+(iii) Sei $V'$ eine affine Varietät mit $V\subseteq V'$ und sei $I'\subseteq k[X_1,\dots,X_n]$ ein Ideal mit $V'=V(I')$. Dann ist $I'\subseteq I(V)\Rightarrow V(I')\supseteq V(I(V))$.\\
+(iv) "'$\Leftarrow$"' $I(V_1)\supseteq I(V_2)\Rightarrow V(I(V_1))\subseteq V(I(V_2))$. Mit $V_1 = V(I(V_1))$ und $V_2= V(I(V_2))$ folgt die Behauptung.
+\end{Bew}
+\begin{Bem}
+\label{bem:2.5}
+Für jede Teilmenge $V\subseteq k^n$ gilt:\\
+(i) $A(V)$ ist reduzierte $k$-Algebra, d.h. es gibt in $A(V)$ keine nilpotenten Elemente (also $f^d\neq 0$ für alle $f \neq 0, d>0$).\\
+(ii) Ist $V\subseteq V'$, so gibt es einen surjektiven $k$-Algebra-Homomorphismus $A(V')\longrightarrow A(V)$.
+\end{Bem}
+\begin{Bew}
+(i) Sei $g\in A(V), f\in k[X_1,\dots,X_n]$ mit $\overline{f}=g$. Dann ist ($g^d=0$ (in $A(V)$) $\Leftrightarrow f^d\in I(V)$) und da $I(V)$ Radikalideal ist, folgt $f\in I(V)$ und somit $g=0$.\\
+(ii) Es ist $I(V')\subseteq I(V)$, also 
+\[
+\begin{xy}
+\xymatrix{
+k[X_1,\dots,X_n]\ar[r]\ar[d]&A(V)=k[X_1,\dots,X_n]/I(V) \\
+A(V')=k[X_1,\dots,X_n]/I(V')\ar@{.>}[ur]_{\exists !}&
+}
+\end{xy}
+\]
+\end{Bew}
+\begin{DefSatz}
+\label{defsatz:2.6}
+Die affinen Varietäten in $k^n$ bilden die abgeschlossenen Mengen einer Topologie, der \begriff{Zariski-Topologie}.
+\end{DefSatz}
+\begin{Bew}
+$\bullet~~ k^n=V(0)$ und $\emptyset = V(1)$ sind affine Varietäten.\\
+$\bullet$ Seien $V_1=V(I_1)$ und $V_2=V(I_2)$ affine Varietäten. Dann ist $V_1\cup V_2=V(I_1\cdot I_2)=V(I_1\cap I_2)$.\\
+\underline{Denn:} "'$\subseteq$"' klar "'$\supseteq$"': Sei $x\in V(I_1\cdot I_2), x\notin V_1$. (Zu zeigen: $x\in V_2$)\\
+Dann gibt es ein $f\in I_1$ mit $f(x) \neq 0$.\\
+Da $x\in V(I_1\cdot I_2)$ ist $f(x)\cdot g(x)=0$ für alle $g\in I_2 \Rightarrow x\in V(I_2) = V_2$.\\
+$\bullet$ Seien $V_i = V(I_i), i\in J,$ affine Varietäten $\Rightarrow \bigcap_{i\in J}V_i = V(\sum_{i\in J}I_i)$.\\
+\underline{Denn:} "'$\supseteq$"' klar "'$\subseteq$"': Sei $x\in\bigcap V_i, f\in \sum I_i$. Schreibe $f=a_1f_1+\dots+a_rf_r$ mit $f_k\in I_{i_k}, a_k \in k[X_1,\dots,X_n] \Rightarrow f(x)=a_1(x) \cdot 0 +\dots+ a_r(x)\cdot 0 = 0$
+\end{Bew}
+\begin{Bem}
+\label{bem:2.7}
+(i) Für $f\in k[X_1,\dots,X_n]\backslash \{0\}$ ist $D(f):= k^n \setminus V(f)$ nichtleere offene Teilmenge von $k^n$.\\
+(ii) Die $D(f)$ bilden eine Basis der Zariski-Topologie. 
+\end{Bem}
+\begin{Bew}
+(ii) Zu zeigen: Jede offene Menge $U$ ist Vereinigung von Mengen der Form $D(f)$.\\
+Zeige dazu: Zu jedem  $x\in U$ gibt es ein $f$ mit $x\in D(f)\subseteq U$.\\
+Sei $V=k^n \setminus U$, also $V=V(I)$ für ein Ideal $I$. Da $x\notin V$, gibt es $f\in I$
+mit $f(x)\neq 0 \Rightarrow x\in D(f)$. Weil $f\in I$, ist $V\cap D(f) = \emptyset \Rightarrow D(f) \subseteq U$
+\end{Bew}
+\begin{Bem}
+\label{bem:2.8}
+Die Zariski-Topologie auf $k^n$ ist nicht hausdorffsch.
+\end{Bem}
+
+\begin{Bew} Wegen 2.7 genügt es zu zeigen, dass $D(f)\cap D(g)\neq \emptyset$ für alle $f,g \in k[X_1,\dots,X_n]\setminus\{0\}$.\\
+\underline{Induktion über $n$}:~\\
+\underline{$n=1$}: $V(f)$ und $V(g)$ sind endlich $\Rightarrow D(f)\cap D(g)=k \setminus V(f\cdot g)$ ist unendlich.\\
+\underline{$n>1$}:  Zerlege $f$ und $g$ in Primfaktoren (vgl. \S 1) und wähle $a\in k$, so dass $(X_n-a)$ nicht Teiler von $f$ oder $g$ ist. Identifiziere $V(X_n-a)= \{(x_1,\dots,x_n)\in k^n: x_n=a\}$ mit $k^{n-1}$.\\
+Nach der Wahl von $a$ sind $f|_{V(X_n-a)}$ und $g|_{V(X_n-a)}$ nicht identisch $0$, also $f'=f(X_1,\dots,X_{n-1},a)$ $\neq 0 \neq g(X_1,\dots,X_{n-1},a)=:g'$ in $k[X_1,\dots,X_n]$. Nach Induktionsvoraussetzung gibt es $x'\in k^{n-1}$ mit $f'(x')\neq 0\neq g'(x')\Rightarrow$ Für $x=(x',a)\in k^n$ gilt $f(x)=f'(x')\neq 0 \neq g'(x')=g(x)$.
+\end{Bew}
+\section{Irreduzible Komponenten}
+\begin{Def}
+a) Ein topologischer Raum $X$ heißt \begriff{irreduzibel}, wenn er nicht Vereinigung von zwei echten abgeschlossenen Teilmengen ist.\\
+b) Eine abgeschlossene Teilmenge von $X$ heißt \begriff{irreduzible Komponente}, wenn sie irreduzibel ist (bzgl. der induzierten Topologie) und maximal (bzgl. Inklusion).
+\end{Def}
+\begin{Prop}
+  \label{prop:3.3}
+Eine affine Varietät $V\subseteq k^n$ ist genau dann irreduzibel, wenn $I(V)$ Primideal in $k[X_1,\dots,X_n]$ ist. Das ist genau dann der Fall, wenn der affine Koordinatenring $A(V)\defeql k[V]$ nullteilerfrei ist.
+\end{Prop}
+\begin{Bew}
+\underline{"'$\Rightarrow$"'} Seien $f_1, f_2\in k[X_1,\dots,X_n]$ mit $f_1\cdot f_2\in I(V)$. Sei $f_1\notin I(V)$.\\
+Dann ist $V\nsubseteq V(f_1)$. \\
+Nach Voraussetzung ist $V\subseteq V(f_1\cdot f_2)= V(f_1)\cup V(f_2)$.\\
+$V$ irreduzibel $\Rightarrow V\subseteq V(f_2)\\
+\Rightarrow f_2(x)=0$ für alle $x\in V\\
+\Rightarrow f_2\in I(V)$.\\
+\underline{"'$\Leftarrow$"'} Sei $V=V_1\cup V_2$ mit $V_i=V(I_i)$, $i=1,2$. Sei $V_1 \neq V.\\
+\Rightarrow V \nsubseteq V(I_1)\\
+\Rightarrow \exists x \in V$ und $f\in I_1$ mit $f(x)\neq 0$\\
+Also $f\notin I(V)\subseteq I(V_1)$\\
+Andererseits ist $V=V(I_1)\cup V(I_2)= V(I_1\cdot I_2)\Rightarrow I_1\cdot I_2\subseteq I(V)\\
+\Rightarrow f\cdot g(x)=0$ für alle $g\in I_2\\
+I(V)$ prim und $f\notin I(V)\Rightarrow g\in I(V)$ für alle $g\in I_2\\
+\Rightarrow V_2 = V(I_2)\supseteq V(I(V))=V$
+\end{Bew}
+\begin{Satz}
+Jede affine Varietät $V\in k^n$ hat eine Zerlegung in endlich viele irreduzible Komponenten. Diese Zerlegung ist eindeutig. 
+\end{Satz}
+
+\begin{Bew}
+\underline{1. Schritt} $V$ ist endliche Vereinigung von irreduziblen Untervarietäten.\\
+Sei dazu $\mathcal{B}$ die Menge der Varietäten in $k^n$, die nicht endliche Vereinigung von irreduziblen Untervarietäten sind. Sei weiter $\mathcal{J}:=\{ I(V)\mid V\in \mathcal{B}\}$.\\
+Zu zeigen: $\mathcal{B}=\emptyset$\\
+Annahme: $\mathcal{J}\neq \emptyset$. Dann enthält $\mathcal{J}$ ein maximales Element $I_0=I(V_0)$ für ein $V_0\in \mathcal{B}.\\
+\Rightarrow V_0$ ist minimales Element in $\mathcal{B}.\\
+V_0 \in \mathcal{B} \Rightarrow V_0$ reduzibel\\
+$\Rightarrow V_0 = V_1 \cup V_2$ mit $V_1\neq V_0\neq V_2, V_i$ abgeschlossen\\
+$\Rightarrow V_i \notin\mathcal{B}, i=1,2$ (da $V_0$ minimales Element in $\mathcal{B})\\
+\Rightarrow V_i$ ist endliche Vereinigung von irreduziblen Untervarietäten\\
+$\Rightarrow V_0$ auch. Widerspruch!\\
+\underline{2. Schritt} "'Irreduzible Komponenten"'\\
+Sei $V=V_1\cup \dots \cup V_n$ mit irreduziblen Varietäten $V_1,\dots, V_n$.
+\\Ohne Einschränkung sei $V_i\nsubseteq V_j$ für $i\neq j$.\\
+Sei $W\subseteq V$ irreduzibel und $V_i\subseteq W$ für ein $i$.\\
+Es ist $W=V\cap W= (V_1 \cup \dots \cup V_n)\cap W= (V_1 \cap W)\cup \dots \cup (V_n \cap W)$\\
+$W$ irreduzibel $\Rightarrow\exists j$ mit 
+\[
+V_j\cap W = W\\
+\Rightarrow V_i \subseteq W= W \cap V_j\subseteq V_j\Rightarrow i=j \text{ und } W=V_i
+\]
+$\Rightarrow V_1,\dots, V_n$ sind irreduzible Komponenten von $V$.\\
+Genauso: $W\subseteq V$ irreduzible Komponente $\Rightarrow \exists j : W \subseteq V_j$,\\
+da $W$ maximal $\Rightarrow$ Zerlegung eindeutig.
+\end{Bew}
+\begin{Bsp}
+$f=y^2-x(x-1)(x+1) \in\mathbb{R}[x,y]~~~~~~~~E\defeqr V(f)$
+\end{Bsp}
+\section{Der Hilbertsche Nullstellensatz}
+
+\begin{Satz}[Hilbertscher Nullstellensatz]
+\label{satz:HNSaffin}
+Sei  $k$ ein Körper, $n\geq 1, m\subseteq k[X_1,\dots,X_n]$ maximales Ideal. Dann ist $L=k[X_1,\dots,X_n]/m$ eine endlich erzeugte Körpererweiterung von $k$.
+\end{Satz}
+\begin{Bew} Siehe Algebra II, Theorem 4. \end{Bew}
+\begin{Folg}
+Ist $k$ algebraisch abgeschlossen, so entsprechen die maximalen Ideale in $k[X_1,\dots,X_n]$ bijektiv den Punkten in $k^n$.
+\end{Folg}
+\begin{Bew}~\\
+$x=(x_1,\dots,x_n)\mapsto (X_1-x_1,\dots,X_n-x_n)$ (maximal, da Faktorring Körper) ist eine injektive Zuordnung $\varphi: k^n \rightarrow m$-Spec$(k[X_1,\dots,X_n])~~$(= Menge der Maximalideale).\\
+$\varphi$ surjektiv:\\
+Sei $m \in m$-Spec$(k[X_1,\dots,X_n]), \alpha: k[X_1,\dots,X_n]/m \rightarrow k$ der Isomorphismus, den es nach Satz 2 gibt. (Das ist tatsächlich ein Isomorphismus, da $k$ algebraisch abgeschlossen ist und somit jede endliche Erweiterung von $k$ wieder $k$ selbst ist.)\\
+$\Rightarrow X_i - \alpha(X_i)\in m, i= 1,\dots,n$ (da $\alpha\in \operatorname{Hom}_k\Rightarrow \alpha(X_i-\alpha(X_i))=0$)\\
+$\Rightarrow (X_1-\alpha(X_1),\dots,X_n-\alpha(X_n)) \subseteq m$
+\end{Bew}
+\begin{Folg}[Schwacher Nullstellensatz]
+Für jedes echte Ideal $I\subsetneqq k[X_1,\dots,X_n]$ ist $V(I)\neq \emptyset$.
+\end{Folg}
+\begin{Bew}
+$I\subseteq m$ für ein maximales Ideal $m \Rightarrow V(I) \supseteq V(m) \neq \emptyset$
+\end{Bew}
+Sei jetzt  $k$ algebraisch abgeschlossen, $n\geq 1$, und
+$$\mathcal{V}_n:= \{V\subseteq k^n\mid V \textrm{~affine~Varietät}\}$$
+$$\mathcal{I}_n:=\{I\subseteq k[X_1,\dots,X_n]\mid I ~ \textrm{Radikalideal}\}$$
+
+\begin{Satz}[Hilbertscher Nullstellensatz]
+\label{satz:HNS}
+Die Zuordnungen
+$$V: \mathcal{I}_n \rightarrow \mathcal{V}_n,~~~I\mapsto V(I)$$
+$$I: \mathcal{V}_n \rightarrow \mathcal{I}_n,~~~V\mapsto I(V)$$
+sind bijektiv und zueinander invers.
+\end{Satz}
+\begin{Bew}
+Zu zeigen: (1) $V(I(V))=V$ für jedes $V\in \mathcal{V}_n$\\
+(2) $I(V(I))=I$ für jedes $I\in \mathcal{I}_n$\\
+(1): Ist Bemerkung 2.4 (iii).\\
+(2): Zeige: $I(V(I))= \sqrt{I}$ für jedes Ideal $I\subseteq k[X_1,\dots,X_n]$.\\
+\underline{"'$\supseteq$"'}: $\surd$\\
+\underline{"'$\subseteq$"'}: Sei $g\in I(V(I))$, seien $f_1,\dots,f_m$ Erzeuger von $I$.\\
+Zu zeigen: $\exists d:g^d=\sum_{i=1}^m a_if_i$ für gewisse $a_i\in k[X_1,\dots,X_n]$.\\
+Betrachte in $k[X_1,\dots,X_n,Y]$ das von $f_1,\dots,f_m$ und $gY-1$ erzeugte Ideal $J$.\\
+Es ist $V(J)=\emptyset$\\
+Schwacher Nullstellensatz $\Rightarrow J=k[X_1,\dots,X_n,Y]\\
+\Rightarrow \exists b_i,b \in k[X_1,\dots,X_n,Y]$ sodass $1=\sum_{i=1}^m b_if_i + b(gY-1)$\\
+In $R:= k[X_1,\dots,X_n,Y]/(gY-1)$ gilt also\\
+$1=\sum_{i=1}^m\tilde{b_i}f_i~~ (\tilde{b_i}\in k[X_1,\dots,X_n,\frac{1}{g}]$ die Restklasse von $b_i$). Multipliziere mit Hauptnenner $g^d$.
+\end{Bew}
+\begin{Bem}
+Sei $k$ algebraisch abgeschlossen, $V\subseteq k^n$ eine affine Varietät. Dann entsprechen die Punkte in $V$ bijektiv den maximalen Idealen in $k[V]$ $(=k[X_1,\dots,X_n]/ I(V))$.
+\end{Bem}
+\begin{Bew}
+Die maximalen Ideale in $k[V]$ entsprechen bijektiv denjenigen maximalen Idealen in $k[X_1,\dots,X_n]$, die $I(V)$ umfassen, also nach 4.1 den Punkten $(x_1,\dots,x_n)$, für die $(X_1-x_1,\dots,X_n-x_n)\supseteq I(V)$ ist\\
+$\Leftrightarrow \underbrace{V(X_1-x_1,\dots,X_n-x_n)}_{\{(x_1,\dots,x_n)\}}\subseteq V(I(V))= V$
+\end{Bew}
+
+\section{Morphismen}
+\begin{DefBem}
+(a) Sei $k$ algebraisch abgeschlossener Körper, $V\subseteq k^n$ und $W\subseteq k^m$ affine Varietäten. Eine Abbildung $f:V\rightarrow W$ heißt \begriff{Morphismus}, wenn es Polynome $f_1,\dots,f_m\in k[X_1,\dots,X_n]$ gibt, so dass $f(x)=(f_1(x),\dots,f_m(x))$ für jedes $x\in V$.\\
+(b) Jeder Morphismus $V\rightarrow W$ ist Einschränkung eines Morphismus $k^n\rightarrow k^m$.\\
+(c) Die affinen Varietäten über $k$ bilden zusammen mit den Morphismen aus (a) eine Kategorie $\underline{\operatorname{Aff}(k)}$. Als Objekte von $\underline{\operatorname{Aff}(k)}$ bezeichnen wir $k^n$ mit $\mathbb{A}^n(k)$.
+\end{DefBem}
+\begin{Bsp}
+(1) Projektionen und Einbettungen $\mathbb{A}^n(k) \rightarrow\mathbb{A}^m(k)$.\\\\
+(2) Jedes $f\in k[X_1,\dots,X_n]$ ist Morphismus $\mathbb{A}^n(k)\rightarrow\mathbb{A}^1(k)$.\\\\
+(3) $V= \mathbb{A}^1(k), W=V(Y^2-X^3)\subseteq \mathbb{A}^2(k)$ ("'Neilsche Parabel"')\\
+$f: V\rightarrow W, x\mapsto (x^2,x^3)$ ist Morphismus.\\
+$f$ ist bijektiv: injektiv $\surd$\\
+surjektiv: Sei $(x,y)\in W\backslash\{(0,0)\}$, d.h. $y^2=x^3$\\
+Dann ist $(x,y)= f(\frac{y}{x})= ((\frac{y}{x})^2,(\frac{y}{x})^3)=(\frac{x^3}{x^2},\frac{y^3}{y^2})$, $f(0) = (0,0)$\\
+Umkehrabbildung:\\
+$g(x,y)=\begin{cases}
+0&(x,y)=(0,0)\\
+\frac{y}{x}&sonst
+\end{cases}$
+ist kein Morphismus.\\\\
+(4) Sei char$(k)=p>0. f:\mathbb{A}^n(k)\rightarrow\mathbb{A}^n(k), (x_1,\dots,x_n)\mapsto (x_1^p,\dots,x_n^p)$, heißt Frobenius-Morphismus. $f$ ist bijektiv, aber kein Isomorphimus. Die Fixpunkte von $f$ sind die Elemente von $\mathbb{A}^n(\mathbb{F}_p)$.
+\end{Bsp}
+\begin{Bem}
+\label{bem:5.3}
+Morphismen sind stetig bezüglich der Zariski-Topologie.
+\end{Bem}
+\begin{Bew}
+Ohne Einschränkung sei $f : \mathbb{A}^n(k)\rightarrow\mathbb{A}^m(k)$. Sei $V\subseteq \mathbb{A}^m(k)$ abgeschlossen, $V=V(I)$ für ein Radikalideal $I\subseteq k[X_1,\dots,X_n]$. Zu zeigen: $f^{-1}(V)$ abgeschlossen in $\mathbb{A}^n(k)$.\\
+Genauer gilt: $f^{-1}(V)=V(J)$ mit $J=\{g\circ f \mid g\in I\}$\\
+denn: $x\in f^{-1}(V) \Leftrightarrow f(x)\in V \Leftrightarrow g(f(x))=0$ für alle $g\in I\Leftrightarrow x\in V(J)$
+\end{Bew}
+\begin{Bem}
+Jeder Morphismus $f:V\rightarrow W$ induziert einen $k$-Algebra-Homomorphismus $f^{\sharp}: k[W]\rightarrow k[V]$ (durch Hintereinanderschalten).\\
+Genauer: Sei $V\subseteq \mathbb{A}^n(k), W\subseteq \mathbb{A}^m(k)$
+\[
+\begin{xy}
+\xymatrix{
+k[X_1,\dots,X_m]\ar[d]\ar[r]^{g\mapsto g\circ f}&k[X_1,\dots,X_n]\ar[d]\\
+k[W]=k[X_1,\dots,X_m]/I(W)\ar@{.>}[r]^{f^{\sharp}}&k[X_1,\dots,X_n]/I(V)=k[V]
+}
+\end{xy}
+\]
+$f^{\sharp}$ existiert, weil für alle $g\in I(W)$ gilt: $g\circ f(x) = g(f(x))=0$ für alle $x\in V$
+\end{Bem}
+\begin{Prop}
+Sei $f: V\rightarrow W$ ein Morphismus von affinen Varietäten, $\alpha:= f^{\sharp}: k[W]\rightarrow k[V]$ der induzierte $k$-Algebra-Homomorphismus. Seien $x\in V$, $y\in W$ und $m_x\subset k[V]$, $m_y\subset k[W]$ die Verschwindungsideale zum jeweiligen Punkt. Dann gilt:
+$$f(x)=y\Leftrightarrow \alpha^{-1}(m_x)= m_y$$
+\end{Prop}
+\begin{Bew}
+\underline{"'$\Rightarrow$"'} $g\in m_y \Leftrightarrow g(y)=0\Rightarrow g\circ f(x)=0 \Leftrightarrow \underbrace{g\circ f}_{= \alpha(g)} \in m_x \Leftrightarrow g\in \alpha^{-1}(m_x) \Leftrightarrow m_y \subseteq \alpha^{-1}(m_x)$. Gleichheit folgt daraus, dass $m_y$ maximales Ideal ist.\\
+\underline{"'$\Leftarrow$"'} Wäre $f(x)\neq y$, dann gäbe es  ein $g\in k[W]$ mit $g(f(x))=0$ und $g(y)=1$.\\
+Andererseits:\\
+$\alpha(g)(x)=(g\circ f)(x)=g(f(x))=0\Leftrightarrow \alpha(g)\in m_x \Leftrightarrow g\in \alpha^{-1}(m_x)=m_y \Leftrightarrow g(y)=0$
+\end{Bew}
+\begin{Satz}
+\label{satz:4}
+Sei $k$ ein algebraisch abgeschlossener Körper. Dann ist 
+$$\Phi:\underline{\operatorname{Aff}} \longrightarrow \underline{k\operatorname{-Alg}}^{\circ}$$
+$$V \longmapsto k[V]$$
+$$f\longmapsto f^{\sharp}$$
+eine kontravariante "Aquivalenz von Kategorien.
+Hierbei bezeichnet $\underline{k\operatorname{-Alg}}^{\circ}$ die Kategorie der endlich erzeugten, reduzierten $k$-Algebren.
+\end{Satz}
+\begin{Bew}
+$\Phi$ ist ein Funktor: $\surd$\\
+Definiere Umkehrfunktor $\Psi$:~\\
+(i) Sei $A\in \underline{k-\operatorname{Alg}}^{\circ}$, $a_1,\dots,a_n$ Erzeuger von $A$\\
+$\Rightarrow p_A: k[X_1,\dots,X_n] \rightarrow A, \ X_i \mapsto a_i$ ist surjektiver $k$-Algebra-Homomorphismus.\\
+Sei $I_A:=$ Kern($p_A$) (Radikalideal).\\
+$\Psi(A):= V(I_A)\subseteq k^n$ affine Varietät mit $k[V(I_A)]\cong A$.\\
+(ii) Sei $\alpha: A\rightarrow B$ $k$-Algebra-Homomorphismus in $\underline{k-\operatorname{Alg}}^{\circ}$.\\
+Definiere die Abbildung $f_{\alpha} := V(I_B) \rightarrow V(I_A)$ durch $f_{\alpha}(y)=x$, falls $m_x=\alpha^{-1}(m_y)$. Diese ist wohldefiniert aufgrund der folgenden 
+\begin{Prop}
+Sei $\alpha : A\rightarrow B$ ein Homomorphismus von endlich erzeugten $k$-Algebren, $m\subset B$ ein maximales Ideal. Dann ist $\alpha^{-1}(m)\subset A$ ein maximales Ideal.\\
+(Beispiel.: F"ur $\alpha:\mathbb{Z}\rightarrow \mathbb{Q}$ ist $\alpha^{-1}(\{0\})$ kein maximales Ideal.) 
+\end{Prop}
+\begin{Bew}
+
+\[
+\begin{xy}
+\xymatrix{
+A\ar[r]^{\alpha}\ar[d]&B\ar[d] \\
+A/\alpha^{-1}(m)\ar@{.>}[r]^{\ \ \overline{\alpha}}&B/m
+}
+\end{xy}
+\]
+
+$\alpha$ induziert einen injektiven $k$-Algebra-Homomorphismus $\overline{\alpha}$. Nach dem HNS ist $B/m=k$.\\
+$k$ hat keine echte $k$-Unteralgebra $\Rightarrow A/\alpha^{-1}(m)=k$.
+\end{Bew}
+
+\paragraph{Ende des Beweises des Satzes}
+Noch zu zeigen: $f_{\alpha}: V(I_B) \rightarrow V(I_A)$ ist ein Morphismus.\\
+Schreibe dazu $A\cong k[X_1,\dots,X_n]/I_A$, $B=k[Y_1,\dots,Y_m]/I_B$.
+\[
+\begin{xy}
+\xymatrix{
+k[X_1,\dots,X_n]\ar@{.>}[r]^{\tilde{\alpha}}\ar[d]&k[Y_1,\dots,Y_m]\ar[d] \\
+A\ar[r]^{\alpha}&B
+}
+\end{xy}
+\]
+Bastle Lift $\tilde{\alpha}$ von $\alpha$:\\
+$\tilde{\alpha}(X_i)=f_i$ mit $\overline{f_i}=\alpha(\overline{X_i})$\\
+\underline{Beh.}: Für $y\in V(I_B)$ ist $f_{\alpha}(y)=(f_1(y),\dots,f_n(y))$.\\
+\underline{Denn}: Sei $y=(y_1,\dots,y_m)$, dann ist $m_y$ das Bild in $B$ von $M_y=(Y_1-y_1,\dots,Y_m-y_m)\Rightarrow \alpha^{-1}(m_y)$ ist das Bild in $A$ von $\tilde{\alpha}^{-1}(M_y)= (X_1-f_1(y),\dots,X_n-f_n(y))$.\\
+Nachrechnen: $\Phi\circ\Psi\cong\operatorname{id}_{\underline{k-\operatorname{Alg}^{\circ}}}$, ~~~~$\Psi\circ\Phi\cong\operatorname{id}_{\underline{\operatorname{Aff}}(k)}$
+\end{Bew}
+
+\section{Reguläre Funktionen}
+\begin{Bem}
+Sei $V\subseteq\mathbb{A}^n(k)$ eine affine Varietät. Dann gilt für $h\in k[X_1,\dots,X_n]$:\\
+$\overline{h}$ ist Einheit in $k[V]\Leftrightarrow V(h)\cap V = \emptyset$
+\end{Bem}
+\begin{Bew} $V(h)\cap V = \emptyset \Leftrightarrow (h)+I(V)=k[X_1,\dots,X_n]\\
+\Leftrightarrow1=g\cdot h+f$ für $g\in k[X_1,\dots,X_n]$ und $f\in I(V)\\
+\Leftrightarrow 1= \overline{g}\cdot\overline{h}$ in $k[V]$.
+\end{Bew}
+\begin{Def}
+\label{def:6.2}
+Sei $V\subseteq\mathbb{A}^n(k)$ eine affine Varietät, $U\subseteq V$ offen.\\
+a) Eine Abbildung $f: U\rightarrow \mathbb{A}^1(k)$ heißt \begriff{reguläre Funktion} auf $U$, wenn es zu jedem $x\in U$ eine Umgebung $U(x)\subseteq U$ und
+$g_x,h_x\in k[V]$ gibt mit $h_x(y)\neq0$ für alle $y\in U(x)$ und $f(x)=\frac{g_x(y)}{h_x(y)}$ für alle $y\in U(x)$.\\
+b) Eine Abbildung $f: U\rightarrow U'$ mit $U' \subseteq \mathbb{A}^m(k)$ offen heißt \begriff{Morphismus}, wenn es reguläre Funktionen $f_1,\dots,f_m$ auf $U$ gibt mit $f(x)=(f_1(x),\dots,f_m(x))$.
+\end{Def}
+\begin{Bsp} $\frac{1}{x}$ ist eine reguläre Funktion auf $k\setminus\{0\}$.\\
+Dann ist $U\rightarrow \mathbb{A}^2(k), ~~x\mapsto(x,\frac{1}{x})$ ein Isomorphismus mit Bild $V(XY-1)$.
+\end{Bsp}
+\begin{Def}
+a) Eine \begriff{Prägarbe} besteht aus einer $k$-Algebra $\mathcal{O}(U)$ für jede offene Menge $U\subseteq V$ zusammen mit $k$-Algebra-Homomorphismen
+$$\rho_{UU'}: \mathcal{O}(U)\rightarrow \mathcal{O}(U') ~~~\forall U'\subseteq U~~\textrm{offen}$$
+so dass $\rho_{UU''}=\rho_{U'U''}\circ\rho_{UU'}$ für $U''\subseteq U'\subseteq U$ gilt.\\\\
+b) Eine Prägarbe heißt \begriff{Garbe}, falls zusätzlich noch folgende Bedingungen gelten:\\
+Sei $U\subseteq V$ offen und $(U_i)_{i\in I}$ eine offene Überdeckung von $U$.\\
+(i) Ist $f\in \mathcal{O}(U)$ und $\rho_{UU'}(f)=: f|_{U_i} = 0$ für alle $i\in I$, so ist $f=0$.\\
+(ii) Ist für jedes $i\in I$ ein $f_i\in \mathcal{O}(U_i)$ gegeben, so dass für alle $i,j\in I$ gilt $f_i|_{U_i\cap U_j}=f_j|_{U_i\cap U_j}$, so gibt es $f\in \mathcal{O}(U)$ mit $f|_{U_i}=f_i$ für jedes $i\in I$.
+\end{Def}
+
+\begin{Bem}
+\label{bem:6.5}
+Sei $V\subseteq \mathbb{A}^n(k)$ eine affine Varietät.\\
+(a) Für jedes offene $U\subseteq V$ ist
+$$\mathcal{O}(U):= \{f: U \rightarrow k \mid f \textrm{~~regulär}\}$$
+eine $k$-Algebra.\\
+(b) $f\mapsto \frac{f}{1}$ ist ein $k$-Algebra-Homomorphismus $k[V]\rightarrow \mathcal{O}(U)$ für jedes offene $U\subseteq V$. Dieser ist injektiv, falls $U$ dicht in $V$ ist. Dies ist für alle $\emptyset\neq U$ der Fall, wenn $V$ irreduzibel ist. (Gegenbsp.: $V(X\cdot Y), ~~~U=D(x), ~~~f=y$)\\
+(c) Die Zuordnung $U\mapsto \mathcal{O}(U)$ ist eine Garbe $\mathcal{O}=\mathcal{O}_V$ von $k$-Algebren auf $V$.
+\end{Bem}
+\begin{Bew}
+Seien $f_1,f_2\in\mathcal{O}(U)$. Ohne Einschränkung sei $U_1(x)=U_2(x)=:U(x)$ für alle $x\in U$.
+Sei $f_i=\frac{g_{i,x}}{h_{i,x}}$ auf $U(x)$.\\
+$\Rightarrow h_{1,x}(y)\cdot h_{2,x}(y)\neq 0$ für alle $y\in U(x) \Rightarrow f_1\pm f_2$ und $f_1\cdot f_2$ sind reguläre Funktionen.\\
+Mit $h_x=1$ und $g_x=f$ für alle $x$ ist jedes $f\in k[V]$ reguläre Funktion auf jedem offenen $U$.
+\end{Bew}
+\begin{Prop}
+\label{prop:6.6}
+Für jede affine Varietät $V\subseteq\mathbb{A}^n(k)$ gilt $\mathcal{O}(V)=k[V]$.
+\end{Prop}
+\begin{Bew} Nach Bem. \ref{bem:6.5}(b) ist $k[V] \rightarrow \mathcal{O}(V)$ injektiv, also gilt ohne Einschränkung $k[V]\subseteq \mathcal{O}(V)$.\\
+Sei zunächst $V$ irreduzibel: Sei $f\in \mathcal{O}(V), x_i\in V, i=1,2, U_i\subseteq V$ offene Umgebungen von $x_i$, auf denen $f(y)=\frac{g_i(y)}{h_i(y)}$ gilt für geeignete $g_i,h_i\in k[V], h_i(y)\neq 0 ~~\forall y\in U_i$.\\
+Dann ist $U:=U_1\cap U_2$ offen \underline{und dicht} in $V \Rightarrow g_1h_2-g_2h_1\in I(U)$ (weil $\frac{g_1(y)}{h_1(y)}=f(y)=\frac{g_2(y)}{h_2(y)}$ für alle $y\in U$).\\
+Mit $V(I(U))=\overline{U}=V$ folgt $g_1h_2=g_2h_1$ in $k[V]\Rightarrow \frac{g_1}{h_1}=\frac{g_2}{h_2}$ auf $U_1\cap U_2$, d.h. $\exists g,h\in k[V]$ mit $\frac{g_i}{h_i}=\frac{g}{h}, i=1,2$.\\
+Ist $V$ zusammenhängend, so sei $V=V_1\cup \dots \cup V_r$ die Zerlegung in irreduzible Komponenten. Die Argumentation ist die gleiche, allerdings für $x\in V_1\cap V_i$ ($V_i$ geeignet).\\
+Ist  $V=V_1\stackrel{\centerdot}{\cup} V_2$ disjunkte Vereinigung von affinen Varietäten $V_1,V_2$, so ist\\
+$\mathcal{O}(V)=\mathcal{O}(V_1)\oplus\mathcal{O}(V_2)$ (folgt aus der Definition von regulären Funktionen) und\\
+$k[V]=k[V_1]\oplus k[V_2]$ (Übung).
+\end{Bew}
+\begin{Prop}
+Sei $V\subseteq\mathbb{A}^n(k)$ eine affine Varietät, $f\in k[V]$. Dann ist $\mathcal{O}(D(f))\cong k[V]_f$ (Lokalisierung von $k[V]$ nach dem multiplikativen System $S=\{f^d: d\geq 0\}$, d.h.: $k[V]_f:=\{\frac{g}{f^m}\mid g\in k[V], ~ m \geq 0\}$).\\
+$D(f)$ ist als offene Teilmenge von $V$ zu interpretieren.
+\end{Prop}
+\begin{Bsp}
+1) $V=\mathbb{A}^1(k),~~f=x,~~ D(f)=k\backslash \{0\}\\
+\mathcal{O}(D(f))=\{\frac{g}{h}: g,h\in k[X]$ mit $h(x)\neq 0$ für alle $x\neq 0\}\\
+=\{\frac{g}{x^d}: g\in k[X], d\geq 0\}$\\
+2) $V=V(x\cdot y)\subseteq \mathbb{A}^2(k), f=x\in k[V]=k[X,Y]/(X\cdot Y)$\\
+$D(f)=V-V(x)= x$-Achse ohne die $0$\\
+$k[V]_x=\{\frac{g}{x^d}: g\in k[V], d\geq 0\}/\sim$ mit der Äquivalenzrelation $\frac{g}{x^d} \sim 0\Leftrightarrow \exists d'\geq 0$ mit $x^{d'}\cdot g=0\Leftrightarrow g=y\cdot g'$ für ein $g'\in k[V]\Rightarrow \operatorname{Kern}(k[V]\rightarrow k[V]_x)=(y)\Rightarrow k[V]_x\cong k[X]_x$.
+\end{Bsp}
+\begin{Bew}
+Sei $I=I(V)$, also $k[V]\cong k[X_1,\dots,X_n]/I$. Sei weiter $\tilde{f}\in k[X_1,\dots,X_n]$ Repräsentant von $f$.\\
+\underline{Beh.:} $D(f)$ ist isomorph zu einer affinen Varietät $W:=V(\underbrace{I+(\tilde{f}X_{n+1}-1)}_{:=\tilde{I}})\subseteq \mathbb{A}^{n+1}(k)$\\
+\underline{Beweis:} Übung (Blatt 4, A.3).\\
+Nach Prop. 6.4: $\mathcal{O}(D(f))\cong\mathcal{O}(W)=k[W]=k[X_1,\dots,X_{n+1}]/\tilde{I}$\\
+Sei $\alpha: k[X_1,\dots,X_{n+1}] \rightarrow k[V]_f$ der durch $x_i\mapsto\begin{cases}
+x_i: i=1,\dots,n\\
+\frac{1}{f}: i=n+1
+\end{cases}$ erzeugte Homomorphismus.\\
+\underline{Beh.:} Kern($\alpha)=\tilde{I}\\
+$"'$\supseteq$"'$ \surd\\
+$"'$\subseteq$"'$ \alpha$ induziert einen Homomorphismus: $\tilde{\alpha}:\underbrace{k[X_1,\dots,X_{n+1}]}_{k[V][X_{n+1}]}/\tilde{I}\rightarrow k[V]_f$\\
+zu zeigen ist also: $A$ $k$-Algebra, $f\in A$\\
+$\alpha: A[X]\rightarrow A_f$, so ist $\Kern(\alpha)=(Xf-1)$.
+\end{Bew}
+
+\subsection*{Nachtrag}
+\[
+\begin{xy}
+\xymatrix{
+k[Y_1,\dots,Y_m]\ar[r]^{\tilde{\alpha}}\ar[d]&k[X_1,\dots,X_n]\ar[d] \\
+k[W]\ar[r]\ar@{}[d]|{\cup}&k[V]\ar@{}[d]|{\cup}&\text{ $k$-Algebrenhomomorphismus } \\
+m_y\defeqr\alpha^{-1}(m_x)\ar[r]\ar@{<->}[d]&m_x\ar@{<->}[d] \\
+y\ar@{}[d]|{\in}& x\ar@{|->}[l]\ar@{}[d]|{\in}\\
+W&V\ar[l]_{f_\alpha}
+}
+\end{xy}
+\]
+\begin{Beh}
+Für $x \in V$ ist $f_\alpha(x)=(f_1(x),\dots,f_n(x))\defeql y$. Noch zu zeigen: $\alpha^{-1}(m_x)=m_y$. Es ist $m_y=\overline{(Y_1-f_1(x),\dots,Y_m-f_m(x))}$. Dann ist $\alpha(m_y)$ das von $\overline{\tilde{\alpha}(Y_i)-f_i(x)}$, $i=1,\dots,n$ erzeugte Ideal. Also:
+\begin{align*}
+&\Rightarrow \alpha(m_y)\subseteq m_x \\
+&\Rightarrow m_y\subseteq\alpha^{-1}(m_x) \\
+&\Rightarrow m_y=\alpha^{-1}(m_x)
+\end{align*}
+\end{Beh}
+\begin{Prop}
+\label{prop:6.9}
+  Seien $V\subseteq\mathbb A^n(k), W\subseteq\mathbb A^m(k)$ affine Varietäten und $U_1\subseteq V, U_2\subseteq W$ offen. Dann gilt: Eine Abbildung $f:U_1\longrightarrow U_2$ ist genau dann ein Morphismus, wenn $f$ stetig ist und für jedes offene $U\subseteq U_2$ gilt:
+  \begin{align*}
+    g\circ f \in \mathcal O(f^{-1}(U)) \text{ für jedes } g\in\mathcal O(U)
+  \end{align*}
+
+\end{Prop}
+
+\begin{Bew}
+  ''$\Rightarrow$'' $f$ ist stetig nach \ref{bem:5.3}. 
+  Seien $g\in\mathcal O(U), x\in f^{-1}(U), U'$ Umgebung von $f(x)$, sodass $g(y)=\frac{h_1(y)}{h_2(y)}$ für alle $y\in U'$, wobei $h_1,h_2\in k[W], h_2(y)\neq 0$ für alle $y\in U'$. Daraus folgt für $z\in f^{-1}(U')$:
+  \begin{align*}
+    g\circ f(z)=\frac{h_1(f(z))}{h_2(f(z))}=(*)
+  \end{align*}
+  weil $f$ ein Morphismus ist, gilt $f(z)=\left(\frac{a_1(z)}{b_1(z)},\dots,\frac{a_m(z)}{b_m(z)}\right)$ für geeignete $a_i,b_i\in k[V]$ und \OE~  alle $z\in f^{-1}(U')$ und damit
+  \begin{align*}
+    (*)=\frac{h_1 \left( \frac{a_1(z)}{b_1(z)}, \dots, \frac{a_m(z)}{b_m(z)} \right)}{h_2 \left( \frac{a_1(z)}{b_1(z)}, \dots, \frac{a_m(z)}{b_m(z)} \right)} \defeql \frac{\tilde{h}_1}{\tilde{h}_2}(z)\text{, mit } \tilde{h}_i\in k[V].
+  \end{align*}
+  ''$\Leftarrow$'' Seien $x\in U_1$ und $U\subseteq W$ eine offene Umgebung von $f(x)\Rightarrow f^{-1}(U)\subseteq V$ ist offen. \\
+  Sei $p_i:U\longrightarrow k$ die $i$-te Koordinatenfunktion, also $p_i(y_1,\dots,y_m)=y_i, i=1,\dots,m$. Nach Voraussetzung ist $p_i\circ f\in\mathcal O(f^{-1}(U)), i=1,\dots,m$. Also gibt es $g_i, h_i \in k[V]$ mit $p_i\circ f(y)=\frac{g_i(y)}{h_i(y)}$ für alle $y$ in einer geeigneten Umgebung von $x$.
+  \begin{align*}
+    \Rightarrow f(z)=\left(\frac{g_1(z)}{h_1(z)},\dots,\frac{g_m(z)}{h_m(z)}\right) \Rightarrow f \text{ ist ein Morphismus.}
+  \end{align*}
+\end{Bew}
+\begin{Def}
+  \label{def:6.10}
+  Sei $V\subseteq\mathbb A^n(k)$ eine affine Varietät und irreduzibel. Dann heißt $k(V)\defeqr\Quot(k[V])$ \begriff{Funktionenkörper} von $V$.
+\end{Def}
+\begin{Bsp}
+  \begin{enumerate}
+  \item $V=\mathbb A^n(k)\Rightarrow k(V)=k(X_1,\dots,X_n)$ \\
+  \item $V=V(Y^2-X^2)\subseteq\mathbb A^2(k)$ \\
+    $k[V]=\FakRaum{k[X,Y]}{(Y^2-X^2)}\cong k[T^2,T^3]\subseteq k[T]$ \\
+    $\Rightarrow k(V)\cong k(T)$
+  \end{enumerate}
+\end{Bsp}
+\begin{Prop}
+  \label{prop:6.12}
+  Sei $f:V\longrightarrow W$ ein Morphismus von irreduziblen affinen Varietäten.
+  \begin{enumerate}
+  \item $f$ induziert genau dann einen Körperhomomorphismus $\varphi_f:k(W)\longrightarrow k(V)$, der den $k$-Algebrenhomomorphismus $f^\sharp:k[W]\longrightarrow k[V]$ fortsetzt, wenn $f^\sharp$ injektiv ist.
+  \item $f^\sharp$ ist genau dann injektiv, wenn $f(V)$ dicht in $W$ ist (in diesem Fall heißt $f$ \begriff{dominant}).
+  \end{enumerate}
+\end{Prop}
+\begin{Bew}~\\
+  \begin{enumerate}
+  \item $k(W)=\Quot(k[W])$. Für $x=\frac{a}{b}\in k(W)$ mit $a,b\in k[W],b\neq 0$ muss gelten $\varphi_f(x)=\frac{f^\sharp(a)}{f^\sharp(b)}$. Das ist wohldefiniert $\Leftrightarrow f^\sharp(b)\neq 0$ für alle $b\neq 0$.
+  \item Sei $\alpha\defeqr f^\sharp:k[W]\longrightarrow k[V], ~Z\subseteq V$, dann gilt $\alpha^{-1}(I(Z))=I(f(Z))$, denn: \\
+    \begin{align*}
+      &g\in\alpha^{-1}(I(Z)) \\
+      \Leftrightarrow&\forall z\in Z:\alpha(g)(z)=0 \\
+      \Leftrightarrow&\forall z\in Z:(g\circ f)(z)=0 \\
+      \Leftrightarrow&g\in I(f(Z))
+    \end{align*}
+    Für $Z=V$ heißt das: $\Kern(\alpha)=\alpha^{-1}(0)=\alpha^{-1}(I(V))=I(f(V))$. Also: $\Kern(\alpha)=0 \Leftrightarrow I(f(V))=0 \Leftrightarrow V(I(f(V)))=\overline{f(V)}=W$
+  \end{enumerate}
+\end{Bew}
+
+
+\section{Rationale Abbildungen}
+\begin{DefBem}
+  \label{defbem:7.1}
+  Sei $V\subseteq\mathbb A^n(k)$ eine affine Varietät.
+  \begin{enumerate}
+  \item Eine \begriff{rationale Funktion} auf $V$ ist eine Äquivalenzklasse von Paaren $(U,f)$, 
+    wobei $U\subseteq V$ offen und dicht und $f\in\mathcal O(U)$ ist. 
+    Dabei sei $(U,f)\sim(U',f'):\Leftrightarrow f|_{U\cap U'}=f'|_{U\cap U'}$
+  \item In jeder Äquivalenzklasse $[(U',f')]$ gibt es ein (bezüglich ''$\subseteq$'')
+    maximales Element $(U,f)$, dessen $U$ \begriff{Definitionsbereich} der rationalen Funktion heißt.
+    $V \setminus U$ heißt \begriff{Pol(stellen)menge}.
+  \item Die rationalen Funktionen auf $V$ bilden eine $k$-Algebra $\Rat(V)$.
+  \item Ist $V$ irreduzibel, so ist $\Rat(V)\cong k(V)$.
+  \end{enumerate}
+\end{DefBem}
+\begin{Bew}
+  \begin{enumerate}
+  \item $\sim$ ist transitiv: Seien $(U,f)\sim(U',f'),(U',f')\sim(U'',f'')$, dann folgt: 
+    $f|_{U\cap U'\cap U''}=f''|_{\vert U\cap U' \cap U''}$. Da $U\cap U' \cap U''$ dicht in $V$ ist, 
+    ist dann auch $f|_{U\cap U''}=f''|_{\vert U\cap U''}$.
+  \item Ist $(U,f)\sim(U',f')$, so definiere auf $U\cup U'$ eine Funktion $\tilde{f}$ durch 
+    $\tilde{f}(x)=
+    \begin{cases}
+      f(x)&x\in U \\
+      f'(x)&x\in U'
+    \end{cases}$.
+    Dann ist $\tilde{f}\in\mathcal O(U\cup U')$.
+  \item $f\pm g, f\cdot g$ sind reguläre Funktionen auf $U\cap U'$, wobei $(U,f)$ und $(U',g)$
+    Repräsentanten sind.
+  \item $\frac{g}{h}\in k(V)$ ist eine reguläre Funktion auf $D(h)$. $D(h)$ liegt dicht in $V$,
+    weil $V$ irreduzibel ist. 
+    Es folgt: $\frac{g}{h}\mapsto (D(h),\frac{g}{h})$ ist ein wohldefinierter $k$-Algebrenhomomorphismus
+    $\alpha:k(V)\longrightarrow\Rat(V)$. \\
+    $\alpha$ ist surjektiv, denn: \\
+    Sei $(U,f)$ ein Repräsentant einer rationalen Funktion auf $V$. Dann gibt es
+    offenes $U'\subseteq U$ und $g,h\in k[V]$ mit $f(x)=\frac{g(x)}{h(x)}$ 
+    für alle $x\in U'$. Da $V$ irreduzibel ist, ist $U'$ dicht in $V$. Also ist $\alpha(\frac{g}{h})$
+    gleich der Klasse $(U',\frac{g}{h})$, was gleich der Klasse von $(U,f)$ ist.
+  \end{enumerate}
+\end{Bew}
+\begin{DefBem}
+  \label{defbem:7.2}
+  Seien $V\subseteq\mathbb A^n(k),W\subseteq\mathbb A^m(k)$ affine Varietäten.
+  \begin{enumerate}
+  \item Eine \begriff{rationale Abbildung} $f:V\dashrightarrow W$ ist eine Äquivalenzklasse von Paaren $(U,f_U)$,
+    wobei $U\subseteq V$ offen und dicht ist und $f_U:U\longrightarrow W$ ein Morphismus ist;
+    dabei sei\\
+$(U,f_U)\sim (U',f_U'):\Leftrightarrow f_U|_{U\cap U'}=f_{U'}|_{\vert U\cap U'}$.
+  \item Rationale Funktionen sind rationale Abbildungen $V\dashrightarrow \mathbb A^1(k)$.
+  \item Jede rationale Abbildung hat einen maximalen Definitionsbereich.
+  \item Die Komposition von dominanten rationalen Abbildungen ist wieder eine dominante rationale Abbildung wegen $\overline{f(U)}=\overline{f(\overline{U})}$.
+  \item Jede dominante rationale Abbildung $f:V\dashrightarrow W$ induziert einen $k$-Algebren\-homo\-mor\-phis\-mus
+    $\Rat(W)\longrightarrow \Rat(V)$.
+  \item Eine dominante rationale Abbildung $f:V\dashrightarrow W$ heißt \begriff{birational}, 
+    wenn es eine rationale Abbildung $g:W\dashrightarrow V$ gibt
+    mit $f\circ g\sim\id_W$ und $g\circ f\sim\id_V$.
+  \end{enumerate}
+\end{DefBem}
+\begin{nnBsp}
+  1) $f:\mathbb A^1(k)\dashrightarrow \mathbb A^2(k), x\mapsto(x,\frac{1}{x})$ ist eine rationale Abbildung.\\
+  2) $\sigma:\mathbb A^2(k)\dashrightarrow \mathbb A^2(k), (x,y)\mapsto(\frac{1}{x},\frac{1}{y})$ ist eine 
+  birationale Abbildung. Es gilt $\sigma\circ\sigma=\id$ auf $\mathbb A^2(k)-V(XY)$.
+\end{nnBsp}
+\begin{Prop}
+  \label{prop:7.3}
+  Seien $V,W$ irreduzible affine Varietäten. Dann gibt es zu jedem Körperhomomorphismus\\
+$\alpha :k(W)
+  \longrightarrow k(V)$ eine rationale Abbildung $f:V\dashrightarrow W$ mit $\alpha=\alpha_f$.
+\end{Prop}
+\begin{Bew}
+  Wähle Erzeuger $g_1,\dots,g_m$ von $k(W)$ als $k$-Algebra. Für $\alpha(g_i)\in k(V)=\Rat(V)$ sei
+  $U_i\subseteq V$ der Definitionsbereich. Sei $\tilde{U}\defeqr\bigcap_{i=1}^m U_i$, $\tilde{U}$ ist offen und dicht in $V$.
+Sei $U\subseteq\tilde{U}$ affin (d.h. isomorph zu einer affinen Varietät) und dicht (sowas gibt es, da $D(f)$ affine Teilmenge).
+\begin{align*}
+\stackrel{\ref{prop:6.6}}{\Rightarrow} \alpha(g_i)\in\mathcal O(U)=k[U], i=1,\dots,m \\
+  \Rightarrow \alpha|_{k[W]}:k[W]\longrightarrow k[U] \text{ ist $k$-Algebrenhomomorphismus.} \\
+\stackrel{\textrm{Satz } \ref{satz:HNSaffin}}{\Rightarrow} \text{Es gibt einen Morphismus $f:U\longrightarrow W$ mit $f^\sharp=\alpha$.}
+\end{align*}
+$\alpha_f$ ist der von $f^\sharp$ induzierte Homomorphismus auf $\Quot(k[W])$.
+\end{Bew}
+\begin{Prop}
+  \label{prop:7.4}
+Zu jeder endlich erzeugten Körpererweiterung $K/k$ gibt es eine irreduzible affine $k$-Varietät $V$ mit $K\cong k(V)$.
+\end{Prop}
+\begin{Bew}
+  Seien $x_1,\dots,x_n\in K$ Erzeuger der Körpererweiterung $K/k$. Sei weiter $A\defeqr k[x_1,\dots,x_n]$ die von
+den $x_i$ erzeugte $k$-Algebra. $A$ ist nullteilerfrei, da $A\subseteq K$. Nach Satz \ref{satz:HNSaffin} gibt es eine 
+affine Varietät $V$ mit $A\cong k[V]$. $V$ ist irreduzibel, da $A$ nullteilerfrei. $k(V)=\Quot(k[V])\cong\Quot(A)=K$.
+\end{Bew}
+\begin{Kor}
+  \label{kor:7.5}
+Die Kategorie der endlich erzeugten Körpererweiterungen $K/k$ (mit $k$-Algebren\-homo\-mor\-phis\-men)
+ist äquivalent zur Kategorie der irreduziblen affinen Varietäten über $k$ mit dominanten rationalen Abbildungen.
+\end{Kor}
+
+
+
+\chapter{Projektive Varietäten}
+\setcounter{section}{7}
+\section{Der projektive Raum $\mathbb P^n(k)$}
+\begin{Eri}
+  \begin{align*}
+  \mathbb P^n(k)=& \{ \text{ Geraden in $k^{n+1}$ durch $0$} \}     \\
+ =&\FakRaum{(k^{n+1}\setminus\{0\})}{\sim}\text{ mit }(x_0,\dots,x_n)\sim(y_0,\dots,y_n):\Leftrightarrow\exists\lambda\in k^\times:\lambda x_i=y_i\text{ für } i=1,\dots,n
+  \end{align*}
+Schreibweise $(x_0:\dots:x_n)\defeqr [(x_0,\dots,x_n)]_\sim$ (``homogene Koordinaten'')
+\begin{nnBsp}
+  $\underline{n=0}$: $\mathbb P^0(k)$ ist ein Punkt.\\\\
+  $\underline{n=1}$:
+ $\mathbb P^1(k)\longrightarrow  k \cup \{ \infty \} \text{ ist bijektiv. } \\
+(x_0:x_1) \mapsto  
+\begin{cases}
+  \frac{x_1}{x_0}:&x_0\neq 0 \\
+\infty:&x_0=0
+\end{cases} $
+Also: $\mathbb P^1(\mathbb R)=\FakRaum{S^1}{\{ \pm 1\} }$\\\\
+$\underline{k\in\{\mathbb R, \mathbb C\}}:$\\
+$\mathbb P^n(k)=\FakRaum{(k^{n+1}\backslash \{0\})}{\sim}\gleichwegen{(k=\mathbb R)}\FakRaum{S^n}{\pm 1}$ \\
+$\Rightarrow\mathbb P^n(k)$ ist mit der Quotiententopologie ein kompakter topologischer Raum. \\
+$\mathbb P^2(\mathbb R)$ ist nicht orientierbar (``Kreuzhaube''). \\
+$\pi_1(\mathbb P^2(\mathbb R))\cong \FakRaum{\mathbb Z}{2\mathbb Z}$ \\\\
+\underline{$k=\mathbb F_q$}: $\mathbb P^n(\mathbb F_q)$ hat $\underbrace{\frac{q^{n+1}-1}{q-1}}_{=1+q+q^1+\dots+q^n}$ Punkte.
+\end{nnBsp}
+\end{Eri}
+\begin{Bem}
+  Für $n\geq 1$ und $i=0,\dots,n$ sei 
+\[
+U_i\defeqr\{(x_0:\dots:x_n)\in\mathbb P^n(k)\vert x_i\neq 0 \}
+\]
+\begin{enumerate}
+\item $\mathbb P^n(k)=\bigcup_{i=0}^n U_i$
+\item \[
+\Abb{\rho_i}{U_i}{k^n}{(x_0:\dots:x_n)}{(\frac{x_0}{x_i},\dots,\frac{x_{i-1}}{x_i},\frac{x_{i+1}}{x_i},\dots,\frac{x_n}{x_i})}
+\]
+ist wohldefiniert und bijektiv. \\ Umkehrabbildung: 
+\[ 
+(y_1,\dots,y_n)\mapsto (y_1:\dots:y_i:1:y_{i+1}:\dots:y_n)
+\]
+
+\item $\varphi_i:\mathbb P^n(k)\setminus U_i\longrightarrow \mathbb P^{n-1}(k),(x_0:\dots:x_n)\mapsto(x_0:\dots:x_{i-1}:x_{i+1}:\dots:x_n)$ ist bijektiv.
+\end{enumerate}
+\end{Bem}
+\begin{Folg}
+  $\mathbb P^n(k)$ ist disjunkte Vereinigung von $\mathbb A^n(k)$ und $\mathbb P^{n-1}(k)$, oder auch von $\mathbb A^n(k),\mathbb A^{n-1}(k),\dots,\mathbb A^0(k)$.
+\end{Folg}
+\begin{Beo}
+  \begin{enumerate}
+  \item Ist $f\in k[X_0,\dots,X_n]$ homogen vom Grad $d\geq 0$, so gilt für $(x_0,\dots,x_n)\in k^{n+1}$ und 
+    $\lambda\in k$ stets $f(\lambda x_0,\dots,\lambda x_n)=\lambda^df(x_0,\dots,x_n)$.
+  \item Jedes homogene Polynom in $k[X_0,\dots,X_n]$ hat eine wohldefinierte Nullstellenmenge in $\mathbb P^n(k)$.
+  \end{enumerate}
+\end{Beo}
+\begin{Def}
+  Eine Teilmenge $V\subseteq\mathbb P^n(k)$ heißt \begriff{projektive Varietät}, wenn es eine Menge $\mathcal F\subset k[X_0,\dots,X_n]$
+  von homogenen Polynomen gibt, sodass
+$$V=V(\mathcal F):=\{x=(x_0:\dots:x_n)\in\mathbb P^n(k)\vert f(x)=0 \text{ für alle } f\in\mathcal F\}.$$
+\end{Def}
+\begin{Bsp}
+  \begin{enumerate}
+  \item $H_i=V(X_i)=\mathbb P^n(k)\setminus U_i(\gleichwegen{\varphi_i}\mathbb P^{n-1}(k))$ ist eine projektive Varietät (``Hyperebene'').
+  \item $V=V(X_0X_2-X_1^2)\subset\mathbb P^2(k)$ ist eine projektive Varietät. \\
+    $V\cap U_0=V(\frac{x_2}{x_0}-(\frac{x_1}{x_0})^2)$ Parabel in $\mathbb A^2(k)$ \\
+    $V\cap U_1=V(\frac{x_0}{x_1}\cdot\frac{x_2}{x_1}-1)$ Hyperbel in $\mathbb A^2(k)$
+  \end{enumerate}
+\end{Bsp}
+\begin{DefBem}
+  \label{defbem:8.6}
+  \begin{enumerate}
+  \item $S=k[X_0,\dots,X_n]$ ist \begriff{graduierter Ring} (genau: graduierte $k$-Algebra), das heißt:
+    \[
+    S=\bigoplus_{d=0}^\infty S_d,~ S_d\cdot S_e\subseteq S_{d+e}
+    \]
+    (hier: $S_d=\{f\in k[X_0,\dots,X_n]\mid f \text{ homogen vom Grad }d\}, S_0=k$)
+  \item Ein Ideal $I\subseteq S$ heißt \begriff{homogen}, wenn $I$ von homogenen Elementen erzeugt wird.
+    Äquivalent: $I=\bigoplus_{d=0}^\infty(I\cap S_d)$
+  \item Summe, Produkt, Durchschnitt und Radikal von homogenen Idealen sind wieder homogen.
+  \end{enumerate}
+\end{DefBem}
+\begin{Bew}
+  (c) Seien $I_1,I_2$ homogene Ideale mit homogenen Erzeugern $(f_i)_{i\in \mathcal I}$ beziehungsweise
+    $(g_j)_{j\in \mathcal J}$, dann folgt, dass $I_1+I_2$ von den $f_i$ und $g_j$ erzeugt wird. Genauso $I_1\cdot I_2$. \\
+    \begin{align*}
+      & \bigoplus_{d=0}^\infty((I_1\cap I_2)\cap S_d)=\bigoplus_{d=0}^\infty((I_1\cap S_d)\cap (I_2\cap S_d)) \\
+      = & \left(\bigoplus_{d=0}^\infty I_1\cap S_d\right)\cap \left(\bigoplus_{d=0}^\infty I_2\cap S_d\right)=I_1\cap I_2
+    \end{align*}
+    $\Rightarrow I_1\cap I_2$ ist homogen.\\
+    Sei $I\defeqr I_1, x\in\sqrt{I},x=\sum_{d=0}^nx_d,x_d\in S_d$. Zu zeigen: $x_d\in\sqrt{I}$.\\
+    Dann gibt es $m\geq 0$ mit $x^m\in I$: $x^m=x_n^m+$ Terme kleineren Grades \\
+    $\Rightarrow x_n^m\in I$ da die Summe aller Monome gleichen Grades auch immer in $I$ liegen $\Rightarrow x_n\in\sqrt{I}$.\\
+Mit Induktion folgt die Behauptung ($x-x_n=\sum_{d=0}^{n-1}x_d\in\sqrt{I}\Rightarrow x_{n-1}\in I$)
+ \end{Bew}
+
+\begin{DefBem}
+ \begin{enumerate}
+  \item Für $V \subseteq \mathbb P^n(k)$ sei $I(V)$ das Ideal in $k[X_0,\dots,X_n]$, das von allen homogenen Polynomen $f$ erzeugt wird, für die $f(x)=0 $ $\forall x \in V$ gilt. $I(V)$ heißt \begriff{Verschwindungsideal} von $V$. $I(V)$ ist Radikalideal.
+  \item Für eine Menge $F \subset k[X_0,\dots,X_n]$ von homogenen Polynomen sei $V(F)=\{ x \in \mathbb P^n(k):f(x)=0~~ \forall f \in F \}$ die zugehörige projektive Varietät. \\ 
+  Für ein homogenes Ideal $I$ sei $V(I)=\{ x \in \mathbb P^n(k):f(x)=0  \text{ für alle homogenen } f \in I \} $. Dann ist $V(F)=V((F))=V(\sqrt{(F)})$ wobei $(F)$ das von $F$ erzeugte Ideal sei.
+ \end{enumerate}
+\end{DefBem}
+\begin{Bew}
+ \begin{enumerate}
+  \item $\sqrt{I(V)}$ ist nach \ref{defbem:8.6} c) auch ein homogenes Ideal, wird also von homogenen Elementen $f_i$ erzeugt.\\
+	$\Rightarrow f_i^m(x) = 0$ $\forall x \in V$ und ein $m \ge 0$ $\Rightarrow f_i(x)=0$ $\Rightarrow f_i \in I(V) \Rightarrow \sqrt{I(V)} = I(V)$
+ \end{enumerate}
+\end{Bew}
+\begin{Prop}
+ \label{prop:8.8}
+ \begin{enumerate}
+  \item Die projektiven Varietäten bilden die abgeschlossenen Mengen einer Topologie. Diese heißt die \begriff{Zariski-Topologie} auf $\mathbb P^n(k)$.
+  \item Eine projektive Varietät $V$ ist genau dann irreduzibel, wenn $I(V)$ ein Primideal ist.
+  \item Jede projektive Varietät besitzt eine eindeutige Zerlegung in irreduzible Komponenten.
+ \end{enumerate}
+\end{Prop}
+\begin{Bew}
+ Wie im affinen Fall.
+\end{Bew}
+
+\begin{DefBem}
+ \label{defbem:8.10}
+ \begin{enumerate}
+  \item Für eine nicht leere projektive Varietät $V \subseteq \mathbb P^n(k)$ heißt \\
+   $\tilde{V}:=\{x = (x_0,\dots ,x_n)\mid (x_0: \dots : x_n) \in V \} \cup \{(0, \dots, 0)\}$ der \begriff{affine Kegel} über $V$.
+  \item $\tilde{V}$ ist affine Varietät. Genauer $V=V(I)$ für ein homogenes Ideal  $I$ in $k[X_0,\dots,X_n]$, so ist $\tilde{V}=V(I)$ als affine Varietät in $\mathbb A^{n+1}(k)$.
+  \item $I(\tilde{V})=I(V)$
+ \end{enumerate}
+\end{DefBem}
+\begin{Bew}
+ (b) Klar ist $(x_0:\dots:x_n) \in V \Leftrightarrow (x_0, \dots , x_n) \in \tilde{V} \setminus \{(0,\dots,0)\}$. Da $V \ne \emptyset$, enthält das Ideal $I$, für das $V = V(I)$ ist, kein Element aus $k\setminus\{0\}$. Für jedes homogene Element $f \in I$ ist daher $deg(f) > 0$ $\Rightarrow f(0, \dots ,0)=0 \Rightarrow \tilde{V}=V(I)$. \\
+ (c) Für jedes homogene Polynom $f \in k[X_0, \dots ,X_n]$ gilt $f \in I(V) \Leftrightarrow f \in I(\tilde{V})$. Es genügt zu zeigen, dass $I(\tilde{V})$ ein homogenes Ideal ist.\\
+Sei also $f \in I(\tilde{V})$ mit $f= \sum_{i=0}^d{f_i}$, $f_i$ homogen vom Grad $i$. Sei $x=(x_0, \dots, x_n) \in \tilde{V}$. Dann ist $(\lambda x_0, \dots , \lambda x_n) = \lambda x \in \tilde{V}$ $\forall \lambda \in k$, also $0 = f(\lambda x) = \sum_{i=0}^d{\lambda^i f_i(x)}$ $\forall \lambda \in k$. Dies ist ein lineares Gleichungssystem mit $|k|$ Zeilen. $k$ ist aber algebraisch abgeschlossen, hat also unendlich viele Elemente $\Rightarrow f_i(x)=0$ $\forall i \in \{0, \dots, d\}\Rightarrow f_i\in I(\tilde{V})$.
+\end{Bew}
+
+\begin{Prop}[Projektiver Nullstellensatz]
+\label{prop:8.9}
+ Sei $k$ algebraisch abgeschlossen, $n \ge 0$. Für jedes von $(X_0, \dots, X_n)$ verschiedene Radikalideal $I \subseteq k[X_0,\dots,X_n]$ gilt $I(\underbrace{V(I)}_{\subset \mathbb P^n(k)})=\sqrt{I}$.
+\end{Prop}
+\begin{Bew}
+Für gegebenes Radikalideal $I$ sei $V \subseteq \mathbb P^n(k)$ die zugehörige projektive Varietät.\\
+Ist $I = k[X_0, \dots, X_n]$, so ist $V(I) = \emptyset$ und $I(V(I))=k[X_0, \dots, X_n] = \sqrt{k[X_0, \dots, X_n]}$.\\
+Ist $I \subsetneq k[X_0, \dots, X_n]$ homogen, so ist mit der Voraussetzng $I\neq(X_0,...,X_n)~~I\subsetneq (X_0,\cdots,X_n)$, und so ist die affine Nullstellenmenge von $I$ in $\mathbb A^n(k)$ echte Obermenge von $\{(0,\dots, 0)\}$, enthält also einen Punkt $(x_0, \dots, x_n) \ne (0, \dots, 0)$. Dann ist $(x_0:\cdots :x_n)\in V$, also $V\ne\emptyset$.
+Nach \ref{defbem:8.10} b) ist $\tilde{V}$ auch die durch $I$ bestimmte affine Varietät in $\mathbb A^{n+1}(k)$. Nach \ref{defbem:8.10} c) ist $I(\tilde{V})=I(V)$. Nach Satz \ref{satz:HNS} (Hilbertscher Nullstellensatz) ist $I(\tilde{V})=\sqrt{I}$.  
+\end{Bew}
+\begin{DefBem}
+ \label{defbem:8.11}
+Sei $V \subseteq \mathbb P^n(k)$ projektive Varietät mit homogenem Verschwindungsideal $I(V)$. Dann heißt $k[V]:=k[X_0, \dots, X_n]/I(V)$ der \begriff{homogene Koordinatenring} von $V$. $k[V]$ ist graduierte $k$-Algebra. Dabei ist $k[V]_d:=k[X_0, \dots, X_n]_d/(I(V) \cap k[X_0, \dots, X_n]_d$).
+\end{DefBem}
+
+\section{Affine und projektive Varietäten}
+Es ist $U_i =\{(x_0: \dots: x_n)\in \mathbb P^n(k):x_i \ne 0\}=\mathbb P^n(k) \setminus V(X_i)$ offen.\\
+$\rho_i:U_i \rightarrow \mathbb A^n(k)$ $(x_0: \dots: x_n) \mapsto (\frac{x_0}{x_i}, \dots , \frac{x_{i-1}}{x_i},\frac{x_{i+1}}{x_i}, \dots , \frac{x_n}{x_i})$ ist bijektiv.
+\begin{Prop}
+ \label{prop:9.1}
+ Die Bijektionen $\rho_i:U_i \rightarrow \mathbb A^n(k)$, $i = 0, \dots, n$ sind Homöomorphismen bzgl. der jeweiligen Zariski-Topologie.
+\end{Prop}
+
+
+%26.11.2008
+
+\begin{Bew}
+$\OE ~~i=0,~~\rho:=\rho_0$\\
+(i) $\rho$ ist stetig: Genügt zu zeigen: Für jedes $f\in k[X_1,\dots,X_n]$ ist $\rho^{-1} (D(f))$ offen in $U_0$.\\
+Äquivalent dazu: $\rho^{-1}(V(f))$ ist abgeschlossen in $U_0$. Dies folgt aus:\\
+\begin{BemDef}
+\label{defbem:9.2}
+Für $f\in k[X_1,\dots,X_n]$ ist $\rho^{-1}(V(f))=U_0\cap V(F)$.\\
+Dabei sei $f=\sum_{i=0}^df_i$, $f_i$ homogen vom Grad $i$, $f_d \ne 0$ und $F:=\sum_{i=0}^df_i\cdot X_0^{d-i}\in k[X_0,\dots,X_n]$. \\
+$F$ ist homogen vom Grad $d$ und heißt die \begriff{Homogenisierung} von $f$.
+\end{BemDef}
+\begin{Bew}
+$x=(x_1,\dots,x_n)\in V(f)\Leftrightarrow f(x_1,\dots,x_n)=0 \Leftrightarrow \sum_{i=0}^df_i(x_1,\dots,x_n)=0\\
+\Leftrightarrow F(1:x_1:\dots:x_n)=0\Leftrightarrow \rho^{-1}(x)\in V(F)$.
+\end{Bew}
+Damit ist gezeigt, dass $\rho$ stetig ist.\\
+(ii) $\rho^{-1}$ ist stetig: Wie in (i) genügt zu zeigen: Für jedes homogene $F\in k[X_0,\dots,X_n]$ ist $\rho(V(F)\cap U_0)$ abgeschlossen in $\mathbb{A}^n(k)$.\\
+Beachte: Die $D(F), F\in k[X_0,\dots,X_n]$ homogen bilden eine Basis der Zariski-Topologie auf $\mathbb{P}^n(k)$ (Bew. wie in Bemerkung \ref{bem:2.7} (ii)).
+\end{Bew}
+\begin{BemDef}
+\label{bemdef:9.3}
+$\rho(V(F)\cap U_0)=V(f)$, wobei mit $y_i:=\frac{x_i}{x_0}, i=1,\dots,n$, $f\in k[Y_1,\dots,Y_n]$ definiert sei durch $f(Y_1,\dots,Y_n)=F(1,\frac{x_1}{x_0},...,\frac{x_n}{x_0})$.\\
+$f$ heißt \begriff{Dehomogenisierung} von $F$ bzgl. $x_0$.
+\end{BemDef}
+\begin{Bew}
+$x=(x_0:\dots:x_n)\in V(F)\cap U_0 \Leftrightarrow x_0\neq0$ und $F(x)=0 \Leftrightarrow F(1,\frac{x_1}{x_0},\dots,\frac{x_n}{x_0}) =0 \Leftrightarrow f(\rho(x))=0\Leftrightarrow \rho(x)\in V(f)$
+\end{Bew}
+\begin{Bsp}
+$F(X_0,X_1,X_2)=X_1^2-X_0X_2,~~~~f_{X_0}(Y_1,Y_2)=F(1,\frac{x_1}{x_0},\frac{x_2}{x_0})= Y_1^2-Y_2,~~~~f_{X_1}(Y_0,Y_2)=1-Y_0Y_2$\\
+Frage: Wie sieht $F$ aus, wenn $V(F)\cap U_0=\emptyset$ ?\\
+Antwort: z.B. $F=X_0^d, \sqrt{(F)}=(X_0)$.
+\end{Bsp}
+\begin{Bem}
+\label{bem:9.5}
+\begin{enumerate}
+\item Sei $f\in k[X_1,\dots,X_n]$, $F\in k[X_0,\dots,X_n]$ die Homogenisierung. Dann gilt für die Dehomogenisierung $\tilde{f}$ von $F$ bzgl. $X_0$: $\tilde{f}=f$.
+\item Sei $F\in k[X_0,\dots,X_n]$ homogen, $f\in k[Y_1,\dots,Y_n]$ die Dehomogenisierung bzgl. $X_0$, $\tilde{F}$ die Homogenisierung von $f$. Dann gilt: $F=\tilde{F}\cdot X_0^d$ für ein $d\geq 0$.
+\end{enumerate}
+\end{Bem}
+\begin{Bew}
+\begin{enumerate}
+\item Sei $f=\sum_{i=0}^df_i,~f_d\neq 0 \Rightarrow F=\sum_{i=0}^df_iX_0^{d-i} \Rightarrow \tilde{f}=\sum_{i=0}^df_i\cdot 1=f$.
+\item Schreibe $F=X_0^d\cdot \tilde{F}$ mit $X_0\nmid \tilde{F}$. Dann hat die Dehomogenisierung von $\tilde{F}$ bzgl. $X_0$ denselben Grad wie $\tilde{F} \Rightarrow$ ihre Homogenisierung ist $\tilde{F}$.
+\end{enumerate}
+\end{Bew}
+\begin{DefBem}
+\label{defbem:9.6}
+Eine Teilmenge $W\subseteq \mathbb{P}^n(k)$ heißt \begriff{quasiprojektive Varietät}, wenn eine der folgenden Bedingungen erfüllt ist:\\
+(i) $W$ ist offen in einer projektiven Varietät.\\
+(ii) Es gibt eine offene Teilmenge $U\subset\mathbb{P}^n(k)$ und eine abgeschlossene Teilmenge $V\subset\mathbb{P}^n(k)$, so dass $W=U\cap V$.
+\end{DefBem}
+\begin{Bsp} 
+$\mathbb{P}^2\setminus \{(0:0:1)\}$ ist quasiprojektiv, aber weder projektiv noch affin (was zu zeigen wäre).
+\end{Bsp}
+\begin{Prop}
+\label{prop:9.8}
+Betrachte $\mathbb{A}^n(k)$ über $\rho_0 : U_0\stackrel{{}_\sim}{\rightarrow} \mathbb{A}^n(k)$ als Teilmenge von $\mathbb{P}^n(k)$. Für ein Radikalideal $I\subseteq k[X_1,\dots,X_n]$ sei $I^*\subseteq k[X_0,\dots,X_n]$ das von den Homogenisierungen aller $f\in I$ erzeugte Ideal. Dann ist $V_p(I^*)\subseteq\mathbb{P}^n(k)$ der Zariski-Abschluss von $V_a(I)\subseteq \mathbb{A}^n(k)$.
+\end{Prop}
+\begin{Bew}
+(i) "'$V_a(I)\subseteq V_p(I^*)$"': Sei $x=(x_1,\dots,x_n)\in V_a(I)$ und sei $f\in I$, $F\in I^*$ die Homogenisierung von $f$.\\
+Dann ist $F(\rho_0^{-1}(x))=F(1:x_1:\dots:x_n)=f(x_1,\dots,x_n)=0$, weil $f\in I =I(V(I))$.\\
+(ii) Sei $V\in \mathbb{P}^n(k)$ abgeschlossen, mit $V_a(I)\subseteq V$.\\
+Zu zeigen: $V(I^*)\subseteq V$.\\
+Sei dazu $V=V(\mathcal{J})$ für ein homogenes Ideal $\mathcal{J}$. Zu zeigen also: $\mathcal{J}\subseteq I^*$.\\
+Sei $F\in \mathcal{J}$ homogen, $f=F(1,\frac{x_1}{x_0},\dots,\frac{x_n}{x_0})$ die Dehomogenisierung von $F$ bzgl. $x_0$.\\
+Sei $y=(y_1,\dots,y_n)\in V_a(I)$.\\
+Dann ist $f(y)=F(1,y_1,\dots,y_n)=0$, weil $\rho_0^{-1}(y)\in V(\mathcal{J})$. Somit folgt $f\in I$.\\
+Sei $\tilde{F}$ die Homogenisierung von $f$, also $\tilde{F}\in I^*$, dann folgt mit \ref{bem:9.5}: $F=\tilde{F}\cdot X_0^d$ für ein $d\geq0\Rightarrow F\in I^*$.
+\end{Bew}
+
+
+%28.11.2008
+
+\begin{Bem}
+\label{bem:9.9}
+Sei $W$ eine quasiprojektive Varietät in $\mathbb{P}^n(k)$.\\
+(a) Die Zariski-Topologie auf $W$ besitzt eine Basis aus affinen Varietäten.\\
+(b) $W$ ist quasikompakt (d.h. jede offene Überdeckung von $W$ besitzt eine endliche Teilüberdeckung)
+\end{Bem}
+
+\begin{Bew}
+(a) Sei $W=\bigcup_{i=0}^n(W\cap U_i)$ mit $U_i=\{(x_0:\dots:x_n)\in\mathbb{P}^n(k):x_i\neq 0\}\cong\mathbb{A}^n(k)$.\\
+Also \OE $~W\subseteq\mathbb{A}^n(k)$, $W$ ist offen in einer affinen Varietät, nämlich dem Zariski-Abschluss $V_i$ von $W\cap U_i$ in $U_i$. Nach \ref{bem:2.7}(ii) bilden die $D(f),~f\in k[V_i]$ eine Basis der Zariski-Topologie auf $W\cap U_i$. Jedes $D(f)$ ist aber isomorph zu einer affinen Varietät mittels
+$$\Abb{\rho}{D(f)}{\mathbb{A}^{n+1}(k)}{(x_1,...,x_n)}{(x_1,...,x_n,\frac{1}{f(x_1,...,x_n)})}$$
+für $f\in k[X_1,...,X_n]$. Bild von $\rho$ ist $V(Yf-1)$.\\
+(b) Sei $(O_j)_{j\in J}$ offene Überdeckung von $W$. Nach dem Beweis von (a) wird jedes $O_j$ überdeckt von offenen Teilen der Form $D(f)$ für geeignete $f\in k[\overline{O_j\cap U_i}]$.\\
+Also \OE $~O_j=D(f_j)$ für ein $f_j\in k[X_0,\dots,\hat{X}_i,\dots,X_n]$ (im Folgenden bedeutet $\hat{X}_i$: "'die $i$-te Variable streichen"').\\
+Sei $F_j\in k[X_0,\dots,X_n]$ die Homogenisierung von $f_j$. Dann ist
+$$W\subseteq \bigcup_{j\in J}D(F_j)=\mathbb{P}^n(k) - \bigcap_{j\in J}V(F_j)=\mathbb{P}^n(k) - V(\underbrace{\sum_{j\in J}(F_j)}_{=:I})$$
+$I$ ist endlich erzeugtes Ideal, z.B. von $F_1,\dots,F_r\Rightarrow W\subseteq\bigcup_{j=1}^rD(F_j)\Rightarrow W\subseteq \bigcup_{j=1}^rD(f_j)$
+\end{Bew}
+
+
+\section{Reguläre Funktionen}
+\begin{Def}
+\label{def:10.1}
+Sei $W\subseteq\mathbb{P}^n(k)$ eine quasiprojektive Varietät. Eine Abbildung $f:W\rightarrow k$ heißt \begriff{reguläre Funktion} auf $W$, wenn $f|_{W\cap U_i}$ reguläre Funktion ist für $i=0,\dots,n$.
+\end{Def}
+\begin{Bem}
+\label{bem:10.2}
+Sind $G,H\in k[X_0,...,X_n]$ homogen vom gleichen Grad, so ist $\frac{G(x)}{H(x)}$ wohlbestimmte Funktion auf $\mathbb{P}^n(k)\setminus V(H)$.
+\end{Bem}
+
+\begin{Bem}
+\label{bem:10.3}
+Sei $V\subseteq\mathbb{P}^n(k)$ quasiprojektive Varietät. Dann gilt:\\
+$f: V\rightarrow k$ ist regulär genau dann, wenn für alle $p\in V$ eine Umgebung $U_p$ von $p$ existiert, sowie homogene Polynome $G_p, H_p$ vom gleichen Grad, so dass $f(x)=\frac{G_p(x)}{H_p(x)}$ für alle $x\in U_p$.
+\end{Bem}
+
+\begin{Bew} "'$\Rightarrow$"' Sei $p\in U_i$, $g_p,h_p\in k[V_i]~~(V_i=\overline{V\cap U_i})$ wie in \ref{def:6.2} (d.h. es gibt ein $U_p\subseteq U,~g_p,h_p\in k[V_i],~h_p(x)\neq 0 ~~\forall x\in U_p: ~f(x)=\frac{g_p(x)}{h_p(x)}$).\\
+Seien $\tilde{g}_p, \tilde{h}_p$ Repräsentanten von $g_p$ bzw. $h_p$ in $k[X_0,...,\hat{X}_i,...,X_n]$ und $G_p, H_p$ Homogenisierungen.\\
+Ist $deg(G_p)\neq deg(H_p)$, so ersetze $G_p$ durch $G_p\cdot X_i^{deg(H_p)-deg(G_p)}$ (falls $deg(H_p)>deg(G_p)$).\\
+$\forall x\in U_p$ ist dann $$f(x)=\frac{g_p(x)}{h_p(x)}=\frac{G_p(x_0:...:x_{i-1}:1:x_{i+1}:...:x_n)}{H_p(x_0:...:x_{i-1}:1:x_{i+1}:...:x_n)}$$
+"'$\Leftarrow$"' Dehomogenisieren \dots
+\end{Bew}
+
+\begin{Bem}
+Sei $V\subseteq\mathbb{P}^n(k)$ eine quasiprojektive Varietät. Für jede offene Teilmenge $U$ von $V$ sei $\mathcal{O}(U)=\mathcal{O}_V(U)=\{f: U\rightarrow k \mid f \text{ regulär} \}$.
+\begin{enumerate}
+\item $\mathcal{O}(U)$ ist $k$-Algebra.
+\item $\mathcal{O}_V$ ist eine Garbe von $k$-Algebren auf $V$.
+\end{enumerate}
+\end{Bem}
+
+\begin{Lemma}
+\label{}
+Sei $V\subseteq\mathbb{P}^n(k)$ eine projektive Varietät, $f\in k[V]$ homogen, $l\in \mathcal O_V(D(f))$. Dann besitzt $D(f)$ eine offene Überdeckung $(U_i)_{i\in J}$ mit $U_i=D(h_i)$ für homogene $h_i\in k[V]$, so dass
+$$l(x)=\frac{g_i(x)}{h_i(x)}~~~\forall x\in U_i$$
+$g_i\in k[V]$ ebenfalls homogen mit $deg(g_i)=deg(h_i)$
+\end{Lemma}
+
+\begin{Bew}
+Eine offene Überdeckung $(U_i')_{i\in J'}$ mit $l(x)=\frac{G_i(x)}{H_i(x)}~\forall x\in U_i',~G_i,H_i$ vom gleichen Grad, existiert nach Bem 10.3. Seien $g_i'$ und $h_i'$ deren Restklassen in $k[V]$. (Beachte: $D(h_i')$ kann größer als $U_i'$ sein)\\
+Nach dem Beweis von 9.9 a) wird $U'_i$ überdeckt von offenen Mengen der Form $D(\tilde{h_i}')$ für homogene $\tilde{h_i'}\in k[V]$ (da die $D(\tilde{h'_i})$ eine Basis der Zariski-Topologie bilden), also
+\begin{align*}
+&D(\tilde{h'_i})\subseteq U'_i\subseteq D(h'_i)~\\
+\Rightarrow & V(h'_i)\subseteq V(\tilde{h'_i})  \text{, also } \tilde{h'_i}\in\sqrt{(h'_i)} ~~ (HNS)\\
+\Rightarrow & (\tilde{h'_i})^m=ah'_i  \text{ für ein } a\in k[V] \text{ und ein } m\geq 0\\
+\Rightarrow & \text{ Auf } D(\tilde{h'_i}) \text{ ist } l=\frac{g'_i}{h'_i}=\frac{g'_ia}{h'_ia}=\frac{g'_ia}{(\tilde{h'_i})^m}
+\end{align*}
+Da $D(\tilde{h'_i})=D((\tilde{h'_i})^m)$, ist mit $h_i:=(\tilde{h'_i})^m$ die Behauptung erfüllt.
+\end{Bew}
+
+\begin{Satz}
+Sei $V\subseteq \mathbb{P}^n(k)$ eine projektive Varietät.
+\begin{enumerate}
+\item Ist $V$ zusammenhängend, so ist $\mathcal{O}(V)\cong k$.
+\item Sei $k[V]$ der homogene Koordinatenring von $V$, $f\in k[V]$ homogen. Dann ist
+$\mathcal{O}_V(D(f))\cong k[V]_{(f)}:= \{\frac{g}{f^r}: g\in k[V]$ homogen, $deg(g)=r\cdot deg(f)\}/\!\!{}_\sim$
+("'homogene Lokalisierung"' von $k[V]$ nach den Potenzen von $f$).
+\end{enumerate}
+\end{Satz}
+
+\begin{Bew}
+(b)~ $k[V]_{(f)}$ ist $k$-Algebra $\surd$\\
+Sonderfälle: $f=0~~~\surd$\\
+deg$(f)=0$: $D(f)=V\stackrel{a)}{\Rightarrow}\mathcal{O}(D(f))\cong k$\\
+$k[V]_{(f)}=\{\frac{g}{f^r}: \operatorname{deg}(g)=0\}\cong k$.\\
+Sei also deg$(f)\geq 1$:\\
+Sei $\alpha: k[V]_{(f)}\rightarrow \mathcal{O}(D(f)),~\frac{g}{f^r}\mapsto\frac{G}{F^r}$ ($G,F\in k[X_0,...,X_n]$ Repräsentanten) ist wohldefinierter, injektiver $k$-Algebra-Homomorphismus (Kern ist 0).\\
+\underline{surjektiv}: Sei $l\in\mathcal{O}(D(f))$\\
+Nach dem Lemma gibt es eine offene Überdeckung $(U_i)_{i\in J}$ von $D(f)$ und $g_i, h_i\in k[V]$ homogen vom gleichen Grad mit
+
+$$l(x)=\frac{g_i}{h_i}(x) \text{ für alle } x\in U_i$$
+
+und $U_i=D(h_i)~~\forall i\in J$\\\\
+\underline{Beh.}: \OE $~~g_ih_j=g_jh_i$ in $k[V]$ für alle $i,j$.\\
+\underline{Denn}: Auf $U_i\cap U_j$ gilt $\frac{g_i}{h_i}=\frac{g_j}{h_j}$, deshalb ist $g_ih_j=g_jh_i$\\
+Nach dem Lemma ist $V\setminus (U_i\cap U_j)=V(h_i)\cup V(h_j)\Rightarrow h_ih_j(g_ih_j-g_jh_i)=0$ auf ganz $V$.\\
+Setze $\tilde{g_i}=g_ih_i, \tilde{h_i}=h_i^2\Rightarrow \frac{\tilde{g_i}}{\tilde{h_i}}=\frac{g_i}{h_i}=l$ auf $U_i$ und $\tilde{g_i}\tilde{h_j}-\tilde{g_j}\tilde{h_i}=0$ auf $V$\\
+$\Rightarrow \tilde{g_i}\tilde{h_j}=\tilde{g_j}\tilde{h_i}$ in $k[V]$.\\
+\\
+Nach Bem 9.9 und dem Lemma überdecken endlich viele der $D(h_i)$ ganz $D(f)$, also \OE
+\begin{align*}
+& D(f)=\bigcup_{i=1}^rD(h_i)\\
+\Rightarrow & V(f)=\bigcap_{i=1}^rV(h_i)=V(h_1,...,h_r)\\
+\Rightarrow & f\in I(V(h_1,...,h_r))\stackrel{HNS}{=} \sqrt{(h_1,...,h_r)}\\
+\Rightarrow & f^m=\sum_{i=1}^ra_ih_i \text{ für geeignetes } m\geq 0, a_i\in k[V] \text{ homogen.}
+\end{align*}
+Setze $g:= \sum_{i=1}^ra_ig_i$. Dann ist $g$ homogen und deg($g$)=deg($f$). Für $j=1,...,r$ gilt
+$$f^mg_j=\sum_{i=1}^r(a_ih_i)g_j\stackrel{Beh.}{=}\sum_{i=1}^ra_ig_ih_j=gh_j$$
+$\Rightarrow$ auf $U_j$ ist $\frac{g}{f^m}=\frac{g_j}{h_j}=l$
+
+(a)~~ \OE $~~V$ irreduzibel (Die Konstante auf jeder Komponente muss auf den Durchschnitten gleich sein)\\
+Sei $V_i:= V\cap U_i$ (wobei $U_i=D(X_i)=\{(x_0:...:x_n)\in\mathbb{P}^n(k): x_i\neq 0\}$). \OE $~~V_i\neq\emptyset$\\
+Sei $f\in\mathcal{O}(V)$. Dann ist $f\mid_{V_i}\in\mathcal{O}(V_i)\stackrel{b)}{=}k[V]_{(X_i)} ~~(i=0,...,n).$\\
+(Beachte: Beim Beweis des (b)-Teils wurde der (a)-Teil nur für den Fall, dass $\deg f=0$ ist, verwendet. Hier ist aber $f=X_i$, also $\deg f=1$).\\
+Da $V$ irreduzibel ist, folgt mit 2.8.7 b), dass $k[V]$ nullteilerfrei ist.\\
+Sei also $L:=$Quot$(k[V])$. Insbes. $f_i:=f\mid_{V_i}\in L$.\\
+Schreibe $f_i=\frac{g_i}{X_i^{d_i}}$ für ein homogenes $g_i\in k[V]$ vom Grad $d_i$.\\
+$f_i=f_j$ auf $U_i\cap U_j \Rightarrow f_i=f_j=f$ in $L$.\\
+\underline{Beh. 1}: $f$ ist ganz über $k[V]$.\\
+Dann ist $f^m+\sum_{j=1}^{m-1}a_jf^j=0$ für geeignetes $m\geq 0,~~ a_j\in k[V]$.\\
+Multipliziere mit $X_i^{d_im}\Rightarrow \underbrace{g_i^m}_{\deg = d_im}+ \sum_{j=1}^{m-1}a_j\underbrace{g_i^j\cdot X^{d_i(m-j)}}_{\deg = d_im}=0\\
+\Rightarrow$ \OE $~~a_j$ homogen vom Grad 0 $\Rightarrow a_j\in k$ und damit auch $f\in k$.\\
+\underline{Beweis von Beh. 1}:\\
+Genügt (Alg II): $k[V][f]$ ist in einem endlich erzeugten $k[V]$-Modul enthalten.\\
+\underline{Beh. 2}: $k[V][f]\subseteq \frac{1}{X_0^d}k[V]$, wobei $d=\sum_{i=0}^nd_i$\\
+\underline{Beweis von Beh. 2}: Zu zeigen: $X_0^d\cdot f^j\in k[V]$ für jedes $j\geq 0$. Dies folgt aus \\
+\underline{Beh. 3}: $k[V]_d\cdot f^j\subseteq k[V]_d$ für alle $j\geq 0$.\\
+\underline{Beweis von Beh. 3}:\\
+$k[V]_d$ wird erzeugt von den Restklassen der Monome $X_0^{j_0}\cdot ... \cdot X_n^{j_n}$ mit $\sum_{i=0}^nj_i=d$ (und $j_i\geq 0$)\\
+$\Rightarrow\exists i$ mit $d_i\leq j_i\\
+\Rightarrow X_0^{j_0}\cdot ... \cdot X_n^{j_n}\cdot f=X_0^{j_0}\cdot ... \cdot X_i^{j_i-d_i}\cdot ... \cdot X_n^{j_n}\cdot g_i\in k[V]_d$
+\end{Bew}
+
+
+\section{Morphismen}
+\begin{DefBem}
+  \label{defbem:11.1}
+  Seien $V\subseteq \mathbb P^n(k)$ und $W\subseteq \mathbb P^m(k)$ quasiprojektive Varietäten.
+  \begin{enumerate}
+  \item Eine Abbildung $f:V\longrightarrow W$ heißt \begriff{Morphismus} wenn es zu jedem $x\in V$ eine Umgebung $U_x$ und homogene 
+    Polynome $f_0^{(x)},\dots,f_m^{(x)}\in k[X_o,\dots,X_n]$, alle vom gleichen Grad, sodass $f(y)=\left(f_0^{(x)}(y):\dots:f_m^{(x)}(y)\right)$
+    für jedes $y\in U_x$.
+  \item Die Morphismen $V\longrightarrow \mathbb A^1(k)$ entsprechen bijektiv den regulären Funktionen auf $V$.
+  \item Morphismen sind stetig.
+  \item Die quasiprojektiven Varietäten über $k$ bilden mit den Morphismen aus a.) eine Kategorie $\underline{Var^\circ(k)}$.
+  \end{enumerate}
+\end{DefBem}
+\begin{Bew}
+  \begin{enumerate}
+  \item -
+  \item Sei $f:V\longrightarrow\mathbb A^1(k)$ ein Morphismus. Sei $x\in V, U_x, f_0^{(x)},f_1^{(x)}$ wie in a.), das heißt: 
+    $f(y)=\left(f_0^{(x)}:f_1^{(x)}\right)$ für alle $y\in U_x$ (wobei $\mathbb A^1(k)$ mit $U_0$ identifiziert sei).
+    Dann ist $\frac{f_1^{(x)}(y)}{f_0^{(x)}(y)}\in k$ für alle $y\in U_x$. $\Rightarrow f\in \mathcal O(V)$. 
+    Die Umkehrung folgt aus Bemerkung \ref{bem:10.3}.
+  \item Wie für affine Varietäten, siehe 1.5.3.
+  \end{enumerate}
+\end{Bew}
+\begin{nnBsp}
+  \begin{enumerate}
+    \renewcommand{\labelenumi}{\arabic{enumi}.)}
+  \item Die Abbildung $(x_0:x_1:x_2)\mapsto(x_0:x_1)$ ist ein Morphismus $\mathbb P^2(k)\setminus \{(0:0:1)\}\longrightarrow\mathbb P^1(k)$,
+    der sich nicht stetig auf ganz $\mathbb P^2(k)$ fortsetzen lässt.
+    \begin{align*}
+      \text{Für } &(\lambda:\lambda:\mu),\lambda\neq 0,\text{ ist } f(\lambda:\lambda:\mu)=(1:1) \\
+      \text{aber für } &(\lambda:-\lambda:\mu),\lambda\neq 0,\text{ ist } f(\lambda:-\lambda:\mu)=(1:-1)
+    \end{align*}
+    $\{(1:1)\}$ und $\{(1:-1)\}$ sind abgeschlossen, also müssen ihre Urbilder auch abgeschlossen sein.
+    Der Abschluss von $\{(x_0:x_1:x_2)\subseteq\mathbb P^2(k):x_0=x_1\}$ ist aber in $V(X_0-X_1)$ enthalten, 
+    denn $V(X_0-X_1)$ ist irreduzibel und es gilt:
+    \begin{align*}
+      V(X_0-X_1)&=\{(x_0:x_1:x_2)\subseteq\mathbb P^2(k):x_0=x_1\} \\
+      &=\{(0:0:1)\}\cup\{(\lambda:\lambda:\mu)\in\mathbb P^2(k):\lambda\in k^\times,\mu\in k\}
+    \end{align*}
+
+Das Urbild von $\{1,1\}$ ist $V(X_0-X_1)\setminus\{(0:0:1)\}$, also nicht abgeschlossen.
+
+  \item Sei $E\defeqr V(X_0X_2^2-X_1^3+X_1X_0^2)$ (elliptische Kurve $y^2=x^3-x$). \\
+    \begin{align*}
+    \Abb{f}{E\setminus\{(0:0:1)\}}{\mathbb P^1(k)}{(x_0:x_1:x_2)}{(x_0:x_1)}      
+    \end{align*}
+    lässt sich zu einem Morphismus $E\longrightarrow\mathbb P^1(k)$ fortsetzen.\\
+Sei $(x_0:x_1:x_2)\in E\setminus \{(0:0:1),(1:0:0)\}$ mit $x^2_2+x_1x_0\neq 0$ Dann ist auch $x_1\neq 0$ und somit
+    \begin{align*}
+      f(x_0:x_1:x_2)&=(x_0:x_1)\gleichwegen{x_2^2+x_1x_0\neq0}(x_0(x_2^2+x_1x_0):x_1(x_2^2+x_1x_0)) \\
+      &=(x_1^3:x_1(x_2^2+x_1x_0))\gleichwegen{x_1\neq0}(x_1^2:x_2^2+x_1x_0)
+    \end{align*}
+    Seien
+    \begin{align*}
+      &U =E\setminus\{(0:0:1)\} \\
+      &U'=E\setminus\{(1:0:0)\}
+    \end{align*}
+    $\Rightarrow E=U\cup U'$.
+    \begin{align*}
+      &f:U\longrightarrow\mathbb P^1, (x_0:x_1:x_2)\mapsto(x_0:x_1) \text{ ist ein Morphismus.} \\
+      &f':U'\longrightarrow\mathbb P^1, (x_0:x_1:x_2)\mapsto(x_1^2:x_2^2+x_1x_0) \text{ ist ein Morphismus.}
+    \end{align*}
+    Auf $U\cap U'$ gilt $f(y)=f'(y)$.
+  \end{enumerate}
+\end{nnBsp}
+\begin{Folg}
+  \label{folg:11.2}
+  Eine Abbildung $f:V\longrightarrow W$ von quasiprojektiven Varietäten ist genau dann ein Morphismus,
+  wenn $f$ stetig ist und für jedes offene $U\subseteq W$ und jedes $g\in \mathcal O_W(U)$ gilt:
+  \[
+  g\circ f\in\mathcal O_V(f^{-1}(U))
+  \]
+\end{Folg}
+\begin{Bew}
+  Folgt aus \ref{defbem:11.1} b). Alternativ: Beweis von Proposition \ref{prop:6.6} anpassen.\\
+"'$\Rightarrow$"'
+$f$ ist ein Morphismus $\Rightarrow f$ ist stetig. Mit 2.11.1.b) folgt: $g: U\rightarrow k$ ist ein Morphismus ($U\subseteq W$) $\Rightarrow g\circ f$ ist als Komposition von Morphismen auch ein Morphismus, also folgt mit 2.11.1.b), dass $g\circ f\in \mathcal O_V(f^{-1}(U))$\\
+"'$\Leftarrow$"' Angenommen, $f$ ist kein Morphismus.\\
+Sei $f=(f_1,...,f_m)$. Dann existiert ein $f_i$, dass sich auf $U_x$ nicht als Polynom darstellen lässt.\\
+Sei $g_i$ die Projektion auf diese Komponente.\\
+Dann ist $g\circ f=f_i$ kein Morphismus, also $g\circ f\notin \mathcal O_V(f^{-1}(U))$ 
+\end{Bew}
+
+
+
+\begin{Folg}
+  \label{folg:11.3}
+  Sind $V,W$ affine Varietäten, so ist eine Abbildung $f:V\longrightarrow W$ genau dann ein
+  Morphismus von affinen Varietäten, wenn sie ein Morphismus im Sinne von Definition \ref{defbem:11.1} a) ist.
+\end{Folg}
+Eleganter: Die Homöomorphismen $\mathbb A^n(k)\tomit{\sim}U_0\subseteq\mathbb P^n(k)\ (n\geq0)$ 
+induzieren einen volltreuen Funktor $\underline{Aff(k)}\longrightarrow\underline{Var^\circ(k)}$.
+ \begin{Prop}
+\label{prop:11.4}
+Für jedes $n \geq 1$ ist $Aut(\mathbb P^n(k)) \simeq \operatorname{PGL}_{n+1}(k) = \operatorname{GL}_{n+1}(k)/\{ \lambda \cdot I_{n+1} : \lambda \in k^\times \}$
+\end{Prop}
+\begin{Bew}
+Für $A \in \operatorname{GL}_{n+1}(k)$ sei\\ $\sigma_A: \mathbb P^n(k) \to \mathbb{P}^n(k)$ die Abbildung $\sigma_A(x_0 : \dots : x_n) = (y_0 : \dots : y_n )$ mit $A\cdot \begin{pmatrix} x_0\\\vdots\\x_n \end{pmatrix} = \begin{pmatrix} y_0\\ \vdots \\ y_n \end{pmatrix}$.\\
+$\sigma_A$ ist wohldefiniert, da $A(\lambda x) = \lambda Ax$.\\
+$\sigma_A$ ist Morphismus, denn $y_i$ ist lineares Polynom in den $x_j$\\
+$\sigma_A$ ist Automorphismus, da $\sigma_A \circ \sigma_{A^{-1}} = id$\\
+Es ist $\sigma_A \circ \sigma_B = \sigma_{A\cdot B} \Rightarrow \sigma: \operatorname{GL}_{n+1}(k) \to Aut(\mathbb P^n(k)), A\mapsto \sigma_A$ ist Gruppenhomomorphismus.\\
+Noch zu zeigen:
+\begin{enumerate}[label=\arabic{*}.]
+\item $\{ \lambda \cdot I_{n+1} : \lambda \in k^\times \} = \ker{\sigma}$
+\item $\sigma$ ist surjektiv.
+\end{enumerate}
+Beweis von $1$:
+\begin{description}
+\item ["`$\subseteq$"':] klar.
+\item ["`$\supseteq$"':] Sei $\sigma_A = id$. Dann gibt es für $i = 0, \dots, n$ ein $\lambda_i \in k^\times$ mit
+\begin{align*}
+& A \cdot \begin{pmatrix} 0\\\vdots\\ 1 \\ \vdots\\ 0 \end{pmatrix} = \begin{pmatrix} 0\\ \vdots\\ \lambda_i \\ \vdots \\ 0 \end{pmatrix} \leftarrow i\\
+\Rightarrow & A = \begin{pmatrix} \lambda_0 & & \\ & \ddots & \\ & & \lambda_n \end{pmatrix}\\
+\Rightarrow & A \cdot \begin{pmatrix} 1\\ \vdots \\ 1 \end{pmatrix} = \begin{pmatrix} \lambda_0 \\ \vdots \\ \lambda_n \end{pmatrix} \overset{!}{=} \begin{pmatrix} \lambda \\ \vdots \\ \lambda \end{pmatrix} \text{ für ein } \lambda \in k^\times\\
+\Rightarrow &\lambda_0 = \dots = \lambda_n = \lambda
+\end{align*}
+\end{description}
+\end{Bew}
+
+\begin{Bem}
+\label{bem:11.5}
+Sei $f: \mathbb{P}^n(k) \to \mathbb{P}^m(k)$ ein Morphismus, dann gibt es homogene Polynome $f_0, \dots, f_m \in k[X_0,\dots,X_n]$, so dass $f(x) = (f_0(x):\dots:f_m(x))$ für alle $x \in \mathbb{P}^n(k)$.
+\end{Bem}
+\begin{Bew}
+Übungsblatt 8, Aufgabe 3
+\end{Bew}
+\begin{Bew}[von Beh. 2]
+Sei $f: \mathbb{P}^n(k) \to \mathbb{P}^n(k)$ Automorphismus, dann gibt es also nach \ref{bem:11.5} homogene Polynome $f_0,\dots,f_n \in k[X_0,\dots,X_n]$ vom gleichen Grad $d$ mit $f(x) = (f_0(x):\dots:f_n(x))$. Genauso gibt es homogene Polynome $g_0,\dots,g_n \in k[X_0,\dots,X_n]$ vom gleichen Grad $e$ mit $f^{-1}(x) = (g_0(x):\dots:g_n(x))$.\\
+Es ist $(f_0(f^{-1}(x)): \dots : f_n( f^{-1}(x)) ) = (x_0: \dots : x_n)$ für jedes $x \in \mathbb{P}^n(k)$.\\
+$\Rightarrow f_i \circ f^{-1} = X_i \cdot h$ für ein homogenes Polynom $h$ vom Grad $d\cdot e -1$. $h$ kann keine Nullstelle haben, denn $f_i \circ f^{-1}$ ist auf ganz $\mathbb{P}^n(k)$ definiert.\\
+$\Rightarrow h \in k^\times \Rightarrow d \cdot e = 1 \Rightarrow d = 1 \text{ und } e = 1$\\
+$\Rightarrow f_i = \sum_{j=0}^m a_{ij} X_j$ für geeignete $a_{ij} \in k$.\\
+$\Rightarrow f = \sigma_A$ mit $A = (a_{ij})$.
+\end{Bew}
+ 
+\begin{nnBsp}
+Seien
+$ n = 1, A = \begin{pmatrix} a& b \\ c & d \end{pmatrix} \in \operatorname{GL}_2(k), x = (x_0: x_1) \in \mathbb{P}^1(k) $
+\\ Dann ist 
+$ \sigma_A(x) = (ax_0 + bx_1 : cx_0 + dx_1)$\\
+In $U_1$ ist also \[\sigma_A(x) = \frac{ax_0 + bx_1}{cx_0 + dx_1} = \frac{a\frac{x_0}{x_1} + b}{c\frac{x_0}{x_1} + d}\]
+\end{nnBsp}
+ 
+ 
+\begin{ErinnDefBem}
+\label{defbem:11.6}
+Sei $V \subset \mathbb{P}^n(k)$ quasiprojektive Varietät.
+\begin{enumerate}[label=(\alph{*})]
+\item Eine \begriff{rationale Funktion} auf $V$ ist eine Äquivalenzklasse von Paaren $(U,f)$, wo $U \subset V$ offen und dicht und $f \in \mathcal{O}_V(U)$ mit der Äquivalenzrelation $(U,f) ~ (U',f') :\Leftrightarrow f|_{U\cap U'} = f'|_{U\cap U'}$.
+\item Ist $V$ irreduzibel, so bilden die rationalen Funktionen auf $V$ einen Körper $k(V)$, den \begriff{Funktionenkörper} von $V$.
+\item Ist $V$ irreduzibel, so ist $k(V) \simeq Quot(k[U])$ für jede dichte, affine und offene Teilmenge $U \subset V$.
+\item Ist $W$ eine weitere quasi-projektive Varietät, so ist eine \begriff{rationale Abbildung} $f: V \dashrightarrow W$ eine Äquivalenzklasse von Paaren $(U,f_U)$, wo $U \subset V$ offen, dicht und $f_U: U \to W$ Morphismus und $(U,f_U) \sim (U',f'_U) :\Leftrightarrow f_U|_{U \cap U'} = f_{U'}|_{U \cap U'}$.
+\item Erinnerung: Eine rationale Abbildung $f: V \dashrightarrow W$ heißt \begriff{dominant}, wenn $f_U(U)$ dicht in $W$ ist, für einen (jeden) Repräsentanten $(U,f_U)$ von $f$.
+\item Die Zuordnung $V \mapsto k(V)$ ist eine kontravariante Äquivalenz von Kategorien
+\[
+\begin{cases} &\text{irred. quasi-proj. Varietäten}\\+&\text{dom. rationale Abb.}\end{cases} \Bigg\} \leftrightarrow \begin{cases} &\text{endl. erzeugte Körpererweiterungen $K/k$}\\ +& \text{$k$-Algebra-hom.} \end{cases}\Bigg\}
+\]
+\end{enumerate}
+\end{ErinnDefBem}
+
+
+%12.12.2008
+
+
+\section{Graßmann-Varietäten}
+Sei $k$ ein algebraisch abgeschlossener Körper, $1\leq d \leq n$ natürliche Zahlen.
+\begin{DefBem}
+\label{defbem:12.1}
+Sei $V$ ein $n$-dimensionaler $k$-Vektorraum.
+\begin{enumerate}
+\item $G(d,n)(V):=\{U\subseteq V: U \text{~ist~Untervektorraum~von~} V, \dim(U)=d\}$
+\item $G(d,n):= G(d,n)(k^n)$
+\item Es gibt eine Bijektion $G(d,n)(V)\rightarrow G(d,n)$.
+\end{enumerate}
+\end{DefBem}
+\begin{nnBsp}
+$d=1$: $G(1,n)= \mathbb{P}^{n-1}(k)$
+\end{nnBsp}
+\begin{Bem}
+\label{bem: 12.2}
+Es gibt "'natürliche"' Bijektionen 
+$$G(d,n) \rightarrow G(n-d,n)$$
+für alle $1\leq d\leq n-1$.
+\end{Bem}
+\begin{Bew}
+Sei $V^*$ der Dualraum zu $V$. Dann ist die Bijektion gegeben durch 
+\begin{align*}
+G(d,n)(V)&\rightarrow G(n-d,n)(V^*)\\
+U&\mapsto \{l\in V^*:U\subseteq\Kern(l)\}\\
+\bigcap_{l\in U^*}\Kern(l)&\mapsfrom U^*
+\end{align*}
+\end{Bew}
+
+\begin{BemDef}
+\label{bemdef: 12.3}
+Sei $\mathcal{F}_n(k)=\{((x_1:...:x_n),(y_1,..., y_n))\in \mathbb{P}^{n-1}(k)\times k^n:$
+\begin{flushright}
+$(y_1:...: y_n)=(x_1:\ldots:x_n) \text{~oder~} (y_1,...,y_n)=(0,...,0)\}$
+ \end{flushright}
+\underline{Beh}. $\mathcal{F}_n(k)$ ist quasiprojektive Varietät, als Untervarietät von
+\begin{align*}
+\mathbb{P}^{n-1}\times\mathbb{P}^n&\hookrightarrow \mathbb{P}^N\\
+((x_1:\cdots:x_n),(y_0:\cdots:y_n))&\mapsto (x_1y_0 : x_1y_1 : \cdots : x_ny_n)
+\end{align*}
+mit $N=n(n+1)$ und $x_iy_k:x_jy_k=x_iy_l:x_jy_l$\\
+Denn: $\mathcal{F}_n(k)=V(x_iy_j-x_jy_i,1\leq i\leq j)$\\
+Sei $pr: \mathcal{F}_n(k) \rightarrow \mathbb{P}^{n-1}(k)$ die Projektion auf die erste Komponente.\\
+$pr$ ist ein surjektiver Morphismus.\\
+Für $x:= (x_1:\cdots :x_n)\in \mathbb{P}^{n-1}(k)$ ist
+$$pr^{-1} = \{((x_1:\cdots:x_n)(y_1,\cdots,y_n))\in\mathbb{P}^{n-1}\times k^n: y_i=\lambda x_i \text{ für ein } \lambda\in k \text{~und~alle~} i = 1,\cdots, n\}$$
+$\mathcal{F}_n(k)$ heißt \begriff{tautologisches Bündel} 
+\end{BemDef}
+Für die folgende Proposition, sei zunächst folgende\\
+\underline{Erinnerung}: Ist $e_1,\cdots,e_n$ Basis von $v$, so ist $e_{i_1}\wedge\cdots\wedge e_{i_d},~1\leq i_1\leq\cdots<i_j\leq n$ Basis von $\bigwedge^dV$. (zwei $e_{i_j}$ vertauschen dreht das Vorzeichen, zwei gleiche $e_{i_j}$ gibt deshalb 0)
+\begin{Prop}
+\label{prop: 12.4}
+$G(d,n)(V)$ "'ist"' quasiprojektive Varietät.\\
+Genauer: Sei $\bigwedge^dV$ die $d$-te äußere Potenz von $V$ und sei 
+\begin{align*}
+\Abb{\psi:=\psi_{d,n}}{G(d,n)(V)}{\mathbb{P}(\bigwedge^dV)}{U}{[u_1\wedge\cdots\wedge u_d]}
+\end{align*}
+wobei $u_1,\cdots,u_d$ eine Basis von $U$ ist. Dann gilt:
+\begin{enumerate}
+\item $\psi$ ist wohldefiniert.
+\item $\psi$ ist injektiv
+\item Bild($\psi$) ist Zariski-abgeschlossen in $\mathbb{P}(\bigwedge^dV)=\mathbb P^{N-1}(k),
+  ~N=\dim(\bigwedge^dV)=\left(\begin{array}{c} n \\ d \end{array} \right)$
+\end{enumerate}
+\end{Prop}
+\begin{Bew}
+\begin{enumerate}
+\item Sei $v_1,\cdots,v_n$ eine weitere Basis von $U$.\\
+Dann gibt es ein $A\in$GL$_d(k)$ mit 
+$A\cdot\begin{pmatrix}
+u_1\\
+\vdots\\
+u_n
+\end{pmatrix}=
+\begin{pmatrix}
+v_1\\
+\vdots\\
+v_n
+\end{pmatrix}\\
+\Rightarrow v_1\wedge\cdots\wedge v_d=\sum_{i=1}^da_{1i}u_i\wedge\cdots\wedge\sum_{i=1}^da_{di}u_i=\\
+(\sum_{\sigma=S_d}(-1)^{sign(\sigma)}a_{1\sigma(1)}\cdot...\cdot a_{d\sigma(d)})\cdot u_1\wedge\cdots\wedge u_d=\det A\cdot u_1\wedge\cdots\wedge u_d$
+\item Sei $u_i,...,u_d$ eine Basis von $U$\\
+Zu zeigen: $U$ ist durch $[u_1\wedge...\wedge u_d]$ eindeutig bestimmt.\\
+Dies folgt aus der Behauptung:
+$$U=\{v\in V: v\wedge(u_1\wedge...\wedge u_d)=0\}$$
+\underline{Beweis der Beh.}: $v\wedge(u_1\wedge...\wedge u_d)=0\\
+\Leftrightarrow v,u_1,...,u_d$ sind linear abhängig\\
+$\Leftrightarrow v\in <u_1,...,u_d>=U$
+\item Wir brauchen homogene Gleichungen, die in allen Punkten in Bild($\psi$) erfüllt werden.
+\underline{Beoobachtung}:
+  \begin{align*}
+  \Bild(\psi)=\{[\omega]:\omega\in\bigwedge^dV\text{ und } \omega=u_1\wedge\dots\wedge u_d
+  \text{ für lin. unabh. Vektoren } u_1,\dots, u_d\text{ in } V\} \\
+    (\omega \text{ ist ``total zerlegbar'' })
+  \end{align*}
+  Für $\omega\in \bigwedge^d V$ sei
+  \begin{align*}
+    \Abb{\varphi_\omega}{V}{\bigwedge^{d+1}V}{v}{\omega\wedge v}
+  \end{align*}
+  und $L_\omega=(l_{ij}(\omega))$ (``Plücker Koordinaten'') die Darstellungsmatrix von
+  $\varphi_\omega$ bezüglich der Basen $e_1,\dots,e_n$ und $\{e_{i_1}\wedge\dots\wedge e_{i_{d+1}}:1\leq i_1<\dots <i_d\leq n\}$.\\
+Die Abbildung
+\begin{align*}
+    \Abb{\varphi}{\bigwedge^dV}{\Hom_k(V,\bigwedge^{d+1}V)}{\omega}{\varphi_\omega}
+\end{align*}
+ist linear.
+Dabei sind die $l_{ij}(\omega)$ linear in $\omega$, das heißt
+\begin{align*}
+\Abb{l_{ij}}{\bigwedge^dV}{k}{\omega}{l_{ij}(\omega)}
+\end{align*}
+ist eine lineare Abbildung.
+  \begin{Beh}
+    $[\omega]\in\Bild(\psi)\Leftrightarrow\det(l_{ij}(\omega))_{i\in\mathcal I\atop j \in\mathcal J}=0$
+  für alle $(n-d+1)$-Minoren $\mathcal I\times\mathcal J$ von $L_\omega$ \\
+  Diese Determinaten sind homogene Polynome vom Grad $n-d+1$ in den Linearformen $l_{ij}$. Also ist 
+  \begin{align*}
+    \Bild(\psi)=V((\det(l_{ij})_{i\in\mathcal I\atop j \in\mathcal J}):\mathcal I\times\mathcal J
+    \text{ ist $(n-d+1)$-Minor })
+  \end{align*}
+  das heißt $\Bild(\psi)$ ist abgeschlossen.
+  \end{Beh}
+  \begin{Bew}[der Behauptung]
+    \begin{align*}
+      & \det(l_{ij})_{i\in\mathcal I\atop j \in\mathcal J}=0\text{ für alle $(n-d+1)$-Minoren } \\
+      \Leftrightarrow & \Rg(\varphi_\omega)\leq n-d \\
+      \Leftrightarrow & \dim(\Kern(\varphi_\omega))\geq d
+    \end{align*}
+    Die Behauptung lautet also:
+    \begin{Beh}[']
+      $\omega$ total zerlegbar $\Leftrightarrow \dim(\Kern(\varphi_\omega))\geq d$
+    \end{Beh}
+    \begin{Beh}['']
+      \begin{enumerate}
+      \item $\dim(\Kern(\varphi_\omega))\leq d$
+      \item $\dim(\Kern(\varphi_\omega))=d\Leftrightarrow \omega\text{ total zerlegbar }$
+      \item Für $v\neq0$: $v\in\Kern(\varphi_\omega)\Leftrightarrow\exists\omega'\in\bigwedge^{d-1}V$ und $\omega=v\wedge\omega'$
+      \end{enumerate}
+    \end{Beh}
+    \begin{Bew}
+      \begin{enumerate}
+      \item[(c)] \OE $v=e_n$
+        \begin{align*}
+          & \omega=\sum_{1\leq i_1 <\dots < i_d\leq n}\lambda_{\underline{i}}\cdot e_{i_1}\wedge\dots\wedge e_{i_d} \\
+          \Rightarrow & 0=\omega\wedge v=\sum_{1\leq i_1 <\dots < i_d\leq n}\lambda_{\underline{i}}\cdot e_{i_1}\wedge\dots\wedge e_{i_d}\wedge e_n \\
+          \Leftrightarrow & \lambda_{\underline{i}}=0\text{ für alle } \underline{i}=(i_1,\dots,i_d)\text{ mit } i_d\neq n\\
+          \Rightarrow & \omega = \left(\sum_{1\leq i_1 <\dots < i_{d-1}\leq n}\lambda_{i_1,\dots,i_{d-1},n}\cdot e_{i_1}\wedge\dots\wedge e_{i_{d-1}}\right)
+          \wedge e_n\defeql\omega'\wedge e_n
+        \end{align*}
+        ``$\Leftarrow$'' $\surd$
+      \item[(a)] Aus (c) folgt mit Induktion über $m$: Sind $v_1,\dots,v_m\in\Kern(\varphi_\omega)$ linear unabhängig, so gibt es $\omega\in\bigwedge^{d-m}V$ mit
+        $\omega=\omega_m\wedge v_1\wedge\dots\wedge v_m \Rightarrow m \leq d$
+      \item[(b)] ``$\Rightarrow$'' Sei $v_1,\dots,v_m$ eine Basis von $\Kern(\varphi_\omega)$ \\
+        $\stackrel{Bew. a)}{\Rightarrow}\omega=\lambda\cdot v_1\wedge\dots\wedge v_d$ für ein $\lambda\in k^\times$ \\
+        ``$\Leftarrow$'' Sei $\omega=u_1\wedge\dots\wedge u_d$
+        \begin{align*}
+          v\in\Kern(\varphi_\omega) \Leftrightarrow & v,u_1,\dots,u_d\text{ linear abhängig } \\
+          \Leftrightarrow & v\in<u_1,\dots,u_d> \\
+          \Rightarrow & \Kern(\varphi_\omega)=<u_1,...,u_d>\\
+          & \text{mit }\dim\Kern(\varphi_\omega)=d
+        \end{align*}
+      \end{enumerate}
+    \end{Bew}
+  \end{Bew}
+\end{enumerate}
+\end{Bew}
+
+
+%19.12.2008
+
+
+
+\section{Varietäten}
+
+Seien $V_1,~V_2$ quasiprojektive Varietäten, $U_i\subseteq V_i$ offen $(i=1,2)$, $\varphi: U_1 \rightarrow U_2$ ein Isomorphismus.\\
+Sei $V:=\FakRaum{(V_1\stackrel{\cdot}{\cup} V_2)}{\sim}$, wobei für $x\in V_1$ und $y\in V_2$ gelte 
+$$x\sim y :\Leftrightarrow x\in U_1 \text{ und } y=\varphi(x)\in U_2$$
+$V$ ist ein topologischer Raum mit der Quotiententopologie.
+Für $U\subseteq V$ offen sei
+$$\mathcal{O}_V(U):=\{f: U\rightarrow k~\mid~\forall x\in U ~\exists U_x \text{ offen mit } U_x\subseteq V_1 \text{ oder } U_x\subseteq V_2 \text{ und } f\mid_{U_x} \text{ ist regulär}\}$$
+d.h. $f\mid_{U_x}\in\mathcal{O}_{V_1}(U_x)$, bzw. $\mathcal{O}_{V_2}(U_x)$.\\
+Ist $x\in U_1$ (oder $x\in U_2$), so ist \OE~~$U_x\subseteq U_1$ und $\varphi(U_x)\subseteq U_2$ ebenfalls offene Umgebung von $x$ in $V$.\\
+dann ist $f\in\mathcal{O}_{V_2}(\varphi(U_x))\Leftrightarrow f\circ\varphi\in\mathcal{O}_{V_1}(U_x)$
+\begin{Bem}
+\label{bem:13.1}
+$\mathcal{O}_V$ ist Garbe von $k$-Algebren auf $V$.
+\end{Bem}
+
+\begin{Def}
+\label{def:13.2}
+$V$ wie oben heißt die aus $V_1$ und $V_2$ durch Verkleben längs $U_1$ und $U_2$ via $\varphi$ entstandene \begriff{Prävarietät}. (Begriff nicht so in der Literatur) 
+\end{Def}
+
+\begin{Bsp}
+\begin{enumerate}
+\item $V_1=V_2=\mathbb{A}^1(k)$, $U_1=U_2=\mathbb{A}^1\setminus\{0\}$\\
+$\varphi:U_1\rightarrow U_2,~x\mapsto\frac{1}{x}$\\
+Dann ist die Verklebung $V$ von $V_1$ und $V_2$ längs $\varphi$ isomorph zu $\mathbb{P}^1(k)$.\\
+Dabei heißt $\Psi:V\rightarrow\mathbb{P}^1(k)$ \begriff{Isomorphismus}, wenn $\Psi$ ein Homöomorphismus ist und für jedes offene $U\subset\mathbb{P}^1(k)$ gilt:
+$$\mathcal{O}_{\mathbb{P}^n(k)}\rightarrow \mathcal{O}_V(\Psi^{-1}(U)),~~~f\mapsto f\circ\Psi$$
+ist ein Isomophismus von $k$-Algebren.
+$\Psi:V\rightarrow\mathbb{P}^1(k)$ sei wie folgt definiert:
+
+\begin{align*}
+\Psi\mid V_1=\rho_0:\mathbb{A}^1(k)\rightarrow\mathbb{P}^1(k),~~x\mapsto (1:x)\\
+\Psi\mid V_2=\rho_1:\mathbb{A}^1(k)\rightarrow\mathbb{P}^1(k),~~y\mapsto (y:1)\\
+\end{align*}
+für $x\in U_1$ ist $(1:x)=(\varphi(x):1)=(\frac{1}{x}:1)$\\
+\underline{Übungsaufgabe}: Verklebe $n+1$ Kopien von $\mathbb{A}^n(k)$, so dass $\mathbb{P}^n(k)$ entsteht.
+\item $V_1=V_2=\mathbb{A}^1(k)$, $U_1=U_2=\mathbb{A}^1(k)\setminus\{0\}$\\
+$\varphi:U_1\rightarrow U_2,~~\varphi=\id, ~~V$ Verklebung längs $\varphi$.\\
+Für jedes offene $U\subseteq V$ mit $0_1\in U$ und $0_2\in U$ und jedes $f\in \mathcal{O}_V(U)$ ist $f(0_1)=f(0_2)$.\\
+So ein $V$ heißt \begriff{separiert}.
+\end{enumerate}
+\end{Bsp}
+
+\begin{Bem}
+\label{bem:13.3 (Topologische Bemerkung)}
+Ein topologischer Raum ist genau dann hausdorffsch, wenn die Diagonale
+$$\Delta:=\{(x,x)\mid x\in X\}\subset X\times X$$
+abgeschlossen in $X\times X$ ist.
+\end{Bem}
+
+\begin{Bew}
+"'$\Rightarrow$"' Sei $X$ hausdorffsch, $(x,y)\in (X\times X)\setminus\Delta\\
+\Rightarrow x\neq y$. Dann gibt es ein $x\in U$ offen, $y\in V$ offen mit $U\cap V=\emptyset\\
+\Rightarrow U\times V$ ist offene Umgebung von $(x,y)$ mit $(U\times V)\cap\Delta=\emptyset$\\
+"'$\Leftarrow$"' Sei $x\neq y\in X,~~W$ eine offene Umgebung von $(x,y)$ in $X\times X$ mit $W\cap \Delta=\emptyset$\\
+\OE~$W=U\times V$, da die $U\times V$ eine Basis der Toplogie auf $X\times X$ bilden $\Rightarrow U\cap V=\emptyset$ 
+\end{Bew}
+
+\begin{Def}
+\label{def:13.4}
+Eine Prävarietät $X$ heißt \begriff{separiert}, wenn $\Delta\subset X\times X$ abgeschlossen ist. 
+\end{Def}
+
+\begin{Bsp}
+\label{bsp:(doppelter Nullpunkt)}
+Sei $V$ wie im letzten Beispiel. Dann ist $\Delta\subset V\times V$ nicht abgeschlossen:\\
+In $V\times V$ gibt es über $(0,0)$ die folgenden Punkte:\\
+$(0_1,0_1),~~(0_1,0_2)~~(0_2,0_1)~~(0_2,0_2)$.\\
+Davon liegen $(0_1,0_1)$ und $(0_2,0_2)$ in $\Delta$, die beiden anderen nicht. Diese liegen aber in $\overline{\Delta}$.
+\end{Bsp}
+
+\begin{Def}
+\label{def:13.5}
+\begin{enumerate}
+\item Eine \begriff{Prävarietät} über $k$ ist ein topologischer Raum $X$, zusammen mit einer Garbe $\mathcal{O}_X$ von $k$-Algebren, der eine endliche offene Überdeckung $X=U_1\cup...\cup U_n$ besitzt, so dass $(U_i,\mathcal{O}_X\mid_{U_i})$ isomorph zu einer affinen Varietät ist.
+\item Eine separierte Prävarietät heißt \begriff{Varietät}.
+\end{enumerate}
+\end{Def}
+
+\begin{Def}
+\label{def:13.6}
+Für eine Prävarietät $X$ mit affiner Überdeckung $(U_i)_{i=1,...,n}$ sei $X\times X$ die Prävarietät, die durch Verkleben der $U_i\times U_j,~~i,j=1,...,n$ hervorgeht.\\
+Dabei ist $U_i\times U_j$ die affine Varietät, die durch $\mathcal{O}_X(U_i)\otimes_k\mathcal{O}_X(U_j)$ bestimmt ist.\\
+Produkt ist folgendes:
+\[
+\begin{xy}
+\xymatrix{
+   &  X\times Y \ar[dr]\ar[dl] &\\
+X  &                           & Y\\
+   &  Z\ar[ul]\ar[ur]\ar@.[uu]^{\exists_1}   & }
+\end{xy}
+\]
+\end{Def}
+
+
+\chapter{Lokale Eigenschaften}
+\setcounter{section}{13}
+\section{Lokale Ringe zu Punkten}
+\begin{ErinnDefBem}
+  \label{bem:14.1}
+  Sei $V$ eine Varietät (über einem algebraisch abgeschlossenen Körper $k$) und $x\in V$.
+  \begin{enumerate}
+  \item
+    \begin{align*}
+      \mathcal{O}_{V,x}\defeqr\{[(U,f)]:U\subseteq V \text{ offen, } x\in U, f\in\mathcal{O}_V(U)\}
+    \end{align*}
+    heißt \begriff{lokaler Ring} von $V$ in $x$, dabei sei $(U,f)\sim (U',f')\Leftrightarrow f\vert U\cap U'=f'\vert U\cap U'$
+  \item $\mathcal{O}_{V,x}$ ist ein lokaler Ring mit maximalem Ideal
+    \begin{align*}
+      m_x=\{[(U,f)]\in\mathcal{O}_{V,x}:f(x)=0\}.
+    \end{align*}
+  \item $\mathcal{O}_{V,x}=\varinjlim_{U\subseteq V \text{ offen},\,x\in U}\mathcal{O}_V(U)$ \\
+    \begin{align*}
+    \begin{xy}
+      \xymatrix{
+        & & \mathcal{O}_V(U)\ar[3,-2]_{\alpha_U}\ar[2,1]^{\rho_U}\ar[2,0]^{U'\subseteq U} & \\
+        & & & \\
+        & & \mathcal{O}_V(U')\ar[r]^{\rho_{U'}}\ar[1,-2]_{\alpha_{U'}} & \mathcal{O}_{V,x}\ar@{.>}[1,-3]^{\exists! \alpha} \\
+        A & & & \\
+      }
+    \end{xy}
+    \end{align*}
+  \end{enumerate}
+\end{ErinnDefBem}
+\begin{Bem}
+  \label{bem:14.2}
+  Seien $V,x\in V$ wie in \ref{bem:14.1}, sei weiter $V_0\subseteq V$ offen und affin mit $x\in V_0$. Dann gilt: 
+  \begin{enumerate}
+  \item $\mathcal{O}_{V,x}\cong k[V_0]_{m_x^{V_0}}$, wobei $k[V_0]$ der affine Koordinatenring von $V_0$
+    sei und $m_x^{V_0}$ das zu $x$ gehörige maximale Ideal in $k[V_0]$, das heißt $m_x^{V_0}=\{f\in k[V_0]:f(x)=0\}$.
+  \item Ist $V$ irreduzibel, so ist $\mathcal{O}_{V,x}\cong \{f=\frac{g}{h}\in k(V):g,h\in k[V_0], h(x)\neq 0\}$.
+  \end{enumerate}
+\end{Bem}
+\begin{Bew}
+  Übung.
+\end{Bew}
+\begin{Prop}
+  \label{prop:14.3}
+  Seien $V,W$ Varietäten, $x\in V, y\in W$. Ist $\mathcal{O}_{V,x}\cong\mathcal{O}_{W,y}$ (als $k$-Algebra), so gibt es (affine)
+  offene Umgebungen $U_1\subseteq V$ von $x$ und $U_2\subseteq W$ von $y$ mit $U_1\cong U_2$.
+\end{Prop}
+\begin{Bew}
+  Übungsblatt 7 Aufgabe 1.
+\end{Bew}
+\begin{Bem}
+  \label{bem:14.4}
+  Sei $\varphi :V\longrightarrow W$ ein Morphismus von Varietäten. Für jedes $x\in V$ induziert $\varphi$ einen
+  $k$-Algebrenhomomorphismus
+  \begin{align*}
+    \varphi_x^\sharp:\mathcal{O}_{W,\varphi(x)}\longrightarrow \mathcal{O}_{V,x} \ \text{ mit } \ \varphi_x^\sharp(m_{\varphi(x)})\subseteq m_x.
+  \end{align*}
+\end{Bem}
+\begin{Bew}
+  \OE \ $V,W$ affin (geeignet einschränken!). \\ Dann induziert $\varphi$ einen $k$-Algebrenhomomorphismus
+  \begin{align*}
+    \Abb{\varphi^\sharp}{k[W]}{k[V]}{f}{f\circ\varphi}
+  \end{align*}
+  Dabei gilt für $f\in k[W]$:
+  \begin{align*}
+    (*) \quad f\in m_{\varphi(x)}^{W}\Leftrightarrow f(\varphi(x))=0\Leftrightarrow (f\circ\varphi)(x)=0\Leftrightarrow\varphi^\sharp(f)\in m_x^V
+  \end{align*}
+  $\Rightarrow\varphi^\sharp$ induziert einen Homomorphismus
+  \begin{align*}
+    \varphi_x^\sharp:\underbrace{k[W]_{m_{\varphi(x)}^W}}_{\cong\mathcal{O}_{W,\varphi(x)}}\longrightarrow \underbrace{k[V]_{m_x^V}}_{\cong\mathcal{O}_{V,x}} .
+  \end{align*}
+  Aus $(*)$ folgt weiter:
+  \begin{align*}
+    \varphi_x^\sharp ( \underbrace{m_{\varphi(x)}^W\cdot k[W]_{m_{\varphi(x)}^W}}_{=m_{\varphi(x)}} ) \subseteq m_x^V k[V]_{m_x^V} = m_x
+  \end{align*}
+\end{Bew}
+
+
+\section{Dimension einer Varietät}
+\begin{Def}
+  \label{def:15.1}
+  Sei $X$ ein topologischer Raum ($\neq\emptyset$). Dann heißt 
+  \begin{align*}
+    \dim(X)\defeqr\sup\{n\in\mathbb{N}:\text{ Es gibt irreduzible Teilmengen } \emptyset\neq V_0\subsetneq \ldots\subsetneq V_n\subseteq X\}
+  \end{align*}
+die \begriff{(Krull-)Dimension} von $X$. 
+\end{Def}
+\begin{ErinnDef}
+  \label{def:15.2}
+  Sei $R$ ein Ring (kommutativ mit Eins).
+  \begin{enumerate}
+  \item Für ein Primideal $\wp\subseteq R$ heißt $$\height(\wp)\defeqr\sup\{n\in\mathbb{N}:\text{ Es gibt Primideale } \wp_0\subsetneq\ldots\subsetneq \wp_n =\wp\}$$
+    die \begriff{Höhe} von $\wp$.
+  \item $\dim R\defeqr\sup\{\height(\wp):\wp\subset R \text{ Primideal}\}$ heißt \begriff{(Krull-)Dimension} von $R$.
+  \end{enumerate}
+\end{ErinnDef}
+\begin{Bem}
+  \label{bem:15.3}
+  Sei $V$ eine affine Varietät. Dann ist $\dim(V)=\dim(k[V])$.
+\end{Bem}
+\begin{Bew}
+  Nach Proposition \ref{prop:3.3} ist eine abgeschlossene Teilmenge $Z$ von $V$ genau dann irreduzibel, wenn ihr Verschwindungsideal
+  $I(Z)$ ein Primideal ist. Nach Satz \ref{satz:HNSaffin} ist das eine Bijektion.
+\end{Bew}
+\begin{Prop}
+  \label{prop:15.4}
+  \begin{enumerate}
+  \item $\dim(k[X_1,\dots,X_n])=n$
+  \item Ist $A$ eine nullteilerfreie $k$-Algebra, so haben alle maximalen Primidealketten die gleiche Länge.
+  \end{enumerate}
+\end{Prop}
+\begin{Bew}
+  Algebra 2.
+\end{Bew}
+
+\begin{BemDef}
+  \label{bemdef:15.5}
+  Sei $V$ eine Varietät, $x\in V$, $V_0\subseteq V$ eine offene und affine Umgebung von $x$.
+  \begin{enumerate}
+  \item $\dim\mathcal{O}_{V,x}=\height(m_x^{V_0}) (=\height(m_x^{V_0}\cdot k[V_0]_{m_x^{V_0}}))$
+  \item Ist $V$ irreduzibel, so ist 
+    \begin{align*}
+      \dim\mathcal{O}_{V,x}=\dim\mathcal{O}_{V,y}=\dim V\text{ für alle } x,y \in V.
+    \end{align*}
+\item $\dim_xV:=\dim\mathcal{O}_{V,x}$ heißt \begriff{lokale Dimension} von $V$ in $x$.
+\item $\dim_xV=\max\{ \dim Z: Z$ irreduzible Komponente von $V,~x\in Z\}$
+\end{enumerate}
+\end{BemDef}
+
+\begin{Bew}
+b) Ist $V$ affin (also $V=V_0$), so folgt die Aussage aus a) und Proposition 3.15.4(b). Im allgemeinen Falle überdecke $V$ durch affine Varietäten $V_i \ (i = 1,\ldots,n)$. Da $V$ irreduzibel ist, ist $V_i\cap V_j\neq \emptyset~\forall i,j.\\
+\Rightarrow \dim \mathcal{O}_{V,x}$ ist unabhängig von $x$, also gleich dim$V_i$ für jedes $i = 1, \ldots, n$.\\
+noch zu zeigen: \ $\dim V_i= \dim V$.\\
+Sei $Z_0\subsetneq Z_1\subsetneq\ldots\subsetneq Z_d=V$ eine maximale Kette von irreduziblen Teilmengen. Dabei ist $Z_0=\{z_0\}$ einpunktig. Es folgt $d= \dim \mathcal{O}_{V,z_0}$.\\
+d) \OE ~sei $V$ affin. Die irreduziblen Komponenten $Z_1,\ldots,Z_n$ von $V$ entsprechen den minimalen Primidealen in $k[V]$. Es gilt $x\in Z_i\Leftrightarrow m_x^V\supseteq I(Z_i)=:\mu_i$. Weiter ist $k[Z_i]=k[V]/\mu_i$. Es folgt:
+$\dim\mathcal{O}_{V,x}=\height(m_x^V)=\max_{i=1; \mu_i\subseteq m_x^V}^n\{\text{maximale Länge einer Primidealkette } \mu_i\subsetneq \wp_1\subsetneq\ldots\subsetneq m_x^V\}=\max_{i=1; \mu_i\subseteq m_x^V}^n\{\underbrace{\dim k[Z_i]}_{= \dim Z_i}\}$.
+\end{Bew}
+\section{Der Tangentialraum}
+Zunächst einige einführende Beispiele:
+
+\begin{nnBsp}
+  \begin{enumerate}
+\item[1.)]
+$V=V(Y^2-X^3+X)$, $x=(0,0)$.\\
+Die Tangente in $x$ an $V$ ist die $y$-Achse, also $V(X)$. Der Tangentialraum in $x=(1,0)$ ist derselbe, d.h. der Tangentialraum ist nicht als affiner Raum, sondern als Vektorraum zu verstehen.
+
+    \begin{tikzpicture}
+      \draw[->] (-2,0) -- (2,0);
+      \draw[->] (0,-2) -- (0,2);
+      \draw[draw=red] (0,-2) -- (0,2);
+      \draw[fill=black] (0,0) circle (0.045) node [below right] {$x$};
+      %koordinaten mit python ausgerechnet:
+      %for t in [-float(x)/n for x in range(0,n)]:
+      %    print "(%.4f,%.4f)" % (t,sqrt(t*t*t-t))
+      \draw (-1.0000,-0.0000) -- (-0.9667,-0.2517) -- (-0.9333,-0.3468) -- (-0.9000,-0.4135) -- (-0.8667,-0.4644) -- (-0.8333,-0.5046) -- (-0.8000,-0.5367) -- (-0.7667,-0.5622) -- (-0.7333,-0.5822) -- (-0.7000,-0.5975) -- (-0.6667,-0.6086) -- (-0.6333,-0.6159) -- (-0.6000,-0.6197) -- (-0.5667,-0.6202) -- (-0.5333,-0.6178) -- (-0.5000,-0.6124) -- (-0.4667,-0.6042) -- (-0.4333,-0.5933) -- (-0.4000,-0.5797) -- (-0.3667,-0.5634) -- (-0.3333,-0.5443) -- (-0.3000,-0.5225) -- (-0.2667,-0.4977) -- (-0.2333,-0.4697) -- (-0.2000,-0.4382) -- (-0.1667,-0.4025) -- (-0.1333,-0.3619) -- (-0.1000,-0.3146) -- (-0.0667,-0.2576) -- (-0.0333,-0.1825) -- (-0.0000,0.0000) -- (-0.0333,0.1825) -- (-0.0667,0.2576) -- (-0.1000,0.3146) -- (-0.1333,0.3619) -- (-0.1667,0.4025) -- (-0.2000,0.4382) -- (-0.2333,0.4697) -- (-0.2667,0.4977) -- (-0.3000,0.5225) -- (-0.3333,0.5443) -- (-0.3667,0.5634) -- (-0.4000,0.5797) -- (-0.4333,0.5933) -- (-0.4667,0.6042) -- (-0.5000,0.6124) -- (-0.5333,0.6178) -- (-0.5667,0.6202) -- (-0.6000,0.6197) -- (-0.6333,0.6159) -- (-0.6667,0.6086) -- (-0.7000,0.5975) -- (-0.7333,0.5822) -- (-0.7667,0.5622) -- (-0.8000,0.5367) -- (-0.8333,0.5046) -- (-0.8667,0.4644) -- (-0.9000,0.4135) -- (-0.9333,0.3468) -- (-0.9667,0.2517) -- (-1.0,0.0);
+      \draw (1.0000,0.0000) -- (1.0333,0.2646) -- (1.0667,0.3834) -- (1.1000,0.4806) -- (1.1333,0.5678) -- (1.1667,0.6491) -- (1.2000,0.7266) -- (1.2333,0.8017) -- (1.2667,0.8750) -- (1.3000,0.9471) -- (1.3333,1.0184) -- (1.3667,1.0890) -- (1.4000,1.1593) -- (1.4333,1.2294) -- (1.4667,1.2993) -- (1.5000,1.3693) -- (1.5333,1.4393) -- (1.5667,1.5095) -- (1.6000,1.5799) -- (1.6333,1.6505) -- (1.6667,1.7213) -- (1.7000,1.7925) -- (1.7333,1.8640) -- (1.7667,1.9358) -- (1.8000,2.0080) -- (1.8333,2.0806) -- (1.8667,2.1535);
+      \draw (1.0000,-0.0000) -- (1.0333,-0.2646) -- (1.0667,-0.3834) -- (1.1000,-0.4806) -- (1.1333,-0.5678) -- (1.1667,-0.6491) -- (1.2000,-0.7266) -- (1.2333,-0.8017) -- (1.2667,-0.8750) -- (1.3000,-0.9471) -- (1.3333,-1.0184) -- (1.3667,-1.0890) -- (1.4000,-1.1593) -- (1.4333,-1.2294) -- (1.4667,-1.2993) -- (1.5000,-1.3693) -- (1.5333,-1.4393) -- (1.5667,-1.5095) -- (1.6000,-1.5799) -- (1.6333,-1.6505) -- (1.6667,-1.7213) -- (1.7000,-1.7925) -- (1.7333,-1.8640) -- (1.7667,-1.9358) -- (1.8000,-2.0080) -- (1.8333,-2.0806) -- (1.8667,-2.1535);
+
+    \end{tikzpicture}
+\item[2.)] $V=V(Y^2-X^3+X^2)$ (Newton-Knoten), $x=(0,0)$.\\
+Hier kann man an den Nullpunkt 2 Tangenten anlegen ($y=x$ und $y=-x$). Der Tangentialraum, wie wir ihn definieren werden, ist der davon aufgespannte $\mathbb{A}^2(k)$.
+\item[3.)] $V=V(Y^2-X^3)$, $x=(0,0)$.\\ Ist jeder beliebige eindimensionale Unterraum im Tangentialraum enthalten?
+\item[4.)] $V=V(X^2+Y^2-Z^2)$ (doppelter Kegel), $x=(0,0,0)$, $y=(1,0,1)$.
+\end{enumerate}
+\end{nnBsp}
+
+\begin{DefBem}
+\label{defbem:16.1}
+Sei $V\subseteq \mathbb{A}^n(k)$ eine affine Varietät, $x\in V$, $I=I(V)$.
+\begin{enumerate}
+\item Für $f\in I$ sei $f^{(1)}:= f^{(1)}_x := \sum_{i=1}^n \frac{\partial f}{\partial X_i}(x)\cdot X_i$. Weiter sei $I_x$ das von den $f^{(1)}$, $f\in I$, erzeugte Ideal in $k[X_1,\ldots ,X_n]$ und $T_x:=T_{V,x}:=V(I_X)$. $T_{V,x}$ heißt \begriff{Tangentialraum} an $V$ in $x$.
+\item $T_x$ ist ein linearer Unterraum von $\mathbb{A}^n(k)$.
+\item Sind $f_1,\ldots , f_r$ Erzeuger von $I$, so wird $I_x$ erzeugt von $f_1^{(1)},\ldots, f_r^{(1)}$.
+\end{enumerate}
+\end{DefBem}
+\underline{Beispiele von oben:}
+\begin{enumerate}
+\item[1.)] $I_x=(X),~~~T_x=V(X)$
+\item[2.)] $I_x=(0),~~~T_x=\mathbb{A}^2(k)$
+\item[3.)] $I_x=(0),~~~T_x=\mathbb{A}^2(k)$
+\item[4.)] $I_x=(0),~~~T_x=\mathbb{A}^3(k)$;\\
+$I_y=(2X-2Z)=(X-Z),~~~T_y=V(X-Z)$
+\end{enumerate}
+
+\begin{Bem}
+\label{bem:16.2}
+Jeder Morphismus $\varphi:V\rightarrow W$ von affinen Varietäten induziert für jedes $x\in V$ eine $k$-lineare Abbildung $d_x\varphi:T_{V,x}\rightarrow T_{W,\varphi(x)}$.
+\end{Bem}
+\begin{Bew}
+\OE $x=0,~\varphi(x)=0$.\\
+Schreibe $\varphi=(\varphi_1,\ldots,\varphi_m)$. Brauche $k$-Algebrenhomomorphismus:
+$$(d_x\varphi)^{\sharp}:~~k[Y_1,\ldots,Y_m]/I_{\varphi(x)}\rightarrow k[X_1,\ldots,X_n]/I_x$$
+Für $j=1,\ldots, m$ ist $\varphi^{\sharp}(Y_j)=Y_j\circ\varphi=\varphi_j\Rightarrow(\varphi^{\sharp}(Y_j)^{(1)})=\sum_{i=1}^n\frac{\partial\varphi_j}{\partial X_i}(0)\cdot X_i=:(d_x\varphi)^{\sharp}(Y_j)$.\\
+Sei $f\in I_{\varphi}$, \OE $f=g^{(1)}$ für ein $g\in I(V)$.\\
+Schreibe $g^{(1)}=\sum_{j=1}^ma_jY_j,~~a_j\in k=(d_x\varphi)^{\sharp}(f)=\sum_{j=1}^ma_j\sum_{i=1}^n\frac{\partial\varphi_i}{\partial X_i}(0)\cdot X_i
+=\sum_{i=1}^n(\sum_{j=1}^ma_j\frac{\partial\varphi_i}{\partial X_i}(0))\cdot X_i=(g\circ\varphi)^{(1)}$\\
+da $\frac{\partial(g\circ\varphi)}{\partial X_i}(0)=
+\sum_{j=1}^m\underbrace{\frac{\partial g}{\partial Y_j}(\varphi(0))}_{=a_j}\frac{\partial\varphi_j}{\partial X_i}(0)$
+\end{Bew}
+
+\begin{PropDef}
+Sei $V\subseteq\mathbb{A}^n(k)$ eine affine Varietät, $x\in V$.
+Dann ist $T_x$ in natürlicher Weise isomorph zu dem Dualraum $(m_x/m_x^2)^{\vee}$ von $m_x/m_x^2$. Der $k$-Vektorraum $(m_x/m_x^2)^{\vee}$ heißt \begriff{Zariski-Tangentialraum} an $V$ in $x$.\\
+$m_x/m_x^2$ ist ein $k$-Vektorraum: Zunächst ist $m_x/m_x^2$ ein $R$-Modul für $R=\mathcal{O}_{V,x}$. Weiter ist $R/m_x=k$.\\
+Da $m_x\cdot(m_x/m_x^2)=0$ ist, hat $m_x/m_x^2$ eine Struktur als $R/m_x$-Modul. 
+\end{PropDef}
+
+
+
+%14.01.2009
+
+
+
+\begin{DefBem}
+\label{defbem:16.4}
+Sei $V$ eine Varietät, $x\in V$.
+\begin{enumerate}
+\item $x$ heißt \begriff{nichtsingulärer Punkt} (oder \begriff{regulärer Punkt}), wenn 
+$$\dim T_{V,x}=\dim_xV.$$
+\item (Jacobi-Kriterium) Sei $U\subseteq V$ eine offene, affine Umgebung von $x$, $f_1,\ldots,f_r\in k[X_1,\ldots,X_n]$ Erzeuger des Verschwindungsideals $I(U)$. Dann gilt:\\
+$$x \text{ nichtsingulär } \Leftrightarrow \Rang\left(\frac{\partial f_i}{\partial X_j}(x)\right)_{i,j}=n-\dim_xV$$
+\item Ist $x$ singulär, so ist $\dim T_{V,x}>\dim_xV$.
+\end{enumerate}
+\end{DefBem}
+\begin{Bew}
+\begin{enumerate}
+\item[b)] Sei $x\in V$, $V=V(f_1,\ldots,f_r)\subseteq\mathbb{A}^n(k)$.
+$$\mathcal{J}_f(x):=\left(\frac{\partial f_i}{\partial X_j}(x)\right)_{i=1,\ldots,r\atop j=1,\ldots,n}$$
+$T_{V,x}$ ist die Lösungsmenge des LGS $\mathcal{J}_f(x)\cdot X=0$, denn $f_i^{(1)}=\sum_{j=1}^n\frac{\partial f_i}{\partial X_j}(x)\cdot X_j$.
+\item[c)] Sei $\mathcal J_f := \left(\frac{\partial f_i}{\partial X_j}\right)_{i,j}$.\\ $\Rightarrow \Rang\left(\mathcal J_f(x)\right)=\max\{d: \exists \, (d\times d)$-Minor $M$ von $\mathcal J_f$ mit $\det M(x)\neq0\}\\
+\Rightarrow$ Es gibt eine offene Teilmenge $U$ von $V$, auf der $\Rang(\mathcal J_f(x))$ maximal ist. 
+\end{enumerate}
+\end{Bew}
+
+\begin{Bsp}
+\begin{enumerate}
+\item $V=(Y^2-X^3-X^2)=:V(f)\\
+\mathcal J_f=\left(\frac{\partial f}{\partial X},\frac{\partial f}{\partial Y}\right)=(-3X^2-2X,2Y)\\
+Rang(\mathcal J_f(x))=\begin{cases}
+0 \ \ , \ -3X^2-2X=0 $ und $Y=0\\
+1 \ \ , \ $ sonst $
+                    \end{cases}$
+\item $V=V(f)\subseteq\mathbb A^n(k)$ mit einem Polynom $f\in k[X_1,\ldots, X_n].\\
+x\in\mathbb A^n(k)$ singulärer Punkt von $V \Leftrightarrow 0=f(x)=\frac{\partial f}{\partial X_1}(x)=\ldots=\frac{\partial f}{\partial X_n}(x)$
+\end{enumerate}
+\end{Bsp}
+
+\begin{Prop}
+\label{prop:16.3}
+$$\mathcal T_{V,x}\cong \left(\FakRaum{m_x}{m_x^2}\right)^*~~~~~~~~~~~\FakRaum{\mathcal O_{V,x}}{m_x}\cong k$$
+(in natürlicher Weise)
+\end{Prop}
+\begin{Bew}
+Sei $I=I(V)$ das Verschwindungsideal von $V$ in $k[X_1,...,X_n]$. \OE $~~x=(0,...,0)$\\
+Dann ist $\mathcal M:=m_x^{\mathbb A^n}=(x_1,...,x_n)\\
+\Rightarrow m_x^V=\FakRaum{\mathcal M_x}{I\cap\mathcal M_x}=\FakRaum{\mathcal M_x}{I}$, da $I\subseteq \mathcal M_x$\\
+\underline{Beh. 1}:
+$\FakRaum{m_x}{m_x^2}\cong\FakRaum{m_x^V}{(m_x^V)^2}$\\
+Denn: $\mathcal O_{x,V}\cong k[v]_{m_x^V}\\
+m_x=m_x^V k[V] m_x^V\\
+a\mapsto \frac{a}{1}$ ist ein Homomorphismus $\rho: m_x^V\rightarrow m_x\rightarrow \FakRaum{m_x}{m_x^2}$ mit Kern $(m_x^V)^2$\\
+$\rho$ ist surjektiv: Sei $p=q\cdot\frac{a}{b}\in m_x$ mit $q\in m_x^V,~a,b\in k[V],~b\notin m_x^V$\\
+Ansatz: Wähle $\tilde{a}(=q\cdot \tilde{b})\in m_x^V\Rightarrow p-\frac{\tilde{a}}{1}= q\cdot \frac{a}{b}-\frac{q\cdot\tilde{b}}{1}=q\frac{a-\tilde{b}b}{b}$\\
+Hätte gerne: $a-b\tilde{b}\in m_x^V$
+\\\\??????????????????????\\\\
+\underline{Beh. 2}:
+$\FakRaum{m_x}{(m_x^V)^2}\cong\FakRaum{\mathcal M_x}{\mathcal M_x^2}+I=\FakRaum{\mathcal M_x}{\mathcal M_x^2}+I_x$\\
+denn: $\FakRaum{m_x}{(m_x^V)^2}\cong\FakRaum{\FakRaum{\mathcal M_x}{I}}{\left(\FakRaum{\mathcal M_x}{I}\right)^2}\\
+\cong\FakRaum{\left(\FakRaum{\mathcal M_x}{I}\right)}{\left(\FakRaum{\mathcal M_x^2}{I\cap\mathcal M_x^2}\right)}\\
+\cong \FakRaum{\left(\FakRaum{\mathcal M_x}{I}\right)}{\left(\FakRaum{\mathcal M_x^2+I}{I}\right)}\\
+\cong \FakRaum{\mathcal M_x}{\mathcal M_x^2+I}$\\
+Definiere $k$-lineare Abbildung: $\alpha: (\FakRaum{m_x}{m_x^2})^*\rightarrow \mathcal T_x$ durch $l\mapsto (l(\overline{X_1}),...,l(\overline{X_n}))\in k^n$\\
+Zu zeigen: $\alpha$ ist wohldefiniert, d.h. $\alpha(l)\in\mathcal T_x$\\
+Sei also $f\in I_x$. Zu zeigen: $f(\alpha(l))=0$\\
+$f=g_x^{(1)}$ für ein $g\in I\\
+\Rightarrow f(L(l))=\sum_\frac{\partial g}{\partial X_i}(x)l(\overline{X_i})\\
+=l(\overline{\sum_{i=1}^n\frac{\partial g}{\partial X_i}(x)X_i})\\
+=l(\overline{g_x^{(1)}})=0$
+weil $g_x^{(1)}\in I_x\subseteq\mathcal M_x^2+I_x$\\
+\underline{Umkehrabbildung}: $$\Abb{\beta}{\mathcal T_x}{(\FakRaum{m_x}{m_x^2})^*}{(l_1,...,l_n)}{(\overline{X_i}\mapsto l_i)}$$
+Wohldefiniertheit von $\beta$: Ist $\sum\lambda_iX_i\in I_X$, so ist $\sum\lambda_il_i=0$, da jedes Polynom in $I_x$ auf dem Tangentialraum verschwindet, $l_i\in\mathcal T_x$
+\end{Bew}
+
+\begin{Def}
+\label{def:+Folgerung 16.5}
+\begin{enumerate}
+\item Ein lokaler Ring heißt \begriff{regulär}, wenn $\dim R=\dim_{R/m}(\FakRaum{m}{m^2})$ ist.
+\item Sei $V$ eine Varietät. Ein Punkt $x\in V$ ist genau dann nichtsingulär, wenn $\mathcal O_{V,x}$ ein regulärer, lokaler Ring ist.
+\end{enumerate}
+\end{Def}
+
+
+%16.01.2009
+
+
+\begin{DefBem}
+\label{defbem:16.6}
+Sei $V=V(f_1,\ldots, f_r)\subseteq\mathbb{A}^n(k)$ eine affine Varietät.
+\begin{enumerate}
+\item Für $i=1,\ldots,r$ sei
+$$f_i^1:=\sum_{j=1}^n\frac{\partial f_i}{\partial X_j}\cdot Y_j\in k[X_1,\ldots,X_n,Y_1,\ldots,Y_n]$$
+Dann heißt
+$$\mathcal{T}_V=V(f_1,\ldots,f_r,f_1^1,\ldots,f_r^1)\subseteq \mathbb{A}^n\times\mathbb{A}^n=\mathbb{A}^{2n}$$
+\begriff{Tangentialbündel} über $V$.
+\item Sei $p:\mathbb{A}^n\times\mathbb{A}^n\rightarrow\mathbb{A}^n$ die Projektion auf die ersten $n$ Komponenten. Dann ist $p(\mathcal{T}_V)=V$.
+\item Für jedes $x\in V$ ist $p^{-1}(x)\cong T_{V,x}$.
+\item Ist $V$ eine beliebige Varietät und $V_1,\ldots,V_m$ eine affine Überdeckung von $V$, so verkleben sich die Tangentialbündel $\mathcal{T}_{V_1},\ldots,\mathcal{T}_{V_m}$ zu einer Varietät $\mathcal{T}_V$, dem \begriff{Tangentialbündel} über $V$.
+\end{enumerate}
+\end{DefBem}
+\begin{Bsp}
+$V=V(\underbrace{Y^2-X^3-X^2}_{=:f})~~~~~~~\mathcal{T}=V(Y^2-X^3-X^2,-(2X+3X^2)W+2YZ)\subseteq\mathbb{A}^4$\\
+\underline{Beh}: $\mathcal{T}_V$ hat 2 irreduzible Komponenten $\mathcal{T}_1$ und $\mathcal{T}_2$.\\
+Äquivalent dazu: $I:=I(Y^2-X^3-X^2,-(2X+3X^2)W+2YZ)$ ist kein Primideal.\\
+$\underbrace{X^2}_{\notin I}(\underbrace{W^2(2+3X)^2-4Z^2(X+1)}_{\notin I})=\\
+\underbrace{(WX(2+3X)-2YZ)}_{\in I}(WX(2+3X)+2YZ)-\underbrace{4Z^2X^2(X+1)+4Z^2Y^2}_{=4Z^2(\underbrace{Y^2-X^2(X+1)}_{\in I})}\\
+\Rightarrow\mathcal{T}_1=V(Y^2-X^3-X^2,W^2(2-3X)^2-4Z^2(X+1))\subset\mathcal{T}_V\\
+\mathcal{T}_2=V(Y^2-X^3-X^2,X)\subset\mathcal{T}_V=V(X,Y)=\mathbb{A}^2$ über dem Nullpunkt.\\
+$\mathcal{T}_1\cap\mathcal{T}_2=V(X,Y,W^2-Z^2)$
+\end{Bsp}
+
+\section{Der singuläre Ort einer Varietät}
+\begin{Def}
+\label{def:17:1}
+Für eine Varietät $V$ heißt
+$$\operatorname{Sing}(V):=\{x\in V: x \text{ ist singulärer Punkt}\}$$
+der \begriff{singuläre Ort} von $V$.
+\end{Def}
+
+\begin{Satz}
+\label{satz:5}
+Sei $V$ eine Varietät über $k$. Dann ist $\operatorname{Sing}(V)$ echte Untervarietät von $V$.
+\end{Satz}
+
+\begin{Bew}
+\OE~~ sei $V$ affin in $\mathbb{A}^n(k)$, $V$ irreduzibel. Sei $d=\dim V$.\\
+\underline{$\operatorname{Sing}(V)$ ist abgeschlossen}: Sei $V=V(f_1,...,f_r)$, $\mathcal{J}=(\frac{\partial f_i}{\partial X_j})_{i=1,...,r\atop j=1,...,n}$.\\
+Dann ist $\operatorname{Sing}(V)=\{x\in V:\operatorname{Rg}(\mathcal{J}(x))<n-d=d'\}=\\
+\{x\in V:\det (M(x))=0 \text{ für alle } (d'\times d')-\text{Minoren } M \text{ von } \mathcal{J}\}=\\
+(\bigcap_{M(d'\times d')-\text{Minoren } M \text{ von } \mathcal{J}}V(\det(M)))\cap V$.\\
+\underline{$\operatorname{Sing}(V)\neq V$}:\\
+\underline{Fall 1}: $V=V(f)$ Hyperfläche, $f$ quadratfreies Polynom\\ $\Rightarrow\operatorname{Sing}(V)=\{x\in V:\frac{\partial f}{\partial X_j}(x)=0, j=1,...,n\}$\\
+Wäre $\operatorname{Sing}(V)=V$, so wäre $\frac{\partial f}{\partial X_j}\in I(V)=(f)$ für $j=1,...,n\Rightarrow\frac{\partial f}{\partial X_j}=0$ für $j=1,...,n\Rightarrow
+\begin{cases}
+\operatorname{char}(k)=0:&f\in k, \text{Wid!}\\
+\operatorname{char}(k)=p:&f(X_1,...,X_n)=g(X_1^p,...,X_n^p)=g^p, \text{Wid!}
+\end{cases}$\\
+\underline{Fall 2} $V$ ist beliebig. Dann folgt die Behauptung aus der folgenden Proposition.
+\end{Bew}
+
+\begin{Prop}
+\label{prop:17.2}
+Jede irreduzible Varietät $V$ der Dimension $d$ ist birational Äquivalent zu einer Hyperfläche in $\mathbb{A}^{d+1}(k)$
+\end{Prop}
+\begin{Bew}
+Ziel: Finde eine irreduzible Hyperfläche $W\subseteq\mathbb{A}^{d+1}(k)$ mit $k(W)\cong k(V)$. Dann folgt die Proposition aus Korollar 7.5.\\
+Sei $X_1,...,X_d$ Transzendenzbasis von $k(V)$ (Noether-Normalisierung von $k(V)$).\\
+Dann ist $\FakRaum{k(V)}{k(X_1,...,X_d)}$ endlich.\\
+\OE~~Sei $\FakRaum{k(V)}{k(X_1,...,X_d)}$ einfach (falls char$(k)=p$, so gibt es eine Transzendenzbasis mit dieser Eigenschaft).\\
+Sei $y\in k(V)$ ein primitives Element.\\
+Sei $y^m+a_{m-1}y^{m-1}+...+a_1y+a_0$ das Minimalpolynom.\\
+Sei $a_i=\frac{f_i}{g_i}$ mit $f_i, g_i\in k[X_1,...,X_d]$.\\
+Sei $g=\Pi g_i$, $W:=V(g^my^m+g^ma_{m-1}y^{m-1}+...+g^ma_0)$.\\
+$W$ ist eine Hyperfläche in $\mathbb{A}^{d+1}(k)$\\
+$k[W]=\FakRaum{k[X_1,...,X_d,gY]}{(...)}\Rightarrow k(W)\cong k(V)$
+\end{Bew}
+
+\begin{Bem}
+  \label{bem:17.3}
+  Sei $V$ eine Varietät, $x\in V$. Dann gilt:
+  \begin{align*}
+    \mathcal O_{V,x} \text{ nullteilerfrei } \Leftrightarrow\text{ es gibt genau eine irreduzible Komponente $Z$ von $V$ mit $x\in Z$. }
+  \end{align*}
+\end{Bem}
+\begin{Bew}
+  \OE\ $V$ affin. Seien $V_1\neq V_2$ irreduzible Komponenten von $V$. Dann gilt:
+  \begin{align*}
+    & x\in V_1\cap V_2 \\
+    \Leftrightarrow & I(V_1)+I(V_2)\subseteq m_x^V \\
+    \Leftrightarrow & \mu_{i,x}\defeqr I(V_i)\cdot\mathcal O_{V,x}\text{ ist minimales Promideal in }\mathcal O_{V,x} ~(i=1,2)\text{ mit } \mu_{1,x}\neq\mu_{2,x} \\
+    \Leftrightarrow & (0) \text{ nicht Primideal in } \mathcal O_{V,x} \\
+    \Leftrightarrow & \mathcal O_{V,x}\text{ nicht nullteilerfrei } \\
+  \end{align*}
+  (das vorletzte ``$\Leftarrow$'' folgt mit der Übung: $\bigcap_{\mathfrak p \text{ Primideal in $R$} }\mathfrak p=\sqrt{(0)}$)
+\end{Bew}
+\begin{Prop}
+  \label{prop:17.4}
+  Sei $V$ eine Varietät, $x\in V$. Gibt es irreduzible Komponenten $V_1\neq V_2$ von $V$ mit $x\in V_1\cap V_2$, so ist $x$
+  singulärer Punkt von $V$.
+\end{Prop}
+\begin{Bew}
+  Es genügt zu zeigen:
+  \begin{Prop}
+    \label{prop:17.5}
+    Jeder reguläre lokale Ring $R$ ist nullteilerfrei.
+  \end{Prop}
+  \begin{Bew}[mit Import von $(1),\cdot,(3)$; siehe unten] Sei $d=\dim R$. Induktion über $d$: 
+  \begin{enumerate}
+  \item[d=0:] $\FakRaum{m}{m^2}=0\Rightarrow m=0$ (Nakayama)
+  \item[d=1:] $\dim (\FakRaum{m}{m^2})=1\Leftrightarrow ~R$ ist diskreter Bewertungsring, also insbesondere nullteilerfrei.
+  \item[d>1:] Seien $\mathfrak p_1,\dots,\mathfrak p_r$ die minimalen Primideale von $R$. $\mathfrak p_i\neq m$, da $\dim R\geq 1$,
+    außerdem $m\neq m^2$. \\
+    $\folgtwegen{(2)}\exists a\in m$ mit $a\notin \mathfrak p_i, i=1,\cdots,r$
+  \end{enumerate}
+  \begin{Beh}
+    $a$ ist ein Primelement in $R$.
+  \end{Beh}
+  Dann gibt es ein $i$ mit $\mathfrak p_i\subseteq (a)$ \\
+  Für jedes $b\in \mathfrak p_i$ gibt es also $q\in R$ mit $b=q\cdot a$
+  \begin{align*}
+    & \Rightarrow q\in \mathfrak p_i\text{, da $\mathfrak p_i$ Primideal ,} a\notin\mathfrak p_i \\
+    & \Rightarrow \mathfrak p_i\subseteq \mathfrak p_i\cdot (a)\subseteq \mathfrak p_i\cdot m \\
+    & \folgtwegen{(Nakayama)} \mathfrak p_i=0
+  \end{align*}
+  \end{Bew}
+\end{Bew}
+\begin{Bew}[der Behauptung]
+  Zeige: $S\defeqr \FakRaum{R}{(a)}$ ist regulärer lokaler Ring der Dimension $d-1$.
+  Es ist $m_S=\FakRaum{m}{(a)}$ und $\FakRaum{m_S}{m_S^2}=\FakRaum{\FakRaum{m}{(a)}}{\FakRaum{m^2}{m^2\cap (a)}}\cong
+  \FakRaum{\FakRaum{m}{(a)}}{\FakRaum{m^2+(a)}{(a)}}\cong\FakRaum{m}{m^2+(a)}$ \\
+  Da $a\notin m^2$, ist $\FakRaum{m_S}{m_S^2}\subsetneq\FakRaum{m}{m^2}\Rightarrow\dim(\FakRaum{m_S}{m_S^2})\leq d-1$. \\
+  Noch zu zeigen: $\dim s=d-1$\\
+  Sei $\mathfrak p$ minimales Primideal in $R$, das in einer Kette der Länge $d$ vorkommt und $R'\defeqr\FakRaum{R}{\mathfrak p}$.
+  Dann ist $\dim R'=\dim R=d$ und $R'$ nullteilerfrei. Da $a\notin \mathfrak p$, ist $\bar{a}\neq 0$ in $R'\Rightarrow\height(\mathfrak p)=1$ für jedes
+  minimale (Primideal $\mathfrak q$ in $R'$ mit $\bar{a}\in\mathfrak q$)  \\
+  $\Rightarrow\dim S=\dim\FakRaum{R'}{(\bar{a})}=\dim\FakRaum{R'}{\mathfrak q}=d-1$
+\end{Bew}
+\textbf{Import:}
+\begin{enumerate}
+\item[$(1)$] Jeder noethersche Ring hat nur endlich viele minimale Primideale.
+\item[$(2)$] Vermeiden von Primidealen: Sei $R$ ein Ring, $\mathfrak p_0\subseteq R$ ein Ideal, $\mathfrak p_1,\cdots,\mathfrak p_r$ Primideale.
+  Ist $I\subseteq R$ Ideal mit $I\nsubseteq\mathfrak p_i, i=0,\cdots,r$, so ist $I\nsubseteq\bigcap_{i=0}^r\mathfrak p_i$
+\item[$(3)$] Krullscher Hauptidealsatz: Sei $R$ nullteilerfrei, noethersch, $x\in R, x\neq 0, x\neq R^\times$. \\
+  Dann hat jedes Primideal, das $x$ enthält und minimal mit dieser Eigenschaft ist, Höhe $1$.
+\end{enumerate}
+
+
+
+\chapter{Nichtsinguläre Kurven}
+
+\setcounter{section}{17}
+
+\section{Funktionenkörper in einer Variablen}
+
+\begin{Satz}
+  \label{satz:6}
+  Ist $K/k$ Funktionenkörper in einer Variablen über $k$ (das heißt endlich erzeugt, $\trdeg_k(K)=1$), so gibt es 
+  eine bis auf Isomorphie eindeutig bestimmte nichtsinguläre Kurve $C$ mit $k(C)\cong K$.
+\end{Satz}
+
+\begin{Bew}
+  Sei $C_K=\{R\subset K:R$ ist diskreter Bewertungsring, $k \subset R\}$ \\
+  Ist $C$ nichtsinguläre Kurve, so ist für jedes $x\in C$ der lokale Ring $\mathcal O_{C,x}$ ein diskreter Bewertungsring
+  in $k(C)$ mit $k\subset\mathcal O_{C,x}$\\
+Die Eindeutigkeit wird aus Prop. 18.4 und Prop. 18.5 folgen.
+\end{Bew}
+
+
+% 23.1.2009
+
+\begin{Bem}
+\label{bem:18.1}
+Für $f\in K$ ist $P_F:=\{R\in C_K:f\notin R\}$ endlich (Polstellenmenge von $f$).
+\end{Bem}
+
+\begin{Bew}
+\OE~~$f\in K\setminus k$ (sonst ist $P_f=\emptyset$).\\
+Dann ist $g:=\frac{1}{f}$ transzendent über $k$, also $K/k(g)$ endlich.\\
+dann sei $B$ der ganze Abschluss von $k[g]$ in $K$. $B$ ist dann ein Dedekindring (Alg I, Satz ...) und somit endlich erzeugte, reduzierte $k$-Algebra.\\
+$\Rightarrow$ es gibt eine affine Varietät $V$ mit $k[V]\cong B$.\\
+Für jedes $x\in V$ ist $\mathcal O_{V,x}$ ein diskreter Bewertungsring $\Rightarrow V$ ist nicht singulär.\\
+Sei $R\in P_f$, also $f\notin R$. Dann ist $g\in R\stackrel{g\notin R}{\Rightarrow} g\in m_R\Rightarrow k[g]\subseteq R\Rightarrow B\subseteq R$.
+($R$ ist normal). \\
+$m:=m_R\cap B$ ist maximales Ideal in $B \Rightarrow B_m$ ist diskreter Bewertungsring, $B_m\subseteq R$\\\\
+\underline{Beh.}: Dann ist $B_m=R$.\\
+\underline{Denn}: Andernfalls sei $a\in R\setminus B_m$.\\
+Schreibe $a=u\cdot f^{-n}$ mit $u\in B_m^\times$, $n>0$, $(f)=m$\\
+Dann wäre $\frac{1}{a}=u^{-1}\cdot f^n\in m\Rightarrow a\in R^\times\\
+f^n\in R^\times$, Widerspruch zu $f^n\in m_R$.\\
+\\
+$\Rightarrow\exists x\in V$ mit $R=\mathcal O_{V,x}$, $g\in m_R$.\\
+ist $g(x)=0\Rightarrow x\in V(g)\subset V$.\\
+da $g\neq 0$, ist $V(g)\neq V$, also endlich.
+\end{Bew}
+
+\begin{Bem}
+\label{bem:18.2}
+Sei $C$ eine irreduzible, nichtsinguläre Kurve über $k$, $K=k(C)$. Dann gilt:\\
+\begin{enumerate}
+\item $\mathcal O_{C,x}\in C_K$ für jedes $x\in C$
+\item $\Abb{\varphi}{C}{C_K}{x}{\mathcal O_{C,x}}$ ist injektiv.
+\item $C_K\setminus \varphi(C)$ ist endlich.
+\end{enumerate}
+\end{Bem}
+
+\begin{Bew}
+\begin{enumerate}
+\item[c)] \OE Sei $C$ affin, dann ist $K=\Quot(k[C])$\\
+Für $R\in C_k$ gilt: $R\in\varphi(C)\Leftrightarrow k[C]\subset R$ (denn das ist äquivalent zu $R=k[C]_m$ für ein maximales Ideal $m\subset k[C]$).\\
+Seien $x_1,...,x_r$ Erzeuger von $k[C]$ als $k$-Algebra, dann ist 
+$$\varphi(C)=\{R\in C_K:x_i\in R\text{ für } i=1,...,r\}=\bigcap_{i=1}^r\{R\in C_K:x_i\in R\}$$
+Nach 18.1. ist $C_k\setminus U_i(= P_{x_i})$ endlich $\Rightarrow C_K\setminus\varphi(C)$ ist endlich.
+\end{enumerate}
+\end{Bew}
+
+
+\begin{Bem}
+\label{bem:18.3}
+$C_K$ ist Varietät durch \\
+\begin{enumerate}
+\item $U\subseteq C_K$ offen $\Leftrightarrow C_K\setminus U$ endlich (oder $U=\emptyset$)
+\item Für $U$ sei $\mathcal O(U)=\mathcal O_{C_K}(U)=\bigcap_{R\in U}R$
+\end{enumerate}
+\end{Bem}
+
+\begin{Bew}
+Sei $C$ affine, nichtsinguläre Kurve mit $k(C)\cong K$. Dann ist nach 18.2 $\varphi(C)$ offen und dicht in $C_K$ und $\varphi: C\rightarrow \varphi(C)$ ist Isomorphismus, denn $\mathcal O_{C_K,R_0}=R_0$ für jedes $R_0\in C_K$.\\
+Für $U\subset C_K$ offen mit $R_0\in U$ ist $\mathcal O(U)\hookrightarrow R_0\\
+\Rightarrow\mathcal O_{C_K,R}= \lim_{R_0\in U}\mathcal O(U)\hookrightarrow R_0$.\\
+Für $f\in R_0$ sei $U_f=C_K\setminus P_f\Rightarrow f\in \mathcal O(U_f)$\\
+Für $U\subset C$ offen ist $\mathcal O_C(U)=\bigcap_{x\in U}\mathcal O_{C,x}$\\
+Wir sind sicher: $\varphi:C\rightarrow \varphi(C)$ ist ein homöomorphismus.\\
+Wir brauchen noch: Für jedes  offene $U\subset C$ einen Isomorphismus von $k$-Algebren (verträglich mit "'$\subseteq$"'):
+
+\[
+\begin{xy}
+\xymatrix{
+\alpha_U:&\mathcal O_{C_K}(\varphi(U))\ar[rr]&&\mathcal O_C(U)\\
+&\Vert &&\Vert\\
+&\bigcap_{R\in\varphi(U)}R&&\bigcap_{x\in U}\mathcal O_{C,x}\\
+&\Vert &&\Vert\\
+&\bigcap_{R\in\varphi(U)}\mathcal O_{C_K,R}&=&\bigcap_{x\in U}\mathcal O_{C_K,\varphi(x)}\\
+}
+\end{xy}
+\]
+
+\underline{Beh.}: Für jedes $R\in L_K$ gibt es eine affine Kurve $C_R$ mit $R\in\varphi(C_R)$, also mit $k[C_R]\subset R$.\\
+\underline{Denn}: Sei $g\in R\setminus k$, $B$ der ganze Abschluss von $k[g]$ in $K$. Dann ist $B\subset R$ und $B=k[C_R]$ für eine nichtsinguläre, affine Kurve $C_R$ (siehe 18.1).\\
+\end{Bew}
+
+
+
+\begin{Prop}
+  \label{prop:18.4}
+  $C_K$ ist projektiv.
+\end{Prop}
+\begin{Bew}
+  Sei $C_K=\bigcup_{i=1}^rV_i$ mit affinen nichtsingulären Kurven $V_i$ wie in \ref{prop:18.3}. Seien weiter $V_i\subseteq\mathbb A^{n_i}(k)$ 
+  und $C_i$ der Zariski-Abschluss von $V_i$ in $\mathbb P^{n_i}(k)$. $C_i$ ist projektive Kurve (eventuell singulär). 
+  Nach Proposition \ref{prop:18.5} lässt sich die Einbettung $V_i\hookrightarrow C_i$ zu einem Morphismus $\varphi_i:C_K\longrightarrow C_i$. \\
+  Sei $\varphi:C_K\longrightarrow\prod_{i=1}^rC_i$ ist projektiv, $C\defeqr\overline{\varphi(C_K)}$ auch. \\
+  $\varphi:C_K\longrightarrow C$ ist dominant $\Rightarrow k(C)\subseteq K\Rightarrow k(C)\cong K$.
+  \begin{Beh}
+    $\varphi$ ist surjektiv.
+  \end{Beh}
+  \begin{Bew}
+    Sei $x\in C$, $R$ der ganze Abschluss von $\mathcal O_{C,x}$ in $K$. $R$ ist normal, also diskreter Bewertungsring
+    \begin{align*}
+      \Rightarrow R\in C_K \Rightarrow \mathcal O_{C,x}\subseteq R\cong \mathcal O_{C,\varphi(R)}\Rightarrow x=\varphi(R)
+    \end{align*}
+    \begin{Bew}[obiges ``$\cong$'']
+      für $i$ mit $R\in V_i$ ist $R\cong \mathcal O_{V_i,\varphi_i(R)}$. Die Projektion $pr_i:C\longrightarrow C_i$ ist dominant
+      \begin{align*}
+        \Rightarrow \mathcal O_{V_i,\varphi_i(R)}\longrightarrow\mathcal O_{C,\varphi(R)}\text{ ist injektiv,}
+      \end{align*}
+      also ein Isomorphismus, da $\mathcal O_{V_i,\varphi_i(R)}$ ein diskreter Bewertungsring ist. 
+      (benutze: Ist $R$ diskreter Bewertungsring, $K=\Quot(R)$, $S\subset K$ lokaler Ring mit $R\subseteq S$
+      und $m_S\cap R=m_R$, so ist $R=S$)
+    \end{Bew}
+    Noch zu zeigen:
+    \begin{Bem}
+      \label{bem:18.6}
+      Sei $\varphi:V\longrightarrow W$ ein bijektiver Morphismus. Ist für jedes $x\in V$ der induzierte Homomorphismus
+      $\mathcal O_{W,\varphi(x)}\longrightarrow \mathcal O_{V,x}$ ein Isomorphismus, so ist $\varphi$ ein Isomorphismus.
+    \end{Bem}
+    \begin{Bew}
+      \OE $V,W$ affin, sei $A\defeqr k[W], B\defeqr k[V]$ \\
+      Die Voraussetzung ist äquivalent zu: \\
+      $\alpha:A\longrightarrow B$ ist ein $k$-Algebrenhomomorphismus, sodass $\alpha_m:A_m\longrightarrow B_{m'}$
+      für jedes maximale Ideal $m$ von $A$ ein Isomorphismus ist (wobei $m'$ das, wegen der Bijektivität von $\varphi$,
+      eindeutig bestimmte maximale Ideal von $B$ mit $\alpha^{-1}(m')=m$). \\
+      Zu zeigen: $\alpha$ ist bijektiv \\
+      $\alpha$ ist injektiv, da $\varphi$ surjektiv ist. \\
+      $\alpha$ ist surjektiv: Sei $x\in B$, $I_x\defeqr\{y\in A:y\cdot x\in A\}$ \\
+      $I_x$ ist Ideal in $A$. \\
+      Ist $I_x=A$, so ist $1\in I_x$, also $x\in A$. \\
+      Ist $I_x\neq A$, so sei $m$ maximales Ideal in $A$ mit $I_x\subseteq m$ \\
+      \begin{align*}
+        & \folgtwegen{Vor.} \exists a\in A, b\in A-m\text{ mit } \frac{x}{1}=\frac{a}{b}\text{ in }A_m=B_{m'} \\
+        & \Rightarrow\exists t\in A-m\text{ mit }t\cdot(b\cdot x-a)=0 \\
+        & \Rightarrow t\cdot bx=ta\in A \\
+        & \Rightarrow tb\in I_x\subseteq m\text{ Widerspruch! ,da } t\notin,b\notin m
+      \end{align*}
+    \end{Bew}
+  \end{Bew}
+\end{Bew}
+\begin{Prop}
+  \label{prop:18.5}
+  Sei $C$ nichtsinguläre irreduzible Kurve, $V$ projektive Varietät, $\emptyset\neq U\subseteq C$ offen
+  und $\varphi:U\longrightarrow V$ ein Morphismus. Dann gibt es genau einen Morphismus $\bar{\varphi}:C\longrightarrow V$
+  mit $\bar{\varphi}\vert U=\varphi$
+\end{Prop}
+\begin{Bew}
+  $C-U$ ist endlich, also \OE $C-U=\{x\}$, \OE $V=\mathbb P^n(k)$ und $\varphi(U)\nsubset V(X_i), i=1,\dots,n$ \\
+  Sei $h_{ij}\defeqr\frac{X_i}{X_j}\circ\varphi$ für $i\neq j$. $h_{ij}$ ist regulär auf $\varphi^{-1}(D(X_i))$ ($\neq\emptyset$, 
+  da $\varphi(U)\nsubset V(X_j)$) \\
+  $\Rightarrow h_{ij}\in k(C)\defeql K$ \\
+  Nach Voraussetzung ist $\mathcal O_{C,x}$ diskreter Bewertungsring in $K$. Sei $v_x:K^\times\longrightarrow\mathbb Z$ die 
+  zugehörige Bewertung. Seien weiter $v_i\defeqr v_x(h_{i,0}), i=1,\dots,n$ und $r_k\defeqr\min\{v_t,i=1,\dots,n\}$. \\
+  Für $i\neq k$ ist dann 
+  \begin{align*}
+    v_x(h_{ik})&=v_x\left(\frac{X_iX_0}{X_0X_k}\circ\varphi\right) \\
+    &=v_x\left(\left(\frac{X_i}{X_0}\circ\varphi\right)\cdot\left(\frac{X_0}{X_k}\circ\varphi\right)\right) \\
+    &=v_x(h_{i,0})-v_x(h_{k,0}) \\
+    &=r_i-r_k>0
+  \end{align*}
+  $\exists$ Umgebung $\bar{U}$ von $x$ mit $h_{ik}\in\mathcal O_C(\bar{U}), i=1,\dots,n~,i\neq k$. 
+  Für $y\in U$ sei 
+  \begin{align*}
+    \tilde{\varphi}(y)\defeqr\left\{\begin{array}{cc} (h_{0k}(y):\dots:h_{nk}(y)) & k=0 \text{ oder } r_k\leq 0 \\
+          (1:h_{1,k}(y)\cdot h_{k,0}(y):\dots:h_{m,k}(y)\cdot h_{k,0}(y)) & k\neq\text{ und } r_k>0 \end{array}\right.
+  \end{align*}
+  $\tilde{\varphi}$ ist Morphismus $\bar{U}\longrightarrow V$ \\
+  (mit Bild in $D(X_k)$ beziehungsweise $D(X_0)$. Für $y\neq x$ ist $\tilde{\varphi}(y)=\varphi(y)$).
+\end{Bew}
+
+%30.01.2009
+
+
+\section{Divisoren}
+\begin{Def}
+\label{def:19.1}
+Sei $C$ eine nichtsinguläre, irreduzible Kurve.
+\begin{enumerate}
+\item Ein \begriff{Divisor} auf $C$ ist eine endliche formale Summe
+$$D=\sum_{i=1}^nn_iP_i,~\text{ wobei } n\in \mathbb{N},~~n_i\in \mathbb{Z},~~P_i\in C$$
+$$\Div(C) :=\{D=\sum n_iP_i:~D \text{ ist Divisor auf } C\}$$
+ist eine freie abelsche Gruppe, genannt \begriff{Divisorengruppe} von $C$.
+\item Für $D=\sum_{i=1}^nn_iP_i$ heißt $\deg(D):=\sum_{i=1}^nn_i$ der \begriff{Grad} von $D$.
+\item $D$ heißt \begriff{effektiv}, wenn alle $n_i\geq 0$ sind.
+\end{enumerate}
+\end{Def}
+
+\begin{DefBem}
+\label{defbem:19.2}
+Sei $C$ wie in 19.1, $f\in k(C)^{\times}$.
+\begin{enumerate}
+\item Für $P\in C$ heißt $\ord_P(f):= v_P(f)$ die \begriff{Ordnung} von $f$ in $P$ (dabei sei $v_P$ die zu $P$ gehörige diskrete Bewertung von $k(C)$).
+\item $\operatorname{div}(f):=\sum_{P\in C}\ord_P(f)\cdot P$ heißt \begriff{Divisor} von $f$.
+\item $D\in\Div(C)$ heißt \begriff{Hauptdivisor}, wenn ein $f\in k(C)^{\times}$ existiert mit $D=\operatorname{div}(f)$.
+\item Die Hauptdivisoren bilden eine Untergruppe $\Div_H(C)$ von $\Div(C)$.
+\item $\Cl(C):=\FakRaum{\Div(C)}{\Div_H(C)}$ heißt \begriff{Divisorenklassengruppe} von $C$.
+\item Divisoren $D,D'\in\Div(C)$ heißen \begriff{linear äquivalent}, wenn $D-D'$ Hauptdivisor ist.\\
+Schreibweisen: $D\equiv D',~~D\sim D'$
+\end{enumerate}
+\begin{Bew}~\\
+b) Zu zeigen: $\{P\in C: \ord_P(f)\neq 0\}$ ist endlich.\\
+$\{P\in C: \ord_P(f)\neq 0\}=V(f)\cup V(\frac{1}{f})$ und $f\neq 0$.\\
+d) $\operatorname{div}(f)+\operatorname{div}(g)=\operatorname{div}(f\cdot g);~~~-\operatorname{div}(f)=\operatorname{div}(\frac{1}{f});~~~0=\operatorname{div}(1)$
+\end{Bew}
+\end{DefBem}
+\begin{Bsp}
+\label{bsp:19.1}
+\begin{enumerate}
+\item $C=\mathbb{P}^1(k)$\\
+Dann gilt $D\in \Div(C)$ ist Hauptdivisor $\Leftrightarrow \deg(D)=0$\\
+\underline{denn} "'$\Rightarrow$"' Sei $f=\frac{\Pi_{i=1}^n(X-a_i)}{\Pi_{j=1}^m(X-b_j)}\in k(C)^{\times}$ mit $a_i,b_j\in k,~~a_i\neq b_j$ für alle $i,j$\\
+$\Rightarrow\operatorname{div}(f) = \sum_{i=1}^na_i-\sum_{j=1}^mb_j+(m-n)\cdot \infty\\
+\Rightarrow\deg(\operatorname{div}(f))=0$\\
+"'$\Leftarrow$"' Für Null- und Polstellen, die nicht im Punkt $\infty$ liegen, schreibe $f$ wie oben, mit den entsprechenden Linearfakoren für die Nullstellen im Zähler, bzw. für die Polstellen im Nenner, jeweils mit Vielfachheiten. 
+\item $C=V(Y^2Z-X^3+XZ^2)\subseteq\mathbb{P}^2(k)$ (Homogenisierung von $y^2=x^3-x$)\\
+$C=V(y^2-x^3+x)\cup \{(0:1:0)\}$
+Sei $f=y=\frac{Y}{Z}\in k(C)^{\times}$. Gesucht: $\operatorname{div}(f)$\\
+Auf $U_0=D(Z)$ ist $y$ regulär und hat 3 Nullstellen, nämlich $P_{-1}=(-1,0),~~P_0=(0,0)$ und $P_1=(1,0)$.\\
+\underline{$P_0$}:~~~ $m_{P_0}$ wird erzeugt von $x$ und $y$.\\
+Es ist $y^2=x(\underbrace{x^2-1}_{\in\mathcal{O}_{C,P_0}^{\times}})\Rightarrow y$ erzeugt $m_{P_0}$ (mit $x$ dagegen lässt sich nur $y^2$ erzeugen).\\
+Mit $y=x(x-1)(x+1)$ und dem gleichen Argument zeigt man das gleiche für $P_{-1}$ und $P_1\\
+\Rightarrow P_0, P_{-1}, P_1$ haben alle Ordnung 1.\\
+\underline{$P_{\infty}=(0:1:0)$}:\\
+$m_{P_{\infty}}$ wird erzeugt von $\frac{X}{Y}$ und $\frac{Z}{Y}$ mit der Gleichung
+$$\frac{Z}{X}=\left(\frac{X}{Y}\right)^3-\frac{X}{Y}\left(\frac{Z}{Y}\right)^2$$
+$$\Rightarrow \left(\frac{X}{Y}\right)^3=\frac{Z}{Y}\left(\underbrace{1+\frac{X}{Y}\frac{Z}{Y}}_{\mathcal{O}_{C,P_{\infty}}^{\times}}\right)$$
+$$\Rightarrow \frac{X}{Y} \text{ erzeugt } m_{P_{\infty}}$$
+$$\Rightarrow\ord_{P_{\infty}}\left(\frac{Y}{Z}\right)=-3$$
+Insgesamt folgt: $\operatorname{div}(f)=P_{-1}+P_0+P_1-3P_{\infty}$
+\end{enumerate}
+\end{Bsp}
+
+\begin{DefBem}
+\label{defbem:19.3}
+Seien $C,C'$ nichtsinguläre Kurven, $f:C\rightarrow C'$ ein nichtkonstanter Morphismus.
+\begin{enumerate}
+\item Sei $Q\in C'$ und $t\in m_Q$ Erzeuger.\\
+Für $P\in f^{-1}(Q)$ heißt $e_P(f):=\ord_P(t\circ f)$ \begriff{Verzweigungsordnung} von $f$ in $P$.
+\item $e_P(f)$ hängt nicht von der Wahl von $t$ ab.
+\item Für $Q\in C'$ sei
+$$f^*Q:=\sum_{P\in f^{-1}(Q)}e_P(f)\cdot P$$
+$$\text{und } f^*:\Div(C')\rightarrow \Div(C)$$
+der induzierte Gruppenhomomorphismus.
+\item $f^*(\Div_H(C'))\subseteq\Div_H(C)$ 
+\end{enumerate}
+
+\end{DefBem}
+\begin{Bew}
+  \begin{enumerate}
+  \item[d.)] Sei $D=\operatorname{div}(g\circ f)\in \Div_HC'$. \\
+    Es gilt $f^*D=\operatorname{div}(g\circ f)$, denn: \\
+    Für $P\in C$ ist $\ord_P(g\circ f)=N$, falls $g\circ f=t_P^N\cdot u$ für eine Einheit $u\in \mathcal O_{C,P}^\times$ und einen Erzeuger
+    $t_P$ von $m_P$. Der Koeffizient von $P$ in $f^*D$ ist 
+    \begin{align*}
+      \underbrace{\ord_{f(P)}(g)}_{\defeql n}\cdot\underbrace{v_P(t_Q\circ f)}_{\defeql m}
+    \end{align*}
+    mit $Q\defeqr f(P)$. Also:
+    \begin{align*}
+      & g=t_Q^n\cdot u_1, t_Q\circ f= t_P^m\cdot u_2 \\
+      \Rightarrow & g\circ f=(t_Q^n\circ f)^n\cdot(u_1\circ f)=t^{m\cdot n}\cdot \underbrace{u_2^n(u_1\circ f)}_{\in \mathcal O_{C,P}^\times} \\
+      \Rightarrow & \ord_P(g\circ f)=n\cdot m 
+    \end{align*}
+  \end{enumerate}
+\end{Bew}
+
+\begin{DefProp}
+  \label{defprop:19.4}
+  Sei $f:C\longrightarrow C'$ ein nichkonstanter Morphismus irreduzibler, nichtsingulärer, projektiver Kurven.
+  \begin{enumerate}
+  \item $\deg(f)\defeqr[k(C):k(C')]$ heißt \begriff{Grad} von $f$ (dabei wird $k(C')$ als Teilkörper von $k(C)$
+    über den von $f$ induzierten Homomorphismus aufgefasst).
+  \item Für $Q\in C'$ ist $\sum_{P\in f^{-1}(Q)}e_P(f)=\deg(f)$
+  \end{enumerate}
+\end{DefProp}
+\begin{Bew}
+  \begin{enumerate}
+  \item[b.)] Sei $f^{-1}(Q)=\{P1,\dots,P_r\}, t=t_Q$ ein Erzeuger von $m_Q$
+    \begin{align*}
+      \Rightarrow e_{P_i}(f)=\ord_{P_i}(t\circ f)=\ord_{P_i}(t)=\dim_k\left(\FakRaum{\mathcal O_{C,P_i}}{(t)}\right) (*)
+    \end{align*}
+    wobei $(t)=\left(t_{P_i}^{e_{P_i}(f)}\right)$. \\
+    \OE $C'$ affin, $C$ affin (die $P_i$ müssen in $C$ sein) \\
+    Sei $R=k[C'], S=k[C]$. Dann ist $S$ der ganze Abschluss von $R$ in $k(C)$. Sei $U=R-m_Q$, also $R_U=\mathcal O_{C',Q}, S'\defeqr S_U$
+    ist ganz über $R_U$. \\
+    \underline{Behauptung:} $S'$ ist freier $R_U$-Modul vom Rang $n\defeqr (f)$. \\
+    ``Beweis'': $S'$ ist endlich erzeugter $R_U$-Modul: vergleich Algebra II, Dedekindringe. \\
+    Mit dem Elementarteilersatz für Hauptidealringe folgt die Behauptung ``frei''. \\
+    Weiter ist 
+    \begin{align*}
+      S'\bigoplus_{\mathcal O_{C',Q}}k(C')=k(C)\Rightarrow\Rg(S')=[k(C):k(C')]=n
+    \end{align*}
+    Die maximalen Ideale $m_1,\dots,m_r$ von $S'$ entsprechen $P_1,\dots,P_r$, genauer: $S_{m_i}'=\mathcal O_{C,P_i}$ \\
+    Es ist $\FakRaum{S'}{t\cdot S'}$ $n$-dimensionaler Vektorraum über $\FakRaum{R_U}{(t)}=k$. \\
+    Weiter gilt: 
+    \begin{align*}
+      tS'=\left(\bigcup_{i=1}^rtS_{m_i}'\right)\cap S'
+    \end{align*}
+    Mit dem chinesischen Restsatz folgt:
+    \begin{align*}
+      \FakRaum{S'}{tS'}=\bigoplus_{i=1}^r\FakRaum{S'}{(tS_-{m_i}'\cap S')}\cong\bigoplus_{i=1}^r\FakRaum{S_{m_i}'}{tS_{m_i}'}
+      =\bigoplus_{i=1}^r\FakRaum{\mathcal O_{C,P_i}}{(t)}
+    \end{align*}
+    und $\dim(\FakRaum{\mathcal O_{C,P_i}}{(t)})=e_{P_i}(f)$
+  \end{enumerate}
+\end{Bew}
+\begin{Satz}
+\label{satz:7}
+Jeder Hauptdivisor auf einer irreduziblen, nichtsingulären Kurve hat Grad 0.
+\end{Satz}
+
+\begin{Bew}
+(Beweisidee)\\
+$f\in k(C)\setminus k$ kann aufgefasst werden als rationale Abbildung $C\dashrightarrow\mathbb{P}^1(k)$. Nach Prop. 18.5 ist $f$ sogar ein Morphismus $f: C \rightarrow\mathbb{P}^1(k)$. Der Satz folgt dann aus:\\
+\underline{Beh 1}: ``$\operatorname{div}(f)=f^*((0)-(\infty))$''\\
+\underline{Beh 2}: $\deg(f^*D)= \deg(f)\cdot\deg(D)$ für jeden Divisor $D$. 
+\begin{Bew}[von Beh 1]
+  Seien $(x_0:x_1)$ homogene Koordinaten auf $\mathbb P^1(k)$. Dann ist $\operatorname{div}(\frac{X_1}{X_0})=(1:0)-(0:1)$ und 
+  \begin{align*}
+    f^*((1:0)-(0:1))\gleichwegen{\ref{defbem:19.3} d.)}\operatorname{div}\left(\frac{X_1}{X_0}\circ f\right)=\operatorname{div}(f)
+  \end{align*}
+\end{Bew}
+\begin{Bew}[von Beh 2]
+  folgt aus Proposition \ref{defprop:19.4} b.)
+\end{Bew}
+\end{Bew}
+
+\section{Das Geschlecht einer Kurve}
+Sei $C$ eine nichtsinguläre, projektive Kurve über $k$.
+\begin{DefBem}
+  \label{defbem:20.1}
+  Sei $D=\sum n_PP$ ein Divisor auf $C$. 
+  \begin{enumerate}
+  \item $L(D)\defeqr\{f\in k(C):D+\operatorname{div}(f)\geq0\}\cup\{0\}$ heißt \begriff{Riemann-Roch-Raum} zu $D, L(D)$ ist $k$-Vektorraum.
+  \item $L(0)=k$
+  \item Ist $\deg(D)<0$, so ist $L(D)=0$
+  \item Für $l(D)\defeqr\dim L(D)$ gilt:
+    \begin{align*}
+      l(D)=l(D'),\text{ falls } D\equiv D'
+    \end{align*}
+  \end{enumerate}
+\end{DefBem}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item $f\in L(D)\Leftrightarrow$ für jedes $P\in C$ ist $\ord_P(f)\geq-n_P$ \\
+    $\ord_P(f+g)\geq\min(\ord_P(f),\ord_P(g))$
+  \item[(d)] Sei $D'=D+\operatorname{div}(g)$. Dann ist $L(D')\longrightarrow L(D),~ f\mapsto fg$ ein Isomorphismus von $k$-Vektorräumen, denn
+    \begin{align*}
+      & D'+\operatorname{div}(f)\geq 0 \Leftrightarrow D+\operatorname{div}(g)+\operatorname{div}(f)\geq 0 \\
+      \Leftrightarrow & D+\operatorname{div}(fg)\geq 0
+    \end{align*}
+  \end{enumerate}
+\end{Bew}
+
+\begin{SatzDef}[Riemann]
+  \label{satz:8}
+  \begin{enumerate}
+  \item Für jeden Divisor $D\in \Div(C)$ mit $\deg D\geq -1$ ist $l(D)\leq\deg D+1$.
+  \item Es gibt ein $\gamma\in\mathbb N$, sodass für alle $D\in\Div(C)$ gilt
+    \begin{align*}
+      l(D)\geq\deg D+1-\gamma
+    \end{align*}
+  \item Das kleinste $\gamma\in\mathbb N$, für das (b) erfüllt ist, heißt \begriff{Geschlecht} von $C$, 
+    Schreibweise: $g=g(C)$.
+  \end{enumerate}
+\end{SatzDef}
+
+\begin{Bem}
+  \label{bem:20.2}
+  \begin{enumerate}
+  \item Sind $C$ und $C'$ isomorph, so ist $g(C)=g(C')$.
+  \item $g(\mathbb P^1(k))=0$
+  \end{enumerate}
+\end{Bem}
+
+\begin{Bew}
+  \begin{enumerate}
+  \item $\sqrt{}$
+  \item Zu zeigen: für jeden Divisor $D$ vom Grad $\geq0$ auf $\mathbb P^1(k)$ ist $l(D)=\deg D+1$. \\
+    Schreibe: $D=D'+D_0$ mit $D'\geq0$ und $\deg(D_0)=0$. Nach Beispiel \ref{bsp:19.1} ist $D_0$ Hauptdivisor. \\
+    $\Rightarrow l(D')=l(D)$. Also \OE $D\geq0$,
+    \begin{align*}
+      & D=\sum_{i=1}^rn_iP_i\text{ mit $n_i\geq1$.} \\
+      \Rightarrow & L(D)=\{f\in k(X):\ord_{P_i}(f)\geq-n_i,i=1,\dots,r \text{ und $f$ regulär auf } \mathbb P^1(k)\setminus\{P_1,\dots,P_r\}\}
+    \end{align*}
+    Also ist
+    \begin{align*}
+      1,&\frac{1}{X-P_1},\dots,\frac{1}{(X-P_1)^{n_1}}, \\
+      &\frac{1}{X-P_2},\dots,\frac{1}{(X-P_2)^{n_2}},\\
+      & ~~~~~~~~~~~~~\vdots \\
+      &\frac{1}{X-P_r},\dots,\frac{1}{(X-P_r)^{n_r}}
+    \end{align*}
+    eine Basis von $L(D)$.
+  \end{enumerate}
+\end{Bew}
+
+\begin{Bew}[von Satz \ref{satz:8}]
+  \begin{enumerate}
+  \item Induktion über $d=\deg(D)$
+    \begin{enumerate}
+    \item[$d=0$:] Ist $f\in L(D), f\neq 0$, so ist $D+\operatorname{div}(f)\geq0$. Da
+      $\deg(D+\operatorname{div}(f))=0$, folgt $D+\operatorname{div}(f)=0$
+      \begin{align*}
+        \Rightarrow & D=-\operatorname{div}(f)=\operatorname{div}(\frac{1}{f}) \\
+        \Rightarrow & L(D)=f\cdot k\Rightarrow l(D)\leq1
+      \end{align*}
+    \item[$d\geq1$:] Sei $D=\sum_{P\in C}$ und $f_1,\dots,f_{d+2}\in L(D)$. \\
+      Zu zeigen: die $f_i$ sind linear abhängig. Sei dazu $P\in C$. Sortiere die $f_i$ so, dass 
+      \begin{align*}
+        & \ord_P(f_i)=-n_P\text{ für }i=1,\dots,k\text{ und } \\
+        & \ord_P(f_i)>-n_P\text{ für }i=k+1,\dots,d+2\text{ (für ein $k\geq0$) } \\
+        \Rightarrow & f_i\in L(D-P)\text{ für }i=k+1,\dots,d+2
+      \end{align*}
+      Ist $k=0$ oder $k=1$, so sind $f_2,\dots,f_{d+2}\in L(D-P)$ nach Induktionsvoraussetzung linear abhängig.
+      Sei also $k\geq2$. \\ 
+      Sei $g_i\defeqr u_i(P)\cdot f_1-u_1(P)\cdot f_i=t^{-n_P}\underbrace{(u_i(P)\cdot u_1-u_1(P)\cdot u_i)}_{\in m_P}$ \\
+      (``$=$'', wegen $f_i=t^{-n_P}\cdot u_i$ für $u_i\in \mathcal O_{C,P}^\times$ und einen Erzeuger $t=t_P$ von $m_P$) 
+      \begin{align*}
+        \Rightarrow &g_i\in L(D-P), i=2,\dots,k \\
+        \Rightarrow &g_2,\dots,g_k,f_{k+1},\dots,f_{d+2}\text{ sind linear abhängig } \\
+        \Rightarrow &f_1,\dots,f_k,f_{k+1},\dots,f_{d+2}\text{ sind linear abhängig }
+      \end{align*}
+    \end{enumerate}
+  \item \textbf{Behauptung 1:} Für jeden Divisor $D\in \Div(C)$ und jedes $P\in C$ gilt
+    \begin{align*}
+      l(D+P)\leq l(D)+1
+    \end{align*}
+    \textbf{denn:} Sei $f_1,\dots,f_n$ eine Basis von $L(D+P)$. Wie oben sei $f_1,\dots,f_k\notin L(D),f_{k+1},\dots,f_n\in L(D)$.
+    Definiere $g_i,i=2,\dots,k$ wie oben (ist $k\leq1$, so ist $l(D)\geq n-1$). 
+    \begin{align*}
+      &g_2,\dots,g_k\text{ linear unabhängig } \\  
+      \Rightarrow & g_2,\dots,g_k,f_{k+1},\dots,f_n\text{ linear abhängig } \\
+      \Rightarrow & l(D)\geq n-1
+    \end{align*}
+    Für $D\in\Div(C)$ sei $s(D)\defeqr\deg D+1-l(D)$. Dann ist zu zeigen
+    \begin{align*}
+      \exists\gamma\in\mathbb N~\forall D\in\Div(C):s(D)\leq\gamma
+    \end{align*}
+    Es gilt
+    \begin{enumerate}
+    \item[(i)] $s(D)=s(D')$ für $D\equiv D'$ (\ref{defbem:20.1} (d))
+    \item[(ii)] $s(D')\leq s(D)$, falls $D'\leq D$ (Behauptung 1)
+    \end{enumerate}
+    Wähle nun $f\in k(C)-k$ fest. Sei
+    \begin{align*}
+      N\defeqr f^*(0)=\sum_{\stackrel{P\in C}{f(P)=0}}\ord_P(f)\cdot P
+    \end{align*}
+    der Nullstellendivisor von $f$. $\deg(N)=\deg(f)\defeql n$. \\
+    \textbf{Behauptung 2:} Zu jedem Divisor $D\in \Div(C)$ gibt es einen linear äquivalenten Divisor $D'$ mit $D'\leq m\cdot N$
+    für ein $m\geq1$. \\
+    \textbf{Behauptung 3:} Es gibt ein $\gamma\in\mathbb N$ mit $l(m\cdot N)\geq m\cdot n+1-\gamma$ für alle $m\geq 1$. \\
+    Dann ist für $D\in \Div(C)$ und $D'$ wie in Behauptung 2
+    \begin{align*}
+      s(D)\stackrel{\text{(i)}}{=}s(D') &\stackrel{\text{(ii)}}{\leq} s(m\cdot N)=m\cdot n+1-l(m\cdot N) \\
+      &\stackrel{\text{Beh. 3}}{\leq}m\cdot n+1-(m\cdot n+1)+\gamma=\gamma
+    \end{align*}
+  \end{enumerate}
+\end{Bew}
+
+
+% 11.02.2009
+
+
+\begin{Bew}[von Behauptung 2]
+  Sei $D=\sum n_P\cdot P$ \\
+  \textbf{Gesucht:} $h\in k(C)$ mit 
+  \begin{align*}
+    n_P+\ord_Ph\leq\left\{\begin{array}{cc}  
+        m\cdot\ord_P(f) &:~~ \ord_P(f)>0 \\
+        0 &:~~ \ord_P(f)\leq0 \\
+      \end{array}\right.
+  \end{align*}
+  Seien $P_1,\dots,P_r$ die Punkte in $C$, für die $n_i\defeqr n_{P_i}>0$ ist, aber $\ord_{P_i}(f)\leq 0$.\\ 
+  Sei $h_i\defeqr \frac{1}{f}-\frac{1}{f(P_i)}\in k(C)^\times, i=1,\dots,r$
+  \begin{align*}
+    \Rightarrow\ord_{P_i}(h_i)\geq 1, i=1,\dots,r
+  \end{align*}
+  $\ord_P(h_i)\geq 0$ für alle $P\neq P_i$ mit $\ord_P(f)\leq 0$
+  \begin{align*}
+    \Rightarrow h\defeqr\prod_{i=1}^rh_i^{n_i}\text{ hat die gewünschte Eigenschaft}
+  \end{align*}
+\end{Bew}
+\begin{Bew}[von Behauptung 3]
+Sei $g_1,...,g_n$ eine Basis von $k(C)$ über $k(f)=k(\frac{1}{f})$.\\
+Dabei können die $g_i$ so gewählt werden, dass sie ganz über $k[\frac{1}{f}]$ sind.\\
+$\Rightarrow$ Jede Polstelle von $g_i$ ist auch Polstelle von $\frac{1}{f}$, also Nullstelle von $f$.\\
+$\Rightarrow \operatorname{div}(g_i) + \gamma_0N \geq 0$ für ein geeignet großes $\gamma_0\in \mathbb{N}~~(i=1,...,n) \Rightarrow g_i\in L(\gamma_0N)$\\\\
+Sei $m\geq 1$\\
+\underline{Beh.}: $\frac{g_i}{f^\nu}\in L((m+\gamma_0)N),~~ i=1,...,n;~\nu=0,...,m$\\
+\underline{Denn}: \\
+$\operatorname{div}(\frac{g}{f^\nu})+(m+\gamma_0)N=
+\operatorname{div}(g_i)-\nu\operatorname{div}(f)+mN+\gamma_0N
+\geq(m-\nu)N\geq0$,~~da $\operatorname{div}(g_i)+\gamma_0N\geq0$ (s.o.)\\
+\\
+Die $\frac{g_i}{f^\nu}$ sind $k$-linear unabhängig.\\
+$\Rightarrow l((m+\gamma_0)N)\geq m(n+1)\\
+\stackrel{Bew. 1+ Ind.}{\Rightarrow} l(mN)\geq n(m+1)-\gamma_0n=mn-\underbrace{n(\gamma_0-1)}_{:=\gamma-1}$\\
+(Denn: Kommt ein Punkt hinzu, so vergrößert sich die Dimension um 0 oder 1.)
+\end{Bew}
+
+\begin{Folg}
+\label{folg:20.3}
+Sei $C$ eine nichtsinguläre, projektive Kurve, $g=g(C)$. Dann gibt es ein $d_0\in\mathbb{Z}$, so dass für alle $D\in \Div(C)$ mit $\deg(D)\geq d_0$ gilt:
+$$l(D)=\deg(D)+1-g$$
+\end{Folg}
+
+\begin{Bew}
+Nach Satz 8 gibt es ein $D_0$ mit $l(D_0)=\deg(D_0)+1-g$.\\
+Sei $d_0=\deg(D_0)+g$ und sei $D\in \Div(C)$ mit $\deg(D)\geq d_0\\
+\Rightarrow l(D-D_0)\geq \deg(D)-\deg(D_0)+1-g\geq 1$\\
+Also gibt es ein $f\in L(D-D_0), f\neq 0\\
+\Rightarrow D':= D+\operatorname{div}(f)\geq D_0\\
+s(D)=s(D')\geq s(D_0)=g$,~~~~~($s(D)=\deg(D)+1-l(D)$)\\
+mit Satz 8: $s(D)\leq g~~\forall D\Rightarrow s(D)=g$
+\end{Bew}
+
+\begin{Prop}
+\label{prop:20.4}
+Sei $C\subseteq \mathbb{P}^2(k)$ eine nichtsinguläre projektive Kurve vom Grad $d\geq 1$ (d.h. $C=V(F)$ für ein homogenes Polynom $F$ vom Grad $d$). Dann ist 
+$$g(C)=\frac{1}{2}(d-1)(d-2)$$
+Also: $d=1,2\Rightarrow g=0; d=3\Rightarrow g=1; d=4\Rightarrow g=3; d=5\Rightarrow g=6 ~~...$\\
+Es esistieren somit keine nichtsingulären Kurven vom Geschlecht 2,4,5,... in $\mathbb{P}^2(k)$
+\end{Prop}
+
+\begin{Bsp}
+$V(X_0^d+X_1^d+X_2^d)$ ist nichtsingulär ($d\geq1$, char$(k)\nmid d$) ("'Fermat-Kurve"')
+\end{Bsp}
+
+\begin{Bew}
+\underline{Beh. 1}: Es gibt eine Gerade $L\subset\mathbb{P}^2(k)$ mit $\sharp(C\cap L)=d$.\\
+\underline{Denn}: Ausnahme bilden nur die Tangenten. Deren Menge ist aber ein Zariski-abgeschlossener Unterraum der Menge der Geraden.\\
+\\
+Sei $L=V(F_1)$ wie in Beh. 1, $L\cap C=\{P_1,...,P_d\}$\\
+\OE~~$P_i\in D(X_0),~~i=1,...,d$\\
+\\
+\underline{Beh.}: Für $D=\sum_{i=1}^dP_i,~m\geq 1$ und $g\in L(mD)$ gibt es ein homogenes Polynom $H\in k[X_0,X_1,X_2]$ mit $g=\frac{H}{F_1^m}$\\
+\underline{Denn}: Sei 
+$$f_1=\frac{F_1}{X_0}\in k(C)$$
+Dann ist $\operatorname{div}(f_1^mg)=mD-mD'+\operatorname{div}(g)$ mit einem effektiven Divisor $D'$
+mit Träger in $V(X_0)$\\
+$\Rightarrow f_1^mg$ ist ein Polynom in $\frac{X_1}{X_0}$ und $\frac{X_2}{X_0}$ vom Grad $m$.\\
+Die Homogenisierung $H$ von $f_1^mg$ erfüllt $g=\frac{H}{F_1^m}$\\
+\\
+\underline{Also}: 
+
+\begin{align*}
+L(mD)&=\FakRaum{k[X_0,X_1,X_2]_m}{F\cdot k[X_0,X_1,X_2]_{m-d}}\\
+\Rightarrow l(mD)&=\frac{1}{2}(m+1)(m+2)-\frac{1}{2}(m-d+1)(m-d+2)\\
+&=\frac{1}{2}[d(m-d+2)+d(m+1)]\\
+&=md-\frac{1}{2}(d^2-3d)\\
+&=md+1-\frac{1}{2}(d-1)(d-2)
+\end{align*}
+
+\end{Bew}
+\section{Der Satz von Riemann-Roch}
+Sei $C$ eine nichtsinguläre projektive Kurve über $k$, $k$ algebraisch abgeschlossen.
+\begin{ErinnDefBem}
+  \label{defbemerinn:21.1}
+  $\Omega_C\defeqr \Omega_{k(C)/k}$ sei der $k(C)$-Vektorraum der $k$-Differentiale von $k(C)$. Die Elemente von 
+  $\Omega_{k(C)/k}$ heißen \begriff{rationale Differentiale} oder \begriff{meromorphe Differentiale} auf $C$.
+  Es gilt: $\dim_{k(C)}\Omega_C=1$
+\end{ErinnDefBem}
+\begin{Bew} ~\\
+  \begin{itemize}
+  \item Ist $C=\mathbb P^1(k)$, so ist $k(C)=k(X)$ und $\Omega_C=k(C)\cdot dX$.
+  \item Im Allgemeinen ist $k(C)=k(x,y)$ für geeignete $x,y$.\\
+    $x$ und $y$ sind algebraisch abgängig, das heißt es gibt $F\in k[X,Y]$ mit $F(x,y)=0\Rightarrow dF(x,y)=0$.
+    Es gibt also lineare Gleichungen zwischen $dx$ und $dy$.
+  \end{itemize}
+\end{Bew}
+\begin{DefBem}
+  \label{defbem:21.2}
+  Sei $\omega\in\Omega_C, \omega\neq0$
+  \begin{enumerate}
+  \item Für $P\in C$ sei $t_P$ ein Erzeuger von $m_P$ und $\omega=fdt_P$ (für ein $f\in k(C)$). 
+    Dann ist $\ord_P\omega\defeqr\ord_P(f)$ unabhängig von der Wahl des Erzeugers $t_P$.
+  \item $ \operatorname{div}(\omega)\defeqr\sum_{P\in C}\ord_P(\omega)\cdot P$ ist Divisor auf $C$.
+  \item $K\in \Div C$ heißt \begriff{kanonisch}, wenn es ein $\omega\in\Omega_C$ gibt mit $K=\operatorname{div}(\omega)$.
+  \item Je zwei kanonische Divisoren sind linear äquivalent.
+  \end{enumerate}
+\end{DefBem}
+\begin{Bew}
+  \begin{enumerate}
+  \item Übung!
+  \item Sei $P\in C, t_P$ Erzeuger von $m_P$
+    \begin{align*}
+      U=C-\{\tilde{P}\in C:t_P\notin \mathcal O_{\tilde{P}}\}  
+    \end{align*}
+    ist offen in $C$. Für $Q\in U$ ist $t_Q\defeqr t_P-t_P(Q)\in m_Q$ und $d(t_Q)=d(t_P)$. Die Teilmenge
+    \begin{align*}
+      U'=\{Q\in U:t_Q\notin m_a^2\}
+    \end{align*}
+    ist offen (!). Für $Q\in U'$ ist $\ord_Q(\omega)=\ord_P(f)$. \\
+    $\Rightarrow\ord_Q(\omega)\neq0$ für nur endlich viele $Q\in U'$.
+  \end{enumerate}
+\end{Bew}
+\begin{nnBsp}
+  $C=\mathbb P^1(k), \omega=dz$\\
+  In $a\in C$ ist $z-a$ ein Erzeuger von $m_a$\\
+  $\Rightarrow\ord_a\omega=0$, da $\omega=dz=1\cdot d(z-a)$\\
+  In $\infty$ ist $\frac{1}{z}$ Erzeuger von $m_\infty$.
+  \begin{align*}
+    dz=-z^2d(\frac{1}{z}), \ord_\infty(z^2)=-2\Rightarrow\operatorname{div}(\omega)=-2\cdot\infty
+  \end{align*}
+\end{nnBsp}
+\begin{Satz}[Riemann-Roch]
+  Sei $C$ eine nichtsinguläre projektive Kurve über $k$, $K$ ein kanonischer Divisor auf $C$. 
+  Dann gilt für jeden Divisor $D\in \Div(C)$:
+  \begin{align*}
+    l(D)-l(K-D)=\deg D+1-g
+  \end{align*}
+\end{Satz}
+\begin{Bew}
+  für den Fall $C\subset\mathbb P^2(k)$.\\
+  \textbf{Behauptung:} Für jeden Divisor $D$ mit $l(D)>0$ und jedes $P\in C$ gilt: \\
+  Ist $l(K-D-P)\neq l(K-D)$, so ist $l(D+P)=l(D)$.
+  \begin{Prop}
+    Sei $C=V(F)\subset\mathbb P^2(k)$ nichsinguläre projektive Kurve vom Grad $d\geq 3$ und 
+    $L\subset\mathbb P^2(k)$ eine Geradee mit $L\cap C=\{P_1,\dots,P_d\}$.
+    Dann ist 
+    \begin{align*}
+      K=\sum_{i=1}^d(d-3)P_i
+    \end{align*}
+    ein kanonischer Divisor.\\
+    \textbf{Probe:} 
+    \begin{align*}
+      &\deg K+2=d(d-3)+2=d^2-3d+2=2g\\
+      &g=\frac{1}{2}(d-1)(d-2)=\frac{1}{2}(d^2-3d+2)
+    \end{align*}
+  \end{Prop}
+  \begin{Bew}
+    \OE $L=V(X_0)$. Sei $X=\frac{X_1}{X_0},Y=\frac{X_2}{X_0}$ (als Elemente von $k(C)$) \\
+    \textbf{Behauptung:} 
+    \begin{align*}
+      \operatorname{div}(dx)=\sum_{i=1}^d(d-3)P_i+\operatorname{div}(f_y)
+    \end{align*}
+    wobei $f_y$ die Klasse in $k(C)$ von $\frac{1}{X_0^{d-1}}\cdot\frac{\partial F}{\partial X_2}$ ist.
+    Dann ist 
+    \begin{align*}
+      \operatorname{div}(f_y)=\sum_{P\in U_0}\ord_P\frac{\partial F}{\partial X_2}\cdot P-\sum_{i=1}^d(d-1)\cdot P_i
+    \end{align*}
+    Zu zeigen ist also:
+    \begin{align*}
+      \operatorname{div}dx=\sum_{P\in U_0}\ord_P\frac{\partial F}{\partial X_2} P-2\cdot\sum_{i=1}^dP_i
+    \end{align*}
+  \end{Bew}
+\end{Bew}
+\begin{Folg}
+  $D=0: 1-l(K)=1-g$
+  \begin{enumerate}
+  \item $l(K)=g$
+  \item $\deg(K)=2g-2, g-1=\deg K+1-g; D=K$
+  \item für $\deg D\geq 2y-1$ ist $l(D)=\deg D+1-g$
+  \end{enumerate}
+\end{Folg}
+
+
+\appendix
+
+\def\indexspace{\par\medskip}
+\printindex[default][\phantomsection\addcontentsline{toc}{chapter}{Vokabeln}\vspace{-1.2em}]
+
+\end{document}

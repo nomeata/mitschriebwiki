@@ -1,0 +1,144 @@
+\documentclass{amsart}
+\usepackage{german}
+\usepackage[utf8x]{inputenc}
+
+\begin{document}
+
+%
+% © 2005 Joachim Breitner
+% Bitte keine Änderungen vornehmen, alle Rechte vorbehalten. (soll heißen: frag halt bevor ihr es irgendwie verwendet)
+%
+
+\title{Der Quotientenlogarithmus}
+\author{Joachim Breitner}
+%\email{mail@joachim-breitner.de}
+%\urladdr{http://www.joachim-breitner.de/}
+
+\begin{abstract}
+
+Analog zum Differenzenquotient, der das additive Wachstum einer Funktion angibt (ihre Steigung), definieren wir den Quotientenlogarithmus, der die gleichen Prinzipien um eine Operation "`verschiebt"'
+
+Dieses Dokument ist noch ein Entwurf, oft wurden Voraussetzungen nicht überprüft und Fehler hats sicher auch noch genug.
+
+\end{abstract}
+
+
+\maketitle
+
+\section{Motivation}
+
+Der Differenzenquotient ist definiert durch
+\[
+f'(x_0) = \lim_{x\to x_0}\frac{f(x) - f(x_0)}{x-x_0}\,.
+\]
+Wenn wir -- etwas unexakt -- den Limes ignorieren, können wir die Gleichung umformen zu
+\[ f(x) - f(x_0) = f'(x_0)\cdot(x-x_0)\,. \]
+Die Analogie zum Mittelwertsatz ist offensichtlich. Nun verschieben wir die Ordnung der Operationen -- aus Addition wird Multiplikation und aus Multiplikation wird Potenzierung -- und benennen $f'$ in $f°$ um, dann ergibt sich folgende Gleichung:
+\[ \frac{f(x)}{f(x_0)} = \left(\frac x{x_0}\right)^{f°(x_0)}\]
+Wir führen das wieder auf die Form mit Limes zurück:
+\[ f°(x_0) := \lim_{x\to x_0} \log_{\frac x{x_0}}\frac{f(x)}{f(x_0)} \]
+und bringen es auf eine besser lesbare Form, um die Defintion des Quotientenlogarithmus zu erhalten:
+
+\section{Definition}
+
+Sei $\emptyset \ne U\subseteq \mathbb{R}^+$ offen, $x_0\in U$ und $f:U\to\mathbb{R}^+$ eine Funktion. Dann wird im Existenzfall des Grenzwertes durch
+\[ f°(x_0) := \lim_{x\to x_0} \frac{ \log f(x) - \log f(x_0) }{ \log x - \log x_0} \]
+der \textbf{Quotientenlogarithmus} von $f$ an der Stelle $x_0$ definiert und $f$ heißt an der Stelle $x_0$ bebleitbar.
+
+Ist $f$ auf allen $x_0 \in U$ bebleitbar, so heißt $f$ bebleitbar auf $U$ und die Funktion $f°:U\to\mathbb R^+$ heißt die Bebleitung von $f$.
+
+
+\section{Beispiele}
+
+Betrachten wir nun einige übliche Funktionen und ihre Bebleitungen.
+
+\begin{enumerate}
+\item $f(x) = c$, $c>0$:
+\[f°(x_0) = \lim_{x\to x_0} \frac{\log c - \log c}{\log x - \log x_0} = 0 \]
+\item $f(x) = x$, $x>0$:
+\[f°(x_0) = \lim_{x\to x_0} \frac{\log x - \log x_0}{\log x - \log x_0} = 1 \]
+\item $f(x) = e^x$:
+\[f°(x_0) = \lim_{x\to x_0} \frac{x - x_0}{\log x - \log x_0} = \left(\lim_{x\to x_0} \frac{\log x - \log x_0}{x-x_0}\right)^{-1} = (\frac1{x_0})^{-1} = x_0 \]
+\item $f(x) = x^p$, $x>0$:
+\[f°(x_0) = \lim_{x\to x_0} \frac{p\log x - p\log x_0}{\log x - \log x_0} = p \]
+\item $f(x) = \log x$, $x>0$:
+\[f°(x_0) = \lim_{x\to x_0} \frac{\log\log x - \log\log x_0}{\log x - \log x_0} = \lim_{u\to u_0}\frac{\log u - \log u_0}{u-u_0} = \frac{1}{u} = \frac{1}{\log x} \]
+\end{enumerate}
+
+\section{Rechenregeln}
+
+Auch beim Quotientenlogarithmus lassen sich Regeln wie Produkt- und Potenzregeln definieren:
+
+\subsection{Produktregel}
+Seien $f$ und $g$ bebleitbare Funktionen auf $D$:
+\begin{align*}
+(f\cdot g)°(x_0) &= \lim_{x\to x_0} \frac{\log f(x)g(x) - \log f(x_0)g(x_0)}{\log x - \log x_0}\\
+&= \lim_{x\to x_0}\frac{\log f(x) - \log f(x_0) + \log g(x) - \log g(x_0)}{\log x - \log x_0}\\
+&= f°(x_0) + g°(x_0)
+\end{align*}
+
+Dies ist soweit wenig überraschend und erinnert an die Linearität der Ableitung. Eine Folgerung dieser Regel ist, wegen $c°=0$, dass die Bebleitung bei Funktionen, die sich nur durch einen konstanten Faktor unterscheiden, gleich ist. Daraus folgt die interessante Bebachtung, dass $(\log_b x)°=\frac{1}{\log x}$, also dass die Basis des Logarithmus irrelevant ist und stets der Kehrwert des natürlichen Logarithmuses heraus kommt. Wieder einmal taucht eine Konstante, hier $e$, völlig unerwartet in einem Satz auf.
+
+\subsection{Potenzregel}
+Seien $f$ und $g$ bebleitbare Funktionen auf $D$:
+\begin{align*}
+(f^g)°(x_0) &= \lim_{x\to x_0} \frac{\log f(x)^{g(x)} - \log f(x_0)^{g(x_0)}}{\log x - \log x_0} \\
+&= \lim_{x \to x_0} \frac{g(x) \log f(x) - g(x_0) \log f(x_0)}{\log x - \log x_0} \\
+&= \lim_{x \to x_0} \frac{g(x) \log f(x) - g(x)\log f(x_0) + g(x)\log f(x_0) - g(x_0) \log f(x_0)}{\log x - \log x_0} \\
+&= g(x_0)f°(x_0) + \log f(x_0) \lim_{x \to x_0} \frac{g(x) - g(x_0)}{\log x - \log x_0} \\
+&= g(x_0)f°(x_0) + \log f(x_0) \lim_{u \to u_0} \frac{g(e^u) - g(e^{u_0})}{u -u_0} \\
+&=g(x_0)f°(x_0) + \log f(x_0)(g(e^{u_0}))' \\
+&=g(x_0)f°(x_0) + \log f(x_0)(e^{u_0}\cdot g'(e^{u_0})) \\
+&=g(x_0)f°(x_0) + x_0 g'(x_0) \log f(x_0)
+\end{align*}
+
+Dieses Ergebnis ist schon neuartiger, und hier haben wir eine Verbindung zur Ableitung. Auch macht sich hier die nicht-kommutiativität der Potenzierung bemerkbar. Eine Ähnlichkeit zur Produktregel der Ableitung wird sichtbar, wenn man den Term $\lim_{x\to x_0} \frac{g(x)-g(x_0)}{\log x - \log x_0}$ durch $(e^{g(x_0)})°$ ersetzt:
+\[(f^g)°(x_0) = f°(x_0)g(x_0) + \log f(x_0)(e^{g(x_0)})° \]
+Aus der Potenzregel können wir nun die Kehrwert- und Quotientenregel bilden:
+
+\subsection{Quotientenregel}
+Seien $f$ und $g$ bebleitbare Funktionen auf $D$:
+\begin{align*}
+(\frac1f)° &= (f^{-1})° = f°(-1) + \log f (e^{-1})° = -f°
+\end{align*}
+sowie
+\begin{align*}
+(\frac gf)° &= (gf^{-1})° = g°-f°
+\end{align*}
+
+\subsection{Kettenregel}
+
+Die Kettenregel ist analog zur Kettenregel der Ableitung:
+
+\begin{align*}
+(f\circ g)°(x_0) &= \lim_{x\to x_0} \frac{\log f(g(x)) - \log f(g(x_0))}{\log x_0 - \log x}\\
+&= \lim_{x\to x_0} \frac{\log f(g(x)) - \log f(g(x_0))}{\log g(x) - \log g(x_0)}\cdot \frac{\log g(x) - \log g(x_0)}{\log x_0 - \log x}\\
+&= \lim _{u \to u_0} \frac{\log f(u) - \log f(u_0)}{\log u - \log u_0} \cdot \lim_{x\to x_0} \frac{\log g(x) - \log g(x_0)}{\log x - \log x_0}\\
+&= f°(g(x_0)) \cdot g°(x_0)
+\end{align*}
+
+\section{Stetigkeit}
+
+Wie bei der Ableitung folgt auch aus der Existenz der Bebleitung die Stetigkeit:
+\[ \log f(x)- \log f(x_0) = \frac{\log f(x) - \log f(x_0)}{\log x - \log x_0}\cdot(\log x - \log x_0) \stackrel{x\to x_0}{\to} f°(x_0) \cdot 0 = 0 \]
+\[\Rightarrow \lim_{x\to x_0}\log f(x) = \log f(x_0) \Rightarrow \lim_{x\to x_0} f(x) =  f(x_0) \]
+
+
+\section{Differenzierbarkeit}
+Folgt auch die Differenzierbarkeit? Der Mittelwertsatz liefert uns für den Logarithmus die Abschätzung $\log x - \log y = \frac{1}{\xi}(x-y)$ mit $\xi \in (x,y)$ für $0<x<y$. Also:
+\begin{align*}
+f°(x_0) &= \lim_{x\to x_0} \frac{ \log f(x) - \log f(x_0)}{\log x - \log x_0} \\
+&= \lim_{x\to x_0} \frac{ \frac1{\eta} (f(x) - f(x_0)}{\frac1{\xi} (x-x_0)} \text{ mit $\eta$ zwischen $f(x)$ und $f(x_0)$} \\
+&= \frac{x_0}{f(x_0)} f'(x_0)
+\end{align*}
+Das liefert leider mehr als nur die Differenzierbarkeit: Ableitung und Bebleitung stehen in direktem Zusammenhang, und der Quotientenlogarithmus ist also keine Bereicherung. Als letztes Goodie können wir dafür berechnen, welche Funktionen die "`Quotientialgleichung"' $f°=f$ erfüllen:
+\begin{align*}
+f &= f° \\
+f &= f'\cdot \frac{x}{f} \\
+f^2 &= f'\cdot x\\
+f' &= \frac{f^2}{x}\\
+\int\frac{1}{f^2}df  &= \int\frac{1}xdx\\
+\frac{-1}{f} &= \log x + \log c\text{, }c\in\mathbb{R}^+\\
+f &= \frac{-1}{\log cx}
+\end{align*}
+\end{document}

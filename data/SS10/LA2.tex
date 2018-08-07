@@ -1,0 +1,5344 @@
+\documentclass[parskip,a4paper,twoside,DIV15,BCOR12mm]{scrbook}
+\usepackage{la}
+
+\usepackage{latexki}
+\lecturer{Prof. Dr. Schmidt}
+\semester{Sommersemester 2010}
+\scriptstate{complete}
+
+\author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
+\title{Lineare Algebra II}
+
+\makeindex
+
+\begin{document}
+\maketitle
+
+\renewcommand{\thechapter}{\Roman{chapter}}
+\addcontentsline{toc}{chapter}{Inhaltsverzeichnis}
+
+\tableofcontents
+
+\chapter{Vorwort}
+
+\section{Über dieses Skriptum}
+Dies ist ein erweiterter Mitschrieb der Vorlesung \glqq Lineare Algebra II\grqq\ von Prof. Dr. Schmidt im
+Sommersemester 2010 an der Universität Karlsruhe (KIT). Die Mitschriebe der Vorlesung werden mit
+ausdrücklicher Genehmigung von Prof. Dr. Schmidt hier veröffentlicht, Prof. Dr. Schmidt ist für den
+Inhalt nicht verantwortlich.
+
+\section{Wer}
+Gestartet wurde das Mitschriebwiki von Joachim Breitner. Beteiligt an diesem Mitschrieb sind
+Rebecca Schwerdt, Manuel Kaiser und Philipp Ost.
+
+\section{Wo}
+Alle Kapitel inklusive \LaTeX-Quellen können unter \url{http://mitschriebwiki.nomeata.de} abgerufen werden.
+Dort ist ein \emph{Wiki} eingerichtet und von Joachim Breitner um die \LaTeX-Funktionen erweitert worden.
+Das heißt, jeder kann Fehler nachbessern und sich an der Entwicklung
+beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
+
+
+\renewcommand{\thechapter}{\arabic{chapter}}
+\renewcommand{\chaptername}{§}
+\setcounter{chapter}{13}
+
+\chapter{Normalformen von Endomorphismen}
+\index{Endomorphismus!Normalform}
+In diesem Abschnitt sei \(\dim V<\infty\).
+\begin{ziel}
+Für ein \(\phi\in\End(V)\) finde man eine Basis \(B\), so dass die
+Darstellungsmatrix \(D_{BB}(\phi)\) eine einfache Form hat.
+\end{ziel}
+\begin{remind}
+Falls eine Basis \(B\) aus Eigenvektoren existiert, so ist \(D_{BB}(\phi)\) eine
+\index{Diagonalmatrix}
+Diagonalmatrix -- der Idealfall. Dies gilt genau dann, wenn
+\[
+g_{\phi}(T)=\prod_{\lambda\in\Spec(\phi)}{(T-\lambda)^{e_{\lambda}}}\in K[T]
+\]
+ein Produkt von Linearfaktoren ist (in \(\mathbb{C}\) immer erfüllt) und
+\[
+e_{\lambda}=\dim E_{\lambda}
+\]
+\end{remind}
+\begin{strategie}
+Ersetze die Eigenvektoren durch Vektoren mit schwächerer Eigenschaft.
+\end{strategie}
+\begin{definition}
+Für \(\phi\in\End(V)\) und \(\lambda\in K\) heißt
+\[
+H(\phi,\lambda):=
+    \bigcup_{k=0}^{\infty}{\Kern\left((\phi-\lambda\id_{v})^{k}\right)}
+\]
+\index{Haupt-!Raum}
+der \textbf{Hauptraum} von \(\phi\) zu \(\lambda\).
+\end{definition}
+\begin{comment}[1]
+\index{Untervektorraum}\index{Untervektorraum!invarianter}
+\(H(\phi,\lambda)\) ist ein \(\phi\)-invarianter Untervektorraum von \(V\), denn
+es gilt
+\[
+\Kern\left((\phi-\lambda\id_{v})^{k}\right)\subseteq
+    \Kern\left((\phi-\lambda\id_{v})^{k+1}\right)
+\]
+und
+\begin{align*}
+(\phi-\lambda\id_{v})^{k}x&=0\\
+(\phi-\lambda\id_{v})^{k}\phi(x)&=0
+\end{align*}
+\end{comment}
+\begin{comment}[2]
+\[
+H(\phi,\lambda)\neq {0}\Longleftrightarrow\lambda\in\Spec(\phi)
+\]
+\end{comment}
+\begin{proof}
+\begin{itemize}
+\item[\(\impliedby\):] Sei \(\lambda\in\Spec(\phi)\). Dann:
+\[
+0\neq E_{\lambda}(\phi)\subseteq H(\phi,\lambda)
+\]
+\item[\(\implies\):] Sei \(x\neq0\) in \(H(\phi,\lambda)\). Dann existiert
+ein \(k\geq1\) mit \((\phi-\lambda\id_{v})^{k}(x)=0\).
+
+Ohne Beschränkung der Allgemeinheit sei \(k\) minimal. Damit:
+\[
+\underbrace{(\phi-\lambda\id_{v})^{k-1}}_{=:y}(x)\neq0
+    \quad\text{ und }y\in E_{\lambda}(\phi)
+\]
+\end{itemize}
+\end{proof}
+\begin{theo}
+\index{Polynom!charakteristisches}
+\label{Satz 14.1}
+Sei das charakteristische Polynom
+\[
+g_{\phi}(T)=\prod_{\lambda\in\Spec(\phi)}{(T-\lambda)^{e_{\lambda}}}
+\]
+Dann gilt für jedes \(\lambda\in\Spec(\phi)\):
+\begin{enumerate}
+\item \(H(\phi,\lambda)=\Kern\left((\phi-\lambda\id_{v})^{e_{\lambda}}\right)\)
+\label{Satz 14.1; Behauptung a}
+\item \(\dim H(\phi,\lambda)=e_{\lambda}\)
+\end{enumerate}
+\end{theo}
+\begin{proof}
+Fixiere \(\lambda\) und \(e=e_{\lambda}\). Schreibe 
+\(g_{\phi}(T)=(T-\lambda)^{e}\cdot h(T)\) -- in \(h(T)\) werden die restlichen
+Linearfaktoren untergebracht. Setze 
+\(H:=\Kern\left((\phi-\lambda\id_{v})^{e}\right)\) und \(U:=\Kern(h(\phi))\).
+
+Wegen \(\ggT\left((T-\lambda)^{e},h(T)\right)=1\) folgt mit der letzten 
+Proposition % welche?
+\[
+V=H\bigoplus U
+\]
+mit \(\phi\)-invarianten Teilräumen.
+
+Für alle \(k\geq1\) gilt: \(\left.(\phi-\lambda\id_{v})^{k}\right|_{U}\) ist
+injektiv, denn
+\[
+1=r\cdot(T-\lambda)^{k}+s\cdot h
+\]
+mit \(r,s\in K[T]\). Damit folgt:
+\begin{align*}
+id_{v}&=r(\phi)\cdot(\phi-\lambda\id_{v})^{k}+
+	s(\phi)\cdot\left.h(\phi)\right|_{U}\\
+id_{v}&=\left.r(\phi)\right|_{U}\cdot\left.(\phi-\lambda\id_{v})^{k}\right|_{U}+
+	0
+\end{align*}
+Damit folgt für alle \(k\geq1\):
+\[
+\Kern\left((\phi-\lambda\id_{v})^{k}\right)\subseteq H
+\]
+also gilt \eqref{Satz 14.1; Behauptung a}.
+
+Ferner gilt:
+\[
+g_{\phi}(T)=g_{\phi|_{H}}\cdot g_{\phi|_{U}}
+\]
+und \((T-\lambda)^{e}\) annulliert \(\phi|_{H}\) (da 
+\(\left.(\phi-\lambda\id_{v})^{e}\right|_{H}=0\)). Daraus folgt: das 
+\index{Minimalpolynom}
+Minimalpolynom von \(\phi|_{H}\) teilt \((T-\lambda)^{e}\), also ist 
+\(g_{\phi|_{H}}\) eine Potenz von \(T-\lambda\).
+
+Damit gilt: \(g_{\phi|_{H}}=(T-\lambda)^{\dim H}\) und \(\dim H\leq e\) (da
+\((T-\lambda)^{e}\) höchste Potenz in \(g_{\phi}\) ist).
+
+\(e>\dim H\), also \(T-\lambda\vert g_{\phi|_{H}}\), steht im Widerspruch zu
+\(\ggT(T-\lambda,h)=1\).\\
+Damit gilt: \(e=\dim H\).
+\end{proof}
+\begin{remind}
+Summen von Eigenräumen sind direkt. Das Analogon für Haupträume gilt auch:
+\end{remind}
+\begin{theo}
+\label{Satz 14.2}
+Sind \(\lambda_{1},\ldots,\lambda_{k}\in K\) paarweise verschieden, so gilt
+\[
+\sum_{i=1}^{k}{H(\phi,\lambda_{i})}=\bigoplus_{i=1}^{k}{H(\phi,\lambda_{i})}
+\]
+\end{theo}
+\begin{proof}
+Schreibe kurz: \(H_{i}:=H(\phi,\lambda_{i})\).\\
+Führe eine vollständige Induktion nach \(k\) durch.
+\begin{itemize}
+\item[\(k=1\):]\checkmark
+\item[\(k-1\to k\):] Zu zeigen: für \(v_{i}\in H_{i}\) gilt:
+\[
+\sum_{i=1}^{k}{v_{i}}=0
+\]
+d.h. alle \(v_{i}=0\).
+
+\(v_{k}\in H_{k}\), d.h. es existiert \(e>0\) mit 
+\((\phi-\lambda_{k}\id_{v})^{e}(v_{k})=0\), also
+\begin{align*}
+0&=(\phi-\lambda_{k}\id_{v})^{e}(0)\\
+&=(\phi-\lambda_{k}\id_{v})^{e}\left(\sum_{i=1}^{k}{v_{i}}\right)\\
+&=\sum_{i=1}^{k}{
+    \underbrace{(\phi-\lambda_{k}\id_{v})^{e}(v_{i})}_{=0\text{ für }i=k}}\\
+&=\sum_{i=1}^{k-1}{
+    \underbrace{(\phi-\lambda_{k}\id_{v})^{e}(v_{i})}_{=:w_{i}\in H_{i}}}
+\end{align*}
+Mit der Induktionsvoraussetzung folgt \(w_{1}=\ldots=w_{k-1}=0\).
+
+Nun fixiere \(i\in\{1,\ldots,k-1\}\).\\
+Analog zum Fall \(i=k\):
+\[
+\exists f>0:(\phi-\lambda_{i}\id_{v})^{f}(v_{i})=0
+\]
+Wegen \(i\neq k\) ist \(\lambda_{i}\neq\lambda_{k}\), also 
+\(\ggT(T-\lambda_{i},T-\lambda_{k})=1\), also existieren \(g,\,h\in K[T]\) mit
+\[
+1=g(T-\lambda_{i})^{f}+h(T-\lambda_{k})^{e}
+\]
+\(\phi\) einsetzen:
+\begin{align*}
+v_{i}&=\id_{v}(v_{i})\\
+&=g(\phi)\circ\underbrace{(\phi-\lambda_{i}\id_{v})^{f}(v_{i})}_{0}+
+    h(\phi)\circ\underbrace{(\phi-\lambda_{k}\id_{v})^{e}(v_{i})}_{=w_{i}=0}\\
+&=0
+\end{align*}
+Damit folgt: \(v_{i}=0\) für \(i=1,\ldots,k-1\) und somit folgt wegen
+\(\sum_{i=1}^{k}{v_{i}}=0\) auch \(v_{k}=0\).
+\end{itemize}
+\end{proof}
+\paragraph{Zentrale Frage:}{
+    Wann ist \(V\) die direkte Summe aller Haupträume?}
+\begin{theo}
+\label{Satz 14.3}
+Sei \(V\) ein \(K\)-Vektorraum endlicher Dimension. Weiter sei 
+\(\phi\in\End(V)\) mit charakteristischem Polynom \(g_{\phi}(T)\) und
+Minimalpolynom \(f_{\phi}(T)\).
+
+Folgende Aussagen sind äquivalent:
+\begin{enumerate}
+\item \(V=\bigoplus_{\lambda\in\Spec(\phi)}{H(\phi,\lambda)}\)
+\label{Satz 14.3 Beh 1}
+\item \(g_{\phi}(T)=
+    \prod_{\lambda\in\Spec(\phi)}{(T-\lambda)^{\dim H(\phi,\lambda)}}\)
+\label{Satz 14.3 Beh 2}
+\item \(g_{\phi}(T)\) ist Produkt von Linearfaktoren
+\label{Satz 14.3 Beh 3}
+\item \(f_{\phi}(T)\) ist Produkt von Linearfaktoren
+\label{Satz 14.3 Beh 4}
+\end{enumerate}
+\end{theo}
+\begin{proof}
+Der Beweis erfolgt durch Ringschluss:
+\begin{itemize}
+\item[\(\eqref{Satz 14.3 Beh 1}\implies\eqref{Satz 14.3 Beh 2}\):] Für
+\(H_{\lambda}:=H(\phi,\lambda)\) bekannt:
+\[
+g_{\phi|_{H_{\lambda}}}=(T-\lambda)^{\dim H_{\lambda}}
+\]
+Wegen \(V=\bigoplus_{\lambda}{H_{\lambda}}\) folgt
+\[
+g_{\phi}=\prod_{\lambda}{g_{\phi|_{H_{\lambda}}}}=
+    \prod_{\lambda}{(T-\lambda)^{\dim H_{\lambda}}}
+\]
+\item[\(\eqref{Satz 14.3 Beh 2}\implies\eqref{Satz 14.3 Beh 3}\):]\checkmark
+\item[\(\eqref{Satz 14.3 Beh 3}\implies\eqref{Satz 14.3 Beh 4}\):] Wegen
+\(f_{\phi}\vert g_{\phi}\)\checkmark
+\item[\(\eqref{Satz 14.3 Beh 4}\implies\eqref{Satz 14.3 Beh 1}\):] 
+Vollständige Induktion nach \(r:=\#\text{Nullstellen von }f_{\phi}\).
+\begin{itemize}
+\item[\(r=0\):] \(f_{\phi}\) hat keine Linearfaktoren, also 
+    \(f_{\phi}=1\quad(\leadsto V=0)\).
+\item[\(r=1\):] \(f_{\phi}=(T-\lambda)^{e}\) impliziert 
+\(V=\Kern(\underbrace{f_{\phi}(\phi)}_{=0})=H(\phi,\lambda)\)
+\item[\(r\geq2\):] Sei \(\lambda\) eine Nullstelle von \(f_{\phi}\), dann
+existiert ein \(\phi\)-invarianter Teilraum \(U:\,V=H\bigoplus U\), wobei
+\(\lambda\) keine Nullstelle des Minimalpolynoms \(f_{\phi|_{U}}\) ist.\\
+Wegen \(f_{\phi}=f_{\phi|_{U}}\cdot f_{\phi|_{H_{\lambda}}}\) ist die Anzahl der
+Nullstellen von \(f_{\phi|_{U}}\) \(r-1\).
+
+Mit der Induktionsvoraussetzung folgt
+\[
+U=\bigoplus_{\lambda'\in\Spec(\phi|_{U})}{H(\phi|_{U},\lambda')}
+\]
+Da \(\Spec(\phi)=\Spec(\phi|_{U})\overset{\cdot}{\cup}\{\lambda\}\) und 
+\(H(\phi|_{U},\lambda')=H(\phi,\lambda')\) für alle \(\lambda'\neq\lambda\)
+folgt \(\eqref{Satz 14.3 Beh 1}\).
+\end{itemize}
+\end{itemize}
+\end{proof}
+Ein wichtiger Spezialfall von Haupträumen ist der mit \(\lambda=0\).
+\begin{definition}
+\index{Nilpotenz}\index{Endomorphismus!nilpotenter}
+Ein Endomorphismus heißt \textbf{nilpotent}, falls ein \(n\in\mathbb{N}\)
+existiert mit \(\phi^{n}=0\).
+\end{definition}
+\begin{comment}[1]
+Für nilpotentes \(\phi\) ist \(\Spec(\phi)=\{0\}\) und 
+\(V=\Kern(\phi^{n})=H(\phi,0)\).
+\end{comment}
+\begin{proof}
+Das Minimalpolynom ist von der Form: \(f_{\phi}=T^{m}\) mit \(m\in\mathbb{N}\).
+\end{proof}
+\begin{comment}[2]
+Für beliebiges \(\phi\in\End(V)\) und \(\dim(V)<\infty\) ist
+\((\phi-\lambda\id_{v})|_{H(\phi,\lambda)}\) nilpotent.
+\end{comment}
+\begin{proof}
+Wir haben gesehen, dass \ gilt
+\[
+H(\phi,\lambda)=\Kern\left((\phi-\lambda\id_{v})^{\dim H(\phi,\lambda)}\right)
+\]
+\end{proof}
+\begin{supptheo}
+\label{Hilfssatz 14.1}
+Sei \(\dim(V)<\infty,\,\phi\in\End(V)\) nilpotent mit Minimalpolynom 
+\(f_{\phi}=T^{d}\). Ferner sei \(u\in V\) mit \(\phi^{d-1}(u)\neq0\).
+
+Dann existiert ein \(\phi\)-invarianter Teilraum \(W\) derart, dass gilt:
+\[
+V=U\bigoplus W
+\]
+für den zyklischen (\(\phi\)-invarianten) Teilraum
+\[
+U:=\left\langle u,\phi(u),\phi^{2}(u),\ldots,\phi^{d-1}(u)\right\rangle
+\]
+\end{supptheo}
+\begin{note}
+Ein solches \(u\) existiert stets, da andernfalls \(\phi^{d-1}=0\). Dies wäre
+ein Widerspruch zu \(f_{\phi}=T^{d}\).
+\end{note}
+\begin{proof}
+Es gilt \(\dim U=d\), da offenbar \(U\leq V\) und
+\[
+\dim U=\Grad(g_{\phi|_{U}})\geq\Grad(f_{\phi|_{U}})=d
+\]
+\(f_{\phi|_{U}}\vert f_{\phi}=T^{d}\) und kein echter Teiler, da 
+\(\phi^{d-1}(u)\neq0\).
+
+Wähle \(\phi\)-invarianten Teilraum \(W\) mit \(U\cap W=0\) und \(\dim W\)
+maximal.
+\begin{thesis}
+\(V=U\bigoplus W\)
+\end{thesis}
+\begin{proof}
+angenommen es gilt \(U\underset{\neq}{>}V\), d.h. es existiert
+\(\tilde{v}\in V\setminus(U\bigoplus W)\).
+
+Wenn \(\phi^{d}(\tilde{v})=0\in U\bigoplus W\), dann existiert ein kleinstes
+\(e\in\mathbb{N}\) mit \(\phi^{e}(\tilde{v})\in U\bigoplus W\).\\
+Setze \(v:=\phi^{e-1}(\tilde{v})\), so dass also 
+\(v\not\in U\bigoplus W\) und \(\phi(v)\in U\bigoplus W\). Damit folgt:
+\[
+\phi(v)=\sum_{i=0}^{d-1}{a_{i}\phi^{i}(u)+w}
+\]
+mit geeignetem \(a_{i}\in K,\,w\in W\). Wende \(\phi^{d-1}\) an:
+\begin{align*}
+0&=\phi^{d}(v)\\
+&=a_{0}\cdot\underbrace{\phi^{d-1}(u)}_{\neq0}+\phi^{d-1}(w)
+\end{align*}
+Damit folgt \(\phi^{d-1}(w)\in W\cap U=0\), also \(a_{0}=0\).
+\[
+\phi(v)=\phi\underbrace{\left(
+    \sum_{i=1}^{d-1}{a_{i}\cdot\phi^{i-1}(u)}\right)}_{=:\tilde{u}\in U}+w
+\Longleftrightarrow\phi(v-\tilde{u})=w
+\]
+Nun betrachte den Teilraum \(\tilde{W}:=W+K\cdot(v-\tilde{u})\)
+\begin{itemize}
+\item \(\tilde{W}\) ist \(\phi\)-invariant
+\item \(\tilde{W}\underset{\neq}{>}W\) (denn \(v-\tilde{u}\not\in W\) wegen
+\(v\not\in U+W\))
+\item \(\tilde{W}\cap U=0\)
+\end{itemize}
+Letzteres gilt, da für \(u'=w'+\alpha(v-\tilde{u})\in\tilde{W}\cap U\) folgt
+\(\left(\alpha\tilde{u}+u'\right)-w'=\alpha\cdot v\in U\bigoplus W\), also 
+\(\alpha=0\).\\
+Daraus folgt \(u'=w'\in U\cap W=0\).
+\end{proof}
+Da \(\dim\tilde{W}>\dim W\) folgt Widerspruch zur Maximalität von \(\dim W\).
+\end{proof}
+\begin{conclusion}
+Für nilpotentes \(\phi\) ist \(V\) direkte Summe von \(\phi\)-zyklischen
+Teilräumen.
+\end{conclusion}
+\begin{proof}
+Vollständige Induktion nach \(n=\dim V\)
+\begin{itemize}
+\item[\(n=0,\,1\):] Klar \checkmark
+\item[\(n\geq2\):] \(V=U\bigoplus W\) mit \(\phi\)-zyklischem \(U\neq0\) nach
+Hilfssatz \(\ref{Hilfssatz 14.1}\).
+
+Damit folgt: \(\dim W<n\).\\
+Induktionsvoraussetzung: \(W\) ist direkte Summe \(\phi\)-zyklischer 
+Teilräume.
+\end{itemize}
+\end{proof}
+\begin{remind}
+Die Darstellungsmatrix von \(\phi|_{U}\) bezüglich der Basis
+\(B=\{u,\phi(u),\phi^{2}(u),\ldots,\phi^{d-1}(u)\}\) lautet für jedes 
+nilpotente \(\phi\) mit Minimalpolynom \(f_{\phi}=T^{d}\)
+\[
+D_{BB}(\phi)=\begin{pmatrix}
+    0&\cdots&\cdots&0\\
+    1&\ddots&& \\
+     &\ddots&\ddots& \\
+    0&&1&0
+\end{pmatrix}=:J_{d}(0)
+\]
+\(J_{d}(0)\) heißt
+\index{Jordan-!Kästchen}
+    \textbf{Jordankästchen der Länge \(\mathbf{d}\) zum Eigenwert 0}.
+\end{remind}
+\paragraph{Übung:}{Für \(e=0,1,\ldots,d\) gilt:
+\(\rank\left(J_{d}(0)^{e}\right)=d-e\) und 
+    \(J_{d}(0)^{e}=0\) für \(e\geq d\).}
+\begin{theo}[Jordannormalform für nilpotente Matrizen]
+\label{Satz 14.4}
+\index{Jordan-!Normalform}\index{Normalform!Jordansche}
+\index{Partition}\index{Summenzerlegung}
+Sei \(A\in K^{n\times n}\) nilpotent. Dann gibt es eine Partition 
+(Summenzerlegung) \(n=\sum_{i=1}^{k}{d_{i}}\) mit eindeutig bestimmenten 
+\(k,\,d_{i}\in\mathbb{N}\) mit \(d_{1}\geq d_{2}\geq\ldots\geq d_{k}\geq1\), so
+\index{Blockdiagonalmatrix}\index{Diagonalmatrix!Block-}
+dass \(A\) ähnlich ist zu der \textbf{Blockdiagonalmatrix}
+\[
+\tilde{A}=\begin{pmatrix}
+    J_{d_{1}}(0)&&&0\\
+    &J_{d_{2}}(0)&&\\
+    &&\ddots&\\
+    0&&&J_{d_{k}}(0)
+\end{pmatrix}
+\]
+\end{theo}
+\begin{proof}
+Bereits bekannt:
+\[
+K^{n}=V=\bigoplus_{i=1}^{k}{U_{i}}
+\]
+mit \(\phi\)-zyklischem \(U_{i}\) zu \(\phi=\phi_{A}\), wobei für 
+\(d_{i}:=\dim U_{i}\) ohne Beschränkung der Allgemeinheit 
+\(d_{1}\geq d_{2}\geq\ldots\geq d_{k}\) und \(n=\sum_{i=1}^{k}{d_{i}}\) gilt.\\
+Ferner ist bezüglich der Basis 
+    \(B_{i}=\{u_{i},\phi(u_{i}),\ldots,\phi^{d-1}(u_{i})\}\)
+\[
+D_{B_{i}B_{i}}\left(\phi|_{U_{i}}\right)=J_{d_{i}}(0)
+\]
+Dies zeigt die Existenz von \(\tilde{A}\).
+\paragraph{Eindeutigkeit:}{Zu zeigen: Für \(d\in\mathbb{N}\) ist die Anzahl
+\index{Jordan-!Kästchen}
+\(m_{d}\) von Jordankästchen \(J_{d}(0)\) der Länge \(d\) eindeutig durch
+\(A\) bestimmt.
+
+Nach der Rangformel (\(\longrightarrow\)Übung!) gilt:
+\begin{align*}
+r_{e}&:=\rank\left(A^{e}\right)\\
+&=\rank\left(\tilde{A}^{e}\right)\\
+&=\sum_{i=1}^{k}{
+    \underbrace{\rank\left(J_{d_{i}}(0)^{e}\right)}_{(\alpha_{i}-e)}}\\
+&=\sum_{d=e}^{n}{(d-e)\cdot m_{d}}\qquad(e=0,1,\ldots,n-1)
+\end{align*}
+Dies ist ein lineares Gleichungssystem:
+\[
+\underbrace{\begin{pmatrix}
+    1&2&\cdots&n\\
+    0&\ddots&\ddots&\vdots\\
+    \vdots&\ddots&\ddots&2\\
+    0&\cdots&0&1
+\end{pmatrix}}_{=:M}\cdot
+\begin{pmatrix}
+    m_{1}\\\vdots\\\vdots\\m_{n}
+\end{pmatrix}=
+\begin{pmatrix}
+    r_{0}\\\vdots\\\vdots\\r_{n-1}
+\end{pmatrix}
+\]
+Es ist \(\det(M)=1\), insbesondere ist \(M\) invertierbar, so dass 
+\((m_{1},\ldots,m_{n})\) eindeutig durch \(A\) bestimmt ist.
+}
+\end{proof}
+\begin{note}
+\[
+M^{-1}=\begin{pmatrix}
+    1&-2&1&0&\cdots&0\\
+    0&\ddots&\ddots&\ddots&\ddots&\vdots\\
+    \vdots&\ddots&\ddots&\ddots&\ddots&0\\
+    \vdots&&\ddots&\ddots&\ddots&1\\
+    \vdots&&&\ddots&\ddots&-2\\
+    0&\cdots&\cdots&\cdots&0&1\\
+\end{pmatrix}
+\]
+Insbesondere gilt:
+\begin{equation}
+\label{eq: Formel Anzahl Jordankaestchen}
+m_{d}=r_{d-1}-2r_{d}+r_{d+1}
+\end{equation}
+\end{note}
+\begin{definition}
+Für \(\lambda\in K\) und \(d\in\mathbb{N}\) heißt die Matrix
+\[
+J_{d}(\lambda)=\begin{pmatrix}
+    \lambda&&&0\\
+    1&\ddots&&\\
+    &\ddots&\ddots&\\
+    0&&1&\lambda
+\end{pmatrix}=J_{d}(0)+\lambda\cdot I_{d}
+\]
+\index{Jordan-!Kästchen}
+ein \textbf{Jordankästchen der Länge \(\mathbf{d}\) zum Eigenwert \(\lambda\)}.
+\end{definition}
+\begin{theo}[Jordannormalform]
+\index{Jordan-!Normalform}\index{Normalform!Jordansche}
+\label{Satz 14.5}
+Sei \(V\) ein \(K\)-Vektorraum, \(\dim V<\infty\) und \(\phi\in\End(V)\), so
+dass das charakteristische Polynom \(g_{\phi}\) in Linearfaktoren zerfällt,
+d.h.
+\[
+g_{\phi}(T)=\prod_{\lambda\in\Spec(\phi)}{(T-\lambda)^{\mu_{a}(\lambda)}}
+\]
+Dabei sei \(\Spec(\phi)=\{\lambda_{1},\lambda_{2},\ldots,\lambda_{l}\}\) für
+\(l:=\lvert\Spec(\phi)\rvert\).
+
+Dann gibt es zu jedem \(\lambda_{i}\) eindeutig bestimmte natürliche Zahlen
+\(k_{i}\) und \(d_{1,i}\geq d_{2,i}\geq\ldots\geq d_{k_{i},i}\geq1\), sodass
+bezüglich einer geeigneten Basis \(B\) von \(V\) die Darstellungsmatrix von
+\(\phi\) die folgende Blockdiagonalform hat:
+\[
+D_{BB}(\phi)=\begin{pmatrix}
+    D_{1}&&0\\
+    &\ddots&\\
+    0&&D_{l}
+\end{pmatrix}\text { mit }
+    D_{i}:=\begin{pmatrix}
+	J_{d_{1,i}}(\lambda_{i})&&0\\
+	&\ddots&\\
+	0&&J_{d_{k_{i},i}}(\lambda_{i})
+    \end{pmatrix}
+\]
+Dabei ist \(D_{i}=D_{B_{i}B_{i}}\left(\phi|_{H(\phi,\lambda_{i})}\right)\) die
+Darstellungsmatrix der Einschränkung von \(\phi\) auf den Hauptraum
+\(H(\phi,\lambda_{i})\) bezüglich einer Basis \(B_{i}\) dieses Raumes.\\
+Bezeichnet \(m_{d}(\lambda)\) die Anzahl der Jordankästchen der Länge \(d\)
+zum Eigenwert \(\lambda\), so gilt für alle \(d\in\mathbb{N}\):
+\[
+m_{d}(\lambda)=\rank\left((\phi-\lambda\id)^{d-1}\right)-
+    2\rank\left((\phi-\lambda\id)^{d}\right)+
+    \rank\left((\phi-\lambda\id)^{d+1}\right)
+\]
+\index{Jordan-!Normalform}
+Diese \textbf{Jordannormalform} \(D_{BB}(\phi)=:\JNF(\phi)\) ist, bis auf die
+\index{Jordan-!Block}
+Reihenfolge der \textbf{Jordanblöcke} \(D_{i}\), eindeutig bestimmt.
+\end{theo}
+\begin{proof}
+Wegen der Voraussetzung an \(g_{\phi}\) ist 
+\(V=\bigoplus_{\lambda}{H(\phi,\lambda)}\) mit 
+\(H(\phi,\lambda)=\Kern\left((\phi-\lambda\id)^{\mu_{a}(\lambda)}\right)\). Es
+ist bereits bekannt, dass
+\[
+\Psi_{i}:=\left.(\phi-\lambda\id)\right|_{H(\phi,\lambda_{i})}
+\]
+nilpotent ist.
+
+Nach Satz \ref{Satz 14.4} existiert also eine Basis \(B_{i}\) von 
+\(H(\phi,\lambda_{i})\) mit
+\[
+D_{B_{i}B_{i}}(\Psi_{i})=\begin{pmatrix}
+    J_{d_{1,i}}(0)&&\\
+    &\ddots&\\
+    &&J_{d_{k_{i},i}}(0)
+\end{pmatrix}
+\]
+Also gilt für \(\phi|_{H(\phi,\lambda_{i})}=\Psi_{i}+\lambda_{i}\cdot\id\)
+\[
+D_{B_{i}B_{i}}\left(\phi|_H(\phi,\lambda_{i})\right)=
+    D_{B_{i}B_{i}}(\Psi_{i})+\lambda_{i}I_{\mu_{a}(\lambda_{i})}=D_{i}
+\]
+(wegen \(J_{d}(\lambda)=J_{d}(0)+\lambda I_{d}\))
+
+Nehme also Basis für \(V\): 
+\(B:=B_{1}\overset{\cdot}{\cup}B_{2}\overset{\cdot}{\cup}\ldots
+    \overset{\cdot}{\cup}B_{l}\) so dass \(D_{BB}(\phi)\) die gewünschte
+Form hat. Die Formel für \(m_{d}(\lambda)\) kennen wir schon (Gleichung
+\eqref{eq: Formel Anzahl Jordankaestchen}), ebenso die Eindeutigkeit aus dem
+Spezialfall nilpotenter Matrizen.
+
+(Beachte hierbei: \(\left.(\phi-\lambda\id)^{d}\right|_{H(\phi,\lambda')}\) ist
+invertierbar für \(\lambda\neq\lambda'\).)
+\end{proof}
+\begin{corollary}
+\label{Korollar 14.1}
+\begin{enumerate}
+\item Die Länge des Jordanblockes \(D_{i}\) zum Eigenwert \(\lambda_{i}\) ist
+\[
+\lvert B_{i}\rvert=\dim\left(H(\phi,\lambda_{i})\right)=\mu_{a}(\lambda_{i})
+\]
+\item Die Anzahl der Jordankästchen zum Eigenwert \(\lambda_{i}\) ist
+\[
+k_{i}=\dim E_{\lambda_{i}}=\mu_{g}(\lambda_{i})
+    \qquad\text{(Dimension des Eigenraumes)}
+\]
+\item Die Vielfachheit \(e_{i}\) eines Linearfaktors \(T-\lambda_{i}\) im
+Minimalpolynom
+\[
+f_{\phi}(T)=\prod_{i=1}^{e}{(T-\lambda_{i})^{e_{i}}}
+\]
+ist die größte Länge der Jordankästchen zum Eigenwert \(\lambda_{i}\),
+also
+\[
+e_{i}=d_{1,i}=\min\left\{
+    e\geq0\mid\rank\left((\phi-\lambda_{i}\id)^{e}\right)=
+	\rank\left((\phi-\lambda_{i}\id)^{e+1}\right)\right\}
+\]
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+\begin{enumerate}
+\item Bekannt!
+\item \ \vspace*{-24pt}
+    \begin{remind} % das ist typographisch nicht ganz sauber :-/
+    Mit \(\Psi_{\lambda}:=(\phi-\lambda\id)|_{H(\phi,\lambda)}\) gilt:
+    \[
+    E_{\lambda}=\Kern\Psi_{\lambda}\leq
+	\Kern\Psi_{\lambda}^{\mu_{a}(\lambda)}=H(\phi,\lambda)
+    \]
+    mit \(\JNF(\Psi_{\lambda})=\begin{pmatrix}
+	    J_{d_{1}}(0)&&\\
+	    &\ddots&\\
+	    &&J_{d_{k}}(0)
+	\end{pmatrix}\)
+    \end{remind}
+Wegen \(\rank\left(J_{d}(0)\right)=d-1\) folgt
+\[
+\rank(\Psi_{\lambda})=(d_{1}+\ldots+d_{k})-k=\dim H(\phi-\lambda)-k
+\]
+also
+\[
+\dim E_{\lambda}=\dim\Kern\Psi_{\lambda}=
+    \dim H(\phi,\lambda)-\rank(\Psi_{\lambda})=k
+\]
+\item Wir haben
+\[
+\JNF(\phi)=\begin{pmatrix}
+	D_{1}&&\\
+	&\ddots&\\
+	&&D_{l}
+    \end{pmatrix}
+\]
+Betrachte annullierende Polynome von \(\phi\) (also von \(\JNF(\phi)\)) der Form
+\[
+f(T)=\prod_{i=1}^{l}{(T-\lambda_{i})^{f_{i}}}
+\]
+Setze \(\JNF(\phi)\) ein:
+\[
+0=f\left(\JNF(\phi)\right)=\begin{pmatrix}
+	f(D_{1})&&\\
+	&\ddots&\\
+	&&f(D_{l})
+    \end{pmatrix}
+\Longleftrightarrow\forall j:\,\prod_{i=1}^{l}{(D_{j}-\lambda_{i}I)^{f_{i}}}=0
+\]
+Wegen \(D_{j}-\lambda_{i}I\) invertierbar für \(i\neq j\) besagt dies:
+\[
+\Longleftrightarrow\forall j:\,
+(\underbrace{D_{j}-\lambda_{j}I}_{\JNF(\Psi_{\lambda_{j}})})^{f_{j}}=0
+\]
+Also wegen 
+\(\left[\rank\left(J_{d}(0)^{f}\right)=0\Longleftrightarrow f\geq d\right]\)
+genau dann, wenn für alle \(j\) gilt:
+\[
+f_{j}\geq d_{1,j}(\geq d_{2,j}\geq\ldots)
+\]
+also überall \(\min f_{j}=e_{j}=d_{1,j}\).
+\end{enumerate}
+\end{proof}
+
+\chapter{Multilineare Abbildungen und Tensorprodukte}
+\section{Bilinearformen}
+\begin{definition}
+\index{Vektorraumpaarung}\index{Paarung}
+\index{Bilinearform}
+\index{ausgeartete Paarung}\index{Paarung!ausgeartete}
+Seien $V,W$ $K$-VRme. Eine Abbildung $P:V\times W\to K$ heißt 
+\textbf{\mbox{(Vektorraum-)}Paarung}, falls $P$ in jedem Argument linear ist, 
+d.h. wenn für jedes feste $w_o\in W$ 
+\[P(\cdot,w_0):V\to K, v\mapsto P(v,w_0)\]
+und für jedes feste $v_0\in V$
+\[P(v_0,\cdot):W\to K, w\mapsto P(v_0,w)\]
+eine lineare Abbildung, also Linearform ist.\\
+Im Fall $V=W$ heißt $P$ eine \textbf{Bilinearform} auf $V$.\\
+Eine Paarung $P$ heißt \textbf{nicht ausgeartet}, wenn für jedes $w_0\in W$ 
+und für jedes $v_0\in V$ die Abbildung $P(\cdot,w_0)$ bzw. $P(v_0,\cdot)$ 
+nicht die Nullabbildung ist.
+\end{definition}
+
+\begin{comment}
+Die Menge $\mathcal{P}(V,W)$ aller Paarungen von $V$ und $W$ ist ein Untervektorraum
+des $K$-VRms $\Abb(V\times W,K)$ aller Abbildungen von $V\times W$ nach $K$.
+\end{comment}
+
+\begin{example}
+Auf dem Dualraum $W:=V^*(=\Hom(V,K))$ ist die nicht ausgeartete Paarung
+\[P:V\times V^*\to K,(v,f)\mapsto f(v)\]
+eine Bilinearform.\\
+Für eine Paarung $P:V\times W\to K$ setzen wir $\rho_w(v):=P(v,w)$ und erhalten
+so Linearformen $\rho_w\in V^*$ für alle $w\in W$.
+\end{example}
+
+\begin{theo}
+\label{Satz 15.1}
+\begin{enumerate}
+\item Die Abbildung $\rho:W\to V^*,w\mapsto \rho_w$ ist ein Homomorphismus
+von $K$-VRmen.
+\item Die Zuordnung $\eta:P\mapsto \rho$ ist ein Isomorphismus, es gilt:
+\[\mathcal{P}(V,W)\stackrel{\sim}{\to} \Hom(W,V^*)\]
+\end{enumerate}
+\end{theo}
+
+\begin{proof}
+\begin{enumerate}
+\item Es gilt für alle $\alpha\in K,w_1,w_2\in W$:
+\begin{align*}
+\rho_{\alpha w_1+w_2}&=(v\mapsto P(v,\alpha w_1+w_2))\\
+&=(v\mapsto \alpha P(v,w_1)+P(v,w_2))\\
+&=\alpha((v\mapsto P(v,w_1))+(v\mapsto P(v,w_2)))\\
+&=\alpha\rho_{w_1}+\rho_{w_2} 
+\end{align*}
+\item Homomorphie selbst nachrechnen!\\
+Die Umkehrabbildung ist:
+\[\Hom(W,V^*)\to \mathcal{P}(V,W),\rho\mapsto P:=((v,w)\mapsto(\rho(w))(v))\]
+\end{enumerate}
+\end{proof}
+
+\begin{remind}
+Lineare Abbildungen sind bereits durch ihre Wirkung auf einer Basis eindeutig
+bestimmt. Dieses Prinzip gilt auch für Paarungen.
+\end{remind}
+
+\begin{comment}
+\index{bilineare Fortsetzung}\index{Fortsetzung!bilineare}
+Seien $V,W$ $K$-VRme mit jeweiliger Basis $B:=\{b_1,\ldots,b_m\}\subseteq V,
+C:=\{c_1,\ldots,c_n\}\subseteq W$, so ist eine Paarung $P$ auf $V\times W$
+Bereits durch ihre Einschränkung auf $B\times C$ festgelegt.\\
+Für $v:=\sum_{i=1}^m \alpha_i b_i,w:=\sum_{j=1}^n \beta_j c_j$ gilt:
+\[P(v,w)=\sum_{i=1}^m\sum_{j=1}^n \alpha_i\beta_j\cdot P(b_i,c_j)\]
+Jede Abbildung $P':B\times C\to K$ definiert über diese Gleichung eine Paarung
+$P':V\times W\to K$. Diese heißt \textbf{bilineare Fortsetzung}.
+\end{comment}
+
+\begin{definition}
+\index{Fundamentalmatrix}
+Die Matrix $D_{BC}(P):=(P(b_i,c_j))\in K^{m\times n}$ heißt \textbf{Fundamentalmatrix}
+der Paarung $P$ bzgl. der Basen $B$ und $C$. Mit den Kkordinatenvektoren:
+\[D_B(v)=\begin{pmatrix}\alpha_1\\\vdots\\\alpha_m\end{pmatrix}\text{ und }
+D_C(w)=\begin{pmatrix}\beta_1\\\vdots\\\beta_n\end{pmatrix}\]
+gilt nach obiger Gleichung:
+\[P(v,w)=D_B(v)^T\cdot D_{BC}(P)\cdot D_C(w)\]
+\end{definition}
+
+\begin{theo}
+\label{Satz 15.2}
+Eine Paarung $P$ endlichdimensionaler $K$-VRme $V,W$ mit Basen $B,C$ ist genau dann
+nicht ausgeartet, wenn die Dimensionen von $V$ und $W$ gleich und $D_{BC}(P)$ invertierbar
+ist.
+\end{theo}
+
+\begin{proof}
+Der Beweis erfolgt durch Implikation in beiden Richtungen:
+\begin{enumerate}
+\item["`$\impliedby$"'] Sei $\dim V=\dim W$ und $F:=D_{BC}(P)$ invertierbar.
+Sei nun $w\ne 0\in W$, dann ist $D_C(w)\ne 0$.\\
+Daraus folgt, dass auch $F\cdot D_C(w)$ nicht null ist. O.B.d.A sei die
+$i$-te Koordinate ungleich null. Dann gilt:
+\[P(b_i,w)=e_i^T\cdot F\cdot D_C(w)\ne 0\]
+Insbesondere ist $P(\cdot,w)\ne 0$.
+Analog folgt $P(v,\cdot)\ne 0$ für alle $0\ne v\in V$. Also ist $P$ nicht ausgeartet.
+\item["`$\implies$"'] Sei $P$ nicht ausgeartet, dann ist insbesondere $\rho:W\to V^*,
+w\mapsto \rho_w=(v\mapsto P(v,w))$ injektiv. Daraus folgt:
+\[\dim V=\dim V^*\ge \dim W\]
+Analog gilt:
+\[\dim W=\dim W^*\ge \dim V\]
+Also haben $V$ und $W$ gleiche Dimension.\\
+\textbf{Annahme:} $F$ ist nicht invertierbar.\\
+Dann existiert ein $D_C(w)\ne 0$, sodass $F\cdot D_C(w)$ gilt. Daraus folgt
+für alle $v\in V$:
+\[P(v,w)=D_B(v)^T\cdot F\cdot D_C(w)=0\ \lightning\]
+Also ist $P(\cdot,w)=0$, was einen Widerspruch zur nicht Ausgeartetheit von $P$ darstellt.
+\end{enumerate}
+\end{proof}
+
+\begin{theo}
+\label{Satz 15.3}
+Seien $B,\hat B$ Basen von $V$, $C,\hat C$ Basen von $W$ und $P$ eine Paarung von
+$V$ und $W$. Dann gilt:
+\[D_{BC}(P)=D_{\hat BB}(\id_V)^T\cdot D_{\hat B\hat C}(P)\cdot D_{\hat CC}(\id_W)\]
+\end{theo}
+
+\begin{proof}
+Für $(v,w)\in V\times W$ gilt:
+\begin{align*}
+P(v,w)&=D_{\hat B}(v)^T\cdot D_{\hat B\hat C}(P)\cdot D_{\hat C}(w)\\
+&=(D_{\hat BB}(\id_V)\cdot D_B(v))^T\cdot D_{\hat B\hat C}(P)\cdot(D_{\hat CC}(\id_W)\cdot D_C(w))\\
+&=D_B(v)^T \cdot (D_{\hat BB}(\id_V)^T \cdot D_{\hat B\hat C}(P)\cdot D_{\hat CC}(\id_W))\cdot D_C(w)
+\end{align*}
+Aber es gilt auch:
+\[P(v,w)=D_B(v)^T\cdot D_{BC}(P)\cdot D_C(w)\]
+Durch einsetzen aller Basispaare $b_i,c_j$ folgt die Behauptung.
+\end{proof}
+
+\begin{comment}
+Mit der Dualbasis $B^*=\{b_1^*,\ldots,b_m^*\}$ von $V^*$ zu $B$ (erinnere:
+$b_k^*(b_i)=\delta_{ik}$) gilt für $\rho=\eta(P):W\to V^*$:
+\[\rho(c_j)=\sum_{i=1}^n P(b_i,c_j)\cdot b_i^*\]
+D.h. $D_{B^*C}(\rho)=D_{BC}(P)$.
+\end{comment}
+
+\begin{proof}
+Es gilt:
+\begin{align*}
+\rho(c_j)&=P(\cdot,c_j)\\
+&=(b_i\mapsto P(b_i,c_j))\\
+&=\sum_{i=1}^n P(b_i,c_j)\cdot b_i^*
+\end{align*}
+\end{proof}
+
+\begin{example}
+Sei $W=V^*$ und für alle $f\in V^*$ sei $P(v,f)=f(v)$. Nehme nun die Dualbasis 
+$C=B*$ zur Basis $B$ von $V$. Dann gilt:
+\[P(b_i,b_k^*)=b_k^*(b_i)=\delta{ik}\]
+Also ist $D_{BB}(P)=I_m$
+\end{example}
+
+Wir spezialisieren nun $W=V$.
+
+\begin{definition}
+\index{symmetrisch!Paarung}
+\index{Orthogonal-!Basis (OGB)}
+\index{Orthonormalbasis (ONB)}
+Sei $P$ eine Paarung von $V$ und $V$.
+\begin{enumerate}[(a)]
+\item $P$ heißt \textbf{symmetrisch}, falls für alle $v,w\in V$ gilt:
+\[P(v,w)=P(w,v)\]
+\item Eine Basis $B=\{b_1,\ldots,b_m\}$ heißt \textbf{Orthogonalbasis} (OGB) von $V$
+bezüglich $P$, wenn für alle $i\ne j$ gilt:
+\[P(b_i,b_j)=0\]
+\item Eine Basis $B=\{b_1,\ldots,b_m\}$ heißt \textbf{Orthonormalbasis} (ONB) von $V$
+bezüglich $P$, wenn $B$ OGB ist und für alle $i\in\{1,\ldots,m\}$ gilt:
+\[P(b_i,b_i)=1\]
+\end{enumerate}
+\end{definition}
+
+\begin{comment}
+Falls eine OGB $B$ existiert, so ist die Fundamentalmatrix $D_{BB}(P)$ diagonal, insbesondere
+symmetrisch, also ist $P$ symmetrisch.
+\end{comment}
+
+\begin{theo}
+\label{Satz 15.4}
+Sei $K$ ein Körper mit $1+1\ne 0$ und $P$ eine symmetrische Bilinearform auf einem
+$K$-VRm $V$ mit $\dim V=:n<\infty$. Dann existiert eine OGB von $V$ bzgl. $P$.
+\end{theo}
+
+\begin{proof}
+Der beweis erfolgt durch vollständige Induktion nach der Dimension $n$.\\
+Für $n=1$ ist die Behauptung offensichtlich wahr, nehmen wir also als Induktionsvoraussetzung an,
+dass sie für $n-1$ erfüllt sei.\\
+Da für $P=0$ jede Basis Orthogonalbasis ist, lässt sich im Folgenden o.B.d.A annehmen,
+dass $P\ne 0$ ist. Also existieren $v,w\in V$ mit $P(v,w)\ne 0$, es gilt:
+\begin{align*}
+P(v+w,v+w)&=P(v,v)+P(w,w)+P(v,w)+P(w,v)\\
+&= P(v,v)+P(w,w)+2P(v,w)
+\end{align*}
+Daraus folgt:
+\[P(v,v)\ne 0 \vee P(w,w)\ne 0 \vee P(v+w,v+w)\ne 0\]
+Also existiert ein $b_1\in V$ mit $P(b_1,b_1)\ne 0$. Nun betrachte:
+\begin{align*}
+W&:=\{v\in V\mid P(v,b_1)=0\}\\
+&=\Kern(P(\cdot,b_1))
+\end{align*}
+Nach Dimensionsformel ist $\dim W=n-1$ und $V=K\cdot b_1 \oplus W$. Da die 
+Einschränkung $P|_{W\times W}$ symmetrisch ist, existiert nach Induktionsvoraussetzung
+eine OGB $\{b_2,\ldots,b_n\}$ von $W$ bzgl. $P|_{W\times W}$.\\
+Da außerdem für alle $w\in W$ $P(w,b_1)=0$ ist, ist
+$\{b_1,\ldots,b_n\}$ OGB von $V$ bzgl. $P$.
+\end{proof}
+
+\begin{comment}[Fourierformel]
+\index{Fourierformel}
+Die Basisdarstellung bzgl. einer ONB $B$ lautet:
+\[v=\sum_{b\in B}P(v,b)\cdot b\]
+\end{comment}
+
+\begin{proof}
+Leichte Übung!
+\end{proof}
+
+\section{Multilineare Abbildungen}
+Veralgemeinere nun die Bilinearität und den Zielbereich.
+
+\begin{definition}
+\index{Multi-!Linearität}
+Seien $V_1,\ldots,V_n,W$ $K$-VRme und $M:V_1\times\ldots\times V_n\to W$ eine Abbildung.\\
+$M$ heißt \textbf{(n-fach) multilinear}, falls für jedes $i\in\{1,\ldots,n\}$ bei fester
+Wahl von $v_j\in V_j$ (für alle $j\ne i$) $M(v_1,\ldots,v_{i-1},\cdot,v_{i+1},\ldots,v_n):V_i\to W$
+eine lineare Abbildubg ist.
+\end{definition}
+
+\begin{example}
+Multilineare Abbildungen sind:
+\begin{enumerate}
+\item Die Determinantenabbildung:
+\[\det:K^n\times\ldots\times K^n\to K\]
+\item Die Skalarmultiplikation:
+\[K\times V\to V,(\lambda,v)\mapsto \lambda\cdot v\]
+\item Die Matrizenmultiplikation:
+\[K^{p\times q}\times K^{q\times r}\times K^{r\times s}\to K^{p\times s},(A,B,C)\mapsto A\cdot B\cdot C\]
+\end{enumerate}
+\end{example}
+
+\section{Tensorprodukte}
+\begin{definition}
+\index{universell!Abbildungseigenschaft (UAE)}\index{Abbildungseigenschaft!universelle (UAE)}
+Seien $V,W$ $K$-VRme. Ein $K$-VRm $T$ mit einer bilinearen Abbildung $\tau:V\times W\to T$
+heißt ein \textbf{Tensorprodukt} von $V$ und $W$, falls $\tau$ die folgende 
+\textbf{universelle Abbildungseigenschaft} (UAE) erfüllt:\\
+Zu jedem $K$-VRm $U$ und jeder bilinearen Abbildung $\beta:V\times W\to U$ existiert
+genau eine lineare Abbildung $\Phi_\beta:T\to U$ derart, dass $\beta=\Phi_\beta\circ \tau$.\\
+Schreibe: $T=:V\otimes_K W,\tau(v,w)=:v\otimes w$
+\end{definition}
+
+\begin{comment}
+\begin{enumerate}
+\item Falls $T$ existiert, so hat man eine Bijektion:
+\[\Bil(V\times W,U)\stackrel{\sim}{\to}\Hom(T,U),\beta\mapsto\Phi_\beta\]
+\item Sind $(T_1,\tau_1),(T_2,\tau_2)$ Tensorprodukte von $V$ und $W$, so existiert genau 
+ein Isomorphismus $\Phi:T_1\to T_2$ mit $\tau_2=\Phi\circ\tau_1$.
+\end{enumerate}
+\end{comment}
+
+\begin{task}
+Beweise die Existenz von Tensorprodukten.
+\end{task}
+
+\begin{example}
+\begin{enumerate}
+\item Sei $V:=K^{n\times 1},W:=K^{m\times 1}, T:=K^{n\times m}$ und die bilineare
+Abbildung:
+\[\tau:K^n\times K^m\to T,(v,w)\mapsto v\cdot w^T\]
+Für die Standardbasen $\{e_i\}\subseteq V,\{e'_j\}\subseteq W$ ist $\tau(e_i,e'_j)=E_{ij}$
+die Elementarmatrix. $D:=\{E_{ij}\mid i\in\{1,\ldots,n\},j\in\{1,\ldots,m\}\}$ ist
+Basis von $T$.\\
+Im folgenden wollen wir die UAE nachweisen. Sei dazu $\beta:V\times W\to U$ bilinear.
+Dann erhalten wir eine lineare Abbildung $\Phi:K^{n\times m}\to U$ für jede Vorgabe einer
+Abbildung $D\to U$ (vgl. lineare Fortsetzung). Insbesondere also auch für die Vorgabe:
+\[\forall i\in\{1,\ldots,n\},j\in\{1,\ldots,m\}:\Phi(E_{ij}):=\beta(e_i,e'_j)\]
+Damit gilt dann:
+\begin{align*}
+\beta(v,w)&=\beta\left(\sum_{i=1}^n \alpha_i e_i,\sum_{j=1}^m \gamma_j e'_j\right)\\
+&=\sum_{i,j}\alpha_i\gamma_j\cdot\beta(e_i,e'_j)\\
+&=\sum_{i,j}\alpha_i\gamma_j\cdot\Phi(E_{ij})\\
+&=\Phi\left(\sum_{ij}\alpha_i\gamma_j\cdot E_{ij}\right)\\
+&=\Phi\left(\tau\left(\sum_{i=1}^n\alpha_i e_i,\sum_{j=1}^m \gamma_j e'_j\right)\right)\\
+&=\Phi(\tau(v,w))=(\Phi\circ\tau)(v,w)
+\end{align*}
+Wir haben also gezeigt, dass $\beta=\Phi\circ\tau$ gilt.\\
+Falls für ein $\Phi':T\to U$ auch $\beta=\Phi'\circ\tau$ gilt, folgt insbesondere
+$\beta(e_i,e'_j)=\Phi'(\tau(e_i,e'_j))$ und damit:
+\[\Phi'(E_{ij}=\beta(e_i,e'_j)=\Phi(\tau(e_i,e'_j))=\Phi(E_{ij)}\]
+D.h. $\Phi|_D=\Phi'|_D$, also ist $\Phi=\Phi'$ eindeutig.
+\item Seien $V,W$ beliebige VRme mit endlichen Dimensionen $\dim V=n,\dim W=m$.\\
+Die Existenz des Tensorproduktes folgt etwa durch Koordinatenisomorphismen und
+Beispiel (1) Für eine \textbf{koordinatenfreie Konstruktion} nehme $T:=\Hom(V^*,W)$ und
+\[\tau:V\times W\to T,(v,w)\mapsto(V^*\to W,f\mapsto f(v)\cdot w)\]
+Leichte Übung: $(T,\tau)$ ist Tensorprodukt von $V,W$ und für Basen $B,C$ von $V,W$ gilt:
+\[D:=\{b\otimes c\in T\mid b\in B,c\in C\}\]
+ist Basis von $T=V\otimes_K W$.
+\end{enumerate}
+\end{example}
+
+\begin{theo}
+\label{Satz 15.5}
+Sind $V,W$ beliebige $K$-VRme, so existiert ein Tensorprodukt von $V$ und $W$.
+\end{theo}
+
+\begin{proof}
+Finde einen \(K\)-Vektorraum \(T\) und eine lineare Abbildung 
+\(\tau:\,V\times W\to T\) mit der universellen Abbildungseigenschaft. Dazu 
+benutze den \(K\)-Vektorraum\break\(F:=\Abb(V\times W,K)_{0}\).\\
+Sei \(f:\,V\times W\to K\) eine Abbildung mit endlichem Träger\break 
+\(\Supp(f):=\{(v,w)\mid f(v,w)\neq0\}\).\\
+\(B:=\{f_{(v,w)}\mid(v,w)\in V\times W\}\) ist eine Basis von \(F\) (da für 
+beliebiges \(f\in F\) gilt: \(f(x,y)=\sum_{(v,w)\in\Supp(f)}{f(v,w)\cdot f_{(v,w)}}\)).\\
+Setze \(\vp:\,V\times W\to F,\,(v,w)\mapsto f_{(v,w)}\). Vorsicht: \(\vp\) ist
+nicht bilinear!
+
+Für die Bilinearität benötigen wir den Untervektorraum \(R\leq F\), 
+erzeugt von den ``fehlenden Relationen''.
+%split?
+\[
+f_{(\alpha v_{1}+v_{2},\beta w_{1}+w_{2})}-\alpha\beta f_{(v_{1},w_{1})}-
+    \beta f_{(v_{2},w_{1})}-\alpha f_{(v_{1},w_{2})}-f_{(v_{2},w_{2})}\,
+    \forall\alpha,\beta\in K,v_{i}\in V,w_{i}\in W
+\]
+\index{Abbildung!kanonische}
+Bilde den Faktorraum \(T:=\frac{F}{R}\) versehen mit der kanonischen Abbildung
+\[
+\pi:\,F\to T,\,f\mapsto f+R=:[f]
+\]
+Betrachte
+\[
+\tau:\,V\times W\to T,\,(v,w)\mapsto\pi\left(\vp(v,w)\right)=[f_{(v,w)}]
+\]
+Nun gilt offenbar Bilinearität:
+\begin{align*}
+\left[f_{(\alpha v_{1}+v_{2},\beta w_{1}+w_{2})}\right]&=
+    \alpha\beta\left[f_{(v_{1},w_{1})}\right]+
+    \beta\left[f_{v_{2},w_{1})}\right]+
+    \alpha\left[f_{(v_{1},w_{2})}\right]+
+    \left[f_{(v_{2},w_{2})}\right]\\
+\tau(\alpha v_{1}+v_{2},\beta w_{1}+w_{2})&=\alpha\beta\tau(v_{1},w_{1})+
+    \beta\tau(v_{2},w_{1})+\alpha\tau(v_{1},w_{2})+\tau(v_{2},w_{2})
+\end{align*}
+\paragraph{Nachweis der universellen Abbildungseigenschaft:}{Sei wieder 
+\(\beta:\,V\times W\to U\) bilinear gegeben. Da 
+\(F=\langle B\rangle=\langle\Bil(\vp)\rangle\) und \(\pi\) surjektiv sind,
+folgt \(T=\langle\Bil(\tau)\rangle\).\\
+Jede lineare Abbildung \(\phi:\,T\to U\) ist eindeutig bestimmt durch 
+\(\left.\phi\right|_{\Bil(\tau)}\), also ist durch die Forderung 
+\(\beta=\phi\circ\tau\) \(\phi\) eindeutig bestimmt (falls existent).}
+\paragraph{Existenz von \(\phi\):}{Zunächst definiere die lineare Abbildung
+\[
+\phi_{F}:\,F\to U
+\]
+durch Vorgabe auf der Basis \(B\).
+\[
+\phi_{F}\left(f_{(v,w)}\right):=\beta(v,w)
+\]
+Da \(\beta\) bilinear ist, folgt
+\[
+\phi_{F}\left(f_{(\alpha v_{1}+v_{2},\beta w_{1}+w_{2})}-
+    \alpha\beta f_{(v_{1},w_{1})}-\beta f_{(v_{2},w_{1})}-
+    \alpha f_{(v_{1},w_{2})}-f_{(v_{2},w_{2})}\right)
+=0
+\]
+also \(R\leq\Kern\phi_{F}\).\\
+Mit dem Homomorphiesatz folgt: Es existiert eine lineare Abbildung 
+\(\phi:\frac{F}{R}=T\to U\) mit 
+\[
+\phi([f])=\phi_{F}(f)
+\]
+und
+\[
+\phi\left(\tau(v,w)\right)=\phi\left([\vp(v,w)]\right)
+    =\phi_{F}\left(f_{(v,w)}\right)=\beta(v,w)
+\]
+}
+\end{proof}
+
+\begin{application}
+Das Tensorprodukt wird zur Erweiterung des Skalarbereiches eines VRms genutzt.
+Sei $V$ $K$-VRm, $L$ ein Körper mit Teilkörper $K\le L$. Insbesondere ist also
+$L$ ein $K$-VRm (vgl. früher). Nach Satz \ref{Satz 15.5} existiert das 
+Tensorprodukt $L\otimes_K V=:V_L$ ($K$-VRm).\\
+Im Folgenden wollen wir zeigen, dass $V_L$ ein $L$-Vektorraum ist. Dazu fehlt
+die Skalarmultiplikation $L\times V_L\to V_L$, die wir mittels der UAE definieren.
+Für alle $l\in L$ ist:
+\[\beta_l:L\times V\to V_L,(x,v)\mapsto lx\otimes v\]
+bilinear, sodass $\beta_l(x,v)=\Phi_{\beta_l}(x\otimes v)$.\\
+Nehme nun $\Phi_{\beta_l}$ als Skalarmultiplikation mit $l\in L$:
+\[L\times V_L\to V_L,(l,u)\mapsto \Phi_{\beta_l}(u)\]
+Leichte Übung: Dies erfüllt die Axiome für eine Skalarverknüpfung.
+\end{application}
+
+\begin{comment}
+$V_L$ enthält $V$ als $K$-Untervektorraum über die Einbettung:
+\[V\to V_L,v\mapsto 1\otimes v\]
+Für eine Basis $B$ von $V$ ist das Bild $\{1\otimes b\mid b\in B\}\subseteq V_L$
+eine Basis des $L$-VRms $V_L$. Insbesondere ist
+\[L\otimes_K K^n\stackrel{\sim}{=}L^n\]
+eine Isomorphie von $L$-VRmen.
+\end{comment}
+
+\chapter{Metriken, Normen und Skalarprodukte}
+\begin{definition}
+\index{Metrik}
+\index{Abstand}
+\index{Positivdefinitheit}
+\index{Dreiecksungleichung}
+Metriken abstrahieren Abstände. Sei $X$ eine beliebige Menge. Eine Abbildung
+$d:X\times X\to \mathbb{R}$ heißt eine \textbf{Metrik} oder ein \textbf{Abstand}
+auf $X$, falls gilt:
+\begin{enumerate}
+\item $d$ ist \textbf{smmetrisch}, d.h. für alle $x,y\in X$ gilt:
+\[d(x,y)=d(y,x)\]
+\item $d$ ist \textbf{positivdefintit}, d.h. für alle $x,y\in X$ gilt:
+\[d(x,y)\ge 0 \text{ und } (d(x,y)=0)\implies (x=y)\]
+\item Für alle $x,y,z\in X$ gilt die \textbf{Dreicksungleichung}:
+\[d(x,y)+d(y,z)\ge d(x,z)\]
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+\index{diskrete Metrik}\index{Metrik!diskrete}
+\begin{enumerate}
+\item Die \textbf{diskrete Metrik} $d_0$ auf $X$:
+\[d_0(x,y)=\begin{cases}
+1&,(x\ne y)\\
+0&,(x=y)
+\end{cases}
+\]
+\item $X=\mathbb{C}$ oder $\mathbb{R}$ oder $\mathbb{Q}$ mit Betrag $|\cdot|$ hat die
+Metrik:
+\[d(x,y)=|x-y|\]
+\end{enumerate}
+Auf Vektorräumen über $K=\mathbb{R}$ entstehen natürliche Metriken aus sogenannten Normen.\\
+Im Folgenden schreibe $\mathbb{K}$ für $\mathbb{R}$ oder $\mathbb{C}$.
+\end{example}
+
+\begin{definition}
+\index{Norm}
+\index{normierter Raum}\index{Raum!normierter}
+\index{Positivdefinitheit}
+\index{Homogenität}
+\index{Dreiecksungleichung}
+Sei $V$ ein $\mathbb{K}$-VRm. Eine Abbildung:
+\[\|\cdot\|:V\to\mathbb{R},x\mapsto \|x\|\]
+heißt eine \textbf{Norm}, falls für $x,y\in V,\alpha\in\mathbb{K}$ gilt:
+\begin{enumerate}
+\item Die Abbildung ist \textbf{positivdefinit}, d.h.:
+\[\|x\|\ge 0 \wedge (\|x\|=0\iff x=0)\]
+\item Die Abbildung ist \textbf{homogen}, d.h.:
+\[\|\alpha x\| = |\alpha|\cdot \|x\|\]
+\item Es gilt die \textbf{Dreiecksungleichung}:
+\[\|x+y\|\le\|x\|+\|y\|\]
+\end{enumerate}
+Ist dies erfüllt, so ist $(V,\|\cdot\|)$ ein \textbf{normierter Raum}.
+\end{definition}
+
+\begin{example}
+\begin{enumerate}
+\item Der Raum $V=\mathbb{K}$ mit $x=(x_1,\ldots,x_n)$ und den Normen:
+\begin{align*}
+&\text{(a) }\|x\|_2:=\sqrt{\sum_{i=1}^n |x_i|^2}\\
+&\text{(b) }\|x\|_{\max}:= \max_{i=1,\ldots,n}|x_i|\\
+&\text{(c) }\|x\|_1:=\sum_{i=1}^n |x_i|
+\end{align*}
+\item Der Raum der beschränkten Abbildungen $V=\Abb(M,\mathbb{K})$ mit einer 
+beliebigen Menge $M$ und der Norm:
+\[\|f\|_\infty := \sup_{m\in M}|f(m)|\]
+\item Der Raum $V=C[a,b]$ der stetigen Abbildungen nach $\mathbb{K}$ mit der Norm:
+\[\|f_1\|:=\int_a^b |f(t)|\text{ d}t\]
+\end{enumerate}
+\end{example}
+
+\begin{comment}
+\begin{enumerate}
+\item Jeder normierte Raum $(V,\|\cdot\|)$ besitzt die Metrik:
+\[d(x,y):=\|x-y\|\]
+\item In der Linearen Algebra tauchen hauptsächlich Normen auf, die mit
+\textbf{Skalarprodukten} definiert werden.
+\end{enumerate}
+\end{comment}
+
+\begin{definition}
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\index{Sesqilinearform}
+\index{Schiefsymmetrie}
+\index{hermitesche Form}\index{Form!hermitesche}
+\index{symmetrisch!Bilinearform}\index{Bilinearform!symmetrische}
+\index{Skalarprodukt}
+Sei $V$ ein $\mathbb{K}$-VRm. Für $\alpha\in\mathbb{K}$ sei $\overline\alpha$
+die komplexe Konjugierte.
+\begin{enumerate}
+\item Eine Abbildung $s:V\times V\to\mathbb{K}$ heißt \textbf{Sesquilinearform}
+("`sesqui"' bedeutet $1\frac12$), falls
+\[s(\alpha x+y,z)=\alpha \cdot s(x,z)+s(y,z)\]
+gilt, also $s(\cdot,z)$ linear ist und außerdem noch gilt:
+\[s(x,\alpha y+z)=\overline\alpha \cdot s(x,y)+s(x,z)\]
+\item Ist $s$ \textbf{schiefsymmetrisch}, d.h. es gilt:
+\[s(y,x)=\overline{s(x,y)}\]
+so heißt es \textbf{hermitesche Form} ($\mathbb{K}=\mathbb{C}$) bzw.
+\textbf{symmetrische Bilinearform} ($\mathbb{K}=\mathbb{R}$).
+\item Eine schiefsymmetrische Sesquilinearform heißt \textbf{Skalarprodukt} auf $V$,
+falls $s$ positivdefinit ist.
+\end{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\end{definition}
+
+\begin{comment}
+\index{Darstellungsmatrix}
+Ist $\dim V=n<\infty$ mit einer Basis $B=\{b_1,\ldots,b_n\}$, so ist eine
+Sesquilinearform $s$ bestimmt durch die Werte $s(b_i,b_j)\in\mathbb{K}$, also
+durch die \textbf{Darstellungsmatrix}
+\[D_{BB}(s):=(s(b_i,bj))\in\mathbb{K}^{n\times n}\]
+Jede beliebige Matrix $D=(d_{ij})\in\mathbb{K}^{n\times n}$ definiert ein
+$s:=s_B^D$ mit:
+\[s(\sum_{i=1}^n \alpha_i b_i,\sum_{j=1}^n \beta_j b_j)=\sum_{i=1}^n\sum_{j=1}^n \alpha_i\overline{\beta_j}\cdot d_{ij}\]
+\end{comment}
+
+\begin{definition}
+\index{Hermitezität}
+\index{Positivdefinitheit}
+$D$ heißt \textbf{hermitesch} (bzw. \textbf{positivdefinit}), wenn das zugehörige $s$
+diese Eigenschaft hat.\\
+Also gilt etwa:
+\begin{align*}
+&A=(a_{ij}) \text{ hermitesch}\\
+\iff &\forall i,j=1,\ldots,n:a_{ij}=\overline{a_{ji}}\\
+\iff &A=\overline{A}^T
+\end{align*}
+\end{definition}
+
+\begin{example}
+\index{Standardskalarprodukt}
+Das \textbf{Standardskalarprodukt} auf $V=\mathbb{K}^n$
+\[D=I \implies s(\begin{pmatrix}\alpha_1\\\vdots\\\alpha_n \end{pmatrix},
+\begin{pmatrix}\beta_1\\\vdots\\\beta_n \end{pmatrix})=\sum_{i=1}^n \alpha_i\overline{\beta_i}\]
+ist hermitesch und positivdefinit.
+\end{example}
+
+\begin{theo}[Cauchy-Schwarzsche Ungleichung]
+\index{Chauchy-Schwarzsche Ungleichung}
+\label{Satz 16.1}
+Ist $V$ VRm mit Skalarprodukt $\langle\cdot,\cdot\rangle$, so gilt für alle $x,y\in V$:
+\[|\langle x,y\rangle|^2 \le \langle x,x\rangle \cdot \langle y,y\rangle\]
+\end{theo}
+
+\begin{proof}
+Es gilt für alle $\alpha,\beta\in\mathbb{R}$:
+\begin{align*}
+0&\le \langle\alpha x+\beta y,\alpha x+\beta y\rangle\\
+&=\alpha\langle x,\alpha x+\beta y\rangle+\beta\langle y,\alpha x+\beta y\rangle\\
+&= \alpha^2\langle x,x\rangle +\alpha\beta(\langle x,y\rangle+\langle y,x\rangle)+
+\beta^2\langle y,y\rangle
+\end{align*}
+Sei nun:
+\begin{align*}
+&F:=\langle x,x\rangle& &2G:=\langle x,y\rangle+\langle y,x\rangle& &H:=\langle y,y\rangle
+\end{align*}
+\textbf{Annahme:} $G^2>FH$\\
+Dann hat $P(X):=FX^2+2GX+H\in\mathbb{R}[X]$ zwei verschiedene Nullstellen und es
+existiert ein $\xi\in\mathbb{R}:P(\xi)<0$. Dies stellt einen Widerspruch zu obiger Überlegung da
+(mit $\alpha=\xi$ und $\beta=1$). Also gilt:
+\[G^2\le FH\]
+\textbf{Fall 1:} $\langle x,y\rangle \in\mathbb{R}$\\
+Dann gilt $G=\langle x,y\rangle=\langle y,x\rangle$ und mit $G^2\le FH$ folgt
+die Cauchy-Schwarzsche Ungleichung.\\
+\textbf{Fall 2:} $\langle x,y\rangle \notin\mathbb{R}$\\
+Ersetze $y$ durch $\zeta	 y$ mit $\zeta\in\mathbb{C}^\times,|\zeta|=1$.
+Wähle $\zeta:=\frac{\langle x,y\rangle}{|\langle x,y\rangle|}$. Dann gilt:
+\begin{align*}
+\langle x,\zeta y\rangle &= \overline{\zeta}\langle x,y\rangle\\
+&=\frac{\langle\overline{x,y}\rangle}{|\langle x,y \rangle |}\cdot \langle  x,y\rangle\\
+&=\frac{|\langle x,y \rangle |^2}{|\langle x,y \rangle |}\\
+&=|\langle x,y \rangle |\in\mathbb{R}
+\end{align*}
+Nach Fall 1 folgt daraus:
+\begin{align*}
+|\langle x,y \rangle |^2&=|\langle x,\zeta y \rangle |^2\\
+&\le \langle x,x\rangle\cdot\langle\zeta y,\zeta y\rangle\\
+&=\langle x,x\rangle\cdot \zeta\overline\zeta\cdot\langle y,y\rangle\\
+&=\langle x,x\rangle\cdot \langle y,y\rangle
+\end{align*}
+\end{proof}
+
+\begin{comment}
+Im Spezialfall $V=\mathbb{K}^n$ mit dem Standardskalarprodukt $\langle\cdot,\cdot\rangle$
+gilt nach der Cauchy-Schwarzschen Ungleichung:
+\[|\sum_{i=1}^n \xi_i\cdot\overline{\eta_i}|^2\le (\sum_{i=1}^n |\xi_i|^2)(\sum_{j=1}^n |\eta_j|^2)\]
+\end{comment}
+
+\begin{theo}
+\label{Satz 16.2}
+Jeder VRm $V$ mit einem Skalarprodukt ist normiert durch die Norm:
+\[\|x\|:=\sqrt{\langle x,x\rangle}\]
+\end{theo}
+
+\begin{proof}
+\begin{enumerate}
+\item Es ist klar, das $\|x\|\in\mathbb{R}$ und $\|x\|\ge 0$ ist. Außerdem gilt:
+\begin{align*}
+\|x\|=0 &\implies \langle x,x\rangle =0\\
+&\implies x=0
+\end{align*}
+\item  Es gilt:
+\begin{align*}
+&\langle x,y\rangle +\langle y,x\rangle\le 2\|x\|\cdot\|y\|\\
+\iff &\langle x,x\rangle\langle x,y\rangle +\langle y,x\rangle\langle y,y\rangle
+\le \langle x,x\rangle 2\|x\|\cdot\|y\|+\langle y,y\rangle\\
+\iff &\langle x+y,x+y\rangle \le (\|x\|+\|y\|)^2\\
+\iff &\|x+y\|\le \|x\|+\|y\|
+\end{align*}
+\item Es gilt:
+\[\|\alpha x\|^2=\langle \alpha x,\alpha x\rangle = \alpha\overline\alpha
+\langle x,x\rangle = |\alpha|^2\cdot\|x\|^2\]
+\end{enumerate}
+\end{proof}
+
+\begin{comment}
+\index{Parallelogrammgleichung}
+\begin{enumerate}
+\item Mit Hilfe der Norm lautet die Cauchy-Schwarzsche Ungleichung:
+\[|\langle x,y\rangle|\le \|x\|\cdot\|y\|\]
+\item Damit eine Norm von einem Skalarprodukt stammt, ist offenbar notwendig,
+dass sie die \textbf{Parallelogrammgleichung} erfüllt:
+\[\forall x,y\in V: \|x+y\|^2+\|x-y\|^2=2(\|x\|^2+\|y\|^2)\]
+Denn falls die Norm $\|\cdot\|$ von einem Skalarprodukt $\langle\cdot,\cdot\rangle$
+kommt, gilt:
+\begin{align*}
+\|x+y\|^2+\|x-y\|^2 &= \langle x+y,x+y\rangle +\langle x-y,x-y\rangle\\
+&= \|x\|^2+\langle x,y\rangle +\langle y,x\rangle+\|y\|^2 + 
+\|x\|^2-\langle x,y\rangle -\langle y,x\rangle+\|y\|^2\\
+&= 2(\|x\|^2+\|y\|^2)
+\end{align*}
+Tatsächlich kommt eine Norm genau dann von einem Skalarprodukt, wenn sie die
+Parallelogrammgleichung erfüllt. Dies wird jedoch ohne Beweis angegeben.
+\end{enumerate}
+\end{comment}
+
+\chapter{Orthogonalsysteme}
+\index{Orthogonal-!System}
+\section{Winkel und Orthogonalität}
+\index{Winkel}\index{orthogonal}
+\begin{prerem}
+Sei \(V\) ein Vektorraum mit Skalaprodukt \(\SKP\) und zugehöriger Norm 
+\(\lVert\cdot\rVert\), dann gilt nach Cauchy-Schwarz:
+\[
+\forall x,y\in V\setminus\{0\}:\quad\frac{\lvert\langle x,y\rangle\rvert}{\lVert x\rVert\cdot\lVert y\rVert}\leq 1
+\]
+\end{prerem}
+\begin{definition}
+\begin{enumerate}
+\item Sei \(\mathbb{K}=\mathbb{R}\). Für \(x,y\in V\setminus\{0\}\) sei 
+\(\phi=\angle(x,y)\in[0,\pi]\) diejenige (eindeutig bestimmte) Zahl mit
+\[
+\cos\phi=\frac{\lvert\langle x,y\rangle\rvert}{\lVert x\rVert\cdot\lVert y\rVert}
+\]
+\(\phi\) heißt der \textbf{Winkel} zwischen \(x\) und \(y\).
+\item \(x,y\) heißen \textbf{orthogonal} oder senkrecht zueinander, falls
+\(\langle x,y\rangle=0\) gilt.\\
+Schreibe: \(x\bot y\).
+\item Teilmengen \(M,N\subseteq V\) heißen orthogonal, falls gilt:
+\[
+\forall x\in M\forall y\in N:\quad x\bot y
+\]
+Schreibe: \(M\bot N\).
+\item Eine Teilmenge \(B\subseteq V\) heißt \textbf{Orthogonalsystem} (OGS),
+falls für \(x,y\in B\) gilt: 
+\[
+x\neq y\implies x\bot y
+\]
+\item Ein Orthogonalsystem \(B\) heißt \textbf{Orthonormalsystem} (ONS) wenn
+gilt:
+\[
+\forall x\in B:\quad\lVert x\rVert=1
+\]
+\item Eine Basis \(B\) von \(V\) heißt \textbf{Orthogonalbasis} (OGB), bzw.
+\textbf{Orthonormalbasis} (ONB), falls \(B\) ein Orthogonalsystem, bzw.
+Orthonormalsystem, ist.
+\end{enumerate}
+\end{definition}
+\begin{example}
+\begin{enumerate}
+\item Sei \(V=\mathbb{K}^{n}\) mit Standardskalarprodukt \(\SKP\) und 
+\(S:=\{e_{1},\ldots,e_{n}\}\) Standardbasis.\\
+Dann ist \(S\) eine Orthonormalbasis und jede Teilmenge \(T\subseteq S\) ist
+ein Orthonormalsystem.
+\item Sei \(I:=[a,b]\) ein Intervall.\\
+Sei 
+\(V:=\{p\in\Abb(I,\mathbb{C})\mid\exists P\in\mathbb{C}[T]:\,p(t)=P(t)\}\).\\
+\(w:I\to\mathbb{R}_{\geq0}\) sei stetig und mit der Eigenschaft \(w(t)=0\) nur
+für endlich viele \(t\in I\).
+
+Wir erhalten ein Skalarprodukt auf \(V\):
+\[
+\langle p,q\rangle_{w}:=\int\limits_{I}{w(t)p(t)\overline{q(t)}\mathrm{d}t}
+\]
+Eine Basis von \(V\) ist \(\{p_{n}(t)=:t^{n}\mid n\in\mathbb{N}_{0}\}\).
+
+Gesucht ist eine Orthonormalbasis und ein Verfahren zu ihrer Bestimmung.
+\end{enumerate}
+\end{example}
+\begin{comment}
+Jedes Orthogonalsystem \(B\) mit \(0\not\in B\) ist linear unabhängig.
+\end{comment}
+\begin{proof}
+Es ist
+\[
+\sum_{b\in B}{\alpha_{b}\cdot b}=0
+\]
+Dann gilt für alle \(c\in B\):
+\begin{align*}
+0&=\langle 0,c\rangle\\
+&=\left\langle\sum_{b}{\alpha_{b}b},c\right\rangle\\
+&=\sum_{b}{\alpha_{b}\langle b,c\rangle}\\
+&\overset{b=0\forall b\neq c}{=}\alpha_{c}\underbrace{\langle c,c\rangle}_{\neq c}\\
+&\implies\,\alpha_{c}=0
+\end{align*}
+\end{proof}
+
+\section{Das E. Schmidtsche Orthogonalisierungsverfahren}
+\index{E. Schmidt!Orthogonalisierungsverfahren}\index{Gram-Schmidt}
+\begin{theo}
+\label{Satz 17.1}
+Sei \(V\) ein Vektorraum mit Skalarprodukt \(\SKP\) und sei 
+\(M:=\{x_{0},x_{1},\ldots\}\) eine abzählbare Teilmenge von \(V\).
+\begin{enumerate}
+\item Es existiert ein Orthogonalsystem \(\{y_{0},y_{1},\ldots\}\) derart, 
+dass gilt:
+\begin{equation}
+\label{eq: Gram-Schmidt; lineare Huelle}
+\forall n:\quad\langle y_{0},y_{1},\ldots,y_{n}\rangle=\langle x_{0},\ldots,x_{n}\rangle\quad\text{(gleiche lineare Hülle)}
+\end{equation}
+\item Falls \(M\) linear unabhängig ist, so sind alle \(y_{i}\neq0\) und
+\(B:=\{z_{0},z_{1},\ldots\}\) mit
+\[
+z_{i}:=\frac{1}{\lVert y_{i}\rVert}y_{i}
+\]
+ist ein Orthonormalsystem mit 
+\[
+\forall n:\quad\langle z_{0},z_{1},\ldots,z_{n}\rangle=\langle x_{0},x_{1},\ldots,x_{n}\rangle
+\]
+\end{enumerate}
+\end{theo}
+\begin{proof}
+\begin{enumerate}
+\item Wir beschreiben einen Algorithmus zum Auffinden der \(y_{n}\).\\
+Start: \(y_{0}:=x_{0}\). Angenommen: alle \(y_{m}\) für \(m<n\) sind bereits
+gefunden. Setze
+\[
+y_{n}:=x_{n}-\sum_{i=0}^{n-1}{\frac{\langle x_{n},y_{i}\rangle}{\langle y_{i},y_{i}\rangle}}y_{i}
+\]
+(nur über \(i\) mit \(y_{i}\neq0\) summieren).\\
+Damit folgt:
+\begin{align*}
+y_{n}&\in\langle\underbrace{y_{0},y_{1},\ldots,y_{n-1}}_{=\langle x_{0},\ldots,x_{n-1}\rangle},x_{n}\rangle=\langle x_{0},\ldots,x_{n}\rangle\\
+x_{n}&\in\langle y_{0},y_{1},\ldots,y_{n}\rangle
+\end{align*}
+Daraus folgt \eqref{eq: Gram-Schmidt; lineare Huelle}.
+
+Rest: Für alle \(m<n:\,y_{n}\bot y_{m}\). Damit:
+\begin{align*}
+\langle y_{n},y_{m}\rangle&=\langle x_{n},y_{m}\rangle-\sum_{i=0}^{n-1}{\frac{\langle x_{n},y_{i}\rangle}{\langle y_{i},y_{i}\rangle}}\langle y_{i},y_{m}\rangle\\
+&=\langle x_{n},y_{m}\rangle-\sum_{i=0}^{n-1}{\frac{\langle x_{n},y_{i}\rangle}{\langle y_{i},y_{i}\rangle}}\delta_{im}\langle y_{i},y_{i}\rangle\\
+&=\langle x_{n},y_{m}\rangle-\langle x_{n},y_{m}\rangle\\
+&=0
+\end{align*}
+\item \checkmark \ Leicht selbst zu verifizieren.
+\end{enumerate}
+\end{proof}
+\begin{example}
+Sei \(V=\mathbb{R}^{3}\) mit dem Standardskalarprodukt, 
+\(M:=\left\{
+\begin{pmatrix}1\\0\\1\end{pmatrix},
+\begin{pmatrix}1\\1\\0\end{pmatrix},
+\begin{pmatrix}0\\1\\1\end{pmatrix}
+\right\}\).
+Dann:
+\begin{align*}
+y_{0}&=x_{0},\quad\lVert y_{0}\rVert=\sqrt{2}\\
+y_{1}&=x_{1}-\frac{\langle x_{1},y_{0}\rangle}{\langle y_{0},y_{0}\rangle}y_{0}
+    =\begin{pmatrix}1\\1\\0\end{pmatrix}-\frac{1}{2}\begin{pmatrix}1\\0\\1\end{pmatrix}
+    =\frac{1}{2}\begin{pmatrix}1\\2\\-1\end{pmatrix},
+    \quad\lVert y_{1}\rVert=\sqrt{\frac{3}{2}}\\
+y_{2}&=x_{2}-\frac{\langle x_{2},y_{0}\rangle}{\langle y_{0},y_{0}\rangle}y_{0}-
+    \frac{\langle x_{2},y_{1}\rangle}{y_{1},y_{1}\rangle}y_{1}
+    =\frac{2}{3}\begin{pmatrix}-1\\1\\1\end{pmatrix}
+\end{align*}
+\end{example}
+
+Auswirkungen (des Orthogonalisierungsverfahrens) auf Matrizen:\\
+Sei \(V\cong\mathbb{K}^{n}\) mit Standardskalarprodukt \(s\) und Basis
+\(B:=\{b_{1},\ldots,b_{n}\}\).
+Das Orthogonalisierungsverfahren liefert eine Orthogonalbasis 
+\(C=\{c_{1},\ldots,c_{n}\}\).
+\begin{align*}
+c_{\nu}&=b_{\nu}-\sum_{i=1}^{n-1}{\frac{\SKP}{\SKP}\cdot c_{i}}=\ldots
+    =\sum_{i=1}^{\nu}{\alpha_{i\nu}b_{i}}
+    \longrightarrow A=M_{BC}=\left(\alpha_{i\nu}\right)=
+    \begin{pmatrix}1&&*\\&\ddots&\\0&&1\end{pmatrix}\\
+\frac{c_{\nu}}{\lVert c_{\nu}\rVert}
+    &=\sum_{i=1}^{\nu}{\frac{\alpha_{i\nu}}{\lVert c_{i}\rVert}b_{i}}=z_{\nu}
+    \longrightarrow M_{BZ}=
+	\begin{pmatrix}*&&*\\&\ddots&\\0&&*\end{pmatrix}
+\end{align*}
+\begin{remind}[Darstellungsmatrix]
+\[
+D_{BB}(s)=\left(s\left(b_{\nu},b_{\mu}\right)\right)\in\mathbb{K}^{n}\\
+\]
+Da \(C\) eine Orthogonalbasis ist, folgt
+\(s\left(c_{\nu},c_{\mu}\right)=\delta_{\nu\mu}\lVert c_{\nu}\rVert^{2}\), also
+\[
+D_{CC}(s)=\diag\left(\ldots,\lVert c_{\nu}\rVert^{2},\ldots\right)
+\]
+Falls \(Z\) eine Orthonormalbasis ist, so folgt \(D_{ZZ}(s)=I\).
+
+Generell für beliebige Basen \(B,C\) und \(A=M_{BC}\):
+\begin{align*}
+D_{CC}(s)&=\left(s\left(c_{\nu},c_{\mu}\right)\right)\\
+&=\left(s\left(\sum_{i=1}^{n}{\alpha_{i\nu}},\sum_{j}{\alpha_{j\mu}b_{j}}\right)\right)\\
+&=\left(\sum_{i}{\sum_{j}{\alpha_{i\nu}\overline{\alpha_{j\mu}}\cdot s(b_{i},b_{j})}}\right)\\
+&=A^{\top}\left(s(b_{i},b_{j})\right)\overline{A}
+\end{align*}
+\end{remind}
+\begin{definition}
+Für beliebige \(D\in\mathbb{K}^{n\times n}\) setze \(D^{*}:=\overline{D}^{\top}\) (die sogenannte \textbf{Adjungierte}).
+\[
+D_{CC}(s)=A^{\top}D_{BB}(s)\overline{A}
+\]
+Speziell für jede Orthonormalbasis \(C\):
+\[
+D_{CC}(s)=I,
+\]
+das folgt wegen \(M_{BC}^{-1}=M_{CB}\).\\
+Es ist 
+\[
+D_{BB}(s)=D^{*}D
+\]
+für \(D:=\overline{M}_{CB}\), wobei \(D\) obere Dreiecksmatrix ist.
+\end{definition}
+\begin{theo}
+\label{Satz 17.2}
+Für \(P\in\mathbb{K}^{n\times n}\) ist äquivalent:
+\begin{enumerate}
+\item \(P\) ist hermitesch (symmetrisch) und positiv definit
+\item Es gibt ein \(A\in\GL_{n}(\mathbb{K})\) mit \(P=A^{*}A\).
+\end{enumerate}
+\end{theo}
+\begin{proof}
+Der Beweis erfolgt durch Ringschluss:
+\begin{enumerate}
+\item[(1)$\implies$(2)]
+Sei \(V=\mathbb{K}^{n},\,B=\{e_{1},\ldots,e_{n}\}\) die Standardbasis.\\
+\(P\) definiert ein Skalarprodukt:
+\begin{align*}
+s(x,y)&=(\overline{\eta}_{1},\ldots,\overline{\eta}_{n})\cdot P\cdot
+    \begin{pmatrix}\xi_{1}\\\vdots\\\xi_{n}\end{pmatrix}\\
+P&=\left(s(e_{i},e_{j})\right)=D_{BB}(s)
+\end{align*}
+% Okay, das hier ist leicht seltsam -- mein Aufschrieb ist an der Stelle etwas
+% wirr und unverstaendlich... Fuer einen Hinweis bin ich dankbar ;-) P.
+Das Schmidtsche Orthogonalisierungsverfahren liefert eine Orthonormalbasis und
+damit \(P=D^{*}D\).
+\item[(2)$\implies$(1)]
+\(P=A^{*}A\) ist hermitesch; zu zeigen: \(P^{*}=P\)
+\begin{align*}
+P^{*}&=\left(A^{*}\cdot A\right)^{*}\\
+&=\overline{\left(A^{*}\cdot A\right)}^{\top}\\
+&=\overline{\left(\overline{A}^{\top}\cdot A\right)}^{\top}\\
+&=\left(A^{\top}\cdot\overline{A}\right)^{\top}\\
+&=\overline{A}^{\top}\cdot A\\
+&=A^{*}A\\
+&=P
+\end{align*}
+Daraus folgt: \(s(x,y)\) ist hermitesche Form. Für alle \(x\in\mathbb{K}^{n}\)
+gilt:
+\begin{align*}
+s(x,x)&=\overline{x}^{\top}\cdot P\cdot x\\
+&=\overline{x}^{\top}\left(\overline{A}^{\top}\cdot A\right)x\\
+&=\left(\overline{A}\overline{x}\right)^{\top}Ax\\
+&=s_{0}(Ax,Ax)\\
+&\geq0
+\end{align*}
+Weiterhin:
+\begin{align*}
+&s_{0}(Ax,Ax)=0\\
+\Longleftrightarrow&Ax=0\\
+\overset{A\text{ inv.}}{\Longleftrightarrow}&x=0\\
+\implies&s\text{ positiv definit}
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+Falls speziell \(B\) und \(C\) Orthonormalbasen sind, folgt:
+\[
+D_{BB}(s)=I=D_{CC}(s)
+\]
+und \(D:=\overline{M}_{CB}\).
+\begin{conclusion}
+Die Basiswechselmatrix \(A=M_{BC}\) einer Orthonormalbasis \(C\) in eine andere
+Orthonormalbasis \(B\) gehört zur \textbf{orthogonalen Gruppe}
+\[
+O(n):=\left\{A\in\GL_{n}(\mathbb{R})\mid A^{\top}\cdot A=I\right\}\quad
+    \text{für } \mathbb{K}=\mathbb{R}
+\]
+beziehungsweise zur \textbf{unitären Gruppe}
+\[
+U(n):=\left\{A\in\GL_{n}(\mathbb{C})\mid A^{\top}\cdot\overline{A}=I\right\}
+    \quad\text{für } \mathbb{K}=\mathbb{C}
+\]
+\end{conclusion}
+\begin{comment}
+\(O(n)\), beziehungsweise \(U(n)\), ist eine Untergruppe von 
+\(\GL_{n}(\mathbb{R})\), beziehungsweise \(\GL_{n}(\mathbb{C})\).
+\end{comment}
+\begin{conclusion}[Iwasawa-Zerlegung]
+\index{Iwasawa-Zerlegung}
+Jede Matrix \(g\in\GL_{n}(\mathbb{R})\) hat eine eindeutige Produktzerlegung
+\[
+g=k\cdot b
+\]
+mit \(k\in O(n)\) und \(b\in B(n):=\left\{
+    \begin{pmatrix}\beta_{1}&&*\\&\ddots&\\0&&\beta_{n}\end{pmatrix}\mid
+    \beta_{\nu}>0\right\}\).
+Das heißt:
+\[
+\GL_{n}(\mathbb{R})=O(n)\cdot B(n)
+\]
+Analog gilt: 
+\[
+\GL_{n}(\mathbb{C})=U(n)\cdot B(n)_{\mathbb{C}}
+\]
+mit
+\[
+B(n)_{\mathbb{C}}:=\left\{
+    \begin{pmatrix}\beta_{1}&&*\\&\ddots&\\0&&\beta_{n}\end{pmatrix}\in
+	\GL_{n}(\mathbb{C})\mid\beta_{\nu}\in\mathbb{R}_{>0}
+    \right\}
+\]
+\end{conclusion}
+\begin{proof}
+Für \(\mathbb{K}=\mathbb{R}\,g\in\GL_{n}(\mathbb{R})\) folgt: Die Spalten
+\(b_{1},\ldots,b_{n}\) sind eine Basis von \(\mathbb{R}^{n}\).\\
+Das Schmidtsche Orthogonalisierungsverfahren liefert eine Orthonormalbasis
+\(\{c_{1},\ldots,c_{n}\}\) mit Übergangsmatrix \(A=M_{BC}\in B(n)\). Denn:
+\[
+c_{\nu}:=\sum_{i=1}^{\nu}{\alpha_{i\nu}b_{i}}
+\]
+besagt \(g\cdot A=(c_{1},\ldots,c_{n})\) und \(k=(c_{1},\ldots,c_{n})\in O(n)\),
+da \(k^{\top}\cdot k=\left(\langle c_{i},c_{j}\rangle\right)=I\).
+\end{proof}
+
+\section{Orthogonale Projektion und orthogonales Komplement}
+\index{Projektion!orthogonale}\index{Komplement!orthogonales}
+\begin{theo}[Satz von Pythagoras]
+\index{Pythagoras!Satz von}
+\label{Satz 17.3}
+Für \(x,y\in V\) mit \(x\bot y\) gilt:
+\[
+\lVert x+y\rVert^{2}=\lVert x\rVert^{2}+\lVert y\rVert^{2}
+\]
+\end{theo}
+\begin{proof}
+\begin{align*}
+\lVert x+y\rVert^{2}&=\langle x+y,x+y\rangle\\
+&=\langle x,x\rangle+\underbrace{\langle x,y\rangle}_{=0}+
+    \underbrace{\langle y,x\rangle}_{=0}+\langle y,y\rangle\\
+&=\lVert x\rVert^{2}+\lVert y\rVert^{2}
+\end{align*}
+Ist \(\{x_{1},\ldots,x_{N}\}\) ein Orthogonalsystem, so folgt
+\[
+\left\lVert\sum_{\nu=1}^{N}{x_{\nu}}\right\rVert^{2}=\sum_{\nu=1}^{N}\lVert x_{\nu}\rVert^{2}
+\]
+Der Beweis folgt leicht mit vollständiger Induktion.
+\end{proof}
+\begin{theo}
+\label{Satz 17.4}
+Sei \(U\leq V\) mit \(\dim V<\infty\).
+\begin{enumerate}
+\item Für alle \(x\in V\) existiert genau ein \(y\in U\) mit 
+\(d:=\lVert x-y\rVert=\min\{\lVert x-u\rVert\mid u\in U\}\).
+\item Dieses \(y\in U\) ist auch charakterisiert durch: \((x-y)\bot U\).\\
+Schreibe: \(y=:\Pi_{U}(x)\).
+\item Die Abbildung \(\Pi_{U}\in\End(V)\) ist stetig; es gilt 
+\(\Pi_{U}^{2}=\Pi_{U}\) und \(\lVert\Pi_{U}(x)\rVert\leq\lVert x\rVert\).\\
+\index{Abstand}\index{Projektion!orthogonale}\index{Lot}\index{Lotfußpunkt}
+\(d\) heißt \textbf{Abstand} von \(x\) und \(U\), \(y=\Pi_{U}(x)\) die
+\textbf{orthogonale Projektion} von \(x\) auf \(U\), \(z:=x-y\) heißt 
+\textbf{Lot} von \(x\) auf \(U\), \(y\) \textbf{Lotfußpunkt}.
+\end{enumerate}
+\end{theo}
+% \(V=\mathbb{R}^{3},\,U=\langle u\rangle\)
+% Hier kommt noch eine Zeichnung hin.
+\begin{proof}
+\begin{enumerate}
+\item Wähle eine Orthonormalbasis \(S=\{e_{i}\mid i=1,\ldots,r\}\) in \(U\).
+Setze \(y=\Pi_{U}(x):=\sum_{i=1}^{r}\langle x,e_{i}\rangle e_{i}\).
+\begin{thesis}
+\(\forall u'\in U:\quad x-y\bot y-u'\)
+\end{thesis}
+\begin{align*}
+\langle x-y,y-u'\rangle&=\underbrace{\langle x,y\rangle-\langle y,y\rangle}_{\overset{!}{=}0}+\underbrace{\langle y,u'\rangle-\langle x,u'\rangle}_{\overset{!}{=}0}\\
+\langle x,y\rangle&=\left\langle x,\sum_{i}{\langle x,e_{i}\rangle e_{i}}\right\rangle
+    =\sum_{i}{\overline{\langle x,e_{i}\rangle}\langle x,e_{i}\rangle}
+% <y,y> !?
+\end{align*}
+\(u'\) in Basisdarstellung: Mit \(u'=\sum_{j}{\alpha_{j}e_{j}}\) folgt
+\begin{align*}
+\langle y,u'\rangle&=\left\langle\sum_{i}{\langle x,e_{i}\rangle e_{i}},\sum_{j}{\alpha_{j}e_{j}}\right\rangle\\
+&=\sum_{i}{\langle x,e_{i}\rangle\overline{\alpha}_{i}}
+\end{align*}
+Weiterhin gilt:
+\begin{align*}
+\langle x,u'\rangle&=\left\langle x,\sum_{j}{\alpha_{j}e_{j}}\right\rangle\\
+&=\sum_{j}{\overline{\alpha}_{j}\langle x,e_{j}\rangle}
+\end{align*}
+Mit Pythagoras folgt:
+\begin{align*}
+\lVert x-u'\rVert^{2}&=\lVert x-y+y-u'\rVert^{2}\\
+&=\lVert x-y\rVert^{2}+\underbrace{\lVert y-u'\rVert^{2}}_{\geq0}\\
+&\geq\lVert x-y\rVert^{2}
+\end{align*}
+Es ist also \(\lVert x-u'\rVert\geq\lVert x-y\rVert\), wobei Gleichheit genau
+für \(y-u'=0\) gilt. Damit folgt die Eindeutigkeit von \(y\).
+\item Sei \(y\in U\) und \(x-y\bot U\). Dann gilt 
+\(\langle x,e_{i}\rangle=\langle y,e_{i}\rangle\) für alle \(i\).\\
+Es folgt:
+\begin{align*}
+y&=\sum_{i}{\langle y,e_{i}\rangle e_{i}}\\
+&=\sum_{i}{\langle x,e_{i}\rangle e_{i}}\\
+&=\Pi_{U}(x)
+\end{align*}
+\item Aus \(x-y\bot y\) folgt mit Pythagoras:
+\begin{align*}
+\lVert x\rVert^{2}&=\lVert x-y\rVert^{2}+\lVert y\rVert^{2}\\
+&\geq\lVert y\rVert^{2}\\
+&=\left\lVert\Pi_{U}(x)\right\rVert^{2}
+\end{align*}
+Es folgt: \(\Pi_{U}\) ist (Lipschitz-)stetig.\\
+\(\Pi_{U}^{2}=\Pi_{U}\) ist leicht selbst zu verifizieren.
+\end{enumerate}
+\end{proof}
+\begin{definition}
+\index{Komplement!orthogonales}\index{Orthogonal-!Raum}
+Sei \(M\subseteq V\) Teilmenge. Der Vektorraum
+\[
+M^{\bot}:=\left\{y\in V\mid y\bot M\right\}
+\]
+heißt \textbf{Orthogonalraum} oder \textbf{orthogonales Komplement} von 
+\(M\).
+\end{definition}
+\begin{lemma}
+\begin{enumerate}
+\item \(M_{1}\subseteq M_{2}\implies M_{1}^{\bot}\geq M_{2}^{\bot}\)
+\item \(\langle M\rangle^{\bot}=M^{\bot}\)
+\item Aus \(M_{i}\subseteq V,\,(i=1,\ldots,n)\) folgt 
+\[
+\left(\bigcup_{i=1}^{n}M_{i}\right)^{\bot}=\bigcap_{i=1}^{n}M_{i}^{\bot}
+\]
+\item Aus \(U_{i}\leq V\) (Teilräume) folgt
+\[
+\left(\bigcap_{i=1}^{n}U_{i}\right)^{\bot}\geq\sum_{i=1}^{n}{\left(U_{i}^{\bot}\right)}
+\]
+\item \(\langle M\rangle\leq\left(M^{\bot}\right)^{\bot}\) und
+\(M^{\bot}=\left(\left(M^{\bot}\right)^{\bot}\right)^{\bot}\).
+\item Im Spezialfall \(\dim V<\infty\) gilt:
+\begin{enumerate}
+\item Mit \(U\leq V\) folgt \(V=U\oplus U^{\bot}\) (insbesondere \(\dim U+\dim U^{\bot}=\dim V\)) und \(\left(U^{\bot}\right)^{\bot}=U\)
+\item Mit \(U_{i}\leq V\) folgt 
+\(\left(\bigcap_{i=1}^{n}U_{i}\right)^{\bot}=\sum_{i=1}^{n}{\left(U_{i}^{\bot}\right)}\)
+\end{enumerate}
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Übung!
+\end{proof}
+
+\chapter{Normale Endomorphismen}
+\index{Endomorphismus!normaler}\index{normaler Endomorphismus}
+\section{Die adjungierte lineare Abbildung}
+\index{linear!Abbildung}\index{adjungierter Homomorphismus}\index{Adjungierte}
+Seien \(V,\,W \mathbb{K}\)-Vektorräume mit Skalarprodukt 
+\(\langle\cdot,\cdot\rangle_{V},\,\langle\cdot,\cdot\rangle_{W}\)
+\begin{lemma}
+Sei \(\phi\in\Hom(V,W)\). Falls \(\Psi\in\Hom(W,V)\) mit der Eigenschaft
+\[
+\langle\phi(x),y\rangle_{W}=\langle x,\Psi(y)\rangle_{V}\,\forall x\in V,\,
+y\in W,
+\]
+so ist \(\Psi\) hierdurch eindeutig bestimmt.
+\end{lemma}
+\begin{proof}
+Sei \(\Psi':W\to V\) ein Homomorphismus mit derselben Eigenschaft\\
+\(\implies\) Für \(\Omega:=\Psi-\Psi'\in\Hom(W,V)\) gilt:
+\begin{align*}
+\forall x\in V,\,y\in W: \langle x,\Omega(y)\rangle_{V}&=
+\langle x,\Psi(y)-\Psi'(y)\rangle_{V}\\
+&=\langle x,\Psi(y)\rangle_{V}-\langle x,\Psi'(y)\rangle_{V}\\
+&=\langle\phi(x),y\rangle_{W}-\langle\phi(x),y\rangle_{W}\\
+&=0
+\end{align*}
+\(\implies \langle\Omega(y),\Omega(y)\rangle_{V}=0\quad\implies
+\Omega(y)=0\,\forall y\)\\
+Also: \(\Omega=0\), d.h. \(\Psi =\Psi'\).
+\end{proof}
+
+\begin{definition}
+Falls \(\Psi\) existiert wie oben, so heißt \(\Psi\) der zu \(\phi\) 
+adjungierte Homomorphismus.\\
+Schreibe: \(\Psi =:\phi^{*}\qquad\Hom^{a}(V,W):=\{\phi\in\Hom(V,W)\mid\phi^{*}\text{existiert}\}\)
+\end{definition}
+
+\begin{example}
+\(V=\mathbb{K}^{n},\,W=\mathbb{K}^{m}\) mit Standardskalarprodukt.\\
+\(A\in\mathbb{K}^{n\times m},\,\phi:=\Lambda_{A}:x\mapsto A\cdot x\)
+\[
+\langle\phi(x),y\rangle_{W}=\langle Ax,y\rangle_{W}=\overline{y}^{T}Ax=
+(y^{*}A)x=(A^{*}y)^{*}=\langle x,A^{*}y\rangle_{V}=\langle x,\Lambda_{A^{*}}(y)\rangle
+\]
+Das heißt: \((\Lambda_{A})^{*}=\Lambda_{A*}\). Insbesondere existiert die 
+Adjungierte.
+\end{example}
+\begin{proposition}
+\begin{enumerate}
+\item \(\Hom^{a}(V,W)\leq\Hom(V,W)\)
+\item Für die Abbildung \(*:\,\Hom^{a}(V,W)\to\Hom(W,V),\,\phi\mapsto\phi^{*}\)
+gilt:
+\[
+(\alpha\phi+\beta\Psi)^{*}=\overline{\alpha}\phi^{*}+\overline{\beta}\Psi^{*}
+\]
+Die Abbildung ist \textbf{semilinear}.
+\item Aus \(\phi\in\Hom^{a}(V,W),\,\Theta\in\Hom^{a}(W,U)\) folgt
+\(
+\Theta\circ\phi\in\Hom^{a}(V,U)
+\)
+und
+\(
+(\Theta\circ\phi)^{*}=\phi^{*}\circ\Theta^{*}
+\)
+\item Aus \(\phi\in\Hom^{a}(V,W)\) folgt \(\phi^{*}\in\Hom^{a}(W,V)\) und
+\((\phi^{*})^{*}=\phi\), sowie \(\Kern\phi=\Bil(\phi^{*})^{\bot}\).
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+\item +(2) % ja, das ist haesslich; kommt Zeit kommt bessere Loesung
+Sei \(\phi,\Psi\in\Hom^{a}(V,W),\,\alpha,\beta\in\mathbb{C}\).\\
+\(\overline{\alpha}\phi^{*}+\overline{\beta}\Psi^{*}\) ist die Adjungierte zu
+\(\alpha\phi+\beta\Psi\), denn
+\begin{align*}
+\langle(\alpha\phi+\beta\Psi)(x),y\rangle
+    &=\alpha\underbrace{\langle\phi(x),y\rangle}_{\langle x,\phi^{*}(y)\rangle}
+    +\beta\underbrace{\langle\Psi(x),y\rangle}_{\langle x,\Psi^{*}(y)\rangle}\\
+&=\langle x,\overline{\alpha}\phi^{*}(y)+\overline{\beta}\Psi^{*}(y)\rangle
+\end{align*}
+\item[(3)] Für alle \(x\in V,\,y\in U\) gilt:
+\begin{align*}
+\langle\Theta\circ\phi(x),y\rangle&=\langle\Theta(\phi(x)),y\rangle\\
+&=\langle\phi(x),\Theta^{*}(y)\rangle\\
+&=\langle x,\phi^{*}(\Theta^{*}(y))\rangle
+\end{align*}
+\item[(4)] Es gilt
+\begin{align*}
+\langle\phi^{*}(y),x\rangle&=\overline{\langle x,\phi^{*}(y)\rangle}\\
+&=\overline{\langle\phi(x),y\rangle}\\
+&=\langle y,\phi(x)\rangle
+\end{align*}
+Das heißt \(\phi^{*}\) hat die Adjungierte \(\left(\phi^{*}\right)^{*}=\phi\)
+
+Weiterhin gilt:
+\begin{align*}
+x\in\Kern(\phi)&\Longleftrightarrow\phi(x)=0\\
+&\Longleftrightarrow\forall y\in W:\,\underbrace{\langle\phi(x),y\rangle}_{\langle x,\phi^{*}(y)\rangle}=0\\
+&\Longleftrightarrow x\bot\phi^{*}(w)
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+Sei \(V\) ein Vektorraum mit Skalarprodukt \(\langle\cdot,\cdot\rangle,
+\,\phi\in\End(V)\) mit \(\langle\phi(x),y\rangle=
+\langle x,\phi^{*}(y)\rangle\).
+\begin{lemma}
+Sei \(\dim V<\infty,\,\phi\in\End(V)\). Dann gilt:
+\[
+\lambda\in\Spec(\phi)\implies\overline{\lambda}\in\Spec(\phi^{*})
+\]
+\end{lemma}
+\begin{proof}
+Sei \(u\neq0,\,\phi(u)=\lambda\cdot u\). Dann gilt für alle \(y\in V\):
+\[
+0=\langle(\phi-\lambda\id)(u),y\rangle=\langle u,e(\phi-\lambda\id)^{*}(y)\rangle
+\]
+Nach Proposition gilt \((\phi-\lambda\id)^{*}=\phi^{*}-\overline{\lambda}\id\).
+\\
+Dann ist \(0=\langle u,\underbrace{(\phi^{*}-\overline{\lambda}\id)(y)}_{\neq u}\rangle\)
+(wegen der positiven Definitheit und \(u\neq0\)).
+
+Daraus folgt: 
+\begin{align*}
+\phi^{*}-\overline{\lambda}\id\text{ ist nicht surjektiv}&\Longleftrightarrow
+    \phi^{*}-\overline{\lambda}\id\text{ ist nicht injektiv}\\
+&\Longleftrightarrow\exists v\neq0:\,\phi^{*}(v)=\overline{\lambda}v\\
+&\implies\overline{\lambda}\in\Spec(\phi^{*})
+\end{align*}
+\end{proof}
+
+\section{Der Spektralsatz}
+\index{Spektral-!Satz}\index{Spektrum}
+
+\begin{proposition}
+Sei \(\phi\in\End^{a}(V)\)
+\begin{enumerate}
+\item Für \(\lambda,\mu\in\Spec(\phi)\) mit \(\lambda\neq\mu\) gilt:
+\[
+E_{\lambda}(\phi)\bot E_{\mu}(\phi)
+\]
+\item Folgende Aussagen sind äquivalent:
+    \begin{enumerate}
+    \item\(\phi\circ\phi^{*}=\phi^{*}\circ\phi\)
+    \item\(\forall x,y\in V:\,\langle\phi(x),\phi(y)\rangle=\langle\phi^{*}(x),\phi^{*}(y)\rangle\)\\
+    \(\phi\) heißt \textbf{normal}.
+    \end{enumerate}
+\item Ist \(\phi\) normal, dann folgt \(\Kern(\phi)=\Kern(\phi^{*})\), 
+insbesondere \(E_{\lambda}(\phi)=E_{\overline{\lambda}}(\phi^{*})\).
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+\item Seien \(u\in E_{\lambda}(\phi),\,v\in E_{\mu}(\phi)\). Dann gilt
+\begin{align*}
+\lambda\langle u,v\rangle&=\langle\lambda u,v\rangle\\
+&=\langle\phi(u),v\rangle\\
+&=\langle u,\phi^{*}(v)\rangle\\
+&=\langle u,\overline{\mu}v\rangle\\
+&=\mu\langle u,v\rangle\\
+\end{align*}
+Mit \(\lambda\neq\mu\) folgt \(\langle u,v\rangle=0\)
+\end{enumerate}
+\end{proof}
+
+\begin{theo}[Spektralsatz]
+\label{Satz 18.1}
+Sei \(\dim V<\infty,\,\langle\cdot,\cdot\rangle\) Skalarprodukt mit 
+\(\phi\in\End(V)\) normal.\\
+Im Fall \(\mathbb{K}=\mathbb{R}\) habe das charakteristische Polynom 
+\(f_{\phi}(T)\) nur reelle Nullstellen. Dann existiert eine Orthonormalbasis
+aus Eigenvektoren von \(\phi\).
+\end{theo}
+\begin{proof}
+Sei \(n:=\dim V,\,\lambda_{1}\in\Spec(\phi),\,b_{1}\neq0\in E_{\lambda_{1}}(\phi)\). Ohne Beschränkung der Allgemeinheit sei \(\lVert b_{1}\rVert=1\).\\
+Betrachte das orthogonale Komplement \(U:=b_{1}^{\top}\). Es gilt
+\[
+V=\langle b_{1}\rangle\oplus U,
+\]
+wobei \(\phi(U)\subseteq U,\,\phi^{*}(U)\subseteq U\) ist, denn für alle 
+\(u\in U\) gilt
+\begin{align*}
+\langle\phi(u),b_{1}\rangle&=\langle u,\phi^{*}(b_{1})\rangle\\
+&=\langle u,\overline{\lambda_{1}}b_{1}\rangle\\
+&=\lambda_{1}\underbrace{\rangle u,b_{1}\rangle}_{=0}=0
+\end{align*}
+Daraus folgt \(\phi(u)\bot b_{1}\), das heißt \(\phi(U)\bot b_{1}\), damit
+folgt \(\phi(U)\subseteq U\).\\
+Für \(\phi^{*}\) ist die Vorgehensweise analog.\\
+Insbesondere ist \(\left.\phi\right|_{U}\in\End(U)\).
+
+Ferner gilt \(\left(\left.\phi\right|_{U}\right)^{*}=\left.\phi^{*}\right|_{U}\), also
+\begin{align*}
+\left.\phi\right|_{U}\left.\phi^{*}\right|_{U}&=\left.\left(\phi\phi^{*}\right)\right|_{U}\\
+% das hier ist von der Ausrichtung noch nicht optimal...
+&\overset{\phi\text{ normal}}{=}\left.\left(\phi^{*}\phi\right)\right|_{U}\\
+&=\left.\phi^{*}\right|_{U}\left.\phi\right|_{U}
+\end{align*}
+Also ist \(\phi\) normal.
+
+Vollständige Induktion nach \(n\):\\
+\(n-1 \leadsto n\): \(U\) hat eine Orthonormalbasis \(\{b_{2},\ldots,b_{n}\}\)
+aus Eigenvektoren von \(\left.\phi\right|_{U}\).\\
+Dann ist \(\{b_{1},b_{2},\ldots,b_{n}\}\) die gesuchte Orthonormalbasis.
+\end{proof}
+\begin{lemma}[Transfer zu Matrizen]
+Für beliebiges \(\phi\in\End(V)\) sei \(s_{\phi}\) die Sesquilinearform
+\[
+s_{\phi}(x,y):=\langle\phi(x),y\rangle
+\]
+\(B\) sei eine Orthonormalbasis von \(V\). Dann gilt:
+\begin{enumerate}
+\item\(D_{BB}(\phi^{*})=D_{BB}(\phi)^{*}\)
+\label{Lemma: 18.2; 1; Beh. 1}
+\item\(D_{BB}(s_{\phi})=D_{BB}(\phi)^{\top}\)
+\label{Lemma: 18.2; 1; Beh. 2}
+\item\(\phi\) ist normal, genau dann wenn für \(A:=D_{BB}(\phi)\) gilt:
+\label{Lemma: 18.2; 1; Beh. 3}
+\[
+A\cdot A^{*}=A^{*}\cdot A
+\]
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Sei \(B=\{b_{1},\ldots,b_{n}\}\).\\
+Erinnere: \(D_{BB}(\phi)=(x_{ij})\) ist 
+definiert durch \(\phi(b_{ij})=\sum_{i=1}^{n}{\alpha_{ij}b_{i}}\).\\
+Es gilt
+\begin{align*}
+s_{\phi}(b_{j},b_{k})&=\langle\phi(b_{j}),b_{k}\rangle\\
+&=\sum_{i=1}^{n}{\alpha_{ij}\underbrace{\langle b_{i},b_{k}\rangle}_{=\delta_{ik}}}\\
+&=\alpha_{kj}
+\end{align*}
+Damit folgt die Behauptung \eqref{Lemma: 18.2; 1; Beh. 2}.
+
+Sei \(D_{BB}(\phi^{*})=(\beta_{ij})\), das heißt
+\begin{align*}
+\overline{\alpha_{ji}}&=\overline{\langle\phi(b_{i}),b_{j}\rangle}\\
+&=\langle b_{j},\phi(b_{i})\rangle\\
+&=\langle\phi^{*}(b_{j}),b_{i}\rangle\\
+&=\beta_{ij}
+\end{align*}
+Damit folgt die Behauptung \eqref{Lemma: 18.2; 1; Beh. 1}.
+
+Es bleibt noch Behauptung \eqref{Lemma: 18.2; 1; Beh. 3} zu zeigen:
+\[
+\phi\cdot\phi^{*}\Longleftrightarrow
+\underbrace{D_{BB}(\phi\phi^{*})}_{=AA^{*}}=
+\underbrace{D_{BB}(\phi^{*}\phi)}_{=A^{*}A}
+\]
+\end{proof}
+\begin{corollary}[zum Spektralsatz]
+Für \(\lambda\in\Spec(\phi)\) sei \(U_{\lambda}:=E_{\lambda}(\phi)\) und
+\(\Pi_{\lambda}:=\Pi_{U_{\lambda}}\) (orthogonale Projektion). Dann gilt für
+\(p(T)\in\mathbb{K}[T]\):
+\[
+p(\phi)=\sum_{\lambda\in\Spec(\phi)}{p(\lambda)\cdot\Pi_{\lambda}}
+\]
+und
+\[
+\phi^{*}=\sum_{\lambda}{\overline{\lambda}\cdot\Pi_{\lambda}}
+\]
+\end{corollary}
+\begin{proof}
+Da \(U_{\lambda}\bot U_{\mu}\) für \(\lambda\neq\mu\) folgt \(\Pi_{\lambda}\Pi_{\mu}=\delta_{\lambda\mu}\Pi_{\lambda}\).\\
+Spektralsatz: Aus \(V=\underset{\lambda}{\bigoplus}U_{\lambda}\) folgt 
+\(\id_{V}=\sum_{\lambda}{\Pi_{\lambda}}\).\\
+Aus \(\left.p(\phi)\right|_{U_{\lambda}}=p(\lambda)\cdot\id_{U_{\lambda}}\)
+folgt \(p(\phi)=\sum_{\lambda}{p(\lambda)\Pi_{\lambda}}\).\\
+\(\left.\phi^{*}\right|_{U_{\lambda}}=\overline{\lambda}\cdot\id_{U_{\lambda}}\)
+liefert
+\begin{align*}
+\phi^{*}&=\phi^{*}\cdot\id_{U_{\lambda}}\\
+&=\phi^{*}\cdot\sum_{\lambda}{\Pi_{\lambda}}\\
+&=\sum_{\lambda}{\phi^{*}\Pi_{\lambda}}\\
+&=\sum_{\lambda}{\overline{\lambda}\Pi_{\lambda}}
+\end{align*}
+\end{proof}
+\begin{theo}
+\label{Satz 18.2}
+Seien \(\phi,\,\Psi\in\End(V)\) normal und \(\phi\cdot\Psi=\Psi\cdot\phi\).\\
+Falls in \(V\) eine Orthonormalbasis aus Eigenvektoren existiert und eine
+Orthonormalbasis aus Eigenvektoren zu \(\Psi\), dann existiert eine
+Orthonormalbasis aus gemeinsamen Eigenvektoren zu \(\phi\) und \(\Psi\).
+\end{theo}
+\begin{proof}
+Seien \(V=\underset{\lambda}{\bigoplus}U_{\lambda},\,U_{\lambda}:=E_{\lambda}(\phi)\).\\
+Zeige: \(\Psi(U_{\lambda})\subseteq U_{\lambda}\) und \(\left.\Psi\right|_{U_{\lambda}}\) sind diagonalisierbar.
+
+Dazu:
+\begin{align*}
+u\in U_{\lambda}&\implies\phi(u)=\lambda u\\
+&\implies\Psi(\phi(u))=\Psi(\lambda u)=\lambda\Psi(u)\\
+&\Longleftrightarrow\phi(\Psi(u))=\lambda\Psi(u)\quad\implies\Psi(u)\in U_{\lambda}
+\end{align*}
+Analog: \(\phi(E_{\mu}(\Psi))\subseteq E_{\mu}(\Psi)\).\\
+Da \(V=\underset{\mu}{\bigoplus}E_{\mu}(\Psi)\), gilt insbesondere für alle
+\(u\in U_{\lambda}:\,u=\sum_{\mu}{x_{\mu}}\in E_{\mu}(\Psi)\). Es gilt sogar:
+jedes \(x_{\mu}\in U_{\lambda}\), denn:
+\[
+\phi(x_{\mu}=:x'_{\mu}\in E_{\mu}(\Psi)
+\]
+\begin{align*}
+\lambda{\sum_{\mu}}^{\oplus}x_{\mu}&=\lambda u\\
+&=\phi(u)\\
+&=\sum_{\mu}{\phi(x_{\mu}})\\
+&={\sum_{\mu}}^{\oplus}{x'_{\mu}}
+\end{align*}
+Da die Summe direkt ist, folgt für alle \(\mu\)
+\[
+\lambda\cdot x_{\mu}=x'_{\mu}=\phi(x_{\mu}),
+\]
+das heißt \(x_{\mu}\in U_{\lambda}\).
+
+Insgesamt gezeigt:
+\[
+U_{\lambda}=\underset{\mu}{\bigoplus}E_{\mu}(\Psi)\cap U_{\lambda}
+\]
+(d.h. \(\left.\Psi\right|_{U_{\lambda}}\) ist diagonalisierbar). Damit folgt
+\[
+V=\underset{\lambda}{\bigoplus}\underset{\mu}{\bigoplus}E_{\mu}(\Psi)\cap E_{\lambda}(\phi)
+\]
+\end{proof}
+
+\section{Selbstadjungierte Endomorphismen}
+\index{Endomorphismus!selbstadjungierter}\index{Matrix!hermitesche}
+\index{Spektral-!Radius}
+
+\begin{definition}
+\(\phi\in\End(V)\) heißt \textbf{selbstadjungiert}, falls \(\phi^{*}=\phi\).
+\end{definition}
+\begin{comment}
+\begin{enumerate}
+\item \(\phi\) ist selbstadjungiert impliziert \(\phi\) ist normal.
+\item Ist \(\dim V<\infty,\, B\) Orthonormalbasis und \(A:=D_{BB}(\phi)\), dann
+ist \(\phi\) selbstadjungiert genau dann wenn \(A=A^{*}\), d.h. \(A\) ist 
+hermitesch.
+\end{enumerate}
+\end{comment}
+\paragraph{Hintergrund:}{Viele Problem in Physik und Technik führen auf 
+hermitesche Matrizen.}
+\begin{theo}
+\label{Satz 18.3}
+\begin{enumerate}
+\item \(A\in\mathbb{C}^{m\times m}\) mit \(A=A^{\top}\) impliziert 
+    \(\Spec(A)\subseteq\mathbb{R}\) (oder: das charakteristische Polynom hat nur
+reelle Nullstellen).
+\item Für hermitesche \(A\) gilt:
+\begin{center}
+\(A\) ist positiv definit\(\Longleftrightarrow\forall\lambda\in\Spec(A):\,\lambda>0\)
+\end{center}
+\end{enumerate}
+\end{theo}
+\begin{proof}
+\begin{enumerate}
+\item Sei \(\lambda\in\Spec(A)\) und \(v\neq0\) mit \(Av=\lambda v\). Dann:
+\begin{align*}
+\lambda\langle v,v\rangle&=\langle\lambda v,v\rangle\\
+&=\langle Av,v\rangle\\
+&=\langle v,A^{*}v\rangle\\
+&=\langle v,Av\rangle\\
+&=\langle v,\lambda v\rangle\\
+&=\overline{\lambda}\underbrace{\langle v,v\rangle}_{=\lVert v\rVert^{2}\neq0}
+\end{align*}
+Also gilt \(\lambda=\overline{\lambda}\), das heißt \(\lambda\in\mathbb{R}\).
+\item \(A\) ist nach Definition genau dann positiv definit wenn 
+\(s_{A}(x,y)=x^{\top}A\overline{y}\) positiv definit ist.\\
+% In der Vorlesung wurde an dieser Stelle an das komplexe Skalarprodukt
+% erinnert, ist es sinnvoll/notwendig das hier auch zu tun?
+Für eine Orthonormalbasis \(\{b_{1},\ldots,b_{n}\}\) aus Eigenvektoren von
+\(A=A^{*}\) gilt
+\[
+Ab_{i}=\lambda b_{i}
+\]
+und Basisdarstellung
+\[
+\overline{x}=\sum_{i=1}^{m}{\alpha_{i}b_{i}}\leadsto x=\sum_{i=1}^{m}{\overline{\alpha_{i}}\overline{b_{i}}}
+\]
+und somit
+\begin{align*}
+s_{A}(x,x)&=x^{\top}A\overline{y}\\
+&=\sum_{i=1}^{m}{\overline{\alpha_{i}}\overline{b_{i}}}\sum_{j=1}^{m}{\alpha_{j}\underbrace{Ab_{j}}_{\lambda_{j}b_{j}}}\\
+&=\sum_{i,j}{\overline{\alpha_{i}}\alpha_{j}\lambda_{j}\overline{b_{i}}^{\top}b_{j}}\\
+&=\sum_{i,j}{\overline{\alpha_{i}}\alpha_{j}\lambda_{j}\underbrace{\overline{\langle b_{i},b_{j}\rangle}}_{=\delta_{ij}}}\\
+&=\sum_{i=1}^{m}\lvert\alpha_{i}\rvert^{2}\lambda_{i}
+\end{align*}
+Also: \(s_{A}(x,x)=\sum_{i=1}^{m}{\lvert\alpha_{i}\rvert^{2}\lambda_{i}}\).\\
+Dann folgt:\\
+\[
+s_{A}(x,x)\geq0\,\forall x\Longleftrightarrow\forall\lambda_{i}\geq0
+\]
+und
+\[
+s_{A}(x,x)=0\implies x=0
+\]
+genau dann, wenn alle \(\lambda_{i}\) größer Null sind.
+\end{enumerate}
+\end{proof}
+\begin{comment}
+Für selbstadjungierte, reelle \(A\) ist die Extravoraussetzung im Spektralsatz
+immer erfüllt.
+\end{comment}
+\begin{corollary}
+Ist \(V\) ein \(\mathbb{R}\)-Vektorraum mit Skalarprodukt, \(\dim V<\infty\) und
+\(\phi\in\End(V)\) selbstadjungiert, so besitzt \(V\) eine Orthonormalbasis aus
+Eigenvektoren zu \(\phi\).
+\end{corollary}
+\begin{definition}
+Sei \(V\) ein \(\mathbb{C}\)-Vektorraum und \(\phi\in\End(V)\).\\
+Dann heißt \(\rho(\phi):=\sup\{\lvert\lambda\rvert\mid\lambda\in\Spec(\phi)\}\)
+der \textbf{Spektralradius} von \(\phi\). Für \(A\in\mathbb{C}^{m\times m}\)
+setze \(\rho(A):=\rho(\Lambda_{A})\).
+\end{definition}
+
+\begin{comment}
+Auf \(\mathbb{K}^{m\times n}\) ist durch
+\[
+\lVert A\rVert:=\sup\{\lVert A\rVert\mid x\in\mathbb{K}^{n},\lVert x\rVert\leq1\}
+\]
+eine Norm definiert.
+\end{comment}
+\begin{theo}
+\label{Satz 18.4}
+Es gilt \(\lVert A\rVert=\sqrt{\rho(A^{*}A)}\).\\
+Falls \(m=n\) und \(A\) normal ist, gilt sogar \(\lVert A\rVert=\rho(A)\).
+\end{theo}
+\begin{proof}
+\(A^{*}A\) ist selbstadjungiert, das heißt es gilt 
+\((A^{*}A)^{*}=A^{*}\cdot\left(A^{*}\right)^{*}=A^{*}A\).\\
+Dann existiert eine Orthonormalbasis \(\{b_{1},\ldots,b_{n}\}\) aus 
+Eigenvektoren, etwa \(A^{*}Ab_{i}=\mu_{i}b_{i}\) mit \(\mu_{i}\in\mathbb{R}\).\\
+Dann gilt:
+\begin{align*}
+\lVert Ax\rVert^{2}&=\langle Ax,Ax\rangle\\
+&=\langle x,A^{*}Ax\rangle\\
+&\overset{x=\sum_{i=1}^{n}{\alpha_{i}b_{i}}}{=}=\left\langle x,\sum_{i=1}^{n}{\alpha_{i}\mu_{i}b_{i}}\right\rangle\\
+&=\sum_{i=1}^{n}\lvert\alpha_{i}\rvert^{2}\underbrace{\overline{\mu_{i}}}_{=\mu_{i}}
+\end{align*}
+Außerdem:
+\begin{align*}
+\lVert Ax\rVert^{2}&\leq\sum_{i}\lvert\alpha_{i}\rvert^{2}\underbrace{\max\{\lvert\mu_{i}\rvert\}}_{=\rho(A^{*}A)}\\
+&=\rho(A^{*}A)\lVert x\rVert^{2}
+\end{align*}
+Sei \(x=\sum_{i}{\alpha_{i}b_{i}}\) die Basisdarstellung. Dann ist 
+\(\lVert Ax\rVert^{2}=\sum_{i}{\lvert\alpha_{i}\rvert^{2}\mu_{i}}\), also alle
+\(\mu_{i}\geq0\).\\
+Weiterhin: \(A^{*}Ab_{i}=\mu_{i}b_{i}\) und \(\rho(A^{*}A)=\mu_{\max}=\mu_{i_{0}}\),
+dazu \(b_{i_{0}}\). Mit \(x:=b_{i_{0}}\) folgt \(\lVert Ax\rVert^{2}=\mu_{\max}\).\\
+\textbf{Speziell für normales \(A\)} (\(m=n\)):\\
+Es gilt \(E_{\lambda}(A)=E_{\overline{\lambda}}(A^{*})\). Dann:
+\[
+\mu_{i}=\lambda_{i}\cdot\overline{\lambda_{i}}=\lvert\lambda_{i}\rvert^{2}
+\]
+und damit folgt 
+\[
+\lVert A\rVert=\lvert\mu_{\max}\rvert=\rho(A)
+\]
+\end{proof}
+\begin{caution}
+Im allgemeinen ist \(\lVert A\rVert\neq\rho(A)\).\\
+Beispiel: 
+\[
+A=\begin{pmatrix}0&1\\0&0\end{pmatrix}
+\] 
+mit \(\rho(A)=0\) aber \(\lVert A\rVert=1\).
+Es ist
+\[
+A^{*}=\begin{pmatrix}0&0\\1&0\end{pmatrix},\,A^{*}A=\begin{pmatrix}0&0\\0&1\end{pmatrix}
+\]
+\end{caution}
+
+\chapter{Isometrien}
+
+\begin{task}
+Studiere alle linearen Abbildungen, die \textbf{Abstände} von Punkten nicht ändern.
+Z.B. Drehungen um einen Punkt im $\mathbb{R}^2$.
+\end{task}
+
+\section{Charakterisierung und orthogonale Gruppe}
+\begin{definition}
+\index{Morphismus}\index{Isometrie}\index{Automorphismus}\index{Automorphismengruppe}
+Seien $V_1,V_2\ \mathbb{K}$-VRme mit Sesquilinearformen $s_1,s_2$.
+\begin{enumerate}[(a)]
+\item Ein \textbf{Morphismus von $\pmb{\mathbb{K}}$-VRmen mit Sesquilinearform} ist
+$\Phi\in \Hom(V_1,V_2)$ mit:\\
+\[\forall x,y\in V_1:s_2(\Phi(x),\Phi(y))=s_1(x,y)\]\\
+Schreibe: $\Phi:(V_1,s_1)\to (V_2,s_2)$.
+\item Ist $\Phi$ zusätzlich bijektiv, so heißt $\Phi$ eine \textbf{(lineare) Isometrie}.
+\item Eine Isometrie $\Phi:(V,s)\to (V,s)$ heißt \textbf{Automorphismus} von s.\\
+Die Gruppe $\Aut(s)\le\Aut(V)$ heißt die \textbf{Automorphismengruppe} von s.
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+\index{Lorenzgruppe}
+In der Relativitätstheorie wichtig ist die \textbf{Lorenzgruppe} $\Aut(s)$ zu\\
+\[s:\mathbb{R}^4 \times \mathbb{R}^4 \to\mathbb{R}, (x,y)\mapsto x^T
+\begin{pmatrix}
+1&0&\cdots&0\\
+0&\ddots&\ddots&\vdots\\
+\vdots&\ddots&1&0\\
+0&\cdots&0&-c
+\end{pmatrix}
+y\]\\ 
+für $c:=$Lichtgeschwindigkeit.
+\end{example}
+
+\begin{definition}
+\index{orthogonal!Gruppe}\index{Gruppe!orthogonale}
+\index{orthogonal!Abbildung}\index{Abbildung!orthogonale}
+\index{unitär!Gruppe}\index{Gruppe!unitäre}
+\index{unitär!Abbildung}\index{Abbildung!unitäre}
+Im Folgenden sei $s$ stets SKP.\\
+\textbf{Fall $\mathbb{K}=\mathbb{R}$:}\\
+$O(V,s):=\Aut(s)$ heißt \textbf{orthogonale Gruppe}. Die Elemente der Gruppe
+heißen \textbf{orthogonale Abb. bzgl. s}.\\
+\textbf{Fall $\mathbb{K}=\mathbb{C}$:}\\
+$U(V,s):=\Aut(s)$ heißt \textbf{unitäre Gruppe}. Die Elemente der Gruppe heißen
+\textbf{unitäre Abb. bzgl. s}.
+\end{definition}
+
+\begin{comment}
+Eine wichtige Isometrie ist: abstrakter VRm $\cong$ Standardraum
+\end{comment}
+
+\begin{theo}
+\label{Satz 19.1}
+Sei $V$ VRm mit SKP $s$, $\dim(V)=n$ und ONB $B$. Dann ist die Koordinatendarstellung:\\
+\[D_B:(V,s)\to(\mathbb{K}^n,\langle\cdot,\cdot\rangle)\] eine Isometrie.
+\end{theo}
+
+\begin{proof}
+Sei $B=\{b_1,\ldots,b_n\}, x,y\in V$ mit $x=\sum_{i=1}^n{\alpha_i b_i},
+y=\sum_{i=1}^n{\beta_i b_i}$. Dann gilt:
+\begin{align*}
+s(x,y)&=\sum_{i,j}{\alpha_i \overline{b_j}\cdot s(b_i,b_j)}\\
+&= \sum_{i=1}^n{\alpha_i \overline{b_i}}\\
+&= \langle
+\begin{pmatrix}
+\alpha_1\\
+\vdots\\
+\alpha_n
+\end{pmatrix},
+\begin{pmatrix}
+\beta_1\\
+\vdots\\
+\beta_n
+\end{pmatrix} 
+\rangle\\
+&= \langle D_B(x),D_B(y)\rangle
+\end{align*}
+\end{proof}
+
+\begin{comment}
+\begin{enumerate}
+\index{Längentreue}\index{Winkeltreue}
+\item Sei $\Phi: V_1\to V_2$ Morphismus von SKP-Räumen, dann ist $\Phi$ \textbf{längentreu}.
+\[\iff\|x\|_1 = \|\Phi(x)\|_2\]
+\textbf{Winkeltreue} für $K=\mathbb{R}$ bedeutet: 
+\[\frac{\langle x,y\rangle_1}{\|x\|_1\|y\|_1} = \frac{\langle\Phi(x),
+\Phi(y)\rangle_2}{\|\Phi(x)\|_2\|\Phi(y)\|_2}\]
+\item $\Phi:(V,s)\to(V,s)$ Endomorphismus von SKP-Räumen und $\dim(V)<\infty
+\implies \Phi$ ist Isomorphismus und Automorphismus, also orthogonal und unitär. 
+\end{enumerate}
+\end{comment}
+
+\begin{theo}[Isometriekriterium]
+\label{Satz 19.2}
+Sei $V$ VRm mit SKP $s=\langle\cdot,\cdot\rangle$ und sei $\Phi\in\Aut(V)$.\\
+Folgende Aussagen sind äquivalent:
+\begin{enumerate}
+\item $\Phi$ ist Isometrie (d.h. $\Phi\in\Aut(s)$).
+\item $\Phi\in\End^a(V)$ und $\Phi^*=\Phi^{-1}$.
+\item $\forall x\in V: \|x\|=\|\Phi(x)\|$
+\item $\forall y\in V: (\|y\|=1)\implies(\|\Phi(y)\|=1)$ (Einheitssphärenabbildung).
+\end{enumerate}
+\end{theo}
+
+\begin{proof}
+Die Äquivalenz ergibt sich aus folgendem Ringschluss:
+\begin{enumerate}
+\item[(1)$\implies$(2)] Es gilt $\forall x,y\in V$, $z:=\Phi(y)$:
+\begin{align*}
+&\Phi \text{ Isometrie}\\
+&\iff \forall x,y\in V:\langle\Phi(x),\Phi(y)\rangle =\langle x,y\rangle\\
+&\stackrel{\Phi^{-1}\text{ ex.}}{\iff} \forall x,z\in V:\langle\Phi(x),z\rangle
+=\langle x,\Phi^{-1}(z)\rangle
+\end{align*}
+Nach Definition der Adjungierten folgt daraus $\Phi^{-1} = \Phi^*$.
+\item[(2)$\implies$(3)] Es gilt für alle $x\in V$:
+\[\|\Phi(x)\|^2=\langle\Phi(x),\Phi(x)\rangle\stackrel{(2)}{=}
+\langle x,\Phi^*\Phi(x)\rangle=\langle x,x\rangle\]
+\item[(3)$\iff$(4)] \checkmark
+\item[(3)$\implies$(1)] Es gilt für alle $x,y,\in V,\alpha\in K:$
+\begin{align*}
+\langle\alpha x+y,\alpha x+y\rangle &= \langle\Phi(\alpha x+y),\Phi(\alpha x+y)\rangle\\
+\iff\langle \alpha x,y\rangle +\langle y,\alpha x\rangle &= \langle\Phi(\alpha x),
+\Phi(y)\rangle + \langle\Phi(y),\Phi(\alpha x)\rangle\\
+\iff\alpha\langle x,y\rangle +\overline{\alpha}\overline{\langle x,y\rangle} &=
+\alpha\langle\Phi(x),\Phi(y)\rangle + \overline{\alpha}\overline{\langle\Phi(x),\Phi(y)\rangle}
+\end{align*}
+\textbf{Fall $K=\mathbb{R}$:}\\ 
+Mit $\alpha:=\frac12:\langle x,y\rangle =\langle\Phi(x),\Phi(y)\rangle$\\
+\textbf{Fall $K=\mathbb{C}$:}\\ 
+Mit $\alpha:=\frac12:\Real\langle x,y\rangle =\Real\langle\Phi(x),\Phi(y)\rangle$\\
+Mit $\alpha:=\frac i2:\Imag\langle x,y\rangle =\Imag\langle\Phi(x),\Phi(y)\rangle$
+\end{enumerate}
+\end{proof}
+
+\begin{corollary}
+Sei $\dim(V)=n<\infty$, $B$ ONB von $V$ und $\Phi\in\End(V)$.\\
+Folgende Aussagen sind äquivalent:
+\begin{enumerate}
+\item $\Phi$ ist Isometrie.
+\item Es gilt für alle $x\in V:\|\Phi(x)\|=\|x\|$
+\item $\Phi(B)$ ist ONB.
+\item Es gilt $D_{BB}(\Phi)^{-1} = D_{BB}(\Phi^*)$, d.h. $D_{BB}(\Phi)$ ist unitär bzw. orthogonal.
+\item Die Spalten (bzw. Zeilen) von $D_{BB}(\Phi)$ bilden eine ONB von $\mathbb{K}^n$ bzgl.
+dem Standard-SKP.
+\item Es existiert eine ONB $C$ von $V$ mit $D_{BC}(\Phi)=I_n$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Jede der Aussagen impliziert $\Phi\in\Aut(V)$.\\
+Sei $B:=\{b_1,\ldots,b_n\}$.
+\begin{enumerate}
+\item[(1)$\iff$(2)$\iff$(4)] Klar nach Isometriekriterium.
+\item[(4)$\iff$(5)]Es gilt:
+\begin{align*}
+&D_{BB}(\Phi)^{-1} = D_{BB}(\Phi^*)\\
+&	\implies D_{BB}(\Phi)\cdot D_{BB}(\Phi^*) = I_n\\
+&\iff\{\text{Zeilen von }\Phi\}\text{ sind ONB bezgl. Standardform}\\
+&\implies D_{BB}(\Phi^*)\cdot D_{BB}(\Phi) = I_n\\
+&\iff\{\text{Spalten von }\Phi\}\text{ sind ONB bezgl. Standardform}
+\end{align*}
+\item[(3)$\implies$(2)]Da für alle $b_i,b_j\in B$ gilt:
+\[\langle\Phi(b_i),\Phi(b_j)\rangle =\delta_{ij}=\langle b_i,b_j\rangle\]
+Folgt für alle $x=\sum_{i=1}^n{\alpha_i b_i}\in V:$
+\begin{align*}
+\langle\Phi(x),\Phi(x)\rangle
+&=\sum_{i,j}{\alpha_i\overline{\alpha_j}\langle\Phi(b_i),\Phi(b_j)\rangle}\\
+&=\sum_{i,j}{\alpha_i\overline{\alpha_j}\langle b_i,b_j\rangle}\\
+&=\langle x,x\rangle
+\end{align*}
+Also ist $\|\Phi(x)\|=\|x\|$ und $\Phi$ längenerhaltend.
+\item[(1)$\implies$(3)] Da $\Phi$ Isometrie ist, gilt:
+\[\implies \langle\Phi(b_i),\Phi(b_j)\rangle=\langle b_i,b_j\rangle =\delta_{ij}\]
+D.h. $\Phi(B)$ ist ONB.
+\item[(3)$\implies$(6)] Sei $C:=\Phi(B)$. Dann gilt:
+\[D_{BC}(\Phi)=I_n\] 
+\item[(6)$\implies$(4)]Es existiert eine ONB $C=\{c_1,\ldots,c_n\}$, sodass gilt:
+\[D_{BC}(\Phi) = I_n\]
+Daraus folgt: $D_{BB}(\Phi)=D_{BC}(\Phi)\cdot M_{CB}=M_{CB}=:(\gamma_{ij})$\\
+Also gilt für alle $b_j\in B$:
+\[b_j=\sum_k{\gamma_{kj}\cdot c_k}\]
+Daraus folgt:
+\begin{align*}
+\delta_{ij}&=\langle b_j,b_i\rangle\\
+&=\langle\sum_k{\gamma_{kj}\cdot c_k},\sum_l{\gamma_{li}\cdot c_l}\rangle\\
+&=\sum_{k,l}{\gamma_{kj}\cdot\overline{\gamma_{li}}\cdot\langle c_k,c_l\rangle}\\
+&=\sum_k{\gamma_{kj}\cdot\overline{\gamma_{ki}}}\\
+&=\sum_k{\overline{\gamma_{ki}}\cdot\gamma_{kj}}-(\overline{M}_{CB}^T\cdot M_{CB})_{ij}
+\end{align*}
+Es gilt also $M_{CB}^* = M_{CB}^{-1}$.
+\end{enumerate}
+\end{proof}
+
+\section{Normalformen für Isometrien und normale Endomorphismen}
+Sei $V$ VRm mit SKP $\langle\cdot,\cdot\rangle, \dim(V)=n<\infty$.
+
+\subsection{Fall $\mathbb{K}=\mathbb{C}$}
+\begin{lemma}
+Ein Endomorphismus $\Phi$ ist genau dann unitär, wenn er normal ist und alle Eigenwerte 
+Betrag 1 haben.
+\end{lemma}
+
+\begin{proof}
+Da $\Phi$ unitär ist, also $\Phi^*=\Phi^{-1}$ gilt, ist $\Phi$ normal. 
+Nach Spektralsatz existiert dann eine ONB $B=\{b_1,\ldots,b_n\}$ aus Eigenvektoren von $\Phi$.
+Also gilt: 
+\[\Phi(b_i)=\lambda_i b_i \text{ mit } \lambda_i\in\mathbb{C}\]
+Mit dem Korollar folgt:\\
+\begin{align*}
+&\Phi \text{ unitär}\\
+&\iff \Phi(B) \text{ ONB}\\
+&\iff \delta_{ij}=\langle\Phi(b_i),\Phi(b_j)\rangle=\langle\lambda_i b_i,\lambda_j b_j\rangle
+=|\lambda_i|^2\cdot\delta_{ij}\\
+&\iff |\lambda_i|^2=1\\
+&\iff |\lambda_i|=1
+\end{align*}
+\end{proof}
+
+\begin{conclusion}
+\index{Normalform}
+$D_{BB}(\Phi)=\diag(\lambda_1,\ldots,\lambda_n)$ mit $|\lambda_i|=1$ heißt \textbf{Normalform}
+der unitären Abb. $\Phi$ und ist bis auf die Reihenfolge der Eigenwerte eindeutig bestimmt.
+\end{conclusion}
+
+\begin{corollary}
+\index{unitär!Basiswechsel}\index{Basiswechsel!unitärer}
+Ist $A\in\mathbb{C}^{n\times n}$ normal, so existieren $M\in U_n$ und $\lambda_i\in\mathbb{C}$,
+sodass gilt:
+\begin{align*}
+M^{-1}\cdot A\cdot M = \diag(\lambda_1,\ldots,\lambda_n)
+\end{align*}
+D.h. jedes normale $A$ erlangt durch \textbf{unitären Basiswechsel} Normalform.\\
+Falls $A$ unitär ist, so existiert $\Phi_j\in\mathbb{R}$, sodass gilt:
+\begin{align*}
+\lambda_j=e^{i\Phi_j}=\cos\Phi_j+i\sin\Phi_j
+\end{align*}
+\end{corollary}
+\begin{proof}
+Sei \(V=\mathbb{C}^{n}\) mit dem Standardskalarprodukt, 
+\(\vp=\Lambda_{A}:\,x\mapsto Ax\)
+
+Aus dem Basiswechsel zwischen einer Orthonormalbasis \(S\) (der Standardbasis) 
+und einer Orthonormalbasis \(B\) aus Eigenvektoren von \(\phi\) folgt:
+\(M:=M_{SB}\) ist unitär.
+
+Das hei\ss t:
+\[
+M^{-1}D_{SS}(\Lambda_{A})M=M^{-1}AM=D_{BB}(\Lambda_{A})=
+    \diag(\lambda_{1},\ldots,\lambda_{n})
+\]
+\end{proof}
+
+\subsection{Fall $\mathbb{K}=\mathbb{R}$} 
+% warum akzeptiert er hier nur $ und kein \(...\)?
+
+Sei \(\Psi\in\End(V)\) normal; das char. Polynom \(f=f_{\Psi}\in\mathbb{R}[X]\).
+
+Beachte: Falls \(\lambda\in\mathbb{C}\) Nullstelle ist, so ist auch 
+\(\bar{\lambda}\) eine Nullstelle.
+\begin{align*}
+0&=f(\lambda)=\sum_{i=0}^{n}{a_{i}\lambda_{i}}\\
+0&=\sum_{i=0}^{n}{\bar{a_{i}}\bar{\lambda}^{i}}
+    =\sum_{i=0}^{n}{a_{i}\bar{\lambda}^{i}}\quad\text{da }a_{i}\in\mathbb{R}
+\end{align*}
+Das hei\ss t: Nullstellen \(\lambda\in\mathbb{C}\setminus\mathbb{R}\) treten
+stets als Paare \((\lambda,\,\bar{\lambda})\) auf.
+
+Via Isometrie:
+\begin{align*}
+D_{BB}:\qquad
+&V\overset{\sim}{\longrightarrow}\mathbb{R}^{n}\\
+\Psi&\downarrow\phantom{\longrightarrow}\downarrow\Lambda_{A}\quad\text{mit }A\in\mathbb{R}^{n\times n}\text{ normal}\\
+&V\overset{\sim}{\longrightarrow}\mathbb{R}^{n}
+\end{align*}
+
+Betrachte zunächst: \(\phi:=\Lambda_{A}\in\End(\mathbb{C}^{n})\)
+\begin{lemma}
+Ist \(A\in\mathbb{R}^{n\times n}\) beliebig und 
+\(\phi=\Lambda_{A}\in\End(\mathbb{C}^{n})\), so gilt:
+\begin{enumerate}
+\item für \(\lambda\in\Spec(\phi)\cap\mathbb{R}\) hat \(E_{\lambda}(\phi)
+(\subseteq\mathbb{C}^{n})\) eine Basis in \(\mathbb{R}^{n}(\subseteq\mathbb{C}^{n})\)
+\item für \(\lambda\in\Spec(\phi)\setminus\mathbb{R}\) ist 
+\(\mathbb{R}^{n}\cap E_{\lambda}(\phi)=0\) und 
+% das mit der \bar gefaellt mir nicht, da muss ich noch nach einer Alternative
+% suchen
+\(\bar{E_{\lambda}(\phi)}=E_{\bar{\lambda}}(\phi)\)
+\end{enumerate}
+Für normale \(A\) gilt: \(\bar{E_{\lambda}(\phi)}\bot E_{\lambda}(\phi)\)
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+\item Vorbemerkung: Die lineare Unabhängigkeit von 
+\(x_{1},\ldots,x_{r}\in\mathbb{R}^{n}\) bleibt in \(\mathbb{C}^{n}\) erhalten.
+
+Für \(\lambda\in\mathbb{R}\) gilt daher: 
+\[
+\rank_{\mathbb{R}}(A-\lambda I)=\rank_{\mathbb{C}}(A-\lambda I)\implies
+\dim_{\mathbb{R}}\Kern(A-\lambda I)=\dim_{\mathbb{C}}\Kern(A-\lambda I)
+\]
+Also ist jede \(\mathbb{R}\)-Basis von \(\Kern_{\mathbb{R}}(A-\lambda I)\) eine
+\(\mathbb{C}\)-Basis von \(\Kern_{\mathbb{C}}(A-\lambda I)=E_{\lambda}(\phi)\)
+\item Sei \(\lambda\in\Spec(\phi)\setminus\mathbb{R}\).
+
+Aus \(A\cdot b=\lambda\cdot b\) folgt \(b\not\in\mathbb{R}^{n}\) oder \(b=0\),
+denn:\\
+falls \(b\in\mathbb{R}^{n}\) folgt \(Ab\in\mathbb{R}^{n}\implies\lambda 
+    b\in\mathbb{R}^{n}\overset{\lambda\not\in\mathbb{R}}{\implies}b=0\)
+
+Ferner folgt:
+\[
+\bar{\lambda}\cdot\bar{b}=\bar{A}\cdot\bar{b}=A\cdot\bar{b}
+\]
+d.h. \(b\in E_{\bar{\lambda}}(\phi)\implies\text{``}\subseteq\text{''}\implies\text{``}=\text{''}\)
+
+Ist \(A\) normal, dann folgt mit dem Spektralsatz: \(\lambda\neq\bar{\lambda}\),
+d.h. \(E_{\lambda}\bot E_{\bar{\lambda}}\)
+\end{enumerate}
+\end{proof}
+\begin{corollary}
+Sei \(A\in\mathbb{R}^{n\times n}\) normal, 
+\(\phi:=\Lambda_{A}\in\End(\mathbb{C}^{n})\).\\
+Ferner sei \(Spec(\phi)=\{\lambda_{1},\ldots,\lambda_{r},\lambda_{r+1},\bar{\lambda}_{r+1},\ldots,\lambda_{r+s},\bar{\lambda}_{r+s}\}\)
+mit \(\lambda_{j}\in\mathbb{R}\,(j=1,\ldots,r),\,\lambda_{r+k}\in
+\mathbb{C}\setminus\mathbb{R}\,(k=1,\ldots,s), n=r+2s\) 
+(evtl. sind gleiche dabei)
+\begin{itemize}
+\item Dann existiert eine Orthonormalbasis
+\[
+B=\{b_{1},\ldots,b_{r},b_{r+1},\bar{b}_{r+1},\ldots,b_{r+s},\bar{b}_{r+s}\}
+\]
+aus Eigenvektoren von \(\phi\), wobei \(b_{j}\in\mathbb{R}^{n}\) für 
+\(j=1,\ldots,r\).\\
+Es ist \(b_{r+k}\in\mathbb{C}^{n}\setminus\mathbb{R}^{n}\,(k=1,\ldots,s)\) und
+\(Ab_{j}=\lambda_{j}b_{j},\,A\bar{b}_{j}=\bar{\lambda}_{j}\bar{b}_{j}\)
+\item Mit 
+\[
+U_{j}:=\begin{cases}
+\mathbb{C}\cdot b_{j}&j=1,\ldots,r\\
+\mathbb{C}\cdot b_{j}\oplus\mathbb{C}\cdot\bar{b}_{j}&j=r+1,\ldots,r+s
+\end{cases}
+\]
+geht die direkte Zerlegung:
+\[
+\mathbb{C}^{n}=\bigoplus_{j=1}^{r+s}{U_{j}}
+\]
+in \(\phi\)-invariante Teilräume, die paarweise orthogonal sind (d.h.
+\(U_{j}\bot U_{k}\) für \(j\neq k\)).
+\end{itemize}
+\end{corollary}
+\begin{proof}
+% hier bietet sich ein vernuenftiger Verweis geradezu an ;-)
+Lemma (1): Für 
+\(\lambda\in\Spec(\phi)\cap\mathbb{R}: E_{\lambda}(\phi)\) hat die Basis
+\(B_{\lambda}\subseteq\mathbb{R}^{n}\).
+
+Orthonormalisierungsalgorithmus: \(B_{\lambda}\leadsto\text{ONB}\subseteq\mathbb{R}^{n}\).
+
+Für Eigenwerte \(\lambda\in\mathbb{C}\setminus\mathbb{R}\) existiert nach 
+Spektralsatz gleichfalls eine Orthonormalbasis \(B_{\lambda}\) von \(E_{\lambda}(\phi)\).\\
+
+Lemma (2): \(\bar{B}_{\lambda}:=B_{\bar{\lambda}}\) ist ONB von \(E_{\bar{\lambda}}(\phi)\). Beachte: Für das Standardskalarprodukt gilt: \(\overline{\langle x,y\rangle}=\langle\bar{x},\bar{y}\rangle\).
+
+Also: Zu \(b_{j}\in B_{\lambda}\) gehört \(\bar{b}_{j}\in B_{\bar{\lambda}}\).
+
+Es ist klar, da\ss \ \(U_{j}=\langle b_{j},\bar{b}_{j}\rangle\) 
+\(\phi\)-invariant und \(U_{j}\bot U_{k}\) ist, da alle \(b\) paarweise 
+orthogonal sind.\\
+Problem: Wie lässt sich die Zerlegung im Korollar auf die reelle Situation
+übertragen?
+\end{proof}
+
+\begin{theo}
+Sei \(V\) ein \(\mathbb{R}\)-Vektorraum mit Skalarprodukt, \(\dim V=n<\infty,\,\Psi\in\End(V)\) normal. Dann gilt:
+\begin{enumerate}
+\item \[
+f_{\Psi}(X)=\prod_{j=1}^{r}{(X-\lambda_{j})}\prod_{k=1}^{s}{(X-\lambda_{r+k})(X-\bar{\lambda}_{r+k})}
+\]
+mit \(\lambda_{1},\ldots,\lambda_{r}\in\mathbb{R}\) (OBdA sei \(\lambda_{1}\leq\ldots\lambda_{n}\)), \(\lambda_{r+k}\in\mathbb{C}\setminus\mathbb{R}\).
+
+Beachte: Für \(\lambda\in\mathbb{C}\setminus\mathbb{R}\) gilt:
+\((X-\lambda)(X-\bar{\lambda})=X^{2}-2\gamma\cos(\phi)X+\gamma^{2}\) mit 
+\(\gamma:=\lvert\lambda\rvert>0\) und \(\phi\in(0,\pi)\).
+\item Es existiert eine ONB \(C=\{c_{1},\ldots,c_{r},c_{r+1},c_{r+1}',\ldots,c_{r+s},c_{r+s}'\}\) 
+\index{Drehkästchennormalform}
+von \(V\) so, da\ss \ \(D_{CC}(\Psi)\) \textbf{Drehkästchennormalform} hat, d.h.
+\[
+D_{CC}(\Psi)=\diag(\lambda_{1},\ldots,\lambda_{r},\gamma_{1}D_{\phi_{1}},\ldots,\gamma_{s}D_{\phi_{s}})
+\]
+(eindeutig bestimmt durch \(\Psi\)), wobei
+\[
+\gamma D_{\phi}=\gamma\begin{pmatrix}
+\cos\phi&-\sin\phi\\
+\sin\phi&\cos\phi
+\end{pmatrix}
+\]
+\item \(\Psi\) ist orthogonal genau dann, wenn alle reellen \(\lambda_{j}=\pm1\)
+und alle \(\gamma_{k}=1\) sind.
+\end{enumerate}
+\end{theo}
+\begin{proof}
+\begin{enumerate}
+\item \checkmark
+\item Nehme aus Korollar \(c_{j}=b_{j}\in\mathbb{R}^{n}\,(j=1,\ldots,r)\) und
+für \(U=\mathbb{C}b\oplus\mathbb{C}\bar{b}\) finden wir eine 
+\(\text{ONB}\subseteq\mathbb{R}^{n}\) wie folgt:
+Behauptung: \(C:=\{\sqrt(2)\Re(b),-\sqrt(2)\Imag(b)\}\) ist ONB von \(U\)\\
+denn: \(M_{BC}=\frac{1}{\sqrt{2}}\begin{pmatrix}1&\imath\\1&-\imath\end{pmatrix}\) ist unitär, also \(M_{CB}=M_{BC}^{-1}=M_{BC}^{*}\).
+
+Damit folgt: 
+\begin{align*}
+D_{CC}(\Psi|_{U})&=M_{CB}\cdot D_{BB}(\Psi|_{U})\cdot M_{BC}\\
+   &=\frac{1}{2}\begin{pmatrix}1&1\\-\imath&\imath\end{pmatrix}\begin{pmatrix}\lambda&\\&\bar{\lambda}\end{pmatrix}\begin{pmatrix}1&\imath\\1&-\imath\end{pmatrix}\\
+    &=\frac{1}{2}\begin{pmatrix}\lambda+\bar{\lambda}&\imath(\lambda-\bar{\lambda})\\-\imath(\lambda-\bar{\lambda})&\lambda+\bar{\lambda}\end{pmatrix}\\
+    &=\gamma\begin{pmatrix}\cos\phi&-\sin\phi\\\sin\phi&\cos\phi\end{pmatrix}
+\end{align*}
+\item \(D_{CC}(\Psi)=A\) orthogonal 
+\(\overset{\text{def.}}{\Leftrightarrow}A^{*}A=I\Leftrightarrow\) alle
+Eigenwerte \(\lvert\lambda\rvert=1\).
+\end{enumerate}
+\end{proof}
+\begin{definition}
+\begin{enumerate}
+\index{Drehung}
+\item\(\Phi\in\End(V)\) orthogonal hei\ss t \textbf{Drehung um den Winkel \(\phi\)},
+falls eine ONB \(B=\{b_{1},\ldots,b_{n}\}\) existiert, so da\ss \
+\(D_{BB}(\Phi)=\diag(D_{phi},1,\ldots,1)\).
+
+\index{Drehebene}\index{Drehachse}\index{Drehachse!verallgemeinerte}
+\(U=\mathbb{R}\cdot b_{1}+\mathbb{R}\cdot b_{2}\) hei\ss t 
+\textbf{Drehebene von \(\phi\)} und \(U^{\bot}=\langle b_{3},\ldots,b_{n}\rangle\)
+\textbf{verallgemeinerte Drehachse}.
+\item \(\Psi\in\End(V)\) orthogonal hei\ss t \textbf{Spiegelung}
+\index{Spiegelung}\index{Hyperebene}
+an einer \textbf{Hyperebene} \(H\), falls eine ONB \(B=\{b_{1},\ldots,b_{n}\}\)
+existiert, so da\ss \ \(D_{BB}(\Psi)=\diag(-1,1,\ldots,1)\) und \(H:=\langle b_{4},\ldots,b_{n}\rangle\).
+\end{enumerate}
+\end{definition}
+\begin{comment}
+Falls \(\Phi\neq\id\) Drehung ist, folgt \(D_{\phi}\neq\begin{pmatrix}1&\\&1\end{pmatrix}\) und \(U^{\bot}=\Kern(\phi-\id_{V})\).
+
+Insbesondere sind \(U\) und \(U^{\bot}\) durch \(\Phi\) eindeutig bestimmt
+(unabhängig von der Basis).
+\end{comment}
+\begin{theo}
+Sei \(V\) ein \(\mathbb{R}\)-Vektorraum mit Skalarprodukt \(s\) und 
+\(\dim V=n<\infty\). Dann ist die Gruppe \(O(V,s)\) erzeugt durch Drehungen und
+Spiegelungen. Genauer:\(\forall\Psi\in O(V,s)\exists\)Zerlegung \(n=r+2r'\), so
+da\ss \ \(\Psi\) Produkt von höchstens \(r\) Spiegelungen und \(r'\) Drehungen
+ist.
+\end{theo}
+\begin{proof}
+\begin{align*}
+D_{BB}(\Psi)&=\diag(\lambda_{1},\ldots,\lambda_{r},D_{\phi_{1}},\ldots,D_{\phi_{r}})\\
+&=\prod_{j=1}^{r}{\diag(1,\ldots,1,\lambda_{j},1,\ldots,1)}\prod_{k=1}^{r'}{\diag(1,\ldots,1,D_{\phi_{k}},1,\ldots,1)}
+\end{align*}
+\end{proof}
+
+\chapter{Affine Räume}
+
+Man möchte vom Anschauungsraum $\mathbb{R}^3$ abstrahieren:
+\begin{itemize}
+\item statt $\mathbb{R}$ \textbf{beliebige} Körper $K$
+\item statt Dimension $3$ \textbf{beliebige} Dimensionen $< \infty$
+\end{itemize}
+
+\begin{task}
+Finde die "`richtige"' Verallgemeinerung der vertrauten \textbf{geometrischen} 
+Begriffe, sodass bekannte geometrische Sätze richtig bleiben.
+\end{task}
+
+Im Folgenden sei $K$ stets ein beliebiger Körper.
+
+\section{Grundbegriffe}
+\begin{definition}
+\index{affin!Raum}\index{Raum!affiner}
+\index{Richtungsvektorraum}
+\index{Translation}
+\index{Punkt}
+\index{Translationsvektor}
+Sei $V$ $K$-VRm mit $\dim(V)=n<\infty$.
+\begin{enumerate}[(a)]
+\item Eine Menge $A \ne \emptyset$ heißt \textbf{affiner Raum mit Richtungsvektorraum $V$},
+falls $(V,+)$ auf $A$ operiert, d.h. es existiert eine Paarung "`$+$"' genannt
+\textbf{Translation} $V \times A \to A$, $(x,P) \mapsto x+P$, mit der Eigentschaft:
+\[\forall P,Q\in A\exists_1 x\in V: Q=x+P\]
+\item Elemente von $A$ heißen \textbf{Punkte}.\\
+Der zu gegebenen Punkten $P$, $Q$ eindeutig bestimmte Vektor $x$ mit $Q=x+P$ heißt
+der \textbf{Translationsvektor von $P$ nach $Q$}.\\
+Schreibe: $x:=\overrightarrow{PQ}$
+\item $\dim(A) := \dim(V)$ heißt \textbf{Dimension von $A$}.
+\end{enumerate}
+\end{definition}
+
+\begin{comment}
+\begin{enumerate}
+\item Vorsicht in (1) wird das Zeichen "`+"' für verschiedene Verknüpfungen benutzt.
+\item Es gilt für $P,Q,R,\in A:$
+\begin{align*}
+\overrightarrow{PP}&=0\\
+\overrightarrow{PQ}+\overrightarrow{QR} &= \overrightarrow{PR}\\
+\overrightarrow{QP}&=-\overrightarrow{PQ}
+\end{align*} 
+\item $A$ besteht aus genau einer Bahn:
+\[\forall P\in A: A=V+P:=\{x+P\mid x\in V\}\]
+\end{enumerate}
+\end{comment}
+
+\begin{example}
+\index{affin!Standardraum}\index{Standardraum!affiner}
+Der \textbf{affine Standardraum} $\mathbb{A}_n(K)$ ist definiert als  Punktmenge
+$\mathbb{A}:=K^n$ und $V:=K^n$, mit Translation $:=$ Addition in $K^n$, d.h.
+für $P,Q\in K^n$ gilt:
+\[\overrightarrow{PQ}=Q-P\]
+\end{example}
+
+\begin{definition}
+\index{affin!Teilraum}\index{Teilraum!affiner}
+\index{linear!Varietät}\index{Varietät!lineare}
+\index{Gerade}
+\index{Ebene}
+\index{Hyperebene}
+Eine Teilmenge $B \ne \emptyset$ eines affinen Raumes A heißt \textbf{(affiner) Teilraum}
+oder \textbf{lineare Varietät} von $A$, falls ein VRm $U_B \le V$ existiert, sodass
+$B$ affiner Raum ist, mit Richtungsvektorraum $U_B$ (unter der in $A$ gegebenen
+Operation).\\
+Auch $B = \emptyset$ werde affiner Teilraum genannt.\\
+Spezielle affine Teilräume B sind:
+\begin{enumerate}[(a)]
+\item \textbf{Gerade} $\iff \dim(B) = 1$
+\item \textbf{Ebene} $\iff \dim(B) = 2$
+\item \textbf{Hyperebene} $\iff \dim(B) = \dim(A)-1$
+\end{enumerate}
+\end{definition}
+
+\begin{lemma}
+\index{Verbindungsgerade}
+\begin{enumerate}
+\item Ist $B\ne \emptyset$ affiner Teilraum, dann gilt:
+\[U_B=\{\overrightarrow{PQ}\mid P,Q\in B\}\]
+\item Sind $\emptyset\ne B \subseteq C$ affine Teilräume und $\dim(B)=\dim(C)$, dann ist $B=C$.
+\item Durch zwei Punkte $P\ne Q$ in $A$ geht genau eine Gerade.
+\[PQ := K \cdot \overrightarrow{PQ}+P = \{\lambda \cdot \overrightarrow{PQ}+P\mid\lambda\in K\}\le A\]
+Diese wird die \textbf{Verbindungsgerade} von $P$ und $Q$ genannt.
+\item Drei Punkte $P,Q,R \in A$ liegen genau dann auf \textbf{einer} Geraden, wenn gilt,
+dass $\overrightarrow{PQ}$ und $\overrightarrow{QR}$ linear abhängig sind.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item 
+\begin{enumerate}
+\item["`$\supseteq$"']\checkmark
+\item["`$\subseteq$"'] Da $B$ affiner Teilraum mit Richtung $U_B$ ist, gilt für alle $P,Q\in B$:
+\[\exists_1 x\in B: x=\overrightarrow{PQ} \iff x+P = Q\]
+\end{enumerate}
+\item Aus (1) folgt mit $B\subseteq C$, dass $U_B\subseteq U_C$ gilt. Da diese die
+gleiche Dimension haben muss dann schon $U_B=U_C$ gelten. Für $P\in B\cap C$ gilt dann:
+\[B=U_B+P=U_C+P=C\]
+\item Es ist klar, dass $P$ und $Q$ auf der Geraden $PQ$ liegen, daher muss lediglich die
+Eindeutigkeit gezeigt werden.\\
+Sei $B$ eine Gerade mit $P,Q\in B$ und $U:=U_B$. Da $P\ne Q$ ist, 
+ist $\overrightarrow{PQ}\in U$ nicht der Nullvektor. Da außerdem $\dim U=1$ ist, gilt:
+\[U=K\cdot\overrightarrow{PQ}\]
+Daraus folgt:
+\[B=U+P=PQ\]
+\item Sei $x:=\overrightarrow{PQ}$ und $y:=\overrightarrow{QR}$. Es existiert genau dann
+eine Gerade $B$ mit $P,Q,R\in B$, wenn gilt:
+\[\exists\text{ VRm }U: \dim U=1, x,y\in U\]
+Also genau dann, wenn $x$ und $y$ linear abhängig sind.
+\end{enumerate}
+\end{proof}
+
+\begin{theo}[Teilraumkriterium]
+\label{Satz 20.1}
+Sei $A$ affiner Raum mit Richtung $V$ und sei $\emptyset \ne B\subseteq A$. Dann 
+sind äquivalent:
+\begin{enumerate}
+\item $B$ ist affiner Teilraum.
+\item Es existieren $P\in A$ und $U\le V$, sodass gilt:
+\[B=U+P\]
+\item Falls $|K| >2$, so ist auch äquivalent:
+\[\forall P,Q\in B: P\ne Q \implies PQ \subseteq B\]
+\item Falls $A=\mathbb{A}_n(K)$, so ist auch äquivalent, dass $B$ Lösungsmenge eines LGS ist.
+\end{enumerate}
+\end{theo}
+
+\begin{proof}
+Die Äquivalenz ergibt sich aus folgendem Ringschluss:
+\begin{itemize}
+\item[(1)$\implies$(2)] Ist $B$ affiner Teilraum, so gilt:
+\[\exists U\le V:\forall P\in U:B=U+P\]
+\item[(2)$\implies$(1)] $B=U+P$ ist affiner Teilraum, denn $U$ operiert auf $B$
+und für $Q,R\in B:$ gilt:
+\[\exists x,y\in U: Q=x+P,R=y+P \text{ und}\] 
+\[\exists_1 \text{ Translation } \overrightarrow{QR}=y-x\in U\]
+Daraus folgt, dass $U$ affiner Teilraum ist.
+\item[(1)$\implies$(3)] Sei $B$ affiner Teilraum mit $P,Q\in B, P\ne Q$. Dann gilt:
+\begin{align*}
+&\overrightarrow{PQ}\in U_B\\
+&\implies\forall \lambda\in K:\lambda\cdot\overrightarrow{PQ}+P\in B\\
+&\implies PQ\subseteq B
+\end{align*}
+\item[(3)$\implies$(2)] Setze $U:=\{\overrightarrow{PQ}\mid P,Q\in B\}\subseteq V$.\\
+\textbf{Zeige zunächst:} Für alle $P\in B$ gilt:
+\[U+P\subseteq B\] 
+D.h. für alle $y\in U$ gilt:
+\[y+P\in B\]
+\begin{enumerate}
+\item["`$\subseteq$"'] Sei also $0\ne y\in U$, dann existiert ein $Q\ne R\in B$, sodass gilt: 
+\[ y=\overrightarrow{QR}\] 
+Setze $z:=\overrightarrow{PQ}$.\\
+\textbf{Fall $y,z$ linear abhängig:}\\
+Aus dem Lemma folgt, dass $P,Q,R$ auf der Geraden $QR=\{\lambda\cdot y+P\mid \lambda\in K\}
+\stackrel{(3)}{\subseteq} B$ liegen. Insbesondere gilt: 
+\[y+P\in B\]
+\textbf{Fall $y,z$ linear unabhängig:}\\
+Wähle $\lambda\in K\setminus\{0,1\}$. Betrachte $S:=\frac{\lambda}{\lambda-1}y+P$, 
+$N:=\lambda z+P$.\\
+Dann ist $N\in PQ\subseteq B$.\\
+Annahme: $N=R$.
+Dann gilt:
+\begin{align*}
+N&=\lambda z+p\\
+&=R\\
+&=y+z+P
+\end{align*}
+Daraus folgt, dass $y$ und $z$ linear abhängig sind. $\lightning$
+Es gilt also $N\ne R$. Ferner gilt, dass $S,N,R$ auf einer Geraden liegen, denn:
+\[\overrightarrow{NR} = y+z-\lambda z = y+(1-\lambda)z \text{ und}\]
+\[\overrightarrow{SN} = \lambda z-\frac{\lambda}{1-\lambda}y=\frac{\lambda}{\lambda-1}
+((\lambda-1)z-y)\]
+sind linear abhängig.\\
+Aus $N,R\in B$ folgt:
+\[S\in NR \stackrel{(3)}{\subseteq}B\]
+Außerdem gilt: $S\ne P$, also $SP\in B$ und damit $y+P\in B$\\
+Es gilt sogar: $B=U+P$, da für alle $Q\in B$ gilt:
+\[Q=\overrightarrow{PQ}+P\in U+P\]
+\item["`$\supseteq$"'] \checkmark
+\end{enumerate}
+\textbf{Es bleibt zu zeigen:} $U\le V$ (Untervektorraum)\\
+Seien $x,y\in U,\alpha\in K$. O.B.d.A lässt sich $x\ne 0$ annehmen, etwa $x=\overrightarrow{PQ},
+P,Q\in B$. Dann gilt:\\
+\[\alpha x+P\in PQ \subseteq B \implies \alpha x\in U\]
+Also genügt es zu zeigen, dass $x+y$ in $U$ liegt. Sei $P':=x+P$.\\
+Dann gilt mit $x=\overrightarrow{PQ}$ und $y+P\in U+P\subseteq B$:\\
+\begin{align*}
+&(x+y)+P=x+(y+P)\in U+P'\subseteq B\\
+&\implies x+y\in U
+\end{align*}
+\end{itemize}
+\end{proof}
+
+\section{Eigenschaften affiner Teilräume}
+\begin{lemma}
+Sei $I\ne\emptyset$ Indexmenge und $(B_i)_{i\in I}$ eine Familie affiner Teilräume von $A$.\\
+Dann ist $B:= \bigcap_{i\in I} B_i$ affiner Teilraum von $A$ mit Richtung
+$U_B=\bigcap_{i\in I} U_{B_i}$, falls $B\ne\emptyset$.
+\end{lemma}
+
+\begin{proof}
+Sei $B\ne\emptyset$, dann existiert ein $P\in\bigcap_{i\in I}B_i$.
+Setze $U:=\bigcap_{i\in I}U_{B_i} \le V$.\\
+Dann gilt für ein $Q\in A$:\\
+\begin{align*}
+Q\in U+P &\iff \forall i\in I: Q\in U_{B_i}+P\\
+&\iff Q\in\bigcap_{i\in I}B_i\\
+&\iff Q\in B
+\end{align*}
+Daraus folgt: $B=U+P$
+\end{proof}
+
+\begin{definition}
+\index{affin!Hülle}\index{Hülle!affine}
+Sei $M$ Teilmenge von $A$, $C$ die Menge aller affinen Teilräume von $A$, die $M$ enthalten.\\
+Dann heißt:
+\[[M]:=\bigcap_{B\in C}B\]
+die \textbf{affine Hülle} von $M$.\\
+Für $M=\{P_1,\ldots,P_m\}$ schreibe: $[P_1,\ldots,P_m]:=[M]$.
+\end{definition}
+
+\begin{example}
+Sei $P\ne Q$, dann ist $[P,Q]=PQ$ die Gerade durch $P$ und $Q$.
+\end{example}
+
+\begin{lemma}
+\index{allgemeine Lage}\index{Lage!allgemeine}
+Seien $P_0,\ldots,P_m\in A$ und sei $x_i:=\overrightarrow{P_0P_i}\in V$ für alle $i\in\{1,\ldots,m\}$.\\
+Dann gilt:
+\[[P_0,\ldots ,P_m]=\langle x_1,\ldots ,x_m \rangle +P_0\]
+Insbesondere ist $\dim{[P_0,\ldots,P_m]}\le m$.\\
+Falls gilt: $\dim{[P_0,\ldots,P_m]}=m$ sagt man, $P_0,\ldots,P_m$ sind in \textbf{allgemeiner Lage}.
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item["`$\subseteq$"'] Für alle $i\in\{1,\ldots,m\}$ gilt:
+\[P_i=x_i+P_0\subseteq\langle x_1,\ldots,x_m\rangle+P_0\]
+\item["`$\supseteq$"'] Sei $\sum_{i=1}^m{\alpha_i x_i+P_0}\in\langle x_1,\ldots,x_m\rangle+P_0$,
+und sei $B\supseteq\{P_0,\ldots,P_m\}$ beliebiger affiner Teilraum. Dann gilt:
+\begin{align*}
+&\forall i\in\{1,\ldots,m\}: x_i=\overrightarrow{P_0P_i}\in U_B\\
+&\implies \sum_{i=1}^m{\alpha_i x_i}\in U_B\\
+&\implies \sum_{i=1}^m{\alpha_i x_i+P_0}\in U_B+P_0=B
+\end{align*}
+Da dies für einen beliebigen affinen Teilraum $B$ gilt, der $\{P_0,\ldots,P_m\}$ enthält, gilt dies für alle
+solche Teilräume. Sei $C$ die Menge aller affinen Teilräume die $\{P_0,\ldots,P_m\}$ enthalten. Dann folgt:
+\begin{align*}
+&\forall B\in C: \sum_{i=1}^m{\alpha_i x_i+P_0}\in B\\ 
+&\iff \sum_{i=1}^m{\alpha_i x_i+P_0}\in\bigcap_{B\in C}B\\
+&\iff \sum_{i=1}^m{\alpha_i x_i+P_0}\in[P_0,\ldots,P_m]
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+\begin{theo}
+\label{Satz 20.2}
+Seien $A_1:=U_1+P_1,A_2:=U_2+P_2$ affine Teilräume von A. Dann gilt:
+\begin{enumerate}
+\item $U_{[A_1\cup A_2]}=U_1+U_2+\langle\overrightarrow{P_1P_2}\rangle$
+\item $A_1\cap A_2\ne\emptyset \implies \dim([A_1\cup A_2])=\dim{A_1}+\dim{A_2}-\dim{(A_1\cap A_2)}\\
+A_1\cap A_2=\emptyset \implies \dim([A_1\cup A_2])=\dim{A_1}+\dim{A_2}-\dim{(U_1\cap U_2)}+1$
+\end{enumerate}
+\end{theo}
+
+\begin{proof}
+\begin{enumerate}
+\item Sei $y:=\overrightarrow{P_1P_2}$ und $U:=U_1+U_2+\langle y\rangle$.\\
+\textbf{Zu Zeigen:} $U+P_1=[A_1\cup A_2]$, d.h. $U_{[A_1\cup A_2]}=U$
+\begin{enumerate}
+\item["`$\subseteq$"'] Für einen beliebigen affinen Raum $B\supseteq A_1\cup A_2$ gilt: $U_B\ge U_1,U_2,
+\langle y\rangle$.\\
+Also gilt für $x=x_1+x_2+\alpha y\in U$ mit $x_1\in U_1, x_2\in U_2$:
+\begin{align*}
+&x=x_1+x_2+\alpha y\in U_B\\
+&\implies x+P_1\in U_B+P_1=B\\
+&\implies x+P_1\in \bigcap B=[A_1\cup A_2]
+\end{align*}
+\item["`$\supseteq$"'] \textbf{Zu zeigen:} $A_1\cup A_2\subseteq U+P_1$\\
+\begin{align*}
+A_1&=U_1+P_1\subseteq U+P_1\\
+A_2&=U_2+P_2=U_2+y+P_1\subseteq U+P_1
+\end{align*}
+\end{enumerate}
+\item 
+\textbf{Fall $A_1\cap A_2\ne\emptyset$:} Nach Lemma gilt $U_{A_1\cap A_2}=U_1\cap U_2$,
+und dass $P_1=P_2$ wählbar ist.\\ 
+Daraus folgt $U=U_1+U_2$ (mit $y=0$). Also gilt: $[A_1\cup A_2]=U_1+U_2+P_1$ mit:
+\begin{align*}
+\dim{[A_1+A_2]}&=\dim{(U_1+U_2)}\\
+&=\dim{U_1}+\dim{U_2}-\dim{(U_1\cap U_2)}\\
+&=\dim{A_1}+\dim{A_2}-\dim{(A_1\cap A_2)}
+\end{align*}
+\textbf{Fall $A_1\cap A_2=\emptyset$}: Annahme: $y\in U_1+U_2$.\\
+Dann ist $y=x_1+x_2$ für ein $x_1\in U_1,x_2\in U_2$. Daraus folgt:
+\[x_1+P_1 = -x_2+y+P_1=-x_2+P_2\in A_1\cap A_2\ \lightning\]
+Also ist $y\notin U_1+U_2$. Daraus folgt:
+\[\dim{U}=\dim{(U_1+U_2)}+1\]
+Der restliche Beweis erfolgt analog zum ersten Fall.
+\end{enumerate}
+\end{proof}
+
+\begin{definition}
+\index{Parallelität}
+Affine Teilräume $B,C$ von $A$ heißen \textbf{parallel}, wenn gilt:
+\[U_B\le U_C \text{ oder }U_C\le U_B\]
+Schreibe: $B\parallel C$.
+\end{definition}
+
+\begin{example}
+Man denke nicht nur an parallele Geraden oder Ebenen, sondern etwa auch an Gerade $\parallel$ Ebene.
+\end{example}
+
+\begin{comment}
+\begin{enumerate}
+\item Auf den Teilräumen einer festen Dimension ist Parallelität eine Äquivalenzrelation.
+\item Aus $B\parallel C$ folgt: $(B\subseteq C) \vee (B\supseteq C) \vee (B\cap C=\emptyset)$
+\item Für alle $P\in A$ und alle affinen Teilräume $B\ne\emptyset$ existiert genau ein affiner Teilraum
+$C$ mit:
+\begin{enumerate}[(a)]
+\item $P\in C$
+\item $B\parallel C$
+\item $\dim{C}=\dim{B}$
+\end{enumerate}
+\end{enumerate}
+\end{comment}
+
+\begin{proof}
+\begin{enumerate}
+\item Leichte Übung!
+\item Sei $P\in B\cap C$ und o.B.d.A $U_B\le U_C$. Dann gilt:
+\[B=U_B+P\le U_C+P=C\]
+\item Es muss $C=U_B+P$ gelten, da aus b) und c) folgt: $U_C=U_B$
+\end{enumerate}
+\end{proof}
+
+\begin{theo}
+\label{Satz 20.3}
+Sei $A$ affiner Raum mit $\dim{A}=n>1$, $G\subseteq A$ Gerade und $H$ Hyperebene in $A$.\\
+Dann gilt:
+\begin{enumerate}
+\item $G\cap H=\emptyset \implies G\parallel H$
+\item $G\not\parallel H \implies \exists P: G\cap H=\{P\}$
+\end{enumerate}
+\end{theo}
+
+\begin{comment}
+$\dim{G\cap H}\le\dim{G}=1 \implies G\cap H=\begin{cases}
+\emptyset\\
+\text{Punkt}\\
+\text{Gerade}
+\end{cases}$
+\end{comment}
+
+\begin{proof}
+\begin{enumerate}
+\item Sei $G\cap H=\emptyset$, dann ist $G\cup H$ echte Obermenge von $H$. Es gilt also:
+\[H \subsetneq G\cup H \subseteq [G\cup H]\]
+Daraus folgt für die Dimensionen:
+\begin{align*}
+&n-1=\dim H < dim[G\cup H]\le n\\
+&\implies \dim[G\cup H]=n\\
+&\implies [G\cup H]=A
+\end{align*}
+Aus der Dimensionsformel für die affine Hülle folgt:
+\begin{align*}
+n&=\dim[G\cup H]\\
+&= \dim G+\dim H -\dim(U_G\cap U_H)+1\\
+&= n-\dim(U_G\cap U_H)+1
+\end{align*}
+Daraus folgt:
+\begin{align*}
+&\dim(U_G\cap U_H)=1=\dim U_G\\
+&\implies U_G\cap U_H = U_G\\
+&\implies U_G \subseteq U_H\\
+&\implies G\parallel H
+\end{align*}
+\item Aus (1) folgt, dass $G\cap H$ nicht die leere Menge ist, wenn $G$ und $H$ nicht
+parallel sind.\\
+Sei nun $G':=G\cap H$ eine Gerade. Dann gilt:
+\begin{align*}
+&G'\subseteq G\\
+&\implies G'=G\\
+&\implies G\subseteq H\\
+&\implies G\parallel H
+\end{align*}
+Also kann $G\cap H$ auch keine Gerade sein, wenn $G$ und $H$ nicht parallel sind. Mit der
+Vorbemerkung folgt daraus, dass $G\cap H$ ein Punkt sein muss.
+\end{enumerate}
+\end{proof}
+
+\chapter{Affine Koordinaten und affine Abbildungen}
+\section{Grundbegriffe}
+\begin{definition}
+\index{affin!Koordinatensystem}\index{Koordinatensystem!affines}
+\index{Ursprung}
+\index{Koordinaten-!Vektor}
+\index{Koordinaten-!Darstellung}
+Sei $A$ ein affiner Raum mit Richtungs-VRm V der Dimension n.
+\begin{enumerate}[(a)]
+\item Sei $\mathcal{B}$ die Menge aller Basen von V. Ein Paar $\mathcal{K}:=(\mathcal{O},B)
+\in A\times\mathcal{B}$ heißt \textbf{affines Koordinatensystem}, wobei $\mathcal{O}$ der
+\textbf{Ursprung} heißt.
+\item  Durch die Koordinatendarstellung $D_B:V\to K^n$ zur Basis $B$ definiert:
+\[D_\mathcal{K}:A\to K^n,P\mapsto D_B(\overrightarrow{\mathcal{O}P})\]
+den \textbf{Koordinatenvektor} $D_\mathcal{K}(P)$ von P bezüglich $\mathcal{O}$.
+\item Die Abbildung $D_\mathcal{K}:A\to\mathbb{A}^n(K)$ heißt \textbf{Koordinatendarstellung}
+zum Koordinatensystem $\mathcal{K}$.
+\end{enumerate}
+\end{definition}
+
+\begin{task}
+Was entspricht Homomorphismen von VRmen bei affinen Räumen?
+\end{task}
+
+\begin{definition}
+\index{affin!Abbildung}\index{Abbildung!affine}
+\index{Morphismus!affiner Räume}
+Seien $A,B$ affine Räume mit Richtungen $V,W$.
+Eine Abbildung $\varphi:A\to B$ heißt \textbf{affine Abbildung} oder \textbf{Morphismus affiner Räume},
+falls ein $\Phi\in\Hom(V,W)$ existiert, sodass gilt:
+\[\forall x\in V,\forall P\in A: \varphi(x+P)=\Phi(x)+\varphi(P)\]
+Schreibe: $\Homaff(A,B):=\{\varphi:A\to B\mid\varphi$ affin $\}$.
+\end{definition}
+
+\begin{example}
+\begin{enumerate}
+\item  Die Identität $\id_A:A\to A$ ist affin mit zugehörigem $\Phi=\id_V$.
+\item Für \textbf{festes} $Q\in B$ ist die konstante Abbildung $\varphi_Q:A\to B,
+P\mapsto Q$ affin, mit der Nullabbildung als zugehörigem Homomorphismus.
+\end{enumerate}
+\end{example}
+
+\begin{comment}
+\begin{enumerate}
+\item $\varphi:A\to B$ mit zugehörigem $\Phi\in\Hom(V,W)$ ist genau dann affin, wenn gilt:
+\[\exists P_0\in A:\forall x\in V: \varphi(x+P_0)=\Phi(x)+\varphi(P_0)\]
+\item Ist $\varphi\in\Homaff(A,B)$, so ist der zugehörige Homomorphismus \mbox{$\Phi=:\Lambda_\varphi$}
+eindeutig bestimmt.
+\item Die Hintereinanderausführung affiner Abbildungen ist affin, d.h.:
+\[\Homaff(A,B)\times\Homaff(B,C)\to \Homaff(A,C), (\varphi,\psi)\mapsto\psi\circ\varphi\]
+\item $\varphi\in\Homaff(A,B)$ ist genau dann injektiv (bzw. surjektiv), wenn $\Lambda_\varphi$
+injektiv (bzw. surjektiv) ist.
+\item Ist $\varphi\in\Homaff(A,B)$ bijektiv, so existiert $\varphi^{-1}\in\Homaff(B,A)$.
+\end{enumerate}
+\end{comment}
+
+\begin{definition}
+\index{Isomorphismus!affiner Räume}
+\index{Affinität}
+\index{affin!Automorphismus}\index{Automorphismus!affiner}
+\index{affin!Gruppe}\index{Gruppe!affine}
+Ein bijektives $\varphi\in\Homaff(A,B)$ heißt \textbf{Isomorphismus affiner Räume} oder \textbf{Affinität}.\\
+Ist zusätzlich $A=B$, so heißt $\varphi\in\Homaff(A,A)$ \textbf{Automorphismus}. Diese Automorphismen
+bilden die Gruppe $\Autaff(A)$, genannt die \textbf{affine Gruppe} von $A$.
+\end{definition}
+
+\begin{proof}
+\begin{enumerate}
+\item Sei $P\in A$ beliebig und $y:=\overrightarrow{P_0P}$. Dann gilt für alle $x\in V$:
+\begin{align*}
+\varphi(x+P) &= \varphi(x+y+P_0)\\
+&= \Phi(x+y)+\varphi(P_0)\\
+&= \Phi(x)+\Phi(y)+\varphi(P_0)\\
+&= \Phi(x)+\varphi(y+P_0)\\
+&= \Phi(x)+\varphi(P)
+\end{align*}
+\item Sei $\varphi\in\Homaff(A,B)$ gegeben, dann gilt für alle $P\in A,x\in V$:
+\begin{align*}
+&\varphi(x+P)=\Phi(x)+\varphi(P)\\
+&\implies \Phi(x)=\overrightarrow{\varphi(P)\varphi(x+P)}
+\end{align*}
+Also ist $\Phi$ durch $\varphi$ eindeutig bestimmt.
+\item Sei $\varphi\in\Homaff(A,B)$, $\psi\in\Homaff(B,C)$. Dann gilt für alle $P\in A,x\in V$:
+\begin{align*}
+\psi\circ\varphi(x+P) &= \psi(\varphi(x+P))\\
+&= \psi(\Lambda_\varphi(x)+\varphi(P))\\
+&= \Lambda_\psi(\Lambda_\varphi(x))+\psi(\varphi(P))\\
+&= \Lambda_\psi\circ\Lambda_\varphi(x)+\psi\circ\varphi(P)
+\end{align*}
+Also ist $\psi\circ\varphi$ affin mit zugehörigem Homomorphismus $\Lambda_{\psi\circ\varphi}=
+\Lambda_\psi\circ\Lambda_\varphi$.
+\item Es gilt für $\varphi\in\Homaff(A,B)$:
+\begin{align*}
+\varphi \text{ injektiv }&\iff (\varphi(P)=\varphi(Q) \implies P=Q)\\
+&\iff (\varphi(\overrightarrow{QP}+Q)=\varphi(Q) \implies P=Q)\\
+&\iff (\Lambda_\varphi(\overrightarrow{QP})+\varphi(Q)=\varphi(Q) \implies P=Q)\\
+&\iff (\Lambda_\varphi(\overrightarrow{QP})=0 \implies \overrightarrow{QP}=0)\\
+&\iff \Lambda_\varphi \text{ ist injektiv}
+\end{align*}
+Der Beweis für Surjektivität erfolgt analog.
+\item Leichte Übung!
+\end{enumerate}
+\end{proof}
+
+\begin{theo}
+\label{Satz 21.1}
+Seien $A,B$ affine Teilräume mit Richtungen $V,W$.
+Zu $(P_0,Q_0)\in A\times B$ und $\Phi\in\Hom(V,W)$ existiert genau eine affine Abbildung
+$\varphi:A\to B$ mit $\Lambda_\varphi=\Phi$ und $\varphi(P_0)=Q_0$.
+\end{theo}
+
+\begin{proof}
+Es ist $A=V+P_0$. Definiere $\varphi(x+P_0):=\Phi(x)+Q_0$, so ergibt sich nach Bemerkung (1)
+eine affine Abbildung mit $\varphi(P_0)=Q_0$. Dies legt $\varphi$ bereits eindeutig fest.
+\end{proof}
+
+\begin{theo}
+\label{Satz 21.2}
+Die Koordinatenabbildung $D_\mathcal{K}:A\to\mathbb{A}^n(K)$ zu einem Koordinatensystem 
+$\mathcal{K}=(\mathcal{O},B)$ ist ein affiner Isomorphismus (mit zugehöriger linearer Abbildung
+$D_B:V\to K^n$).
+\end{theo}
+
+\begin{proof}
+Es gilt:
+\begin{align*}
+D_\mathcal{K}(x+\mathcal{O})&\stackrel{Def.}{=} D_B(x)\\
+&= D_B(x)+0\\
+&= D_B(x)+D_\mathcal{K}(\mathcal{O})
+\end{align*}
+Nach Satz \ref{Satz 21.2} existiert genau eine affine Abbildung, die dies tut.
+Dass es sich bei $D_\mathcal{K}$ um eine Isometrie handelt, wurde bereits früher eingesehen,
+da $D_B$ Isometrie ist.
+\end{proof}
+
+\begin{corollary}
+Affine Räume über festen Körper sind genau dann isomorph, wenn ihre Dimension gleich ist.
+\end{corollary}
+
+\begin{theo}[Erhaltung von Teilräumen]
+\label{Satz 21.3}
+Sei $\varphi\in\Homaff(A,B)$ und $C\subseteq A$.
+Falls $C$ affiner Teilraum  mit Richtung $U:=U_C$ ist, so ist $\varphi(C)\subseteq B$
+affiner Teilraum mit Richtung $\Lambda_\varphi(U)$.\\
+Ist $\varphi$ Isomorphismus, so gilt:
+\begin{enumerate}
+\item $C\subseteq A$ ist genau dann affiner Teilraum, wenn $\varphi(C)\subseteq B$ affiner Teilraum ist.
+\item Es gilt $\dim C = \dim \varphi(C)$ für jeden affinen Teilraum $C$.
+\item Sind $C,C'\subseteq A$ affine Teilräume, so gilt:
+\[\varphi([C\cup C'])=[\varphi(C)\cup\varphi(C')]\]
+und:
+\[\varphi(C\cap C')=\varphi(C)\cap\varphi(C')\]
+\item $C\parallel C' \implies \varphi(C)\parallel\varphi(C')$
+\end{enumerate}
+\end{theo}
+
+\begin{proof}
+Sei $\varphi\in\Homaff(A,B), P\in C$ (d.h. $C=U+P$). Nach Teilraumkriterium gilt dann:
+\[\varphi(C)=\Phi(U)+\varphi(P)\]
+Daraus folgt, dass $\varphi(C)$ affiner Teilraum ist.
+\begin{enumerate}
+\item Leichte Übung!
+\item Leichte Übung!
+\item Sogar für beliebige Teilmengen $C,C'\subseteq A$ gilt, wenn $\varphi$ bijektiv ist:
+\[\varphi(C\cap C')=\varphi(C)\cap\varphi(C')\]
+Für alle affinen Teilräume $D$, die $C\cup C'$ enhalten, gilt:
+\[\varphi(D)\supseteq\varphi(C)\cup\varphi(C')\]
+Also gilt insbesondere auch für $D:=[C\cup C']$:
+\[\varphi([C\cup C'])\supseteq\varphi(C)\cup\varphi(C')\]
+Daraus folgt (für jede affine Abbildung, also insbesondere auch für $\varphi^{-1}$):
+\[\varphi([C\cup C'])\supseteq[\varphi(C)\cup\varphi(C')]\]
+Insgesamt folgt:
+\begin{align*}
+[C\cup C']&\supseteq\varphi^{-1}([\varphi(C)\cup\varphi(C')])\\
+&\supseteq[\varphi^{-1}(\varphi(C))\cup\varphi^{-1}(\varphi(C'))]\\
+&= [C\cup C']
+\end{align*}
+Daraus folgt die Gleichheit.
+\item Leichte Übung!
+\end{enumerate}
+\end{proof}
+
+\subsection{Grundaufgaben im affinen Standardraum $\mathbb{A}_n(K)$}
+Seien $P_0,\ldots,P_m,Q_0,\ldots,Q_s\in K^n$ und $B:=[P_0,\ldots,P_m], C:=[Q_0,\ldots,Q_s]$
+gegeben. Ziel ist es $[B\cup C]$ und $B\cap C$ zu berechnen.\\
+
+Mit $x_i:=\overrightarrow{P_0P_i}=P_i-P_0$ gilt:
+\[B=\langle x_1,\ldots,x_m\rangle+P_0\]
+Analog gilt mit $z_j:=\overrightarrow{Q_0Q_i}=Q_i-Q_0$:
+\[C=\langle z_1,\ldots,z_s\rangle+Q_0\]
+Daraus folgt dann mit $y:=\overrightarrow{P_0Q_0}$:
+\[[B\cup C]=\langle x_1,\ldots,x_m,z_1,\ldots,z_s,y\rangle+P_0\]
+
+\begin{enumerate}
+\item Finde mit dem Gauß-Algorithmus eine Basis $\{b_1,\ldots,b_r\}$ von $U$, dann gilt:
+\[[B\cup C]=[b_1+P_0,\ldots,b_r+P_0,P_0]\]
+mit erzeugenden Punkten in allgemeiner Lage.
+\item Interpretiere $B$ als Lösungsmenge $\mathcal{L}(A,b)$ eines LGS $Ax=b$.\\
+Sei $x_0=P_0\in K^n$, dann liefert der Spezialfall $B=C$ in (1):
+\[B=U+x_0\]
+wobei ${b_1,\ldots,b_r}$ Basis von $U$ ist.\\
+Ziel ist es nun, eine Matrix $A\in K^{n-r\times n}$ zu finden, mit $U=\Kern(\Lambda_A)$.
+Dazu betrachte die Matrix:
+\[M:=
+\begin{pmatrix}
+b_1&\cdots&b_r
+\end{pmatrix}\]
+Offensichtlich gilt $\rank(M)=r$.\\
+Betrachte nun die Rechtsmultiplikation:
+\[ P_M:K^n\to K^r,y\mapsto yM\]
+Dann hat der Kern von $\rho_M$ Dimension $n-r$ und eine Basis aus Zeilenvektoren
+$\{c_1,\ldots,c_{n-r}\}$. Damit lässt sich nun die Matrix $A$ wie folgt definieren:
+\[A:=
+\begin{pmatrix}
+c_1\\
+\vdots\\
+c_{n-r}
+\end{pmatrix}\]
+Da der Rang von A offensichtlich $n-r$ ist, ist die Dimension des Kerns genau $r$, und es gilt:
+\begin{align*}
+&\forall t\in\{1,\ldots,n-r\}: c_tM=0\\
+&\iff\forall t\in\{1,\ldots,n-r\},j\in\{1,\ldots,r\}: c_t\cdot b_j=0\\
+&\iff\forall j\in\{1,\ldots,r\}: Ab_j=0
+\end{align*}
+Also ist $U$ Unterraum von $\Kern(\Lambda_A)$ und aus der Gleichheit der Dimensionen
+beider Räume folgt dann:
+\[B=\mathcal{L}(A,b)\]
+\item Durchschnittsberechnung:\\
+Finde mit Hilfe von (2) Matrizen $A,A'$ und $b,b'\in K^n$, sodass $B=\mathcal{L}(A,b),
+C=\mathcal{L}(A',b')$ ist. Dann gilt:
+\[B\cap C = \mathcal{L}(D,d)\text{ mit }D:=
+\begin{pmatrix}
+A\\
+A'
+\end{pmatrix}, d=
+\begin{pmatrix}
+b\\
+b'
+\end{pmatrix}\]
+Es genügt nun das LGS $Dx=d$ zu lösen, um $B\cap C$ zu erhalten. 
+\end{enumerate}
+
+\begin{example}
+Betrachte den affinen Raum $\mathbb{A}_3(\mathbb{F}_2)=\{0,1\}^3$. Gegeben seien die
+Ebenen:
+\begin{align*}
+&E:=\langle 
+\begin{pmatrix}
+1\\0\\0\\
+\end{pmatrix},
+\begin{pmatrix}
+0\\1\\0
+\end{pmatrix}\rangle +
+\begin{pmatrix}
+0\\0\\0
+\end{pmatrix}=[e_1,e_2,0]\\
+&F:=\langle 
+\begin{pmatrix}
+0\\0\\1\\
+\end{pmatrix},
+\begin{pmatrix}
+1\\0\\0
+\end{pmatrix}\rangle +
+\begin{pmatrix}
+1\\1\\1
+\end{pmatrix}=[e_2,e_1+e_2,e_2+e_3]
+\end{align*}
+Zur Bestimmung von $E\cap F$ werden zunächst die zu $E$ und $F$ gehörigen Gleichungssysteme
+aufgestellt:
+\begin{align*}
+&E=\{x\in\mathbb{F}_2^3\mid x_3=0\}=\mathcal{L}((0,0,1),0)\\
+&F=\Kern(\Lambda_{(0,1,0)})+
+\begin{pmatrix}
+1\\1\\1
+\end{pmatrix} = \mathcal{L}((0,1,0),1)
+\end{align*}
+Daraus folgt:
+\[E\cap F=\mathcal{L}(
+\begin{pmatrix}
+0&0&1\\
+0&1&0
+\end{pmatrix},
+\begin{pmatrix}
+0\\1
+\end{pmatrix})=\{e_2,e_1+e_2\}\]
+\end{example}
+
+\begin{theo}[Satz von Pappos]
+\label{Satz 21.4}
+In einem affinen Raum $A$ mit Dimension 2 seien $G,G'$ verschiedene Geraden
+mit $G\cap G'=\{O\}\in A$. Ferner seien $P_1,P_2,P_3\in G\setminus\{O\}$
+und $Q_1,Q_2,Q_3\in G'\setminus\{O\}$, sodass gilt:
+\[ P_1Q_3\parallel P_3Q_1\text{ und }P_1Q_2\parallel P_2Q_1\]
+Daraus folgt:
+\[ P_2Q_3\parallel P_3Q_2\]
+\end{theo}
+
+\begin{proof}
+Da $Q_3\notin G$ ist, sind $O,P_1,Q_3$ in allgemeiner Lage. Daraus erhalten
+wir folgendes Koordinatensystem: 
+\[\mathcal{K}:=(O,\{\overrightarrow{OP_1},\overrightarrow{OQ_3}\})\]
+Da die Koordinatendarstellung $D_{\mathcal{K}}:A\stackrel{\sim}{\to}\mathbb{A}_2(K)$ 
+Parallelitäten und Schnittpunkte erhält, können wir o.B.d.A annehmen:
+\[A=\mathbb{A}_2(K) \text{ und }O=\begin{pmatrix}0\\0\end{pmatrix}\]
+Dann gilt:
+\begin{align*}
+&P_1=\overrightarrow{OP_1}=\begin{pmatrix}\lambda_1\\0\end{pmatrix}=\begin{pmatrix}1\\0\end{pmatrix}
+& &P_2=\begin{pmatrix}\lambda_2\\0\end{pmatrix}
+& &P_3=\begin{pmatrix}\lambda_3\\0\end{pmatrix}\\
+&Q_3=\overrightarrow{OQ_3}=\begin{pmatrix}0\\\mu_1\end{pmatrix}=\begin{pmatrix}0\\1\end{pmatrix}
+& &Q_2=\begin{pmatrix}0\\\mu_2\end{pmatrix}
+& &Q_3=\begin{pmatrix}0\\\mu_3\end{pmatrix}
+\end{align*}
+Wobei $\lambda_2,\lambda_3,\mu_2,\mu_3\ne 0$ sind. Daraus folgt für die Richtungen:
+\begin{align*}
+&\forall i,j\in \{1,2,3\}:U_{P_iQ_j}=\langle\overrightarrow{P_iQ_j}\rangle =\langle 
+\begin{pmatrix}\lambda_i\\-\mu_j\end{pmatrix}\rangle\\
+&\implies U_{P_1Q_3}=\langle \begin{pmatrix}1\\-1\end{pmatrix}\rangle
+\end{align*}
+Nach Vorraussetzung ist $\lambda_3=\mu_1$ und es existiert ein $\rho\in K^\times$, sodass gilt:
+\[ \begin{pmatrix}\lambda_2\\-\mu_1 \end{pmatrix}=\rho\begin{pmatrix}1\\-\mu_2\end{pmatrix}\]
+Daraus folgt mit $\lambda_3=\rho\mu_2=\lambda_2\mu_2$:
+\begin{align*}
+U_{P_2Q_3}&=\langle \begin{pmatrix}\lambda_2 \\-\mu_3 \end{pmatrix}\rangle\\
+&=\langle \begin{pmatrix} \lambda_2\mu_2\\-\mu_2 \end{pmatrix}\rangle\\
+&=\langle \begin{pmatrix} \lambda_3\\-\mu_2 \end{pmatrix}\rangle\\
+&= U_{P_3Q_2}
+\end{align*}
+Also sind $P_2Q_3$ und $P_3,Q_2$ parallel.
+\end{proof}
+
+\section{Koordinatenwechsel und Darstellung affiner Abbildungen}
+\begin{lemma}
+Seien $\mathcal{K}=(O,B)$ und $\mathcal{L}=(Q,C)$ Koordinatensysteme des affinen Raums
+$A$ mit Richtung $V$. Sei $M_{CB}:=D_{CB}(\id_V)$ die Basiswechselmatrix.\\
+Dann rechnen sich Koordinaten eines Punktes $P$ bzgl. $\mathcal{K}$ in die
+Koordinaten bzgl. $\mathcal{L}$ wie folgt um:
+\[D_\mathcal{L}(P)=M_{CB}\cdot(D_\mathcal{K}(P)-D_\mathcal{K}(Q))\]
+\end{lemma}
+
+\begin{proof}
+Es gilt:
+\begin{align*}
+D_\mathcal{L}(P)&=D_C(\overrightarrow{QP})\\
+&=M_{CB}\cdot D_B(\overrightarrow{QP})\\
+&=M_{CB}\cdot D_B(\overrightarrow{OP}-\overrightarrow{OQ})\\
+&=M_{CB}\cdot (D_B(\overrightarrow{OP})-D_B(\overrightarrow{OQ}))\\
+&=M_{CB}\cdot(D_\mathcal{K}(P)-D_\mathcal{K}(Q)
+\end{align*}
+\end{proof}
+
+\begin{application}
+Ist ein beliebiges Koordinatensystem $\mathcal{L}=(Q,B)$ gegeben, so lässt sich ein 
+Punkt $P$ einfach in das Koordinatensystem $\mathcal{K}=(0,S)$ von $\mathbb{A}_n(K)$ 
+mit Standardbasis $S$ überführen. Schreibe dazu $B$ als:
+\[B=\begin{pmatrix}b_1&\cdots &b_n\end{pmatrix}\in K^{(n\times n)}\]
+Dann ist $M_{SB}=B$ und es gilt:
+\[D_\mathcal{L}(P)=M_{BS}(P-Q)=B^{-1}(P-Q)\]
+\end{application}
+
+\begin{lemma}
+\begin{enumerate}
+\item Die Abbildung $\psi:K^n\to K^m$ ist genau dann affin, wenn gilt:
+\[\exists A\in K^{m\times n},a\in K^m:\Psi(x)=Ax+a\]
+Schreibe daher kurz: $\psi=:(A,a)$
+\item Ist ferner $C\in K^{t\times m},c\in K^t$, so gilt:
+\[(C,c)\circ(A,a)=(CA,Ca+c)\]
+\item Ist $m=n$ und $A\in\GL_n(K)$, so ist $(A,a)$ bijektiv und es gilt:
+\[(A,a)^{-1}=(A^{-1},-A^{-1}a)\]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item Die Abbildung $\psi$ ist genau dann affin, wenn ein $\Lambda_\vp=\Lambda_A\in\Homaff
+(K^n,K^m)$ für ein $A\in K^{m\times n}$, sodass gilt:
+\[\psi(x)=\psi(x+0)=\Lambda_\vp(x)+\psi(0)\]
+Die Behauptung folgt mit $a:=\psi(0)$.
+\item Leichte Übung!
+\item Leichte Übung!
+\end{enumerate}
+\end{proof}
+
+\begin{definition}
+Seien $A,A'$ affine Räume mit Koordinatensystemen $\mathcal{K}=(O,B),\mathcal{K'}=(O',B')$
+und zugehörigen Koordinatenisomorphismen $D_{\mathcal{K}},D_{\mathcal{K'}}$. Definiere:
+\[D_{\mathcal{K'K}}(\vp):=D_{\mathcal{K'}}\circ \vp\circ D_{\mathcal{K}}^{-1}\in\Homaff(K^n,K^m)\]
+\end{definition}
+
+\begin{lemma}
+Es gilt:
+\[D_{\mathcal{K'K}}(\vp)=(D_{B'B}(\Lambda_\vp),D_{B'}(\overrightarrow{O'\vp(O)}))\]
+\end{lemma}
+
+\begin{proof}
+Sei $P\in A$ beliebig, so entspricht es $D_\mathcal{K}(P)\in K^n$. Dann gilt:
+\begin{align*}
+D_{\mathcal{K'K}}(\vp)(D_\mathcal{K}(P)) &\stackrel{Def.}{=} D_\mathcal{K'}(\vp(P))\\
+&\stackrel{Def.}{=} D_{B'}(\overrightarrow{O'\vp(P)})\\
+&= D_{B'}(\overrightarrow{O'\vp(O)}+\overrightarrow{\vp(O)\vp(P)})\\
+&= D_{B'}(\overrightarrow{O'\vp(O)})+D_{B'}(\overrightarrow{\vp(O)\vp(P)})\\
+&= D_{B'}(\overrightarrow{O'\vp(O)})+D_{B'}(\Lambda_\vp (\overrightarrow{OP}))\\
+&= D_{B'B}(\Lambda_\vp)\cdot D_B(\overrightarrow{OP})+D_{B'}(\overrightarrow{O'\vp(O)})\\
+&= (D_{B'B}(\Lambda_\vp),D_{B'}(\overrightarrow{O'\vp(O)}))(D_\mathcal{K}(P))
+\end{align*}
+Da also beide Abbildungen auf einen beliebigen Punkt $P$ die selbe Wirkung haben, 
+müssen sie gleich sein.
+\end{proof}
+
+\begin{comment}
+Das Zusammenfügen von kommutativen Diagrammen liefert für einen weiteren affinen Raum
+$A''$ mit Koordinatensystem $\mathcal{K''}=(O'',B'')$ und einer affinen Abbildung $\Psi:
+A'\to A''$:
+\[D_{\mathcal{K''K}}(\psi\circ\vp)=D_{\mathcal{K''K'}}(\psi)\circ D_{\mathcal{K'K}}(\vp)\]
+\end{comment}
+
+\begin{corollary}
+\begin{enumerate}
+\item Speziell für eine affine Abbildung $\vp:A\to A$ und zwei Koordinatensysteme
+$\mathcal{K,L}$ gilt:
+\[D_{\mathcal{LL}}(\vp)=D_{\mathcal{LK}}(\id)\circ D_{\mathcal{KK}}(\vp)\circ D_{\mathcal{KL}}(\id)\]
+\item Insbesondere gilt für $\vp=\id$:
+\[D_{\mathcal{LL}}(\vp)=D_{\mathcal{KK}}(\vp)\]
+\item Für $\mathbb{A}_n(K)$ mit Standardkoordinatensystem $\mathcal{K}=(0,S)$, sei
+$D_{\mathcal{KL}}(\id)=:(M,b)$. Dann gilt für $\vp=(A,a)=D_{\mathcal{KK}}(\vp)$:
+\[D_{\mathcal{LL}}(\vp)=(M^{-1}AM,M^{-1}((A-I)b+a))\]
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+\begin{enumerate}
+\item Folgt aus zweimaligem anwenden der obigen Bemerkung.
+\item Folgt aus (1).
+\item Es gilt:
+\[D_{\mathcal{LK}}(\id)=(M,b)^{-1}=(M^{-1},-M^{-1}b)\]
+Der restliche Beweis ergibt sich aus (1).
+\end{enumerate}
+\end{proof}
+
+\section{Geometrische Eigenschaften von affinen Abbildungen}
+Wir haben gesehen, dass Koordinaten für den Umgang mit affinen Abbildungen \textbf{nützlich}
+sind. Nun stellen wir die Frage, inwiefern Koordinaten \textbf{nötig} sind, d.h.
+welche Eigenschaften von der Koordinatenwahl abhängen.
+
+\begin{definition}
+\index{Fix-!Punkt}
+\index{Fix-!Raum}
+\index{Fix-!Richtung}
+Sei $A$ affiner Raum und $\vp\in\Homaff(A,A)$.
+\begin{enumerate}
+\item $P\in A$ heißt \textbf{Fixpunkt} von $\vp$, falls gilt:
+\[\vp(P)=P\]
+\item Ein affiner Teilraum $\emptyset\ne B\subseteq A$ heißt \textbf{Fixraum} 
+von $\vp$, falls gilt:
+\[\vp(B)\subseteq B\]
+\item Ein Untervektorraum $U$ des Richtungsvektorraums $U_A$ heißt \textbf{Fixrichtung}
+von $\vp$, falls gilt:
+\[\Lambda_\vp(U)\subseteq U\]
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+\index{Translation}
+\index{Streckung}
+\begin{enumerate}
+\item Sei $x\in V:=U_A$ fest und eine \textbf{Translation} 
+\[\vp=\tau_x:A\to A,P\mapsto x+P\] 
+gegeben, dann gilt:
+\begin{enumerate}
+\item Für alle $U\le V$ ist $U$ Fixrichtung, da $\Lambda_\vp=\id_V$ ist.
+\item Für $x\ne 0$ existieren keine Fixpunkte.
+\item Für eine Fixgerade $G$ muss gelten:
+\begin{align*}
+&\vp(G)=x+G\subseteq G\\
+\iff &x\in U_G
+\end{align*}
+Also ist die Menge aller Fixgeraden für $X\ne 0$:
+\[\{Kx+P\mid P\in A\}\]
+Beachte dass eine Fixgerade hier \textbf{keinen} Fixpunkt enthält.
+\end{enumerate}
+\item Seien $\mu\in K\setminus\{0\}$ und $P\in A$ fest und eine \textbf{Streckung}
+\[\vp:A\to A,x+P\mapsto \mu x+P\]
+mit Zentrum $P$ und Streckungsfaktor $\mu$ gegeben.\\
+Da im Fall $\mu=1$ $\vp=\id=\tau_0$ gilt, wollen wir im Folgenden $\mu\ne 1$ annehmen.
+\begin{enumerate}
+\item Die Menge der Fixpunkte ist gleich $\{P\}$.
+\item Für alle $U\le V$ ist $U$ Fixrichtung.
+\item Fixgeraden sind genau die Geraden, die $P$ enthalten.
+\end{enumerate}
+\end{enumerate}
+\end{example}
+
+\begin{lemma}
+Für $A\in K^{n\times n},a\in K^n$ und $\vp=(A,a)$ gilt:
+\begin{enumerate}
+\item Die Fixpunkte bilden den affinen Teilraum $\mathcal{L}(A-I,-a)$.
+\item Genau dann, wenn $1$ kein Eigenwert von $A$ ist, ist die Menge der Fixpunkte
+einelementig.
+\item $B$ ist genau dann Fixraum von $\vp$, wenn $U_B$ Fixrichtung ist und ein
+Punkt $P\in B$ mit $\vp(P)\in B$ existiert.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item Es ist $\vp=Ax+a$, also gilt:
+\begin{align*}
+\vp(x)=x &\iff Ax+a=x\\
+&\iff Ax-x=-a\\
+&\iff (A-I)x=-a\\
+&\iff x\in\mathcal{L}(A-I,-a)
+\end{align*}
+\item Ist $1$ kein Eigenwert von $\vp$, so existiert $(A-I)^{-1}$, daraus folgt für 
+einen Fixpunkt $x$:
+\[x=(A-I)^{-1}(-a)\]
+Also ist $x$ eindeutig bestimmt.
+\item $B=U+P$ ist genau dann Fixraum, wenn gilt:
+\begin{align*}
+\vp(B)\subseteq B &\iff \vp(U+P)\subseteq U+P=B\\
+&\iff \Lambda_\vp(U)+\vp(P)\subseteq U+P\\
+&\iff \vp(P)\in B\wedge \Lambda_\vp(U)\subseteq U
+\end{align*}
+Also ist $U$ Fixrichtung.
+\end{enumerate}
+\end{proof}
+
+\section{Geometrische Charakterisierung von Affinitäten}
+\begin{definition}
+\index{Geradentreue}
+Sei $A$ ein affiner Raum mit einer (nicht notwendigerweise affinen) Abbildung
+$\vp:A\to A$. $\vp$ heißt \textbf{geradentreu}, wenn für $G\subseteq A$ gilt:
+\[G \text{ Gerade } \iff \vp(G) \text{ Gerade}\]
+\end{definition}
+
+\begin{example}
+\begin{enumerate}
+\item Affinitäten sind geradentreu.
+\item Die Abbildung:
+\[\vp:\mathbb{A}_2(\mathbb{C})\to\mathbb{A}_2(\mathbb{C}), (\alpha,\beta)\mapsto
+(\overline\alpha,\overline\beta)\]
+ist geradentreu, aber \textbf{nicht} affin.
+\end{enumerate}
+\end{example}
+\begin{lemma}
+Sei \(A\) ein affiner Raum über \(K\neq\mathbb{F}_{2}\) und sei 
+\(\vp:\,A\to A\) bijektiv und geradentreu.
+
+Dann gilt für \(O,P,Q\in A:\,\vp([P,Q])=[\vp(Q),\vp(P)]\) und
+\(\vp([O,P,Q])=[\vp(O),\vp(P),\vp(Q)]\).\\
+Falls \(\dim(A)=2\), so gilt:
+\begin{enumerate}
+\item Sind \(P\neq Q\) Fixpunkte von \(\vp\), so folgt: \(G:=[P,Q]\) ist 
+\index{Fix-!Gerade} Fixgerade
+\item Sind \(H\not\parallel G\) Fixgeraden, so folgt: \(H\cap G=\{Q\}\) mit
+\index{Fix-!Punkt} Fixpunkt \(Q\).
+\item Ist \(G\) Fixgerade und \(P\) Fixpunkt, so folgt: \(H\) mit 
+\(H\parallel G\wedge P\in H\) ist Fixgerade.
+\end{enumerate}
+\end{lemma}
+\begin{prerem}
+Auch \(\vp^{-1}\) ist geradentreu
+\[
+\underbrace{\vp^{-1}(G)}_{=:L}\text{ Gerade }\Longleftrightarrow
+    \underbrace{\vp(L)}_{=G}\text{ Gerade}
+\]
+\end{prerem}
+
+\begin{proof}
+Ohne Einschränkung sei \(P\neq Q\).
+
+Aus \(\vp\) geradentreu folgt 
+\[
+\vp([P,Q])\text{ Gerade }\ni\vp(P),\vp(Q)\supseteq[\vp(P),\vp(Q)]
+\]
+Daraus folgt die Gleichheit, da die Dimension gleich ist.
+\begin{thesis}
+\(B:=\vp([O,P,Q])\) ist ein affiner Teilraum.
+\end{thesis}
+Wende das Teilraumkriterium an\\
+{[Sei \(\vp(R),\vp(S)\in B\) mit \(R,S\in[O,P,Q]\), dann folgt
+    \([\vp(R),\vp(S)]=\vp([R,S])\subseteq B\)]} und
+\(B\supseteq[\underbrace{\vp(O)}_{=:O'},\underbrace{\vp(P)}_{=:P'},
+    \underbrace{\vp(Q)}_{=:Q'}]\)
+
+Gleicher Schluss für \(vp^{-1}\):
+\[
+\vp^{-1}([O',P',Q'])\supseteq[\vp^{-1}(O'),\vp^{-1}(P'),\vp^{-1}(Q')]=[O,P,Q]
+\]
+Wende \(\vp\) an:
+\[
+[O',P',Q']\supseteq\vp([O,P,Q])=B
+\]
+Damit folgt die Gleichheit.
+
+Speziell für \(\dim A=2\):
+\begin{enumerate}
+\item Für \(G:=[P,Q]\) gilt:
+\[
+\vp(G)=[\vp(P),\vp(Q)]=[P,Q]=G
+\]
+\item \(G\not\parallel H,\,G\cap H=:\{Q\}\); dann folgt
+\[
+\{\vp(Q)\}=\vp(G\cap H)\subseteq\vp(G)\cap\vp(H)=G\cap H
+\]
+Daraus folgt \(\{\vp(Q)\}\subseteq G\cap H=\{Q\}\), also \(\vp(Q)=Q\).
+\item Fall \(P\in G\): also \(H=G\). Fertig.\\
+Fall \(P\not\in G\):
+\[
+H\parallel G\implies H\cap G=\varnothing
+    \overset{\vp\text{ bij.}}{\Longleftrightarrow}
+\vp(H)\cap\underbrace{\vp(G)}_{G}=\varnothing\implies\vp(H)\parallel G
+\]
+Aus \(P=\vp(P)\in\vp(H)\) folgt \(H=\vp(H)\).
+\end{enumerate}
+\end{proof}
+\begin{theo}
+\label{Satz 21.5}
+\begin{enumerate}
+\item Sei \(A\) ein affiner Raum mit \(\dim A>1\) über dem Körper 
+    \label{Satz 21.5 Behauptung 1}
+\(K=\mathbb{F}_{p}\,(p>2)\) oder \(K=\mathbb{Q}\). Für eine Abbildung
+\(\vp:\,A\to A\) gilt:
+\begin{center}
+\(\vp\) Affinität \(\Longleftrightarrow\,\vp\) bijektiv und geradentreu
+\end{center}
+\item Sei \(K\) ein Körper mit Teilkörper \(\mathbb{Q},\,n>1\). Ist
+    \label{Satz 21.5 Behauptung 2}
+\(\vp:\,K^{n}\to K^{n}\) bijektiv und geradentreu mit \(\vp(0)=0\), so folgt:
+\(\vp\) ist \(\mathbb{Q}\)-linear.
+\end{enumerate}
+\end{theo}
+\begin{proof}
+\begin{enumerate}
+\item ``\(\implies\)'': bekannt \checkmark\\
+``\(\impliedby\)'': Wähle Koordinatensystem \(\mathcal{K}=(0,B)\) und
+\(\mathcal{L}=(\vp(0),B)\).\\
+Schachtele mit den affinen Bijektionen \(D_{\mathcal{K}}^{-1}\) und
+\(D_{\mathcal{L}}\) zu
+\[
+\tilde{\vp}:=D_{\mathcal{L}}\circ\vp\circ D_{\mathcal{K}}^{-1}:\,K^{n}\to K^{n}
+    \qquad(\text{mit }\tilde{\vp}(0)=0)
+\]
+Es gilt: \(\vp\) ist geradentreu, bijektiv (bzw. Affinität) genau dann, wenn
+\(\tilde{\vp}\) die entsprechende Eigenschaft hat.\\
+Daher gilt ohne Beschränkung der Allgemeinheit: \(\vp:\,K^{n}\to K^{n}\) und
+\(\vp(0)=0\).
+\end{enumerate}
+\eqref{Satz 21.5 Behauptung 1}\(\wedge\)\eqref{Satz 21.5 Behauptung 2} 
+    Restbehauptung: Für \(K_{0}:=\mathbb{F}_{p}\) oder \(\mathbb{Q}\) gilt:
+\(\vp\) ist \(K_{0}\)-linear.
+
+Zu zeigen: Für \(P,Q\in K^{n},\,\lambda\in K_{0}\) gilt:
+    \(\vp(\lambda P)=\lambda\vp(P),\,\vp(P+Q)=\vp(P)+\vp(Q)\)\\
+Oder: Auf \(U_{0}:=K_{0}P+K_{0}Q\) ist \(\vp|_{U_{0}}\) \(K_{0}\)-linear.
+
+Dies ist leicht zu reduzieren auf den Fall: \(P,\,Q\) sind linear unabhängig:
+\break
+\(O:=0,P,Q\) in allgemeiner Lage, \(E:=[O,P,Q]\) ist Ebene mit zwei 
+verschiedenen Geraden \([O,P],\,[O,Q]\subseteq E\).\\
+Mit \(\vp\) geradentreu und bijektiv folgt: 
+\([\vp(O),\vp(P),\vp(Q)]=\vp(E)\supseteq2\) verschiedene Geraden; daraus folgt
+\(\vp(E)\) ist Ebene, also \(\{\underbrace{\vp(0)}_{=0},\vp(P),\vp(Q)\}\) in
+allgemeiner Lage, d.h. \(\vp(P),\,\vp(Q)\) sind linear unabhängig.
+
+Daraus folgt: es existiert \(\rho\in\Aut(K^{n})\) mit 
+\(\rho(P)\vp(P),\,\rho(Q)=\vp(Q)\)
+\paragraph{Beachte:}{\(\Psi|_{U_{0}}:=\rho^{-1}\circ\vp|_{E}:\,E\to E\) ist
+bijektiv, geradentreu und hat mindestens die Fixpunkte \(O,P,Q\).}
+\paragraph{Zeige:}{\(\Psi|_{U_{0}}=\id\qquad\)(\(\leadsto\,\vp|_{U_{0}}\) ist
+\(K_{0}\)-linear; mit anderen Worten: \(U_{0}\) besteht aus Fixpunkten von
+\(\Psi\))}
+\textbf{1. Schritt:} Für alle \(n\in\mathbb{N}:\,nP\) Fixpunkte von \(\Psi\)
+(mit vollständiger Induktion)
+\begin{itemize}
+\item[\(n=0,\,1\):]\checkmark
+\item[\(n-1\to n\):] Falls \((n-1)P=0\), so ist \(nP=P\) Fixpunkt. Fertig.\\
+Falls \(R:=(n-1)P\neq0\) Fixpunkt ist, dann folgt nach Lemma: die parallelen
+Geraden \(G_{1}\parallel[O,Q]\) mit \(R\in G_{1}\) und \(G_{2}\parallel[O,P]\)
+mit \(Q\in G_{2}\) sind Fixgeraden \(G_{i}\) und \(G_{1}\cap G_{2}=\{R+Q\}\) ist
+Fixpunkt. Damit und mit \([Q,P]\) Fixgerade folgt, dass eine parallele Gerade
+\(G_{3}\) durch \(R+Q\) Fixgerade ist.
+
+Also ist
+\[
+\left(R+Q+K(P-Q)\right)\cap K\cdot P=G_{3}\cap[O,P]=\{nP\}
+\]
+ein Fixpunkt.
+
+Analog: für alle \(m\in\mathbb{N}:\,mQ\) ist Fixpunkt.
+\end{itemize}
+
+\textbf{2. Schritt:} \(K_{0}\cdot P\) (und analog \(K_{0}\cdot Q\)) besteht aus
+Fixpunkten.
+
+Fall \(K_{0}=\mathbb{F}_{p}\): Fertig nach dem ersten Schritt, da 
+\(\mathbb{F}_{p}=\{n-1_{\mathbb{F}_{p}}\mid n\in\mathbb{N}\}\)\\
+Fall \(K_{0}=\mathbb{Q}\): Seien \(m\,n>0\) in \(\mathbb{N}\). \([mQ,nP]\) ist
+Fixgerade.
+
+Die Parallele \(G_{4}\) durch \(Q\) ist Fixgerade
+\[
+G_{4}=K\cdot(mQ-nP)+Q
+\]
+Daraus folgt: \(G_{4}\cap[O,P]=:\{S\}\) ist Fixpunkt mit \(S=\frac{n}{m}P\).
+Ferner ist \(-S\) Fixpunkt, denn:
+\[
+\{S+Q\}=\underbrace{(K\cdot Q+S)}_{\parallel[O,Q]}\cap
+    \underbrace{(K\cdot S+Q)}_{\parallel[O,S]}
+\]
+Beides sind Fixgeraden, also ist \(\{S+Q\}\) Fixpunkt
+\[
+\{-S\}=[O,S]\cap(K\cdot(S+Q)+Q)
+\]
+
+\textbf{3. Schritt:} Zu zeigen: für alle \(T\in U_0:\,T\) ist Fixpunkt
+\[\exists \alpha,\beta\in K_0: T=\alpha P\beta Q\]
+\[\{T\}=\underbrace{(KP+\underbrace{\beta Q}_{Fixpunkt})}_{\parallel [O,P]}\cap \underbrace{(KQ+\underbrace{\alpha P}_{Fixpunkt})}_{\parallel [O,Q]}\]
+\end{proof}
+
+\chapter{Euklidische Punkträume}
+
+Hier sei stets $K=\mathbb{R}$. Neu in diesem Paragraphen sind \textbf{Abstände}
+zwischen Punkten im affinen Raum.
+
+\section{Grundbegriffe}
+
+\begin{definition}
+\index{euklidischer Raum}\index{Raum!euklidischer}
+\index{Abstand}
+\begin{enumerate}
+\item $(E,\langle\cdot,\cdot\rangle)$ mit einem affinen Raum $E$ über $\mathbb{R}$
+und einem Skalarprodukt $\langle\cdot,\cdot\rangle$ auf dem Richtungs-VRm $V=U_E$ 
+von $E$ heißt \textbf{euklidischer Raum}.
+\item Der \textbf{Abstand} von $P,Q\in E$ ist definiert als:
+\[d(P,Q):=\|\overrightarrow{PQ}\| \left(=\sqrt{\langle\overrightarrow{PQ},\overrightarrow{PQ}\rangle}\right)\]
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+Der \textbf{euklidische Standardraum} $E=\mathbb{A}_n(\mathbb{R})=\mathbb{R}^n$ mit Standardskalarprodukt
+\[d(\begin{pmatrix}x_1\\\vdots\\x_n\end{pmatrix},\begin{pmatrix}y_1\\\vdots\\y_n\end{pmatrix})
+=\sqrt{\sum_{i=1}^n(x_i-y_i)^2}\]
+\end{example}
+
+\begin{comment}
+Der Abstand $d$ eines euklidischen Raums $E$ definiert eine Metrik auf $E$ (Positivdefinitheit, Symmetrie
+und Dreiecksungleichung).
+\end{comment}
+
+\begin{definition}
+\index{Koordinatensystem!cartesisches}\index{cartesisches Koordinatensystem}
+\index{Längentreue}
+\index{Bewegung}
+\index{Isometrie}
+\begin{enumerate}
+\item Ein Koordinatensystem $\mathcal{K}=(O,B)$ auf dem euklidischen Raum $E$ heißt \textbf{cartesisch},
+falls $B$ Orthonormalbasis (bzgl $\langle\cdot,\cdot\rangle$) ist.
+\item Seien $E,F$ euklidische Räume und $\vp:E\to F$ eine beliebige Abbildung. $\vp$ heißt
+\textbf{längentreu}, falls gilt:
+\[\forall P,Q\in E: d(\vp(P),\vp(Q))=d(P,Q)\] 
+\item $\vp$ heißt \textbf{isometrisch}, falls $\vp$ affin und längentreu ist.\\
+$\vp$ heißt \textbf{Bewegung} von $E$, falls $\vp\in\Autaff(E)$ und isometrisch ist.
+Ist ferner $\det(\Lambda_\vp)=1$, so heißt $\vp$ eine \textbf{eigentliche Bewegung}.
+\end{enumerate}
+\end{definition}
+
+\begin{comment}
+Die Menge aller Bewegungen (schreibe $\Autdist(E)$) ist eine Gruppe mit Untergruppe
+der Menge aller eigentlichen Bewegungen (schreibe $\Aut^+_\text{dist}(E)$).
+\end{comment}
+
+\begin{lemma}
+Seien $E,F$ euklidische Räume und $\vp\in\Homaff(E,F)$. Falls $\Lambda_\vp$ ein 
+Morphismus von Skalarprodukträumen ist, so ist $\vp$ isometrisch.
+\end{lemma}
+
+\begin{proof}
+Sei $\Phi :=\Lambda_\vp$, dann gilt $\langle\Phi(x),\Phi(y)\rangle
+=\langle x,y\rangle$ und es folgt:
+\begin{align*}
+d(\vp(P),\vp(Q))&=\|\overrightarrow{\vp(P)\vp(Q)}\|\\
+&=\|\Phi(\overrightarrow{PQ})\|\\
+&=\|\overrightarrow{PQ}\|\\
+&= d(P,Q)
+\end{align*}
+\end{proof}
+
+\begin{corollary}
+Sei $\mathcal{K}=(O,B)$ cartesisches Koordinatensystem eines euklisischen Raums $E$. Dann
+ist die Koordinatendarstellung $D_\mathcal{K}:E\to \mathbb{R}^n$ ein isometrischer affiner
+Isomorphismus.\\
+Daher genügt es meistens, den euklidischen Standardraum zu behandeln.
+\end{corollary}
+
+\begin{proof}
+Es ist $D_\mathcal{K}(P)=D_B(\overrightarrow{OP})$ mit $B$ ONB. Daraus folgt:
+\[D_B:V\stackrel{\sim}{\to}\mathbb{R}^n\] 
+d.h. $D_B$ ist Isometrie von $V$ in den $\mathbb{R}^n$.
+\end{proof}
+
+\begin{comment}
+Im Standardraum gilt:
+\[\Autdist(\mathbb{R}^n)=\{(A,a)\in\Homaff(\mathbb{R}^n,\mathbb{R}^n)\mid A\in O_n\}\]
+\end{comment}
+
+\begin{definition}
+\index{orthogonal!Teilräume}
+$A,B$ affine Teilräume eines euklidischen Raumes $E$ heißen \textbf{orthogonal}, falls
+$U_A \bot U_B$.
+\end{definition}
+
+\begin{task}
+Bestimme den \textbf{Abstand} zwischen zwei Teilräumen $A,B$. Dieser ist wie folgt definiert:
+\[d(A,B):=\min\{d(P,Q)\mid P\in A,Q\in B\}\]
+\end{task}
+
+\begin{method}
+Lot fällen! (Dabei genügt es $E=\mathbb{R}^n$ zu betrachten.)
+\end{method}
+
+\begin{definition}
+\index{gemeinsames Lot}\index{Lot!gemeinsames}
+\index{Lotfußpunkt}
+Eine Gerade $G$ heißt \textbf{gemeinsames Lot} von $A,B$ mit \textbf{Lotfußpunkten} $P^+$ 
+und $Q^+$, falls gilt:
+\begin{align*}
+G&\bot A &G&\bot B\\
+G\cap A&=\{P^+\} &G\cap B&=\{Q^+\} 
+\end{align*}
+\end{definition}
+
+\begin{theo}
+\label{Satz 22.1}
+Seien $A,B$ affine Teilräume von $\mathbb{R}^n$ mit $A\ne\emptyset\ne B$. Aus $\dim(U_A+U_B)<n$ folgt, dass
+ein gemeinsames Lot $G$ mit Lotfußpunkten $P^+,Q^+$ und $d(A,B)=d(P^+,Q^+)$ existiert.
+\end{theo}
+
+\begin{proof}
+Falls $G$ existiert, so gilt für alle $P\in A,Q\in B$:
+\[d(P,Q)=\|\overrightarrow{PQ}\|=\|\underbrace{\overrightarrow{PP^+}}_{=:x\in U_A}+\underbrace{\overrightarrow{P^+Q^+}}_{=:y\in U_G}+\underbrace{\overrightarrow{Q^+Q}}_{=:z\in U_B}\|\]
+wobei nach Vorraussetzung $y\bot y$ und $y \bot z$, also auch $y \bot (x+z)$ ist.
+Nach Pythagoras gilt:
+\[\|y+(x+z)\|^2=\|y\|^2+\|x+z\|^2\ge \|y\|^2\]
+Mit Wurzelziehen folgt daraus:
+\[d(P,Q)\ge \|y\|=d(P^+,Q^+)\]
+Also ist $d(P^+,Q^+)=d(A,B)$, falls $G$ existiert.\\
+Schreibe:
+\begin{align*}
+&A=\sum_{i=1}^r \mathbb{R}\cdot x_i+x_0 &&B=\sum_{j=1}^s \mathbb{R}\cdot y_j +y_0
+\end{align*}
+Es gelten folgende notwendige Bedingungen für $P^+,Q^+$:	
+\begin{enumerate}
+\item $P^+=\sum_{i}\lambda_i x_i+x_0$ mit $\lambda_i\in\mathbb{R}$.
+\item $Q^+=\sum_{j}\mu_i y_j+y_0$ mit $\mu_j\in\mathbb{R}$.
+\item $\forall i\in\{1,\ldots,r\}\langle x_i,P^+-Q^+\rangle = 0$
+\item $\forall j\in\{1,\ldots,s\}\langle y_j,P^+-Q^+\rangle = 0$
+\end{enumerate}
+Daraus erhalten wir ein LGS für die unbestimmten $\lambda_i,\mu_j$, dessen
+Lösung $P^+$ und $Q^+$ ergibt.
+Das LGS ist genau dann lösbar, wenn gilt:
+\[\exists P^+-Q^+:\sum_i \lambda_ix_i+x_0-\sum_j \mu_jy_j+y_0\in (U_A+U_B)^\bot\]
+Wegen $\mathbb{R}^n=(U_A+U_B)\oplus(U_A+U_B)^\bot$ ist sicher
+$x_0-y_0\in\langle x_i,y_j\rangle+(U_A+U_B)^\bot$, also ist das LGS lösbar.\\
+Nach Vorraussetzung existiert ein $z\ne 0$ mit $z\in(U_A+U_B)^\bot$\\
+Nehme:
+\begin{align*}
+G:=
+\begin{cases}
+[P^+,Q^+] &,P^+\ne Q^+\\
+\mathbb{R}\cdot z+P^+ &,P^+=Q^+
+\end{cases}
+\end{align*}
+\end{proof}
+
+\begin{comment}
+Sei $\{b_1,\ldots,b_t\}$ ONB von $(U_A+U_B)^\bot$. Dann gilt mit $\beta_\tau=\langle x_0-y_0, b_\tau\rangle$:
+\[P^+-Q^+=\sum_{\tau=1}^t \beta_\tau\cdot b_\tau\]
+Dann erhalten wir zwei Methoden zur Abstandsbestimmung:
+\begin{enumerate}
+\item Löse das LGS in $\lambda_i,\mu_j$!
+\item Bestimme eine ONB $\{b_1,\ldots,b_t\}$ von $(U_A+U_B)\bot$, dann gilt:
+\[d(A,B)\left(=\|P^+-Q^+\|\right) =\sqrt{\sum_{\tau=1}^t \langle x_0-y_0,b_\tau\rangle^2}\]
+Diese Methode kommt \textbf{ohne} Berechnung von $P^+,Q^+$ aus.
+\end{enumerate}
+\end{comment}
+
+\section{Bewegungen im $\mathbb{R}^2$}
+\begin{task}
+Klasseneinteilung von $\Autdist(\mathbb{R}^2)$.
+\end{task}
+
+\begin{method}
+Die folgende Methode funktioniert analog zu der bei Affinitäten.\\ 
+$\vp=(A,a)$ (bzgl. Standardkoordinatensystem $\mathcal{K}=(O,B)$) wird in ein 
+anderes Koordinatensystem $\mathcal{L}=(P,B)$ umgerechnet:
+\[D_{\mathcal{L}\mathcal{L}}(\vp)=\left((M^{-1}AM),M^{-1}((A-I)b+a)\right)=:(A',b')\]
+wobei $(M,b):=D_{\mathcal{K}\mathcal{L}}(\id)$ mit $M=M_{SB}$ den Wechsel \textbf{cartesischer}
+Koordinatensysteme beschreibt, so dass \((A',b')\) einfache Gestalt erhält 
+(``Normalform'').\\
+\(A'\) hat folgende Form:\\
+\(A'=D_{\alpha}=
+\begin{pmatrix}
+\cos\alpha&&-\sin\alpha\\
+\sin\alpha&&\cos\alpha
+\end{pmatrix}\) (Drehung) oder \(A'=C:=
+\begin{pmatrix}
+1&&0\\
+0&&-1
+\end{pmatrix}\) (Spiegelung)
+\begin{itemize}
+\item Fall \(D_{\alpha}\) mit \(0<\alpha <2\pi\):\\
+Es gilt: \(1\not\in\Spec(A) \implies \vp\) hat genau einen Fixpunkt 
+\(P\,\Longleftrightarrow\,(A-I)P+a=0\) wobei \((A-I)\) invertierbar ist.
+
+Wähle Koordinatensystem \(\mathcal{L}:=(P,B)\,\rightarrow\,(A',b')=(D_{\alpha},0)\)
+\item Fall \(A'=I\):\\
+Sei \(\vp=(I,a)\) eine Translation, \(a\neq 0\).\\
+Wähle \(\mathcal{L}:=(0,(b_{1},b_{2}))\) mit \(b_{1}:=\frac{a}{||a||}\). Dann
+gilt:
+\[
+M_{SB} = (b_{1},b_{2}),\quad M_{SB}^{-1}(b_{1},b_{2})=(e_{1},e_{2})
+\]
+also \(b'=M_{SB}^{-1}a=\lambda_{e_{1}}\).\\
+Dann ist \(D_{\mathcal{L}\mathcal{L}}(\vp)=(I,\lambda_{e_{1}})\) mit 
+\(\lambda:=||a||>0\).
+\item Fall \(A'=C\): analog
+\end{itemize}
+\end{method}
+
+\begin{theo}
+\index{Normalform}\index{Drehung}\index{Translation}\index{Spiegelung}
+\label{Satz 22.2}
+Zu \(\vp\in\Autdist(\mathbb{R}^{2})\) existiert ein cartesisches 
+Koordinatensystem \(\mathcal{L}\) so, dass \(D_{\mathcal{L}\mathcal{L}}(\vp)\)
+eine der folgenden Normalformen hat:
+\begin{enumerate}
+\item\((I,0) = \id\)
+\item\((I,\lambda_{e_{1}})\quad\) Translation \((\lambda > 0)\), keine Fixpunkte
+\item\((D_{\alpha})\quad\) Drehungen \((0<\alpha<2\pi)\), genau ein Fixpunkt 
+\(O\).
+\item\((C,0)\quad\)Spiegelung an einer Achse, die Achse ist die Menge der 
+Fixpunkte
+\item\((C,\lambda_{e_{1}})\quad\) Gleitspiegelung, kein Fixpunkt, genau eine
+Fixgerade
+\end{enumerate}
+Eigentliche Bewegungen sind die Identität, Translationen und Drehungen.
+\end{theo}
+
+\section{Geometrische Kennzeichnung von Bewegungen}
+\index{Bewegung}
+
+Betrachte zunächst generell eine längentreue Abbildung 
+\(\Psi:\mathbb{R}^{n}\to\mathbb{R}^{m}\) (nicht notwendig affin).
+\begin{lemma}
+Zu \(\lambda\in\mathbb{R},\,P\neq Q\in\mathbb{R}^{n}\) existiert genau ein
+Punkt \(R\in\mathbb{R}^{n}\) mit
+\begin{align*}
+d(P,R)&=|\lambda|\cdot d(P,Q)\\
+d(Q,R)&=|1-\lambda|\cdot d(P,Q)
+\end{align*}
+nämlich \(R:=\lambda y+P\) für \(y:=\overrightarrow{PQ}\).
+\end{lemma}
+\begin{proof}
+\begin{align*}
+d(P,R)&=||\lambda y|| = |\lambda|||y||=|\lambda|\cdot d(P,Q)\\
+d(Q,R)&=||y+P-(\lambda y + P)||=|1-\lambda|||y||=|1-\lambda|\cdot d(P,Q)
+\end{align*}
+
+Sei \(S\) ein weiterer Punkt mit \(d(P,S)=d(P,R),\,d(Q,S)=d(Q,R)\). Etwa
+\(S=x+R\).
+Ohne Beschränkung der Allgemeinheit sei \(P=0\) (nach Koordinatenwechsel),
+also
+\[
+Q=y,\,R=\lambda y,\,S=x+\lambda y
+\]
+\(\implies ||R||=d(0,R)=d(0,S)=||S||\), also 
+\[
+\langle\lambda y,\lambda y\rangle = \langle x+\lambda y,x+\lambda y\rangle
+\implies\langle x,x\rangle+2\lambda\langle x,y\rangle =0
+\]
+und
+\[
+||Q-R||=||Q-S||\implies ||y-\lambda y||=||y-\lambda y-x|| 
+\overset{\text{analog}}{\implies}
+\langle x,x\rangle+(2\lambda -2)\langle x,y\rangle =0
+\]
+Insgesamt: \(\langle x,y\rangle =0,\,\langle x,x\rangle=0\), also \(x=0\), d.h.
+\(R=S\).
+\end{proof}
+
+\begin{corollary}
+Ist \(\Psi:\mathbb{R}^{n}\to\mathbb{R}^{m}\) längentreu, so gilt für alle
+\(P,\,Q\in\mathbb{R}^{n},\,\lambda\in\mathbb{R}\):
+\[
+\Psi(\lambda\cdot\overrightarrow{PQ}+P)=\lambda\overrightarrow{\Psi(P)\Psi(Q)}+\Psi(P)
+\]
+Insbesondere ist \(\Psi\) geradentreu für \(n=m\).
+\end{corollary}
+\begin{proof}
+Klar für \(P=Q\).\\
+Sei nun \(y:=\overrightarrow{PQ}\neq 0,\,R:=\lambda y+P\). Da \(\Psi\) 
+längentreu, folgt nach Lemma
+\begin{align*}
+d(\Psi(P),\Psi(R))&=|\lambda|\cdot d(\Psi(P),\Psi(Q))\\
+d(\Psi(Q),\Psi(R))&=|1-\lambda|d(\Psi(P),\Psi(Q))
+\end{align*}
+Lemma anwenden auf die Bildpunkte \(P':=\Psi(P),\,Q':=\Psi(Q),\,R':=\Psi(R)\)
+liefert \(R'=\lambda\overrightarrow{P'Q'}+P'\).
+\end{proof}
+
+\begin{corollary}
+\(\Psi(\mathbb{R}^{n})\) ist affiner Teilraum von \(\mathbb{R}^{n}\).
+\end{corollary}
+\begin{proof}
+Nach dem vorhergehenden Korollar gilt für beliebige Punkte 
+\(P',\,Q'\in\Psi(\mathbb{R}^{n})\), dass die Verbindungsgerade
+\([P',Q']\subseteq\Psi(\mathbb{R}^{n})\).
+Mit dem Teilraumkriterium folgt die Behauptung.
+\end{proof}
+
+\begin{corollary}
+Sei \(n=m,\,\Psi:\mathbb{R}^{n}\to\mathbb{R}^{m}\) längentreu, 
+\(B={b_{1},\ldots,b_{n}}\) Orthonormalbasis und \(\Psi(0)=0\). Dann ist auch
+\(\Psi(B)\) eine Orthonormalbasis.
+\end{corollary}
+\begin{proof}
+\(n=1\): Klar.\\
+Sei \(n>1\). Betrachte Abstände \(d(\mathbb{R}\cdot b_{i},{b_{j}})\) für
+\(i\neq j\).\\
+\(\implies 0=\Psi(0)\in\Psi(\mathbb{R}\cdot b_{i})=[0,\Psi(b_{i})]\) hat 
+minimalen Abstand von \(\Psi(b_{j})\).\\
+Lotgerade \(G=[0,\Psi(b_{j})]\bot[0,\Psi(b_{i})]\), also \(\Psi(b_{i})\bot\Psi(b_{j})\)\\
+Ferner ist: \(||\Psi(b_{i}||=d(0,\Psi(b_{i}))=d(0,b_{i})=||b_{i}||=1\).
+Also ist \(\Psi(B)\) eine Orthonormalbasis.
+\end{proof}
+
+\begin{corollary}
+\(\Psi:\mathbb{R}^{n}\to\mathbb{R}^{m}\) längentreu \(\implies\,\Psi\) ist 
+bijektiv.
+\end{corollary}
+\begin{proof}
+Ohne Beschränkung der Allgemeinheit sei \(\Psi(0)=0\), also 
+\(\Psi(\mathbb{R}^{n})\) Untervektorraum von \(\mathbb{R}^{n}\) mit einer 
+Orthonormalbasis von \(\mathbb{R}^{n}\,\implies\,\Psi(\mathbb{R}^{n})=\mathbb{R}^{n}\).\\
+Injektiv: \(\Psi(P)=\Psi(Q)\)
+\[
+\implies 0=d(\Psi(P),\Psi(Q))=d(P,Q)\quad\implies P=Q
+\]
+\end{proof}
+
+\begin{theo}
+\label{Satz 22.3}
+Jede längentreue Abbildung \(\Psi:E\to E\) eines euklidischen Raumes \(E\) ist
+eine Bewegung (also \(\Psi\in\Autaff(E)\)).
+\end{theo}
+\begin{proof}
+Die Wahl eines cartesischen Koordinatensystems erlaubt ohne Beschränkung der
+Allgemeinheit \(E=\mathbb{R}^{n}\) zu nehmen.\\
+Wechsel zu \(\Psi':=(x\mapsto\Psi(x)-\Psi(0))\) ergibt \(\Psi'(0)=0\).
+
+Beachte: \(\Psi\) ist affin (bzw. längentreu) genau dann, wenn \(\Psi'\) affin
+(bzw. längentreu) ist.
+
+Also sei ohne Einschränkung \(\Psi(0)=0\). Restbehauptung: \(\Psi\) ist eine
+lineare Abbildung.\\
+\(n=1\): Klar.\\
+\(n>1\): \(\Psi\) ist geradentreu nach dem ersten Korollar, also 
+% Querverweis von LaTeX erledigen lassen?
+\(\mathbb{Q}\)-linear (nach 21.4), insbesondere additiv. 
+\[
+\lambda\in\mathbb{R}:\,\Psi(\lambda x)=\lambda\cdot\overrightarrow{\Psi(0)\Psi(x)}+\underbrace{\Psi(0)}_{=0}=\lambda\Psi(x)
+\]
+\end{proof}
+
+\chapter{Analytische Geometrie}
+\section{Quadriken}
+\index{Quadrik}\index{Multi-!Index}
+
+\(K\) sei ein Körper, \(f\in K[X_{1},\ldots,X_{n}]\)
+\[
+f(X_{1},\ldots,X_{n})=\sum_{i_{1},\ldots,i_{n}\in\mathbb{N}}{\alpha_{i_{1},\ldots,i_{n}}\underbrace{X_{1}^{i_{1}}\ldots X_{n}^{i_{n}}}_{=:\underline{X}^{\underline{i}}}}=
+\sum_{\underline{i}\in\mathbb{N}^{n}}{\alpha_{\underline{i}}\cdot\underline{X}^{\underline{i}}}
+\]
+
+\(\underline{i}\) heißt \textbf{Multiindex}.
+\begin{definition}
+Für \(\underline{i}\in\mathbb{N}^{n}\) sei \(|\underline{i}|:=i_{1}+\ldots+i_{n}\) der \textbf{Grad} von \(\underline{X}^{\underline{i}}\).\\
+Der \textbf{(Gesamt-)Grad} von \(f\) ist \(\deg(f):=\max\{|\underline{i}|:\alpha_{\underline{i}}\neq0\}\).
+\end{definition}
+
+\begin{ziel}
+Beschreibe die Nullstellenmenge
+\(\mathcal{N}(f):=\{x=(x_{1},\dots,x_{n}\in K^{n}\mid f(x_{1},\dots,x_{n})=0\}\)
+für ein Polynom \(f\) mit \(\deg(f)=2\).
+\end{ziel} 
+
+\begin{comment}
+Den Fall eines oder mehrerer Polynome vom Grad 1 erledigt die lineare Algebra.
+Mehrere Polynome vom Grad \(\geq 2\) behandelt die \textbf{Kommutative Algebra 
+und algebraische Geometrie}.
+\end{comment}
+
+\begin{prepwork}
+Klassifiziere die Menge \(\mathcal{N}(f)\) durch
+Klassifizierung der Polynome. (Erinnerung: Klasseneinteilung entspricht einer
+Äquivalenzrelation)
+
+Dazu sei \(G\leq\Autaff(K^{n})\) (Untergruppe).
+
+Definiere hiermit eine Äquivalenzrelation auf Polynomen bzw. auf Teilmengen
+\(T\subseteq K^{n}\).
+\begin{align*}
+f_{1}\approx_{G}f_{2}&:\Longleftrightarrow\exists\mu\in K^{\times}\exists\varphi
+\in G:\,f_{2}=\mu\cdot (f_{1}\circ\phi)\\
+M_{1}\sim_{G}M_{2}&:\Longleftrightarrow\exists\varphi\in G:\,M_{2}=\varphi(M_{1})
+\end{align*}
+Klar: \(f_{1}\approx_{G}f_{2}\implies\mathcal{N}(f_{1})\sim_{G}\mathcal{N}(f_{2})\)
+\end{prepwork}
+
+\begin{ziel}
+Klassifiziere die Polynome für spezielle \(G\).
+\begin{itemize}
+\item Affine Klassifikation (für Char(K)\(\neq 2\)): 
+\[
+G=\Autaff(K^{n})=\{\varphi=(A,b)\mid A\in\GL_{n}(K),b\in K^{n}\}
+\]
+\item Euklidische Klassifikation: 
+\[
+G=\Autaff(\mathbb{R}^{n})=\{(A,b)\mid A\in O_{n},b\in\mathbb{R}^{n}\}
+\]
+\end{itemize}
+\end{ziel}
+
+Sei nun Char(K)\(\neq 2\).
+
+\begin{prep}
+Jedes Polynom \(f\) mit \(\deg(f)=2\) hat die Form
+\[
+f(X_{1},\dots,X_{n})=\sum_{i,j=1}^{n}{\alpha_{ij}X_{i}X_{j}}+2\sum_{i=1}^{n}{\beta_{i}X_{i}}+\gamma
+\]
+mit einer symmetrischen Matrix \(A=(\alpha_{ij})\neq 0,\,b=\begin{pmatrix}\beta_{1}\\\vdots\\\beta_{n}\end{pmatrix}\in K^{n},\,y\in K\).
+\end{prep}
+
+\begin{proof}(Symmetrie von A)\\
+Falls \(A\) nicht symmetrisch ist, ersetze \(A\) durch 
+\[
+\frac{1}{2}\left(A+A^{\top}\right)=:A'
+\]
+\end{proof}
+
+\begin{note}
+Für \(x=\begin{pmatrix} x_{1}\\\vdots\\ x_{n}\end{pmatrix}\in K^{n}\)
+gilt
+\[
+f\left(x^{\top}\right)=x^{\top}Ax+2b^{\top}x+\gamma
+\]
+mit \(A^{\top}=A\).
+
+\(Q:=\mathcal{N}(f)\) heißt \textbf{affine Quadrik}.
+\end{note} 
+
+\begin{lemma}
+Für \(f\) wie oben und \(\varphi=(C,d)\in\Autaff(K^{n})\) sei 
+\(g(y):=(f\circ\varphi)(y)\). Dann ist
+\[
+g(y)=y^{\top}A'y+2b'^{\top}y+\gamma'
+\]
+wobei \(A':=C^{\top}AC,\,b':=C^{\top}(Ad+b),\,\gamma':=f(d)\).
+\end{lemma}
+\begin{proof}
+\begin{align*}
+f\left(\varphi(y)\right)&=f(Cy+d)\\
+&=\underbrace{(Cy+d)^{\top}}_{y^{\top}C^{\top}+d^{\top}}A(Cy+d)+2b^{\top}(Cy+d)+\gamma\\
+&=y^{\top}\underbrace{C^{\top}AC}_{=:A'}y+d^{\top}ACy+
+    \underbrace{\overbrace{y^{\top}C^{\top}Ad}}^{\in K^{1\times 1}}_{=d^{\top}A^{\top}Cy = d^{\top}ACy}
+    +2b^{\top}Cy+\underbrace{d^{\top}Ad+2b^{\top}d+\gamma}_{=:\gamma'}\\
+&=y^{\top}A'y+2b'^{\top}y+\gamma'
+\end{align*}
+\end{proof}
+
+\textbf{Prinzip der Klassifikation:} Zu gegebenem \(f\) finde \((C,d)\), so 
+dass \(A',\,b",\,\gamma'\) eine einfache, übersichtliche ``Normalform''
+annehmen.
+
+\begin{comment}
+\(\vp\) bewirkt Wechsel des Koordinatensystems \(y=\vp^{-1}(x)=D_{\mathcal{L}}(x)\).
+\(y\) beschreibt \(Q=\mathcal{N}(f)\) im Koordinatensystem \(\mathcal{L}\).
+\end{comment}
+\begin{theo}[Satz von der quadratischen Ergänzung]
+\label{Satz 23.1}
+Sei \(A\in K^{n\times n}\) symmetrisch vom Rang \(r\) und 
+\(\text{Char}(K)\neq 2\). Dann existiert \(C\in\GL_{n}(K)\) so dass 
+\[
+C^{\top}AC=\diag(\alpha_{1},\ldots,\alpha_{r},0,\ldots,0)
+\]
+\end{theo}
+\begin{proof}
+Sei \(A=(\alpha_{ij})\) mit \(\alpha_{ij}=\alpha_{ji}\) für alle \(i,j\).\\
+Nutze eine Variante des Gaußalgorithmus; es genügt Diagonalgestalt zu 
+erreichen, den Rest erledigen Vertauschungsmatrizen \(V_{ij}\).
+
+\(\nu\)-ter Schritt: Angenommen die Zeilen (Spalten) mit einer Nummer kleiner
+\(\nu\) haben die gewünschte Form. Dann ist:
+\[
+A_{\nu}:=
+    \begin{pmatrix}
+    *& & &0& & \\
+     &\ddots& & &\ddots& \\
+     & &*& & &0\\
+    0& & &*&\cdots&* \\
+     &\ddots& &\vdots&\ddots&\vdots\\
+     & &0&*&\cdots&*\\
+    \end{pmatrix}
+\]
+Unterscheide folgende Fälle:
+\begin{enumerate}
+\item \(\alpha_{\nu\nu}\neq 0\):\\
+Mache Zeilenumformung: Subtrahiere Vielfaches
+der \(\nu\)-ten Zeile von der unteren Zeile, so dass dort die \(\nu\)-te 
+Spalte Null wird.\\
+Dies geht mit
+\[
+C':=I-\sum_{k=\nu+1}^{n}{\frac{\alpha_{k\nu}}{\alpha_{\nu\nu}}E_{k\nu}}:\quad
+C'A_{\nu}=(\beta_{ij})
+\]
+mit \(\beta_{\nu+1,\nu}=\ldots =\beta_{n}=0\). Die \(\nu\)-te Zeile ist 
+\(\beta_{\nu j}=\alpha_{\nu j}\left(=\alpha_{j\nu}\right)\).
+\item \(\alpha_{\nu\nu}=0,\,\alpha_{kk}\neq 0\) für ein \(k>\nu\):\\
+Bilde \(A'_{\nu}:=V_{\nu k}A_{\nu}V_{\nu k}\), dann weiter wie in Fall 1.
+\item \(\alpha_{kk}=0\) für \(k=\nu,\ldots,n\):\\
+Ist \(\alpha_{k\nu}=0\,\forall k\geq\nu\), so ist bereits \(A_{\nu}\) diagonal
+bis Zeile \(\nu\).\\
+Sonst sei \(\beta:=\alpha_{k\nu}\neq0\) für ein \(k>\nu\)
+(addiere die \(k\)-te Zeile zur \(\nu\)-ten).
+Nutze die Additionsmatrix \(T:=A_{\nu k}(1)=I+E_{\nu k}\) mit
+\(T^{\top}=I+E_{k\nu}\).\\
+Dann folgt \(A'_{\nu}:=TA_{\nu}T^{\top}\) hat \(\alpha'_{\nu\nu}=2\beta\neq0\)
+(da Char\((K)\neq2\)). Fahre fort wie in Fall 1.
+\end{enumerate}
+\end{proof}
+
+\begin{caution} 
+Die \(\alpha_{1},\ldots,\alpha_{n}\) sind im allgemeinen nicht eindeutig.
+\end{caution}
+
+\begin{theo}[Trägheitssatz von Sylvester]
+\index{Trägheitssatz von Sylvester}
+\label{Satz 23.2}
+Sei \(A\in K^{n\times n}\) symmetrisch vom Rang \(r\).
+\begin{enumerate}
+\item Für \(K=\mathbb{C}\) existiert \(C\in\GL_{n}(\mathbb{C})\) mit
+\[
+C^{\top}AC=\diag(\underbrace{1,\ldots,1}_{r},0,\ldots,0)
+\]
+\item Für \(K=\mathbb{R}\) existiert \(C\in\GL_{n}(\mathbb{R})\) mit
+\[
+C^{\top}AC=\diag(\underbrace{1,\ldots,1}_{p},\underbrace{-1,\ldots,-1}_{q},0,\ldots,0)
+\]
+wobei \(p,q\) durch \(A\) eindeutig bestimmt sind.
+\end{enumerate}
+\end{theo}
+\begin{proof}
+\begin{enumerate}
+\item Nach Satz \ref{Satz 23.1} mit \(D:=\diag(\beta_{1},\ldots,\beta_{r},0,\ldots,0)\).\\
+Weiteres umformen liefert:
+\[
+D^{\top}\cdot\diag(\alpha_{1},\ldots,\alpha_{r},0,\ldots,0)\cdot D=
+\diag(\beta_{1}^{2}\alpha_{1},\ldots,\beta_{r}^{2}\alpha_{r},0,\ldots,0)
+\]
+Falls \(\beta_{i}\) Nullstelle von \(X^{2}-\frac{1}{\alpha_{i}}\) ist, existiert
+in \(\mathbb{C}\) immer in eine Diagonalmatrix \(\diag(1,\ldots,1,0,\ldots,0)\).
+\item Ähnlich für \(\mathbb{R}\). Vorzeichen berücksichtigen
+
+Restbehauptung: \(p\) ist eindeutig bestimmt durch \(A\)\\
+Behauptung: \(p=\max\left\{\dim U\mid U\leq\mathbb{R}^{n}\text{ mit } \left.
+s_{A}\right|_{U}\text{ positiv definit}\right\}\) wobei 
+\(s_{A}(x,y):=\langle Ax,y\rangle\).\\
+Sei anderes \(C'\) mit zugehörigem \(p',\,q'\). Setze
+\begin{align*}
+b_{i}&:=Ce_{i}\\
+b'_{i}&:=C'e_{i}\\
+U&:=\langle b_{1},\ldots,b_{p}\rangle\\
+U'&:=\langle b'_{1},\ldots,b'_{p'}\rangle\\
+V&:=\langle b_{p+1},\ldots,b_{p+q}\rangle\\
+V'&:=\langle b'_{p'+1},\ldots,b'_{p'+q'}\rangle\\
+\end{align*}
+Dann sind \(\left.s_{A}\right|_{U},\,\left.s_{A}\right|_{U'},\,\left.-s_{A}\right|_{V},\,\left.-s_{A}\right|_{V'}\) positiv definit.
+
+Für \(W:=\Kern(\Lambda_{A})=\langle b_{r+1},\ldots,b_{n}\rangle =\langle b'_{r+1},\ldots,b'_{n}\rangle\) gilt
+\[
+\mathbb{R}^{n}=U\oplus V\oplus W=U'\oplus V'\oplus W
+\]
+Damit folgt
+\[
+U\cap(V'\oplus W)=0,
+\]
+denn 
+\begin{align*}
+\forall x\in U\cap(V'\oplus W): s_{A}(x,x)\geq 0,s_{A}(x,x)\leq 0&\implies
+s_{A}(x,x)=0\\
+&\implies x=0
+\end{align*}
+Damit folgt \(p=\dim U\leq\dim U'=p'\), da 
+\begin{align*}
+\dim U'+\dim(V'+W)&=n\\
+&\geq\dim(U+V'+W)\\
+&=\dim(U\oplus V'+W)\\
+&=\dim U + \dim (V'+W)
+\end{align*}
+Aus Symmetriegründen folgt \(p=p'\).
+\end{enumerate}
+\end{proof}
+
+\paragraph{Fortsetzung der Polynomklassifikation (\(\deg=2\)) über beliebigem
+Körper \(K\):}{Aus obigem Lemma und Satz \ref{Satz 23.2} folgt: Der 
+quadratische Anteil der Polynome \(f(x)=x^{\top}Ax+2b^{\top}x+\gamma\) 
+lässt sich durch eine geeignete affine Abbildung \(\vp=(C,d)\) auf folgende 
+einfache Gestalt bringen:
+\[
+\alpha_{1}x_{1}^{2}+\alpha_{2}x_{2}^{2}+\ldots+\alpha_{n}x_{n}^{2}
+\]
+\begin{note}
+Abändern von \(C\), etwa 
+\(C_{1}=\diag(\underbrace{1,\ldots,1}_{r},B)\) mit \(B\in\GL_{n-r}(K)\),
+ändert den quadratischen Anteil \textbf{nicht}.
+\end{note}}
+\paragraph{Nächste Vereinfachung:}{linearer Term \(2b'^{\top}y\)\\
+Kann eventuell \(2b'^{\top}y=0\) erreicht werden?
+\[
+b'\overset{\text{Def.}}{=}C^{\top}(Ad+b)=0\Longleftrightarrow Ad+b=0
+\]
+Das heißt das LGS \(Az=-b\) hat die Lösung \(z=d\).}
+\begin{definition}
+\index{Mittelpunkt}\index{Quadrik!Mittelpunkt der}
+Falls eine Lösung \(d\) existiert, so heißt \(d\) \textbf{Mittelpunkt} der
+Quadrik.
+\end{definition}
+\begin{note}
+\[
+y=d+t\in\mathcal{N}(f)\implies\,d-t\in\mathcal{N}(f)
+\]
+\end{note}
+\begin{proof}
+\(f(d+t)=0\), das heißt:
+\begin{align*}
+&(d+t)^{\top}A(d+t)+2b^{\top}(d+t)+\gamma=0\\
+&(d+t)^{\top}A(d+t)+2(-Ad)^{\top}(d+t)+\gamma=0\\
+&(d+t)^{\top}A(d+t)-2d^{\top}A(d+t)+\gamma=0\\
+\Longleftrightarrow&(d-t)^{\top}A(d+t)+\gamma=0
+\end{align*}
+\begin{align*}
+f(d-t)&=(d-t)^{\top}A(d-t)+2(-Ad)^{\top}(d-t)+\gamma\\
+&=-(d-t)^{\top}A(d+t)+\gamma\\
+&=0
+\end{align*}
+\end{proof}
+\subsubsection{Affine Klassifikation der Quadriken mit Mittelpunkt:}
+\begin{enumerate}
+\item Fall \(K=\mathbb{C}\):
+    \begin{enumerate}
+    \item\(f=X_{1}^{2}+\ldots+X_{r}^{2}\quad(\gamma'=0)\)
+    \item\(f=X_{1}^{2}+\ldots+X_{r}^{2}+1\quad(\gamma'\neq0)\)
+    \end{enumerate}
+\item Fall \(K=\mathbb{R}\):
+    \begin{enumerate}
+    \item\(f=X_{1}^{2}+\ldots+X_{p}^{2}-X_{p+1}^{2}-\ldots-X_{p+q}^{2}\quad
+	(\text{ohne Einschränkung }p\geq q)\)
+    \item\(f=X_{1}^{2}+\ldots+X_{p}^{2}-X_{p+1}^{2}-\ldots-X_{p+q}^{2}+1\quad
+	(\gamma'\neq0)\)
+    \end{enumerate}
+\end{enumerate}
+\begin{example}
+\(n=r=2\)
+\begin{enumerate}
+\item Ellipse: \(f=X_{1}^{2}+X_{2}^{2}-1\)
+\item Hyperbel: \(f=X_{1}^{2}-X_{2}^{2}+1\)
+\end{enumerate}
+\end{example}
+
+\subsubsection{Affine Klassifikation der Quadriken ohne Mittelpunkt:}
+Jetzt sei \(Az=-b\) unlösbar. Es ist aber auch für \(A\) Diagonalform 
+erreichbar: \(A=\diag(\alpha_{1},\ldots,\alpha_{r},0,\ldots,0)\), wobei 
+\(r=\rank(A)\) ist.\\
+Daraus folgt: es existiert ein \(d\) mit
+\[
+Ad+b=:c\in\langle e_{r+1},\ldots,e_{n}\rangle\quad(c\neq0)
+\]
+Nun wähle \(C_{1}=\diag(\underbrace{1,\ldots,1}_{r},B)\), so dass 
+\(C_{1}^{\top}c=-e_{r+1}\).
+\[
+C_{1}^{\top}c=C_{1}^{\top}(Ad+b)=:b'
+\]
+\begin{note}
+\(c\) bleibt unverändert wenn \(d\) durch \(d+y\) mit 
+\(y\in\langle e_{r+1},\ldots,e_{n}=\Kern(\Lambda_{A})\) ersetzt wird.
+\end{note}
+Somit: 
+\(f=\alpha_{1}X_{1}^{2}+\ldots+\alpha_{r}X_{r}^{2}
+    \underbrace{-2X_{r+1}}_{2b'^{\top}X}+\gamma'\)
+
+Schließlich: affine Transformation 
+\(\vp=\left(I,\frac{1}{2}\gamma'e_{r+1}\right)\) führt zu 
+\begin{align*}
+f&=\alpha_{1}X_{1}^{2}+\ldots+\alpha_{r}X_{r}^{2}-2\left(X_{r+1}+\frac{1}{2}\gamma'\right)+\gamma'\\
+&=\alpha_{1}X_{1}^{2}+\ldots+\alpha_{r}X_{r}^{2}-2X_{r=1}
+\end{align*}
+\begin{enumerate}
+\item Fall \(K=\mathbb{C}\): \(f=X_{1}^{2}+\ldots+X_{r}^{2}-2X_{r+1}\quad(\text{für }r<n)\)
+\item Fall \(K=\mathbb{R}\): \(f=X_{1}^{2}+\ldots+X_{p}^{2}-X_{p+1}^{2}-\ldots-X_{p+q}^{2}-2X_{r+1}\quad(p\geq q)\)
+\end{enumerate}
+\subsubsection{Euklidische Klassifikation}
+(\(\vp=(x\mapsto Cx+d)\) mit \(C\in O_{n}\) sei zugelassen)\\
+Zur Diagonalisierung von \(A\) verwende den Spektralsatz. Das heißt, es
+existiert \(C\in O_{n}:\,C^{\top}AC=\diag(\lambda_{1},\ldots,\lambda_{r},0,\ldots,0)\), 
+wobei ohne Beschränkung der Allgemeinheit 
+\(\lambda_{1}\geq\ldots\geq\lambda_{r}\) sei.
+
+Der Rest ist wie oben. Damit erhalten wir folgende Normalformen:
+\begin{enumerate}
+\item\(\lambda_{1}X_{1}^{2}+\ldots+\lambda_{r}X_{r}^{2}\quad\)(bis auf einen
+gemeinsamen Faktor \(\mu\neq0\) eindeutig)
+\item\(\lambda_{1}X_{1}^{2}+\ldots+\lambda_{r}X_{r}^{2}+1\)
+\item\(\lambda_{1}X_{1}^{2}+\ldots+\lambda_{r}X_{r}^{2}-2X_{r+1}\)
+\end{enumerate}
+\begin{definition}
+Die Zahlen \(\lvert\lambda_{i}\rvert^{-\frac{1}{2}}\) heißen 
+\index{Halb-!Achse}\index{Halb-!Achsenlänge}
+\textbf{Halbachsenlängen}, die Geraden \(\langle e_{i}\rangle\,(i=1,\ldots,r)\)
+\index{Haupt-!Achse}
+heißen die \textbf{Hauptachsen} der Quadrik in Normalform.
+\index{Haupt-!Achsentransformation}
+Der Übergang in Normalform heißt auch \textbf{Hauptachsentransformation}.
+\end{definition}
+
+\section{Der Tangentialraum}
+\index{Tangentialraum}
+Sei \(K\) ein beliebiger Körper.
+\begin{definition}
+\index{Hyperfläche}
+Die Nullstellenmenge \(\mathcal{F}=\mathcal{N}(f)\) eines Polynoms
+\(f\in K[X_{1},\ldots,X_{n}]\) heißt \textbf{Hyperfläche}.
+\end{definition}
+Im folgenden sei stets \(\mathcal{N}(f)\neq\varnothing\). Es sei 
+\(P\in\mathcal{F}\subseteq K^{n}\) ein Punkt auf der Hyperfläche.\\
+Betrachte die Geraden \(G=P+\langle u\rangle\) mit  \(u\in K^{n}\).
+\[
+Q\in G:\,Q=P+\tau u\quad\text{mit }u\in K^{n}
+\]
+\begin{note}
+\(\mathcal{P}\in\mathcal{F}\) impliziert \(\left.T\right|f(P+Tu)\in K[T]\) (da
+Nullstelle bei \(T=0\)).
+\end{note}
+\begin{definition}
+\index{Tangente}
+Eine Gerade heißt \textbf{Tangente} an \(\mathcal{F}\) in \(P\), falls
+\(\left.T^{2}\right|f(P+Tu)\) gilt.
+\end{definition}
+\begin{ziel}
+Bestimme alle Tangenten durch \(P\) (d.h. \(u\) variiert).
+\end{ziel}
+Dazu schreibe:
+\[
+f(P+Tu)=\alpha_{0}+\alpha_{1}T+\alpha_{2}T^{2}+\ldots
+    \quad\text{mit }\alpha_{i}=\alpha_{i}(u)
+\]
+Es gilt: \(\alpha_{1}\in\Hom(K^{n},K)\). Daraus folgt: es existiert ein Vektor
+\(J_{p}(f):=J_{p}\in K^{1\times n}\) mit \(\alpha_{1}(u)=J_{p}\cdot u\).
+\index{Jacobi-Matrix}
+\(J_{p}\) heißt \textbf{Jacobi-Matrix}.
+
+In Analogie zur Analysis schreibe 
+\[
+J_{p}=:\left.\frac{\partial f}{\partial x}\right|_{x=p}
+\]
+Es gilt
+\[
+J_{p}=\left.\left(\frac{\partial f}{\partial X_{1}},\ldots,\frac{\partial f}{\partial X_{n}}\right)\right|_{x=p}
+\]
+Das heißt: 
+\[
+G=P+\langle u\rangle\text{ ist Tangente}\Longleftrightarrow J_{p}u=0
+    \Longleftrightarrow u\in J_{p}^{\bot}
+\]
+\begin{definition}
+\begin{enumerate}
+\index{Regularität}
+\item \(P\in\mathcal{F}\) heißt \textbf{regulär}, falls
+    \(J_{p}\neq0\).\\
+\index{Tangentialraum}\index{Hyperebene}
+Die Hyperebene \(T_{p}(\mathcal{F}):=P+J_{p}^{\bot}\) heißt 
+\textbf{Tangentialraum}.
+\item \index{Singularität}Sonst heißt \(P\) \textbf{singulär} (oder \textbf{Singularität}).
+\end{enumerate}
+\end{definition}
+\begin{example}
+\index{Kurve}
+\begin{enumerate}
+\item ``Kurven'' \(y=p(x)\) mit \(p(x)\in K[x]\)
+\[
+f(X,Y)=Y-p(X)
+\]
+\(\mathcal{N}(f)\) ist Singularitätenfrei, da
+\begin{align*}
+J_{p}&=\left.\left(\frac{\partial f}{\partial X},\frac{\partial f}{\partial Y}\right)\right|_{(X,Y)=P}\\
+&=\left.\left(\frac{\partial p}{\partial X}, 1\right)\right|_{(X,Y)=P}\\
+&\neq0
+\end{align*}
+\item Kurve \(y^{2}-x^{3}\quad f(X,Y)=Y^{2}-X^{3}\)
+\[
+J_{p}=\left(3X^{2},2Y\right)_{(X,Y)=P}=0\Longleftrightarrow P=(0,0)
+\]
+Also: \((0,0)\) ist die einzige Singularität.
+\end{enumerate}
+\end{example}
+\begin{theo}
+\index{Affinität}\index{Hyperfläche}
+\label{Satz 23.3}
+Sei \(\vp\) eine Affinität von \(K^{n}\) und \(\mathcal{F}\) eine 
+Hyperfläche. Dann gilt
+\begin{enumerate}
+\item\(P\in\mathcal{F}\) regulär \(\Longleftarrow\,\vp(P)\) regulär in
+    \(\vp(\mathcal{F})\)
+\item \(P\) regulär \(\Longleftrightarrow\,T_{\vp(P)}(\vp(\mathcal{F}))=\vp(T_{p}(\mathcal{F}))\)
+\end{enumerate}
+\end{theo}
+\begin{proof}
+\begin{enumerate}
+\item \(\vp(\mathcal{F})=\mathcal{N}\left(f\circ\vp^{-1}\right)\)\\
+\index{Taylorentwicklung}
+Taylorentwicklung von \(f\circ\vp^{-1}\) bei \(\vp(P)\)\\
+Schreibe:
+\[
+\vp^{-1}(x)=Ax+b
+\]
+mit \(A=(\alpha_{ij})\in\GL_{n}(K)\).\\
+Kettenregel anwenden auf \(f\circ\vp^{-1}(X)=f(AX+b)\) mit\break 
+\(X=\begin{pmatrix}X_{1}\\\vdots\\X_{n}\end{pmatrix},\,
+    AX+b=\begin{pmatrix}Y_{1}\\\vdots\\Y_{n}\end{pmatrix}\).
+\begin{align*}
+\left.\frac{\partial f}{\partial X_{i}}(AX+b)\right|_{X=\vp(P)}&=
+    \left.\sum_{j=1}^{n}{\frac{\partial f}{\partial X_{j}}}\right|_{Y=P}\cdot
+    \left.\frac{\partial(AX+b)_{j}}{\partial X_{i}}\right|_{X=\vp(P)}\\
+&=J_{p}(f)\cdot\begin{pmatrix}\alpha_{1i}\\\vdots\\\alpha_{ni}\end{pmatrix}\\
+\end{align*}
+Damit folgt: 
+\[
+J_{\vp(P)}\left(f\circ\vp^{-1}\right)=J_{P}(f)\cdot A
+\]
+\begin{align*}
+P\text{ regulär in }\mathcal{F}&\Longleftrightarrow J_{P}(f)\neq0\\
+&\overset{\exists A^{-1}}{\Longleftrightarrow}J_{\vp(P)}\left(f\circ\vp^{-1}\right)\neq0\\
+&\Longleftarrow\vp(P)\text{ regulär in }\vp(\mathcal{F})
+\end{align*}
+\item\begin{align*}
+T_{\vp(P)}(\vp(\mathcal{F}))&=\vp(P)+J_{\vp(P)}\left(f\circ\vp^{-1}\right)^{\bot}\\
+&\overset{!}{=}\vp(\underbrace{P+J_{P}(f)^{\bot}}_{=T_{P}(\mathcal{F})})
+\end{align*}
+\begin{align*}
+J_{P}(f)Av=0&\Longleftrightarrow Av\in J_{P}(f)^{\bot}\\
+&\Longleftrightarrow v\in A^{-1}\left(J_{P}(f)^{\bot}\right)
+\end{align*}
+\begin{note}
+\(A^{-1}=\Lambda_{\vp}\)
+\end{note}
+\end{enumerate}
+\end{proof}
+\begin{example}
+\(\mathcal{F}=Q\) Quadrik mit \(f(P)=P^{\top}AP+2b^{\top}P+\gamma=0\quad
+    \left(A=A^{\top}\right)\). Damit folgt:
+\begin{align*}
+f(P+Tu)&=\underbrace{f(P)}_{=0}+2TP^{\top}Au+2Tb^{\top}u+T^{2}u^{\top}Au\\
+&=T\cdot2\left(P^{\top}A+b^{\top}\right)u+T^{2}u^{\top}Au\\
+&=T\cdot J_{P}(f)\cdot u+T^{2}u^{\top}Au\\
+\end{align*}
+\(P\) singulär genau dann wenn \(f(P)=0\) und \(AP=-b\) (das liefert entweder
+eine Hyperebene oder die leere Menge).
+\end{example}
+
+\begin{conclusion}[aus Satz \ref{Satz 23.3}]
+\index{Singularität}\index{Affinität}\
+\begin{enumerate}
+\item Alle Singularitäten bleiben bei Affinitäten erhalten
+\item Es genügt die Normalformen der affinen Klassifikation auf 
+    Singularitäten zu untersuchen
+\end{enumerate}
+\end{conclusion}
+
+\section{Die oskulierende Quadrik}
+\index{Quadrik!oskulierend}
+
+Sei \(\mathcal{F}=\mathcal{N}(f)\in K^{n}\) Hyperfläche, \(P\in\mathcal{F}\)
+regulärer Punkt mit
+\[
+T_{P}(\mathcal{F})=
+    \left\{P+(\lambda_{1},\ldots,\lambda_{n})^{\top},\,
+\lambda_{i}\in K,\,\left(\frac{\partial f}{\partial X_{1}},\ldots,
+    \frac{\partial f}{\partial X_{n}}\right)_{X=P}\cdot
+    (\lambda_{1},\ldots,\lambda_{n})^{\top}=0\right\}
+\]
+Die definierende Gleichung ist aus der formalen Taylorentwicklung um \(P\)
+ablesbar.
+\[
+f\left(P+(\lambda_{1},\ldots,\lambda_{n})^{\top}\right)=f(P)+
+    \left.\frac{\partial f}{\partial X}\right|_{X=P}\cdot
+    \begin{pmatrix}\lambda_{1}\\\vdots\\\lambda_{n}\end{pmatrix}+\frac{1}{2}
+    \sum_{i,j=1}^{n}{
+	\left.\frac{\partial^{2}f}{\partial X_{i}X_{j}}\right|_{X=P}
+	\lambda_{i}\lambda_{j}}+\text{ höhere Terme}
+\]
+(Dabei ist \(\Char(K)\neq2\))\\
+\index{Tangentialraum}\index{Approximation}\index{Näherung}
+Daher sagt man: Der Tangentialraum approximiert \(\mathcal{F}\) in einer
+Umgebung von \(P\) in ``erster'' Näherung (d.h. Terme vom Grad größer
+2 weglassen).
+Die Approximation wird besser je höher der Grad der zugelassenen Terme ist.
+
+Wir lassen nun nur Terme bis zum Grad 2 zu.
+\begin{definition}
+Die Quadrik
+\[
+Q_{P,\mathcal{F}}:=\left\{
+    P+\begin{pmatrix}\lambda_{1}\\\vdots\\\lambda_{n}\end{pmatrix}\mid
+    \left.\frac{\partial f}{\partial X}\right|_{X=P}\cdot
+	\begin{pmatrix}\lambda_{1}\\\vdots\\\lambda_{n}\end{pmatrix}
+    +\frac{1}{2}\sum_{i,j}{
+	\left.\frac{\partial^{2}f}{\partial X_{i}X_{j}}\right|_{X=P}
+	\cdot\lambda_{i}\lambda_{j}}=0\right\}
+\]
+heißt \textbf{oskulierende} Quadrik zu \(\mathcal{F}\) im Punkt \(P\) (auch
+\index{Quadrik!oskulierend}\index{Quadrik!Schmieg-}
+\textbf{Schmieg-Quadrik} genannt).
+\end{definition}
+\begin{comment}
+\index{Quadrik!oskulierend}\index{Tangentialraum}\index{Affinität}
+\index{Invariante!affine}
+Die oskulierende Quadrik ist eine affine Invariante wie der Tangentialraum, d.h.
+für jede Affinität \(\vp\) gilt:
+\[
+Q_{\vp(P),\vp(\mathcal{F})}=\vp\left(Q_{P,\mathcal{F}}\right)
+\]
+\end{comment}
+\begin{proof}
+wie für den Tangentialraum.
+\end{proof}
+\begin{example}
+\index{Torus}\index{Torusfläche}
+Die \textbf{Torusfläche}\\
+\(\mathcal{T}=\mathcal{N}(f)\subseteq\mathbb{R}^{3}\) für
+\[
+f(x,y,z)=(R^{2}-r^{2}+x^{2}+y^{2}+z^{2})-4R^{2}(x^{2}+y^{2})
+\]
+% Hier kommt noch ein schoenes Bild hin
+Wir benötigen eine Liste der partiellen Ableitungen:
+\begin{align*}
+f_{x}&=4x(-R^{2}-r^{2}+x^{2}+y^{2}+z^{2})\\
+f_{y}&=4y(-R^{2}-r^{2}+x^{2}+y^{2}+z^{2})\\
+f_{z}&=4z(R^{2}-r^{2}+x^{2}+y^{2}+z^{2})
+\end{align*}
+\index{Punkt!singulärer}\index{Punkt!regulärer}
+Welche singulären Punkte
+\(\left.f\right|_{P}=0=
+    \left.f_{x}\right|_{P}=\left.f_{y}\right|_{P}=\left.f_{z}\right|_{P}\)
+existieren?
+\begin{itemize}
+\item{Fall \(0<r<R\):}
+\[
+R^{2}-r^{2}+x^{2}+y^{2}+z^{2}>0\quad\forall x,\,y,\,z\in\mathbb{R}
+\]
+Aus \(P=(x,y,z)\) singulär folgt \(z=0\) (da \(\left.f_{z}\right|_{P}=0\)).
+Währe \(x\neq0\) oder \(y\neq0\), so ergäbe \(f_{x}=f_{y}=0\)
+\[
+x^{2}+y^{2}=R^{2}+r^{2}
+\]
+In \(f\) einsetzen:
+\[
+\left(2R^{2}\right)^{2}=4R^{2}(R^{2}+r^{2})\quad\text{Widerspruch!}
+\]
+Also folgt \(x=y=z=0\). Aber: \(f(0,0,0)=R^{2}-r^{2}>0\), da \(R>r\), d.h.
+\((0,0,0)\not\in\mathcal{T}\).
+
+Damit sind alle Punkte auf \(\mathcal{T}\) regulär.
+\item{Fall \(r\geq R>0\):}\\
+Es gibt singuläre Punkte. Welche? Übung. % ;-)
+\end{itemize}
+\end{example}
+
+\section{Durchschnitte von Hyperebenen}
+\index{Hyperebene!Durchschnitt}\index{Hyperebene}
+Sei \(K\) ein beliebiger Körper, \(R=K[X_{1},\ldots,X_{n}]\).
+\begin{problem}
+Beschreibe die (gemeinsamen) Nullstellen endlich vieler vorgegebener Polynome
+\(f_{i}\in\mathbb{R}\).
+
+Mit \(\mathcal{F}_{i}:=\mathcal{N}(f_{i})\) betrachte also
+\[
+\mathcal{D}:=\bigcap_{i=1}^{n}{\mathcal{F}_{i}}
+    =\mathcal{N}(f_{1},f_{2},\ldots,f_{m})
+\]
+\end{problem}
+\index{Tangente}
+Eine Gerade \(G=P+\langle u\rangle\) heißt Tangente an \(\mathcal{D}\) in
+\(P\in\mathcal{D}\), wenn \(G\) Tangente an jede Hyperfläche 
+\(\mathcal{F}_{i}\) ist, d.h.
+\[
+\left(\frac{\partial f_{i}}{\partial X_{1}},\ldots,\frac{\partial f_{i}}{\partial X_{n}}\right)_{X=P}\cdot u=0\quad\forall i
+\]
+d.h. mit der \textbf{Jacobi-Matrix}:\index{Jacobi-Matrix}\index{Matrix!Jacobi-}
+\[
+J_{P}=\begin{pmatrix}
+\frac{\partial f_{1}}{\partial X_{1}}&\cdots&\frac{\partial f_{1}}{\partial X_{n}}\\
+\vdots&\ddots&\vdots\\
+\frac{\partial f_{m}}{\partial X_{1}}&\cdots&\frac{\partial f_{m}}{\partial X_{n}}
+\end{pmatrix}_{X=P}\in K^{m\times n}
+\]
+Es gilt: \(J_{P}\cdot u=0\).
+\begin{definition}
+\index{Transversalität}\index{Punkt!regulärer}\index{Tangentialraum}
+Die \(\mathcal{F}_{1},\ldots,\mathcal{F}_{m}\) schneiden sich in 
+\(P\in\mathcal{D}\) \textbf{transversal} wenn \(\rank(J_{P})=m\). Dann heißt
+\(P\) regulärer Punkt von \(\mathcal{D}\) und 
+\[
+T_{P,\mathcal{D}}:=P+\Kern\left(\Lambda_{J_{P}}\right)
+\]
+heißt Tangentialraum.
+\end{definition}
+\begin{comment}
+\(T_{P,\mathcal{D}}=T_{P,\mathcal{F}_{1}}\cap\ldots\cap T_{P,\mathcal{F}_{n}}\)
+bei transversalem Schneiden.
+\end{comment}
+\begin{example}
+Die orthogonale Gruppe 
+\(O_{n}=\left\{A=(\alpha_{rs})\in\mathbb{R}^{n\times n}\mid A\cdot A^{\top}=I\right\}\)
+\begin{enumerate}
+\item \(O_{n}\) ist der Durchschnitt von Hyperflächen (Quadriken) im 
+\(\mathbb{R}^{3}\).
+
+Der zugehörige Polynomring ist
+\[
+R=\mathbb{R}[X_{11},X_{12},\ldots,X_{1n},X_{21},\ldots,X_{n1},\ldots,X_{nn}]\in
+    \mathbb{R}[X]
+\]
+Nach Definition von \(O_{n}\) gilt:
+\[
+O_{n}=\left\{
+    (\alpha_{rs})\mid\sum_{k=1}^{n}{\alpha_{ik}\cdot\alpha_{jk}=\delta_{ij}}
+    \right\}
+\]
+d.h. \(\alpha_{rs}\in\mathbb{R}^{n^{2}}\) ist Nullstelle des Polynoms
+\[
+f_{ij}(X)=\sum_{k=1}^{n}{X_{ik}X_{jk}-\delta_{ij}}\in\mathbb{R}
+\]
+\begin{note}
+\(f_{ij}=f_{ji}\), daraus folgt 
+    \(O_{n}=\bigcap_{1\leq i\leq j\leq n}{\mathcal{F}_{ij}}\) mit
+\(\mathcal{F}_{ij}:=\mathcal{N}(f_{ij})\).
+\end{note}
+\item Die \(\mathcal{F}_{ij}\) schneiden sich transversal in \(P=I\).
+
+Also insbesondere
+\[
+T_{I,O_{n}}=\bigcap_{i\leq j}{T_{I,\mathcal{F}_{ij}}}
+\]
+mit
+\begin{align*}
+\dim T_{I,O_{n}}&=n^{2}-\card\left\{(i,j)\mid 1\leq i\leq j\leq n\right\}\\
+&=n^{2}-\sum_{j=1}^{n}{j}\\
+&=n^{2}-\frac{n(n+1)}{2}\\
+&=\frac{1}{2}n(n-1)
+\end{align*}
+\begin{proof}[der Transversalität]
+Aus \(\frac{\partial f_{ik}}{\partial X_{pq}}=:f_{ik,pq}\) folgt: Jacobi-Matrix
+\(J_{I}=\alpha_{ik,pq})\in\mathbb{R}^{\frac{n(n+1)}{2}\times n^{2}}\) mit
+\(\alpha_{ik,pq}:=\left.f_{ik,pq}\right|_{X=I}\).
+\begin{align*}
+\frac{\partial f_{ik}}{\partial X_{pq}}
+    &=\sum_{j=1}^{n}{\frac{\partial X_{ij}X_{kj}}{\partial X_{pq}}}\\
+&=\sum_{j=1}^{n}{\left(
+    X_{ij}\frac{\partial X_{kj}}{\partial X_{pq}}+
+	X_{kj}\frac{\partial X_{ij}}{\partial X_{pq}}\right)}\\
+&=X_{iq}\delta_{kp}+X_{kq}\delta_{ip}
+\end{align*}
+Auswerten bei \(P=I\) liefert 
+\(\delta_{iq}\delta_{kp}+\delta_{kq}\delta_{ip}=\alpha_{ik,pq}\).
+
+Bilde das Skalarprodukt zweier Zeilen von \(J_{I}\) (Zeile \(ik\) mit Zeile
+\(jl\)):
+\begin{align*}
+\sum_{pq}{\alpha_{ik,pq}\cdot\alpha_{jl,pq}}&=
+    \sum_{pq}{\left(\delta_{iq}\delta_{kp}+\delta_{kq}\delta_{ip}\right)
+	\left(\delta_{jq}\delta_{lp}+\delta_{lq}\delta_{jp}\right)}\\
+&=\delta_{ji}\delta_{lk}+\delta_{li}\delta_{jk}+\delta_{jk}\delta_{li}
+    +\delta_{lk}\delta_{ji}\\
+&=2\left(\delta_{ij}\delta_{lk}+\delta_{jl}\delta_{jk}\right)\\
+&=\begin{cases}
+	0&\quad\text{für }ik\neq jl\\
+	2\vee 4&\quad\text{für }ik=jl
+    \end{cases}
+\end{align*}
+\(\delta_{il}\delta_{jk}=1\) impliziert \(i=l,\,j=k\) und wegen 
+\(i\leq k,\,j\leq l\) gilt \(i\leq k=j\leq l=i\), also \(ik=ii=il\).
+
+Damit folgt: Die Zeilen von \(J_{I}\) sind paarweise orthogonal und jeweils 
+ungleich Null. \(\rank(J_{I})\) ist gleich der Anzahl Zeilen. Das heißt die
+\(\mathcal{F}_{ij}\) schneiden sich transversal bei \(I\).
+\end{proof}
+\item Der Tangentialraum bei \(I\) ist
+\[
+T_{I,O_{n}}=I+\bigoplus_{i<k}\mathbb{R}(\underbrace{E_{ik}-E_{ki}}_{=:B_{ik}})
+\]
+\begin{proof}
+Die \(B_{ik}\) sind offenbar linear unabhängig im \(\mathbb{R}^{n^{2}}\), also
+\[
+\dim\langle B_{ik}\mid i<k\rangle=\sum_{k=1}^{n}{(k-1)}=\frac{n(n-1)}{2}
+\]
+und \(B_{ik}\in\Kern(\Lambda_{J_{I}})\), da \(J_{I}\cdot B_{ik}=0\) (leicht).
+\end{proof}
+\end{enumerate}
+\end{example}
+\begin{definition}
+\index{Gruppe!algebraische}\index{Matrizengruppe!algbraische}
+Eine Untergruppe \(\mathcal{J}\leq\GL_{n}(K)\) (wie hier \(O_{n}\)), die als
+Durchschnitt von Hyperflächen definiert ist, heißt 
+\textbf{algebraische (Matrizen-)Gruppe}.
+\end{definition}
+\begin{comment}
+Solche \(\mathcal{J}\) haben den großen Vorzug, dass Regularität an 
+einem Punkt \(Q\in\mathcal{J}\) sich auf alle anderen Punkte von \(\mathcal{J}\)
+überträgt.
+\end{comment}
+\begin{theo}
+\label{Satz 23.4}
+Sei \(\mathcal{J}\) eine algebraische Gruppe mit mindestens einem Punkt. Dann 
+ist jeder Punkt \(Q\in\mathcal{J}\) regulär und
+\[
+T_{Q,\mathcal{J}}=Q\cdot T_{I,\mathcal{J}}
+    =\left\{Q\cdot T\mid T\in T_{I,\mathcal{J}}\right\}
+\]
+\end{theo}
+\begin{proof}
+\(\Lambda_{Q}:\,B\mapsto Q\cdot B\) ist eine Affinität von \(K^{n\times n}\).
+
+Schon gesehen: Affinitäten erhalten die Regularität und führen 
+Tangentialräume ineinander über.
+\end{proof}
+\begin{corollary}
+\(Q_{n}\) ist Singularitätenfrei und die Dimension von \(T_{P,O_{n}}\) ist
+\(\frac{n(n-1)}{2}\).
+\end{corollary}
+
+\chapter{Projektive Geometrie}
+\section{Projektive Räume}
+\index{Raum!projektiver}
+\begin{zweck}
+Störende Ausnahmefälle der affinen Geometrie beseitigen durch geschickte 
+Erweiterung affiner Räume zu sogenannten projektiven Räumen, wo die
+Ausnahmen nicht mehr auftreten.
+\end{zweck}
+
+Sei \(K\) ein beliebiger Körper, \(V\) ein \(K\)-Vektorraum.
+\begin{definition}
+Die Menge der eindimensionalen Teilräume von \(V\)
+\[
+\mathbb{P}:=\mathbb{P}(V):=\left\{Kx\mid x\in V\setminus\{0\}\right\}
+\]
+heißt \textbf{projektiver Raum}.
+
+\index{Teilraum!projektiver}
+Eine Teilmenge \(X\subseteq\mathbb{P}(V)\) heißt 
+\textbf{projektiver Teilraum} von \(\mathbb{P}(V)\), falls ein Untervektorraum
+\(U_{x}\leq V\) existiert mit
+\[
+X=\mathbb{P}(U_{x}):=\left\{Kx\mid x\in U_{x}\setminus\{0\}\right\}
+\]
+\index{Dimension}
+\(\dim(\mathbb{P}):=\dim(U)-1\) heißt \textbf{Dimension} von \(\mathbb{P}\).
+
+\(X\) heißt 
+\(\left.
+    \begin{cases}\text{Punkt}\\\text{Gerade}\\\text{Ebene}\end{cases}
+\right\}\) falls \(\dim X=\begin{cases}0\\1\\2\end{cases}\).
+
+\index{Standardraum!projektiver}
+\(\mathbb{P}^{n}:=\mathbb{P}^{n}(K):=\mathbb{P}(K^{n+1})\) heißt der
+\textbf{projektive Standardraum}.
+\end{definition}
+\begin{comment}
+Die leere Menge \(\varnothing\) ist ein projektiver Raum mit 
+\(U_{\varnothing}=\{0\}\), also \(\dim\varnothing=-1\).
+\end{comment}
+\begin{lemma}
+Ist \(I\) eine beliebige Indexmenge und 
+    \(\forall i\in X:\,X_{i}\subseteq\mathbb{P}(V)\) projektive Teilräume.
+Dann ist
+\[
+X:=\bigcap_{i\in I}{X_{i}}\subseteq\mathbb{P}(V)
+\]
+ein projektiver Teilraum.
+
+Insbesondere existiert für jede beliebige Teilmenge 
+\index{Hülle!projektive}
+\(M\subseteq\mathbb{P}(V)\) die \textbf{projektive Hülle}
+\[
+[M]:=\bigcap_{X\text{ proj. TR};M\subseteq X}{X}
+\]
+Speziell:
+\begin{enumerate}
+\item \(X,\,Y\subseteq\mathbb{P}(V)\) projektive Teilräume
+\[
+[X\cup Y]=\mathbb{P}(U_{x}+U_{y})
+\]
+\item Für \(M=\{P_{1},\ldots,P_{r}\}\) setze
+\[
+[M]:=[P_{1},\ldots,P_{r}]
+\]
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Sei \(X_{i}=\mathbb{P}(U_{i})\) zu Teilvektorräumen \(U_{i}\leq V\). Damit:
+\begin{align*}
+X&=\bigcap_{i\in I}{\left\{Kx\mid x\in U_{i}\setminus\{0\}\right\}}\\
+&=\left\{Kx\mid x\in\bigcap_{i\in I}{U_{i}},\,x\neq0\right\}\\
+&\overset{\text{Def.}}{=}\mathbb{P}\left(\bigcap_{i\in I}{U_{i}}\right)
+\end{align*}
+\end{proof}
+\begin{definition}
+\index{Hyperebene}\index{Hyperebene!projektive}
+Ein projektiver Teilraum \(H\underset{\neq}{\subset}\mathbb{P}(V)\) heißt
+\textbf{(proj.) Hyperebene}, falls ein Punkt \(p=Kx\in\mathbb{P}(V)\) existiert
+mit
+\[
+[H\cup\{p\}]=\mathbb{P}(V)
+\]
+\end{definition}
+\begin{comment}
+Falls \(n=\dim\mathbb{P}(V)<\infty\) ist, so gilt für projektive Teilräume
+\(H\subseteq\mathbb{P}(V)\):
+\[
+H\text{ Hyperebene}\Longleftrightarrow\dim H=n-1
+\]
+\end{comment}
+\begin{theo}
+\label{Satz 24.1}
+Ist \(\dim\mathbb{P}(V)<\infty\), so gilt:
+\begin{enumerate}
+\item Für projektive Teilräume \(X,\,Y\subseteq\mathbb{P}\) ist
+\[
+\dim X+\dim Y=\dim[X\cup Y]+\dim{X\cap Y}
+\]
+\item Für jede Hyperebene \(H\) und jeden projektiven Teilraum 
+\(X\not\subseteq H\) ist
+\[
+\dim(X\cap H)=\dim X-1
+\]
+\index{Ebene!projektive}\index{Schnittpunkt}
+Insbesondere besitzen zwei verschiedene Geraden in einer projektiven Ebene
+\(\mathbb{P}(V)\) genau einen Schnittpunkt.
+\end{enumerate}
+\end{theo}
+\begin{proof}
+\begin{enumerate}
+\item
+\label{Bew: Dimension proj. Teilraeume}
+    \begin{align*}
+	\dim X+\dim Y&\overset{\text{Def.}}{=}\dim U_{x}-1+\dim U_{y}-1\\
+	&=\dim(U_{x}+U_{y})+\dim(U_{x}\cap U_{y})-2\\
+	&=\dim[X\cup Y]+\dim(X\cap Y)
+    \end{align*}
+\item \(X\subseteq H\) impliziert \([X\cup H]=\mathbb{P}(V)\). Damit folgt:
+    \begin{align*}
+	\dim[X\cup H]&=\dim\mathbb{P}(V)=\dim H+1\\
+	\dim X\cap H&\overset{\eqref{Bew: Dimension proj. Teilraeume}}{=}
+	    \dim H+\dim X-\dim[X\cup H]=\dim X-1
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+\section{projektive Koordinaten}
+\index{Koordinaten!projektive}
+\begin{definition}
+\index{Punkt!unabhängiger}
+Die Punkte \(p_{0},p_{1},\ldots,p_{k}\in\mathbb{P}\) heißen 
+\textbf{unabhängig}, wenn gilt
+\[
+\dim[p_{0},p_{1},\ldots,p_{k}]=k
+\]
+\end{definition}
+\begin{lemma}
+Für \(p_{\vk}=K\cdot v_{\vk}\quad(v_{\vk}\in V)\) gilt:
+\[
+p_{0},p_{1},\ldots,p_{k}\text{ unabhängig}\Longleftrightarrow
+    \dim(Kv_{0}+\ldots+Kv_{k})=k+1\text{ linear unabhängig}
+\]
+\end{lemma}
+\begin{proof}
+\[
+p_{0},\ldots,p_{k}\text{ unabhängig}\Longleftrightarrow
+    \dim(Kv_{0},\ldots,Kv_{k})=k+1
+\]
+\end{proof}
+\begin{definition}
+Sei \(\dim\mathbb{P}=n<\infty\) und seien \(p_{0},\ldots,p_{k},e\in\mathbb{P}\).
+
+\index{Koordinaten-!System}
+Das \(n+2\)-Tupel \((e;p_{0},\ldots,p_{n})\) heißt ein 
+\textbf{Koordinatensystem} von \(\mathbb{P}\), wenn je \(n+1\) Punkte hiervon 
+linear unabhängig sind.
+\end{definition}
+\begin{note}
+\index{Koordinaten-!Abbildung}
+Ein Koordinatensystem legt eine (bijektive) \textbf{Koordinatenabbildung}
+\[
+D:\,\mathbb{P}\overset{\sim}{\to}\mathbb{P}(K^{n+1})
+\]
+fest wie folgt:
+\begin{enumerate}
+\item Jede Wahl von Erzeugern \(v'_{\vk}\) der \(p_{\vk}\) ergibt eine Basis
+\(\{v'_{0},\ldots,v'_{n}\}\) von \(V\).
+
+Insbesondere hat jedes \(v\in V\) mit \(e=Kv\) die Darstellung
+\[
+v=\sum_{\nu=0}^{n}{\underbrace{x'_{\nu}v'_{\nu}}_{=:v_{\nu}}}
+\]
+mit \(x'_{\nu}\neq0\,\forall\nu\) (wegen der Voraussetzung über lineare
+Unabhängigkeit). Dabei sind die \(v_{\nu}\) unabhängig von der Wahl der
+\(v'_{\nu}\).
+\item Zu festem \(v\) existiert also eine eindeutig bestimmte Basis 
+\(\{v_{0},\ldots,v_{n}\}\) mit \(v=\sum_{\nu=0}^{n}{v_{\nu}}\). Zu einem
+beliebigen anderen \(v'=\lambda\cdot v\in K\cdot v\) gehört die Basis
+\(\{\lambda v_{0},\ldots,\lambda v_{n}\}\).
+\item Für einen beliebigen Punkt \(p=K\cdot w\) mit Basisdarstellung
+\[
+w=\sum_{\nu=0}^{n}{x_{\nu}v_{\nu}}
+\]
+setze \(D(p):=K\cdot(x_{0},\ldots,x_{n})=:(x_{0}:\ldots:x_{n})\).
+
+Das ist wohldefiniert, da für \(w'=\lambda\cdot w\) mit \(\lambda\neq0\) gilt:
+\[
+w'=\sum_{\nu=0}^{n}{\underbrace{\lambda x_{\nu}}_{=:x'_{\nu}}v_{\nu}}
+\]
+Daher:
+\[
+K(x'_{0},\ldots,x'_{n})=K(x_{0},\ldots,x_{n})
+\]
+\(D(p)\) ist unabhängig von der speziellen Wahl von \(v\).
+
+\index{Koordinaten!homogene}
+\((x_{0}:\ldots:x_{n})\) heißen \textbf{homogene Koordinaten} von 
+\(\mathbb{P}\).
+\item Es gilt offenbar:
+\begin{align*}
+D(p_{\nu}&=(0:\ldots:\overset{\nu}{1}:0:\ldots:0)\\
+D(e)&=(1:\ldots:1)
+\end{align*}
+\end{enumerate}
+\end{note}
+\section{Projektivitäten}
+\index{Projektivität}
+\begin{prerem}
+Jede injektive lineare Abbildung \(\phi:\,V\to W\) von \(K\)-Vektorräumen
+definiert eine Abbildung der zugehörigen projektiven Räume.
+\[
+\tilde{\phi}:\,\mathbb{P}(V)\to\mathbb{P}(W),\,
+    p=K\cdot v\mapsto\tilde{\phi}(p):=\phi(Kv)=K\phi(v)
+\]
+\end{prerem}
+\begin{definition}
+\index{Projektivität}
+Eine Permutation \(\vp\) von \(\mathbb{P}\) heiß t \textbf{Projektivität},
+wenn ein Vektorraumautomorphismus \(\phi\in\Aut(V)\) existiert mit
+\(\tilde{\phi}=\vp\).
+\end{definition}
+\begin{lemma}
+Für \(\phi_{1},\,\phi_{2}\in\Aut(V)\) gilt:
+\[
+\tilde{\phi}_{1}=\tilde{\phi}_{2}\Longleftrightarrow
+    \exists c\in K,\,c\neq0:\,\phi_{1}=c\cdot\phi_{2}
+\]
+\end{lemma}
+\begin{proof}
+\begin{itemize}
+\item[\(\implies\):] klar
+\item[\(\impliedby\):] Für alle \(x\) gilt: \(\phi_{1}(Kx)=\phi_{2}(Kx)\), 
+d.h. es existiert ein \(c_{x}\in K\) mit \(\phi_{1}(x)=c_{x}\cdot\phi_{2}(x)\).
+
+Für \(x,y\) linear unabhängig setze \(z:=x+y\).
+\begin{align*}
+\phi_{1}(z)&=c_{z}\cdot\phi_{2}(z)=c_{z}\left(\phi_{2}(x)+\phi_{2}(y)\right)\\
+\phi_{1}(z)&=\phi_{1}(x)+\phi_{1}(y)=c_{x}\phi_{2}(x)+c_{y}\phi_{2}(y)
+\end{align*}
+Da \(x,\,y\) linear unabhängig und \(\phi_{i}\) Automorphismus folgt:
+\(\phi_{2}(x),\,\phi_{2}(y)\) linear unabhängig.
+
+Koeffizientenvergleich liefert \(c_{x}=c_{z}=c_{y}\). Damit sind alle \(c_{x}\)
+gleich \(=:c\).
+\end{itemize}
+\end{proof}
+\begin{comment}
+\begin{enumerate}
+\item Die Projektivitäten von \(\mathbb{P}\) bilden eine Gruppe, wobei
+\(\tilde{\phi}_{1}\circ\tilde{\phi}_{2}=\tilde{\phi_{1}\circ\phi_{2}}\) und 
+\(\tilde{\phi}_{1}^{-1}=\tilde{\phi_{1}^{-1}}\) ist.
+\item Jede Projektivität bildet einen projektiven Teilraum auf einen 
+projektiven Teilraum gleicher Dimension ab.
+\end{enumerate}
+\end{comment}
+\begin{theo}
+\label{Satz 24.2}
+Zu verschiedenen Koordinatensystemen \((e;p_{0},\ldots,p_{n})\) und
+\((e';p'_{0},\ldots,p'_{n})\) von \(\mathbb{P}\) existiert genau eine 
+Projektivität \(\vp\), die sie ineinander überführt, d.h.
+\begin{align*}
+\vp(p_{\nu})&=p'_{\nu}\\
+\vp(e)&=e'
+\end{align*}
+\end{theo}
+\begin{proof}
+Übung.
+\end{proof}
+\section{Der Zusammenhang zwischen affinen und projektiven Räumen}
+\index{Raum!affin}\index{Raum!projektiv}
+Sei \(\mathbb{P}=\mathbb{P}(V)\), fixiere eine Hyperebene 
+\(H\subseteq\mathbb{P}\) und \(a=Ky\in\mathbb{P}\setminus H\). Also 
+\(\mathbb{P}=[H,a]\) und \(V=U_{H}\oplus Ky\).
+\begin{prerem}
+Jedes \(p\in\mathbb{P}\setminus H\) ist von der Form \(p=K(u_{p}+y)\) mit
+\(u_{p}\in U_{H}\) eindeutig.
+
+Für \(p=Kx\in\mathbb{P}\) gilt:
+\[
+p\in H\Longleftrightarrow p=Kx\leq U_{H}
+\]
+Also gilt: \(p\in\mathbb{P}\setminus H\Longleftrightarrow p=Kx\not\leq U_{H}\).
+
+Wegen direkter Summe ist \(x\) eindeutig zerlegbar:
+\[
+x=u'_{p}+\lambda y\qquad(u'_{p}\in U_{H})
+\]
+\[
+x\not\in U_{H}\Longleftrightarrow\lambda\neq0\quad
+    \implies Kx=K(\underbrace{\lambda^{-1}u'_{p}}_{=:u_{p}}+y)
+\]
+\end{prerem}
+\begin{theo}
+\label{Satz 24.3}
+Die Menge \(\mathbb{A}:=\mathbb{P}\setminus H\) ist ein affiner Raum mit 
+\(U_{H}\) als Translationsvektorraum bezüglich der Operation
+\[
+(u,p)\mapsto K(u+u_{p}+y)
+\]
+wobei \(p=K(u_{p}+y)\) gilt, mit eindeutig bestimmtem \(u_{p}\in U_{H}\).\\
+Dabei ist die Translation \(\overrightarrow{pq}=u_{q}-u_{p}\).
+\end{theo}
+\begin{note}
+\[
+\dim\mathbb{A}=\dim U_{H}=\dim V-1=\dim\mathbb{P}(V)
+\]
+\end{note}
+\begin{definition}
+\index{Punkt!eigentlicher}\index{Punkt!uneigentlicher}
+Die Punkte von \(\mathbb{A}\) heiß en \textbf{eigentliche Punkte}, die von
+\(H\) \textbf{uneigentlich}.
+\end{definition}
+Umgekehrt lässt sich jeder affine Raum \(\mathbb{A}\) erweitern zu einem 
+projektiven Raum durch disjunkte Vereinigung mit einer projektiven Hyperebene
+\(H\) gleicher Dimension:\\
+ohne Einschränkung sei \(\mathbb{A}=K^{n}\). Zum Beispiel haben wir die
+injektive Abbildung
+\[
+j_{1}:\,\mathbb{A}\to\mathbb{P}(K^{n+1}),\,
+    (x_{1},\ldots,x_{n})\mapsto(1:x_{1}:\ldots:x_{n})
+\]
+\(H:=\mathbb{P}(\underbrace{0\times K^{n}}_{\leq K^{n+1}})\).
+
+Für eigentliche Punkte \(p=(y_{0}:y_{1}:\ldots:y_{n})\), d.h. \(p\not\in H\),
+gilt: \(y_{0}\neq0\), also 
+\(p=\left(1:\frac{y_{1}}{y_{0}}:\ldots:\frac{y_{n}}{y_{0}}\right)\), d.h. \(p\)
+hat die affinen Koordinaten 
+    \(\left(\frac{y_{1}}{y_{0}},\ldots,\frac{y_{n}}{y_{0}}\right)\) in 
+\(\mathbb{A}\).
+
+Es gilt: \(j_{1}(\mathbb{A})\overset{\cdot}{\cup}H=\mathbb{P}(K^{n+1})\)
+
+Ferner gilt mit den den Einbettungen
+\[
+j_{\nu}:\,K^{n}\to\mathbb{P}(K^{n+1}),\,
+    (x_{1},\ldots,x_{n})\mapsto(x_{1}:\ldots:x_{\nu-1}:1:x_{\nu+1}:\ldots:x_{n})
+\]
+folgende Gleichheit:
+\[
+\mathbb{P}(K^{n+1})=\bigcup_{\nu=1}^{n+1}{j_{\nu}(\mathbb{A})}
+\]
+Aber: nicht disjunkt.
+\begin{example}
+\begin{enumerate}
+\item Die reelle projektive Gerade \(\mathbb{P}^{1}(\mathbb{R})\)
+
+Es gibt zwei Modelle:
+\[
+\left\{\mathbb{R}\cdot x\leq\mathbb{R}^{2}\mid x\neq0\right\}\longleftrightarrow
+\left\{G\subseteq\mathbb{R}^{2}\mid G\text{ affine Gerade mit }0\in G\right\}
+\]
+\index{Büschelmodell}
+Dies ist das sogenannten \textbf{Büschelmodell} von \(\mathbb{P}^{1}\).
+% Hier fehlt 'ne Zeichnung
+
+Fixiere \(g\) (die Hyperebene besteht hier aus einem Punkt)
+\[
+\mathbb{P}^{1}\setminus\{g\}\underset{\text{bijekt.}}{\longleftrightarrow}g'
+\quad(\text{affine Gerade }\neq g,\,g'\parallel g)
+\]
+eigentliche Punkte \(g_{a}\mapsto g_{a}\cap g'\)
+
+\(g\) ist der einzige uneigentliche Punkt; das entspricht anschaulich einem
+\index{Fern-!Punkt}
+unendlich fernen Punkt \(F\) auf \(g'\). Sprich: \textbf{Fernpunkt}.
+% Hier fehlt 'ne Zeichnung
+
+\index{Punktmodell}
+Wir erhalten das \textbf{Punktmodell} von 
+\(\mathbb{P}^{1}:\,g'\overset{\cdot}{\cup}\{F\}\).
+
+\index{Einheitskreis} % Zeichnung...
+Ein einheitliches Modell liefert der Einheitskreis um \((0,1)\in\mathbb{R}^{2}\)
+\[
+S:=\left\{y\in\mathbb{R}^{2}\mid \lVert y-(0,1)\rVert=1\right\}
+\]
+\begin{align*}
+\left\{\mathbb{R}x\leq\mathbb{R}^{2}\mid x\neq0\right\}
+    &\overset{\text{bij.}}{\longleftrightarrow}S\\
+\mathbb{R}x&\mapsto\mathbb{R}x\cap S\leadsto\{s_{x}\}\quad(s_{x}\neq(0,0))
+\end{align*}
+\item Die projektive Ebene \(\mathbb{P}^{2}(\mathbb{R})\)\\
+Bündelmodell:
+\[
+\left\{\mathbb{R}x\leq\mathbb{R}^{2}\mid x\neq0\right\}
+    \overset{\text{bij.}}{\longleftrightarrow}
+    \left\{\text{affine Gerade }g\leq\mathbb{R}^{3},\,0\in g\right\}
+\]
+Fixiere die affine Ebene \(E\subseteq\mathbb{R}^{3}\) mit \(0\not\in E\) und
+eine dazu parallele \(E'\) mit \(0\in E'\).
+% Zeichnung...
+
+Dabei entsteht eine Bijektion
+\begin{align*}
+\mathbb{P}^{2}\setminus\{g'\subseteq E'\}&\longleftrightarrow E\\
+g&\mapsto g\cap E\\
+A&\mapsto g=0A
+\end{align*}
+\index{Fix-!Punkt}
+Jedem \(g'\in E'\) ordnet man genau einen \textbf{Fixpunkt} 
+    \(F_{g'}\in\mathbb{P}^{2}\) zu.
+
+\(\{g'\in E'\}\) ist projektive Gerade. \(f:=\{F_{g'}\mid g'\subseteq E'\}\)
+\index{Fern-!Gerade}
+heißt \textbf{Ferngerade}.
+
+\(E\overset{\cdot}{\cup}f\) ist das Punktmodell des \(\mathbb{P}^{2}\).
+
+
+Analog lassen sich generell Bündel- und Punktmodell des \(\mathbb{P}^{n}\)
+mittels \(\mathbb{A}^{n+1}\) beschreiben.
+\end{enumerate}
+\end{example}
+
+\renewcommand{\indexname}{Stichwortverzeichnis}
+\printindex
+\end{document}

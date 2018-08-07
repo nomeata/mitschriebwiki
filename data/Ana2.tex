@@ -1,0 +1,3000 @@
+\documentclass[a4paper,twoside,DIV15,BCOR12mm]{scrbook}
+\usepackage{ana}
+
+\lecturer{Dr. C. Schmoeger}
+\semester{Sommersemester 2005}
+\scriptstate{complete}
+
+
+\author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
+\title{Analysis II}
+\makeindex
+
+\begin{document}
+\maketitle
+
+\renewcommand{\thechapter}{\Roman{chapter}}
+%\chapter{Inhaltsverzeichnis}
+\addcontentsline{toc}{chapter}{Inhaltsverzeichnis}
+\tableofcontents
+
+\chapter{Vorwort}
+
+\section{Über dieses Skriptum}
+Dies ist ein erweiterter Mitschrieb der Vorlesung \glqq Analysis II\grqq\ von Herrn Schmoeger im
+Sommersemester 05 an der Universität Karlsruhe (TH). Die Mitschriebe der Vorlesung werden mit
+ausdrücklicher Genehmigung von Herrn Schmoeger hier veröffentlicht, Herr Schmoeger ist für den
+Inhalt nicht verantwortlich.
+
+\section{Wer}
+Gestartet wurde das Projekt von Joachim Breitner. Beteiligt am Mitschrieb sind außer Joachim
+noch Pascal Maillard, Wenzel Jakob und andere.
+
+\section{Wo}
+Alle Kapitel inklusive \LaTeX-Quellen können unter \url{http://mitschriebwiki.nomeata.de} abgerufen werden.
+Dort ist ein \emph{Wiki} eingerichtet und von Joachim Breitner um die \LaTeX-Funktionen erweitert.
+Das heißt, jeder kann Fehler nachbessern und sich an der Entwicklung
+beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
+
+
+\renewcommand{\thechapter}{\arabic{chapter}}
+\renewcommand{\chaptername}{§}
+\setcounter{chapter}{0}
+
+\chapter{Der Raum $\MdR^n$}
+
+Sei $n\in\MdN$. $\MdR^n=\{(x_1, \ldots, x_n) : x_1,\ldots, x_n \in \MdR\}$ ist mit der "ublichen Addition und Skalarmultiplikation ein reeller Vektorraum.\\
+$e_1:=(1,0,\ldots,0),\ e_2:=(0,1,0,\ldots, 0),\ \ldots,\ e_n:=(0,\ldots,0,1) \in \MdR^n$.
+
+\begin{definition}
+Seien $x=(x_1, \ldots, x_n), y=(y_1, \ldots, y_n) \in \MdR^n$
+\begin{liste}
+\item $x\cdot y := xy := x_1y_1+\cdots+x_ny_n$ hei"st das \textbf{Skalar}\indexlabel{Skalarprodukt}- oder \begriff{Innenprodukt} von $x$ und $y$.
+\item $\|x\|=(x\cdot x)^\frac{1}{2} = (x_1^2 + \cdots + x_n^2)^\frac{1}{2}$ hei"st die \begriff{Norm} oder \begriff{L"ange} von $x$.
+\item \indexlabel{Abstand!zwischen zwei Vektoren}$\|x-y\|$ hei"st der \textbf{Abstand} von $x$ und $y$.
+\end{liste}
+\end{definition}
+
+\begin{beispiele}
+\item $\|e_j\|=1\ (j=1,\dots,n)$
+\item $n=3: \|(1,2,3)\|=(1+4+9)^{\frac{1}{2}}=\sqrt{14}$
+\end{beispiele}
+
+\textbf{Beachte: }
+\begin{liste}
+\item $x \cdot y \in \MdR$
+\item $\|x\|^2=x \cdot x$
+\end{liste}
+
+\begin{satz}[Rechenregeln zur Norm]
+Seien $x,y,z \in \MdR^n,\ \alpha, \beta \in \MdR,\ x=(x_1, \ldots, x_n),\ y=(y_1, \ldots, y_n)$
+\begin{liste}
+\item $(\alpha x + \beta y)\cdot z=\alpha(x\cdot z)+\beta(y \cdot z),\ x(\alpha y + \beta z)=\alpha(xy)+\beta(xz)$
+\item $\|x\|\ge 0; \|x\|=0\equizu x=0$
+\item $\|\alpha x\|=|\alpha|\|x\|$
+\item $|x \cdot y|\le\|x\| \|y\|$ \begriff{Cauchy-Schwarzsche Ungleichung} (\begriff{CSU})
+\item $\|x+y\|\le\|x\|+\|y\|$
+\item ${\left|\|x\|-\|y\|\right|}\le \|x-y\|$
+\item $|x_j|\le\|x\|\le |x_1|+|x_2|+\ldots+|x_n|\ (j=1,\ldots,n)$
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item[(1)], (2), (3)\ nachrechnen.
+\item[(6)] "Ubung.
+\item[(4)] O.B.d.A: $y\ne0$ also $\|y\|>0$. $a:=x\cdot x=\|x\|^2,\ b:=xy,\ c:=\|y\|^2=y\cdot y,\ \alpha:=\frac{b}{c}.\ 0\le\sum_{j=1}^n(x_j-\alpha y_j)^2=\sum_{j=1}^n(x_j^2-2\alpha x_jy_j+a^2y^2)=a-2\alpha b + \alpha^2 c=a-2\frac{b}{c}b+\frac{b^2}{c^2}c=a-\frac{b^2}{c}\folgt0\le ac-b^2\folgt b^2\le ac\folgt(xy)^2\le\|x\|^2\|y\|^2$.
+\item[(5)] $\|x+y\|^2=(x+y)(x+y)\gleichnach{(1)}x\cdot x + 2xy+y \cdot y=\|x\|^2+2xy+\|y\|^2\le\|x\|^2+2|xy|+\|y\|^2\overset{\text{(4)}}{\le}\|x\|^2+2\|x\|\|y\|+\|y\|^2=(\|x\|+\|y\|)^2$.
+\item[(7)] $|x_j|^2=x_j^2\le x_1^2 + \ldots + x_n^2 = \|x\|^2\folgt$ 1. Ungleichung; $x=x_1e_1+\ldots+x_ne_n\folgt\|x\|=\|x_1e_1+\ldots+x_ne_n\|\overset{(5)}{\le}\|x_1e_1\|+\ldots+\|x_ne_n\|=|x_1|+\ldots+|x_n|$
+\end{beweise}
+
+Seien $p,q,l \in \MdN$. Es sei $A$ eine reelle $p${\tiny x}$q$-Matrix.
+
+$$A = \begin{pmatrix}
+\alpha_{11} & \cdots & \alpha_{1q}\\
+\vdots & & \vdots\\
+\alpha_{p1} & \cdots & \alpha_{pq}
+\end{pmatrix}\qquad \|A\|:=\left(\sum_{j=1}^p\sum_{k=1}^q\alpha^2_{jk}\right)^\frac{1}{2} \text{\textbf{Norm} von A}$$
+Sei $B$ eine reelle $q${\tiny x}$l$-Matrix ($\folgt AB$ existiert). \textbf{"Ubung}: $\|AB\|\le\|A\|\|B\|$\\
+Sei $x=(x_1,\ldots,x_q) \in \MdR^q$. $Ax:=A\begin{pmatrix}x_1\\ \vdots \\ x_q\end{pmatrix}$ (\begriff{Matrix-Vektorprodukt}). \\
+Es folgt: $$\|Ax\|\le\|A\|\|x\|$$
+
+\begin{definition}
+Sei $x_0 \in \MdR^n$, $\delta > 0$, $A, U\subseteq \MdR^n$.
+\begin{liste}
+ \item $U_\delta(x_0) := \{ x \in \MdR^n: \|x-x_0\|<\delta\}$ heißt $\delta$-Umgebung von $x_0$ oder \begriff{offene Kugel} um $x_0$ mit Radius $\delta$.
+ \item $U$ ist eine \begriff{Umgebung} von $x_0$ $:\equizu$ $\exists \delta > 0 : U_\delta(x_0) \subseteq U$.
+ \item \indexlabel{Beschränktheit!einer Menge}$A$ heißt \textbf{beschränkt} $:\equizu$ $\exists c \ge 0: \|a\|\le c \forall a\in A$.
+ \item $x_0\in A$ heißt ein \begriff{innerer Punkt} von A $:\equizu$ $\exists \delta>0: U_\delta(x_0) \subseteq A$. \\
+   $A^\circ:=\{ x\in A: x \text{ x ist innerer Punkt von }A\}$ heißt das \indexlabel{Inneres einer Menge}\textbf{Innere} von A. Klar: $A^\circ\subseteq A.$
+ \item $A$ heißt offen $:\equizu$ $A=A^\circ$. Zur Übung: $A^\circ$ ist offen.
+\end{liste}
+\end{definition}
+
+\begin{beispiele}
+ \item offene Kugeln sind offen, $\MdR^n$ ist offen, $\emptyset$ ist offen.
+ \item $A=\{x\in\MdR^n: \|x-x_0\|\le \delta\}$, $A^\circ = U_\delta(x_0)$
+ \item $n=2$: $A=\{(x_1,x_2)\in\MdR^n: x_2 = x_1^2\}$, $A^\circ=\emptyset$
+\end{beispiele}
+
+\begin{definition}
+ $A\subseteq \MdR^n$
+ \begin{liste}
+ \item $x_0\in \MdR^n$ heißt ein \begriff{Häufungspunkt} (HP) von $A$ $:\equizu$ $\forall \delta > 0: (U_\delta(x_0) \backslash \{x_0\}) \cap A \ne \emptyset$. $\H(A) := \{ x\in\MdR^n: x \text{ ist Häufungspunkt von } A\}$.
+ \item  $x_0\in\MdR^n$ heißt ein \begriff{Berührungspunkt} (BP) von $A$ $:\equizu$ $\forall\delta>0: U_\delta(x_0) \cap A \ne \emptyset$. $\bar{A}:=\{x\in\MdR^n: x \text{ ist ein Berührungspunkt von } A\}$ heißt die \begriff{Abschließung} von $A$. Klar: $A\subseteq\bar{A}$. Zur Übung: $\bar{A} = A \cup \H(A)$.
+ \item \indexlabel{abgeschlossene Menge}$A$ heißt \textbf{abgeschlossen} $:\equizu$ $A=\bar{A}$. Zur Übung: $\bar{A}$ ist abgeschlossen.
+ \item $x_0\in\MdR^n$ heißt ein \begriff{Randpunkt} von $A$ $:\equizu$ $\forall\delta>0: U_\delta(x_0) \cap A \ne \emptyset$ und $U_\delta(x_0) \cap (\MdR^n\backslash A) \ne \emptyset$. $\partial A := \{x\in\MdR^n: x \text{ ist ein Randpunkt von } A \}$ heißt der \begriff{Rand} von $A$. Zur Übung: $\partial A = \bar{A}\backslash A^\circ$.
+ \end{liste}
+\end{definition}
+
+\begin{beispiele}
+\item $\MdR^n$ ist abgeschlossen, $\emptyset$ ist abgeschlossen; \\ 
+  $\bar{A}=\bar{U_\delta(x_0)} = \{x\in\MdR^n: \|x-x_0\| \le \delta\}$ (\begriff{abgeschlossene Kugel} um $x_0$ mit Radius $\delta$)
+\item $\partial U_\delta(x_0) = \{x\in\MdR^n: \|x-x_0\|=\delta\} = \partial \bar{U_\delta(x_0)}$
+\item $A = \{(x_1,x_2)\in\MdR^2; x_2 = x_1^2\}$. $A=\bar{A}=\partial A$
+\end{beispiele}
+
+\begin{satz}[Offene und abgeschlossene Mengen]
+ \begin{liste}
+ \item Sei $A\subseteq\MdR^n$. $A$ ist abgeschlossen $:\equizu$  $\MdR^n\backslash A$ ist offen.
+ \item Die Vereinigung offener Mengen ist offen.
+ \item Der Durchschnitt abgeschlossener Mengen ist abgeschlossen.
+ \item Sind $A_1,\ldots,A_n\subseteq\MdR^n$ offen $\folgt$ $\bigcap_{j=1}^nA_j$ ist offen
+ \item Sind $A_1,\ldots,A_n\subseteq\MdR^n$ abgeschlossen $\folgt$ $\bigcap_{j=1}^nA_j$ ist abgeschlossen
+ \end{liste}
+\end{satz}
+
+\begin{beispiel}
+  $(n=1)$. $A_t := (0,1+t)\ (t>0)$. Jedes $A_t$ ist offen. $\bigcap_{t>0}A_t = (0,1]$ ist nicht offen.
+\end{beispiel}
+
+\begin{beweise}
+ \item \glqq\folgt\grqq: Sei $x_0\in\MdR^n\backslash A$. Annahme: $\forall \delta>0: U_\delta(x_0) \nsubseteq \MdR^n\backslash A\folgt\forall\delta>0: U_\delta(x_0)\cap A\ne\emptyset \folgt x_0\in\bar{A} \gleichnach{Vor.} A$, Widerspruch \\
+ \glqq$\Leftarrow$\grqq: Annahme: $\subset\bar{A} \folgt \ \exists x_0\in\bar{A}: x_0\notin A$; also $x_0\in\MdR^n\backslash A$. Voraussetzung $\folgt \ \exists \delta > 0: U_\delta(x_0) \subseteq \MdR^n\backslash A \folgt U_\delta(x_0) \cap A = \emptyset \folgt x_0 \notin \bar{A}$, Widerspruch!
+ \item Sei $(A_\lambda)_{\lambda\in M}$ eine Familie offener Mengen und $V := \bigcup_{\lambda\in M} A_\lambda$. Sei $x_0\in V \folgt \exists\lambda_0\in M: x_0 \in A_{\lambda_0}$. $A_{\lambda_0}$ offen $\folgt \ \exists \delta > 0: U_\delta(x_0) \subseteq A_{\lambda_0} \subseteq V$
+ \item folgt aus (1) und (2) (Komplemente!)
+ \item $D:=\bigcap_{j=1}^mA_j$. Sei $x_0\in D$. $\forall j\in\{1,\ldots,m\}: x_0\in A_j$, also eixistiert $\delta_j>0: U_\delta(x_0)\subseteq A_j$. $\delta := \min\{\delta_j,\ldots,\delta_m\} \folgt U_\delta(x_0) \subseteq D$
+ \item folgt aus (1) und (4)
+\end{beweise}
+
+\chapter{Konvergenz im $\MdR^n$}
+
+Sei $(a^{(k)})$ eine Folge in $\MdR^n$, also $(a^{(k)}) = ( a^{(1)}, a^{(2)}, \ldots ) $ mit $a^{(k)} = (a_1^{(k)}, \ldots a_n^{(k)}) \in \MdR^n$. Die Begriffe \begriff{Teilfolge} und \begriff{Umordnung} definiert man wie in Analysis I. $(a^{(k)})$ heißt beschränkt $:\equizu$ $\exists c\ge0: \|a^{(k)}\| \le c  \ \forall k\in\MdN$.
+
+\begin{definition*}[Grenzwert und Beschränktheit]
+\indexlabel{Konvergenz}$(a^{(k)})$ heißt \textbf{konvergent} $:\equizu$ $\exists a\in\MdR^n: \|a^{(k)} - a\| \to 0 \ (k\to\infty)$ ($\equizu\ \exists a\in\MdR^n: \forall \ep>0\exists k_0 \in\MdN: \|a^{(k)} - a\|<\ep \ \forall k\ge k_0$). In diesem Fall heißt $a$ der \begriff{Grenzwert} (GW) oder \begriff{Limes} von $(a^{(k)})$ und schreibt: $a=\lim_{k\to\infty}a^{(k)}$ oder $a^{(k)} \to a \ (k\to\infty)$
+\end{definition*}
+
+\begin{beispiel}
+$(n=2)$: $a^{(k)} = (\frac{1}{k}, 1+\frac{1}{k^n})$ (Erinnerung: $\frac{1}{n}$ konvergiert gegen 17); $a := (0,1)$; $\|a^{(k)} - a \| = \|(\frac{1}{k} , \frac{1}{k^2})\| = (\frac{1}{k^2} + \frac{1}{k^4})^\frac{1}{2} \to 0 \folgt a^{(k)} \to (0,1)$
+\end{beispiel}
+%satz 2.1
+\begin{satz}[Konvergenz]
+Sei $(a^{(k)})$ eine Folge in $\MdR^n$.
+\begin{liste}
+ \item Sei $a^{(k)} = (a_1^{(k)}, \ldots, a_n^{(k)})$ und $a = (a_1,\ldots,a_n)\in\MdR^n$. Dann:
+ $$ a^{(k)} \to a \ (k\to\infty) \equizu a_1^{(k)} \to a_1, \ldots, a_n^{(k)} \to a_n \ (k\to\infty) $$
+ \item Der Grenzwert einer konvergenen Folge ist eindeutig bestimmt.
+ \item Ist $(a^{(k)})$ konvergent $\folgt \ a^{(k)}$ ist beschränkgt und jede Teilfolge und jede Umordnung von $(a^{(k)})$ konvergiert gegen $\lim a^{(k)}$.
+ \item Sei $(b^{(k)})$ eine weitere Folge, $a,b\in\MdR^n$ und $\alpha\in\MdR$. Es gelte $a^{(k)}\to a$, $b^{(k)} \to b$ Dann: $$\|a^{(k)}\| \to \|a\|$$ $$a^{(k)} + b ^{(k)} \to a+b$$ $$\alpha a^{(k)} \to \alpha a$$ $$a^{(k)}\cdot b^{(k)} \to a\cdot b$$
+ \item \begriff{Bolzano-Weierstraß}: Ist $(a^{(k)})$ beschränkt, so enthält $(a^{(k)})$ eine konvergente Teilfolge.
+ \item \begriff{Cauchy-Kriterium}: $(a^{(k)})$ konvergent $\equizu \ \forall\ep>0\ \exists k_0\in\MdN: \|a^{(k)} - a^{(l)}\| <\ep \ \forall k,l \ge k_0$
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+  \item 1.1(7) $\folgt |a_j^{(k)} - a_j| \le \|a^{(k)}-a\| \le \sum_{i=1}^n|a_j^{(k)} - a_j| \folgt $ Behauptung.
+  \item und
+  \item wie in Analysis I.
+  \item folgt aus (1)
+  \item Sei $(a^{(k)})$ beschr"ankt. O.B.d.A: $n=2$. Also $a^{(k)}=(a_1^{(k)},a_2^{(k)})$ 1.1(7) $\folgt |a_1^{(k)}|,|a_2^{(k)}|\le\|a^{(k)}\|\ \forall k\in\MdN \folgt (a_1^{(k)},a_2^{(k)})$ sind beschr"ankte Folgen in $\MdR$. Analysis 1 $\folgt (a_1^{(k)})$ enth"alt eine konvergente Teilfolge $(a_1^{(k_j)})$. $(a_2^{(k_j)})$ enth"alt eine konvergente Teilfolge$ (a_2^{(k_{j_l})})$. Analysis 1 $\folgt (a_1^{(k_{j_l})})$ ist konvergent $\overset{(1)}{\folgt} (a^{(k_{j_l})})$ konvergiert.
+  \item \glqq$\folgt$\grqq: wie in Analysis 1. \glqq$\Leftarrow$\grqq: 1.1(7) $\folgt |a_j^{(k)}-a_j^{(l)}| \le \|a^{(k)}-a^{(l)}\|\ (j=1,\ldots,n)\ \folgt$ jede Folge $(a_j^{(k)})$ ist eine Cauchyfolge in $\MdR$, also konvergent $\overset{(1)}{\folgt} (a^{(k)})$ konvergiert.
+\end{beweise}
+
+\begin{satz}[Häufungswerte und konvergente Folgen]
+Sei $A\subseteq\MdR^n$
+\begin{liste}
+\item $x_0 \in H(A)\equizu\ \exists$ Folge $(x^{(k)})$ in $A\ \backslash\ \{x_0\}$ mit $x^{(k)}\to x_0$.
+\item $x_0 \in \bar A\equizu\ \exists$ Folge $(x^{(k)})$ in $A$ mit $x^{(k)}\to x_0$.
+\item $A$ ist abgeschlossen $\equizu$ der Grenzwert jeder konvergenten Folge in $A$ geh"ort zu $A$.
+\item $A$ ist beschr"ankt und abgeschlossen $\equizu$ jede Folge in $A$ enth"alt eine konvergente Teilfolge, deren Grenzwert zu $A$ geh"ort.
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item Wie in Analysis 1
+\item Fast w"ortlich wie bei (1)
+\item[(4)] W"ortlich wie in Analysis 1
+\item[(3)] \glqq$\folgt$\grqq: Sei $(a^{(k)})$ eine konvergente Folge in $A$ und $x_0:=\lim a^{(k)} \overset{(2)}{\folgt} x_0 \in \bar A \overset{\text{Vor.}}{=}A$. \glqq$\Leftarrow$\grqq: z.z: $\bar A \subseteq A$. Sei $x_0 \in \bar A \overset{(2)}{\folgt}x_0 \in A$. Also: $A=\bar A$.
+\end{beweise}
+
+\begin{satz}[Überdeckungen]
+$A \subseteq \MdR^n$ sei abgeschlossen und beschr"ankt
+\begin{liste}
+\item Ist $\ep>0\folgt\ \exists a^{(1)},\ldots,a^{(m)} \in A: A\subseteq \displaystyle\bigcup_{j=1}^m U_\ep(a^{(j)})$
+\item $\exists$ abz"ahlbare Teilmenge $B$ von $A: \bar B=A$.
+\item \begriff{"Uberdeckungssatz von Heine-Borel}: Ist $(G_\lambda)_{\lambda \in M}$ eine Familie offener Mengen mit $A \subseteq \displaystyle\bigcup_{\lambda \in M} G_\lambda$, dann existieren $\lambda_1, \ldots, \lambda_m \in M: A\subseteq \displaystyle\bigcup_{j=1}^m G_{\lambda_j}$.
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item Sei $\ep>0$. Annahme: Die Behauptung ist falsch. Sei $a^{(1)}\in A$. Dann: $A\nsubseteq U_{\ep}(a^{(1)})\folgt\exists a^{(2)}\in A: a^{(2)}\notin U_\ep(a^{(1)})\folgt\|a^{(2)}-a^{(1)}\|\ge\ep$. $A\nsubseteq U_\ep(a^{(1)})\cup U_\ep(a^{(2)})\folgt\exists a^{(3)} \in A: \|a^{(3)}-a^{(2)}\|\ge\ep,\ \|a^{(3)}-a^{(1)}\|\ge\ep$ etc.. Wir erhalten so eine Folge $(a^{(k)})$ in A: $\|a^{(k)}-a^{(l)}\|\ge\ep$ f"ur $k\ne l$. 2.2(4) $\folgt (a^{(k)})$ enth"alt eine konvergente Teilfolge $\folgtnach{2.1(6)}\ \exists j_0 \in\MdN:\ \|a^{(k_j)}-a^{(k_l)}\|<\ep\ \forall j,l\ge j_0$, Widerspruch!
+\item Sei $j\in\MdN$. $\ep:=\frac{1}{j}$. (1) $\folgt\exists$ endl. Teilmenge $B_j$ von $A$ mit $(*)\ A\subseteq \displaystyle\bigcup_{x \in B_j}U_{\frac{1}{j}}(x)$. $B:=\displaystyle\bigcup_{j\in\MdN}B_j\folgt B\subseteq A$ und $B$ ist abz"ahlbar. Dann: $\bar B\subseteq\bar A\gleichnach{Vor.}A$. Noch zu zeigen: $A\subseteq\bar B$. Sei $x_0\in A$ und $\delta>0$: zu zeigen: $U_\delta(x_0)\cap B\ne\emptyset$. W"ahle $j\in\MdN$ so, da"s $\frac{1}{j}<\delta\ (*)\folgt\exists x \in B_j\subseteq B:\ x_0\in U_{\frac{1}{j}}(x)\folgt \|x_0-x\|<\frac{1}{j}<\delta\folgt x\in U_\delta(x_0)\folgt x\in U_\delta(x_0)\cap B$.
+\item Teil 1: Behauptung: $\exists \ep>0:\ \forall a \in A\ \exists\lambda\in M: U_\ep(a)\subseteq G_\lambda$. Beweis: Annahme: Die Behauptung ist falsch. $\forall k\in\MdN\ \exists a^{(k)}\in A:\ (**) U_{\frac{1}{k}}(a^{(k)})\nsubseteq G_\lambda\ \forall \lambda\in M$. 2.2(4) $\folgt (a^{(k)})$ enth"alt eine konvergente Teilfolge $(a^{(k_j)})$ und $x_0:=\displaystyle\lim_{j\to\infty}a^{k_j}\in A\folgt\exists \lambda_0\in M: x_0 \in G_{\lambda_0};\ G_{\lambda_0}$ offen $\folgt\exists \delta>0: U_\delta(x_0)\subseteq G_{\lambda_0}.\ a^{(k_j)}\to x_0\ (j\to\infty)\folgt\exists m_0\in\MdN: a^{(m_0)}\in U_{\frac{\delta}{2}}(x_0)$ und $m_0\ge\frac{2}{\delta}$. Sei $x\in U_{\frac{1}{m_0}}(a^{(m_0)})\folgt \|x-x_0\|=\|x-a^{(m_0)}+a^{(m_0)}-x_0\|\le\|x-a^{(m_0)}\|+\|a^{(m_0)}-x_0\|\le\frac{1}{m_0}+\frac{\delta}{2}\le\frac{\delta}{2}+\frac{\delta}{2}=\delta\folgt x\in U_\delta(x_0)\folgt x \in G_{\lambda_0}$. Also: $U_{\frac{1}{m_0}}(a^{(m_0)})\subseteq G_{\lambda_0}$, Widerspruch zu $(**)$!\\
+Teil 2: Sei $\ep>0$ wie in Teil 1. (1) $\folgt\exists a^{(1)},\ldots,a^{(m)}\in A: A\subseteq\displaystyle\bigcup_{j=1}^mU_\ep(a^{(j)})$. Teil 1 $\folgt\exists \lambda_j\in M: U_\ep(a^{(j)})\subseteq G_{\lambda_j}\ (j=1,\ldots,m)\folgt A\subseteq \displaystyle\bigcup_{j=1}^m G_{\lambda_j}$ 
+\end{beweise}
+
+\chapter{Grenzwerte bei Funktionen, Stetigkeit}
+
+\begin{vereinbarung}
+\indexlabel{vektorwertige Funktion}Stets in dem Paragraphen: Sei $\emptyset \ne D \subseteq \MdR^n$ und $f: D\to\MdR^m$ eine (\textbf{vektorwertige}) Funktion. F"ur Punkte $(x_1, x_2) \in \MdR^2$ schreiben wir auch $(x,y)$. F"ur Punkte $(x_1, x_2, x_3) \in\MdR^3$ schreiben wir auch $(x, y, z)$. Mit $x=(x_1,\ldots,x_n)\in D$ hat $f$ die Form $f(x)=f(x_1,\ldots,x_n)=(f_1(x_1,\ldots,x_n),\ldots,f_m(x_1,\ldots,x_n))$, wobei $f_j:D\to\MdR\ (j=1,\ldots,m)$. Kurz: $f=(f_1,\ldots,f_m)$.
+\end{vereinbarung}
+
+\begin{beispiele}
+\item $n=2,m=3$. $f(x,y)=(x+y,xy,xe^y);\ f_1(x,y)=x+y, f_2(x,y)=xy, f_3(x,y)=xe^y$.
+\item $n=3,m=1$. $f(x,y,z)=1+x^2+y^2+z^2$
+\end{beispiele}
+
+\begin{definition*}
+Sei $x_0\in H(D)$.
+
+\begin{liste}
+\item Sei $y_0 \in \MdR^m$. $\displaystyle\lim_{x\to x_0}f(x)=y_0 :\equizu$ f"ur \textbf{jede} Folge $(x^{(k)})$ in $D\ \backslash\ \{x_0\}$ mit $x^{(k)}\to x_0$ gilt: $f(x^{(k)})\to y_0$. In diesem Fall schreibt man: $f(x)\to y_0(x\to x_0)$.
+\item $\displaystyle\lim_{x\to x_0}f(x)$ existiert $:\equizu\ \exists y_0 \in \MdR^m: \displaystyle\lim_{x\to x_0}f(x)=y_0$.
+\end{liste}
+\end{definition*}
+
+\begin{beispiele}
+\item $f(x,y)=(x+y,xy,xe^y); \displaystyle\lim_{(x,y)\to(1,1)}f(x,y)=(2,1,e)$, denn: ist $((x_k, y_n))$ eine Folge mit $(x,y)\to(1,1)\folgt (x_k,y_k)\to(1,1)\folgtnach{2.1}x_k\to 1, y_k\to 1 \folgt x_k+y_k\to 2, x_ky_k\to 1, x_ke^{y_k}\to e\folgtnach{2.1}(x_k,y_k)\to(2,1,e)$.
+\item $f(x,y)=\begin{cases}
+\frac{xy}{x^2+y^2}&\text{, falls }(x,y)\ne(0,0)\\
+0&\text{, falls }(x,y)=(0,0)
+\end{cases}$\\
+$f(\frac{1}{k},0)=0\to 0\ (k\to \infty), (\frac{1}{k},0)\to(0,0), f(\frac{1}{k},\frac{1}{k})=\frac{1}{2}\to\frac{1}{2}\ (k\to \infty), (\frac{1}{k},\frac{1}{k})\to(0,0)$, d.h $\displaystyle\lim_{(x,y)\to(0,0)}f(x,y)$ existiert nicht! \textbf{Aber}: $\displaystyle\lim_{x\to 0}(\displaystyle\lim_{y\to 0} f(x,y))=0=\displaystyle\lim_{y\to 0}(\displaystyle\lim_{x\to 0} f(x,y))$.
+\end{beispiele}
+
+\begin{satz}[Grenzwerte vektorwertiger Funktionen]
+\begin{liste}
+\item Ist $f = (f_1,\ldots,f_m)$ und $y_0 = (y_1,\ldots,y_m) \in \MdR^m$, so gilt: $f(x) \to y_0\ (x \to x_0) \equizu f_j(x) \to y_j\ (x \to x_0)\ (j=1,\ldots,m)$
+\item Die Aussagen des Satzes Ana I, 16.1 und die Aussagen (1) und (2) des Satzes Ana I, 16.2 gelten sinngemäß für Funktionen von mehreren Variablen.
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item folgt aus 2.1
+\item wie in Ana I
+\end{beweise}
+
+\begin{definition*}[Stetigkeit vektorwertiger Funktionen]
+\begin{liste}
+\item \indexlabel{Stetigkeit}Sei $x_0 \in D$. $f$ heißt \textbf{stetig} in $x_0$ gdw. für jede Folge $(x^{(k)})$ in $D$ mit $(x^{(k)}) \to x_0$ gilt: $f(x^{(k)}) \to f(x_0)$. Wie in Ana I: Ist $x_0 \in D \cap H(D)$, so gilt: $f$ ist stetig in $x_0 \equizu \displaystyle{\lim_{x \to x_0}} f(x) = f(x_0)$.
+\item \indexlabel{Stetigkeit!auf einem Intervall}$f$ heißt auf $D$ stetig gdw. $f$ in jedem $x \in D$ stetig ist. In diesem Fall schreibt man: $f \in C(D,\MdR^m)\ (C(D) = C(D,\MdR)).$
+\item \indexlabel{Stetigkeit!gleichmäßige}$f$ heißt auf $D$ \textbf{gleichmäßig} (glm) stetig gdw. gilt:\\
+$\forall \ep>0\ \exists \delta>0: ||f(x)-f(y)|| < \ep\ \forall x,y \in D: ||x-y|| < \delta$
+\item \indexlabel{Stetigkeit!Lipschitz-}$f$ heißt auf $D$  \textbf{Lipschitzstetig} gdw. gilt:\\
+$\exists L\ge0: ||f(x)-f(y)|| \le L||x-y||\ \forall x,y \in D.$
+\end{liste}
+\end{definition*}
+
+\begin{satz}[Stetigkeit vektorwertiger Funktionen]
+\begin{liste}
+\item Sei $x_0 \in D$ und $f = (f_1,\ldots,f_m).$ Dann ist $f$ stetig in $x_0$ gdw. alle $f_j$ stetig in $x_0$ sind. Entsprechendes gilt für "`stetig auf $D$"', "`glm stetig auf $D$"', "`Lipschitzstetig auf $D$"'.
+\item Die Aussagen des Satzes Ana I, 17.1 gelten sinngemäß für Funktionen von mehreren Variablen.
+\item Sei $x_0 \in D$. $f$ ist stetig in $x_0$ gdw. zu jeder Umgebung $V$ von $f(x_0)$ eine Umgebung $U$ von $x_0$ existiert mit $f(U \cap D) \subseteq V$.
+\item Sei $\emptyset \ne E \subseteq \MdR^m$, $f(D) \subseteq E$, $g: E \to \MdR^p$ eine Funktion, $f$ stetig in $x_0 \in D$ und $g$ stetig in $f(x_0)$. Dann ist $g \circ f: D \to \MdR^p$ stetig in $x_0$.
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item folgt aus 2.1
+\item wie in Ana 1
+\item Übung
+\item wie in Ana 1
+\end{beweise}
+
+\begin{beispiele}
+\item $f(x,y) := \begin{cases}
+\frac{xy}{x^2+y^2}, & (x,y) \ne (0,0)\\
+0,                  & (x,y) = (0,0)
+\end{cases}\quad(D = \MdR^2)$
+
+$f(\frac{1}{k},\frac{1}{k}) = \frac{1}{2} \to \frac{1}{2} \ne 0 = f(0,0) \folgt f$ ist in $(0,0)$ \emph{nicht} stetig.
+
+\item $f(x,y) := \begin{cases}
+\frac{1}{y} \sin(xy), & y \ne 0\\
+x,                    & y = 0
+\end{cases}$
+
+Für $y \ne 0: |f(x,y) - f(0,0)| = \frac{1}{|y|}|\sin(xy)| \le \frac{1}{|y|}|xy| = |x|.$
+
+Also gilt: $|f(x,y) - f(0,0)| \le |x|\ \forall (x,y) \in \MdR^2 \folgt f(x,y) \to f(0,0)\ ((x,y) \to (0,0)) \folgt f$ ist stetig in $(0,0)$.
+
+\item Sei $\Phi \in C^1(\MdR),\ \Phi(0) = 0,\ \Phi'(0) = 2$ und $a \in \MdR$.
+
+$f(x,y) := \begin{cases}
+\frac{\Phi(a(x^2+y^2))}{x^2+y^2}, & (x,y) \ne (0,0)\\
+\frac{1}{2},                      & (x,y) = (0,0)
+\end{cases}$
+
+Für welche $a \in \MdR$ ist $f$ stetig in $(0,0)$?
+
+Fall 1: $a = 0$
+
+$f(x,y) = 0\ \forall(x,y) \in \MdR^2\backslash\{(0,0)\} \folgt f$ ist in $(0,0)$ nicht stetig.
+
+Fall 2: $a \ne 0$
+
+$r := x^2 + y^2.\ (x,y) \to (0,0) \equizu ||(x,y)|| \to 0 \equizu r \to 0$, Sei $(x,y) \ne (0,0)$. Dann gilt:
+
+$f(x,y) = \frac{\Phi(ar)}{r} = \frac{\Phi(ar) - \Phi(0)}{r - 0} = a \frac{\Phi(ar) - \Phi(0)}{ar - 0} \overset{r \to 0}{\to} a \Phi'(0) = 2a$. Das heißt: $f(x,y) \to 2a\ ((x,y)\to(0,0))$.
+
+Daher gilt: $f$ ist stetig in $(0,0) \equizu 2a = \frac{1}{2} \equizu a = \frac{1}{4}$.
+\end{beispiele}
+
+\begin{definition*}[Beschränktheit einer Funktion]
+\indexlabel{Beschränktheit!einer Funktion}
+$f:D \to \MdR^m$ heißt \textbf{beschränkt} (auf $D$) gdw. $f(D)$ beschränkt ist $(\equizu \exists c \ge 0: ||f(x)|| \le c\ \forall x \in D)$.
+\end{definition*}
+
+\begin{satz}[Funktionen auf beschränkten und abgeschlossenen Intervallen]
+$D$ sei beschränkt und abgeschlossen und es sei $f \in C(D,\MdR^m)$.
+\begin{liste}
+\item $f(D)$ ist beschränkt und abgeschlossen.
+\item $f$ ist auf $D$ gleichmäßig stetig.
+\item Ist $f$ injektiv auf $D$, so gilt: $f^{-1} \in C(f(D),\MdR^n)$.
+\item Ist $m = 1$, so gilt: $\exists a,b \in D: f(a) \le f(x) \le f(b)\ \forall x \in D$.
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+wie in Ana I.
+\end{beweis}
+
+\begin{satz}[Fortsetzungssatz von Tietze]
+Sei $D$ abgeschlossen und $f \in C(D,\MdR) \folgt \exists F \in C(\MdR^n,\MdR^m): F=f$ auf $D$.
+\end{satz}
+
+\begin{satz}[Lineare Funktionen und Untervektorräume von $\MdR^n$]
+\begin{liste}
+\item Ist $f:\MdR^n \to \MdR^m$ und \emph{linear}, so gilt: $f$ ist Lipschitzstetig auf $\MdR^n$, insbesondere gilt: $f \in C(\MdR^n,\MdR^m)$.
+\item Ist $U$ ein Untervektorraum von $\MdR^n$, so ist $U$ abgeschlossen.
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item Aus der Linearen Algebra ist bekannt: Es gibt eine $(m \times n)$-Matrix $A$ mit $f(x) = Ax$. Für $x,y \in \MdR^n$ gilt: $||f(x)-f(y)|| = ||Ax - Ay|| = ||A(x-y)|| \le ||A||\cdot ||x-y||$
+
+\item Aus der Linearen Algebra ist bekannt: Es gibt einen UVR $V$ von $\MdR^n$ mit: $\MdR^n = U \oplus V$. Definiere $P: \MdR^n \to \MdR^n$ wie folgt: zu $x \in \MdR^n$ existieren eindeutig bestimmte $u \in U,\ v \in V$ mit: $x = u+v;\ P(x) := u$.
+
+Nachrechnen: $P$ ist linear.
+
+$P(\MdR^n) = U$ (Kern $P = V,\ P^2 = P$). Sei $(u^{(k)})$ eine konvergente Folge in $U$ und $x_0 := \lim u^{(k)}$, z.z.: $x_0 \in U$.
+
+Aus (1) folgt: $P$ ist stetig $\folgt P(u^{(k)}) \to P(x_0) \folgt x_0 = \lim u^{(k)} = \lim P(u^{(k)}) = P(x_0) \in P(\MdR^n) = U$.
+\end{beweise}
+
+\begin{definition*}[Abstand eines Vektor zu einer Menge]
+\indexlabel{Abstand!zwischen Vektor und Menge}
+Sei $\emptyset \ne A \subseteq \MdR^n,\ x \in \MdR^n.\ d(x,A) := \inf\{||x-a||:a \in A\}$ heißt der \textbf{Abstand} von x und A.
+
+Klar: $d(a,A) = 0\ \forall a \in A$.
+\end{definition*}
+
+\begin{satz}[Eigenschaften des Abstands zwischen Vektor und Menge]
+\begin{liste}
+\item $|d(x,A) - d(y,A)| \le ||x-y||\ \forall x,y \in \MdR^n$.
+\item $d(x,A) = 0 \equizu x \in \overline{A}$.
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item Seien $x,y \in \MdR^n$. Sei $a \in A$. $d(x,A) \le ||x-a|| = ||x-y+y-a|| \le ||x-y||+||y-a||\\
+\folgt d(x,A)-||x-y|| \le ||y-a||\ \forall a \in A\\
+\folgt d(x,A) - ||x-y|| \le d(y,A)\\
+\folgt d(x,A) - d(y,A) \le ||x-y||$
+
+Genauso: $d(y,A) - d(x,A) \le ||y-x|| = ||x-y|| \folgt$ Beh.
+\item \begin{itemize}
+\item["`$\Leftarrow$"':] Sei $x \in \overline{A} \folgtnach{2.2} \exists$ Folge $(a^{(k)})$ in $A: a^{(k)} \to x \folgtnach{(1)} d(a^{(k)},A) \to d(x,A) \folgt d(x,A) = 0$.
+\item["`$\Rightarrow$"':] Sei $d(x,A) = 0.\ \forall k \in \MdN\ \exists a^{(k)} \in A: ||a^{(k)} - x|| < \frac{1}{k} \folgt a^{(k)} \to x \folgtnach{2.2} x \in \overline{A}$.
+\end{itemize}
+\end{beweise}
+
+
+
+\chapter{Partielle Ableitungen}
+
+Stets in diesem Paragraphen: $\emptyset\ne D\subseteq \MdR^n$, $D$ sei offen und $f:D\to\MdR$ eine reellwertige Funktion. $x_0 = (x_1^{(0)}, \ldots, x_n^{(0)}) \in D$. Sei $j\in\{1,\ldots,n\}$ (fest).
+
+Die Gerade durch $x_0$ mit der Richtung $e_j$ ist gegeben durch folgende Menge: $\{x_0+te_j:t\in\MdR\}$. $D$ offen $\folgt$ $\exists\delta>0: U_\delta(x_0)\subseteq D$. $\|x_0+te_j - x_0\| = \|te_j\| = |t| \folgt x_0+e_j \in D $ für $t\in(-\delta,\delta)$. $g(t) := f(x_0+te_j)$ $(t\in(-\delta,\delta))$
+ Es ist $g(t) = f(x_1^{(0)}, \ldots, x_{j-1}^{(0)}, x_j^{(0)} + t, x_{j+1}^{(0)}, \ldots, x_n^{(0)} )$
+
+\begin{definition}
+$f$ heißt in $x_0$ partiell differenzierbar nach $x_j$ :\equizu es exisitert der Grenzwert $$\lim_{t\to0}\frac{f(x_0+te_j) - f(x_0)}t$$ und ist $\in\MdR$. In diesem Fall heißt obiger Grenzwert die partielle Ableitung von $f$ in $x_0$ nach $x_j$ und man schreibt für diesen Grenzwert: $$f_{x_j}(x_0) \text{ oder }\frac{\partial f}{\partial x_j}(x_0)$$
+
+Im Falle $n=2$ oder $n=3$ schreibt man $f_x$, $f_y$, $f_z$ bzw. $\frac{\partial f}{\partial x}$, $\frac{\partial f}{\partial y}$, $\frac{\partial f}{\partial z}$
+\end{definition}
+
+
+\begin{beispiele}
+\item $f(x,y,z) = xy+z^2+e^{x+y}$; $f_x(x,y,z) = y + e^{x+y} = \frac{\partial f}{\partial x}(x,y,z)$. $f_x(1,1,2)=1+e^2$. $f_y(x,y,z) = x+e^{x+y}$. $f_z(x,y,z) = 2z = \frac{\partial f}{\partial z}(x,y,z)$.
+\item $f(x) = f(x_1,\ldots, x_n) = \|x\| = \sqrt{x_1^2 + \cdots + x_n^2}$.
+
+Sei $x\ne0$: $f_{x_j}(x) = \frac{1}{2\sqrt{\ldots}}2x_j = \frac{x_j}{\|x\|} $
+
+Sei $x=0$: $\frac{f(t,0,\ldots,0) - f(0,0,\ldots,0)}{t} = \frac{|t|}{t} = \begin{cases} 1, &t>0\\-1,&t<0\end{cases} \folgt f$ ist in $(0,\ldots,0)$ nicht partiell differenzierbar nach $x_1$. Analog: $f$ ist in $(0,\ldots,0)$ nicht partiell differenzierbar nach $x_2,\ldots,x_n$
+\item $f(x,y) = \begin{cases} \frac{xy}{x^2+y^2}, &(x,y)\ne(0,0)\\0,&(x,y) = (0,0) \end{cases}$
+
+$\frac{f(t,0) - f(0,0)}{t} = 0 \to 0 \ (t\to0) \folgt f$ ist in $(0,0)$ partiell differenzierbar nach $x$ und $f_x(0,0) = 0$. Analog: $f$ ist in $(0,0)$ partiell differenzierbar nach $y$ und $f_y(0,0) = 0$. Aber: $f$ ist in $(0,0)$ nicht stetig.
+\end{beispiele}
+
+\def\grad{\mathop{\rm grad}\nolimits}
+\begin{definition}
+\indexlabel{Partielle Differenzierbarkeit}
+\indexlabel{Partielle Ableitung}
+\indexlabel{Differenzierbarkeit!partielle}
+\indexlabel{Ableitung!partielle}
+\begin{liste}
+\item $f$ heißt in $x_0$ partiell differenzierbar $:\equizu$ $f$ ist in $x_0$ partiell differenzierbar nach allen Variablen $x_1,\ldots, x_n$. In diesem Fall heißt $\grad f(x_0) := \nabla f(x_0) := (f_{x_1}(x_0),\ldots, f_{x_n}(x_0))$ der Gradient von $f$ in $x_0$. \indexlabel{Gradient}
+\item $f$ ist auf $D$ partiell differenzierbar nach $x_j$ oder $f_{x_j}$ ist auf $D$ vorhanden :\equizu $f$ ist in jedem $x\in D$ partiell differenzierbar nach $x_j$. In diesem Fall wird durch $x\mapsto f_{x_j}(x)$ eine Funktion $f_{x_j}: D\to \MdR$ definiert die partielle Ableitung von $f$ auf $D$ nach $x_j$.
+\item $f$ heißt partiell differenzierbar auf $D$ :\equizu $f_{x_1},\ldots,f_{x_n}$ sind auf $D$ vorhanden.
+\item $f$ heißt auf $D$ stetig partiell differenzierbar :\equizu $f$ ist auf $D$ partiell differenzierbar und $f_{x_1},\ldots,f_{x_n}$ sind auf $D$ stetig. In diesem Fall schreibt man $f\in C^1(D,\MdR)$.
+\end{liste}
+\end{definition}
+
+\begin{beispiele}
+\item Sei $f$ wie in obigem Beispiel (3). $f$ ist in $(0,0)$ partiell differenzierbar und $\grad f(0,0) = (0,0)$
+\item Sei $f$ wie in obigem Beispiel (2). $f$ ist auf $\MdR^n\backslash\{0\}$ partiell differenzierbar und $\grad f(x) = (\frac{x_1}{\|x_n\|},\ldots,\frac{x_n}{\|x_n\|}) = \frac{1}{\|x\|} x \ (x\ne 0)$
+\end{beispiele}
+
+\begin{definition}
+Seien $j,k\in\{1,\ldots,n\}$ und $f_{x_j}$ sei auf $D$ vorhanden. Ist $f_{x_j}$ in $x_0\in D$ partiell differenzierbar nach $x_k$, so heißt $$f_{x_jx_k}(x_0) := \frac{\partial^2 f}{\partial x_j\partial x_k}(x_0) := \left(f_{x_j}\right)_{x_k}(x_0)$$ die partielle Ableitung zweiter Ordnung von $f$ in $x_0$ nach $x_j$ und $x_k$. Ist $k=j$, so schreibt man:
+$$\frac{\partial^2 f}{\partial x_j^2}(x_0) = \frac{\partial^2 f}{\partial x_j\partial x_j}(x_0) $$ Entsprechend definiert man partielle Ableitungen höherer Ordnung (soweit vorhanden).
+\end{definition}
+
+\begin{schreibweisen}
+$\ds f_{xxyzz} = \frac{\partial^5 f}{\partial x^2\partial y\partial z^2}$, vergleiche: $\ds\frac{\partial^{180} f}{\partial x^{179}\partial y}$
+\end{schreibweisen}
+
+\begin{beispiele}
+\item $f(x,y) = xy + y^2$, $f_x(x,y)=y$, $f_{xx} = 0$, $f_y = x + 2y$, $f_{yy} = 2$, $f_{xy}=1$, $f_{yx} = 1$.
+\item $f(x,y,z) = xy + z^2e^x$, $f_x = y+z^2e^x$, $f_{xy} = 1$, $f_{xyz} = 0$. $f_z=2ze^x$, $f_{zy}=0$, $f_{zyx} = 0$.
+\item $f(x,y) = \begin{cases} \frac{xy(x^2-y^2)}{x^2+y^2}, & (x,y) \ne (0,0) \\ 0, &(x,y)=(0,0)\end{cases}$
+
+Übungsblatt: $f_{xy}(0,0)$, $f_{yx}(0,0)$ exisitieren, aber $f_{xy}(0,0) \ne f_{yx}(0,0)$
+\end{beispiele}
+
+\begin{definition}
+Sei $m\in\MdN$. $f$ heißt auf $D$ $m$-mal steig partiell differenzierbar :\equizu alle partiellen Ableitungen  von $f$ der Ordnung $\le m$ sind auf $D$ vorhanden und auf $D$ stetig. In diesem Fall schreibt man: $f\in C^m(D,\MdR)$
+
+$$C^0(D, \MdR) := C(D,\MdR),\qquad C^\infty(D,\MdR) := \bigcap_{k\in\MdN_0}C^{k}(D,\MdR)$$
+\end{definition}
+
+\begin{satz}[Satz von Schwarz]
+Es sei $f\in C^2(D,\MdR)$, $x_0\in D$ und $j,k\in\{1,\ldots,n\}$. Dann: $f_{x_jx_k}(x_0) = f_{x_kx_j}(x_0)$
+\end{satz}
+
+\begin{satz}[Folgerung]
+Ist $f\in C^m(D,\MdR)$, so sind die partiellen Ableitungen von $f$ der Ordnung $\le m$ unabhängig von der Reihenfolge der Differentation.
+\end{satz}
+
+\begin{beweis}
+O.B.d.A: $n=2$ und $x_0=(0,0)$. Zu zeigen: $f_{xy}(0,0)=f_{yx}(0,0)$. $D$ offen $\folgt\exists\delta>0: U_\delta(0,0)\subseteq D$. Sei $(x,y) \in U_\delta(0,0)$ und $x\ne 0\ne y$. $$\nabla:=f(x,y)-f(x,0)-(f(0,y)-f(0,0)),\quad\varphi(t):=f(t,y)-f(t,0)$$ f"ur $t$ zwischen $0$ und $x$. $\varphi$ ist differenzierbar und $\varphi'(t)=f_x(t,y)-f_x(t,0)$. $\varphi(x)-\varphi(0)=\nabla$. MWS, Analysis 1 $\folgt\exists\xi=\xi(x,y)$ zwischen $0$ und $x$: $\nabla=x\varphi'(\xi)=x(f_x(\xi,y)-f_x(\xi,0))$. $g(s):=f_x(\xi,s)$ f"ur s zwischen $0$ und $y$; $g$ ist differenzierbar und $g'(s)=f_{xy}(\xi,s)$. Es ist $\nabla=x(g(y)-g(0))\gleichnach{MWS}xyg'(\eta),\ \eta=\eta(x,y)$ zwischen $0$ und $y$. $\folgt \nabla=xyf_{xy}(\xi,\eta).$ (1)\\
+$\psi(t):=f(x,t)-f(0,t)$, $t$ zwischen $0$ und $y$. $\psi'(t)=f_y(x,t)-f_y(0,t)$. $\nabla=\psi(y)-\psi(0)$. Analog: $\exists \bar\eta=\bar\eta(x,y)$ und $\bar\xi=\bar\xi(x,y)$, $\bar\eta$ zwischen $0$ und $y$, $\bar\xi$ zwischen $0$ und $x$. $\nabla=xyf_{yx}(\bar\xi,\bar\eta).$ (2)\\
+Aus (1), (2) und $xy\ne0$ folgt $f_{xy}(\xi,\eta)=f_{yx}(\bar\xi,\bar\eta)$. $(x,y)\to(0,0)\folgt\xi,\bar\xi,\eta,\bar\eta\to 0\folgtwegen{f\in C^2}f_{xy}(0,0)=f_{yx}(0,0)$
+\end{beweis}
+
+\chapter{Differentiation}
+\def\grad{\mathop{\rm grad}\nolimits}
+
+\begin{vereinbarung}
+Stets in dem Paragraphen: $\emptyset\ne D\subseteq\MdR^n$, $D$ offen und $f:D\to\MdR^m$ eine Funktion, also $f=(f_1,\ldots,f_m)$
+\end{vereinbarung}
+
+\begin{definition*}
+\begin{liste}
+\item Sei $k\in\MdN$. $f\in C^k(D,\MdR^m) :\equizu f_j\in C^k(D,\MdR)\ (j=1,\ldots,m)$
+\item Sei $x_0\in D$. $f$ hei"st partiell differenzierbar in $x_0 :\equizu$ jedes $f_j$ ist in $x_0$ partiell differenzierbar. In diesem Fall hei"st
+$$\frac{\partial f}{\partial x}(x_0):=\frac{\partial(f_1,\ldots,f_m)}{\partial(x_1,\ldots,x_n)}:=J_f(x_0):=\begin{pmatrix}
+\frac{\partial f_1}{\partial x_1}(x_0) & \cdots & \frac{\partial f_1}{\partial x_n}(x_0) \\
+\vdots & & \vdots \\
+\frac{\partial f_m}{\partial x_1}(x_0) & \cdots & \frac{\partial f_m}{\partial x_n}(x_0)
+\end{pmatrix}$$
+\indexlabel{Jacobi-Matrix}
+\indexlabel{Funktionalmatrix}
+die \textbf{Jacobi-} oder \textbf{Funktionalmatrix} von $f$ in $x_0$.
+\end{liste}
+\textbf{Beachte:}
+(1) $J_f(x_0)$ ist eine $(m \times n)$-Matrix, (2) Ist $m=1\folgt J_f(x_0)=\grad f(x_0)$
+\end{definition*}
+
+\begin{erinnerung}
+Sei $I\subseteq\MdR$ ein Intervall, $\varphi:I\to\MdR$ eine Funktion, $x_0\in I$. $\varphi$ ist in $x_0$ differenzierbar
+$$\overset{\text{ANA 1}}{\equizu}\exists a \in\MdR: \ds\lim_{h\to 0}\frac{\varphi(x_0+h)-\varphi(x_0)}{h}=a$$
+$$\equizu\exists a\in\MdR:\ds\lim_{h\to 0}\frac{\varphi(x_0+h)-\varphi(x_0)-ah}{h}=0$$
+$$\equizu\exists a\in\MdR: \ds\lim_{h\to 0}\frac{\varphi(x_0+h)-\varphi(x_0)-ah}{|h|}=0$$
+\end{erinnerung}
+
+\begin{definition*}
+\begin{liste}
+\item Sei $x_0\in D$. $f$ hei"st \begriff{differenzierbar} (db) in $x_0 :\equizu \exists (m \times n)$-Matrix $A:\ds\lim_{h\to 0}\frac{f(x_0+h)-f(x_0)-Ah}{\|h\|}=0\ (*)$
+\item $f$ hei"st differenzierbar auf $D\ :\equizu f$ ist in jedem $x\in D$ differenzierbar.
+\end{liste}
+\end{definition*}
+
+\begin{bemerkungen}
+\begin{liste}
+\item $f$ ist differenzierbar in $x_0\equizu\exists (m \times n)$-Matrix $A$: $$\ds\lim_{x\to x_0}\frac{f(x)-f(x_0)-A(x-x_0)}{\|x-x_0\|}=0$$
+\item Ist $m=1$, so gilt: $f$ ist differenzierbar in $x_0$ $$\equizu\exists a \in\MdR^n:\ds\lim_{h\to 0}\frac{f(x_0+h)-f(x_0)-ah}{\|h\|}=0\ (**)$$
+\item Aus 2.1 folgt: $f$ ist differenzierbar in $x_0\equizu$ jedes $f_j$ ist differenzierbar in $x_0$.
+\end{liste}
+\end{bemerkungen}
+
+\begin{satz}[Differnzierbarkeit und Stetigkeit]
+$f$ sei in $x_0\in D$ differenzierbar
+\begin{liste}
+\item $f$ ist in $x_0$ stetig
+\item $f$ ist in $x_0$ partiell differenzierbar und die Matrix A in $(*)$ ist eindeutig bestimmt: \\$A=J_f(x_0)$. $f'(x_0):=A=J_f(x_0)$ (\begriff{Ableitung} von $f$ in $x_0$).
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+Sei A wie in $(*)$, $A=(a_{jk})$, $\varrho(h):=\frac{f(x_0+h)-f(x_0)-Ah}{\|h\|}$, also: $\varrho(h)\to0\ (h\to 0)$. Sei $\varrho=(\varrho_1,\ldots,\varrho_m)$. 2.1 $\folgt \varrho_j(h)\to 0\ (h\to 0)\ (j=1,\ldots,m)$
+\begin{liste}
+\item $f(x_0+h)=f(x_0)+\underbrace{Ah}_{\overset{\text{3.5}}{\to}0}+\underbrace{\|h\|\varrho(h)}_{\to 0\ (h\to 0)}\to f(x_0)\ (h\to 0)$
+\item Sei $j\in\{1,\ldots,m\}$ und $k\in\{1,\ldots,n\}$. Zu zeigen: $f_j$ ist partiell differenzierbar und $\frac{\partial f_j}{\partial x_k}(x_0)=a_{jk}$. $\varrho_j(h)=\frac{1}{\|h\|}(f_j(x_0+h)-f_j(x_0)-(a_{j1},\ldots,a_{jn})\cdot h)\to 0\ (h \to 0)$. F"ur $t\in\MdR$ sei $h=te_k\folgt\varrho(h)=\frac{1}{|t|}(f(x_0+te_k)-a_{jk}t)\to 0\ (t\to 0)\folgt\left|\frac{f(x_0+te_k)-f(x_0)}{t}-a_{jk}\right|\to 0\ (t\to 0)\folgt f_j$ ist in $x_0$ partiell differenzierbar und $\frac{\partial f_j}{\partial x_k}(x_0)=a_{jk}$.
+\end{liste}
+\end{beweis}
+
+\begin{beispiele}
+\item $$f(x,y)=\begin{cases}
+\frac{xy}{x^2+y^2}&\text{, falls } (x,y)\ne(0,0)\\
+0&\text{, falls } (x,y)=(0,0)
+\end{cases}$$
+Bekannt: $f$ ist in $(0,0)$ \textbf{nicht} stetig, aber partiell differenzierbar und $\grad f(0,0)=(0,0)$ 5.1 $\folgt f$ ist in $(0,0)$ \textbf{nicht} differenzierbar.
+\item $$f(x,y)=\begin{cases}
+(x^2+y^2)\sin\frac{1}{\sqrt{x^2+y^2}}&\text{, falls } (x,y)\ne(0,0)\\
+0&\text{, falls }(x,y)=(0,0)
+\end{cases}$$
+F"ur $(x,y)\ne(0,0): \left|f(x,y)\right|=(x^2+y^2)\left|\sin\frac{1}{\sqrt{x^2+y^2}}\right|\le x^2+y^2\overset{(x,y)\to(0,0)}{\folgt}f$ ist in $(0,0)$ stetig. $\frac{f(t,0)-f(0,0)}{t}=\frac{1}{t}t^2\sin\frac{1}{|t|}=t\sin\frac{1}{|t|}\to 0\ (t\to 0)\folgt f$ ist in $(0,0)$ partiell differenzierbar nach $x$ und $f_x(0,0)=0$. Analog: $f$ ist in $(0,0)$ partiell differenzierbar nach $y$ und $f_y(0,0)=0$. $\varrho(h)=\frac{1}{\|h\|}f(h)\gleichwegen{h=(h_1,h_2)}\frac{1}{\sqrt{h_1^2+h_2^2}}(h_1^2+h_2^2)\sin\frac{1}{h_1^2+h_2^2}=\sqrt{h_1^2+h_2^2}\underbrace{\sin\frac{1}{\sqrt{h_1^2+h_2^2}}}_{\text{beschr"ankt}}\to 0\ (h\to 0)\folgt f$ ist differenzierbar in $(0,0)$ und $f'(0,0)=\grad f(0,0)=(0,0)$
+
+\item $$f(x,y) := \begin{cases}
+\frac{x^3}{x^2+y^2}&\text{, falls} (x,y) \ne (0,0)\\
+0&\text{, falls} (x,y) = (0,0)\end{cases}$$
+
+\"Ubung: $f$ ist in $(0,0)$ stetig.
+
+$\frac{f(t,0) - f(0,0)}{t} = \frac{1}{t} \frac{t^3}{t^2} = 1 \to 1\ (t \to 0).\ \frac{f(0,t) - f(0,0)}{t} = 0 \to 0\ (t \to 0)$.
+
+$\folgt f$ ist in $(0,0)$ partiell db und $\grad f(0,0) = (1,0)$.
+
+Für $h = (h_1,h_2) \ne (0,0): \rho(h) = \frac{1}{||h||}(f(h) - f(0,0) - \grad f(0,0)\cdot h) = \frac{1}{||h||} (\frac{h_1^3}{h_1^2+h_2^2} - h_1) = \frac{1}{||h||} \frac{-h_1 h_2^2}{h_1^2 + h_2^2} =  \frac{-h_1 h_2^2}{(h_1^2 + h_2^2)^{3/2}}.$
+
+Für $h_2 = h_1 > 0: \rho(h) = \frac{-h_1^3}{(\sqrt{2})^3 h_1^3} = - \frac{1}{(\sqrt{2})^3} \folgt \rho(h) \nrightarrow 0\ (h \to 0) \folgt f$ ist in $(0,0)$ \emph{nicht} db.
+\end{beispiele}
+
+\begin{satz}[Stetigkeit aller paritiellen Ableitungen]
+Sei $x_0 \in D$ und \emph{alle} partiellen Ableitungen $\frac{\partial f_j}{\partial x_k}$ seien auf $D$ vorhanden und in $x_0$ stetig $(j=1,\ldots,m,\ k=1,\ldots,n)$. Dann ist $f$ in $x_0$ db.
+\end{satz}
+
+\begin{beweis}
+O.B.d.A: $m=1$ und $x_0=0$. Der Übersicht wegen sei $n=2$.
+
+Für $h = (h_1,h_2) \ne (0,0):$ $$\rho(h) := \frac{1}{||h||}(f(h) - f(0,0) - (\underbrace{h_1 f_x(0,0) + h_2 f_y(0,0)}_{= \grad f(0,0)\cdot h}))$$
+
+$f(h) - f(0) = f(h_1,h_2) - f(0,0) = \underbrace{f(h_1,h_2) - f(0,h_2)}_{=:\Delta_1} + \underbrace{f(0,h_2) - f(0,0)}_{=:\Delta_2}$
+
+$\varphi(t) := f(t,h_2),\ t$ zwischen $0$ und $h_1 \folgt \Delta_1 = \varphi(h_1) - \varphi(0),\ \varphi'(t) = f_x(t,h_2)$
+
+Aus dem Mittelwertsatz aus Analysis I folgt:
+$\exists \xi = \xi(h)$ zw. $0$ und $h_1: \Delta_1 = h_1\varphi(\xi) = h_1 f_x(\xi,h_2)\\
+\exists \eta = \eta(h)$ zw. $0$ und $h_2: \Delta_2 = h_2\varphi(\eta) = h_2 f_x(\eta,h_2)$
+
+$\folgt \rho(h) := \frac{1}{||h||}(h_1 f_x(\xi,h_2) - h_2 f_y(0,\eta) - (h_1 f_x(0,0) + h_2 f_y(0,0)))\\
+= \frac{1}{||h||} h(\underbrace{f_x(\xi,h_2) - f_x(0,0),\ f_y(0,\eta) - f_y(0,0)}_{=:v(h)})
+= \frac{1}{||h||} h\cdot v(h)$
+
+$\folgt |\rho(h)| = \frac{1}{||h||} |h\cdot v(h)| \overset{\text{CSU}}{\le} \frac{1}{||h||} ||h|| ||v(h)|| = ||v(h)||$
+
+$f_x,f_y$ sind stetig in $(0,0) \folgt v(h) \to 0\ (h \to 0) \folgt \rho(h) \to 0\ (h \to 0)$
+\end{beweis}
+
+\begin{folgerung}
+Ist $f \in C^1(D,\MdR^m) \folgt f$ ist auf $D$ db.
+\end{folgerung}
+
+\begin{definition*}
+Sei $k \in \MdN$ und $f \in C^k(D,\MdR^m)$. Dann heißt $f$ \textbf{auf $D$ $k$-mal stetig db}.
+\end{definition*}
+
+\begin{beispiele}
+\item $f(x,y,z) = (x^2+y, xyz).\ J_f(x,y,z) = \begin{pmatrix}
+2x & 1 & 0\\
+yz & xz & xy\end{pmatrix} \folgt f \in C^1(\MdR^3,\MdR^2)$
+
+$\folgtnach{5.3} f$ ist auf $\MdR^3$ db und $f'(x,y,z) = J_f(x,y,z)\ \forall (x,y,z) \in \MdR^3.$
+
+\item Sei $f:\MdR^n \to \MdR^m$ \emph{linear}, es ex. also eine $(m \times n)$-Matrix $A:f(x) = Ax\ (x \in \MdR^n).$
+
+Für $x_0 \in \MdR^n$ und $h \in \MdR^n \backslash\{0\}$ gilt:\\
+$\rho(h) = \frac{1}{||h||}(f(x_0+h) - f(x_0) - Ah) = \frac{1}{||h||}(f(x_0) + f(h) - f(x_0) - f(h)) = 0.$
+
+Also: $f$ ist auf $\MdR^n$ db und $f'(x) = A\ \forall x \in \MdR^n$. Insbesondere ist $f \in C^1(\MdR^n,\MdR^m).$
+
+\item[(2.1)] $n = m$ und $f(x) = x = Ix$ ($I = (m \times n)$-Einheitsmatrix). Dann: $f'(x) = I\ \forall x \in \MdR^n$.
+
+\item[(2.2)] $m = 1:\ \exists a \in \MdR^n: f(x) = ax\ (x \in \MdR^n)$ (Linearform). $f'(x) = a\ \forall x \in \MdR^n$.
+
+\item $$f(x,y) = \begin{cases}
+(x^2+y^2) \sin \frac{1}{\sqrt{x^2+y^2}} & \text{, falls} (x,y) \ne (0,0)\\
+0 & \text{, falls} (x,y) = (0,0)\end{cases}$$
+
+Bekannt: $f$ ist in $(0,0)$ db. \"Ubungsblatt: $f_x,f_y$ sind in $(0,0)$ \emph{nicht} stetig.
+
+\item Sei $I \subseteq \MdR$ ein Intervall und $g = (g_1,\ldots,g_m): I \to \MdR^m;\ g_1,\ldots,g_m: I \to \MdR.$
+
+$g$ ist in $t_0 \in I$ db $\equizu g_1,\ldots,g_m$ sind in $t_0 \in I$ db. In diesem Fall gilt: $g'(t_0) = (g_1'(t_0),\ldots,g_m'(t_0)).$
+
+\item[(4.1)] $m = 2: g(t) = (\cos t,\sin t),\ t \in [0,2\pi].\ g'(t) = (-\sin t,\cos t).$
+\item[(4.2)] Seien $a,b \in \MdR^m,\ g(t) = a+t(b-a),\ t \in [0,1],\ g'(t) = b-a$.
+\end{beispiele}
+
+\begin{satz}[Kettenregel]
+$f$ sei in $x_0 \in D$ db, $\emptyset \ne E \subseteq \MdR^m,\ E$ sei offen, $f(D) \subseteq E$ und $g:E \to \MdR^p$ sei db in $y_0 := f(x_0)$. Dann ist $g \circ f: D \to \MdR^p$ db in $x_0$ und $$(g \circ f)'(x_0) = g'(f(x_0))\cdot f'(x_0)\text{ (Matrizenprodukt)}$$
+\end{satz}
+
+\begin{beweis}
+$A := f'(x_0),\ B := g'(y_0) = g'(f(x_0)),\ h := g \circ f.$
+
+$$\tilde{g}(y) = \begin{cases}
+\frac{g(y)-g(y_0)-B(y-y_0)}{||y-y_0||} & \text{, falls } y \in E\backslash\{y_0\} \\
+0                                      & \text{, falls } y = y_0
+\end{cases}$$
+
+$g$ ist db in $y_0 \folgt \tilde{g}(y) \to 0\ (y \to y_0).$ Aus Satz 5.1 folgt, dass $f$ stetig ist in $x_0 \folgt f(x) \to f(x_0) = y_0\ (x \to x_0) \folgt \tilde{g}(f(x)) \to 0\ (x \to x_0)$
+
+Es ist $g(y) - g(y_0) = ||y-y_0|| \tilde{g}(y) = B(y-y_0)\ \forall y \in E.$
+
+$\ds{\frac{h(x)-h(x_0)-BA(x-x_0)}{||x-x_0||} = \frac{1}{||x-x_0||}(g(f(x))-g(f(x_0))-BA(x-x_0))}$\\
+$\ds{= \frac{1}{||x-x_0||} (||f(x)-f(x_0)|| \tilde{g}(f(x)) + B(f(x)-f(x_0))-BA(x-x_0))}$\\
+$\ds{= \underbrace{\frac{||f(x)-f(x_0)||}{||x-x_0||}}_{=:D(x)} \underbrace{\tilde{g}(f(x))}_{\to 0} + \underbrace{B(\underbrace{\frac{f(x)-f(x_0)-A(x-x_0)}{||x-x_0||}}_{\overset{f\text{ db}}{\to} 0\ (x \to x_0)})}_{\overset{\text{3.5}}{\to} 0\ (x \to x_0)}}$
+
+Noch zu zeigen: $D(x)$ bleibt in der "`Nähe"' von $x_0$ beschränkt.
+
+$0 \le D(x) = \ds{\frac{||f(x)-f(x_0)-A(x-x_0)+A(x-x_0)||}{||x-x_0||}}$\\
+$\ds{= \underbrace{\frac{||f(x)-f(x_0)-A(x-x_0)||}{||x-x_0||}}_{\to 0\ (x \to x_0)} + \underbrace{\frac{||A(x-x_0)||}{||x-x_0||}}_{\le ||A||}}.$
+\end{beweis}
+
+\paragraph{Wichtigster Fall} $g = g(x_1,\ldots,x_m)$ reellwertig, $h(x) = h(x_1,\ldots,x_n) = g(f_1(x_1,\ldots,x_n),f_2(x_1,\ldots,x_n),\ldots,f_m(x_1,\ldots,x_n)) = (g \circ f)(x).$
+
+$h_{x_j}(x) = g_{x_1}(f(x))\frac{\partial f_1}{\partial x_j}(x)+g_{x_2}(f(x))\frac{\partial f_2}{\partial x_j}(x)+\ldots+g_{x_m}(f(x))\frac{\partial f_m}{\partial x_j}(x)$
+\begin{beispiel}
+$g = g(x,y,z),\ h(x,y) = g(xy,x^2+y,x \sin y) = g(f(x,y)).$
+
+$h_x(x,y) = g_x(f(x,y))y + g_y(f(x,y))2x + g_z(f(x,y))\sin y.$\\
+$h_y(x,y) = g_x(f(x,y))x + g_y(f(x,y))1 + g_z(f(x,y))x \cos y.$
+\end{beispiel}
+
+\begin{hilfssatz}
+Es sei $A$ eine $(m \times n)$-Matrix (reell), es sei $B$ eine $(n \times n)$-Matrix (reell) und es gelte
+\begin{itemize}
+\item[(i)] $BA = I $($= (n \times n)$-Einheitsmatrix) und
+\item[(ii)] $AB = \tilde{I} $($= (m \times m)$-Einheitsmatrix)
+\end{itemize}
+Dann: $m = n$.
+\end{hilfssatz}
+
+\begin{beweis}
+$\Phi(x):=Ax (x \in \MdR^n). \text{ Lin. Alg.} \folgt \Phi \text{ ist linear, }
+\Phi:\MdR^n \rightarrow \MdR^m. \folgtnach{(i)} \Phi \text{ ist injektiv, also }
+Kern \Phi = {0}. \text{ (ii) Sei }z \in \MdR^m, x:=Bz \folgtnach{(ii)} z = ABz = Ax = \Phi(x) \folgt \Phi \text{ ist surjektiv. Dann: } n = \dim \MdR^n \gleichnach{LA} \dim\kernn\Phi + \text{dim}\Phi(\MdR^n) = m.$
+\end{beweis}
+
+\begin{satz}[Injektivität und Dimensionsgleichheit]
+$f:D\rightarrow \MdR^n$ sei db auf $D$, es sei $f(D)$ offen, $f$ injektiv auf $D$ und $f^{-1}:f(D)\rightarrow \MdR^n$ sei db auf $f(D)$. Dann:
+\item[(1)] $m = n$
+\item[(2)] $\forall x \in D:f'(x)$ ist eine invertierbare Matrix und $f'(x)^{-1} = (f^{-1})'(f(x))$
+\end{satz}
+
+\textbf{Beachte:}
+\begin{itemize}
+\item[(1)] Ist $D$ offen und $f:D\rightarrow \MdR^m$ db, so muss i. A. $f(D)$ nicht offen sein. Z.B.: $f(x) = \sin x, D = \MdR, f(D) = [-1,1]$
+\item[(2)] Ist $D$ offen, $f:D\rightarrow \MdR^m$ db und injektiv, so muss i.A. $f^{-1}$ \underline{nicht} db sein. Z.B.: $f(x) = x^3, D = \MdR, f^{-1}$ ist in 0 \underline{nicht} db.
+\end{itemize}
+
+\begin{beweis} von 5.5: $g:=f^{-1}; x_0 \in D, z_0:=f(x_0) (\folgt x_0 = g(z_0))$
+Es gilt: $g(f(x)) = x \forall x \in D, f(g(z)) = z \forall z \in f(D) \folgtnach{5.4} g'(f(x))\cdot f'(x) = I \forall x \in D; f'(g(z))\cdot g'(z) = \tilde{I}
+\forall z \in f(D) \folgt \underbrace{g'(z_0)}_{=:B}\cdot \underbrace{f'(x_0)}_{=:A} = I, f'(x_0)\cdot g'(z_0) = \tilde{I} \folgtnach{5.5} m = n$ und $f'(x_0)^{-1} = g'(z_0) = (f^{-1})'(f(x_0))$.
+\end{beweis}
+
+\theoremstyle{numberbreak}
+\newtheorem{spezialfall}[satz]{Spezialfall}
+\chapter{Differenzierbarkeitseigenschaften reellwertiger Funktionen}
+\def\grad{\mathop{\rm grad}\nolimits}
+
+\begin{definition}
+\begin{liste}
+\item Seien $a,b \in \MdR^n; S[a,b]:=\{a+t(b-a): t\in [0,1]\}$ hei"st
+\begriff{Verbindungsstrecke} von a und b
+\item $M\subseteq \MdR^n$ heißt \begriff{konvex} $:\equizu$\ aus $a,b \in M$ folgt
+stets: $S[a,b] \subseteq M$
+\item Sei $k \in \MdN$ und $x^{(0)},\ldots,x^{(k)} \in \MdR^n.\ S[x^{(0)},\ldots,x^{(k)}]:=\bigcup_{j=1}^{k}S[x^{(j-1)}, x^{(j)}]$ heißt Streckenzug durch $x^{(0)},\ldots,x^{(k)}$ (in dieser Reihenfolge!)
+\item Sei $G \subseteq \MdR^n$. $G$ heißt \begriff{Gebiet}$:\equizu\ G$ ist offen und aus $a,b \in G$ folgt: $\exists x^{(0)},\ldots,x^{(k)} \in G: x^{(0)}=a, x^{(k)}=b$ und $S[x^{(0)},\ldots,x^{(k)}] \subseteq G$.
+\end{liste}
+\end{definition}
+
+\begin{vereinbarung}
+Ab jetzt in diesem Paragraphen: $\emptyset \ne D \subseteq \MdR^n$, $D$ offen und
+$f:D\to \MdR$ eine Funktion.
+\end{vereinbarung}
+
+\begin{satz}[Der Mittelwertsatz]
+$f:D\to\MdR$ sei differenzierbar auf $D$, es seien $a,b \in D$ und $S[a,b]\subseteq D$. Dann: $$\exists\ \xi \in S[a,b]: f(b)-f(a)=f'(\xi)\cdot(b-a)$$
+$ $%Bug
+\end{satz}
+
+\begin{beweis}
+Sei $g(t):=a+t\cdot(b-a)$ für $t\in[0,1]$. $g([0,1])=S[a,b]\subseteq D$. $\Phi(t):=f(g(t)) (t \in [0,1])$ 5.4 $\folgt \Phi$ ist differenzierbar auf $[0,1]$ und $\Phi'(t) = f'(g(t))\cdot g'(t) = f'(a+t(b-a))\cdot(b-a)$. $f(b)-f(a)=\Phi(1)-\Phi(0) \folgtnach[MWS, AI] \Phi'(\eta) = f'(\underbrace{a+\eta(b-a)}_{=:S})\cdot(b-a), \eta \in [0,1]$
+\end{beweis}
+
+\begin{folgerungen}
+Sei $D$ ein \textbf{Gebiet} und $f,g:D\to\MdR$ seien differenzierbar auf $D$.
+\begin{liste}
+\item Ist $f'(x)=0\ \forall x \in D \folgt f$ ist auf $D$ konstant.
+\item Ist $f'(x)=g'(x) \forall x \in D \folgt \exists c \in \MdR: f=g+c$ auf $D$.
+\end{liste}
+\end{folgerungen}
+
+\begin{beweis}
+(2) folgt aus (1). (1) Seien $a,b \in D$. Z.z.: $f(a)=f(b)$.
+$\exists x^{(0)},\ldots,x^{(k)} \in D, x^{(0)}=a, x^{(k)}=b: S[x^{(0)},\ldots,x^{(k)}] \subseteq D$
+$\forall j \in \{1,\ldots,k\}$ ex. nach 6.1 ein $\xi_j \in S[x^{(j-1)}, x^{(j)}]:
+f(x^{(j)})-f(x^{(j-1)}) = \underbrace{f'(\xi_j)}_0\cdot(x^{(j)}-x^{(j-1)})=0
+\folgt f(x^{(j)}) = f(x^{(j-1)}) \folgt f(a)=f(x^{(0)})=f(x^{(1)})=f(x^{(2)})=\ldots = f(x^{(k)}) = f(b)$.
+\end{beweis}
+
+\begin{satz}[Bedingung für Lipschitzstetigkeit]
+$D$ sei konvex und $f:D\to\MdR$ sei differenzierbar auf $D$. Weiter sei $f'$ auf $D$ beschränkt. Dann ist $f$ auf $D$ Lipschitzstetig.
+\end{satz}
+
+\begin{beweis}
+$\exists L \ge 0: ||f'(x)|| \le L \forall x \in D$. Seien $u,v \in D$. $D$ konvex $\folgt S[u,v]\subseteq D$. 6.1 $\folgt \exists\xi\in S[u,v]:f(u)-f(v)=f'(\xi)\cdot(u-v) \folgt |f(u)-f(v)|=|f'(\xi)\cdot(u-v)|\stackrel{CSU}{\le}||f'(\xi)|| ||u-v|| \le L||u-v||$.
+\end{beweis}
+
+\begin{satz}[Linearität]
+Sei $\Phi:\MdR^n\to\MdR^m$ eine Funktion.
+
+$\Phi$ ist linear $\equizu \Phi \in C^1(\MdR^n, \MdR^m)$ und $\Phi(\alpha x)=\alpha\Phi(x)\ \forall x \in \MdR^n\ \forall \alpha \in \MdR.$
+\end{satz}
+
+\begin{beweis}
+``$\folgt$'':
+``$\Leftarrow$'': O.B.d.A.: $m=1$. Z.z.: $\exists a \in \MdR^n:\Phi(x)=a\cdot x \forall x \in \MdR^n$.
+$a:=\Phi'(0) \Phi(0)=\Phi(2\cdot0)=2\cdot \Phi(0) \folgt \Phi(0)=0$.
+$\forall x \in \MdR^n \forall \alpha \in \MdR: \Phi(\alpha x)=\alpha\Phi(x) \folgtnach{5.4} \alpha \Phi'(\alpha x)=\alpha\Phi'(x)\ \forall x \in \MdR^n\ \forall \alpha \in \MdR
+\folgt \Phi'(x)=\Phi'(\alpha x)\ \forall x \in\MdR^n\ \forall\alpha\ne0$.$ \folgtnach{$\alpha\to0, f\in C^1$} \Phi'(x)=\Phi'(0)=a\ \forall x \in\MdR^n$.
+$g(x):=(\Phi(x)-ax)^2\ (x \in \MdR^n)$, $ g(0)=(\Phi(0)-a\cdot0)^2=0$.
+5.4 $\folgt g$ ist differenzierbar auf $\MdR^n$ und $g'(x)=2(\Phi(x)-ax)(\Phi'(x)-a)=0\ \forall x \in \MdR^n$.
+6.2(1) $\folgt g(x)=g(0)=0\ \forall x\in\MdR^n \folgt \Phi(x)=a\cdot x\ \forall x\in \MdR^n.$
+\end{beweis}
+
+\paragraph{Die Richtungsableitung}
+\indexlabel{Richtung}
+\indexlabel{Richtungsvektor}
+\indexlabel{Richtungsableitung}
+Sei $\emptyset \ne D \subseteq \MdR^n,\ D$ offen, $f:D \to \MdR$ und $x_0 \in D$. Ist $a \in \MdR^n$ und $||a||=1$, so heißt $a$ eine \textbf{Richtung} (oder ein \textbf{Richtungsvektor}).
+
+Sei $a \in \MdR^n$ eine Richtung. $D$ offen $\folgt \exists \delta>0: U_\delta(x_0) \subseteq D$. Gerade durch $x_0$ mit Richtung $a:\{x_0+ta:t\in\MdR\}.\  ||x_0+ta-x_0|| = ||ta|| = |t|$. Also: $x_0+ta \in D$ für $t \in (-\delta,\delta),\ g(t) := f(x_0+ta)\ (t \in (-\delta,\delta))$.
+
+$f$ heißt \textbf{in $x_0$ in Richtung $a$ db}, gdw. der Grenzwert $$\lim_{t\to 0} \frac{f(x_0+ta)-f(x_0)}{t}$$ existiert und $\in \MdR$ ist. In diesem Fall heißt $$\frac{\partial f}{\partial a}(x_0) := \lim_{t\to 0} \frac{f(x_0+ta)-f(x_0)}{t}$$ die \textbf{Richtungsableitung von $f$ in $x_0$ in Richtung $a$}.
+
+\begin{beispiele}
+\item $f$ ist in $x_0$ partiell db nach $x_j \equizu f$ ist in $x_0$ db in Richtung $e_j$. In diesem Fall gilt: $\frac{\partial f}{\partial x_j}(x_0) = \frac{\partial f}{\partial e_j}(x_0)$.
+
+\item $$f(x,y) := \begin{cases}
+\frac{xy}{x^2+y^2} & \text{, falls } (x,y) \ne (0,0)\\
+0 & \text{, falls } (x,y) = (0,0)\end{cases}$$
+
+$x_0 = (0,0).$ Sei $a=(a_1,a_2) \in \MdR^2$ eine Richtung, also $a_1^2+a_2^2=1;\ \frac{f(ta)-f(0,0)}{t} = \frac{1}{t} \frac{t^2a_1a_2}{t^2a_1^2+t^2a_2^2} = \frac{a_1a_2}{t}$. D.h.: $\frac{\partial f}{\partial a}(0,0)$ ex. $\equizu a_1a_2 = 0 \equizu a \in \{(1,0),(-1,0),(0,1),(0,-1)\}$. In diesem Fall: $\frac{\partial f}{\partial a}(0,0) = 0.$
+
+\item $$f(x,y) := \begin{cases}
+\frac{xy^2}{x^2+y^4} & \text{, falls } (x,y) \ne (0,0)\\
+0 & \text{, falls } (x,y) = (0,0)\end{cases}$$
+
+$x_0 = (0,0)$. Sei $a = (a_1,a_2) \in \MdR$ eine Richtung. $\frac{f(ta)-f(0,0)}{t} = \frac{1}{t} \frac{t^3a_1a_2^2}{t^2a_1^2+t^4a_2^4} = \frac{a_1a_2^2}{a_1^2+t^2a_2^4} \overset{t \to 0}{\to} \begin{cases}
+0 & \text{, falls } a_1=0\\
+\frac{a_2^2}{a_1} & \text{, falls } a_1 \ne 0 \end{cases}$
+
+D.h. $\frac{\partial f}{\partial a}(0,0)$ existiert für \emph{jede} Richtung $a \in \MdR^2$. Z.B.: $a = \frac{1}{\sqrt{2}}(1,1): \frac{\partial f}{\partial a}(0,0) = \frac{1}{\sqrt{2}}.$
+
+$f(x,\sqrt{x}) = \frac{x^2}{2x^2} = \frac{1}{2}\ \forall x>0 \folgt f$ ist in $(0,0)$ \emph{nicht} stetig.
+\end{beispiele}
+
+\begin{satz}[Richtungsableitungen]
+Sei $x_0 \in D,\ a \in \MdR^n$ eine Richtung, $f:D \to \MdR$.
+\begin{liste}
+\item $\frac{\partial f}{\partial a}(x_0)$ existiert $\equizu \frac{\partial f}{\partial (-a)}(x_0)$ existiert. In diesem Fall ist: $$\frac{\partial f}{\partial (-a)}(x_0) = -\frac{\partial f}{\partial a}(x_0)$$
+\item $f$ sei in $x_0$ db. Dann:
+\begin{enumerate}
+\item[(i)] $\frac{\partial f}{\partial a}(x_0)$ existiert und $$\frac{\partial f}{\partial a}(x_0) = a\cdot \grad f(x_0).$$
+\item[(ii)] Sei $\grad f(x_0) \ne 0$ und $a_0 := ||\grad f(x_0)||^{-1}\cdot \grad f(x_0)$. Dann: $$\frac{\partial f}{\partial (-a_0)}(x_0) \le \frac{\partial f}{\partial a}(x_0) \le \frac{\partial f}{\partial a_0}(x_0) = ||\grad f(x_0)||.$$ Weiter gilt: $\frac{\partial f}{\partial a}(x_0) < \frac{\partial f}{\partial a_0}(x_0)$, falls $a \ne a_0$; $\frac{\partial f}{\partial (-a_0)}(x_0) < \frac{\partial f}{\partial a}(x_0)$, falls $a \ne -a_0$.
+\end{enumerate}
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+\begin{liste}
+\item $\frac{(f(x_0+t(-a))-f(x_0))}{t} = -\frac{(f(x_0+(-t)a)-f(x_0))}{-t} \folgt$ Beh.
+\item \begin{enumerate}
+\item[(i)] $g(t) := f(x_0+ta)$ ($|t|$ hinreichend klein). Aus Satz 5.4 folgt: $g$ ist db in $t=0$ und $g'(0) = f'(x_0) \cdot a \folgt \frac{\partial f}{\partial a}(x_0)$ existiert und ist $= g'(0) = \grad f(x_0)\cdot a$
+\item[(ii)] $\left| \frac{\partial f}{\partial a}(x_0) \right| \gleichnach{(i)} |a\cdot \grad f(x_0)| \overset{\text{CSU}}{\le} ||a||\cdot ||\grad f(x_0)|| = ||\grad f(x_0)|| = \frac{1}{||\grad f(x_0)||} \grad f(x_0) \cdot \grad f(x_0) = a_0\cdot \grad f(x_0) \gleichnach{(i)} \frac{\partial f}{\partial a_0}(x_0)$
+
+$\folgt \frac{\partial f}{\partial (-a_0)}(x_0) \gleichnach{(1)} -\frac{\partial f}{\partial a_0}(x_0) \le \frac{\partial f}{\partial a}(x_0) \le \frac{\partial f}{\partial a_0}(x_0) = ||\grad f(x_0)||$
+
+Sei $\frac{\partial f}{\partial a}(x_0) = \frac{\partial f}{\partial a_0}(x_0) \folgtnach{(i),(ii)} a\cdot\grad f(x_0) = ||\grad f(x_0)|| \folgt a\cdot a_0 = 1 \folgt ||a-a_0||^2 = (a-a_0)(a-a_0) = a\cdot a - 2a\cdot a_0 + a_0\cdot a_0 = 1-2+1 = 0 \folgt a=a_0.$
+\end{enumerate}
+\end{liste}
+\end{beweis}
+
+\paragraph{Der Satz von Taylor}
+Im Folgenden sei $f:D \to \MdR$ zunächst "`genügend oft partiell db"', $x_0 \in D$ und $h=(h_1,\ldots,h_n) \in \MdR^n$. Wir führen folgenden Formalismus ein.
+
+$$\nabla := \left( \frac{\partial}{\partial x_1},\ldots,\frac{\partial}{\partial x_n}\right)\ \text{("`Nabla"')};\ \nabla f:= \left( \frac{\partial f}{\partial x_1},\ldots,\frac{\partial f}{\partial x_n}\right) = \grad f;\ \nabla f(x_0) := \grad f(x_0)$$
+
+$$(h\cdot\nabla) := h_1 \frac{\partial}{\partial x_1} + \ldots + h_n \frac{\partial}{\partial x_n};\ (h\cdot\nabla) f:= h_1 \frac{\partial f}{\partial x_1} + \ldots + h_n \frac{\partial f}{\partial x_n} = h \grad f;\ (h\cdot\nabla) f(x_0) := h\cdot\grad f(x_0)$$
+
+$(h\cdot\nabla)^{(0)} f(x_0) := f(x_0)$. Für $k\in\MdN: (h\cdot\nabla)^{(k)} := \left( h_1 \frac{\partial}{\partial x_1} + \ldots + h_n \frac{\partial}{\partial x_n} \right)^k$
+
+$(h\cdot\nabla)^{(2)} f(x_0) = \sum_{j=1}^n \sum_{k=1}^n h_jh_k\frac{\partial^2 f}{\partial x_j \partial x_k} (x_0)$
+
+$(h\cdot\nabla)^{(3)} f(x_0) = \sum_{j=1}^n \sum_{k=1}^n \sum_{l=1}^n h_jh_kh_l\frac{\partial^3 f}{\partial x_j \partial x_k \partial x_l} (x_0)$
+
+\begin{beispiel}
+$(n=2): h = (h_1,h_2).$
+
+$(h\cdot\nabla)^{(0)} f(x_0) = f(x_0),\ (h\cdot\nabla)^{(1)} f(x_0) = h\cdot \grad f(x_0) = h_1 f_x(x_0) + h_2 f_y(x_0)$.
+
+$(h\cdot\nabla)^{(2)} f(x_0) = \left( h_1 \frac{\partial f}{\partial x} + h_2 \frac{\partial f}{\partial y}\right)^2 (x_0) = h_1^2 \frac{\partial^2 f}{\partial^2 x} (x_0) + h_1h_2 \frac{\partial^2 f}{\partial x \partial y} (x_0) + h_2h_1 \frac{\partial^2 f}{\partial y \partial x} (x_0) + h_2^2 \frac{\partial^2 f}{\partial^2 y} (x_0).$
+\end{beispiel}
+
+\begin{satz}[Der Satz von Taylor]
+Sei $k\in\MdN, f\in C^{k+1}(D,\MdR),x_0 \in D, h\in\MdR^n$ und $S[x_0,x_0+h]\subseteq D$. Dann:
+$$f(x_0+h)=\sum_{j=0}^k\frac{(h\cdot\nabla)^{(j)}f(x_0)}{j!}+\frac{(h\cdot\nabla)^{(k+1)}f(\xi)}{(k+1)!}$$
+wobei $\xi \in S[x_0, x_0+h]$
+\end{satz}
+
+\begin{beweis}
+$\Phi(t):=f(x_0+th)$ f"ur $t\in[0,1]$. 5.4$\folgt \Phi \in C^{k+1}[0,1],\ \Phi'(t)=f'(x_0+th)*h=(h*\nabla)f(x_0+th)$\\
+Induktiv: $\Phi^{(j)}(t)=(h\cdot\nabla)^{(j)}f(x_0+th)\ (j=0,\ldots,k+1, t\in[0,1]).\ \Phi(0)=f(x_0), \Phi(1)=f(x_0+h);\ \Phi^{(j)}(0)=(h\cdot\nabla)^{(j)}f(x_0)$. Analysis 1 (22.2) $\folgt \Phi(1)=\ds\sum_{j=0}^k\frac{\Phi^{(j)}(0)f(x_0)}{j!}+\frac{\Phi^{(k+1)}f(\eta)}{(k+1)!}$, wobei $\eta\in[0,1]\folgt f(x_0+h)=\ds\sum_{j=1}^k\frac{(h\cdot\nabla)^{(j)}f(x_0)}{j!}+\frac{(h\cdot\nabla)^{(k+1)}f(x_0+\eta h)}{(k+1)!},\ \xi:=x_0+\eta h$
+\end{beweis}
+
+\begin{spezialfall}
+Sei $f\in C^2(D,\MdR),x_0\in D, h\in \MdR^n, S[x_0,x_0+h]\subseteq D$. Dann: 
+$$f(x_0+h)=f(x_0)+\grad f(x_0)\cdot h+\frac{1}{2}\sum_{j,k=1}^nh_jh_k\frac{\partial^2 f}{\partial x_j\partial x_k}(x_0+\eta h)$$
+\end{spezialfall}
+
+\chapter{Quadratische Formen}
+\def\grad{\mathop{\rm grad}\nolimits}
+
+\begin{vereinbarung}
+In diesem Paragraphen sei $A$ stets eine reelle und symmetrische $(n\times n)$-Matrix, $(A=A^\top)$. Also: $A=(a_{jk})$, dann $a_{jk}=a_{kj}\ (k,j=1,\ldots,n)$ 
+\end{vereinbarung}
+
+\begin{definition*}
+$Q_A:\MdR^n\to\MdR$ durch $Q_A(x):=x(Ax^T)$. $Q_A$ hei"st die zu $A$ geh"orende \begriff{quadratische Form}. F"ur $x=(x_1,\ldots,x_n):$
+$$Q_A(x)=\ds\sum_{j,k=1}^na_{jk}x_jx_k$$
+\end{definition*}
+
+\begin{beispiel}
+Sei $f\in C^2(D,\MdR),x_0\in D, h\in \MdR^n, S[x_0,x_0+h]\subseteq D$.
+$$H_f(x_0):=\begin{pmatrix}
+f_{x_1x_1}(x_0)&\cdots&f_{x_1x_n}(x_0)\\
+f_{x_2x_1}(x_0)&\cdots&f_{x_2x_n}(x_0)\\
+\vdots& &\vdots\\
+f_{x_nx_1}(x_0)&\cdots&f_{x_nx_n}(x_0)\\
+\end{pmatrix}$$
+hei"st die \begriff{Hesse-Matrix} von $f$ in $x_0$. 4.1$\folgt H_f(x_0)$ ist symmetrisch. Aus 6.7 folgt:
+$$f(x_0+h)=f(x_0)+\grad f(x_0)\cdot h + \frac{1}{2}Q_B(h)\text{ mit }B=H_f(x_0+\eta h)$$
+\end{beispiel}
+\begin{definition*}
+\begin{tabular}{ll}
+\\ % Bug!
+\\
+$A$ hei"st $\begriff{positiv definit}$ (pd) & $:\equizu$ $Q_A(x)>0\ \forall x\in\MdR^n\ \backslash\ \{0\}$\\
+$A$ hei"st $\begriff{negativ definit}$ (nd) & $:\equizu$ $Q_A(x)<0\ \forall x\in\MdR^n\ \backslash\ \{0\}$\\
+$A$ hei"st $\begriff{indefinit}$ (id) & $:\equizu \exists u,v\in\MdR^n: Q_A(u)>0, Q_A(v)<0$
+\end{tabular}
+\end{definition*}
+
+\begin{beispiele}
+\item $(n=2),\ A=\left(\begin{smallmatrix}a&b\\b&c\end{smallmatrix}\right)$\\
+$Q_A(x,y):=ax^2+2bxy+cy^2\ \left((x,y)\in\MdR^2\right)$. Nachrechnen:\\
+$$aQa(x,y)=(ax+by)^2+(\det A)y^2\ \forall (x,y)\in\MdR^2$$ "Ubung:\\
+\begin{tabular}{ll}
+A ist positiv definit & $\equizu a>0, \det A>0$\\
+A ist negativ definit & $\equizu a<0, \det A>0$\\
+A ist indefinit& $\equizu \det A<0$
+\end{tabular}
+\item $(n=3),\ A=\left(\begin{smallmatrix}1&0&1\\0&0&0\\1&0&1\end{smallmatrix}\right)$\\
+$Q_A(x,y,z)=(x+z)^2\ \forall\ (x,y,z)\in\MdR^3.\ Q_A(0,1,0)=0.\ A$ ist weder pd, noch id, noch nd.
+\item ohne Beweis ($\to$ Lineare Algebra). $A$ symmetrisch $\folgt$ alle \begriff{Eigenwerte} (EW) von $A$ sind $\in\MdR$.\\
+\begin{tabular}{ll}
+A ist positiv definit & $\equizu$ Alle Eigenwerte von $A$ sind $>0$\\
+A ist negativ definit & $\equizu$ Alle Eigenwerte von $A$ sind $<0$\\
+A ist indefinit& $\equizu \exists$ Eigenwerte $\lambda, \mu$ von $A$ mit $\lambda>0,\ \mu<0$
+\end{tabular}
+\end{beispiele}
+
+\begin{satz}[Regeln zu definiten Matrizen und quadratischen Formen]
+\begin{liste}
+\item $A$ ist positiv definit $\equizu$ $-A$ ist negativ definit
+\item $Q_A(\alpha x)=\alpha^2Q_A(x)\ \forall x\in\MdR^n\ \forall \alpha\in\MdR$
+\item \begin{tabular}{ll}
+A ist positiv definit & $\equizu \exists c>0: Q_A(x)\ge c\|x\|^2\ \forall x\in\MdR^n$\\
+A ist negativ definit & $\equizu \exists c>0: Q_A(x)\le -c\|x\|^2\ \forall x\in\MdR^n$
+\end{tabular}
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item Klar
+\item $Q_A(\alpha x)=(\alpha x)(A(\alpha x))=\alpha^2x(Ax)=\alpha^2Q_A(x)$
+\item \glqq$\Leftarrow$\grqq: Klar. \glqq$\folgt$\grqq: $K:=\{x\in\MdR^n: \|x\|=1\}=\partial U_1(0)$ ist beschr"ankt und abgeschlossen. $Q_A$ ist stetig auf $K$. 3.3 $\folgt\exists x_0\in K: Q_A(x_0)\le Q_A(x)\ \forall x\in K$. $c:=Q_A(x_0).\ A$ positiv definit, $x_0\ne 0\folgt Q_A(x_0)=c>0$. Sei $x\in\MdR^n\ \backslash\ \{0\};\ z:=\frac{1}{\|x\|}x\folgt z\in K\folgt Q_A(z)\ge c\folgt c \le Q_A\left(\frac{1}{\|x\|}x\right)\gleichnach{(2)}\frac{1}{\|x\|}^2Q_A(x)\folgt Q_A(x)\ge c\|x\|^2$
+\end{beweise}
+
+\begin{satz}[St"orung von definiten Matrizen]
+\begin{liste}
+\item $A$ sei positiv definit \alt{negativ definit}. Dann existiert ein $\ep>0$ mit: Ist $B=(b_{jk})$ eine weitere symmetrische $(n\times n)$-Matrix und gilt: $(*)\ |a_{jk}-b_{jk}|\le\ep\ (j,k=1,\ldots, n)$, so ist B positiv definit \alt{negativ definit}.
+\item $A$ sei indefinit. Dann existieren $u,v\in\MdR^n$ und $\ep>0$ mit: ist $B=(b_{jk})$ eine weitere symmetrische $(n\times n)$-Matrix und gilt: $(*)\ |a_{jk}-b_{jk}|\le\ep\ (j,k=1,\ldots,n)$, so ist $Q_B(u)>0, Q_B(v)<0$. Insbesondere: $B$ ist indefinit.
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item $A$ sei positiv definit $\folgtnach{7.1}\exists c>0: Q_A(x)\ge c\|x\|^2\ \forall x\in\MdR^n$. $\ep:=\frac{c}{2n^2}$. Sei $B=(b_{jk})$ eine symmetrische Matrix mit $(*)$. F"ur $x=(x_1,\ldots,x_n)\in\MdR^n:\ Q_A(x)-Q_B(x)\le|Q_A(x)-Q_B(x)|=\left|\ds\sum_{j,k=1}^m(a_{jk}-b_{jk})x_jx_k\right|\le\ds\sum_{j,k=1}^n\underbrace{|a_{jk}-b_{jk}|}_{\le\ep}\underbrace{|x_j|}_{\le\|x\|}\underbrace{|x_k|}_{\le\|x\|}\le\ep\|x\|^2n^2=\frac{c}{2n^2}\|x\|^2n^2=\frac{c}{2}\|x\|^2$
+\item $A$ sei indefinit. $\exists u,v\in\MdR^n:\ Q_A(u)>0, Q_A(v)<0$. $\alpha:=\min\left\{\frac{Q_A(u)}{\|u\|^2},\ -\frac{Q_A(v)}{\|v\|^2}\right\}\folgt\alpha>0$. $\ep:=\frac{\alpha}{2n^2}$. Sei $B=(b_{jk})$ eine symmetrische Matrix mit $(*)$.\\
+$Q_A(u)-Q_B(u)\overset{\text{Wie bei (1)}}{\le}\ep u^2\|u\|^2=\frac{\alpha}{2n^2}n^2\|u\|^2=\frac{\alpha}{2}\|u\|^2\le\frac{1}{2}\frac{Q_A(u)}{\|u\|^2}\|u\|^2=\frac{1}{2}Q_A(u) \folgt Q_B(u)\ge\frac{1}{2}Q_A(u)>0$. Analog: $Q_B(v)<0$.
+\end{beweise}
+
+\chapter{Extremwerte}
+\def\grad{\mathop{\rm grad}\nolimits}
+
+\begin{vereinbarung}
+In diesem Paragraphen sei $\emptyset\ne D \subseteq\MdR^n, f:D\to\MdR$ und $x_0\in D$
+\end{vereinbarung}
+
+\begin{definition*}
+\indexlabel{lokales Maximum}
+\indexlabel{lokales Minimum}
+\indexlabel{lokales Extremum}
+\indexlabel{Station"arer Punkt}
+\begin{liste}
+\item
+$f$ hat in $x_0$ ein \textbf{lokales Maximum} $:\equizu \exists \delta>0:\ f(x)\le f(x_0)\ \forall x\in D \cap U_\delta(x_0)$.\\
+$f$ hat in $x_0$ ein \textbf{lokales Minimum} $:\equizu \exists \delta>0:\ f(x)\ge f(x_0)\ \forall x\in D \cap U_\delta(x_0)$.\\
+\textbf{lokales Extremum} = lokales Maximum oder lokales Minimum
+\item Ist $D$ offen, $f$ in $x_0$ partiel differenzierbar und $\grad f(x_0)=0$, so hei"st $x_0$ ein station"arer Punkt.
+\end{liste}
+\end{definition*}
+
+\begin{satz}[Nullstelle des Gradienten]
+Ist $D$ offen und hat $f$ in $x_0$ ein lokales Extremum und ist $f$ in $x_0$ partiell differenzierbar, dann ist $\grad f(x_0)=0$.
+\end{satz}
+
+\begin{beweis}
+$f$ habe in $x_0$ ein lokales Maximum. Also $\exists \delta>0: U_\delta(x_0)\subseteq D$ und $f(x)\le f(x_0)\ \forall x\in U_\delta(x_0)$. Sei $j \in \{1,\ldots,n\}$. Dann: $x_0 + te_j \in U_\delta(x_0)$ f"ur $t\in (-\delta, \delta)$. $g(t):=f(x_0 + te_j)\ (t\in (-\delta, \delta))$. $g$ ist differenzierbar in $t=0$ und $g'(0)=f_{xj}(x_0)$. $g(t)=f(x_0+te_j)\le f(x_0)=g(0)\ \forall t\in(-\delta,\delta)$. Analysis 1, 21.5 $\folgt g'(0)=0\folgt f_{xj}(x_0)=0$
+\end{beweis}
+
+\begin{satz}[Definitheit und Extremwerte]
+Sei $D$ offen, $f\in C^2(D,\MdR)$ und $\grad f(x_0)=0$.
+\begin{liste}
+\item[(i)]
+Ist $H_f(x_0)$ positiv definit $\folgt f$ hat in $x_0$ ein lokales Minimum.
+\item[(ii)]
+Ist $H_f(x_0)$ negativ definit $\folgt f$ hat in $x_0$ ein lokales Maximum.
+\item[(iii)]
+Ist $H_f(x_0)$ indefinit $\folgt f$ hat in $x_0$ \underline{kein} lokales Extremum.
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+\begin{liste}
+\item[(i),]
+(ii) $A:=H_f(x_0)$ sei positiv definit oder negativ definit oder indefinit. Sei $\ep>0$ wie in 7.2. $f\in C^2(D,\MdR)\folgt \exists \delta>0: U_\delta(x_0)\subseteq D$ und $(*)\ |f_{x_jx_k}(x)-f_{x_jx_k}(x_0)|\le\ep\ \forall x\in U_\delta(x_0)\ (j,k=1,\ldots,n)$. Sei $x\in U_\delta(x_0) \ \backslash\ \{x_0\}, h:=x-x_0\folgt x=x_0+h, h\ne 0$ und $S[x_0,x_0+h] \subseteq U_\delta(x_0)$ 6.7$\folgt\exists \eta\in [0,1]:\ f(x)=f(x_0+h)=f(x_0) + \underbrace{h\cdot \grad f(x_0)}_{=0}+\frac{1}{2}Q_B(h)$, wobei $B=H_f(x_0 + \eta h)$. Also: $(**)\ f(x)=f(x_0)+\frac{1}{2}Q_B(h)$. $A$ sei positiv definit \alt{negativ definit} $\folgtnach{7.2} B$ ist positiv definit \alt{negativ definit}. $\folgtwegen{h\ne 0}Q_B(h)\stackrel{(<)}{>}0 \folgtwegen{(**)}f(x)\stackrel{(<)}{>}f(x_0)\folgt f$ hat in $x_0$ ein lokales Minimum \alt{Maximum}.
+\item[(iii)]$A$ sei indefinit und es seien $u, v\in\MdR^n$ wie in 7.2. Wegen 7.1 OBdA: $\|u\|=\|v\|=1$. Dann: $x_0+tu, x_0+tv \in U_\delta(x_0)$ f"ur $t\in(-\delta, \delta)$. Sei $t\in(-\delta, \delta), t\ne 0$. Mit $h:=t\stackrel{(v)}{u}$ folgt aus 7.2 und $(**):\ f(x_0+t\stackrel{(v)}{u})=f(x_0)+\frac{1}{2}Q_B(t\stackrel{(v)}{u})=f(x_0)+\frac{t^2}{2}\underbrace{Q_B(\stackrel{(v)}{u})}_{>0\text{/}<0\text{ (7.2)}}\stackrel{(>)}{<}f(x_0)\folgt f$ hat in $x_0$ kein lokales Extremum.
+\end{liste}
+\end{beweis}
+
+\begin{beispiele}
+\item $D=\MdR^2, f(x,y)=x^2+y^2-2xy-5$. $f_x=2x-2y, f_y=2y-2x;\ \grad f(x,y)=(0,0)\equizu x=y$. Station"are: $(x,x)\ (x\in\MdR)$.\\
+$$f_{xx}=2,\ f_{xy}=-2=f_{yx},\ f_{yy}=2\folgt H_f(x,x)=\begin{pmatrix}2&-2\\-2&2\end{pmatrix}$$
+$\det H_f(x,x)=0\folgt H_f(x,x)$ ist weder pd, noch nd, noch id.\\
+Es ist $f(x,y)=(x-y)^2-5\ge -5\ \forall\ (x,y)\in\MdR^2$ und $f(x,x)=-5\ \forall x\in\MdR$.
+\item $D=\MdR^2, f(x,y)=x^3-12xy+8y^3$.\\
+$f_x=3x^2-12y=3(x^2-4y),\ f_y=-12x+24y^2=12(-x+2y^2)$. $\grad f(x,y)=(0,0)\equizu x^2=4y, x=2y^2\folgt 4y^4=4y\folgt y=0$ oder $y=1\folgt (x,y)=(0,0)$ oder $(x,y)=(2,1)$\\
+$$f_{xx}=6x,\ f_{xy}=-12=f_{yx},\ f_{yy}=48y.\ H_f(0,0)=\begin{pmatrix}0&-12&\\-12&0\end{pmatrix}$$
+$\det H_f(0,0)=-144<0\folgt H_f(0,0)$ ist indefinit $\folgt f$ hat in $(0,0)$ kein lokales Extremum. 
+$$H_f(2,1)=\begin{pmatrix}12&-12\\-12&48\end{pmatrix}$$
+$12>0, \det H_f(2,1)>0\folgt H_f(2,1)$ ist positiv definit $\folgt f$ hat in $(2,1)$ ein lokales Minimum.
+\item $K:=\{(x,y)\in\MdR^2: x,y\ge 0, y\le -x+3\}, f(x,y)=3xy-x^2y-xy^2$. Bestimme $\max f(K), \min f(K)$. $f(x,y)=xy(3-x-y).\ K=\partial K \cup K^\circ$. $K$ ist beschr"ankt und abgeschlossen $\folgtnach{3.3}\exists\ (x_1,y_1), (x_2,y_2)\in K: \max f(K)=f(x_1, y_1), \min f(K)=f(x_2,y_2)$. $f\ge 0$ auf $K$, $f=0$ auf $\partial K$, also $\min f(K)=0$. $f$ ist nicht konstant $\folgt f(x_2,y_2)>0\folgt (x_2,y_2)\in K^\circ\folgtnach{8.1}\grad f(x_1,x_2)=0$. Nachrechnen: $(x_2,y_2)=(1,1); f(1,1)=1=\max f(K)$.
+\end{beispiele}
+
+\chapter{Der Umkehrsatz}
+\def\grad{\mathop{\rm grad}\nolimits}
+
+\begin{erinnerung}
+Sei $x_0\in\MdR^n$ und $U\subseteq\MdR^n$. $U$ ist eine Umgebung von $x_0\equizu\exists\delta>0:U_\delta(x_0)\subseteq U$
+\end{erinnerung}
+
+\begin{wichtigerhilfssatz}[Offenheit des Bildes]
+Sei $\delta>0, f:U_\delta(0)\subseteq\MdR^n\to\MdR^n$ stetig, $f(0)=0$ und $V$ sei eine offene Umgebung von $f(0)\ (=0)$. $U:=\{x\in U_\delta(0):f(x)\in V\}$. Dann ist $U$ eine offene Umgebung von $0$.
+\end{wichtigerhilfssatz}
+\begin{beweis}
+"Ubung
+\end{beweis}
+
+\begin{erinnerung}
+\begriff{Cramersche Regel}: Sei $A$ eine reelle $(n\times n)$-Matrix, $\det A\ne 0$, und $b\in\MdR^n$. Das lineare Gleichungssystem $Ax=b$ hat genau eine L"osung: $x=(x_1,\ldots,x_n)=A^{-1}b$. Ersetze in $A$ die $j$-te Spalte durch $b^\top$. Es entsteht eine Matrix $A_j$. Dann: $x_j=\frac{\det A_j}{\det A}$.
+\end{erinnerung}
+
+\begin{satz}[Stetigkeit der Umkehrfunktion]
+Sei $\emptyset\ne D\subseteq \MdR^n, D$ offen, $f\in C^1(D,\MdR^n)$. $f$ sei auf $D$ injektiv und es sei $f(D)$ offen. Weiter sei $\det f'(x)\ne 0\ \forall x\in D$ und $f^{-1}$ sei auf $f(D)$ differenzierbar. Dann: $f^{-1}\in C^1(f(D),\MdR^n)$.
+\end{satz}
+
+\begin{beweis}
+Sei $f^{-1}=g=(g_1,\ldots,g_n), g=g(y)$. Zu zeigen: $\frac{\partial g_j}{\partial y_k}$ sind stetig auf $f(D)$. 5.6\folgt $g'(y)\cdot f'(x)=I$ $(n\times n\text{-Einheitsmatrix})$, wobei $y=f(x)\in f(D)\folgt$
+$$
+\begin{pmatrix}
+g_1'(y)\\
+\vdots\\
+g_n'(y)
+\end{pmatrix}\cdot f'(x)=
+\begin{pmatrix}
+1 & & 0 \\
+& \ddots &\\
+0 & & 1
+\end{pmatrix}$$
+$\folgt \grad g_j(y)\cdot f'(x)=e_j\folgt f'(x)^\top\cdot \grad g_j(y)^\top=e_j^\top$. Ersetze in $f'(x)^\top$ die $k$-te Spalte durch $e_j^\top$. Es entsteht die Matrix $A_k(x)=A_k(f^{-1}(y))$. Cramersche Regel $\folgt \frac{\partial g_j}{\partial y_k}(y)=\frac{\det A_k(f^{-1}(y))}{\det f'(x)}=\frac{\det A_k(f^{-1}(y))}{\det f'(f^{-1}(y))}$. $f\in C^1(D,\MdR), f^{-1}$ stetig $\folgt$ obige Definitionen h"angen stetig von y ab $\folgt \frac{\partial g_j}{\partial y_k}\in C(f(D),\MdR)$.
+\end{beweis}
+
+\begin{satz}[Der Umkehrsatz]
+Sei $\emptyset \ne D \subseteq \MdR ^n$, $D$ sei offen, $f\in C^1(D, \MdR^n)$, $x_0\in D$ und $\det f'(x_0) \ne 0$. Dann existiert eine offene Umgebung $U$ von $x_0$ und eine offene Umgebung $V$ von $f(x_0)$ mit:
+\begin{liste}
+\item[(a)] $f$ ist auf $U$ injektiv, $f(U)=V$ und $\det f'(x) \ne 0 \ \forall x\in U$
+\item[(b)] Für $f^{-1}: V\to U$ gilt: $f^{-1}$ ist stetig differenzierbar auf $V$ und $$(f^{-1})'(f(x)) = (f'(x))^{-1}\ \forall x\in U$$
+\end{liste}
+
+\end{satz}
+
+\begin{folgerung}[Satz von der offenen Abbildung]
+$D$ und $f$ seien wie in 9.3 und es gelte: $\det f'(x) \ne 0 \ \forall x\in D$. Dann ist $f(D)$ offen.
+\end{folgerung}
+
+\begin{beweis}
+O.B.d.A: $x_0 = 0$, $f(x_0) = f(0) = 0$ und $f'(0) = I$ (=$(n\times n)$-Einheitsmatrix)
+
+Die Abbildungen $x \mapsto \det f'(x)$ und $x\mapsto \|f'(x) - I\|$ sind auf D stetig, $\det f'(0) \ne 0$, $\| f'(0)- I \| = 0$. Dann existiert ein $\delta > 0$: $K := U_\delta(0) \subseteq D$, $\overline{K} = \overline{U_\delta(0)} \subseteq D$ und 
+\begin{liste}
+\item $\det f'(x) \ne 0 \ \forall x\in\overline{K}$ und
+\item $\|f'(x) - I \| \le \frac{1}{2n} \ \forall x\in\overline{K}$
+
+\item \textbf{Behauptung:} $\frac{1}{2} \|u-v\| \le \|f(u) - f(v)\| \ \forall u,v\in\overline{K}$, insbesondere ist $f$ injektiv auf $\overline{K}$
+
+\item $f^{-1}$ ist stetig auf $f(\overline{K})$: Seien $\xi, \eta \in f(\overline{K})$, $u:=f^{-1}(\xi)$, $v:= f^{-1}(\eta) \folgt u,v \in \overline{K}$ und $\|f^{-1}(\xi) - f^{-1}(\eta)\| = \|u-v\| \stackrel{\text{(3)}}{\le} 2\|f(u) - f(v)\| = 2\|\xi - \eta\|$
+\end{liste}
+
+Beweis zu (3): $h(x) := f(x) - x \ (x\in D) \folgt h\in C^1(D,\MdR^n)$ und $h'(x) = f'(x) - I $. Sei $h=(h1,\ldots,h_n)$. Also: $h' = \begin{pmatrix} h_1' \\ \vdots \\ h_n' \end{pmatrix}$. Seien $u,v\in \overline{K}$ und $j\in \{1,\ldots,n\}$.
+
+$|h_j(u) - h_j(v)| \gleichnach{6.1} |h_j'(\xi) \cdot (u-v)| \stackrel{\text{CSU}}{\le} \|h_j'(\xi)\| \|u-v\| \le \|h'(\xi)\| \|u-v\|$, $\xi \in S[u,v] \in \overline{K}$. (2) $\folgt \le \frac{1}{2n}\|u-v\|$ \\
+$\folgt \|h(u) - h(v)\| = \left(\sum_{j=1}^{n}(h_j(n) - h_j(v))^2\right)^{\frac{1}{2}} \le \left( \sum_{j=1}^n \frac{1}{4n^2}\|u-v\|^2\right)^{\frac{1}{2}} = \frac{1}{2n}\|u-v\|\sqrt{n} \le \frac{1}{2}\|u-v\| \folgt \|u-v\| - \|f(u)-f(v)\| \le \|f(u) - f(v) - (u-v)\| = \|h(u) - h(v)\| \le \frac{1}{2}\|u-v\| \folgt$ (3)
+
+$V:=U_{\frac{\delta}{4}}(0)$ ist eine offene Umgebung von $f(0) \ (=0)$. $U:=\{x\in K: f(x) \in V\}$ Klar: $U\subseteq K \subseteq \overline{K}$, $0\in U$, 9.1 $\folgt$ $U$ ist eine offene Umgebung von 0. (3) $\folgt$ $f$ ist auf $U$ injektiv. (1) $\folgt \det f'(x) \ne 0 \ \forall x\in U$. (4) $\folgt$ $f^{-1}$ ist stetig auf $f(U)$. Klar: $f(U) \subseteq V$. Für (a) ist noch zu zeigen: $V\subseteq f(U)$.
+
+Sei $y\in V$. $w(x) := \| f(x) - y\|^2 = (f(x) - y)\cdot(f(x)-y) \folgt w\in C^1(D,\MdR)$ und (nachzurechnen) $w'(x) = 2(f(x)-y)\cdot f'(x)$. $\overline K$ ist beschränkt und abgeschlossen $\folgtnach{3.3} \exists x_1 \in \overline K: \text{ (5) } w(x_1) \le w(x) \ \forall x\in\overline K$.
+
+\textbf{Behauptung:} $x_1 \in K$. \\
+Annahme: $x_1\ne K \folgt x_1 \in \partial K \folgt \| x_1 \| = \delta$. $2\sqrt {w(0)} =  2\|f(0) - y\| = 2\|y\|\le 2 \frac{\delta} 4 = \frac \delta 2 = \frac{\|x_1\|} 2 = \frac 1 2 \|x_1 - 0 \| \stackrel{\text{(3)}}{\le} \|f(x_1) - f(0)\| = \|f(x_1) - y + y - f(0)\| \le \|f(x_1)-y\| -\|f(0) - y\| = \sqrt{w(x_1)} + \sqrt{w(0)} \folgt \sqrt{w(0)} < \sqrt{w(x_1)} \folgt w(0) < w(x_1) \overset{\text{(5)}}{\le} w(0)$, Widerspruch. Also: $x_1\in K$
+
+(5) $\folgt w(x_1) \le w(x) \ \forall x\in K$. 8.1 $\folgt w'(x_1) = 0 \folgt \left( f(x_1) - y \right) \cdot f'(x_1) = 0$; (1) $\folgt f'(x_1)$ ist invertierbar $\folgt y = f(x_1) \folgt x_1 \in U \folgt y=f(x_1) \in f(U)$. Also: $f(U) = V$. Damit ist (a) gezeigt.
+
+% Laut Schmöger 5.6, bei uns 5.5. Wessen Zählung ist falsch? Wer Lust hat, mal überprüfen
+(b): Wegen 5.5 und 9.2 ist nur zu zeigen: $f^{-1}$ ist differenzierbar auf $V$. Sei $y_1 \in V$, $y \in V\backslash\{y_1\}$, $x_1 := f^{-1}(y_1)$, $x := f^{-1}(y)$; $L(y) := \frac{f^{-1}(y) - f^{-1}(y_1) - f'(x_0)^{-1}(y-y_1)}{\|y-y_1\|}$. zu zeigen: $L(y) \to 0 \ (y-y_1)$. $\varrho(x) := f(x)-f(x_1)-f'(x_1)(x-x_1)$. $f$ ist differenzierbar in $x_1$ $\folgt \frac{\varrho(x)}{\|x-x_1\|} \to 0 \ (x\to x_1)$.
+
+$$f'(x_1)^{-1}\varrho(x) = f'(x_1)^{-1}(y-y_1) - (f^{-1}(y) - f^{-1}(y_1)) = -\|y-y_1\| L(y)$$
+$$\folgt L(y) = -f'(x_1)^{-1} \frac{\varrho(x)}{\|y-y_1\|} = - f'(x_1)^{-1} \underbrace{\frac{\varrho(x)}{\|x-x_1\|}}_{\to 0\ (x\to x_1)} \cdot \underbrace{\frac{\|x-x_1\|}{\|f(x)-f(x_1)}}_{\le 2, \text{ nach (3)}}$$
+Für $y\to y_1$, gilt (wegen (4)) $x\to x_1 \folgt L(y) \to 0$.
+
+\end{beweis}
+
+\begin{beispiel}
+
+$$f(x,y) = (x \cos y, x \sin y)$$
+
+$$f'(x,y) = \begin{pmatrix} \cos y & -x \sin y \\ \sin y & x \cos y \end{pmatrix}, \det f'(x,y) = x \cos^2 y + x \sin^2 y = x$$
+
+$D:=\{(x,y) \in \MdR^2: x\ne 0\}$. Sei $(\xi, \eta)\in D$ 9.3 $\folgt \exists$ Umgebung $U$ von $(\xi, \eta)$ mit: $f$ ist auf $U$ injektiv $(*)$. z.B. $(\xi, \eta) = (1, \frac{\pi}{2}) \folgt f(1,\frac{\pi}2) = (0,1)$. $f'(1,\frac{\pi}2) = \begin{pmatrix}0 & -1 \\ 1 & 0 \end{pmatrix}$, $(f^{-1})(0,1) = f'(1,\frac{\pi}{2})^{-1} = \begin{pmatrix}0 & 1 \\ -1 & 0\end{pmatrix}$.
+
+\end{beispiel}
+
+\paragraph{Beachte:} $f$ ist auf $D$ "`lokal"'   injektiv (im Sinne von $(*)$), aber $f$ ist auf $D$ \emph{nicht} injektiv, da $f(x,y) = f(x,y+2 k\pi) \ \forall x,y\in\MdR \ \forall k\in\MdZ$.
+
+\chapter{Implizit definierte Funktionen}
+\def\grad{\mathop{\rm grad}\nolimits}
+\def\MdU{\ensuremath{\mathbb{U}}}
+
+\begin{beispiele}
+\item $f(x,y)=x^2+y^2-1$. $f(x,y)=0\equizu y^2=1-x^2\equizu y=\pm\sqrt{1-x^2}$. \\
+Sei $(x_0, y_0)\in\MdR^2$ mit $f(x_0, y_0)=0$ und $y_0\overset{(<)}{>}0$. Dann existiert eine Umgebung $U$ von $x_0$ und genau eine Funktion $g:U\to\MdR$ mit $g(x_0)=y_0$ und $f(x,g(x))=0\ \forall x \in U$, n"amlich $g(x)=\overset{(-\sqrt{\cdots})}{\sqrt{1-x^2}}$
+
+\textbf{Sprechweisen}: \glqq $g$ ist implizit durch die Gleichung $f(x,y)=0$ definiert\grqq\ oder\ \glqq die Gleichung $f(x,y)=0$ kann in der Form $y=g(x)$ aufgel"ost werden\grqq
+
+\item $f(x,y,z)=y+z+\log(x+z)$. Wir werden sehen: $\exists$ Umgebung $U\subseteq \MdR^2$ von $(0,1)$ und genau eine Funktion $g:U\to\MdR$ mit $g(0,-1)=1$ und $f(x,y,g(x,y))=0\ \forall\ (x,y)\in U$.
+\end{beispiele}
+
+\textbf{Der allgemeine Fall}:
+Es seien $p,n\in\MdN,\ \emptyset\ne D\subseteq\MdR^{n+p},\ D$ offen, $f=(f_1,\ldots, f_p) \in C^1(D,\MdR^p)$. Punkte in $D$ (bzw. $\MdR^{n+p}$) bezeichnen wir mit $(x,y)$, wobei $x=(x_1,\ldots, x_n)\in\MdR^n$ und $y=(y_1,\ldots, y_p)\in\MdR^p$, also $(x,y)=(x_1,\dots,x_n,y_1,\ldots,y_p)$. Damit:
+$$ f'=
+\underbrace{
+\left(
+\begin{array}{ccc|}
+\frac{\partial f_1}{\partial x_1} & \cdots & \frac{\partial f_1}{\partial x_n} \\
+\vdots & & \vdots \\
+\frac{\partial f_p}{\partial x_1} & \cdots & \frac{\partial f_p}{\partial x_n} \\
+\end{array}
+\right.
+}_{=:\frac{\partial f}{\partial x}}
+\underbrace{
+\left.
+\begin{array}{ccc}
+\frac{\partial f_1}{\partial y_1} & \cdots & \frac{\partial f_1}{\partial y_p} \\
+\vdots & & \vdots \\
+\frac{\partial f_p}{\partial y_1} & \cdots & \frac{\partial f_p}{\partial y_p} \\
+\end{array}
+\right)
+}_{=:\frac{\partial f}{\partial y}\ (p\times p)\text{-Matrix}}
+\text{; also } f'(x,y)=\left(\frac{\partial f}{\partial x}(x,y),\ \frac{\partial f}{\partial y}(x,y)\right)$$
+
+\begin{satz}[Satz "uber implizit definierte Funktionen]
+Sei $(x_0, y_0)\in D, f(x_0, y_0)=0$ und $\det\frac{\partial f}{\partial y}(x_0, y_0)\ne 0$. Dann existiert eine offene Umgebung $U\subseteq \MdR^n$ von $x_0$ und genau eine Funktion $g:U\to\MdR^p$ mit:
+\begin{liste}
+\item $(x, g(x))\in D\ \forall x\in U$
+\item $g(x_0)=y_0$
+\item $f(x,g(x))=0\ \forall x\in U$
+\item $g \in C^1(U,\MdR^p)$
+\item $\det\frac{\partial f}{\partial y}(x, g(x))\ne0\ \forall x\in U$
+\item $g'(x)=-\left(\frac{\partial f}{\partial y}(x, g(x))^{-1}\right) \cdot \frac{\partial f}{\partial x}(x, g(x))\ \forall x\in U$
+\end{liste}
+\end{satz}
+%stimmt bei (6) das mit dem ^{-1} tatsächlich?
+
+
+\begin{beweis}
+Definition: $F:D\to\MdR^{n+p}$ durch $F(x,y):=(x,f(x,y))$. Dann: $F\in C^1(D,\MdR^{n+p})$ und
+$$
+F'(x,y)=\left(\begin{array}{c|c}
+\begin{array}{ccc}
+1  &        & 0 \\
+   & \ddots &   \\
+0  &        & 1 \\
+\end{array} & 
+\begin{array}{ccc}
+0  & \cdots & 0 \\
+\vdots   &  & \vdots  \\
+0  & \cdots & 0 \\
+\end{array} \\
+\hline\\
+\ds\frac{\partial f}{\partial x}(x,y)&
+\ds\frac{\partial f}{\partial y}(x,y)
+\end{array}
+\right)$$
+Dann: \begin{liste}
+\item[(I)] $\det F'(x,y)\gleichnach{LA}\det\frac{\partial f}{\partial y}(x,y)\ ((x, y) \in D)$, insbesondere: $\det F'(x_0, y_0)\ne 0$. Es ist $F(x_0, y_0)=(x_0, 0)$. 9.3$\folgt\exists$ eine offene Umgebung $\MdU$ von $(x_0, y_0)$ mit: $\MdU\subseteq D, f(\MdU)=\vartheta$. $F$ ist auf $\MdU$ injektiv, $F^{-1}:\vartheta\to\MdU$ ist stetig differenzierbar und
+\item[(II)] $\det F'(x,y)\gleichnach{(I)}\det\frac{\partial f}{\partial y}(x,y)\ne 0\ \forall\ (x,y)\in\MdU$
+\end{liste}
+\textbf{Bezeichnungen}: Sei $(s,t)\in\vartheta\ (s\in\MdR^n, t\in\MdR^p)$, $F^{-1}(s,t)=:(u(s,t),v(s,t))$, also $u:\vartheta\to\MdR^n$ stetig differenzierbar, $v:\vartheta\to\MdR^p$ stetig differenzierbar. Dann: $(s,t)=F(F^{-1}(s,t))=(u(s,t),f(u(s,t),v(s,t)))\folgt u(s,t)=s\folgt F^{-1}(s,t)=(s,v(s,t))$. F"ur $(x,y)\in\MdU: f(x,y)=0\equizu F(x,y)=(x,0)\equizu(x,y)=F^{-1}(x,0)=(x,v(x,0))\equizu y=v(x,0)$, insbesondere: $y_0=v(x_0,0)$. $U:=\{x\in\MdR^n: (x,0)\in\vartheta\}$. Es gilt: $x_0\in U$. "Ubung: $U$ ist eine offene Umgebung von $x_0$.
+
+\textbf{Definition}: $g:U\to\MdR^p$ durch $g(x):=v(x,0)$, f"ur $x\in U$ gilt: $(x,0)\in\vartheta\folgt F^{-1}(x,0)=(x,v(x,0))=(x,g(x))\in \MdU$. Dann gelten: (1), (2), (3) und (4). (5) folgt aus (II).
+
+Zu (6): Definition f"ur $x\in U: \psi(x):=(x,g(x)), \psi\in C^1(U,\MdR^{n+p}),$
+$$\psi'(x)=\left(\begin{array}{c}
+\begin{array}{ccc}
+1 & & 0 \\
+& \ddots & \\
+0 & & 1 \\
+\end{array}\\
+\hline \\
+\ds{g'(x)}
+\end{array}\right)$$
+(3)$\folgt 0=f(\psi(x))\ \forall x\in U$. 5.4$\folgt 0=f'(\psi(x))\cdot\psi'(x)=\left(\frac{\partial f}{\partial x}(x, g(x))\ \vline \frac{\partial f}{\partial y}(x, g(x))\right)\cdot\psi'(x)\gleichnach{LA}\frac{\partial f}{\partial x}(x, g(x)) + \frac{\partial f}{\partial y}(x, g(x))\cdot g'(x)\ \forall x\in U$. (5) $\folgt \frac{\partial f}{\partial y}(x, g(x))$ invertierbar, Multiplikation von links mit $\frac{\partial f}{\partial y}(x, g(x))^{-1}$ liefert (6).
+\end{beweis}
+
+\begin{beispiel}
+$f(x,y,z)=y+z+\log(x+z)$. Zeige: $\exists$ offene Umgebung $U$ von $(0,1)$ und genau eine stetig differenzierbare Funktion $g:U\to\MdR$ mit $g(0,-1)=1$ und $f(x,y,g(x,y))=0\ \forall (x,y)\in U$. Berechne $g'$ an der Stelle $(0,-1)$.\\
+$f(0,-1,1)=0$, $f_z=1+\frac{1}{x+z}$; $f_z(0,-1,1)=2\ne 0$. Die Behauptung folgt aus dem Satz "uber impliziert definierte Funktionen. Also: $0=y+g(x,y)+\log(x+g(x,y))\ \forall (x,y)\in U$.\\
+Differentiation nach $x$: $0=g_x(x,y)+\frac{1}{x+g(x,y)}(1+g_x(x,y))\ \forall (x,y)\in U\overset{(x,y)=(0,-1)}{\folgt}0=g_x(0,-1)+\frac{1}{1}(g_x(0,-1)+1)\folgt g_x(0,-1)=-\frac{1}{2}$.\\
+Differentiation nach $y$: $0=1+g_y(x,y)+\frac{1}{x+g(x,y)}g_y(x,y)\ \forall (x,y)\in U \folgtnach{(x,y)=(0,-1)}g_y(0,-1)=-\frac{1}{2}$. Also: $g'(0,-1)=(-\frac{1}{2},-\frac{1}{2})$.
+\end{beispiel}
+
+\chapter{Extremwerte unter Nebenbedingungen}
+
+\begin{definition}
+\indexlabel{Einschränkung einer Funktion}
+Seien $M,N$ Mengen $\ne \emptyset,\ f:M\to N$ eine Funktion und $\emptyset \ne T \subseteq M$. Die Funktion $f_{|_T}: T \to N,\ f_{|_T}(x) := f(x)\ \forall x \in T$ heißt die \textbf{Einschränkung} von $f$ auf $T$.
+\end{definition}
+
+In diesem Paragraphen gelte stets: $\emptyset \ne D \subseteq \MdR^n,\ D$ offen, $f \in C^1(D,\MdR),\ p \in \MdN,\ p<n$ und $\varphi = (\varphi_1,\ldots,\varphi_p) \in C^1(D,\MdR^p)$. Es sei $T:=\{x\in D: \varphi(x) = 0\} \ne \emptyset.$
+
+\begin{definition}
+\indexlabel{lokales Extremum!unter einer Nebenbedingung}
+$f$ hat in $x_0\in D$ ein \textbf{lokales Extremum unter der Nebenbedingung $\varphi = 0$} $:\equizu x_0 \in T$ und $f_{|_T}$ hat in $x_0$ ein lokales Extremum.
+\end{definition}
+
+Wir führen folgende Hilfsfunktion ein: Für $x=(x_1,\ldots,x_n) \in D$ und $\lambda = (\lambda_1,\ldots,\lambda_p) \in \MdR^p$ gilt: $$H(x,\lambda) := f(x) + \lambda\cdot\varphi(x) = f(x) + \lambda_1\varphi_1(x) + \cdots + \lambda_p\varphi_p(x)$$
+
+Es ist $$H_{x_j} = f_{x_j} + \lambda_1\frac{\partial\varphi_1}{\partial x_j} + \cdots \lambda_p\frac{\partial\varphi_p}{\partial x_j}\ (j=1,\ldots,n),\ H_{\lambda_j} = \varphi_j$$
+
+Für $x_0 \in D$ und $\lambda_0 \in \MdR^p$ gilt:
+
+$H'(x_0,\lambda_0) = 0 \equizu f'(x_0) + \lambda_0\varphi'(x_0) = 0$ und $\varphi(x_0) = 0$\\
+$\equizu f'(x_0) + \lambda_0\varphi'(x_0) = 0$ und $x_0 \in T$ (I)
+
+\begin{satz}[Multiplikationenregel von Lagrange]
+\indexlabel{Multiplikator}
+$f$ habe in $x_0\in D$ eine lokales Extremum unter der Nebenbedingung $\varphi=0$ und es sei Rang $\varphi'(x_0) = p$. Dann existiert ein $\lambda_0 \in \MdR^p$ mit: $H'(x_0,\lambda_0) = 0$ ($\lambda_0$ heißt \textbf{Multiplikator}).
+\end{satz}
+
+\begin{folgerung}
+$T$ sei beschränkt und abgeschlossen. Wegen 3.3 gilt: $\exists a,b \in T: f(a) = \max f(T),\ f(b) = \min f(T).$ Ist Rang $\varphi'(\underset{b}{a}) = p \folgt \exists \lambda_0 \in \MdR^p: H'(\underset{b}{a},\lambda_0) = 0$.
+\end{folgerung}
+
+\begin{beweis}
+Es ist $x_0 \in T$ und
+
+$$\varphi'(x_0) = 
+\underbrace{
+\left(
+\begin{array}{ccc|}
+\frac{\partial \varphi_1}{\partial x_1}(x_0) & \cdots & \frac{\partial \varphi_1}{\partial x_p}(x_0)\\
+\vdots &  & \vdots\\
+\frac{\partial \varphi_p}{\partial x_1}(x_0) & \cdots & \frac{\partial \varphi_p}{\partial x_p}(x_0)\\
+\end{array}
+\right.
+}_{=:A}
+\left.
+\begin{array}{cc}
+\cdots & \frac{\partial \varphi_1}{\partial x_n}(x_0)\\
+ & \vdots\\
+\cdots & \frac{\partial \varphi_p}{\partial x_n}(x_0)\\
+\end{array}
+\right)$$
+
+Rang $\varphi'(x_0) = p \folgt$ o.B.d.A.: $\det A \ne 0.$
+
+Für $x=(x_1,\ldots,x_n) \in D$ schreiben wir $x=(y,z)$, wobei $y=(x_1,\dots,x_p),\ z=(x_{p+1},\ldots,x_n).$ Insbesondere ist $x_0=(y_0,z_0)$. Damit gilt: $\varphi(y_0,z_0) = 0$ und $\det \frac{\partial \varphi}{\partial y}(y_0,z_0) \ne 0$.
+
+Aus 10.1 folgt: $\exists$ offene Umgebung $U \subseteq \MdR^{n-p}$ von $z_0,\ \exists$ offene Umgebung $V \subseteq \MdR^p$ von $y_0$ und es existiert $g \in C^1(U,\MdR^p)$ mit:
+
+\begin{itemize}
+\item[(II)] $g(z_0)=y_0$
+\item[(III)] $\varphi(g(z),z) = 0\ \forall z \in U$
+\item[(IV)] $g'(z_0) = -(\frac{\partial \varphi}{\partial y}\underbrace{(g(z_0),z_0)}_{=x_0})^{-1}\frac{\partial \varphi}{\partial z}\underbrace{(g(z_0),z_0)}_{=x_0}$
+\end{itemize}
+
+(III) $\folgt (g(z),z) \in T\ \forall z \in U$. Wir definieren $h(z)$ durch
+$$h(z) := f(g(z),z)\ (z \in U)$$
+
+Dann hat $h$ in $z_0$ ein lokales Extremum (\emph{ohne} Nebenbedingung). Damit gilt nach 8.1:
+
+$$0=h'(z_0) \gleichnach{5.4} f'(g(z_0),z_0)\cdot\left(
+\begin{array}{c}
+g'(z_0)\\
+I
+\end{array}\right) = \left(
+\begin{array}{c|c}
+\frac{\partial f}{\partial y}(x_0) & \frac{\partial f}{\partial z}(x_0)
+\end{array}\right) \cdot \left(
+\begin{array}{c}
+g'(z_0)\\
+I
+\end{array}\right) = \frac{\partial f}{\partial y}(x_0) g'(z_0) + \frac{\partial f}{\partial z}(x_0)$$
+
+$$\gleichnach{(IV)} \underbrace{\frac{\partial f}{\partial y}(x_0) \left(-\frac{\partial \varphi}{\partial y}(x_0)\right)^{-1}}_{=: \lambda_0 \in \MdR^p} \frac{\partial \varphi}{\partial z}(x_0) + \frac{\partial f}{\partial z}(x_0) \folgt \frac{\partial f}{\partial z}(x_0) + \lambda_0 \frac{\partial \varphi}{\partial z}(x_0) = 0\text{ (V)}$$
+
+$\ds{\lambda_0 = \frac{\partial f}{\partial y}(x_0) \left(-\frac{\partial \varphi}{\partial y}(x_0)\right)^{-1} \folgt \frac{\partial f}{\partial y}(x_0) + \lambda_0 \frac{\partial \varphi}{\partial y}(x_0) = 0}$ (VI)
+
+Aus (V),(VI) folgt: $f'(x_0) + \lambda_0\varphi'(x_0) = 0 \folgtnach{(I)} H'(x_0,\lambda_0) = 0.$
+
+\end{beweis}
+
+\begin{beispiel}
+$(n=3,p=2)\ f(x,y,z) = x+y+z,\ T:=\{(x,y,z) \in \MdR^3: x^2+y^2=2,\ x+z=1\},\ \varphi(x,y,z) = (x^2+y^2-2,x+z-1).$
+
+Bestimme $\max f(T),\ \min f(T)$. Übung: $T$ ist beschränkt und abgeschlossen $\folgtnach{3.3} \exists a,b \in T: f(a) = \max f(T),\ f(b) = \min f(T)$.
+
+$$\varphi'(x,y,z) = \left(\begin{array}{ccc}
+2x & 2y & 0\\
+1  & 0  & 1
+\end{array}\right)$$
+
+Rang $\varphi'(x,y,z) = 1 < p=2 \equizu x=y=0.\ a,b\in T \folgt$ Rang $\varphi'(a) =$ Rang $\varphi'(b) = 2$
+
+\def\shouldbe{\overset{!}{=}}
+
+$H(x,y,z,\lambda_1,\lambda_2) = x+y+z+\lambda_1(x^2+y^2-2) + \lambda_2(x+z-1)$\\
+\begin{tabbing}
+$H_x=1+2\lambda_1x+\lambda_2$ \= $\shouldbe 0$ (1)\\
+$H_y=1+2\lambda_1y          $ \> $\shouldbe 0$ (2)\\
+$H_z=1+\lambda_2            $ \> $\shouldbe 0$ (3)\\
+$H_{\lambda_1}=x^2+y^2-2    $ \> $\shouldbe 0$ (4)\\
+$H_{\lambda_2}=x+z-1        $ \> $\shouldbe 0$ (5)
+\end{tabbing}
+
+(3) $\folgt \lambda_2=-1 \folgtnach{(1)} 2\lambda_1x=0$; (2) $\folgt \lambda_1\ne0 \folgt x=0 \folgtnach{(5)} z=1$; (4) $\folgt y = \pm \sqrt{2}$
+
+11.2 $\folgt a,b \in \{(0,\sqrt{2},1),(0,-\sqrt{2},1)\}$
+
+$f(0,\sqrt{2},1) = 1+\sqrt{2} = \max f(T);\ f(0,-\sqrt{2},1) = 1-\sqrt{2} = \min f(T)$
+
+\end{beispiel}
+
+\paragraph{Anwendung}
+Sei $A$ eine reelle, \emph{symmetrische} $(n\times n)$-Matrix. Beh: $A$ besitzt einen reellen EW.
+
+\begin{beweis}
+$f(x) := x\cdot(Ax) = Q_A(x)\ (x \in \MdR^n),\ T:= \{x \in \MdR^n: ||x||=1\} = \partial U_1(0)$ ist beschränkt und abgeschlossen.
+
+$\varphi(x) := ||x||^2-1 = x\cdot x-1;\ \varphi'(x) = 2x,\ f'(x) = 2Ax$.
+
+3.3 $\folgt \exists x_0 \in T: f(x_0) = \max f(T);\ \varphi'(x) = 2(x_1,\ldots,x_n);\ x_0 \in T \folgt$ Rang $\varphi'(x_0) = 1\ (=p)$
+
+11.2 $\folgt \exists \lambda_0 \in \MdR: H'(x_0,\lambda_0) = 0;\ h(x,\lambda) = f(x)+\lambda\varphi(x);\ H'(x,\lambda) = 2Ax+2\lambda x$
+
+$\folgt 0 = 2(Ax_0+\lambda_0 x_0) \folgt Ax_0 = (-\lambda_0) x_0,\ x_0 \ne 0 \folgt -\lambda_0$ ist ein EW von $A$.
+\end{beweis}
+\chapter{Wege im $\MdR^n$}
+ 
+\indexlabel{Weg}
+\indexlabel{Bogen}
+\indexlabel{Anfangspunkt}
+\indexlabel{Endpunkt}
+\indexlabel{Weg!inverser}
+\indexlabel{Inverser Weg}
+\indexlabel{Parameterintervall}
+\begin{definition}
+\begin{liste}
+\item Sei $[a,b]\subseteq \MdR$ und $\gamma: [a,b] \to \MdR^n$ sei stetig. Dann heißt $\gamma$ ein Weg im $\MdR^n$
+\item Sei $\gamma :[a,b] \to \MdR^n$ ein Weg. $\Gamma_\gamma := \gamma([a,b])$ heißt der zu $\gamma$ gehörende Bogen, $\Gamma_\gamma \subseteq \MdR^n$. 3.3 \folgt{} $\Gamma_\gamma$ ist beschränkt und abgeschlossen. $\gamma(a)$ heißt der Anfangspunkt von $\gamma$, $\gamma(b)$ heißt der Endpunkt von $\gamma$. $[a,b]$ heißt Parameterintervall von $\gamma$.
+\item $\gamma^-:[a,b]\to \MdR^n$, definiert durch $\gamma^-(t):=\gamma(b+a-t)$ heißt der zu $\gamma$ inverse Weg. Beachte: $\gamma^- \ne \gamma$, aber $\Gamma_\gamma = \Gamma_{\gamma^-}$.
+\end{liste}
+\end{definition}
+
+\begin{beispiele}
+\item Sei $x_0, y_0\in\MdR^n$, $\gamma(t) := x_0 + t(y_0-x_0)$, $t\in[0,1]$. $\Gamma_\gamma=S[x_0,y_0]$
+\item Sei $r>0$ und $y(t) := (r \cos t, r \sin t)$, $t\in[0,2\pi]$\\ $\Gamma_\gamma=\{(x,y)\in\MdR^2: x^2+y^2=r^2\} = \partial U_r(0)$ \\
+$\tilde\gamma(t) := (r \cos t, r \sin t)$, $t\in[0,4\pi]$. $\tilde\gamma \ne \gamma$, aber $\Gamma_{\tilde\gamma} = \Gamma_\gamma$.
+\end{beispiele}
+
+\begin{erinnerung}
+$\Z$ ist die Menge aller Zerlegungen von $[a,b]$
+\end{erinnerung}
+
+\begin{definition}
+Sei $\gamma:[a,b]\to \MdR^n$ ein Weg. Sei $Z=\{t_0, \ldots, t_m\} \in \Z$.\\
+$$L(\gamma,Z):= \sum_{j=1}^m\|\gamma(t_j) - \gamma(t_{j-1})\|$$
+Übung: Sind $Z_1,Z_2\in\Z$ und gilt $Z_1 \subseteq Z_2 \folgt L(\gamma,Z_1) \le L(\gamma,Z_2)$
+
+$\gamma$ heißt rektifizierbar (rb) \indexlabel{Rektifizierbarkeit} $:\equizu$ $\exists M\ge0: L(\gamma,Z)\le M\ \forall Z\in\Z$. In diesem Fall heißt $L(\gamma) := \sup\{L(\gamma,Z): Z\in\Z\}$ die Länge von $\gamma$\indexlabel{Länge}.
+
+Ist $n=1$, so gilt: $\gamma$ ist rektifizierbar $\equizu$ $\gamma\in \BV[a,b]$. In diesem Fall: $L(\gamma) = V_\gamma([a,b])$.
+\end{definition}
+
+\begin{satz}[Rektifizierbarkeit und Beschränkte Variation]
+Sei $\gamma = (\eta_1, \ldots, \eta_n):[a,b]\to\MdR^n$ ein Weg. $\gamma$ ist rektifizierbar $\equizu$ \mbox{$\eta_1,\ldots,\eta_n\in \BV[a,b]$}.
+\end{satz}
+
+\begin{beweis}
+Sei $Z = \{t_0,\ldots,t_n\} \in \Z$ und $J=\{1,\ldots,n\}$.\\
+$|\eta_j(t_k)-\eta_j(t_{k-1})| \stackrel{\text{1.7}}{\le} \|\gamma(t_k) - \gamma(t_{k-1})\| \stackrel{\text{1.7}}\le \sum_{\nu=1}^n |\eta_\nu(t_k) - \eta_\nu(t_{k-1})\|$. Summation über $k$ $\folgt$ $V_{\eta_j} \le L(\gamma,Z) \le \sum_{k=1}^m\sum_{\nu=1}^n |\eta_\nu(t_k)-\eta_\nu(t_{k-1})| = \sum_{\nu=1}^n V_{\eta_\nu}(Z) \folgt$ Behauptung
+\end{beweis}
+\paragraph{Übung:} $\gamma$ ist rektifizierbar $\equizu$ $\gamma^-$ ist rektifizierbar. In diesem Fall: \mbox{$L(\gamma) = L(\gamma^-)$}
+
+\paragraph{Summe von Wege:}Gegeben: $a_0, a_1,\ldots a_l \in \MdR$, $a_0<a_1<a_2<\ldots<a_c$ und Wege $\gamma_k:[a_{k-1},a_k] \to \MdR^n$ $(k=1,\ldots,l)$ mit : $\gamma_k(a_k) = \gamma_{k+1}(a_k)$ $(k=1,\ldots,l-1)$.
+Definiere $\gamma:[a_0,a_l]\to\MdR^n$ durch $\gamma(t):=\gamma_k(t)$, falls $t\in[a_{k-1},a_k]$. $\gamma$ ist ein Weg im $\MdR^n$, $\Gamma_\gamma = \Gamma_{\gamma_1} \cup \Gamma_{\gamma_2} \cup \cdots \cup \Gamma_{\gamma_l}$. $\gamma$ heißt die Summe der Wege $\gamma_1,\ldots,\gamma_l$ und wird mit. $\gamma = \gamma_1 \oplus \gamma_2 \oplus \cdots \oplus \gamma_l$ bezeichnet. \indexlabel{Summe!von Wegen}
+
+\begin{bemerkung}
+Ist $\gamma:[a,b]\to\MdR^n$ ein Weg und $Z=\{t_0,\ldots,t_m\}\in\Z$ und $\gamma_k:=\gamma_{|_{[t_{k-1},t_k]}}$ $(k=1,\ldots,m)$ $\folgt$ $\gamma = \gamma_1 \oplus \cdots \oplus \gamma_m$. Aus Analysis I, 25.1(7) und 12.1 folgt: 
+\end{bemerkung}
+
+\begin{satz}[Summe von Wegen]
+Ist $\gamma = \gamma_1 \oplus \cdots \oplus \gamma_m$, so gilt: $\gamma$ ist rektifizierbar $\equizu$ $\gamma_1,\ldots,\gamma_m$ sind rektifizierbar. In diesem Fall: $L(\gamma)=L(\gamma_1) + \cdots + L(\gamma_m)$
+\end{satz}
+
+\begin{definition}
+Sei $\gamma:[a,b]\to\MdR^n$ ein rektifizierbarer Weg. Sei $t\in(a,b]$. Dann: $\gamma_{|_{[a,t]}}$ ist rektifizierbar (12.2).
+$$s(t):= \begin{cases}L(\gamma_{|_{[a,t]}}),&\text{falls }t\in(a,b] \\0, &\text{falls }t=a\end{cases}$$ heißt die zu $\gamma$ gehörende \begriff{Weglängenfunktion}.
+\end{definition}
+
+\begin{satz}[Eigenschaften der Weglängenfunktion]
+Sei $\gamma:[a,b]\to\MdR^n$ ein rektifizierbarer Weg. Dann: 
+\begin{liste}
+\item $s\in C[a,b]$
+\item $s$ ist wachsend.
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+\begin{liste}
+\item In der großen Übung
+\item Sei $t_1, t_2 \in [a,b]$ und $t_1<t_2$. $\gamma_1:=\gamma_{|_{[a,t_1]}}$, $\gamma_2:=\gamma_{|_{[t_1,t_2]}}$, $\gamma_3:=\gamma_{|_{[a,t_2]}}$. Dann $\gamma_3 = \gamma_1 \oplus \gamma_2$. 12.2 $\folgt$ $\gamma_1,\gamma_2,\gamma_3$ sind rektifizierbar und $\underbrace{L(\gamma_3)}_{=s(t_2)} = \underbrace{L(\gamma1)}_{s(t_1)} + \underbrace{L(\gamma_3)}_{\ge 0} \folgt s(t_2) \ge s(t_1)$.
+\end{liste}
+\end{beweis}
+
+\begin{satz}[Rechenregeln für Wegintegrale]
+Sei $f=(f_1,\ldots,f_n):[a,b]\to\MdR^n$ und $f_1,\ldots,f_n\in R[a,b]$.
+$$\int_a^bf(t)dt := \left(\int_a^bf_1(t)dt, \int_a^bf_2(t)dt,\ldots, \int_a^bf_n(t)dt\right) \quad (\in\MdR^n)$$
+Dann: \begin{liste}
+\item $$x\cdot \int_a^bf(t)dt = \int_a^b(x\cdot f(t))dt \ \forall x\in\MdR^n$$
+\item $$\left\|\int_a^bf(t)dt\right\| \le \int_a^b\|f(t)\|dt$$
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+\begin{liste}
+\item Sei $x=(x_1,\ldots,x_n) \folgt$\\ $x\cdot\int_a^b f(t)dt = \sum_{j=1}^n x_j\int_a^bf_j(t) dt = \int_a^b\left(\sum_{j=1}^n x_j f_j(t)dt\right) = \int_a^b \left(x\cdot f(t)\right) dt$
+\item $y:=\int_a^bf(t)dt$. O.B.d.A: $y\ne 0$. $x:= \frac{1}{\|y\|} y \folgt \|x\|=1, y=\|y\|x$. $\|y\|^2 = y\cdot y = \|<\|(x\cdot y) = \|y\|\left(x\cdot \int_a^bf(t)dt \right) = \|y\|\int_a^b\left(x\cdot f(t)\right) dt \le \|y\|\int_a^b\underbrace{|x \cdot f(t)|}_{\le\|y\|\|f(t)\| = \|f(t)\|} \le \|y\| \int_a^b\|f(t)\|dt$
+\end{liste}
+\end{beweis}
+
+
+\begin{satz}[Eigenschaften stetig differenzierbarer Wege]
+$\gamma:[a,b]\to\MdR^n$ sei ein stetig differenzierbarer Weg. Dann:
+\begin{liste}
+\item $\gamma$ ist rektifizierbar
+\item Ist $s$ die zu $\gamma$ geh"orende Wegl"angenfunktion, so ist $s\in C^1[a,b]$ und $s'(t)=\|\gamma'(t)\|\ \forall t\in[a,b]$
+\item $L(\gamma)=\int_a^b\|\gamma'(t)\|dt$
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item $\gamma=(\eta_1,\ldots,\eta_n)$, $\eta_j\in C^1[a,b]\folgtnach{A1,25.1}\eta_j\in \text{BV}[a,b]\folgtnach{12.1}\gamma$ ist rektifizierbar.
+\item Sei $t_0\in[a,b)$. Wir zeigen: 
+$$\frac{s(t)-s(t_0)}{t-t_0}\to\|\gamma'(t_0)\|\ (t\to t_0+0)\text{. (analog zeigt man :}\frac{s(t)-s(t_0)}{t-t_0}\to\|\gamma'(t_0)\|\ (t\to t_0-0)\text{).}$$
+Sei $t\in (t_0, b];\ \gamma_1:=\gamma_{|_{[a,t_0]}}, \gamma_2:=\gamma_{|_{[t_0,t]}}, \gamma_3:=\gamma_{|_{[a,t]}}$. Dann: $\gamma_3=\gamma_1 \oplus \gamma_2$ und $\underbrace{L(\gamma_3)}_{=s(t)}=\underbrace{L(\gamma_1)}_{=s(t_0)}+L(\gamma_2)\folgt s(t)-s(t_0)=L(\gamma_2)\ (I).$\\
+$\tilde{Z}:=\{t_0, t\}$ ist eine Zerlegung von $[t_0,t]\folgt \|\gamma(t)-\gamma(t_0)\|=L(\gamma_2,\tilde{Z})\le L(\gamma_2)$\\
+\textbf{Definition}: $F:[a,b]\to\MdR$ durch $F(t)=\ds\int_a^t\|\gamma'(\tau)\|\text{d}\tau$. 2.Hauptsatz der Differential- und Integralrechnung $\folgt F$ ist differenzierbar und $F'(t)=\|\gamma'(t)\|\ \forall t\in[a,b]$. Sei $Z=\{\tau_0,\ldots,\tau_m\}$ eine beliebige Zerlegung von $[t_0, t]$.
+$$\ds\int_{\tau_{j-1}}^{\tau_j}\gamma'(\tau)\text{d}\tau=\left(\cdots, \ds\int_{\tau_{j-1}}^{\tau_j}\eta_k'(\tau)\text{d}\tau,\cdots\right)\gleichnach{A1}\left(\cdots, \eta_k(\tau_j)-\eta_k(\tau_{j-1}),\cdots\right)=\gamma(\tau_j)-\gamma(\tau_{j-1})$$
+$\folgt \|\gamma(\tau_j)-\gamma(\tau_{j-1})\|\overset{12.4}{\le}\ds\int_{\tau_{j-1}}^{\tau_j}\|\gamma'(\tau)\|\text{d}\tau$. Summation $\folgt L(\gamma_2,Z)\le\ds\int_{t_0}^t\|\gamma'(\tau)\|\text{d}\tau=F(t)-F(t_0)\folgt L(\gamma_2)\le F(t)-F(t_0)\ (III)$.\\
+$(I), (II), (III)\folgt\|\gamma(t)-\gamma(t_0)\|\overset{(II)}{\le}L(\gamma_2)\overset{(I)}{=}s(t)-s(t_0)\overset{(III)}{\le}F(t)-F(t_0)$
+$$\folgt\underbrace{\frac{\|\gamma(t)-\gamma(t_0)\|}{t-t_0}}_{\overset{t\to t_0}{\to}\|\gamma'(t_0)\|}\le\frac{s(t)-s(t_0)}{t-t_0}\le\underbrace{\frac{F(t)-F(t_0)}{t-t_0}}_{\overset{t\to t_0}{\to}F'(t_0)=\|\gamma'(t_0)\|}$$
+$(3)\ L(\gamma)=s(b)=s(b)-s(a)\overset{AI}{=}\ds\int_a^b s'(t)\text{d}t\gleichnach{(2)}\ds\int_a^b\|\gamma'(t)\|\text{d}t$
+\end{beweise}
+
+\begin{beispiele}
+\item $x_0, y_0\in\MdR^n, \gamma(t):=x_0+t(y_0-x_0)\ (t\in [0,1])$. $\gamma'(t)=y_0-x_0\folgt L(\gamma)=\ds\int_0^1\|y_0-x_0\|\text{d}t=\|y_0-x_0\|$.
+\item Sei $f:[a,b]\to\MdR$ stetig und $\gamma(t):=(t, f(t)), t\in[a,b]$. $\gamma$ ist ein Weg im $\MdR^2$. $\gamma$ ist rektifizierbar $\equizu f \in \text{BV}[a,b]$. $\Gamma_\gamma=$Graph von $f$. Jetzt sei $f\in C^1[a,b] \folgtnach{12.5} L(\gamma)=\ds\int_a^b\|\gamma'(t)\|\text{d}t=\ds\int_a^b (1+f'(t)^2)^{\frac{1}{2}}\text{d}t$.
+\item $\gamma(t):=(\cos t, \sin t)\ (t\in [0,2\pi])$. $\gamma'(t)=(-\sin t, \cos t)$. $\|\gamma'(t)\|=1\ \forall t\in [0,2\pi]\folgtnach{12.5}s'(t)=1\ \forall t\in[0,2\pi]\folgt s(t)=t\ \forall t\in[0,2\pi]$ (\begriff{Bogenma"s}). \begriff{Winkelma"s}: $\varphi:=\frac{180}{\pi}t$. $L(\gamma)=2\pi$.
+\end{beispiele}
+
+\begin{definition*}
+$\gamma:[a,b]\to\MdR^n$ sei ein Weg.
+\begin{liste}
+\item $\gamma$ hei"st \begriff{st"uckweise stetig differenzierbar} $:\equizu\exists z=\{t_0,\ldots,t_m\}\in\Z$ mit: $\gamma_{|_{[t_k-1,t_k]}}$ sind stetig differenzierbar $(k=1,\ldots,m)\equizu\exists$ stetig differenzierbare Wege $\gamma_1,\ldots,\gamma_l: \gamma=\gamma_1\oplus\cdots\oplus\gamma_l$.
+\item $\gamma$ hei"st \begriff{glatt} $:\equizu \gamma$ ist stetig differenzierbar und $\|\gamma'(t)\|>0\ \forall t\in[a,b]$.
+\item $\gamma$ hei"st \begriff{st"uckweise glatt} $:\equizu\exists$ glatte Wege $\gamma=\gamma_1\oplus\cdots\oplus\gamma_l$
+\end{liste}
+\end{definition*}
+
+Aus 12.2 und 12.5 folgt:
+
+\begin{satz}[Rektivizierbarkeit von Wegsummen]
+Ist $\gamma=\gamma_1\oplus\cdots\oplus\gamma_l$ st"uckweise stetig differenzierbar, mit stetig differenzierbaren Wegen $\gamma_1,\ldots,\gamma_l\folgt \gamma$ ist rektifizierbar und $L(\gamma)=L(\gamma_1)+\cdots+L(\gamma_l)$.
+\end{satz}
+
+\begin{definition*}
+Sei $\gamma:[a,b]\to\MdR^n$ ein Weg. $\gamma$ hei"st eine \begriff{Parameterdarstellung} von $\Gamma_\gamma$.
+\end{definition*}
+
+\begin{beispiele}
+\item $x_0, y_0\in\MdR^n, \gamma_1(t):=x_0+t(y_0-x_0)\ t\in[0,1],\ \gamma_2(t):=\gamma_1^-(t)\ t\in[0,1],\ \gamma_3(t):=x_0+7t(y_0-x_0)\ t\in[0,\frac{1}{7}].\ \gamma_1,\gamma_2,\gamma_3$ sind Parameterdarstellungen von $S[x_0, y_0]$.
+\item $\gamma_1(t)=(\cos t, \sin t),\ (t\in [0,2\pi]), \gamma_2(t):=(\cos t, \sin t), (t\in[0,4\pi])$. $\gamma_1, \gamma_2$ sind Parameterdarstellungen von $K=\{(x,y)\in\MdR^2: x^2+y^2=1\}.$
+\end{beispiele}
+
+\begin{definition*}
+$\gamma_1:[a,b]\to\MdR^n$ und $\gamma_2:[\alpha,\beta]\to\MdR^n$ seien Wege.
+
+$\gamma_1$ und $\gamma_2$ hei"sen \begriff{"aquivalent}, in Zeichen $\gamma_1\sim\gamma_2:\equizu\exists h:[a,b]\to[\alpha, \beta]$ stetig und streng wachsend, $h(a)=\alpha, h(b)=\beta$ und $\gamma_1(t)=\gamma_2(h(t))\ \forall t\in[a,b]$ (also $\gamma_1=\gamma_2\circ h)$. $h$ hei"st eine \begriff{Parametertransformation} (PTF). Analysis 1 $\folgt h([a,b])=[\alpha,\beta]\folgt \Gamma_{\gamma_1}=\Gamma_{\gamma_2}$.
+Es gilt: $\gamma_2=\gamma_1\circ h^{-1}\folgt \gamma_2\sim\gamma_1$. \glqq$\sim$\grqq\ ist eine "Aquivalenzrelation.
+\end{definition*}
+
+\begin{beispiele}
+\item $\gamma_1, \gamma_2, \gamma_3$ seien wie in obigem Beispiel (1). $\gamma_1\sim\gamma_3, \gamma_1\nsim\gamma_2$.
+\item $\gamma_1, \gamma_2$ seien wie in obigem Beispiel (2). $\gamma_1\nsim\gamma_2$, denn $L(\gamma_1)=2\pi\ne 4\pi=L(\gamma_2)$
+\end{beispiele}
+
+\begin{satz}[Eigenschaften der Parametertransformation]
+$\gamma_1:[a,b]\to\MdR^n$ und $\gamma_2:[\alpha,\beta]\to\MdR^n$ seien "aquivalente Wege und $h:[a,b]\to[\alpha,\beta]$ eine Parametertransformation.
+\begin{liste}
+\item $\gamma_1$ ist rektifizierbar $\equizu \gamma_2$ ist rektifizierbar. In diesem Falle: $L(\gamma_1)=L(\gamma_2)$
+\item Sind $\gamma_1$ und $\gamma_2$ glatt $\folgt h\in C^1[a,b]$ und $h'>0$.
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item[(2)] In den gro"sen "Ubungen.
+\item[(1)] Es gen"ugt zu zeigen: Aus $\gamma_2$ rektifizierbar folgt: $\gamma_1$ ist rektifizierbar und $L(\gamma_1)\le L(\gamma_2)$. Sei $Z=\{t_0,\ldots,t_m\}\in\Z\folgt\tilde{Z}:=\{h(t_0),\ldots, h(t_m)\}$ ist eine Zerlegung von $[\alpha,\beta]$.
+$$L(\gamma_1, Z)=\ds\sum_{j=1}^m\|\gamma_1(t_j)-\gamma_1(t_{j-1})\|=\ds\sum_{j=1}^m\|\gamma_2(h(t_j))-\gamma_2(h(t_{j-1}))\|=L(\gamma_2, \tilde{Z})\le L(\gamma_2)$$
+$\folgt \gamma_1$ ist rektifizierbar und $L(\gamma_1)\le L(\gamma_2)$.
+\end{beweise}
+
+\paragraph{Wegl"ange als Parameter}
+Es sei $\gamma:[a,b]->\MdR^n$ ein \emph{glatter} Weg. 12.5 $\folgt \gamma$ ist rb. $L:=L(\gamma)$. 12.5 $\folgt s \in C^1[a,b]$ und $s'(t) = ||\gamma'(t)|| > 0\ \forall t\in[a,b].\ s$ ist also \emph{streng wachsend}. Dann gilt: $s([a,b]) = [0,L],\ s^{-1}:[0,L]\to[a,b]$ ist streng wachsend und stetig db. $(s^{-1})'(\sigma) = \frac{1}{s'(t)}$ f"ur $\sigma \in [0,L],\ s(t) = \sigma.$
+
+\begin{definition}
+$\tilde{\gamma}[0,L] \to \MdR^n$ durch $\tilde{\gamma}(\sigma) := \gamma(s^{-1}(\sigma)),$ also $\tilde{\gamma} = \gamma\cdot s^{-1};\ \tilde{\gamma}$ ist ein Weg im $\MdR^n$ und $\tilde{\gamma} \sim \gamma;\ \Gamma_\gamma = \Gamma_{\tilde{\gamma}}.$
+
+12.7 $\folgt \tilde{\gamma}$ ist rb, $L(\tilde{\gamma})=L(\gamma)=L,\ \tilde{\gamma}$ ist stetig db. $\tilde{\gamma}$ hei"st Parameterdarstellung von $\Gamma_\gamma$ mit der Wegl"ange als Parameter. Warum?
+\end{definition}
+
+Darum: Sei $\tilde{s}$ die zu $\tilde{\gamma}$ geh"orende Wegl"angenfunktion. $\forall \sigma\in[0,L]: \tilde{\gamma}(\sigma) = \gamma(s^{-1}(\sigma)).$ Sei $\sigma\in[0,L],\ t:= s^{-1}(\sigma) \in [a,b],\ s(t) = \sigma.$
+
+$\tilde{\gamma}(\sigma) = (s^{-1})'(\sigma)\cdot\gamma'(s^{-1}(\sigma)) = \frac{1}{s'(t)}\gamma'(t) \gleichnach{12.5} \frac{1}{||\gamma'(t)||}\gamma'(t) \folgt ||\gamma'(\sigma)||=1$ ($\folgt \tilde{\gamma}$ ist glatt).
+
+$\tilde{s}'(\gamma) \gleichnach{12.5} ||\gamma'(\sigma)|| = 1 \folgtwegen{\tilde{s}(0)=0} \tilde{s}(\sigma)=\sigma.$
+
+Also: $||\tilde{\gamma}'(\sigma)|| = 1,\ \tilde{s}(\sigma)=\sigma\ \forall \sigma\in[0,L].$
+
+\begin{beispiel}
+$\gamma(t) = \frac{e^t}{\sqrt{2}}(\cos t,\sin t),\ t \in [0,1];\ \gamma$ ist stetig db; Nachrechnen: $||\gamma'(t)||=e^t\ \forall t \in [0,1] \folgt \gamma$ ist glatt.
+
+$s'(t) \gleichnach{12.5} ||\gamma'(t)|| = e^t \folgt s(t) = e^t+c \folgt 0=s(0) = 1+c \folgt c=-1,\ s(t) = e^t-1\ (t\in[0,1]) \folgt L=L(\gamma)=s(1)=e-1.\ e^t=1+s(t),\ t=\log (1+s(t)).$
+
+$\tilde{\gamma}(\sigma) = \gamma(s^{-1}(\sigma)) = \gamma(\log (1+\sigma)) = \frac{1+\sigma}{\sqrt{2}}(\cos (\log(1+\sigma)),\sin (\log(1+\sigma))),\ \sigma\in[0,e-1].$
+\end{beispiel}
+
+\chapter{Wegintegrale}
+ 
+\begin{definition}
+\indexlabel{Wegintegral}
+
+$\gamma=(\gamma_1,\ldots,\gamma_n):[a,b] \to \MdR^n$ sei ein \emph{rektifizierbarer} Weg, $\Gamma:=\Gamma_\gamma$ und $f=(f_1,\ldots,f_n):\Gamma \to \MdR^n$ sei \emph{stetig}. Sei $j\in\{1,\ldots,n\};\ \gamma_j\in BV[a,b]$ (12.1). $f_j\circ \gamma$ ist \emph{stetig}. Ana I, 26.6 $\folgt f_j\circ\gamma \in R_{\gamma_j}[a,b].$
+
+$$\int_\gamma f_j(x)dx_j := \int_a^b f_j(\gamma(t))d\gamma_j(t)$$
+
+$$\int_\gamma f(x)\cdot dx := \int_\gamma f_1(x)dx_1+\cdots+f_n(x)dx_n := \int_\gamma f_1(x)dx_1+\cdots+\int_\gamma f_n(x)dx_n$$
+$$= \int_a^b f_1(\gamma(t)) d\gamma_1(t)+\cdots +\int_a^b f_n(\gamma(t)) d\gamma_n(t).$$
+
+\textbf{Wegintegral} von $f$ l"angs $\gamma$.
+\end{definition}
+
+Aus Ana I, 26.3 folgt:
+
+\begin{satz}[Berechnung des Wegintegrals]
+$\gamma,\Gamma$ und $f$ seien wie oben. $\gamma$ sei stetig differenzierbar. Dann:
+$$\int_\gamma f_j(x)dx_j = \int_a^b f_j(\gamma(t))\gamma'_j(t)dt\ (j=1,\ldots,n)$$ und $$\int_\gamma f(x)\cdot dx = \sum_{j=1}^{n} \int_a^b f_j(\gamma(t))\gamma'_j(t) dt = \int_a^b f(\gamma(t))\cdot\gamma'(t) dt.$$
+\end{satz}
+
+\begin{beispiel}
+$f(x,y,z) := (z,y,x),\ \gamma(t) = (t,t^2,3t),\ t\in[0,1].\ f(\gamma(t)) = (3t,t^2,t),\ \gamma'(t)=(1,2t,3),\ f(\gamma(t))\cdot\gamma'(t) = 3t+2t^3+3t = 6t+2t^3$.
+
+$\int_\gamma f(x,y,z)\cdot d(x,y,z) = \int_0^1 (6t+2t^3) dt = \frac{7}{2}.$
+\end{beispiel}
+
+\begin{satz}[Rechnen mit Wegintegralen]
+$\gamma,\Gamma,f$ seien wie oben, $g:\Gamma\to\MdR^n$ sei stetig, $\hat\gamma = (\hat{\gamma}_1,\ldots,\hat{\gamma}_n): [\alpha,\beta] \to \MdR^n$ sei rektifizierbar und $\xi,\eta \in \MdR$.
+\begin{liste}
+\item $\ds{\int_\gamma(\xi f(x)+\eta g(x))\cdot dx = \xi \int_\gamma f(x)\cdot dx+\eta \int_\gamma g(x)\cdot dx}$
+\item Ist $\gamma = \gamma^{(1)} \oplus \gamma^{(2)} \folgt \ds{\int_\gamma f(x)\cdot dx = \int_{\gamma^{(1)}} f(x)\cdot dx + \int_{\gamma^{(2)}} f(x)\cdot dx}$
+\item $\ds{\int_{\gamma^-} f(x)\cdot dx = -\int_\gamma f(x)\cdot dx}$
+\item $\ds{\left| \int_\gamma f(x)\cdot dx\right| \le L(\gamma)\cdot \max\{||f(x)||:x \in \Gamma\}}$
+\item Ist $\ds{\hat{\gamma} \sim \gamma \folgt \int_\gamma f(x)\cdot dx = \int_{\hat{\gamma}} f(x)\cdot dx}$.
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item klar
+\item Ana I, 26.1(3)
+\item nur f"ur $\gamma$ stetig differenzierbar. $\gamma^-(t) = \gamma(b+a-t),\ t\in[a,b].$
+
+$\int_{\gamma^-} f(x)\cdot dx = \int_a^b f(\gamma(b+a-t))\cdot \gamma'(b+a-t) (-1) dt =$ (subst. $\tau=b+a-t,\ d\tau = dt$) $= \int_b^a f(\gamma(\tau))\cdot\gamma'(\tau) d\tau = -\int_a^b f(\gamma(\tau))\cdot\gamma'(\tau) d\tau = -\int_\gamma f(x)\cdot dx.$
+\item "Ubung
+\item Sei $\hat{\gamma} = \gamma\circ h,\ h:[\alpha,\beta]\to[a,b]$ stetig und streng wachsend. $h(\alpha) = a,\ h(\beta) = b$. Nur f"ur $\gamma$ und $h$ stetig db. Dann ist $\hat{\gamma}$ stetig db.
+
+$\int_{\hat{\gamma}} f(x)\cdot dx = \int_\alpha^\beta f(\gamma(h(t)))\cdot \gamma'(h(t))\cdot h'(t) dt =$ (subst. $\tau = h(t),\ d\tau = h'(t)dt$) $= \int_a^b f(\gamma(\tau))\cdot \gamma'(\tau)d\tau = \int_\gamma f(x)\cdot dx.$
+\end{beweise}
+
+\begin{definition}
+$\gamma,\Gamma$ seien wie immer in diesem Paragraphen. $s$ sei die zu $\gamma$ geh"orende Wegl"angenfunktion und $g:\Gamma \to \MdR$ stetig. 12.4 $\folgt s$ ist wachsend $\folgtnach{Ana I} s \in BV[a,b];\ g\circ\gamma$ stetig $\folgtnach{Ana I, 26.6} g\circ\gamma \in R_s[a,b]$.
+
+$$\int_\gamma g(x) ds := \int_a^b g(\gamma(t))ds(t)$$
+
+\textbf{Integral bzgl. der Wegl"ange}.
+\end{definition}
+
+\begin{satz}[Rechnen mit Integralen bezgl. der Weglänge]
+Seien $\gamma,g$ wie oben.
+\begin{liste}
+\item $\ds{\int_{\gamma^-} g(x) ds = \int_\gamma g(x) ds}$
+\item Ist $\ds{\gamma = \gamma^{(1)} \oplus \gamma^{(2)} \folgt \int_\gamma g(x)ds = \int_{\gamma^{(1)}} g(x)ds + \int_{\gamma^{(2)}} g(x)ds}$.
+\item Ist $\gamma$ stetig db $\folgt \ds{\int_\gamma g(x)ds = \int_a^b g(\gamma(t))||\gamma'(t)||dt}$.
+\end{liste}
+\end{satz}
+
+\begin{beispiel}
+$g(x,y) = (1+x^2+3y)^{1/2},\ \gamma(t) = (t,t^2),\ t\in[0,1].$
+
+$g(\gamma(t)) = (1+t^2+3t^2)^{1/2} = (1+4t^2)^{1/2},\ \gamma'(t) = (1+2t),\ ||\gamma'(t)|| = (1+4t^2)^{1/2} \folgt \int_\gamma g(x,y)ds = \int_0^1 (1+4t^2) dt = \frac{7}{3}$
+\end{beispiel}
+
+\paragraph{Gegeben:} $\gamma_1,\gamma_2,\ldots,\gamma_m$ rektifizierbare Wege, $\gamma_k:[a_k,b_k]\to\MdR^n$ mit $\gamma_1(b_1) = \gamma_2(a_2), \gamma_2(b_2) = \gamma_3(a_3),\ldots , \gamma_{m-1}(b_{m-1}) = \gamma_m(a_m)$. $\Gamma := \Gamma_{\gamma_1} \cup \ldots \cup \Gamma_{\gamma_m}r$.
+
+$\text{AH}(\gamma_1,\ldots,\gamma_m) := \{\gamma:\gamma$ ist ein rektifizierbarer Weg im $\MdR^n$ mit: $\Gamma_\gamma=\Gamma$, $L(\gamma)=L(\gamma_1)+\cdots+L(\gamma_m)$ und $\int_\gamma f(x)\cdot dx = \int_{\gamma_1}f(x)\cdot dx+ \cdots + \int_{\gamma_m}f(x)\cdot dx$ für \emph{jedes} stetige $f:\Gamma\to\MdR^n\}.$
+
+Ist $\gamma\in \text{AH}(\gamma_1,\ldots,\gamma_m)$, so sagt man $\gamma$ entsteht durch \indexlabel{Aneinanderhängung}\textbf{Aneinanderhängen} der Wege $\gamma_1,\ldots,\gamma_m$.
+
+\begin{satz}[Stetige Differenzierbarekeit der Aneinanderhängung]
+$\gamma_1,\ldots,\gamma_m$ seien wie oben. Dann: $\text{AH}(\gamma_1,\ldots,\gamma_m) \ne \emptyset$. \\
+Sind $\gamma_1,\ldots,\gamma_m$ stetig differenzierbar, so existiert ein stückweise stetig differenzierbarer Weg $\gamma\in \text{AH}(\gamma_1,\ldots,\gamma_m)$.
+\end{satz}
+
+\begin{beweis}
+O.B.d.A: $m=2$.
+
+Def. $h:[b_1,c] \to [a_2,b_2]$ linear wie folgt: $h(x)=px+q$, $h(b_1)=a_2$, $h(c)=b_2$. $\hat\gamma_2 := \gamma_2\circ h$. Dann: $\gamma_2\sim \hat\gamma_2$. $\gamma := \gamma_1\oplus\hat\gamma_2$. 12.2, 12.7, 13.2 $\folgt$ $\gamma\in \text{AH}(\gamma_1,\gamma_2)$.
+\end{beweis}
+
+\begin{beispiel}
+In allen Beispielen sei $f(x,y)=(y,x-y)$ und $t\in[0,1]$.
+\begin{liste}
+\item $\gamma_1(t)=(t,0)$, $\gamma_2(t)=(1,t)$.
+
+Sei $\gamma \in \text{AH}(\gamma_1,\gamma_2)$. Anfangspunkt von $\gamma$ ist (0,0), Endpunkt von $\gamma$ ist (1,1). Nachrechnen: $\int_{\gamma_1}f(x,y)\cdot d(x,y) = 0$, $\int_{\gamma_2}f(x,y)\cdot d(x,y) = \frac{1}{2}$. Also: $\int_\gamma f(x,y) \cdot d(x,y) = \frac{1}{2}$
+
+\item $\gamma_1(t) = (0,t)$, $\gamma_2(t)=(t,1)$.
+
+Sei $\gamma\in \text{AH}(\gamma_1,\gamma_2)$, Anfangspunkt von $\gamma$ ist (0,0), Endpunkt von $\gamma$ ist (1,1). Nachrechnen: $\int_{\gamma}f(x,y)\cdot d(x,y) = \frac{1}{2}$
+
+\item $\gamma(t)=(t,t^3)$. Anfangspunkt von $\gamma$ ist (0,0), Endpunkt von $\gamma$ ist (1,1). Nachrechnen: $\int_\gamma f(x,y)\cdot d(x,y) = \frac{1}{2}$
+\end{liste}
+\end{beispiel}
+
+\chapter{Stammfunktionen}
+
+In diesem Paragraphen sei stets: $\emptyset \ne G \subseteq \MdR^n$, $G$ ein \emph{Gebiet} und $f=(f_1,\ldots,f_n): G\to\MdR^n$ stetig.
+
+\begin{definition}
+Eine Funktion $\varphi:G\to\MdR$ heißt eine \textbf{Stammfunktion (SF) von $f$ auf $G$}\indexlabel{Stammfunktion} $:\equizu$ $\varphi$ ist auf $G$ partiell differenzierbar und $\grad\varphi = f$ auf $G$. Also: $f_{x_j} = f_j$ auf $G$ ($j=1,\ldots,n$).
+\end{definition}
+
+\begin{bemerkung}
+\ 
+\vspace{-1.5em}
+\begin{liste}
+\item Ist $\varphi$ eine Stammfunktion von $f$ auf $G$ $\folgt$ $\grad\varphi = f \folgt \varphi \in C^1(G,\MdR) \folgtnach{5.3} \varphi$ ist auf $G$ differenzierbar und $\varphi' = f$ auf $G$.
+\item Sind $\varphi_1$, $\varphi_2$ Stammfunktionen von $f$ auf $G$ $\folgtnach{(1)}$ $\varphi_1'=\varphi_2'$ auf $G$ $\folgtnach{6.2} \exists c\in\MdR: \varphi_1=\varphi_2+c$ auf $G$
+\item Ist $n=1$ $\folgt$ $G$ ist ein offenes Intervall. AI, 23.14 $\folgt$ \emph{jedes} stetige $f:G\to\MdR$ besitzt auf $G$ eine Stammfunktion! Im Falle $n\ge 2$ ist dies \emph{nicht} so.
+\end{liste}
+\end{bemerkung}
+
+\begin{beispiele}
+\item $G=\MdR^2$, $f(x,y) = (y,-x)$.
+
+Annahme: $f$ besitzt auf $\MdR^2$ die Stammfunktion $\varphi$. Dann: $\varphi_x = y$, $\varphi_y = -x$ auf $G$ $\folgt$ $\varphi\in C^2(\MdR^2,\MdR)$ und $\varphi_{xy} = 1 \ne -1 = \varphi_{yx}$. Widerspruch zu 4.1. Also: $f$ besitzt auf $\MdR^2$ \emph{keine} Stammfunktion.
+\item $G=\MdR^2$, $f(x,y) = (y,x-y)$.
+
+Ansatz für eine Stammfunktion $\varphi$ von $f$: $\varphi_x=y \folgt \varphi=xy+c(y)$, $c$ differenzierbar, $\folgt$ $\varphi_y\stackrel{!}{=}x+c'(y) = x-y \folgt c'(y) = -y$, etwa $c(y)=-\frac{1}{2}y^2$. Also: $\varphi(x,y) = xy - \frac{1}{2}y^2$. Probe: $\varphi_x=y$, $\varphi_y=x-y$, also: $\grad\varphi=f$. $\varphi$ ist also eine Stammfunktion von $f$ auf $\MdR^n$.
+%Weiß wer warum man da ne Probe braucht?
+%Braucht man nicht, war nur um uns zu überzeugen
+\end{beispiele}
+\vspace{2em} % ntheorembugumgehung
+\begin{satz}[Hauptsatz der mehrdimensionalen Integralrechnung]
+$f$ besitzt auf $G$ die Stammfunktion $\varphi$; $\gamma:[a,b]\to\MdR^n$ ein ein stückweise stetig differenzierbarer Weg mit $\Gamma_\gamma\subseteq G$. Dann:
+$$ \int_\gamma f(x)\cdot dx = \varphi\left(\gamma(b)\right) - \varphi\left(\gamma(a)\right) $$
+Das heißt: $\int_\gamma f(x)\cdot dx$ hängt nur vom Anfangs- und Endpunkt von $\gamma$ ab.
+
+Ist $\gamma$ \emph{geschlossen}, das heißt $\gamma(a) = \gamma(b)$, dann gilt $\int_\gamma f(x)\cdot dx = 0$.
+\end{satz}
+
+\begin{beweis}
+O.B.d.A.: $\gamma$ ist stetig differenzierbar. $\Phi(t):= \varphi (\gamma(t))$, $t\in[a,b]$. $\Phi$ ist stetig differenzierbar und $\Phi'(t) = \varphi'(\gamma(t))\cdot \gamma'(t) = f(\gamma(t))\cdot\gamma(t)$ Dann: $\int_\gamma f(x)\cdot dx \gleichnach{13.1} \int_a^bf(\gamma(t))\cdot\gamma'(t)dt = \int_a^b\Phi'(t)dt \gleichnach{AI} \Phi(b)-\Phi(a) = \varphi(\gamma(b))-\varphi(\gamma(a))$.
+\end{beweis}
+
+\begin{wichtigerhilfssatz}
+Es seien $x_0,y_0\in G$. Dann existiert ein stückweise stetig differenzierbarer Weg $\gamma$ mit: $\Gamma_\gamma\subseteq G$ und Anfangspunkt von $\gamma = x_0$ und Endpunkt von $\gamma=y_0$.
+\end{wichtigerhilfssatz}
+
+\begin{beweis}
+$G$ Gebiet $\folgt \exists z_0,z_1,\ldots,z_m \in G: S[z_0,\ldots,z_m]\subseteq G, z_0=x_0, z_m = y_0$.
+
+$\gamma_j(t) := z_{j-1} + t(z_j - z_{j-1})$, $(t\in[0,1])$, ($j=1,\ldots,n$). Dann:$\Gamma_{\gamma_j} = S[z_{j-1},z_{j}] \folgt \Gamma_{\gamma_1}\cup\ldots\cup\Gamma_{\gamma_m} = S[z_0,\ldots,z_m] \subseteq G$. 13.4 $\folgt \exists \gamma \in \text{AH}(\gamma_1,\ldots,\gamma_m)$ stückweise stetig differenzierbar $\folgt \Gamma_{\gamma} = S[z_0,\ldots,z_m] \subseteq G$. 
+\end{beweis}
+
+\begin{definition*}
+\indexlabel{wegunabhängig}
+$\int f(x)\cdot \text{d}x$ hei"st \textbf{in G wegunabh"angig} (wu) $:\equizu$ f"ur je zwei Punkte $x_0, y_0\in G$ gilt: f"ur jeden st"uckweise stetig differenzierbaren Weg $\gamma:[a,b]\to\MdR^n$ mit $\Gamma_\gamma\subseteq G$, $\gamma(a)=x_0$ und $\gamma(b)=y_0$ hat das Integral $\ds\int_\gamma f(x)\cdot\text{d}x$ stets denselben Wert. In diesem Fall: $\ds\int_{x_0}^{y_0}f(x)\cdot\text{d}x:=\ds\int_\gamma f(x)\cdot\text{d}x$.
+\end{definition*}
+
+\textbf{14.4 lautet dann}: besitzt f auf G die Stammfunktion $\varphi\folgt \ds\int f(x)\cdot\text{d}x$ ist in $G$ wegunabh"angig und $\int_{x_0}^{y_0}=\varphi(y_0)-\varphi(x_0)$ (Verallgemeinerung von Analysis 1, 23.5).
+
+\begin{satz}[Wegunabhängigkeit, Existenz von Stammfunktionen]
+$f$ besitzt auf $G$ eine Stammfunktion $\equizu\int f(x)\cdot\text{d}x$ ist in G wegunabh"angig. \\
+In diesem Fall: ist $x_0\in G$ und $\varphi:G\to\MdR$ definiert durch: 
+$$\varphi(z)=\ds\int_{x_0}^z f(x)\cdot\text{d}x\ (z\in G)\ (*)$$Dann ist $\varphi$ eine Stammfunktion von $f$ auf $G$.
+\end{satz}
+
+\begin{beweis}
+\glqq$\folgt$\grqq: 14.1\quad \glqq$\Leftarrow$\grqq: Sei $x_0\in G$ und $\varphi$ wie in $(*)$. Zu zeigen: $\varphi$ ist auf $G$ differenzierbar und $\varphi'=f$ auf G. Sei $z_0\in G, h\in\MdR^n,h\ne 0$ und $\|h\|$ so klein, dass $z_0+th\in G\ \forall t\in[0,1].\ \gamma(t):=z_0+th\ (t\in[0,1]), \Gamma_\gamma=s[z_0, z_0+h]\subseteq G$. $\rho(h):=\frac{1}{\|h\|}(\varphi(z_0+h)-\varphi(z_0)-f(z_0)\cdot h)$. Zu zeigen: $\rho(h)\to 0\ (h\to 0)$. 14.2 $\folgt$ es existieren st"uckweise stetig differenzierbare Wege $\gamma_1, \gamma_2$ mit: $\Gamma_{\gamma_1},\Gamma_{\gamma_2}\subseteq G$. Anfangspunkt von $\gamma_1=x_0=$Anfangspunkt von $\gamma_2$. Endpunkt von $\gamma_1=z_0$, Endpunkt von $\gamma_2=z_0+h$. Sei $\gamma_3\in \text{AH}(\gamma_1,\gamma)$ st"uckweise stetig differenzierbar (13.4!). Dann: 
+$$\underbrace{\ds\int_{\gamma_3}f(x)\cdot\text{d}x}_{=\varphi(z_0+h)}=\underbrace{\ds\int_{\gamma_1}f(x)\cdot\text{d}x}_{=\varphi(z_0)}+\ds\int_{\gamma}f(x)\cdot\text{d}x$$
+$\ds\int f(x)\cdot\text{d}x$ ist wegunabh"angig in $G\folgt$\\
+$$\ds\int_{\gamma_3}f(x)\cdot\text{d}x=\ds\int_{\gamma_2}f(x)\cdot\text{d}x=\varphi(z_0+h)\folgt\varphi(z_0+h)-\varphi(z_0)=\ds\int_{\gamma}f(x)\cdot\text{d}x$$
+Es ist:
+\begin{eqnarray*}
+&&\ds\int_{\gamma}f(z_0)\cdot\text{d}x=\ds\int_0^1 f(z_0)\cdot\underbrace{\gamma'(t)}_{=h}\text{d}t=f(z_0)\cdot h\\
+&&\folgt \rho(h)=\frac{1}{\|h\|}\ds\int_{\gamma}(f(x)-f(z_0))\text{d}x\\
+&&\folgt |\rho(h)|=\frac{1}{\|h\|}\left|\ds\int_{\gamma}f(x)-f(z_0)\text{d}x\right|\\
+&&\le\frac{1}{\|h\|}\underbrace{L(\gamma)}_{=\|h\|}\underbrace{\max\{\|f(x)-f(z_0)\|: x\in\Gamma_\gamma\}}_{=\|f(x_n)-f(z_0)\|}
+\end{eqnarray*}
+wobei $x_n\in\Gamma_\gamma=S[z_0,z_0+h]\folgt |\rho(h)|\le\|f(x_n)-f(z_0)\|$. F"ur $h\to 0: x_n\to z_0\folgtnach{f stetig}\|f(x_n)-f(z_0)\|\to 0\folgt\rho(h)\to 0$.
+\end{beweis}
+
+\begin{satz}[Integrabilitätsbedingungen]
+Sei $f=(f_1,\ldots, f_n)\in C^1(G,\MdR^n)$. Besitzt $f$ auf $G$ die Stammfunktion $\varphi\folgt$
+
+$$\frac{\partial f_j}{\partial x_k}=\frac{\partial f_k}{\partial x_j}\text{ auf }G\ (j,k=1,\ldots,n)$$
+(\begriff{Integrabilitätsbedingungen} (IB)). Warnung: Die Umkehrung von 14.4 gilt im Allgemeinen \textbf{nicht} ($\to$ "Ubungen!).
+\end{satz}
+
+\begin{beweis}
+Sei $\varphi$ eine Stammfunktion von $f$ auf $G\folgt\varphi$ ist differenzierbar auf $G$ und $\varphi_{x_j}=f_j$ auf $G\ (j=1,\ldots,n)$. $f\in C^1(G,\MdR^n)\folgt\varphi\in C^2(G,\MdR)$
+$$\folgt \frac{\partial f_j}{\partial x_k}=\varphi_{x_jx_k}\gleichnach{4.7}\varphi_{x_kx_j}=\frac{\partial f_k}{\partial x_j}\text{ auf G.}$$ $ $
+\end{beweis}
+
+\begin{definition*}
+Sei $\emptyset\ne M\subseteq\MdR^n$. $M$ hei"st \begriff{sternförmig} $:\equizu\exists x_0\in M: S[x_0,x]\subseteq M\ \forall x\in M$.\\
+\textbf{Beachte:}
+\begin{liste}
+\item Ist $M$ konvex$\folgt M$ ist sternförmig
+\item Ist $M$ offen und sternförmig$\folgt M$ ist ein Gebiet
+\end{liste}
+\end{definition*}
+
+\begin{satz}[Kriterium zur Existenz von Stammfunktionen]
+Sei $G$ sternförmig und $f\in C^1(G,\MdR^n)$. Dann: $f$ besitzt auf $G$ eine Stammfunktion $:\equizu f$ erfüllt auf $G$ die Integrabilitätsbedingungen
+\end{satz}
+
+\begin{beweis}
+\glqq$\folgt$\grqq: 14.1\quad \glqq$\Leftarrow$\grqq: $G$ sternförmig $\folgt\exists x_0\in G:S[x_0,x]\subseteq G\ \forall x\in G$. OBdA: $x_0=0$. 
+
+Für $x=(x_1,\ldots,x_n)\in G$ sei $\gamma_x(t)=tx, t\in [0,1]$.
+\begin{eqnarray*}
+\varphi(x)&:=&\int_{\gamma_x}f(z)\cdot\text{d}z\ (x\in G)\\
+&=&\ds\int_0^1 f(tx)\cdot x\text{d}t\\
+&=&\ds\int_0^1(f_1(tx)\cdot x_1+f_2(tx)\cdot x_2+\ldots+f_n(tx)\cdot x_n)\text{d}t\\
+\end{eqnarray*}
+Zu zeigen: $\varphi$ ist auf $G$ partiell differenzierbar nach $x_j$ und $\varphi_{x_j}=f_j\ (j=1,\ldots,n)$.
+OBdA: $j=1$. Sp"ater (in 21.3) zeigen wir: $\varphi$ ist partiell differenzierbar nach $x_1$ und:
+$$\varphi_{x_1}(x)=\ds\int_0^1\frac{\partial}{\partial x_1}(f_1(tx)x_1+\ldots+f_n(tx)\cdot x_n)\text{d}t$$
+
+F"ur $k=1,\ldots,n:\ g_k(x)=f_k(tx)\cdot x_k$.\\
+$k=1:\ g_1(x)=f_1(tx)x_1\folgt\frac{\partial g_1}{\partial x_1}(x)=f_1(tx)+t\frac{\partial f_1}{\partial x_1}(tx)x_1$\\
+$k\ge 2:\ g_k(x)=f_k(tx)x_k\folgt\frac{\partial g_k}{\partial x_1}(x)=t\frac{\partial f_k}{\partial x_1}(tx)x_k\folgt$
+
+\begin{eqnarray*}
+\varphi_{x_1}(x)&=&\int_0^1(f_1(tx)+t(\frac{\partial f_1}{\partial x_1}(tx)x_1+\ldots+\frac{\partial f_n}{\partial x_1}(tx)x_n))\text{d}t\\
+&\gleichnach{IB}&\int_0^1(f_1(tx)+t(\frac{\partial f_1}{\partial x_1}(tx)x_1+\frac{\partial f_1}{\partial x_2}(tx)x_2+\ldots+\frac{\partial f_1}{\partial x_n}(tx)x_n))\text{d}t\\
+&=&\ds\int_0^1(f_1(tx)+tf_1'(tx)\cdot x)\text{d}t
+\end{eqnarray*}
+
+Sei $x\in G$ (fest), $h(t):=t\cdot f_1(tx)\ (t\in [0,1])$. $h$ ist stetig differenzierbar und $h'(t)=f_1(tx)+tf_1'(tx)\cdot x\folgt \varphi_{x_1}(x)=\ds\int_0^1 h'(t)\text{d}t\gleichnach{A1}h(1)-h(0)=f_1(x)$.
+\end{beweis}
+
+\chapter{Integration von Treppenfunktionen}
+
+\begin{definition}
+\begin{liste}
+\item $\M:=\{I:I$ ist ein \emph{beschränktes} Intervall in $\MdR\}.$ Also: $I\in\M:\equizu\exists a,b\in\MdR$ mit $a<b: I=[a,b]$ oder $I=(a,b)$ oder $I=[a,b)$ oder $I=(a,b]$ oder $I=\{a\}.$
+
+In den ersten 4 Fällen setzt man $|I|:=b-a$ und $|\{a\}|:=0$ (Intervalllänge).
+
+\indexlabel{Quader}
+\indexlabel{Volumen}
+\item Sei $n\in\MdR$ und es seien $I_1,I_2,\ldots,I_n\in\M.$ Dann heißt $Q:=I_1\times I_2\times \ldots \times I_n$ ein \textbf{Quader im $\MdR^n$} und $v_n(Q):=|I_1|\cdot |I_2|\cdot \ldots \cdot |I_n|$ das ($n$-dim.) \textbf{Volumen von $Q$}.
+\begin{beispiel}
+$(n=2)$
+\begin{enumerate}
+\item $Q = [a_1,b_1) \times [a_2,b_2],\ v_2(Q) = (b_1-a_1)(b_2-a_2).$
+\item $Q = [a_1,b_1) \times \{a\},\ v_2(Q) = 0.$
+\end{enumerate}
+\end{beispiel}
+
+\indexlabel{Treppenfunktion}
+\item Eine Funktion $\varphi:\MdR^n\to\MdR$ heißt eine \textbf{Treppenfunktion} im $\MdR^n :\equizu \exists$ Quader $Q_1,\ldots,Q_m$ im $\MdR^n$ mit:
+\begin{enumerate}
+\item $Q_j\cap Q_k=\emptyset\ (j\ne k)$
+\item $\varphi$ ist auf jedem $Q_j$ konstant
+\item $\varphi=0$ auf $\MdR^n\backslash(Q_1\cup\ldots\cup Q_m)$
+\end{enumerate}
+
+$\T_n =$ \textbf{Menge aller Treppenfunktionen in $\MdR^n$}.
+
+\end{liste}
+\end{definition}
+
+Der nächste Satz wird hier nicht bewiesen:
+
+\begin{satz}[Disjunkte Quaderzerlegung und Treppenfunktionsraum]
+\begin{liste}
+\item Es seien $Q_1',Q_2',\ldots,Q_k'$ Quader im $\MdR^n$. Dann ex. Quader $Q_1,Q_2,\ldots,Q_m$ im $\MdR^n: Q_1'\cup Q_2'\cup\ldots\cup Q_k' = Q_1\cup Q_2\cup\ldots\cup Q_m$ \emph{und} $Q_j\cap Q_k = \emptyset\ (j\ne k).$
+
+\emph{Beachte:} $Q_1,\ldots,Q_m$ sind \emph{nicht} eindeutig bestimmt.
+
+\item $\T_n$ ist ein reeller Vektorraum.
+
+\item Aus $\varphi,\psi \in\T_n$ folgt: $|\varphi|,\varphi\cdot\psi\in\T_n.$
+\end{liste}
+\end{satz}
+
+\begin{definition}
+\indexlabel{charakteristische Funktion}
+Sei $A\subseteq\MdR^n.$
+$$1_A(x):=\begin{cases}
+1 & \text{, falls }x\in A\\
+0 & \text{, sonst}
+\end{cases}$$
+
+$1_A$ heißt die \textbf{charakteristische Funktion von $A$}.
+\end{definition}
+
+Aus 15.1 folgt:
+
+Ist $\varphi:\MdR^n\to\MdR$ eine Funktion, dann gilt: $\varphi\in\T_n \equizu \exists$ Quader $Q_1,\ldots,Q_m$ in $\MdR^n$ und $c_1,\ldots,c_m\in\MdR:$
+$$\varphi=\sum_{j=1}^m c_j1_{Q_j}\ (*)$$
+
+\emph{Beachte:} \begin{enumerate}
+\item Die Darstellung von $\varphi$ in (*) ist i.A. \emph{nicht} eindeutig.
+\item In (*) wird \emph{nicht} gefordert, dass $Q_j\cap Q_k=\emptyset\ (j\ne k).$
+\end{enumerate}
+
+\begin{beispiel}
+FIXME: Bild
+
+$\varphi = 2\cdot1_{Q_1} + 3\cdot1_{Q_2}.$
+\end{beispiel}
+
+\begin{satz}[Integral über Treppenfunktion (mit Definition)]
+Sei $\varphi\in\T_n$ wie in (*). $$\int \varphi dx:=\int\varphi(x)dx:=\int_{\MdR^n}\varphi(x)dx:=\int_{\MdR^n}\varphi dx:=\sum_{j=1}^mc_jv_n(Q_j)$$
+
+\emph{Behauptung:} $\int\varphi dx$ ist wohldefiniert, d.h. obige Def. ist unabhängig von der Darstellung von $\varphi$ in (*).
+\end{satz}
+
+\paragraph{Vorbemerkung:} Sei $Q=I_1\times\ldots\times I_n$ Quader im $\MdR^n\ (I_j\in\M).$ Sei $p\in\{1,\ldots,n-1\}.\ P:=I_j\times\ldots\times I_p,\ R:=I_{p+1}\times\ldots\times I_n.\ P$ ist ein Quader im $\MdR^p.\ R$ ist ein Quader im $\MdR^{n-p}.\ Q=P\times R.\ v_n(Q)=v_p(P)\cdot v_{n-p}(R).$ Ist $z=(x,y)\in\MdR^n,\ x\in\MdR^p,\ y\in\MdR^{n-p} \folgt 1_Q(z) = 1_P(x)\cdot1_R(y).$
+
+\begin{beweis}[von 15.2]
+Induktion nach $n$.
+
+IA: $n=1$: Übung
+
+IV: Die Beh. sei gezeigt für \emph{jedes} $q\in\{1,\ldots,n-1\}$.
+
+IS: Sei $p\in\{1,\ldots,n-1\}.$ Vorbemerkung $\folgt \exists$ Quader $P_1,\ldots,P_m$ im $\MdR^p$ und Quader $R_1,\ldots,R_m$ im $\MdR^{n-p}: Q_j=P_j\times R_j\ (j=1,\ldots,m).$ Für $z\in\MdR^n$ schreiben wir $z=(x,y),\ x\in\MdR^p, y\in\MdR^{n-p}.$
+
+Sei $y\in\MdR^{n-p}$ fest. $\varphi_y(x):=\varphi(x,y)\ (x\in\MdR^p).$
+
+$\varphi_y(x)=\varphi(x,y) \gleichnach{(*)} \sum_{j=1}^m c_j1_{Q_j}(x,y) \gleichnach{Vorbem.}\sum_{j=1}^m c_j1_{P_j}(x)\cdot1_{R_j}(y) = \sum_{j=1}^m \underbrace{c_j1_{R_j}(y)}_{=:d_j=d_j(y)}\cdot1_{P_j}(x) = \sum_{j=1}^m d_j1_{P_j}(x)$
+
+$\folgt \varphi_y = \sum_{j=1}^m d_j1_{P_j} \folgt \varphi_y \in \T_p$
+
+IV $\folgt \sum_{j=1}^m d_jv_p(P_j) = \int_{\MdR^p}\varphi_y(x)dx$ ist unabhängig von der Darstellung von $\varphi_y$ (und damit auch von $\varphi$).
+
+Def. $\phi:\MdR^{n-p}\to\MdR$ durch $\phi(y):=\int_{\MdR^p}\varphi_y(x)dx = \sum_{j=1}^m d_j(y)v_p(P_j) = \sum_{j=1}^m c_j1_{R_j}(y)v_p(P_j) = \sum_{j=1}^m \underbrace{c_jv_p(P_j)}_{=:e_j}1_{R_j}(y)$
+
+$\folgt \phi = \sum_{j=1}^m e_j\cdot1_{R_j} \folgt \phi \in \T_{n-p}.$
+
+IV $\folgt \int_{\MdR^{n-p}}\phi(y)dy = \sum_{j=1}^m e_jv_{n-p}(R_j) = \sum_{j=1}^m c_jv_p(P_j)v_{n-p}(R_j) = \sum_{j=1}^m c_jv_n(Q_j)$ ist unabhängig von der Darstellung von $\varphi$.
+\end{beweis}
+
+Aus dem Beweis von 15.2 folgt:
+
+\begin{satz}[Satz von Fubini für Treppenfunktionen]
+Ist $\varphi\in\T_n$ und $p\in\{1,\ldots,n-1\}$ so gilt: $$\int_{\MdR^n}\varphi(z)dz = \int_{\MdR^{n-p}}\left(\int_{\MdR^p}\varphi(x,y)dx\right)dy = \int_{\MdR^p}\left(\int_{\MdR^{n-p}}\varphi(x,y)dy\right)dx$$
+\end{satz}
+
+\begin{satz}[Eigenschaften des Integrals über Treppenfunktionen]
+Es seien $\varphi,\psi\in\T_n$ und $\alpha,\beta\in\MdR.$
+\begin{liste}
+\item $\ds{\int(\alpha\varphi+\beta\psi)dx = \alpha\int\varphi dx+\beta\int\psi dx}$
+\item $\ds{\left|\int\varphi dx\right| \le \int|\varphi|dx}$
+\item Aus $\varphi\le\psi$ auf $\MdR^n$ folgt $\ds{\int\varphi dx \le \int\psi dx}$
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item Übung
+\item Sei $\varphi = \sum_{j=1}^m c_j1_{Q_j}$ wie in (*). Wegen 15.1: O.B.d.A: $Q_j\cap Q_k = \emptyset\ (j\ne k).$ Dann: $|\varphi| = \sum_{j=1}^m |c_j|1_{Q_j}.$
+
+$\folgt |\int\varphi dx| = |\sum_{j=1}^m c_jv_n(Q_j)| \le \sum_{j=1}^m |c_j|v_n(Q_j) = \int|\varphi|dx.$
+\item Übung
+\end{beweise}
+
+
+\chapter{Das Lebesguesche Integral}
+
+Es sei $\tilde\MdR := \MdR \cup \{\infty\}$
+Im Folgenden lassen wir Funktionen und Reihen mit Werten in $\tilde\MdR$ zu.
+\paragraph{Regeln:} 
+$a < \infty \ \forall a\in\MdR$. $\infty \le \infty$, $\infty \pm c = c \pm \infty = \infty \ \forall c\in \tilde\MdR$. $\infty \cdot c = c \cdot \infty = \infty \ \forall c\in \tilde\MdR\backslash\{0\}$. $\infty \cdot 0 = 0 \cdot \infty = 0$. Ist $(a_n)$ eine Folge in $\tilde\MdR$ und $a_n\ge 0 \ \forall n\in\MdN$; $\sum_{n=1}^\infty a_n := \infty$, falls alle $a_n \in \MdR$ und $\sum_{n=1}^\infty a_n$ divergiert; $\sum_{n=1}^\infty a_n := \infty$, falls $a_n = \infty$ für ein $n\in\MdN$. Sei $A\subseteq \tilde\MdR$ und $a\ge 0 \ \forall a\in A$.
+$$ \inf A := \begin{cases}\infty &\text{, falls }A=\{\infty\} \\ \inf(A\backslash\{\infty\})&\text{, falls }A\backslash\{\infty\} \ne \emptyset\end{cases}$$
+
+\begin{motivation}
+$f:\MdR \to \MdR$ sei eine Funktion, $f\ge 0$ auf $\MdR$ und $M:=\{(x,y)\in\MdR^2: 0\le y \le f(x)\}$. Es seien $Q_1,Q_2,\ldots$ offene Quader im $\MdR^1$ und $c_1,c_2,\ldots \ge 0$. Es gelte $f(x) \le \sum_{k=1}^\infty c_k 1_{Q_k}(x) \ \forall x\in\MdR$ ($\sum_{k=1}^\infty c_k 1_{Q_k}(x) = \infty$ ist zugelassen!)
+
+Dann kann man $\sum_{k=1}^\infty c_k v_1(Q_k)$ betrachten als obere Approximation an den \glqq Inhalt\grqq{} von $M$. ($\sum_{k=1}^\infty c_k v_1(Q_k)=\infty$ ist zugelassen)
+\end{motivation}
+
+Im Folgenden bedeutet $\sum_{k}$ entweder eine endliche Summe oder eine unendliche Reihe $\sum_{k=1}^\infty\ldots$
+
+\indexlabel{$L^1$!Halbnorm}
+\begin{definition}
+Sei $f:\MdR^n\to \tilde\MdR$ eine Funktion. Seien $(Q_1,c_1), (Q_2,c_2), \ldots$ endlich viele oder abzählbar viele Paare mit $Q_j$ \emph{offener} Quader und $c_j\in[0,\infty)$ und es gelte $|f(x)| \le \sum_{k} c_k 1_{Q_k}(x) \ \forall x\in\MdR^n$.
+
+Dann heißt $\Phi:= \sum_{k} c_k 1_{Q_k}$ eine \begriff{Hüllreihe} für $f$ und $I(\Phi) := \sum_{k} c_k v_n(Q_k)$ ihr \textbf{Inhalt}\indexlabel{Inhalt!einer Hüllreihe}.
+$\H(f) := \{\Phi: \Phi \text{ ist eine Hüllreihe für }f\}$
+$\|f\|_1 := \inf\{I(\Phi): \Phi \in \H(f)\}$ (\textbf{$L^1$-Halbnorm} von $f$.)
+\end{definition}
+
+\paragraph{Beachte:}
+$\|f\|_1 \ge 0$, $\|f\|_1 = \infty$ ist zugelassen.
+
+
+\paragraph{Behauptung:} $\H(f) \ne \emptyset$
+\paragraph{Beweis:} Für $k\in\MdN$ sei $Q_k := (-k, k)\times\cdots\times(-k,k)$ $(\subseteq \MdR^n)$. $\Phi := \sum_{k=1}^\infty 1\cdot1_{Q_k}$. Sei $x\in\MdR^n \folgt \exists m_0 \in \MdN: x\in Q_{m_0} \folgt x\in Q_k \ \forall k\ge m_0 \folgt \Phi(x) \ge \sum_{k=m_0}^\infty 1\cdot \underbrace{1_{Q_k}}_{=1} = \infty \folgt |f(x)| \le \Phi(x) \ \forall x\in\MdR^n \folgt \Phi \in \H(f).$\\($I(\Phi) = \sum_{k=1}^\infty v_n(Q_k) = \sum_{k=1}^\infty (2k)^n = \infty$).
+
+\begin{beispiel}
+$(n=1), A=\{0\} \ (\subseteq \MdR)$; $f:= 1_A$ (also: $f(0)=1$, $f(x)= 0 \ \forall x\ne0$).
+
+Sei $\ep>0$, $Q:=(-\ep,\ep)$, $\Phi := 1_Q \folgt \Phi \in \H(f)$.\\
+$I(\Phi)=v_1(Q) = 2\ep \folgt \|f\|_1 \le 2\ep \folgtwegen{\ep\to0} \|f\|_1 = 0$. Aber: $f\ne0$
+\end{beispiel}
+
+\begin{satz}[Rechenregeln der $L^1$-Halbnorm]
+Seien $f,g,f_1,g_1,\ldots: \MdR^n\to \tilde\MdR$ Funktionen.
+\begin{liste}
+\item $\|cf\|_1 = |c| \|f\|_1 \ \forall c\in\MdR$
+\item $\|f+g\|_1 \le \|f\|_1 + \|g\|_1$
+\item Aus $|f|\le |g|$ auf $\MdR^n$ folgt $\|f\|_1 \le\|g\|_1$
+\item $\left\|\sum_{k=1}^\infty f_k \right\|_1 \le \sum_{k=1}^\infty \|f_k\|_1$
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item Klar
+\item O.B.d.A.: $\|f_1\|_1 + \|g_1\|_2 < \infty$. Sei $\ep >0$. $\exists \Phi_1 \in \H(f)$, $\exists \Phi_2\in\H(g)$: $I(\Phi_1)\le \|f\|_1 + \ep$, $I(\Phi_2) \le \|g\|_1 + \ep$. $\Phi:= \Phi_1+ \Phi_2 \folgt \Phi \in \H(f+g)$ und $I(\Phi) = I(\Phi_1) + I(\Phi_2) \le \|f\|_1 + \|g\|_1 + 2\ep \folgt \|f+g\|_1 \le \|f\|_1 + \|g\|_1 + 2\ep \folgtwegen{\ep \to 0}$ Beh.
+\item Sei $\Phi \in \H(g) \folgt \Phi\in \H(f)$. Also: $\H(g)\subseteq \H(f) \folgt$ Beh.
+\item In der Übung
+\end{beweise}
+
+\begin{satz}[$L^1$-Halbnorm eines Quaders]
+Es sei $Q$ ein \emph{abgeschlossener} Quader im $\MdR^n$. Dann: 
+$$v_n(Q) = \int_{\MdR^n} 1_Q dx = \|1_Q\|_1$$
+\end{satz}
+
+\begin{beweis}
+$f:=1_Q$. $\int f dx \gleichnach{§15} v_n(Q)$. Zu zeigen: $v_n(Q) = \|f\|_1$.
+\begin{liste}
+\item Es sei $\ep > 0$. Dann existiert ein offener Quader $\hat Q$ mit: $Q\subseteq \hat Q$ und $v_n(\hat Q) = v_n(Q) + \ep$. $\Phi := 1_{\hat Q} \folgt \Phi \in\H(f)$ und $I(\Phi) = v_n(\hat Q) = v_n(Q)+\ep \folgt \|f\|_1 \le v_n(Q)+\ep \folgtwegen{\ep \to 0} \|f\|_1 \le v_n(Q)$
+\item Sei $\Phi = \sum_{k} f_k1_{Q_k} \in \H(f)$, also $c_k \ge 0$, $Q_k$ offene Quader.
+
+Sei $\ep\in(0,1)$. Für $x\in Q$: $1=1_Q(x) = f(x) = |f(x)| \le \sum_{k} c_k 1_{Q_k}(X)$
+
+$\exists n(x) \le \MdN$: $\sum_{k=1}^{n(x)} c_k 1_{Q_k}(x) \ge 1-\ep$ und (o.B.d.A.) $1_{Q_k}(x)=1$ $(k=1,\ldots,n(x))$. $Q_1,\ldots,Q_{n(x)}$ offen $\folgt \exists \delta_x>0: U_\delta(x)\subseteq Q_j \ (j=1,\ldots,n(x)) \folgt \sum_{k=1}^{n(x)} c_k 1_{Q_k}(z) \ge 1-\ep \ \forall z\in U_{\delta_x}(x)\ (*)$.
+$$Q\subseteq \bigcup_{x\in Q} U_{\delta_x} (X) \folgtnach{2.2(3)} \exists x_1,\ldots,x_p\in Q: Q\subseteq \bigcup_{j=1}^p U_{\delta_{x_j}}(x_j)$$
+$N := \max\{n(x_1), \ldots , n(x_p)\}$. $\varphi_1 := \sum_{k=1}^N c_k 1_{Q_k}$, $\varphi_2(x) := (1-\ep)1_Q$. Also: $\varphi_1,\varphi_2 \in \T_n$.
+$$\int \varphi_2dx = (1-\ep)v_n(Q), \int \varphi_1dx = \sum_{k=1}^N c_k v_n(Q_k) \le \sum_{k} v_k v_n(Q_k) = I(\Phi)$$
+Sei $x\notin Q$: $\varphi_2(x)=0 \le \varphi_1(x)$.
+
+Sei $z\in Q$: $\exists j\in\{1,\ldots,p\}: z\in U_{\delta_{x_j}} (x_j) \folgt \varphi_1(z) = \sum_{k=1}^Nc_k 1_{Q_k}(z) \ge \sum_{k=1}^{n(x_j)} c_k 1_{Q_k}(z) \ge 1-\ep = \varphi_2(z)$. Also $\varphi_2\le \varphi_1$ auf $\MdR^n$. 15.4 $\folgt \int \varphi_2dx \le \int \varphi_1dx \folgt (1-\ep)v_n(Q) \le I(\Phi)$. $\Phi\in \H(f)$ beliebig $\folgt (1-\ep)v_n(Q) \le \|f\|_1$. Also: $(1-\ep)v_n(Q)\le \|f\|_1 \ \forall \ep > 0 \folgtwegen{\ep \to 0} v_n(Q)\le\|f\|_1.$
+
+\end{liste}
+(1) und (2) $\folgt$ $v_n(Q) = \|f\|_1$
+\end{beweis}
+
+
+\paragraph{Vorbemerkung:} Es sei $Q\subseteq\MdR^{n}$ ein nicht offene Quader. Dann existieren Quader $Q_1, \ldots, Q_\nu \subseteq \partial Q$ mit: $Q = Q^0\cup Q_1\cup\ldots\cup Q_\nu$ und $Q^0,Q_1,\ldots,Q_\nu$ paarweise disjunkt. Insbesondere: $v_n(Q_j)=0\ (j=1,\ldots,\nu)$ und $1_Q = 1_{Q^0}+1_{Q_1}+\cdots+1_{Q_\nu}$.
+
+\begin{satz}[$L^1$-Halbnorm einer Treppenfunktion]
+Sei $\varphi\in\T_n$ und $Q$ ein beliebiger Quader im $\MdR^n$.
+\begin{liste}
+\item $\H(\varphi) = \H(|\varphi|)$, $\|f\|_1 = \||\varphi|\|_1$
+\item $\|\varphi\|_1 = \int|\varphi| dx$
+\item $v_n(Q) = \int 1_Qdx = \|1_{Q}\|_1$
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item Klar
+\item Sei $\varphi = \sum_{k=1}^m \hat c_k 1_{\hat Q_k}$ wobei $\hat{c_k}\in\MdR$, $\hat Q_1,\ldots,\hat Q_m$ passende disjunkte Quader. Anwendung der Vorbemerkung auf jeden nichtoffenen Quader $\hat Q_j$ liefert:
+$$\varphi = \sum_{k=1}^s c_k 1_{Q_k} + \sum_{k=1}^r d_k 1_{R_k}$$
+wobei $Q_1,\ldots,Q_s,R_1,\ldots,R_r$ paarweise diskunkt, $Q_1\ldots,Q_s$ offen, $v_n(R_j) = 0$ $(j=1,\ldots,r)$. Wegen (1): O.B.d.A: $\varphi \ge0$; dann: $c_k,d_k \ge 0$, $\alpha := \sum_{k=1}^r d_k$. Sei $\ep>0$. Zu jedem $R_k$ exisitert ein Quader $\hat R_k$: $v_n(\hat R_k) = \ep$.
+$$\Phi := \sum_{k=1}^s c_k 1_{Q_k} + \sum_{k=1}^r d_k 1_{\hat R_k} \folgt \Phi \in \H(f)$$ und $$I(\Phi) = \underbrace{\sum_{k=1}^s c_k v_n(Q_k)}_{=\int\varphi dx} + \underbrace{\sum_{k=1}^r d_k v_n(\hat R_k)}_{=\ep \alpha} = \int \varphi dx + \ep \alpha \folgt \|\varphi\|_1 \le \int \varphi dx + \ep \alpha$$ $$\folgtwegen{\ep\to0} \|\varphi\|_1 \le \int \varphi dx$$
+
+Wähle einen \emph{abgeschlossenen} Quader $Q$ mit $Q_1\cup\ldots\cup Q_s\cup R_1\cup\ldots\cup R_r \subseteq Q$. Dann: $\varphi(x)=0 \ \forall x\in\MdR^n\backslash Q$, $m:= \max\{\varphi(x):x\in\MdR^n\}$, $\psi:= m\cdot 1_{Q}-\varphi \in \T_n \folgt \psi \ge 0$ auf $\MdR^n$. Wie oben: $\|\psi\|_1\le\int\psi dx$.
+$\int \psi dx = \int (m\cdot 1_Q -\phi)dx = m\int1_Q dx-\int\psi dx \le m \int 1_Q dx - \|\psi\|_1 \gleichnach{16.2} m \|1_Q\|_1 - \|\psi\|_1 = \|m\cdot1_Q\|_1 - \|\psi\|_1 = \|\varphi + \psi\|_1 - \|\psi\|_1 \le \|\varphi\|_1 + \|\psi\|_1 - \|\psi\|_1 = \|\varphi\|_1$.
+\item folgt aus (2) und $\varphi = 1_{Q}$
+\end{beweise}
+
+\begin{satz}[Integration und Grenzwertbildung bei Treppenfunktionen]
+Sei $f:\MdR^n \to \tilde \MdR$, seien $(\varphi_k),(\psi_k)$ Folgen in $\T_n$ mit $\|f-\varphi_k\|_1 \to 0$, $\|f-\psi_k\|_1 \to 0$ $(k\to\infty)$. Dann sind $(\int\varphi_k dx)$ und $(\int \psi_kdx)$ konvergente Folgen in $\MdR$ und 
+\[\lim_{k\to\infty} \int \varphi_k dx = \lim_{k\to\infty} \int \psi_k dx\]
+\end{satz}
+
+\begin{beweis}
+$a_k := \int \varphi_k dx$, $b_k := \int \psi_k dx$ $(k\in\MdN)$.
+
+$|a_k - a_l| = |\int \varphi_k dx - \int \varphi_l dx | = | \int (\varphi_k - \varphi_l) dx | \stackrel{\text{15.4}}{\le} \int | \varphi_k -\varphi_l| dx \gleichnach{16.3} \|\varphi_k - \varphi_l\|_1 = \|\varphi_k - f+ f -\varphi_l\|_1 \le \|\varphi_k - f\|_1 + \|f - \varphi_l\|_1 \folgt (a_k) $ ist eine Cauchyfolge in $\MdR$ und als solche konvergent. Genau so: $(b_k)$ ist konvergent.
+
+$a:= \lim a_k$, $b:= \lim b_k$. $|a_k -b_k| \stackrel{\text{wie oben}}\le \|f-\varphi_k\|_1 + \|f-\psi_k\|_1 \folgtwegen{k\to\infty}  a = b$.
+\end{beweis}
+
+\begin{definition}
+\begin{liste}
+\item $L(\MdR^n) := \{f:\MdR^n\to\tilde\MdR: \exists$ Folge $(\varphi_k)\in\T_n$ mit: $\|f-\varphi_k\|_1 \to 0$ $(k\to\infty)\}$
+\item Ist $f\in L(\MdR^n)$, so heißt $f$ \textbf{Lebesgueintegrierbar über $\MdR^n$}\indexlabel{Lebegueintegrierbarkeit}.
+\item Ist $f\in L(\MdR^n)$ und $(\varphi_k)$ eine Folge in $\T_n$ mit $\|f-\varphi_k\|_1 \to 0$, so heißt 
+$$\int f dx := \int f(x) dx := \int_{\MdR^n} f dx:= \int_{\MdR^n}f(x)dx := \lim_{k\to\infty} \int \varphi _k dx$$
+das \begriff{Lebesgueintegral} von $f$ über $\MdR^n$.
+\end{liste}
+\end{definition}
+
+\begin{bemerkung}
+\begin{liste}
+\item Wegen 16.4 ist $\int f dx$ wohldefiniert und reell.
+\item Ist $\varphi \in \T _n$, so wähle $(\varphi _k)=(\varphi,\varphi,\varphi,\ldots)\folgt \varphi \in L(\MdR^n)$ und Integral von $\varphi$ aus §15 stimmt mit obigem Integral überein.  Insbesondere: $\T_n \subseteq L(\MdR^n)$
+\end{liste}
+\end{bemerkung}
+
+\begin{satz}[Rechenregln für Lebesgueintegrale]
+Es seien $f,g\in L(\MdR^n)$ und $\alpha,\beta \in \MdR^n$.
+\begin{liste}
+\item $\alpha f + \beta g \in L(\MdR^n)$ und $\int(\alpha f + \beta g)dx = \alpha \int f dx + \beta \int g d x$
+\item $|f| \in L(\MdR^n)$ und $|\int fdx| \le \int |f| dx  = \|f\|_1$
+\item Aus $f\le g $ auf $\MdR^n$ folgt: $\int f d x \le \int g dx$
+\item Ist $g$ auf $\MdR^n$ beschränkt $\folgt f g \in L(\MdR^n)$.
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item Klar.
+\item $\exists$ Folge $(\varphi_k)$ in $\T_n$ mit $\|f-\varphi_k\|_1 \to 0$ $(k\to\infty)$. $|\varphi_k| \in \T_n$ ($k\in\MdN$). $\left| |f| - |\varphi| \right|\le|f-\varphi_k| \folgtnach{16.4} \left\| |f|-|\varphi_k| \right\|_1 \le \|f-k\varphi_k\|_1 \folgt |f| \in L(\MdR^n)$ und $| \int fdx | = |\lim \int \varphi_k dx| = \lim | \int \varphi_k dx | \stackrel{\text{15.4}}\le \lim \underbrace{\int |\varphi_{k}| dx}_{\gleichnach{16.3} \|\varphi_k\|_1} = \int |f| dx$.
+
+$\|f\|_1 = \|f - \varphi _k + \varphi_k\|_1 \le \|f-\varphi_k\|_1 + \|\varphi_k\|_1 \gleichwegen{k\to\infty} \|f\|_1 \le \int |f| dx$. $\|\varphi_k\|_1 = \|\varphi_k- f + f\|_1 \le \|\varphi_k - f\|_1 + \|f\|_1 \folgtwegen{k\to\infty} \int |f| dx \le \|f\|_1$
+\item Es ist $g-f \ge 0$ auf $\MdR^n$. $\int gdx - \int fdx \gleichnach{(1)} \int \underbrace{(g-f)}_{>0} dx = \int |g-f| dx \gleichnach{(2)} \|g-f\|_1 \ge 0$.
+
+\item $\exists M \ge 0: |g|\le M$ auf $\MdR^n$. Sei $k\in\MdN$. $\exists \varphi_k \in \T_n: \|f-\varphi_k\|_1\le \frac{1}{2Mk}$. $\exists \gamma \ge 0$: $|\varphi_k| \le \gamma $ auf $\MdR^n$. $\exists \psi _k \in \T_n: \|g-\psi_k\|_1 \le \frac{1}{2\gamma k}$. Dann: $\varphi_k\psi_k \in \T_n$.
+
+$|fg -\varphi_k \psi_k| = |gf - g\varphi_k + g \varphi_k - \varphi_k\psi_k| \le |g| |f-\varphi_k| + |\varphi_k||g -\psi_k| \le M|f-\varphi_k| + \gamma|g - \psi_k| \folgtnach{16.1} \|fg-\varphi_k\psi_k\|_1 \le M \|f-\varphi_k\|_1 + \gamma \| g-\psi_k\|_1 \le M\cdot \frac{1}{2Mk} + \gamma \frac{1}{2\gamma k} = \frac{1}{k} \folgt$ Beh.
+\end{beweise}
+
+\begin{definition}
+Sei $\emptyset \ne D \subseteq \MdR^n$ und $f,g: D\to\MdR$ (nicht $\tilde \MdR$!) seien Funktionen.
+$$\max(f,g) (x) := \max \{f(x),g(x)\} \ (x\in D) $$
+$$\min(f,g) (x) := \min \{f(x),g(x)\} \ (x\in D) $$
+$$f^+ := \max(f,0),\ f^- := \max(-f,0) = (-f)^+$$
+Es ist $\max(f,g) = \frac{1}{2}(f+g+|f-g|)$, $\min(f,g) = \frac{1}{2}(f+g-|f-g|)$, $f^+,f^- \ge 0$ auf $D$ und $f=f^+-f^-$.
+\end{definition}
+
+\begin{folgerung}
+Gilt für $f,g: \MdR^n\to \MdR$, dass $f,g\in L(\MdR^n)$ $\folgt \max(f,g), \min(f,g), f^+, f^- \in L(\MdR^n)$.
+\end{folgerung}
+
+\begin{satz}["`Kleiner"' Satz von Beppo Levi]
+$f:\MdR^n\to\tilde\MdR$ sei eine Fkt., $(\varphi_k)$ sei eine Folge in $\T_n$ mit: $\varphi_1\le\varphi_2\le\varphi_3\le\ldots$ auf $\MdR^n,\ \varphi_k(x)\to f(x)\ (k\to\infty)\ \forall x\in\MdR^n$ und $(\int\varphi_k dx)$ sei beschränkt.
+
+Dann: $f \in L(\MdR^n)$ und $\int fdx = \lim\int\varphi_k dx\ (\lim\int\varphi_k dx = \int\lim\varphi_k dx)$
+\end{satz}
+
+\begin{beweis}
+$a_j:=\int\varphi_{j+1} dx - \int\varphi_j dx\ (j\in\MdN).\ a_j\ge 0\ (j\in\MdN).\ \sum_{j=1}^m a_j = \int\varphi_{m+1} dx - \int \varphi_1 dx \folgt (\sum_{j=1}^m a_j)$ ist beschränkt. $\folgtnach{Ana I} \sum_{j=1}^\infty a_j$ konvergiert.
+
+Für $k\in\MdN: c_k := \sum_{j=k}^\infty a_j$. Ana I $\folgt c_k \to 0\ (k\to\infty)$.
+
+Sei $k\in\MdN$ und $m\ge k: \sum_{j=k}^m(\varphi_{j+1} - \varphi_j) = \varphi_{m+1} - \varphi_k \overset{m\to\infty}{\to} f-\varphi_k = \sum_{j=k}^\infty(\varphi_{j+1} - \varphi_j).$
+
+$||f-\varphi_k||_1 = ||\sum_{j=k}^\infty(\varphi_{j+1} - \varphi_j)||_1 \overset{\text{16.1}}{\le} \sum_{j=k}^\infty||\varphi_{j+1}-\varphi_j||_1 \gleichnach{16.3} \sum_{j=k}^\infty \int|\varphi_{j+1}-\varphi_j| dx = \sum_{j=k}^\infty a_j = c_k \to 0\ (k\to\infty) \folgt ||f-\varphi_k||_1 \to 0\ (k\to\infty) \folgt$ Beh.
+\end{beweis}
+
+\begin{definition}
+\indexlabel{Funktion!triviale Erweiterung}
+Sei $A\subseteq \MdR^n$
+\begin{liste}
+\item Ist $f:A\to\tilde\MdR$ eine Fkt.:
+$$f_A(x) := \begin{cases}
+f(x) & ,\ x\in A \\
+0    & ,\ x\notin A \\
+\end{cases}
+,\ f_A:\MdR^n\to\tilde\MdR$$
+
+$||f||_{1,A} := ||f_A||_1$
+
+\indexlabel{Lebesgueintegral!über einer Menge}
+\item $L(A) := \{f:A\to\tilde\MdR:f_A\in L(\MdR^n)\}.$ Ist $f\in L(A)$, so heißt $f$ \textbf{auf $A$ Lebesgueintegrierbar} und $\int_Afdx := \int_Af(x)dx := \int_{\MdR^n}f_Adx$ heißt das \textbf{Lebesgueintegral von $f$ über $A$}. Bem.: $\int_\emptyset fdx$ existiert und $=0$.
+\end{liste}
+\end{definition}
+
+\begin{satz}[Lebegueintegral und $L^1$-Halbnorm]
+Die Sätze 16.5 bis 16.6 gelten sinngemäß für $L(A)$. Insbes.: $$||f||_{1,A} = \int_A|f|dx$$
+\end{satz}
+
+\begin{beispiel}
+$(n=1),\ A:=[0,1].$ $$f(x):=\begin{cases}
+1 & ,\ x\in A\backslash\MdQ \\
+0 & ,\ x\in A\cap\MdQ
+\end{cases}$$
+
+Bekannt: $f\notin R[0,1]$. Gr. Übung: $f\in L(A)$ und $\int_Afdx=1$
+\end{beispiel}
+
+\begin{satz}[Riemann- und Lebegueintegrale]
+Sei $I:=[a,b]\ (a<b),\ I\subseteq\MdR$ und $f\in R[a,b].$ Dann: $f\in L(I),$
+$$\underbrace{\int_a^bfdx}_{\text{R-Int.}} = \underbrace{\int_I fdx}_{\text{L-Int.}}.$$
+
+Also: $R[a,b] \subset L([a,b])$
+\end{satz}
+
+\begin{beweis}
+$h:=f_I$
+
+\begin{enumerate}
+\item Sei $Z=\{x_0,\ldots,x_m\} \in \Z,\ I_j:=[x_{j-1},x_j],\ m_j:=\inf f(I_j),\ M_j:=\sup f(I_j),\ Q_j:=(x_{j-1},x_j)\ (j=1,\ldots,m).$
+
+Zu $Z$ definiere $\varphi\in\T_1$ durch:
+
+$$\varphi(x):=\begin{cases}
+f(x) & ,\ x\in Z \\
+m_j  & ,\ x\in Q_j \\
+0    & ,\ x\notin [a,b]
+\end{cases}$$
+
+$\int\varphi dx = \sum_{j=1}^m m_j\underbrace{v_1(Q_j)}_{=|I_j|} = s_f(Z)$
+
+Def.: $\Phi:=\sum_{j=1}^m (M_j-m_j) 1_{Q_j};$ Dann: $0\le h-\varphi\le\Phi$ auf $\MdR \folgt \Phi\in\H(h-f)$ und $I(\Phi) = \sum_{j=1}^m (M_j-m_j)|I_j| = S_f(Z)-s_f(Z) \folgt ||h-\varphi||_1 \le S_f(Z)-s_f(Z)$
+
+\item Sei $(Z_k)$ eine Folge in $\Z$ mit $|Z_k| \to 0$. Ana I, 23.18 $\folgt S_f(Z_k) \to \int_a^bfdx,\ s_f(Z_k) \to \int_a^bfdx.$ Zu jedem $Z_k$ konstruiere $\varphi_k\in\T_1$ wie in (1). Dann: $||h-\varphi_k||_1 \le S_f(Z_k)-s_f(Z_k) \to 0\ (k\to\infty) \folgt h\in L(\MdR)$ und $\int_\MdR hdx = \lim\int\varphi_k dx \gleichnach{(1)} \lim s_f(Z_k) = \int_a^bfdx \folgt f\in L([a,b])$ und $\int_{[a,b]} fdx = \int_\MdR hdx = \int_a^bfdx.$
+\end{enumerate}
+\end{beweis}
+
+\begin{satz}[Konvergente Treppenfunktionsfolge]
+Sei $A\subseteq\MdR^n$ offen, $f\in C(A,\MdR)$ und $f\ge 0$ auf $A$. Dann: $\exists$ Folge $(\varphi_k)$ in $\T_n$ mit: $\varphi_1\le\varphi_2\le\varphi_3\le\ldots$ auf $\MdR^n$ und $\varphi_k(x)\to f_A(x)\ \forall x\in\MdR^n$.
+
+Insbes.: $\varphi_k\le f_A$ auf $\MdR^n\ \forall k\in\MdN$
+\end{satz}
+
+\begin{beweis}
+$g:=f_A,\ \MdQ^n:=\{(a_1,\ldots,a_n)\in\MdR^n:a_1,\ldots,a_k\in\MdQ\},\ \MdQ^+:=\{r\in\MdQ:r\ge0\}$
+
+Für $(a_1,\ldots,a_n)\in\MdQ^n,\ r\in\MdQ^+: W_r(a):=[a_1-r,a_1+r] \times \ldots \times [a_n-r,a_n+r].$
+
+$m_{r,a}:=\inf g(W_r(a))\ge 0,\ \psi_{r,a}:=m_{r,a}1_{W_r(a)}\ge 0,\ \psi_{r,a}\in\T_n.$
+
+Dann: $0\le\psi_{r,a}\le g$ auf $\MdR^n$ (*)
+
+$\T:=\{\psi_{r,a}:a\in\MdQ^n,\ r\in\MdQ^+\}.\ \MdQ^n,\MdQ^+$ abzählbar $\folgt \T$ ist abzählbar, etwa $\T=\{\psi_1,\psi_2,\psi_3,\ldots\}.$
+
+$s(x):=\sup \{\psi(x):\psi\in\T\}\ (x\in\MdR^n)$
+
+Aus (*) folgt: $s(x)\le g(x)\ \forall x\in\MdR^n$
+
+Sei $x\in\MdR^n$: Fall 1: $x\notin A.$ Dann: $0=g(x)\le s(x)$
+
+Fall 2: $x\in A.$ Sei $\ep>0.\ A$ offen, $f$ stetig\\
+$\folgt \exists a\in\MdQ^n,\ r\in\MdQ^+: |f(z)-f(x)|<\ep\ \forall z\in W_r(a)\subseteq A$\\
+$\folgt g(z)>f(x)-\ep\ \forall z\in W_r(a) \folgt m_{r,a}\ge f(x)-\ep$\\
+$\folgt g(x )-\ep \le m_{r,a} = \psi_{r,a}(x) \le s(x) \folgtwegen{\ep\to0} g(x) \le s(x)$.
+
+Also: $s=g$ auf $\MdR^n$
+
+$\varphi_k:=\max(\psi_1,\psi_2,\ldots,\psi_k)\ (k\in\MdN)\in\T_n.\ (\varphi_k)$ leistet das Verlangte.
+\end{beweis}
+
+\begin{satz}[Stetige und beschränkte Funktionen sind Lebegue-Integrierbar]
+Sei $A\subseteq\MdR^n$ offen und beschränkt und $f\in C(A,\MdR)$ sei beschränkt. Dann: $f\in L(A).$
+\end{satz}
+
+\begin{beweis}
+$f=f^+-f^-,\ f^+,f^-\in C(A,\MdR),\ f^+,f^-$ beschr. auf $A$. O.B.d.A: $f\ge0$ auf $A$.
+
+Sei $(\varphi_k)$ wie in 16.10. Sei $Q\subseteq\MdR^n$ ein Quader mit $A\subseteq Q.\ \gamma:=\sup\{f(x):x\in A\}.$ Dann: $\varphi_1\le\varphi_k\le f_A\le\gamma\cdot 1_Q$ auf $\MdR^n\ \forall k\in\MdN\\
+\folgt \int\varphi_1dx\le\int\varphi_kdx\le\gamma\int 1_Qdx=\gamma v_1(Q)\ \forall k\in\MdN\\
+\folgt (\int\varphi_kdx)$ ist beschränkt. 16.7 $\folgt f_A\in L(\MdR^n) \folgt f\in L(A).$
+\end{beweis}
+
+\begin{satz}[Stetige und beschränkte Funktionen sind Lebegue-Integrierbar]
+$A\subseteq\MdR^n$ sei abg. und beschr. und $f\in C(A,\MdR).$ Dann: $f\in L(A).$
+\end{satz}
+
+\begin{beweis}
+3.4 $\folgt \exists F\in C(\MdR^n,\MdR): F=f$ auf $A$. Sei $Q$ ein \emph{offener} Quader mit $A\subseteq Q$. $\bar Q$ ist beschr. und abg. 3.3 $\folgt F$ ist auf $\bar Q$ beschr. $\folgt F$ ist auf Q beschr. $\folgtnach{16.11} F_{|_Q}\in L(Q) \folgt \underbrace{(F_{|_Q})_Q}_{=F_Q} \in L(\MdR^n) \folgt F_Q \in L(\MdR^n).$
+
+$Q\backslash A$ ist offen und beschr. $\folgtnach{16.11} 1 \in L(Q\backslash A) \folgt 1_{Q\backslash A} \in L(\MdR^n) \folgtnach{16.5} F_Q\cdot1_{Q\backslash A} \in L(\MdR^n).$
+
+Es ist $f_A = F_Q-F_Q\cdot1_{Q\backslash A} \folgtnach{16.5} f_A\in L(\MdR^n) \folgt f\in L(A).$
+\end{beweis}
+\paragraph{Bezeichungen:} $\MdR^{n+m} = \MdR^n\times\MdR^m = \{ (x,y) : x \in\MdR^n, y
+G
+\in\MdR^m\}$. Sei $A \subseteq \MdR^{n+m}$.
+
+Für $y \in \MdR^m: A_y :=\{x\in\MdR^n:(x,y)\in A\} \subseteq \MdR^n$.
+Für $x \in \MdR^n: A_x :=\{y\in\MdR^m:(x,y)\in A\} \subseteq \MdR^m$.
+
+\begin{satz}[``Kleiner'' Satz von Fubini]
+
+$A\subseteq\MdR^{n+m}$ sei beschränkt und offen und $f \in C(A,\MdR)$ sei
+beschränkt (also $f \in L(A)$, 16.11!).
+
+$A\subseteq\MdR^{n+m}$ sei beschränkt und abgeschlossen und $f \in C(A,\MdR)$
+sei beschränkt (also $f \in L(A)$, 16.12!).
+
+Dann:
+\begin{liste}
+\item Für jedes $y\in\MdR^m$ ist die Funktion $x\mapsto f(x,y)$ Lebesgueintegrierbar über $A_y$
+\item Die Funktion $y\mapsto \int_{A_y} f(x,y)dx$ ist Lebesgueintegrierbar über $\MdR^n$ und
+\[\int_A f(x,y)d(x,y) = \int_{\MdR^m} ( \int_{A_y} f(x,y)dx)dy\]
+\item Analog zu (1),(2):
+\[\int_A f(x,y)d(x,y) = \int_{\MdR^n} ( \int_{A_x} f(x,y)dy)dx\]
+\end{liste}
+
+\end{satz}
+
+\begin{beweis}
+
+Nur für $A$ beschränkt und offen (für $A$ beschränkt und abgeschlossen ähnlich
+wie bei 16.12). O.B.d.A.: $f \geq 0$ auf $A (f = f^{+} - f^{-})$.
+
+\begin{liste}
+
+\item Sei $(\varphi_k)$ eine Folge in $\T_{n+m}$ wie in 16.10.
+Wie im Beweis von 16.11: $(\int_{\MdR^{n+m}}\varphi_k (x,y)d(x,y))$ ist beschränkt.
+16.7 $\folgt \int_A f(x,y) d(x,y) = \int_{\MdR^{n+m}} f_A(x,y)d(x,y) = \lim \int \varphi_k (x,y)d(x,y)$
+
+\item Sei $y\in\MdR^m$ (fest). $\Psi_k(x):=\varphi_k(x,y), g(x):=f_A(x,y) (x\in\MdR^n), \tilde f(x):=f(x,y) (x \in A_y)$
+Dann: $g = \tilde f_A$.
+
+Es gilt: $\Psi_1 \leq \Psi_2 \leq \ldots$ auf $\MdR^n$, $\Psi_k(x)=\varphi_k(x,y) \rightarrow f_A(x,y) = g(x) \forall x\in\MdR^n$. $(\Psi_k \in \T_n)$ Übung: $(\int \Psi_k(x)dx)$ beschränkt.
+
+16.7 \folgt $g\in L(\MdR^n)$, also $\tilde f_{A_y} \in L(\MdR^n) \folgt \tilde f \in L(A_y) \folgt (1)$,
+
+\[\underbrace{\int_{\MdR^n} g(x)dx}_{\int_{A_y} f(x,y) dx} = \lim \int \Psi_k dx = \lim \int \Psi_k (x,y)dx\]
+
+\item $\Phi_k(y):= \int_{\MdR^n} \varphi_k(x,y)dx (y\in\MdR^m)$. Dann: $\Phi_k\in\T_m$,
+$\Phi_1 \leq \Phi_2 \leq \ldots$ auf $\MdR^m$.
+
+\[\Phi_k(y) \folgtnach{(2)} \int_{A_y} f(x,y)dx\] $\forall y\in\MdR^m$.
+\[\int_{\MdR^m} \Phi_k (y)dy = \int_{\MdR^m} ( \int_{\MdR^n} \varphi_k (x,y)dx)dy\]
+\[=_{15.3} \int_{\MdR^{n+m}} \varphi_k (x,y)d(x,y)\]
+\[ \folgtnach{(1)} \int_A f(x,y)d(x,y)\]
+
+16.7 \folgt $y \mapsto \int_{A_y} f(x,y)dx$ ist Lebesgueintegrierbar über $\MdR^m$ und
+\[\int_{\MdR^m}(\int_{A_y} f(x,y)dx)dy = \lim \int \Phi_k(y)dy = \int_A f(x,y)d(x,y)\].
+
+\end{liste}
+
+\end{beweis}
+
+\begin{definition}
+Sei $A\subseteq\MdR^{n-1}\times\MdR (=\MdR^n)$. $A$ heißt \textbf{einfach
+bezüglich des 1. Faktors}\indexlabel{einfach!bezüglich eines Faktors}
+($\MdR^{n-1}$) $:\Leftrightarrow$ $\forall x \in \MdR^{n-1}$ ist $A_x =
+\emptyset$ oder ein Intervall in $\MdR$.
+
+Sei $a\subseteq\MdR\times\MdR^{n-1} (=\MdR^n)$. $A$ heißt \textbf{einfach
+bezüglich des 2. Faktors} ($\MdR^{n-1}$) $:\Leftrightarrow$ $\forall y \in
+\MdR^{n-1}$ ist $A_y = \emptyset$ oder ein Intervall in $\MdR$.
+\end{definition}
+
+Aus 16.13 folgt:
+
+\begin{satz}[Aufteilung des Integrals in Doppelintegrale]
+
+$A \subseteq \MdR^{n-1}\times\MdR$ sei beschränkt und abgeschlossen und einfach bezüglich des 1. Faktors.
+
+$B:=\{x\in\MdR^{n-1}:A_x\neq\emptyset\}$.
+
+Dann:
+\begin{liste}
+
+\item $\forall x \in B$ ist $A_x$ ein beschränktes und abgeschlossenes Intervall in $\MdR$
+\item \[\forall f \in C(A,\MdR):\int_A f(x,y)d(x,y) = \int_B ( \int_{A_x} f(x,y)dy)dx\]
+
+\end{liste}
+
+$A \subseteq \MdR\times\MdR^{n-1}$ sei beschränkt und abgeschlossen und einfach bezüglich des 2. Faktors.
+
+$B:=\{y\in\MdR^{n-1}:A_y\neq\emptyset\}$.
+
+Dann:
+\begin{liste}
+
+\item $\forall y \in B$ ist $A_y$ ein beschränktes und abgeschlossenes Intervall in $\MdR$
+\item \[\forall f \in C(A,\MdR):\int_A f(x,y)d(x,y) = \int_B ( \int_{A_y} f(x,y)dx)dy\]
+
+\end{liste}
+\end{satz}
+
+$Q:=[a_1,b_1]\times[a_2,b_2]\times\ldots\times[a_n,b_n]\subseteq\MdR^n$.
+$f\in C(Q,\MdR):$
+\[\int_Q f(x)dx = \int_{a_n}^{b_n}(\ldots(\int_{a_2}^{b_2}(\int_{a_1}^{b_1}f(x_1,\ldots,x_n)dx_1)dx_2)\ldots)dx_n\]
+
+Die Reihenfolge der Integration darf beliebig vertauscht werden.
+\begin{beispiel}\footnote{Anmerkung des \TeX{}ers: in jedem dieser Beispiele kommt eine Skizze vor, mit deren Hilfe man sich klar machen kann, dass die entsprechenden Mengen einfach bezüglich des 1. Faktors sind. Diese Skizzen sind hier (bisher) nicht wiedergegeben.}
+
+\begin{liste}
+
+\item $(n = 2)$, $Q:=[0,1]\times[1,2]$, $f(x,y)=xy$.
+
+$\int_Q xy d(x,y) = \int_1^2(\int_0^1 xydx)dy = \int_1^2([\frac{1}{2}x^2y]_{x=0}^{x=1})dy = \int_1^2\frac{1}{2}ydy = \frac{1}{4}y^2|_1^2 = \frac{3}{4}$.
+
+\item $A:=\{(x,y)\in\MdR^2:x\in[0,1],x^2\leq y\leq x\}$, $f(x,y)=xy^2$
+
+$A$ ist einfach bezüglich des 1. Faktors
+
+$B=[0,1]$
+
+Für $x\in B:A_x=[x^2,x]$
+
+\[\int_A xy^2d(x,y) = \int_0^1(\int_{x^2}^x xy^2dy)dx\]
+\[=\int_0^1([\frac{1}{3}xy^3]_{y=x^2}^{y=x})dx = \int_0^1\frac{1}{3}x^4-\frac{1}{3}x^7dx = \frac{1}{40}\]
+
+\item $A:=\{(x,y)\in\MdR^2:y\geq 0, x^2+y^2 \leq 1\}$, $f(x,y)=y$
+
+$B=[-1,1]$
+
+$x\in B: A_x=[0,\sqrt{1-x^2}]$;
+
+\[\int_A yd(x,y)=\int_{-1}^1(\int_0^{\sqrt{1-x^2}}ydy)dx\]
+\[= \int_{-1}^1([\frac{1}{2}y^2]_{y=0}^{y=\sqrt{1-x^2}})dx = \int_{-1}^1\frac{1}{2}(1-x^2)dx=\frac{2}{3}\]
+
+\item $A:=\{(x,y,z)\in\MdR^3:x,y,z\geq 0, x+y+z\leq 1\}$, $f(x,y,z)=x$
+
+$A$ ist einfach bezüglich des 1. Faktors ($\MdR^2$)
+
+Für $(x,y)\in B$: $A_{(x,y)}=[0,1-(x+y)]$
+
+$B = \{(x,y)\in\MdR^2:x\in[0,1], x+y \leq 1, y\geq 0\}$
+
+\[\int_Axd(x,y,z)=\int_B(\int_0^{1-(x+y)}xdz)d(x,y)= \int_B[xz]_{z=0}^{z=1-(x+y)]}d(x,y)\]
+\[= \int_Bx(1-(x+y))d(x,y)=\int_0^1(\int_0^{1-x}x(1-(x+y))dy)dx)=\frac{1}{24} (?)\]
+\end{liste}
+\end{beispiel}
+
+\chapter{Quadrierbare Mengen}
+
+Sei $A \subseteq \MdR^n$. A heißt \begriff{quadrierbar} (qb) $:\equizu 1_A \in L(\MdR^n)$ $(\equizu 1\in L(A))$
+
+In diesem Fall heißt $v_n(A) := \int_{\MdR^n} 1_A dx = \int_A1dx$ das $n$-dimensionale \begriff{Volumen} oder \begriff{Lebesguemaß} von $A$.  
+\textbf{Beachte:} $v_n(A) \in \MdR$
+
+\begin{satz}
+Sei $A\subseteq\MdR^n$ beschränkt. Ist $A$ offen oder abgeschlossen, dann ist $A$ quadrierbar.
+\end{satz}
+\begin{beweis}
+16.11, 16.12
+\end{beweis}
+
+\begin{beispiele}
+\item $\emptyset$ ist quadrierbar und $v_n(\emptyset) = 0$.
+\item Sei $Q$ ein Quader im $\MdR^n \folgt 1_Q \in \T_n \subseteq L(\MdR^n) \folgt Q$ ist quadrierbar und $n$-dimensionale Volumen von oben gleich dem $n$-dimensionalen Volumen aus §15
+\item Sei $\emptyset \ne D \subseteq \MdR^n$, $D$ beschränkt und abgeschlossen, $f\in C(D,\MdR)$ und $f\ge 0 $ auf $D$. $A:=\{(x,y) \in \MdR^{n+1}: x\in D, 0 \le y \le f(x)\}$. $A$ ist beschränkt und abgeschlossen $\folgtnach{17.1}$ $A$ ist quadrierbar (im $\MdR^{n+1}$). $v_{n+1}(A) = \int_A 1 d(x,y) \gleichnach{16.3} \int D \left(\int_0^{f(x)} 1 dy\right) dx = \int_D f(x)dx$
+\item $A:=\{(x,y)\in\MdR^n: x^2+y^2\le r^2\} \ (r>0)$. $A=\overline{U_r(0)}$. $A$ ist beschränkt und abgeschlossen $\folgtnach{17.1}$ $A$ ist quadrierbar. $v_2(A) = \int_A 1 dx$. Für $x\in[-r,r]$: $A_x=[-\sqrt{r^2-x^2}, \sqrt{r^2-x^2}] \folgt v_n(A) = \int _{-r}^r \left( \int _{-\sqrt{r^2-x^2}}^{\sqrt{r^2-x^2}} 1 dy \right) dx = \int_{-r}^r 2 \sqrt{r^2-x^2}dx \gleichnach{AI} \pi r^2$.
+\end{beispiele}
+
+\begin{satz}
+$A,B,A_1,\ldots,A_m$ seien $\subseteq \MdR^n$ und quadrierbar.
+\begin{liste}
+\item $A \cap B, A \cup B, A\backslash B$ sind quadrierbar und\\ $v_n(A\cup B) = v_n(A)+v_n(B)-v_n(A\cap B)$.
+\item Aus $A\subseteq B$ folgt $v_n(A) \le v_n(B)$.
+\item $A_1 \cup A_2 \cup \ldots \cup A_m$ ist quadrierbar und\\ $v_n(A_1 \cup A_2 \cup \ldots \cup A_m)\le v_n(A_1)+\cdots+v_n(A_m)$
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item $1_{A\cap B} = 1_A \cdot 1_B \folgtnach{16.5} 1_{A \cap B} \in L(\MdR^n) \folgt A\cup B$ ist quadrierbar. \\
+      $1_{A\cup B} = 1_A + 1_B -1_{A\cap B} \folgtnach{16.5} 1_{A \cup B} \in L(\MdR^n) \folgt A\cup B$ ist quadrierbar. $v_n(A\cup B) = \int_{\MdR^n}1_{A\cup B} dx = \int_{\MdR^n}1_A dx + \int_{\MdR^n}1_B dx - \int_{\MdR^n}1_{A\cap B}dx = v_n(A) + v_n(B) - v_n(A\cap B)$.\\
+      $1_{A\backslash B} = 1_A(1-1_B) \folgtnach{16.5} 1_{A\backslash B}\in L(\MdR^n) \folgt A\backslash B$ ist quadrierbar.
+\item $A\subseteq B \folgt 1_A \le 1_B$ auf $\MdR^n \folgt v_n(A) = \int_{\MdR^n}1_A dx \le \int_{\MdR^n}1_B dx = v_n(B)$
+\item folgt aus (1) mit Induktion
+\end{beweise}
+
+\begin{satz}[Prinzip von Cavalieri]
+Sei $A\subseteq \MdR^n\times \MdR = \MdR^{n+1} = \{(x,z): x\in\MdR^n, z\in\MdR\}$ beschränkt und abgeschlossen (also quadrierbar im $\MdR^{n+1}$). Dann:
+\begin{liste}
+\item $\forall z\in\MdR$ ist $A_z$ beschränkt und abgeschlossen (also quadrierbar im $\MdR^n$).
+\item $v_{n+1}(A) = \int_\MdR v_n(A_z)dz$
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item Übung
+\item $v_{n+1}(A) = \int_A 1 d(x,z) \gleichnach{16.3} \int_\MdR \underbrace{ \left( \int_{A_z} 1dx\right)} _{=v_n(A_z)} dz$. 
+\end{beweise}
+
+\begin{beispiele}
+\item $A:=\{(x,y,z)\in\MdR^3: z\in[0,1], x^2+y^2\le z^2\}$. $A$ ist beschränkt und abgeschlossen $\folgt$ $A$ ist quadrierbar. Für $z\notin [0,1]: A_z = \emptyset$. Für $z \in [0,1]: A_z = \{(x,y)\in \MdR^n : x^2+y^2\le z^2\} \folgt v_2(A_z) = \pi z^2 \folgt v_3(A) = \int_0^1 \pi z^2 dz = \frac\pi 3$
+\item Sei $[a,b]\subseteq \MdR$, $f\in C([a,b],\MdR)$ und $f\ge 0$ auf $[a,b]$. Graph von $f$ rotiert um die $x$-Achse $\longrightarrow$ Rotationskörper $A$. $A=\{(x,y,z)\in\MdR^3: x\in[a,b], y^2+z^2\le f(x)^2\}$. $A_x = \{ (y,z)\in\MdR^2 : y^2+z^2\le f(x)^2\}$ für $x\in[a,b]$. $v_2(A_X) = \pi f(x)^2$. $v_3(A)=\pi \int_a^b f(x)^2 dx$.
+
+\textbf{Speziell:} $f(x) = \sqrt{r^2-x^2}$ ($r>0$), $x\in[-r,r]$.\\ Rotationskörper $A=\overline{U_r(0)} \subseteq \MdR^3$. $v_3(A) = \pi\int _{-r}^r (r^2-x^2)dx = \frac 4 3 \pi r^3$.
+\end{beispiele}
+
+\begin{definition}
+Sei $N\subseteq \MdR^n$. $N$ heißt eine \begriff{Nullmenge} genau dann, wenn $F$ quadrierbar und $v_n(N) = 0$ ist.
+\end{definition}
+
+\begin{satz}
+Sei $N\subseteq \MdR^n$. $N$ ist eine Nullmenge $\equizu$ $\|1_N\|_1 = 0 $.
+\end{satz}
+
+\begin{beweis}
+\glqq$\Rightarrow$\grqq{}: $N$ Nullmenge $\folgt 1_N \in L(\MdR^n)$. 16.5 $\folgt \|1_N\|_1 = \int_{\MdR^n}1_N dx  = v_n(N) = 0$.
+\glqq$\Leftarrow$\grqq{}: Setze $(\varphi_k) := (0,0,0,\ldots)$; $(\varphi_k)$ ist eine Folge in $\T_n$: $\|1_N - \phi_k\|_1 = \|1_N\|_1 = \|1_N\|_1 \gleichnach{Vor.} 0 \ \forall k\in\MdN \folgt 1_N \in L(\MdR^n)$ und $\int 1_Ndx = \lim \int \varphi_k dx = 0 \folgt N$ ist quadrierbar und $v_n(N)=0$.
+\end{beweis} 
+
+
+\begin{satz}
+$N,N_1,N_2,\ldots$ seien Nullmengen im $\MdR^n$.
+\begin{liste}
+\item Ist $M\subseteq N \folgt M$ ist eine Nullmenge.
+\item $\displaystyle\bigcup_{k=1}^\infty N_k$ ist eine Nullmenge.
+\end{liste}
+\end{satz}
+
+\begin{beweise}
+\item $1_M \le 1_N \folgtnach{16.1} \|1_M\|_1 \le \|1_N\|_1 \gleichnach{17.4} 0 \folgt \|1_M\|_1 = 0 \folgt $ Beh.
+\item $A:= \bigcup_{k=1}^\infty N_k$; $1_A \le \sum_{k=1}^\infty 1_{N_K} \folgtnach{16.1} \|1_A\|_1 \le \sum_{k=1}^\infty \|1_{N_k}\|_1 \gleichnach{17.4} 0 \folgt$ Beh.
+\end{beweise}
+
+\begin{beispiele}
+\item Sei $x_0=(x_1,\ldots,x_n)\in\MdR^n$, $N:=\{x_0\} = \{x_1\}\times\{x_2\}\times\cdots\times\{x_0\}$. $N$ ist ein Quader, also quadrierbar, $v_n(N) = 0$, $N$ ist eine Nullmenge.
+\item Beispiel (1) und 17.5(2) liefern: Jede abzählbare Teilmenge des $\MdR^n$ ist eine Nullmenge % Falsch, wenn nicht Ines da wäre.
+\item Ist $Q = [a_1,b_1]\times[a_2,b_2]\times[a_3,b_3]\times \cdots \times [a_n,b_n] \subseteq\MdR^n$. $Q$ ist eine Nullmenge $\equizu$ $a_j=b_j$ für ein $j\in\{1,\ldots,n\}$.
+\end{beispiele}
+
+\begin{satz}
+Sei $\emptyset \ne D \subseteq \MdR^n,\ D$ sei beschränkt und abgeschlossen, es sei $f\in C(D,\MdR)$ und $G_f:=\{(x,f(x)):x\in D\}\subseteq\MdR^{n+1}.$ Dann ist $G_f$ eine Nullmenge im $\MdR^{n+1}$.
+\end{satz}
+
+\begin{beweis}
+$G_f$ ist beschränkt und abgeschlossen $\folgtnach{17.1} G_f$ ist qb. $v_{n+1}(G_f) = \int_{G_f}1d(x,y) \gleichnach{16.13} \int_D\left(\int_{f(x)}^{f(x)}1dy\right) dx = 0.$
+\end{beweis}
+
+\begin{definition}
+\indexlabel{fast überall}
+Sei $A\subseteq\MdR^n$ und (E) eine Eigenschaft, welche die Elemente von $A$ betrifft. (E) gilt \textbf{fast überall (f.ü.)} auf $A :\equizu \exists$ Nullmenge $N\subseteq A$ mit: (E) gilt für alle $x\in A\backslash N$.
+\end{definition}
+
+\begin{beispiel}
+$f:A\to\tilde\MdR$ sei eine Funktion. $f=0$ f.ü. auf $A \equizu \exists$ Nullmenge $N\subseteq A:f(x)=0\ \forall x\in A\backslash N$.
+\end{beispiel}
+
+\begin{satz}
+\begin{liste}
+\item $f,g:\MdR^n\to\tilde\MdR$ seien Funktionen mit $f=g$ f.ü. auf $\MdR^n$. Dann: $f\in L(\MdR^n) \equizu g\in L(\MdR^n).$ I. d. Fall: $\int fdx = \int gdx$.
+\item Seien $A,B \subseteq\MdR^n,\ f\in L(A)\cap L(B)$ und $A\cap B$ sei eine Nullmenge. Dann: $f\in L(A\cup B)$ und $\int_{A\cup B}fdx = \int_A fdx + \int_B fdx$.
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+\begin{liste}
+\item $\exists$ Nullmenge $N\subseteq\MdR^n:f(x)=g(x)\ \forall x\in\MdR^n\backslash N$. Sei $f\in L(\MdR^n) \folgt \exists$ Folge $(\varphi_k)$ von Treppenfunktionen mit: $||f-\varphi_k||_1 \to 0$ und $\int fdx = \lim_{k\to\infty} \int\varphi_k dx.$
+
+$f_k:=1_N\ (k\in N),\ h:=\sum_{k=1}^\infty f_k,\ ||h||_1 \overset{\text{16.1}}{\le} \sum_{k=1}^\infty ||f_k||_1 \gleichnach{17.4} 0 \folgt ||h||_1 = 0.$
+
+Es ist $|g-\varphi_k|\le|f-\varphi_k|+h$ auf $\MdR^n \folgtnach{16.1} ||g-\varphi_k||_1\le||f-\varphi_k||_1+||h||_1 = ||f-\varphi_k||_1 \folgt ||g-\varphi_k||_1 \to 0 \folgt g\in L(\MdR^n)$ und $\int gdx = \lim\int\varphi_k dx = \int fdx.$
+
+\item Wegen (1) o.B.d.A: $f=0$ auf $A\cap B$. Dann: $f_{A\cup B} = f_A+f_B \overset{\text{16.5}}\in L(\MdR^n) \folgt f\in L(A\cup B)$ und $\int_{A\cup B} fdx = \int_{\MdR^n} f_{A\cup B} dx = \int_{\MdR^n} f_A dx + \int_{\MdR^n} f_B dx = \int_A fdx + \int_B fdx.$
+\end{liste}
+\end{beweis}
+
+\begin{satz}
+$f:\MdR^n\to\tilde\MdR$ sei eine Funktion.
+\begin{liste}
+\item Ist $||f||_1<\infty$ und $N:=\{x\in\MdR^n:f(x)=\infty\} \folgt N$ ist eine Nullmenge. Dies ist z.B. der Fall, wenn $f\in L(\MdR^n)$ (16.5: $||f||_1 = \int|f|dx$)
+
+\item $||f||_1=0\equizu f=0$ f.ü. auf $\MdR^n$.
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+\begin{liste}
+\item Sei $\ep>0: 1_N\le\ep|f|$ auf $\MdR^n \folgtnach{16.1} ||1_N||_1 \le \ep||f||_1 \folgtwegen{\ep\to0} ||1_N||_1=0 \folgtnach{17.4}$ Beh.
+\item "`$\Rightarrow$"': Für $k\in N:N_k := \{x\in\MdR^n:|f(x)|\ge \frac{1}{k}\}$. Dann: $1_{N_k}\le k|f|$ auf $\MdR^n \folgtnach{16.1} ||1_{N_k}||_1\le k||f||_1=0 \folgtnach{17.4} N_k$ ist eine Nullmenge $\folgtnach{17.5} N:= \bigcup_{k=1}^\infty N_k$ ist eine Nullmenge. Es ist $N=\{x\in\MdR^n:f(x)\ne0\} \folgt f=0$ f.ü. auf $\MdR^n$.
+
+"`$\Leftarrow$"': $|f|=0$ f.ü. auf $\MdR^n \folgtnach{17.7} |f|\in L(\MdR^n)$ und $\int|f|dx = \int0dx = 0.$ 16.5 $\folgt ||f||_1 = \int|f|dx = 0.$
+\end{liste}
+\end{beweis}
+
+\begin{definition}
+\indexlabel{Figur}
+Seien $Q_1,Q_2,\ldots,Q_m$ \emph{abgeschlossene} Quader im $\MdR^n$ und $A:=Q_1\cup Q_2\cup\ldots\cup Q_m.$ Dann heißt $A$ eine \textbf{Figur}.
+\end{definition}
+
+\begin{satz}
+Sei $U\subseteq\MdR^n$ offen. Dann ex. Figuren $A_1,A_2,\ldots$ mit $A_1\subseteq A_2\subseteq \ldots$ und $U=\bigcup_{k=1}^\infty A_k$. Ist $U$ qb $\folgt v_n(U) = \ds{\lim_{k\to\infty}}v_n(A_k) = \sup\{v_n(A_k):k\in\MdN\}.$
+\end{satz}
+
+\def\Q{\ensuremath{\mathscr{Q}}}
+
+\begin{beweis}
+Für $a\in\MdQ^n$ und $r\in\MdQ^+$ sei $W_r(a)$ wie im Beweis von 16.10.
+
+$\Q:=\{W_r(a):a\in\MdQ^n,\ r\in\MdQ^+,\ W_r(a)\subseteq U\},\ U$ offen $\folgt \Q\ne\emptyset$.
+
+Es ist $\Q=\{Q_1,Q_2,\ldots\},\ A_k:=Q_1\cup Q_2\cup\ldots\cup Q_k\ (k\in\MdN).\ (A_k)$ leistet das Verlangte.
+
+Sei $U$ qb. $\varphi_k:=1_{A_k}\ (k\in\MdN) \folgt \varphi_k\in\T_n,\ \varphi_1\le\varphi_2\le\ldots$ auf $\MdR^n$ und $\varphi_k(x)\to1_U(x)\ \forall x\in\MdR^n$ und $\varphi_1\le\varphi_k\le1_U$ auf $\MdR^n \folgt \int\varphi_1dx\le\int\varphi_kdx\le\int1_Udx=v_n(U).$ 16.7 $\folgt \lim\underbrace{\int\varphi_kdx}_{v_n(A_k)} = \int1_udx = v_n(U).$
+\end{beweis}
+
+\begin{satz}
+Sei $U\subseteq\MdR^n$ offen. Dann ex. Quader $Q_1,Q_2,\ldots \subseteq\MdR^n$ mit: $$U=\bigcup_{k=1}^\infty Q_k\text{ und }Q_k^\circ\cap Q_j^\circ = \emptyset\ (j\ne k)$$
+
+Ist $U$ qb $\folgt v_n(U)=\sum_{k=1}^\infty v_n(Q_k).$
+\end{satz}
+
+\begin{beweis}
+In der gr. Übung.
+\end{beweis}
+
+\begin{satz}
+Sei $N\subseteq\MdR^n.\ N$ ist eine Nullmenge $\equizu \forall\ep>0\ \exists$ Quader $Q_1,Q_2,\ldots$ im $\MdR^n$ mit: (*) $N\subseteq\bigcup_{k=1}^\infty Q_k$ und $\sum_{k=1}^\infty v_n(Q_k)<\ep.$
+\end{satz}
+
+\begin{beweis}
+"`$\Leftarrow$"': Sei $\ep>0$. Seien $Q_1,Q_2,\ldots$ wie in (*). Dann: $1_N\le\sum_{k=1}^\infty 1_{Q_k}$ auf $\MdR^n \folgtnach{16.1} ||1_N||_1\le\sum_{k=1}^\infty||1_{Q_k}||_1 = \sum_{k=1}^\infty\int1_{Q_k}dx = \sum_{k=1}^\infty v_n(Q_k) < \ep \folgt ||1_N||_1 = 0 \folgtnach{17.4} N$ ist eine Nullmenge.
+
+"`$\Rightarrow$"': Sei $\ep>0$. Es genügt z.z.: $\exists$ offene Menge $U$ mit: $N\subseteq U,\ U$ ist qb und $v_n(U)<\ep$ (wegen 17.10).
+
+$||2\cdot1_N||_1 = 2||1_N||_1 \gleichnach{17.4}0 \folgt \exists \Phi\in\H(2\cdot1_N):I(\Phi)<\ep.$ Sei $\Phi=\sum_kc_k1_{R_k}$, wobei $c_k\ge0,\ R_k$ offene Quader. O.B.d.A: $\Phi=\sum_{k=1}^\infty c_k1_{R_k}$.
+
+$\varphi_m:=\sum_{k=1}^mc_k1_{R_k}\in\T_n;\ \varphi_1\le\varphi_2\le\ldots\le\Phi;\ \varphi_m(x)\to\Phi(x)\ \forall x\in\MdR^n.\ \int\varphi_1dx\le\int\varphi_mdx = \sum_{k=1}^mc_kv_n(R_k) \overset{m\to\infty}{\to} \sum_{k=1}^\infty c_kv_n(R_k) = I(\Phi) < \ep.$
+
+16.7 $\folgt\Phi\in L(\MdR^n)$ und $\int\Phi dx = \lim\int\varphi_m dx = I(\Phi) < \ep.$
+
+$U:=\{x\in\MdR^n:\Phi(x)>1\}.\ x\in N \folgt \Phi(x) \ge 2\cdot1_N(x) = 2\folgt x\in U.$ Also: $N\subseteq U.\ U$ offen, $U$ qb, $v_n(U)<\ep$.
+\end{beweis}
+
+\begin{folgerung}
+Sei $N\subseteq\MdR^n$ eine Nullmenge und $\ep>0$. Dann existiert eine Menge $U\subseteq\MdR^n$: $U$ ist offen, $U$ ist quadrierbar, $N\subseteq U$ und $v_n(U)<\ep$.
+\end{folgerung}
+
+\begin{beweis}
+Beweis von 17.11
+\end{beweis}
+
+\begin{satz}
+Sei $A\subseteq\MdR^n$ beschr"ankt und abgeschlossen, $f:A\to\MdR$ sei beschr"ankt und fast "uberall stetig auf A. Dann: $f\in L(A)$.
+\end{satz}
+
+\begin{beweis}
+$\exists \gamma\ge 0: |f|\le\gamma$ auf A. $\exists$ Nullmenge $N\subseteq A$: $f$ ist stetig auf $A\ \backslash\ N$. Sei $\ep>0$. 17.12 $\folgt\exists$ offene und quadrierbare Menge $U$ mit $N\subseteq U, v_n(U)<\ep$. $A\ \backslash\ U\subseteq A\ \backslash\ N$, $f$ stetig auf $A\ \backslash\ U$, $A\ \backslash\ U$ ist beschr"ankt und abgeschlossen. 16.12 $\folgt f\in L(A\ \backslash\ U)\folgt f_{A\backslash U}\in L(\MdR^n)\folgt \exists \varphi\in\T_n:\|f_{A\backslash U}-\varphi\|_1\le\ep$. Es ist $|f_A - f_{A\backslash U}|\le\gamma\cdot 1_U$ auf $\MdR^n$. $\overset{16.1}{\folgt}\|f_A-f_{A\backslash U}\|_1\le\gamma\|1_U\|_1\gleichnach{16.5}\gamma\int 1_U\text{d}x=\gamma v_n(U)<\gamma\ep$. Dann:
+\begin{eqnarray*}
+\|f_A-\varphi\|_1 & = & \|f_A-f_{A\backslash U}+f_{A\backslash U}-\varphi\|_1 \\
+&\le&\|f_A-f_{A\backslash U}\|_1+\|f_{A\backslash U}-\varphi\|_1\\
+&\le&\gamma\ep+\ep\\
+&=&(\gamma+1)\ep
+\end{eqnarray*}
+D.h: $\forall k\in\MdN\ \exists\varphi_k\in\T_n:\|f_A-\varphi_k\|<\frac{\gamma+1}{k}\folgt f_a\in L(\MdR^n)\folgt f\in L(A)$.
+\end{beweis}
+
+\chapter{Konvergenzsätze}
+
+\indexlabel{$L^1$!Konvergenz}
+\indexlabel{$L^1$!Cauchyfolge}
+\begin{definition}
+Sei $(f_k)$ eine Folge von Funktionen, $f_k:\MdR^n\to\tilde{\MdR}$ und $f:\MdR^n\to\tilde{\MdR}$.
+\begin{liste}
+\item $(f_k)$ hei"st \textbf{$L^1$-konvergent gegen f} $:\equizu \|f-f_l\|_1\to 0\ (k\to\infty)$
+\item $(f_k)$ hei"st eine \textbf{$L^1$-Cauchyfolge} $:\equizu\ \forall \ep>0\ \exists k_0\in \MdN: \|f_k-f_l\|_1<\ep\ \forall k,l\ge k_0$.
+\end{liste}
+Ist $(f_k)\  L^1$-konvergent gegen $f$, so ist $(f_k)$ eine $L^1$-Cauchyfolge: $\|f_l-f_k\|_1=\|f_l-f+f-f_k\|_1\ge\|f-f_l\|_1+\|f-f_k\|_1$.
+\end{definition}
+
+\begin{satz}[Satz von Riesz-Fischer]
+$(f_k)$ sei eine $L^1$-Cauchyfolge in L($\MdR^n$), also $f_k\in$ L($\MdR^n$) $\forall k\in\MdN$. Dann existiert ein $f\in $L$(\MdR^n)$:
+\begin{liste}
+\item $\|f-f_k\|_1\to 0\ (k\to\infty)$
+\item $\ds\int f\text{d}x=\ds\lim_{k\to\infty}\ds\int f_k\text{d}x$
+\item $(f_k)$ enth"alt eine Teilfolge, die fast "uberall auf $\MdR^n$ punktweise gegen f konvergiert.
+\end{liste}
+(Ohne Beweis)
+\end{satz}
+
+\begin{satz}[Satz von Beppo Levi]
+Sei $(f_k)$ eine Folge in L($\MdR$) mit $f_1\le f_2\le f_3\le \cdots$ auf $\MdR^n$ und $(\ds\int f_k\text{d}x)$ beschr"ankt. $f:\MdR^n\to\tilde{\MdR}$ sei definiert durch $f(x):=\ds\lim_{k\to\infty}f_k(x)$. Dann: $f\in L(\MdR^n)$ und
+$$\ds\int f\text{d}x=\ds\lim_{k\to\infty}\ds\int f_k\text{d}x\quad (=\ds\int\ds\lim_{k\to\infty} f_k(x)\text{d}x)$$
+\end{satz}
+
+\begin{beweis}
+F"ur $k\ge l: \|f_k-f_l\|_1\gleichnach{16.5}\int\underbrace{f_k-f_l}_{\ge 0}\text{d}x=\int f_k\text{d}x-\int f_l\text{d}x=|\int f_k\text{d}x -\int f_l\text{d}x|$. $(\int f_k\text{d}x)$ ist beschr"ankt und monoton, also konvergent $\folgt (\int f_k\text{d}x)$ ist eine Cauchyfolge in $\MdR \folgt (f_k)$ ist eine $L^1$-Cauchyfolge in L($\MdR^n$). 18.1 $\folgt \exists g\in L(\MdR^n)$ mit: $\int g\text{d}x=\lim\int f_k\text{d}x$ und $(f_k)$ enth"alt eine Teilfolge, die fast "uberall auf $\MdR^n$ punktweise gegen g konvergiert $\folgt f=g$ fast "uberall auf $\MdR^n\folgtnach{17.7}f\in L(\MdR^n)$ und $\int f\text{d}x=\int g\text{d}x=\lim\int f_k\text{d}x$.
+\end{beweis}
+
+\indexlabel{Ausschöpfung}
+\begin{definition}
+Sei $A\subseteq\MdR^n, (A_k)$ sei eine Folge von Teilmengen von $A$. $(A_k)$ ist eine \textbf{Aussch"opfung von A}:\equizu $A_1\subseteq A_2\subseteq A_3\ldots$ und $\ds\bigcup_{k=1}^\infty A_k=A$.
+\end{definition}
+
+\begin{satz}
+Sei $A\subseteq\MdR^n, (A_k)$ sei eine Aussch"opfung von $A$ und es sei $f\in L(A_k)\ \forall k\in\MdN$. $f\in L(A)\equizu (\ds\int_{A_k}|f|\text{d}x)$ ist beschr"ankt. In diesem Fall:
+$$\ds\int_A f\text{d}x=\ds\lim_{k\to\infty}\ds\int_{A_k}f\text{d}x$$
+\end{satz}
+
+\begin{beweis}
+\glqq$\folgt$\grqq: $A_k\subseteq A\folgt |f|_{A_k}\le |f|_{A}\folgt\underbrace{\int|f|_{A_k}\text{d}x}_{=\int|f|\text{d}x}\le\int|f|_A\text{d}x$.\\
+\glqq$\Leftarrow$\grqq: OBdA: $f\ge 0$ auf $A\ (f=f^{+}-f^{-})$. Dann: $0\le f_{A_1}\le f_{A_2}\le f_{A_3}\le \ldots$. $|\int f_{A_k}\text{d}x|\le\int|f|_{A_k}\text{d}x=\int_{A_k}|f|\text{d}x\folgt (\int f_{A_k}\text{d}x)$ beschr"ankt. Es gilt: $f_{A_k}(x)\to f_A(x)\ \forall x\in\MdR^n$. 18.2$\folgt f_A\in L(\MdR^n)$ und $\int f_A\text{d}x=\lim\int f_{A_k}\text{d}x\folgt f\in L(A)$ und $\int_A f\text{d}x=\lim\int_{A_k}f\text{d}x$. 
+\end{beweis}
+
+\begin{satz}[Uneigentliche Lebesgue- und Riemann-Integrale]
+Es sei $f:[a,\infty)\to\MdR$ eine Funktion $(a\in\MdR)$ und es gelte $f\in R[a,t]\ \forall t>a$. Dann: $f\in L([a,\infty))\equizu \ds\int_a^\infty f\text{d}x$ ist \textbf{absolut} konvergent. In diesem Fall:
+$$\underbrace{\ds\int_{[a,\infty)}f\text{d}x}_{\text{L-Int.}}=\underbrace{\ds\int_a^\infty f\text{d}x}_{\text{uneigentl. R-Int.}}$$
+\end{satz}
+
+\begin{beweis}
+Sei $(t_k)$ eine Folge in $[a,\infty)$ mit: $a<t_1<t_2<t_3<\ldots$ und $t_k\to\infty\ (k\to\infty)$. $A_k:=[a,t_k]\ (k\in\MdN), A:=[a,\infty)$. F"ur $k\in N: I_k:=\int_a^{t_k}f\text{d}x, J_k:=\int_a^{t_k}|f|\text{d}x$ (R-Integrale). 16.9 $\folgt f, |f|\in L([a,t_k])$ und $I_k=\int_{A_k}f\text{d}x, J_k=\int_{A_k}|f|\text{d}x$. $f\in L(A)\overset{18.3}{\equizu}(\int|f|\text{d}x)$ ist beschr"ankt $\equizu (J_k)$ ist beschr"ankt $\overset{J_1\subseteq J_2\subseteq \cdots}{\equizu}(J_k)$ konvergent $\equizu\int_a^\infty|f|\text{d}x$ konv. In diesem Fall: $\int_A f\text{d}x\gleichnach{16.3}\lim\int_{A_k}f\text{d}x=\lim I_k=\int_a^\infty f\text{d}x$. 
+\end{beweis}
+
+\begin{beispiele}
+\item $f(x):=\ds\frac{1}{\sqrt{x}};\quad$Analysis 1 $\folgt \ds\int_0^1\ds\frac{1}{\sqrt{x}}\text{d}x$ abs. konv. $\folgtnach{18.4}f\in L([0,1])$. Analysis 1 $\folgt \ds\int_0^1\ds\frac{1}{x}\text{d}x$ div. $\folgtnach{18.4}f^2\notin L([0,1])$.
+\item $f(x):=\begin{cases}
+\frac{\sin x}{x} &, x>0\\
+1 &, x=0
+\end{cases}$\\
+Analysis 1 $\folgt\ds\int_0^\infty\ds\frac{\sin x}{x}$ konv., aber nicht abs. konv. 18.4 $\folgt f\notin L([0,\infty))$, aber $\ds\int_0^\infty\ds\frac{\sin x}{x}\text{d}x$ existiert im uneigentlichen R-Sinne.
+\end{beispiele}
+
+\begin{satz}
+$(A_k),(B_k)$ seien Folgen qber Mengen im $\MdR^n$.
+\begin{liste}
+\item Ist $A_1\subseteq A_2\subseteq \ldots$ und $A:=\bigcup_{k=1}^\infty A_k$. Dann gilt: $A$ ist qb $\equizu (v_n(A_k))$ ist beschränkt ($\equizu (v_n(A_k))$ konvergiert).
+
+I. d. Fall: $v_n(A) = \lim_{k\to\infty}v_n(A_k)$.
+\item Für $j\ne k$ sei $B_j\cap B_k$ jeweils eine Nullmenge und $B:=\bigcup_{k=1}^\infty B_k.\ B$ ist qb $\equizu \sum_{j=1}^\infty v_n(B_j)$ konvergiert.
+
+I. d. Fall: $v_n(B) = \sum_{j=1}^\infty v_n(B_j)$.
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+\begin{liste}
+\item Folgt aus 18.3 mit $f \equiv 1$
+\item $\tilde A_k := B_1\cup B_2\cup\ldots\cup B_k\ (k\in\MdN).$ Dann: $\tilde A_1\subseteq \tilde A_2\subseteq \ldots$ und $B=\bigcup_{k=1}^\infty \tilde A_k.$ 17.2 $\folgt \tilde A_k$ ist qb und $v_n(\tilde A_k) = v_n(B_1)+\ldots+v_n(B_k).$ $B$ ist qb $\overset{\text{(1)}}{\equizu} (v_n(\tilde A_k))$ konvergiert $\equizu \sum_{j=1}^\infty v_n(B_j)$ konvergiert.
+
+I. d. Fall: $v_n(B) \gleichnach{(1)} \lim_{k\to\infty} v_n(\tilde A_k) = \sum_{j=1}^\infty v_n(B_j)$.
+\end{liste}
+\end{beweis}
+
+\begin{satz}[Satz von Lebesgue (Majorisierte Konvergenz)]
+Sei $A\subseteq\MdR^n$ und $(f_k)$ eine Folge in $L(A)$ und $(f_k)$ konv. fast überall auf $A$ punktweise gegen $f:A\to\tilde\MdR$
+\begin{liste}
+\item Ist $F\in L(A)$ und gilt $|f_k|\le F$ auf $A\ \forall k\in\MdN$, so ist $f\in L(A)$ und $\int_A fdx = \lim\int_A f_kdx$.
+
+\item Ist $A$ qb und ex. ein $M\ge 0$ mit $(f_k)\le M$ auf $A\ \forall k\in\MdN$, so ist $f\in L(A)$ und $\int_A fdx = \lim\int_Af_kdx$.
+\end{liste}
+\end{satz}
+
+\begin{beweis}
+\begin{liste}
+\item O.B.d.A: $A=\MdR^n$ (Übergang $f\to f_A$). $\exists$ Nullmenge $N$ mit $F(x)\in\MdR\ \forall x\in\MdR^n\backslash N$ (17.8) \emph{und} $f_k(x)\to f(x)\ (k\to\infty)\ \forall x\in\MdR^n\backslash N$. Dann: $f_k(x)\in\MdR\ \forall x\in\MdR^n\backslash N\ \forall k\in\MdN$. Wegen 17.7 ändern wir ab: $f(x):=f_k(x):=F(x):=0\ \forall x\in N\ \forall k\in\MdN$. Dann: $f_k(x)\to f(x)\ \forall x\in\MdR^n$. Für $k,\nu \in\MdN: g_k(x):=\sup\{f_j(x):j\ge k\};\ g_{k,\nu}(x):=\max\{f_k(x),f_{k+1}(x),\ldots,f_{k+\nu}(x)\}$. Dann: $|g_k|,|g_{k,\nu}|\le F$ auf $\MdR^n$. 16.6 $\folgt g_{k,\nu} \in L(\MdR^n)$.
+
+Sei $k\in\MdN$ (fest). $g_{k,1}\le g_{k,2}\le g_{k,3}\le \ldots$ auf $\MdR^n$, $|\int g_{k,\nu}dx|\le\int|g_{k,\nu}|dx\le\int Fdx \folgt \left(\int g_{k,\nu}dx\right)_{\nu=1}^\infty$ ist beschränkt. Es gilt: $g_{k,\nu}(x)\to g_k(x)\ (\nu\to\infty)\ \forall x\in\MdR^n$. 18.2 $\folgt g_k\in L(\MdR^n)$. Es ist: $g_1\ge g_2\ge g_3\ge \ldots$ auf $\MdR^n$; wie oben: $\left(\int g_kdx\right)$ beschränkt. Weiter gilt: $g_k(x)\to f(x)\ (k\to\infty)\ \forall x\in\MdR^n$.
+
+18.2 $\folgt f\in L(\MdR^n)$ und $\int fdx = \lim\int g_kdx.\ h_k(x):=\inf\{f_j(x):j\ge k\}\ (x\in\MdR^n).$ Analog: $h_k\in L(\MdR^n)$ und $\int fdx=\lim\int h_kdx$. Es ist: $h_k\le f_k\le g_k$ auf $\MdR^n \folgt \int h_kdx\le\int f_kdx\le\int g_kdx \folgtwegen{k\to\infty} \int fdx = \lim\int f_kdx.$
+
+\item folgt aus (1): $A$ qb $\folgt 1\in L(A) \folgt M\in L(A),\ F:=M$.
+\end{liste}
+\end{beweis}
+
+\begin{beispiel}
+Für $k\in\MdN$ sei $f_k:[1,k]\to\MdR$ def. durch $$f_k(x):=\frac{k^3\sin(\frac{x}{k})}{(1+kx^2)^2}$$
+
+Bestimme: $\lim_{k\to\infty}\int_1^k f_k(x)dx$.
+
+$$g_k(x):=\begin{cases}
+f_k(x), & x\in[1,k]\\
+0,      & x>k
+\end{cases}\ (x\in[1,\infty))$$
+
+Sei $x\in[1,\infty) \folgt \exists k_0\in\MdN: x\in[1,k]\ \forall k\ge k_0$. Für $k\ge k_0:g_k(x)=f_k(x)=\frac{\sin(\frac{x}{k})}{\frac{x}{k}}\cdot\frac{k^2x^2}{(1+kx^2)^2} = \frac{\sin(\frac{x}{k})}{\frac{x}{k}}\cdot\frac{1}{(\frac{1}{kx}+x)^2} \overset{k\to\infty}{\to} \frac{1}{x^2} =: f(x)$.
+
+$|g_k(x)| = \underbrace{\frac{|\sin\frac{x}{k}|}{\frac{x}{k}}}_{\le 1} \cdot \underbrace{\frac{1}{(\frac{1}{kx}+x)^2}}_{\le \frac{1}{x^2}} \le \frac{1}{x^2} = f(x).\ f_k\in R[1,k] \folgtnach{16.9} f_k\in L([1,k]) \folgtnach{17.7} g_k\in L([1,\infty))$ und $\int_{[1,\infty)} fdx = \int_1^\infty \frac{1}{x^2}dx = 1$. 18.6 $\folgt \underbrace{\int_{[1,\infty)} g_kdx}_{\int_1^k f_kdx} \to \int_{[1,\infty)} fdx = 1.$
+\end{beispiel}
+
+\paragraph{Erinnerung:} (Ana I, 23.5): $f:[a,b]\to\MdR$ sei auf $[a,b]$ db und $f'\in R[a,b]$. Dann: $\int_a^b f'dx = f(b)-f(a)$.
+
+\begin{satz}
+$f:[a,b]\to\MdR$ sei db auf $[a,b]$ und $f'$ sei auf $[a,b]$ beschränkt. Dann: $f'\in L([a,b])$ und $\int_{[a,b]} f'dx = f(b)-f(a)$.
+\end{satz}
+
+\begin{beweis}
+$M:=\sup\{|f'(x)|:x\in[a,b]\}.\ f_k(x):=\begin{cases}
+\frac{f(x+\frac{1}{k})-f(x)}{\frac{1}{k}}, & x\in[a,b-\frac{1}{k}]\\
+0, & x\in(b-\frac{1}{k},b]
+\end{cases}$. Ana I $\folgt f_k\in R[a,b] \folgtnach{16.9} f\in L([a,b]):|f(x+\frac{1}{k})-f(x)| \gleichnach{MWS} |f'(\xi)|\frac{1}{k} \le M\frac{1}{k}\ (x\in[a,b-\frac{1}{k}]) \folgt |f_k(x)|\le M\ \forall x\in[a,b]$. Sei $x\in[a,b) \folgt \exists k_0\in\MdN: x\in[a,b-\frac{1}{k}]\ \forall k\ge k_0.$ Für $k\ge k_0: f_k(x) = \frac{f(x+\frac{1}{k})-f(x)}{\frac{1}{k}} \overset{k\to\infty}{\to} f'(x)$. Also: $f_k(x)\to g(x):=\begin{cases}
+f'(x), & x\in [a,b)\\
+0, & x=b
+\end{cases}\ \forall x\in[a,b].$
+
+18.6 $\folgt g\in L([a,b]) \folgtnach{17.7} f'\in L([a,b])$ und $\int_{[a,b]} f'dx = \int_{[a,b]} gdx \gleichnach{18.6} \lim_{k\to\infty}\int_{[a,b]} f_kdx \gleichnach{16.9} \lim_{k\to\infty} \int_a^bf_kdx.$
+
+$f\in C[a,b] \folgtnach{Ana I} f$ besitzt auf $[a,b]$ eine Stammfunktion $F$. $\int_a^bf_k(x)dx = k\int_a^{b-\frac{1}{k}}(f(x+\frac{1}{k})-f(x))dx = k\int_1^{b-\frac{1}{k}} f(x+\frac{1}{k})dx - k\int_a^{b-\frac{1}{k}} f(x)dx \gleichwegen{z:=x+\frac{1}{k}} \int_{a+\frac{1}{k}}^b f(z)dz - k\int_a^{b-\frac{1}{k}} f(x)dx = k(F(b)-F(a+\frac{1}{k})) - k(F(b-\frac{1}{k})-F(a)) = \frac{F(b)-F(b-\frac{1}{k})}{\frac{1}{k}} - \frac{F(a+\frac{1}{k})-F(a)}{\frac{1}{k}} \overset{k\to\infty}{\to} F'(b)-F'(a) = f(b)-f(a)$.
+\end{beweis}
+
+\chapter{Messbare Mengen und messbare Funktionen}
+
+\def\L{\mathfrak{L}}
+
+\indexlabel{messbar}
+\indexlabel{Lebesguemaß}
+\begin{definition}
+$A\subseteq\MdR^n$ hei"st \textbf{(Lebesgue-)messbar} (mb) :$\equizu\exists$ Folge quadrierbarer Mengen $(A_k)$ mit
+\[
+	A=\bigcup_{k=1}^\infty A_k
+\]
+$\L_n:=\{A\subseteq\MdR^n:\ A \text{ ist messbar}\}$. Ist $A$ quadrierbar $\folgt A\in\L_n$. Die Abbildung $\lambda_n\to\tilde{\MdR}$ definiert durch
+\[
+	\lambda_n(A):=\begin{cases}
+		v_n(A) &\text{, falls } A \text{ quadrierbar}\\
+		\infty &\text{, falls } A \text{ nicht quadrierbar}
+	\end{cases}
+\]
+hei"st das \textbf{n-dimensional Lebesguema"s}.
+\end{definition}
+
+\begin{beispiel}
+$\MdR^n\in\L_n, \lambda_n(\MdR^n)=\infty$
+\end{beispiel}
+
+\begin{satz}
+Es seien $A, B, A_1, A_2, \ldots\ \in\L_n$
+\begin{liste}
+\item $A\ \backslash \ B,\ \ds\bigcup_{j=1}^\infty A_j,\ \ds\bigcap_{j=1}^\infty A_j\in\L_n$.
+\item Sei $B\subseteq A$
+\begin{liste}
+\item $\lambda_n(B)\le\lambda_n(A)$.
+\item Ist $B$ quadrierbar $\folgt\lambda_n(A\ \backslash\ B)=\lambda_n(A)-\lambda_n(B)$
+\end{liste}
+\item $\lambda_n(\ds\bigcup_{j=1}^\infty A_j)\le\ds\sum_{j=1}^\infty\lambda_n(A_j)$.
+\item Aus $A_1\subseteq A_2\subseteq A_3\subseteq\ldots$ folgt
+\[
+\lambda_n(\bigcup_{j=1}^\infty A_j)=\lim_{j=1} \lambda_n(A_j)
+\]
+\item Ist $A_1$ quadrierbar und $A_1\supseteq A_2\supseteq A_3\supseteq\ldots$ folgt
+\[
+\lambda_n(\bigcap_{j=1}^\infty A_j)=\lim_{j=1} \lambda_n(A_j)
+\]
+\item Ist $A_j\cap A_k=\emptyset\ (j\ne k)$ folgt
+\[
+\lambda_n(\bigcup_{j=1}^\infty A_j)=\sum_{j=1}^\infty \lambda_n(A_j)
+\]
+\end{liste}
+Ohne Beweis!
+\end{satz}
+
+\begin{folgerung}
+\begin{liste}
+\item Ist $A\subseteq\MdR^n$ offen $\folgt A\in\L_n$
+\item Ist $A\subseteq\MdR^n$ abgeschlossen $\folgt A\in\L_n$
+\end{liste}
+\end{folgerung}
+
+\begin{beweise}
+\item folgt aus 17.10
+\item $\MdR^n\ \backslash\ A$ ist offen \folgtnach{(1)} $\MdR^n\ \backslash\ A\in\L_n\folgtnach{19.1(1)}A\in\L_n$.
+\end{beweise}
+
+\indexlabel{messbar}
+\begin{definition}
+Sei $A\in\L_n$ und $F:A\to\tilde{\MdR}$ eine Funktion. $f$ hei"st \textbf{messbar}$:\equizu\exists$ Folge $(\varphi_k)$ in $\T_n$: $(\varphi_k)$ konvergiert fast "uberall auf $\MdR^n$ punktweise gegen $f_A$.
+\end{definition}
+
+\begin{satz}
+$A\in\L_n, f,g:A\to\tilde{\MdR}$ seien Funktionen.
+\begin{liste}
+\item Ist $f\in L(A)\folgt f$ ist messbar.
+\item Sind $f$,$g$ messbar \folgt $f+g, f^{+}, f^{-}, cf\ (c\in\MdR), |f|^p\ (p>0), \max(f,g), \min(f,g)$ sind messbar $(\infty^p:=\infty)$
+\end{liste}
+Ohne Beweis!
+\end{satz}
+
+\chapter{Satz von Fubini / Substitutionsregel}
+
+\begin{satz}[Satz von Fubini]
+Ohne Beweis:
+$\MdR^{n+m}=\MdR^n\times\MdR^m=\{(x,y):\ x\in\MdR^n, y\in\MdR^m\}$. Es sei $f\in L(\MdR^n\times\MdR^m)$.
+\begin{liste}
+\item $\exists$ Nullmenge $N\subseteq\MdR^m:$ f"ur jedes $y\in\MdR^m\ \backslash\ N$ ist $x\mapsto f(x,y)$ Lebesgueintegrierbar "uber $\MdR^n$.
+\item Mit
+\[
+	F(y):=\begin{cases}
+		\int_{\MdR^n}f(x,y)\text{d}x&\text{, falls } y\in\MdR^m\ \backslash\ N\\
+		0 &\text{, falls } y\in N
+	\end{cases}
+\]
+gilt: $F\in L(\MdR^m)$ und $\ds\int_{\MdR^{n+m}}f(x,y)\text{d}(x,y)=\ds\int_{\MdR^m}F(y)\text{d}y$
+\end{liste}
+\end{satz}
+
+\begin{satz}[Substitutionsregel]
+$U\subseteq\MdR^n$ sei offen und beschr"ankt. $\phi\in C^1(U,\MdR^n)$ sei auf $U$ injektiv und Lipschitzstetig. Es sei $B:=\bar{U}$
+($B$ beschr"ankt und abgeschlossen). Dann l"asst sich $\phi$ Lipschitzstetig auf B fortsetzen und f"ur $A:=\phi(B)$ gilt:
+\[
+	\int_A f(x)\text{d}x=\int_B f(\phi(z))|\det\phi'(z)|\text{d}z\ \forall f\in C(A,\MdR)
+\]
+($A$ beschr"ankt und abgeschlossen, im Allgemeinen ist auf der Nullmenge $\partial U$ $\phi'$ nicht erkl"art).
+\end{satz}
+
+\paragraph{Polarkoordinaten (n=2):} $ $\\
+$r=\|(x,y)\|=\sqrt{x^2+y^2}, x=r\cdot\cos\varphi, y=r\cdot\sin\varphi\ (r\ge 0, \varphi\in[0,2\pi])$\\
+$\phi(r,\varphi):=(r\cos\varphi, r\sin\varphi).\ \det \phi'(r,\varphi)=r$.
+\begin{beispiele}
+\item $A:=\{(x,y)\in\MdR^2:x^2+y^2\le1, y\ge 0\}, f(x,y)=y\sqrt{x^2+y^2}.\ B:=[0,1]\times[0,\pi]\folgt\phi(B)=A$.
+Dann:
+\begin{eqnarray*}
+\int_Af(x,y)\text{d}(x,y)&=&\int_Bf(r\cos\varphi,r\sin\varphi)\cdot r\ \text{d}(r,\varphi)\\
+&=&\int_Br\sin\varphi\cdot r\cdot r\ \text{d}(r,\varphi)\\
+&=&\int_0^\pi(\int_0^1 r^3\sin\varphi\text{d}r)\text{d}\varphi\\
+&=&\int_0^\pi\left[\frac{1}{4}r^4\sin\varphi\right]_{r=0}^{r=1}\text{d}\varphi\\
+&=&\int_0^\pi\frac{1}{4}\sin\varphi\text{d}\varphi\\
+&=&\frac{1}{2}
+\end{eqnarray*}
+\item Behauptung:
+\[
+	\int_{-\infty}^\infty e^{-x^2}\text{d}x=\sqrt{\pi}
+\]
+\textbf{Beweis}: $f(x,y):=e^{-(x^2+y^2)}=e^{-x^2}\cdot e^{-y^2}$. Sei $\varrho>0.\ Q_\varrho:=[0,\varrho]\times[0,\varrho]$.
+\begin{eqnarray*}
+\int_{Q_\varrho}f(x,y)\text{d}(x,y)&=&\int_0^\varrho(\int_0^\varrho e^{-x^2}e^{-y^2}\text{d}y)\text{d}x\\
+&=&(\int_0^\varrho e^{-x^2}\text{d}x)^2
+\end{eqnarray*}
+$A_{\varrho}:=\{(x,y)\in\MdR^2:\ x^2+y^2\le\varrho^2,\ x,y\ge 0\}, B_{\varrho}=[0,\varrho]\times[0,\frac{\pi}{2}], \phi(B_{\varrho})=A$.
+\begin{eqnarray*}
+\int_{A_\varrho}f(x,y)\text{d}(x,y)&=&\int_{B_\varrho}f(r\cos\varphi,r\sin\varphi)\text{d}(r,\varphi)\\
+&=&\int_{B_\varrho}r\cdot e^{-r^2}\text{d}(r,\varphi)\\
+&=&\int_0^{\frac{\pi}{2}}(\int_0^\varrho r\cdot e^{-r^2}\text{d}r)\text{d}\varphi\\
+&=&\frac{\pi}{2}\int_0^{\varrho}r\cdot e^{-r^2}\text{d}r\\
+&=&\frac{\pi}{2}\left[-\frac{1}{2}e^{-r^2}\right]_0^{\varrho}\\
+&=&\frac{\pi}{2}(-\frac{1}{2}e^{-\varrho^2}+\frac{1}{2}) =: h(\varrho)
+\end{eqnarray*}
+$h(\varrho)\to\frac{\pi}{4}\ (\varrho\to\infty)$. $A_\varrho\subseteq Q_\varrho\subseteq A_{\sqrt{2}\varrho}\folgtwegen{f\ge 0}f_{A_\varrho}\le f_{Q_\varrho}\le f_{A_{\sqrt{2}\varrho}}$.
+\[
+	\folgt
+	\underbrace{\int_{\MdR^2}f_{A_\varrho}\text{d}(x,y)}_{=h(\varrho)}\ \le\ 
+	\underbrace{\int_{\MdR^2}f_{Q_\varrho}\text{d}(x,y)}_{=(\int_0^\varrho e^{-x^2}\text{d}x)^2}\ \le\ 
+	\underbrace{\int_{\MdR^2}f_{A_{\sqrt{2}\varrho}}\text{d}(x,y)}_{=h(\sqrt{2}\varrho)}
+\]
+\[
+	\folgt
+	(\int_0^\varrho e^{-x^2}\text{d}x)^2\to\frac{\pi}{4}\ (\varrho\to\infty)
+\]
+\[
+	\folgt
+	\int_0^\infty e^{-x^2}\text{d}x=\frac{\sqrt{\pi}}{2}\folgt\int_{-\infty}^\infty e^{-x^2}\text{d}x=\sqrt{\pi}
+\]
+\end{beispiele}
+
+\paragraph{Zylinderkoordinaten (n=3):} $ $\\
+$\phi(r,\varphi,z):=(r\cdot \cos\varphi, r\cdot\sin\varphi, z), r\ge 0, \varphi\in[0,2\pi], z\in\MdR, \det\phi'(r,\varphi,z)=r.$
+\begin{beispiel}
+$A:=\{(x,y,z)\in\MdR^3: x,y\ge 0, x^2+y^2\le 1, 0\le z\le 1\}.\\
+f(x,y,z)=y\sqrt{x^2+y^2}+z,\ B=[0,1]\times[0,\frac{\pi}{2}]\times[0,1]$. 
+\begin{eqnarray*}
+\int_A f(x,y,z)\text{d}(x,y,z) & = & \int_b f(r\cos\varphi, r\sin\varphi,z)\text{d}(r,\varphi,z)\\
+& = &\int_B(r\sin\varphi r+z)r\text{d}(r,\varphi,z)\\
+& = &\int_0^1(\int_0^{\frac{\pi}{2}}(\int_0^1(r^2\sin\varphi+rz)\text{d}r)+\text{d}\varphi)\text{d}z\\
+& = & \frac{\pi}{8}+\frac{1}{4}
+\end{eqnarray*}
+\end{beispiel}
+
+\paragraph{Kugelkoordinaten (n=3):} $ $\\
+$r=\|(x,y,z)\|=(x^2+y^2+z^2)^{\frac{1}{2}}$,\\
+$x=r\cos\varphi\sin\nu,\ y=r\sin\varphi\sin\nu,\ z=\cos\nu\ (r\ge 0, \varphi\in[0,2\pi],\nu\in[0\pi])$.\\
+$\phi(r,\varphi,\nu)=(r\cos\varphi\sin\nu,r\sin\varphi\sin\nu,r\cos\nu)$, $\det\phi'(r,\varphi,\nu)=-r^2\sin\nu$.
+\begin{beispiel}
+$A:=\{(x,y,z)\in\MdR^3: 1\le\|(x,y,z)\|\le 2,\ x,y,z\ge 0\}.$\\
+$f(x,y,z):=\frac{1}{x^2+y^2+z^2}.\ B=[1,2]\times[0,\frac{\pi}{2}]\times[0,\frac{\pi}{2}]$.
+
+\begin{eqnarray*}
+\int_a\frac{1}{x^2+y^2+z^2}\text{d}(x,y,z)&=&\int_B\frac{1}{r^2}\sin\nu\text{d}(r,\varphi,\nu)\\
+&=&\int_0^\frac{\pi}{2}(\int_0^\frac{\pi}{2}(\int_1^2\sin\nu\text{d}r)\text{d}\varphi)\text{d}\nu\\
+&=&\frac{\pi}{2}
+\end{eqnarray*}
+\end{beispiel}
+
+
+\chapter{Parameterabhängige Integrale}
+
+\begin{satz}
+Sei $A\subseteq\MdR^n, B\subseteq\MdR^m, A\times B=\{(x,y):x\in A, y\in B\}$.
+Es sei $f:A\times B\to\MdR$ eine Funktion mit:
+\begin{liste}
+\item F"ur jedes (feste) $x\in A$ sei $y\mapsto f(x,y)$ Lebesgueintegrierbar "uber $B$.
+\item F"ur jedes (feste) $y\in B$ sei $x\mapsto f(x,y)$ stetig auf $A$.
+\item $\exists \phi\in L(B): |f(x,y)|\le \phi(y)\ \forall (x,y)\in A\times B$.
+\end{liste}
+$F:A\to\MdR$ sei definiert durch $F(x):=\ds\int_B f(x,y)\text{d}y$. Dann: $F\in C(A,\MdR)$.
+\end{satz}
+
+\begin{beweis}
+Sei $x_0\in A$. Sei $(x_k)$ eine Folge in $A$ mit $x_k\to x_0$. zu zeigen: $F(x_k)\to F(x_0)$.\\
+Definiere $g,f_1,f_2,\ldots:B\to\MdR$ durch $g(y):=f(x_0,y),\ f_k(y):=f(x_k,y)$.
+Vor.(1) $\folgt f_k\in L(B)\ \forall k\in \MdN$.
+Vor.(2) $\folgt f_k(y)\to g(y)\ \forall y\in B$.
+Vor.(3) $\folgt |f_k(y)|\le \phi(y)\ \forall y\in B$.
+\[18.6 \folgt \underbrace{\ds\int_B g(y)\text{d}y}_{=F(x_0)}=\lim_{k\to\infty}\underbrace{\int_B f_k(y)\text{d}y}_{=F(x_k)}\]
+\end{beweis}
+
+\begin{satz}[Vertauschbarkeit von Integration und Differentiation]
+Sei $A\subseteq \MdR^n$ offen, $B\subseteq\MdR^m$ und $f:A\times B\to\MdR$ mit:
+\begin{liste}
+\item F"ur jedes (feste) $x \in A$ sei $y\mapsto f(x,y)$ Lebesgueintegrierbar "uber $B$.
+	\item F"ur jedes (feste) $y \in B$ sei $x\mapsto f(x,y)$ stetig differenzierbar auf $A$.
+\item $\exists \phi\in L(B): |f_{x_j}(x,y)|\le\phi(y)\ \forall (x,y)\in A\times B,\ \forall j\in\{1,\ldots,n\}$.
+\end{liste}
+$F$ sei wie in 21.1. Dann ist $F\in C^1(A,\MdR)$, f"ur jedes (feste) $x\in A$ ist $y\mapsto f_{x_j}(x,y)$ Lebesgueintegrierbar "uber $B$ und $F_{x_j}(x)=\ds\int_B f_{x_j}(x,y)\text{d}y\ \forall x\in A\ \forall j\in \{1,\ldots,n\}$.
+\end{satz}
+
+\begin{beweis}
+Sei $x_0\in A, j\in \{1,\ldots, n\}$. $A$ offen $\folgt\exists \delta>0:x_0+te_j\in A$ f"ur $|t|<\delta$. Sei $(t_n)$ eine Folge in $\MdR$ mit $t_k\to 0\ (k\to\infty)$ und $0<|t_k|<\delta\ \forall k$.\\
+\[g(y):=f_{x_j}(x_0, y),\ f_k(y):=\frac{f(x_0+t_ke_j,y)-f(x_0,y)}{t_k}\ (k\in \MdN, y\in B)\]
+Vor.(1) $\folgt f_k\in L(B)\ \forall k\in \MdN$.
+Vor.(2) $\folgt f_k(y)\to g(y)\ \forall y\in B$.
+Vor.(3) $\folgt |f_k(y)|\gleichnach{MWS}\underbrace{|f_{x_j}(x_0+\xi_ke_j,y)|}_{\le\phi(y)\ \forall y\in B}$, $\xi_k$ zwischen 0 und $t_k$.
+18.6 $\folgt g\in L(B)$ und 
+\[\underbrace{\int_B g(y)dy}_{=\int_B f_{x_j}(x_0,y)\text{d}y}=\lim_{k\to\infty}\int_Bf_k(y)\text{d}y=\lim_{k\to\infty}\frac{F(x_0+t_ke_j)-F(x_0)}{t_k}\]
+$ $
+\end{beweis}
+
+\begin{satz}
+Es sei $D\subseteq\MdR^2$ offen, $[a,b]\times[c,d]\subseteq D$ und $\varphi:[a,b]\to[c,d]$ sei stetig differenzierbar. Es sei $f\in C^1(D,\MdR)$ und $\alpha:[a,b]\to\MdR$ sei definiert durch $\alpha(x):=\ds\int_c^{\varphi(x)}f(x,y)\text{d}y$.
+Dann ist $\alpha$ auf $[a,b]$ differenzierbar und
+\[
+	\alpha'(x)=\int_c^{\varphi(x)}f_x(x,y)\text{d}y+f(x,\varphi(x))\cdot\varphi'(x)\ \forall x\in [c,b]
+\]
+\end{satz}
+
+\begin{beweis}
+$\beta(x,z):=\int_c^z f(x,y)\text{d}y$. Dann: $\alpha(x)=\beta(x,\varphi(x))\ (z\in[c,d])$.
+Analysis 1$\folgt \beta$ ist partiell differenzierbar nach $z$ und $\beta_z(x,z)=f(x,z)$.
+21.2 $\folgt \beta$ ist partiell differenzierbar nach $x$ und $\beta_x(x,z)=\int_c^z f_x(x,y)\text{d}y$. $\beta_x, \beta_z$ sind stetig.
+5.2 $\folgt \beta$ ist differenzierbar \folgtnach{5.4} $\alpha$ ist differenzierbar und 
+\begin{eqnarray*}
+\alpha'(x)&=&\beta_x(x,\varphi(x))\cdot 1 + \beta_z(x,\varphi(x))\cdot \varphi'(x)\\
+&=&\int_c^{\varphi(x)}f_x(x,y)\text{d}y+f(x,\varphi(x))\cdot\varphi'(x).
+\end{eqnarray*}
+\end{beweis}
+
+
+\appendix
+\chapter{Satz um Satz (hüpft der Has)}
+\listtheorems{satz,wichtigedefinition}
+
+\renewcommand{\indexname}{Stichwortverzeichnis}
+\addcontentsline{toc}{chapter}{Stichwortverzeichnis}
+\printindex
+
+\chapter{Credits für Analysis II} Abgetippt haben die folgenden Paragraphen:\\% no data in Ana2Vorwort.tex
+\textbf{§ 1: Der Raum $\MdR^n$}: Wenzel Jakob, Joachim Breitner\\
+\textbf{§ 2: Konvergenz im $\MdR^n$}: Joachim Breitner und Wenzel Jakob\\
+\textbf{§ 3: Grenzwerte bei Funktionen, Stetigkeit}: Wenzel Jakob, Pascal Maillard\\
+\textbf{§ 4: Partielle Ableitungen}: Joachim Breitner und Wenzel Jakob\\
+\textbf{§ 5: Differentiation}: Wenzel Jakob, Pascal Maillard, Jonathan Picht\\
+\textbf{§ 6: Differenzierbarkeitseigenschaften reellwertiger Funktionen}: Jonathan Picht, Pascal Maillard, Wenzel Jakob\\
+\textbf{§ 7: Quadratische Formen}: Wenzel Jakob\\
+\textbf{§ 8: Extremwerte}: Wenzel Jakob\\
+\textbf{§ 9: Der Umkehrsatz}: Wenzel Jakob und Joachim Breitner\\
+\textbf{§ 10: Implizit definierte Funktionen}: Wenzel Jakob\\
+\textbf{§ 11: Extremwerte unter Nebenbedingungen}: Pascal Maillard\\
+\textbf{§ 12: Wege im $\MdR^n$}: Joachim Breitner, Wenzel Jakob und Pascal Maillard\\
+\textbf{§ 13: Wegintegrale}: Pascal Maillard und Joachim Breitner\\
+\textbf{§ 14: Stammfunktionen}: Joachim Breitner und Ines Türk\\
+\textbf{§ 15: Integration von Treppenfunktionen}: Ines Türk\\
+\textbf{§ 16: Das Lebesguesche Integral}: Joachim Breitner, Pascal Maillard und Jonathan Picht\\
+\textbf{§ 17: Quadrierbare Mengen}: Joachim Breitner, Pascal Maillard und Wenzel Jakob\\
+\textbf{§ 18: Konvergenzsätze}: Wenzel Jakob und Pascal Maillard\\
+\textbf{§ 19: Messbare Mengen und messbare Funktionen}: Wenzel Jakob\\
+\textbf{§ 20: Satz von Fubini / Substitutionsregel}: Wenzel Jakob\\
+\textbf{§ 21: Parameterabhängige Integrale}: Wenzel Jakob\\
+
+\end{document}

@@ -1,0 +1,259 @@
+\documentclass[a4paper,DIV15]{scrartcl}
+
+\usepackage{mathe}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{longtable}
+
+\usepackage{latexki}
+\lecturer{Prof. Dr. Bäuerle}
+\semester{Sommersemester 2008}
+\scriptstate{complete}
+
+
+
+\newcommand{\cF}{\mathcal F}
+\newcommand{\borel}{{\mathfrak B}}
+
+\author{Joachim Breitner}
+\title{Stochastische Prozesse\\Stoffzusammenfassung}
+\begin{document}
+\maketitle
+
+Diese Zusammefassung ist natürlich alles andere als vollständig und zu knapp, um immer alle Aussagen mit Voraussetzungen korrekt wiederzugeben. Man verwende sie mit Vorsicht.
+
+\section{Vokabeln, Definitionen und äquivalente Charakterisierungen}
+\subsection{Markov-Ketten in diskreter Zeit}
+
+\begin{longtable}[h]{lp{0.8\linewidth}}
+$(X_n)_{x\in\MdN_0}$, $X_n:\Omega\to S$
+	& Markov-Kette mit Zustandsraum $S$\\
+	& $P(X_{n+1}=i_{n+i} \mid X_0=i_0,\ldots,X_n=i_n) = p_{i_ni_{n+1}}$ \\
+$P=(p_{ij})_{i,j\in S}$
+	& Übergangsmatrix mit Übergangswahrscheinlichkeiten \\
+$P^{(n)} = (p_{ij}^{(n)})_{i,j\in S}$
+	& $n$-Schritt-Übergangsmatrix mit $n$-Schritt-Übergangswahrscheinlichkeiten\\
+$i\rightsquigarrow j$
+	& $\exists n\in\MdN p_{ij}^{(n)} > 0$, „$i$ führt nach $j$“\\
+$i \leftrightarrow j$
+	& $i\rightsquigarrow j \wedge j\rightsquigarrow i$, „$i$ kommuniziert mit $j$“ \\
+$J\subseteq S$ abgeschlossen
+	& $\not\exists j\in J, i\in S\setminus J: i\rightsquigarrow j$ \\
+	& $(p_{ij},\, i,j\in S)$ ist stochastische Matrix \\
+$(X_n)$ irreduzibel
+	& $(X_n)$ hat nur eine Äquivalenzklasse bzgl. „$\leftrightarrow \vee =$“\\
+$T_i$
+	& $\inf\{n\in\MdN\mid X_n=i\}$, „Ersteintrittszeit“\\
+$f_{ij}^{(n)}$
+	& $P(T_j=n\mid X_0=i)$, insbesondere $f_{ij}^{(1)} = p_{ij}$\\
+$f_{ij}^{*}$
+	& $\sum_{n=0}^\infty f_{ij}^{(n)} = P_i(T_j < \infty)$\\
+$i$ rekurrent
+	& $f_{ii}^*=1$ \\
+	& $\sum_{n=0}^\infty p_{ij}^{(n)} = \infty = E_i(\sum_{n=0}^\infty 1_{X_n=i})$, die erwartete Zahl der Besuche.\\
+$i$ transient
+	& $i$ nicht rekurrent \\
+$\nu:S\to\MdR_{\ge0}$
+	& Maß \\
+	& Verteilung, wenn gilt: $\sum_{a\in S} \nu(a)=1$\\
+$\nu$ invariant
+	& $\sum_{i\in S} \nu(i)p_{ij} = \nu(j)$, also $\nu = \nu P$\\
+$\gamma_k:S\to\MdR_{\ge0}$
+	& $E_k(\sum_{n=1}^{T_k} 1_{(X_n=i)})$, Besucher pro Zyklus \\
+	& invariant, $0<\gamma_k<\infty$, eindeutig mit $\gamma_k(k)=1$, wenn $(X_n)$ irreduzibel, rekurrent. \\
+	& $(X_n)$ irreduzibel, transient: stationäre Verteilung existiert nicht. \\
+$m_i$
+	& $E_i(T_i) = \sum_{n=1}^\infty n\cdot f_{ii}^{(n)} + \infty \cdot(1-f_{ii}^*)$ \\
+	& $i$ transient $\implies$ $m_i=\infty$.\\
+$i$ positiv rekurrent 
+	& $m_i<\infty$ \\
+	& $(X_n)$ irreduzibel: Stationäre Verteilung existiert $\iff$ ein/alle Zustände positive rekurrent. Dann: $\pi(i)=\frac1{m_i}$ \\
+$(Ph)(i)$
+	& $\sum_{j\in S} p_{ij}h(j)$, vergleiche Matrix-Vektor-Multiplikation. \\
+	& $Ph \ge h \implies h(X_n)$ Sub-Martingal\\
+	& $Ph = h \implies h(X_n)$ Martingal\\
+	& $Ph \le h \implies h(X_n)$ Super-Martingal\\
+\end{longtable}
+
+\subsection{Markov-Ketten in stetiger Zeit}
+
+\subsubsection{Poisson-Prozess}
+\begin{enumerate}[({A}1)]
+\item $t\mapsto N(t,\omega)\in \{f:[0,\infty) \to \MdN_0\mid f(0)=0,\text{ $f$ monoton wachsend, $f$ stetig von rechts}\}$
+\item Unabhängige Zuwächse
+\item Identisch verteilte Zuwächse
+\item Ereignisse einzeln: $P(N_h\ge 2) = o(h)$ für $h\to 0$
+\end{enumerate}
+
+Dann gilt:
+\begin{itemize}
+\item $\forall s,t\ge 0:N_{s+t}-N_s \sim \mathcal Po(\lambda t)$
+\item Zeit zwischen Sprüngen $\operatorname{Exp}(\lambda)$-verteilt.
+\end{itemize}
+
+Intensitätsmatrix:
+\[
+\begin{pmatrix}
+-\lambda & \lambda & 0 & \cdots \\
+0 & -\lambda & \lambda & 0 & \\
+\vdots & 0 & -\lambda & \lambda & \\
+& & & \ddots & \ddots 
+\end{pmatrix}
+\]
+
+\subsubsection{Der allgemeine Fall}
+
+\begin{longtable}[h]{lp{0.8\linewidth}}
+Markov-Eigenschaft
+	& $P(X_{t_n+h} = i_{n+1} \mid X_{t_k}=i_k,\, k=1,\ldots,n) = P(X_{t_n+h} = i_{n+1} \mid X_{t_n}=i_n)  = P(X_{t+h} = i_{n+1} \mid X_{t}=i_n)$\\
+$P(t) = (p_{ij}(t))$
+	& $p_{ij}(t) \da P(X_t = j \mid X_0=i)$, Übergangsmatrizenfunktion \\
+$P_{ij}$ SÜMF
+	& $\lim_{t\to 0}p_{ij}(t) = \delta_{ij}$, „Standardübergangsmatrizenfunktion“\\
+$Q=(q_{ij})$
+	& Instensitätsmatrix \\
+	& $q_{ij}\da \lim_{t\to0}\frac{p_{ij}(t)-\delta_{ij}}t = p_{ij}'(0)$\\
+	& Anschaulich: Kehrwert der Diagonalelemente sagt, wie lange die Kette in dem Zustand bleibt, die anderen Elemente geben die Wahrscheinlichkeit des nächsten Zustands an. \\
+$q_i$
+	& $-q_{ii}$\\
+$P$ konservativ
+	& $\sum_{i\in S} q_{ij} = 0$ \\
+\end{longtable}
+
+\subsection{Brownsche Bewegung}
+\begin{longtable}[h]{lp{0.8\linewidth}}
+Gauss-Prozess
+	& alle Fidis normalverteilt \\
+Brownsche Bew.
+	& $P(B_0=0)=1$, $P$-f.a. Pfade stetig, $B_t-B_s$ unabhängig von $\cF_s$, $\mathcal N (0,t-s)$-verteilt.\\
+	& $\iff$ $EB_t=0$, $\operatorname{Cov}(B_s,B_t)=s\wedge t$, Gauss-Prozess mit $F$-f.s. stetigen Pfaden. \\
+$P:\MdR \times \borel \to [0,1]$
+	& Stochasticher Kern \\
+	& $A\mapsto P(x,A)$ Wahrscheinlichkeitsmaß und $x\mapsto P(x,A)$ messbar\\
+$\mathcal G$ Generator
+	& $\lim_{t\to0}\frac 1t (P_t-P_0)$ \\
+	& Bei BB: $\mathcal Gf= \frac 12 f''$ \\
+Markov-Eigenschaft
+	& $P(X_t\in A\mid \cF_s) = P_{t-s}(X_s,A)$ \\
+$\cF_\tau$
+	& $\{A\in\cF\mid \forall t\ge 0: A \cap \{\tau\le t\} \in \cF_t\}$\\
+Progressiv messbar
+	& $\forall t\ge 0: (s,\omega) \mapsto X_s(\omega)$ ist $\borel([0,t])\otimes \cF_t$-messbar.\\
+\end{longtable}
+
+\section{Formeln}
+
+Methode des ersten Besuchs:
+\[
+p_{ij}^{(n)} = \sum_{k=1}^n f_{ij}^{(n)} p_{jj}^{(n-k)}
+\]
+
+Übergangswahrscheinlichsgrenzwert bei Periode $d_j$:
+\[
+\lim_{n\to\infty} p_{ij}^{n\cdot d_j + r} = \frac{d_j}{m_j} \sum_{k=0}^\infty f_{ij}^{k\cdot d_j + r}
+\]
+insbesondere ist $p_{ij}^{(n)}\to 0$ für $m_j=\infty$, d.h. $i$ transient oder null-rekurrent.
+
+Chapman-Kolmogorov-Gleichungen
+\begin{itemize}
+\item diskret
+\[
+p_{ij}^{(n+m)} = \sum_{k\in S} p_{ik}^{(n)} p_{kj}^{(m)}
+\]
+\item stetig
+\[
+p_{ij}(t+s) = \sum_{k\in S} p_{ik}(t) p_{kj}(s)
+\]
+\item allgemein (eigentlich die Definition von stochastischem Kern)
+\[
+P_{t+s}(x,A) = \int P_s(y,A)P_t(x,dy)
+\]
+\end{itemize}
+
+Kolmogorovsche Rückwärts-DGL:
+\[
+P'(t) = QP(t) \text{ d.h. } p_{ij}'(t) = -q_ip_{ij}(t) + \sum_{k\ne i}q_{ik}p_{kj}(t)
+\]
+Kolmogorovsch Vorwärts-DGL: \emph{Wann genau gilt die?}
+\[
+P'(t) = P(t)Q
+\]
+Ist $S$ endlich, kann man $P(t) = e^{tQ}$ schreiben.
+
+Erfüllt $Q$ die Bedingungen
+\begin{align*}
+\sum_{j\in S} q_{ij} = 0\text{ und } 0<\sup_{i\in S} |q_ii| \ad \lambda <\infty \tag{($*$)}
+\end{align*}
+so gilt:
+\begin{itemize}
+\item Ist $N$ Poissonprozess und $Y_n$ Markov-Kette mit $P=E+\frac 1 \lambda Q$, dann ist $X_t=Y_{N_t}$ Markov-Kette mit Intensitätsmatrix $Q$.
+\item $\mu$ ist invariantes Maß $\iff \mu Q = 0$
+\item Ist $X_n$ rekurrent, irreduzibel, dann gilt $\lim_{t\to\infty} p_{ij}(t) = \frac1{m_jq_j}$
+\end{itemize}
+
+Ist $(B_t)$ eine Brownsche Bewegung, dann auch:
+\begin{itemize}
+\item $(-B_t)$, $(B_{a+t}-B_a)$, $(cB_{\frac{t}{c^2}})$
+\item Zeitumkehr: $(tB_{\frac1t})$
+\item Spiegelungsprinzip: Der nach $\tau$ gespiegelte Prozess.
+\end{itemize}
+Eigenschaften der Brownschen Bewegung:
+\begin{itemize}
+\item $\sup B_t=\infty$, $\inf B_t=-\infty$, also unendlich oft weit hoch und runter.
+\item $P$-fast-sicher nie Lipschitzs-Stetig
+\item Totalvariation $\infty$, quadratische Variation $\tonach{$P$}t$.
+\item Stochastischer Kern $P_t(x,\cdot) = \mathcal N(x,t)$
+\item $\mathcal G f = \frac 12 f''$
+\item Ist $\tau$ endliche Stoppzeit, dann ist $(B_{\tau +t} - B_\tau)$ verteilt wie $(B_t)$ und unabhängig von $\cF_\tau$.
+\item Identisch verteilt sind: $M_t\da \sup_{0\le s\le t}B_s$, $M_t-B_t$, $|B_t|$
+\item $P$-fast-sicher Nullstellenmenge perfekt
+\end{itemize}
+
+Invarianzprinzip von Dansker:
+Ist $E\xi_i=0$, $0<\operatorname{Var}(\xi_i)\ad \sigma^2<\infty$, $S_k=\sum_{j=1}^k \xi_i$, $Y_t = S_{\lfloor t\rfloor} + (t-\lfloor t\rfloor t)\xi_{\lfloor t\rfloor +1}$, $(X_t^{(n)}) \da \frac1{\sigma\sqrt n} Y_{nt}$, dann konvergieren die Wahrscheinlichkeitsmaße $P_n$ schwach gegen $P$, wobei $P$ so ist, dass die Projektionen $\pi_t$ eine Brownsche Bewegung sind.
+
+\section{Wichtige Beweisideen}
+
+\subsection{Konvergenz gegen stationäre Verteilung}
+
+Voraussetzungen: $(X_n)$ irreduzibel, aperiodisch, positiv rekurrent. „Kopplungs-Argument“: $(Y_n)$ Kette mit gleicher Übergangsmatrix, $Y_n\sim\pi$, $T\da \inf\{n\in\MdN\mid X_n=Y_n\}$.
+\begin{itemize}
+\item Zeige $P(T<\infty)=1$
+\item Definiere 
+\[
+Z_n \da 
+\begin{cases}
+X_n,n\le T
+Y_n,n> T
+\end{cases}
+\]
+\item Schätze ab
+\[
+|p_{ij}^{(n)}-\pi(j)| \le 2\cdot P_{\hat \nu}(T>n) \to P(T=\infty) = 0
+\]
+\end{itemize}
+
+\subsection{$\mu Q = 0 \iff$ $\mu$ stationäre Verteilung}
+\begin{itemize}
+\item $P'(t) = P(t)Q = QP(t)$
+\item $\implies P(t) = E + Q\int_0^t P(s)ds = E+\int_0^t P(s)ds Q$
+\item $\implies \mu = \mu P(t) = \mu  + \int_0^t \mu P(s) ds Q = \mu  + t \cdot (\mu Q) = \mu$
+\end{itemize}
+
+\subsection{Solidaritätsprinzip}
+$i$ rekurrent, $j\in K(i)$, also $\exists m,n\in\MdN: p_{ij}^(m)p_{ji}^{(n)} > 0$. Dann
+\begin{align*}
+\sum_{k=0}^\infty p_{jj}^{(k)} \ge \sum_{k=0}^\infty p_{jj}^{(n+m+k)}
+\ge \sum_{k=0}^\infty p_{ji}^{(n)} p_{ii}^{(k)} p_{ij}^{(m)}
+= p_{ij}^{(m)}p_{ji}^{(n)} \sum_{k=0}^\infty p_{ii}^{(k)} = \infty
+\end{align*}
+
+\section{Verteilungen}
+
+\begin{itemize}
+\item $\mathcal N(0,\sigma^2)$: $f(x) = \frac1{\sigma \sqrt{2\pi}} \exp(-\frac 12 (\frac x \sigma)^2)$
+\item $\operatorname{Exp}(\lambda)$: $f(x) =\lambda e^{-\lambda x}$, $F(x)=1-e^{-\lambda x}$, $EX=\frac 1 \lambda$, $\operatorname{Var}X=\frac1{\lambda^2}$.
+\item $\mathcal Po(\lambda)$: $P(X=k)=\frac{\lambda^k}{k!} e^{-\lambda}$, $EX=\operatorname{Var}X=\lambda$.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,92 @@
+\documentclass{article}
+\usepackage{info}
+\usepackage[left=2cm,right=2cm,top=1.5cm,bottom=2cm]{geometry}
+
+\title{Vereinbarungen für Info2}
+\author{Felix Brandt, Mathias Ziebarth}
+% Wer nennenswerte Änderungen macht, schreibt sich bei \author dazu
+
+\begin{document}
+
+\def\A{\mathcal{A}}
+\def\U{\mathcal{U}}
+\def\I{\mathcal{I}}
+
+\begin{center}
+	Dieses Dokument erhebt keinen Anspruch auf Richtig- oder Vollständigkeit!\\
+	Alle Angaben also ohne Gewähr!
+\end{center}
+	
+\section{Syntax der Prädikatenlogik}
+	\subsection{Terme}
+		\begin{tabular}{ll}
+			Variablen        & $X$, $Y$, $Z$ oder $X_1$, $X_2$, $X_3$, $\ldots$\\
+			Konstanten       & $a$, $b$, $c$ oder $a_1$, $a_2$, $a_3$, $\ldots$\\
+			Funktionssymbole & $f$, $g$, $h$ oder $f_1$, $f_2$, $f_3$, $\ldots$\\
+											 &Sind $t_1, \ldots, t_n$ Terme, dann auch $f(t_1, \ldots, t_n)$.\\
+		\end{tabular}
+	\subsection{Formeln}
+		\begin{tabular}{ll}
+			Prädikatensymbole & $P$, $Q$, $R$ oder bspw. $P_1$, $Q_2$, $R_5$, $\ldots$\\
+												&Sind $t_1, \ldots, t_n$ Terme, dann ist auch $P(t_1, \ldots, t_n)$ eine atomare Formel.\\
+												&Beispiele: $(F \wedge G)$, $(F \vee G)$, $\forall xF$, $\exists xF$, $\neg F$\\
+		\end{tabular}
+
+\section{Semantik der Prädikatenlogik}
+	\subsection{Struktur}
+		$$\A(\U_\A, \I_\A)$$	
+		
+		\begin{description}
+		\item[$\U_\A$] nichtleere Menge (Universum)
+		
+		\item[$\I_\A$] eine Abbildung die
+			\begin{itemize}
+				\item jedem Prädikatensymbol ein Prädikat
+				\item jedem Funktionssymbol eine Funktion
+				\item jeder Variablen $X$ ein Element der Grundmenge $\U_\A$
+			\end{itemize}	
+			zuordnet.
+		\end{description}
+			
+			Falls $\I_\A$ für alle Symbole in $F$ definiert ist so "`passt"' $\A$ zu $F$.
+			Ist $F$ eine Formel und $\A$ passt zu $F$ dann sei
+			
+			\begin{enumerate}
+				\item Falls $F$ die Form $F=P(t_1, \ldots, t_k)$ mit Termen $t_1, \ldots, t_k$, so ist\\ $\A(F)=
+					\begin{cases}
+					1 & \text{falls } ((\A(t_1), \ldots, \A(t_k)) \in P^\A) \\
+					0 & \text{sonst }
+					\end{cases}$
+				\item Falls "`$F = \neg G$"' hat, so ist\\ $\A(F)=
+					\begin{cases}
+					1 & \text{falls $\A(G)=0$} \\
+					0 & \text{sonst}
+					\end{cases}$
+				\item Falls "`$F=(G \begin{array}{c}\wedge\\\vee\end{array} H)$"' so ist\\ $\A(F)=
+					\begin{cases}
+					1 & \text{falls }\A(G)=1 \begin{array}{c}\text{und}\\\text{oder}\end{array} \A(H)=1 \\
+					0 & \text{sonst}
+					\end{cases}$
+				\item Falls "`$F=\forall xG$"' so ist\\ $\A(F)=
+					\begin{cases}
+					1 & \text{falls für alle $d \in \U_\A$ gilt $\A_{[x/d]}(G)=1$} \\
+					0 & \text{sonst}
+					\end{cases}$
+				\item Falls "`$F=\exists xG$"' so ist\\ $\A(F)=
+					\begin{cases}
+					1 & \text{falls es ein $d \in \U_\A$ gibt, mit $\A_{[x/d]}(G)=1$}\\
+					0 & \text{sonst}
+					\end{cases}$
+				\end{enumerate}
+
+% ----------------------
+% O-Kalkül Konventionen: 
+% ----------------------
+
+\section{O-Kalkül Vereinbarungen}
+
+Zugelassen sind nur asymptotisch monoton wachsende Funktionen. \\
+(Hinweis: Polynome besitzen eine endliche Anzahl an Nullstellen, sind also ab einem $n_0$ monoton) \\
+Dann gilt: $O(f)*O(g)=O(f*g)$ und $O(f+c)=O(f)$.
+
+\end{document}

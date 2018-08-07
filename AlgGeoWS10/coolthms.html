@@ -1,0 +1,133 @@
+<!doctype html><html><head><meta charset="utf-8"/><title>Das VorlesungsMitschriebWiki - AlgGeoWS10/coolthms</title><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/><link rel="stylesheet" media="screen" href="../data/css/screen.css"/></head><body><header id="msw_top"><h1><a href=".">Das VorlesungsMitschriebWiki</a></h1><nav><ul><li><a href="../." class="icon-home">Home</a></li><li><a href="../IchWarHier.html" class="icon-heart">Guestbook</a></li><li><a href="../SiteMap.html" class="icon-sitemap">Sitemap</a></li><li><a href="../RecentChanges.html" class="icon-time">Wiki-History</a></li><li><a href="../About.html" class="icon-question-sign">About</a></li></ul></nav><div class="hr"><hr/></div></header><div class="body"><nav class="page_nav"><ul><li class="tocLink"><a href="#" title="TOC for this page" class="icon-list-ul"><i>TOC for this page</i></a></li><li class="editPage"><a href="https://github.com/nomeata/mitschriebwiki/edit/master/AlgGeoWS10/coolthms.sty" title="Edit this page" class="icon-pencil"><i>Edit this page</i></a></li><li class="new"><a href="https://github.com/nomeata/mitschriebwiki/new/master" title="New Document" class="icon-plus"><i>New Document</i></a></li><li class="totop"><a href="#msw_top" title="Back to top" class="icon-arrow-up"><i>Back to top</i></a></li></ul></nav><div class="page"><div class="hr"><hr/></div><h1>AlgGeoWS10/coolthms</h1><p><a href="../../data/AlgGeoWS10/coolthms.sty">../data/AlgGeoWS10/coolthms.sty (download)</a></p><h2>Source</h2><pre>%%
+%% This is file `coolthms.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% coolthms.dtx 
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% For the copyright see the source file.
+%% 
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from coolthms.sty.
+%% 
+%% For distribution of the original source see the terms
+%% for copying and modification in the file coolthms.dtx.
+%% 
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{coolthms}[2012/04/01 v1.1 Theorem markup and advanced referencing]
+\let\Finv\@undefined
+\let\Game\@undefined
+\let\beth\@undefined
+\let\gimel\@undefined
+\let\daleth\@undefined
+\RequirePackage{amssymb}
+\RequirePackage{hyperref}
+\RequirePackage{etoolbox}
+\RequirePackage{ifthen}
+\RequirePackage{xargs}
+\RequirePackage{kvoptions}
+\@ifpackageloaded{amsmath}
+  {\RequirePackage[thmmarks,amsmath,hyperref]{ntheorem}}
+  {\RequirePackage[thmmarks,hyperref]{ntheorem}}
+\RequirePackage{cleveref}
+\begingroup
+\catcode`\#=12
+\gdef\ctp@hashchar{#}%
+\endgroup
+\@ifundefined{proofname}{\newcommand{\proofname}{Proof}}{}
+\let\ctp@temp\proofname\relax
+\AtBeginDocument{\edef\ctp@temp{\proofname}%
+   \apptocmd{\select@language}{\edef\ctp@temp{\proofname}}{}{}}
+\AfterEndEnvironment{proof}{\gdef\proofname{\ctp@temp}}
+\DeclareStringOption[\ctp@temp]{proofname}
+\DeclareStringOption[$\Box$]{proofsymbol}
+\DeclareStringOption[\it]{proofcaptionstyle}
+\DeclareStringOption[\coolthms@indent]{proofindent}
+\DeclareStringOption[:]{separator}
+\DeclareStringOption[0em]{indent}
+\DeclareStringOption[0pt]{minskip}
+\DeclareStringOption[6pt]{maxskip}
+\DeclareLocalOptions{separator,indent,minskip,maxskip%
+  proofname,proofsymbol,proofcaptionstyle,proofindent}
+\ProcessKeyvalOptions*
+\newtheoremstyle{keinenummern}%
+  {\item[\hskip\labelsep\theorem@headerfont ##1\theorem@separator]}%
+  {\item[\hskip\labelsep\theorem@headerfont ##1\ %
+    {\normalfont(##3)}\theorem@separator]}
+\newtheoremstyle{mitnummern}%
+  {\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\theorem@separator]}%
+  {\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\ %
+    {\normalfont(##3)}\theorem@separator]}
+\newtheoremstyle{unserbeweis}%
+  {\item[{\hskip\labelsep\theorem@headerfont ##1\theorem@separator}]}%
+  {\item[\hskip\labelsep{\theorem@headerfont ##3\theorem@separator}]}
+\@ifundefined{c@chapter}{%
+  \newcounter{chapter}%
+  \setcounter{chapter}{1}%
+}{}%
+\newcommandx*{\definetheorem}[5][1=thmcnt,3=,5=section]{
+  \@ifundefined{c@#1}{
+    \@ifundefined{c@#5}{
+      \newtheorem{#1}{#1}
+    }{
+      \newtheorem{#1}{#1}[#5]
+    }
+  }{}
+  \theoremstyle{mitnummern}
+  \newtheorem{#2}[#1]{#4}
+  \theoremstyle{keinenummern}
+  \newtheorem{n#2}[#1]{#4}
+  \ifblank{#3}{
+    \crefname{#2}{#4}{#4}
+  }{
+    \crefname{#2}{#4}{#3}
+  }
+  \crefformat{#2}{##2#4~##1##3}
+  \BeforeBeginEnvironment{n#2}{\addtocounter{#1}{-1}}
+  \BeforeBeginEnvironment{#2}{%
+     \addtocounter{#1}{1}%
+     \edef\ctp@labelcode%
+        {ctp@#2@\roman{chapter}@\roman{section}@\arabic{#1}}\relax%
+     \immediate\write\@auxout{\string\crefname{\ctp@labelcode}%
+               {#4\noexpand~\csname the#1\endcsname}%
+               {#4 plural\noexpand~\csname the#1\endcsname}}\relax%
+     \immediate\write\@auxout{\string\crefformat{\ctp@labelcode}%
+               {\string##2#4\noexpand~\csname the#1\endcsname\noexpand~%
+                  \ctp@hashchar1\ctp@hashchar3}}\relax%
+      \edef\Label##1{\noexpand\label[\ctp@labelcode]{##1}}%
+      \addtocounter{#1}{-1} %
+  }%
+}%
+\newcommandx*{\theoremmarkup}[6][1=\bf,2=\normalfont,3=\relax,%
+              4=\coolthms@indent,5=\coolthms@separator,6=arabic]{
+  \theoremheaderfont{\hspace*{-\theorem@indent}#1}
+  \theorembodyfont{#2}
+  \theoremsymbol{#3}
+  \theoremindent#4\relax
+  \theoremseparator{#5}
+  \theoremnumbering{#6}
+}
+\crefformat{equation}{#2(#1)#3}
+\crefformat{chapter}{#2\chaptername~#1#3}
+\@ifundefined{sectionname}{\newcommand{\sectionname}{}}{}
+  \gappto\captionsgerman{\renewcommand{\sectionname}{Abschnitt}}%
+  \gappto\captionsenglish{\renewcommand{\sectionname}{section}}
+\crefformat{section}{#2\sectionname~#1#3}
+\theorempreskipamount\coolthms@minskip plus \coolthms@maxskip\relax
+\theorempostskipamount\coolthms@minskip plus \coolthms@maxskip\relax
+\theoremstyle{unserbeweis}
+\theoremmarkup[\coolthms@proofcaptionstyle][\normalfont]%
+  [\coolthms@proofsymbol][\coolthms@proofindent]
+\expandafter\newtheorem{proof}{\coolthms@proofname}
+\theoremmarkup
+\endinput
+%%
+%% End of file `coolthms.sty'.
+</pre></div></div><footer><div class="hr"><hr/></div><ul><li><div id="socialshareprivacy"/></li></ul><div class="hr hr2"><hr/></div></footer><script src="../data/js/minimized.js"> </script><!-- Piwik --> <script type="text/javascript"> var _paq = _paq || []; _paq.push(['trackPageView']); _paq.push(['enableLinkTracking']); (function() { var u=(("https:" == document.location.protocol) ? "https" : "http") + "://nomeata.de/piwik/"; _paq.push(['setTrackerUrl', u+'piwik.php']); _paq.push(['setSiteId', 1]); var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript'; g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s); })(); </script> <noscript><p><img src="http://nomeata.de/piwik/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript> <!-- End Piwik Code --></body></html>

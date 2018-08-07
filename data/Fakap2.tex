@@ -1,0 +1,911 @@
+\documentclass[a4paper,11pt]{book}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{ngerman}
+%\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{euscript}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage{mathtools}
+\usepackage[arrow, matrix, curve]{xy}
+%\usepackage{pst-all}
+%\usepackage{pst-add}
+%\usepackage{multicol}
+
+\usepackage[latin1]{inputenc}
+
+%%Zahlenmengen
+%Neue Kommando-Makros
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\K}{{\mathbb K}}
+\newcommand{\ssL}{{\mathcal L}}
+\newcommand{\sn}[1]{||#1||_{\infty}}
+\newcommand{\eps}{{\varepsilon}}
+\newcommand{\begriff}[1]{\textbf{#1}} %das sollte man noch ändern!
+%\newcommand{\eb}{\hfill \rule{1ex}{1ex}} %F"ur den Ende eine Beweises
+\newcommand{\ind}{1\hspace{-0,9ex}\raisebox{-0,2ex}{1}}
+\newcommand{\re}{\ensuremath{\text Re}\,} %Realteil
+\newcommand{\lin}{\ensuremath{\text lin}\,} %Lineare Hülle
+\newcommand{\LN}[1][]{\| \cdot \|_{#1}} %LN = Leere Norm mit optionalem Argument
+\def\bewhin{\textquotedblleft\ensuremath{\Rightarrow}\textquotedblright: } %Hinrichtung eines Beweises
+\def\bewrueck{\textquotedblleft\ensuremath{\Leftarrow}\textquotedblright: } %Rueckrichtung eines Beweises
+
+
+% Seitenraender
+\textheight22cm
+\textwidth14cm
+\topmargin-0.5cm
+\evensidemargin0,5cm
+\oddsidemargin0,5cm
+\headheight14pt
+
+%%Seitenformat
+% Keine Einrückung am Absatzbeginn
+\parindent0pt
+
+\DeclareMathOperator{\unif}{Unif}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
+
+
+\def\AA{ \mathcal{A} }
+\def\PM{ \EuScript{P} } 
+\def\EE{ \mathcal{E} }
+\def\BB{ \mathfrak{B} } 
+\def\DD{ \mathcal{D} } 
+\def\NN{ \mathcal{N} } 
+\def\TT{ \mathcal{T} }
+
+% Komische Symbole
+\def\folgt{\ensuremath{\implies}}
+\newcommand{\folgtnach}[1]{\ensuremath{\DOTSB\;\xRightarrow{\text{#1}}\;}}
+\def\equizu{\ensuremath{\iff}}
+\def\d{\mbox{d}}
+\def\fs{\stackrel{f.s.}{\rightarrow }}
+
+%Nummerierungen
+\newtheorem{Def}{Definition}[chapter]
+\newtheorem*{DefNO}{Definition}
+\newtheorem{Sa}[Def]{Satz}
+\newtheorem{Lem}[Def]{Lemma}
+\newtheorem{Kor}[Def]{Korollar}
+\newtheorem*{TheoNO}{Theorem}
+\newtheorem{Theo}[Def]{Theorem}
+\theorembodyfont{\normalfont}
+\newtheorem*{BspNO}{Beispiel}
+\newtheorem{Bsp}[Def]{Beispiel}
+\newtheorem*{BemNO}{Bemerkung}
+\newtheorem{Bem}[Def]{Bemerkung}
+\theoremsymbol{\ensuremath{_\blacksquare}}
+\theoremstyle{nonumberplain}
+\newtheorem{Bew}{Beweis}
+\setcounter{chapter}{1}
+\setcounter{section}{0}
+\setcounter{Def}{0}
+
+% Kopf- und Fusszeilen
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+\fancyfoot[C]{}
+\fancyhead[LO]{\rightmark}
+
+\title{07.12.06}
+\author{Das \texttt{latexki}-Team\\[8 cm]}
+
+\date{Stand: \today}
+\begin{document}
+%Chapter 2!
+\chapter{Hilbertr"aume}
+
+(Weidmann: Lin Op auf HR, Band I)
+
+%2.1
+\section{Grundlegende Eigenschaften}
+
+%Def 2.1
+\begin{Def}
+Ein \begriff{Skalarprodukt} $(x|y)$ auf einem VR $X$ ist eine Abbildung von $X^2$ nach $\K$ mit
+\begin{enumerate}
+\item $(x_1 + x_2 | y) = (x_1|y) + (x_2|y)$
+\item $(\alpha x|y) = \alpha(x|y)$
+\item $(x|y) = \overline{(y,x)}$
+\item[] (a) - c) Sesquilinearform)
+\item[d)] $(x|x) \geq 0,\ (x|x) = 0 \Leftrightarrow x = 0$ (positiv definit)
+\end{enumerate}
+f"ur alle $x_1,x_2,x,y \in X,\ \alpha \in \K$. Wir setzen $\|x\|=\sqrt{(x|x)}$
+\end{Def}
+
+%Bem 2.2
+\begin{Bem}
+\begin{enumerate}
+
+\item Aus a) - c) folgen $(x,0) = 0$ und $(x,\alpha_1 y_1 + \alpha_2 y_2) = \overline{\alpha_1}(x|y_1) + \overline{\alpha_2}(x|y_2)$ f"ur alle $x,y_1,y_2 \in X,\ \alpha_1,\alpha_2 \in \K.$
+
+\item F"ur $x,y \in X$ gilt die Cauchy-Schwarze Ungl. (CS) $|(x|y)| \leq \|x\| \|y\|$. Gleichheit gilt genau dann, wenn $x = \alpha y$ f"ur ein $\alpha \in \K$. (Bew: LA, Werner V, 1.2)
+
+\item $\| \cdot \|$ ist eine Norm auf $X$, denn:
+\begin{enumerate}
+\item[(i)] $\| \alpha x \| = \sqrt{\alpha \overline{\alpha} (x|x)} = |\alpha| \|x\|$
+
+\item[(ii)] $\| x+y \|^2 = (x+y|x+y) = \|x\|^2 + (x|y) + (y|x) + \|y\|^2 = \|x\|^2 + \underbrace{2 \re (x|y)}_{\leq 2\|x\| \|y\|}+ \|y\|^2 \ (2.1) \stackrel{CS}{\leq} \left( \|x\|+\|y\|\right)^2$
+
+\item[(iii)] $\|x\| = 0 \Leftrightarrow (x|x) = 0 \Leftrightarrow x = 0$
+\end{enumerate}
+
+\item \emph{Beh:} Das Skalarprodukt ist stetig.\\
+\emph{Bew:} Seien $x_1,x_2,y_1,y_2 \in X$. Dann:
+\begin{eqnarray}
+|(x_1-x_2|y_1-y_2)| & \leq & |(x_1-x_2|y_)| + |(x_2|y_1-y_2)| \\
+& \stackrel{CS}{\leq} & \|x_1 - x_2\| \|y_1\| + \|x_2\| \|y_1-y_2\| \quad (\Rightarrow \text{ lokal Lipschitz})
+\end{eqnarray}
+
+\end{enumerate}
+\end{Bem}
+
+%Def 2.3
+\begin{Def}
+Sei $(\cdot|\cdot)$ ein Skalarprodukt auf $X$. Dann hei"st $(X, \| \cdot \|)$ ein \begriff{Pr"a Hilbertraum}. Wenn $\LN$ vollst"andig ist, so hei"st $(X,\LN)$ \begriff{Hilbertraum} (HR) (mit $\LN$ aus Def 2.1)
+\end{Def}
+
+%Bsp 2.4
+\begin{Bsp}
+In a)-d) werden HR def.
+\begin{enumerate}
+\item $X = \K^n,\ (x|y) = \sum_{k=1}^n x_k \overline{y_k} \Rightarrow \|x\|^2 = \sum_{k=1}^n |x_k|^2$
+
+\item $X = \ell^2,\ (x|y) = \sum_{k=1}^{\infty} x_k \overline{y_k}$ (Summe konv absolut nach H"older mit $p=2$. $\|x\| = \|x\|_2$
+
+\item Sei $A \in \ssL_d,\ X = L^2(A) (f|g) = \int_A f(x) \overline{g(x)} \d x$ (ex nach H"older mit $p=p'=2$.) $\|f\|= \|f\|_2$.
+
+\item Sei $S$ eine Menge. Setze $\ell^2(S) = \{f: S \Rightarrow \K, f(s_j) \not= 0$ nur f"ur h"ochstens abz"ahlbar viele $s_j \in S$ (abh von $f$) mit $\sum_{s \in S} |f(x)|^2 = \sum_{j=1}^{\infty} |f(s_j)|^2 < \infty \}$ Wie bei $\ell^2 = \ell^2(\N)$ sieht man, dann $(f|g) = \sum_{s \in S} f(s) \overline{g(s)}$ ein Skalarprodukt ist und $\|f\|^2 := \sum_{s \in S} |f(s)|^2$ ist vollst"andig.
+
+\item Teilr"aume von Pr"a HR sind Pr"a HR mit gleichem Skalarprodukt.
+\end{enumerate}
+\end{Bsp}
+
+\stepcounter{Def}{-1}
+%Lemma 2.4!
+\begin{Lem}
+Ein nVR $X$ ist ein Pr"a HR genau dann, wenn $\|x+y\|^2 + \|x-y\|^2 = 2\|x\|^2 + 2\|y\|^2$ (2.2) (Parallelogrammgl) f"ur $x,y \in X$ gilt.
+\end{Lem}
+
+
+\begin{Bew}
+\begin{enumerate}
+\item[``$\Rightarrow$´´] $\|x+y\|^2 \stackrel{2.1}{=} \|x\|^2 + 2 \re (x|y) + \|y\|^2.\ \|x-y\|^2 \stackrel{2.1}{=} \|x\|^2 - 2 \re (x|y) + \|y\|^2 \Rightarrow (2.2)$
+
+\item[``$\Leftarrow$´´] siehe Werner,V,1.6
+\end{enumerate}
+\end{Bew}
+
+%Korollar 2.5
+\begin{Kor}
+Die Vervollst"andigung eines Pr"a HR $X$ ist ein HR.
+\end{Kor}
+
+\begin{Bew}
+(2.2) gilt auf $X$ und somit auch auf $\tilde{X}$ per Approximation.
+\end{Bew}
+
+%Def 2.6
+\begin{Def}
+Zwei Elemeten $x,y$ eines Pr"aHR $X$ hei"sen \begriff{orthogonal}, wenn $(x|y) = 0$. Zwei TM $A,B$ hei"sen orthogonal, wenn $(a|b) = 0 \ \forall\, a \in A, b \in B$. Mann schreibt $x \perp auf y$ bzw $A \perp B$. Das orthogonale Komplement $A^{\perp}$ von $A \subseteq X$ ist gegeben durch $A^{\perp} \{ x \in X: x \perp a \ \forall\, a \in A \}$.\\
+Ein \begriff{Orthogonalsystem} (ONS) ist eine TM $S \subseteq X$ mit $\|b\| = 1$ und $b \perp b'$ f"ur alle $b,b' \in S, b \not= b'$
+\end{Def}
+
+%Bem 2.7
+\begin{Bem}
+Sei $X$ ein Pr"aHR, $x,y \in X, A,b \subseteq X$. Dann gelten:
+\begin{enumerate}
+\item $x \perp x \Rightarrow x = 0, x \perp y \Leftrightarrow y \perp x$.
+
+\item Pythahoras: $x \perp y \Rightarrow \|x+y\|^2 \stackrel{(2.1)}{=} \|x\|^2 + \|y\|^2$
+
+\item $X^{\perp} = \{0\}, A \cap A^{\perp} = \{0\}. A \subseteq (A^{\perp})^{\perp}$ nach a), $\{0\}^{\perp} = X.$
+
+\item $A^{\perp}$ ist UVR (klar) und abg ($x_n \perp a, x_n \rightarrow x \Rightarrow (x|a) = \lim_{n \rightarrow \infty} (x_n|a) = 0$)
+
+\item $A \subseteq B \Rightarrow B^{\perp} \subseteq A^{\perp}.\ A^{\perp} = (\overline{\lim A})^{\perp}$ (wie d))
+
+\item $(x|y) = (z,y) \ \forall\, y \in X \Rightarrow (x-z) \perp X \stackrel{a)}{\Rightarrow} x = z$
+\end{enumerate}
+\end{Bem}
+
+%Theorem 2.8
+\begin{Theo}[Projektionssatz]
+Sei $X$ ein HR, $K \subseteq X$ abg + konvex. Dann ex f"ur jedes $x \in X$ genau ein $y_{\ast} = P_K(x) \in \K$ mit $\| x - P_K(x) \| = \inf_{y \in K} \|x-y\| = d(x,K)$. Wenn $x \in K$, dann gilt $P_K(x) ) = x$ (mit $d(x,K)$, und $P_k \circ P_k = P_K, R(P_K) = K$
+\end{Theo}
+
+\begin{Bew}
+$R(p_k) = K:$ klar.\\
+Wenn $x \not= 0$, so k"onnen wir $\tilde{x} = 0$ und $\tilde{K} = K-x$ betrachten. Sei also $x=0 \not\in K$. Dann ex $y_n \in K$ mit $\|y_n\| \rightarrow \kappa := \inf \{\|y\|,\ y \in K\} \ (n \rightarrow \infty).\ \kappa > 0$, da $K$ abg. $2.2 \Rightarrow \| \frac12 (y_n-y_m)\|^2 = \frac12 \|y_n\|^2 + \frac12 \|y_m\|^2 - \underbrace{\|\frac12(y_n+y_m)\|}_{\in K}^2 \leq \frac12 \|y_n\|^2 + \frac12 \|y_m\|^2 - \kappa^2 \rightarrow 0 \ (n,m \rightarrow \infty)$\\
+$\Rightarrow \ \exists\, y^{\ast} = \lim_{n \rightarrow \infty} y_n \in K,\ K$ abg. Ferner $\|y^{\ast}\| = \kappa$.\\
+Sei $y_0 \in K, y_{\ast} \not= y_0, \|y_0\| = \kappa. \Rightarrow \|\frac12 (y_0 - y_{\ast})\|^2 < \| \frac12 (y_0 + y_{\ast})\|^2 + \|\frac12 (y_0 - y_{\ast})\|^2 \stackrel{(2.2)}{=} \frac12 \|y_0\|^2 + \frac12 \|y_{\ast}\|^2 = \kappa^2$. Wid zu $\frac12(y_0 + y_{\ast}) \in K$
+\end{Bew}
+
+
+\begin{BemNO}
+Theorem gilt auch (mit "ahnlichem Beweis) f"ur gleichm"a"sig konvexe BRe, d.h.
+\begin{eqnarray*}
+\forall\, \eps \in (0,2] \ \exists\, \delta = \delta(\eps) > 0:& \ & \|x\| = \|y\| = 1,\ \|x-y\| \geq \eps\\
+& & \Longrightarrow \|\frac12(x+y)\| \leq 1 - \delta
+\end{eqnarray*}
+\textbf{Beispiele:} \\
+\begin{enumerate}
+\item $(\R^2,\LN{2})\ X := \{(x,y) \in \R^2: x^2+y^2 = 1, x,y > 0\}$ ist glm konvex
+
+\item $(\R^2,\LN{2})\ X := \{(x,y) \in \R^2: x+y = 1, x,y > 0\}$ ist nicht glm konvex
+\end{enumerate}
+HRe sind glm konvext mit $\delta = 1 - \sqrt{1-\frac{\eps^2}4}$ nach (2.2)\\
+Ferner: $L^p(A), \ell^p \ (1<p<\infty)$ sind glm konvex (Dobrowdski, Satz 4.29)
+\end{BemNO}
+
+%Korollar 2.9
+\begin{Kor}
+In der Situation von Theorem 2.8 gilt:
+\[
+y = p_K(x) \Longleftrightarrow y \in K \text{ und } \re(x-y|z-y) \leq 0 \ \forall\, z \in K
+\]
+\end{Kor}
+
+%\begin{Bew}
+%\bewhin $\|x-z\|^2 = \|x-y+y-z\| \stackrel{(2.1)\}{=} \|x-y\| + \|y-z\| - 2\re(x-y|y-z) \geq \|x-y\|^2 \ \forall\, z \in K. \Longrightarrow y = p_K(x)$
+%\bewrueck Fehlt noch, bitte nachzutragen von jmd der ein Script hat!
+%\end{Bew}
+
+\textbf{Nachtrag zu Beispiel 2.4 c)}\\
+$A \in \ssL^d: \omega: A \rightarrow \R$ messbar, $\omega(x) > 0 \ \forall\, x \in A$. Dann: $X = L^2(A,\omega) = \{ f: A \rightarrow \C$ messbar, $\sqrt{\omega} f \in L^2(A)\} \ (f|g) = \int_A f \overline{g} \omega dx \Rightarrow$ Skalarprodukt mit vollst"andiger Norm $\|f\|_{2; \omega} = \left( \int_A |f|^2 \omega dx \right)^{\frac12}$
+
+%Definition 2.10
+\begin{Def}
+Sei $X$ ein Pr"aHR. Eine Projektion $P \in B(X)$ hei"st \begriff{orthogonal} $:\Leftrightarrow R(P) \perp N(P)$
+\end{Def}
+
+
+%Theorem 2.11
+\begin{Theo}
+Sei $X$ ein HR, $Y \subseteq X$ ein abg UVR. Dann ist die Projektion $P$ aus Theorem 2.8 linear mit $\|P\| = 1$ und es gelten: $R(P) = Y, N(P) = Y^{\perp}$ und $X = Y \oplus Y^{\perp}.$ Insbesondere gilt:\\
+$P$ ist orthogonal und $X_{/ Y} \cong Y^{\perp}$ (Bsp 1.76)
+\end{Theo}
+
+
+\begin{Bew}
+Sei $x \in X$ und $P = Py$. Dann: $y = Px \stackrel{2.9}{\Leftrightarrow} y \in Y, \re(x-y|z-y) \leq 0 \ \forall\, z \in Y \stackrel{Y \text{ UVR}}{\Leftrightarrow} y \in Y, \re(x-y|z') \leq 0 \ \forall\, z' \in Y \Leftrightarrow y \in Y, (x-y|z') = 0 \ \forall\, z' \in Y (\bewhin$ Betrachte $-z', \pm iz') \Rightarrow x-y \perp Y \ (\ast)$\\
+Also: $R(I-P) = Y^{\perp}$\\
+Seien $x_1,x_2 \in X, \alpha_1,\alpha_2 \in \C$. Da $Y^{\perp}$ UVR gilt:
+\begin{eqnarray*}
+& & \alpha_1(x_1-Px_1) + \alpha_2(x_2-Px_2) \in Y^{\perp} \\
+& \stackrel{(\ast)}{\Rightarrow} & y = \alpha_1 Px_1 + \alpha_2 Px_2 = P(\underbrace{\alpha_1 x_1 + \alpha_2 x_2}_{=:x}) \Rightarrow P \text{ ist linear.} \\
+& 2.8 \Rightarrow & P^2 = P, R(P) = Y. \\
+& \text{Ferner:} & \|x^2\| = \|Px + (I-P)x\|^2 \stackrel{\text{Pyth.}}{=} \|Px\|^2 + \|(I-P)x\|^2 \geq \|Px\|^2 \\
+& \Rightarrow & P \text{ ist stetig und } \|P\| \leq 1. \\
+& \text{Lemma 1.73 } \Rightarrow & \|P\| \geq 1 \\
+& \Rightarrow & \|P\| = 1
+\end{eqnarray*}
+
+Sei $X$ HR. F"ur $y \in X$ definiere $\Phi(y): X \rightarrow \C$ durch $(\Phi(y))(x) = (x|y), \ x \in X \Rightarrow \Phi(y)$ ist linear. Nach CS:
+\[
+|\left( \Phi(y) \right) (x) | \leq \|x\| \|y\| \Longrightarrow \Phi(y) \in X^{\ast},\ \|\Phi(y)\|_{X^{\ast}} \leq \|y\|_X
+\]
+\end{Bew}
+
+
+%Theorem 2.12
+\begin{Theo}
+Sei $X$ ein HR. Dann ist obiges $\Phi: X \rightarrow X^{\ast}$ \textquotedblleft konjugiert linear \textquotedblright oder \textquotedblleft ...unlesbar... \textquotedblright, d.h. $\Phi(\alpha_1 y_1 + \alpha_2 y_2) = \overline{\alpha_1} \Phi(y_1) + \overline{\alpha_2} \Phi(y_2)$, bijektiv und isometrisch. D.h. $\forall\, x^{\ast} \in X^{\ast} \ \exists$ genau ein $y \in X$, sodass $\|x^{\ast}\|_{X^{\ast}} = \|y\|_X$ und $\langle x,x^{\ast} \rangle = (x|y) \ \forall\, x \in X$.
+\end{Theo}
+
+\begin{Bew}
+Offenbar ist $\Phi$ konjugiert linear. Sei $y \in X \backslash \{0\}$. Setze $x = \frac{y}{\|y\|} \Rightarrow \|\Phi(y)\|_{X^{\ast}} \geq | (\Phi(y))(x) | = \frac1{\|y\|} |(y|y)| = \|y\|_X \Rightarrow \Phi$ ist Isometrie.\\
+z.z: $\Phi$ ist surjektiv. Sei $x^{\ast} \in X^{\ast} \backslash \{0\} \Rightarrow R(x^{\ast}) = \C.$ Sei $U = N(x^{\ast}) \Rightarrow U \not= X, U$ abg. UVR. Theorem 2.11 $\Rightarrow X = U \oplus U^{\perp}$. 1.77 und Bsp 1.76 liefern:\\
+$x^{\ast}_{|U^{\perp}}$ ist bijektiv $\Rightarrow U^{\perp} = 1.$ Sei $y \in U^{\perp}$ mit $\langle y,x^{\ast} \rangle = 1$. F"ur $x \in X$ gibt es also eindeutige $u \in U, \alpha \in \K$ mit $x = u+\alpha y$. Damit: $\langle x,x^{\ast} \rangle = \langle u,x^{\ast} \rangle + \alpha \langle y,x^{\ast} \rangle = \alpha.$\\
+$(x|y ) = (u|y) + \alpha (y|y) = \alpha \|y\|_X^2 \Longrightarrow x^{\ast} = \Phi(\frac1{\|y\|^2}y)$
+\end{Bew}
+
+
+%2.2
+\section{Othonormalbasen}
+
+%Definition 2.13
+\begin{Def}
+Ein Orthonormalsystem (ONS) $S$ hei"st \begriff{Orthonormalbasis} (ONB) $: \Longleftrightarrow S$ ist maximal, d.h. ONS $S', S \subseteq S' \Rightarrow S = S'$
+\end{Def}
+
+
+%Beispiel ohne Nummer
+\begin{BspNO}[zu ONS, sp"ater sind alles ONBs]
+\begin{enumerate}
+\item[a)] $X = \ell^2,\ \{e_n,\ n \in \N \}$ ist ONS. Wenn $X = \ell^2(J)$, dann bilden
+\[
+e_j(i) = 
+\begin{cases}
+1 &, j = i \\
+0 &, j \not= i
+\end{cases}
+\text{ ein ONS.}
+\]
+
+\item[b)] $X = L^2([0,2\pi]).\ S = \{ f_n,\ n \in \Z \}$ mit $f_n(t) = \frac{e^{int}}{\sqrt{2\pi}} \ (t \in [0,2\pi], \ n \in \Z$. ist ein ONS, denn:
+\[
+\|f_n\|_2^2 = \int_0^{2\pi} |\frac{e^{int}}{\sqrt{2\pi}}|^2 dt = 1
+\]
+\[
+n \not= m \Longrightarrow (f_n|f_m) = \int_0^{2\pi} \frac1{\sqrt{2\pi}} e^{int} e^{-imt} dt = \frac1{2\pi i (n-m)} e^{i(n-m)t} |_0^{2\pi} = 0
+\]
+reelle Variante:
+\[
+S = \{ \frac1{\sqrt{2 \pi}} \ind,\ \frac1{\sqrt{\pi}} \cos(n),\ \frac1{\sqrt{\pi}} \sin(n),\ n \in \N \} \text{ ist ONS.}
+\]
+\end{enumerate}
+\end{BspNO}
+
+
+%Satz 2.15
+\begin{Sa}
+Sei $X$ ein HR, $x,y \in X,\ \{b_n, n \in \N\}$. Dann gilt:
+\begin{enumerate}
+\item[a)]
+\[
+\sum_{n=1}^{\infty} |(x|b_n)|^2 \leq \|x\|^2 \text{ \begriff{Besselsche Ungleichung}.}
+\]
+
+\item[b)]
+\[
+\sum_{n=1}^{\infty} |(x|b_n)(y|b_n)| < \infty \text{ f"ur } x,y \in X
+\]
+\end{enumerate}
+\end{Sa}
+
+
+\begin{Bew}
+\begin{enumerate}
+\item[a)] Sei $N \in \N, x \in X$. Setze $x_N = x- \sum_{k=1}^N (x|b_k)b_k \Rightarrow x_n \perp b_n, n=1,\dots,N \stackrel{\text{Pyth.}}{\Rightarrow} \|x\|^2 = \|x_N\|^2 + \sum_{k=1}^N \underbrace{\| (x|b_k)b_k \|^2}_{= |(x|b_k)|^2} \geq \sum_{n=1}^N |(x|b_k)|^2 \stackrel{n \rightarrow \infty}{\Rightarrow}$ Beh.
+
+\item[b)] folgt aus H"older
+\end{enumerate}
+\end{Bew}
+
+
+%Lemma 2.16
+\begin{Lem}
+Sei $S \subseteq X$ ein ONS und $X$ ein HR, $x \in X$. Dann ist die Menge $S_X := \{ b \in S: (x|b) \not= 0\}$ h"ochstens abz"ahlbar. Beachte: $S_X$ ist ONS.
+\end{Lem}
+
+\begin{Bew}
+Sei $k \in \N$. Nach 2.15a) ist $S_{x,k} := \{b \in S, |(x|b)|^2 \geq \frac1{k}\}$ ist endlich. $S_X = \bigcup_{k \in \N} S_{x,k} \Rightarrow S_X$ ist abz"ahlbar.
+\end{Bew}
+
+Sei $X$ ein UVR, $J$ eine Indexmenge und $x_j \in X$ f"ur $j \in J.$  Man sagt, dass $\sum_{j \in J} x_j$ \begriff{unbedingt konvergiert} gegen $x \in X$, wenn
+\begin{enumerate}
+\item[i)] $J_0 = \{j \in J: x_j \not= 0\}$ ist h"ochstens abz"ahlbar
+
+\item[ii)] $x = \sum_{n=1}^{\infty} x_{jn}$ f"ur jede Abz"ahlung $\{ j_1, j_2,\dots\}$ von $J_0$.
+\end{enumerate}
+Dann schreibt man $x = \sum_{j \in J} x_j$.
+
+
+%Bemerkung ohne Nummer
+\begin{BemNO}
+\begin{enumerate}
+\item dim $X < \infty$: absolut konvergent $\Leftrightarrow$ unbedingt konvergent (Riemannscher Umordnungssatz)
+
+\item dim $X = \infty$ absolut konvergent $\stackrel{\text{wie in } \R}{\Rightarrow}$ unbedingt konvergent. R"uckrichtung gilt nicht, vgl (Dvoretzky-Rogers)
+\end{enumerate}
+\end{BemNO}
+
+
+%Satz 2.17
+\begin{Sa}
+Sei $S$ ein ONS im HR $X$ und $x \in X$. Dann:
+\begin{enumerate}
+\item[a)] $\sum_{b \in S} |(x|b)|^2 \leq \|x\|^2$
+
+\item[b)] $Px := \sum_{b \in S} (x|b)b$ konv. unbedingt.
+
+\item[c)] $P$ ist Orthogonalprojektion auf $\overline{\lin S}$ und $X = \overline{\lin S} \oplus  S^{\perp}$
+
+\item[d)] $\exists$ ONS $B \supset S$
+\end{enumerate}
+\end{Sa}
+
+
+\begin{Bew}
+Sei $S_x = \{b_1,b_2,\dots\}$ wie in Lemma 2.16
+\begin{enumerate}
+\item[a)] Folgt aus 2.15a) und 2.16
+
+\item[b)] Sei $N \geq M$. Pyth+Bessel liefern
+\[
+\| \sum_{n=m}^N (x|b_n)b_n \|^2 = \sum_{n=M}^N | (x|b_n)|^2 \underbrace{\|b_n\|}_{=1}^2 \rightarrow 0 \ (N,M \rightarrow \infty)
+\]
+\[
+\stackrel{\text{Cauchy-Folge}}{\Rightarrow} \exists\, y := \sum_{n=1}^{\infty} (x|b_n)b_n \text{ und } \|y\|^2 = \sum_{n=1}^{\infty} |(x|b_n)|^2 \stackrel{a)}{\leq} \|x\|^2 \ (\ast)
+\]
+Sei $\{b_{\pi(1)},b_{\pi(2)},\dots\}$ eine Umordnung von $S_x$. Wir erhalten genauso $y_{\pi} = \sum_{n=1}^{\infty} (x|b_{\pi(n)}.$ Sei $z \in X$. Dann:
+\begin{eqnarray*}
+(y_{\pi}|z) & = & \sum_{n=1}^{\infty} (x|b_{\pi(n)})b_{\pi(n)} \\
+& \stackrel{2.15b)}{=} \sum_{n=1}^{\infty} (x|b_n)(b_n|z) = (y|z) \\
+\Rightarrow (y_{\pi}-y|z) \ \forall\, z \in X & \stackrel{2.7f)}{\Rightarrow} y_{\pi} = y.
+\end{eqnarray*}
+
+\item[c)] $Px := y$ ist linear und nach $(\ast)$ stetig auf $X$. Sei $x \in X \Rightarrow P^2x = \sum_{b \in S} \sum_{b' \in S} (x|b)(b|b')b' \stackrel{\text{ONS}}{=} \sum_{b \in S} (x|b)b = Px$.\\
+Klar: $R(P) \subseteq \overline{\lin S}$ und $S \subseteq R(P). R(P)$ abg. UVR $\Rightarrow R(P) = \overline{\lin S}.$ Ferner: $S^{\perp} \subseteq N(P) = R(I-P)$. Sei $b_0 \in S$. Dann: $(x-Px|b_0) = (x|b_0)-(x|b_0)(b_0|b_0) = 0 \Rightarrow \underbrace{N(P)}_{= R(I-P)} \subseteq S^{\perp} \Rightarrow N(P) = S^{\perp} = \overline{\lin S}^{\perp}$
+
+\item[zu d)] Sei \textquotedblleft $\leq$ \textquotedblright eine partielle Ordnung auf einer Menge $M \not= \emptyset. K \subseteq M$ hei"st \begriff{Kette}, wenn f"ur alle $x,y \in K$ stets $x \leq y$ oder $y \leq x$ gilt. Ein maximales Element in $M$ ist $x^{\ast} \in M$ wenn f"ur $x \in M, x \geq x^{\ast}$ folgt: $x = x^{\ast}$\\
+\textbf{Lemma von Zorn:}\\
+Sei $(M,\leq)$ eine geordnete Menge, sodass jede Kette in $M$ eine obere Schranke hat. Dann hat jede Kette ein maximales Element in $M$.
+
+\item[d)] Betrachte $\mathcal{S} := \{ S' \subseteq X: S'$ ONS, $S \subseteq S'\}$ mit Mengeninklusion. Eine Kette $\mathcal{S}_0$ in $\mathcal{S}$ hat die obere Schranke $\bigcup_{S' \in \mathcal{S}_0} S' \in \mathcal{S} \stackrel{\text{Lemma von Zorn}}{\Rightarrow} \exists$ maximales Element $B \in \mathcal{S} \Rightarrow B$ ist die gew"unschte ONB
+\end{enumerate}
+\end{Bew}
+
+
+%Theorem 2.18
+\begin{Theo}
+Sei $X$ ein HR und $S \subseteq X$ ein ONS. Dann sind "aquivalent:
+\begin{enumerate}
+\item[a)] $S$ ist ONB.
+
+\item[b)] $S^{\perp} = \{0\}$
+
+\item[c)] $X = \overline{\lin S}$
+
+\item[d)] $x = \sum_{b \in S} (x|b)b \ \forall\, x \in X$ (unbedingte konvergenz)
+
+\item[e)] $(x|y) = \sum_{b \in S} (x|b)(b|y) \ \forall\, x,y \in X$
+
+\item[f)] \begriff{Parsevalsche Gleichung}: $\|x\|^2 = \sum_{b \in S} |(x|b)|^2 \ \forall\, x \in X$
+\end{enumerate}
+\end{Theo}
+
+
+\begin{Bew}
+\begin{enumerate}
+\item[a) $\Rightarrow$ b)] Annahme: $y \in S^{\perp}, y \not= 0 \Rightarrow S' = \{ \frac1{\|y\|} y\} \cup S$ ist ONS. Wid zu S ONB!
+
+\item[b) $\Rightarrow$ c) $\Rightarrow$ d)] folgen aus 2.17, denn $Px = \sum_{b \in S} (x|b)b$ ist orthogonale Projektion auf $\overline{\lin S}$ mit $N(P) = S^{\perp}$
+
+\item[d) $\Rightarrow$ e)] Sei $S_x \cup S_y = \{b_n, n \in \N\}$ (Lemma 2.16). Dann liefert d)
+\begin{eqnarray*}
+(x|y) & = & \left( \sum_{n=1}^{\infty} (x|b_n)b_n | \sum_{m=1}^{\infty} (y|b_m)b_m \right) \stackrel{(\cdot|\cdot) \text{ stetig}}{=} \sum_{n=1}^{\infty} \sum_{m=1}^{\infty} \left( (x|b_n)b_n | (y|b_m)b_m \right) \\
+& = & \sum_{n=1}^{\infty} \sum_{m=1}^{\infty} (x|b_n) \overline{(y|b_m)} \underbrace{(b_n|b_m)}_{= \delta_{mn}} = \sum_{n=1}^{\infty} (x|b_n)(b_n|y) = \sum_{b \in S} (x|b)(b|y)
+\end{eqnarray*}
+
+\item[e) $\Rightarrow$ f)] Setze $x = y$.
+
+\item[f) $\Rightarrow$ a)] Annahme: $S$ ist keine ONB $\Rightarrow \exists\, x \in X: \|x\|=1\ x \perp S \stackrel{f)}{\Rightarrow} \|x\|^2 = \sum_{b \in S} |\underbrace{(x|b)}_{=0}|^2$ Wid!
+\end{enumerate}
+\end{Bew}
+
+
+
+%Beispiel ohne Nummer
+\begin{BspNO}
+Sei $X = L^2([-1,1])$. Sei weiter $S$ die Orthonormalisierung von $\{ f_n, n \in \N_0\}$ mit $f_n(t) = t^n,\ t \in [-1,1],\ n\in \N_0$. (Legendre Poynome). $S$ ist dann ONS mit $\lin S = \lin \{f_n,\ n \in \N_0\}$.\\
+Nach Bsp 1.55: $\lin \{f_n,\ n \in \N_0\}$ dicht in $C([-1,1]) \hookrightarrow L^2([-1,1]) \Rightarrow \lin \{f_n,\ n \in \N_0\}$ dicht in $X \Rightarrow S$ ist ONB (vgl "UB 21)
+\end{BspNO}
+
+
+%Bemerkung 2.19
+\begin{Bem}
+Die Koeffizienten $(x|b)$ in 2.18d) sind eindeutig bestimmt, denn:\\
+Sei $x = \sum_{b \in S} \alpha(b) b,\ b' \in S \stackrel{\text{ONS}}{\Rightarrow} (x|b') = \sum_{b \in S} \alpha(b)(b|b') = \alpha (b')$
+\end{Bem}
+
+
+%Definition ohne Nummer
+\begin{DefNO}
+Eine \begriff{Schauderbasis} $\{x_n,\ n \in \N\}$ eines Banachraumes $X$ ist eine Folge $(x_n)$ in $X$ mit:\\
+F"ur alle $x \in X$ gibt es eindeutig bestimmte $\alpha_n \in \K$ mit $x = \sum_{n=1}^{\infty} \alpha_n x_n$.\\
+Die Basis hei"st \begriff{unbedingt}, wenn diese Reihe f"ur alle $x$ unbedingt konvergiert.
+\end{DefNO}
+
+
+%Beispiel ohne Nummer
+\begin{BspNO}
+abz"ahlbare ONB in HRen (Literatur: unlesbar, Basis in Banach Spaces)
+\end{BspNO}
+
+
+
+%Korollar 2.20
+\begin{Kor}
+Sei $X$ ein HR mit $\dim X = \infty$. Dann sind "aquivalent
+\begin{enumerate}
+\item[a)] $X$ ist seperabel
+
+\item[b)] Alle ONBs auf $X$ sind abz"ahlbar
+
+\item[c)] Es gibt eine abz"ahlbare ONB auf $X$
+\end{enumerate}
+\end{Kor}
+
+
+\begin{Bew}
+\begin{enumerate}
+\item[a) $\Rightarrow$ b)] $x \perp y$ und $\|x\| = 1 = \|y\|$, dann (Pyth): $\|x-y\|^2 = \|x\|^2 + \|y\|^2 = 2$ wie bei $\ell^{\infty}$ folgt: ONB kann nicht "uberabz"ahlbar sein, wenn a) gilt.
+
+\item[b) $\Rightarrow$ c)] Ist klar (beachte S.2.17b))
+
+\item[c) $\Rightarrow$ a)] Thm 2.18d) und Lemma 1.57
+\end{enumerate}
+\end{Bew}
+
+
+%Theorem 2.21
+\begin{Theo}
+Sei $X$ ein HR mit ONB $S$. Dann ist $X$ isometrisch isomorph zu $\ell^2(S)$. Somit sind alle separablen URe isometrisch isomorph zu $\ell^2$, falls deren Dimension $\infty$ ist.
+\end{Theo}
+
+
+\begin{Bew}
+Setze $Tx = \left( (x|b) \right)_{b \in S}$ f"ur $x \in X$. 2.18f) $\Rightarrow T: X \rightarrow \ell^2(S)$ und $T$ Isometrie. Klar: $T$ linear.\\
+Sei $f \in \ell^2(S)$. Setze $x = \sum_{b \in S} f(b)b$. Wie im Beweis von 2.17h) sieht man, dass $\sum_{b \in S} f(b)b$ in $X$ konvergiert. Ferner: $Tx = f$.
+\end{Bew}
+
+
+%Beispiel ohne Nummer
+\begin{BspNO}
+\begin{enumerate}
+\item $L^2(\R^d) \cong \ell^d$
+
+\item $L^2([0,1]) \cong \ell^2$
+
+\item "Ub 22: $AP_2(\R) \cong \ell^2(\R)$
+\end{enumerate}
+\end{BspNO}
+
+
+
+%Beispiel 2.22
+\begin{Bsp}[Fourierreihen]
+Sei $X = L^2([0,2\pi]),\ f_n(t) = \frac1{\sqrt{2\pi}}e^{int},\ t \in [0,2\pi],\ n \in \Z$.\\
+Bsp 2.14 $\Rightarrow S = \{f_n,\ n \in \Z\}$ ins ONS. Sei $Y = \{ f \in C([0,2\pi]),\ f(0) = f(2\pi)\}$, $f \in X$ und $\eps > 0$.Nach 1.44 existiert denn ein $g \in C([0,2\pi]),\ g \not= 0$ mit $\|f-g\|_2 \leq \eps$. Sei $0 < \nu \leq \frac{\eps^2}{\|g\|_{\infty}}$
+\[
+\text{Setze: } h(t) := \begin{cases}
+g(t) &, \nu \leq t \leq 2\pi \\
+g(2\pi) + \frac{t}{\nu}(g(\nu)-g(2\pi)) &, 0 \leq t \leq \nu
+\end{cases}
+\]
+$\Rightarrow h \in Y, \|g-h\|_2^2 = \int_0^{\nu} |g(t)-h(t)|^2 dt \leq \nu (4 \|g\|_{\infty})^2 \leq 14 \eps^2$.\\
+Nach Bsp 1.55 ex $\varphi \in \lin S$ mit $\|h-\varphi\|_{\infty} \leq \eps \stackrel{1.39}{\Rightarrow} \|h-\varphi\|_2 \leq \sqrt{2\pi} \eps \Rightarrow \|f-\varphi\|_2 \leq \eps + 4 \eps + \sqrt{2\pi} \eps \Rightarrow \overline{\lin S} = X \stackrel{2.18}{\Rightarrow} S$ ONB.\\
+Sei $e_n(t) = e^{int},\ c_n = (f|e_n) \frac1{2\pi} = \frac1{2\pi} \int_0^{2\pi} f(t) e^{-int} dt \ (n \in \Z,\ f \in X)$ 2.18 $\Rightarrow f = \sum_{n=1}^{\infty} c_n e_n$ (komplexe Fourierreihe)\\
+Dabei unbedingt konvergent in $L^2$. Ferner zeigt 2.19, dass
+\begin{eqnarray*}
+T: & & L^2([0,2\pi]) \rightarrow \ell^2(\Z) \\
+& & \hat{f} = Tf = \left( (f|f_n) \right)_{n \in \Z}
+\end{eqnarray*}
+ein isometrischer Isomorphismus ist.
+\end{Bsp}
+
+
+%Bemerkung ohne Nummer
+\begin{BemNO}
+\begin{enumerate}
+\item[a)] Bsp 3.7: $\exists f \in Y$, sodass Fourierreihe nicht punktweise konvergiert.
+
+\item[b)] Carleson: Fourierreihe konvergiert f"ur alle $f \in X$ fast "uberall.
+
+\item[c)] Gleichm"a"sige Konvergenz f"ur bessere $f$ ("UB 24 siehe auch AE, TH VI 7.21)
+\end{enumerate}
+\end{BemNO}
+
+
+\textbf{reelle Version:}\\
+F"ur reelwertige $f \in L^2([0,2\pi])$ setze
+\begin{eqnarray*}
+a_n &=& \frac1{\pi} \int_0^{2\pi} f(t) \cos(nt) nt,\ n \in \N_0 \\
+b_n &=& \frac1{\pi} \int_0^{2\pi} f(t) \sin(nt) nt,\ n \in \N
+\end{eqnarray*}
+wie oben:
+\[
+f = \frac{a_0}2 + \sum_{n=1}^{\infty} (a_1 \cos(n \cdot) + b_n \sin(n \cdot)) \quad \text{konvergiert in } X
+\]
+dabei: $c_0 = \frac{a_0}2,\ c_k = \frac12 (a_k-ib_k),\ c_{-k} = \frac12 (a_k + ib_k),\ k \in \N$
+
+
+%Beispiel ohne Nummer
+\begin{BspNO}
+\[
+f = \ind_{[0,\pi]} \Rightarrow c_n = \frac1{2\pi} \int_0^{\pi} e^{-int} dt = \frac1{2\pi} \frac1{-in}e^{-int}|_0^{\pi} = \begin{cases}
+0 &, n \text{ gerade} \\
+\frac1{i \pi n} &, n \text{ ungerade}
+\end{cases}
+\]
+$\Rightarrow \|c_{2k+1}e_{2k+1}\|_2 = \sqrt{\frac2{\pi}} \frac1{2k+1} \Rightarrow$ Fourierreihe $f = \sum_{k \in \Z} \frac{-i}{2k+1} e_{2k+1}$ konvergiert unbedingt, aber nicht absolut in $X$.
+\end{BspNO}
+
+
+%section 2.3
+\section{Operatoren auf Hilbertr"aumen}
+Seien $X,Y$ HRe und $T \in B(X,Y)$. F"ur gegebenes $y \in Y$ definiert man $\varphi_y(x) = (Tx|y),\ x \in X \Longrightarrow \varphi_y: X \rightarrow \C$ ist linear in $X$.
+\[
+(2.3) \quad |\varphi_y(x)| \stackrel{CS}{\leq} \|Tx\| \|y\| \leq \underbrace{\|T\| \|y\|}_{\text{konstant}} \|x\| \Rightarrow \varphi_y \in X^{\ast}
+\]
+Nach 2.12 eixistiert genau ein $z:= T'y \in X$ mit
+\[
+(2.4) \quad (Tx|y)_Y = \varphi_y(x) \stackrel{2.12}{=} (x|z)_X = (x|T'y)_X \ \forall x \in X
+\]
+Die Abbildung $T': Y \rightarrow X$ hei"st \begriff{HR-Adjungierte} von T. (2.4) defniert $T'$ eindeutig wegen Bem 2.7f
+
+
+%Satz 2.23
+\begin{Sa}
+Seien $X,Y,Z$ HRe, $T,S \in B(X,Y),\ R \in B(Y,Z),\ \alpha \in K$. Dann gelten:
+\begin{enumerate}
+\item[a)] $T' \in B(Y,X)$ mit $\|T'\| = \|T\|$ und $T'' := (T')' = T$
+
+\item[b)] $(T+S)' = T' + S',\ (\alpha T)' = \overline{\alpha}T',\ (R \circ T)' = T' \circ R'$
+
+\item[c)] $N(T) = R(T')^{\perp},\ N(T') = R(T)^{\perp}$. Damit: $T$ injektiv $\Rightarrow R(T')$ dicht.
+\end{enumerate}
+\end{Sa}
+
+
+\begin{Bew}
+Seien $\alpha,\beta \in \K,\ y,u \in Y,\ x \in X,\ z \in Z$
+\begin{enumerate}
+\item[a)] $(x|T'(\alpha y + \beta u)) = (Tx|\alpha y + \beta u) = \overline{\alpha}(Tx|y) + \overline{\beta}(Tx|u) = \overline{\alpha}(x|T'y) + \overline{\beta}(x|T'u) = (x| \alpha T'y + \beta T' u) \Rightarrow T'$ linear. (2.3), (2.4) $\Rightarrow T' \in B(Y,X)$ mit $\|T'\| \leq \|T\| \ (\ast)$\\
+$\Rightarrow T'' \in B(X,Y) \Rightarrow (Tx|y) \stackrel{(2.4)}{=} (x|T'y) = \overline{(T'y|x)} \stackrel{(2.4)}{=} \overline{(y|T''(x))} = (T''x|y) \stackrel{x,y \text{ bel}}{\Longrightarrow} T'' = T \Rightarrow \|T\| = \|(T')'\| \stackrel{(\ast)}{\leq} \|T'\| \Longrightarrow \|T\| = \|T'\|$
+
+\item[b)] folgt aus 2.7f) und
+\begin{enumerate}
+\item[i)] $(x|(S+T)'y) \stackrel{(2.4)}{=} (Sx|y) + (Tx|y) = (x|S'y) + (x|T'y) = (x|(S'+T')y)$
+
+\item[ii)] $(x|(\alpha T)' y) = \alpha(Tx|y) = (x| \overline{\alpha}T'y)$
+
+\item[iii)] $(x| (RT)'y) = (RTx|y) = (Tx|R'y) = (x|T'R'y)$
+\end{enumerate}
+
+\item[c)] $Tx = 0 \stackrel{2.7a)}{\Leftrightarrow} 0 = (Tx|y) \ \forall\, y \in Y \Leftrightarrow 0 = (x|T'y) \ \forall\, y \in Y \Leftrightarrow x \perp R(T')$\\
+$\Rightarrow N(T') = R(T'')^{\perp} \stackrel{a)}{=} R(T)^{\perp}$
+\end{enumerate}
+\end{Bew}
+
+
+
+%Defnition 2.24
+\begin{Def}
+Seien $X,Y$ HRe, $T \in B(X,Y)$. Dann:
+\begin{enumerate}
+\item[a)] $T$ hei"st \begriff{selbstadjungiert} (sa.) $: \Longleftrightarrow T = T'$ und $X = Y$, d.h.
+\[
+(Tx|y) = (x|Ty) \ \forall x,y \in X
+\]
+
+\item[b)] T hei"st \begriff{unit"ar} $: \Longleftrightarrow T'T = id_X$ und $TT' = id_Y \Longleftrightarrow \ \ exists\, T^{-1} = T' \in B(Y,X)$
+
+\item[c)] $X = Y: T$ hei"st \begriff{normal} $: \Longleftrightarrow TT' = T'T$.
+\end{enumerate}
+\end{Def}
+
+
+\begin{BemNO}
+\begin{enumerate}
+\item sa $\Rightarrow$ normal. \ unit"ar $\Rightarrow$ normal.
+
+\item $TT', T'T$ sind stehts selbstadjungiert.
+\end{enumerate}
+\end{BemNO}
+
+
+%Beispiel 2.25
+\begin{Bsp}
+Seien $a_{kl} \in \C, k,l \in \N$ mit $\|T\|_{HS}^2 := \sum_{k,l = 1}^{\infty} |a_{kl}|^2 < \infty$.\\
+"Ub 18 (H"older) definiert $(Tx)_k = \sum_{l=1}^{\infty} a_{kl}x_l \ , k \in \N, x \in \ell^2$ ein $T \in B(\ell^2)$ mit $\|T\| \leq \|T\|_{HS} = $ Hilbert-Schmidt-Norm.\\
+\textbf{Beh:}
+\[
+(T'y)_i = \sum_{j=1}^{\infty} b_{ij}x_j \ (\ast), y \in \ell^2 \text{  mit } b_{ij} = \overline{a_{ji}} \ ,i,j \in \N
+\]
+\textbf{Beweis:}\\
+1.68 $\Rightarrow (\ast)$ mit $b_{ij} = (T'e_j)_i \Rightarrow b_{ij} = (T'e_j|e_i) = \overline{(Te_i|e_j)} \stackrel{1.68}{=} \overline{a_{ji}}$
+\end{Bsp}
+
+
+\begin{BspNO}[s. 1.68]
+$R' = L, L' = R$\\
+Alternativ: $(Lx|y) = \sum_{k=1}^{\infty} x_{k+1} \overline{y_k} \stackrel{j=k+1}{=} \sum_{j=2}^{\infty} x_j \overline{y_{j-1}} = (x,Ry)$\\
+Insbesondere: $T$ sa. $\Longleftrightarrow a_{kl} = \overline{a_{lk}} \ \forall\, k,l \in \N$.\\
+Schreibe $z \in \R^{m \times n}$ als $z = (x,y)$ mit $x \in \R^m, y \in \R^n$. Seien $A \in \ssL_m, B \in \ssL_n \Rightarrow A \times B \in \ssL_{m+n}$.\\
+F"ur $f: A \times B \rightarrow \C$ bzw $[0,\infty)$ schreiben wir $f^y(x) = f(x,y) \ (y \in B$ fest) und $f^x(y) = f(x,y) \ (x \in A$ fest) sowie (soweit existent):
+\[
+F(x) = \int_B f(x,y)dy \ , x \in A; \quad G(y) = \int_A f(x,y)dx \ , y \in B
+\]
+(setze $F(x),G(y) = 0$, falls die Integrale nicht existieren.)
+\end{BspNO}
+
+
+
+\begin{TheoNO}[Fubini]
+\begin{enumerate}
+\item[a)] Sei $f: A \times B \rightarrow [0,\infty)$ messbar. Dann sind $f^y$ f"ur f.a. $y \in B, f^x$ f"ur f.a. $x \in A \ F,G$ messbar und es gilt:
+\[
+(2.5) \ \int_{A \times B} f(x,y)d(x,y) = \int_A ( \int_B f(x,y)dy)dx = \int_B ( \int_A f(x,y)dx)dy
+\]
+
+\item[b)] Sei $f \in L^1(A \times B)$. Dann sind $f^y$ f"ur f.a. $y \in B, f^x$ f"ur f.a. $x \in A \ F,G$ integrierbar und es gilt (2.5).
+\end{enumerate}
+\end{TheoNO}
+
+
+\begin{BemNO}
+Analog: $n$-fache Integrale
+\end{BemNO}
+
+
+%Beispiel 2.26
+\begin{Bsp}
+\textbf{Integraloperatoren}\\
+Sei $k \in L^2(A \times A), A \in \ssL_d, f \in L^2(A)$. Nach Bem. 1.34 ist
+\[
+(x,y) \mapsto \varphi(x,y) := k(x,y)f(y) \text{ messbar}
+\]
+(Beachte, dass auch $(x,y) \mapsto f(y)$ messbar ist.) Ferner ist $(x,y) \mapsto |\varphi(x,y)|$ messbar. Fubini a) und H"older liefern:
+\begin{eqnarray*}
+\int_{A \cap B(0,n)} ( \int_A |\varphi(x,y)|dy)^2 dx & \leq & \int_A ( \int_A |k(x,y)|^2 dy)^{\frac12 2} dx \|f\|_2^2 = \|k\|_2^2 \|f\|_2^2 \ (\ast)\\
+\Rightarrow ( \int_{A \cap B(0,n)} ( \int_A |\varphi(x,y)|dy)dx)^2 & \stackrel{1.39}{\leq} & c(n) \int_{A \cap B(0,n)} ( \int_A |\varphi(x,y)|dy)^2 dx\\
+& \leq & c(n) \|k\|_2^2 \|f\|_2^2 \Rightarrow \varphi \in L^1((A \cap B(0,n) \times A) \ \forall\, n \in \N
+\end{eqnarray*}
+$\stackrel{\text{Fubini b)}}{\Rightarrow} Tf(x) = \int_A k(x,y)f(y)dy$ existiert f"ur f.a. $x$ und ist messbar. Da $|Tf(x)|^2 \leq (\int_A |\varphi(x,y)|dy)^2$ liefert $\sup_n$ in $(\ast)$, dass $Tf \in L^2(A)$ und $\|Tf\|_2 \leq \|k\|_2 \|f\|_2 \Rightarrow T \in B(L^2(A)), \|T\| \leq \|k\|_2 \ $(MS-Norm von $T$)\\
+Sei $g \in L^2(A)$. Dann gilt:
+\begin{eqnarray*}
+(Tf|g) & = & \int_A (\int_A k(x,y)f(y)dy)\overline{g(x)}dx \stackrel{\text{H"older und Fubini}}{=} \int_A (\int_A k(x,y)f(y)\overline{g(x)} dx)dy \\
+& = & \int_A f(y) \overline{(\int_A \overline{k(x,y)} g(x) dx)}dy = (f|T'g)
+\end{eqnarray*}
+$\Rightarrow T'g(t) = \int_A \overline{k(s,t)}g(s) ds \ (t \in A) \Rightarrow T$ sa $\Longleftrightarrow k(x,y) = k(y,x)$ f"ur f.a. $(x,y) \in A \times A$.
+\end{Bsp}
+
+
+%Satz 2.27
+\begin{Sa}
+Seien $X,Y$ HRe, $T \in B(X,Y).$
+\[
+T \text{ ist Isometrie } \Longleftrightarrow (T'Tx|z)_X = (Tx|Tz)_Y = (x|z)_X \ \forall x,z \in X
+\]
+Insbesondere:\\
+$T$ unit"ar $\Leftrightarrow T$ bijektiv und $T$ Isometrie $\Leftrightarrow T$ bijektiv und erh"alt Skalarprodukt.
+\end{Sa}
+
+\begin{Bew}
+\begin{enumerate}
+\item["` $\Leftarrow$ "'] Setze $x = z$.
+
+\item["` $\Rightarrow$ "'] Sei $\alpha \in \K, x,z \in X$. Dann:\\
+$(T(x+\alpha z)|T(x+\alpha z)) \stackrel{2.1}{=} \|Tx\|^2 + \|\alpha Tz\|^2 + 2 \re (Tx|\alpha Tz) = \|x\|^2 + |\alpha| \|z\|^2 + 2 \re (\overline{\alpha}(Tx|Tz))$\\
+Andererseits gilt:\\
+$|(T(x+\alpha z)|T(x+\alpha z))| = \|T(x+\alpha z)\|^2 = \|x+\alpha z\|^2 \stackrel{(2.1)}{=} \|x\|^2 + 2 \re (\overline{\alpha}(x|z)) + |\alpha| \|z\|^2$\\
+$\Rightarrow \re(\overline{\alpha}(Tx|Tz)) = \re(\overline{\alpha}(x|z)) \stackrel{\alpha=1,\alpha=i}{\Rightarrow} (Tx|Tz) = (x|z).$
+\end{enumerate}
+\end{Bew}
+
+
+%Satz 2.28
+\begin{Sa}
+Sei $\K = \C, X$ HR, $T \in B(X)$.
+\[
+T \text{ sa } \Leftrightarrow (Tx|x) \in \R \text{ f"ur alle } x \in X
+\]
+\end{Sa}
+
+\begin{Bew}
+\begin{enumerate}
+\item["` $\Rightarrow$ "'] $(Tx|x) = (x|Tx) = \overline{(Tx|x)} \Rightarrow$ Beh.
+
+\item["` $\Leftarrow$ "'] Sei $\alpha \in \K, x,y \in X$\\
+$(T(x+\alpha y)|x+\alpha y) = (Tx|x) + \overline{\alpha} (Tx|y) + \alpha (Ty|x) + |\alpha|^2(Ty|y) =: a \stackrel{\text{Vor.}}{=} \overline{a} \stackrel{\text{Vor.}}{=} (Tx|x) + \alpha(y|Tx) + \overline{\alpha}(x|Ty) + |\alpha|^2(Ty|y)$
+\begin{eqnarray}
+\stackrel{\alpha = 1}{\Rightarrow} (Tx|y) + (Ty|x) = (y|Tx) + (x|Ty) \\
+\stackrel{\alpha = i}{\Rightarrow} i(Tx|y) - i(Ty|x) = -i(y|Tx) + i(x|Ty)
+\end{eqnarray}
+$\Rightarrow (Ty|x) = (y|Tx) \stackrel{x,y \text{ bel.}}{\Rightarrow} T$ sa.
+\end{enumerate}
+\end{Bew}
+
+
+\begin{BspNO}
+$X = \R^2, T =$
+\[
+\left(\begin{array}{rc}
+0 & 1 \\
+-1 & 0 \\
+\end{array} \right)
+\]
+$\Rightarrow T$ nicht sa, $(Tx|x) = 0 \ \forall\, x \in \R^2$
+\end{BspNO}
+
+
+%Satz 2.29
+\begin{Sa}
+Sei $X$ HR, $T \in B(X)$ sei sa. Dann gilt:
+\[
+\| T \| = \sup_{\|x\| \leq 1} \left| (Tx|x) \right| =: M
+\]
+Insbesondere:
+\[
+(Tx|x) = 0 \ \forall\, x \in X \Rightarrow T = 0
+\]
+\end{Sa}
+
+\begin{Bew}
+\begin{enumerate}
+\item["` $\geq$ "'] Klar.
+
+\item["` $\leq$ "'] Seien $x,y \in X$ mit $\|x\|,\|y\| \leq 1.$\\
+$(T(x+y)|x+y) - (T(x-y)|x-y) \stackrel{2.1}{=} 2(Tx|y) + 2(Ty|x) = 2(Tx|y) + 2 \overline{(Tx|y)} = 4 \re (Tx|y)$\\
+$\Rightarrow 4 \re (Tx|y) \leq M( \|x+y\|^2 - \|x-y\|^2) \stackrel{(2.2)}{=} 2M(\|x\|^2 + \|y\|^2) \leq 4M$\\
+Sei $(Tx|y) \not =0$ ersetze oben $x$ durch $|(Tx|y)|(Tx|y)^{-1}x$. Dann:
+\[
+|(Tx|y)| = |(x|Ty)| \leq M \stackrel{2.12; \sup \|x\| \leq 1}{\Longrightarrow} \|Ty\| \leq M \Longrightarrow \|T\| \leq M.
+\]
+\end{enumerate}
+\end{Bew}
+
+
+%Lemma 2.30
+\begin{Lem}
+Sei $X$ HR, $T \in B(X)$ sei normal. Dann gilt:
+\[
+\| Tx \| = \| T'x \| \quad \forall\, x \in X
+\]
+Insbesondere gilt:
+\[
+N(T) = N(T') \stackrel{2.23}{=} R(T)^{\bot}
+\]
+\end{Lem}
+
+\begin{Bew}
+$0 = ((T'T-TT)x|x) = |\ Tx \|^2 - \| T'x \|^2 \quad \forall\, x \in X$
+\end{Bew}
+
+
+%Satz 2.31
+\begin{Sa}
+Sei $X$ HR, $P \in B(X)$ eine Projektion mit $P \not= 0$. Dann sind "aquivalent:
+\begin{enumerate}
+\item[a)] $P$ ist orthogonal
+
+\item[b)] $\|P\| = 1$
+
+\item[c)] $P = P'$ (d.h. $P$ sa.)
+
+\item[d)] $P$ ist normal
+
+\item[e)] $(Px|x) = 0 \ \forall\, x \in X$.
+\end{enumerate}
+\end{Sa}
+
+
+\begin{Bew}
+\begin{enumerate}
+\item[a) $\Rightarrow$ c)] F"ur $x,y \in X$ gilt: $(Px|y) = (Px|Py+\underbrace{(I-P)y}_{\in N(P)}) \stackrel{a)}{=} (Px|Py)$.\\
+Genauso: $(x|Py) = (Px|Py) \Longrightarrow P = P'$.
+
+\item[c) $\Rightarrow$ d)] Klar.
+
+\item[d) $\Rightarrow$ a)] Lemma 2.30
+
+\item[c) $\Rightarrow$ e)] $(Px|x) = (PPx|x) \stackrel{c)}{=} (Px|Px) \geq 0 \ \forall\, x \in X.$
+
+\item[e) $\Rightarrow$ c)] $\K = \C$: Satz 2.29; $\K = \R$: Werner V 5.9
+
+\item[a) $\Rightarrow$ b)] Theorem 2.11
+
+\item[b) $\Rightarrow$ a)] Sei $\alpha \in \K, x \in N(P), y \in R(P)$. Dann:
+\[
+\|\alpha y\|^2 = \|P(x+\alpha y)\|^2 \stackrel{b)}{\leq} \|x + \alpha y\|^2 \stackrel{(2.1)}{=} \|x\|^2 + 2 \re \overline{\alpha} (x|y) + |\alpha| \|y\|^2
+\]
+W"ahle $\alpha = \frac{(x|y)}{|(x|y)|} \Longrightarrow (x|y) = 0$.
+\end{enumerate}
+\end{Bew}
+
+\end{document}

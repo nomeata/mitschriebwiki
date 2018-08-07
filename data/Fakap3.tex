@@ -1,0 +1,269 @@
+%FunkAna, Kapitel 3
+
+\documentclass[a4paper,11pt]{book}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{ngerman}
+%\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{euscript}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage{mathtools}
+\usepackage[arrow, matrix, curve]{xy}
+%\usepackage{pst-all}
+%\usepackage{pst-add}
+%\usepackage{multicol}
+
+\usepackage[latin1]{inputenc}
+
+%%Zahlenmengen
+%Neue Kommando-Makros
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\K}{{\mathbb K}}
+\newcommand{\ssL}{{\mathcal L}}
+\newcommand{\sn}[1]{||#1||_{\infty}}
+\newcommand{\eps}{{\varepsilon}}
+\newcommand{\begriff}[1]{\textbf{#1}} %das sollte man noch ändern!
+%\newcommand{\eb}{\hfill \rule{1ex}{1ex}} %F"ur den Ende eine Beweises
+\newcommand{\ind}{1\hspace{-0,9ex}\raisebox{-0,2ex}{1}}
+\newcommand{\re}{\ensuremath{\text Re}\,} %Realteil
+\newcommand{\lin}{\ensuremath{\text lin}\,} %Lineare Hülle
+\newcommand{\LN}[1][]{\| \cdot \|_{#1}} %LN = Leere Norm mit optionalem Argument
+\def\bewhin{\textquotedblleft\ensuremath{\Rightarrow}\textquotedblright: } %Hinrichtung eines Beweises
+\def\bewrueck{\textquotedblleft\ensuremath{\Leftarrow}\textquotedblright: } %Rueckrichtung eines Beweises
+
+
+% Seitenraender
+\textheight22cm
+\textwidth14cm
+\topmargin-0.5cm
+\evensidemargin0,5cm
+\oddsidemargin0,5cm
+\headheight14pt
+
+%%Seitenformat
+% Keine Einrückung am Absatzbeginn
+\parindent0pt
+
+\DeclareMathOperator{\unif}{Unif}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
+
+
+\def\AA{ \mathcal{A} }
+\def\PM{ \EuScript{P} } 
+\def\EE{ \mathcal{E} }
+\def\BB{ \mathfrak{B} } 
+\def\DD{ \mathcal{D} } 
+\def\NN{ \mathcal{N} } 
+\def\TT{ \mathcal{T} }
+
+% Komische Symbole
+\def\folgt{\ensuremath{\implies}}
+\newcommand{\folgtnach}[1]{\ensuremath{\DOTSB\;\xRightarrow{\text{#1}}\;}}
+\def\equizu{\ensuremath{\iff}}
+\def\d{\mbox{d}}
+\def\fs{\stackrel{f.s.}{\rightarrow }}
+
+%Nummerierungen
+\newtheorem{Def}{Definition}[chapter]
+\newtheorem*{DefNO}{Definition}
+\newtheorem{Sa}[Def]{Satz}
+\newtheorem{Lem}[Def]{Lemma}
+\newtheorem{Kor}[Def]{Korollar}
+\newtheorem*{TheoNO}{Theorem}
+\newtheorem{Theo}[Def]{Theorem}
+\theorembodyfont{\normalfont}
+\newtheorem*{BspNO}{Beispiel}
+\newtheorem{Bsp}[Def]{Beispiel}
+\newtheorem*{BemNO}{Bemerkung}
+\newtheorem{Bem}[Def]{Bemerkung}
+\theoremsymbol{\ensuremath{_\blacksquare}}
+\theoremstyle{nonumberplain}
+\newtheorem{Bew}{Beweis}
+\setcounter{chapter}{2}
+\setcounter{section}{0}
+\setcounter{Def}{0}
+
+% Kopf- und Fusszeilen
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+\fancyfoot[C]{}
+\fancyhead[LO]{\rightmark}
+
+\title{07.12.06}
+\author{Das \texttt{latexki}-Team\\[8 cm]}
+
+\date{Stand: \today}
+\begin{document}
+
+%Chapter 3
+\chapter{2 Haupts"atze der Operatorentheorie}
+
+%3.1
+\section{Das Prinzip der gleichm"a"sigen Beschr"anktheit (PUB)}
+
+%Theorem 3.1
+\begin{Theo}[Baire]
+Sei $(M,d)$ ein vollst"andiger Raum, $O_n \subseteq M$ offen und dicht, $n \in \N$. Dann ist $D = \cap_{n \in \N} O_n$ dicht in $M$.
+\end{Theo}
+
+\begin{Bew}
+Sei $x_0 \in M,\ \delta > 0,\ B_0 = B(x_0,\delta).$ z.z: $B_0 \cap D \not= \emptyset$.\\
+Da $O_1$ offen und dicht $\exists\, x_1 \in O_1 \cap B_0,\ \delta_1 \in (0,\frac12 \delta)$ mit $\overline{B(x_1,\delta_1)} \subseteq O_1 \cap B_0$. Induktiv findet man $x_n \in O_n \cap B_{n-1},\ \delta_n \in (0,\frac12 \delta_{n-1}).\ B_n = B(x_n,\delta_n)$ mit $\overline{B_n} \subseteq O_n \cap B_{n-1} \subseteq O_n \cap O_{n-1} \cap B_{n-2} \subseteq \dots \subseteq O_1 \cap \dots O_n \cap B_0\ (\ast)$. Da $\delta_m < 2^{-m} \delta$ gilt ferner, dass $x_n \in \overline{B_m} \subseteq B(x_m,2^{-m} \delta)$ f"ur $n \geq m$.\\
+$\Rightarrow (x_n)_{n \in \N}$ ist CF. $\stackrel{\text{vollst.}}{\Longrightarrow} \exists\, x = \lim_{n \rightarrow \infty} x_n \in \overline{B_m} \ \forall\, m \in \N.$\\
+$\stackrel{(\ast)}{\Rightarrow} x \in \cap_{n = 1}^{\infty} O_n \cap B_0$.
+\end{Bew}
+
+%Korollar 3.2
+\begin{Kor}
+Sei $(M,d)$ ein vollst"andiger metrischer Raum, $A_n \subseteq M$ abg ($n \in \N$) mit $\cup_{n \in \N} A_n = M$. Dann $\exists\, N \in \N$, sodass $\mathring{A}_N \not= \emptyset$.
+\end{Kor}
+
+\begin{Bew}
+Annahne: $\mathring{A}_n = \emptyset \ \forall\, n \in \N.$\\
+Setze $O_n = M \backslash A_n \Rightarrow O_n$ ist offen und dicht (nach Satz 1.12), $n \in \N \stackrel{\text{Theo 3.1}}{\Rightarrow} \cap_{n \in \N} O_n$ ist dicht in $M$.\\
+Aber: $M \backslash \cap_{n \in \N} O_n = \cup_{n \in \N} M \backslash O_n = \cup_{n \in \N} A_n = M$. Wid!
+\end{Bew}
+
+
+%Theorem 3.3
+\begin{Theo}[PUB]
+Seien $X$ ein BR, $Y$ ein normierter VR und $\TT \subseteq B(X,Y)$. Wenn $\TT$ punktweise beschr"ankt ist ($\forall x \in X \ \exists\, c_x > 0:\ \|Tx\| \leq c_x\ \forall T \in \TT$), dann ist $\TT$ gleichm"a"sig beschr"ankt (d.h. $\exists c > 0:\ \|T\| \leq c \ \forall\, T \in \TT$)
+\end{Theo}
+
+
+\begin{Bew}
+Sei $A_n = \{ x \in X:\ \|Tx\| \leq n \ \forall T \in \TT\}\ n \in \N$. Nach Vor: $\cup_{n \in \N} A_n = X$. Sei $x_k \in A_n,\ x_k \mapsto x$ in $X\ (k \rightarrow \infty$). Dann: $\|Tx\| = \lim_{k \rightarrow \infty} \|Tx_k\| \leq n\ \forall T \in \TT$. Korollar 3.2 $\Rightarrow \exists\, N \in \N,\ y \in A_N,\ \eps > 0:\ B(y,\eps) \subseteq A_N$.\\
+Da $\TT \subseteq B(X,Y): A_N$ ist konvex und aus $x \in A_N$ folgt $-x \in A_N$, also $-B(y,\eps) \subseteq -A_N = A_N$.\\
+Damit $\|z\| < \eps \Rightarrow z = \frac12 (\underbrace{y+z}_{\in B(y,\eps)} + \underbrace{z-y}_{\in - B(y,\eps)} \Rightarrow z \in \frac12 (A_N + A_N) \stackrel{A_N \text{ konvex}}{\subseteq} A_N \ (\ast)$.\\
+Sei $x \in X$ mit $\|x\| = 1$. Dann: $z = \eps x \in A_N$ nach $(\ast) \Rightarrow N \geq \|Tz\| = \eps \|Tz\|\ \forall T \in \TT \Rightarrow \|T\| \leq \frac{N}{\eps}\ \forall T \in \TT$.
+\end{Bew}
+
+
+%Beispiel 3.4
+\begin{Bsp}
+Sei $X = c_{\infty}$ mit sup Norm (kein BR!), $Y = \K,\ T_nx = nx_n,\ n \in \N$.\\
+Dann: $T_n \in B(X,Y) = X^{\ast},\ \|T_m\| = n \rightarrow \infty$. Sei $x = (x_1,\dots,x_m,0,\dots) \in c_{\infty} \Rightarrow |T_n x| \leq m \sn{x} =: c_x \Rightarrow$ Theorem 3.3 ben"otigt vollst. von $X$.
+\end{Bsp}
+
+
+%Korollar 3.5
+\begin{Kor}[Banach-Steinhaus]
+Seien $X,Y$ BRe, $D \subseteq X$ dichter UVR, $T_n \in B(X,Y),\ n \in \N.$\\
+Dann sind "aquivalent:
+\begin{enumerate}
+\item $\exists\, T \in B(X,Y)$ mit $T_nx \rightarrow Tx\ (n \rightarrow \infty)$ f"ur alle $x \in X$ (``starke Konvergenz'')
+
+\item $T_nx$ konvergiert f"ur $n \rightarrow \infty$ und alle $x \in X$.
+
+\item $T_nx$ konvergiert f"ur $n \rightarrow \infty$ und alle $x \in D$ und $\|T_n\| \leq c$ f"ur alle $n \in \N$.
+\end{enumerate}
+\end{Kor}
+
+\begin{Bew}
+\begin{enumerate}
+\item[a) $\Rightarrow$ b)] trivial.
+
+\item[b) $\Rightarrow$ c)] Nach Vor. gilt $\|T_nx\| \leq c_x\ \forall n \in \N \stackrel{\text{PUB}}{\Rightarrow} \exists\, c > 0: \|T_n\| \leq c, \forall n \in \N$.
+
+\item[c) $\Rightarrow$ a)] Setze $T_0x = \lin T_nx$ f"ur $x \in D$. Da $T_n$ linear ist, ist $T_0$ linear. Ferner: $\|T_0x\| = \lim_{n \rightarrow \infty} \|T_nx\| \stackrel{c)}{\leq} c \|x\|$ f"ur alle $x \in D \Rightarrow T_0 \in B(D,Y) \stackrel{\text{Lemma 1.64}}{\Longrightarrow} \exists\, T \in B(X,Y)$ mit $Tx = T_0x\ \forall x \in D$.\\
+Sei $\eps > 0,\ x \in X$. Dann existiert ein $y \in D$ mit $\|x-y\| \leq \eps$ (da $\overline{D} = X$). Damit $\overline{\lim} \|T_nx-Tx\| \leq \overline{\lim_{n \rightarrow \infty}} ( \|T_n(x-y)\| + \|T_ny - Ty\| + \|T(y-x)\|) \stackrel{c)}{\leq} c \eps + \lim_{n \rightarrow \infty} \|T_ny - Ty\| + c \eps = 2c\eps \stackrel{\eps \rightarrow 0}{\Rightarrow}$ Beh.
+\end{enumerate}
+\end{Bew}
+
+
+%Beispiel 3.6
+\begin{Bsp}
+Sei $X = Y = c_0,\ T_nx = (x_1,2x_2,\dots,nx_n,0,\dots)\ (n \in \N,\ x \in X) \Rightarrow T_n \in B(c_0)$ mit $\|T_n\| \geq \|T_n e_n\| = n \Rightarrow \infty$.\\
+Aber: F"ur $x = (x_1,\dots,x_m,0,\dots) \in c_0$ gilt: $T_nx \rightarrow (x_1,2x_2,\dots,mx_m,0,\dots) \Rightarrow$ man kann in c) die Beh $\|T_n\| \leq c$ nicht weglassen.
+\end{Bsp}
+
+
+%Beispiel 3.7
+\begin{Bsp}[Fourierreihen]
+Sei $X = \{ f \in C(\R):\ f(t) = f(t + 2\pi),\ t \in \R\}$ mit sup Norm (BR). Setze
+\begin{eqnarray*}
+a_k & = & \frac1{\pi} \int_{-\pi}^{\pi} f(t) \cos(kt) dt,\ k \in \N_0\\
+b_k & = & \frac1{\pi} \int_{-\pi}^{\pi} f(t) \sin(kt) dt,\ k \in \N_0
+\end{eqnarray*}
+Wie in Bsp 2.22 kovergiert $s_n(f,t) = \frac{a_0}2 + \sum_{k=1}^n a_k \cos(kt) + b_k \sin(kt)$ f"ur $n \rightarrow \infty$ in $L^2([-\pi,\pi])$, Werner S.130 zeigt:
+\begin{eqnarray*}
+s_n(f,t) & = & \frac1{\pi} \int_{-\pi}^{\pi} f_n(s+t) D_n(s) ds \text{  mit} \\
+D_n(t) & = & \begin{cases}
+\frac{\sin(n+\frac12)t}{2 \sin \frac{t}2} , & t \in [-\pi,\pi] \backslash \{0\} \\
+n + \frac12, & t = 0
+\end{cases}
+\end{eqnarray*}
+Setze $T_nf = s_n(f,0) \Rightarrow T_n \in X^{\ast}$.\\
+Annahme: $T_n$ konvergiert f"ur alle $f \in X \stackrel{\text{Kor 3.5}}{\Rightarrow} \|T_n\| \leq c \ \forall\, n \in \N$.\\
+Aber: Wie in Bsp 1.67 gilt: $\|T_n\| = \frac1{\pi} \int_{-\pi}^{\pi} |D_n(t)| dt \stackrel{n \rightarrow \infty}{\rightarrow} \infty$. (Werner IV, 2.10) Wid! $\Rightarrow \exists\, f \in X:\ s_n(f,0)$ divergiert.
+\end{Bsp}
+
+``richtiges Gegenbeispiel'' (Du Bois-Raymond 1876)
+
+%Beispiel 3.8
+\begin{Bsp}[Links-Translation]
+Sei $X = L^p(\R),\ 1 \leq p < \infty$. Setze $(T(t)f)(s) = f(s+t),\ s \in \R,\ (t \in \R,\ f \in X)$. Klar. $T(t)f$ ist mb, $T(t)$ ist linear, $\|T(t)f\|_p = (\int_{\R} |f(\underbrace{s+t}_{= r})|^p dt)^{\frac1{p}} = \|f\|_p \Rightarrow T(t) \in B(X)$ ist Isometrie. Seien $f \in X,t,s,r \in \R,\ (T(t),T(s),f) = (T(s)f)(r+t) = f(r+t+s) = (T(t+s)f)(r) \Rightarrow T(t)T(s) = T(t+s) = T(s)T(t)$.\\
+Weiter $T(0) = T \Rightarrow T(t)$ ist invertierbar mit $T(t)^{-1} = T(-t),\ t \in \R$.\\
+Sei $f \in C_0(\R),\ t,t_0 \in \R: \sn{T(t)f - T(t_0)f} := \sup_{s \in \R} |f(s+t) - f(s+t_0)| \rightarrow 0\ (t \rightarrow t_0)$, da $f$ glm stetig. Sei supp $\subseteq [a,b]$ und $|t-t_0| \leq 1.$ Dann supp $(T(t)f - T(t_0)f) \subseteq [a-t_0-1,b+b_0+1] \stackrel{1.39}{\Rightarrow} \|T(t)f - T(t_0)f\|_p \leq c_{a,b} \sn{T(t)f - T(t_0)f} \rightarrow 0\ (t \rightarrow t_0) \stackrel{\text{Kor 3.5,Sa 1.44}}{\Longrightarrow} T(t)(f) \rightarrow T(t_0)f$ f"ur $f \in X,\ t \rightarrow t_0$.\\
+$(T(t))_{t \in \R}$ hei"st \begriff{stark stetige Operatorengruppe}.
+\end{Bsp}
+
+
+\begin{BemNO}
+$t \mapsto T(t) \in B(X)$ ist bzgl der Operatornorm unstetig.
+\end{BemNO}
+
+
+\begin{Bew}
+Sei $t_0 = 0.$
+\begin{eqnarray*}
+f & = & t^{\frac1{p}} \ind_{[0,t]},\ t > 0 \Rightarrow \|f\|_p = 1 \\
+(T(t)f)(s) & = & t^{-\frac1{p}} \ind_{[0,t]}(s+t) = \begin{cases}
+t^{-\frac1{p}}, & -t \leq s \leq 0 \\
+0,& \text{sonst}
+\end{cases}
+\end{eqnarray*}
+$\Rightarrow \|T(t)-I\| \geq \|T(t)f - f\|_p = t^{-\frac1{p}} (\int_{-t}^t |1|^p dt)^{\frac1{p}} = 2^{\frac1{p}} \Rightarrow T(t) \not\rightarrow I = T(0),\ t \rightarrow 0$ (in $B(X)$).\\
+(entsprechend f"ur $X = C_c(\R)$)
+\end{Bew}
+
+
+%Beispiel 3.9
+\begin{Bsp}[Faltungsoperatoren]
+Seien $k \in L^1(\R),\ f \in L^p(\R^d),\ 1 \leq p < \infty$. AE, Lemma X 7.2 zeigt: $\R^{d +d} \ni (x,y) \mapsto k(x-y) \in \K$ ist mb $\Rightarrow (x,y) \mapsto \varphi(x,y) = k(x-y)f(y)$ ist mb.\\
+Sei $p = 1$. Fubini a) $\int_{\R^{d+d}} |\varphi(x,y)| d(x,y) = \int_{R^d} \int_{R^d} |k( \underbrace{x-y}_{= z} )| |f(y)| dx dy = \int_{\R^d} \int_{\R^d} |k(z)|dz |f(y)|dy = \|k\|_1 \|f\|_1 \Rightarrow \varphi \in L^1(\R^{d+d})$. Fubini b) zeigt: $Tf(x) := (k \ast f)(x) := \int_{\R^d} k(x-y) f(y) dy$ ist f"ur alle $x \in \R^d$ definiert, in $x$ int'bar und $\|Tf\|_X \leq \|\varphi\|_{L^1(\R^{d+d})} \leq \|k\|_1 \|f\|_X$.\\
+Sei $p \in (1,\infty)$. Dann
+\begin{eqnarray*}
+\Psi(x) & := & \int_{\R^d} |\varphi(x,y)|dy \\
+& = & \int_{R^d} |k(x-y)|^{\frac1{p}} |k(x-y)|^{\frac1{p}} |f(y)|dy \\
+& \stackrel{\text{H"older}}{\leq} & ( \int_{\R^d} |k(x-y)|^{\frac{p'}{p'}} dy)^{\frac1{p'}} \cdot (\int_{\R^d} |k(x-y)|^{\frac{p}{p}} |f(y)|^p dy)^{\frac1{p}} \\
+& = & \|k\|_1^{\frac1{p'}} (|k| + |f|^p)^{\frac1{p}}
+\end{eqnarray*}
+f"ur f.a. $x \in \R^d$ (vgl. Fubini a))\\
+Da $|f|^p \in L^1(\R^d)$ liefert Fubini a): $\Psi^p \in L^1(\R^d)$ und
+\[
+\| \Psi \|_p^p = \| \Psi^p \|_p \stackrel{a)}{\leq} \|k\|_1^{\frac{p}{p'}} \cdot \|k\|_1 \cdot \| |f|^p \|_1 = \| k \|_1^p \cdot \|f\|_p^p \ (\ast)
+\]
+$\stackrel{\text{Fub a),Kor 1.35}}{\Longrightarrow} \varphi \in L^1(B(0,n) \times \R^d)\ \forall n \in \N$.\\
+$\stackrel{\text{Fub b)}}{\Longrightarrow} Tf = k \ast f$ ist f."u. definiert, mb und $(\ast)$ liefert:
+\begin{eqnarray}
+\text{\begriff{Youngsche Ungleichung}} \quad \| \Psi \|_p = \| k + f \|_p \leq \|k\|_1 \|f\|_p
+\end{eqnarray}
+f"ur $1 \leq p < \infty$.\\
+Insbesondere: $T \in B(L^p(\R)^d)$ mit $\|T\| \leq \|k\|_1$.
+\end{Bsp}
+
+
+\end{document}

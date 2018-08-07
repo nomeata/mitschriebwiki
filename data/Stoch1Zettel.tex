@@ -1,0 +1,485 @@
+\documentclass{article}
+
+\usepackage{latexki}
+\title{Stochastik 1 -- Klausurzettel}
+%\lecturer{}
+\semester{Wintersemester 05/06}
+\scriptstate{complete}
+
+\usepackage[german]{babel}
+\usepackage[latin1]{inputenc}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+
+\usepackage{color}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\usepackage{multicol}
+
+\usepackage{svninfo}
+
+\usepackage[top=0.5cm, left=1cm, right=1cm, bottom=1cm, a4paper]{geometry}
+
+% Mathezeug
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\mse}{MSE}
+
+
+% Platzsparende ‹berschriften
+\newcommand{\h}[1]{\vspace{1ex}\begin{center}\small\textbf{#1}\end{center}}
+\newcommand{\hh}[1]{{\vspace{1pt}\hrule\vspace{1pt} \noindent\textbf{#1}}\\*}
+\newcommand{\hhh}[1]{{\vspace{1pt}\noindent\emph{#1:}}}
+\setlength{\parindent}{2ex}
+
+\newenvironment{tightlist}{
+\begin{list}{\textbullet}{
+\setlength{\topsep}{-1ex}
+\setlength{\itemsep}{-1ex}
+\setlength{\leftmargin}{4ex}
+}
+}{
+\end{list}
+\vspace{1ex}
+}
+
+\newcounter{Lcount}
+\newenvironment{tightenum}{
+\begin{list}{\arabic{Lcount}.}{
+\usecounter{Lcount}
+\setlength{\topsep}{-1ex}
+\setlength{\itemsep}{-1ex}
+\setlength{\leftmargin}{4ex}}
+}{
+\end{list}
+\vspace{1ex}
+}
+
+% FIXME
+\newcommand{\FM}[1]{{\color{red}\emph{#1}}}
+
+\pagestyle{empty}
+
+\begin{document}
+\setlength{\topsep}{0ex}
+%\setlength{\parskip}{10ex}
+\setlength{\abovedisplayskip}{0ex}
+\setlength{\belowdisplayskip}{0ex}
+
+\svnInfo $Id$
+
+\begin{center}\end{center}
+\begin{multicols}{4}
+\scriptsize\raggedright
+
+\h{Grundlagen}
+\hh{$\sigma$-Algebren}
+$\mathfrak{A}$ ist $\sigma$-Algebra, gdw.:\\
+$\Omega \in \mathfrak{A}$, $A^c\in\mathfrak{A}$, $\cup_{i=1}^\infty A_i\in\mathfrak{A}$
+\hh{Mengengrenzwerte}
+unendlich viele:
+\begin{align*}
+\limsup A_n &= \bigcap_{k=1}^\infty \bigcup_{n=k}^\infty A_n\\
+\intertext{alle bis auf endlich viele:}
+\liminf A_n &= \bigcup_{k=1}^\infty \bigcap_{n=k}^\infty A_n
+\end{align*}
+\hh{Wahrscheinlichkeitsmaﬂ}
+$0 \le P(\omega) \le 1$\\
+$\sum_{\omega\in\Omega} P(\omega) = 1$\\
+$P(\sum A_i) = \sum P(A_i)$\\
+$P(A^c) = 1- P(A)$\\
+$A \subset B \Rightarrow P(A) \le P(B)$\\
+$P(\bigcup_{i=1}^\infty A_i) \le \sum_{i=1}^\infty P(A_i)$
+\hh{Siebformel}
+\vspace{-1em}
+\begin{multline*}
+P(\bigcup_{k=1}^{n}A_k)= \sum_{k=1}^{n}(-1)^{k-1}\\\cdot\sum_{\mathclap{1\leq i_1 < i_2 \cdots < i_k\leq n}} P(A_{i1}\cap \cdots \cap A_{ik})
+\end{multline*}
+Also: $P(A\cup B) = P(A) + P(B) - P(A\cap B)$
+\hh{Bedingte Wahrscheinlichkeiten}
+$P(A|B) := \frac{P(A\cap B)}{P(B)}$\\
+$B_i$ seien eine Partition:\\
+$P(A) = \sum_{i=1}^n P(B_i) P(A|B_i)$\\
+\hhh{Satz v. Bayes}
+$P(B_k|A) = \frac{ P(A|B_k)\cdot P(B_k) }{\sum_{i=1}^\infty P(A|B_i) \cdot P(B_i)}$
+
+
+\h{Diskrete Verteilungen}
+\hh{Gleichverteilung}
+$P(X=x_i)=p_X(x_i)=\frac{1}{n}\ (i=1,\ldots,n)$
+$EX = \frac{1}{n} \sum_{i=1}^n x_i$
+$\var(X) = \frac1n \left(\sum_{i=1}^n x_i^2 - \frac1n (\sum_{i=1}^n x_i)^2  \right)$
+
+\hh{Binomialverteilung} $X \sim B(n,p)$
+$p_X(k)={n \choose k}p^k(1-p)^{n-k}$
+$F_X(x)=\displaystyle\sum_{k\le x}{n \choose k}p^k(1-p)^{n-k}$
+$EX = np$, $\var(X) = np(1-p)$ \\
+$g_X(s) = (1 - p + sp)^n$
+
+\hh{neg. Binomialverteilung} $X \sim NegB(n,p)$
+$p_X(k)={n-1 \choose k-1}p^k(1-p)^{n-k}$
+$F_X(x)=\displaystyle\sum_{k\le x}{n \choose k}p^k(1-p)^{n-k}$
+$EX = \frac n p$, $\var(X) = n\frac{(1-p)}{p^2}$ \\
+
+\hh{Hypergeometrische Verteilung}
+W'keit, bei $m$ Versuchen ohne Zur¸cklegen von $n$ s/w-Kugeln $k$ der $r$ weiﬂen zu ziehen.\\
+$X \sim\text{Hypergeom}(n,r,m)$
+$p_X(k)=\displaystyle\frac{{r \choose k}{n-r \choose m-k}}{{n \choose m}}$ \\
+$EX = \frac{rm}{n}$ \\
+$\var(X) = \frac{rm}{n}(1-\frac{r}{n})(\frac{n-m}{n-1})$
+
+\hh{Geometrische Verteilung}
+W'keit beim $k$-ten Versuch den 1. Treffer zu bekommen, $p$ Trefferw'keit.
+$p_X(k)=(1-p)^{k-1}p$
+$EX=\frac{1}{p}, \, \var(X)=\frac{1-p}{p^2}$
+
+\hh{Poisson-Verteilung}
+$X \sim \text{Po}(\lambda)$
+Approximation der Binomialvert. mit $\lambda = np$\\
+$p_X(k)=e^{-\lambda}\frac{\lambda^k}{k!}\ (k=0, \ldots)$
+$EX = \var(X) = \lambda$\\
+$g_X(s) = e^{\lambda(s-1)}$
+$X \sim \text{Po}(\lambda_{0}), Y \sim \text{Po}(\lambda_{1}) \Rightarrow X+Y \sim \text{Po}(\lambda_{0} + \lambda_{1}) $
+
+\h{Stetige Verteilungen}
+\hh{Gleichverteilung}
+$X \sim U(a,b)$
+$f_X(x)=\begin{cases}\frac{1}{b-a}, &a<x<b\\ 0,&\text{sonst}\end{cases}$
+$F_X(x)=\frac{x-a}{b-a}$ auf $(a,b)$
+$EX = \frac{a+b}{2}, \, \var(X) = \frac{1}{12}(b-a)^2$
+
+\hh{Exponentialverteilung}
+$X\sim$ Exp$(\lambda), \lambda>0$
+$f_X(x)=\begin{cases}\lambda e^{-\lambda x},&x\ge 0 \\ 0,&x<0\end{cases}$
+$F_X(x)=1-e^{-\lambda x}$
+$EX = \frac{1}{\lambda}, \, \var(X) = \frac{1}{\lambda ^2}$
+\hhh{Ged‰chtnislosigkeit} $P(X\ge t | X\ge s)=P(X\ge t-s)\ (0<s<t)$
+
+\hh{Normalverteilung}
+$X\sim N(\mu,\sigma^2)$
+$f_X(x)=\displaystyle\frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$
+$EX = \mu$, $\var(X) = \sigma^2$
+$\Phi(x)=\displaystyle\int_{-\infty}^x\displaystyle\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{y^2}{2}\right)\text{d}y$
+$\Phi(x)=1-\Phi(-x)$\\
+$\Phi^{-1}(x)=-\Phi^{-1}(1-x)$
+$EX = \mu, \, \var(X) = \sigma ^2$\\
+Sei $X\sim N(\mu,\sigma^2)$.
+$\Rightarrow Z:=\frac{X-\mu}{\sigma} \, \sim N(0,1)$\\
+\hhh{Standardnormalverteilung} $\mu = 0, \, \sigma ^2 = 1$\\
+\hhh{Faltungsstabil} $X_1+X_2 \sim N(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)$
+$X\sim N(0,1):$\\
+$\varphi_X(t) = \int_{-\infty}^{\infty} \cos(tx) \frac{1}{\sqrt{2 \pi}} e^{-\frac{x^2}{2}} dx$ \\
+$\varphi_X'(t) = -t\varphi_X(t)$
+
+\hh{Gammaverteilung}
+$X \sim G(\alpha, \lambda)$
+$f_X(x)=\begin{cases} \frac{\lambda^{\alpha}}{\Gamma(\alpha)}x^{\alpha-1}e^{-\lambda x} ,&x\ge 0 \\ 0,&x<0\end{cases}$,
+wobei $\Gamma(\alpha) := \int_{o}^{\infty}t^{\alpha-1}e^{-t}\text{d}t$
+$EX = \frac{\alpha}{\lambda}, \, \var(X) = \frac{\alpha}{\lambda^2}$
+$X \sim G(\alpha, \lambda_1), Y \sim G(\alpha, \lambda_2) \Rightarrow X+Y \sim G(\alpha, \lambda_1+ \lambda_2)$ \\
+f"ur $\alpha = 1$ erh"alt man die Exponentialverteilung. 
+
+
+\h{Formeln}
+\hh{Erwartungswert}
+(Existenz falls mit $|\cdot|$ noch $<\infty$)\\
+\hhh{diskret}
+$EX = \sum_{k=1}^\infty x_k P_X(k)$\\
+$Eg(X)= \sum_{k=1}^\infty g(x_k) P_X(k)$\\
+\hhh{stetig}
+$EX= \int_{-\infty}^{\infty} xf_{X}(x)dx$\\
+$Eg(X)= \int_{-\infty}^{\infty} g(x)f_{X}(x)dx$\\
+$E(aX+bY) = aEX+bEY$\\
+Falls $X_i$ unkorreliert:
+$E(\prod_{i=1}^n X_i) = \prod_{i=1}^nE(X_i)$
+\hhh{Erwartungsvektor}
+$X=(X_1,\dots,X_n)$ ZV, $EX_i^2 < \infty: EX:=(EX_1,\dots,EX_n)$
+\hhh{Cauchy-Schwarze Ungleichung}
+$\text{Var}(X), \text{Var}(Y) ex.$\\$\qquad \Rightarrow (EXY)^2 \le EX^2 EY^2$
+\hh{Varianz}
+$\var(X) := E((X-EX)^2) = EX^2 - (EX)^2 \ge 0 $\\
+Daher auch: $EX^2 = \var(X) + (EX)^2$
+$\var(aX+b) = a^2\var(X)$\\
+Falls $X_i$ nicht unkorreliert:
+$\var(\sum_{i=1}^n X_i) = \sum_{i=1}^n\var(X_i) +$\\
+$\qquad 2\cdot\sum_{1\le i < j \le n} \cov(X_i,X_j)$\\
+Falls $X_i$ unkorreliert:
+$\var(\sum_{i=1}^n X_i) = \sum_{i=1}^n\var(X_i)$
+\hhh{Standardabweichung}
+$\sigma(X) := \sqrt{\var(X)}$\\
+
+\hh{Urnenmodell}
+Mit Zur"uckl., mit Reihenflg. (k unterscheidbare Objekte mit Mehrfachbel. auf n F‰cher):
+$n^k$\\
+Mit Zur"uckl., ohne Reihenflg. (nicht untersch. O., mit Mehrfachbel.) :
+$n+k-1 \choose k$\\
+Ohne Zur"uckl., mit Reihenflg. (untersch. O., ohne Mehfachbel.):
+$\frac{n!}{(n-k)!}$\\
+Ohne Zur"uckl., ohne Reihenflg. (nicht untersch. O., ohne Mehrfachbel.):
+$n \choose k$
+
+\hh{Tschebyscheff Ungleichung}
+$P(|X-EX|\geq \varepsilon )\leq \frac{1}{\varepsilon^2} \var(X)$
+
+\hh{Faltungsformel}
+$(X,Y)$ abs stetige ZV, mit gem Dichte $f_{XY} \Rightarrow Z:=X+Y$ ist abs stetige ZV mit Dichte: $f_Z(x) = \int_{-\infty}^{\infty} f_{X,Y}(t,x-t)dt$\\
+$X,Y$ unabh $\Rightarrow$ Faltungsformel: $f_Z(x) = \int_{-\infty}^{\infty} f_X(t)f_Y(x-t)dt$
+
+\hh{Unabh"angingkeit von ZV}
+\hhh{Def.} $F_{X_1,\ldots,X_n}(x_1,\ldots,x_n) = \prod F_{X_i}(x_i)$\\
+gdw. bis auf eine Nullmenge: $f_{X_1,\ldots,X_n}(x_1,\ldots,x_n) = \prod f_{X_i}(x_i)$\\
+\hhh{S‰tze}\\
+$X,Y$ unabh. $\Rightarrow EXY = EXEY$\\
+$X_1,\dots,X_n$ unabh $\Rightarrow \var(X_1+\dots+X_n) = \sum_{i=1}^n \var(X_i)$
+
+\hh{Kovarianz}
+$\cov(X,Y) = E(X-EX)(Y-EY) = EXY - EXEY$\\
+$\cov(X,X) = \var(X)$
+$\cov(aX+bY,Z)$\\$\qquad = a\cov(X,Z)+b\cov(Y,Z)$\\
+                 $\qquad = \cov(Z,aX+bY)$\\
+\hhh{$X,Y$ unkorreliert} gdw. $\cov(X,Y) = 0$\\
+$X,Y$ unabh. $\Rightarrow X,Y$ unkorr.\\
+\hhh{Kovarianzmatrix}
+$X=(X_1,\dots,X_n) \Rightarrow \cov(X):=(\cov(X_i,X_j))_{i,j=1,\dots,n}$ \\
+\hhh{Korrelationskoeffizient}
+Ist $\var(X)\cdot\var(Y)>0$ so gilt:\\
+$\left|\rho(X,Y) := \frac{\cov(X,Y)}{\sqrt{\var(X)\var(Y)}}\right|\le 1$
+
+\hh{Erzeugende Fkt (diskret)}
+$g_X:[-1,1] \rightarrow R$\\
+$g_X(s) = \sum_{k=0}^{\infty} p_X(k)s^k = Es^X$\\
+$g_X(1) = 1, p_X(k) = \frac{g_X^{(k)}(0)}{k!}$\\
+$EX = g_X'(1^-)$, $\var(X) = g_X''(1^-)+g_X'(1^-) - (g_X'(1^-))^2$\\
+$X,Y$ unabh, diskret $\Rightarrow g_{X+Y}(s)=g_X(s)g_Y(s)$
+
+\h{Konvergenzbegriff f"ur ZV}
+\hh{P-fast sicher}
+$X_n\stackrel{fs}{\rightarrow}X$ wenn:
+\[P(\{\omega\in\Omega | \lim_{\mathclap{n\to\infty}} X_n(\omega)=X(\omega)\})=1\]
+
+\hh{in Wahrs'keit, stochastisch}
+$X_n\stackrel{P}{\rightarrow }X$ wenn, $\forall\varepsilon > 0$
+\[\lim_{\mathclap{n\to\infty}}P(\{\omega\in\Omega \Bigr| |X_n(\omega)-X(\omega)|\geq \varepsilon \})=0\]
+
+\hh{in Verteilung}
+$X_n\stackrel{d}{\rightarrow }X$ wenn $\forall x$ mit $F_X$ stetig:
+\[\lim_{\mathclap{n\to\infty}} F_{X_n}(x)=F_X(x)\]
+
+\hh{Implikationen}
+f.s. $\Rightarrow$ in Wahrs'keit\\
+in Wahrs'keit $\Rightarrow$ in Verteilung\\
+in Verteilung gegen eine Konstante $c \in \mathbb{R} \Rightarrow$ in Wahrs'keit
+
+\h{Grenzwerts‰tze}
+\hh{Kolmogorov}
+(Starkes Gesetz der groﬂen Zahlen)\\
+$X_i$ unabh. und identisch vert, $E|X_1| <\infty$:
+$\frac1n \sum_{i=1}^n X_i \stackrel{f.s.}{\rightarrow} EX_1$
+
+\hh{Zentraler Grenzwertsatz}
+$X_i$ u.i.v., $E|X_1|<\infty$, $0<\var(X_1)<\infty$: f¸r $n\to\infty$ gilt:
+\[
+\frac{\sum_{i=1}^n X_i - n\cdot EX_1}{\sqrt{n\cdot\var(X_1)}} \stackrel{d}{\rightarrow} X \sim \mathcal{N}(0,1)
+\]
+also
+\[
+P\left(\frac{\sum_{i=1}^n X_i - n EX_1}{\sqrt{n\cdot\var(X_1)}} \le x\right) \rightarrow\Phi(x)
+\]
+
+\hh{Zweiseitiger Grenzwertsatz}
+Gleiche Voraussetzungen wie oben:
+\begin{multline*}
+P\left(a \le \frac{\sum_{i=1}^n X_i - n\cdot EX_1}{\sqrt{n\cdot\var(X_1)}}\le b \right) \\
+\rightarrow\Phi(b)-\Phi(a)
+\end{multline*}
+
+\h{Charkteristische Funktion}
+$X$ ZV, $\varphi_X : \mathbb{R} \rightarrow \mathbb{C}$
+\[
+\varphi_X(t) := Ee^{itX} = E\cos(tX)+iE\sin(tX)
+\]
+$X$ diskret $\Rightarrow \varphi_X(t)=g_X(e^{it})$\\
+$X$ abs stetig $\Rightarrow \varphi_X(t) = \int_{-\infty}^\infty e^{itx} f_X(x) dx$\\
+$\varphi_X(0)=1$
+$|\varphi_X(t)|\leq 1\quad \forall\, t\in \mathbb{R}$
+$a,b\in \mathbb{R}$: $\qquad\varphi_{aX+b}(t)=e^{ibt}\varphi_X(at)$
+$\varphi_X(t)$ ist glm stetig auf $\mathbb{R}$\\
+$X,Y$ unabh ZV $\Rightarrow \varphi_{X+Y}(t) = \varphi_X(t) \varphi_Y(t)$\\
+$E|X|^n<\infty,\,n\in N \Rightarrow \varphi_X n$-mal db und: $\varphi_X^{(n)}(0)=i^nEX^n$\\
+$X,Y$ ZV mit gleicher char Fkt, so auch gleiche Verteilung.\\
+$(X_n)$ Folge von ZV mit $F_{X_n}(x)$ und $\varphi_{X_n}(t)$ so ist "aquivalent:\\
+$X_n\stackrel{d}{\rightarrow}X$\\  
+$\varphi_{X_n}(t)\rightarrow \varphi(t)\quad \forall\, t\in \mathbb{R}$ und $\varphi$ stetig in 0
+
+\h{Parametersch‰tzung}
+\hh{Defnitionen}
+\hhh{Stichprobenmittel} $\bar{x} = \frac1n \sum_{i=1}^nx_i$
+\hhh{Stichprobenvarianz} $S^2(x) = \frac1{n-1} \sum_{i=1}^n(x_i-\bar x)^2$
+\hh{Maximum-Likelihood-Methode}
+\hhh{Likelihood-Funktion} $L_x(\theta) = f_\theta(x_1)\cdot\cdots\cdot f_\theta(x_n)$bzw.\\
+$L_x(\theta) = p_\theta(x_1)\cdot\cdots\cdot p_\theta(x_n)$
+\hhh{Maximum-Likelihood-Sch‰tzer MLS} bei welchen $\theta$ ist $L_x$ maximal.
+Oft einfacher: $\ln L_x(\theta)$ maximieren. ($\ln a\cdot b = \ln a + \ln b$, $\ln\prod = \sum\ln$)
+
+\hh{Momentenmethode}
+Pro zu sch‰tzenden Parameter ein empirisches Moment mit dem der Verteilung gleichsetzen.
+Also: $\mu_k(\theta) = \text{E}_{\theta}X^k \stackrel{!}{=} \overline{x}_k := \frac{1}{n}\sum_{i=1}^{n}x_{i}^k $
+
+\hh{Eigenschaften}
+\hhh{Erwartungstreu} $E_\theta T(X) = \theta$\\
+$ET$ hat i.A. nix mit $EX$ zu tun!
+\hhh{Bias} $b_T(\theta) := E_\theta T(X) - \theta$
+\hhh{Mittlerer Quadratischer Fehler} $\mse(T) := E_\theta (T(x)-\theta)^2$\\
+unbiasd: $\mse(T) = \var_\theta(T)$
+\hh{Fisher-Info.} $I(\theta) := E_\theta\left( (\frac{\partial}{\partial\theta} \log L_X(\theta))^2 \right)$
+\hh{Ungleichung von Cram\'er-Rao}
+$\var_\theta(T(X)) \ge \frac{ (1+\frac{\partial}{\partial\theta}b_T(\theta))^2 }{I(\theta)}$
+
+\h{Konfidenzintervalle}
+Gesucht sind ZV $L$ und $U$ mit $L(x)\le U(x)$ und
+$P_\theta(L(x)\le \theta \le U(x)) = 1-\alpha$
+
+\h{Testtheorie}
+‹berpr¸fen, ob ein Parameter $\theta$ einer Verteilung in $\Theta_0$ oder $\Theta_1$ ($\Theta_0+\Theta_1=\Theta$) ist.\\
+\hhh{Einseitiger Test}\\ $H_0: \theta \le \theta_0$ vs. $H_1: \theta > \theta_0$\\
+\hhh{Zweiseitiger Test}\\ $H_0: \theta = \theta_0$ vs. $H_1: \theta \ne \theta_0$
+\hh{Test, Fehler und G¸te}
+Sei $ x \in \chi^n $ eine Stichprobe. \\
+$\varphi : \chi^n \rightarrow \{1,0\}$ heiﬂt \hhh{Test} \\
+Mit $\varphi(x)=1$ lehnen wir $H_{0}$ f¸r $x$ ab\\
+\hhh{G"utefkt} $\beta$ gibt W'keit an, mit der $H_0$ wir ablehnen \\
+$\beta(\theta) = P_{\theta}(\varphi(x)=1)$ \\
+\hhh{F. 1. Art} Test: "`$H_1$"' aber $H_0$ wahr.\\
+\hhh{F. 2. Art} Test: "`$H_0$"' aber $H_1$ wahr.\\
+\hhh{Niveau} $\alpha \hat=$ W'keit f¸r Fehler 1. Art $\leq \alpha.$ Also: $\beta(\theta) \leq \alpha$\\
+Man legt $\alpha$ fest. Also muss der Fehler 1. Art der schlimmere sein (z.B. unwirksames Medikament als wirksam bedacht oder Ham als Spam eingeordnet). Danach erst minimiert man den Fehler 2. Art. Eselsbr¸cke: \textbf{H}ypothese $H_0$ $\hat=$ \textbf{H}am.
+
+\hh{Likelihood-Quotienten Test}
+\hhh{Likelihood-Quotient}\\
+$q(x):=\frac{\sup_{\theta\in\Theta_0}L_x(\theta)}{\sup_{\theta\in\Theta_1}L_x(\theta)}$\\
+Test der Form:\\
+$\varphi(x)=\begin{cases}
+0 & q(x) > c_0 \\
+\gamma, & q(x) = c_0\\
+1 & q(x) < c_0
+\end{cases}$
+
+\hh{Spezialfall: Neyman-Pearson-T.}
+$\varphi^*(x)=\begin{cases}
+1 &  L_x(\theta_1) > c^* L_x(\theta_0)  \\
+\gamma & L_x(\theta_1) = c^* L_x(\theta_0)  \\
+0 &  L_x(\theta_1) < c^* L_x(\theta_0)  
+\end{cases}$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+\h{Hilfreiche Rechenregeln}
+\hh{Diskrete}
+$ \sum_{k=0}^n\binom{n}{k}a^kb^{n-k} = (a+b)^n $
+\hh{Integrale}
+$\int f\cdot g = [f\cdot G] - \int f'\cdot G$\\
+$\int_{-\infty}^\infty \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}dx = 1$
+
+\h{$(1-\alpha)$-Konfidenzintervalle}
+\hh{Regenwurmaufgabe}
+\emph{Annahme:} L"ange d. Regenwurm auf $(0,\theta)$ gleichverteilt. Maximall"ange von $n$ W"urmern liegt vor. Gebe ein $(1-\alpha)$-KonfInt f"ur d $\theta$ an.
+\emph{L"osung:} $P_{\theta} (\max\{X_1,\dots,X_n\} \geq x) = 1-P_{\theta}(X_1 < x) \cdot \dots \cdot P_{\theta}(X_n < x) = 1 - \left(\frac{x}{\theta}\right)^n = 1 - \alpha \Rightarrow x= \theta \sqrt[n]{\alpha}.$ Somit: $\max\{X_1,\dots,X_n\} \geq \theta \sqrt[n]{\alpha} \Leftrightarrow \theta \leq \frac{\max\{X_1,\dots,X_n\}}{\sqrt[n]{\alpha}}$ Konfidenzintervall: $\left[\max\{X_1,\dots,X_n\},\frac{\max\{X_1,\dots,X_n\}}{\sqrt[n]{\alpha}}\right]$
+
+\hh{Scriptbeispiel 15.2}
+Sch"atzung der Erfolgswahrscheinlichkeit, $X \sim B(m,\theta), \Theta = [0,1]$ Dann gilt:
+$L(x)=\frac{1}{m+(z_{\frac{\alpha}{2}})^2} \cdot$\\
+$\left(x+\frac{(z_{\frac{\alpha}{2}})^2}{2} + z_{\frac{\alpha}{2}}\sqrt{\frac{x(m-x)}{m}+\frac{(z_{\frac{\alpha}{2}})^2}{4} }\right)$\\
+$U(x)=\frac{1}{m+(z_{\frac{\alpha}{2}})^2} \cdot$\\
+$\left(x+\frac{(z_{\frac{\alpha}{2}})^2}{2} - z_{\frac{\alpha}{2}}\sqrt{\frac{x(m-x)}{m}+\frac{(z_{\frac{\alpha}{2}})^2}{4} }\right)$\\
+wobei $x$ Treffer der Stichprobe, $z_{\frac{\alpha}{2}} = \Phi^{-1}(\frac{\alpha}{2})$.
+
+\h{Hypothesentest}
+\hh{Test auf Mittelw, Var bekannt}
+$X=(X_1,...,X_n), X_i\sim P_\mu=N(\mu,\sigma_0^2), \sigma_0$ bekannt, $\mu\in\Theta=R$.\\
+
+\emph{Einseitiger Test}
+\[H_0: \mu\leq \mu_0 \quad\textnormal{vs}\quad H_1: \mu > \mu_0\]
+mit $\mu_0\in R$ geg.\\
+
+Sinnvoller Test:
+\[\varphi(x)=\left\{\begin{array}{r@{\quad,\quad}l}
+0 & \overline{x}\leq c\\
+1 & \overline{x} > c
+\end{array}\right.\]
+$\overline{x}=\frac{1}{n}\sum_{i=1}^n X_i.$
+$c\in R$ nun zu bestimmen, sodass Testnivea $\alpha$ eingehalten.\\
+
+Betrachte $\sqrt{n}$ $\frac{\overline{x}-\mu}{\sigma_0}$\\
+\[P_\mu\left(\sqrt{n} \frac{\overline{X}-\mu}{\sigma_0}\leq x\right)=\Phi(x)\]
+
+$\beta_c(\mu)=1-\Phi\left(\sqrt{n}\frac{c-\mu}{\sigma_0}\right)$
+Es gen¸gt: $\beta_c(\mu_0)\leq\alpha$\\
+\[\beta_c(\mu_0)\leq\alpha \Leftrightarrow 1-\Phi\underbrace{\left(\sqrt{n}\frac{c-\mu_0}{\sigma_0}\right)}_{=z_{1-\alpha}} \leq\alpha\]
+$ \Leftrightarrow c\geq\frac{z_{1-\alpha}\,\sigma_0}{\sqrt{n}}+\mu_0 =: c^* $
+
+\hh{Test auf Mittelw, Var unbekannt (sog.t-Test)}
+$P_{\mu,\sigma^2} = N(\mu,\sigma^2)$, $\theta=(\mu,\sigma^2)\in \Theta = R \times R_+$. $\sigma^2$ ist hier nicht bekannt!
+
+\emph{Einseitiges Testproblem:} $H_0: \mu\leq \mu_0$ vs $H_1: \mu > \mu_0$ f¸r ein festes $\mu_0\in R$
+
+$X=(X_1,\ldots,X_n)$ Zufallsstichprobe zu $P_{\mu,\sigma^2}$. Dann gilt: $\sqrt{n}\,\frac{\overline{X}-\mu}{S(X)}\sim t_{n-1}$, wir mussten also im Gegensatz zu oben $\sigma$ durch $S(X)$ ersetzen. 
+
+Folgender Test h"alt $\alpha$:
+
+\[\varphi(x)=\begin{cases}
+0, \, \sqrt{n}\, \frac{\overline{x}-\mu_0}{S(x)} \leq t_{n-1}(1-\alpha) \\
+1, \, \sqrt{n}\, \frac{\overline{x}-\mu_0}{S(x)} > t_{n-1}(1-\alpha)
+\end{cases}\]
+
+\emph{Zweiseitiger Test:} $H_0: \mu = \mu_0 \quad \textnormal{vs}\quad H_1: \mu \neq \mu_0$\\
+Der zugeh"orige Test ist:
+\[
+\varphi(x)=\begin{cases}
+0, \, \sqrt{n}\, \bigl| \frac{\overline{x}-\mu_0}{S(x)} \bigr| \leq t_{n-1}(1-\frac{\alpha}{2}) \\
+1, \, \sqrt{n}\, \bigl| \frac{\overline{x}-\mu_0}{S(x)} \bigr| > t_{n-1}(1-\frac{\alpha}{2}) 
+\end{cases}
+\]
+
+\hh{Test auf die Varianz}
+$P_{\mu,\sigma^2} = N(\mu,\sigma^2)$, $\theta=(\mu,\sigma^2)\in \Theta = R \times R_+$. wie gehabt.
+
+\emph{Einseitiger Test:} $H_0: \sigma^2 \leq \sigma_0^2\text{ vs. }H_1:  \sigma^2>\sigma_0^2$
+
+Es gilt:
+\[
+P_{\mu,\sigma^2}(\frac{(n-1)S(X)^2}{\sigma_0^2}\leq x) = F_{\chi^2_{n-1}}(x)
+\]
+
+Folgender Test tut es:
+\[\varphi(x)=
+\begin{cases}
+0, \, \frac{(n-1)S(x)^2}{\sigma_0}\leq \chi_{n-1}^2(1-\alpha)  \\
+1, \, \frac{(n-1)S(x)^2}{\sigma_0}> \chi_{n-1}^2(1-\alpha) 
+\end{cases}\]
+
+\emph{Zweiseitiger Test}
+$H_0: \sigma = \sigma_0 \text{ vs. } H_1: \sigma \not= \sigma_0$\\
+Hier gewinnt:
+\[\varphi(x)=
+\begin{cases}
+0, \, \frac{(n-1)S^2(x)}{\sigma_0} > \chi_{n-1}^2(\frac{\alpha}{2}) \\
+0, \, \frac{(n-1)S^2(x)}{\sigma_0} < \chi_{n-1}^2(1-\frac{\alpha}{2}) \\
+1, \, \textnormal{sonst}
+\end{cases}\]
+\end{multicols}
+\vfill
+\begin{center}
+\includegraphics[width=.4\linewidth]{erwartung.jpg}
+\vfill
+\includegraphics[width=.4\linewidth]{klausur.jpg}
+\\
+%\vfill
+\tiny Dieses Blatt ist ein \url{http://mitschriebwiki.nomeata.de/}-Projekt.\\ Letze ƒnderung: \svnInfoLongDate{} \svnInfoTime
+\end{center}
+\end{document}

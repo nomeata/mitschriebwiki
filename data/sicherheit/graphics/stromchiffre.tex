@@ -1,0 +1,32 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,fit,calc,positioning,automata}
+\begin{document}
+{
+\tikzstyle{int}     = [draw, minimum size=4em]
+\tikzstyle{init}    = [pin edge={to-,thin,black}]
+\tikzstyle{XORgate} = [draw,circle]
+\tikzstyle{line}    = [draw, -latex']
+
+\newcommand*\nodedistance{4cm}
+\begin{tikzpicture}[node distance=\nodedistance,auto,>=latex', scale = 1, transform shape]
+    \tikzstyle{line}=[draw, -latex']
+	
+    \node [label={[font=\small\color{black!30}]270:bitweise XOR}](XOR-aa)[XORgate] {\large +};
+	
+    \coordinate [below of=XOR-aa,node distance=.5*\nodedistance] (below-XOR-aa);
+	
+    \node [label={[font=\small\color{black!30}]90:pseudo-random number generator zum key k}][above of=XOR-aa,node distance=1.5cm,text width=1.5cm,anchor=south,align=center] (key) {$PRNG_k$};
+	
+	\node [right of=XOR-aa,node distance=3cm,text width=1.5cm,anchor=east,align=center] (cipher) {Chiffrat};
+	
+	\node [left of=XOR-aa,node distance=3cm,text width=1.5cm,anchor=west,align=center] (input) {Klartext};
+    
+	\path[line] %(XOR-aa) -- (below-XOR-aa) -| ($(cipher) + (.5*\nodedistance,0pt)$) -- (cipher)
+				(XOR-aa) edge (cipher)
+                (key) edge (XOR-aa)
+				(input) edge (XOR-aa);
+                %($(XOR-b-c)+(0,-.5*\nodedistance)$) -- (XOR-b-c);
+\end{tikzpicture}
+}
+\end{document}

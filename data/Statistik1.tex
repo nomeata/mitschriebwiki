@@ -1,0 +1,3028 @@
+\documentclass[a4paper,11pt,twoside,titlepage]{article}
+
+\usepackage{latexki}
+\lecturer{Dr. B. Klar}
+\semester{Sommersemester 2007}
+\scriptstate{complete}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{ngerman}
+%\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{euscript}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[amsmath,thmmarks,hyperref]{ntheorem}
+%\usepackage{pst-all}
+%\usepackage{pst-add}
+%\usepackage{multicol}
+
+\usepackage[utf8]{inputenc}
+
+%Neuer Befehl für Kommentare über Zeilen
+\newcommand{\kommentar}[1]{}
+
+%%Zahlenmengen
+%Neue Kommando-Makros
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\Z}{{\mathbb Z}}
+
+%spezielle Mengen, etc.
+\newcommand{\PP}{{\mathbb P}} %Wahrscheinlichkeitsmaß P
+\newcommand{\XX}{{\mathfrak X}} %X des statistischen Raums 
+\newcommand{\B}{{\mathcal B}} %Borel-B
+\newcommand{\K}{{\mathcal K}} 
+\newcommand{\MM}{{\mathcal M}}
+\newcommand\AAA{ \mathcal{A} } %Sigma-Algebra A
+\newcommand\PM{ \EuScript{P} } %Potenzmengen-P
+\newcommand\EE{ \mathcal{E} } %Erzeugendensystem E
+\newcommand\BB{ \mathcal{B} } %Borel-B
+\newcommand\DD{ \mathcal{D} } %Dynkin-D
+\newcommand\FF{ \mathfrak{F} }
+\newcommand\NN{ \mathcal{N} } %Normalverteilungs-N
+\newcommand\TT{ \mathcal{T} } 
+\newcommand\SSS{ \mathcal{S} } 
+\newcommand\UU{ \mathcal{U} } %Score-Vektor U
+
+%%Seitenformat
+% Keine Einrückung am Absatzbeginn
+\parindent0pt
+\parskip12pt
+
+\newcommand{\ind}{\text{\bf{1}}} %Indikatorfunktion
+\newcommand{\id}{\text{\bf{id}}} %Identität
+\newcommand{\eps}{\varepsilon} 
+\newcommand{\diag}{\ensuremath{\,\text{diag}}}
+\newcommand{\Pfs}{\ensuremath{\ P-\text{f.s.}\ }} 
+\newcommand{\uiv}{\ensuremath{\stackrel{uiv}{\sim}}}
+\DeclareMathOperator{\unif}{Unif}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\med}{med}
+\DeclareMathOperator{\MQA}{MQA}
+
+% Kopf- und Fusszeilen
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+\fancyfoot[C]{}
+\fancyhead[LO]{\rightmark}
+
+
+\makeindex
+\title{Mathematische Statistik}
+\author{Vorlesungsmitschrieb zur Vorlesung\\ "`Mathematische Statistik (Statistik I)"'\\
+Dr. Klar / Universität Karlsruhe / Sommersemester 2007
+\footnote{
+Dieser inoffizielle Mitschrieb der Vorlesung wurde mit ausdrücklicher Genehmigung von Herrn Dr. Klar auf \url{http://mitschriebwiki.nomeata.de/} veröffentlicht, \emph{Herr Dr. Klar ist für den Inhalt dieser Seiten nicht verantwortlich.} Der Mitschrieb erhebt keinen Anspruch auf Vollständigkeit und Richtigkeit!
+}\\
+~\\
+ge\TeX ed von\\
+Tobias Baust und Tobias Flaig}
+\date{Stand: \today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%Einstellungen, Titelseite, Inhaltsverzeichnis
+\setcounter{tocdepth}{1}
+\renewcommand{\thepage}{\roman{page}}
+\thispagestyle{empty}
+\maketitle
+\newpage
+\thispagestyle{empty}
+\tableofcontents
+\thispagestyle{empty}
+\cleardoublepage
+
+%Einstellungen
+\renewcommand{\thepage}{\arabic{page}}
+\setcounter{page}{1}
+\renewcommand{\thesection}{\arabic{section}}
+
+
+
+
+\section{Grundbegriffe, Motivation}
+Sei $(\Omega,\AAA,\PP)$ Wahrscheinlichkeitsraum, $(\XX,\BB)$ messbarer Raum\footnote{$\BB$ steht hier für eine beliebige $\sigma$-Algebra, die Borelsche $\sigma$-Algebra wird mit $\BB^d$ bezeichnet, wobei d die Dimension angibt} (sogenannter Stichprobenraum).\\
+$X:\ \Omega\to\XX$ Zufallsvariable
+\[P(B):=P^X(B):=\PP(X^{-1}(B)),\ B\in\BB\]
+Verteilung von X ($\hookrightarrow$ Wahrscheinlichkeitsraum $(\XX,\BB,P)$)
+
+Statistischer Entscheidung liegt Datenmaterial (Beobachtung) $x\in\XX$ zugrunde.\\
+\underline{Grundannahme:}
+\begin{itemize}
+\item[1) ]$x=X(\omega)$ für ein $\omega\in\Omega$, d.h. x ist Realisierung von X
+\item[2) ]P ist (teilweise) unbekannt
+\end{itemize}
+\underline{Ziel:} Aufgrund von x Aussagen über P machen!
+
+Sei $\MM^1(\XX,\BB):=\{P:\ P\mbox{ ist Wahrscheinlichkeitsmaß auf }\BB\}$.
+
+\subsection{Definition}
+Eine Verteilungsannahme ist eine Teilmenge $\wp\subset\MM^1(\XX,\BB)$.\\
+Das Tripel $(\XX,\BB,\wp)$ heißt statistischer Raum (statistisches Modell).
+
+\subsection{Beispiel}
+$(\XX,\BB)=(\R^n,\BB^n)$
+\[\wp:=\{P:\ \exists\mbox{ Wahrscheinlichkeitsmaß } Q\mbox{ auf }\BB^1\mbox{ mit }P=\underbrace{Q\otimes\ldots\otimes Q}_{n\mbox{ Faktoren}}\}\]
+Mit anderen Worten $X=(X_1,\ldots,X_n)$, $X_1,\ldots,X_n$ stochastisch unabhängig mit gleicher Verteilung Q, $X_1,\ldots,X_n\stackrel{\mbox{uiv}}{\sim}Q$.
+
+\subsection{Beispiel}
+$(\XX,\BB)=(\R^n,\BB^n)$
+\[\wp:=\{P:\ \exists(\mu,\sigma^2)\in\R\times\R_{>0}\mbox{ mit }P=\NN(\mu,\sigma^2)\otimes\ldots\otimes \NN(\mu,\sigma^2)\}\]
+Also $X_1,\ldots,X_n\stackrel{\mbox{uiv}}{\sim}\NN(\mu,\sigma^2)$.\\
+Ein-Stichproben-Normalverteilungs-Annahme
+
+\subsection{Beispiel}
+$(\XX,\BB)=(\R^{m+n},\BB^{m+n})$
+\[\wp:=\{P:\ \exists\mbox{ W'maße } Q_1,Q_2:\ P=\underbrace{Q_1\otimes\ldots\otimes Q_1}_{m\mbox{ Faktoren}}\otimes\underbrace{Q_2\otimes\ldots\otimes Q_2}_{n\mbox{ Faktoren}}\}\]
+Also $X=(X_1,\ldots,X_m,Y_1,\ldots,Y_n)$, $X_1,\ldots,X_m,Y_1,\ldots,Y_n$ unabhängig,\\ $X_1,\ldots,X_m\stackrel{\mbox{uiv}}{\sim}Q_1, Y_1,\ldots,Y_n\stackrel{\mbox{uiv}}{\sim}Q_2$.
+
+\subsection{Beispiel}
+$(\XX,\BB)$ wie in 1.4
+\[\wp:=\{P:\ \exists(\mu,\nu,\sigma^2)\in\R\times\R\times\R_{>0}:\ P=\NN(\mu,\sigma^2)\otimes\ldots\otimes \NN(\mu,\sigma^2)\otimes\NN(\nu,\sigma^2)\otimes\ldots\otimes\NN(\nu,\sigma^2)\}\]
+$X_1,\ldots,X_m,Y_1,\ldots,Y_n$ unabhängig\\
+$X_i\stackrel{\mbox{uiv}}{\sim}\NN(\mu,\sigma^2), Y_j\stackrel{\mbox{uiv}}{\sim}\NN(\nu,\sigma^2)$\\
+2 unabhängige normalverteilte Stichproben mit gleicher Varianz
+
+\subsection{Definition}
+Eine \textbf{Parametrisierung} von $\wp\subset\MM^1(\XX,\BB)$ ist eine bijektive Abbildung $\Theta\ni\vartheta\to P_\vartheta\in\wp$.
+
+Ist X eine Zufallsvariable mit Verteilung $P_\vartheta$, so schreibt man auch
+\[\left.\begin{array}{l}E_\vartheta(X)\\\var_\vartheta(X)\\(\ast)\ F_\vartheta(t):=P_\vartheta(X\leq t)=P_\vartheta((-\infty,t])\end{array}\right\}\mbox{falls X reellwertig}\]
+\[(\ast\ast)\ P_\vartheta(B)=P_\vartheta(X\in B),\ B\in\BB\]
+Schreibweisen $(\ast),(\ast\ast)$ unterstellen
+\[(\Omega,\AAA,\PP)=(\XX,\BB,P),\ X=\id_\Omega\]
+[eigentlich: \(P_\vartheta(B):=\PP(X^{-1}(B))=\PP(X\in B)\)]
+
+\subsection{Definition}
+Eine Verteilungsklasse $\wp=\{P_\vartheta:\ \vartheta\in\Theta\}$ heißt $\vartheta$-parametrisch, wenn sie sich "`zwanglos"' durch einen Parameterraum $\Theta\subset\R^k$ parametrisieren lässt.\\
+Ist $\vartheta=(\vartheta_1,\vartheta_2)$ und interessiert nur $\vartheta_1$, so heißt $\vartheta_1$ Hauptparameter und $\vartheta_2$ Nebenparameter oder Störparameter.
+
+\subsection{Beispiele}
+\begin{itemize}
+\item[a) ]In Beispiel 1.3:\\ 2-parametrige Verteilungsannahme, wobei $\vartheta=(\mu,\sigma^2)$, $\Theta=\R\times\R_{>0}$.
+\item[b) ]In Beispiel 1.5:\\ 3-parametrig, $\vartheta=(\mu,\nu,\sigma^2)$, $\Theta=\R\times\R\times\R_{>0}$\\
+Hier meistens: $(\mu,\nu)$ Hauptparameter
+\end{itemize}
+
+Häufig interssiert von $\wp$ der Wert eines reellwertigen Funktionals $\gamma:\ \wp\to\R$ anstelle von P, z.B. (falls P Wahrscheinlichkeitsmaß auf $\BB^1$)
+\[\gamma(P):=\int_\R xdP(x)\]
+(Erwartungswert von X)
+
+Falls $\wp=\{P_\vartheta:\ \vartheta\in\Theta\}$, so schreibt man auch $\gamma(\vartheta):=\gamma(P_\vartheta)$, fasst also $\gamma$ als Abbildung $\gamma:\ \Theta\to\R$ auf.
+
+\underline{Problem:}\\
+"`Enge"' Verteilungsannahme täuscht oft nicht vorhandene Genauigkeit vor.\\
+$\wp$ sollte das \underline{wahre} P enthalten. (realistisch?)
+
+Bei diskreten Zufallsvariablen ergibt sich $\wp$ manchmal zwangsläufig; bei stetigen Zufallsvariablen ist $\wp$ häufig nicht vorgezeichnet.
+
+\subsection{Typische Fragestellungen der Statistik}
+\begin{itemize}
+\item[a) ]\underline{Punktschätzung}\\Schätze aufgrund von $x\in\XX$ den Wert $\gamma(\vartheta)\in\R$ möglichst "`gut"'.
+\item[b) ]\underline{Konfidenzbereiche}\\Konstruiere "`möglichst kleinen"', von x abhängigen Bereich, der $\gamma(\vartheta)$ mit "`großer Wahrscheinlichkeit"' enthält.
+\item[c) ]\underline{Testprobleme}\\Es sei $\Theta=\Theta_0+\Theta_1$ eine Zerlegung von $\Theta$. Teste die Hypothese\\ $H_0:\ \vartheta\in\Theta_0$ gegen die Alternative $H_1:\ \vartheta\in\Theta_1$.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2. Vorlesung 19.04.07
+
+\subsection{Asymptotische Betrachtungen}
+Häufig liegt Folge $(X_j)_{j\in\N}$ unabhängiger Zufallsvariablen zugrunde (alle auf nicht interessierenden Wahrscheinlichkeitsräume $(\Omega,\AAA,\PP)$ definiert) mit Werten in einem Messraum $(\XX_0,\BB_0)$.\\
+Häufig: $P^{X_j}=P\ \forall j$ (identische Verteilung)
+
+Unter der Verteilungsannahme $P\in\wp_0\subset\MM^1(\XX_0,\BB_0)$ nimmt dann die Folge $(X_j)_{j\in\N}$ Werte im statistischen Raum $$(\XX,\BB,\wp):=(\times_{j=1}^\infty\XX_0,\bigotimes_{j=1}^\infty\BB_0,\{\bigotimes_{j=1}^\infty P:\ P\in\wp_0\})$$
+an. Also: $X_1,X_2,\ldots$ unabhängig, $\XX_0$-wertig mit gleicher Verteilung $P\in\wp_0$
+
+\subsection{Statistiken}
+Es seien $(\XX,\BB)$ Stichprobenraum und $(\TT,\DD)$ Messraum. Eine messbare Abbildung $T:\ \XX\to\TT$ heißt Statistik (Stichprobenfunktion).\\Häufig: $(\TT,\DD)=(\R,\BB^1)$.
+
+\underline{Wichtigstes Beispiel:}\\
+$\XX=\R^n,\TT=\R$ 
+$$T(x_1,\ldots,x_n)= \frac{1}{n}\sum_{i=1}^n x_i$$
+Stichproben-Funktionen bewirken eine \textbf{Datenkompression}.\\
+Statistische Entscheidungen wie Ablehnung von Hypothesen hängen von\\ $x\in\XX$ im Allgemeinen durch den Wert $T(x)$ einer geeigneten Statistik ab.\\
+Bei Tests: Statistik $\hat{=}$ Testgröße $\hat=$ Prüfgröße
+
+Sind $X_1,\ldots,X_n\stackrel{uiv}{\sim}P$, so nennt man $X_1,\ldots,X_n$ eine Stichprobe vom Umfang n aus der Verteilung P.\\
+Ist $T(X_1,\ldots,X_n)$ eine mit $X_1,\ldots,X_n$ operierende Statistik, so schreib man auch $T_n:=T_n(X_1,\ldots,X_n):=T(X_1,\ldots,X_n)$.
+\\
+Insbesondere bei bei asymptotischen Betrachtungen ist $(T_n)_{n\geq1}$ dann eine Folge von Statistiken.
+
+\cleardoublepage
+\section{Klassische statistische Verfahren unter\\ Normalverteilungs-Annahme}
+\subsection{$\chi_s^2,t_s,F_{r,s}$-Verteilung}
+\begin{itemize}
+\item[a) ]$N_1,\ldots,N_s\uiv\NN(0,1)$\\
+Verteilung von $Y:=N_1^2+\ldots+N_s^2$ heißt Chi-Quadrat-Verteilung mit s Freiheitsgraden ($\chi_s^2$-Verteilung).\\
+Y besitzt die Dichte 
+\[f(y)=\frac{1}{2^{\frac s2}\Gamma(\frac s2)}e^{-\frac y2}y^{\frac s2-1},\ y>0\]
+Dabei:
+\[\Gamma(t)=\int_0^\infty e^{-x} x^{t-1}dx,\ t>0\]
+(Gamma-Funktion)\newline
+[$\Gamma(x+1)=x\Gamma(x)\ (x>0)$, $\Gamma(n+1)=n!\ (n\in\N)$, $\Gamma(\frac12)=\sqrt \pi$]\\
+Es gilt:
+\[EY=s,\ \var(Y)=2s\]
+\item[b) ]Seien $N_0,N_1,\ldots,N_s\uiv \NN(0,1)$.\\
+Die  Verteilung von 
+$$y:=\frac{N_0}{\sqrt{\sum_{j=1}^s N_j^2/s}}$$
+heißt (studentsche) t-Verteilung mit s Freiheitsgraden ($t_s$-Verteilung). Dichte:
+$$f(y)=\frac{1}{\sqrt{\pi s}}\frac{\Gamma(\frac{s+1}{2})}{\Gamma(\frac{s}{2})}(1+\frac{y^2}{s})^{-\frac{s+1}{2}},\ y\in\R$$
+$$E(Y)=0\ (s\geq 2), \var(Y)=\frac{s}{s-2}\ (s\geq3)$$
+s=1\footnote{Cauchy-Verteilung}: $$f(y)=\frac{1}{\sqrt\pi}\frac{1}{\sqrt\pi}\frac{1}{1+y^2}=\frac{1}{\pi(1+y^2)},\ y\in\R$$
+\item[c) ]Es seien R,S unabhängig, $R\sim\chi^2_r,\ S\sim\chi^2_s$. Die Verteilung von 
+$$Y:=\frac{\frac1r R}{\frac1s S}$$
+heißt F(isher)-Verteilung mit r Zähler- und s Nenner-Freiheitsgraden (kurz: $Y\sim F_{r,s}$).\\
+Dichte: $$ f(y)=\frac{\Gamma(\frac{r+s}{2})(\frac rs)^{\frac r2} y^{\frac r2 -1}}{\Gamma(\frac r2)\Gamma(\frac s2)(1+\frac rs y)^{\frac{r+s}{2}}},\ y>0$$
+Es gilt: 
+$$E(Y)= \frac{s}{s-2},\ s>2,\quad\var(Y)=\frac{2s^2(r+s-2)}{r(s-2)^2(s-4)},\ s>4$$
+\end{itemize}
+
+\subsection{Satz}
+Es seien $X_1,\ldots,X_n\uiv\NN(\mu,\sigma^2)$.
+$$\bar{X}_n:=\frac 1n\sum_{i=1}^nX_i,\ \hat\sigma_n^2:= \frac 1n \sum_{j=1}^n(X_j-\bar{X}_n)^2$$
+Dann gilt: 
+\begin{itemize}
+\item[a) ]$\bar{X}_n \sim\NN(\mu,\frac{\sigma^2}{n})$.
+\item[b) ]$\frac{n}{\sigma^2}\hat\sigma^2_n\sim\chi_{n-1}^2$
+\item[c) ]$\bar{X}_n$ und $\hat\sigma_n^2$ sind unabhängig.
+\end{itemize}
+
+\underline{\textbf{Beweis}}
+\begin{itemize}
+\item[a) ]klar
+\item[b),c) ]Sei $Z_j:=X_j-\mu$, $Z:=(Z_1,\ldots,Z_n)^T$.\\
+Es gilt: $Z\sim \NN_n(0,\sigma^2\cdot I_n)$.\\
+Sei $H=(h_{ij})$ orthogonale $n \times n$-Matrix mit $h_{nj}=\frac{1}{\sqrt n},\ 1\leq j\leq n$.
+\[Y=(Y_1,\ldots,Y_n)^T:=HZ\]
+$Y\sim\NN_n(0,\sigma^2 HH^T)=\NN(0,\sigma^2 I_n)$, d.h. $Y_1,\ldots,Y_n\uiv\NN(0,\sigma^2)$.\\
+Es gilt:
+\[\sum_{j=1}^n Y_j^2=\|Y\|^2=\|Z\|^2=\sum_{j=1}^nZ_j^2\]
+\[Y_n=\frac{1}{\sqrt n}\sum_{j=1}^nZ_j=\sqrt n(\bar{X}_n-\mu)\]
+Mit $\bar Z_n:=\frac1n\sum_{j=1}^nZ_j$ folgt:
+\begin{eqnarray*}\sum_{i=1}^n(X_j-\bar X_n)^2=\sum_{j=1}^n(Z_j-\bar Z_n)^2&=&\sum_{j=1}^n Z_j^2-n\bar Z_n^2\\&=&\sum_{j=1}^nY_j^2-Y_n^2\\&=&\sum_{j=1}^{n-1}Y_j^2\\&=&\sigma^2\underbrace{\sum_{j=1}^{n-1}\underbrace{\left(\frac{Y_j}{\sigma}\right)^2}_{\sim\NN(0,1)}}_{\sim\chi^2_{n-1}}\end{eqnarray*}
+$\Rightarrow$ b)
+
+Wegen $\sum_{j=1}^n(X_j-\bar X_n)^2=$ Funktion von $Y_1,\ldots,Y_{n-1}$ und $\bar X_n=$ Funktion von $Y_n$ sind $\hat\sigma_n^2$ und $\bar X_n$ unabhängig (Blockungslemma). $\blacksquare$\end{itemize}
+
+%%%%%%%%%Vorlesung 25.04.%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Korollar}
+In der Situation von 2.2 sei\footnote{Stichprobenvarianz} 
+\[S_n^2:=\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar X_n)^2=\frac{n}{n-1}\hat\sigma_n^2\]
+Dann gilt:
+\[\frac{\sqrt n(\bar X_n-\mu)}{S_n}\sim t_{n-1}\]
+
+\underline{Beweis:}
+\[\sqrt n\frac{\bar X_n-\mu}{S_n}=\frac{\frac{\sqrt n(\bar X_n-\mu)}{\sigma}}{\sqrt{\underbrace{\frac{1}{\sigma^2}\cdot\sum_i(X_i-\bar X_n)^2}_{\sim\chi_{n-1}^2}/n-1}}\]
+Zähler und Nenner sind unabhängig und der Zähler ist $\NN(0,1)$-verteilt.\\
+$\stackrel{2.1b)}{\Rightarrow}$ Behauptung
+
+\subsection{Korollar}
+Sei $0<\alpha\leq 1$ und sei $t_{n-1,1-\frac\alpha2}$ das $(1-\frac\alpha2)$-Quantil der $t_{n-1}$-Verteilung.\footnote{$\rightarrow$ Abbildung 2.1} Dann gilt:
+\[P_{\mu,\sigma^2}\left(\left|\frac{\sqrt n(\bar X_n-\mu)}{S_n}\right|\leq t_{n-1,1-\frac\alpha2}\right)=1-\alpha\]
+Oder äquivalent:
+\[P_{\mu,\sigma^2}\left(\bar X_n-\frac{S_n}{\sqrt n}t_{n-1,1-\frac\alpha2}\leq\mu\leq\bar X_n+\frac{S_n}{\sqrt{n}} t_{n-1,1-\frac\alpha2}\right)=1-\alpha\]
+Sprechweise:\\
+$[\bar X_n-\frac{S_n}{\sqrt n}t_{n-1,1-\frac\alpha2},\bar X_n+\frac{S_n}{\sqrt{n}} t_{n-1,1-\frac\alpha2}]$ ist ein Konfidenzintervall (Vertrauensintervall) zur Konfidenzwahrscheinlichkeit (Vertrauenswahrscheinlichkeit)\\ $1-\alpha$ für $\mu$. (Störparameter $\sigma^2$ tritt hier nicht auf!)
+
+\subsection{Ein-Stichproben-t-Test (1-SP-t-Test)}
+Seien $X_1,\ldots,X_n\uiv\NN(\mu,\sigma^2)$, $\vartheta=(\mu,\sigma^2)$, $\Theta:=\R\times\R_{>0}$.\\
+Zu testen sei $H_0:\ \mu=\mu_0$ gegen $H_1:\ \mu\neq\mu_0$ ($\mu_0$ gegebener Wert).
+\[H_0/H_1\ \leftrightarrow\ \Theta_0/\Theta_1\]
+\[\Theta_0:=\{\vartheta=(\mu,\sigma^2)\in\Theta:\ \mu=\mu_0\}\]
+\[\Theta_1:=\{\vartheta=(\mu,\sigma^2)\in\Theta:\ \mu\neq\mu_0\}\]
+Sei $(x_1,\ldots,x_n)=:x$ Realisierung von $X_1,\ldots,X_n$.
+\[\bar x_n:=\frac1n\sum_{i=1}^nx_i\]
+\[s_n^2:=\frac{1}{n-1}\sum_{i=1}^n(x_i-\bar x_n)^2\]
+\[T(x_1,\ldots,x_n):=\frac{\sqrt n(\bar x_n-\mu_0)}{s_n}\]
+
+\framebox{\parbox{0.9\textwidth}{(Zweiseitiger) 1-SP-t-Test zum Niveau $\alpha$:\\
+$H_0$ ablehnen, falls
+\[|T(x_1,\ldots,x_n)|\geq t_{n-1,1-\frac\alpha2}\]
+Kein Widerspruch zu $H_0$, falls
+\[|T(x_1,\ldots,x_n)|< t_{n-1,1-\frac\alpha2}\]}}
+
+Sei $\vartheta\in\Theta_0$, also $\mu=\mu_0$.\\
+$\Rightarrow T(X_1,\ldots,X_n)\sim t_{n-1}$
+\[\Rightarrow P(|T(X_1,\ldots,X_n)|\geq t_{n-1,1-\frac\alpha2})=\alpha\quad\forall\vartheta\in\Theta_0\]
+[Das bedeutet, wenn $H_0$ gilt, ist die Wahrscheinlichkeit $H_0$ trotzdem abzulehnen $\alpha$. ($\rightarrow$ Niveau)]
+
+\underline{Bemerkungen:}
+\begin{itemize}
+\item[1)] Entsprechend einseitige Tests\footnote{vgl. Stochstik I ($\rightarrow$ Wahl der Nullhypothese)}, z.B. $H_0:\ \mu\geq\mu_0$ gegen $H_1:\ \mu<\mu_0$.\\
+$H_0$ ablehnen, falls $|T(x_1,\ldots,x_n)|\geq t_{n-1,\alpha}$\footnote{etc.; Niveau $\alpha$}
+\item[2)] Sei
+\[f(x,\vartheta):=\prod_{j=1}^n f_1(x_j,\vartheta)=\left(\frac{1}{\sigma\sqrt{2\pi}}\right)^n\exp(-\frac{1}{2\sigma^2}\sum_{j=1}^n(x_j-\mu)^2)\]
+Die Prüfgröße $T(x_1,\ldots,x_n)$ des t-Tests ergibt sich aus einem allgemeinen "`Rezept"':\\
+Bilde den (verallgemeinerten) Likelihood-Quotienten
+\[\lambda(x):=\frac{\sup_{\vartheta\in\Theta_0}f(x,\vartheta)}{\sup_{\vartheta\in\Theta}f(x,\vartheta)}\]
+und lehne $H_0:\ \vartheta\in\Theta_0$ für zu "`kleine"' Werte von $\lambda(x)$ ab.
+
+Es gilt:
+\[(n-1)(\lambda(x)^{-\frac2n}-1)=T^2(x_1,\ldots,x_n)\]
+(Blatt 2, Aufgabe 6)
+\end{itemize}
+
+\subsection{Satz}
+Seien $X_1,\ldots,X_m,Y_1,\ldots,Y_n$ unabhängig.
+\[X_i\sim\NN(\mu,\sigma^2)\ \forall i,\ \ Y_j\sim\NN(\nu,\sigma^2)\ \forall j\]
+\[\bar{X}_m:=\frac 1m\sum_{i=1}^mX_i,\ \bar Y_n:=\frac1n\sum_{j=1}^nY_j\]
+Dann gilt:
+\[\bar{X}_m \sim\NN(\mu,\frac{\sigma^2}{m}),\ \bar{Y}_n \sim\NN(\nu,\frac{\sigma^2}{n})\]
+\[\bar X_m-\bar Y_n-(\mu-\nu)\sim\NN(0,\frac{\sigma^2}{m}+\frac{\sigma^2}{n})=\NN(0,\frac{m+n}{mn}\sigma^2)\]
+
+\[\frac{1}{\sigma^2} \sum_{i=1}^n(X_i-\bar{X}_m)^2\sim\chi_{m-1}^2\]
+\[\frac{1}{\sigma^2}\sum_{j=1}^n(Y_j-\bar{Y}_n)^2\sim\chi_{n-1}^2\]
+$\bar X_m$, $\bar Y_n$ und die letzten beiden Größen sind stochastisch unabhängig!
+
+Sei
+\[S_{m,n}^2:=\frac{1}{m+n-2}(\sum_{i=1}^n(X_i-\bar{X}_m)^2+\sum_{j=1}^n(Y_j-\bar{Y}_n)^2)\]
+Dann gilt weiter:
+\[(m+n-2)\cdot S_{m,n}^2/\sigma^2\sim\chi^2_{m+n-2}\]
+
+\subsection{Korollar}
+In der Situation von 2.6 gilt: 
+\[\frac{\sqrt{\frac{mn}{m+n}}(\bar X_m-\bar Y_n-(\mu-\nu))}{S_{m,n}}\sim t_{m+n-2}\]
+
+\underline{Beweis:}\\
+Wie Korollar 2.3.
+
+\subsection{Korollar}
+\[P_{\mu,\nu,\sigma^2}\left(\sqrt{\frac{mn}{m+n}}\frac{|\bar X_m-\bar Y_n-(\mu-\nu)|}{S_{m,n}}\leq t_{m+n-2,1-\frac\alpha2}\right)=1-\alpha\]
+D.h.
+\[\bar X_m-\bar Y_n\pm\frac{S_{m,n}}{\sqrt{\frac{mn}{m+n}}}t_{m+n-2,1-\frac\alpha2}\]
+ist Konfidenzintervall für $\mu-\nu$ zur Konfidenzwahrscheinlichkeit $1-\alpha$.
+
+\subsection{(Zweiseitiger) 2-SP-t-Test}
+Situation von 2.6.\\
+$H_0:\ \mu=\nu$ ($\mu-\nu=0$), $H_1:\ \mu\neq\nu$ ($\mu-\nu\neq0$)
+
+Mit
+\[\Theta:=\{\vartheta=(\mu,\nu,\sigma^2):\ -\infty<\mu,\nu<\infty, \sigma^2>0\}\]
+\[\Theta_0:=\{(\mu,\nu,\sigma^2)\in\Theta:\ \mu=\nu\}\]
+\[\Theta_1:=\{(\mu,\nu,\sigma^2)\in\Theta:\ \mu\neq\nu\}\]
+gilt: $H_0\hat{=}\vartheta\in\Theta_0$, $H_1\hat{=}\vartheta\in\Theta_1$.
+
+\underline{Prüfgröße:}
+\[T_{m,n}(x_1,\ldots,x_m,y_1,\ldots,y_n):=\sqrt{\frac{mn}{m+n}}\frac{\bar x_m-\bar y_n}{s_{m,n}}\]
+
+\underline{Testentscheidung:}\\
+$H_0$ ablehnen, falls $|T_{m,n}|\geq t_{m+n-2,1-\frac\alpha2}$.\\
+Kein Widerspruch zu $H_0$, falls $|T_{m,n}|< t_{m+n-2,1-\frac\alpha2}$.
+
+\underline{Es gilt:}
+\[P(|T_{m,n}(X_1,\ldots,X_m,Y_1,\ldots,Y_n)|\geq t_{m+n-2,1-\frac\alpha2})=\alpha\ \forall\vartheta\in\Theta_0\]
+D.h. Test hat Niveau $\alpha$.
+
+%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 26.04.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{F-Test für den Varianz-Quotienten}
+Situation wie in 2.6, aber $Y_j\sim\NN(\nu,\tau^2)$ ($\tau^2\neq\sigma^2$ möglich).\\
+Zu testen: $H_0:\ \sigma^2=\tau^2\ (\frac{\sigma^2}{\tau^2}=1)$ gegen $H_1:\ \sigma^2\neq\tau^2\ (\frac{\sigma^2}{\tau^2}\neq1)$.\\
+Prüfgröße des F-Tests für Varianzquotienten ist
+\[Q_{m,n}=\frac{\frac{1}{m-1}\sum_{i=1}^m(X_i-\bar X_m)^2}{\frac{1}{n-1}\sum_{j=1}^n(Y_j-\bar Y_n)^2}\]
+Unter $H_0$ gilt $Q_{m,n}\sim F_{m-1,n-1}$.\\
+Ablehnung von $H_0$ erfolgt für große und kleine Werte von $Q_{m,n}$\newline
+[Meist\footnote{$\rightarrow$ Abbildung 2.2}: Ablehnung für $Q_{m,n}\geq F_{m-1,n-1,1-\frac\alpha2}$, $Q_{m,n}\leq F_{m-1,n-1,\frac\alpha2}$]
+
+\cleardoublepage
+\section{Schätzer und ihre Eigenschaften}
+Es seien $(\XX,\BB,\{P_\vartheta: \vartheta\in\Theta\})$ ein statistischer Raum, $\gamma:\ \Theta\to\Gamma$ ein Funktional, wobei $\Gamma\supset\gamma(\Theta)$, $A_\Gamma$ eine $\sigma$-Algebra auf $\Gamma$.
+
+\subsection{Definition}
+Ein \textbf{Schätzer} für $\gamma(\vartheta)$ ist eine messbare Abbildung $S:\ (\XX,\BB)\to(\Gamma,A_\Gamma)$.\\
+$S(x)$ heißt \textbf{Schätzwert} für $\gamma(\vartheta)$ zur Beobachtung $x\in\XX$.
+
+\subsection{Beispiel}
+$(\XX,\BB)=(\{0,1\}^n,\PM(\{0,1\}^n))$, $\Theta=(0,1)$, $P_\vartheta=\bigotimes_{j=1}^n\Bin(1,\vartheta)$
+\[\gamma(\vartheta)=\vartheta\]
+\[S(x_1,\ldots,x_n):=\frac1n \sum_{j=1}^n X_j\]
+(relative Trefferhäufigkeit)
+\[\Gamma=[0,1]=\bar\Theta,\ A_\Gamma=\BB^1\cap[0,1]\]
+[Beachte: $\gamma(\Theta)=\Theta\subset\Gamma$]
+
+Die Güte eines Schätzers wird über die Verteilung $P_\vartheta^{S(X)}$ von $S(X)$ unter $\vartheta$ beurteilt. Für jedes $\vartheta\in\Theta$ sollte $P_\vartheta^{S(x)}$ "`stark um $\gamma(\vartheta)$ konzentriert"' sein.
+
+\subsection{Definition \textnormal{(Sei $\Gamma\subset\R^k$.)}}
+\begin{itemize}
+\item[a)] S \textbf{erwartungstreu} (unbiased) für $\gamma(\vartheta)\ :\Leftrightarrow\ E_\vartheta S(X)=\gamma(\vartheta)\ \forall\vartheta\in\Theta$
+\item[b)] $b_S(\vartheta):=E_\vartheta S(X)-\gamma(\vartheta)$ heißt Verzerrung (bias) von S an der Stelle $\vartheta$.
+\item[c)] Ist $S_n=S_n(X_1,\ldots,X_n),\ n\geq1$ eine Schätzfolge, so heißt $(S_n)$ \textbf{asymptotisch erwartungstreu} für $\gamma(\vartheta)\ :\Leftrightarrow$\[\lim_{n\to\infty}E_\vartheta S_n=\gamma(\vartheta)\ \forall\vartheta\in\Theta\]
+\end{itemize}
+\underline{Erwartungstreue:} $\forall\vartheta\in\Theta$: Schwerpunkt von $P_\vartheta^{S(X)}$ ist $\gamma(\vartheta)$
+
+\subsection{Definition \textnormal{(Sei $\Gamma\subset\R$.)}}
+S mediantreu für $\gamma(\vartheta)\ :\Leftrightarrow\ \med_\vartheta S(X)=\gamma(\vartheta)\ \forall\vartheta\in\Theta$.
+
+Dabei:\\
+Sei Y Zufallsvariable mit Verteilungsfunktion F.
+\[F^{-1}(q):=\inf\{x\in\R:\ F(x)\geq q\},\ 0<q<1\]
+\[\med Y:=\med F:=\frac12(F^{-1}(\frac12)+\underbrace{F^{-1}(\frac12+0)}_{=\lim_{x\to\frac12+}F^{-1}(x)})\]
+$\rightarrow$ Median\footnote{$\rightarrow$ Abbildung 3.1}
+
+\underline{Mediantreue:} $\forall\vartheta\in\Theta$:
+\[P_\vartheta(S(X)\leq\gamma(\vartheta))=P_\vartheta(S(X)\geq\gamma(\vartheta))\geq\frac12\]
+(In jeweils 50\% der Fälle Unter- bzw. Überschätzung.)
+
+\underline{Beispiele:}
+\begin{itemize}
+\item[a)] $X_1,\ldots,X_n$ reellwertig, $X_1,\ldots,X_n\uiv P_\vartheta$, $\mu(\vartheta):=E_\vartheta X_1$\\ ($E_\vartheta|X_1|<\infty$).
+
+$\bar X_n$ ist erwartungstreu für $\mu(\vartheta)$\\
+$X_1$ ist erwartungstreu für $\mu(\vartheta)$
+\item[b)] Wie a), $E_\vartheta X_1^2<\infty$. $\sigma^2(\vartheta):=\var_\vartheta(X_1)$.
+\[S_n^2:=\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar X_n)^2\]
+$S_n^2$ ist erwartungstreu für $\sigma^2(\vartheta)$.
+
+\underline{Beweis:}
+\begin{eqnarray*}
+E_\vartheta S_n^2&=&\frac{1}{n-1}E_\vartheta\left[\sum_{i=1}^n((X_i-\mu(\vartheta))-(\bar X_n-\mu(\vartheta)))^2\right]\\
+&=&\frac{1}{n-1}\left[\sum_{i=1}^n\underbrace{E_\vartheta(X_i-\mu(\vartheta))^2}_{=\var_\vartheta(X_i)}-n\underbrace{E_\vartheta(\bar X_n-\mu(\vartheta))^2}_{=\var_\vartheta(\bar X_n)=\frac{\sigma^2(\vartheta)}{n}}\right]\\
+&=&\frac{1}{n-1}(n\sigma^2(\vartheta)-\sigma^2(\vartheta))\\
+&=&\sigma^2(\vartheta)\end{eqnarray*}
+\item[c)] $X_1,\ldots,X_n\uiv\NN(\mu,\sigma^2)$, $\vartheta=(\mu,\sigma^2)$, $\gamma(\vartheta)=E_\vartheta X_1=\mu$
+\[\bar X_n\sim\NN(\mu,\frac{\sigma^2}{n})\ \Rightarrow\ \med_\vartheta\bar X_n=\mu\]
+$\Rightarrow \bar X_n$ ist mediantreu für $\gamma(\vartheta)$.
+\end{itemize}
+
+\subsection{Definition \textnormal{(Sei $\Gamma\subset\R^k$.)}}
+Schätzfolge $S_n=S_n(X_1,\ldots,X_n)$, $n\geq1$, heißt (schwach) \textbf{konsistent} für $\gamma(\vartheta)\ :\Leftrightarrow$
+\[P_\vartheta(\|S_n(X_1,\ldots,X_n)-\gamma(\vartheta)\|\geq\varepsilon)\to0\quad\forall\varepsilon>0\ \forall\vartheta\in\Theta\]
+($\forall\vartheta\in\Theta:\ S_n\stackrel{P_\vartheta}{\to}\gamma(\vartheta)$)
+
+\subsection{Bemerkung \textnormal{(Sei $\Gamma\subset\R$.)}}
+$(S_n)$ asymptotisch erwartungstreu für $\gamma(\vartheta)$ und $\var_\vartheta S_n\to0 (n\to\infty)$ $\Rightarrow (S_n)$ konsistent für $\gamma(\vartheta)$.
+
+\underline{[Beweis:]}
+\begin{eqnarray*}
+P_\vartheta(|S_n-\gamma|\geq\varepsilon)&\leq&P_\vartheta(|S_n-ES_n|+|ES_n-\gamma|\geq\varepsilon)\\
+&\leq&P_\vartheta(|S_n-ES_n|\geq\frac\varepsilon2\mbox{ oder }|ES_n-\gamma|\geq\frac\varepsilon2)\\
+&\leq&P_\vartheta(|S_n-ES_n|\geq\frac\varepsilon2)+P_\vartheta(|ES_n-\gamma|\geq\frac\varepsilon2)\\
+&\stackrel{(\ast)}{\leq}&\frac{\var(S_n)}{(\frac\varepsilon2)^2}+P_\vartheta(|ES_n-\gamma|\geq\frac\varepsilon2)\\
+&\to&0\ (n\to\infty)\end{eqnarray*}
+$(\ast)$: Tschebyscheff
+
+Kurz:
+\[|S_n-\gamma|\leq\underbrace{|S_n-E_\vartheta S_n|}_{\stackrel{P_\vartheta}{\to}0\ (1)}+\underbrace{|E_\vartheta S_n-\gamma|}_{\stackrel{P_\vartheta}{\to}0\ (2)}\stackrel{P_\vartheta}{\to}0\]
+(1): Tschebyscheff, (2): asymptotisch erwartungstreu
+
+
+\underline{Obiges Beispiel a):}\\
+$\bar X_n$ konsistent für $\mu(\vartheta)$, falls $E_\vartheta X_1^2<\infty$ nach 3.6.\\
+Starkes Gesetz der großen Zahlen (SGGZ):\\ $\bar X_n\stackrel{P_\vartheta-f.s.}{\to}E_\vartheta X_1$ (ohne weitere Voraussetzung) $\Rightarrow \bar X_n\stackrel{P_\vartheta}{\to}E_\vartheta X_1$
+
+\subsection{Bemerkung und Definition \textnormal{(Sei $\Gamma\subset\R$.)}}
+\[\MQA_S(\vartheta):=E_\vartheta(S(X)-\gamma(\vartheta))^2\]
+heißt \textbf{mittlere quadratische Abweichung} von S an der Stelle $\vartheta$.\\
+Es gilt:
+\[\MQA_S(\vartheta)=E_\vartheta(S(X)-E_\vartheta S(X))^2+(E_\vartheta S(X)-\gamma(\vartheta))^2=\var_\vartheta S(X)+b_s^2(\vartheta)\]
+
+\subsection{Beispiel}
+$X_1,\ldots,X_n\uiv\NN(\mu,\sigma^2)$, $\mu,\sigma^2$ unbekannt\\
+Schätzer von $\sigma^2$:
+\[\tilde \sigma_n^2(c)=c\cdot\sum_{j=1}^n(X_j-\bar X_n)^2\]
+Ziel: c so wählen, dass MQA von $\tilde \sigma_n^2(c)$ minimal wird.
+\[E_\vartheta(\tilde\sigma_n^2(c))=c\sigma^2\cdot E_\vartheta[\underbrace{\frac{1}{\sigma^2}\sum_{i=1}^n(X_i-\bar X_n)^2}_{\sim\chi^2_{n-1}}]=c\sigma^2\cdot(n-1)\]
+\[\var_\vartheta(\tilde\sigma_n^2(c))=c^2\sigma^4\cdot2(n-1)\]
+Damit:
+\begin{eqnarray*}
+\MQA_{\tilde\sigma_n^2(c)}(\vartheta)&=&2(n-1)c^2\sigma^4+(c\sigma^2(n-1)-\sigma^2)^2\\
+&=&\ldots\\
+&=&\sigma^4(n^2-1)\left[(c-\frac{1}{n+1})^2+\frac{2}{(n-1)(n+1)^2}\right]\\
+&\stackrel{!}{=}&\min\end{eqnarray*}
+Dies führt offensichtlich auf $c=\frac{1}{n+1}$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 02.05.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage
+\section{Schätzmethoden}
+a) \underline{Maximum-Likelihood-Schätzer} (ML-Schätzer)
+
+ML-Methode (R. A. Fisher) setzt dominierte Verteilungsklasse\\
+$\wp:=\{P_\vartheta:\vartheta\in\Theta\}$ voraus. ($\Theta\subset\R^k$)\\
+\underline{Im Folgenden:} $(\XX,\BB)=(\R^n,\BB^n)$
+
+\subsection{Grundannahmen}
+\begin{itemize}
+\item[1)] $\exists \sigma$-endliches Maß $\mu$ auf $\BB$ mit:
+\[\forall N\in\BB:\ \mu(N)=0 \Rightarrow\ P_\vartheta(N)=0\ \forall\vartheta\in\Theta\]
+d.h. $P_\vartheta$ stetig bzgl. $\mu\ \forall\vartheta$.\\
+($\Rightarrow P_\vartheta$ besitzt Dichte bzgl. $\mu$)
+\item[2)] Im Folgenden stets
+\begin{itemize}
+\item[(i)] $\mu=\lambda^n$ (Borel-Lebesgue-Maß)\\
+($\rightarrow$ stetige Verteilung)\end{itemize}
+oder
+\begin{itemize}
+\item[(ii)] $\mu=$Zählmaß auf einer abzählbaren Menge $A\subset\R^n$.\\
+($\rightarrow$ diskrete Verteilung)
+\end{itemize}
+\end{itemize}
+
+Im Falle (i) bezeichne $f(x,\vartheta)=\frac{dP_\vartheta}{d\lambda^n}(x)$ die Lebesgue-Dichte\footnote{Beachte Schreibweise aus Stochastik II!} von X, also 
+\[P_\vartheta(X\in B)=\int_B f(x,\vartheta)d\lambda^n(x),\ B\in\BB\]
+Im Falle (ii) bezeichne $f(x,\vartheta)=\frac{dP_\vartheta}{d\mu}(x)$ die Zähldichte von X, also 
+\[f(x,\vartheta)=P_\vartheta(X=x),\ x\in A\]
+\[P_\vartheta(X\in B)=\sum_{x\in B\cap A}f(x,\vartheta)\]
+
+\subsection{Definition und Bemerkung}
+Für jedes $x\in\R^n$ heißt die Abbildung
+\[L_x:\ \left\{\begin{array}{rcl}\Theta&\to&[0,\infty)\\\vartheta&\mapsto&L_x(\vartheta):=f(x,\vartheta)\end{array}\right.\]
+die Likelihood-Funktion zur Stichprobe x.
+
+Jeder Wert $\hat\vartheta(x)\in\Theta$, der Lösung t von
+\[L_x(t)=\sup_{\vartheta\in\Theta}L_x(\vartheta)\quad(\ast)\]
+ist, heißt (ein) ML-Schätzwert für $\vartheta\in\Theta$
+
+\begin{itemize}
+\item[(i)] Im Allgemeinen Existenz gesichert, falls $\Theta$ abgeschlossen ist.
+\item[(ii)] Falls $\Theta$ nicht abgeschlossen, so häufig $\vartheta\mapsto f(x,\vartheta)$ auf $\bar\Theta$ fortsetzbar.\\
+Dann sieht man $\hat\vartheta(x)$ auch als Lösung an, wenn $\sup$ in $(\ast)$ im Punkt $\hat\vartheta(x)\in\bar\Theta\backslash\Theta$ angenommen wird.
+\end{itemize}
+
+Eine messbare Funktion $\hat\vartheta:\ (\R^n,\BB^n)\to(\bar\Theta,\bar\Theta\cap\BB^k)$ heißt \textbf{ML-Schätzer} für $\vartheta$, wenn für jedes $x\in\XX$ gilt: $\hat\vartheta(x)$ ist Lösung von $(\ast)$ im obigen Sinn\footnote{siehe Punkt (ii)}.
+
+\subsection{Bemerkungen}
+\begin{itemize}
+\item[(i)] Oft ist $L_x(\cdot)=f(x,\cdot)$ differenzierbar.\\
+Dann liefert $\frac{\partial}{\partial\vartheta}f(x,\vartheta)\stackrel{!}{=}0\in\R^k$ die lokalen Maximalstellen von $L_x$ im Inneren $\Theta^0$ von $\Theta$.
+\item[(ii)] Oft: $X=(X_1,\ldots,X_n)$, $X_1,\ldots,X_n\uiv f_1(\xi,\vartheta)$ [Dichte von $X_1$.]\\
+Dann:
+\[f(x,\vartheta)=\prod_{j=1}^n f_1(x_j,\vartheta),\ x=(x_1,\ldots,x_n)\]
+
+\underline{Log-Likelihood-Funktion}
+\[\log L_x(\vartheta)=\sum_{j=1}^n\log f_1(x_j,\vartheta)\]
+$\frac{\partial}{\partial\vartheta}\log L_x(\vartheta)\stackrel{!}{=}0\ \rightarrow$ Maximalstellen von $L_x$ in $\Theta^0$
+\end{itemize}
+
+\subsection{Satz \textnormal{(Invarianzprinzip für ML-Schätzer)}}
+Sei $g:\ \R^k\to\R^l$ messbar und \[M_x(\gamma):=\sup_{\vartheta:\ g(\vartheta)=\gamma}L_x(\vartheta)\]
+(sogenannte von g induzierte Likelihood-Funktion)
+
+Ist $\hat\vartheta$ ML-Schätzer für $\vartheta\in\Theta$, so ist $\hat\gamma:=g(\hat\vartheta)$ der ML-Schätzer für $\gamma=g(\vartheta)\in\Gamma:=g(\Theta)$, es gilt also $M(\hat\gamma)\geq M(\gamma)\ \forall\gamma\in\Gamma$.\\
+(Plug-In-Methode)
+
+\underline{Beweis:}\footnote{\textit{In der 1. Zeile gilt eigentlich bereits Gleichheit.}}\\
+Aus 
+\[M_x(g(\hat\vartheta))=\sup_{\vartheta:\ g(\vartheta)=g(\hat\vartheta)}L_x(\vartheta)\geq L_x(\hat\vartheta)\]
+und
+\[M_x(g(\hat\vartheta))\leq \sup_{\gamma\in\Gamma}M_x(\gamma)=L_x(\hat\vartheta)\]
+folgt
+\[M_x(g(\hat\vartheta))=L_x(\hat\vartheta)\geq M_x(\gamma)\quad \forall\gamma\in\Gamma\]
+
+\subsection{Beispiel}
+$X_1,\ldots,X_n\uiv\NN(\mu,\sigma^2)$, $\vartheta=(\mu,\sigma^2)$
+\[\hat\vartheta(x)=(\bar X_n,\hat\sigma_n^2)\]
+\begin{tabular}{cl}
+$\Rightarrow$& $\bar X_n$ ist ML-Schätzer für $\mu$\\
+& $\hat\sigma_n^2$ ist ML-Schätzer für $\sigma^2$\\
+& $\hat\sigma_n=+\sqrt{\hat\sigma_n^2}$ ist ML-Schätzer für $\sigma$\end{tabular}
+
+b) \underline{Minimum-Quadrat-Schätzer} (MQ-Schätzer)
+
+\subsection{Situation}
+Seien $X_1,\ldots,X_n$ stochastisch unabhängig.
+
+Annahme:\\
+$EX_j=\mu_j(\vartheta)$, wobei $\vartheta\in\R^p$ \textbf{unbekannt}, $\mu_j:\ \R^p\to\R\ (j=1,\ldots,n)$ \textbf{bekannte Regressionsfunktionen}.
+
+Für $\varepsilon_j:=X_j-EX_j$ gilt dann:\\
+$\eps_1,\ldots,\eps_n$ unabhängig, $E(\eps_j)=0\ \forall j$, $X_j=\mu_j(\vartheta)+\eps_j\ (j=1,\ldots,n)$ bzw. 
+\[X=\mu(\vartheta)+\eps\]
+wobei
+\[X=\begin{pmatrix}X_1\\\vdots\\X_n\end{pmatrix},\ \mu(\vartheta)=\begin{pmatrix}\mu_1(\vartheta)\\\vdots\\\mu_n(\vartheta)\end{pmatrix},\ \eps=\begin{pmatrix}\eps_1\\\vdots\\\eps_n\end{pmatrix}\]
+
+Schätzmethode von $\vartheta$ durch Methode der \textbf{kleinsten Quadrate}, d.h. durch Minimierung der Fehlerquadratsumme
+\[Q(\vartheta):=\sum_{j=1}^n(X_j-\mu_j(\vartheta))^2=\|X-\mu(\vartheta)\|^2\]
+Sind $\mu_1,\ldots,\mu_n$ stetig differenzierbar, so gilt mit
+\[M(\vartheta):=\begin{pmatrix} \frac{\partial}{\partial\vartheta_1}\mu_1(\vartheta)&\cdots&\frac{\partial}{\partial\vartheta_p}\mu_1(\vartheta)\\
+\vdots&&\vdots\\\frac{\partial}{\partial\vartheta_1}\mu_n(\vartheta)&\cdots&\frac{\partial}{\partial\vartheta_p}\mu_n(\vartheta)\end{pmatrix}\]
+\[\frac{\partial}{\partial\vartheta}Q(\vartheta)=-2\cdot M^T(\vartheta)\cdot(X-\mu(\vartheta))\]
+
+\underline{Beweis:}\\
+Sei allgemein $f,g:\ \R^p\to\R^q$.\\
+Jacobi-Matrix
+\[J_f=\begin{pmatrix} \frac{\partial f_1}{\partial x_1}&\cdots&\frac{\partial f_1}{\partial x_p}\\
+\vdots&&\vdots\\\frac{\partial f_q}{\partial x_1}&\cdots&\frac{\partial f_q}{\partial x_p}\end{pmatrix}\in\R^{q\times p}\]
+\[\Rightarrow \underbrace{J_{f^T\cdot g}^T}_{\in\R^p}=\underbrace{\underbrace{J_f^T}_{\in\R^{p\times q}}\cdot g}_{\in\R^p}+\underbrace{J_g^T\cdot f}_{\in\R^p}\qquad(\ast)\]
+[Beachte: f,g vektorwertig!]
+
+Hier speziell: $f(\vartheta)=g(\vartheta)=X-\mu(\vartheta)$
+\[\Rightarrow Q(\vartheta)=f^T(\vartheta)\cdot f(\vartheta)\]
+\[\Rightarrow J_f=-M(\vartheta)=J_g\]
+\begin{eqnarray*}
+\stackrel{(\ast)}{\Rightarrow}\ \frac{\partial}{\partial\vartheta}[f^T(\vartheta)\cdot f(\vartheta)]&=&-M^T(\vartheta)g-M^T(\vartheta)f\\
+&=&-2M^T(\vartheta)(X-\mu(\vartheta))\end{eqnarray*}
+
+
+Die Lösungen $\hat\vartheta$ von \[Q(\hat\vartheta)=\min_{\vartheta\in\R^p}Q(\vartheta)\] (sogenannte MQ-Schätzer) befinden sich also unter den Lösungen $\vartheta$ der sogenannten \textbf{Normalengleichung}
+\[M^T(\vartheta)\cdot\mu(\vartheta)=M^T(\vartheta)\cdot X\]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Vorlesung vom 03.05.07 geteXt von Tobias Flaig
+\subsection{Beispiel (Einfach lineare Regression)}
+$\vartheta=(\vartheta_0,\vartheta_1)\in\R$
+\[\mu_i(\vartheta )=\vartheta_0+\vartheta_1t_i\ (i=1,\ldots ,n)\]
+$t_i$ bekannt, nicht alle gleich.
+ 
+$$ Q(\vartheta)=\sum_{i=1}^n(X_i-\vartheta_0-\vartheta_1t_i)^2=\min_{\vartheta_0,\vartheta_1}!$$
+$$ M^T(\vartheta)=
+\begin{pmatrix}
+	1 & \ldots & 1\\
+	t_1&\ldots & t_n\\
+\end{pmatrix}$$
+Normalengleichung: $$ 
+\begin{pmatrix}
+	1 & \ldots & 1\\
+	t_1&\ldots & t_n\\
+\end{pmatrix}
+\begin{pmatrix}
+	\vartheta_0+\vartheta_1t_1\\
+	\vdots \\
+	\vartheta_0+\vartheta_1t_n\\
+\end{pmatrix}=
+\begin{pmatrix}
+	1 & \ldots & 1\\
+	t_1&\ldots & t_n\\
+\end{pmatrix}
+\begin{pmatrix}
+	x_1\\
+	\vdots \\
+	x_n\\
+\end{pmatrix}$$
+$$\Leftrightarrow n\vartheta_0+\vartheta_1\sum_{i=1}^nt_i=\sum_{i=1}^nx_i$$
+$$\vartheta_0\sum_{i=1}^nt_i+\vartheta_1\sum_{i=1}^nt_i^2=\sum_{i=1}^nt_ix_i$$
+Mit $\bar t=\frac1n\sum_{i=1}^nt_i,\ \bar{x}=\frac1n\sum_{i=1}^nx_i$ folgt\\
+\framebox{\parbox{0.9\textwidth}{
+$$\hat{\vartheta_0}=\bar{x}-\hat{\vartheta_1}\bar{t}$$ $$\hat{\vartheta_1}=
+\frac{\sum_{i=1}^nt_ix_i-n\bar{t}\bar{x}}{\sum_{i=1}^n(t_i-\bar{t})^2}$$}}\\
+Wegen\footnote{$\sum (a_i-\bar a)\bar b=\bar b\sum(a_i-\bar a)=0$} $$\sum_ia_ib_i-n\bar{a}\bar{b}=\sum_i(a_i-\bar{a})(b_i-\bar{b})=
+\sum_i(a_i-\bar{a})b_i$$ folgt
+$$\hat\vartheta_1=\hat\vartheta_1(X)=
+\frac{\sum_{i=1}^n(t_i-\bar{t})x_i}{\sum_{i=1}^n(t_i-\bar{t})^2}$$
+und somit 
+$$E(\vartheta_1)=\frac{1}{\sum_i(t_i-\bar{t})^2}\sum_i(t_i-\bar{t})(\vartheta_0+\vartheta_1t_i)
+=\vartheta_1$$
+Falls $\var(X_i)=\sigma^2\ \forall i$, so gilt:
+$$\var(\hat\vartheta_1)=\frac{1}{(\sum_i(t_i-\bar{t})^2)^2}\sum_i(t_i-\bar{t})^2\sigma^2=
+\frac{\sigma^2}{\sum_{i=1}^n(t_i-\bar{t})^2}$$
+[$\var(\hat\vartheta_1)=\MQA$, da erwartungstreu; $t_i$ so wählen, dass $\var(\hat\vartheta_1)$ klein wird, also möglichst weit auseinander.]\\
+Weiter gilt $$E(\hat\vartheta_0)=E\bar{X}-\bar{t}E(\hat\vartheta_1)=
+\frac1n\sum_{i=1}^n(\vartheta_0+\vartheta_1t_i)-\bar{t}\vartheta_1
+=\vartheta_0+\vartheta_1\bar{t}-\vartheta_1\bar{t}=\vartheta_0$$
+
+\underline{Bemerkungen:}
+\begin{itemize}
+\item[(i) ]Falls $\var(X_i)=\sigma^2\ \forall i$ ($\cov(X_i,X_j)=0\ \forall i\neq j $
+wegen Unabhängigkeit\footnote{Voraussetzung!}), so gilt mit $\bar{t^2}=\frac1n\sum_{i=1}^nt_i^2$
+$$\var(\hat{\vartheta_0})=\frac{\sigma^2\bar{t^2}}{n(\bar{t^2}-(\bar{t})^2)}$$
+\item[(ii) ]Falls $X_i\sim \NN(\mu,\sigma^2)\ \forall i$, so ist der MQ-Schätzer auch ML-Schätzer\\ für $\vartheta$
+\end{itemize}
+\newpage
+c) \underline{Momentenmethode}
+\subsection{Definition}
+Es seien $X_1,\ldots , X_n\uiv X$, X reellwertig, $P^X\in \{ P_{\vartheta } : \vartheta \in \Theta \},\ \Theta\subset\R^k$
+\[\vartheta = (\vartheta_1 ,\ldots,\vartheta_k )\]
+\underline{Annahme}
+\begin{itemize}
+\item[(i) ]$ E\left|X^k\right| < \infty $
+\item[(ii) ]Es gibt Funktionen $g_1,\ldots,g_k:\R^k\rightarrow\R$ mit 
+$$\vartheta_1=g_1(EX,\ldots,EX^k)$$
+$$\vdots$$
+$$\vartheta_k=g_k(EX,\ldots,EX^k)$$
+\end{itemize}
+
+Sei $\bar{X^l_n}=\frac1n\sum_{j=1}^nX_j^l\ (l=1,\ldots,k)$.\\
+Dann ist der Momentenschätzer für $\vartheta$ 
+$$\hat{\vartheta}:=
+\begin{pmatrix}
+	g_1(\bar{X_n^1},\ldots,\bar{X_n^k})\\
+	\vdots\\
+	g_k(\bar{X_n^1},\ldots,\bar{X_n^k})\\
+\end{pmatrix}$$
+
+\underline{Beispiel:}\\
+$X_i\uiv \NN(\mu, \sigma^2)$, $\mu=EX$, $\sigma^2=EX^2-(EX)^2$\\
+$\Rightarrow \hat\mu_n=\bar{X_n^1},\ \hat\sigma_n^2=\bar{X_n^2}-(\bar{X_n^1})^2=\frac1n\sum_{i=1}^n(X_i-\bar{X})^2$
+
+\underline{Probleme:}\\
+$g_1,\ldots,g_k$ nicht explizit gegeben.\\
+Ausreißeranfälligkeit.\\
+Momentenschäter sind nicht "`robust"'.
+
+\underline{Beachte}\\
+Momentenschätzer sind konsistent, falls $g_1,\ldots,g_k$ stetig sind an der Stelle $(EX,\ldots,EX^k)$.
+
+\subsection{Beispiel (Gamma-Verteilung)}
+$X_1,\ldots,X_n\uiv \Gamma(\alpha,\beta)$, Dichte $$f(x,\alpha,\beta)=\frac{\beta^{\alpha}x^{\alpha-1}e^{-\beta x}}{\Gamma(\alpha)}\ (x>0)$$
+$\vartheta=(\alpha,\beta)\in\Theta=\R_{>0}\times\R_{>0}$\\
+$X\sim f(x,\alpha,\beta)\Rightarrow EX =\frac{\alpha}{\beta}$, $EX^2=\frac{\alpha(\alpha+1)}{\beta^2}\ \Rightarrow$ \[\alpha=\frac{(EX)^2}{EX^2-(EX)^2}=:g_1(EX,EX^2)\]\[\beta=\frac{EX}{EX^2-(EX)^2}=:g_2(EX,EX^2)\]
+$\Rightarrow$ Momentenschätzer $$\hat{\alpha}=\frac{(\bar{X_n^1})^2}{\bar{X_n^2}-(\bar{X_n^1})^2}=\frac{\bar{X_n}^2}{\hat{\sigma_n^2}}$$
+\[\hat{\beta}=\frac{\bar{X_n}}{\hat{\sigma_n^2}}\]
+
+d) \underline{Ein nichtparametrisches Schätzprinzip}\\
+Seien $X_1,\ldots,X_n\uiv F,\ F(t)=P(X\leq t),\ t\in\R$, F unbekannt
+
+\subsection{Definition}
+Die durch 
+\[\hat F_n(t)=\frac1n\sum_{i=1}^n \ind\{ X_i\leq t\},\ t\in\R\] definierte Funktion heißt \textbf{empirische Verteilungsfunktion} (EVF) von 
+$X_1,\ldots,X_n$.\\
+Die Realisierungen von $\hat{F_n}$ sind Treppenfunktionen.
+$$\hat{F_n}(t_0)\stackrel{f.s.}{\rightarrow}E[\ind\{X_1\leq t_0\}]=P(X_1\leq t_0) = F(t_0)$$
+
+\subsection{Satz von Glivenko-Cantelli}
+Sei $\hat{F_n^{\omega}}(t)=\frac1n\sum_{i=1}^n \ind\{ X_i(\omega)\leq t\},\ \omega\in\Omega$.\\
+Falls $X_1,\ldots,X_n\uiv F$ auf Wahrscheinlichkeitsraum $(\Omega,\AAA,\PP)$, so gilt
+$$ \PP(\{ \omega \in \Omega : \lim_{n\to\infty}\underbrace{\sup_{t\in\R}\left|\hat{F_n^{\omega}}(t)
+-F(t)\right|}_{=:\left\|\hat{F_n^{\omega}}-F\right\|_{\infty}}=0\})=1$$
+\underline{Kurz:} $\left\|\hat{F_n^{\omega}}-F\right\|_{\infty}\rightarrow 0\ $ $\ \PP-f.s.$ \\
+(Stochastik II, Henze)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 09.05.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{$\hat F_n$ als nichtparametrischer ML-Schätzer}
+Sei $\FF$ die Menge aller Verteilungsfunktionen auf $\R$, $X_1,\ldots,X_n\uiv F\in\FF$.\\
+Sei $P_F$ das zu F gehörende Wahrscheinlichkeitsmaß auf $\BB^1$, also
+\[P_F([a,b])=F(b)-F(a),\ a<b\]
+\[P_F(\{x\})=F(x)-F(x-0),\ x\in\R\]
+Sei $(x_1,\ldots,x_n)$ Realisierung von $(X_1,\ldots,X_n)$. Die durch
+\[L_x:\ \begin{array}{rcl}\FF&\to&[0,\infty)\\G&\mapsto&L_x(G):=\prod_{i=1}^n P_G(\{x_i\})\end{array}\]
+definierte Funktion heißt nichtparametrische Likelihood-Funktion zu\\ $x=(x_1,\ldots,x_n)$.\\
+\underline{Beachte:} $L_x(G)=0$, falls $P_G(\{x_i\})=0$ für ein i.\footnote{z.B. für G stetig}
+
+\underline{Behauptung:}\\
+$L_x(\cdot)$ wird maximal für $G(t)=\frac1n\sum_{i=1}^n \ind\{x_i\leq t\}$.
+
+\underline{Beweis:}\\
+Seien $z_1,\ldots,z_k$ die unterschiedlichen Werte unter $x_1,\ldots,x_n$, $n_1,\ldots,n_k$ die entsprechenden Vielfachheiten.
+\[L_x(G)=\prod_{i=1}^nP_G(\{x_i\})=\prod_{j=1}^k{\underbrace{P_G(\{z_j\})}_{=:p_j}}^{n_j}=\prod_{j=1}^k p_j^{n_j}\]
+Setze $\hat p_j:=\frac{n_j}{n}, j=1,\ldots,k$, Verteilungsfunktion ist $\hat F_n$.
+
+F sei beliebige Verteilungsfunktion mit $p_j:=F(z_j)-F(z_j-0)>0, j=1,\ldots,k$ mit $p_j\neq \hat p_j$ für mindestens ein j.\\
+Es gilt für $x>0$:
+\[\log x\leq x-1\quad(\ast)\]
+$\log x=x-1$ nur für $x=1$.
+\begin{eqnarray*}
+\log\left(\frac{L_x(F)}{L_x(\hat F_n)}\right)&=&\sum_{j=1}^k n_j\cdot\log(\frac{p_j}{\hat p_j})\\
+&=&n\sum_{j=1}^k \hat p_j\cdot \log(\frac{p_j}{\hat p_j})\\
+&\stackrel{(\ast)}{<}&n\sum_{j=1}^k\hat p_j(\frac{p_j}{\hat p_j}-1)\\
+&=&n(\underbrace{\sum_{j=1}^kp_j}_{\leq 1}-\underbrace{\sum_{j=1}^k\hat p_j}_{=1})\\
+&\leq&0\end{eqnarray*}
+$\Rightarrow L_x(F)<L_x(\hat F_n)$ $\blacksquare$
+
+\subsection{Nichtparametrisches Schätzprinzip}
+Seien $X_1,\ldots,X_n\uiv F$, $F\in \FF$, $\FF$ Menge von Verteilungsfunktionen (Verteilungsannahme).\\
+Sei $\gamma:\ \FF\to\R$ Funktional.
+
+Interessierender Parameter sei $\gamma(F)$.\\
+"`Rezept"': \fbox{Schätze $\gamma(F)$ durch $\gamma(\hat F_n)$}
+
+\subsection{Beispiele}
+\begin{itemize}
+\item[a)] $\FF:=\{F:\ \underbrace{\int|x|F(dx)}_{=E|X_1|}<\infty\}$
+\[\gamma(F):=\int xF(dx)(=EX_1)\]
+\[\gamma(\hat F_n)=\int x\hat F_n(dx)=\frac1n\sum_{i=1}^n X_i=\bar X_n\]
+\item[b)] $\FF:=\{F:\ \int x^2F(dx)<\infty\}$
+\[\gamma(F):=\int (x-\int ydF(y))^2dF(x)=\var(X_1)\]
+\[\gamma(\hat F_n)=\frac1n\sum_{i=1}^n (X_i-\bar X_n)^2\]
+\item[c)] $\FF:=\{F:\ F\mbox{ hat Lebesgue-Dichte }f\}$
+\[\gamma(F)=F'(t_0)=f(t_0)\]
+\[\gamma(\hat F_n)=?\]
+\end{itemize}
+
+\cleardoublepage
+\section{Optimale erwartungstreue Schätzer}
+\subsection{Definition}
+Seien $X_1,\ldots,X_n$ reelle Zufallsvariablen, $T=T(X_1,\ldots,X_n)$ reellwertige Statistik.\\
+T heißt \textbf{linear} $:\Leftrightarrow\ \exists c_1,\ldots,c_n\in\R$ mit $T=\sum\limits_{j=1}^n c_jX_j$
+
+\subsection{Satz}
+Seien $X_1,\ldots,X_n\uiv X$, $EX^2<\infty$, $\mu:=EX$, $\sigma^2:=\var(X)$, $(\mu,\sigma^2)$ unbekannt. Es sei T ein beliebiger linearer erwartungstreuer Schätzer für $\mu$. Dann gilt:
+\[\var(T)\geq\var(\bar X_n)=\frac{\sigma^2}{n}\]
+
+\underline{Beweis:}\\
+Sei $T=\sum\limits_{j=1}^n c_jX_j$.\\
+T erwartungstreu \[\Rightarrow \mu=E(T)=\mu\sum_{j=1}^nc_j\]
+\[\Rightarrow \sum_{j=1}^n c_j=1\]
+$\var(T)=\sigma^2\sum\limits_{j=1}^n c_j^2$
+\[\underbrace{\left(\sum_{j=1}^n c_j\cdot 1\right)^2}_{=1}\leq \sum_{j=1}^n c_j^2\underbrace{\sum_{j=1}^n 1^2}_{=n}\]
+(Cauchy-Schwarz)
+\[\sum_{j=1}^n c_j^2\geq\frac 1n\]
+\[\sum_{j=1}^n c_j^2=\frac 1n \Leftrightarrow c_j=\frac1n\ \forall j\]
+$\Rightarrow T=\bar X_n$. $\blacksquare$
+
+\subsection{Situation}
+Sei $(\XX,\BB,\{P_\vartheta: \vartheta\in\Theta\})$, $\Theta\subset\R^k$, ein statistischer Raum. $X_1,\ldots,X_n\uiv P_\vartheta$.
+\[g:\ \Theta\to\R\ \mbox{ Funktional}\]
+$g(\vartheta)$ interessierender Parameter.
+
+Sei
+\[U_g=\{T|\ T:\ \XX^n\to\R\mbox{ messbar, }E_\vartheta T=g(\vartheta)\ \forall\vartheta\in\Theta, E_\vartheta T^2<\infty\ \forall\vartheta\in\Theta\}\]
+die Menge aller erwartungstreuen Schätzer für $g(\vartheta)$ mit endlicher Varianz.
+
+\underline{Annahme:} $U_g\neq\emptyset$\\
+Sei 
+\[m(\vartheta):=\inf\{\var_\vartheta(T):\ T\in U_g\}\]
+
+\subsection{Definition}
+Ein $T_0\in U_g$ mit $\var_\vartheta(T_0)=m(\vartheta)\ \forall\vartheta\in\Theta$ heißt \textbf{UMVUE}.\\
+(Uniformly Minimum Variance Unbiased Estimator)
+
+\subsection{Satz}
+Falls $T_1$ und $T_2$ UMVUE, so gilt 
+\[P_\vartheta(T_1=T_2)=1\ \forall\vartheta\in\Theta\]
+
+\underline{Beweis:}\\
+$U_g$ ist konvex, d.h. 
+\[S,T\in U_g\ \Rightarrow\ \lambda S+(1-\lambda)T\in U_g\ \forall\lambda\in[0,1]\]
+Seien $T_1, T_2$ UMVUE.\\
+$\Rightarrow \frac12(T_1+T_2)\in U_g$
+\[\Rightarrow \underbrace{\var_\vartheta(\frac12(T_1+T_2))}_{=\frac14(\var_\vartheta(T_1)+\var_\vartheta(T_2)+2\cov_\vartheta(T_1,T_2))}\geq\var_\vartheta(T_1)(=m(\vartheta)=\var_\vartheta(T_2))\]
+\[\Rightarrow \var_\vartheta(T_1)\leq\cov_\vartheta(T_1,T_2)\stackrel{\textnormal{CSU}}{\leq}\sqrt{\var_\vartheta(T_1)\var_\vartheta(T_2)}=\var_\vartheta(T_1)\]
+$\Rightarrow \var_\vartheta(T_1)=\cov_\vartheta(T_1,T_2)$
+\[\Rightarrow \var_\vartheta(T_1-T_2)=\var_\vartheta(T_1)+\var_\vartheta(T_2)-2\cov_\vartheta(T_1,T_2)=0\]
+\[E_\vartheta(T_1-T_2)=0\]
+$\Rightarrow P_\vartheta(T_1=T_2)=1$. $\blacksquare$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 10.05.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Definition und Satz}
+Sei \[\SSS_n:=\{\pi=(\pi(1),\ldots,\pi(n)):\ \pi\mbox{ Permutation von }\{1,\ldots,n\}\}\]
+Für Statistik $T:\ \XX^n\to\R$ sei $T^\pi(X_1,\ldots,X_n)=T(X_{\pi(1)},\ldots,X_{\pi(n)})$.\\
+In der Situation von 5.3 heißt T (im wesentlichen) symmetrisch $:\Leftrightarrow$ \[P_\vartheta(T^\pi=T)=1\ \forall\vartheta\in\Theta\forall\pi\in\SSS_n\]
+
+$T_0\in U_g$ UMVUE $\Rightarrow T$ symmetrisch.
+
+\underline{Beweis:}\\
+Sei $\pi\in\SSS_n$, $\vartheta\in\Theta$ beliebig.\\
+Wegen $X_1,\ldots,X_n\uiv P_\vartheta$ folgt $T_0^\pi\sim T_0$ unter $P_\vartheta$
+\[\left.\begin{array}{l}\Rightarrow E_\vartheta(T_0^\pi)=E_\vartheta(T_0)=g(\vartheta)\\\Rightarrow\var_\vartheta(T_0^\pi)=\var_\vartheta(T_0)=m(\vartheta)\end{array}\right\}\Rightarrow T_0^\pi\in U_g,\mbox{ UMVUE}\]
+Satz 5.5 $\Rightarrow P_\vartheta(T_0^\pi=T_0)=1$. $\blacksquare$
+
+\subsection{Reguläre Verteilungsklassen}
+\underline{Situation:}\\
+Sei $(\XX,\BB,\{P_\vartheta:\vartheta\in\Theta)$ statistischer Raum mit $(\XX,\BB)=(\R^n,\BB^n)$, $\Theta\subset\R^k$, $\Theta$ offen.\\
+$X=(X_1,\ldots,X_n)$ Zufallsvektor mit Verteilung $P_\vartheta\ (\vartheta\in\Theta)$, $P_\vartheta$ besitze Dichte $f(x,\vartheta)$ bezüglich $\mu$, dabei sei $\mu$ entweder das Lebesgue-Maß oder das Zählmaß auf einer abzählbaren Teilmenge des $\R^n$.
+
+$T:\ \R^n\to\R^s$ sei Statistik mit $E_\vartheta\|T\|^2<\infty$, Kovarianzmatrix\footnote{Schreibweise für Kovarianzmatrix hier nicht $\cov_\vartheta$, sondern $\var_\vartheta$. Beachte dazu die Fälle $s=1$ und $s>1$!} von T:\footnote{Bei Vektoren manchmal Schreibweise $x'$ für $x^T$.}
+\[\var_\vartheta(T):=E_\vartheta[(T-E_\vartheta T)(T-E_\vartheta T)^T]\]
+
+Folgende Regularitätsbedingungen sollen gelten:
+\begin{itemize}
+\item[a)] $\forall x\in\XX$ existiert $\frac{\partial}{\partial\vartheta_j}f(x,\vartheta)$ und ist stetig. $(j=1,\ldots,k)$
+\item[b)] \[\frac{d}{d\vartheta}\int f(x,\vartheta)\mu(dx)=\int\frac{d}{d\vartheta}f(x,\vartheta)\mu(dx)\]
+wobei hier $\frac{d}{d\vartheta}:=(\frac{\partial}{\partial\vartheta_1},\ldots,\frac{\partial}{\partial\vartheta_k})^T$.
+\end{itemize}
+
+Der k-dimensionale Zufallsvektor
+\[\UU_n(\vartheta):=\frac{d}{d\vartheta}\log f(X,\vartheta)=\frac{\frac{d}{d\vartheta}f(X,\vartheta)}{f(X,\vartheta)}\]
+heißt Score-Vektor.\\
+Die $k\times k$-Matrix
+\[I_n(\vartheta):=E_\vartheta[\UU_n(\vartheta)\cdot \UU_n(\vartheta)^T]=\left(E_\vartheta\left[\frac{\partial}{\partial\vartheta_i}\log f(X,\vartheta)\frac{\partial}{\partial\vartheta_j}\log f(X,\vartheta)\right]\right)_{i,j=1,\ldots,k}\]
+heißt \textbf{Fisher-Informationsmatrix} (von f an der Stelle $\vartheta$):
+\begin{itemize}
+\item[c)] $I_n(\vartheta)$ existiert und ist positiv definit.
+\end{itemize}
+
+Eine Verteilungsklasse $\{P_\vartheta:\vartheta\in\Theta\}$, die die Bedingungen (a)-(c) erfüllt, heißt \textbf{regulär}.
+
+\subsection{Lemma}
+In der Situation von 5.7 gilt:\\
+$E_\vartheta \UU_n(\vartheta)=0\ \forall\vartheta\in\Theta$ und somit $I_n(\vartheta)=\var_\vartheta(\UU_n(\vartheta))$, $\vartheta\in\Theta$, d.h. die Fisher-Informationsmatrix ist Kovarianzmatrix des Score-Vektors.
+
+\underline{Beweis:}
+\[E_\vartheta\UU_n(\vartheta)\stackrel{(\ast)}{=}\int\frac{\frac{d}{d\vartheta}f(x,\vartheta)}{f(x,\vartheta)}f(x,\vartheta)d\mu(x)\stackrel{(b)}{=}\frac{d}{d\vartheta}\underbrace{\int f(x,\vartheta)d\mu(x)}_{=1}=0\]
+$(\ast)$: Integration bezüglich $P_\vartheta$; $P_\vartheta$ hat aber Dichte $f(x,\vartheta)$ bezüglich $\mu$
+
+\subsection{Bemerkung} 
+Gelegentlich werden die weiteren Voraussetzungen 
+\begin{itemize}
+\item[d)] $\forall x\in\XX$ existiert $\frac{\partial^2}{\partial\vartheta_i\partial\vartheta_j}f(x,\vartheta)$ und ist stetig. $(i,j=1,\ldots,k)$
+\item[e)] \[\frac{\partial^2}{\partial\vartheta_i\partial\vartheta_j}\int f(x,\vartheta)\mu(dx)=\int\frac{\partial^2}{\partial\vartheta_i\partial\vartheta_j}f(x,\vartheta)\mu(dx)\ \forall i,j=1,\ldots,k\]
+\end{itemize}
+benötigt.
+
+Wir führen noch die folgenden Notationen ein:
+\[W_n(\vartheta):=\left(\frac{\partial^2}{\partial\vartheta_i\partial\vartheta_j}\log f(X,\vartheta)\right)_{1\leq i,j\leq k}=:\frac{d^2}{d\vartheta d\vartheta^T}\log f(X,\vartheta)\]
+
+\subsection{Lemma}
+Unter (d) und (e) gilt:
+\[I_n(\vartheta)=-E_\vartheta W_n(\vartheta)\]
+
+\underline{Beweis:}\\
+Wegen
+\[\frac{\partial^2}{\partial\vartheta_i\partial\vartheta_j}\log f=\frac{\frac{\partial^2}{\partial\vartheta_i\partial\vartheta_j}f}{f}-\frac{(\frac{\partial}{\partial\vartheta_i}f)(\frac{\partial}{\partial\vartheta_j}f)}{f^2}\]
+folgt
+\begin{eqnarray*}
+E_\vartheta(W_n(\vartheta))&=&\int \frac{d^2}{d\vartheta d\vartheta^T}\log f(x,\vartheta)\cdot f(x,\vartheta)d\mu(x)\\
+&=&\underbrace{\left(\int \frac{\partial^2}{\partial\vartheta_i\partial\vartheta_j} f(x,\vartheta)\mu(dx)\right)_{i,j}}_{=0\textnormal{\footnotesize{ nach (e) [vgl. 5.7]}}}\\&&\quad-\left(\int \frac{\partial}{\partial\vartheta_i}\log f(x,\vartheta)\cdot\frac{\partial}{\partial\vartheta_j}\log f(x,\vartheta)\cdot f(x,\vartheta)d\mu(x)\right)_{i,j}\\
+&=&-E_\vartheta[\UU_n(\vartheta)U_nn(\vartheta)^T]\\
+&=&-I_n(\vartheta)
+\end{eqnarray*}
+
+\subsection{Reguläre Statistiken (Schätzer)}
+In der Situation von 5.7 heißt eine Statistik $T:\ \R^n\to\R^s$ \textbf{regulär}, falls gilt:
+\begin{itemize}
+\item[f)] Die Funktion $\Theta\ni\vartheta\mapsto E_\vartheta T\in\R^s$ ist stetig differenzierbar.
+\item[g)] Differenziation und Integration können vertauscht werden:
+\[\frac{\partial}{\partial\vartheta_j}\int T(x)f(x,\vartheta)\mu(dx)=\int T(x)\frac{\partial}{\partial\vartheta_j}f(x,\vartheta)\mu(dx)\ j=1,\ldots,k\]
+\end{itemize}
+
+Mit
+\[C_n(\vartheta):=\left[\begin{array}{ccc}\frac{\partial}{\partial\vartheta_1}E_\vartheta T_1&\cdots&\frac{\partial}{\partial\vartheta_1}E_\vartheta T_s\\\vdots&\ddots&\vdots\\\frac{\partial}{\partial\vartheta_k}E_\vartheta T_1&\cdots&\frac{\partial}{\partial\vartheta_k}E_\vartheta T_s
+\end{array}\right]_{k\times s}=\frac{d}{d\vartheta}E_\vartheta T^T\]
+wird Bedingung (g) zu
+\[C_n(\vartheta)=E_\vartheta[\UU_n(\vartheta)T^T]\]
+Wegen $E_\vartheta[\UU_n(\vartheta)]=0$ folgt
+\[C_n(\vartheta)=E_\vartheta[\UU_n(\vartheta)(T-E_\vartheta T)^T]\]
+
+\subsection{Strukturlemma}
+\underline{Vorbemerkung:}\\
+Seien A,B $n\times n$-Matrizen.\\
+$A\geq B\ :\Leftrightarrow\ A-B$ positiv semidefinit\footnote{$A-B\geq0$} ($\Leftrightarrow x^TAx\geq x^TBx\ \forall x\in\R^n$)\\
+("`$\geq$"' definiert Loewner-Halbordnung)
+
+Es seien $T:\ \R^n\to\R^s$ eine Statistik, $P_\vartheta$ Verteilung auf $\BB^n$, $V(\vartheta)$ ein k-dimensionaler Zufallsvektor mit $E_\vartheta V(\vartheta)=0$ und positiv definiter Kovarianzmatrix 
+\[J(\vartheta)=E_\vartheta[V(\vartheta)\cdot V(\vartheta)^T]\]
+Definiert man
+\[D(\vartheta):=E_\vartheta[V(\vartheta)\cdot(T-E_\vartheta T)^T]\]
+($k\times s$-Matrix), so gilt\footnote{$\var_\vartheta(T)$ ist Kovarianzmatrix, da T vektorwertig; im Folgenden wird diese Schreibweise bei (Zufalls-)Vektoren meistens angewandt (...)}:
+\[\var_\vartheta(T)\geq D^T(\vartheta)\cdot J^{-1}(\vartheta)\cdot D(\vartheta)\]
+"`="' gilt genau dann, wenn $T=E_\vartheta T+D^T(\vartheta)\cdot J^{-1}(\vartheta)\cdot V(\vartheta)$ $P_\vartheta$-f.s.
+
+\underline{Beweis:}\\
+Für jeden Zufallsvektor $Y_{k\times 1}$ gilt:
+\begin{itemize}
+\item[(i)] $E[YY^T]\geq0$
+\item[(ii)] $E[YY^T]=0\ \Leftrightarrow\ Y=0$ P-f.s.
+\end{itemize}
+[zu (i): 
+\[\forall a\in\R^k:\ a^TE[YY^T]a=E[a^TYY^Ta]=E[(a^TY)^2]\geq0\]
+zu (ii): "`$\Rightarrow$"'
+\[EYY^T=0\ \Rightarrow\ \forall j:\ EY_j^2=0\ \Rightarrow\ Y=0\mbox{ P-f.s.}\quad]\]
+Setze $Y:=T-E_\vartheta T-D^T(\vartheta)\cdot J^{-1}(\vartheta)\cdot V(\vartheta)$.
+
+Dann gilt:
+\begin{eqnarray*}
+0\stackrel{(i)}{\leq} E_\vartheta[YY^T]&\stackrel{(\ast)}{=}&E_\vartheta[(T-E_\vartheta T)(T-E_\vartheta T)^T]\\
+&&\ -\underbrace{E_\vartheta[(T-E_\vartheta T)V^T(\vartheta)]}_{=D^T(\vartheta)}J^{-1}(\vartheta)D(\vartheta)\\
+&&\ -D^T(\vartheta)J^{-1}(\vartheta)\underbrace{E_\vartheta[V(\vartheta)(T-E_\vartheta T)^T]}_{=D(\vartheta)}\\
+&&\ +D^T(\vartheta)J^{-1}(\vartheta)\underbrace{E_\vartheta[V(\vartheta)\cdot V^T(\vartheta)]}_{=J(\vartheta)}J^{-1}(\vartheta)D(\vartheta)\\
+&=&\var_\vartheta(T)-D^T(\vartheta)J^{-1}(\vartheta)D(\vartheta) \end{eqnarray*}
+$(\ast)$: Beachte: J symmetrisch, $J=E_\vartheta[\cdot]$, $D=E_\vartheta[\cdot]$.\newline
+[$Y=(T-E_\vartheta T)-(D^T(\vartheta)\cdot J^{-1}(\vartheta)\cdot V(\vartheta))$]
+
+"`="' $\stackrel{(ii)}{\Leftrightarrow} Y=0$ P-f.s. $\blacksquare$
+\newpage
+\subsection{Satz (Cramér-Rao-Ungleichung)}
+Es seien $\{P_\vartheta: \vartheta\in\Theta\}$ reguläre Verteilungsklasse und $T:\ \R^n\to\R^s$ reguläre Statistik. Dann gilt:\\
+\framebox{\parbox{0.9\textwidth}{\[(1)\quad\var_\vartheta(T)\geq (\frac{d}{d\vartheta}E_\vartheta T^T)^T\cdot I_n^{-1}(\vartheta)\cdot(\frac{d}{d\vartheta}E_\vartheta T^T)\quad (\vartheta\in\Theta)\]}}\\
+"`="' in (1) gilt $\Leftrightarrow\ T=E_\vartheta T+(\frac{d}{d\vartheta}E_\vartheta T^T)^T\cdot I_n^{-1}(\vartheta)\cdot\UU_n(\vartheta)$
+
+\underline{Beweis:}\\
+5.12 mit $V(\vartheta):=\UU_n(\vartheta)$, $E_\vartheta\UU_n(\vartheta)=0$ (Lemma 5.8), $J(\vartheta)=I_n(\vartheta)$,\\ $D(\vartheta)=E_\vartheta[\UU_n(\vartheta)(T-E_\vartheta T)^T]=C_n(\vartheta)=\frac{d}{d\vartheta}E_\vartheta T^T$ (5.11).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Vorlesung vom 16.05.07 (Tobi)
+
+\subsection{Bemerkungen}
+\begin{itemize}
+\item[a) ]Ist T erwartungstreu für $g(\vartheta)$, so gilt
+$$E_{\vartheta}T=g(\vartheta)\ \forall \vartheta \in \Theta$$
+$ \Rightarrow$ rechte Seite von 5.13(1) ist nicht von T abhängig.
+\item[b) ]Falls $k=s$ und T erwartungstreu für $\vartheta$, so gilt
+$E_{\vartheta}T=\vartheta\ \forall\vartheta\in\Theta$ und somit $\frac{d}{d\vartheta}E_{\vartheta}T^T=I_k\Rightarrow$ \[\var_{\vartheta}T\geq I_n^{-1}(\vartheta)\]
+\[\mbox{"`}=\mbox{"'} \Leftrightarrow T=\vartheta + I_n^{-1}(\vartheta)\frac{d}{d\vartheta}\log f(X,\vartheta)\quad P_{\vartheta}-f.s.\]
+\item[c) ]Falls $X=(X_1,\ldots,X_n)$ und $X_1,\ldots,X_n\uiv f_1(\xi,\vartheta)$, so gilt: $$f(x,\vartheta)=\prod_{j=1}^n f_1(x_j,\vartheta)$$
+$$\UU_n(\vartheta)=\frac{d}{d\vartheta}\sum_{j=1}^n\log f_1(X_j,\vartheta)=\sum_{j=1}^n\underbrace{\frac{d}{d\vartheta}\log f_1(X_j,\vartheta)}_{\mbox{uiv mit }E_{\vartheta}(\cdot)=0}$$
+\begin{eqnarray*}
+\Rightarrow I_n(\vartheta)&=&E_\vartheta [\UU_n(\vartheta)\UU_n^T(\vartheta)]\\
+&=&\sum_{i=1}^n\sum_{j=1}^n\underbrace{E_\vartheta[\frac{d}{d\vartheta}\log f_1(X_i,\vartheta)\frac{d}{d\vartheta}\log f_1(X_j,\vartheta)^T]}_{=0 \textnormal{ für }i \neq j}\\
+&=& n\cdot \underbrace{E_\vartheta[\frac{d}{d\vartheta}\log f_1(X_1,\vartheta)\cdot \frac{d}{d\vartheta} \log f_1(X_1,\vartheta)T]}_{=:I_1(\vartheta)}\\
+&=&n\cdot I_1(\vartheta)
+\end{eqnarray*}
+$\Rightarrow$ Schranke in 5.13(1) geht mit $\frac1n$ gegen 0.
+\item[d) ]Ist $\Theta\subset\R^1,\ T:\R^1\rightarrow\R^1,\ \gamma(\vartheta):=E_\vartheta(T),\vartheta\in\Theta$,\\
+$X_1,\ldots,X_n\uiv f_1(\xi,\vartheta)$ wie in (c), so folgt:
+$$\var_\vartheta(T)\geq\frac{(\gamma'(\vartheta))^2}{n\cdot I_1(\vartheta)},\ \vartheta\in\Theta$$
+\item[e) ] T heißt \textbf{CR-effizient}, falls in 5.13(1) Gleichheitszeichen gilt.\\
+\underline{Achtung:} CR-effizienzierter Schätzer muss nicht existieren.
+\end{itemize}
+
+\subsection{Beispiel}
+$X_1,\ldots,X_n\uiv \Bin (1,\vartheta), \vartheta \in\Theta =(0,1),\ \mu =$ Zählmaß auf $\{0,1\}^n.\\
+f_1(\xi,\vartheta)=\vartheta^\xi\cdot (1-\vartheta)^{1-\xi}$, $\xi\in\{0,1\}$
+$$f(x,\vartheta)=\prod_{j=1}^nf_1(x_j,\vartheta)=\vartheta^{\sum_j x_j}(1-\vartheta)^{n-\sum_j x_j},\ x\in A$$
+$$\log f(x,\vartheta)=\sum_jx_j\log \vartheta +(n-\sum_jx_j)\log (1-\vartheta)$$
+$$\frac{d}{d\vartheta}\log f(x,\vartheta)=\frac{\sum_jx_j}{\vartheta}-\frac{n-\sum_jx_j}{1-\vartheta}=
+\frac{\sum_jx_j-n\vartheta}{\vartheta(1-\vartheta)}$$
+\begin{eqnarray*}\Rightarrow I_n(\vartheta)&=&E_\vartheta[(\frac{d}{d\vartheta} \log f(X,\vartheta))^2]\\&=&\frac{1}{\vartheta^2(1-\vartheta)^2}
+\underbrace{E_\vartheta[(\underbrace{\sum_{j=1}^nX_j}_{\sim\Bin(n,\vartheta)}-n\vartheta)^2]}_{=n\vartheta(1-\vartheta)}\\
+&=&\frac{1}{\vartheta(1-\vartheta)}\end{eqnarray*}
+[Erwartungswert von $\Bin(n,\vartheta)=n\vartheta$, also ist in der vorletzten Zeile die Varianz von $\Bin(n,\vartheta)$ gesucht.] 
+\begin{itemize}
+\item[(1) ]"`Raten"'\\ Sei $T(x):=\frac1n\sum_{j=1}^nx_j.$\[E_\vartheta T=\vartheta\]$\Rightarrow $T erwatungstreu\\
+5.14(d) $\Rightarrow$ \[\underbrace{\var_\vartheta T}_{=\frac1n\var_\vartheta(X_1)=\frac1n\vartheta(1-\vartheta)}
+\geq I_n^{-1}(\vartheta)=\frac{\vartheta(1-\vartheta)}{n}\]$\Rightarrow$ T ist UMVUE
+\item[(2) ]Konstruktion nach 5.13 durchführen
+$$T(X)\stackrel{5.14(b)}{=} \vartheta+\underbrace{\frac{\vartheta(1-\vartheta)}{n}}_{I_n(\vartheta)^{-1}}\cdot
+\underbrace{\frac{\sum_{j=1}^nX_j-n\vartheta}{\vartheta(1-\vartheta)}}_{\frac{d}{d\vartheta}\log f(X,\vartheta)}=\bar{X}_n$$
+\end{itemize}
+
+\cleardoublepage
+%Exponentialfamilien (Klar)
+\section{Exponentialfamilien}
+Es sei $(\XX,\BB)$ Messraum, $\MM^1(\XX,\BB)$ Menge aller Wahrscheinlichkeitsmaße auf $\BB.$
+
+\subsection{Definition}
+Eine Verteilungsklasse $\wp = \{ P_{\vartheta}: \vartheta\in\Theta \} \subset \MM^1(\XX,\BB)$
+heißt {\bf Exponentialfamilie} $:\Leftrightarrow$ es existiert ein $\sigma-$endliches dominierendes Maß $\mu$ auf $\BB$, für ein $k\in\N$ existieren $q_1,\ldots,q_k, \, c:\Theta\rightarrow \R$
+und messbare Funktionen $T_1,\ldots,T_k : \XX\rightarrow\R, \; h:\XX \rightarrow \R_{\geq 0}$ mit
+\[
+ f(x,\vartheta) :=  \frac{d P_\vartheta}{d\mu}(x) = c(\vartheta) \cdot e^{\sum_{j=1}^k q_j(\vartheta)T_j(x)} \cdot h(x) \quad \mu\mbox{-f.ü}.\]
+
+
+\subsection{Bemerkungen}
+\begin{itemize}
+   \item[a)] Mit $\, q(\vartheta) := \left(q_1(\vartheta),\ldots,q_k(\vartheta)\right)^{T} \;$
+    und $\; T(x) := (T_1(x),\ldots,T_k(x))^{T} \;$ ist
+    \[f(x,\vartheta) = c(\vartheta) \, e^{q(\vartheta)^{T} T(x)} \, h(x)\]
+  \item[b)] $c$ ist Normierungskonstante:
+    \[c(\vartheta) = \left[\int e^{q(\vartheta)^{T} T(x)} h(x) \mu(dx)\right]^{-1} > 0\]
+  \item[c)] Der Träger $\{ x :\ f(x,\vartheta)>0 \}$ hängt nicht von $\vartheta$ ab,
+   insbesondere gilt
+   \[ \forall N \in \BB: \quad P_{\vartheta_1}(N)=0 \Leftrightarrow P_{\vartheta_2}(N)=0
+     \qquad (\vartheta_1, \vartheta_2 \in \Theta)\]
+  (d.h. es gilt $P_{\vartheta_1} \ll P_{\vartheta_2}, P_{\vartheta_2} \ll P_{\vartheta_1}$).
+  \item[d)]
+   Im Folgenden gelte immer:
+     \begin{itemize}
+       \item[(i)]  Die Funktionen $1,q_1,\ldots,q_k$ sind linear unabh\"angig
+       \item[(ii)] Die Funktionen $1,T_1,\ldots,T_k$ sind linear unabh\"angig
+                auf dem\\ Komplement jeder $\mu$-Nullmenge
+     \end{itemize}
+   (sogenannte (strikt) {\bf k-parametrige Exponentialfamilie}). \\
+   Dann ist $k$ kleinstmöglich gewählt, und $q$ sowie $T$ sind bis auf nicht
+   ausgeartete affine Transformationen $q\mapsto Aq+a,$ $ T\mapsto BT+b$
+   ($\mu$-f.ü.) eindeutig bestimmt.
+\end{itemize}
+
+\subsection{Beispiele}
+\begin{itemize}
+\item[a)]
+$P_\vartheta := \NN(\mu,\sigma^2), \; \vartheta:=(\mu,\sigma^2)\in\R\times\R_{>0}=:\Theta.$\\
+Die Lebesguedichte ist
+\begin{eqnarray*}
+  f(x,\vartheta) &=& \frac1{\sqrt{2\pi\sigma^2}}
+  \exp \left( - \frac{(x-\mu)^2}{2\sigma^2}\right) \\
+   &=& \underbrace{\frac1{\sqrt{2\pi\sigma^2}}
+   \exp \left( -\frac{\mu^2}{2\sigma^2}\right)}_{=: c(\vartheta)}
+   \exp \left( \frac\mu{\sigma^2} x -\frac1{2\sigma^2} x^2\right)
+   \cdot \underbrace{1}_{=: h(x)}
+\end{eqnarray*}
+Mit $q(\vartheta):=(\frac\mu{\sigma^2},-\frac1{2\sigma^2}),\; T(x):=(x,x^2)$
+folgt, dass hier eine (strikt) zweiparametrige Exponentialfamilie vorliegt.
+\item[b)]
+$P_\vartheta := \NN(\vartheta,\vartheta^2), \; \vartheta \in \R_{>0} =: \Theta.$\\
+Die Lebesguedichte ist
+\begin{eqnarray*}
+  f(x,\vartheta) &=& \frac1{\sqrt{2\pi\vartheta^2}}
+  \exp \left( - \frac{(x-\vartheta)^2}{2\vartheta^2}\right) \\
+   &=& \underbrace{\frac1{\sqrt{2\pi\vartheta^2}}
+    e^{-1/2}}_{=: c(\vartheta)}
+   \exp \left( \frac{1}{\vartheta} x - \frac1{2\vartheta^2} x^2\right)
+   \cdot \underbrace{1}_{=: h(x)}
+\end{eqnarray*}
+Mit $q(\vartheta):=(\frac{1}{\vartheta},-\frac1{2\vartheta^2}),\; T(x):=(x,x^2)$
+folgt wieder, dass eine (strikt) zweiparametrige Exponentialfamilie vorliegt
+(obwohl der Parameterraum $\Theta$ eindimensional ist!)
+\item[c)]
+$P_\vartheta :=\Bin(n,\vartheta), \; \vartheta \in (0,1)=:\Theta.$\\ Die Zähldichte ist
+\begin{eqnarray*}
+  f(x,\vartheta) &=& { n \choose x} \vartheta^x (1-\vartheta)^{n-x}
+   \;=\; (1-\vartheta)^n \exp\left(x \log\frac\vartheta{1-\vartheta}\right) {n \choose x}.
+\end{eqnarray*}
+Mit $c(\vartheta):=(1-\vartheta)^n, \; q(\vartheta):=\log\frac\vartheta{1-\vartheta},
+\; T(x):=x$ und $h(x):={n \choose x}$ folgt, dass
+$\wp := \{ \Bin(n, \vartheta): \, \vartheta \in \Theta\}$ eine einparametrige
+Exponentialfamilie ist.
+\item[d)]
+Die Menge aller Gleichverteilungen $\{U(0,\vartheta),\; \vartheta\in\R_{>0}\}$ ist
+nach 6.2(c) keine Exponentialfamilie.
+\end{itemize}
+
+\newpage
+\subsection{Satz}
+Es seien $X_1,\ldots,X_n\uiv P_\vartheta,$
+wobei $P_\vartheta$ Element einer $k-$parametrigen Exponentialfamilie
+$\{P_\vartheta: \, \vartheta \in \Theta\}$ ist. Dann geh\"ohrt auch
+die Verteilung von $X:=(X_1,\ldots,X_n)$ zu einer $k-$parametrigen
+Exponentialfamilie mit
+$$q(\vartheta)\quad  \text{und} \quad T_{(n)}(x):=\sum_{j=1}^n T(x_j).$$
+
+\underline{Beweis:}\\
+Sei $\mu^n:=\mu \otimes\cdots\otimes\mu$ das $n-$fache Produktmaß auf $\B^n:=\B\otimes\cdots\otimes\B$ und
+$$ P_\vartheta^n:=P_\vartheta\otimes\cdots \otimes P_\vartheta$$
+die Verteilung von $X$ unter $P_\vartheta.$ Wir erhalten mit $x:=(x_1,\ldots,x_n):$
+\begin{eqnarray*}
+  \frac{ d P^n_\vartheta}{d\mu^n}(x) &=& \prod_{j=1}^n \frac{d P_\vartheta}{d\mu} (x_j) \quad \mu\mbox{-f.ü.}\\
+   &=& \prod_{j=1}^n \left[ c(\vartheta) \exp \left( q^{T} (\vartheta)T(x_j)\right) h(x_j)\right] \quad \mu\mbox{-f.ü.}\\
+   &=& c(\vartheta)^n \exp\left(q^{T} (\vartheta) \sum_{j=1}^n T(x_j)\right) \prod_{J=1}^n h(x_j)\quad \mu\mbox{-f.ü.}
+\end{eqnarray*}
+
+\underline{Bemerkung:}\\ 
+In der Situation von Satz 6.4 ist der ML-Schätzer $\hat\vartheta_n$
+für $\vartheta$ eine Funktion von $\sum_{j=1}^n T(X_j)$.
+
+In der Darstellung  $$f(x,\vartheta) = c(\vartheta) \exp(q^{T} (\vartheta) T(x)) h(x)$$
+hängt $c(\cdot)$ von $\vartheta$ nur über
+$q:=q(\vartheta)\in Q:=q(\Theta)\subset\R^k$ ab, das heißt es gilt
+$$c(\vartheta)=C\left(q(\vartheta)\right)$$
+f\"ur ein geeignetes $C: Q\rightarrow \R.$\\
+$q$ hei\ss t {\bf nat\"urlicher Parameter.}
+Somit l\"asst sich $f$ ausdr\"ucken als
+\[ f(x,q) = \frac{ d P_q}{d\mu}(x)=C(q) e^{q^{T} \cdot T(x)}h(x)\]
+
+Die Menge
+\[ Q_* := \{q\in\R^k:~ 0<\int e^{q^{T} T(x)} h(x) \mu(dx)<\infty\}
+\]
+hei\ss t {\bf nat\"urlicher Parameterraum} der Exponentialfamilie. Es gilt
+$$Q=q(\Theta)\subset Q_*.$$
+
+\subsection{Satz}
+$Q_*$ ist konvex und enthält ein nicht-ausgeartetes $k$-dimensionales Intervall.
+
+\underline{Beweis:}\\
+F\"ur $q,r\in Q_*$ und $\lambda\in[0,1]$ gilt
+\begin{eqnarray*}
+  0 &<& \int e^{(\lambda q^{T} +(1-\lambda)r^{T} )T} h d\mu
+   \\&=& \int \left( e^{q^{T}  T} \right)^\lambda \left(e^{r^{T}  T} \right)^{1-\lambda} h d\mu \\
+   &\leq& \int \max\left( e^{q^{T}  T}, e^{r^{T} T} \right) h d\mu
+   \\&=& \int \left( e^{q^{T}  T}+ e^{r^{T} T} \right) h d\mu  \qquad<\infty
+\end{eqnarray*}
+Die zweite Aussage folgt dann aus der linearen Unabhängigkeit\\ von $1,q_1,\ldots,q_k.$
+
+\underline{Bemerkung:}\\
+Im Folgenden setzen wir $\vartheta:=q,$ betrachten also Exponentialfamilien
+\begin{equation}
+f(x,\vartheta)=\frac{d P_\vartheta}{d\mu}(x)= C(\vartheta)
+e^{\vartheta^{T}  T(x)} h(x)
+\end{equation}
+mit
+$\vartheta\in\Theta:= \left\{\vartheta\in\R^k:~ 0<\int e^{\vartheta^{T} T(x)} h(x) \mu(dx) <\infty \right\}.$\\ Weiter sei
+$$b(\vartheta):=-\log C(\vartheta). $$
+
+\subsection{Lemma}
+Es sei $\varphi:\XX\rightarrow \R$ eine messbare Abbildung mit
+$$ E_\vartheta|\varphi|=\int |\varphi(x)| f(x,\vartheta) \mu(dx)<\infty$$
+Sei
+\begin{equation}
+A_\varphi(\vartheta):=\int \varphi(X) e^{\vartheta^{T} T(x)} h(x) \mu(dx), \quad \vartheta\in \, \Theta^0
+\end{equation}
+Dann ist $A_\varphi: \, \Theta^0\rightarrow\R$ beliebig oft differenzierbar und die Differentiation in (2)  kann unter dem Integralzeichen vorgenommen werden beziehungsweise Integration und Differentiation k\"onnen vertauscht werden.
+
+\underline{Beweis:}\\
+Witting, 1985, S. 151f.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 23.05.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Satz}
+\begin{itemize}
+\item[a) ]Die Funktion $b(\vartheta)$, $\vartheta\in\Theta^0$, ist beliebig oft differenzierbar.
+\item[b) ]Besitzt X die Dichte $f(x,\vartheta)$ aus (1), so gilt:
+\[E_\vartheta T(X)=\frac{d}{d\vartheta}b(\vartheta)\]
+\[\var_\vartheta T(X)=\frac{d^2}{d\vartheta d\vartheta^T}b(\vartheta)\]
+\end{itemize}
+
+\underline{Beweis:}
+\begin{itemize}
+\item[a) ]$\varphi\equiv1$ in 6.6 $\Rightarrow A_\varphi(\vartheta)=C(\vartheta)^{-1}=e^{b(\vartheta)}$\\
+6.6 $\Rightarrow$ Behauptung
+\item[b) ]
+\begin{eqnarray*}
+E_\vartheta T(X)&=&e^{-b(\vartheta)}\int T(x)e^{\vartheta^T T(x)}h(x)\mu(dx)\\
+&=&e^{-b(\vartheta)}\int \frac{d}{d\vartheta}e^{\vartheta^T T(x)}h(x)\mu(dx)\\
+&\stackrel{6.6}{=}&e^{-b(\vartheta)}\frac{d}{d\vartheta}\underbrace{\int e^{\vartheta^T T(x)}h(x)\mu(dx)}_{=e^{b(\vartheta)}}\\
+&=&\frac{d}{d\vartheta}b(\vartheta)\end{eqnarray*}
+\begin{eqnarray*}
+E_\vartheta [T(X)\cdot T(X)^T]&=&e^{-b(\vartheta)}\int T(x)e^{\vartheta^T T(x)}T(x)^Th(x)\mu(dx)\\
+&=&e^{-b(\vartheta)}\int \frac{d^2}{d\vartheta d\vartheta^T}e^{\vartheta^T T(x)}h(x)\mu(dx)\\
+&=&e^{-b(\vartheta)}\frac{d^2}{d\vartheta d\vartheta^T}e^{b(\vartheta)}\\
+&=&\frac{d^2}{d\vartheta d\vartheta^T}b(\vartheta)+\underbrace{(\frac{d}{d\vartheta}b(\vartheta))(\frac{d}{d\vartheta}b(\vartheta))^T}_{=E_\vartheta T(X)\cdot (E_\vartheta T(X))^T}\end{eqnarray*}
+$\Rightarrow \var_\vartheta T(X)=\frac{d^2}{d\vartheta d\vartheta^T}b(\vartheta)$
+\end{itemize}
+
+\subsection{CR-Effizienz in Exponentialfamilien}
+Seien $X_1,\ldots,X_n\uiv f_1(\xi,\vartheta)=e^{-b(\vartheta)}e^{\vartheta^T T(\xi)}h(\xi)$ wie in (1).\\
+$\Rightarrow X=(X_1,\ldots,X_n)$ besitzt die Dichte
+\[f(x,\vartheta)=e^{-nb(\vartheta)}\cdot\exp(\vartheta^T \sum_{i=1}^n T(x_j))\prod_{j=1}^nh(x_j)\]
+Sei $S(X)=\frac1n\sum_{j=1}^n T(X_j)$.
+\[\Rightarrow E_\vartheta S(X)=E_\vartheta T(X_1)\stackrel{6.7}{=}\frac{d}{d\vartheta}b(\vartheta),\ \vartheta\in\Theta\]
+$\Rightarrow$ S erwartungstreu für $\frac{d}{d\vartheta}b(\vartheta)$.\\
+\underline{Behauptung:} $S(X)$ ist CR-effizient.
+
+\underline{Beweis:}
+\[\var_\vartheta S(X)=\frac1n\var_\vartheta T(X_1)\stackrel{6.7}{=}\frac1n\frac{d^2}{d\vartheta d\vartheta^T}b(\vartheta)\]
+CR-Ungleichung:
+\[\var_\vartheta S(X)\geq C_n(\vartheta)^T I_n(\vartheta)^{-1} C_n(\vartheta)\]
+wobei
+\[C_n(\vartheta)=\frac{d}{d\vartheta}E_\vartheta[S(X)^T]=\frac{d}{d\vartheta}[\frac{d}{d\vartheta}b(\vartheta)]^T=\frac{d^2}{d\vartheta d\vartheta^T}b(\vartheta)\] 
+\[I_n(\vartheta)=n\cdot I_1(\vartheta)=n\cdot E_\vartheta[\frac{d}{d\vartheta}\log f_1(X_1,\vartheta)\cdot \frac{d}{d\vartheta}\log f_1(X_1,\vartheta)^T]\]
+\[\log f_1(X_1,\vartheta)=-b(\vartheta)+\vartheta^T T(X_1)+\log h(X_1)\]
+\[\frac{d}{d\vartheta}\log f_1(X_1,\vartheta)=-\frac{d}{d\vartheta}b(\vartheta)+T(X_1)=T(X_1)-E_\vartheta T(X_1)\]
+\[\Rightarrow I_n(\vartheta)=n\cdot\var_\vartheta T(X_1)=n\cdot\frac{d^2}{d\vartheta d\vartheta^T}b(\vartheta)\]
+\[\Rightarrow C_n(\vartheta)^T I_n(\vartheta)^{-1} C_n(\vartheta)=\frac1n\frac{d^2}{d\vartheta d\vartheta^T}b(\vartheta)\]
+
+\subsection{Beispiel}
+\[f_1(\xi,\vartheta)=\underbrace{\frac{1}{\sqrt{2\pi\sigma^2}}\exp(-\frac{\mu^2}{2\sigma^2})}_{=C(\vartheta)}\exp(\frac{\mu}{\sigma^2}\cdot\xi-\frac{1}{2\sigma^2}\xi^2)\]
+\[\vartheta=(\vartheta_1,\vartheta_2):=(\frac{\mu}{\sigma^2},-\frac{1}{2\sigma^2})\]
+\[b(\vartheta)=-\log C(\vartheta)=\frac{\mu^2}{2\sigma^2}+\frac12\log(2\pi\sigma^2)=-\frac14\frac{\vartheta_1^2}{\vartheta_2}+\frac12\log(\frac{-\pi}{\vartheta_2})\]
+\[\frac{d}{d\vartheta}b(\vartheta)=(-\frac12\frac{\vartheta_1}{\vartheta_2},\frac14\frac{\vartheta_1^2}{\vartheta_2^2}-\frac{1}{2\vartheta_2})^T=(\mu,\sigma^2+\mu^2)^T\]
+\underline{Fazit:}
+\[S(X)=(\frac1n\sum_{j=1}^nX_j,\frac1n\sum_{j=1}^n X_j^2)\]
+ist erwartungstreu und CR-effizient für $(E_\vartheta X_1,E_\vartheta X_1^2)$.
+
+\underline{Frage:}\\
+Ist $S_n^2=\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar X_n)^2$ CR-effizient für $\sigma^2$?
+
+\cleardoublepage
+\section{Suffizienz und Vollständigkeit}
+\subsection{Wiederholung}
+\underline{\textbf{Bedingte Verteilungen}}\\
+Sei $(\Omega,\AAA,P)$ Wahrscheinlichkeitsraum, $X:\ \Omega\to\R^k$, $Y:\ \Omega\to\R^s$ Zufallsvektoren.
+
+\underline{Stochastik:}\\
+Es existiert Übergangswahrscheinlichkeit $P^{Y|X}$ mit $$P^{(X,Y)}=P^X\otimes P^{Y|X}\quad(1)$$
+\[P^{Y|X}:\left\{\begin{array}{c@{\to}l}\R^k\times \BB^s&\R\\(x,B)&P^{Y|X}(x,B)=:P^{Y|X=x}(B)\end{array}\right.\]
+\[\begin{array}{lll}\mbox{mit}&\forall x\in\R^k:&\ P^{Y|X=x}(\cdot)\mbox{ Wahrscheinlichkeitsmaß auf }\BB^s\\
+&\forall B\in\BB^s:&\ P^{Y|X=\cdot}(B)\ \BB^k-\mbox{messbar}\end{array}\]
+$P^{Y|X}$ heißt (eine) bedingte Verteilung von Y bei gegebenem X.\\
+$P^{Y|X=x}$ heißt (eine) bedingte Verteilung von Y bei gegebenem $X=x$.
+
+\underline{Schreibweise:}
+\[P(Y\in B|X=x):=P^{Y|X=x}(B)\]
+Dann (1) äquivalent zu 
+\[P^{(X,Y)}(A\times B)=P(X\in A,Y\in B)=\int_A P(Y\in B|X=x)P^X(dx)\] $\forall A\in\BB^k, B\in\BB^s$
+
+Insbesondere:
+\[P(Y\in B)=\int P(Y\in B|X=x)P^X(dx)\]
+
+Falls $(X,Y)$ Dichte $f(x,y)$ bezüglich $\lambda\times\nu$ besitzt, so definiert man bedingte Dichte von Y gegeben $X=x$ durch
+\[f_{Y|X}(y|x)=\frac{f(x,y)}{f_X(x)}\]
+$f_X(x):=\int f(x,y)\nu(dy)>0$
+
+\underline{Damit:}\\
+\framebox{\parbox{0.9\textwidth}{\[P(Y\in B|X=x)=\int_B f_{Y|X}(y|x)\nu(dy)\]}}
+\[\left[\begin{array}{rcl}P(X\in A,Y\in B)&\stackrel{!}{=}&\int_A[\int_B f_{Y|X}(y|x)\nu(dy)]f_X(x)\lambda(dx)\\
+&=&\int_A\int_B f(x,y)d(\lambda\times\nu)(x,y)\end{array}\right]\]
+
+\subsection{Definition}
+Sei $(\Omega,\AAA,\PP)$ Wahrscheinlichkeitsraum, $(\R^n,\BB^n,\wp)$ statistischer Raum.\\ $X:\ \Omega\to\R^n$ Zufallsvektor, $T:\ \R^n\to\R^s$ Statistik.\\
+T heißt \textbf{suffizient} für $\wp$ $:\Leftrightarrow$ $P^{X|T(X)}$ hängt nicht von $P\in\wp$ ab.\\
+"`Die bedingte Verteilung von X gegeben T ist bekannt."'
+
+Falls $\wp=\{P_\vartheta:\vartheta\in\Theta\}$, so T \textbf{suffizient für $\vartheta$} $:\Leftrightarrow$ $P^{X|T(X)}$ hängt nicht von $\vartheta$ ab.
+
+\subsection{Bemerkungen}
+\begin{itemize}
+\item[(i)] Wegen
+\begin{eqnarray*}
+\underbrace{P(X\in A,X\in B)}_{=\int_A P(X\in B|X=x)P^X(dx)}&=&\int \ind_{A\cap B}(x)P^X(dx)\\
+&=&\int_A\ind_B(x)P^X(dx)\end{eqnarray*}
+gilt $P^{X|X=x}(B)=\ind_B(x)$\\
+$\Rightarrow$ X suffizient für $\wp$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 24.05.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item[(ii)] T suffizient für $\wp$ $\Leftrightarrow$ $\forall A\in\BB^n:\ P(X\in A|T(X)=t)$ ist unabhängig von $\wp$ für alle t (im Wertebereich von T)
+\item[(iii)] Sei g bijektiv, $g,g^{-1}$ messbar. Dann:
+\[T \mbox{ suffizient}\Leftrightarrow g(T)\mbox{ suffizient}\]
+\end{itemize}
+
+\subsection{Beispiel}
+$X=(X_1,\ldots,X_n)$, $X_1,\ldots,X_n\uiv\Bin(1,\vartheta)$, $\vartheta\in(0,1)$, $T(x)=\sum_{j=1}^n x_j$.\\
+Sei $t\in\{0,1,\ldots,n\}$, $x\in\{0,1\}^n$.
+\begin{eqnarray*}
+P_\vartheta(X=x|T=t)&=&\frac{P_\vartheta(X=x,T=t)}{P_\vartheta(T(x)=t)}\\&=&\left\{\begin{array}{c@{,\ }l}
+0&\sum_{j=1}^nx_j\neq t\\\frac{P_\vartheta(X=x)}{P_\vartheta(T(x)=t)}=\frac{\prod_{j=1}^n\vartheta^{x_j}(1-\vartheta)^{1-x_j}}{{n\choose t}\vartheta^t(1-\vartheta)^{n-t}}=\frac{1}{{n\choose t}}&\sum_{j=1}^n x_j=t\end{array}\right.\end{eqnarray*}
+Also:
+\[P_\vartheta^{X|T(X)=t}=U(\{(s_1,\ldots,s_n):\ s_j\in\{0,1\}\ \forall j,\sum_{j=1}^ns_j=t\})\]
+Insbesondere ist T suffizient für $\vartheta$.\footnote{$P_\vartheta^{X|T(X)=t}$ Gleichverteilung (auf Menge)}\\
+7.3(ii) $\Rightarrow$ 
+\[P_\vartheta (X\in A)=\int\underbrace{P(X\in A|T=t)}_{\mbox{unabhängig von }\vartheta}P_\vartheta^T(dt)\]
+\underline{Hier:}
+\begin{eqnarray*}
+P_\vartheta(X=x)&=&\sum_{t=0}^n P(X=x|T=t)P_\vartheta(T=t)\\
+&=&\sum_{t=0}^n\frac{1}{{n\choose t}}\ind\{\sum_{j=1}^nx_j=t\}\cdot {n\choose t}\vartheta^t(1-\vartheta)^{n-t}\\
+(&=&\vartheta^{\sum x_j}(1-\vartheta)^{n-\sum x_j})
+\end{eqnarray*}
+"`In Verteilung von T ist alle Information bezüglich $\vartheta$ enthalten."'\\
+$\hookrightarrow$ Datenreduktion \textbf{ohne Informationsverlust}
+
+\subsection{Faktorisierungssatz}
+In der Situation von 7.2 existiere $\sigma$-endliches Maß $\mu$ auf $\BB^n$ mit $P\ll\mu\\ \forall P\in\wp$. Dann sind äquivalent:
+\begin{itemize}
+\item[(i)] T(X) ist suffizient für $\wp$.
+\item[(ii)] $\exists h:\ \R^n\to\R_{\geq0}$ messbar, $\forall P\in\wp$ existiert $g_P:\ \R^k\to\R_{\geq0}$ messbar mit
+\[\frac{dP}{d\mu}(x)=g_P(T(x))\cdot h(x),\ x\in\R\]
+\end{itemize}
+Ist speziell $\wp=\{P_\vartheta: \vartheta\in\Theta\}$, $f(x,\vartheta):=\frac{dP_\vartheta}{d\mu}(x)$,  $g(T(x),\vartheta)=g_{P_\vartheta}(T(x))$, so gilt also:
+\[\mbox{T suffizient }\Leftrightarrow\ f(x,\vartheta)=g(T(x),\vartheta)\cdot h(x)\ \forall x\in\R^n\]
+
+\underline{Beweis:}\\
+z.B. Shao, Mathematische Statistik, S.104-106 oder Pruscha, S. 77-80
+
+\subsection{Besispiel (Ordnungsstatistik)}
+Sei $X=(X_1,\ldots,X_n)$, $X_1,\ldots,X_n$ unabhängig identisch verteilt mit Verteilung $P\in\wp$, $\wp$ die Familie aller Verteilungen auf $\R$ mit Lebesgue-Dichte.
+\[T(X_1,\ldots,X_n):=(X_{(1)},\ldots,X_{(n)})\]
+geordnete Stichprobe (Ordnungsstatistik).
+\[\frac{dP^n}{d\lambda^n}(x)=\prod_{j=1}^n f(x_j)=\underbrace{\prod_{j=1}^n f(x_{(j)})}_{=g_P(T(x))}\cdot \underbrace{1}_{=h(x)}\]
+$\stackrel{7.5}{\Rightarrow}$ T suffizient für $\wp$.
+
+\underline{Bemerkung:}\\
+Es gilt
+\[P^{X|T(x)=(x_{(1)},\ldots,x_{(n)})}=U(\{(x_{\pi_1},\ldots,x_{\pi_n}):\ (\pi_1,\ldots,\pi_n)\in \SSS_n\})\]
+\newpage
+\subsection{Beispiel (Exponentialfamilien)}
+In der Situation von Satz 6.4 ist $T_{(n)}(X)$ suffizient für $\vartheta$.\newline
+[Aufgabe 21(b)]
+
+\subsection{Satz von Rao-Blackwell} 
+Sei $(\XX,\BB,\{P_\vartheta:\vartheta\in\Theta\subset\R^s\})$ statistischer Raum, $g:\ \Theta\to\R$, $X:\ \Omega\to\XX$, $U_g=\{S|\ S:\ \XX\to\R\mbox{ messbar, }E_\vartheta S=g(\vartheta)\ \forall\vartheta\in\Theta, E_\vartheta S^2<\infty\ \forall\vartheta\in\Theta\}$.\\
+\underline{Annahme:} $U_g\neq\emptyset$
+
+Sei $T:\ \XX\to\R^k$ suffizient für $\vartheta$, $S\in U_g$.\\
+Sei $\tilde S(X):=E[S(X)|T(X)]$.\footnote{Nicht von $\vartheta$ abhängig, da T suffizient. (Sonst wäre $\tilde S$ kein Schätzer!)}\\
+Dann gilt:
+\[\tilde S\in U_g\mbox{ und }\var_\vartheta \tilde S(X)\leq\var_\vartheta S(X)\ \forall\vartheta\in\Theta\]
+(Verbesserung erwartungstreuer Schätzer durch suffiziente Statistiken)
+
+\underline{Beweis:}
+\[E_\vartheta \tilde S(X)=E_\vartheta E[S(X)|T(X)]=E_\vartheta S(X)=g(\vartheta)\ \forall\vartheta\in\Theta\]
+\begin{eqnarray*}
+\var_\vartheta S(X)&=&E_\vartheta[(S(X)-\tilde S(X)+\tilde S(X)-\underbrace{E_\vartheta S(X)}_{=g(\vartheta)})^2]\\
+&=&\underbrace{E_\vartheta(S(X)-\tilde S(X))^2}_{\geq 0}+\var_\vartheta\tilde S(X)\\&&+2E_\vartheta[\underbrace{E_\vartheta[(S(X)-\tilde S(X))(\tilde S(X)-g(\vartheta))|T(X)]}_{=(\tilde S(X)-g(\vartheta))\cdot \underbrace{E_\vartheta[S(X)-\tilde S(X)|T(X)]}_{=\tilde S(X)-\tilde S(X)=0}}\\
+&\geq&\var_\vartheta\tilde S(X)\end{eqnarray*}
+[Beachte: $E_\vartheta \tilde S(X)=E_\vartheta S(X)=g(\vartheta)$; Regeln bedingter Erwartungswert\footnote{insbesondere einmal ohne Auswirkung Erwartungswert in Erwartungswert eines bedingten Erwartungswertes umgeschrieben}]
+
+\subsection{Beispiel}
+$X_1,\ldots,X_n\uiv U(0,\vartheta)$, $\vartheta\in\Theta=(0,\infty)$, $X=(X_1,\ldots,X_n)$
+\[S(X)=\frac2n \sum_{j=1}^n X_j\]
+\[\Rightarrow E_\vartheta S(X)=2E_\vartheta X_1)=\vartheta\]
+d.h. S erwartungstreu für $\vartheta$.
+\[\var_\vartheta S(X)=\frac4n\var_\vartheta X_1=\frac4n\cdot \frac{\vartheta^2}{12}=\frac{\vartheta^2}{3n}\]
+\[T(X):=\max_{1\leq j\leq n}X_j\]
+Wegen
+\[f(x,\vartheta)=\prod_{j=1}^n\frac{1}{\vartheta}\ind_{(0,\vartheta)}(x_j)=\underbrace{\frac{1}{\vartheta^n}\cdot\ind_{(0,\vartheta)}(\max x_j)}_{=g(T(x),\vartheta)}\cdot \underbrace{1}_{=h(x)}\]
+ist T(X) suffizient für $\vartheta$.
+
+Wegen
+\[P^{X_1|\max X_j}=\frac 1n\delta_{\max X_j}+\frac{n-1}{n}U(0,\max X_j)\]
+folgt
+\begin{eqnarray*}
+\tilde S(X)&=&E[S(X)|\max_j X_j]\\
+&=&\frac2n \sum_{i=1}^nE[X_i|\max_j X_j]\\
+&=&2E[X_1|\max_j X_j]\\
+&=&2(\frac 1n\cdot \max_j X_j+\frac{n-1}{n} \frac{\max_j X_j}{2})\\
+&=&\frac{n+1}{n}\max_j X_j\end{eqnarray*}
+\[\var_\vartheta \tilde S(X)=\ldots=\frac{\vartheta^2}{n(n+2)}<\var_\vartheta S(X)\ \mbox{ für }n\geq 2\]
+\[\var_\vartheta \tilde S(X)=\ldots=\frac{\vartheta^2}{n(n+2)}=\var_\vartheta S(X)\ \mbox{ für }n = 1\]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 30.05.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Definition}
+In der Situation von 7.2 heißt $T:\ \R^n\to\R^k$ vollständig für $P\in\wp$ (bzw. $\vartheta\in\Theta$, falls $\wp=\{P_\vartheta:\vartheta\in\Theta\}$), falls gilt:\\
+Für jede messbare Funktion $\Psi:\ \R^k\to\R$ mit $E_P[\Psi(T)]=0\ \forall P\in\wp$ (bzw. $E_\vartheta[\Psi(T)]=0\ \forall \vartheta\in\Theta$) folgt $\Psi(T)=0$ P-f.s. $\forall P\in\wp$ (bzw. $P_\vartheta$-f.s. $\forall\vartheta\in\Theta$).
+
+\subsection{Beispiel \textnormal{(Fortsetzung von 7.9)}}
+\underline{Behauptung:}\\
+$T(X):=\max_j X_j$ vollständig
+
+\underline{Beweis:}\\
+Sei $\Psi:\ \R\to\R$ messbar.
+\[E_\vartheta\Psi(T)=\int_0^\vartheta\Psi(t)\cdot\frac{n}{\vartheta}\left(\frac{t}{\vartheta}\right)^{n-1}dt=\frac{n}{\vartheta^n}\underbrace{\int_0^\vartheta\Psi(t)\cdot t^{n-1}dt}_{=:G(\vartheta)}\]
+$E_\vartheta\Psi(T)=0\ \forall\vartheta>0$ $\Rightarrow G(\vartheta)=0\ \forall\vartheta>0$\\
+$\Rightarrow \Psi(\vartheta)\cdot\vartheta^{n-1}=0\quad \lambda^1|_{[0,\infty)}$-f.s.\\
+$\Rightarrow \Psi(\vartheta)=0\quad \lambda^1|_{[0,\infty)}$-f.s.\\
+$\Rightarrow P_\vartheta(\Psi(T)=0)=1$
+
+\subsection{Beispiel}
+In einer strikt k-parametrigen Exponentialfamilie
+\[f(x,\vartheta)=C(\vartheta)\cdot e^{\vartheta^T T(x)}h(x)\]
+(mit natürlichem Parameterraum) ist die Statistik T vollständig.\\
+(Beweis z.B. Shao, S.110 oder Pruscha, S.82)
+
+\underline{Beispiel:}\\
+Sei $X_1,X_2\uiv\NN(\vartheta,1),\vartheta\in\R$.\\
+$T(X_1,X_2)=X_1+X_2$ ist vollständig nach 7.12.\\
+$S(X_1,X_2)=X_1-X_2$ dagegen nicht!
+
+$T\sim\NN(2\vartheta,2)=P_\vartheta^T$
+\[E_\vartheta\Psi(T)=\int_\R\Psi(t)\cdot\underbrace{\varphi_{2\vartheta,2}(t)}_{\mbox{Dichte NV}}dt\]
+$S\sim\NN(0,2)=P_\vartheta^S$, $\Psi(S)=S$:
+\[E_\vartheta\Psi(S)=\vartheta-\vartheta=0\ \forall\vartheta\in\Theta\]
+\[\not\Rightarrow \Psi(S)=X_1-X_2=0\ P_\vartheta\mbox{-f.s.}\]
+$\{P_\vartheta^T:\vartheta\in\R\}=\{\NN(2\vartheta,2):\vartheta\in\R\}$ ist viel "`reichhaltiger"' als\\ $\{P_\vartheta^S:\vartheta\in\R\}=\{\NN(0,2)\}$!
+
+\subsection{Satz von Lehmann-Scheffé}
+In der Situation von 7.8 ($U_g\neq\emptyset$) sei die suffiziente Statistik T auch\\ vollständig für $\vartheta$. Dann existiert ein eindeutig bestimmter erwartungstreuer Schätzer für $g(\vartheta)$ der Gestalt
+\[S^\ast(X)=h(T(X))\] mit einer messbaren Funktion $h:\ \R^k\to\R$.\\
+Dieser Schätzer ist UMVUE für $g(\vartheta)$.
+
+\underline{Beweis:}\\
+Sei $S\in U_g$ und $\tilde S(X):=E[S(X)|T(X)]$.\\
+Faktorisierungssatz des bedingten Erwartungswerts $\Rightarrow$ es existiert h messbar mit
+\[\tilde S(X)=h(T(X))\]
+\underline{Annahme:} $\exists S_\ast\in U_g$ mit $S_\ast(X)=h_\ast(T(X))$ für ein $h_\ast$
+\[\Rightarrow E_\vartheta[\underbrace{(h-h_\ast)}_{=:\Psi}(T)]=g(\vartheta)-g(\vartheta)=0\ \forall\vartheta\in\Theta\]
+\[\stackrel{(+)}{\Rightarrow} h=h_\ast\ P_\vartheta\mbox{-f.s.}\ \forall\vartheta\in\Theta\]
+(+): Vollständigkeit von T ($\Psi=h-h_\ast=0$)
+
+$\tilde S(X)$ ist UMVUE für $g(\vartheta)$!
+
+[Annahme: $S_2$ "`besser"' als $\tilde S$
+$$\Rightarrow \tilde S_2(X)=E[S_2(X)|T(X)]$$ "`mindestens so gut"' wie $S_2$ (Rao-Blackwell); $\tilde S_2=\tilde S$ wegen Eindeutigkeit]
+
+\subsection{Beispiel \textnormal{(Fortsetzung von 7.11)}} 
+$\frac{n+1}{n}\max_j X_j$ ist UMVUE für $\vartheta$, falls $X_1,\ldots,X_n\uiv U(0,\vartheta)$, $\vartheta>0$ unbekannt.
+
+\subsection{Beispiel (Anwendungen von Lehmann-Scheffé)}
+Sei T vollständig und suffizient für $\vartheta$, $\vartheta\in\Theta$.\\
+Finde h, so dass $E_\vartheta[h(T)]=g(\vartheta)\ \forall\vartheta\in\Theta$. (Lösen!, Raten!)\\
+Falls $\var_\vartheta[h(T)]<\infty \Rightarrow$ h(T) UMVUE.
+
+Sei $X_1,\ldots,X_n\uiv\NN(\mu,\sigma^2)$, $\vartheta=(\mu,\sigma^2)$.
+\begin{itemize}
+\item[(i)] Aufgabe 20:
+\[\var_\vartheta((\bar X_n,S_n^2)^T)=\left[\begin{array}{cc}\frac{\sigma^2}{n}&0\\0&\frac{2\sigma^4}{n-1}\end{array}\right]\]
+\[\frac{2\sigma^4}{n-1}>\mbox{ CR-Schranke }\frac{2\sigma^4}{n}\]
+$\Rightarrow (\bar X_n,S_n^2)$ nicht CR-effizient für $\vartheta$
+
+\underline{Aber:}
+\[T(X)=(\sum_i X_i,\sum_iX_i^2)\]
+suffizient und vollständig für $\bar\vartheta=(\frac{\mu}{\sigma^2},-\frac{1}{2\sigma^2})$ (nach 7.12).\\
+$\Rightarrow T(X)=(\sum_i X_i,\sum_iX_i^2)$ suffizient und vollständig für $\vartheta=(\mu,\sigma^2)$.
+
+Sei $h(T(X))=(\bar X_n,S_n^2)$.
+\[\left.\begin{array}{l}E_\vartheta[h(T(X))]=\vartheta\ \forall\vartheta\\\var_\vartheta[h(T(X))]\mbox{ existiert }\forall\vartheta\end{array}\right\}\Rightarrow (\bar X_n,S_n^2)\mbox{ ist UMVUE für }\vartheta=(\mu,\sigma^2)\]
+
+\underline{Bemerkung:}\\
+Auch $(\bar X_n,S_n^2)$ suffizient und vollständig für $\vartheta$ nach Bemerkung 7.3(ii) und analoge Aussage für Vollständigkeit.
+\item[(ii)] Analog:\\
+Der Schätzer aus Aufgabe 9 der Form $\sqrt{c_nS_n^2}$ ist UMVUE für $\sigma$.
+\item[(iii)] Gesucht: UMVUE für $\frac{\mu}{\sigma}$
+\[(T_1(X),T_2(X)):=(\sum_i X_i,\sum_i(X_i-\bar X_n)^2)\]
+$T_1(X), T_2(X)$ unabhängig, $\frac{T_1(X)}{\sigma^2}\sim\chi^2_{n-1}=\Gamma(\frac{n-1}{2},\frac12)$
+\[\Rightarrow E_\vartheta T_2^{-\frac12}=\frac{1}{\sigma}\cdot\frac{\Gamma(\frac n2-1)}{\sqrt{2}\Gamma(\frac{n-1}{2})}\ (n\geq3)\]
+\[\var_\vartheta T_2^{-\frac12}<\infty\mbox{ für }n\geq4\]
+\begin{eqnarray*}
+\Rightarrow\ E_\vartheta(\frac{T_1}{\sqrt{T_2}})&=&E_\vartheta T_1\cdot E_\vartheta T_2^{-\frac12}\\
+&=&\frac{\mu}{\sigma}\cdot\frac{n\Gamma(\frac n2-1)}{\sqrt{2}\Gamma(\frac{n-1}{2})}\\
+&=:&\frac{\mu}{\sigma}K_n\end{eqnarray*}
+($n\geq3$)
+\[\Rightarrow K_n^{-1}\cdot\frac{T_1}{\sqrt{T_2}}\]
+ist UMVUE für $\frac{\mu}{\sigma}$ für $n\geq4$.
+\end{itemize}
+
+\cleardoublepage
+%Teil Klar (Kapitel 8)
+\section{Asymptotik von Schätzfehlern}
+\subsection{Problemstellung}
+Seien $X_1,X_2,\ldots,X_n\uiv P_\vartheta,$ mit
+$\vartheta\in\Theta\subset\R^k$.\\
+Die Schätzfolge $\hat{\vartheta}_n=\hat\vartheta_n(X_1,\ldots,X_n)$ sei konsistent,
+es gilt also
+$$\hat\vartheta_n\stackrel{P_\vartheta}{\rightarrow}
+\vartheta\mbox{ für } n\rightarrow \infty\quad
+\forall\vartheta\in\Theta$$
+Sei $(a_n)$ eine reelle Folge
+mit $a_n>0\quad\forall n$ und $a_n\rightarrow\infty$ für
+$n\rightarrow\infty.$\\
+Die Folge $(\hat\vartheta_n)_{n\geq 1}$ heißt {\bf $a_n-$ konsistent,} wenn
+$$ a_n(\hat\vartheta_n-\vartheta)=O_{P_\vartheta}(1) \quad \forall
+\vartheta\in\Theta.$$ Hierbei bedeutet $Y_n=O_{P}(1)$
+für eine Folge $(Y_n)$, dass für jedes $\varepsilon>0$ eine kompakte
+Menge $K\subset\R^d$ existiert, so dass $P(Y_n\in K)\geq 1-\varepsilon$
+für alle $n\in \N.$\footnote{vergleiche Stochastik II: Straffheit}
+
+Typischerweise liegt $\sqrt{n}-$Konsistenz vor, d.h. es gilt
+$$\sqrt{n}(\hat\vartheta_n-\vartheta)=O_{P_\vartheta}(1) \quad
+\forall \vartheta\in\Theta.$$ Zusätzlich  kann man oftmals
+Aussagen über Konvergenz in Verteilung machen, insbesondere
+$$\sqrt{n}(\hat\vartheta_n-\vartheta)\stackrel{D_\vartheta}{\rightarrow}
+\NN_k(0,\Sigma(\vartheta)), \quad\vartheta\in\Theta.$$
+
+\subsection{Multivariater Zentraler-Grenzwert-Satz (ZGWS)}
+Seien $Y_1,Y_2\ldots\uiv Y$ mit
+einer $\R^d-$wertigen Zufallsvariablen $Y$ mit\\ $E\|Y\|^2<\infty.$
+Mit $a:=EY$ und $\Sigma:=E(Y-a)(Y-a)^T,$ gilt
+\begin{eqnarray*}
+\frac1{\sqrt{n}}\left(\sum_{j=1}^n Y_j -
+n a\right)  &\stackrel{D}{\rightarrow}& \NN_d(0,\Sigma).
+\end{eqnarray*}
+\newpage
+\subsection{$\delta$-Methode}
+Seien $Z_1,Z_2,\ldots $ d-dimensionale Zufallsvariablen mit
+\begin{eqnarray*}
+\sqrt{n} \left(Z_n - a\right) &\stackrel{D}{\rightarrow}& \NN_d(0,\Sigma),
+\end{eqnarray*}
+mit $a:=(a_1,\ldots,a_d)\in\R^d$ und $\Sigma\in\R^{d\times d}.$
+
+Sei $g:=(g_1,\ldots,g_s)^T:\ \R^d\rightarrow\R^s$ differenzierbar und
+$$\frac{dg}{da}:=\left(\frac{\partial g_j}{\partial a_k}\right)_{1\leq j
+\leq s, \atop 1\leq k \leq d}$$ dann gilt
+\begin{eqnarray*}
+\sqrt{n} \left(g(Z_n) - g(a)\right) &\stackrel{D}{\rightarrow}&
+\NN_s\left(0,\frac{dg}{da} \, \Sigma \, \left(\frac{dg}{da}\right)^T\right).
+\end{eqnarray*}
+
+\underline{Beweis:}\\
+Nach der Definition der Differenzierbarkeit gilt
+\begin{eqnarray*}
+ \sqrt{n} \left( g(Z_n)-g(a)\right) &=&
+ \underbrace{\frac{dg}{da} \sqrt{n} (Z_n-a)}_{=:U_n} +
+ \underbrace{\|\sqrt{n}(Z_n-a)\|\cdot r(Z_n-a)}_{=:V_n},
+\end{eqnarray*}
+mit $r(Z_n-a)\rightarrow 0$ für $Z_n \rightarrow a$.\\
+Beachte, dass $\|\sqrt{n}(Z_n-a)\|\in O_p{(1)}$.
+
+Aus $Z_n\stackrel{P}{\rightarrow}a$ folgt,
+dass $r(Z_n-a)\stackrel{P}{\rightarrow}0$, und somit
+\begin{eqnarray*}
+V_n &\stackrel{P}{\rightarrow}& 0.
+\end{eqnarray*}
+Aus der Voraussetzung folgt mit dem Abbildungssatz weiter
+\begin{eqnarray*}
+U_n\stackrel{D}{\rightarrow}\frac{dg}{da}\cdot T
+\end{eqnarray*}
+mit $T\sim\NN_d(0,\Sigma)$ und somit
+\begin{eqnarray*}
+ U_n  &\stackrel{D}{\rightarrow}& \NN_s\left(0,\frac{dg}{da} \,
+\Sigma \, \left(\frac{dg}{da}\right)^T\right).
+\end{eqnarray*}
+Die Behauptung folgt schlie{\ss}lich aus dem Lemma von Slutzky.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 31.05.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Asymptotik des Momentenschätzers (vgl. 4.8)}
+$X_1,\ldots,X_n\uiv X,\ X\ \R^1 $ -wertig, $P^X\in\{P_\vartheta:\vartheta\in\Theta\},\ \Theta\subset\R^k,\\  \vartheta=(\vartheta_1,\ldots,\vartheta_n)$\\
+Sei $m_l:=EX^l,\ \hat{m}_l=\frac1n\sum_{i=1}^nX_i^l\ (\hat= \bar{X_n^l}$ aus 4.8)\\
+\underline{Voraussetzung:}\\
+$\vartheta=g(m_1,\ldots,m_k)$ mit $g:\R^k\rightarrow\R^k$\\
+Momentschätzer: $\hat{\vartheta}=g(\hat{\vartheta}_1,\ldots,\hat{\vartheta}_k)$\\
+Sei $$Y_j:=\begin{pmatrix}X_j\\ \vdots\\ X_j^k\end{pmatrix} Y:=\begin{pmatrix}X\\ \vdots\\ X^k\end{pmatrix},\ 
+a:=EY=\begin{pmatrix}m_1\\ \vdots\\ m_k\end{pmatrix} $$
+$E\left\|Y\right\|^2<\infty \Leftrightarrow EX^{2k}<\infty$
+\begin{eqnarray*}\Sigma:= E[(Y-a)(Y-a)^T]&=&(E[(X^i-m_i)(X^j-m_j)^T])_{i,j=(1,\ldots,k)}\\&=&(EX^{i+j}-m_im_j)_{i,j}\\
+&=&(m_{i+j}-m_im_j)_{i,j}\end{eqnarray*}
+$8.2\ \Rightarrow$ 
+\begin{eqnarray*}
+\frac{1}{\sqrt{n}}(\sum_{j=1}^nY_j-na)&=&\frac{1}{\sqrt{n}}\left(
+{\begin{pmatrix}\sum_jX_j\\ \vdots\\ \sum_jX_j^k\end{pmatrix}}-n\cdot{\begin{pmatrix}m_1\\ \vdots \\m_k\end{pmatrix}}\right)\\
+&=&\sqrt{n}\cdot{\begin{pmatrix}\hat{m}_1-m_1\\ \vdots \\ \hat{m}_k-m_k\end{pmatrix}} \qquad\qquad\qquad\stackrel{D_\vartheta}{\rightarrow}\NN(0,\Sigma(\vartheta))\\
+\end{eqnarray*}
+Aus 8.3 folgt: Falls $EX^{2k}<\infty$ und g differenzierbar, so gilt:
+$$ \sqrt{n}(\hat{\vartheta}_n-\vartheta)\stackrel{D_\vartheta}{\rightarrow}\NN_k(0,\ \frac{dg}{da}\sum(\vartheta)(\frac{dg}{da})T)$$\\
+\underline{Achtung:} $\Sigma$ hängt von $m_1,\ldots,m_{2k}$ und somit von unbekanntem $\vartheta$ ab.
+
+(Schreibweise "`asymptotisch normalverteilt"':)\\
+$\sqrt{n}(\hat{\vartheta}_n-\vartheta)\approx\NN_k(0,T)\Leftrightarrow \hat{\vartheta}_n\approx \NN_k(\vartheta,\frac{T}{n}),
+\ \hat{\vartheta}_n\sim AN(\vartheta,\frac{\hat T}{n} )$, $\hat T=T(\hat\vartheta_n)$
+\newpage
+\subsection{Asymptotik des ML-Schätzers}
+$X_1,\ldots,X_n\uiv f_1(\xi,\ \vartheta)$ (Dichte bezüglich dominierendem Maß $\mu$)\\
+$\vartheta\in\Theta\subset\R^k,\ \Theta$ offen\\
+\underline{Regularitätsvoraussetzungen:} (a)-(e) aus 5.7- 5.9 seien erfüllt.\\
+\underline{Zusätzlich gelte:}\\
+$\{\xi:f_1(\xi,\vartheta)>0\}$ist unabhängig von $\vartheta$! \\
+$\forall i,j,l\in \{1,\ldots,k\}$ existiert $\frac{\partial^3 \log f_1(\xi,\vartheta)}{\partial \vartheta_i\partial\vartheta_j\partial\vartheta_l}
+= L_{ijl}(\xi,\vartheta)$\\
+$\forall\vartheta\in\Theta\ \forall\delta>0\ \forall i,j,l\in\{1,\ldots,k\}$ existiert eine Funktion $M_{i,j,l}(\xi)\geq 0$ mit $$\left|L_{i,j,l}(\xi,\eta)\right|\leq M_{i,j,l}(\xi),\ \left\|\eta-\vartheta\right\|\leq\delta$$ und $E_\vartheta M_{i,j,l}(X_1)<\infty$
+
+Sei $$\UU_n(\vartheta):=\sum_{j=1}^n\frac{d}{d\vartheta}\log f_1(X_j,\vartheta),\ E_\vartheta \UU_n(\vartheta)=0$$
+$$I_n(\vartheta)=E[\UU_n(\vartheta)\UU_n(\vartheta)^T]=nI_1(\vartheta)$$
+$$W_n(\vartheta)=\frac{d}{d\vartheta^T}\UU_n(\vartheta),\ E_\vartheta[W_n(\vartheta)]=-I_n(\vartheta)$$
+
+\subsubsection{Satz}
+Es gelte $\UU_n(\hat\vartheta_n)=0$ (d.h. $\hat\vartheta_n$ ist Lösung der Likelihood-Gleichung\\ $\UU_n(\vartheta)=0$) und
+$\hat\vartheta_n\stackrel{P_\vartheta}{\rightarrow}\vartheta,\ \vartheta\in\Theta$ (d.h. $(\hat\vartheta_n)_n$ ist konsistent). Dann folgt:\\
+\framebox{\parbox{0.9\textwidth}{
+$$\sqrt{n}(\hat\vartheta_n-\vartheta)\stackrel{D_\vartheta}{\rightarrow}\NN_k(0,I_1(\vartheta)^{-1})$$}}\\
+$\Leftrightarrow \hat\vartheta_n\sim AN(\vartheta,\frac{I_n^{-1}}{n})$
+
+\underline{Beweisskizze:}
+\begin{eqnarray*}0&=&\frac{1}{\sqrt{n}}\UU_n(\hat\vartheta_n)\\
+&\stackrel{\textnormal{Taylor}}{=}&\frac{1}{\sqrt{n}}\UU_n(\vartheta)+\frac{1}{\sqrt{n}}W_n(\vartheta)(\hat\vartheta_n-\vartheta)+\underbrace{\frac{1}{\sqrt{n}}
+R_n(\vartheta,\hat\vartheta_n-\vartheta)}_{z.z.:\ =o_{P_\vartheta}(1)}\\
+\end{eqnarray*}
+\[\Rightarrow\underbrace{\frac1nW_n(\vartheta)}_{\stackrel{P_\vartheta-f.s}{\rightarrow}-I_1(\vartheta)(SGGZ)}
+\sqrt{n}(\hat\vartheta_n-\vartheta)=\underbrace{\underbrace{-\frac{1}{\sqrt{n}}\UU_n(\vartheta)}_{\stackrel{D_\vartheta}{\rightarrow}
+\NN_k(0,I_1(\vartheta))\ \textnormal{(ZGWS 8.2)}}+o_{P_\vartheta}(1)}_{\stackrel{D_\vartheta}{\to}\NN_k(0,I_1(\vartheta))}\ (\ast)\]
+$$\Rightarrow\sqrt{n}(\hat\vartheta_n-\vartheta)\stackrel{D_\vartheta}{\rightarrow}\NN_k(0,-I_1(\vartheta)^{-1}I_1(\vartheta)(-I_1(\vartheta)^{-1}))$$
+(z.B. Knight, 249 oder Lehmann/Casella, 443-468)\footnote{$o_{P_\vartheta}(1)$ bedeutet stochastische Konvergenz gegen 0}
+
+\underline{Bemerkung:} (asymptotische Linearisierbarkeit des Schätzfehlers)
+\begin{eqnarray*}
+(\ast)\Rightarrow\sqrt{n}(\hat\vartheta_n-\vartheta)&=&I_1(\vartheta)^{-1}\frac{1}{\sqrt{n}}\UU_n(\vartheta)+o_{P_\vartheta}(1)\\
+&=&\frac{1}{\sqrt{n}}\sum_{j=1}^n\underbrace{I_1(\vartheta)^{-1}\frac{d}{d\vartheta}\log f_1(X_j,\vartheta)}_{
+=:\widetilde{l}(X_j,\vartheta)}+o_{P_\vartheta}(1)
+\end{eqnarray*}
+mit $E_\vartheta\widetilde{l}(X_1,\vartheta)=0$
+
+\subsubsection{Satz}
+Unter den obigen Voraussetzungen existiert eine Folge $\hat\vartheta_n=\hat\vartheta_n(X_1,\ldots,X_n)$ mit:\\
+Ist $\vartheta_0$ der wahre Parameter, so gilt:
+$$\lim P_{\vartheta_0}(\UU_n(\hat\vartheta_n)=0,\ \left| \hat\vartheta_n-\vartheta_0\right|\leq \varepsilon)=1\ \forall\varepsilon>0$$
+
+\underline{Korollar}\\
+Besitzt die Likelihood-Gleichung $\UU_n(\vartheta)=0$ für jedes n eine eindeutige Lösung $\hat\vartheta_n$, so gilt:
+$$\hat\vartheta_n\stackrel{P_\vartheta}{\rightarrow}\vartheta,\ \vartheta\in\Theta$$
+
+\underline{Anmerkung:}
+\begin{itemize}
+\item[(1) ]$\{P_\vartheta:\vartheta\in\Theta\}$ mit Dichte $f(x,\vartheta)$ bzgl. dem Maß $\mu$. Dann $\forall\vartheta\neq\vartheta_0$:
+\begin{eqnarray*}
+E_{\vartheta_0}\left[\log \frac{f(X,\vartheta)}{f(X,\vartheta_0)}\right]&\stackrel{\textnormal{Jensensche Ungl.}}{<}&
+\log \underbrace{E_{\vartheta_0}\left[\frac{f(X,\vartheta)}{f(X,\vartheta_0)}\right]}_{\int f(x,\vartheta)dx=1}\\
+&=&0
+\end{eqnarray*}
+$$\Leftrightarrow E_{\vartheta_0}[\log f(X,\vartheta_0)]>E_{\vartheta_0}[\log f(X,\vartheta)]\quad \forall\vartheta\neq\vartheta_0$$
+d.h. \fbox{$\vartheta_0$ maximiert $E_{\vartheta_0}[\log f(X,\vartheta)]$ bezüglich $\vartheta$!}
+\item[(2) ]Funktional in $(\ast)$ ist nicht auswertbar, da $\vartheta_0$ unbekannt!\\
+Aber: $$\frac1n\underbrace{\sum_{i=1}^n \log f(X_i,\vartheta)}_{l(X,\vartheta),\ \textnormal{"`Log-Likelihood Funktion"'}}
+\stackrel{P_\vartheta -f.s.}{\rightarrow}E_{\vartheta_0}[\log f(X,\vartheta)]\forall\vartheta\in\Theta$$
+Maximierung von $l(X,\vartheta)$ als "`Ersatz"' für $(\ast)$.
+\item[(3) ]f,g $\mu$-Dichten:
+$$E_f\left[\log \frac{f(X)}{g(X)}\right]\geq0$$
+$$\mbox{"'="'} \Leftrightarrow f=g$$
+"`Entropie"' zwischen f und g, Kullbach-Leibler-Information von g\\ bezüglich f, Kullbach-Leibler-Abstand zwischen f und g
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 05.06.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item[(4)] Was tun, falls Lösung von $\UU_n(\vartheta)=0$ nicht eindeutig?
+\begin{itemize}
+\item[(i)] Oft ist die Folge von globalen Maxima konsistent.\\ (Theorie von Wald 1949, Le Cam 1953)
+\item[(ii)] Sei $(\delta_n)$ konsistent. Wähle Folge $\vartheta_n^\ast$, die am nächsten zu $\delta_n$\\ liegt $\Rightarrow (\vartheta_n^\ast)$ konsistent, 8.5.1 anwendbar.
+\item[(iii)] 1-Schritt-MLE verwenden:\\
+$(\vartheta_n^{(0)})$ sei $\sqrt n$-konsistent. Mache einen Newton-Schritt zur\\ Lösung von $\UU_n(\vartheta)=0$:
+\[\vartheta_n^{(1)}=\vartheta_n^{(0)}-\frac{\UU_n'(\vartheta_n^{(0)})}{\UU_n'{'}(\vartheta_n^{(0)})}\]
+Dann hat $(\vartheta_n^{(1)})_{n\geq1}$ dasselbe asymptotische Verhalten wie in 8.5.1.
+\end{itemize}
+\end{itemize}
+
+\cleardoublepage
+\section{Robuste Schätzer}
+Seien $X_1,\ldots,X_n,X_{n+1}\uiv F$, $F\in\FF$: Verteilungsannahme, $x_1,\ldots,x_n,x$ Realisierungen von $X_1,\ldots,X_n,X_{n+1}$, $X_i$ reellwertig.\\
+Sei $\vartheta:\ \FF\to\R$, $\hat \vartheta_n=\vartheta(\hat F_n)$ Plug-In-Schätzer für $\vartheta(F)$.\newline
+($\hat F_n(t)=\frac1n\sum_{i=1}^n\ind\{X_i\leq t\}$)
+
+\subsection{Definition \textnormal{(Sensitivitätskurve)}}
+\[S(x,\hat\vartheta)=\frac{\hat\vartheta_{n+1}-\hat\vartheta_n}{\frac{1}{n+1}}\]
+Dabei: $\hat\vartheta_{n+1}=\vartheta(\hat F_{n+1})$ basierend auf $X_1,\ldots,X_n$ und einer zusätzlichen Beobachtung x.
+
+$S(x,\hat\vartheta)$ ist die Änderung von $\hat\vartheta$ bei einer zusätzlichen Beobachtung x relativ gesehen zur Masse $\frac{1}{n+1}$ von x.
+
+\underline{Beispiele:}
+\begin{itemize}
+\item[a)] $\vartheta(F)=\int xdF(x)$, $\vartheta(\hat F_n)=\bar x_n$
+\[S(x,\hat\vartheta)=\frac{\bar x_{n+1}-\bar x_n}{\frac{1}{n+1}}=\sum_{i=1}^n x_i+x-\frac{n+1}{n}\sum_{i=1}^n x_i=x-\bar x_n\]
+linear in x $\Rightarrow$ unbeschränkt in x
+
+Große Änderung von S, falls $|x|$ groß!
+\item[b)] Sei $\FF=\{F:\ F$ streng monoton wachsend auf $\{x:\ 0<F(x)<1\}\}$, $\vartheta(F)=F^{-1}(\frac12)$.\\
+Sei $n=2r-1$ ungerade.
+\[\Rightarrow \vartheta(\hat F_n)=x_{(r)}=:x_{r:n}\]
+("`das r kleinste unter n"')
+
+$n+1=2r$:
+\[\hat F_{n+1}^{-1}(\frac12)=x_{r:n+1}\]
+\[\hat\vartheta_{n+1}=\vartheta(\hat F_{n+1})\in[x_{(r-1)},x_{(r)}]\]
+$\Rightarrow$ S beschränkt in x!
+\end{itemize}
+
+\underline{Nachteil der Sensitivitätskurve:}\\
+Hängt von Stichprobe ab.\\
+Wünschenswert wäre Abhängigkeit nur von x und F.
+
+\subsection{Definition}
+\begin{itemize}
+\item[a)] Sei $\Delta_x$ die zum Dirac-Maß in x gehörende Verteilungsfunktion, also
+\[\Delta_x(y)=\left\{\begin{array}{ll}0,&y<x\\1,&y\geq x\end{array}\right.\]
+Die Einflusskurve (\textit{influence curve}) von $\vartheta(F)$ ist
+\begin{eqnarray*}
+\varphi(x,F)&=&\lim_{t\to0}\frac{\vartheta((1-t)F+t\Delta_x)-\vartheta(F)}{t}\\
+&=&\frac{d}{dt}\vartheta((1-t)F+t\Delta_x)|_{t=0}
+\end{eqnarray*}
+wobei die Existenz der Ableitung vorausgesetzt wird.
+\item[b)] $\hat\vartheta=\vartheta(\hat F_n)$ heißt \textbf{robust}, falls $\varphi(x,F)$ beschränkt ist in x.
+\end{itemize}
+
+\underline{Bemerkung:}\\
+Gegeben:\\
+Stichprobe $x_1,\ldots,x_n$: Schätze $\vartheta(F)$ durch $\hat\vartheta_n=\vartheta(\hat F_n)$.\\
+Weiterer Wert x: Schätze $\vartheta(F)$ durch $\hat\vartheta_{n+1}=\vartheta(\hat F_{n+1})$, wobei 
+\[\hat F_{n+1}(y)=\frac{n}{n+1}\hat F_n(y)+\frac{1}{n+1}\Delta_x(y)\]
+
+Sei nun $t=\frac{1}{n+1}$, also $1-t=\frac{n}{n+1}$. Damit gilt:
+\begin{eqnarray*}
+\hat\vartheta_{n+1}=\vartheta(\hat F_{n+1})&=&\vartheta((1-t)\hat F_n+t\Delta_x)\\
+&=&\frac{\vartheta((1-t)\hat F_n+t\Delta_x)-\vartheta(\hat F_n)}{t}t+\underbrace{\vartheta(\hat F_n)}_{=\hat\vartheta_n}\\
+&\approx&\hat\vartheta_n+\frac{1}{n+1}\varphi(x,\hat F_n)\end{eqnarray*}
+(Diese Approximation setzt voraus, dass $\varphi(x,\hat F_n)$ existiert.)
+
+In diesem Fall gilt:\\
+\framebox{\parbox{0.9\textwidth}{\[\varphi(x,\hat F_n)\approx\frac{\hat\vartheta_{n+1}-\hat\vartheta_n}{\frac{1}{n+1}}=S(x,\hat\vartheta)\]}}
+
+\subsection{Beispiel}
+Sei $\vartheta(F)=\int ydF(y)$.
+\begin{eqnarray*}
+\Rightarrow \varphi(x,F)&=&\lim_{t\to0}\frac1t[(1-t)\int ydF(y)+t\cdot\int yd\Delta_x(y)-\int ydF(y)]\\
+&=&-\int ydF(y)+x\\
+&=&x-\vartheta(F)\end{eqnarray*}
+Hier gilt sogar\footnote{vergleiche 9.1, Beispiel (a)}: $\varphi(x,\hat F_n)=x-\bar x_n=S(x,\hat\vartheta)$.
+
+\subsection{Satz \textnormal{(Eigenschaften von $\varphi(x,F)$)}}
+Sei $\varphi(x,F)$ Einflusskurve von $\vartheta(F)$.
+\begin{itemize}
+\item[a)] Sei $\vartheta(F)=\int hdF=Eh(X)$, wobei $X\sim F$ und $E|h(X)|<\infty$.\\
+Dann gilt: $\varphi(x,F)=h(x)-\vartheta(F)$
+\item[b)] Sei $\vartheta(F)=\vartheta_1(F)+\vartheta_2(F)$ mut Einflusskurven $\varphi_1(x,F),\varphi_2(x,F)$.\\
+Dann: $\varphi(x,F)=\varphi_1(x,F)+\varphi_2(x,F)$
+\item[c)] Sei $I\subset\R$, $\vartheta(F)=\int_I g(s)\varphi_s(x,F)ds$.\\
+Ist $\varphi_s(x,F)$ die Einflusskurve von $\vartheta_s(F)\ (s\in I)$, so gilt (unter Regularität\footnote{siehe Beweis}):
+\[\varphi(x,F)=\int_I g(s)\varphi_s(x,F)ds\]
+\item[d)] (Kettenregel)\\
+Ist g differenzierbar, so ist die Einflusskurve von $g(\vartheta(F))$ gegeben durch 
+\[g'(\vartheta(F))\cdot\varphi(x,F)\]
+\item[e)] (implizit definierter Parameter)\\
+$\vartheta(F)$ sei Lösung der Gleichung $h(F,\vartheta(F))=0$, wobei für festes u $\lambda(x,F,u)$ die Einflusskurve von $h(F,u)$ sei und die Ableitung $h'(F,u)$ nach u existiere. Dann gilt:
+\[\varphi(x,F)=-\frac{\lambda(x,F,\vartheta(F))}{h'(F,\vartheta(F))}\]
+\end{itemize}
+
+\underline{Beweis:}\\ 
+Sei $F_{t,x}=(1-t)F+t\Delta_x$.
+\begin{itemize}
+\item[a)] Aus
+\[\vartheta(F_{t,x})=(1-t)\int h(y)dF(y)+t\cdot h(x)\]
+(vergleiche 9.3) folgt:
+\[\frac1t(\vartheta(F_{t,x})-\vartheta(F))=h(x)-\vartheta(F)\]
+\item[b)] Klar.
+\item[c)]
+\begin{eqnarray*}
+\varphi(x,F)&=&\frac{d}{dt}\vartheta(F_{t,x})|_{t=0}\\
+&=&\frac{d}{dt}\int_I g(s)\vartheta_s(F_{t,x})ds|_{t=0}\\
+&\stackrel{(\ast)}{=}&\int_I g(s)\frac{d}{dt}\vartheta_s(F_{t,x})|_{t=0}ds\\
+&=&\int_I g(s)\varphi_s(x,F)ds\end{eqnarray*}
+$(\ast)$: Vertauschbarkeit vorausgesetzt! (Regularität)
+\item[d)] \begin{eqnarray*}
+\frac1t(g(\vartheta(F_{t,x}))-g(\vartheta(F)))&=&\underbrace{\frac{g(\vartheta(F_{t,x}))-g(\vartheta(F))}{\vartheta(F_{t,x})-\vartheta(F)}}_{\stackrel{t\to0}{\to}g'(\vartheta(F)),\mbox{ da }\vartheta(F_{t,x})\stackrel{t\to0}{\to}\vartheta(F)}\\&&\qquad\qquad\cdot\underbrace{\frac{\vartheta(F_{t,x})-\vartheta(F)}{t}}_{\stackrel{t\to0}{\to}\varphi(x,F)}\\
+&\stackrel{t\to0}{\to}&g'(\vartheta(F))\varphi(x,F)\end{eqnarray*}
+\item[e)] \begin{eqnarray*}
+0&=&\frac1t[\underbrace{h(F_{t,x},\vartheta(F_{t,x}))}_{=0}-\underbrace{h(F,\vartheta(F))}_{=0}]\\&=&\frac1t[h(F_{t,x},\vartheta(F_{t,x}))-h(F_{t,x},\vartheta(F))]\\&&\qquad\qquad+\underbrace{\frac1t[h(F_{t,x},\vartheta(F))-h(F,\vartheta(F))]}_{\stackrel{t\to0}{\to}\lambda(x,F,\vartheta(F))}\\
+&=&\underbrace{\frac{h(F_{t,x},\vartheta(F_{t,x}))-h(F_{t,x},\vartheta(F))}{h(F,\vartheta(F_{t,x}))-h(F,\vartheta(F))}}_{\stackrel{t\to0}{\to}1\textnormal{ (Forderung)}}\cdot\underbrace{\frac{h(F,\vartheta(F_{t,x}))-h(F,\vartheta(F))}{\vartheta(F_{t,x})-\vartheta(F)}}_{\stackrel{t\to0}{\to}h'(F,\vartheta(F))}\\&&\qquad\qquad\cdot\underbrace{\frac{\vartheta(F_{t,x})-\vartheta(F)}{t}}_{\stackrel{t\to0}{\to}\varphi(x,F)}+\frac1t[h(F_{t,x},\vartheta(F))-h(F,\vartheta(F))]\\
+&\stackrel{t\to0}{\to}&h'(F,\vartheta(F))\cdot\varphi(x,F)+\lambda(x,F,\vartheta(F))\end{eqnarray*}
+Also:
+\[h'(F,\vartheta(F))\cdot\varphi(x,F)+\lambda(x,F,\vartheta(F))=0\]
+$\stackrel{h'\neq0\ \textnormal{(Forderung)}}{\Rightarrow}$ Behauptung.
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 06.06.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Bemerkung (Einflusskurven-Heuristik)}
+Sei $\varphi(x,F)$ Einflusskurve von $\vartheta(F),\ X\sim F$\\
+Oft gilt:
+\begin{itemize}
+\item[(i) ]$E[\varphi(X,F)]=\int\varphi(x,F)dF(x)=0$
+\item[(ii) ]$\vartheta(\hat F_n)-\vartheta(F)=\int\varphi(x,F)d(\hat{F}_n(x)-F(x))+R_n$, wobei $\sqrt{n}R_n
+\stackrel{n\to\infty}{\rightarrow}0$\newline
+[\textit{wird oft als erfüllt angenommen}]
+\item[(iii) ]$0<\tau^2(F)=E[\varphi^2(X,F)]<\infty$
+\end{itemize}
+Dann gilt:
+$$\sqrt{n}(\hat\vartheta_n-\vartheta)=\sqrt{n}(\vartheta(\hat{F}_n)-\vartheta(F))\stackrel{D}{\rightarrow}\NN(0,\tau^2(F))$$
+
+\underline{Beweis:}\\
+Mit (i) und (ii) gilt:
+$$\vartheta(\hat F_n)-\vartheta(F)=\frac1n\sum_{i=1}^n\varphi(X_i,F)+R_n$$
+$$\Rightarrow \sqrt n(\hat\vartheta_n-\vartheta)=\underbrace{\frac{1}{\sqrt n}\sum_{i=1}^n\varphi(X_i,F)}_{
+\stackrel{D}{\rightarrow}\NN(0,\tau^2(F))}+\underbrace{\sqrt nR_n}_{\stackrel{P}{\rightarrow}0}$$
+Lemma von Slutzky $\Rightarrow$ Behauptung
+
+\subsection{Beispiel (Median)}
+Sei F stetig mit Dichte $f=F'$. $f(x)>0$ für $\{x:0<F(x)<1\},\ X\sim F$\\
+Median $$\vartheta(F)=F^{-1}(\frac12)$$ bzw. $F(\vartheta(F))-\frac12=0$ $\Leftrightarrow h(F,\vartheta(F))=0$ mit 
+\begin{eqnarray*}
+h(F,u)&=&F(u)-\frac12\\
+&=&\int\underbrace{(\ind\{x\leq u\}-\frac12)}_{=:\widetilde h_u(x)}dF(x)\\
+&=&\int \widetilde h_u(x)dF(x)
+\end{eqnarray*}
+\[\stackrel{9.4(a)}{\Rightarrow}\lambda(x,F,u)=\widetilde h_u(x)-h(F,u)=\ind\{x\leq u\}-F(u)\]
+\begin{eqnarray*}\stackrel{9.4(c)}{\Rightarrow}\varphi(x,F)
+&=&-\frac{\lambda(x,F,\vartheta(F))}{h'(F,\vartheta(F))}\\
+&=&-\frac{\ind\{x\leq \vartheta(F)\}-F(\vartheta(F))}{f(\vartheta(F))}\\
+&=&\frac{\frac12-\ind\{x\leq \vartheta(F)\}}{f(\vartheta(F))}\\
+&=&\left\{
+\begin{matrix}
+-\frac{1}{2f(\vartheta(F))},\ x\leq \vartheta(F)\\
++\frac{1}{2f(\vartheta(F))},\ x>\vartheta(F)
+\end{matrix}\right.
+\end{eqnarray*}
+\newpage
+\underline{Bemerkungen:}
+\begin{itemize}
+\item[(i) ]$\hat\vartheta$ ist robust
+\item[(ii) ]$\hat F_n$ ist Treppenfunktion $\Rightarrow \varphi(x,\hat F_n)$ existiert nicht\\
+$\Rightarrow$ Bemerkung nach 9.2 ist hier nicht zutreffend
+\item[(iii) ]$$E[\varphi(X,F)]=\frac{\frac12-P(X\leq\vartheta(F))}{f(\vartheta(F))}=0$$
+$$\tau^2(F)=E[\varphi^2(X,F)]=\frac{1}{4f^2(\vartheta(F))}$$
+$$\stackrel{9.5}{\Rightarrow} \sqrt n(\hat\vartheta_n-\vartheta)\stackrel{D}{\rightarrow}\NN(0,\frac{1}{4f^2(\vartheta(F))})$$
+\end{itemize}
+
+\underline{Konkret:}\\
+$X_1,\ldots,X_n\uiv\NN(\mu,\sigma^2),\ \vartheta(F)=\mu$
+$$\Rightarrow\sqrt n(\hat\vartheta_n-\mu)\stackrel{D}{\rightarrow}\NN(0,\frac{\pi\sigma^2}{2})$$
+$f(\mu)=\frac{1}{\sqrt{2\pi}\sigma}\cdot1$
+\[\hat\vartheta_n\sim AN(\mu,\underbrace{\frac{\pi\sigma^2}{2n}}_{\tau_1^2})\]
+$$\bar X\sim\NN(0,\underbrace{\frac{\sigma^2}{n}}_{\tau^2_2})$$
+($\bar X$ UMVUE)
+\[\frac{\tau_1^2}{\tau_2^2}=\frac{\pi}{2}\approx1,57\]
+
+Einflusskurve des Medians $\vartheta(F)=F^{-1}(\frac12)$ ist also
+\[\varphi_{\frac12}(x,F)=\frac{\frac12-\ind\{x\leq\vartheta(F)\}}{f(\vartheta(F))}\]
+Ganz analog: Einflusskurve von $F^{-1}(p)$ ist
+\[(\ast)\qquad\varphi_p(x,F)=\frac{p-\ind\{x\leq F^{-1}(p)\}}{f(F^{-1}(p))},\ 0<p<1\]
+
+\subsection{Beispiel ($\alpha$-getrimmtes Mittel)}
+Sei F stetig, $F'=f,\ f(x)>0$ für $\{x:0<F(x)<1\}$.\\
+f symmetrisch mit Zentrum $\mu=EX$.\\
+Für $0<\alpha<\frac12$ heißt
+$$\mu_\alpha(F)=\frac{1}{1-2\alpha}\int_{F^{-1}(\alpha)}^{F^{-1}(1-\alpha)}x\ dF(x)=\frac{1}{1-2\alpha}\int_\alpha^{1-\alpha}F^{-1}(p)dp$$
+\textbf{$\alpha$-getrimmtes Mittel}.\\
+Für symmetrische Verteilungen gilt:\\
+\framebox{\parbox{0.9\textwidth}{
+$$\mu_\alpha(F)=\mu$$}}
+
+(Denn:)
+$$\frac{1}{1-2\alpha}\int_{F^{-1}(\alpha)}^{F^{-1}(1-\alpha)}\mu dF(x)=\mu$$
+$$\Rightarrow\mu_\alpha(F)-\mu=\frac{1}{1-2\alpha}\int_{F^{-1}(\alpha)}^{F^{-1}(1-\alpha)}(x-\mu)dF(x)=0$$
+
+Der Plug-In Schätzer für $\mu_\alpha(F)$ ist 
+$$\mu_\alpha(\hat F_n)=\frac{1}{1-2\alpha}\int_{\alpha}^{1-\alpha}
+\hat F_n^{-1}(p)dp$$
+wobei $\hat F_n^{-1}(t)=X_{(i)}$, falls $\frac{i-1}{n}<t\leq\frac{i}{n}$. (Aufgabe 16)
+
+In der Praxis wird der (asymptotisch gelichwertige) Schätzer
+$$\bar X_{n,\alpha}=\frac{1}{n-2[\alpha n]}\sum_{k=[\alpha n]+1}^{n-[\alpha n]}X_{(k)}$$
+verwendet.
+
+Einflusskurve von $\mu_\alpha(F)$:\\
+9.4(c) $\Rightarrow$
+\begin{eqnarray*}(\ast\ast)\qquad \varphi^\alpha(x,F)&=&\frac{1}{1-2\alpha}\int_\alpha^{1-\alpha}\varphi_p(x,F)dp\\&\stackrel{(\ast)}{=}&\frac{1}{1-2\alpha}\int_\alpha^{1-\alpha}\frac{p-\ind\{x\leq F^{-1}(p)\}}{f(F^{-1}(p))}dp\end{eqnarray*}
+Nun sei $F(x)<\alpha$. Dann:
+\begin{eqnarray*}
+(\ast\ast)&=&\frac{1}{1-2\alpha}\int_\alpha^{1-\alpha}(p-1)\underbrace{\frac{1}{f(F^{-1}(p))}}_{\textnormal{Dichte von }F^{-1}}dp\\
+&=&\frac{1}{1-2\alpha}\int_\alpha^{1-\alpha}\underbrace{(p-1)}_{G}dF^{-1}(p)\\
+&\stackrel{(+)}{=}&\frac{1}{1-2\alpha}[(\underbrace{(1-\alpha)-1}_{=G(b)})\cdot F^{-1}(1-\alpha)-(\underbrace{\alpha-1}_{=G(a)})\cdot F^{-1}(\alpha)\\&&\qquad\qquad-\underbrace{\int_\alpha^{1-\alpha}F^{-1}(p)dp}_{=(1-2\alpha)\cdot\mu}]\\
+&=&\frac{1}{1-2\alpha}[(-\alpha)(\underbrace{F^{-1}(1-\alpha)+F^{-1}(\alpha)}_{=2\mu})+F^{-1}(\alpha)-(1-2\alpha)\mu]\\
+&=&\frac{F^{-1}(\alpha)-\mu}{1-2\alpha}\end{eqnarray*}
+(+): partielle Integration (Stochastik II), F weiterhin symmetrisch
+
+Ähnliche Überlegungen für $F(x)>1-\alpha$ bzw. $\alpha\leq F(x)\leq 1-\alpha$ ergeben:
+\[\varphi^\alpha(x,F)=\left\{\begin{array}{c@{,\ }c}\frac{F^{-1}(\alpha)-\mu}{1-2\alpha}&x<F^{-1}(\alpha)\\ \frac{x-\mu}{1-2\alpha}&F^{-1}(\alpha)\leq x\leq F^{-1}(1-\alpha)\\\frac{F^{-1}(1-\alpha)-\mu}{1-2\alpha}&x>F^{-1}(1-\alpha)\end{array}\right.\]
+Insbesondere ist $\varphi^\alpha(x,F)$ beschränkt in x.
+\[\Rightarrow \bar X_{n,\alpha}=\frac{1}{n-2[\alpha n]}\sum_{k=[\alpha n]+1}^{n-[\alpha n]}X_{(k)}\]
+ist robust.
+
+Einflusskurven-Heuristik ergibt:
+\[\sqrt{n}(\bar X_{n,\alpha}-\mu_\alpha)\stackrel{D}{\to}\NN\left(0,\frac{1}{(1-2\alpha)^2}[2\alpha(F^{-1}(\alpha)-\mu)^2+\int_{F^{-1}(\alpha)}^{F^{-1}(1-\alpha)}(x-\mu)^2dF]\right)\]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 13.06.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage
+\section{Grundbegriffe der Testtheorie}
+Sei $(\Omega,\AAA,\PP)$ Wahrscheinlichkeitsraum,  $(\XX,\BB,\{P_\vartheta:\vartheta\in\Theta\})$ statistischer Raum, $X:\ \Omega\to\XX$ Zufallsvariable, $\Theta=\Theta_0+\Theta_1$ mit $\Theta_0,\Theta_1\neq\emptyset$.\\ ($\Theta_0\cap\Theta_1=\emptyset$)
+
+\subsection{Definition}
+Die Aussage $H_0: \vartheta\in\Theta_0$ heißt (Null-)Hypothese, $H_1: \vartheta\in\Theta_1$ heißt Alternativhypothese oder Alternative.\\
+$|\Theta_j|=1\Rightarrow\Theta_j$ heißt einfach, sonst zusammengesetzt
+
+\subsection{Definition}
+Ein \textbf{randomisierter Test} zur Prüfung von $H_0$ gegen $H_1$ ist eine messbare Abbildung $\varphi:\ \XX\to[0,1]$ mit der Interpretation
+\[\varphi(x)=P(H_0\textnormal{ ablehnen}|\ X=x)\]
+
+Gilt $\varphi(\XX)=\{0,1\}$, so heißt $\varphi$ \textbf{nicht randomisiert}. Mit $\K:=\{x\in\XX:\ \varphi(x)=1\}$ gilt dann $\varphi=\ind_\K$ und die Testvorschrift lautet:
+\[\begin{array}{rcl}x\in\K&\Rightarrow&H_0\textnormal{ ablehnen}\\
+x\in\XX\backslash\K&\Rightarrow&H_0\textnormal{ nicht ablehnen}\end{array}\]
+$\K$ heißt kritischer Bereich (Ablehnbereich), $\XX\backslash\K$ heißt Annahmebereich.
+
+\subsection{Bemerkung}
+Falls $0<\varphi(x)<1$, so muss "`externes"' Bernoulli-Experiment durchgeführt werden; man erhält also Realisierung y einer Zufallsvariablen Y mit\\ $Y\sim\Bin(1,\varphi(x))$.\\
+In praktischen Anwendungen ist "`Randomisierung"' unerwünscht.
+
+\subsection{Definition}
+Es sei $T:\ \XX\to\R$ eine messbare Abbildung. Häufig besitzt ein nicht randomisierter Test die Gestalt 
+\[(\ast)\quad\begin{array}{rcl}T(x)\geq c&\Rightarrow&H_0\textnormal{ ablehnen}\\
+T(x)<c&\Rightarrow&\textnormal{kein Widerspruch zu }H_0\end{array}\]
+(d.h. $\K=\{x\in\XX:\ T(x)\geq c\}=T^{-1}([c,\infty))$)
+
+Dann heißt T Testgröße (Prüfgröße) und $c\in\R$ heißt kritischer Wert.\\
+$(\ast)$ liefert Test mit \textbf{oberem Ablehnbereich}.
+
+In $(\ast)$ $\geq$ durch $\leq$ und $<$ durch $>$ ersetzen $\hookrightarrow$ Test mit unterem Ablehnbereich
+
+\subsection{Beispiel}
+$(\XX,\BB)=(\R^{m+n},\BB^{n+m})$, $X=(\underbrace{X_1,\ldots,X_m}_{\uiv F},\underbrace{Y_1,\ldots,Y_n}_{\uiv G})$, $X_1,\ldots,Y_n$\\
+unabhängig, $\vartheta=(F,G)$, $\Theta=\{(F,G):\ F,G\textnormal{ stetig}\}$, $\Theta_0=\{(F,G)\in\Theta:\ F=G\}$
+\[H_0:\ F=G\]
+\[H_1:\ F\neq G\]
+(nichtparametrisches 2-Stichproben-Problem mit allgemeiner Alternative)
+
+Sei 
+\[\hat F_m(x)=\frac1m\sum_{i=1}^m \ind\{ X_i\leq x\},\ \hat G_n(x)=\frac1n\sum_{j=1}^n \ind\{ Y_j\leq x\}\]
+Mögliche Prüfgröße (mit oberem Anlehnbereich):
+\[T(X_1,\ldots,X_m,Y_1,\ldots,Y_n)=\sup_{x\in\R}|\hat F_m(x)-\hat G_n(x)|\]
+(Kolmogorov-Smirnov-Testgröße)
+
+\subsection{Definition und Bemerkung}
+Ein Fehler 1. Art ist das Verwerfen von $H_0$, obwohl $H_0$ richtig ist.\\
+Ein Fehler 2. Art ist das Nichtverwerfen von $H_0$, obwohl $H_0$ falsch ist.
+
+\begin{center}
+\begin{tabular}[h]{|p{2.5cm}|p{2.5cm}|p{2.5cm}|} 
+\hline
+Entscheidung & $H_0$ richtig & $H_0$ falsch\\\hline
+$H_0$ nicht\newline verwerfen & richtige\newline Entscheidung & Fehler 2. Art\\\hline
+$H_0$ verwerfen   & Fehler 1. Art & richtige\newline Entscheidung\\\hline
+\end{tabular}
+\end{center} 
+
+Die Funktion
+\[G_\varphi:\begin{array}{l}\Theta\to[0,1]\\\vartheta\mapsto G_\varphi(\vartheta):=E_\vartheta[\varphi]=\int_\XX\varphi(x)P_\vartheta(dx)\end{array}\]
+heißt \textbf{Gütefunktion} des Tests $\varphi$.\newline
+($\varphi=\ind_\K\Rightarrow G_\varphi(\vartheta)=P_\vartheta(\K)$, $\varphi=\ind\{T(x)\geq c\}\Rightarrow G_\varphi(\vartheta)=P_\vartheta(T\geq c)$)
+
+Ideale Gütefunktion wäre 
+\[G_\varphi(\vartheta)=\left\{\begin{array}{l}1,\vartheta\in\Theta_1\\0,\vartheta\in\Theta_0\end{array}\right.\]
+Sei $\alpha\in(0,1)$. $\varphi$ heißt Test zum \textbf{Niveau} $\alpha$ $:\Leftrightarrow G_\varphi(\vartheta)\leq\alpha\ \forall\vartheta\in\Theta_0$\footnote{Wahrscheinlichkeit für einen Fehler 1. Art ist $\leq\alpha$}
+
+In Praxis übliche Werte: $\alpha=0,05;\ 0,01;\ 0,001$\\
+Kleines $\alpha$ dient "`Sicherung von $H_1$"'.\footnote{vgl. "`Wahl der Nullhypothese"'; das Verwerfen von $H_0$ ist "`fast nie"' falsch, also in diesem Fall umgekehrt $H_1$ auch "`fast immer"' richtig (...)}
+
+Die Zahl $\sup_{\vartheta\in\Theta_0}G_\varphi(\vartheta)$ heißt \textbf{Umfang} (size) von $\varphi$.  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 14.06.07 T. Flaig%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Definition}
+Sei $$\Phi_\alpha=\{\varphi:\XX\rightarrow[0,1]|\sup_{\vartheta\in\Theta_0}G_\varphi(\vartheta)\leq\alpha\}$$
+die Menge aller Niveau $\alpha$-Tests.\\
+$\Phi_\alpha\neq\emptyset$, da $\varphi\equiv\alpha\in\Phi_\alpha$.
+
+Sei $\widetilde\Phi_\alpha\subset\Phi_\alpha$\\
+$\varphi_1\in\widetilde\Phi_\alpha$ heißt \textbf{gleichmäßig besser} als $\varphi_2\in\widetilde\Phi_\alpha :\Leftrightarrow$ $$G_{\varphi_1}(\vartheta)
+\geq G_{\varphi_2}(\vartheta)\ \forall\vartheta\in\Theta_1$$
+$\varphi^\ast\in\widetilde\Phi_\alpha$ heißt (gleichmäßig) \textbf{bester Test} in $\widetilde\Phi_\alpha$ $:\Leftrightarrow$ $$G_{\varphi^\ast}(\vartheta)\geq G_{\varphi}(\vartheta)\ \forall\vartheta\in\Theta_1\ \forall\varphi
+\in\widetilde\Phi_\alpha$$
+\underline{Bezeichnung:} UMP-Test ("`uniformly most powerfully"')
+
+\section{Neyman-Pearson-Tests (NP-Tests)}
+Es sei $\Theta_0=\{\vartheta_0\}\ \Theta_1=\{\vartheta_1\},\ f_j$ sei die Dichte von $P_{\vartheta_j}$\\
+bezüglich dem Maß $\mu$ auf $\XX$.
+
+\subsection{Definition}
+$\varphi$ heißt NP-Test für $H_0:\vartheta=\vartheta_0$ gegen $H_1:\vartheta=\vartheta_1$\\
+$:\Leftrightarrow \exists c\geq 0\ \exists\gamma\in[0,1]$ mit
+$$(1)\quad\varphi(x)=\left\{
+\begin{matrix} 
+1, \textnormal{ falls }f_1(x)>cf_0(x)\\
+\gamma, \textnormal{ falls }f_1(x)=cf_0(x)\\
+0, \textnormal{ falls }f_1(x)<cf_0(x)\\
+\end{matrix}\right.$$
+Beachte\footnote{Niveau}: $E_{\vartheta_0}(\varphi)=P_{\vartheta_0}(f_1>cf_0)+\gamma P_{\vartheta_0}(f_1=cf_0)$
+$$(2)\quad Q(x):=\left\{\begin{matrix}
+\frac{f_1(x)}{f_0(x)}&\textnormal{, falls }f_0(x)>0\\
+\infty &\textnormal{, falls }f_0(x)=0
+\end{matrix}\right.$$
+$$\widetilde\varphi(x)=\left\{\begin{matrix}
+1&\textnormal{, falls }Q(x)>c\\
+\gamma&\textnormal{, falls }Q(x)=c\\
+0&\textnormal{, falls }Q(x)<c\\
+\end{matrix}\right.$$
+\begin{tabular}{lcc}
+[falls $f_0(x)>0$&$\Rightarrow$&$\varphi(x)=\widetilde\varphi(x)$\\
+falls $f_0(x)=0,\ f_1(x)>0$&$\Rightarrow$&$\varphi(x)=\widetilde\varphi(x)$\\
+falls $f_0(x)=0,\ f_1(x)=0$&$\Rightarrow$&$\varphi(x)\neq\widetilde\varphi(x)$]\end{tabular}
+
+Es gilt: $\{f_0>0\}\cup\{f_1>0\}\subset\{\varphi=\widetilde\varphi)$
+$$\Rightarrow P_{\vartheta_1}(\varphi=\widetilde\varphi^\ast)=P_{\vartheta_1}(\varphi=\widetilde\varphi)=1$$
+\underline{Beachte:} $E_{\vartheta_0}(\widetilde\varphi)=P_{\vartheta_0}
+(Q>c)+\gamma P_{\vartheta_0}(Q=c)$
+
+\subsection{Satz}
+Der Test aus 11.1(1) ist bester Test zum Niveau $\alpha:=E_{\vartheta_0}(\varphi)$.
+
+\underline{Beweis:}\\
+Sei $\Psi$ beliebiger Test mit $E_{\vartheta_0}(\Psi)\leq\alpha$.\\
+Zu zeigen:
+$$E_{\vartheta_1}(\varphi)\geq E_{\vartheta_1}(\Psi)$$
+Sei $M^{(+)}:=\{x:\varphi(x)>\Psi(x)\},\ M^{(-)}:=\{x:\varphi(x)<\Psi(x)\},\\ M^{(=)}:=\{x:\varphi(x)=\Psi(x)\}$
+\[x\in M^{(+)}\Rightarrow \varphi(x)>0\Rightarrow f_1(x)\geq cf_0(x)\]
+\[x\in M^{(-)}\Rightarrow \varphi(x)<1\Rightarrow f_1(x)\leq cf_0(x)\]
+\begin{eqnarray*}
+\Rightarrow E_{\vartheta_1}(\varphi-\Psi)&=&\int_\XX (\varphi(x)-\Psi(x)) f_1(x)\mu (dx)\\
+&=&\int_{M^{(+)}}\underbrace{(\varphi(x)-\Psi(x))}_{>0}\underbrace{f_1(x)}_{\geq cf_0}d\mu(x)\\
+&&+ \int_{M^{(-)}}\underbrace{(\varphi-\Psi)}_{<0}\underbrace{f_1}_{\leq cf_0}d\mu +\underbrace{\int_{M^{(=)}}\underbrace{(\varphi-\Psi)f_1}_{=0}d\mu}_{=0}\\
+&\geq&\int_{M^{(+)}}(\varphi-\Psi)cf_0d\mu+\int_{M^{(-)}}(\varphi-\Psi)cf_0d\mu\\
+&&+\int_{M^{(=)}}(\varphi-\Psi)cf_0d\mu\\
+&=&c\int_\XX(\varphi-\Psi)f_0d\mu\\
+&=&\underbrace{c}_{\geq0}[\underbrace{E_{\vartheta_0}(\varphi)-E_{\vartheta_0}(\Psi)}_{\geq 0}]\\&\geq& 0
+\end{eqnarray*}
+
+\subsection{Bemerkung}
+Beweis deckt auch den Fall $\varphi(x)=\gamma(x)$, falls $f_1(x)=cf_0(x)$ ab
+
+\subsection{Lemma von Neyman-Pearson}
+\begin{itemize}
+\item[a) ]Zu jedem $\alpha\in(0,1)$ existiert ein NP-Test $\varphi$ der Form 11.1(1).
+\item[b) ]Ist $\Psi$ ebenfalls bester Test zum Niveau $\alpha$,\\
+so gilt mit $\varphi$ aus (a) und $D=\{x:f_1(x)\neq cf_0(x)\}$
+$$\varphi(x)=\Psi(x)\textnormal{für }\mu\textnormal{- fast alle }x\in D$$
+\end{itemize}
+\newpage
+\underline{Beweis:}
+\begin{itemize}
+\item[a) ]Sei Q wie in 11.1(2). Zu zeigen:
+$$\exists c\geq 0\ \exists\gamma\in[0,1]\textnormal{ mit }P_{\vartheta_0}(Q>c)+\gamma P_{\vartheta_0}(Q=c)=\alpha\ (\ast)$$
+Sei $F_0(t):=P_{\vartheta_0}(Q\leq t)$ die Verteilungsfunktion von Q unter $\vartheta_0$.\\
+Dann wird $(\ast)$ zu $1-F_0(c)+\gamma(F_0(c-0))\stackrel{!}{=}\alpha$.\\
+Setze $c:=F_0^{-1}(1-\alpha)$ und
+$$\gamma:=\left\{\begin{matrix}
+0,&\textnormal{falls }F_0(c)=F_0(c-0)\\
+\frac{F_0(c)-(1-\alpha)}{F_0(c)-F_0(c-0)},&\textnormal{sonst}\\
+\end{matrix}\right.$$
+\item[b) ]siehe Pruscha, Vorlesungen über Mathematische Statistik, S. 225
+\end{itemize}
+
+\underline{Beispiel:} (Poissonverteilung)\\
+$X\sim Po(\lambda),\ (\lambda>0),\ 0<\lambda_0<\lambda_1$
+$$H_0:\lambda=\lambda_0,\ H_1: \lambda=\lambda_1$$
+$$f(x,\lambda)=e^{-\lambda}\frac{\lambda^x}{x!}\ x=1,2,\ldots$$
+$\Rightarrow$ Dichtequotient ist 
+$$T(x)=\frac{f(x,\lambda_1)}{f(x,\lambda_0)}={\underbrace{(\frac{\lambda_1}{\lambda_0})}_{>1}}^xe^{-(\lambda_1-\lambda_0)}$$
+streng monoton wachsend in x.\\
+$\Rightarrow$ Bereich $\{T(x)>c\}$ bzw $\{T(x)=c\}$ kann umgeschrieben werden in $\{x>k\}$ bzw. $\{x=k\}$.\\
+NP-Test $$\varphi(x)=\left\{\begin{matrix}
+1&,\ x>k\\\gamma&,\ x=k\\0&,\ x<k\\\end{matrix}\right.$$
+für $\alpha\in(0,1)$ wähle $k\in\N_0,\ \gamma\in[0,1]$ so, dass
+$$P_{\lambda_0}(X>k)+\gamma P_{\lambda_0}(X=k)\stackrel{!}{=}\alpha$$
+zum Beispiel $\alpha=0,05,\ \lambda_0=1:\\ P_{\lambda_0}(X=3)=0,0613,\ P_{\lambda_0}(X>3)=0,0190$\\
+$\Rightarrow P_{\lambda_0}(X\geq 3)>0,05$
+$$P_{\lambda_0}(X>3)+\gamma P_{\lambda_0}(X=3)\stackrel{!}{=}0,05$$
+$$\Rightarrow \gamma=\frac{\alpha-P_{\lambda_0}(X>3)}{P_{\lambda_0}(X=3)}=0,5057$$
+
+\underline{Bemerkung:}\\
+Wird bei der konkreten Testdurchführung z.B. der Wert $x=3$ beobachtet,\\
+so wird in der Praxis der sogenannte p-Wert
+\begin{eqnarray*} p^\ast(x)&=&p^\ast(3)\\&=&P_{\lambda_0}(\textnormal{"`mindestens so extremes Ergebnis wie das beobachtete"'})\\&=&P_{\lambda_0}(X\geq 3)\\&=&0,0803\end{eqnarray*}
+$[p^\ast(2)>0,1,\ p^\ast(4)=0,019 $, usw$]$ angegeben.\\
+Bei diesem Vorgehen wird das Problem der Randomisierung umgangen:\\
+Ist zum Beispiel $\alpha=0,05$ gewählt, so entscheidet man bei $p^\ast(x)\leq0,05$ gegen die Hypothese.\\
+Bei $p^\ast(x)>0,05$ wird die Hypothese nicht verworfen.
+
+\vspace{1cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 20.06.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\underline{Im Folgenden:} "`Loslösen"' vom Fall $|\Theta_0|=1=|\Theta_1|$
+
+Sei $\{P_\vartheta:\vartheta\in\Theta\}$ dominiert durch $\sigma$-endliches Maß $\mu$ auf $\BB$.
+\[f(x,\vartheta)=\frac{dP_\vartheta}{d\mu}(x)\]
+$\Theta\subset\R^1$, $\Theta$ offen
+
+\subsection{Definition}
+Es sei $T:\ \XX\to\R$ messbar mit $\forall\vartheta,\vartheta'\in\Theta$ mit $\vartheta<\vartheta'$ existiert eine monoton wachsende Funktion $g(\cdot,\vartheta,\vartheta'):\ \R\to[0,\infty]$ mit
+\[\frac{f(x,\vartheta')}{f(x,\vartheta)}=g(T(x),\vartheta,\vartheta'),\ x\in\XX\]
+Dann heißt $\{P_\vartheta:\vartheta\in\Theta\}$ \textbf{Klasse mit monotonem Dichtequotienten (DQ) in T}.\\
+Falls $f(x,\vartheta')>f(x,\vartheta)=0$, so $\frac{f(x,\vartheta')}{f(x,\vartheta)}:=\infty$.
+
+\subsection{Beispiel}
+Sei 
+\[f(x,\vartheta)=c(\vartheta)\cdot e^{q(\vartheta)T(x)}\cdot h(x),\ x\in\XX\]
+(einparametrige Exponentialfamilie)\\
+Ist $q:\ \Theta\to\R$ streng monoton wachsend und gilt $\var_\vartheta(T)>0\ \forall\vartheta\in\Theta\quad(\ast)$, so ist $\{P_\vartheta:\vartheta\in\Theta\}$ Klasse mit monotonem DQ in T.
+
+\underline{Beweis:}
+\begin{itemize}
+\item[(i)] Aus $(\ast)$ folgt Injektivität von $\Theta\ni\vartheta\to P_\vartheta$:\\
+Annahme: $\vartheta\neq\vartheta'$ und $P_\vartheta=P_{\vartheta'}$
+\[\Rightarrow f(\cdot,\vartheta)=f(\cdot,\vartheta')\ \mu\mbox{-f.ü.}\]
+\[\Rightarrow \log c(\vartheta)+q(\vartheta)\cdot T(x)=\log c(\vartheta')+q(\vartheta')\cdot T(x)\ \mu\mbox{-f.ü.}\]
+\[\Rightarrow T(x)=\frac{\log c(\vartheta')-\log c(\vartheta)}{q(\vartheta)-q(\vartheta')}\ \mu\mbox{-f.ü.}\]
+\[\Rightarrow \var(T)=0\]
+Widerspruch zu $(\ast)$!
+\item[(ii)] $\vartheta<\vartheta'$
+\[\Rightarrow \frac{f(x,\vartheta')}{f(x,\vartheta)}=\frac{c(\vartheta')}{c(\vartheta)}\exp(\underbrace{(q(\vartheta')-q(\vartheta))}_{>0}\cdot T(x))=:g(T(x),\vartheta,\vartheta')\]
+\end{itemize}
+
+\underline{Spezialfall:} $\Bin(n,\vartheta)$, $0<\vartheta<1$
+\[f(x,\vartheta)={n\choose x}\vartheta^x(1-\vartheta)^{n-x}=(1-\vartheta)^ne^{xq(\vartheta)}{n\choose x}\]
+wobei $q(\vartheta)=\log\frac{\vartheta}{1-\vartheta}$ streng monoton wachsend in $\vartheta$ ist.\\
+$\Rightarrow$ monotoner DQ in $T(x)=x$, $x\in\{0,\ldots,n\}$
+
+\vspace{1cm}
+
+In der Situation von 11.5 sei $H_0:\vartheta\leq\vartheta_0$ gegen $H_1:\vartheta>\vartheta_0$ zu testen. ($\vartheta_0\in\Theta$ vorgegeben)\\
+Für $c^\ast\in\R$ und $\gamma^\ast\in[0,1]$ sei 
+\[(\ast)\quad\varphi^\ast(x)=\left\{\begin{array}{ll}1,&T(x)>c^\ast\\\gamma^\ast,&T(x)=c^\ast\\0,&T(x)<c^\ast\end{array}\right.\]
+$\Rightarrow E_{\vartheta_0}(\varphi^\ast)=P_{\vartheta_0}(T>c^\ast)+\gamma^\ast P_{\vartheta_0}(T=c^\ast)$
+
+\subsection{Satz}
+Die Klasse $\{P_\vartheta:\vartheta\in\Theta\}$, $\Theta\subset\R^1$, besitze monotonen DQ in T. Dann gilt:
+\begin{itemize}
+\item[a)] Ist $\varphi^\ast$ von der Form $(\ast)$ mit $\alpha:=E_{\vartheta_0}(\varphi^\ast)>0$, so ist $\varphi^\ast$ UMP-Test für $H_0$ gegen $H_1$.
+\item[b)] Zu vorgegebenem $\vartheta_0\in\Theta$ und $\alpha\in(0,1)$ existieren $c^\ast\in\R,\gamma^\ast\in[0,1]$, so dass $\varphi^\ast$ aus $(\ast)$ ein Test zum Umfang $\alpha$ ist.
+\item[c)] Die Gütefunktion $E_\vartheta\varphi^\ast$ ist monoton wachsend und auf\\ $\{\vartheta:\ 0<E_\vartheta\varphi^\ast<1\}$ streng monoton.
+\end{itemize}
+
+\underline{Beweis:}
+\begin{itemize}
+\item[a)] Sei $\vartheta_1\in\Theta$ mit $\vartheta_1>\vartheta_0$ beliebig.
+\[H_0':\vartheta=\vartheta_0\ \mbox{ gegen }\ H_1':\vartheta=\vartheta_1\]
+Sei $f_j(x):=f(x,\vartheta_j)$. Wegen
+\[\frac{f_1(x)}{f_0(x)}=g(T(x),\vartheta_0,\vartheta_1)\]
+existiert zu $c^\ast$ ein $c:=g(c^\ast,\vartheta_0,\vartheta_1)$ mit 
+\[\{x:\ \frac{f_1(x)}{f_0(x)}>c\}\subset\{x:\ T(x)>c^\ast\}\]
+\[\{x:\ \frac{f_1(x)}{f_0(x)}<c\}\subset\{x:\ T(x)<c^\ast\}\]
+[Echte Teilmengen, denn aus $T(x)>c^\ast$ folgt $g(T(x),\vartheta_0,\vartheta_1)\geq c$.]
+
+Aus
+\begin{eqnarray*}
+0<\alpha&=&E_{\vartheta_0}\varphi^\ast\\
+&=&P_{\vartheta_0}(T>c^\ast)+\gamma^\ast P_{\vartheta_0}(T=c^\ast)\\
+&\leq&P_{\vartheta_0}(T\geq c^\ast)\\
+&=&P_{\vartheta_0}(\frac{f_1(x)}{f_0(x)}\geq c)\end{eqnarray*}
+folgt $c<\infty$. [Denn: $P_{\vartheta_0}(\frac{f_1(x)}{f_0(x)}=\infty)=0$]
+
+Für $\varphi^\ast$ aus $(\ast)$ gilt
+\[(\ast\ast)\quad\varphi^\ast(x)=\left\{\begin{array}{ll}1,&\frac{f_1(x)}{f_0(x)}>c\\\gamma(x),&\frac{f_1(x)}{f_0(x)}=c\\0,&\frac{f_1(x)}{f_0(x)}<c\end{array}\right.\]
+mit $\gamma(x)\in\{0,1,\gamma^\ast\}$.
+
+Nach 11.2 und 11.3 ist $\varphi^\ast$ bester Test für $H_0'$ gegen $H_1'$ zum Niveau $\alpha=E_{\vartheta_0}(\varphi^\ast)$.\\
+Da $\varphi^\ast$ in $(\ast)$ nicht von $\vartheta_1$ abhängt, ist (a) für $H_0'$ gegen $H_1:\vartheta>\vartheta_0$ bewiesen.
+
+Teil (c) $\Rightarrow E_\vartheta\varphi^\ast\leq\alpha\ \forall\vartheta\leq\vartheta_0$, d.h. Test $\varphi^\ast$ ist UMP-Test für $H_0$ gegen $H_1$ zu $\alpha:=E_{\vartheta_0}\varphi^\ast$.
+\item[b)] Analog zu 11.4(a).\\
+Nach (c) gilt $\sup_{\vartheta\in\Theta_0}E_\vartheta\varphi^\ast=E_{\vartheta_0}\varphi^\ast=\alpha$, d.h. der Test hat Umfang $\alpha$.
+\item[c)] Sei $\vartheta_1<\vartheta_2$ beliebig, $\alpha_1:=E_{\vartheta_1}\varphi^\ast$.\\
+Analog zu 11.7 $(\ast\ast)$ ist $\varphi^\ast$ NP-Test für $H_0^\ast:\vartheta=\vartheta_1$ gegen $H_1^\ast:\vartheta=\vartheta_2$.\\
+Da $\varphi^\ast$ besser als $\varphi_1:\equiv\alpha_1$ folgt
+\[\alpha_1=E_{\vartheta_2}(\varphi_1)\leq E_{\vartheta_2}(\varphi^\ast)\]
+d.h. $E_\vartheta(\varphi^\ast)$ monoton wachsend.
+
+(Für strenge Monotonie siehe Pruscha, S. 230)
+\end{itemize}
+
+\underline{Anmerkung:}\\
+Die Tests in $(\ast)$ und $(\ast\ast)$ sind äquivalent. $\varphi^\ast$ in $(\ast)$ hängt nicht von $\vartheta_1$ ab, also hängt auch der Test in $(\ast\ast)$ nicht von $\vartheta_1$ ab. Dies ist jedoch nicht beweisbar, da $\vartheta_1$ sowohl in $f_1(x)$ als auch in $c=c(\vartheta_0,\vartheta_1)$ eingeht.\\
+Beide Tests haben gleichen Ablehnbereich!
+
+\subsection{Bemerkung}
+\begin{itemize}
+\item[a)] Testproblem $H_0:\vartheta\geq\vartheta_0$ gegen $H_1:\vartheta<\vartheta_0$ analog.\newline
+[$\vartheta$ durch $-\vartheta$ und T durch -T ersetzen $\Rightarrow$ in $(\ast)$ werden $<$ und $>$ vertauscht]
+\item[b)] Für \textbf{zweiseitiges Testproblem} $H_0:\vartheta=\vartheta_0$ gegen $H_1:\vartheta\neq\vartheta_0$ existiert i.A. kein UMP-Test zum Niveau $\alpha$.\\
+Ein solcher Test $\varphi^\ast$ wäre 
+\begin{itemize}
+\item[(i)] UMP-Test für $H_0:\vartheta=\vartheta_0$ gegen $H_1^>:\vartheta>\vartheta_0$
+\[\Rightarrow E_\vartheta\varphi^\ast<\alpha\ \forall\vartheta<\vartheta_0\]
+($\hat{=} H_0$)
+\item[(ii)] UMP-Test für $H_0:\vartheta=\vartheta_0$ gegen $H_1^<:\vartheta<\vartheta_0$
+\[\Rightarrow E_\vartheta\varphi^\ast>\alpha\ \forall\vartheta<\vartheta_0\]
+($\hat{=} H_1$)
+\end{itemize}
+Widerspruch!
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung vom 21.06.07%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Beispiel (Der einseitige Gauss-Test)}
+Sei $X=(X_1,\ldots,X_n),\ X_1,\ldots,X_n\uiv\NN(\mu,\sigma_0^2),\ \sigma_0^2$ bekannt. Da
+\begin{eqnarray*}
+\frac{f(x,\mu_1,\sigma_0^2)}{f(x,\mu_0,\sigma^2_0)}&=&\frac{\exp(-\frac{1}{2\sigma_0^2}\sum_{j=1}^n(x_j-\mu_1)^2)}
+{\exp(-\frac{1}{2\sigma_0^2}\sum_{j=1}^n(x_j-\mu_0)^2)}\\
+&=&\exp(\frac{\mu_1-\mu_0}{\sigma_0^2}\underbrace{\sum_jx_j}_{=T(x)}-\frac{n(\mu_1^2-\mu_0^2)}{2\sigma_0^2})\\
+\end{eqnarray*}
+streng monoton wachsend in $T(x)=\sum_jx_j$ ist für $\mu_1>\mu_0$, besitzt\\
+$\{\otimes\NN(\mu,\sigma_0^2):\ \mu\in\R\}$ monotonen DQ in $T(x)=\sum_{j=1}^nx_j$\\
+Als UMP-Test  zum Neveau $\alpha$ für $H_0:\mu\leq\mu_0$ gegen $H_1:\mu>\mu_0$ ergibt sich
+$$\varphi^\ast(x)=\left\{
+\begin{matrix}1\ ,\sum_jx_j>c^\ast\\\gamma^\ast\ ,\sum_jx_j=c^\ast\\0\ ,\sum_jx_j<c^\ast\\\end{matrix}\right.$$
+Da $P_{\mu_0}(\sum_jX_j=c^\ast)=0$ kann $\gamma^\ast\in[0,1]$ beliebig gewählt werden, z.B. $\gamma^\ast=0$. Außerdem:
+\[E_{\mu_0}\varphi^\ast=P_{\mu_0}(\sum_{j=1}^nX_j>c^\ast)=P_{\mu_0}(\underbrace{\sqrt{n}\frac{\bar{X}_n-\mu_0}{\sigma_0}}_{\sim\NN(0,1)}>\sqrt{n}\frac{\frac{c^\ast}{n}-\mu_0}{\sigma_0})\stackrel{!}{=}\alpha\]
+$$\Rightarrow\sqrt{n}\frac{\frac{c^\ast}{n}-\mu_0}{\sigma_0}\stackrel{!}{=}z_{1-\alpha}:=\Phi^{-1}(1-\alpha)$$
+\underline{Ergebnis:}
+$$\varphi^\ast(x)=\left\{\begin{matrix}1\ ,\sqrt{n}\frac{\bar{x}_n-\mu_0}{\sigma_0}>z_{1-\alpha}\\
+0,\ \sqrt{n}\frac{\bar{x}_n-\mu_0}{\sigma_0}\leq z_{1-\alpha}\\\end{matrix}\right.$$
+ist UMP-Test zum Niveau $\alpha$ für $H_0:\mu\leq\mu_0$ gegen $H_1:\mu>\mu_0$.
+
+\subsection{Beispiel\\(UMP-Tests in einparametrigen Exponentialfamilien)}
+Sei $f_1(x_1,\vartheta)=c(\vartheta)e^{\vartheta T(x)}h(x),\ X_1,\ldots,\ X_n\uiv f_1$.
+$$\Rightarrow f(x,\vartheta)=c(\vartheta)^n\exp(\vartheta\sum_iT(x_i))\prod_ih(x_i)$$ und
+f hat momotonen DQ in $\tilde T(x)=\sum_{j=1}^nT(x_j)$ (vgl. 11.6).\\
+$\Rightarrow$ UMP-Test zum Niveau $\alpha$ für
+$H_0:\vartheta\leq\vartheta_0$ gegen $H_1:\vartheta>\vartheta_0$ ist
+$$\varphi^\ast(x)=\left\{
+\begin{matrix}1,\ \tilde T(x)>c^\ast\\\gamma^\ast,\ \tilde T(x)=c^\ast\\0,\ \tilde T(x)<c^\ast\\\end{matrix}\right.$$
+wobei $P_{\vartheta_0}(\widetilde{T}>c^\ast)+\gamma^\ast P_{\vartheta_0}(\widetilde{T}=c^\ast)
+\stackrel{!}{=}\alpha$.
+
+\subsection{Korollar}
+Sei $h=h(t)$ streng monoton wachsend, $\widetilde{T}(x)=h(T(x))$.\\
+In der Situation von 11.7 ist dann auch
+$$\tilde\varphi^\ast(x)=\left\{
+\begin{matrix}1\ ,\widetilde{T}(x)>\widetilde{c}^\ast\\\tilde\gamma^\ast\ ,\widetilde{T}(x)=\widetilde{c}^\ast\\0\ ,\widetilde{T}(x)<\widetilde{c}^\ast\\\end{matrix}\right.$$
+mit $\tilde c^\ast,\underbrace{\tilde \gamma^\ast}_{\in[0,1]}$ gemäß $E_{\vartheta_0}\widetilde{\varphi}^\ast\stackrel{!}{=}\alpha$ UMP-Test zum Niveau $\alpha$ für $H_0$ gegen $H_1$.
+
+\cleardoublepage
+\section{UMPU Tests ("`UMP unbiased"')}
+Nach Bemerkung 11.8(b) exisitiert im Allgemeinen kein zweiseitiger
+UMP-Test zu einem Niveau $\alpha$. Deshalb Einschränkung auf unverfälschte
+Tests:\\
+$\varphi\in\Phi_\alpha$ heißt \textbf{unverfälscht} (unbiased)
+zum Niveau $\alpha$ für $H_0:\vartheta\in\Theta_0$ gegen $H_1:\vartheta\in\Theta_1$, falls
+$$(1)\ E_\vartheta\varphi\leq\alpha\ \forall\vartheta\in\Theta_0,\ E_0\varphi\geq\alpha\ \forall \vartheta\in\Theta_1$$
+Im Folgenden liegen einparametrige Exponentialfamilien mit Dichte
+$$(\ast)\ f(x,\vartheta)=c(\vartheta)\cdot\exp(\vartheta T(x))\cdot h(x),\ x\in\XX$$
+und natürlichem Parameterbereich $\Theta$ vor.\\
+Zu testen sei $H_0: \vartheta=\vartheta_0$ gegen $H_1: \vartheta\neq\vartheta_0$.\\
+Nach Lemma 6.12 ist die Gütefunktion $\beta(\vartheta)=E_\vartheta\varphi(X)$ beliebig oft differenzierbar. Aus Forderung (1) folgt:
+$$(2)\ E_{\vartheta_0}\varphi(X)=\alpha,\ \frac{d}{d\vartheta}E_\vartheta\varphi(X)|_{\vartheta=\vartheta_0}=0$$
+Mit $$c(\vartheta)=[\int e^{\vartheta T(x)}h(x)\mu(dx)]^{-1}$$
+$$\ c'(\vartheta)=-\int T(x)e^{\vartheta T(x)}h(x)\mu(dx)\cdot c(\vartheta)^2$$ folgt weiter
+\begin{eqnarray*}
+\beta'(x)&=&[\int \varphi(x)c(\vartheta)e^{\vartheta T(x)}h(x)\mu(dx)]'\\
+&=&c'(\vartheta)\int \varphi(x)e^{\vartheta T(x)}h(x)\mu(dx)+c(\vartheta)\int \varphi(x)T(x)e^{\vartheta T(x)}h(x)\mu(dx)\\
+&=&-\bar{c}(\vartheta)^2\int T(x)e^{\vartheta T(x)}h(x)\mu(dx)\int\varphi(x)e^{\vartheta T(x)}h(x)\mu(dx)\\
+&&+E_\vartheta[\varphi(x)T(x)]\\
+&=&E_\vartheta[\varphi(x)T(x)]-E_\vartheta T(x)E_\vartheta\varphi(x)\\
+\end{eqnarray*}
+Damit ist (2) äquivalent zu
+$$(3)\ E_{\vartheta_0}\varphi(x)=\alpha,\ E_{\vartheta_0}[\varphi(x)T(x)]=\alpha E_{\vartheta_0}T(x)$$
+
+\subsection{Satz (UMPU-Tests in einparametrigen Exponentialfamilien)}
+Exponentialfamilie wie in $(\ast)$. Weiter sei 
+$$\varphi^\ast(x)=\left\{
+\begin{array}{cl}
+1,&T(x)<c_1^\ast \textnormal{ oder }T(x)>c_2^\ast\\
+\gamma_i^\ast,&T(x)=c_i^\ast\ (i=1,2)\\
+0,&c_1^\ast<T(x)<c_2^\ast\\
+\end{array}\right.$$
+wobei $c_1^\ast,c_2^\ast,0\leq \gamma_1^\ast,\gamma_2^\ast\leq1$ so, dass $\varphi^\ast$ (3) erfüllt. Dann:
+\begin{itemize}
+\item[a) ]Unter allen Niveau $\alpha$ Tests für $H_0: \vartheta=\vartheta_0$ gegen $H_1: \vartheta\neq\vartheta_0$
+die (3) erfüllen ist $\varphi^\ast$ gleichmäßig bester Test.
+\item[b) ]$\varphi^\ast$ ist UMPU-Test zum Niveau $\alpha$ für $H_0$ gegen $H_1$.
+\end{itemize}
+
+\underline{Anmerkung:}\\
+UMP-Tests sind eventuell auf einer Seite besser, versagen dafür aber auf der anderen Seite. Sie sind hier aber sowieso unzulässig, da sie nicht unverfälscht sind!
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 27.06.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%folgt
+\subsection{Bemerkungen}
+\begin{itemize}
+\item[a)] Aus (3) folgt 
+\[E_{\vartheta_0}[\varphi(X)\cdot(aT(X)+b)]=a\underbrace{E_{\vartheta_0}[\varphi(X)T(X)]}_{=\alpha E_{\vartheta_0}T}+\alpha\cdot b=\alpha E_{\vartheta_0}[aT(X)+b]\]
+d.h. Bedingung (3) und auch die Form des Tests $\varphi^\ast$ ändern sich nicht unter linear affinen Transformationen $\tilde T(x)=a\cdot T(x)+b$ ($a\neq0$). Also ist 
+\[\tilde \varphi^\ast(x)=\left\{\begin{array}{cl} 1,&\tilde T(x)<\tilde c_1^\ast\mbox{ oder }\tilde T(x)>\tilde c_2^\ast\\
+\tilde\gamma_i^\ast,&\tilde T(x)=\tilde c_i^\ast\ (i=1,2)\\
+0,&\tilde c_1^\ast<T(x)<\tilde c_2^\ast\end{array}\right.\]
+mit $E_{\vartheta_0}\tilde\varphi^\ast\stackrel{!}{=}\alpha$, $E_{\vartheta_0}[\tilde\varphi^\ast\tilde T]=\alpha\cdot E_{\vartheta_0}\tilde T$ ebenfalls UMPU-Test zum Niveau $\alpha$ für $H_0$ gegen $H_1$.
+\item[b)] Sei $P_{\vartheta_0}^T$ symmetrisch bezüglich $t_0$, d.h.
+\[P_{\vartheta_0}(T-t_0\leq -t)=P_{\vartheta_0}(T-t_0\geq t)\ \forall t\in\R\]
+Sei \[\varphi^\ast(x)=\left\{\begin{array}{cl} 1,&|T(x)-t_0|> c^\ast\\
+\gamma^\ast,&|T(x)-t_0|= c^\ast\\0,&|T(x)-t_0|< c^\ast\end{array}\right.\]
+mit $P_{\vartheta_0}(T(X)-t_0>\underbrace{c^\ast}_{>0})+\gamma^\ast P_{\vartheta_0}(T(X)-t_0=c^\ast)\stackrel{!}{=}\frac\alpha2$.\\
+$\Rightarrow P_{\vartheta_0}(|T(X)-t_0|>c^\ast)+\gamma^\ast P_{\vartheta_0}(|T(X)-t_0|=c^\ast)=\alpha$, d.h.\\ $E_{\vartheta_0}\varphi^\ast=\alpha\ (\ast)$.
+
+Weiter gilt: $E_{\vartheta_0}T(X)=t_0$, $\varphi^\ast$ symmetrisch bezüglich $t_0$
+\[\Rightarrow E_{\vartheta_0}[\varphi^\ast\cdot T]=\underbrace{E_{\vartheta_0}[(T-t_0)\cdot\varphi^\ast]}_{=0\mbox{ s.u.}}+t_0 E_{\vartheta_0}\varphi^\ast\stackrel{(\ast)}{=}t_0\cdot \alpha=\alpha\cdot E_{\vartheta_0}T\]
+[Betrachte $g(t)=(t-t_0)\cdot\varphi^\ast(t)\\ \Rightarrow E_{\vartheta_0}[(T-t_0)\cdot\varphi^\ast(T)]=\int g(t)P_{\vartheta_0}^T(dt)=0$.]
+
+D.h. auch die zweite Bedingung in (3) ist erfüllt.\\
+$\varphi^\ast$ ist also UMPU-Test zum Niveau $\alpha$ für $H_0$ gegen $H_1$.\\
+Bestimmung von $c^\ast,\gamma^\ast$ also wie beim einseitigen UMP-Test zum Niveau $\frac\alpha2$.
+
+\underline{Bemerkung:}\\
+Form des Tests bleibt unverändert unter streng monotonen Transformationen $\tilde{\tilde{T}}(x)=h(|T(x)-t_0|)$.
+\end{itemize}
+
+\subsection{Beispiel (Zweiseitiger Gauss-Test)}
+$X_1,\ldots,X_n\uiv \NN(\mu,\sigma_0^2),\sigma_0^2>0$ bekannt.
+\[H_0:\ \mu=\mu_0\ \mbox{ gegen }\ H_1:\ \mu\neq\mu_0\]
+Verteilung von $X=(X_1,\ldots,X_n)$ ist einparametrige Exponentialfamilie mit $\vartheta=\frac{\mu}{\sigma_0^2}$, $T(x)=\sum_{i=1}^n x_i$, $\sum_{i=1}^n X_i\sim\NN(n\mu_0,n\sigma_0^2)$ unter $H_0$.\\
+Linear affine Transformation
+\[\tilde T(x)=\frac{T(x)-n\mu_0}{\sqrt{n\sigma_0^2}}=\sqrt{n}\frac{\bar x_n-\mu_0}{\sigma_0}\]
+liefert $P_{\mu_0}^{\tilde T}=\NN(0,1)$, also symmetrisch bezüglich 0.\\
+Verteilungsfunktion ist stetig
+\[\Rightarrow \varphi^\ast=\left\{\begin{array}{cl}1,&\sqrt{n}|\frac{\bar x_n-\mu_0}{\sigma_0}|>z_{1-\frac\alpha2}\\0,&\sqrt{n}|\frac{\bar x_n-\mu_0}{\sigma_0}|\leq z_{1-\frac\alpha2}\end{array}\right.\]
+ist UMPU-Test für $H_0$ gegen $H_1$.
+
+\subsection{Beispiel}
+$X=(X_1,\ldots,X_n)$, $X_i\uiv\Bin(1,p)$, $0<p<1$
+\[H_0:\ p=p_0\ \mbox{ gegen }\ H_1:\ p\neq p_0\]
+Einparametrige Exponentialfamilie mit $\vartheta=\log\frac{p}{1-p}$, $T(x)=\sum_{i=1}^n x_i$,\\ $\sum_{i=1}^n X_i\sim\Bin(n,p_0)$ unter $H_0$.\\
+Im Allgemeinen nicht symmetrisch! UMPU-Test:
+\[\Rightarrow \varphi^\ast(x)=\left\{\begin{array}{cl}1,&\sum x_i<c_1^\ast\mbox{ oder }\sum x_i>c_2^\ast\\\gamma_i^\ast,&\sum x_i =c_i^\ast\\0,&c_1^\ast<\sum x_i<c_2^\ast\end{array}\right.\]
+mit (komplizierten) Bedingungen für $c_1^\ast,c_2^\ast,\gamma_1^\ast,\gamma_2^\ast$.
+
+In der Praxis oft:\\
+Konstruktion des Tests aus zwei einseitigen UMP-Tests zum Niveau $\frac\alpha2$,\\ ist aber nicht UMPU.
+
+\vspace{1cm}
+
+Im Folgenden Exponentialfamilie mit
+\[(4)\qquad f(x,\vartheta,\xi)=c(\vartheta,\xi)\cdot\exp(\vartheta\cdot U(x)+\sum_{i=1}^k\xi_iT_i(x))\cdot h(x)\]
+$(\vartheta,\xi)\in\Theta\subset\R\times\R^k$, $\Theta$ konvex, $\dot \Theta\neq\emptyset$.
+
+Zu testen: \[H_0: \vartheta\leq\vartheta_0\ \mbox{ gegen }\ H_1: \vartheta>\vartheta_0\]
+bzw.
+\[\tilde H_0: \vartheta=\vartheta_0\ \mbox{ gegen }\ \tilde H_1: \vartheta\neq\vartheta_0\]
+$\xi=(\xi_1,\ldots,\xi_k)$ ist Störparameter, $T(x)=(T_1(x),\ldots,T_k(x))$\\
+Für festes t ist Dichte in (4) einparametrige Exponentialfamilie.
+
+[Genauer: Man kann zeigen, dass die bedingte Verteilung $P_{\vartheta,\xi}^{U|T=t}$ eine einparametrige Exponentialfamilie mit Dichte
+\[c_t(\vartheta)\cdot e^{\vartheta\cdot U}h(x)\]
+(unabhängig von $\xi$) ist.]
+
+$\Rightarrow$ (bedingte) UMP- bzw. UMPU-Tests für $H_0$ bzw. $\tilde H_0$ existieren.\\
+Es lässt sich zeigen, dass diese bedingten Tests auch für zufälliges $T=T(X)$ optimal sind:
+
+\subsection{Satz}
+\begin{itemize}
+\item[a)] Der Test $\varphi_1$, definiert durch
+\[\varphi_1(x)=\left\{\begin{array}{cl}1,&U>c(t)\\\gamma(t),&U=c(t)\\0,&U<c(t)\end{array}\right.\]
+wobei $E_{\vartheta_0}[\varphi_1(U,T)|T=t]\stackrel{!}{=}\alpha$, ist UMPU-Test\footnote{Kein Schreibfehler! Test ist kein UMP-Test sondern nur UMPU!} zum Niveau $\alpha$ für $H_0$ gegen $H_1$.
+\item[b)] Der Test $\varphi_2$, definiert durch\footnote{besser: $\gamma_i(t)$}
+\[\varphi_2(x)=\left\{\begin{array}{cl}1,&U<c_1(t)\mbox{ oder }U>c_2(t)\\\gamma_i^\ast,&U=c_i(t)\\0,&c_1(t)<U<c_2(t)\end{array}\right.\]
+wobei $E_{\vartheta_0}[\varphi_2(U,T)|T=t]\stackrel{!}{=}\alpha$, $$E_{\vartheta_0}[\varphi_2(U,T)\cdot U|T=t]\stackrel{!}{=}\alpha\cdot E_{\vartheta_0}[U|T=t]$$ ist UMPU-Test zum Niveau $\alpha$ für $\tilde H_0$ gegen $\tilde H_1$.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Vorlesung 28.06.07 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Die Tests aus 12.5 können manchmal so transformiert werden, dass\\
+$c(t),\gamma(t)$ beziehungsweise $c_1(t),c_2(t),\gamma_i(t)$ nicht von t abhängen.
+
+\subsection{Satz}
+Unter der Verteilungsannahme (4) sei $V=h(U,T)$ eine unter $\vartheta=\vartheta_0$ von T
+unabhängige reellwertige Statistik. Dann gilt:
+\begin{itemize}
+\item[a) ]Ist $h(u,t)$ streng monoton wachsend in u bei festem t,
+so ist 
+$$\widetilde\varphi_1(v)=\left\{\begin{matrix}
+1,\ v>\widetilde{c}\\\widetilde\gamma,\ v=\widetilde{c}\\0,\ v<\widetilde{c}\end{matrix}\right.$$
+wobei $E_{\vartheta_0}\widetilde\varphi_1(V)=\alpha$, UMPU-Test zum Niveau $\alpha$ für $H_0$ gegen $H_1$.
+\item[b) ]Gilt $h(u,t)=a(t)u+b(t),\ a(t)>0$ so ist
+$$\widetilde\varphi_2(v)=\left\{\begin{array}{cl}
+1,&v<\widetilde{c}_1\textnormal{ oder }v>\widetilde{c}_2\\\widetilde\gamma_i,&v=\widetilde{c}_i\\0,&\widetilde{c}_1<v<\widetilde{c}_2\end{array}\right.$$
+wobei $E_{\vartheta_0}\widetilde\varphi_2(V)=\alpha,\ E_{\vartheta_0}[\widetilde\varphi_2(V)V]=\alpha 
+E_{\vartheta_0}(V)$
+UMPU-Test zum Niveau $\alpha$ für $\widetilde{H}_0$ gegen $\widetilde{H}_1$.
+\end{itemize}
+
+\underline{Beweis:}
+\begin{itemize}
+\item[a) ]Nach Korollar 11.11 bleibt die Form des Tests unter streng monotoner
+Transformation unverändert, man erhält also einen Test der Form $\widetilde\varphi_1$ mit
+$\widetilde{c}=\widetilde{c}(t),\ \widetilde\gamma=\widetilde\gamma(t)$. Nach Vorraussetzung
+ist V aber unabhängig von T unter $\vartheta=\vartheta_0$, deshalb hängen $\widetilde{c},\widetilde\gamma$
+ nicht von t ab.
+ \item[b) ] folgt analog mit Bemerkung 12.2(a)
+\end{itemize}
+ 
+Nachweis der Unabhängigkeit von V und T?\\
+Übliche Methoden der Wahrscheinlichkeitstheorie, oder
+ 
+\subsection{Satz (Basu's Theorem)}
+Sei $\wp=\{P_\vartheta:\ \vartheta\in\Theta\}$. Statistik T sei suffizient und vollständig
+für $\vartheta$. Ist V eine Statistik deren Verteilung nicht von $\vartheta$ abhängt, so
+sind V und T stochastisch unabhängig.\footnote{V "`ancillary"'}
+
+\underline{Beispiel:}\\
+$X_1,\ldots,X_n\uiv\NN(\mu,\sigma_0^2),\ \sigma_0^2>0$ bekannt, $\Theta=\{\mu:\mu\in\R\}$, $T=\sum_{i=1}^nX_i$ suffizient und vollständig für $\mu$.
+$$V=\underbrace{\sum_{i=1}^n(X_i-\bar{X}_n)^2}_{(\ast)}$$ 
+$(\ast)=\sum_i((X_i-\mu)(\bar{X}_n-\mu))^2=\sum_{i=1}^n(Y_i-\bar{Y}_n)^2$ wobei $Y_i\sim\NN(0,\sigma_0^2)$\\
+Verteilung von V unabhängig von $\mu\ (V\sim\sigma_0^2\chi^2_{n-1})$.\\
+$\stackrel{12.7}{\Rightarrow}$ V und T sind unabhängig.
+
+\underline{Beweis:}\\
+Sei g beliebige beschränkte Funktion, $m=E_\vartheta g(V)$ (unabhänig von $\vartheta$ nach Vorraussetzung).
+$$h(T(x)):=E_\vartheta[g(V)-m|T=T(x)]$$ unabhängig von $\vartheta$, da T suffizient. Wegen $$E_\vartheta h(T)=E_\vartheta[E_\vartheta[g(V)-m|T]]=0\forall\vartheta\in\Theta$$
+und der Vollständigkeit von T folgt $h(T)=0\ P_\vartheta-f.s.$, 
+also $$E_\vartheta[g(V)|T]=m=E_\vartheta g(V)\ P_\vartheta-f.s.$$
+und somit die Unabhängigkeit von V und T.
+
+\subsection{Korollar}
+Sei $\wp$ Exponentialfamilie wie in (4), wobei $\vartheta(=\vartheta_0)$ fest gewählt ist. Hängt die
+Verteilung einer Statistik V nicht von $\xi$ ab, so sind V und T unabhängig.
+
+\underline{Beweis:}\\
+Nach Beispiel 7.7 und 7.12 ist T vollständig und suffizient für $\xi .\\ 12.7\Rightarrow$ Behauptung.
+
+\subsection{Beispiel (1-Stichproben-t-Test)}
+$X_1,\ldots,X_n\uiv\NN(\mu,\sigma^2),\ \vartheta=(\mu,\sigma^2)\in\Theta=\R\times\R_{>0},\ X=(X_1,\ldots,X_n)$
+\begin{itemize}
+\item[a) ] $H_0:\mu\leq\mu_0$ gegen $H_1:\mu>\mu_0$\\
+2-parametrige Exponentialfamilie nach Beispiel 6.3, hat die Form in (4) mit $\vartheta=\frac{\mu}{\sigma^2},\ \xi=-\frac{1}{2\sigma^2},\ U(x)=\sum_{i=1}^nx_i,\ T(x)=\sum_{i=1}^nx_i^2$.\\
+Ohne Einschränkung sei $\mu_0=0$, andernfalls betrachte man $x_i-\mu_0$ anstelle der $x_i$.\\
+$H_0,\ H_1$ sind dann äquivalent zu $H_0: \vartheta\leq 0,\ H_1: \vartheta>0$.\\
+Betrachte:
+$$v=\frac{\sqrt{n}\bar{x}_n}{\sqrt{\frac{1}{n-1}\sum_{i=1}^n(x_i-\bar{x}_n)^2}}=
+\frac{1}{\sqrt{n}}\frac{u}{\sqrt{\frac{t-\frac{u^2}{n}}{n-1}}}=:h(u,t)$$
+$\frac{\partial h(u,t)}{\partial u}>0\Rightarrow h(u,t)$ streng monoton wachsend in u
+bei festem t. (Beachte: $t>\frac{u^2}{n}>0$.)
+
+Weiter gilt: Unter $\vartheta = \vartheta_0$ gilt $V\sim t_{n-1}$, also unabhängig von $\xi$.\\
+$\stackrel{12.8}{\Rightarrow}$ V und T sind stochastisch unabhängig (unter $\vartheta=\vartheta_0$).\\
+$\stackrel{12.6(a)}{\Rightarrow}$ Der UMPU-Test für $H_0:\mu\leq\mu_0$ gegen $\mu>\mu_0$ zum Niveau $\alpha$ ist
+$$\widetilde\varphi_1(v)=\left\{\begin{matrix}
+1\ ,\sqrt{n}\frac{\bar{x}_n-\mu_0}{s}\geq t_{n-1;1-\alpha}\\0\ ,\sqrt{n}\frac{\bar{x}_n-\mu_0}{s}< t_{n-1;1-\alpha}\end{matrix}\right.$$
+\item[b) ] $\tilde H_0: \mu=\mu_0$ gegen $\tilde H_1:\mu\neq\mu_0$\\
+Ohne Einschränkung $\mu_0=0$, dann $\tilde H_0: \vartheta=\vartheta_0=0,\ \tilde H_1:\vartheta\neq\vartheta_0$
+\[h(u,t)=\frac{1}{\sqrt n}\frac{u}{\sqrt{\frac{t-u^2/n}{n-1}}}\]
+nicht linear in u.
+
+Betrachte
+\[\tilde v=\tilde h(u,t)=\frac{u}{\sqrt{t}}=\frac{\sum x_i}{\sqrt{\sum x_i^2}}\]
+Unter $\vartheta=0$ gilt $\tilde V\sim\frac{\sum Y_i}{\sqrt{\sum Y_i^2}}$, wobei $Y_i\sim\NN(0,1)$.\footnote{Erweitere $\tilde v$ mit $\frac1\sigma$ um dies zu erkennen!}\\
+$\Rightarrow$ Verteilung von $\tilde V$ ist unabhängig von $\xi$ und symmetrisch um 0.\\
+Nach 12.6(b) existiert ein UMPU-Test $\tilde\varphi_2(\tilde v)$, der wegen der Symmetrie der Verteilung von $\tilde V$ nach 12.2(b) einen Ablehnbereich der Form $|\tilde v|>\tilde c$ hat.\\
+Nun gilt
+\[v=h(u,t)=g(\tilde v)=\sqrt{\frac{n-1}{n}}\frac{\tilde v}{\sqrt{1-\tilde v^2/n}}\]
+bzw. $|v|=g(|\tilde v|)$.
+
+$g(|\tilde v|)$ ist streng monoton wachsend auf $[0,\sqrt n)$\footnote{Beachte: $\tilde v\in(-\sqrt n,\sqrt n)$ (nachrechenbar)}, so dass nach Bemerkung in 12.2(b) der UMPU-Test auch auf einem Ablehnbereich der Form $|v|\geq c$ basieren kann. Somit ist
+$$\tilde\varphi_2(x)=\left\{\begin{array}{cl}
+1,&\sqrt{n}\frac{|\bar{x}_n-\mu_0|}{s}\geq t_{n-1;1-\frac\alpha2}\\0,&\sqrt{n}\frac{|\bar{x}_n-\mu_0|}{s}< t_{n-1;1-\frac\alpha2}\end{array}\right.$$
+UMPU-Test für $\tilde H_0$ gegen $\tilde H_1$.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 04.07.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Bemerkung}
+Ähnliche Überlegungen zeigen, dass auch der ein- bzw. zweiseitige\\ 2-Stichproben-t-Test UMPU-Test ist.\\
+(z.B. Lehmann/Romano, S. 157-161, 3. ed.)
+
+\subsection{Beispiel (Unabhängigkeitstest unter NV-Annahme)}
+$(X_1,Y_1),\ldots,(X_n,Y_n)\uiv\NN_2(\mu,\nu,\sigma^2,\tau^2,\varrho)$, also Dichte\footnote{$\varrho$ ist Korrelationskoeffizient (s. Stochastik 1)}
+
+$f((x_1,y_1),\ldots,(x_n,y_n),\mu,\nu,\sigma^2,\tau^2,\varrho)=(2\pi\sigma\tau\sqrt{1-\varrho^2})^{-n}\cdot$\[\exp(-\frac{1}{2(1-\varrho^2)}(\frac{1}{\sigma^2}\sum_i(x_i-\mu)^2-\frac{2\varrho}{\sigma\tau}\sum_i(x_i-\mu)(y_i-\nu)+\frac{1}{\tau^2}\sum_i(y_i-\nu)^2))\quad(\ast)\]
+Zu testen: $\tilde H_0$: $X_1,Y_1$ unabhängig; $\tilde H_1$: $X_1,Y_1$ nicht unabhängig\\
+Äquivalent: $\tilde H_0: \varrho=0$; $\tilde H_1: \varrho\neq0$\\
+Bzw. die einseitige Hypothese $H_0:\varrho\leq 0$ gegen $H_1:\varrho>0$.
+
+$(\ast)$ ist Exponentialfamilie wie in (4) mit $$U=\sum_ix_iy_i, T_1=\sum_ix_i^2, T_2=\sum_iy_i^2, T_3=\sum_ix_i, T_4=\sum_iy_i$$
+\[\vartheta=\frac{\varrho}{\sigma\tau(1-\varrho^2)}\]\[\xi_1=-\frac{1}{2\sigma^2(1-\varrho^2)},\ \xi_2=-\frac{1}{2\tau^2(1-\varrho^2)},\]\[\xi_3=\frac{1}{1-\varrho^2}(\frac{\mu}{\sigma^2}-\frac{\nu\varrho}{\sigma\tau}),\ \xi_4=\frac{1}{1-\varrho^2}(\frac{\nu}{\tau^2}-\frac{\mu\varrho}{\sigma\tau})\]
+\begin{itemize}
+\item[a)] $H_0:\vartheta\leq 0$ gegen $H_1:\vartheta>0$\\
+Sei
+\[R=\frac{\sum_i(X_i-\bar X)(Y_i-\bar Y)}{\sqrt{\sum_i(X_i-\bar X)^2\cdot\sum_i(Y_i-\bar Y)^2}}\]
+empirischer Korrelationskoeffizient nach Pearson.\\
+Transformation $X_i\to\frac{X_i-\mu}{\sigma}$, $Y_j\to\frac{Y_j-\nu}{\tau}$ ändert R nicht, deshalb hängt die Verteilung von R nicht von $\mu,\nu,\sigma^2,\tau^2$ ab, sondern nur von $\varrho$.\\
+Für $\vartheta=0$ ist die Verteilung von R also unabhängig von $\xi_1,\xi_2,\xi_3,\xi_4$.\\
+Korolar 12.8 $\Rightarrow$ R ist unabhängig von $(T_1,\ldots,T_4)$ unter $\vartheta=0$.\\
+$\stackrel{12.6}{\Rightarrow}$ UMPU-Test hat Ablehnbereich der Form $R\geq c$ oder äquivalent 
+\[w:=\frac{R}{\sqrt{\frac{1-R^2}{n-2}}}\geq \tilde c\]
+[$R=\frac{U-T_3T_4/n}{\sqrt{(T_1-T_3^2/n)(T_2-T_4^2/n)}}$ ist streng monoton wachsend in U\\ $\Rightarrow$ w ist streng monoton wachsend\footnote{w ist streng monoton wachsend in R (Beachte: $R\in[-1,1]$ und $w'(R)>0\ \forall R\in(-1,1)$)} in U]
+
+Nach Aufgabe 36 gilt: $w\sim t_{n-2}$ falls $\varrho=0$ (bzw. $\vartheta=0$).\\
+Deshalb:
+\[\varphi_1(w)=\left\{\begin{array}{cl}1,&w\geq t_{n-2,1-\alpha}\\0,&w<t_{n-2,1-\alpha}\end{array}\right.\]
+UMPU-Test zum Niveau $\alpha$ für $H_0$ gegen $H_1$.
+\item[b)] Test von $\tilde H_0:\vartheta=0$, $\tilde H_1:\vartheta\neq0$\\
+R ist linear in U mit um 0 symmetrischer Verteilung für $\vartheta=0$\\ $\Rightarrow$ UMPU-Test hat Ablehnbereich der Form $|R|\geq \tilde c$.\\
+Die Funktion $x\to\frac{x}{\sqrt{1-x^2}}$ ist streng monoton wachsend für $0\leq x\leq 1$, woraus wie in 12.9(b) folgt:
+\[\varphi_2(w)=\left\{\begin{array}{cl}1,&|w|\geq t_{n-2,1-\frac\alpha1}\\0,&|w|<t_{n-2,1-\frac\alpha2}\end{array}\right.\]
+ist UMPU-Test zum Niveau $\alpha$ für $\tilde H_0:\varrho=0$ gegen $\tilde H_1:\varrho\neq 0$.
+\end{itemize}
+
+\cleardoublepage
+%%%Teil Klar
+\section{Konfidenzbereiche}
+Sei $(\XX,\BB,\{P_\vartheta:\vartheta\in\Theta\})$ statistisches Modell,
+$g:\Theta\rightarrow\R^s$.
+
+\subsection{Definition}
+Sei $\alpha\in (0,1).$ Eine Abbildung $C:\XX\rightarrow \PM(\R^s)$ heißt \textbf{Konfidenzbereich}
+für $g(\vartheta)$ zum Niveau $1-\alpha$ genau dann, wenn
+\begin{itemize}
+  \item[(1)] $\{x\in\XX:~ C(x)\ni g(\vartheta)\}\in \BB \quad \forall \; \vartheta\in\Theta$
+  \item[(2)] $P_\vartheta \left( \{x\in\XX:~ C(x)\ni g(\vartheta)\}\right) \geq 1-\alpha\quad
+     \forall \; \vartheta\in\Theta.$
+\end{itemize}
+Falls $X:\Omega\rightarrow\XX$ eine Zufallsvariable mit Verteilung $P_\vartheta$ ist,
+so die zweite Bedingung gleichbedeutend mit
+$$P_\vartheta \left( C(X)\ni g(\vartheta) \right) \geq 1-\alpha\quad \forall \; \vartheta\in\Theta.$$
+Falls $s=1$ und $C(x)$ f\"ur alle $x\in\XX$ ein Intervall ist, so heißt
+$C(\, \cdot \,)$ ein \textbf{Konfidenzintervall}.\footnote{Anmerkung: Ermitteln wir z.B. das 95\%-Konfidenzintervall für den wahren Erwartungswert einer Population, dann bedeutet dies, dass wir bei durchschnittlich 5 von 100 gleichgroßen Zufallsstichproben ein Konfidenzintervall ermitteln, das den Erwartungswert nicht enthält.}
+%%%Teil Klar Ende
+
+\underline{Beispiel:}\\
+$X=(X_1,\ldots,X_n)$, $X_1,\ldots,X_n\uiv\NN(\mu,\sigma^2)$, $\vartheta=(\mu,\sigma^2)$, $g(\vartheta)=\mu$
+\[C(X)=[\bar X_n-\frac{S_n}{\sqrt n}\cdot t_{n-1;1-\frac\alpha2}, \bar X_n+\frac{S_n}{\sqrt{n}}\cdot t_{n-1;1-\frac\alpha2}]\]
+ist Konfidenzintervall zum Niveau $1-\alpha$ nach 2.4.
+
+\subsection{Bemerkung (Pivot-Methode)}
+Praktische Berechnung von Konfidenzintervallen:\\
+Finde Funktion k so, dass die Verteilung von $k(X,\vartheta)$ unabhängig von $\vartheta$ ist, d.h., dass $H(x):=P_\vartheta(k(X,\vartheta)\leq x)$ unabhängig von $\vartheta$ ist.
+
+Dann existieren Konstanten a,b:
+\[P_\vartheta(a\leq k(X,\vartheta)\leq b)\geq1-\alpha\ \forall\vartheta\in\Theta\]
+Falls man das Ereignis $\{a\leq k(X,\vartheta)\leq b\}$ umschreiben kann als $\{U(X)\leq g(\vartheta)\leq O(X)\}$, so ist $[U(X),O(X)]$ Konfidenzintervall für $g(\vartheta)$ zum Niveau $1-\alpha$.
+
+Im Beispiel oben:\\
+Verteilung von 
+\[k(X,\vartheta)=\frac{\sqrt{n}(\bar X_n-\mu)}{S_n}\]
+unabhängig von $\vartheta=(\mu,\sigma^2)$.\\
+$\frac{\sqrt{n}(\bar X_n-\mu)}{S_n}$ ist Pivot für $g(\vartheta)=\mu$.\newline
+[$\{-t_{n-1;1-\frac\alpha2}\leq k(X,\vartheta)\leq t_{n-1;1-\frac\alpha2}\}\rightarrow C(X)$ im Beispiel oben]
+
+\underline{Weiteres Beispiel:}\\
+$X_1,\ldots,X_n\uiv U(0,\vartheta)$, $\vartheta>0$, $g(\vartheta)=\vartheta$\\
+MLE\footnote{ML-Schätzer (\textit{Estimator})} von $\vartheta$: $X_{(n)}=\max_{1\leq i\leq n}X_i$
+
+Verteilungsfunktion von $X_{(n)}$ ist $(\frac{x}{\vartheta})^n, 0\leq x\leq \vartheta$\\
+$\Rightarrow$ Verteilungsfunktion von $\frac{X_{(n)}}{\vartheta}$ ist $x^n, 0\leq x\leq 1$, also ist $\frac{X_{(n)}}{\vartheta}$ Pivot für $\vartheta$.
+
+Wähle a,b so, dass 
+\[P_\vartheta(a\leq \frac{X_{(n)}}{\vartheta}\leq b)=b^n-a^n\stackrel{!}{=}1-\alpha\ (\forall\vartheta\in\Theta)\]
+Dann ist $[\frac{X_{(n)}}{b}, \frac{X_{(n)}}{a}]$ $(1-\alpha)$-Konfidenzintervall für $\vartheta$.
+
+Wie a und b wählen?
+\begin{itemize}
+\item Intervall $[a,b]$ "`kleinstmöglich"' wählen
+\item andere Optimalitätsbegriffe
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 05.07.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Teil Tobi (13.3/13.5/13.8/13.9) da
+%Teil Klar (13.4/13.6/13.7) da
+\subsection{Zusammenhang zwischen Konfidenzintervallen und\\ (nichtrandomisierten) Tests}%13.3
+\begin{itemize}
+\item[1. ]$C(x)$ sei Konfidenzinterwall zum Niveau $1-\alpha$ für $\vartheta$ (d.h.\\ $P_\vartheta(C(X)\ni\vartheta)\geq 1-\alpha\ \forall\vartheta\in\Theta)$.\\
+Zu testen ist
+$H_0:\vartheta=\vartheta_0$ gegen $H_1:\vartheta\neq\vartheta_0$.\\
+ Definiere Test $\varphi$:
+ $$\varphi(x)=\left\{\begin{matrix}1&,\ \vartheta_0\notin C(x)\\0&,\ \vartheta_0\in C(x)\end{matrix}\right.$$
+ Umfang von $\varphi$:\[ E_{\vartheta_0}\varphi(x)=1-\underbrace{P_{\vartheta_0}(\vartheta_0\in C(x))}_{\geq1-\alpha}\leq \alpha\]
+ d.h. $\varphi$ ist Niveau $\alpha$-Test.
+ \item[2. ]Umgekehrt sei für jedes $\vartheta_0\in\Theta$ ein Niveau $\alpha$-Test $\varphi_{\vartheta_0}(x)$ für
+ obige Situation gegeben (d.h. $P_{\vartheta_0}(\varphi_{\vartheta_0}(X)=0)\geq1-\alpha,\ \vartheta_0\in\Theta$).\\
+Definiere $C^\ast(x)=\{\vartheta_0:\varphi_{\vartheta_0}(x)=0\}$
+\[\Rightarrow P_\vartheta(C^\ast(X)\ni\vartheta)=P_\vartheta(\varphi_\vartheta(x)=0)\geq1-\alpha\quad \forall\vartheta\in\Theta\]
+d.h. $C^\ast(X)$ ist $(1-\alpha)$-Konfidenzbereich für $\vartheta$.
+\end{itemize}
+
+\underline{Beispiel (1 Stichproben-t-Test):}
+\begin{itemize}
+\item[1. ]$(1-\alpha)$-Konfidenzintervall für $\mu$: $[\bar{x}_n-\frac{s_n}{\sqrt{n}}t_{n-1,1-\frac{\alpha}{2}},\bar{x}_n+\frac{s_n}{\sqrt{n}}t_{n-1,1-\frac{\alpha}{2}}]$.\\
+Lehne $H_0:\mu=\mu_0$ ab, falls $\mu_0\notin$ Konfidenzintervall.
+$$\hat{=}|\mu_0-\bar{x}_n| >\frac{s_n}{\sqrt{n}}\ t_{n-1,1-\frac{\alpha}{2}}$$
+$$\hat{=}\frac{\sqrt{n} | \bar{x}_n-\mu_0|}{s_n}>t_{n-1,1-\frac{\alpha}{2}}$$
+\item[2. ]Umgekehrt:
+$$\frac{\sqrt{n} | \bar{x}_n-\mu_0|}{s_n}>t_{n-1,1-\frac{\alpha}{2}}$$ Ablehnbereich für
+Test $\varphi_{\mu_0}$ von $H_0:\mu=\mu_0$ gegen $H_1:\mu\neq\mu_0$ für jedes $\mu_0\in\R$.
+\begin{eqnarray*}
+C^\ast(x)&=&\{\mu:\varphi_\mu(x)=0\}\\
+&=&\{\mu:\frac{\sqrt{n} | \bar{x}_n-\mu_0|}{s_n}\leq t_{n-1,1-\frac{\alpha}{2}}\}\\
+&=&\{\bar{x}_n-\frac{s_n}{\sqrt{n}}t_{n-1,1-\frac{\alpha}{2}}\leq\mu\leq\bar{x}_n+\frac{s_n}{\sqrt{n}}t_{n-1,1-\frac{\alpha}{2}}\}
+\end{eqnarray*}
+$(1-\alpha)$-Konfidenzintervall für $\mu$.
+\end{itemize}
+\underline{Bemerkungen:}
+\begin{itemize}
+\item[(i) ]Es besteht also eine Dualität zwischen Signifikanztests und Konfidenzbereichen, allerdings nur,
+wenn eine ganze Schar von Hypothesen\\ $H_{\vartheta_0}:\vartheta=\vartheta_0$ getestet wird.\\
+Bei Beschränkung auf einen Test (was bei praktischer Testdurchführung immer der Fall ist) ist der Test "`weniger"' informativ. \newline
+[Allerdings: Bei Tests wird in der Praxis p-Wert (siehe Beispiel nach 11.4) angegeben $\Rightarrow$
+andere Information als Konfidenzintervall].
+\item[(ii) ]UMP(U)-Tests führen auf Konfidenzbereiche, die gewisse (komplizierte) Optimalitätseigenschaften
+haben.\\ (Im Allgemeinen aber nicht kürzeste Konfidenzintervalle.)
+\end{itemize}
+
+\subsection{Definition} %13.4
+Ist f\"ur jedes $n$ die Abbildung $C_n:\XX_n\rightarrow\R^s$ ein Konfidenzbereich
+f\"ur $g(\vartheta),$ basierend auf $(X_1,\ldots,X_n),$ und gilt
+\begin{eqnarray*}
+ \lim_{n\rightarrow\infty} P_\vartheta\left(\{(x_1,\ldots,x_n)\in\XX_n:~
+  C_n(x_1,\ldots,x_n)\ni g(\vartheta)\}\right) &=& 1-\alpha
+\end{eqnarray*}
+für alle $\vartheta\in\Theta$, so heißt die Folge $(C_n)$ ein
+\textbf{asymptotischer Konfidenzbereich} für $g(\vartheta)$ zum Niveau $1-\alpha$.
+
+\subsection{Beispiel}%13.5
+$X_1,\ldots,X_n\uiv X,\ EX^2<\alpha,\ F(x)=P(X\leq x),\ \vartheta:=F,\\
+g(\vartheta)=\int xdF(x)=EX=:\mu$
+\[S_n^2:=\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{X}_n)^2\stackrel{P}{\rightarrow}\sigma^2:=\var(X)\]
+ZGWS: $\frac{\sqrt{n}(\bar{X}_n-\mu)}{\sigma}\stackrel{D}{\rightarrow}\NN(0,1)$
+\[\Rightarrow \lim_{n\to\infty}P_\vartheta(\underbrace{
+\bar{X}_n-\frac{S_n}{\sqrt{n}}\Phi^{-1}(1-\frac{\alpha}{2})\leq\mu\leq\bar{X}_n+\frac{S_n}{\sqrt{n}}\Phi^{-1}(1-\frac{\alpha}{2})}_{
+\textnormal{asymptotisches Konfidenzintervall zum Niveau }1-\alpha})=1-\alpha\]
+
+\subsection{Hilfssatz}%13.6
+\begin{eqnarray*}
+Y \sim \NN_k(0,\Sigma),~ \Sigma>0 &\Longrightarrow& Y^T \Sigma^{-1} Y \sim \chi^2_k.
+\end{eqnarray*}
+\underline{Beweis:}
+\begin{eqnarray*}
+  \Sigma^{-1/2} Y \sim \NN_k(0,I_k) &\Rightarrow&
+   \|\Sigma^{-1/2} Y\|^2 = Y^T\Sigma^{-1} Y\sim \chi^2_k.
+\end{eqnarray*}
+
+\subsection{Asymptotische Konfidenzbereiche in parametrischen\\ Modellen}%13.7
+Seien $X_1\ldots,X_n\stackrel{uiv}{\sim} f(\xi;\vartheta),~\vartheta\in\Theta,~\Theta\subset\R^k$ offen
+und $f$ eine reguläre Dichte im $\R^s$ bezüglich $\mu$ ($=\lambda^s$ oder Zählmaß ).
+
+Sei $\hat{\vartheta}_n$ eine Schätzfolge für $\vartheta$ mit der Eigenschaft
+\[
+\sqrt{n}(\hat{\vartheta}_n-\vartheta)\stackrel{D_\vartheta}{\longrightarrow}
+\NN_k(0,\Sigma(\vartheta)),\quad \vartheta\in\Theta\qquad(1)\]
+wobei $\Sigma(\vartheta)>0$ und $\Sigma(\, \cdot \,)$ stetig.
+
+Aus (1) und Hilfssatz 13.6 folgt, dass
+\begin{eqnarray*}
+ n(\hat{\vartheta}_n-\vartheta)^T \Sigma(\hat{\vartheta}_n)^{-1} (\hat{\vartheta}_n-\vartheta)
+  &\stackrel{D_\vartheta}{\longrightarrow}& \chi^2_k,\quad \vartheta\in\Theta
+\end{eqnarray*}
+das heißt
+\begin{eqnarray*}
+ \lim_{n\rightarrow\infty} P_\vartheta\left( n(\hat{\vartheta}_n-\vartheta)^T \Sigma
+ (\hat{\vartheta}_n)^{-1} (\hat{\vartheta}_n-\vartheta)\leq \chi^2_{k;1-\alpha}\right)
+ &=& 1-\alpha\quad \forall \; \vartheta \in\Theta.
+\end{eqnarray*}
+Da die Menge
+$$\left\{\vartheta\in\R^k: (\hat{\vartheta}_n-\vartheta)^T\Sigma(\hat{\vartheta}_n)^{-1}
+  (\hat{\vartheta}_n-\vartheta)\leq \frac{\chi^2_{k;1-\alpha}}{n} \right\}$$
+ein Ellipsoid in $\R^k$ mit Zentrum $\hat{\vartheta}_n$ ist, handelt es sich hier um
+einen elliptischen Konfidenzbereich f\"ur $\vartheta.$
+
+Falls $g:\R^k\rightarrow\R$ differenzierbar ist, so folgt aus (1), dass
+\begin{eqnarray*}
+ \sqrt{n} (g(\hat{\vartheta}_n)-g(\vartheta)) &\stackrel{D_\vartheta}{\longrightarrow}&
+  \NN(0,\sigma^2(\vartheta)),
+\end{eqnarray*}
+wobei
+$$\sigma^2(\vartheta)=g'(\vartheta)^T \Sigma(\vartheta) g(\vartheta)).$$
+Somit gilt
+\begin{eqnarray*}
+ \frac{ \sqrt{n} (g(\hat{\vartheta}_n)-g(\vartheta))}{\sigma(\hat{\vartheta}_n)}
+  &\stackrel{D_\vartheta}{\longrightarrow}& \NN(0,1).
+\end{eqnarray*}
+Mit $r_n = \sigma(\hat{\vartheta}_n) \cdot \Phi^{-1}\left(1-\frac{\alpha}{2}\right)/\sqrt{n}$
+folgt
+\begin{eqnarray*}
+ \lim_{n\to\infty} P_\vartheta\left( g(\hat{\vartheta}_n) - r_n \leq g(\vartheta)
+  \leq g(\hat{\vartheta}_n) + r_n \right) &=& 1-\alpha.
+\end{eqnarray*}
+Man hat also einen asymptotischen Konfidenzbereich f\"ur $g(\vartheta)$ konstruiert.
+
+\subsection{Beispiele}%13.8
+\begin{itemize}
+\item[a) ]$X_1,\ldots,X_n\uiv\Bin(1,p),\ 0<p<1,\ \vartheta=p,\ \hat{p}_n=\frac1n\sum_{i=1}^nX_i=\bar{X}_n$
+ZGWS:\[\sqrt{n}(\hat{p}_n-p)\stackrel{D}{\rightarrow}\NN(0,\underbrace{p(1-p)}_{=\Sigma(\vartheta)})\]
+$g:\ \R\rightarrow\R,\ g(p)=\log\frac{p}{1-p}$ "`logit"'-Funktion\\
+$g'(p)=\frac{1}{p(1-p)}$
+\[\Rightarrow\sigma^2(p)=g'(p)^2\Sigma(p)=\frac{1}{p(1-p)}=\frac1p+\frac{1}{1-p}\]
+\[\Rightarrow\sqrt{n}(\log\frac{\hat{p}_n}{1-\hat{p}_n}-\log\frac{p}{1-p})\stackrel{D}{\rightarrow}\NN(0,\frac{1}{p(1-p)})\]
+und \[[\log\frac{\hat{p}_n}{1-\hat{p}_n}-\frac{\Phi^{-1}(1-\frac{\alpha}{2})}{\sqrt{n\hat{p}_n(1-\hat{p}_n)}},\ 
+\log\frac{\hat{p}_n}{1-\hat{p}_n}+\frac{\Phi^{-1}(1-\frac{\alpha}{2})}{\sqrt{n\hat{p}_n(1-\hat{p}_n)}}]\]
+ist asymptotisches $(1-\alpha)$-Konfidenzintervall für $\log\frac{p}{1-p}$.
+\item[b) ]Konfidenzintervall für "`log odds ratio"'\\
+ $X_1,\ldots,X_n\sim\Bin(1,p),\ Y_1,\ldots,Y_n\sim\Bin(1,q)$
+\[\Theta=\log\frac{\frac{p}{1-p}}{\frac{q}{1-q}},\ \Theta=0\Leftrightarrow p=q\]
+siehe Übung
+\end{itemize}
+
+\subsection{Beispiel}%13.9
+Sei $X_1,\ldots,X_n\uiv\NN_2(\mu,\Sigma),\ X_i=\ \begin{pmatrix}X_i^{(1)}\\X_i^{(2)}\end{pmatrix},\ 
+\mu=\begin{pmatrix}\mu_1\\\mu_2\end{pmatrix}\\
+\Sigma$ regulär, $\Sigma=\begin{pmatrix}\sigma_{11}&\sigma_{12}\\\sigma_{12}&\sigma_{22}\end{pmatrix},\ \bar{X}_n=
+\begin{pmatrix}\bar{X}_n^{(1)}\\\bar{X}_n^{(2)}\end{pmatrix}$ mit
+$\bar{X}_n^{(k)}=\frac1n\sum_{i=1}^nX_i^{(k)},\\ k=1,2$
+
+\underline{$\Sigma$ bekannt:} $\sqrt{n}(\bar{X}_n-\mu)\sim\NN_2(0,\Sigma)$
+$$\stackrel{13.6}{\Rightarrow}n(\bar{X}_n-\mu)^T\Sigma^{-1}(\bar{X}_n-\mu)\sim\chi_2^2$$
+$$\Rightarrow P_\mu(\underbrace{n(\bar{X}_n-\mu)^T\Sigma^{-1}(\bar{X}_n-\mu)\leq\chi^2_{2;1-\alpha}}_{
+\textnormal{elliptischer }(1-\alpha)-\textnormal{Konfidenzbereich für }\mu})= 1-\alpha$$
+\underline{$\Sigma$ unbekannt:} Konsistenter Schätzer für $\Sigma$ ist $$\hat{\Sigma}_n=\frac1n\sum_{i=1}^n(X_i-\bar{X}_n)(X_i-\bar{X}_n)^T$$
+$\vartheta=(\mu,\Sigma),\ \hat\vartheta_n=(\bar{X}_n,\hat\Sigma_n)$\\
+Für $n>d(=2)$\footnote{d ist Dimension} ist $\hat\Sigma_n$ nicht singulär mit
+Wahrscheinlichkeit 1. $$\Rightarrow n(\bar{X}_n-\mu)^T\hat\Sigma_n^{-1}(\bar{X}_n-\mu)\stackrel{D}{\rightarrow}\chi_2^2$$
+Betrachte $g(\vartheta)=\mu_1-\mu_2$.\\
+$g'(\vartheta)=\begin{pmatrix}1\\-1\end{pmatrix},\ \sigma^2(\vartheta)=(1,-1)\Sigma\begin{pmatrix}1\\-1\end{pmatrix}=\sigma_{11}-2\sigma_{12}+\sigma_{22}$
+\[\Rightarrow\frac{\sqrt{n}((\bar{X}_n^{(1)}-\bar{X}_n^{(2)})-(\mu_1-\mu_2))}{\sigma(\hat\vartheta_n)}\stackrel{D}{\rightarrow}\NN(0,1)\]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Vorlesung 11.07.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage
+\section{Lineare statistische Modelle}
+\subsection{Definition}
+Es seien $X=(X_1,\ldots,X_n)^T$ ein (beobachtbarer) Zufallsvektor,\\ $C=(c_{ij})_{{i=1,\ldots,n}\atop{j=1,\ldots,s}}$ eine bekannte $n\times s$-Matrix mit $\operatorname{Rang}(C)=s$\\ (insbesondere $n\geq s$), $\vartheta=(\vartheta_1,\ldots,\vartheta_s)^T$ unbekannter Parametervektor,\\ $\varepsilon=(\varepsilon_1,\ldots,\varepsilon_n)^T$ ein (nicht beobachtbarer) Zufallsvektor mit \[E(\varepsilon)=0,\  \var(\varepsilon)=E(\varepsilon\cdot\varepsilon^T)=\sigma^2\cdot I_n\] $\sigma^2$ unbekannt.\\
+Ein \textbf{lineares Modell (LM)} wird beschrieben durch die Gleichung
+\[X=C\vartheta+\varepsilon\qquad(1)\]
+also
+\[\begin{pmatrix} X_1\\\vdots\\X_n\end{pmatrix}=\begin{pmatrix}c_{11}&\cdots&c_{1s}\\\vdots&&\vdots\\c_{n1}&\cdots&c_{ns}\end{pmatrix}\begin{pmatrix} \vartheta_1\\\vdots\\\vartheta_s\end{pmatrix}+\begin{pmatrix}\varepsilon_1\\\vdots\\\varepsilon_n\end{pmatrix}\]
+C heißt "`Designmatrix"'.\\
+(1) heißt klassisch, falls $\varepsilon\sim\NN_n(0,\sigma^2I_n)$.
+
+\underline{Bemerkungen:}
+\begin{itemize}
+\item[a) ]Im klassischen LM gilt: $X\sim\NN_n(C\vartheta,\sigma^2I_n)$.\\
+Die Beobachtungen $X_1,\ldots,X_n$ sind also unabhängig, aber nicht identisch verteilt.
+\item[b) ]$\operatorname{Rang}(C)=s\ \Leftrightarrow\ C^TC$ nicht singulär\\
+Denn\footnote{In der Hinrichtung multipliziere $C^TCu=0$ mit $u^T$, in der Rückrichtung multipliziere $Cu=0$ mit $C^T$.}:
+\begin{eqnarray*}
+C^TC\mbox{ singulär}&\Leftrightarrow&\exists u\in\R^s, u\neq0:\ C^TCu=0\\
+&\Leftrightarrow&\exists u\in\R^s, u\neq0:\ u^TC^TCu=(Cu)^TCu=0\\
+&\Leftrightarrow&\exists u\in\R^s, u\neq0:\ Cu=0\\
+&\Leftrightarrow&\operatorname{Rang}(C)<s\end{eqnarray*}
+\end{itemize}
+
+\subsection{Beispiele}
+\begin{itemize}
+\item[a) ]$X_i=\vartheta+\varepsilon_i$, $i=1,\ldots,n$
+\[(s=1,\ C=\begin{pmatrix}1\\\vdots\\1\end{pmatrix})\]
+(wiederholte Messung)
+\item[b) ]$X_i=a+bt_i+\varepsilon_i$, $i=1,\ldots,n$
+\[(s=2,\ a=\vartheta_1,\ b=\vartheta_2,\ C=\begin{pmatrix}1&t_1\\\vdots&\vdots\\1&t_n\end{pmatrix})\]
+(einfache lineare Regression)
+\item[c) ]$X_i=a+bt_i+ct_i^2+\varepsilon_i$, $i=1,\ldots,n$
+\[(s=3,\ \vartheta=(a,b,c)^T,\ C=\begin{pmatrix}1&t_1&t_1^2\\\vdots&\vdots&\vdots\\1&t_n&t_n^2\end{pmatrix})\]
+(einfache quadratische Regression)
+\item[d) ]$X_i=\sum_{j=1}^s\vartheta_j\cdot f_j(t_i)+\varepsilon_i$, $i=1,\ldots,n$\\
+$f_1,\ldots,f_s$ beliebige gegebene Funktionen! (allgemeine (lineare) Regression)\\
+z.B. $f_j(t)=\sin(\omega_j\cdot t)$ (trigonometrische Regression)
+\item[e) ]$X_i=a+bu_i+cv_i+\ldots+gz_i+\varepsilon_i$, $i=1,\ldots,n$
+\[\vartheta=\begin{pmatrix}a\\\vdots\\g\end{pmatrix},\ C=\begin{pmatrix}1&u_1&v_1&\cdots&z_1\\\vdots&\vdots&\vdots&&\vdots\\1&u_n&v_n&\cdots&z_n\end{pmatrix})\]
+(multiple lineare Regression)
+\item[f) ]$X_{1,i}=\vartheta_1+\varepsilon_{1,i}$, $i=1,\ldots,n_1$\\
+$X_{2,i}=\vartheta_2+\varepsilon_{2,i}$, $i=1,\ldots,n_2$
+\[\begin{pmatrix} X_{1,1}\\\vdots\\X_{1,n_1}\\X_{2,1}\\\vdots\\X_{2,n_2}\end{pmatrix}=\begin{pmatrix}1&0\\\vdots&\vdots\\1&0\\0&1\\\vdots&\vdots\\0&1\end{pmatrix}\begin{pmatrix} \vartheta_1\\\vartheta_2\end{pmatrix}+\begin{pmatrix}\varepsilon_{1,1}\\\vdots\\\varepsilon_{1,n_1}\\\varepsilon_{2,1}\\\vdots\\\varepsilon_{2,n_2}\end{pmatrix}\]
+(2-Stichproben-Modell)
+\item[g) ]$X_{i,j}=\vartheta_i+\varepsilon_{i,j}$, $i=1,\ldots,k$, $j=1,\ldots,n_i$\\
+(Modell der einfachen Varianzanalyse, 1-faktorielle ANOVA)\\
+z.B. Effekt $X_{i,j}$ bei k unterschiedlichen Behandlungen
+\end{itemize}
+
+\subsection{Schätzung von $\vartheta$}
+Sei $R(C):=\{C\vartheta:\vartheta\in\R^s\}$ s-dimensionaler Unterraum des $\R^n$.\\
+14.1(1) besagt $EX\in R(C)$.\\
+Forderung: $\|X-C\vartheta\|^2=\min\limits_\vartheta!$ (kleinste-Quadrate-Methode; vgl. 4.6)
+
+\underline{Lösung:}
+\[\hat\vartheta=\hat\vartheta(X)=(C^TC)^{-1}\cdot C^TX\]
+
+\underline{Beweis:}\\
+Wegen $\mu(\vartheta)=C\vartheta$ folgt $M(\vartheta)=\left(\frac{\partial\mu_i}{\partial\vartheta_j}\right)_{i,j}=C$ in 4.6 und somit die Normalengleichung $C^TC\vartheta=C^TX$.\\
+Da $C^TC$ nach Bemerkung 14.1(b) invertierbar ist, ist 
+\[\hat\vartheta=\hat\vartheta(X)=(C^TC)^{-1}\cdot C^TX\]
+die (einzige) Lösung.
+
+\underline{Bemerkung:}\\
+Es gilt\footnote{Beachte: $(A^T)^{-1}=(A^{-1})^T$}:
+\[E_{\vartheta,\sigma^2}(\hat\vartheta)=(C^TC)^{-1}C^T\underbrace{E_{\vartheta,\sigma^2}(X)}_{=C\vartheta}=\vartheta\]
+d.h. $\hat\vartheta$ ist erwartungstreu für $\vartheta$.
+\[\var_{\vartheta,\sigma^2}(\hat\vartheta)=(C^TC)^{-1}C^T\underbrace{\var_{\vartheta,\sigma^2}(X)}_{=\var_{\vartheta,\sigma^2}(\varepsilon)=\sigma^2\cdot I_n}\cdot C(C^TC)^{-1}=\sigma^2(C^TC)^{-1}\]
+
+\underline{Beispiele:}
+\begin{itemize}
+\item[a) ]In 14.2(b) (einfache lineare Regression) ist (vgl. 4.7)
+\[\hat\vartheta_1=\bar{X}-\hat\vartheta_2\bar{t},\ \hat\vartheta_2=
+\frac{\sum_{i=1}^nt_iX_i-n\cdot\bar{t}\cdot\bar{X}}{\sum_{i=1}^n(t_i-\bar{t})^2}\]
+\item[b) ]In 14.2(g) (ANOVA) ist
+\[C=\begin{pmatrix}1&&&\\\vdots&&&\\1&&&\\&1&&\\&\vdots&&\\&1&&\\&&\ddots&\\&&&1\\&&&\vdots\\&&&1\end{pmatrix},\ C^TC=\begin{pmatrix}n_1&&&0\\&n_2&&\\&&\ddots&\\0&&&n_k\end{pmatrix}\]
+und somit
+\[\hat\vartheta=\begin{pmatrix}\hat\vartheta_1\\\vdots\\\hat\vartheta_k\end{pmatrix}=\begin{pmatrix}\frac{1}{n_2}\sum_{j=1}^{n_1}X_{1,j}\\\vdots\\\frac{1}{n_k}\sum_{j=1}^{n_k}X_{k,j}\end{pmatrix}=:\begin{pmatrix}\bar X_{1+}\\\vdots\\\bar X_{k+}\end{pmatrix}\]
+(+ bedeutet, dass hier summiert wird)
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Vorlesung 12.07.07 Tobias Flaig%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Satz ( Gauß-Markov-Theorem)}
+Es sei $a\in\R^s$. Dann ist $T:=a^T\hat\vartheta$ \textbf{bester linearer erwartungstreuer} Schätzer für $a^T\vartheta$. (BLUE)
+
+\underline{Beweis:}\\
+Sei $S=S(X)$ linearer Schätzer für $a^T\vartheta$.
+\[\Rightarrow\exists b\in\R^n:S=b^TX\]
+S erwartungstreu für $a^T\vartheta\Rightarrow$\[ E_{\vartheta,\sigma^2}S=b^TE_{\vartheta,\sigma^2}X=
+b^TC\vartheta\stackrel{!}{=}a^T\vartheta\ \forall\vartheta\]
+$\Rightarrow b^TC=a^T\ (\ast)$
+$$\var_{\vartheta,\sigma^2}(S))b^T\underbrace{\var_{\vartheta,\sigma^2}X}_{\sigma^2I_n}\cdot b=\sigma^2b^Tb$$
+$$\var_{\vartheta,\sigma^2}(T)=a^T\var_{\vartheta,\sigma^2}(\hat\vartheta)a=\sigma^2a^T(C^TC)^{-1}a\stackrel{(\ast)}{=}
+\sigma^2b^TC(C^TC)^{-1}C^Tb$$
+$$\Rightarrow\var_{\vartheta,\sigma^2}(S)-\var_{\vartheta,\sigma^2}(T)=\sigma^2b^T(\underbrace{I_n-\underbrace{C(C^TC)^{-1}}_{=:P}}_{=:Q}C^T)b$$
+Wegen $P=P^T=P^2$ folgt $Q=Q^T=Q^2$ (vgl. Aufgabe 44) folgt
+$$b^TQb=b^TQ^2b=b^TQ^TQb=\left\|Qb\right\|^2\geq 0$$
+$\Rightarrow$ Behauptung
+
+\underline{Beispiele:}
+\begin{itemize}
+\item[a) ]1-faktorielle ANOVA (14.2(g), Beispiel 14.3(b))\\
+$a^T=(0,\ldots,0,\underbrace{1}_{a_i},0,\ldots,0,\underbrace{-1}_{a_j},0,\ldots,0),\ a^T\vartheta=\vartheta_i-\vartheta_j\\
+$Differenz der Erwartungswerte der i-ten und j-ten Gruppe.\\
+$T=a^T\hat\vartheta=\bar{X}_{i+}-\bar{X}_{j+}$ ist BLUE für $a^T\vartheta$.
+\item[b) ]einfache lineare Regression\\
+$a=\begin{pmatrix}1\\t^\ast\end{pmatrix},\ a^T\vartheta=\vartheta_1+\vartheta_2-t^\ast\\
+T=a^T\hat\vartheta=\hat\vartheta_1+\hat\vartheta_2t^\ast$ ist BLUE.\\
+\underline{Hier:}
+$$C=\begin{pmatrix}1&t_1\\\vdots&\vdots\\1&t_n\end{pmatrix}$$
+\[C^TC=\begin{pmatrix}n&n\bar{t}\\n\bar{t}&\sum t_i^2\end{pmatrix},
+\ (C^TC)^{-1}=\frac{1}{\sum(t_i-\bar{t})^2}\begin{pmatrix}\frac1n\sum t_i^2&-\bar{t}\\-\bar{t}&1\end{pmatrix}\]
+\[\Rightarrow\var_{\vartheta,\sigma^2}(\hat\vartheta_1)=\sigma^2\frac{\frac1n\sum t_i^2}{\sum(t_i-\bar{t})^2}\]\[ 
+\var_{\vartheta,\sigma^2}(\hat{\vartheta}_2)=\sigma^2\frac{1}{\sum(t_i-\bar{t})^2} \mbox{ (vgl. 4.7)}\]
+$$\cov_{\vartheta,\sigma^2}(\hat\vartheta_1,\hat\vartheta_2)=\frac{-\sigma^2\bar{t}}{\sum(t_i-\bar{t})^2}\ (=0,\mbox{ falls } \bar{t}=0)\]
+\begin{eqnarray*}
+\var_{\vartheta,\sigma^2}(T)&=&\sigma^2a^T(C^TC)^{-1}a\\&=&\frac{\sigma^2}{\sum(t_i-\bar{t})^2}(\frac1n\sum t_i^2-2t^\ast\bar{t}+(t^\ast)^2)\\&=&\sigma^2(\frac1n+\frac{(t^\ast-\bar{t})^2}{\sum(t_i-\bar{t})^2})\end{eqnarray*}
+\end{itemize}
+
+\subsection{Schätzung von $\sigma^2$}
+$\hat\sigma^2=\hat\sigma^2(X)=\frac1n \|\underbrace{X-C\hat\vartheta}_{=:\hat\varepsilon}\|^2=
+\frac1n\left\|\hat\varepsilon\right\|^2=\frac{\hat{\varepsilon}^T\hat\varepsilon}{n}\\
+(\hat\varepsilon$ Residuenvektor )
+
+\underline{Bemerkung:}\\
+$\hat\sigma^2$ ist asymptotisch erwartungstreu, aber nicht erwartungstreu für $\sigma^2$, da nach Aufgabe 44
+$$\hat{S}^2=\frac{n}{n-s}\hat\sigma^2=\frac{1}{n-s}\left\|\hat\varepsilon\right\|^2$$ erwartungstreu für $\sigma^2$ ist.
+
+\vspace{2cm}
+
+Ab jetzt stets klassisches lineares Modell ($\varepsilon\sim\NN_n(0,\sigma^2I_n))$!
+
+\subsection{Satz}
+Im (klassischen) linearen Modell gilt:
+\begin{itemize}
+\item[a) ]$(\hat\vartheta,\hat\sigma)$ ist ML-Schätzer für $(\vartheta,\sigma^2)$
+\item[b) ]$\hat\vartheta\sim\NN_s(\vartheta,\sigma^2(C^TC)^{-1})$
+\item[c) ]$\frac{n}{\sigma^2}\hat\sigma^2\sim\chi^2_{n-s}$
+\item[d) ]$\hat\vartheta$ und $\hat\sigma^2$ sind stochastisch unabhängig
+\end{itemize}
+
+\underline{Beweis:}
+\begin{itemize}
+\item[a) ]$X\sim\NN_n(C\vartheta,\sigma^2I_n)$
+\begin{eqnarray*}
+\Rightarrow f(x,\vartheta,\sigma^2)&=&\frac{1}{(\sigma\sqrt{2\pi})^n}\exp\{-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-(C\vartheta)_i)^2\}\\
+&=&\frac{1}{(\sigma^22\pi)^{\frac{n}{2}}}\exp\{-\frac{\left\|x-C\vartheta\right\|^2}{2\sigma^2}\}\\&=:&L_x(\vartheta,\sigma^2)
+\end{eqnarray*}
+Maximieren von $L_x$ bezüglich $\vartheta$ bei festem $\sigma^2$ führt auf\\
+Minimierung von $\left\|x-C\vartheta\right\|^2$,
+ Lösung ist $\hat\vartheta$.
+$$\frac{\partial\log L_x(\hat\vartheta,\sigma^2)}{\partial\sigma^2}\stackrel{!}{=}0$$
+$$\hat\sigma^2=\frac1n\left\|x-C\hat\vartheta\right\|^2$$
+ \item[b) ]folgt aus Bemerkung 14.3 und Normalverteilungs-Annahme
+ \item[c) ] \begin{eqnarray*}\varepsilon^T\varepsilon&=&(X-C\vartheta)^T(X-C\vartheta)\\&=&(X-C\hat\vartheta+C(\hat\vartheta-\vartheta))^T
+(X-C\hat\vartheta+C(\hat\vartheta-\vartheta))\\&=&(\hat\varepsilon+C(\hat\vartheta-\vartheta))^T(\hat\varepsilon+C(\hat\vartheta-\vartheta))\end{eqnarray*}
+\[\Rightarrow\underbrace{\frac{\varepsilon^T\varepsilon}{\sigma^2}}_{\sim\chi^2_n}=
+\frac{\hat\varepsilon^T\hat\varepsilon}{\sigma^2}+\underbrace{(
+ \hat\vartheta-\vartheta)^T\frac{C^TC}{\sigma^2}(\hat\vartheta-\vartheta)}_{\sim\chi_s^2\ (1)}+2\underbrace{\hat\varepsilon^TC}_{(2)}\frac{(\hat\vartheta-\vartheta)}{\sigma^2}\]
+(1) nach Hilfssatz 13.6 und (b)\\
+(2) $=\varepsilon^T(I_n-P)^TC=\varepsilon^T(I_n-P)C=0$
+
+Zu zeigen: $\frac{\hat\varepsilon^T\hat\varepsilon}{\sigma^2}\sim\chi^2_{n-s}$\\
+Die charakteristische Funktion von $\chi_k^2$ ist $$\varphi_{\chi_k^2}(t)=
+ \int_{-\infty}^\infty e^{itx}f_k(x)dx=(1-2it)^{-\frac{k}{2}}$$
+Unabhängigkeit von $\hat\vartheta$ und $\hat\varepsilon$ nach (d)
+\[\Rightarrow (1-2it)^{-\frac{n}{2}}=\varphi_{\frac{\hat\varepsilon^T\hat\varepsilon}{\sigma^2}}(t)\cdot(1-2it)^{-\frac{s}{2}}\]
+\[\Rightarrow\varphi_{\frac{\hat\varepsilon^T\hat\varepsilon}{\sigma^2}}(t)=(1-2it)^{-\frac{n-s}{2}}\]
+ Eindeutigkeitssatz für charakteristische Funktionen
+ $$\Rightarrow\frac{\hat\varepsilon^T\hat\varepsilon}{\sigma^2}=\frac{n}{\sigma^2}\hat\sigma^2\sim\chi_{n-s}^2$$
+\item[d) ]$\hat\vartheta=(C^TC)^{-1}C^TX=(C^TC)^{-1}C^T(C\vartheta+\varepsilon)
+=\vartheta+(C^TC)^{-1}C^T\varepsilon$
+\begin{eqnarray*}
+\hat\varepsilon&=&X-C\hat\vartheta\\
+&=&(I_n-C(C^TC)^{-1}C^T)X\\
+&=&(I_n-P)(C\vartheta+\varepsilon)\\
+&=&\underbrace{(I_n-P)C}_{C-C=0}\vartheta+(I_n-P)\varepsilon\\
+&=&(I_n-P)\varepsilon\\(&=&Q\varepsilon)
+\end{eqnarray*}
+\begin{eqnarray*}
+\Rightarrow\underbrace{\cov(\hat\vartheta,\hat\varepsilon)}_{s\times n \textnormal{ Matrix}}&=&\cov(\vartheta+(C^TC)^{-1}C^T\varepsilon,(I_n-P)\varepsilon)\\
+&=&\cov((C^TC)^{-1}C^T\varepsilon,(I_n-P)\varepsilon)\\
+&=&\underbrace{(C^TC)^{-1}C^T}_{s\times n}\cdot \underbrace{\cov(\varepsilon,\varepsilon)}_{=\var(\varepsilon)=\sigma^2I_n}\cdot\underbrace{(I_n-P)^T}_{n\times n}\\
+&=&\sigma^2(C^TC)^{-1}(\underbrace{(I_n-P)C}_{=0})^T\\&=&0
+\end{eqnarray*}
+$\hat\varepsilon=(I_n-P)\varepsilon\sim\NN_n(0,(I_n-P)\sigma^2(I_n-P)^T)=\NN_n(0,\sigma^2(I_n-P))$\\
+$\hat\varepsilon,\hat\vartheta$ normalverteilt und unkorreliert $\Rightarrow \hat\vartheta,\hat\varepsilon$ unabhängig\\ $\Rightarrow\hat\vartheta,\hat\sigma^2$ stochastisch unabhängig.
+\end{itemize}
+ 
+ \underline{Bemerkung:}\\
+ $\hat\varepsilon\sim\NN_n(0,(I_n-P)\sigma^2)$, d.h. die $\hat\varepsilon_i$ haben nicht die gleiche Varianz.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Vorlesungen 18./19.07.07%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Konfidenzbereiche für $\vartheta$}
+\begin{itemize}
+\item[a)] elliptischer Konfidenzbereich für $\vartheta$:
+\[\hat\vartheta-\vartheta\sim\NN(0,\sigma^2(C^TC)^{-1})\]
+\[\Rightarrow (\hat\vartheta-\vartheta)^T\frac{C^TC}{\sigma^2}(\hat\vartheta-\vartheta)\sim\chi^2_s;\ \frac{n\hat\sigma^2}{\sigma^2}\sim\chi^2_{n-s}\]
+Beide Größen sind stochastisch unabhängig.
+\[\Rightarrow \frac{\frac1s (\hat\vartheta-\vartheta)^TC^TC(\hat\vartheta-\vartheta)}{\frac{n}{n-s}\hat\sigma^2}\sim F_{s,n-s}\]
+\[\Rightarrow C_E:=\{y\in\R^s:\ \frac{\frac1s (\hat\vartheta-y)^TC^TC(\hat\vartheta-y)}{\hat s^2}\leq F_{s,n-s,1-\alpha}\}\]
+erfüllt $P_{\vartheta,\sigma^2}(C_E(X)\ni\vartheta)=1-\alpha\ \forall\vartheta,\sigma^2$, d.h. $C_E$ ist ein (exakter) $(1-\alpha)$-Konfidenzbereich für $\vartheta$.
+\item[b)] Konfidenzintervall für $\vartheta_j$:\\
+Sei $(C^TC)^{-1}=:(b_{ij})_{s\times s}$. $\hat\vartheta_j\sim\NN(\vartheta_j,b_{jj}\sigma^2)$
+\[\stackrel{14.6(c),(d),\ 2.1}{\Rightarrow} \frac{\frac{\hat\vartheta_j-\vartheta_j}{\sigma\sqrt{b_{jj}}}}{\sqrt{\frac{n}{n-s}\frac{\hat\sigma^2}{\sigma^2}}}=\frac{\hat\vartheta_j-\vartheta_j}{\hat s\cdot\sqrt{b_{jj}}}\sim t_{n-s}(\sim\sqrt{F_{1,n-s}})\]
+\[\Rightarrow P_{\vartheta,\sigma^2}(|\hat\vartheta_j-\vartheta_j|\leq t_{n-s,1-\frac\alpha2}\cdot \hat s\sqrt{b_{jj}})=1-\alpha\]
+d.h. $\hat\vartheta_j\pm t_{n-s,1-\frac\alpha2}\cdot \hat s\sqrt{b_{jj}}$ ist zweiseitiges $(1-\alpha)$-Konfidenzintervall für $\vartheta_j$.
+\item[c)] quaderförmiger Konfidenzbereich für $\vartheta$ ("`Bonferroni-Methode"'):\\
+Regel von den kleinen Ausnahmewahrscheinlichkeiten:
+\[P(A_j)\geq 1-\frac as,\ j=1,\ldots,s\ \Rightarrow\ P(\bigcap_{j=1}^s A_j)\geq 1-\alpha\]
+\textit{Denn:}
+\[P(\bigcap_{j=1}^s A_j)=1-P((\bigcap_{j=1}^s A_j)^C)=1-P(\bigcup_{j=1}^s A_j^C)\geq1-\sum_{j=1}^s\underbrace{P(A_j^C)}_{\leq\frac as}\geq 1-\alpha\]
+Somit gilt für 
+\[C_Q(x):=\times_{j=1}^s[\hat\vartheta_j(x)-r(x),\hat\vartheta_j(x)+r(x)]\]
+mit $r(x):=t_{n-s,1-\frac{\alpha}{2s}}\cdot\hat s\sqrt{b_{jj}}$:
+\[P_{\vartheta,\sigma^2}(C_Q(X)\ni\vartheta)\geq1-\alpha\ \forall\vartheta,\sigma^2\]
+d.h. $C_Q$ ist quaderförmiger $(1-\alpha)$-Konfidenzbereich für $\vartheta$.
+
+\underline{Bemerkung:}\\
+$C_E$ hat kleineres Volumen wie $C_Q$, aber $C_Q$ ist leichter zu interpretieren.
+\item[d)] Konfidenzintervall für $a^T\vartheta$:
+\[a^T\hat\vartheta\sim\NN(a^T\vartheta,\sigma^2\cdot a^T(C^TC)^{-1}a)\]
+\[\Rightarrow \frac{a^T(\hat\vartheta-\vartheta)}{\hat s\sqrt{a^T(C^TC)^{-1}a}}=\frac{\frac{a^T(\hat\vartheta-\vartheta)}{\sigma\sqrt{a^T(C^TC)^{-1}a}}}{\sqrt{\frac{\hat s^2}{\sigma^2}}}\sim t_{n-s}\]
+$\Rightarrow$ Mit $r:=t_{n-s,1-\frac\alpha2}\cdot\hat s\sqrt{a^T(C^TC)^{-1}a}$ ist $[a^T\hat\vartheta-r,a^T\hat\vartheta+r]$ $(1-\alpha)$-Konfidenzintervall für $a^T\vartheta$.
+
+\underline{Beispiel:}\\
+einfache lineare Regression (vgl. Beispiel 14.4(b))
+\[a=\left(\begin{array}{c}1\\t^\ast\end{array}\right),\ r=t_{n-2,1-\frac\alpha2}\cdot \hat s\sqrt{\frac1n+\frac{(t^\ast-\bar t)^2}{\sum_i(t_i-\bar t)^2}}\]
+$[\hat\vartheta_1+\hat\vartheta_2\cdot t^\ast-r,\hat\vartheta_1+\hat\vartheta_2\cdot t^\ast+r]$ ist $(1-\alpha)$-Konfidenzintervall für $a^T\vartheta=\vartheta_1+\vartheta_2\cdot t^\ast$.
+\end{itemize}
+
+\subsection{Tests von linearen Hypothesen im linearen Modell}
+$X=C\vartheta+\varepsilon$, $\varepsilon\sim\NN_n(0,\sigma^2\cdot I_n)$\\
+Zu testen sei "`lineare Hypothese"'
+\[H_0:\ H\vartheta=h\ \mbox{ gegen }\ H_1:\ H\vartheta\neq h\]
+Dabei: H $r\times s$-Matrix, $\operatorname{Rang}(H)=r$ \textit{(insbesondere $r\leq s$)}, $h\in\R^r$ gegeben
+\[H_0\hat{=}\Theta_0:=\{(\vartheta,\sigma^2)\in\underbrace{\R^s\times\R_{>0}}_{=\Theta}:\ H\vartheta=h\},\ H_1\hat{=}\Theta\backslash\Theta_0\]
+
+\subsection{Beispiele}
+\begin{itemize}
+\item[a)] $X_j=\vartheta_1+\vartheta_2\cdot t_j+\varepsilon_j$, $j=1,\ldots,n$ (einfache lineare Regression)
+\[H_0:\vartheta_2=0\ \mbox{ gegen }\ H_1:\vartheta_2\neq0\]
+"`Lineare Hypothese"': $H=(0,1)$, $h=0$ ($s=2,r=1$)
+\[H_0:\ H\cdot\left(\begin{array}{c}\vartheta_1\\\vartheta_2\end{array}\right)=0\]
+\underline{Möglicher Test:} Verallgemeinerter Likelihood-Quotienten-Test\\
+Testgröße $\Lambda_n$ bzw. $\log\Lambda_n$.
+\[\Lambda_n:=\frac{\sup_{(\vartheta,\sigma^2)\in\Theta_0}f(x,\vartheta,\sigma^2)}{\sup_\Theta f(x,\vartheta,\sigma^2)}\]
+\underline{Unter $H_0$:} $X_j=\vartheta_1+\varepsilon_j$, $X_j\sim\NN(\vartheta_1,\sigma^2)$, ML-Schätzer für $\vartheta_1$: $\bar X_n$\\
+\underline{Ohne Restriktion:} ML-Schätzer = KQ-Schätzer\footnote{Kleinste-Quadrate-Schätzer} = $\hat\vartheta$ (Satz 14.6(a))
+
+Als Schätzer für $\sigma^2$ wird aber üblicherweise in beiden Fällen der\\ Schätzer $\hat\sigma^2$ aus Obermodell verwendet!
+
+Dann\footnote{SS: sum of squares}:
+\[\log\Lambda_n=-\frac{1}{2\hat\sigma^2}[\underbrace{\sum_{i=1}^n(X_i-\bar X_n)^2}_{=:SS_0}-\underbrace{\sum_{i=1}^n(X_i-(\hat\vartheta_1+\hat\vartheta_2t_i))^2}_{=SS_1(=n\hat\sigma^2)}]\]
+Als Testgröße wird 
+\[T:=\frac{SS_0-SS_1}{\frac{SS_1}{n-2}}\]
+verwendet. Es gilt:
+\begin{itemize}
+\item[(i)] $\frac{SS_1}{\sigma^2}\sim\chi^2_{n-2}$ (nach 14.6(c))
+\item[(ii)] $\frac{SS_0}{\sigma^2}\sim\chi^2_{n-1}$ unter $H_0$ (nach 2.2)
+\item[(iii)] $SS_0-SS_1$ und $SS_1$ stochastisch unabhängig (ohne Beweis)
+\[\underbrace{\frac{SS_0}{\sigma^2}}_{\stackrel{H_0}{\sim}\chi^2_{n-1}}=\frac{SS_0-SS_1}{\sigma^2}+\underbrace{\frac{SS_1}{\sigma^2}}_{\sim\chi^2_{n-2}}\]
+$\Rightarrow \frac{SS_0-SS_1}{\sigma^2}\sim\chi^2_{n-1-(n-2)}=\chi^2_1$ unter $H_0$ (vgl. Beweis von 14.6(c))
+\end{itemize}
+Damit $T\sim F_{1,n-2}$ unter $H_0$.
+\item[b)] $X_{i,j}=\vartheta_j+\varepsilon_{i,j}$ $(i=1,\ldots,k$, $j=1,\ldots,n_i$) (einfache Varianzanalyse\footnote{$k\hat=s$})
+\[H_0:\vartheta_1=\ldots=\vartheta_k\]
+("`kein Effekt des zu untersuchenden Faktors"')
+\[\underbrace{\left(\begin{array}{cccc}1&&0&-1\\&\ddots&&\vdots\\0&&1&-1\end{array}\right)}_{=:H\in\R^{k-1\times k}}\cdot\left(\begin{array}{c}\vartheta_1\\\vdots\\\vartheta_k\end{array}\right)=\underbrace{\left(\begin{array}{c}0\\\vdots\\0\end{array}\right)}_{=:h\in\R^{k-1}}\]
+$\operatorname{Rang}(H)=k-1(=r)$
+
+\underline{Testgröße:} (vgl. Aufgabe 45)\\
+Sei $\bar X_{i+}=\frac{1}{n_i}\sum_{j=1}^{n_i}X_{i,j}$, $\bar X_{++}=\frac{1}{n}\sum_{i,j}X_{i,j}$, $n=\sum_{i=1}^{k}n_i$,\\ $\operatorname{SQZ}=\sum_{i=1}^k n_i(\bar X_{i+}-\bar X_{++})^2$,$\operatorname{SQI}=\sum_{i,j}(X_{i,j}-\bar X_{i+})^2$ $$\sum_{i,j}(X_{i,j}-\bar X_{++})^2=\operatorname{SQI}+\operatorname{SQZ}$$
+\[T:=\frac{\frac{\operatorname{SQZ}}{k-1}}{\frac{\operatorname{SQI}}{n-k}}\sim F_{k-1,n-k}\ \mbox{ unter }H_0\]
+\end{itemize}
+\newpage
+\subsection{Die Testgröße bei allgemeinen linearen Hypothesen}
+$\hat\vartheta\sim\NN_j(\vartheta,\sigma^2(C^TC)^{-1})$
+\[\Rightarrow H\hat\vartheta\sim\NN_r(H\vartheta,\sigma^2\underbrace{H(C^TC)^{-1}H^T}_{=:B})\]
+\[\frac{\frac1r\cdot\frac{1}{\sigma^2}(H\hat\vartheta-H\vartheta)^TB^{-1}(H\hat\vartheta-H\vartheta)}{\frac{\hat s^2}{\sigma^2}}\sim\frac{\frac{\chi_r^2}{r}}{\frac{\chi_{n-s}^2}{n-s}}\sim F_{r,n-s}\]
+(Zähler und Nenner sind stochastisch unabhängig.)\\
+Sei 
+\[T:=\frac{\frac1r(H\hat\vartheta-h)^T(H(C^TC)^{-1}H^T)^{-1}(H\hat\vartheta-h)}{\hat s^2}\sim F_{r,n-s}\ \mbox{ unter }H_0\]
+
+Der sogenannte \textbf{F-Test} im linearen Modell besitzt die Gestalt:\\
+$H_0$ ablehnen, falls $T\geq F_{r,n-s,1-\alpha}$.\\
+Kein Widerspruch zu $H_0$, falls $T<F_{r,n-s,1-\alpha}$.
+
+\underline{Bemerkung:}\\
+Für die Beispiele aus 14.9 stimmt die obige Testgröße mit den Testgrößen aus 14.9(a) bzw. (b) überein. 
+
+\end{document}

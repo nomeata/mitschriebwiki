@@ -1,0 +1,2548 @@
+\documentclass[a4paper,twoside,DIV15,BCOR12mm]{scrbook}
+
+\usepackage{mathe}
+\usepackage{saetze-leuzinger}
+
+\lecturer{Prof. Dr. E. Leuzinger}
+\semester{Sommersemester 2007}
+\scriptstate{complete}
+
+\usepackage{skull}
+\usepackage{faktor}
+\usepackage{enumerate}
+
+\newcommand{\otm}{\stackrel{\circ}{\subset}} % Offene Teilmenge
+\newcommand{\At}{\mathcal A}
+
+\newcommand{\V}{\mathcal V}
+\newcommand{\kan}{\text{kan}}
+\DeclareMathOperator{\cut}{Cut}
+\DeclareMathOperator{\inj}{Inj}
+\DeclareMathOperator{\dist}{Dist}
+\DeclareMathOperator{\vol}{vol}
+
+\author{Die Mitarbeiter von \url{http://mitschriebwiki.nomeata.de/}}
+\title{Riemann’sche Geometrie}
+\makeindex
+
+\begin{document}
+\maketitle
+ 
+
+\renewcommand{\thechapter}{\Roman{chapter}}
+%\chapter{Inhaltsverzeichnis}
+\stepcounter{chapter}
+%\renewcommand{\tocname}{bla}
+\addcontentsline{toc}{chapter}{\protect\numberline {\thechapter}Inhaltsverzeichnis}
+\tableofcontents
+
+ % Vorwort
+
+\chapter{Vorwort}
+%\addcontentsline{toc}{chapter}{Vorwort}
+
+\section*{Über dieses Skriptum}
+Dies ist ein Mitschrieb der Vorlesung \glqq Riemann’sche Geometrie\grqq\ von Herrn Dr. Leuzinger im
+Sommersemester 07 an der Universität Karlsruhe (TH). Die Mitschriebe der Vorlesung werden mit
+ausdrücklicher Genehmigung von Herrn Dr. Leuzinger hier veröffentlicht, Herr Dr. Leuzinger ist für  den
+Inhalt nicht verantwortlich.
+\section*{Wer}
+Gestartet wurde das Projekt von Joachim Breitner. Bei der Erstellung wurde bisweilen auf ein Skript für die englische Version der Vorlesung, geTeXt von Bernhard Konrad, zurückgegriffen.
+
+
+\section*{Wo}
+Alle Kapitel inklusive \LaTeX-Quellen können unter \url{http://mitschriebwiki.nomeata.de} abgerufen werden.
+Dort ist ein von Joachim Breitner programmiertes \emph{Wiki}, basierend auf \url{http://latexki.nomeata.de} installiert. 
+Das heißt, jeder kann Fehler nachbessern und sich an der Entwicklung
+beteiligen. Auf Wunsch ist auch ein Zugang über \emph{Subversion} möglich.
+
+
+\setcounter{chapter}{0}
+\renewcommand{\thechapter}{\arabic{chapter}}
+\chapter{Mannigfaltigkeiten}
+
+\section{Differenzierbare Mannigfaltigkeiten}
+
+\subsection*{Erinnerung (LA/Analysis)}
+%\begin{center}
+\begin{tabular}{rl}
+Euklidischer Raum & $\MdR^n, \langle\cdot,\cdot\rangle$ \\
+Norm & $ \|a\| \da  \sqrt{\langle a, a\rangle} $ \\
+Metrik & $d(a,b) \da  \| a-b\| $ \\
+Winkel & $\cos \angle(a,b) \da  \frac{\langle a, b\rangle}{\|a\|\cdot\|b\|} $ 
+\end{tabular}
+%\end{center}
+
+Die Funktion $f:U (\otm \MdR^n) \to \MdR$ ist \index{glatt!Funktion}glatt (oder \index{$C^\infty$}$C^\infty$) falls in jedem Punkt $p\in U$ alle gemischten partiellen Ableitungen existieren und stetig sind.\footnote{$A\otm B \da  $ $A$ offen und $A\subset B$}
+
+Die $C^\infty$-Funktion
+\[ u^i:
+\begin{aligned}
+\MdR^n &\to \MdR \\
+p = (p_1,\ldots,p_n) &\mapsto p_i =u^i(p)
+\end{aligned}
+\]
+heißt $i$-te Koordinatenfunktion ($i=1,\ldots,n$). Eine Abbildung $\phi: U(\otm \MdR^n)\to \MdR^n$ heißt glatt falls jede der reellen Funktionen $u^i\circ\phi$ glatt ist ($i=1,\ldots,n$).
+
+\subsubsection*{Karten und Atlanten}
+Sei $M$ ein topologischer Raum, der hausdorff’sch ist und eine abzählbare Basis hat.
+
+\index{Koordinatensytem}
+\index{Karte}
+Ein Koordinatensystem (oder Karte) in $M$ ist ein Homöomorphismus
+\[\varphi: U(\otm M) \to \varphi(U) (\otm\MdR^n) \]
+Schreibt man $\varphi(p) = (x^1(p),\ldots,x^n(p))$, dann heißen die Funktionen $x^i \da  u^i\circ \varphi : U \to \MdR$ Koordinatenfunktionen von $\varphi$. $n$ heißt Dimension von $(\varphi,U)$.
+
+\index{Atlas}
+Ein $n$-dimensionaler, differenzierbarer Atlas für $M$ ist eine Kollektion $\At$ von $n$-dimensionalen Karten von $M$. Es gilt:
+\begin{enumerate}[($\At$1)]
+\item Jeder Punkt von $M$ liegt im Definitionsbereich mindestens einer Karte, d.h. $M$ ist lokal euklidisch.
+\item Alle zu $\At$ gehörigen Kartenwechsel sind glatt, das heißt: Sind die Karten $\varphi: U\to \varphi(U)$ und $\psi:V\to\psi(V)$ in $\At$ und $V\cap U \ne \emptyset$, so sind $\varphi \circ \psi^{-1}: \psi(U\cap V) \to \varphi(U\cap V)$ sowie $\psi \circ \varphi^{-1}: \varphi(U\cap V) \to \psi(U \cap V)$, genannt Kartenwechsel, glatt.
+\end{enumerate}
+
+Eine Karte $\psi$ von $M$ heißt mit $\At$ verträglich, wenn auch $\At \cup \{\psi\}$ ein differenzierbarer Atlas für $M$ ist.
+
+\index{Atlas!vollständiger}
+$\At$ ist vollständig (oder maximal) wenn jede mit $\At$ verträgliche Karte zu $\At$ gehört.
+
+\index{Mannigfaltigkeit!$n$-dimensional und differenzierbar}
+\begin{definition}
+Eine $n$-dimensionale differenzierbare Mannigfaltigkeit ist ein topologischer Hausdorff-Raum mit abzählbarer Basis versehen mit einem vollständigen differenzierbaren $n$-dimensionalen Atlas.
+\end{definition}
+\begin{bemerkung}[Lokal euklidisch $\nRightarrow$ hausdorffsch]
+ Sei $Y \da \{(s,t) \in \MdR^2 \mid t = \pm 1\}$ versehen mit Teilraum-Topologie. $(s,t) \sim (s', t')\ :\Longleftrightarrow\ s=s'>0$ , $X \da \faktor{Y}{\sim}$ mit Quotienten-Topologie.
+ \begin{itemize}
+  \item $X$ ist lokal euklidisch (lokal homöomorph zu $\MdR$).
+  \item $X$ ist nicht hausdorffsch: $p=[(0,1)]$, $q=[(0,-1)]$ sind nicht durch offene Mengen trennbar.
+ \end{itemize}
+
+\end{bemerkung}
+
+
+\begin{beispiele}
+\index{Struktur!standard-differenzierbare}
+\item $\MdR^n$: $\tilde\At = \{ (\MdR^n,\text{id}) \}$ ist ein Atlas. Durch Erweiterung zu einem vollständigen Atlas $\At$ erhalten wir die standard-differenzierbare Struktur auf $\MdR^n$.
+\begin{bemerkung}
+Auf $\MdR^n$, $n\ne 4$, existiert bis auf Diffeomorphismus genau eine differenzierbare Struktur. Auf $\MdR^4$ existieren weitere, „exotische“ differenzierbare Strukturen.
+\end{bemerkung}
+
+\item Die Sphären $S^n \da  \left\{ p = (p_1,\ldots,p_{n+1})\in \MdR^{n+1} \mid \|p\| = 1\right\}$. Wir behaupten: $S^n$ ist eine $n$-dimensionale differenzierbare Mannigfaltigkeit.
+
+Als Topologie wählen wir die Teilmengen-Topologie, d.h. $U\subset S^n$ offen $\gdw \exists U'\subset \MdR^{n+1}$ offen, so dass $U=S^n\cap U'$. Daher folgt auch, dass die Sphären auch hausdorff’sch sind und eine abzählbare Basis haben.
+
+%Um einen Atlas zu finden, definieren wir die offen Halb-Sphären
+Seien $U_i^+$ bzw. $U_i^-$ die offenen Hemisphären, definiert durch
+\begin{align*}
+U_i^+ &\da \{ p \in S^n \mid p_i > 0 \} \\
+U_i^- &\da \{ p \in S^n \mid p_i < 0 \}\,.
+\end{align*}
+
+Die Abbildungen $\varphi_i^{\pm}: U_i^\pm \to \MdR^n$ (Projektion in Richtung $i$-te Koordinaten-Achse) für $i=1,\dots,n+1$ mit
+\[
+\varphi_i^{\pm}(p) \da \left(u^1(p), \dots, u^{i-1}(p),u^{i+1}(p),\dots,u^{n+1}(p)\right) 
+\]
+sind Karten mit glatten ($C^\infty$) Kartenwechsel, was wir am Beispiel $n=2$ überprüfen:
+\[
+\left(u^1,u^2\right) \xmapsto{(\varphi_3^+)^{-1}} \left(u^1,u^2,\sqrt{1-\left(u^1\right)^2-\left(u^2\right)^2}\right) \xmapsto{\varphi_1^+} \left(u^2,\sqrt{1-\left(u^1\right)^2-\left(u^2\right)^2}\right)\quad \left(\left(u^1\right)^2 +\left(u^2\right)^2 < 1\right)
+\]
+
+\item Kurven und Flächen in $\MdR^3$ sind $1$- bzw. 2-dimensionale Mannigfaltigkeiten
+
+\index{Reell-Projektiver Raum}
+\index{$P^n\MdR$}
+\item[(4a)] Der $n$-dimensionale reell-projektiver Raum $P^n\MdR$
+\begin{definition}
+Auf $X\da \MdR^{n+1}\setminus\{0\}$ betrachte die Äquivalenz-Relation
+\[ x \sim y \gdw \exists t \in \MdR,\; t\ne 0,\; y=tx, \text{ also } \left(y^1,\ldots,y^n\right) = \left(tx^1,\ldots,tx^{n+1}\right)\]
+Die Äquivalenzklassen sind also Geraden durch den Ursprung. Nun definieren wir:
+% FIXME, Quotiontenraum schöner
+\[ P^n\MdR \da \faktor{\MdR^{n+1}\setminus\{0\}}{\sim} \]
+\end{definition}
+
+Wir behaupten nun dass $P^n\MdR$ eine $n$-dimensionale differenzierbare Mannigfaltigkeit ist.
+
+Die Topologie erhalten wir aus dem topologischen Raum $\MdR^{n+1}\setminus\{0\}$ über die Quotienten-Topologie, für die wir die surjektive Abbildung $\pi$ verwenden:
+\[ \pi:
+\begin{aligned}
+\MdR^{n+1}\setminus\{0\} &\to P^n\MdR \\
+x &\mapsto [x]_\sim
+\end{aligned}
+\]
+Zur Erinnerung: Die Quotiententopologie ist allgemein: 
+\[ U\subset \faktor{X}{\sim}\text{ offen } \gdw \pi^{-1}(U)\subset X \text{ offen } \]
+Um zu zeigen, dass $P^n\MdR$ eine abzählbare Basis hat, genügt es nach Lemma 1 des verteilten Blattes „Einige Grundbegriffe der Topologie“ zu zeigen, dass $\pi: \MdR^{n+1}\setminus\{0\} \to P^n\MdR$ offen ist. ($\pi$ ist offen wenn $\pi$-Bilder offener Mengen offen sind.) Dazu betrachten wir die Streckung $\alpha_t: X \to X$; $x\mapsto tx$ ($t\ne 0$). $\alpha_t$ ist ein Homöomorphismus mit $\alpha_t^{-1}=\alpha_{\frac 1 t}$.
+
+Sei nun $U\subset X$ offen, so ist $\pi^{-1}(\pi(U)) = \bigcup_{t\ne 0}\alpha_t(U)$. Da jedes $\alpha_t(U)$ offen ist, ist $\pi^{-1}(\pi(U))$ offen. Nach der Definition der Quotiententopologie also ist $\pi(U)$ offen.
+
+Weiter müssen wir zeigen, dass $P^n\MdR$ hausdorff’sch ist. Anschaulich heißt das, um zwei „Geraden“ $[x]$ und $[y]$ je einen offenen „Kegel“ zu finden, welche disjunkt sind. Wir zeigen dies über das Lemma 2 des Blattes „Einige Grundbegriffe der Topologie“, wozu wir zeigen müssen:
+$ R \da \{ (x,y) \in X \times X \mid x \sim y \} $ ist abgeschlossen.
+
+Die Idee ist, auf $X\times X \subset \MdR^{n+1} \times \MdR^{n+1}$ die reelle Funktion $f$ zu betrachten:
+\[
+f(x,y) = f\left(x^1,\ldots,x^{n+1},y^1,\ldots,y^{n+1}\right) \da \sum_{i\ne j} \left|x^iy^j - x^jy^i\right|
+\]
+$f$ ist stetig und $f(x,y) = 0 \gdw y = t x$ für ein $t\ne 0$ $\gdw x\sim y$. Also ist $R = f^{-1}(\{0\})$. Da $f$ stetig ist, ist das Urbild einer abgeschlossenen Menge abgeschlossen, also ist $R$ abgeschlossen. Damit ist gezeigt, dass $\faktor{X}{\sim}$ hausdorff’sch ist.
+
+Also ist $P^n\MdR$ ein topologischer Raum mit den gewünschten Eigenschaften. Es bleibt zu zeigen, dass für diese Menge ein vollständiger Atlas existiert.
+
+Wir definieren also $n+1$ Karten $(U_i,\varphi_i)$ ($i=1,\ldots,n+1$). Es ist $\bar{U_i} \da \{x \in X\mid x^i\ne 0\}$ und $U_i \da \pi(\bar{U_i}) \subset P^n\MdR$. Damit ist $P^n\MdR$ abgedeckt ($\bigcup_{i=1,\ldots,n+1}U_i = P^n\MdR$). Weiter ist:
+\[
+\varphi_i :
+\begin{aligned}
+U_i &\to \MdR^n \\
+[x] &\mapsto \left( \frac{x^1}{x^i},\ldots,\frac{x^{i-1}}{x^i},\frac{x^{i+1}}{x^i},\ldots,\frac{x^n}{x^i}\right)
+\end{aligned}
+\]
+Diese Definition ist representanten-unabhängig und injektiv:
+\begin{align*}
+\varphi_i([x]) = \varphi_i([y]) 
+& \folgt \frac{y^1}{y^i} = \frac{x^1}{x^i} \ad t \\
+& \folgt y^1 = tx^1 \\
+& \folgt y = tx \\
+& \folgt [y] = [x]
+\end{align*}
+Auch ist $\varphi_i$ stetig, und surjektiv: $\varphi_i^{-1}\left(z^1,\ldots,z^n\right) = \pi\left(z^1,\ldots,z^{i-1},1,z^{i+1},\ldots,z^n\right)$.
+
+Die Koordinatenwechsel $\varphi_j\circ \varphi_i^{-1}$ sind affin, also $C^\infty$ (Übungsaufgabe).
+
+Diese Karten lassen sich zu einem vollständigen Atlas für $P^n\MdR$ erweitern, also liegt eine differenzierbare Mannigfaltigkeit vor.
+
+\item[(4b)] $P^n\MdC$ ist eine $2n$-dimensionale differenzierbare Mannigfaltigkeit, was sich ähnlich zeigen lässt. Die doppelte Dimension kommt von der 2-dimensionalität von $\MdC$.
+
+\item[(5)] Wir wollen aus gegebenen Mannigfaltigkeiten neue Mannigfaltigkeiten erhalten.
+
+\index{Untermannigfaltigkeit!offen}
+Sei $M$ eine differenzierbare Mannigfaltigkeit mit vollständigem Atlas $\At$. Sei $\At'$ die Menge aller Koordinatensysteme mit Definitionsbereich in einer offenen Teilmenge $O\subset M$. $\At'$ ist ein Atlas für $O$. Die entsprechende differenzierbare Mannigfaltigkeit heißt offene Untermannigfaltigkeit.
+
+\begin{beispiel}
+Die allgemeine lineare Gruppe
+\[ GL_n\MdR \da \{ A \in \MdR^{n\times n} \mid \det A \ne 0 \} \]
+ist eine $n^2$-dimensionale differenzierbare Mannigfaltigkeit:
+$\MdR^{n\times n} = \MdR^{n^2}$ ist eine $n^2$-differenzierbare Mannigfaltigkeit und $GL_n\MdR = \MdR^{n\times n} \setminus \{\det A = 0\}$ ist offen, da die Determinantenfunktion stetig ist, also  $\{\det A = 0\}$ abgeschlossen ist.
+\end{beispiel}
+
+\item[(6)] Die Produkt-Mannigfaltigkeit:\index{Produkt-Mannigfaltigkeit}
+Sind $M^m$ und $N^n$ $m$- bzw. $n$-dimensionale Mannigfaltigkeiten, so ist das topologische Produkt $M\times N$ eine $(n+m)$-dimensionale Mannigfaltigkeit. Der Atlas besteht aus den Karten $\varphi\times \psi: U\times V \to \MdR^m\times\MdR^n = \MdR^{n+m}$ für Karten $(U,\varphi)$ von $M$ und $(V,\psi)$ von $N$.
+
+\begin{beispiel}
+($S^1$ ist der Einheitskreis im $\MdR^2$)
+\begin{align*}
+\MdR^n &= \underbrace{\MdR\times \cdots \times \MdR}_{\text{$n$ Faktoren}} \\
+\mathbb{T}^n &= \overbrace{S^1\times \cdots \times S^1} \text{ $n$-dimensionaler Torus}
+\end{align*}
+\end{beispiel}
+
+\item[(7)] Eine Lie-Gruppe\index{Lie-Gruppe} $G$ ist eine Gruppe die zugleich eine Mannigfaltigkeitsstruktur besitzt und zwar so, dass die Gruppenoperationen $i$ und $m$ differenzierbare Abbildungen (siehe nächster Abschnitt) sind. 
+\begin{align*}
+m&: G\times G \to G , &m(g_1,g_2) &= g_1g_2 \\
+i&: G \to G , &i(g) &= g^{-1} 
+\end{align*}
+\begin{beispiele}
+\item Die eindimensionalen Gruppen $GL_n\MdR$, $GL_1\MdR = (\MdR\setminus\{0\},\cdot)$ und  $(\MdR^+,\cdot)$ 
+\item Die null-dimensionale Gruppe $(\MdZ,+)$.
+\item Die spezielle Orthogonale Gruppe 
+\[ SO(2) \da \left\{
+\begin{pmatrix}
+\cos \theta & \sin \theta \\ -\sin \theta & \cos \theta \end{pmatrix} \mid \theta \in [0,2\pi) \right\} \]
+welche homöomorph zu $S^1$ ist.
+
+\item Die spezielle unitäre Gruppe 
+\[ SU(2) \da \left\{
+\begin{pmatrix} \alpha & \beta \\ -\bar\beta & \bar\alpha \end{pmatrix} \mid \alpha, \beta \in \MdC,\ \alpha\bar\alpha + \beta\bar\beta =1 \right\} \]
+welche homöomorph zu $S^3$ ist.
+\end{beispiele}
+
+\item[(8)] Ein Kegel ist keine differenzierbare Mannigfaltigkeit (``die Spitze ist nicht differenzierbar'').
+\end{beispiele}
+
+\section{Differenzierbare Abbildungen}
+\begin{definition}[differenzierbare Abbildung]
+\index{Differenzierbare Abbildung}
+\index{Abbildung!differenzierbare}
+\index{glatt!Abbildung}
+Eine Abbildung $f:M^m\to N^n$ zwischen differenzierbaren Mannigfaltigkeiten heißt differenzierbar (oder glatt) im Punkt $p\in M$ falls für eine (und damit jede) Karte $\varphi: U \to U'=\varphi(U)\subset\MdR^m$ um $p$ und $\psi:V\to V'=\psi(V)\subset \MdR^n$ mit $f(U)\subset V$ die Darstellung von $f$ in lokalen Koordinaten $\psi\circ f\circ\varphi^{-1}: U' \to V'$ glatt (oder $C^\infty$) ist.
+\end{definition}
+
+Die Unabhängigkeit der Aussage von der Wahl der Karte folgt aus der Definition des Atlasses. Seien $\tilde\varphi$ und $\tilde\psi$ andere Karten um $p$ bzw. $f(p)$.
+\begin{align*}
+\tilde\psi \circ f \circ \tilde\varphi^{-1} &= \tilde\psi \circ (\psi^{-1} \circ \psi) \circ f \circ (\varphi^{-1} \circ \varphi) \circ \tilde\varphi^{-1} \\
+ &= \underbrace{(\tilde\psi \circ \psi^{-1})}_{\mathclap{\text{$C^\infty$, da Kartenwechsel}}} \circ \psi \circ f \circ \varphi^{-1} \circ \underbrace{(\varphi \circ \tilde\varphi^{-1})}_{\mathclap{\text{$C^\infty$, da Kartenwechsel}}}
+\end{align*}
+Also $\tilde\psi \circ f \circ \tilde \varphi^{-1}$ ist $C^\infty \gdw \psi \circ f \circ \varphi^{-1}$ ist $C^\infty$.
+
+Spezialfälle sind:
+\begin{itemize}
+\item Falls $n=1$ heißt $f:M\to \MdR$ differenzierbare Funktion
+\item Falls $m=1$ heißt $f:\MdR\to N$ heißt differenzierbare Kurve
+\end{itemize}
+
+\begin{definition}
+$C^\infty(M)$ ist die Menge aller $C^\infty$-Funktionen auf einer differenzierbaren Mannigfaltigkeit $M$.
+\end{definition}
+
+\begin{bemerkung}
+\index{$C^{\infty}(M)$}
+$C^{\infty}(M)$ ist eine $\MdR$-Algebra bezüglich Addition, Multiplikation, skalare Multiplikation: ($p\in M$, $\lambda \in \MdR$)
+\begin{align*}
+(f+g)(p) &\da f(p) + g(p)   \\
+(f\cdot g)(p) &\da f(p) \cdot g(p)  \\
+(\lambda f)(p) &\da \lambda f(p) \\
+\end{align*}
+\end{bemerkung}
+
+\begin{definition}[Diffeomorphismus]
+\index{Diffeomorphismus}
+Eine differenzierbare Abbildung $f:M\to N$ heißt Diffeomorphismus falls $f$ bijektiv und $f$ sowie $f^{-1}$ glatt sind.
+\end{definition}
+
+\begin{beispiele}
+\item Identität auf $M$
+\item Kartenwechsel
+\end{beispiele}
+
+Die Menge $\text{Diff}(M)$ aller (Selbst-)Diffeomorphismen von $M$ bilden eine Gruppe.
+
+
+$\skull$
+Ein differenzierbarer Homöomorphismus ist im allgemeinen \textbf{kein} Diffeomorphismus! So ist etwa $f:\MdR\to\MdR,\ x\mapsto x^3$ ein differenzierbarer Homöomorphismus, aber $f^{-1} :\MdR \to \MdR, \ x\mapsto\sqrt[3]{x}$ ist zwar stetig aber nicht glatt.
+
+\section{Tangentialvektoren und -räume}
+
+\subsection*{Erinnerung}
+$v \in T_p\MdR^n = \{p\} \times \MdR^n$ und $f:U(p) (\otm \MdR^n) \to \MdR$ sei $C^\infty$. Dann ist die Richtungsableitung von $f$ in Richtung $v$:
+\[
+\partial_vf \da  \lim_{t\to0} \frac{f(p+tv) - f(p)}{t} = \left.\frac{d}{dt}\right|_{t=0} f(p+tv)
+\]
+Für $v=e_i$ erhält man die $i$-te partielle Ableitung
+\[ \frac{\partial f}{\partial x^i} = \partial_{e_i} f \]
+Es gilt: ($a,b\in\MdR$, $f,g\in C^\infty(\MdR^n)$)
+\begin{align*}
+\partial_v(af + bg) &= a\partial_v f+ b\partial_v g \\
+\partial_v(f \cdot g) &= f(p)\cdot\partial_v g+ g(p)\cdot\partial_v f
+\end{align*}
+
+\begin{definition}[Funktionskeim]
+Zwei Funktionen $f,g:M \to \MdR$, die auf offenen Umgebungen von $p\in M$ differenzierbar sind, heißen äquivalent, falls sie auf einer Umgebung übereinstimmen. Die Äquivalenzklassen heißen Funktionskeime in $p\in M$. Die Menge aller Funktionskeime in $p$ schreiben wir als $C^\infty(p)$.\index{Funktionskeim}
+\end{definition}
+
+\begin{definition}[Tangentialvektor]
+Sei $M$ eine differenzierbare Mannigfaltigkeit und $p\in M$. Ein Tangentialvektor an $M$ in $p$ ist eine Funktion $v:C^\infty(p) \to \MdR$ so dass gilt: ($a,b\in\MdR$, $f,g\in C^\infty(p)$)
+\begin{enumerate}[(T1)]
+\item $v$ ist $\MdR$-linear: $v(af + bg) = a v(f) + b v(g)$
+\item Leibniz-Regel: $v(fg) = v(f)g(p) + f(p)v(g)$ 
+\end{enumerate}
+Sei $T_pM$ die Menge aller Tangentialvektoren von $M$ im Punkt $p$
+\end{definition}
+
+\begin{beispiel}
+$v(f) \da 0$
+\end{beispiel}
+
+Wie rechnet man mit Funktionskeimen? Praktisch genügt es mit Repräsentanten, also in $p$ differenzierbaren Funktionen zu rechnen.
+
+\begin{lemma}
+\begin{itemize}
+\item[a)]
+$v:C^\infty(p) \to \MdR$ erfülle (T1) und (T2) für Funktionen, die in $p$ differenzierbar sind. Falls $f$ und $g$ in einer Umgebung von $p$ übereinstimmen (d.h. $f\sim g \gdw [f] = [g]$) so ist $v(f) = v(g)$. Also insbesondere: $\tilde v([f]) \da v(f)$.
+\item[b)]
+Falls $h$ in einer Umgebung von $p$ konstant ist, so ist $v(h)=0$.
+\end{itemize}
+\end{lemma}
+
+\begin{beweis}
+\begin{itemize}
+\item[a)] Da $v$ linear ist, genügt es zu zeigen: Falls $f=0$ in einer Umgebung $U$ von $p$, so ist $v(f)=0$ ($v(g-h)=0 \folgt v(g)=v(h)$). Dazu betrachte die „Abschneidefunktion“ $\tilde g$ mit 
+\begin{enumerate}
+\item Träger von $\tilde g \da \{ q\in M \mid \tilde g(q) \ne 0\} \subset U$
+\item $0\le \tilde g \le 1$ auf $M$
+\item $\tilde g = 1$ in einer Umgebung $V$ von $p$, $V \subset U$.
+\end{enumerate}
+Es ist dann $f\tilde g = 0$ auf $M$. Nun folgt aus den Axiomen (T1) und (T2) dass wegen $v(0)= v(0+0) = v(0) + v(0)$ gilt: $v(0)=0$. Somit ist
+\[
+0 = v(0) = v(f\tilde g) \gleichwegen{(T2)} v(f)\underbrace{\tilde g(p)}_{=1} + \underbrace{f(p)}_{=0}v(\tilde g) = v(f)\,.
+\]
+\item[b)] Nach a) können wir annehmen dass $h$ konstant $c$ auf $M$ ist. Es ist dann $v(h)= v(c\cdot1) = c\cdot v(1)$. Aus $v(1) = v(1\cdot 1) = v(1)\cdot 1 + 1\cdot v(1)$ folgt $v(1)=0$ und damit die Behauptung.
+\end{itemize}
+\end{beweis}
+
+$T_pM$ ist ein $\MdR$-Vektorraum: ($v,w \in T_pM$, $f\in C^\infty(p)$, $a\in\MdR$)
+\begin{align*}
+\left(v + w\right)(f) &\da v(f) + w(f) \\
+\left(a\cdot v\right)(f)   &\da a\cdot v(f) 
+\end{align*}
+
+% Der Satz ist irgendwie nicht sehr hilfreich:
+%Was ist die Definition dieses Vektorraumes?
+
+Weitere Beispiele von Tangentialvektoren via Karten:
+\newcommand{\ptv}[1]{\left.\frac{\partial}{\partial x^{#1}}\right|_p}
+\newcommand{\qtv}[1]{\left.\frac{\partial}{\partial x^{#1}}\right|_q}
+
+Sei $\varphi=(x^1,\ldots,x^n)$ ein Koordinatensystem (eine Karte) von $M$ im Punkt $p$. (d.h. $x^i=u^i\circ\varphi$). Für $f\in C^{\infty}(p)$ setze:
+\[
+\frac{\partial f}{\partial x^i}(p) \da \frac{\partial (f\circ \varphi^{-1})}{\partial u^i}\left(\varphi(p)\right) % \qquad \text{$i$-te partielle Ableitung im $\MdR^n$}
+\]
+
+Eine direkte Rechnung zeigt:
+\[
+\ptv{i}:
+\begin{aligned}
+C^\infty{p} &\to \MdR \\
+f &\mapsto \ptv{i}(f) \da \frac{\partial f}{\partial x^i}(p)
+\end{aligned}
+\]
+ist ein Tangentialvektor in $p$.
+
+\begin{satz}[Basis-Satz]
+Sei $M$ eine $m$-dimensionale differenzierbare Mannigfaltigkeit und $\varphi=(x^i,\ldots,x^n)$ eine Karte um $p\in M$. Dann bilden die Tangentialvektoren $\ptv{i}$, $i=1,\ldots,n$, eine Basis von $T_pM$ und es gilt für alle $v\in T_pM$:
+\[
+v = \sum_{i=1}^m v(x^i) \ptv{i}
+\]
+Insbesondere ist $\dim T_pM = m = \dim M$.
+\label{basissatz}
+\end{satz}
+
+Für diesen Satz benötigen wir noch das
+\begin{lemma}[Analysis]
+Sei $g$ eine $C^\infty$-Funktion in einer bezüglich $o$ sternförmigen offenen Umgebung von $o\in \MdR^n$. Dann gilt: $g = g(0) + \sum_{j=1}^n u^jg_j$ für $C^\infty$-Funktionen $g_j$, $j=1,\ldots,n$.
+\label{lem2}
+\end{lemma}
+
+\begin{beweis}[Lemma \ref{lem2}]
+Taylorintegralformel:
+\[
+g(u)-g(0) = \int_0^1 \frac d{dt} g(tu) dt = \sum_{j=1}^n u^j \int_0^1 \frac{\partial g}{\partial u^j}(tu) dt
+\]
+\end{beweis}
+
+\begin{beweis}[Satz \ref{basissatz}]
+\begin{enumerate}
+\item[(a)] $\ptv{i}$ ist ein Tangentialvektor in $p$. (Rechnung hier ausgelassen) und für die $k$-te Koordinatensystem $x^k\da u^k\circ \varphi$ gilt:
+\[
+\ptv{i}(x^k) = \frac{\partial \left(x^k\circ\varphi^{-1}\right)}{\partial u^i}\left(\varphi(p)\right) = \frac{\partial u^k}{\partial u^i}\left(\varphi(p)\right) = \delta_{ik}\,.
+\]
+\item[(b)] Die Vektoren $\ptv{i}$, $i=1,\ldots,n$, sind linear unabhängig:
+Sei 
+\[
+\sum_{i=1}^m \lambda_i \ptv{i} = 0 
+\qquad (\lambda_i\in\MdR)
+\]
+Dann ist für $k=1,\ldots,m$:
+\[
+0 = 0(x^k) = 
+\sum_{i=1}^m \lambda_i \underbrace{\ptv{i}(x^k)}_{\delta_{ik}} = \lambda_k
+\]
+\item[(c)]  Die Vektoren $\ptv{i}$, $i=1,\ldots,n$, bilden ein Erzeugendensystem. Ohne Einschränkung gelte $\varphi(p)=0$ ($(*)$). Sei $v\in T_pM$ und $a_k \da v(x^k)$, $k=1,\ldots,m$. Setze 
+\[w\da v-\sum_{k=1}^m a_k \ptv{k} \in T_pM\,.\]
+Dann ist für alle $k=1,\ldots,m$: 
+\[
+w(x^k) = v(x^k) - \sum_{i=1}^m  a_i \ptv i (x^k) = a_k - \sum_{i=1}^m  a_i \delta_{ik} = 0 \quad (**)
+\]
+Nun wollen wir zeigen: $w=0$, d.h. $w(f) = 0$ für alle $f\in C^{\infty}(p)$.
+Sei $f\in C^\infty(p)$. Dann ist $g \da f \circ \varphi^{-1} \in C^\infty\left(\varphi(p)\right)$.
+\begin{align*}
+w(f) &= w\left(f \circ \varphi^{-1} \circ \varphi\right) \\
+&= w(g \circ \varphi) \\
+&\gleichnach{Lemma \ref{lem2}} w\left( g(0) + \sum_{j=1}^m (u^j\circ\varphi )\cdot(g_j \circ \varphi ) \right) \\
+& \gleichnach{(T1),(T2)} 0 + \sum_{j=1}^m \underbrace{w(x^j)}_{\gleichwegen{(**)}0} \cdot (g_j\circ\varphi)(p) + \underbrace{x^j(p)}_{\gleichwegen{(*)}0} \cdot w(g_j \circ\varphi ) ) \\
+& = 0
+\end{align*}
+\end{enumerate}
+
+\end{beweis}
+
+
+\section{Tangentialabbildungen}
+
+In diesem Abschnitt verwendete Notation: $\Phi: M\to N$ differenzierbar, $f\in C^\infty(M)$ oder $f\in C^\infty(p)$, $\varphi: U \to U'$ eine Karte.
+
+Sei $\Phi:M^m\to N^n$ eine differenzierbare Abbildung zwischen differenzierbaren Mannigfaltigkeiten. Das Ziel ist $\Phi$ in jedem Punkt von $p\in M$ durch lineare Abbildungen $d\Phi_p: T_pM \to T_{\Phi(p)}N$ zu „approximieren“. 
+
+\begin{definition}
+\index{Differential}
+\index{Tangentialabbildung}
+Das Differential (oder die Tangentialabbildung) von $\Phi$ in $p$ ist:
+$ d\Phi_p : T_pM \to T_{\Phi(p)}N $ mit $d\Phi_p(v) : C^\infty(\Phi(p)) \to \MdR$ gegeben durch
+\[ d\Phi_p(v)(f) \da v(f \circ \Phi)\,. \]
+\end{definition}
+
+Nun ist zu zeigen dass $d\Phi_p(v) \in T_{\Phi(p)}N$:
+\begin{itemize}
+\item[(T1)]
+\begin{align*}
+d\Phi_p(v)(a\cdot f + b\cdot g) 
+&= v( (a\cdot f+b\cdot g) \circ \Phi) \\
+&=v(a\cdot f \circ \Phi + b\cdot g \circ \Phi) \\
+&=a\cdot v(f\circ \Phi) + b\cdot v(g\circ \Phi) \\
+&=a\cdot d\Phi_p(v)(f) + b\cdot d\Phi_p(v)(g)
+\end{align*}
+\item[(T2)]
+\begin{align*}
+d\Phi_p(v)(fg) 
+&= v( (fg)\circ \Phi) \\
+&= v( (f\circ \Phi)\cdot(g\circ\Phi) ) \\
+&= v(f\circ \Phi)(g\circ \Phi)(p) + v(g\circ \Phi)(f\circ \Phi)(p) \\
+&= d\Phi_p(v)(f) + \cdots 
+\end{align*}
+\end{itemize}
+
+Beachte, dass aus der Definition direkt folgt: Ist $\Phi = \text{id}_M: M\to M,\> p\mapsto p$, so gilt $d\Phi_p(v) = d(\text{id})_p(v) = v$ für alle $v\in T_pM$.
+
+\begin{lemma}
+\label{lem3}
+Sei $\Phi \in C^\infty(M,N)$, $\xi = (x^1,\ldots,x^m)$ eine Karte um $p\in M$ und $\eta = (y^1,\ldots,y^n)$ eine Karte um $\Phi(p)\in N$. Dann gilt:
+\[
+d\Phi_p\left(\ptv{j}\right) = \sum_{i=1}^n \frac{ \partial(y^i\circ \Phi)}{\partial x^j}(p) \left.\frac{\partial}{\partial y^i}\right|_{\Phi(p)} \qquad (*)
+\]
+\end{lemma}
+
+\begin{beweis}
+Sei $w\in T_{\Phi(p)}N$ die linke Seite von $(*)$. Dann gilt nach dem Basis-Satz (Satz \ref{basissatz}) ist 
+\[ w = \sum w(y^i) \left.\frac{\partial}{\partial y^i}\right|_{\Phi(p)}\,.\]
+Nach der Definition des Differentials ist
+\[ w(y^i) = d\Phi_p\left(\ptv j\right)(y^i) = \frac{\partial\left(y^j\circ \Phi\right)}{\partial x^i}(p)\,.\]
+\end{beweis}
+
+\begin{definition}
+Die Matrix 
+\[
+\left( \frac{\partial (y^i\circ \Phi)}{\partial x^j}(p)\right) 
+= \left( \frac{\partial\left(y^i\circ \Phi \circ \xi^{-1}\right)}{\partial u^j}\left(\xi(p)\right)\right)
+\qquad (1\le i\le n, 1\le j\le m)
+\]
+heißt Jacobi-Matrix von $\Phi$ bezüglich $\xi$ und $\eta$.
+\index{Jacobi-Matrix}
+\end{definition}
+
+\begin{lemma}[Kettenregel]
+\label{lem4}
+Falls $\Phi\in C^\infty(M,N)$ und $\Psi \in C^\infty(N,L)$, so gilt
+\[
+d(\Psi\circ\Phi)_p = d\Psi_{\Phi(p)} \circ d\Phi_p\,.
+\]
+\end{lemma}
+
+\begin{beweis}
+Mit einer Testfunktion $g$ überprüfen wir:
+\[
+d(\Psi \circ \Phi)(v)(g) = v(g \circ \Psi \circ \Phi) = d\Phi(v)(g \circ \Psi) = d\Psi(d\Phi(v))(g)
+\]
+\end{beweis}
+
+\begin{bemerkung}
+Falls $\Phi: M\to N$ ein Diffeomorphismus ist, so folgt wegen
+\[ \text{id} = d(\text{id})_p = d(\Phi \circ \Phi^{-1})|_p \gleichnach{Lemma \ref{lem4}} d\Phi_p \circ d\Phi^{-1}_{\Phi(p)} \]
+dass
+\[ (d\Phi_p)^{-1} = d\Phi_{\Phi(p)}^{-1}\,. \]
+Das heißt insbesondere, dass $d\Phi_p$ ein Vektorraum-Isomophismus ist, und $\dim M = \dim N$.
+\end{bemerkung}
+
+\begin{satz}[Inverser Funktionensatz für Mannigfaltigkeiten]
+\label{invfunk}
+\index{Lokaler Diffeomorphismus}
+\index{Diffeomorphismus!lokaler}
+Ist $\Phi \in C^\infty(M,N)$ und $d\Phi_p:T_pM \to T_{\Phi(p)}N$ ein Vektorraum-Isomorphismus für ein Punkt $p\in M$, dann existiert eine Umgebung $V$ von $p$ und eine Umgebung $W$ von $\Phi(p)$ so dass $\Phi|_V$ ein Diffeomorphismus von $V$ auf $\Phi(V)=W$ ist. $\Phi|_V$ nennen wir einen lokalen Diffeomorphismus.
+\end{satz}
+
+\begin{beweis}
+Wähle eine Karte $\xi$ um $p\in M$ und eine Karte $\eta$ um $\Phi(p)\in N$. Nach dem Satz über inverse Funktionen (Analysis II) ist $\eta \circ \Phi \circ \xi^{-1}$ ein lokaler Diffeomorphismus (da $d\left(\eta \circ \Phi \circ \xi^{-1}\right) = d\eta \circ d\Phi \circ (d\xi)^{-1}$, was jeweils reguläre lineare Abbildungen sind).
+\end{beweis}
+
+\section{Tangentialvektoren an Kurven}
+
+Die bisherige Herangehensweise an die Tangentialvektoren war sehr abstrakt, was Vor- und Nachteile hat. Ein weiterer Ansatz ist der Zugang über Kurven, den wir im Folgenden untersuchen.
+
+\index{Kurve}
+Eine Kurve ist eine $C^\infty$-Abbildung $c:I\to M$, wobei $I$ ein offenes Intervall in $\MdR$ (meist mit $0\in I$) und $M$ eine differenzierbare Mannigfaltigkeit ist.
+
+Die erste (und einzige) Koordinatenfunktion der trivialen Karte von $I\subset\MdR$ schreiben wir als $u\da u^1$. Der Tangentialvektor ist dann $\left.\frac{d}{d u}\right|_t \da \left.\frac{\partial}{\partial u^1}\right|_t \in T_tI = T_t\MdR$.
+
+\begin{definition}
+Der Tangentialvektor an $c$ in $c(t)$ ist
+\[
+c'(t) \da dc_t \left(\left. \frac d{du}\right|_t\right) \in T_{c(t)}M\,.
+\]
+\end{definition}
+
+Diese Tangentialvektoren haben interessante Eigenschaften:
+\begin{enumerate}
+\item Für $f\in C^\infty(M)$ ist $c'(t)(f) = \frac{d(f\circ c)}{du}(t)$ (Richtungsableitung)
+\item Falls $v\in T_pM$ und $c$ eine Kurve mit $c(0)=p$ und $c'(0) = v$, dann gilt:
+\[
+v(f) = \frac{d}{dt}\left(f\circ c\right) (0)
+\]
+\item Ist $c:I\to M$ eine glatte Kurve und $\Phi:M\to N$ eine differenzierbare Abbildung, so ist $\Phi \circ c: I \to N$ eine glatte Kurve in $N$ und es gilt dass
+\[
+d\Phi_{c(t)}\left(c'(t)\right) = \left(\Phi \circ c\right)'(t)
+\]
+\begin{beweis}
+$d\Phi\left(c'\right)(f) = c'(f\circ \Phi) = \frac{d}{du}\left(f\circ \Phi \circ c\right) (t) 
+= \left(\Phi \circ c\right)'(t)(f)$
+\end{beweis}
+\item Ist $\varphi$ eine Karte um $p$ und $c_i(t):\varphi^{-1}(\varphi(p) + te_i)$, $i=1,\ldots,n$ die $i$-te Koordinatenline\index{Koordinatenlinie} um $p$ bezüglich $\varphi$, so gilt
+\[
+c_i'(0) = \ptv{i} \qquad (i=1,\ldots,n)
+\]
+\begin{beweis}
+Sei $f\in C^\infty(p)$.
+\begin{align*}c_i\left(p\right) (f) &= \frac d{dt}\left(f\circ c_i\right)(0)  \\
+&= \frac d{dt} \left(f\circ \varphi^{-1}(\varphi(p) + te_i)\right)(0) \\
+&= \frac{\partial}{\partial u^i}\left(f\circ \varphi^{-1}\right)(\varphi(p))\\
+&= \ptv{i}(f)
+\end{align*}
+\end{beweis}
+\end{enumerate}
+
+\section{Untermannigfaltigkeiten und spezielle differenzierbare Abbildungen}
+
+Eine $C^\infty$-Abbildung $\Phi:M^m\to N^n$ heißt 
+\begin{itemize}
+\item Immersion, falls $d\Phi_p: T_pM \to T_{\Phi(p)}N$ injektiv ist für alle $p\in M$.\index{Immersion}
+\item Submersion, falls $d\Phi_p: T_pM \to T_{\Phi(p)}N$ surjektiv ist für alle $p\in M$.\index{Submersion}
+\item Einbettung, falls $\Phi$ eine Immersion ist und $M$ homöomoph zu $\Phi(M)\subset N$ (versehen mit der Teilraum-Topologie) ist. \index{Einbettung}
+\end{itemize}
+
+Eine Teilmenge $M\subset N$ heißt (reguläre) Untermannigfaltigkeit,\index{Untermannigfaltigkeit!reguläre} falls die Inklusionsabbildung $i:M\hookrightarrow N$, $i(p) \da p$, eine differenzierbare Einbettung ist.
+
+Manchmal definiert man eine (allgemeine) Untermannigfaltigkeit\index{Untermannigfaltigkeit!allgemein} als injektive Immersion $\Phi:M\to N$, so dass $M$ und $\Phi(M)$ diffeomorph sind. Dabei hat $\Phi(M)$ nicht notwendigerweise die Teilraum-Topologie.
+
+\begin{beispiele}
+\item Immersion:
+\begin{align*}
+\MdR^k &\to \MdR^{k+l} \\
+\left(x^1,\ldots,x^k\right) &\mapsto \left(x^1,\ldots,x^k,0,\ldots,0\right)
+\end{align*}
+Man kann zeigen: Lokal sieht jede Immersion so aus.
+\item Submersion:
+\begin{align*}
+\MdR^{k+l} &\to \MdR^k\\
+\left(x^1,\ldots,x^{k+l}\right) &\mapsto \left(x^1,\ldots,x^k\right)
+\end{align*}
+Auch hier kann man zeigen, dass jede Submersion lokal so aussieht.
+
+\item  Die Kurve $c : \MdR \to \MdR^2$, $t\mapsto \left(t^3, t^2\right)$ ist differenzierbar, aber keine Immersion, denn
+\[ c'(o) = dc_0\left(\underbrace{\frac d{dt}}_{\ne 0}\right) = (0,0)\,.\]
+
+\item  Die Kurve $c : \MdR \to \MdR^2$, $t\mapsto \left(t^3 - 4t, t^2 -4\right)$ ist eine Immersion, aber keine Einbettung.
+
+\item $\MdR^2$ versehen mit der Äquivalenzrelation 
+\[
+(x, y)\sim(u,v) \gdw
+\begin{aligned}
+x &\equiv u \pmod {2\pi\MdZ}\\
+y&\equiv v \pmod {2 \pi\MdZ}
+\end{aligned}
+\]
+ergibt den zweidimensionalen Torus $T^2 \da \faktor{\MdR^2}{\sim}$. Wir betrachten nun die Kurve $c_\alpha: \MdR\to T^2$, $t\mapsto (\mathrm{e}^{\mathrm{i}t}, \mathrm{e}^{\mathrm{i}\alpha t})$.
+\begin{satz*}[Kronecker]
+\begin{itemize}
+\item $\alpha \in 2\pi\MdQ \folgt c_\alpha(\MdR)$ geschlossene Kurve.
+\item $\alpha \notin 2\pi\MdQ \folgt c_\alpha(\MdR)$ dicht in $\MdR^2$
+\end{itemize}
+\end{satz*}
+\begin{beweis}
+\emph{Siehe V.I. Arnold: Gewöhliche Differenzialgleichungen}
+\end{beweis}
+Daraus folgt: Für $\alpha\notin 2\pi\MdQ$ ist $c_\alpha$ eine injektive Immersion, aber keine Einbettung, da $c_\alpha(\MdR)\subset\MdR^2$ mit der Teilraumtopologie nicht homöomoph zu $\MdR$ ist.
+\end{beispiele}
+
+\begin{bemerkungen}
+\item Jede Immersion ist lokal eine Einbettung.
+\item Einbettungs-Satz von Whitney (1936): Jede differenzierbare $n$-dimensionale Mannigfaltigkeit kann in $\MdR^{2n+1}$ eingebettet werden:
+\[
+\Phi: M^n \hookrightarrow \MdR^{2n+1}
+\]
+\emph{(Beweis: L.Führer: Topologie)}
+\end{bemerkungen}
+
+\section{Tangentialbündel und Vektorfelder}
+
+\begin{satz}[Tangentialbündel]
+Sei $M$ eine $n$-dimensionale differenzierbare Mannigfaltigkeit und 
+\[TM \da \bigcup_{p\in M} T_pM = \left\{(p,v)\mid p\in M, v\in T_pM\right\}\,.\]
+$TM$ ist eine $2n$-dimensionale differenzierbare Mannigfaltigkeit.
+\label{satz3}
+\end{satz}
+$TM$ heißt Tangentialbündel\index{Tangentialbündel} und ist ein Spezialfall eines Vektorraumbündels. In der Physik entspricht dies dem Phasenraum (Ort, Geschwindigkeit).
+
+\begin{beweis}
+\emph{(Skizze)} Sei $(U_\alpha, \varphi_\alpha)_{\alpha \in A}$ ein Atlas für $M$. Ist $\varphi_\alpha = (x_\alpha^1,\ldots, x_\alpha^n)$, so gilt nach Basis-Satz (\mbox{Satz \ref{basissatz}}), dass $\left\{\ptv{i} \mid i = 1,\ldots,n\right\}$ eine Basis von $T_pM$ für alle $p \in U_\alpha$ ist. Für $v\in T_pM$ gilt also $v= \sum_{i=1}^n v(x^i)\ptv{i}$.
+
+Somit erhalten wir für jedes $\alpha\in A$ eine bijektive Abbildung 
+\[
+h_\alpha:
+\begin{aligned}
+V_\alpha \da TU_\alpha = \bigcup_{p\in U_\alpha} T_pM &\to \MdR^{2n} \\
+(p,v) &\mapsto \left(x^1(p), \ldots, x^n(p), v(x^1), \ldots, v(x^n)\right)
+\end{aligned}
+\]
+\emph{Ohne Beweis:} $(V_\alpha, v_\alpha)_{\alpha\in A}$ ist ein differenzierbarer Atlas für $TM$.
+\end{beweis}
+
+\begin{definition}
+Sei $M$ eine differenzierbarere Mannigfaltigkeit, $TM$ das Tangentialbündel von $M$ und $\pi: TM \to M$, $(p,v)\mapsto p$ die natürliche (oder kanonische) Projektion.
+
+Ein Vektorfeld\index{Vektorfeld} (VF) auf $M$ ist eine Abbildung $V : M \to TM$, $p\mapsto v_p$ mit $\pi \circ V = \text{id}_M$, d.h. $v_p \in T_pM$.
+
+Das Vektorfeld ist differenzierbar ($C^\infty$, glatt), falls $V: M \to TM$ eine differenzierbare Abbildung ist. Äquivalent dazu: Für alle $f\in C^\infty(M)$ ist $Vf\in C^\infty(M)$ mit $\left(Vf\right)(p) \da v_p(f)$.
+
+Wir definieren für $p\in M$ und $f\in C^\infty(M)$:
+\begin{itemize}
+\item $\left(f\cdot V\right)(p) \da f(p) v_p$ sowie
+\item $\left(V+W\right)(p) \da v_p + w_p$.
+\end{itemize}
+Damit ist $\V M$ (die Menge aller Vektorfelder auf $M$) ein $C^\infty(M)$-Modul.
+\end{definition}
+
+Die lokale Darstellung der Vektorfelder liefert uns Basisfelder:\index{Basisfeld}
+Sei $\varphi = (x^1,\ldots,x^n)$ für $U\subset M$. Dann ist für $i=1,\ldots,n$
+\[
+\frac{\partial}{\partial x^i}:
+\begin{aligned}
+U&\to TU\\
+p&\mapsto \ptv{i}
+\end{aligned}
+\]
+ein Vektorfeld auf $U$, nämlich das $i$-te Koordinaten-Vektorfeld\index{Koordinaten-Vektorfeld} von $\varphi$ oder „begleitendes $n$-Bein\rlap{.}“
+
+Nach dem Basissatz (Satz \ref{basissatz}) gilt: Jedes Vektorfeld $V\in \V M $ kann auf $U$ geschrieben werden als 
+\[
+V = \sum_{i=1}^n V(x^i) \frac{\partial}{\partial x^i}
+\]
+
+\begin{definition}
+Eine Derivation\index{Derivation} von $C^\infty M$ ist eine Abbildung $\mathcal{D}: C^\infty M \to C^\infty M$ mit
+\begin{enumerate}[(D1)]
+\item $\mathcal{D}$ ist $\MdR$-linear: $\mathcal{D}(af+ bg) = a\mathcal D(f) + b\mathcal D(g)$
+\item Leibnitz: $\mathcal D(f\cdot g) = \mathcal D(f)\cdot g + f\mathcal D(g)$
+\end{enumerate}
+\end{definition}
+
+Aus den Axiomen (T1), (T2) für Tangentialvektoren folgt, dass $V\in\V M $ eine Derivation ist.
+
+Umgekehrt gilt, dass jede Derivation von einem Vektorfeld kommt:  Sei $\mathcal D$ eine Derivation. Definiere für jeden Punkt $p\in M$: $v_p(f) \da \mathcal D\left(f\right)(p)$. Aus (D1), (D2) folgt: $v_p\in T_pM$ und $V: M \to TM$, $p\mapsto v_p$ ist ein Vektorfeld.
+
+Weiter gilt für alle $p\in M$: $\left(Vf\right)(p) = v_p\left(f\right) = \left(\mathcal D f\right) (p)$, also ist $Vf = \mathcal D f$, insbesondere ist $V$ glatt. Also entspricht $\V M $ den Derivationen auf $C^\infty M$.
+
+Warum also führen wir Derivationen ein? Die entscheidende Eigenschaft ist dass das Produkt zwei Vektorfelder $V$ und $W$
+\[
+\left(V \cdot W\right) (f) \da V (W f)
+\]
+keine Derivation ist, da (D2) nicht erfüllt ist, also $(V\cdot W)$ kein Vektorfeld ist!
+
+Dies korrigieren wir mit der Lie-Klammer\index{Lie-Klammer}
+\[
+[V,W] \da V\cdot W  - W\cdot V
+\]
+welche eine Derivation liefert! Insbesondere ist also $[V,W]$ wieder ein Vektorfeld.
+
+Also 
+\[[\cdot,\cdot]:
+\begin{aligned}
+\V M  \times \V M  &\to \V M  \\
+(V,W) &\mapsto [V,W]
+\end{aligned}
+\]
+
+\begin{lemma}
+$\V M $ versehen mit der Lie-Klammer $[\cdot,\cdot]:\V M  \times \V M  \to \V M $ ist eine Lie-Algebra.
+\label{lem5}
+\end{lemma}
+
+\begin{definition}
+\index{Lie-Algebra}
+Eine reelle Lie-Algebra ist ein $\MdR$-Vektorraum $L$ mit einer Verknüpfung $[\cdot,\cdot]: L\times L \to L$ mit 
+\begin{enumerate}[(L1)]
+\item $\MdR$-Linearität: $[ax+by, z] = a [x,z] + b[y,z]$ sowie
+$[x,ay + bz] = a[x,y] + b[x,z]$ für $a,b\in\MdR$
+\item Schiefsymetrie: $[x,y] = -[y,x]$
+\item Jacobi-Identität: $\big[ [x,y], z\big] + \big[ [z,x], y\big] + \big[[y,z], x\big] = 0$
+\end{enumerate}
+\end{definition}
+
+\subsection*{Vektorfelder und Differentialgleichungen}
+
+Sei $V\in \V M $. Eine Integralkurve von V ist eine differenzierbare Kurve $\alpha: I\to M$ mit $\alpha'(t) = V\left(\alpha(t)\right)$ für alle $t\in I$.
+
+In einem Koordinatensystem $\varphi=(x^1,\ldots,x^n)$ gilt:
+\[
+\alpha'(t) = \sum_{i=1}^n \frac d{dt}\left(x^i\circ \alpha\right) \left.\frac\partial{\partial x^i}\right|_{\alpha(t)}
+\text{ sowie }
+V\left(\alpha(t)\right) = \sum_{i=1}^n V\left(x^i\circ \alpha\right) \left.\frac\partial{\partial x^i}\right|_{\alpha(t)}
+\]
+Also gilt für $i=1,\ldots,n$
+\[
+\alpha'(t) = V(\alpha(t)) \gdw \frac d{dt}\left(x^i\circ \alpha\right) = V\left(x^i\circ\alpha\right)
+\]
+Dies ist ein System von $n$ gewöhnlichen Differenzialgleichungen erster Ordnung. Aus Existenz- und Eindeutigkeitssätzen für solche Systeme (zum Beispiel Königsberger II, 4.2) folgt
+
+\begin{satz}[Existenz und Eindeutigkeit der Integralkurven]
+Sei $V\in \V M $. Dann existiert für jeden Punkt $p\in M$ ein Intervall $I=I(p)$ um 0 und eine eindeutige Integralkurve $\alpha : I \to M$ von $V$ mit $\alpha(0) = p$.
+\label{satz4}
+\end{satz}
+
+\begin{korrolar}
+Ist $v\in T_pM$, dann existiert eine differenzierbare Kurve $\alpha: I\to M$ mit $\alpha (0)=p$ und $\alpha'(0)=v$.
+\end{korrolar}
+Beweisidee: Ergänze $v$ zu einem Vektorfeld in einer Umgebung von $p$ und wende Satz $\ref{satz4}$ an.
+
+
+
+
+\chapter{Riemann’sche Metriken}
+
+\section{Definition einer Riemann’schen Metrik und Struktur}
+\newcommand{\asp}{\langle\cdot,\cdot\rangle} % Abstraktes Skalarprodukt
+\newcommand{\ksp}[2]{\langle#1,#2\rangle} % Konkretes Skalarprodukt mit zwei Parameter
+\newcommand{\lsp}[2]{\left\langle#1,#2\right\rangle} % großes Skalarprodukt mit zwei Parameter
+\newcommand{\aasp}{\langle\!\langle\cdot,\cdot\rangle\!\rangle} % Abstraktes Skalarprodukt 2
+\newcommand{\kksp}[2]{\langle\!\langle#1,#2\rangle\!\rangle} % Konkretes Skalarprodukt 2
+
+\index{Riemann’sche Metrik}
+\index{Riemann’sche Struktur}
+\index{Metrik!Riemann’sche}
+\index{Struktur!Riemann’sche}
+Eine Riemann’sche Metrik (oder Riemann’sche Struktur) auf einer differenzierbaren Mannigfaltigkeit $M$ ist dadurch gegeben, dass jedem Punkt $p\in M$ ein Skalarprodukt $\asp_p \equiv g_p(\cdot,\cdot)$ in $T_pM$ zugeordnet wird.
+
+Diese Zuordnung soll differenzierbar sein, das heißt für alle lokalen Koordinaten $\phi: U \to \MdR^n$; $q\mapsto \left(x^1(q), \ldots, x^n(q)\right)$ sind die Funktionen 
+\[
+g_{ij}:
+\begin{aligned}
+U &\to \MdR \\
+q &\mapsto g_{ij}(q) \da \lsp{\left.\frac\partial{\partial x^i}\right|_q}{\left.\frac\partial{\partial x^j}\right|_q}_q
+\end{aligned}
+\]
+$C^\infty$ für $1\le i,j\le n$. Die $(n\times n)$-Matrix $\left( g_{ij}(q)\right)$ ist symmetrisch und positiv definit für alle $q\in  U$.
+
+Insbesondere gilt für $v = \sum_{i=1}^n a_i \left.\frac\partial{\partial x^i}\right|_q$ und $w = \sum_{j=1}^n b_j \left.\frac\partial{\partial x^i}\right|_q \in T_pM$:
+\[ \langle v,w\rangle_q = \sum_{i,j=1}^n a_i b_j g_{ij}(q) \]
+
+\begin{definition}
+\index{Riemann’sche Mannigfaltigkeit}
+\index{Mannigfaltigkeit!Riemann’sche}
+Eine Riemann’sche Mannigfaltigkeit ist ein Paar $(M,g)$ (oder $(M,\asp)$) bestehend aus einer differenzierbaren Mannigfaltigkeit $M$ und einer Riemann’schen Struktur auf $M$.
+\end{definition}
+
+\begin{bemerkung}
+Ist $g$ nicht positiv definit (d.h. $g_p(v,v)\ge 0$ und $g_p(v,v) = 0 \gdw v=0$), sondern nur semi-definit, so heißt $g$ Pseudo-Riemann’sche Struktur. Zum Beispiel der $\MdR^4$ versehen mit der Form $x^2 + y^2 + z^2 - t^2$ modelliert die Minkowski-Raum-Zeit der speziellen Relativitätstheorie. Mehr dazu etwa in B. O’Neill: Semi-Riemannian Geometry.
+\end{bemerkung}
+
+Der Isometrie-Begriff auf Riemann’schen Mannigfaltigkeiten: Ein Diffeomorphismus $\Phi: (M,\asp) \to (N,\aasp)$ zwischen Riemann’schen Mannigfaltigkeiten heißt Isometrie\index{Isometrie} falls für alle $p\in M$ und alle $v,w\in T_pM$ gilt:
+\[ \langle\langle d\Phi_p(v), d\Phi_p(w) \rangle\rangle_{\Phi_{p}} = \langle v,w\rangle_p \qquad (*) \]
+
+Ein lokaler Diffeomorphismus $\Phi: U \to V$ ($U\subset M$, $V\subset N$) heißt lokale Isometrie\index{lokale Isometrie} falls $(*)$ gilt für alle $q\in U$ und alle $v,w \in T_qM$.
+
+
+\section{Beispiele und Konstruktionen}
+\subsection{$n$-dimensionaler Euklidischer Raum}
+$M=\MdR^n$ mit Atlas $\{\text{id}\}$ ist eine Riemann’sche Struktur mit dem Standard-Skalarprodukt $\asp$. Dabei ist $g_{ij}(p) = \lsp{\ptv{i}}{\ptv{j}} = \ksp{e_i}{e_j} = \delta_{ij}$, also ist $\left(g_{ij}(p)\right)$ die Einheitsmatrix.
+
+\subsection{$n$-dimensionale hyperbolische Räume}
+$M = H^n \da \{ x = (x^1,\ldots, x^n) \in \MdR^n \mid x_n > 0 \}$. Dies ist eine offene Teilmenge von $\MdR^n$, also eine offene Untermannigfaltigkeit.
+
+Die Riemann’sche Metrik ist dann 
+\[
+g_{ij}(x) \da 
+\begin{cases}
+\frac 1 {(x^n)^2} & 1\le i = j \le n \\
+0 & i \ne j
+\end{cases}
+\]
+und die Matrix 
+\[
+\left(g_{ij}(x)\right) = 
+\begin{pmatrix}
+\frac 1 {(x^n)^2}& & 0 \\
+& \ddots & \\
+0 & & \frac 1 {(x^n)^2}
+\end{pmatrix}
+\]
+positiv definit und symmetrisch, also ist $(H^n, g)$ eine Riemann’sche Mannigfaltigkeit und ist ein Modell für $n$-dimensionale hyperbolische Geometrien.
+
+\subsection{Konstruktion von neuen Riemann’schen Mannigfaltigkeiten aus gegebenen}
+
+Sei $\Phi: M^m \to N^{n=m+k}$ sei eine Immersion. Weiter sei auf $N$ eine Riemann’sche Struktur $\aasp$ gegeben. Diese induziert eine Riemann’sche Metrik $\asp$ auf $M$:
+
+Für $p\in M$, $u,v\in T_pM$ setze: $\langle u,v\rangle_p \da \langle\langle d\Phi_pu, d\Phi_p v \rangle\rangle_{\Phi(p)}$
+
+Zu zeigen ist: $\asp_p$ ist symmetrisch, bilinear und positiv definit. Die Symmetrie und Bilinearität ist klar. Zu überprüfen: Ist $\asp$ positiv definit? Es ist $\langle u,u\rangle_p \ge 0$. Ist $0 = \langle u,u\rangle_p = \langle\langle d\Phi_pu,d\Phi_pu\rangle\rangle_{\Phi(p)}$, so ist $d\Phi_pu = 0 \folgtnach{$\Phi$ injektiv} u = 0$
+
+\index{Isometrische Immersion}
+\index{Immersion!isometrische}
+Die Abbildung $\Phi: (M,\asp) \to (N,\aasp)$ heißt isometrische Immersion von $M$ in $N$.
+
+\begin{beispiel}
+Flächen im $\MdR^3$ mit Standardskalarprodukt, wobei $\Phi=i: F \hookrightarrow \MdR^3$ die Inklusionsabbildung ist. Die so induzierte Riemann’sche Metrik auf $F$ heißt die 1. Fundamentalform von $F$. Für $u,v \in T_pF$ gilt dann:
+\[
+\langle u,v\rangle \da \langle di_pu, di_pv\rangle = \langle u, v\rangle
+\]
+wobei das letzte Skalarprodukt das Standardskalarprodukt ist.
+\end{beispiel}
+
+Analog kann man mit anderen Untermannigfaltigkeiten des $(\MdR^m,\asp)$ vorgehen. So kan man $S^n = \{x\in\MdR^{n+1}\mid \|x\|=1\}\subset \MdR^{n+1}$ mit der vom Standardskalarprodukt in $\MdR^{n+1}$ induzierten Riemann’schen Metrik versehen. Diese heißt sphärische Geometrie.\index{Sphärische Geometrie}
+
+\begin{bemerkung}
+Die klassischen Geometrien (euklidische, hyperbolische, sphärische) sind Spezialfälle der Riemman’schen Geometrien.
+\end{bemerkung}
+
+\subsection{Riemann’sche Produkte}
+Seien $\left(M_1, \asp^{(1)}\right)$, $\left(M_2, \asp^{(2)}\right)$ zwei Riemann’sche Mannigfaltigkeiten. $M_1\times M_2$ ist eine differenzierbare Mannigfaltigkeit. Weiter haben wir die zwei kanonischen Projektionen auf die Faktoren:
+\begin{align*}
+\pi_1: M_1&\times M_2 \to M_1 &
+\pi_2: M_1&\times M_2 \to M_2 \\
+(m_1,m_2) &\mapsto m_1 &
+(m_1,m_2) &\mapsto m_2 \\
+\end{align*}
+
+\begin{definition}[Riemann’sche Produktmetrik]
+Riemann’sche Produktmetrik auf $M_1\times M_2$ ist für alle $u,v\in T_{(p,q)}(M_1\times M_2)$ und für alle $(p,q)\in M_1\times M_2$:
+\begin{align*}
+\ksp uv_{(p,q)} \da \ & \lsp {d{\pi_1}_{(p,q)} u}{ d{\pi_1}_{(p,q)}v}^{(1)} \\
++ &\lsp {d{\pi_2}_{(p,q)} u}{ d{\pi_2}_{(p,q)}v}^{(2)}
+\end{align*}
+(Kurz: $\|u\|^2 = \ksp uu = \ksp {u_1}{u_1}^{(1)} + \ksp {u_2}{u_2}^{(2)} = \|u_1\|^2 + \|u_2\|^2$)
+\end{definition}
+
+$\asp_{(p,q)}$ ist symmetrisch und positiv bilinear. Es ist auch positiv definit:
+\[
+0 = \ksp uu \folgt 
+\left.\begin{aligned}
+d\pi_1 u = 0 \\
+d\pi_2 u = 0
+\end{aligned}\right\} \folgt u=0\,,
+\]
+da $u=d\pi_1u \oplus d\pi_2 u$.
+
+\begin{beispiele}
+\item $(\MdR^n,\asp) = \prod_{i=1}^n (\MdR^1,\asp)$. $(a_1,\ldots,a_n) = a \in T_x\MdR^n$; $\|a\|^2 = \sum_{i=1}^n a_i^2$
+\item Flacher Torus:
+
+$T^2 \da S^1 \times S^1$, wobei jeder Faktor $S^1$ mit der kanonischen Riemann’schen Metrik, induziert von $\MdR^2$, versehen ist. Wir betrachten lokale Koordinaten $(s,t)$. Dann:
+\[
+T_{(s,t)}(S^1\times S^1) = \MdR \left.\frac{\partial}{\partial s}\right|_s \oplus \MdR \left.\frac{\partial}{\partial t}\right|_t
+\]
+Sei nun $u,v\in T_{(s,t)}(S^1\times S^1)$ mit $u=a \frac\partial{\partial s} + b \frac\partial{\partial t}$ und $v=c \frac\partial{\partial s} + d \frac\partial{\partial t}$. Das heißt: $d\pi_1 u = a \frac\partial{\partial s}$ und $d\pi_2 u = b \frac\partial{\partial t}$.  
+Ohne Einschränkung sei $\lsp {\frac\partial{\partial s}} {\frac\partial{\partial s}} = 1$ und $\lsp {\frac\partial{\partial t}} {\frac\partial{\partial t}} = 1$
+
+Die Riemann’sche Produktmetrik auf $T^2$ bezüglich lokalen Koordinaten $(s,t)$:
+\begin{align*}
+g_{11}(s,t) &= \lsp {d\pi_1 \left({\frac\partial{\partial s}} + 0\right)}{d\pi_1 \left({\frac\partial{\partial s}} + 0\right)} + \lsp {d\pi_2 \left({\frac\partial{\partial s}} + 0\right)}{d\pi_2 \left({\frac\partial{\partial s}} + 0\right)} \\
+&= \lsp {\frac\partial{\partial s}}{\frac\partial{\partial s}} + \lsp 0 0 = 1
+\end{align*}
+Analog: $g_{22}(s,t) = \cdots = \lsp {\frac\partial{\partial t}} {\frac\partial{\partial t}} = 1$
+\begin{align*}
+g_{12}(s,t) &= \lsp {d\pi_1 \left({\frac\partial{\partial s}} + 0\right)}{d\pi_1 \left({\frac\partial{\partial t}} + 0\right)} + \lsp {d\pi_2 \left({\frac\partial{\partial s}} + 0\right)}{d\pi_2 \left({\frac\partial{\partial t}} + 0\right)} \\
+&= \lsp {\frac\partial{\partial s}}0 + \lsp 0 {\frac\partial{\partial s}} = 0
+\end{align*}
+also ist
+\[
+\left( g_{ij}(s,t) \right) = 
+\begin{pmatrix}
+1 & 0 \\ 0 & 1
+\end{pmatrix}
+\]
+das heißt: $T^2$ mit Produktmetrik ist lokal isometrisch zur euklidischen Ebene. 
+
+$\skull$ $T^2$ und $\MdR^2$ sind nicht global isometrisch (sonst wären sie homöomoph, aber $\MdR^2$ ist nicht kompakt, während $T^2$ kompakt ist).
+
+
+\end{beispiele}
+
+
+\section{Existenz von Riemann’schen Metriken}
+
+\begin{satz}[Existenz der Riemann’schen Metrik]
+Auf jeder $n$-dimensionalen differenzierbaren Mannigfaltigkeit existiert eine Riemann’sche Metrik.
+\label{exriemet}
+\end{satz}
+
+\begin{beweis}
+Wir gehen in zwei Schritten vor: %Füllsatz, LaTeX komisch.
+\paragraph*{1. Schritt} (lokale Konstruktion für Kartengebiete)
+
+Gegeben eine Karte $\varphi_\alpha: U_\alpha \to \MdR^n$, $p\mapsto \varphi_\alpha(p) = \left(x^1_\alpha(p),\ldots,x^n_\alpha(p)\right)$. Wir benötigen $\frac{n(n+1)}2$ $C^\infty$-Funktionen $g_{ij}: U_\alpha \to \MdR$, so dass die $n\times n$-Matrix $\left(g_{ij}(q)\right)$ positiv definit wird für alle $q\in U_\alpha$.
+
+Eine Möglichkeit: Wähle Standardskalarprodukt $\asp$ auf $\varphi_\alpha(U_\alpha)\subset \MdR^n$, das heißt $\ksp {e_i}{e_j} = \delta_{ij}$ und setze für alle $u,v\in TqM$, $q\in U_\alpha$:
+\[
+g_\alpha(u,v) \da \lsp {d\varphi_{\alpha}|_q(u)} {d\varphi_{\alpha}|_q(v)} _{\varphi_\alpha(q)}\,,
+\]
+das heißt $\varphi_\alpha$ wird zu einer lokalen Isometrie gemacht.
+
+Weil $\left.d\varphi_\alpha\right|_q \left(\left.\frac\partial{\partial x^i}\right|_q\right) = e_i$ für $i=1,\ldots,n$ gilt, ist
+\[
+g_{ij}^{(\alpha)}(q) = g_\alpha\left( \left.\frac\partial{\partial x^i}\right|_q, \left.\frac\partial{\partial x^j}\right|_q \right) = \ksp {e_i} {e_j} = \delta_{ij}\,.
+\]
+
+\paragraph*{2. Schritt} (Globale Konstruktion)
+
+Wir nehmen ein Hilfsmittel aus der Differential-Topologie:
+\begin{satz}[„Zerlegung der Eins“]
+\label{einszerl}
+Sein $M$ eine differenzierbare Mannigfaltigkeit (insbesondere Hausdorff’sch und es existiert eine abzählbare Basis) und $(U_\alpha)_{\alpha\in A}$ eine (offene) Überdeckung von $M$ von Karten.
+
+Dann existiert eine lokal endliche  Überdeckung $(V_k)_{k\in I}$ und $C^\infty$-Funktionen $f_k: M \to \MdR$ mit
+\begin{enumerate}
+\item Jedes $V_k$ liegt in einem $U_{\alpha=\alpha(k)}$.
+\item $f_k\ge 0$ auf $\bar{V_k}$ und $f_k = 0$ auf dem Komplement von $\bar{V_k}$. (Das heißt: Der Träger von $f_k$ ist eine Teilmenge von $\bar{V_k}$)
+\item $( \sum_{k\in I} f_k ) = 1$ für alle $p\in M$. Diese Summe ist immer endlich, da die Überdeckung lokal endlich ist. 
+\end{enumerate}
+\end{satz}
+Lokal Endlich: {Für jeden Punkt $p\in M$ existiert eine Umgebung $U=U(p)$ mit $U\cap V_k \ne \emptyset$ für nur endlich viele $k\in I$}
+\begin{beweis}[von Satz \ref{einszerl}]
+siehe zum Beispiel: Gromoll-Klingenberg-Meyer, „Riemann’sche Geometrie im Großen“.
+\end{beweis}
+
+Für die Konstruktion einer Riemann’schen Metrik auf $M$ „verschmiert“ oder „glättet“ man jetzt alle im ersten Schritt konstruierten lokalen Riemann’schen Metriken $g_k : g_\alpha|_{V_k}$ wie folgt: 
+
+Sei $p\in M$ beliebig und $u,v \in T_pM$. Setze 
+\[
+\ksp uv_p \da \sum_{k\in I} f_k(p) \cdot g_k\left(p\right) (u,v)
+\]
+Diese Summe ist endlich, da $f_k(p) \ne 0$ nur für endlich viele $k$.
+
+Ist $\asp_p$ ein Skalarprodukt auf $T_pM$? 
+\begin{itemize}
+\item Symetrie und Bilinearität sind klar.
+\item Positivität:
+\[ \ksp uu_p = \sum_{k\in I} \underbrace{f_k(p)}_{\ge 0} \underbrace{g_k(u,u)}_{\ge 0} \ge 0\,.\]
+\item Definitheit: Sei $\ksp uu_p = 0$, dann ist für jedes $k$ $f_k(p) g_k(u,u) = 0$. Wegen Punkt (3) von Satz \ref{einszerl} existiert mindestens ein $k_0\in I$, so dass $f_{k_0}(p) > 0$. Daher ist $g_{k_0}(u,u) = 0$, woraus $u=0$ folgt, da $g_{k_0} $positiv definit ist.
+\end{itemize}
+\end{beweis}
+
+\begin{bemerkung}[Riemannsche Metrik ist nicht eindeutig]
+ Im $\MdR^n$ ist durch jede positiv definite Bilinearform ein Skalarprodukt und damit eine Riemannsche Metrik gegeben.
+\end{bemerkung}
+
+
+
+\section[Erste Anwendung von Riemann’schen Metriken: Länge von Kurven]{Anwendung: Länge von Kurven}
+
+Sei $c: I \to M$ eine differenzierbare Kurve in einer Riemann’schen Mannigfaltigkeit $M$. Dann ist die Länge von $c$
+\[
+L(c) \da \int_I \sqrt{\ksp {c'(t)}{c'(t)}}dt  = \int _I \left\|c'(t)\right\|dt
+\]
+(Ein Spezialfall sind $C^\infty$-Kurven in $\MdR^n$ versehen mit Standardskalarprodukt)
+
+Die Länge ist unabhängig von der Parametrisierung der Kurve und invariant unter Isometrien $\Phi : (M,\asp_1) \to (N,\asp_2)$, also $L(\Phi \circ c) = L(c)$, da $L(\Phi \circ c) = \int_I\left\|(\Phi \circ c)'\right\|_2dt = \int_I\left\|d\Phi_{c(t)}c'(t)\right\|_2dt \gleichnach{$\Phi$ iso.} \int_I\left\|c'\right\|_1dt = L(c)$.
+
+
+\chapter{Affine Zusammenhänge und Parallelverschiebung}
+
+\section{Motivation}
+
+In $\MdR^n$ kann man Tangentialräume in verschiedenen Punkten vergleichen:
+Die Tangentialräume von $x$ und $y$ sind $T_x\MdR^n = \{x\}\times \MdR^n \simeq \MdR^n$ und $T_y\MdR^n \simeq \MdR^n$. Es gibt dann eine Translation (Parallelverschiebung) $T_{y-x}:T_x\MdR^n \to T_y\MdR^n$; $(x,v)\mapsto (T_{y-x}(x), v)$, wobei $T_{y-x}(x) = x + (y-x) = y$.
+
+Die Situation für Mannigfaltigkeiten ist lokal die gleiche: Ist $(U,\varphi)$ eine Karten, so gilt $TU \simeq U\times\MdR^n$ (vergleiche Basis-Satz, Satz \ref{basissatz}). Ist $p,q\in U$, so gilt: ($[\ldots]$ affine Hülle)
+\[ T_pM = \left[ \ptv1,\ldots, \ptv n \right] \text{ und } T_qM = \left[ 
+\qtv1 ,\ldots, \qtv n
+ \right] \]
+ Die Parallelverschiebung $T_pM \to T_qM$ bildet jetzt 
+$v=\sum a_i \ptv i$ auf $\bar v = \sum a_i \qtv i$ ab.
+
+Der globale Vergleich von Tangentialräumen erfordert jedoch eine Zusatzstruktur („Fernparallelismus“)
+
+In der Flächentheorie realsisiert man die Parallelverschiebung via Kovariante Ableitung: Ist $c$ eine Flächenkurve der Fläche $F$, so ist $\frac D {dt} c'$ die orthogonale Projektion von $c''$  in die Tangentialebene $T_{c(t)}F$. Die Geodätischen in $F$ (die „verallgemeinerten Geraden“) sind definiert als Lösungen von $\frac D {dt} c' = 0$.
+
+\section{Affine Zusammenhänge}
+
+\begin{definition}[Affiner Zusammenhang]
+\index{Affiner Zusammenhang}
+\index{Zusammenhang!affiner}
+Ein Affiner Zusammenhang $D$ auf einer differenzierbaren Mannigfaltigkeit $M$ ist eine Abbildung
+\[
+D: 
+\begin{aligned}
+\V M \times \V M &\to \V M \\
+(X,Y) &\mapsto D_XY
+\end{aligned}
+\]
+so dass für alle $X,Y,Z \in \V M$ und $f,g \in C^\infty M$ gilt:
+\begin{enumerate}[(Z1)]
+\item $D_{fX + gY} Z = fD_XZ + gD_YZ$
+\item $D_X(Y + Z) = D_X Y + D_X Y$
+\item $D_X(fY) = fD_XY + (Xf)Y$
+\end{enumerate}
+\end{definition}
+
+\begin{beispiele}
+\item Flächentheorie: $D_X Y \da Y_T'$
+\item In $\MdR^n$: $X= \sum a_i \frac\partial{\partial x^i}$, $Y=\sum b_i \frac\partial{\partial x^i}$, $D_XY\da \sum X(b_i) \frac\partial{\partial x^i}$
+\end{beispiele}
+
+$D$ ist ein lokaler Begriff: Wähle Karte $(U,\varphi)$ mit Basisfelder $X_i=\frac\partial{\partial x^i}$. $X,Y\in \V U$: $X=\sum_{i=1}^n v^iX_i$, $Y=\sum_{j=1}^n w^j X_j$. Dann: 
+\begin{align*}
+D_XY &= D_{\sum_i v^iX_i}\left(\sum_jw^jX_j\right) \\
+     &\gleichnach{\clap{(Z1)}} \sum_i v^i D_{X_i}\left(\sum_jw^jX_j\right) \\
+     &\gleichnach{\clap{(Z2)}} \sum_i v^i \sum_j D_{X_i} \left(w^j X_j\right) \\
+     &\gleichnach{\clap{(Z3)}} \sum_{i,j} v^iw^j D_{X_i}X_j + \sum_{i,j} v^i X_i\left(w^j\right)X_j
+\end{align*}
+wobei $D_{X_i}X_j = \sum_{k=1}^n \Gamma^k_{ij} X_k$ (diese Darstellung existiert wegen dem Basissatz \ref{basissatz}) für lokal definierte $C^\infty$-Funktionen $\Gamma_{ij}^k: U \to \MdR$ (Christoffel-Symbole)\label{Christoffel-Symbole}.
+
+Wir haben also:
+\[
+D_XY = \sum_{k=1}^n \left(\sum_{i,j=1}^n v^i w^j \Gamma_{ij}^k + X(w^k)\right)X_k
+\]
+Die Formel zeigt, dass $D_XY(p)$ bestimmt ist durch $v^i(p)$, $w^j(p)$ und $X_p(w^k)$ (und $\Gamma_{ij}^k$). Insbesondere braucht man das Vektorfeld $Y$ (bzw. $w^k$) nur „in Richtung $X$“ zu kennen.
+
+Wir folgern: Man kann Vektorfelder längs einer Kurve in Richtung dieser Kurve ableiten: Falls $Y$ ein Vektorfeld ist längs $c$ (also $Y\left(c(t)\right) = \sum_{i=1}^n w^k(t)X_k\left(c(t)\right)$), dann ist
+\[
+D_{c'}Y \da \sum_{k=1}^n\left(\sum_{ij}^n {x^i}'(t) w^j(t) \Gamma_{ij}^k\left(c(t)\right) + {w^k}'(t)\right)X_k(c(t))
+\]
+(wobei $\varphi \circ c(t) = \left(x^1(t),\ldots, x^n(t)\right)$ und damit $c' = \sum {x^i}'X_i$)
+
+\begin{definition}
+Ein Vektorfeld $Y$ längs einer Kurve $c$ heißt parallel\index{paralleles Vektorfeld} bezüglich einem affinen Zusammenhang $D$, falls $D_{c'}Y = 0$.
+\end{definition}
+
+\begin{beispiele}
+\item Im $\MdR^n$ haben wir für ein paralleles Vektorfeld $Y$, dass $D_{c'}Y = \sum_{j=1}^n {w^j}'X_j = \sum_{j=1}^n 0 X_j= 0$, da bei Vektorfeldern in $\MdR^n$ parallel und konstant gleichwertig ist.
+\item Ein Vektorfeld entlang eines Klein-Kreises der Sphäre ist nicht parallel. (Durch Skizze motiviert). Ein Vektorfeld entlang eines Groß-Kreises ist jedoch parallel, da $c''$ orthogonal zum Groß-Kreis zum Mittelpunkt zeigt, die Projektion auf die Sphäre also 0 ist.
+\end{beispiele}
+
+Später werden wir sehen, dass Geodätische (Kurven mit $D_{c'}c' = 0$) Geraden verallgemeinern.
+
+\begin{satz}[Eindeutigkeit der Parallelverschiebung]
+\label{eindpara}
+Sei $M$ eine differenzierbare Mannigfaltigkeit mit affinem Zusammenhang $D$. Sei $c: I=[a,b] \to M$ eine differenzierbare Kurve und $v_0 \in T_{c(a)}M$. Dann existiert genau ein paralleles Vektorfeld $V$ längs $c$ mit $V\left(c(a)\right)= v_0$.
+\end{satz}
+
+\begin{definition}
+Der Vektor $V(t)$ (aus Satz \ref{eindpara}) heißt der längs $c$ parallel verschobene Vektor $v_0$. Die Abbildung
+\[
+c\|_a^t: 
+\begin{aligned}
+T_{c(a)}M &\to T_{c(t)}M \\
+v_0&\to V(t)
+\end{aligned}
+\]
+heißt Parallelverschiebung.
+\end{definition}
+
+\begin{beweis}
+Im ersten Schritt betrachten wir die Situation lokal. Sei $t_1\in I$, so dass $c([a,t_1]) \subset U$ (Kartengebiet um $c(a)$). In der Karte $(U,\varphi)$ ist die Definitionsgleichung $D_{c'}V=0$ äquivalent zu:
+\[
+\sum_k \bigg(\frac{dv^k}{dt} + \sum_{i,j} \frac{dx^i}{dt}v^j \Gamma_{ij}^k \bigg) X_k = 0
+\]
+wobei $V = \sum_{i=1}^n v^i X_i$, $X_i = \frac\partial{\partial x^i}$, $\varphi \circ c(t) = \left(x^1(t),\ldots,x^n(t)\right)$, $c'(t) = \sum_i \frac{dx^i}{dt}(t)X_i\left(c(t)\right)$. Das heißt wir haben ein System von $n$ linearen Differentialgleichungen 1. Ordnung in $v_k(t)$:
+\[
+0 = \frac{dv^k}{dt} + \sum_{i,j} \Gamma_{ij}^k \frac{dx^i}{dt} v^j, \qquad k=1,\ldots,n
+\]
+Dieses System hat zu gegebenen Anfangsbedingungen $v(a)=v_0 = (v^1(a),\ldots,v^n(a))$ genau eine Lösung für alle $t\in [a,t_1]$. Dann existiert eindeutig ein Parallelfeld $V$ längs $c([a,t_1])$ mit $V(a)=v_0$.
+
+Im zweiten Schritt sei $t_2\in I$ beliebig. Das Segment $c([a,t_2])$ ist kompakt in $M$ und kann daher mit endlich vielen Karten überdeckt werden. In jeder Karte existiert ein $V$ und ist eindeutig (nach Schritt 1). Daraus folgt, dass $V$ global eindeutig existiert auf $c([a,t_2])$ für beliebige $t_2$.
+\end{beweis}
+
+\section{Der Levi-Civita-Zusammenhang}
+
+\paragraph{Motivation:} Ein Parallelfeld im Euklidischen Raum $(\MdR^n,\asp)$ ist eine Isometrie. 
+
+\begin{definition}
+Ein affiner Zusammenhang $D$ auf einer Riemann’schen Mannigfaltigkeit $(M,\asp)$ heißt verträglich \index{Zusammenhang!verträglicher}\index{verträglicher Zusammenhang}mit der Riemann’schen Struktur $\asp$ falls für jede differenzierbare Kurve $c:I\to M$ und jedes Paar von parallelen Vektorfeldern $V_1,V_2$ längs $c$ gilt:
+\[
+\lsp {V_1\left(c(t)\right)}{V_2\left(c(t)\right)}_{c(t)} \text{ ist für alle $t\in I$ konstant.}
+\]
+Das heißt dass die Parallelverschiebung $c\|_{t_1}^{t_2}: T_{c(t_1)}M \to T_{c(t_2)}M$ eine lineare Isometrie ist.
+\end{definition}
+
+\begin{satz}[Äquivalente Formulierung der Verträglichkeit]
+Sei $(M,\asp)$ eine Riemann’sche Mannigfaltigkeit. Ein affiner Zusammenhang $D$ ist verträglich \index{Zusammenhang!verträglicher}\index{verträglicher Zusammenhang}mit $\asp$ genau dann, wenn für beliebige Vektorfelder $V$, $W$ längs einer beliebigen Kurve $c:I\to M$ für alle $t\in I$ gilt:
+\[
+\frac d{dt} \ksp {V(t)}{W(t)}_{c(t)} = \ksp {D_{c'}V}W_{c(t)} + \ksp V {D_{c'}W}_{c(t)} \quad (*)
+\]
+\end{satz}
+
+\begin{beweis}
+$(*) \folgt$ verträglich: $V$, $W$ parallel ist äquivalent zu $D_{c'}V = D_{c'}W = 0$, also $\frac d{dt} \ksp {V(t)}{W(t)}_{c(t)} = 0$, also verträglich.
+
+Umgekehrt gilt: Sei $D$ verträglich, wir haben also eine Parallelverschiebung, die Isometrie ist. Wähle eine Orthonormalbasis $\{P_1(t_0),\ldots,P_n(t_0)\}$ von $T_{c(t_0)}M$. Mittels der der Parallelverschiebung erhalten wir wieder für alle $t\in I$ eine Orthonormalbasis $\{P_1(t),\ldots,P_n(t)\}$ von $T_{c(t)}M$. Wir können schreiben: 
+\[ V(t) = \sum_{i=1}^n v_i(t) P_i(t)\quad \text{sowie}\quad
+   W(t) = \sum_{i=1}^n w_i(t) P_i(t) \]
+wobei $v_i, w_i \in C^\infty$. Also:
+\[
+D_{c'}V = \sum_{i=1}^n \underbrace{c'(v_i)}_{v_i'} P_i + \sum_{i=1}^n v_i \underbrace{D_{c'}P_i}_{=0}
+\]
+das heißt: $D_{c'}V = \sum_{i=1}^n v_i' P_i$ und $D_{c'}W = \sum_{i=1}^n w_i' P_i$. Wir wollen zeigen, dass $(*)$ gilt. Die rechte Seite ist:
+\begin{align*}
+\ksp{D_{c'}V}W + \ksp V{D_{c'}W} &= \lsp {\sum v_i' P_i} {\sum w_jP_j} + \lsp {\sum v_i P_i} {\sum w_j'P_j} \\
+&= \sum_{i,j} \left( v_i' w_j \ksp {P_i}{P_j} + v_iw_j' \ksp {P_1}{P_j}\right) \\
+&= \sum_{i,j} \left( v_i' w_j \delta_{ij} + v_iw_j' \delta_{ij}\right) \\
+&= \sum_{i=1}^n (v_i' w_j + v_i w_j')\\
+&= \frac d{dt} \left( \sum_{i=1}^n v_i w_j \right)
+\intertext{Die linke Seite ist:}
+\frac d{dt} \ksp V W &= \frac d{dt} \lsp {\sum_i v_iP_i}{\sum_j w_j P_j} \\
+&= \frac d{dt} \left( \sum_{ij} v_i w_j \lsp {P_i} {P_j} \right) \\
+&= \frac d{dt} \left( \sum_{i=1}^n v_i w_j \right)
+\end{align*}
+\end{beweis}
+
+\begin{bemerkung}
+ Eine weitere äquivalente Formulierung der Verträglichkeit:
+ \\ Für alle $X,\,Y\,Z\in\mathcal{V}M$ gilt:
+ \[
+  X \underbrace{\ksp{Y}{Z}}_{\in C^\infty(M)} = \ksp{D_XY}{Z} + \ksp{Y}{D_XZ}
+ \]
+
+\end{bemerkung}
+
+
+Die Frage ist jetzt, ob zu einer gegebener Riemann’schen Struktur ein verträglicher Zusammenhang existiert.
+
+\begin{definition}
+Ein affiner Zusammenhang $D$ heißt symmetrisch\index{symmetrischer Zusammenhang} (oder torsionsfrei) falls für alle $X,Y\in \V M$:
+\[
+T(X,Y) \da D_XY - D_YX - [X,Y] = 0
+\]
+\end{definition}
+
+\begin{bemerkung}
+In lokalen Koordinaten $(U,\varphi)$ gilt für $D$ symmetrisch und Basisfelder $X_i = \frac\partial{\partial x^i}$:
+\[
+D_{X_i} X_j - D_{X_j}X_i  = [X_i,Y_j] = \left[\frac{\partial}{\partial x_i},\frac{\partial}{\partial x_j}\right] = 0
+\]
+da $\left[\frac{\partial}{\partial x_i},\frac{\partial}{\partial x_j}\right] f = \frac{\partial}{\partial x_i} \frac{\partial}{\partial x_j} f - \frac{\partial}{\partial x_j} \frac{\partial}{\partial x_i} f = 0$ wegen $f\in C^\infty$ und Vertauschbarkeit der partiellen Ableitungen. Weiter gilt:
+\[
+D_{X_i} X_j - D_{X_j}X_i  = \sum_k \Gamma_{ij}^kX_k - \sum_k \Gamma_{ji}^kX_k = \sum_k\left( \Gamma_{ij}^k - \Gamma_{ji}^k\right) X_k \folgt \Gamma_{ij}^k = \Gamma_{ji}^k
+\]
+\end{bemerkung}
+
+\begin{satz}[Levi-Civita-Zusammenhang]
+Auf jeder Riemann’schen Mannigfaltigkeit $\left(M,\asp\right)$ existiert genau ein affiner Zusammenhang $D$, so dass gilt:
+\begin{enumerate}
+\item $D$ ist symmetrisch
+\item $D$ ist verträglich mit $\asp$
+\end{enumerate}
+\end{satz}
+
+Dieser eindeutige Zusammenhang $D$ heißt Levi-Civita-Zusammenhang\index{Levi-Civita-Zusammenhang} von $M$ bezüglich $\asp$.
+
+\begin{beweis}
+Wir nehmen an, dass ein solches $D$ existiert. Was sind die Eigenschaften?
+
+$D$ verträglich:
+\begin{align*}
+X\ksp Y Z &= \ksp {D_X Y} Z  + \ksp Y {D_XZ} \\
+\intertext{Der Trick ist jetzt, die Gleichung zyklisch zu vertauschen:}
+Y\ksp Z X &= \ksp {D_Y Z} X  + \ksp Z {D_YX} \\
+-Z\ksp X Y &= -\ksp {D_Z X} Y  - \ksp X {D_ZY} \\
+\intertext{Summe der drei Gleichungen}
+X \ksp Y Z + Y \ksp Z X - Z \ksp X Y &=
+\ksp {[X,Z]}Y + \ksp {[X,Y]} Z + 2 \ksp Z {D_YX} + \ksp {[Y,Z]} X
+\end{align*}
+Wir erhalten die Kozul-Formel\index{Kozul-Formel}
+\[
+\ksp Z {D_YX} = \frac 12 \Big( X \ksp Y Z + Y \ksp Z X  - Z \ksp X Y -\ksp {[X,Z]}Y - \ksp {[X,Y]} Z  - \ksp {[Y,Z]} X \Big) \mathrlap{\quad (*)}
+\]
+Diese Formel zeigt, dass $D$ eindeutig durch die Riemann’sche Struktur $\asp$ bestimmt ist, denn seien $D$ und $\tilde D$ zwei affine Zusammenhänge, die (1) und (2) erfüllen, dann gilt $(*)$ für beide, also $\ksp Z {D_YX} = \ksp Z {\tilde D_Y X}$ für alle $X,Y,Z\in \V M$, was heißt dass $\ksp {D_YX - \tilde D_YX} Z = 0$, was heißt das $D_YX - \tilde D_YX=0$. Also ist $D=\tilde D$.
+
+Die Existenz folgt daraus, dass man $D$ durch $(*)$ definieren kann.
+\end{beweis}
+
+\paragraph{Lokale Form von $D$} Gegeben eine Karte $(U,\varphi)$ mit Basisfelder $X_i \da \frac \partial {\partial x^i}$, $i=1,\ldots,n$, auf $U$.
+Wir haben $g_{ij}=\ksp {X_i} {X_j}$, $D_{X_i}X_j = \sum_{k=1}^n \Gamma_{ij}^k X_k$, $[X_i, X_j] = 0$. Kozulformel:
+\[
+\ksp {X_k} {D_{X_i}X_j} = \frac 1 2 \left( \frac {\partial g_{ik}}{\partial x^j} + \frac {\partial g_{jk}}{\partial x^i} - \frac {\partial g_{ij}}{\partial x^k} + 0 \right) = \lsp {X_k} {\sum_{l=1}^n \Gamma_{ij}^l X_l} = \sum_{l=1}^n \Gamma_{ij}^l g_{kl}
+\]
+$(g_{kl})$ hat inverse Matrix $(g^{mk})$. Damit
+\[
+\Gamma_{ij}^m = \frac 1 2 \sum_{k=1}^n g^{mk} \left( \frac {\partial g_{ik}}{\partial x^j} + \frac {\partial g_{jk}}{\partial x^i} - \frac {\partial g_{ij}}{\partial x^k} \right)\,.
+\]
+Dieser Ausdruck zeigt nochmals: Levi-Civita-Zusammenhang ist eindeutig durch die Metrik bestimmt.
+
+\begin{beispiel}
+Im Euklidischer Raum ($\MdR^n$, Standardskalarprodukt) ist $g_{ij}=\delta_{ij}$, also $\Gamma_{ij}^k = 0$. Also: Der kanonische Zusammenhang ist der Levi-Civita-Zusammenhang.
+\end{beispiel}
+
+
+
+\chapter{Geodätische Linien}
+
+Gegeben ist eine Riemann’sche Mannigfaltigkeit ($M,\asp)$ mit Levi-Civita-Zusammenhang $D$. Das Ziel ist es, ein Analogon für Geraden zu finden. Mögliche Charakterisierung von Geraden in der Euklidischen Geometrie sind:
+\begin{itemize}
+\item kürzeste Verbindung zweier Punkte (Variationseigenschaft).
+\item Kurven $c(t)$ (mit Bogenlänge parametrisiert) mit $c''(t)=0$ (Differentialgleichung).
+\end{itemize}
+
+\section{Definition von Geodätischen}
+
+\index{Geodätische}
+Eine Geodätische (Linie) in $(M,\asp)$ ist eine differenzierbare Kurve $\gamma: I \to M$ so dass gilt: $D_{\gamma'(t)}\gamma'(t) = 0$ für alle $t\in I$. (Das heißt: Geodätische sind autoparallele Vektorfelder).
+
+Das Tangentialvektorfeld ist parallel. $\gamma' = \frac {d\gamma}{dt} \da d\gamma(\frac\partial{\partial t})$.
+
+Folgerungen aus der Definition:
+\begin{enumerate}
+\item $\|\gamma'(t)\|_{\gamma(t)}$ ist konstant.
+
+\begin{beweis}
+$\left\|\gamma'\right\|^2 = \ksp {\gamma'}{\gamma'}$. Also $\frac d{dt} \left\|\gamma'\right\|^2 = \frac d{dt} \ksp {\gamma'}{\gamma'} = \ksp{D_{\gamma'}\gamma'}{\gamma'} + \ksp {\gamma'}{D_{\gamma'}\gamma'} = 0$
+\end{beweis}
+Ein (entarteter) Spezialfall ist $\gamma(t)$ konstant $p\in M$.
+\item Eine Geodätische ist proportional zur Bogenlänge parametrisiert:
+\[
+s(\gamma) \da \int_a^t \|\gamma'(\tau)\| d\tau = k |t-a|
+\]
+Ist $k=1$ so spricht man von einer normalen Geodätischen\index{normale Geodätische} sowie von isometrischen Kopien von Intervallen.
+\item Ob eine Kurve eine „Geodätische“ ist hängt von der Parametrisierung ab, nicht nur vom Bild $\gamma(I)\subset M$.
+\begin{beispiel}
+$\gamma_1(t) = (t,0)$ ist eine Geodätische, aber $\gamma_2(t) = (t^3,0)$ nicht, da $\|\gamma_2'\|=3t^2$ nicht konstant ist.
+\end{beispiel}
+\end{enumerate}
+
+\section{Lokale Darstellung und Differentialgleichung für Geodätische}
+Sei $\gamma: I\to M$ eine Geodätische in $(M,\asp)$ und $(U,\varphi)$ eine Karte um $\gamma(t_0)$ mit $\varphi \circ \gamma(t) = (x^1(t),\ldots, x^n(t))$.
+
+Dann ist $\gamma'(t) = \sum_{i=1}^n x_i' (t) \left. \frac \partial{\partial x^i}\right|_{\gamma(t)}$. Die allgemeine Formel für Parallelfelder in lokalen Koordinaten (vgl 3.2) ergibt:
+\[
+0 = D_{\gamma '}\gamma' = \sum_{k=1}^n \left(x''^k + \sum_{i,j=1}^n \Gamma_{ij}^k x'^i x'^j\right) \frac{\partial}{\partial x^k}
+\]
+lokal gilt also: $D_{\gamma '}\gamma'= 0$ ist äquivalent zu dem System von $n$ Differentialgleichung 2. Ordnung
+\[
+x''^k(t) = - \sum_{i,j=1}^n \Gamma_{ij}^k(x(t)) x'^i(t) x'^j(t)\mathrlap{\qquad (1)}
+\]
+
+\section{Das Geodätische Vektorfeld auf $TM$}
+Das System 2. Ordnung (1) ist äquivalent zu System 1. Ordnung:
+\[
+\begin{aligned}
+x'^k &\ad y^k \\
+y'^k &= -\sum_{i,j=1}^n \Gamma_{ij}^k(x(t)) y^i(t) y^j(t)
+\end{aligned}\mathrlap{\qquad (2)}
+\]
+Was ist die Interpretation der $y^i$ in der Mannigfaltigkeit? Die Geodätische $t\mapsto \gamma(t)$ in $M$ definiert die differenzierbare Kurve $t \mapsto \left(\gamma(t), \gamma'(t)\right)$ in $TM = \{(p,v) \mid p\in M, v\in T_pM\}$. Lokale Koordinaten für $TM$: Sei $(U,\varphi)$ eine Karte in $M$, $TU \cong U\times \MdR^n$ (nach Basissatz). Dies ergibt eine Darstellung von  $(p,v)$ als $(x^1,\ldots,x^n,y^1,\ldots,x^n)$ mit $v=\sum y^i \frac\partial{\partial x^i}$. Speziell gilt $\left(\gamma(t),\gamma(t)\right) \to \left(x^1(t),\ldots,x^n(t),x'^1(t), \ldots x'^n(t)\right)$.
+
+\begin{lemma}
+Es existiert genau ein Vektorfeld $G\in \mathcal V(TM)$ auf $TM$ dessen Integralkurven (vergleiche 1.7) von der Form $\tilde \gamma(t) = \left(\gamma(t), \gamma'(t)\right)$ sind, wobei $\gamma(t)$ jeweils eine Geodätische in $M$ ist.
+\end{lemma}
+\begin{beweis}
+\begin{enumerate}[(a)]
+\item Eindeutigkeit (unter der Annahme der Existenz): Die Integralkurven von $G$ auf $TU$ sind nach Voraussetzung gegeben durch $\tilde \gamma(t) = \left( \gamma(t), \gamma'(t)\right)$. Diese Kurve ist aber Lösung von (2), also zu gegebener Anfangsbedingung eindeutig:
+\[
+\tilde G\left(\tilde \gamma(t)\right) = \tilde\gamma'(t) = G\left(\tilde\gamma(t)\right)
+\]
+\item Existenz: Wir definieren die Komponenten von $G$ bezüglich Basisfelder lokal durch (2). Wegen (a) ist $G$ auf ganz $TM$ eindeutig.
+\end{enumerate}
+\end{beweis}
+
+\begin{definition}
+$G$ heißt geodätisches Vektorfeld\index{geodätisches Vektorfeld}\index{Vektorfeld!geodätisches} auf $M$. ($G(p,v) \in T_{(p,v)}(TM) \subset T(TM)$)
+\end{definition}
+
+\begin{satz}[Lokale Integralkurve]
+Für jede Karte $U$ und $p\in M$ existiert ein offenes $O\in TM$ mit $(p,0)\in O$ eine Zahl $\delta = \delta(p)$ und eine $C^\infty$-Abbildung $f: (-\delta,\delta)\times O \to TU\subset TM$, so dass $t \mapsto f\left(t,(q,v)\right)$ die eindeutige Integralkurve von $G$ ist mit $f\left(0,(q,v)\right)=(q,v)$ für alle $(q,v)\in O$.
+\label{intkurv}
+\end{satz}
+
+\begin{beweis}
+Nach 1.7 gilt lokal, dass Integralkurven von Vektorfeldern den Lösungen eines Systems von gewöhnlichen Differentialgleichung entsprechen.
+Die Existenz und Eindeutigkeit im Satz \ref{intkurv} folgt dann aus dem ensprechenden Satz über Existenz und Eindeutigkeit von Lösungen eines Differentialgleichungssystems zu gegebenen Anfangsbedingungen.
+
+Dass $f$ differenzierbar ist folgt aus der Tatsache, dass Lösungen von Differentialgleichungen (gewöhnlich, 1. Ordnung) differenzierbar von den Anfangsbedingungen abhängen (vergleiche zum Beispiel Arnold, „Gewöhnliche Differenzialgleichungen“, Gromoll-Klingenberg-Meryer, „Differenzialgleichungen im Großen“, S.275)
+
+Sei $\pi: TM\to M$; $(q,v)\mapsto q$ die kanonische Projektion. Die offene Menge $O\subset TM$ im Satz kann man wie folgt wählen: Es existiert ein $V\subset U$ (offene Umgebung von $p$) und $\ep_1>0$, so dass $O=\{(q,v)\in TU \cong U\times \MdR^n \mid q \in V, v\in T_qM, \|v\|<\ep_1\}$
+\end{beweis}
+
+Aus Satz \ref{intkurv} folgt dann:
+\begin{satz}[Lokale Geodätische]
+\label{lokgeo}
+Zu $p\in M$ und einer Karte $U$ um $p$ existiert eine offene Menge $V$ von $p$, Zahlen $\delta=\delta(p)<0$, $\ep_1>0$  und eine $C^\infty$-Abbildung 
+$\gamma \da \pi \circ f : (-\delta, \delta) \times O \to M$ (mit $O$, $f$ definiert wie oben), so dass die Kurve $t\mapsto \gamma(t,q,v)$ die  eindeutige Geodätische in $M$ ist mit $\gamma(0,q,v)=q$ und $\gamma'(0)=v$.
+\end{satz}
+
+\section{Die Expontential-Abbildung}
+
+\begin{lemma}[Homogenität von Geodätischen]
+\label{homgeo}
+Sei $a\in \MdR$, $a>0$. Falls die Geodätische $\gamma(t,q,v)$ auf $(-\delta,\delta)$ definiert ist, so ist die Geodätische $\gamma(t,q,a\cdot v)$ auf $\left(-\frac \delta a, \frac \delta a\right)$ definiert und es gilt $\gamma(t,q,a\cdot v) = \gamma(a\cdot t, q ,v)$.
+\end{lemma}
+
+\begin{beweis}
+Betrachte die Kurve $h: \left(-\frac \delta a, \frac \delta a\right) \to M$; $t\mapsto \gamma(at,q,v)$. Es gilt: $h(0)= \gamma(0,q,v) = q$ sowie $h'(0) = \frac d{dt}\gamma(at,q,v)|_{t_0} = a \gamma'(0,q,v) = av$. Weiter ist $h'(t) = a\gamma'(at,q,v)$, also $D_{h'}h' = D_{a\gamma'}a\gamma' = a^2 D_{\gamma'}\gamma' = a^2\cdot 0 = 0.$
+
+Das heißt: $h$ is eine Geodätische mit $h(0) = q$, $h'(0)=av$. Aus der Eindeutigkeit von Geodätischen (Satz \ref{lokgeo}) folgt, dass $\gamma(at,q,v) = h(t) = \gamma(t,q,av)$.
+\end{beweis}
+
+Nach Satz \ref{lokgeo} ist (für $q\in V=V(p)$) $\gamma(t,q,v)$ definiert für $|t|<\delta=\delta(p)$ und $\|v\| < \ep_1=\ep_1(p)$. Mit Lemma \ref{homgeo} folgt jetzt, dass $\gamma\left(t,q,\frac \delta 2 v\right)$ für $|t|<2$ definiert ist. Dann ist die Geodätische $\gamma(t,q,w)$ definiert für $q\in V, |t|<2$ und $w\in T_qM$, $\|w\|<\ep$. Damit ist gezeigt: 
+\begin{satz}
+\label{eindgeo}
+Für jeden Punkt $p\in M$ existiert eine Umgebung $V$ von $p$, $\ep = \ep(p)>0$ und eine differenzierbare Abbildung:
+\[
+\gamma: (-2,2) \times \{(q,v)\in TM \mid q\in V, v\in T_qM, \|v\| < \ep \}
+\]
+so dass für ein festes $(q,v)$ die Abbildung $t\mapsto \gamma(t,q,v)$ die eindeutige Geodätische in $M$ ist mit Anfangsbedingung $\gamma(0,q,v) = q$, $\gamma'(0,q,v) = v$.
+\end{satz}
+
+Sei $p\in M$ und $O$ wie in Satz \ref{eindgeo}.
+\begin{definition}
+Die Expontential-Abbildung\index{Expontential-Abbildung} (auf $O$) ist:
+\begin{align*}
+\exp :\quad &O \subset TM \to M\\
+\exp(q,v) &\da \gamma(1,q,v) \\
+&= \gamma\left(1,q,\|v\| \frac v {\|v\|}\right) \\
+&= \gamma\left(\|v\|,q,\frac v {\|v\|}\right)
+\end{align*}
+\end{definition}
+
+\begin{bemerkungen}
+\item $\exp$ ist differenzierbar, da $\gamma$ differenzierbar ist (vergleiche Satz \ref{lokgeo})
+\item Meistens benutzt man die Einschränkung von $\exp$ auf \emph{einen} Tangentialraum:
+\[
+\exp_p \da \exp(p,\cdot): B_\ep(0) (\subset T_pM) \to M
+\]
+Wobei $B_\ep(0)$ ein offener Ball mit Radius $\ep$ um $0$ ist.
+\end{bemerkungen}
+
+\begin{satz}
+Für jeden Punkt $p$ einer $n$-dimensionalen differenzierbaren Riemann’schen Mannigfaltigkeit existiert ein $r=r(p)>0$, so dass die Abbildung $\exp_p: B_r(0)\subset T_pM \to \exp_p(B_r(0)) \subset M$ (mit $B_r(0) \da \{v\in T_pM \mid \|v\|<r\}$) ein Diffeomorphismus auf die offene Umgebung $V\da \exp_p(B_r(0))$ von $p$ ist.
+\end{satz}
+
+\begin{beweis}
+Wir benutzen den Umkehrsatz für Mannigfaltigkeit (Satz \ref{invfunk}). Zu zeigen ist: $\left.d\exp_p\right|_0: T_p(B_r(0)) \cong T_pM \to T_{\exp_p(0)}M = T_pM$ ist ein Vektorraum-Isomophismus.
+
+Wähle dazu die Kurve $c(t) = tv$ (mit $c(0)=0$, $c'(0)=v$). Dann ist: $\left.d\exp_p\right|_0(v) = \left.\frac{d}{dt}\right|_0 (\exp _p \circ\, c)(t) = \left.\frac{d}{dt}\right|_0 \exp_p(tv) = \left.\frac{d}{dt}\right|_0 \gamma(1,p,tv) = \left.\frac{d}{dt}\right|_0 \gamma(t,p,v) = v$. Also ist $\left.d\exp_p\right|_0 = \text{id}$, und damit ein Vektorraum-Isomophismus.
+\end{beweis}
+
+\begin{definition}
+Eine geodätische Normalumgebung\index{geodätische Normalumgebung}  von $p\in M$ ist eine Umgebung $U$ von $p$, so dass $\exp_p: V\to U$ ein Diffeomorphismus ist.
+
+$B_r(p) \da \exp_p(B_r(0))$ heißt geodätischer\index{geodätischer Ball} Ball vom Radius $r$.
+
+Die Koordinatenfunktionen der Karte $\exp_p^{-1} : U = \exp_p(V) \to V \otm T_pM \cong \MdR^n$ heißen geodätische Normalkoordinaten\index{geodätische Normalkoordinaten}.
+\end{definition}
+
+\begin{beispiele}
+\item Im $\MdR^n$ mit Standardskalarprodukt sind die Geodätischen gerade die Geraden (mit Bogenlänge parametrisiert). Also, da $T_p\MdR^n \cong \MdR^n$, $\exp_0: \MdR^n \to \MdR^n$ ist die Identität.
+\item In $M=S^n$ mit der von $\MdR^{n+1}$ induzierten Metrik sind die Geodätischen die Großkreise (mit Bogenlänge parametrisiert, siehe 4.5). Durch Skizzen für die Fälle $n=1,2$ motiviert: $\exp_0$ ist ein Diffeomorphismus auf $B_\pi(0)$.
+\item Der Name „Exponentialabbildung“ kommt aus der Lie-Theorie. $G = U(1) \cong S^1$ sind die unitäre $(1\times 1)$-Matrizen, dann steht der Tangentialraum am Punkt 1 senkrecht, also $T_1U(1) \cong \mathrm{i}\MdR$, und daher $\exp_1(t) = \mathrm{e}^{t}$.
+\item In der Lie-Gruppe $G=(\MdR_{>0},\cdot)$ ist $T_1\MdR \cong (\MdR,+)$. Hier ist $\exp_1(t) = \mathrm{e}^t$.
+\item $G=O(n)=\left\{A\in \MdR^{n\times n} \mid A A^\top = E \right\}$. Hier ist $T_EO(n)$ die Menge der schiefsymetrischen Matrizen. Für $B\in T_EO(n)$ setze $A \da \exp(sB) \da E + sB + \frac{s^2}{2}B^2 + \frac{s^3}{3!}B^3 + \cdots$. Es gilt: $A\in O(n)$.
+\end{beispiele}
+
+\section{Minimaleigenschaft von Geodätischen}
+
+Zur technischen Vorbereitung benötigen wir „Vektorfelder längs Flächen“. Sei $A$ eine zusammenhängende Menge in $\MdR^2$ mit stückweise differenzierbarem Rand und $M$ sei eine differenzierbare Mannigfaltigkeit. Eine parametrisierte Fläche\index{paramterisierte Fläche} in $M$ ist eine differenzierbare Abbildung $f: A (\subset \MdR^2) \to M$; $(u,v) \mapsto f(u,v)$.
+
+Ein Vektorfeld längs $f$ ist eine differenzierbare Abbildung $V: A \to TM$ mit $V(u,v) \in T_{f(u,v)}M$. Die Parameterlinien $f(u,v_0)$ bzw. $f(u_0,v)$ mit $v_0$ bzw. $u_0$ fest definieren die „Tangential-Vektorfelder“ 
+\[
+\frac {\partial f}{\partial u}(u,v) \da df|_{(u,v)} \left(\left.\frac\partial{\partial u}\right|_{(u,v)}\right)
+\quad\text{sowie}\quad
+\frac {\partial f}{\partial v}(u,v) \da df|_{(u,v)} \left(\left.\frac\partial{\partial v}\right|_{(u,v)}\right)
+\]
+
+Weiter definieren wir die kovariante Ableitung für ein Vektorfeld $V$ längs $f$ wie folgt:
+\[
+\frac{DV}{\partial u}(u,v_0) \da D_{\frac{\partial f}{\partial u}(u,v_0)} V(u,v_0)
+\quad\text{sowie}\quad
+\frac{DV}{\partial v}(u_0,v) \da D_{\frac{\partial f}{\partial v}(u_0,v)} V(u_0,v)
+\]
+
+
+\begin{lemma}[Symmetrie]
+\label{flaechsymm} Sei $M$ ein differenzierbare Mannigfaltigkeit und $D$ ein symmetrischer Zusammenhang auf $M$. Für eine parametrisierte Fläche $f: A \to M$ gilt:
+\[
+\frac D {\partial v} \left(\frac {\partial f}{\partial u}\right) =
+\frac D {\partial u} \left(\frac {\partial f}{\partial v}\right)
+\]
+\end{lemma}
+
+\begin{beweis}
+In lokalen Koordinaten $(U,\varphi)$ in der Umgebung eines Punktes von $f(A)\subset M$ sei $\varphi\circ f(u,v) = \left(x^1(u,v), \ldots, x^n(u,v)\right)$. Es gilt:
+\begin{align*}
+\frac D {\partial v} \left(\frac {\partial f}{\partial u}\right) &= \frac D{\partial v} \left(\sum_{i=1}^n \frac {\partial x^i}{\partial u} \frac{\partial}{\partial x^i}\right) \\
+&= \sum_{i=1}^n \frac {\partial^2 x^i}{\partial v\partial u} \frac{\partial}{\partial x^i} + \sum_{i=1}^n \frac{\partial x^i}{\partial u} D_{\sum_j \frac{\partial x^j}{\partial v}\frac{\partial}{\partial x^j}} \frac \partial {\partial x^i} \\
+&= \sum_{i=1}^n \frac {\partial^2 x^i}{\partial v\partial u} \frac{\partial}{\partial x^i} + \sum_{i,j=1}^n \frac{\partial x^i}{\partial u}\frac{\partial x^j}{\partial v}  D_{\frac{\partial}{\partial x^j}} \frac \partial {\partial x^i} \\
+\intertext{Wegen der Symmetrie von D erhalten wir dann durch zurückrechnen}
+&= \frac D {\partial u} \left(\frac {\partial f}{\partial v}\right)
+\end{align*}
+\end{beweis}
+
+\begin{satz}[Gauß-Lemma]
+\label{gausslemma} Sei $(M,\asp)$ eine Riemann’sche Mannigfaltigkeit. Sei $p\in M$ und $v\in T_pM$ so dass $\exp_p(v)\ad q$ definiert ist. Für $w\in T_v(T_pM) \cong T_pM$ gilt:
+\[
+\lsp {d(\exp_p)|_v v} {d(\exp_p)|_v w}_q = \ksp v w_p
+\]
+\end{satz}
+\begin{beweis}
+Zerlege $w = w_T + w_N$, wobei $w_T$ die Komponente in Richtung $v$ und $w_N$ die dazu orthogonale Komponente ist (also $w_T = \ksp v w \frac v {\|v\|}$, $w_N = w- w_T$). Das Differential 
+\[
+\left.d\exp_p\right|_v : T_v(T_pM) \cong T_pM \to T_{\exp_pv}M = T_qM
+\]
+ist linear. Also: 
+\[
+\left.d\exp_p\right|_v (w_T + w_N) = \left.d\exp_p\right|_v(w_T) + \left.d\exp_p\right|_v(w_N)
+\]
+
+Es gilt zunächst
+\[
+\left.d\exp_p\right|_v w_T = \left.\frac d{dt}\right|_0 \exp_p(v + tw_T) = \left.\frac d{dt}\right|_0 \exp_q(tw_T) = w_T
+\]
+sowie
+\[
+\left.d\exp_p\right|_v v = \left.\frac d{dt}\right|_0 \exp_p(v + tv) = \left.\frac d{dt}\right|_0 \exp_q(tv) = v
+\]
+das heißt, das Gauß-Lemma gilt für $w=w_T$.
+
+Ohne Einschränkung sei nun $w=w_N$. Nach Voraussetzung ist $q=\exp_p(v)$, also existiert ein $\ep>0$, so dass die Exponentialabbildung definiert ist für: $u\da tv(s)$ wobei $v(s)$ eine Kurve in $T_pM$ mit $v(0)=v$, $\|v(s)\|$ konstant und $v'(0)=w\>(\bot v)$. Die Fläche $A\subset \MdR^2$ ist jetzt die Menge der $u$ für $0\le t\le 1$ und $-\ep < s < \ep$.
+
+Betrachte jetzt die parametrisierte Fläche
+\[
+f: A \to M ; f(t,s) \da \exp_p(tv(s))
+\]
+Es gilt: $f(t,s_0)$ ist eine Geodätische für ein festes $s_0$, sowie $f(1,0) = \exp_p v = q$.
+
+Wir haben für $t=1$
+\[
+\left.\frac{\partial f}{\partial s}\right|_{(1,0)} \gleichnach{Lemma \ref{lem3}} (d\exp_p)_v(v'(0)) = \left.d\exp_p\right|_v (w)
+\]
+und für $s=0$
+\[
+\left.\frac{\partial f}{\partial t}\right|_{(1,0)} = v = \left.d\exp_p\right|_v(v)
+\]
+Also ist zu zeigen:
+\[
+\lsp {\left.\frac{\partial f}{\partial s}\right|_{(1,0)} }{\left.\frac{\partial f}{\partial t}\right|_{(1,0)} }_q = 0 \mathrlap{\qquad (*)}
+\]
+
+Wir zeigen dazu zuerst: 
+\[
+\lsp {\left.\frac{\partial f}{\partial s}\right|_{(t,s)} }{\left.\frac{\partial f}{\partial t}\right|_{(t,s)} }_q
+\]
+ist unabhängig von $t$.
+\begin{align*}
+\frac\partial {\partial t} \lsp {\left.\frac{\partial f}{\partial s}\right|_{(t,s)} }{\left.\frac{\partial f}{\partial t}\right|_{(t,s)} }_q &\gleichnach{Verträglichkeit} 
+\lsp {\frac D{\partial t}\frac{\partial f}{\partial s}}{\frac{\partial f}{\partial t}}_q + 
+\lsp {\frac{\partial f}{\partial s}}{\smash{\underbrace{\frac D{\partial t}\frac{\partial f}{\partial t}}_{=0}}}_q \\
+&\gleichnach{\hphantom{Verträgl}\clap{Lemma \ref{flaechsymm}}\hphantom{ichkeit}} \lsp {\frac D{\partial s}\frac{\partial f}{\partial t}}{\frac{\partial f}{\partial t}} \\
+&\gleichnach{\hphantom{Verträglichkeit}} \frac 1 2 \frac{\partial}{\partial s} \underbrace{\lsp {\frac{\partial f}{\partial t}}{\frac{\partial f}{\partial t}}}_{\mathclap{\text{konstant (Geodätische!)}}} = 0
+\end{align*}
+Es war $t$ beliebig, also wählen wir $t=0$.
+\[
+(*) \gdw 
+\lsp {\left.\frac{\partial f}{\partial s}\right|_{(0,0)} }{\left.\frac{\partial f}{\partial t}\right|_{(0,0)} }_q = 0
+\]
+Aber für ein festes $t$ gilt:
+\begin{align*}
+\left.\frac{\partial f}{\partial s}\right|_{(t,0)} &= \left.d\exp_p\right|_{tv(s)} (tv'(s))\bigg|_{s=0} \\
+&=\left.d\exp_p\right|_{tv}(tw)
+\end{align*}
+
+\end{beweis}
+
+\subsubsection*{Frage: Geodätische und Kürzeste}
+Ein Segment $\gamma|_{[a,b]}$ einer Geodätischen $\gamma : I \to M
+([a,b] \subset I)$ heißt minimierend, falls $L(\gamma|_{[a,b]})
+\le L(c)$, wobei $c$ eine beliebige Kurve mit $c(a)=\gamma(a)$, $c(b)=
+\gamma(b)$ und $L(.)$ die Länge ist.
+
+\begin{satz}[Geodätische sind lokal minimierend]
+\label{geolokmin}
+Sei $p \in M$, $U$ eine normale Umgebung von $p$ und $B \subset U$ ein normaler Ball mit Zentrum $p$. Sei $\gamma: [0,1] \to B$ ein geodätisches Segment mit $\gamma(0)=p$. Falls $c:[0,1] \to M$ eine beliebige, stückweise $C^\infty$ - Kurve mit $\gamma(0)=c(0)$ und $\gamma(1)=c(1)$ ist, dann gilt $L(\gamma) \le L(c)$, und falls $L(\gamma)=L(c)$, so ist $\gamma([0,1]) = c([0,1])$.
+\end{satz}
+\begin{beweis}
+1. Fall: $c([0,1]) \subset B$. $\exp_p$ ist ein Diffeomorphismus, also können wir schreiben ("Polarkoordinaten"):
+$c(t)=\exp_p(r(t)v(t))$, $t \in [0,1]$, wobei $v(t)$ ein Kurve in $T_pM$  ist mit $\|v(t)\|=1$ und $r:[0,1] \to \MdR^+$ stückweise differenzierbar. Sei $f(r,t) \da \exp_p(r\cdot v(t))$ eine parametrisierte Fläche in $B$, die $c$ enthält. Es gilt für fast alle $t$: 
+\[ \frac{dc}{dt}=\frac{\partial f}{\partial r}r' + \frac{\partial f}{\partial t}\,.
+\]
+Nach dem Gauß-Lemma (\ref{gausslemma}) ist $\ksp {\frac{\partial f}{\partial t}} {\frac{\partial f}{\partial r}} = 0$, also 
+\[
+\left\|\frac{dc}{dt}\right\|^2 = \underbrace{\left\|\frac{df}{dr}\right\|^2}_{=1} |r'|^2 + \underbrace{\left\|\frac{df}{dt}\right\|^2}_{\ge 0} \ge |r'|^2\,.
+\]
+
+Damit gilt $\int_\ep^1 \left\|\frac{dc}{dt}\right\| dt \ge \int_\ep^1|r'|dt \ge \int_\ep^1r'dt = r(1) - r(\ep)$. (Beachte dass $r$ bei 0 nicht differenzierbar ist, aber $r(\ep) \to 0$ für $\ep \to 0$.) Also $L(c) = \int_0^1\left\|\frac{dc}{dt}\right\| dt \ge r(1) = c(1) = $ Endpunkt von $c = L(\gamma)$.
+
+Die Gleichheit $L(c) = L(\gamma)$ gilt dann, wenn Gleichheit in allen Abschätzungen oben gilt, also $\left\|\frac{\partial f}{\partial t}\right\| = 0$, also $\frac{\partial f}{\partial t} = 0 \gleichnach{Kettenregel} d\exp_p(rv') \gdw rv'= 0\folgt v'=0 \folgt v$ ist konstant, das heißt, dass die Richtung konstant ist. Weiter muss dann $\int_\ep^1 |r'|dt = \int_\ep^1 r' dt$ sein, also $|r'| = r' >0$, also ist $c$ eine monotone Parametrisierung von $\gamma$, insbesondere $c([0,1]) = \gamma([0,1])$.
+
+2. Fall: $c([0,1]) \not\subset B$. Sei $\ep$ der Radius von $B$ und $t_1\in [0,1]$ der erste Parameterwert mit $c(t_1) \in S_\ep(p) = \partial B_\ep (p) = \partial B$. Dann ist
+\[
+L(c) > L\left(c|_{[0,t_1]}\right) \stackrel{\text{1. Fall}}\ge \ep \ge L(\gamma') \ge L(\gamma)\,.
+\]
+\end{beweis}
+
+\paragraph{Fazit:} Aus „$\gamma$ ist eine Geodätische“ folgt „$\gamma$ ist lokal minimierend“. Doch gilt auch die Umkehrung?
+
+\begin{satz}
+\label{totnormumg}
+Für jeden Punkt $p$ einer Riemann’schen Mannigfaltigkeit existiert eine Umgebung $W$ von $p$ und $\delta = \delta(p)>0$, so dass für alle $q\in W$ gilt:
+\[
+\exp_q : B_\delta(0)\ (\subset T_qM) \to M
+\]
+ist ein Diffeomorphismus mit $\exp_q (B_\delta(0)) \supseteq W$. Das heißt: $W$ ist eine normale Umgebung für jeden ihrer Punkte. Eine solche Umgebung von $p$ heißt total normal\index{total normale Umgebung}.
+\end{satz}
+
+\begin{beweis}
+(Skizze) Betrachte $F:U\ (\subset TM)\to M\times M$, wobei $F(q,v) \da (q,\exp_q(v))$. Die Jacobi-Matrix von $F$ im Punkt $(p,0)$ ist $J_p \da \begin{pmatrix} E & 0 \\ E & E \end{pmatrix}$, wobei $E$ die $n\times n$-Einheitsmatrix ist. $J_F$ ist regulär in $(p,0)$. Weiter ist $F$ ein lokaler Diffeomorphismus von einer $(p,0)$-Umgebung $U'\subset U$ auf eine Umgebung $W'$ um $F(p,0) = (p,p)$. Wähle nun die Umgebung $W$ von $p$ so, dass $W\times W\subset W'$.
+\end{beweis}
+
+\begin{bemerkung}
+Nach Satz \ref{geolokmin} und \ref{totnormumg} gilt: Für je zwei Punkte $q_1,q_2\in W$ (wie in Satz \ref{totnormumg}) existiert \emph{genau eine} minimierende Geodätische der Länge $<\delta$, welche $q_1$ und $q_2$ verbindet. Damit kann man die Radialsymetrie verlassen und hat mehr „Beweglichkeit“.
+\end{bemerkung}
+
+\begin{korrolar}[Geodätische erkennen]
+Sei $\gamma$ eine stückweise differenzierbare Kurve $\gamma:[a,b]\to M$, mit der Bogenlänge parametrisiert. Falls $L(\gamma) \le L(c)$ für jede stückweise differenzierbare Vergleichskurve $c$, die $\gamma(a)$ und $\gamma(b)$ verbindet, so ist $\gamma$ eine Geodätische.
+
+Es gilt also: „$\gamma$ minimierend $\folgt$ $\gamma$ Geodätische“ (keine Lokalität zunächst!).
+\end{korrolar}
+
+\begin{beweis}
+Sei $t\in[a,b]$ und $W$ eine total normale Umgebung von $\gamma(t)$. Dann existiert ein abgeschlossenes Intervall $[t_1,t_2] \subset [a,b]$, so dass $t\in I$ und $\gamma(I)\subset W$. $\gamma|_I$ ist stückweise differenzierbar und minimierend (sonst wäre $\gamma$ nicht minimierend). Nach Satz \ref{geolokmin} ist $L(\gamma|_I)$ die Länge eines radialen geodätischen Segments (da $W$ total normal) von $\gamma(t_1)$ nach $\gamma(t_2)$. Da $\gamma$ nach Bogenlänge parametrisiert ist, folgt nach Satz \ref{geolokmin}, dass $\gamma|_I$ eine Geodätische in der Umgebung von $t$ ist. $t$ war beliebig, woraus die Behauptung folgt.
+\end{beweis}
+
+\subsubsection*{Anwendungen:}
+\begin{enumerate}
+\item Eine Riemann’sche Isometrie bildet Geodätische auf Geodätische ab.
+\begin{beweis}
+$\varphi: M \to N$ sei eine Isometrie; $\gamma$ ist eine Geodätische, dann ist $L(\varphi \circ \gamma) = L(\gamma)$. Also: $\gamma$ ist minimierend, dann $\varphi\circ \gamma$ minimierend. Dann folgt die Behauptung aus dem Korrolar.
+
+Alternativ: $D_{\gamma'}{\gamma'} = 0 \folgt D_{(\varphi\circ \gamma)'}(\varphi\circ\gamma)' = 0$.
+\end{beweis}
+\item Geodätische von $S^n=\{x \in \MdR^{n+1}\mid \|x\| = 1\}$ sind Großkreise.
+\begin{beweis}
+Sei $c$ ein Großkreis, das heißt $c = S^n \cap \sigma$, wobei $\sigma$ eine 2-dimensionale Ebene in $\MdR^{n+1}$ durch 0 ist. Wähle $p,q\in c$ genügend nahe, so dass es nach Satz \ref{totnormumg} genau eine Geodätische $\gamma$ zwischen $p,q$ existiert. Dann ist die euklidische Spiegelung $R$ an $\sigma$ eine euklidische Isometrie von $S^n$. $R$ fixiert $c$ punktweise und bildet $\gamma$  auf $\tilde\gamma$ ab (auch durch $p,q$). Also mus wegen Eindeutigkeit $\gamma = \tilde \gamma$ gelten und $\gamma$ bleibt punktweise fest, das heißt $\gamma\subset c = $ die Fixpunkte von $R$ $= S^n\cap \sigma$. Damit ist der Großkreis selber die Geodätische $\gamma$.
+\end{beweis}
+\end{enumerate}
+
+\chapter{Krümmung}
+
+% Historischer Ausgangspunkt Gauss fehlt...  
+
+\section{Der Riemann’sche Krümmungstensor}
+
+Gegeben sei eine Riemann’sche Mannigfaltigkeit $(M,\asp)$ mit Levi-Civita-Zusammenhang $D$. Der Riemann’sche Krümmungstensor\index{Riemann’sche Krümmungstensor}\index{Krümmungstensor} von $M$ bezüglich $D$ ist die Abbildung $R:\V M\times \V M \times \V M \to \V M$, $(X,Y,Z) \mapsto R(X,Y)Z$, wobei \[R(X,Y)Z \da D_YD_XZ - D_XD_YZ + D_{[X,Y]}Z\,.\]
+
+\begin{beispiel}
+Im $(\MdR^n,\asp)$, wobei $\asp$ das Standardskalarprodukt ist, betrachten wir das Vektorfeld $Z=(z^1,\ldots,z^n)\in \V \MdR^n$. Da $D_XZ = (Xz^1,\ldots,Xz^n)$, folgt: $D_YD_XZ = (YXz^1,\ldots,YXz^n)$. Wegen $[X,Y] = XY-YX$ folgt: $R(X,Y)Z = 0$.
+\end{beispiel}
+
+Das oben definierte $R$ ist somit ein „Maß“ für die Abweichung der Riemann’schen Mannigfaltigkeit $(M,\asp)$ von der euklidischen Geometrie.
+
+\begin{bemerkung}
+Bezüglich lokalen Basisfeldern $\frac{\partial}{\partial x^i}$ ($i=(1,\ldots,n)$) gilt: $\left[\frac\partial{\partial x^i},\frac\partial{\partial x^j}\right] = 0$ für $C^\infty$-Funktionen. Dann ist $R\left(\frac\partial{\partial x^i},\frac\partial{\partial x^j}\right)\frac\partial{\partial x^k} = D_{\frac\partial{\partial x^j}}D_{\frac\partial{\partial x^i}} \frac\partial{\partial x^k} - D_{\frac\partial{\partial x^i}}D_{\frac\partial{\partial x^j}} \frac\partial{\partial x^k} $. „$R$ ist ein Maß für die Vertauschbarkeit der 2. kovarianten Ableitungen.“
+\end{bemerkung}
+
+\begin{definition}
+Setze $\V_0M \da C^\infty M$, $\V_rM \da \V M\times \cdots \times \V M$. ($r$ Summanden). $\V_rM$ ist ein $C^\infty M$-Modul. Ein $(s,r)$-Tensorfeld\index{Tensorfeld} auf $M$ ist eine $r$-lineare Abbildung $T:\V_rM \to \V_sM$ über dem Ring $C^\infty M$, das heißt 
+\begin{align*}
+T(X_1,\ldots,X_{i-1},fX + gY,X_{i+1},\ldots, X_r) &=
+f T(X_1,\ldots,X_{i-1},X,X_{i+1},\ldots, X_r)\\ &+
+g T(X_1,\ldots,X_{i-1},Y,X_{i+1},\ldots, X_r) 
+\end{align*}
+für alle Argumente von $T$, $X,Y \in \V M$
+\end{definition}
+
+\begin{satz}
+\label{tensorfeld}
+$R$ ist ein (1,3)-Tensorfeld
+\end{satz}
+\begin{beweis}
+Exemplarisch für $R(X,Y)(fZ) = fR(X,Y)Z\ \forall f\in C^\infty M$.
+
+$D_YD_X(fZ) = D_Y(fD_XZ + (Xf)Z) = (Yf)D_XZ + fD_YD_X Z + (YXf) Z + (Xf)D_YZ$.
+\\Also: $D_YD_X(fZ) - D_XD_Y(fZ) = f(D_YD_XZ - D_XD_YZ) + (YXf - XYf)Z$;
+\\$D_{[X,Y]}fZ = fD_{[X,Y]}Z + ([X,Y]f)Z\folgt R(X,Y)fZ = fR(X,Y)Z.$
+\end{beweis}
+
+\begin{satz}[Symmetrie-Eigenschaften]
+\label{symeig}
+$(M,\asp)$ sei eine Riemann’sche Mannigfaltigkeit. $D$ der Levi-Civita-Zusammenhang und $R$ ein Krümmungstensor. Dann gilt
+\begin{enumerate}
+\item $R(X,Y)Z + R(Y,Z)X + R(Z,X)Y = 0$ (zyklisch Vertauschbar). „Bianchi-Identität“
+\item $\ksp {R(X,Y)Z} T = - \ksp {R(Y,X)Z} T$
+\item $\ksp {R(X,Y)Z} T = - \ksp {R(X,Y)T} Z$
+\item $\ksp {R(X,Y)Z} T = \ksp {R(Z,T)X} Y$
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+\begin{enumerate}
+\item ist äquivalent zur Jacobi-Identität für Lie-Klammern (mit Torsionsfreiheit).
+\item folgt direkt aus der Definition.
+\item ist äquivalent zu $\ksp {R(X,Y) W} W = 0$ (setzte $W=Z+T$ und verwende Satz \ref{tensorfeld}).
+
+Es ist $\ksp {R(X,Y)W} W = \ksp {D_YD_XW - D_XD_YW + D_{[X,Y]}W} W$, 
+\\$\ksp {D_YD_X W} W \gleichnach{Levi-Civita, verträglich} Y \ksp{D_XW} W  - \ksp {D_X W} {D_Y W}$,
+analog $\ksp{D_XD_Y W} W$; 
+\\$\ksp {D_{[X,Y]}W}W = \frac 12 [X,Y]\ksp W W$. Somit: $\ksp{R(X,Y)W}W = Y \ksp{D_XW}W - \ksp {D_XW}{D_YW} - X\ksp{D_YW}W + \ksp{D_YW}{D_XW} + \frac 12 [X,Y] \ksp W W = 0$.
+\item Analog.
+\end{enumerate}
+\end{beweis}
+
+
+\subsection*{Krümmungstensor in lokalen Koordinaten $(u,\varphi)$}
+
+Die Basisfelder seien $X_i \da \frac{\partial}{\partial x^i}$, $i=1,\ldots,n$. Dann: $R(X_i,X_j)X_k \da \sum_{l=1}^n R_{ijk}^l X_l$ (per Basissatz), wobei $R_{ijk}^l$ die Komponenten des Krümmungstensors in lokalen Koordinaten sind, also $C^\infty$-Funktionen und symmetrisch bezüglich $i$, $j$.
+
+Für beliebige Vektorfelder $X,Y,Z\in \V M$ mit 
+\[ X =\sum_{i=1}^n u^i X_i,\quad Y=\sum_{j=1}^n v^jX_j,\quad Z=\sum_{k=1}^n w^k X_k \]
+gilt wegen Satz \ref{tensorfeld}:
+\[ R(X,Y)Z = \sum_{i,j,k,l=1}^n u^i v^j w^k R_{ijk}^l X_l \mathrlap{\qquad (*)} \]
+(man muss alles an der Stelle $p$ kennen).
+
+
+\begin{bemerkung} (Trägereigenschaft von $R$)
+Die Formel $(*)$ zeigt, dass $(R(X,Y)Z)(p)$ nur von den Werten der Vektorfelder $X,Y,Z$ im Punkt $p$ abhängig ist.
+\end{bemerkung}
+
+\subsection*{Formel für $R_{ijk}^l$}
+\begin{align*}
+R(X_i,X_j)X_k &= D_{X_j}(D_{X_i}X_k) - D_{X_i}(D_{X_j}X_k) + D_{\underbrace{[X_i,X_j]}_{=0}}X_k \\
+&=  D_{X_j}\left(\sum_{m=1}^n \Gamma_{ik}^m X_m\right) - D_{X_i}\left(\sum_{m=1}^n \Gamma_{jk}^n X_m\right) \\
+&= \sum_{m=1}^n [ X_j \left(\Gamma_{ik}^m\right) X_m + \Gamma_{ik}^m \underbrace{D_{X_j}X_m}_{\sum_{l=1}^m \Gamma_{jm}^l X_l} ] - \sum_{m=1}^n [X_i (\Gamma_{ik}^m) X_m + \Gamma_{jk}^m \underbrace{D_{X_i}X_m}_{\sum_{l=1}^n \Gamma_{im}^l X_l } ] \\
+\folgt R_{ijk}^l &= \frac{\partial}{\partial x^j} \Gamma_{ik}^l + \sum_{m=1}^n \Gamma_{ik}^m \Gamma_{jm}^l - \frac{\partial}{\partial x^i} \Gamma_{jk}^l - \sum_{m=1}^n \Gamma_{jk}^m \Gamma_{im}^l
+\end{align*}
+(so hatte es Riemann definiert)
+
+Setze nun
+\[
+R_{ijks} \da \sum_{l=1}^n R_{ijk}^l \cdot g_{ls} = \lsp {R(X_i,X_j)X_k} {X_s}
+\]
+„Herunterziehen von Indizes“, „Ricci-Kalkül“. Nach Satz \ref{symeig} gilt:
+\begin{itemize}
+\item $R_{ijks} + R_{jkis} + R_{kijs} = 0$
+\item $R_{ijks} = -R_{jiks}$
+\item $R_{ijks} = -R_{ijsk}$
+\item $R_{ijks} = R_{ksij}$
+\end{itemize}
+
+\begin{bemerkung}
+Für $\dim M=2$ sind $i,j,k,s \in \{1,2\}$ und aufgrund obiger Symmetrien ist im wesentlichen nur $R_{1212} \ne 0$. Dies ist gerade die Gauß-Krümmung.
+\end{bemerkung}
+
+
+\subsection*{Riemann’scher Krümmungstensor}
+
+Sei $(M,\asp)$ eine Riemann’sche Mannigfaltigkeit und $D$ der zugehöriger Levi-Civita-Zusammenhang. Dann ist
+\[
+R:
+\begin{aligned}
+\V M \times \V M \times \V M  &\to \V M \\
+(X,Y,Z) &\mapsto R(X,Y)Z \da D_YD_XZ - D_XD_YZ - D_{[X,Y]}Z
+\end{aligned}
+\]
+multilinear bezüglich $C^\infty M$.
+
+\section{Schnittkrümmung}
+
+Vorbemerkung aus der Linearen Algebra. Sei $V$ ein $\MdR$-Vektorraum mit Skalarprodukt $\asp$. Für $x,y\in V$ setze 
+\[
+| x \wedge y| \da \sqrt{\|x\|^2 \|y\|^2 - \ksp{x}{y}^2} \ge 0
+\]
+(Flächeninhalt des des von $x$ und $y$ aufgespannten Parallelogramms). Für orthonormierte Vektoren ist $|x\wedge y| = 1$.
+
+\begin{lemma}
+Sei $(M,\asp)$ eine Riemann’sche Mannigfaltigkeit, $p\in M$, $\sigma$ ein 2-dimensionaler Untervektorraum von $T_pM$ mit Basis $x,y$. Dann ist 
+\[
+K(x,y) \da \frac{\ksp {R(x,y)x} y_p}{|x\wedge y|^2}
+\] unabhängig von der Wahl der Basis.
+\end{lemma}
+
+In der Konsequenz macht folgende Definition Sinn:
+\begin{definition}
+Für $p\in M$, $\sigma \subset T_pM$ ein 2-dimensionaler Untervektorraum setze $K(p,\sigma) \da K(x,y)$ für eine beliebige Basis $\{x,y\}$ von $\sigma$. $K(p,\sigma)$ heißt Schnittkrümmung von $\sigma$ in $p\in M$.
+\end{definition}
+
+\begin{bemerkungen}
+\item Für $n=2$ ist $K(p,\sigma) = K(p)$ die Gauß-Krümmung von $M$ im Punkt $p$. Die Menge der Krümmungstensoren $R$ im Punkt $p$ ist vollständig bestimmt.
+\begin{beispiel}
+Schnittkrümmung von $(\MdR^n,\kan)$ ist konstant null, da $R=0$.
+\end{beispiel}
+\item $(S^n,\kan)$. Behauptung: Schnittkrümmung ist konstant 1.
+\begin{lemma}
+Sei $f:(M,\asp) \to (N,\aasp)$ eine Riemann’sche Isometrie. Für $\sigma \subset T_pM$ ist $df|_p(\sigma) \subset T_{f(p)}N$ ein 2-dimensionaler Untervektorraum und $K^M(p,\sigma) = K^N(f(p),df|_p(\sigma))$. Das heißt: Schnittkrümmung ist invariant unter Isometrie.
+\end{lemma}
+\begin{beweis}[des Lemmas]
+Es gilt (Übungsblatt 7 Aufgabe 1):
+\begin{itemize}
+\item $D_{df(x)}^N df(y) = df(D_x^My)$
+\item $[df(x), df(y)]^N = df([x,y]^M)$
+\item $\kksp {df(x)}{df(y)} = \ksp x y$
+\end{itemize}
+$\folgt R^N(df(x), df(y)) df(z) = df(R^M(x,y)z)$. 
+\end{beweis}
+% Eventuell wäre eine Umgebung für Unterbeweise schön
+\begin{beweis}[Schnittkrümmung von $S^n$ ist konstant]
+Es genügt zu zeigen: Zu $\sigma \subset T_xS^n$ und $\tau \subset T_yS^n$, jeweils 2-dimensionale Untervektorräume, existiert eine Isometrie $f: S^n \to S^n$ mit $df_x(\sigma) = \tau$.
+
+Sei nun $\sigma = [u,v]$, $\tau = [\tilde u, \tilde v]$, wobei $u,v$ bzw. $\tilde u, \tilde v$ Orthonormalbasen sind. $l_1=x$, $l_2=u$, $l_3=v$.
+\[
+y =
+\begin{pmatrix}
+y_1 \\ \vdots \\ y_{n+1}
+\end{pmatrix}
+= f_1
+\qquad
+\tilde u =
+\begin{pmatrix}
+\tilde u_1 \\ \vdots \\ \tilde u_{n+1}
+\end{pmatrix}
+= f_2
+\qquad
+\tilde v =
+\begin{pmatrix}
+\tilde v_1 \\ \vdots \\ \tilde v_{n+1}
+\end{pmatrix}
+= f_3
+\]
+ergänze zu einer Orthonormalbasis $\{f_1,\ldots,f_{n+1}\}$ von $\MdR^{n+1}$. Dann ist $A \da [f_1,f_2,\ldots,f_{n+1}] \in O(n+1)$, also eine orthogonale $(n+1)\times(n+1)$-Matrix, mit $A_{li} = (f_i)_l$, $f: \MdR^{n+1} \to \MdR^{n+1}$; $w\mapsto Aw$ ist eine euklidische Isometrie (Rotation von $(\MdR^{n+1},\kan)$) die $S^n$ invariant lässt. Dies Induziert also eine Isometrie von $(S^n,\kan)$.
+
+Da $f$ linear ist, $df=f$, also $df_x(\sigma) = df_x([u,v]) = [df_x(u), df_y(v)] = [\tilde u, \tilde v] = \tau \folgt$ Behauptung. $S^n$ hat konstante Schnittkrümmung. Es gilt $K=1$ (siehe später).
+\end{beweis}
+
+\item $n$-dimensionale hyperbolische Räume $H^n\MdR \da \{ x\in\MdR^n \mid x_n > 0\}$ mit der Identität als Karte und lokalen Koordinaten $x_1,\ldots,x_n$. Es ist
+\[
+(g_{ij}) \da 
+\begin{pmatrix}
+\frac{1}{(x_n)^2} & & 0 \\
+& \ddots & \\
+0 & & \frac 1 {(x_n)^2}
+\end{pmatrix} = \frac 1 {(x_n)^2} 
+\begin{pmatrix}
+1 & & 0 \\
+& \ddots & \\
+0 & & 1
+\end{pmatrix}
+\] Berechnung der $R_{ijks}$ zeigt: Schnittkrümmung $R$ ist konstant $-1$.
+
+\item Konforme Änderung der Metrik $(M,g)$ einer Riemann’schen Mannigfaltigkeit um $\lambda \in C^\infty M$, $\lambda >0$: $\tilde g \da \lambda g$ ist wieder eine Riemann’sche Metrik.
+
+Für konstantes $\lambda>0$ ist die Schnittkrümmung für $\tilde g$: $\tilde K=\frac 1\lambda K$. Insbesondere kann man aus jeder Mannigfaltigkeit mit beliebiger, konstanter Krümmung ($\ne0$) durch Reskalierung der Riemann’schen Metrik $S^n$ oder $H^n$ erhalten.
+
+\end{bemerkungen}
+
+\subsection*{Ergänzende Sätze (ohne Beweis, vergleiche: do Carmo, Kapitel 8)}
+
+\begin{satz*}
+$(M, \asp)$ hat konstante Schnittkrümmung, also
+\[ K(p,\sigma) = K_0\ \forall \sigma \subset T_pM\
+\forall p \in M \gdw \ksp {R(x,y)w} z = K_0 \left(\ksp x w \ksp y z - \ksp y w \ksp x z\right)
+\]
+insbesondere ist $\ksp {R(x,y)x} y = K_0\left(\|x\|^2\|y\|^2 - \ksp x y ^2\right)$.
+\end{satz*}
+
+\begin{satz*}[Hopf]
+Eine vollständige, einfach zusammenhängende, zusammenhängende Riemann’sche Mannigfaltigkeit mit konstanter Krümmung $0$,\ $1$ oder $-1$ ist isometrisch zu $\MdR^n$, $S^n$, $H^n\MdR$. Dabei heißt
+\begin{itemize}
+\item Vollständig: Jede Geodätische ist auf ganz $\MdR$ definiert
+\item Einfach zusammenhängend: Jede geschlossene Kurve ist auf einen Punkt zusammenziehbar
+\end{itemize}
+
+\end{satz*}
+
+\section{Ricci-Krümmung}
+
+Sei $R$ der Krümmungstensor einer Riemann’schen Mannigfaltigkeit $(M,\asp)$ und $X,Y,Z \in \V M$. In jedem Punkt $p\in M$ ist $Y(p) \mapsto R(X(p),Y(p))Z(p)$ ein Endomorphismus von $T_pM$. Oder: Für $X,Z \in \V M$ fest ist $R(X,\cdot)Z$ ein (1,1)-Tensormodul.
+
+Für ein beliebiges (1,1)-Tensorfeld $A$ ist $A(p):T_pM \to T_pM$ ein Endomorphismus und wir definieren die Spur von $A$ durch
+\[
+(\spur A)(p) \da \sum_{i=1}^n \ksp {A(p)e_i}{e_i}_p
+\] wobei $[e_i]$ eine Orthonormalbasis von $T_pM$ ist. Linere Algebra: Es gibt einen Endomorphismus $\Phi$ mit Abbildungsmatrix $A$ und $\spur \Phi = \spur A = \sum_{i=1}^n A_{ii}$ (insbesondere für Orthonormalbasen, $a_{ii} = \ksp {Ae_i}{e_i}$).
+
+Der Ricci-Tensor von $M$ ist der (0,2)-Tensor $\mathrm{Ric}(x,z)\da \spur(y\mapsto R(x,y)z)$. (In manchen Quellen noch mit $\frac1{n-1}$ normiert.) Die Ricci-Krümmung von $M$ in Richtung $v\in T_pM$ ist \[r(v) \da \frac{\mathrm{Ric}(v,v)}{\|v^2\|}\,.\]
+
+Für eine Orthonormalbasis $\{e_i\}$ von $T_pM$ ist $\mathrm{Ric}(v,w) = \sum_{i=1}^n \ksp {R(v,e_i)w} {e_i}$. Also insbesondere ist der Ricci-Tensor symmetrisch und $r(e_1) = \sum_{i=2}^n K(p,[e_1,e_i])$.
+
+Die Skalar-Krümmung ist eine differenzierbare Funktion auf $S:M\to \MdR$, $p\mapsto \sum_{j=1}^n r(e_j)$, wobei $\{e_j\}$ eine Orthonormalbasis von $T_pM$ ist.
+\[
+S(p) = \sum_{j=1}^n r(e_j) = \sum_{j=1}^n \mathrm{Ric}(e_j, e_j) = \sum_{i,j=1}^n \ksp {R(e_j, e_i)e_j}{e_i} =\sum_{\substack{i,j=1\\i\ne j}}^n K(p, [e_i, e_j])
+\]
+
+Eine Riemann’sche Mannigfaltigkeit $(M,g)$ heißt Einstein-Raum falls $\mathrm{Ric}(x,y) = \lambda g(x,y)\, \forall x,y\in \V M$, wobei $\lambda:M \to \MdR$ eine differenzierbare Funktion ist.
+
+\begin{beispiel}
+Räume mit konstanter Krümmung sind Einstein-Räume: $K=c_0$ konstant: 
+\[
+\mathrm{Ric}(X,X)=\sum_{i=1}^n K([x,e_i]) g(x,x) = (n-1) c_0 g(x,x)
+\]
+\end{beispiel}
+
+\begin{bemerkung}
+Der Einstein-Tensor ist $G\da \mathrm{Ric}-\frac{S}{2}g$. Einstein-Feldgleichungen der ART:
+\[
+ \underbrace{G}_\text{Geometrie} = \underbrace{T}_\text{Physik},
+\]
+wobei $G$: Einstein-Tensor für 4 dimensionale Lorentz-Mannigfaltigkeit (mit Pseudo-Riemannscher Metrik), $T$: Energie-Impuls-Tensor der Materie-Verteilung. (Buch: Gravitation -- Misner, Thorne, Wheeler).
+
+\end{bemerkung}
+
+
+
+\chapter{Jacobi-Felder (Verbindung Geometrie--Krümmung)}
+\section{Jacobi-Gleichung}
+
+Sei $(M,\asp)$ eine Riemann’sche Mannigfaltigkeit. Für $v\in T_pM$ sei $\exp_p$ definiert. Wir betrachten die parametrisierte Fläche $f(t,s) \da \exp_p(t v(s))$ mit $0\le t \le 1$ und $-\ep \le s \le \ep$, wobei $v(s)$ eine Kurve in $T_pM$ mit $\|v(s)\| = \|v(0)\|$, $v(0) = v$, $v'(0) = w$ ist.
+
+Es gilt (vergleiche Beweis Gauß-Lemma):
+\[
+\left.d\exp_p\right|_v w  = \frac{\partial f}{\partial s}(1,0) \in T_{\exp_p(v)}M\,.
+\] $\left\|\left.d\exp_p\right|_v w\right\|$ ist ein Maß dafür, wie schnell die Geodätischen $t\mapsto f(t,s)$ auseinanderlaufen.
+
+
+Betrachte dazu das Vektorfeld $\left.d\exp_p\right|_{tv} tw = \frac{\partial f}{\partial s}(t,v)$ längs $\gamma(t) \da \exp_p(tv)$, $0\le t\le 1$. Wir halten fest: Da $\gamma$ eine Geodätische ist, gilt für alle $t,s$: $\frac D{\partial t}\frac{\partial f}{\partial t}(t,s)=0$.
+
+\begin{lemma}
+$\ $\[
+f: 
+\begin{aligned}
+A\subset \MdR^2 &\to M \\ (u,v) &\mapsto f(u,v)
+\end{aligned}
+\] sei eine parametrisierte Fläche und $V(u,v)$ sei ein Vektorfeld längs $f$. Dann gilt:
+\[
+\frac{D}{\partial v}\frac{D}{\partial u} V - \frac{D}{\partial u}\frac{D}{\partial v} V
+ = R\left(\frac{\partial f}{\partial u}, \frac{\partial f}{\partial v}\right)V
+\]
+wobei $\frac{D}{\partial u} = D_{\frac{\partial f}{\partial u}}$.
+\end{lemma}
+\begin{beweis}
+Betrachte Karte $(U,\varphi)$. Dann sind die Basisfelder also $V=\sum_{i=1}^n v^iX_i$, $v^i= v^i(u,v)$, 
+\\$\frac{D}{\partial u}V = \frac{D}{\partial u}\left(\sum_{i=1}^n v^iX_i\right) = \sum_{i=1}^n \frac{\partial v^i}{\partial u} x_i + \sum_{i=1}^n v^i \frac{D}{\partial u}X_i$. 
+\\$\frac D {\partial v}\left(\frac D{\partial u} V\right) = \sum_{i=1}^n \frac{\partial ^2 v^i}{\partial v \partial u} X_i + \sum_{i=1}^n \frac{\partial v^i}{\partial u} \frac D{\partial v} X_i + \sum_{i=1}^n \frac{\partial v^i}{\partial v} \frac{\partial D}{\partial u} X_i + \sum_{i=1}^n v_i \frac{D}{\partial v} \frac{D}{\partial u}X_i$
+\\$\folgt \frac{D}{\partial v}\frac D{\partial u} V - \frac D {\partial u}\frac D{\partial v} V = \sum_{i=1}^n v_i \left(\frac{D}{\partial v}\frac{D}{\partial u} X_i - \frac D{\partial u}\frac D{\partial v} X_i\right)$
+
+Berechne $\frac D{\partial v}\frac D{\partial u} X_i$: Für $f(u,v) = (x^1(u,v),\ldots, x^n(u,v))$ ist 
+\\$\frac {\partial f}{\partial u} = \sum_{j=1}^n \frac{\partial x^j}{\partial u} X_j$; $\frac {\partial f}{\partial v} = \sum_{k=1}^n \frac{\partial x^k}{\partial u} X_k$ und $\frac D {\partial u} X_i = D_{\frac {\partial f}{\partial u}} X_i = \sum_{j=1}^n \frac{\partial x^j}{\partial u} D_{X_j} X_j$. 
+\\$\frac D{\partial v}\frac D {\partial u} X_i = \sum_{j=1}^n \frac{\partial ^2 x^j}{\partial v\partial u} D_{X_j}  X_i + \sum_{j=1}^n \frac{\partial x^j}{\partial u} D_{\frac{\partial f}{\partial u}} \left(D_{X_j}X_i\right) = \sum_{j} \frac{\partial ^2 x^j}{\partial u\partial v} D_{X_j}X_i + \sum_j \frac{\partial x^i}{\partial u} \left(\sum_k \frac{\partial x^k}{\partial u} D_{X_k}D_{X_j}X_i\right)$.
+\\$\folgt \left(\frac{D}{\partial v}\frac D{\partial u} - \frac D {\partial u}\frac D{\partial v}\right)X_i = \sum_{j,k=1}^n \frac{\partial x^j}{\partial u} \frac{\partial x^k}{\partial v} \underbrace{\left(D_{X_k}D_{X_j}X_i-D_{X_j}D_{X_k}X_i\right)}_{\gleichwegen{[X_j,X_k]=0} R(X_j,X_k)X_i}$
+\\$\folgt \frac{D}{\partial v}\frac D{\partial u} V - \frac D {\partial u}\frac D{\partial v}V = \sum_{i,j,k} v_i \frac{\partial x^j}{\partial u} \frac{\partial x^k}{\partial v} R(X_j,X_k)X_i \gleichwegen{R \text{ multilinear}} R\left(\frac{\partial f}{\partial u}, \frac{\partial f}{\partial v}\right)$
+\end{beweis}
+
+
+Weiter gilt:
+\begin{align*}
+0 = \frac D {\partial s} \left(\frac D {\partial t} \frac {\partial f}{\partial t}\right) &\gleichnach{\hphantom{Lemma }\clap{Lemma 1}\hphantom{3 Kap 4}} \frac D{\partial t} \left(\frac D {\partial s} \frac{\partial f}{\partial t}\right) - R\left(\frac {\partial f}{\partial s},\frac{\partial f}{\partial t}\right) \frac{\partial f}{\partial t} \\
+&\gleichnach{\shortstack{Lemma 3 Kap 4\\ + schiefsym.}}
+\frac D{\partial t} \left(\frac D {\partial t} \frac{\partial f}{\partial s}\right) - R\left(\frac {\partial f}{\partial t},\frac{\partial f}{\partial s}\right) \frac{\partial f}{\partial t}
+\end{align*}
+
+Wir setzen $\gamma(t) = \exp_p(tv) = f(t,0)$ und $J(t)\equiv J(\gamma(t)) \da \frac{\partial f}{\partial s} (t,0)$ ein Vektorfeld längs $\gamma$. Dann gilt die Jacobi-Gleichung:
+\[
+\frac D{\partial t} \frac D{\partial t} J(t) + R(\gamma'(t), J(t))\gamma'(t) = 0
+\]
+mit der Kurzschreibweise
+\[
+\frac D{\partial t} \frac D{\partial t} J(t) \ad J''(t)
+\]
+
+\begin{definition}
+Sei  $\gamma: [0,a] \to M$ eine Geodätische. Ein Vektorfeld $J$ längs $\gamma$ heißt Jacobi-Feld, falls $J$ für alle $t\in[0,a]$ die Jacobi-Gleichung\index{Jacobi-Gleichung} erfüllt.
+\end{definition}
+
+Es gilt: Ein Jacobi-Feld ist eindeutig bestimmt durch die Anfangsbedingungen $J(0)$ und $J'(0)\da D_{\gamma'} J(0)$.
+
+
+Begründung: Betrachte orthonormale Parallelfelder $E_1(t),\ldots,E_n(t)$, wobei $E_i(t) = E_i(\gamma(t))$, längs $\gamma$. Dann kann man schreiben: $J(t) = \sum_{i=1}^n f_i(t) E_i(t)$ mit $f_i\in C^\infty$. Also $J'(t) = D_{\gamma'}J(t) = \sum_{i=1}^n D_{\gamma'} (f_i E_i)= \sum_{i=1}^n (f_i' E_i+ f_i \underbrace{D_{\gamma'}E_i}_{=\,0}) 
+= \sum_{i=1}^n f_i'(t) E_i(t)$ und $J''(t) = \sum_{i=1}^n f''_i(t) E_i(t)$.
+
+Weiter sei $a_{ij}(t) \da \ksp {R(\gamma'(t), E_i(t))\gamma'(t)} {E_j(t)}_{\gamma(t)}$. Dann gilt $R(\gamma',J)\gamma' = \sum_j \lsp {R(\gamma',J)\gamma'} {E_j} E_j
+= \sum_{j=1}^n \sum_{i=1}^n f_i \lsp {R(\gamma' E_i)\gamma'} {E_j} E_j
+= \sum_{j=1}^n \sum_{i=1}^n f_i a_{ij}(t) E_j(t)$
+
+Damit ist die Jacobi-Gleichung äquivalent zum System linearer Differentialgleichungen
+2. Ordnung
+\[
+f_j''(t) + \sum_{i=1}^n a_{ij}(t) f_i(t) = 0,\quad j=1,\ldots,n
+\]
+
+Die Lösungen bilden einen Vektorraum $\mathrm{Jac}_\gamma$ der Dimension $2n$, wobei $n=\dim M$. Zu gegebener Anfangsbedingung $J(0)$, $J'(0)$ bzw. $f_1(0),\ldots,f_n(0),f_1'(0),\ldots,f_n'(0)$ existiert genau ein Jacobi-Feld längs ganz $\gamma$, also eine Lösung des obigen Differentialgleichungssystems für alle $t\in[0,a]$.
+
+\begin{folgerung*}
+Längs der Geodätischen $\gamma:[0,a] \to M$ existieren $2n$ linear unabhängige Jacobi-Felder, wobei $n=\dim M$.
+\end{folgerung*}
+
+\begin{bemerkung}
+Gewisse Jacobi-Felder kann man direkt angeben:  $J(t) \da \gamma'(t)$ ist ein Jacobi-Feld, da $J'' + R(\gamma',J)\gamma' = \gamma''' + R(\gamma',\gamma')\gamma' = D_{\gamma'}\gamma'' + 0 = D_{\gamma'}D_{\gamma'} \gamma' = 0$.
+\end{bemerkung}
+
+Ansatz: $J(t)\da a(t)\gamma'(t)$ für $a:I\to \MdR$ ist Jacobi-Feld, genau dann, wenn $a(t)$ linear (affin) ist. Also: $J''= a''\gamma'$, $R(\gamma',J)\gamma' = R(\gamma',a \gamma')\gamma' = a R(\gamma',\gamma')\gamma'= 0$. Das heißt die Jacobi-Gleichung gilt $\gdw a''\gamma'=0 \gdw a''=0 \gdw a(t) = \alpha + t\beta$, $\alpha, \beta\in \MdR$.
+
+\begin{folgerung*}
+$J_1(t) \da \gamma'(t)$ und $J_2(t) \da t \gamma'(t)$ sind verschieden, da $J_1(0) = \gamma'(0) \ne J_2(0) = 0$, und spannen einen 2-dimensionalen Untervektorraum des Vektorraumes $\mathrm{Jac}_\gamma$ aller Jacobi-Felder längs $\gamma$ auf.
+
+Es genügt dann den $2(n-1)$-dimensionalen Untervektorraum aller Jacobi-Felder orthogonal zu $\gamma'$ zu verstehen.
+\end{folgerung*}
+
+\subsection*{Jacobi-Felder für Riemann’sche Mannigfaltigkeiten konstanter Krümmung}
+Sei $(M,\asp)$ eine Riemann’sche Mannigfaltigkeit mit konstanter Schnittkrümmung $k_0$, etwa $(\MdR^2,\kan): k_0=0$, $(S^2,\kan): k_0=1$, $(H^2\MdR,\kan): k_0 = -1$.
+
+Weiter sei $\gamma: [0,a] \to M$ eine normale Geodätische und $J$ ein Jacobi-Feld längs $\gamma$, so dass $J(t) \bot \gamma'(t)$.
+
+Für ein beliebigs Vektorfeld $X$ längs $\gamma$ gilt die Formel (vgl. 5.2, Ergänzende Sätze):
+\[
+\ksp{R(\gamma',J) \gamma'}{X} = k_0 \left(\smash{\underbrace{\ksp{\gamma'}{\gamma'}}_{=1}} \ksp J X - \ksp{\gamma'}X \smash{\underbrace{\ksp{J}{\gamma'}}_{=0}}\right) = k_0 \ksp J X
+\] also 
+\[
+R(\gamma', J) \gamma' = k_0 J
+\]
+
+Die Jacobi-Gleichung lautet hier:
+\[
+J'' + k_0 J = 0\mathrlap{\quad(*)}
+\]
+Es sei $E(t)$ ein Parallelfeld längs $\gamma$ mit $\|E(t)\|_{\gamma(t)}=1$ und $\ksp{E(t)}{\gamma'(t)}_{\gamma(t)} = 0$ für alle $t$. Dann ist 
+\[
+J(t) \da
+\begin{cases}
+\frac1{\sqrt {k_0}}\cdot {\sin(t\sqrt {k_0})}\cdot E(t), &k_0 > 0 \\
+t \cdot E(t), & k_0 = 0 \\
+\frac1{\sqrt{-k_0}}\cdot {\sinh(t \sqrt{-k_0})}\cdot E(t), & k_0 < 0
+\end{cases}
+\] eine Lösung von $(*)$ mit Anfangsbedingung $J(0) = 0$ und $J'(0) = E(0)$.
+
+\begin{beispiele}
+ \item[(1)] ($\MdR^2$, kan), $k_0=0$:
+ \\Geodätische = Gerade; Parallelfeld = konstantes Vektorfeld $E(t)=e\ \forall t$ 
+ \\ $\folgt J(t)=tE(t)=te$
+ \item[(2)] ($S^2$, kan), $k_0=1$:
+ \begin{align*}
+  X(s,t) &= (\cos s \sin t, \sin s \sin t, \cos t) \\
+  \frac{\partial X}{\partial s}(s,t) &= (-\sin s \sin t, \cos s \sin t, 0) \\
+  \frac{\partial X}{\partial t}(s,t) &= (\cos s \cos t, -\sin s \cos t, -\sin t)
+ \end{align*}
+ Mit $s=0$ ( = Großkreis in $x$-$z$-Ebene = Geodätische = $\gamma$):
+ \begin{align*}
+  \frac{\partial X}{\partial t}(0,t) &= \frac{\partial}{\partial t}\gamma(t) = \gamma'(t) =(\cos t, 0, -\sin t) \\
+  \frac{\partial X}{\partial s}(0,t) &= (0, \sin t, 0) \ad J(t) \\
+  E(t) &= \frac{J(t)}{\| J(t)\|} = (0,1,0)
+ \end{align*}
+ \item[(3)] ($H^2$, kan), $k_0=-1$:
+ \\$H^2 = \{(x,y) \in \MdR^2 \mid y>0\} \mathrel{\hat{=}} \{z \in \MdC \mid \Im z>0\}$. Betrachte $\gamma(t) = (0, \mathrm{e}^t) \mathrel{\hat{=}} \mathrm{i}\mathrm{e}^t$.
+ \\$T_{(x,y)}H^2 = \MdR \frac{\partial}{\partial x} \oplus \MdR \frac{\partial}{\partial y}$, $\left\|\frac{\partial}{\partial x}(x,y)\right\|_\mathrm{hyp} = \frac{1}{y} \|(1,0)\|_\mathrm{eukl} =\frac{1}{y}$, $\left\|\frac{\partial}{\partial y}(x,y)\right\|_\mathrm{hyp} = \frac{1}{y}$
+ \\$\gamma'(t) = (0,\mathrm{e}^t) = \mathrm{e}^t\frac{\partial}{\partial y}$ $\folgt \|\gamma'(t)\|_\mathrm{hyp} = \mathrm{e}^t \left\|\frac{\partial}{\partial y}\right\|_\mathrm{hyp} = \mathrm{e}^t \frac{1}{\mathrm{e}^t} = 1$.
+ \\Parallelfeld: $E(t) = \frac{\frac{\partial}{\partial x}(0,\, \mathrm{e}^t)\hphantom{\mathrm{hyp}}}{\left\|\frac{\partial}{\partial x}(0,\, \mathrm{e}^t)\right\|_\mathrm{hyp}} = \frac{(1,\, 0)}{\frac{1}{\mathrm{e}^t}} = (\mathrm{e}^t, 0)$, $\|E(t)\|_\mathrm{hyp} = 1$
+ \\$\folgt J(t)=\sinh t\cdot E(t) = (\sinh t \cdot\mathrm{e}^t,0)$, $\|J(t)\|_\mathrm{hyp}=\sinh t$.
+
+\end{beispiele}
+
+
+\begin{satz}
+Sei $\gamma:[0,a]\to M$ eine normale Geodätische (also $\left\|\gamma'\right\| = 1$) und $J$ ein Jacobi-Feld längs $\gamma$ mit $J(0)=0$ und $J'(0)=\frac D{\partial t} J(0) = \left(D_{\gamma'}J\right)(0) \ad w$. Schließlich sei $v\da \gamma'(0)$.
+
+Wir betrachten $w$ als Element von $T_{av}\left(T_{\gamma(0)} M\right)$ und wählen Kurve $v(s)$ in $T_{\gamma(0)}M$ mit $v(0) = av$, $v'(0)=aw$. Für die parametrisierte Fläche $f(t,s) \da \exp_{\gamma(0)}\left(\frac t a v(s)\right)$, $|s|<\ep$, $0\le \frac t a \le 1$ ist $\bar J(t) \da \frac{\partial f}{\partial s}(t,0)$ ein Jacobi-Feld längs $\gamma$ mit $J(t) = \bar J(t)$ für alle $t\in[0,a]$.
+\end{satz}
+
+\begin{beweis}
+Jacobi-Feld is durch Anfangsbedingungen vollständig bestimmt, das heißt es genüg zu zeigen: $J(0) = \bar J(0)$ und $J'(0) = \bar J'(0)$.
+
+Es ist einfach zu sehen, dass $\bar J(0) = \frac {\partial f}{\partial s}(0,0) = 0$.
+
+Weiter gilt
+\begin{multline*}
+\bar J'(t) = \frac D {\partial t} \frac {\partial f}{\partial s} (t,0) = \frac D {\partial t}\left(\left.d\exp_p\right|_{\frac t a v(0)} \cdot \frac t a v'(0)\right)  = \frac D{\partial t} \left(\left.d\exp_p\right|_{tv} tw\right) \\ = \frac D{\partial t}\left(t \cdot \left.d\exp_p\right|_{tv} w\right) = 1\cdot \left.d\exp_p\right|_{tv} w + t \frac D{\partial t}\left(\left.d\exp_p\right|_{tv} w\right)\,.
+\end{multline*}
+Daher ist $\bar J'(0) = \left.d\exp_p\right|_0 w = w = J'(0)$.
+\end{beweis}
+
+\begin{bemerkungen}
+\item Es gilt folgende Formel für ein Jacobi-Feld längs einer normalen Geodätischen $\gamma:[0,a] \to M$ mit $J(0) = 0$:
+\[
+J(t) = \left.d\exp_p\right|_{t\gamma'(0)} \left(tJ'(0)\right),\quad t\in[0,a]
+\]
+
+\item Eine analoge Konstruktion (Jacobi-Felder erzeugen durch Variation einer Geodätischen) gilt auch für Jacobi-Felder mit Anfangsbedingung $J(0)\ne 0$.
+\end{bemerkungen}
+
+\section{Jacobi-Felder und Schnittkrümmung}
+
+\begin{satz}
+Sei $p\in M$, $\gamma:[0,a]\to M$ eine normale Geodätische mit $\gamma(0)=p$, $\gamma'(0)=v$ und $w \in T_v(T_pM) \cong T_pM$ mit $\|w\| = 1$.  Weiter sei $J(t) = \left.d\exp_p\right|_{tv}(tw)$, $0\le t \le a$ ein Jacobi-Feld längs $\gamma$.
+
+Dann gilt für die Taylorentwicklung von $\|J(t)\|^2_{\gamma(t)} = \ksp {J(t)}{J(t)}_{\gamma(t)}$ bei $t=0$:
+\[
+\|J(t)\|_{\gamma(t)}^2 = t^2 - \frac 13 \ksp {R(v,w)v}w_p t^4 + o(t^4)
+\]
+\end{satz}
+
+\begin{beweis}
+Es ist $J(0)=0$, $J'(0) = w$, $\|w\|=1$. Für die ersten drei Koeffizienten der Taylorreihe in $t$ folgt:
+\begin{enumerate}
+\item[(0)] $\|J(p)\|_p^2 = \ksp J J (0) = 0$
+\item[(1)] $\ksp J J '(0) = 2\ksp {J'}J(0) = 0$
+\item[(2)] $\ksp{J}J''(0) = 2\ksp {J''}J(0) + 2 \ksp{J'}{J'}(0) = 0 + 2\|w\|^2 = 2$
+\item[(3)] $\ksp JJ'''(0) = 2\ksp {J'''} J (0) + 2 \ksp {J''}{J'} (0) + 4 \ksp {J''}{J'}(0) = 0 + 6 \ksp {-R(\gamma',J)\gamma'}{J'}(0) = 6 \ksp {-R(\gamma',0)\gamma'}{J'}(0) = 6 \ksp 0 {J'}(0) = 0$
+\item[(4)] $\ksp JJ ''''(0) = 2 \ksp{J''''}J(0) + 2 \ksp{J'''}{J'}(0) + 6 \ksp{J'''}{J'}(0) + 6 \ksp{J''}{J''}(0) = 8 \ksp{J'''}{J'}(0) = -8 \ksp{R(\gamma',J')\gamma'}{J'}(0) = -8 \ksp{R(v,w)v}w_p$
+
+Nebenrechnung für $J'''= -\frac D {\partial t} R(\gamma',J)\gamma'$. Dazu betrachten wir ein beliebiges Vektorfeld $Z$ mit $Z' = \frac D{\partial t}Z = D_{\gamma'}Z$. Es ist 
+\begin{align*}
+\lsp{\frac D{\partial t} R(\gamma',J) \gamma'}Z &= \frac d{dt} \ksp {R(\gamma',J)\gamma'}Z - \ksp{R(\gamma',J)\gamma'}{Z'}\\
+&= \frac d{dt} \ksp {R(\gamma',Z)\gamma'}J - \ksp{R(\gamma',J)\gamma'}{Z'}\\
+&= \lsp {\frac D{dt} R(\gamma',Z)\gamma'}J + \ksp {R(\gamma',Z)\gamma'}{J'} - \ksp{R(\gamma',J)\gamma'}{Z'}\,.\\
+\intertext{Für $t=0$ ist $J(0)=0$, also:}
+\lsp{\frac D{\partial t} R(\gamma',J) \gamma'}Z(0) &= 0 + \ksp {R(\gamma',Z)\gamma'}{J'}(0) - 0 \\
+&= \ksp{R(\gamma',J')\gamma'}Z(0)
+\end{align*}
+Da $Z$ beliebig war, gilt $J'''(0) = - \frac D{\partial t} R(\gamma',J) \gamma'(0) = - R(\gamma',J')\gamma'(0)$
+\end{enumerate}
+\end{beweis}
+
+\begin{korrolar}
+Falls $\ksp v w_p =0$, ($v,w$ also orthonormiert) gilt: $\ksp {R(v,w)v}w_p = K(p,\sigma) =$ Schnittkrümmung der von $v$ und $w$ aufgespannten Ebene $\sigma$, also
+\[
+\|J(t)\|_{\gamma(t)}^2 =t^2 - \frac 1 3 K(p,\sigma)t^4 + o(t^4)
+\]
+sowie
+\[
+\|J(t)\|_{\gamma(t)} = t - \frac 1 6 K(p,\sigma)t^3 + o(t^3)
+\]
+
+\end{korrolar}
+
+\begin{beweis}
+Die Formel für $\|J(t)\|_{\gamma(t)}$ folgt aus einem Koeffizientenvergleich der Taylorreihen:
+\begin{align*}
+f(t) &= a + bt + ct^2 + dt^3+\cdots \\
+(f(t))^2 &= a^2 + 2abt + \cdots
+\end{align*}
+\end{beweis}
+
+\paragraph{Anwendung} Länge von geodätischen Kreisen. $p\in M$, $v,w\in T_pM$, $v\bot w$, $\|v\|=\|w\|=1$, $f(r,\theta) \da \exp_p(r (\cos \theta \cdot v + \sin \theta \cdot w))$. Für ein festes $r$ heißt $K_r(\theta) = f(r,\theta)$ für $0\le\theta\le2\pi$ ein geodätischer Kreis\index{geodätischer Kreis} von Radius $r$.
+
+Die Länge von $K_r$ ist $L(K_r)\da \int_{0}^{2\pi} \left\|\frac d{d\theta} K_r(\theta) \right\| d\theta = \int_0^{2\pi} \left\|\frac{\partial f}{\partial \theta}\right\|d\theta $, wobei $\frac{\partial f}{\partial \theta}$ ein Jacobi-Feld längs $\gamma_\theta(r) = \exp_p(rv(\theta))$ ist. Daher \[ L(K_r) = \int_0^{2\pi} \left[r - \frac 1 6 K(p,\sigma) r^3 + o(r^3)\right] d\theta = 2\pi r\left(1 - \frac 1 6 K(p,\sigma)r^2 + o(r^2)\right).\] Das ist die klassiche Formel von Betrand-Puiseux (1848) für Flächen in $\MdR^3$.
+
+Umgekehrt hat man $K(p,\sigma) = \frac3{\pi r^3} \left(2\pi r - L(K_r) + o(r^3)\right)$ oder \[ K(p,\sigma) = \lim_{r\to0} \frac 3{\pi r^3}(2\pi r - L(K_r)).\]
+
+Im euklidischen ist $L(K_r) = 2\pi r$, also $K(p,\sigma) = 0$. Im Sphärischen ist $L(K_r) = 2\pi \sin r = 2\pi\left(r - \frac{r^3}{3!} + \cdots \right)$, also $K(p,\sigma) = +1$. Im Hyperbolischen ist $L(K_r) = 2\pi \sinh r = 2\pi \left(r + \frac{r^3}{3!} +\cdots \right)$, also $K(p,\sigma) = -1$.
+
+
+
+\chapter{Riemann’sche Mannigfaltigkeiten als metrische Räume}
+
+Sei $(M,\asp)$ eine differenzierbare Mannigfaltigkeit, also insbesondere ein topologischer Raum (nach Definition), der Hausdorff’sch ist, eine abzählbare Basis hat und lokal euklidisch ist. Solche topologischen Räume sind metrisierbar.
+
+Bisher waren die Konzepte „lokal“, etwa die Geodätischen, die Exponentialabbildung, der Krümmungstensor, die Jacobi-Felder. Für globale Aussagen benötigen wir zusätzliche topologische Voraussetzungen.
+
+Ein Prototyp für eine solche Voraussetzung ist der Satz von Gauß-Bounet in der Flächentheorie: Gegeben eine kompakte Fläche $S$ im $\MdR^3$ ohne Rand und die Gauß-Krümmung $K$, so ist $\int_S KdA = 2\pi \chi(S) = 2\pi (2 - 2g)$, wobei $\chi$ die Euler-Charakteristik ist. Diese Gleichung verbindet links eine Aussage über die „lokale Geometrie“ mit rechts einer topologische Invariante.
+
+Die einfachste Globale Frage ist: Gegeben zwei Punkte $p,q\in M$, gibt es einen stetigen Weg zwischen $p$ und $q$? Notwendig dafür ist: $M$ zusammenhängend\footnote{Ein topologischer Raum $X$ heißt zusammenhängend wenn $X$ nicht in zwei disjunkte, offene, nichtleere Teilmengen zerlegt werden kann. Dazu äquivalent: $X$ und $\emptyset$ sind die einzigen Teilmengen von $X$ die sowohl offen als auch abgeschlossen sind.}. Zusammenhängend ist auch hinreichend:
+\begin{lemma}
+Ist $M$ zusammenhängend, so ist $M$ auch wegzusammenhängend. Das heißt, dass zu $p,q\in M$ ein stetiger Weg $c:[0,1]\to M$ mit $c(0)=p$ und $c(1)=q$ existiert.
+\end{lemma}
+
+\begin{bemerkung}
+In allgemeinen topologischen Räumen gilt: Aus wegzusammenhängend folgt zusammenhängend, aber aus zusammenhängend folgt nicht zwingend wegzusammenhängend. Ein Beispiel dafür ist $X\da [(0,-1),(0,1)] \cup \left\{\left(x,\sin \frac1x\right)\in\MdR^2\mid x>0\right\}$ mit der von $\MdR^2$ induzierten Topologie. (Für einen Beweis siehe: Singer-Therpe, Elementary Topology \& Geometry, Seite 53)
+\end{bemerkung}
+
+\begin{beweis}
+Sei $p\in M$ und $A\da \{q \in M\mid q$ ist mit $p$ durch einen stetigen Weg verbindbar$\}$.
+\begin{itemize}
+\item  $A\ne \emptyset$, da $p\in A$: $c:[0,1] \to M$; $c(t)\da p$.
+\item  $A$ ist offen: Ist $q\in A$ und $r\in B_\ep(q)$ (= normale Umgebung von $q$), dann ist $r \in A$.
+\item $A$ ist abgeschlossen, also $M\setminus A$ ist offen: Ist $q\in M \setminus A$, $r\in B_\ep(q)$, dann ist $r\in M\setminus A$.
+\end{itemize}
+\end{beweis}
+
+Daher sei in diesem Kapitel stets vorausgesetzt, dass $M$ zusammenhängend ist. 
+
+Daraus folgt: Zwei beliebige Punkte $p,q\in M$ sind durch stückweise differenzierbare (bzw. stückweise geodätische) Wege verbindbar.
+
+\begin{beweis}
+Wähle stetigen Weg zwischen $p$ und $q$: $c:[0,1]\to M$. $c([0,1])$ ist kompakt. Diese Menge kann durch endlich viele total normale Umgebungen überdeckt werden. In  diesem Umgebungen lässt sich der Weg wie gewünscht abändern.
+\end{beweis}
+
+\begin{bemerkung}
+Im Allgemeinen existiert zwischen zwei Punkten $p$ und $q$ einer Riemann’schen Mannigfaltigkeit keine Geodätische! Etwa in $\left(\MdR^2\setminus\{0\},\kan\right)$, wo Geodätische Geradenstücken entsprechen, gibt es keine Geodätische zwischen $(0,-1)$ und $(0,1)$.
+\end{bemerkung}
+
+Setze $\Omega_{qp}\da \{$stückweise differenzierbare Kurven zwischen $p$ und $q\}$.
+
+\begin{satz}[Längenmetrik]
+$(M,\asp)$ sein eine Riemann’sche Mannigfaltigkeit. 
+\[
+d : 
+\begin{aligned}
+M \times M &\to \MdR_{\ge 0} \\
+(p,q) &\mapsto \inf_{\mathclap{c\in \Omega_{pq}}} L(c)
+\end{aligned}
+\]
+Dann ist $(M,d)$ ein metrischer Raum, also es gilt für $p,q,r\in M$: 
+\begin{enumerate}
+\item $d(p,q) = d(q,p) \ge 0$
+\item $d(p,q) \le d(p,r) + d(r,q)$
+\item $d(p,q) = 0 \gdw p = q$
+\end{enumerate}
+\end{satz}
+
+\begin{beweis}
+\begin{enumerate}
+\item „rückwärts laufen“: $c:[0,l]\to M$, $t\mapsto c(t)$, sei Kurve zwischen $p$ und $q$, also $c\in \Omega_{pq}$. Dann ist $\tilde c(t) \da c(l-t) \in \Omega_{qp}$ und $L(c) = L(\tilde c)$.
+\item Da $\Omega_{pq}$ eine Obermenge der Wege von $p$ nach $q$ über $r$ ist, gilt $\inf_{c\in\Omega_{pq}} L(c) \le \inf_{c\in\Omega_{pr}} L(c) + \inf_{c\in\Omega_{rq}} L(c)$
+\item Klar: Ist $p=q$, so ist hat der konstante Weg $c:[0,1]\to M$; $t\mapsto p$ die Länge 0, also $d(p,q)=0$.
+
+Annahme $p\ne q$. Wähle eine normale Umgebung $U_\ep(p)$ um $p$ mit $q\notin U_\ep(p)$ Dann gilt für eine beliebiges $c\in \Omega_{pq}$ nach Satz \ref{geolokmin}: $L(c) \ge \ep \folgt d(p,q) \ge \ep$.
+\end{enumerate}
+\end{beweis}
+
+\begin{korrolar}
+\begin{enumerate}
+\item  Die Topologie des metrischen Raumes $(M,d)$ ist äquivalent zur ursprünglich auf $M$ gegebenen Topologie (also $U$ ist offen in $M$ $\gdw$ $U$ ist offen in $(M,d)$). Das heißt: Riemann’sche Mannigfaltigkeiten sind metrisierbar.
+\item Für $p_0\in M$ ist $d_{p_0}: M \to \MdR$; $d_{p_0}(p) \da d(p_0,p)$ stetig (gilt für beliebige metrische Räume).
+\item Ist $M$ kompakt, so ist der Durchmesser von $M$ beschränkt: \[ \operatorname{Diam}(M) = \sup_{p,q\in M} d(p,q) < \infty \]
+\end{enumerate}
+\end{korrolar}
+
+\begin{beweis}
+\begin{enumerate}
+\item Nach Satz \ref{geolokmin} sind normale offene Bälle von genügend kleinem Radius $r$ identisch mit metrischen Bällen von Radius $r$ (bezüglich $d$):
+\[
+B_r^{(d)}(p) \da \{q\in M \mid d(p,q) < r\} = \exp_p(B_r(0))
+\] wobei $B_r(0) = \{ v\in T_pM \mid \| v\|< r\}$.
+\item $\left|d_{p_0}(p) - d_{p_0}(q)\right| = |d(p_0,p) - d(p_0,q)| \le d(p,q)$
+\item Seien $p,q$ beliebig aus $M$ kompakt.
+\[
+d(p,q) \le d(p,p_0) + d(p_0,q) \le 2 \max_{r\in M} d(p_0,r) < \infty
+\]
+Das Maximum wird angenommen, da $M$ kompakt und $d_{p_0}$ stetig ist.
+\end{enumerate}
+\end{beweis}
+
+\begin{definition}
+$(M,d)$ ist vollständig\index{vollständig} genau dann, wenn jede Cauchy-Folge konvergiert.
+
+$(M,\asp)$ ist geodätisch vollständig\index{geodätisch vollständig} genau dann, wenn für jedes $p\in M$ die Exponentialabbildung $\exp_p$ auf ganz $T_pM$ definiert ist, also jede Geodätische $\gamma(t)$ mit $\gamma(0) = p$ ist für alle $t\in \MdR$ definiert.
+\end{definition}
+
+\begin{satz}[Hopf-Rinow, 1931]
+Sei $M$ eine zusammenhängende Riemann’sche Mannigfaltigkeit und $p\in M$. Folgende Aussagen sind äquivalent:
+\begin{enumerate}
+\item $\exp_p$ ist auf ganz $T_pM$ definiert.
+\item Jede abgeschlossene Teilmenge $A\subset M$ mit beschränktem Durchmesser ist kompakt.
+\item Der metrische Raum $(M,d)$ ist vollständig, das heißt, jede Cauchy-Folge konvergiert.
+\item $M$ ist geodätisch vollständig.
+\end{enumerate}
+In diesem Falle gilt: Für jeden Punkt $q\in M$ existiert mindestens eine Geodätische $\gamma$, welche $p$ und $q$ verbindet und für die gilt: $L(\gamma) = d(p,q)$, das heißt, $\gamma$ realisiert die kürzeste Verbindung zwischen $p$ und $q$.
+\end{satz}
+
+\begin{beweis}
+Die Vorgehensweise ist: $1 \folgt 2 \folgt 3 \folgt 4 \folgt 1$.
+\begin{enumerate}[(1)$\folgt$(2)]
+\item[(1)$\folgt$(2)] $A$ ist abgeschlossen. \[\operatorname{Diam}(A) = \sup_{a,b\in A}d(a,b) \le c < \infty\,.\]
+Für ein festes $q_0\in A$ gilt für alle $q\in A$: \[d(p,q) \le d(p,q_0) + d(q_0,q) \le d(p,q_0) + c \ad R\,.\]
+Das heißt: $A \subset \overline{B_{2R}(p)} \gleichwegen{(1)} \exp_p(\overline{B_{2R}(0)})$ ist kompakt, da $\exp_p$ stetig und $\overline{B_{2R}(0)}\subset T_pM$ kompakt ist. Also ist $A$ als abgeschlossene Teilmenge einer kompakten Menge selbst auch kompakt.
+\item[(2)$\folgt$(3)] 
+Eine Cauchy-Folge $\{p_n\}_{n\in \MdN}$ ist beschränkt: Wähle $\ep>0$, so gilt $d(p_n,p_m) < \ep$ für alle $m,n \ge n_0(\ep)$. Also ist nach (2) $\{p_n\}_{n\in \MdN}$ in einer kompakten Menge enthalten. Insbesondere hat $\{p_n\}_{n\in \MdN}$ eine konvergente Teilfolge. Da $\{p_n\}_{n\in \MdN}$ eine Cauchy-Folge ist, konvergiert $\{p_n\}_{n\in\MdN}$ selbst.
+\item[(3)$\folgt$(4)] 
+Sei $\gamma: I\to M$ eine normale Geodätische in $M$. Zu zeigen: $I$ ist offen und abgeschlossen in $\MdR$, also $I=\MdR$.
+
+$I$ ist offen (und nicht leer): Aus der (lokalen) Eindeutigkeit und Existenz von Geodätischen (Satz \ref{eindgeo}) folgt: Ist $\gamma(t_0)$ definiert, so auch $\gamma(t_0+t)$ für genügend kleine $t$.
+
+$I$ abgeschlossen: Sei $(t_n)_{n\in \MdN}$ eine monoton wachsende Folge in $I$, welche gegen $t_*$ konvergiert. Zu zeigen: $t_* \in I$. Zunächst ist für $m\ge n$ 
+\[d(\gamma(t_n),\gamma(t_m)) \le L\left(\gamma|_{[t_n,t_m]}\right) = |t_n - t_m|\,.\] 
+Daher ist $(\gamma(t_n))_{n\in\MdN}$ eine Cauchy-Folge in $M$ und nach Voraussetzung (3) konvergent.
+
+Sei $p\da \lim_{n\to\infty} \gamma(t_n)$. Sei $W(p)$ eine total normale Umgebung um $p$. Satz \ref{totnormumg} besagt: Es existiert ein $\delta > 0$, so dass jede normale Geodätische, welche in $W(p)$ beginnt, auf $(-\delta,\delta)$ definiert ist. Wähle $n$ so groß, dass $|t_n - t_*|<\frac\delta2$ und $\gamma(t_n) \in W(p)$. Dann ist $\gamma(t)$ definiert für alle $t$ mit $|t_n - t| < \delta$, also insbesondere für $t_*$, das heißt $t_*\in I$ und $I$ ist abgeschlossen.
+\item[(4)$\folgt$(1)] 
+Klar.
+\end{enumerate}
+Es gelte nun (1), und wir zeigen die letzte Aussage des Satzes.
+
+\begin{enumerate}[1. {Schritt:}]
+\item Wir finden einen Kandidaten für die Geodätische $\gamma$. Sei $r\da d(p,q)$ und für $0< \delta < r$ sei $B_\delta(p)$ ein normaler Ball um $p$ mit geodätischer Sphäre $S_\delta(p) = \partial B_\delta(p)$ als Rand. $S_\delta(p)$ ist kompakt.
+
+Die Idee ist, $x_0$ als denjenigen Punkt auf dem Rand zu wählen, wo die stetige Funktion $d_q|_{S_\delta} \da d(q,\cdot)|_{S_\delta}$ ein Minimum annimmt. Dann existiert nach Voraussetzung (1) ein $v\in T_pM$ mit $\|v\|=1$ und $x_0 = \exp_p(\delta v)$.
+
+Definiere $\gamma(s) \da \exp_p(s v),$ $s\in \MdR$, was nach Voraussetzung (1) geht.
+
+\item Wir zeigen, dass $\gamma$ die Punkte $p$ und $q$ verbindet. Zu zeigen ist also: $\gamma(r)=q$ (bzw. $d(q,\gamma(r)) = 0$). Betrachte dazu die Menge
+\[A\da \{ s\in [0,r] \mid d(\gamma(s),q) = r - s\}. \qquad (*)\]
+Wir zeigen, dass $A = [0,r]$. $A$ ist abgeschlossen. $A \ne \emptyset$, da $0\in A$. Sei $s_0 \da \max A$.
+
+Annahme: $s_0 < r$. Betrachte wieder normalen Ball $B_{\delta'}(\gamma(s_0))$ mit Rand $S'$ um $\gamma(s_0)$ mit $\delta'$ so klein, dass $q\notin B_{\delta'}(\gamma(s_0))$. $x_0'$ sei ein Punkt auf $S'$ in dem, $d_q|_{S'}$ ein Minimum annimmt.
+
+\paragraph{Behauptung:} Es gilt $x_0' = \gamma(s_0 + \delta').\quad (**)$
+\begin{beweis}[der Behauptung]
+Zunächst ist 
+\[d(\gamma(s_0),q) = \delta' + \min_{x\in S'} d(x,q) = \delta' + d(x_0',q)\,.\]
+Nach Voraussetzung ($(*)$ und Definition von $s_0$) ist $d(\gamma(s_0),q) = r - s_0$, also \[r-s_0 = \delta' + d(x_0',q)\,.\quad(***)\]
+Weiter mit der Dreiecks-Ungleichung: \[d(p,x_0') \ge d(p,q) - d(q,x_0') \gleichwegen{(***)} r - (r - s_0 - \delta') = s_0 + \delta'\]
+Ebenso gilt für die stückweise differenzierbare Kurve $c$: \[d(p,x_0') \le d(p,\gamma(s_0)) + d(\gamma(s_0),x_0') \le s_0 + \delta '\]
+Die Kurve $c$ ist also minimierend und somit eine Geodätische, hat also keinen „Knick“ bei $s_0$. Daher gilt: $x_0' = \gamma(s_0+\delta')$.
+\end{beweis}
+Aus $(**)$ und $(***)$ folgt:
+\[
+r - (s_0 + \delta ') \gleichwegen{(***)} d(x_0',q) \gleichwegen{(**)} d(\gamma(s_0 + \delta'),q)
+\]
+Also gilt $(*)$ für $s_0 + \delta' > s_0$ im Widerspruch zur Definition von $s_0$. Daher ist die Annahme $s_0 < r$ falsch und $s_0 =r$.
+\end{enumerate}
+\end{beweis}
+
+\begin{korrolar}
+Eine zusammenhängende kompakte Riemann’sche Mannigfaltigkeit ist (geodätisch) vollständig.
+\end{korrolar}
+
+\begin{beweis}
+$(M,d)$ ist vollständig, also nach Hopf-Rinow geodätisch vollständig.
+\end{beweis}
+
+\begin{korrolar}
+$M$ sei eine zusammenhängende und vollständige, aber nicht kompakte, Riemann’sche Mannigfaltigkeit. Dann existiert ein geodätischer Strahl in $M$, also eine Geodätische $\gamma:[0,\infty)\to M$, welche für alle $t\in [0,\infty)$ minimierend ist: $d(\gamma(t),\gamma(0)) = t$.
+\end{korrolar}
+
+\begin{beweis}
+Wähle Folge $(q_n)_{n\in\MdN}$ in $M$, so dass $d(q_0,q_n)\to \infty$ für $n\to\infty$. Schreibe $q_n = \exp(t_n v_n)$, $\|v_n\|=1$. Die Folge $(v_n)_{n\in\MdN} \subset \left\{ w \in T_{q_0}M\mid \|w\|=1\right\}$ kompakt, also hat $(v_n)_{n\in\MdN}$ eine konvergente Teilfolge, ohne Einschränkung sei diese $(v_n)_{n\in \MdN}$: $v_n \to v$.
+
+Nun haben wir die Geodätischen $\gamma_n(t) \da \exp_{q_0}(tv_n)$ und  $\gamma(t) \da \exp_{q_0}(tv)$. Zu zeigen ist $d(\gamma(t_1), \gamma(t_2)) = |t_1 - t_2|$: Aber $\lim_{n\to\infty} \gamma_n(t) = \lim_{n\to\infty} \exp_{q_0}(tv_n) = \exp_{q_0}(\lim_{n\to\infty}tv_n) = \exp_{q_0}(tv) = \gamma(t) \folgt$ Behauptung.
+\end{beweis}
+
+\section{Schnittort einer vollständigen Riemann’schen Mannigfaltigkeit}
+\label{schnittort}
+
+\begin{lemma}
+$M$ sei eine zusammenhängende vollständige Riemann’sche Mannigfaltigkeit und $\gamma:[a,b]\to M$ sei eine normale Geodätische.
+
+\begin{enumerate}
+\item Falls keine weitere Geodätische zwischen $\gamma(a)$ und $\gamma(b)$ existiert, die kürzer ist als $\gamma$, dann ist $\gamma$ minimierend auf $[a,b]$.
+\item Falls eine Geodätische $c\ne \gamma$ zwischen $\gamma(a)$ und $\gamma(b)$ mit $L(c)=L(\gamma)$ existiert, so ist $\gamma$ nicht mehr minimierend auf $[a,b+\ep]$ für ein $\ep >0$.
+\item Ist $\gamma$ minimierend auf einem Intervall $I$, so ist sie auch auf $J\subseteq I$ minimierend.
+\end{enumerate}
+\end{lemma}
+
+\begin{beweis}
+\begin{enumerate}
+\item 
+Nach Hopf-Rinow existiert eine minimierende Geodätische $\gamma^*$ zwischen $\gamma(a)$ und $\gamma(b)$. Es ist dann $L(\gamma^*)\le L(\gamma)$, also nach Voraussetzung $L(\gamma^*)=L(\gamma)$, also muss $\gamma$ minimierend sein.
+\item Sei $c$ eine Geodätische zwischen $\gamma(a)$ und $\gamma(b)$, $c\ne \gamma$, mit $L(c) = L(\gamma)$. Wähle $\delta>0$, so dass $W=W(\delta)$ eine total normale Umgebung von $\gamma(b)$ (siehe Satz \ref{totnormumg}). Betrachte die Kurve
+\[
+\alpha(t) \da 
+\begin{cases}
+c(t), & t\in [a,b] \\
+\gamma(t), & t\in \left[b,b+\frac\delta2\right]
+\end{cases}
+\]
+$\alpha$ verbindet $\gamma(0)$ und $\gamma\left(b+\frac\delta4\right)$. Da $W$ total normal ist existiert eine minimale Geodätische zwischen $\alpha\left(b-\frac\delta4\right)$ und $\alpha\left(b+\frac\delta4\right)$. $\alpha$ ist keine Geodätische (wegen dem „Knick“ bei $\gamma(b)$), also ist die Länge des minimalen geodätischen Segments zwischen $\alpha\left(b-\frac\delta4\right)$ und $\alpha\left(b+\frac\delta4\right)$ echt kleiner als das entsprechende Stück von $\alpha$. Daher existiert eine Kurve von $\gamma(a)$ nach $\gamma\left(\frac\delta4\right)$ die kürzer ist als $\alpha|_{\left[a,\,b+\frac\delta4\right]}$. Konstruktion ist $L(\gamma_{\left[a,\,b+\frac\delta4\right]}) = L(\alpha|_{\left[a,\,b+\frac\delta4\right]})$ und somit nicht mehr kürzeste nach $\gamma(b)$.
+\item Annahme: $\gamma$ nicht minimierend auf $J\subseteq I$, dann wäre $\gamma$ nicht minimierend auf $I$.
+\end{enumerate}
+\end{beweis}
+
+Für $p\in M$, $v\in T_pM$, $\|v\|=1$ sei $\gamma_v \da \exp_p(tv)$ die eindeutige normale Geodätische mit $\gamma_v(0)=p$, $\gamma_v'(0)=v$. Setze $I_v \da \{ t\in [0,\infty) \mid d(\gamma_v(t), \gamma_v(0))=t\}$, das heißt: $\gamma$ minimierend zwischen $\gamma_v(0)$ und $\gamma_v(t)$. $I_v \ne \emptyset$, da $[0,\ep]\subseteq I_v$ für genügend kleines $\ep$. $I_v$ ist abgeschlossen, da $d(\gamma_v(0),\cdot)$ stetig. Es gilt also entweder $I_v = [0,\infty)$, also $\gamma_v$ ist geodätischer Strahl, oder es existiert $s(v)>0$, so dass $I_v=[0,s(v)]$. In diesem Fall heißt $\gamma_v(s(v))$ Schnittpunkt\index{Schnittpunkt} von $p$ längs $\gamma_v$.
+
+\begin{bemerkung}
+\begin{enumerate}[(a)]
+\item Es gilt (ohne Beweis): Die Abbildung 
+\[
+s:
+\begin{aligned}
+E_pM \da \{v \in T_pM \mid \|v\|=1\} &\to \MdR\cup\{\infty\} \\
+v &\mapsto s(v)
+\end{aligned}
+\] ist stetig.
+\item Für kompakte $M$ ist $s(v) < \infty$ für alle $v\in E_pM$, $p\in M$.
+\item Ist $M$ nicht kompakt, so existiert nach dem Korrolar ein geodätischer Strahl und somit $p\in M$ und $v\in T_pM$, so dass $s(v)=\infty$.
+\end{enumerate}
+\end{bemerkung}
+
+Für ein beliebiges, aber festes $p\in M$ ist
+\[
+U_p \da \left\{ w\in T_pM\setminus \{0\} \mid \|w\| < s\left(\frac w {\|w\|}\right)\right\} \cup \{0\}
+\] eine offene Umgebung von $0\in T_pM$. Der Rand von $U_p$, $\partial U_p$, ist die Menge $\left\{w\in T_pM | \|w\| = s\left(\frac w{\|w\|}\right)\right\} = \{s(v) \cdot v \in T_pM \mid v \in E_pM\}$. Der Schnittort\index{Schnittort} von $p\in M$ ist \[ \cut(p) \da \exp_p(\partial U_p)=\{\gamma_v(s(v))\mid \|v\|=1\}\,.\]
+
+\begin{beispiel}
+In $(S^n,\kan)$ sind die Geodätischen mit Bogenlänge parametrisierte Großkreise der Länge $2\pi$. Also sind Geodätische $\gamma_v(t)$ minimierend für $t<\pi$. Also ist für alle $p\in S^n$: $U_p=\{w\in T_pM \mid \|w\| <\pi\}$, also \[\exp_p(U_p) = \{q\in S^n \mid d(p,q)<\pi \} = S^n\setminus \{-p\}\] und \[\cut(p) = \{q\in S^n \mid d(p,q)=\pi \} = \{-p\}\,.\] Man kann also die Sphäre disjunkt zerlegen in $\exp_p(U_p)$ und $\exp_p(\partial U_p) = \cut(p)$. Dies gilt allgemein!
+\end{beispiel}
+
+\begin{bemerkung}
+Es gilt (ohne Beweis) der Satz: (Berker 1980)
+
+Ist $(M,\asp)$ eine zusammenhängende kompakte Riemman’sche Mannigfaltigkeit mit $\operatorname{Diam}(M)=\pi$ und $\cut(p) = \{\text{Punkt}\}$ für alle $p\in M$, so ist $(M,\asp)$ isometrisch zu $(S^n,\kan)$. Solche Mannigfaltigkeiten heißen „Wiedersehen-Mannigfaltigkeit“.
+\end{bemerkung}
+
+\begin{satz}[Zerlegungssatz]
+\label{zerlsatz}
+Sei $M$ eine zusammenhängende, vollständige Riemman’sche Mannigfaltigkeit. Dann gilt für jeden Punkt $p\in M$ die disjunkte Zerlegung
+\[
+M = \exp_p(U_p) \uplus \cut(p)\,.
+\]
+\end{satz}
+
+\begin{beweis}
+Nach Hopf-Rinow gibt es für jeden Punkt $q\in M$ eine minimale Geodätische $\gamma_v$ zwischen $p$ und $q$ mit $q=\gamma_v(t_0 v)$, $t_0\le s(v)$, $\|v\|=1$. Insbesondere ist $t_0 v \in \overline U_p = U_p \cup \partial U_p$. Da $q$ beliebig ist $M \subset \exp_p(\overline U_p) = \exp_p(U_p) \cup \exp_p(\partial U_p) = \exp_p(U_p) \cup \cut(p) \subset M$.
+
+Noch zu zeigen ist: $\exp_p(U_p) \cap \cut(p) = \emptyset$. Wir nehmen an, dass $q \in \exp_p(U_p) \cap \cut(p)$.
+
+Da $q\in \exp_p(U_p)$ existiert eine minimierende Geodätische $\gamma:[a,b] \to M$ mit $\gamma(a) = p$ und $\gamma(b) = q$. $U_p$ ist offen also $\gamma$ auch minimierend auf $[a,b+\ep]$ für $\ep$ genügend klein.
+
+$q\in \cut(p)$ heißt: $q$ ist Schnittpunkt einer von $p$ ausgehenden Geodätischen, das heißt es existiert eine minimierende Geodätische $c:[\alpha,\beta] \to M$ mit $c(\alpha)=p$, $c(\beta)=q$, die nach $c(\beta)$ nicht mehr minimierend ist (insbesondere $c\ne \gamma$), aber mit $L(c|_{[\alpha,\,\beta]}) = L(\gamma|_{[a,\,b]}) = d(p,q)$. Nach Lemma 2 (2) angewandt auf $\gamma$ ist die Geodätische $\gamma$ nicht mehr minimierend nach $\gamma(b)$, im Widerspruch zur Annahme!
+\end{beweis}
+
+\subsection*{Weitere Eigenschaften von $\cut(p)$}
+\begin{enumerate}[(a)]
+\item $\cut(p)$ hat keine inneren Punkte.
+\begin{beweis}
+Wir nehmen an es existiert ein $q$ im Inneren von $\cut(p)$ längs $\gamma$. Dann existiert ein $q' \in \gamma \cap \cut(p)$ „vor“ $q$. Nach Definition des Schnittortes existiert eine minimierende Geodätische $c$ zwischen Punkten $p$ und $q'$.
+\begin{enumerate}[1. {Fall:}]
+\item $c=\gamma$: nach Definition des Schnittortes ist dann $\gamma$ nicht minimierend nach $q'$, im Widerspruch zur Annahme.
+\item $c\ne \gamma$: Nach Lemma 2 (2) ist $\gamma$ nicht mehr minimierend „nach“ $q'$, im Widerspruch zur Annahme.
+\end{enumerate}
+\end{beweis}
+\item $\exp_p|_{U_p}$ ist injektiv. Es gilt sogar ohne Beschränkung: $\exp_p|_{U_p}$ ist eine differenzierbare Einbettung. Das heißt: für $q\in \exp_p(U_p)$ existiert genau eine minimierende Geodätische von $p$ nach $q$.
+\begin{beweis}
+Sei $q\in\exp_p(U_p)$ und $\exp_p(v_1) = q = \exp_p(v_2)$. Nehmen wir an, dass $v_1\ne v_2$, so hat man zwei minimierende Geodätische $\gamma_1\ne \gamma_2$ zwischen $p$ und $q$, das heißt nach Definition des Schnittortes bzw. Lemma 2(4), dass $q\in \cut(p)$, im Widerspruch zur Annahme.
+\end{beweis}
+\item Für ein kompaktes $M$ nimmt die stetige Funktion $s: E_pM \to \MdR$ ein Maximum bzw. Minimum an und ist somit beschränkt. Also ist $\overline {U_p} = \{tv \in T_pM \mid v\in E_pM, 0\le t\le s(v)\}$ homöomoph zum Einheitsball $B_p \da \{tv \in T_pM \mid v\in E_pM, 0\le t \le 1\}$.
+\item 
+Da $\exp_p: \overline{U_p} \to M$ surjektiv ist (Satz \ref{zerlsatz}) und auf $U_p$ injektiv ist, erhält man eine kompakte Riemann’sche Mannigfaltigkeit topologisch dadurch, dass man die Randpunkte eines Einheitsballs „geeignet“ identifiziert (beispielsweise werden für $S^n$ alle Punkte identifiziert). Die topologische Komplexität einer kompakten Mannigfaltigkeit steckt also im Schnittort.
+\end{enumerate}
+
+\begin{definition}
+Der \index{Injektivitätsradius}Injektivitätsradius von $p$ ist definiert als
+\[ \operatorname{Inj(p)} \da \dist (p,\cut(p))\,. \]
+Der Injektivitätsradius von $M$ ist dann
+\[ \operatorname{Inj(M)} \da \inf_{p\in M} \inj (p)\,.\]
+\end{definition}
+
+\begin{beispiel}
+$\inj (S^n) = \pi$ und $\inj (p) = \pi$ für jeden Punkt $p \in S^n$.
+\end{beispiel}
+
+\begin{bemerkung}
+$2\cdot \inj (p)$ ist die Länge der kürzesten von $p$ ausgehenden geschlossenen Geodätischen, falls es diese gibt.
+\end{bemerkung}
+
+\begin{satz}
+(Ohne Beweis, vergleiche do Carmo, Kapitel 13, Proposition 2.2)
+
+\begin{enumerate}
+\item Sei $q\in \cut(p)$ mit $l\da d(p,q) = \dist (p,\cut(p)) = \inj (p)$. Dann gilt entweder, dass es eine Geodätische $\gamma$ zwischen $p$ und $q$ gibt, so dass $q$ zu $p$ längs ($\gamma$) konjugiert ist (das heißt, es gibt ein Jacobi-Feld $J$ längs $\gamma$, so dass $J(p)=0=J(q)$), oder es existieren genau zwei minimierende Geodätische $\gamma$ und $\tau$ zwischen $p$ und $q$ mit $\gamma'(l) = - \tau'(l)$.
+\item Falls für $p\in M$ gilt: $\inj(p)=\inj(M)$, also $\dist(p,\cut(p))$ minimal in $M$, so gilt: Entweder ist $q$ zu $p$ konjugiert längs einer minimierenden Geodätischen oder $q$ ist Mittelpunkt einer geschlossenen Geodätischen (das heißt: differenzierbar in $p$ und $q$).
+\end{enumerate}
+\end{satz}
+
+Beispiel für konjungierte Punkte: Breitner-Fläche (Vesperdose)
+
+\begin{beispiel}
+\begin{enumerate}
+\setcounter{enumi}{-1}
+\item $(\MdR^n,\kan)$ hat keine Schnittpunkte, da die Geodätischen Geraden sind. Also $\cut(p) = \emptyset$ für jeden Punkt $p\in \MdR^n$, und laut Zerlegungssatz gilt $\MdR^n=\exp_p(T_pM)$.
+\item Hyperbolische Ebene $\left(H^2,\frac1{y^2}
+\left(\begin{smallmatrix}
+1 & 0 \\ 0 & 1
+\end{smallmatrix}\right)\right)$: Auch hier gilt $\cut(p) = \emptyset$ für jeden Punkt $p\in H^2$, also $H^2 = \exp_p(T_pH^2)$.
+\begin{bemerkung}
+Allgemeiner gilt der Satz von Hadamard-Cartan: Für eine einfach zusammenhängende und zusammenhängende Riemann’sche Mannigfaltigkeit $M$ mit nichtpositiver Schnittkrümmung. So gilt $\cut(p) = \emptyset$ für alle $p\in M$.
+\end{bemerkung}
+\item $(\mathbb P ^n,\kan) = \left(\faktor{S^{\mathrlap{n}}}\sim,\text{ die von }S^n\text{ induzierte Metrik}\right)$, wobei $p\sim q$ genau dann, wenn $p$ und $q$ Antipoden sind. Hier sind Geodätische minimierend für $d(p,\cdot)<\frac\pi 2$. Sei $pr:S^n\to \mathbb{P}^n$; $pr(p)\da [p] = \{p,-p\}$ die Projektion von $S^n$ auf $\mathbb{P}^n$. Dann ist 
+\[\cut(p)=pr(\text{„Äquator“}) = pr\left(q\in S^n\mid d(p,q)=\frac\pi2\right) = \faktor{S^{n-1}}\sim = \mathbb{P}^{n-1}\,.\]
+Weiter ist $\exp_p(U_p)$ die offene „obere Hemisphäre“ und damit diffeomorph zu $\MdR^n$, etwa durch die Zentralprojektion
+$Z: S_+^n \to \MdR^n$ oder die Orthogonalprojektion $O:S^n_+ \to D^n = \{x\in\MdR^n \mid \|x\|<1\}$.
+
+Nach dem Zerlegungssatz gilt also topologisch betrachtet:
+\[ \mathbb{P}^n = \exp_p(U_p) \uplus \cut(p) \cong \MdR^n \uplus \mathbb{P}^{n-1} \]
+Mit Induktion nach $n= \dim \mathbb{P}^n$ folgt mit $\MdR^0\da\{0\}$:
+\[ \mathbb{P}^n = \MdR^n \uplus \MdR^{n-1} \uplus \cdots \uplus \MdR^1 \uplus \MdR^0 \]
+Beispielsweise ist $\mathbb{P}^2 = \MdR^2 \uplus \mathbb P^1 = \MdR^n \uplus \MdR^1 \uplus \MdR^0$. Dies nennt man auch eine Zellenzerlegung des projektiven Raumes.
+\item Rotationszylinder: Schnittort von $p$ ist die gegenüberliegende Gerade.
+\item Flacher Torus $T^2 = S^1 \times S^1 = \faktor\MdR\MdZ \times \faktor\MdR\MdZ$: Schnittort ist der gegenüberliegende Kreis. $T^2$ kann dargestellt werden als Quadrat mit Seitenlänge 1 und Mittelpunkt $p$, dessen gegenüberliegende Seiten miteinander identifiziert werden. Der Rand des Quadrats ist der Schnittort von $p$.
+\end{enumerate}
+\end{beispiel}
+
+\begin{bemerkungen}
+\item Der Schnittort ist im allgemeinen nicht differenzierbar, sondern in zweidimensionalen Mannigfaltigkeiten ein Graph, also ein simplizialer 1-Komplex.
+\item Für obige Beispiele $M$ gilt immer, dass die Schnittorte eines jeden Punktes gleich aussehen. Dies liegt daran, dass $M$ jeweils homogen war, also für beliebige Punkte $p,q\in M$ exisistiert eine Isometrie $\varphi$ mit $\varphi(p)=q$.
+\end{bemerkungen}
+
+\begin{beispiel}
+Für einen Raum mit $\cut(p) \ne \cut(q)$: Rotationsellipsoid mit Rotationsachse $z$-Achse.
+\end{beispiel}
+
+\section{Volumenberechnung mit dem Zerlegungs-Satz}
+
+Sei zuerst $G\subset M$ ein Gebiet, also offen, zusammenhängend und relativ kompakt, das ganz in einer Karte $(U,\varphi)$ liegt (mit $\varphi(p) = (x^1,\ldots,x^n)$ als Koordinaten).
+
+In der linearen Algebra bezeichnen wir das Volumen des von $a_1,\ldots,a_n\in\MdR^n$ aufgespannten Parallelepipeds als $V=\sqrt{\det(\ksp {a_i} {a_j})}$ (Gramsche Determinante).
+
+\begin{definition}
+Das Volumen\index{Volumen} des Gebietes bezeichnen wir als
+\[
+\vol(G) \da \int_{\varphi(G)} \sqrt{\det (g_{ij}(\varphi^{-1}(x)))} dx\mathrlap{^1}\ldots dx^n \ad \int_{\varphi(G)}d\vol
+\] mit $g_{ij}(p) = \lsp{\frac{\partial}{\partial x^i}|_p}{\frac{\partial}{\partial x^j}|_p}_p$.
+\end{definition}
+
+Nach der Substitutionsregel für Integrale gilt: $\vol(G)$ ist unabhängig von der gewählten Karten und invariant unter Isometrien.
+
+\begin{bemerkung}
+Um das Volumen eines kompakten Gebietes $G$, das nicht ganz in einem Kartengebiet liegt, zu definieren benutzt man eine Überdeckung von $G$ durch (endlich viele) Karten $(U_i,\varphi_i)$ und eine zugehörige Zerlegung der Eins $(f_i)_{i\in I}$. Dann setzt man:
+\[
+\vol (G) \da \sum_{i\in I} \int_{\varphi_i(G\cap U_i)} f_i d \vol_i 
+\]
+wobei $d\vol_i \da \sqrt{\det(g_{jk}(\varphi_i^{-1}(p)))}dx_i^1\ldots x_i^n$.
+
+Man kann zeigen, dass $\vol(G)$ nicht von der Wahl der Karten und der entsprechenden Zerlegung der Eins abhängt.
+\end{bemerkung}
+
+\begin{beispiele}
+\item In der Flächentheorie ist $d\vol = dA = \sqrt{EG-F^2}du dv$.
+\item $(\MdR^n,\text{id})$. Hier ist $d\vol = dx^{\mathrlap 1}\ldots dx^n$ bezüglich cartesischen Koordinaten.
+
+Bezüglich Polarkoordinaten $(t,u)$, $u\in S^{n-1}$, ist $d\vol = t^{n-1}dtd\sigma$, wobei $d\sigma$ das Volumenelement auf der Einheitssphäre $S^{n-1}\subset \MdR^n$ ist.
+\end{beispiele}
+
+Wir wissen:
+\begin{itemize}
+\item $M=\exp_p(U_p) \uplus \cut(p)$.
+\item $\cut(p)$ hat keine inneren Punkte, also ist $\vol(M) = \vol(\exp_p(U_p))$.
+\item $\exp_p|_{U_p}$ ist ein Diffeomorphismus auf das Bild in $M$. 
+\end{itemize}
+Das heißt: Wir können $\exp_p^{-1}: \exp_p(U_p) \to T_pM\cong \MdR^n$ als Karte benutzen.
+
+Sei $c(t)\da \exp_p(tu)$ eine normale Geodätische und $\{u,e_2,\ldots,e_n\}$ eine Orthonormalbasis von $T_pM$. Weiter seien $Y _i(t)$, $i=1,\ldots,n$, die eindeutigen Jacobifelder längs $c(t)$ mit $Y _i(0)=0$ und $Y'_i(0)=e_i$. Es gilt (siehe \ref{schnittort}): $\left.d\exp_p\right|_{tu}(u)= c'(t)$ und $\left.d\exp_p\right|_{tu}(te_i)=Y _i(t)$, $i=2,\ldots,n$.
+
+$\left(t\,(=x^1),x^2\ldots,x^n\right)$ seien die Koordinaten in $T_pM$ bezüglich der Orthonormalbasis $\{u,e_2,\ldots,e_n\}$. Dann gilt:
+\begin{align*}
+\left.\frac{\partial}{\partial t}\right|_{c(t)} &= c'(t) \text{ und } c'(0)=u \\
+\left.\frac{\partial}{\partial x^i}\right|_{c(t)} &= \left.\frac{\partial}{\partial s}\right|_0 \exp_p(tu+se_i) = \left.d\exp_p\right|_{tu}(e_i) = \frac 1 t Y _i(t)
+\end{align*}
+Also:
+\begin{align*}
+g_{11}(c(t)) &= \lsp{\frac\partial{\partial t}}{\frac\partial{\partial t}}_{c(t)} = 1 \\
+g_{1k}(c(t)) &= \lsp{\frac\partial{\partial t}}{\frac\partial{\partial x^k}}_{c(t)} = 0 \\
+g_{ij}(c(t)) &= \lsp{\frac\partial{\partial x^i}}{\frac\partial{\partial x^j}}_{c(t)} = \frac 1 {t^2} \ksp{Y _i(t)}{Y _j(t)}_{c(t)} \\
+\end{align*}
+und
+\[
+\sqrt{\det (g_{ij}(c(t)))} = \frac 1 {t^{n-1}} \sqrt{\vphantom{\ksp{Y _i}{Y _j}_{c(t)}}\smash{\det \underbrace{\ksp{Y _i}{Y _j}_{c(t)}}_{\mathclap{\text{$(n-1)\times(n-1)$-Matrix}}}}} \ad J(u,t)
+\]
+Also:
+\begin{align*}
+d\vol &= \sqrt{\det(g_{ij})}dx^{\mathrlap 1}\ldots dx^n \\
+ &= J(u,t)dx^{\mathrlap 1}\ldots dx^n = J(u,t)t^{n-1}dt du
+\end{align*}
+wobei $du$ das euklidische Volumen-Element auf der Einheitssphäre $S^{n-1}\subset T_pM$ ist.
+
+Daraus können wir folgende Volumenformel ableiten:
+
+Ist $s(u) \in \MdR\cup\{\infty\}$ der Abstand von $p$ zum Schnittort von $p$ in Richtung $u\in T_pM$, $\|u\|=1$, so gilt:
+\begin{align*}
+\vol(M) &= \vol(\exp_p(U_p)) \\
+&= \int_{S^{n-1}} \int_0^{s(u)} J(u,t) t^{n-1} dt du
+\end{align*}
+Allerdings kann man im allgemeinen $J(u,t)$ nicht explitzit berechnen, nur abschätzen.
+
+Einfache Beispiele sind Mannigfaltigkeiten mit konstanter Krümmung.
+\begin{enumerate}
+\item $(\MdR^n,\kan)$ mit Schnittkrümmung konstant 0. Hier ist $Y _i(t) = t E_i(t)$, wobei $E_i(t) = c\|_0^te_i$ ein Parallelfeld längs $c$ ist. Hier ist $J(t,u)=1$. 
+\item $(S^n,\kan)$. Hier ist $Y_i(t) = \sin(t) E_i(t)$. Also 
+\[ \vol(S^n)= \int_{S^{n-1}} \int_0^\pi \left(\frac{\sin(t)}{t}\right)^{n-1} t^{n-1} dt du = \vol(S^{n-1}) \int_0^\pi (\sin t)^{n-1}dt \]
+Diese Rekursionsformel führt zu:
+\begin{align*}
+\vol\left(S^{2n}\right) &= \frac {2 (2\pi)^n} {(2n-1)(2n-3)\cdots 3\cdot 1} \\
+\vol\left(S^{2n+1}\right) &= 2\frac {\pi^{n+1}} {n!}
+\end{align*}
+Das heißt auch: $\vol(S^n)\to 0$ für $n\to \infty$.
+\item Hyperbolische Räume $H^n$. Hier ist $s(u)=\infty$ für alle $u\in S^{n-1}\subset T_pM$. $Y_i(t) = \sinh(t)E_i(t)$. $J(u,t) = \left( \frac {\sinh(t)} t \right)^{n-1}$.
+Daraus ergibt sich $\vol(H^n)=\infty$. Betrachten wir also einen Ball von Radius $R$ (das heißt $B_R(p) \da \{ q\in H^n, d(p,q)\le R\}$):
+\[
+\vol\left(B_R(p)\right) = \int_{S^{n-1}} \int_0^R (\sinh t)^{n-1} dt du = \vol\left(S^{n-1}\right) \int_0^R (\sinh t)^{n-1} dt
+\]
+Für sehr große $R$ wächst $\vol\left(B_R(p)\right)$ wie $\mathrm{e}^{(n-1)R}$: Das Volumenwachstum von Bällen vom Radius $R$ in hyperbolischen Räumen ist exponentiell in $R$. Vergleiche das mit dem Volumenwachstum von Bällen von Radius $R$ in $\MdR^n$, welches polynomial ist.
+
+Diese Beobachtungen waren Ausgangspunkt um den Krümmungsbegriff in allgemeinen metrischen Räumen einzuführen.
+\end{enumerate}
+
+
+\appendix
+
+\chapter{Satz um Satz (hüpft der Has)}
+\listtheorems{satz,wichtigedefinition}
+
+\renewcommand{\indexname}{Stichwortverzeichnis}
+\addtocounter{chapter}{1}
+\addcontentsline{toc}{chapter}{\protect\numberline {\thechapter}Stichwortverzeichnis}
+\printindex
+
+\end{document}

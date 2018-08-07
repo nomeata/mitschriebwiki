@@ -1,0 +1,1709 @@
+<!doctype html><html><head><meta charset="utf-8"/><title>Das VorlesungsMitschriebWiki - AlgGeoWS10/etoolbox</title><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/><link rel="stylesheet" media="screen" href="../data/css/screen.css"/></head><body><header id="msw_top"><h1><a href=".">Das VorlesungsMitschriebWiki</a></h1><nav><ul><li><a href="../." class="icon-home">Home</a></li><li><a href="../IchWarHier.html" class="icon-heart">Guestbook</a></li><li><a href="../SiteMap.html" class="icon-sitemap">Sitemap</a></li><li><a href="../RecentChanges.html" class="icon-time">Wiki-History</a></li><li><a href="../About.html" class="icon-question-sign">About</a></li></ul></nav><div class="hr"><hr/></div></header><div class="body"><nav class="page_nav"><ul><li class="tocLink"><a href="#" title="TOC for this page" class="icon-list-ul"><i>TOC for this page</i></a></li><li class="editPage"><a href="https://github.com/nomeata/mitschriebwiki/edit/master/AlgGeoWS10/etoolbox.sty" title="Edit this page" class="icon-pencil"><i>Edit this page</i></a></li><li class="new"><a href="https://github.com/nomeata/mitschriebwiki/new/master" title="New Document" class="icon-plus"><i>New Document</i></a></li><li class="totop"><a href="#msw_top" title="Back to top" class="icon-arrow-up"><i>Back to top</i></a></li></ul></nav><div class="page"><div class="hr"><hr/></div><h1>AlgGeoWS10/etoolbox</h1><p><a href="../../data/AlgGeoWS10/etoolbox.sty">../data/AlgGeoWS10/etoolbox.sty (download)</a></p><h2>Source</h2><pre>% $Id: etoolbox.sty,v 2.1 2011/01/03 19:14:10 lehman stable $
+
+% Copyright (c) 2007-2011 Philipp Lehman.
+%
+% Permission is granted to copy, distribute and/or modify this
+% software under the terms of the LaTeX Project Public License
+% (LPPL), version 1.3.
+%
+% The LPPL maintenance status of this software is
+% 'author-maintained'.
+%
+% This software is provided 'as is', without warranty of any kind,
+% either expressed or implied, including, but not limited to, the
+% implied warranties of merchantability and fitness for a
+% particular purpose.
+
+\def\etb@rcsid$#1: #2 #3 #4 #5${#4 v#3}
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{etoolbox}
+[\etb@rcsid $Id: etoolbox.sty,v 2.1 2011/01/03 19:14:10 lehman stable $
+ e-TeX tools for LaTeX]
+
+\begingroup
+\@ifundefined{eTeXversion}
+  {\PackageError{etoolbox}
+     {Not running under e-TeX}
+     {This package requires e-TeX. Try compiling the document
+      with\MessageBreak 'elatex' instead of 'latex'. When using
+      pdfTeX, try 'pdfelatex'\MessageBreak instead of 'pdflatex'.
+      This is a fatal error. I'm aborting now.}%
+   \aftergroup\endinput}
+  {}
+\endgroup
+
+\RequirePackage{etex}
+
+\def\etb@catcodes{\do\&amp;\do\|\do\:\do\-\do\=\do\&lt;\do\&gt;}
+\def\do#1{\catcode\number`#1=\the\catcode`#1\relax}
+\edef\etb@catcodes{\etb@catcodes}
+\let\do\noexpand
+\AtEndOfPackage{\etb@catcodes\undef\etb@catcodes}
+
+\catcode`\&amp;=3
+\catcode`\|=3
+\@makeother\:
+\@makeother\-
+\@makeother\=
+\@makeother\&lt;
+\@makeother\&gt;
+
+\protected\def\etb@error{\PackageError{etoolbox}}
+\protected\def\etb@warning{\PackageWarning{etoolbox}}
+\protected\def\etb@info{\PackageInfo{etoolbox}}
+\newcount\etb@tempcnta
+
+% {&lt;cstoken&gt;}[&lt;arguments&gt;][&lt;optarg default&gt;]{&lt;definition&gt;}
+
+\newcommand*{\newrobustcmd}{}
+\protected\def\newrobustcmd{\@star@or@long\etb@new@command}
+
+\def\etb@new@command#1{\@testopt{\etb@newcommand#1}0}
+
+\def\etb@newcommand#1[#2]{%
+  \@ifnextchar[%]
+    {\etb@xargdef#1[#2]}
+    {\ifx\l@ngrel@x\relax
+       \let\l@ngrel@x\protected
+     \else
+       \protected\def\l@ngrel@x{\protected\long}%
+     \fi
+     \@argdef#1[#2]}}
+
+\long\def\etb@xargdef#1[#2][#3]#4{%
+  \@ifdefinable#1{%
+    \expandafter\protected
+    \expandafter\def
+    \expandafter#1%
+    \expandafter{%
+      \expandafter\@testopt
+      \csname\string#1\endcsname{#3}}%
+    \expandafter\@yargdef\csname\string#1\endcsname\tw@{#2}{#4}}}
+
+% {&lt;cstoken&gt;}[&lt;arguments&gt;][&lt;optarg default&gt;]{&lt;definition&gt;}
+
+\newrobustcmd*{\renewrobustcmd}{\@star@or@long\etb@renew@command}
+
+\def\etb@renew@command#1{%
+  \ifundef{#1}
+     {\etb@error{\string#1 undefined}\@ehc}
+     {}%
+  \let\@ifdefinable\@rc@ifdefinable
+  \etb@new@command#1}
+
+% {&lt;cstoken&gt;}[&lt;arguments&gt;][&lt;optarg default&gt;]{&lt;definition&gt;}
+
+\newrobustcmd*{\providerobustcmd}{\@star@or@long\etb@provide@command}
+
+\def\etb@provide@command#1{%
+  \ifundef{#1}
+    {\def\reserved@a{\etb@new@command#1}}
+    {\def\reserved@a{\etb@renew@command\reserved@a}}%
+  \reserved@a}
+
+% {&lt;csname&gt;}
+
+\newrobustcmd*{\csshow}[1]{%
+  \begingroup\expandafter\endgroup
+  \expandafter\show\csname#1\endcsname}
+
+% {&lt;cstoken&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand{\ifdef}[1]{%
+  \ifdefined#1%
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi}
+
+% {&lt;cstoken&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand{\ifundef}[1]{%
+  \ifdefined#1%
+    \ifx#1\relax
+      \expandafter\expandafter
+      \expandafter\@firstoftwo
+    \else
+      \expandafter\expandafter
+      \expandafter\@secondoftwo
+    \fi
+  \else
+    \expandafter\@firstoftwo
+  \fi}
+
+% {&lt;csname&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifcsdef}[1]{%
+  \ifcsname#1\endcsname
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi}
+
+% {&lt;csname&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifcsundef}[1]{%
+  \ifcsname#1\endcsname
+    \expandafter\ifx\csname#1\endcsname\relax
+      \expandafter\expandafter
+      \expandafter\@firstoftwo
+    \else
+      \expandafter\expandafter
+      \expandafter\@secondoftwo
+    \fi
+  \else
+    \expandafter\@firstoftwo
+  \fi}
+
+% {&lt;cstoken&gt;}{&lt;true}{&lt;false&gt;}
+
+\newcommand{\ifdefmacro}{}
+\long\edef\ifdefmacro#1{%
+  \noexpand\expandafter\noexpand\etb@ifdefmacro
+  \noexpand\meaning#1\detokenize{macro}:&amp;}
+\edef\etb@ifdefmacro{%
+  \def\noexpand\etb@ifdefmacro##1\detokenize{macro}:##2&amp;}
+\etb@ifdefmacro{\notblank{#2}}
+
+% {&lt;csname&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifcsmacro}[1]{%
+  \ifcsdef{#1}
+    {\expandafter\ifdefmacro\csname#1\endcsname}
+    {\@secondoftwo}}
+
+% {&lt;cstoken&gt;}{&lt;true}{&lt;false&gt;}
+
+\newcommand{\ifdefprefix}[1]{%
+  \ifdefmacro{#1}
+    {\etb@ifdefprefix{#1}}
+    {\@secondoftwo}}
+\long\edef\etb@ifdefprefix#1{%
+  \noexpand\expandafter\noexpand\etb@ifdefprefix@i
+  \noexpand\meaning#1\detokenize{macro}:&amp;}
+\edef\etb@ifdefprefix@i{%
+  \def\noexpand\etb@ifdefprefix@i##1\detokenize{macro}:##2&amp;}
+\etb@ifdefprefix@i{\notblank{#1}}
+
+% {&lt;csname&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifcsprefix}[1]{%
+  \ifcsdef{#1}
+    {\expandafter\ifdefprefix\csname#1\endcsname}
+    {\@secondoftwo}}
+
+% {&lt;cstoken&gt;}{&lt;true}{&lt;false&gt;}
+
+\newcommand{\ifdefparam}{}
+\long\edef\ifdefparam#1{%
+  \noexpand\expandafter\noexpand\etb@ifdefparam
+  \noexpand\meaning#1\detokenize{macro}:-&gt;&amp;}
+\edef\etb@ifdefparam{%
+  \def\noexpand\etb@ifdefparam##1\detokenize{macro}:##2-&gt;##3&amp;}
+\etb@ifdefparam{\notblank{#2}}
+
+% {&lt;csname&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifcsparam}[1]{%
+  \ifcsdef{#1}
+    {\expandafter\ifdefparam\csname#1\endcsname}
+    {\@secondoftwo}}
+
+% {&lt;cstoken&gt;}{&lt;true}{&lt;false&gt;}
+
+\newcommand{\ifdefprotected}{}
+\long\edef\ifdefprotected#1{%
+  \noexpand\expandafter\noexpand\etb@ifdefprotected
+  \noexpand\meaning#1\string\protected&amp;}
+\edef\etb@ifdefprotected{%
+  \def\noexpand\etb@ifdefprotected##1\string\protected##2&amp;}
+\etb@ifdefprotected{\notblank{#2}}
+
+% {&lt;csname&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifcsprotected}[1]{%
+  \ifcsdef{#1}
+    {\expandafter\ifdefprotected\csname#1\endcsname}
+    {\@secondoftwo}}
+
+% {&lt;cstoken&gt;}{&lt;true}{&lt;false&gt;}
+
+\newrobustcmd{\ifdefltxprotect}[1]{%
+  \begingroup
+  \edef\etb@resrvda{%
+    \noexpand\protect\expandafter\noexpand
+    \csname\expandafter\@gobble\string#1 \endcsname}%
+  \expandafter\endgroup\ifx#1\etb@resrvda
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi}
+
+% {&lt;csname&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newrobustcmd*{\ifcsltxprotect}[1]{%
+  \ifcsdef{#1}
+    {\expandafter\ifdefltxprotect\csname#1\endcsname}
+    {\@secondoftwo}}
+
+% {&lt;cstoken&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand{\ifdefempty}[1]{%
+  \ifundef{#1}
+    {\@secondoftwo}
+    {\ifdefmacro{#1}
+       {\ifdefparam{#1}
+	  {\@secondoftwo}
+	  {\etb@ifdefempty{#1}}}
+       {\@secondoftwo}}}
+
+\def\etb@ifdefempty#1{%
+  \expandafter\expandafter
+  \expandafter\ifblank
+  \expandafter\expandafter
+  \expandafter{%
+  \expandafter\strip@prefix\meaning#1}}
+
+% {&lt;csname&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifcsempty}[1]{%
+  \ifcsundef{#1}
+    {\@secondoftwo}
+    {\expandafter\ifdefparam\csname#1\endcsname
+       {\@secondoftwo}
+       {\expandafter\etb@ifdefempty\csname#1\endcsname}}}
+
+% {&lt;cstoken&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand{\ifdefvoid}[1]{%
+  \ifundef{#1}
+    {\@firstoftwo}
+    {\ifdefmacro{#1}
+       {\ifdefparam{#1}
+	  {\@secondoftwo}
+	  {\etb@ifdefempty{#1}}}
+       {\@secondoftwo}}}
+
+% {&lt;csname&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifcsvoid}[1]{%
+  \ifcsundef{#1}
+    {\@firstoftwo}
+    {\expandafter\ifdefparam\csname#1\endcsname
+       {\@secondoftwo}
+       {\expandafter\etb@ifdefempty\csname#1\endcsname}}}
+
+% {&lt;cstoken1&gt;}{&lt;cstoken2&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand{\ifdefequal}[2]{%
+  \ifundef{#1}
+    {\@secondoftwo}
+    {\ifundef{#2}
+       {\@secondoftwo}
+       {\ifx#1#2%
+          \expandafter\@firstoftwo
+        \else
+          \expandafter\@secondoftwo
+        \fi}}}
+
+% {&lt;csname1&gt;}{&lt;csname2&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifcsequal}[2]{%
+  \ifcsundef{#1}
+    {\@secondoftwo}
+    {\ifcsundef{#2}
+       {\@secondoftwo}
+       {\expandafter\ifx
+        \csname#1\expandafter\endcsname
+        \csname#2\endcsname
+          \expandafter\@firstoftwo
+        \else
+          \expandafter\@secondoftwo
+        \fi}}}
+
+% {&lt;cstoken1&gt;}{&lt;cstoken2&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newrobustcmd{\ifdefstrequal}[2]{%
+  \ifdefmacro{#1}
+    {\ifdefmacro{#2}
+       {\begingroup
+	\edef\etb@tempa{\expandafter\strip@prefix\meaning#1}%
+	\edef\etb@tempb{\expandafter\strip@prefix\meaning#2}%
+	\ifx\etb@tempa\etb@tempb
+	  \aftergroup\@firstoftwo
+	\else
+	  \aftergroup\@secondoftwo
+	\fi
+	\endgroup}
+       {\@secondoftwo}}
+    {\@secondoftwo}}
+
+% {&lt;csname1&gt;}{&lt;csname2&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifcsstrequal}[2]{%
+  \ifcsundef{#1}
+    {\@secondoftwo}
+    {\ifcsundef{#2}
+       {\@secondoftwo}
+       {\expandafter\ifdefstrequal
+        \csname#1\expandafter\endcsname
+	\csname#2\endcsname}}}
+
+% {&lt;cstoken&gt;}{&lt;string&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newrobustcmd{\ifdefstring}[2]{%
+  \ifdefmacro{#1}
+    {\begingroup
+     \edef\etb@tempa{\expandafter\strip@prefix\meaning#1}%
+     \edef\etb@tempb{\detokenize{#2}}%
+     \ifx\etb@tempa\etb@tempb
+       \aftergroup\@firstoftwo
+     \else
+       \aftergroup\@secondoftwo
+     \fi
+     \endgroup}
+    {\@secondoftwo}}
+
+% {&lt;csname&gt;}{&lt;string&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newrobustcmd{\ifcsstring}[2]{%
+  \ifcsundef{#1}
+    {\@secondoftwo}
+    {\expandafter\ifdefstring\csname#1\endcsname{#2}}}
+
+% {&lt;cstoken&gt;}{&lt;true}{&lt;false&gt;}
+
+\newcommand{\ifdefcounter}[1]{\etb@ifcounter#1&amp;}
+\long\def\etb@ifcounter#1#2&amp;{%
+  \ifx\count#1%
+    \expandafter\@secondoftwo
+  \else
+    \expandafter\etb@ifcounter@i\meaning#1:%
+  \fi}
+\edef\etb@ifcounter@i#1:#2\fi{\noexpand\fi
+  \noexpand\etb@ifcounter@ii#1\string\count&amp;}
+\edef\etb@ifcounter@ii{%
+  \def\noexpand\etb@ifcounter@ii##1\string\count##2&amp;}
+\etb@ifcounter@ii{\ifblank{#1}}
+
+% {&lt;csname&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifcscounter}[1]{%
+  \ifcsdef{#1}
+    {\expandafter\ifdefcounter\csname#1\endcsname}
+    {\@secondoftwo}}
+
+% {&lt;name&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifltxcounter}[1]{%
+  \ifcsdef{c@#1}
+    {\expandafter\ifdefcounter\csname c@#1\endcsname}
+    {\@secondoftwo}}
+
+% {&lt;cstoken&gt;}{&lt;true}{&lt;false&gt;}
+
+\newcommand{\ifdeflength}[1]{\etb@iflength#1&amp;}
+\long\def\etb@iflength#1#2&amp;{%
+  \ifx\skip#1%
+    \expandafter\@secondoftwo
+  \else
+    \expandafter\etb@iflength@i\meaning#1:%
+  \fi}
+\edef\etb@iflength@i#1:#2\fi{\noexpand\fi
+  \noexpand\etb@iflength@ii#1\string\skip&amp;}
+\edef\etb@iflength@ii{%
+  \def\noexpand\etb@iflength@ii##1\string\skip##2&amp;}
+\etb@iflength@ii{\ifblank{#1}}
+
+% {&lt;csname&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifcslength}[1]{%
+  \ifcsdef{#1}
+    {\expandafter\ifdeflength\csname#1\endcsname}
+    {\@secondoftwo}}
+
+% {&lt;cstoken&gt;}{&lt;true}{&lt;false&gt;}
+
+\newcommand{\ifdefdimen}[1]{\etb@ifdimen#1&amp;}
+\long\def\etb@ifdimen#1#2&amp;{%
+  \ifx\dimen#1%
+    \expandafter\@secondoftwo
+  \else
+    \expandafter\etb@ifdimen@i\meaning#1:%
+  \fi}
+\edef\etb@ifdimen@i#1:#2\fi{\noexpand\fi
+  \noexpand\etb@ifdimen@ii#1\string\dimen&amp;}
+\edef\etb@ifdimen@ii{%
+  \def\noexpand\etb@ifdimen@ii##1\string\dimen##2&amp;}
+\etb@ifdimen@ii{\ifblank{#1}}
+
+% {&lt;csname&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifcsdimen}[1]{%
+  \ifcsdef{#1}
+    {\expandafter\ifdefdimen\csname#1\endcsname}
+    {\@secondoftwo}}
+
+% {&lt;string1&gt;}{&lt;string2&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newrobustcmd{\ifstrequal}[2]{%
+  \begingroup
+  \edef\etb@tempa{\detokenize{#1}}%
+  \edef\etb@tempb{\detokenize{#2}}%
+  \ifx\etb@tempa\etb@tempb
+    \aftergroup\@firstoftwo
+  \else
+    \aftergroup\@secondoftwo
+  \fi
+  \endgroup}
+
+% {&lt;string&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand{\ifstrempty}[1]{%
+  \expandafter\ifx\expandafter&amp;\detokenize{#1}&amp;%
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi}
+
+% {&lt;string&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand{\ifblank}[1]{% from url.sty
+  \etb@ifblank@i#1&amp;&amp;\@secondoftwo\@firstoftwo:}
+\long\def\etb@ifblank@i#1#2&amp;#3#4#5:{#4}
+
+\newcommand{\notblank}[1]{%
+  \etb@ifblank@i#1&amp;&amp;\@firstoftwo\@secondoftwo:}
+
+% {&lt;numexpr&gt;}{&lt;comp&gt;}{&lt;numexpr&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifnumcomp}[3]{%
+  \ifnum\numexpr#1\relax#2\numexpr#3\relax
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi}
+
+% {&lt;numexpr&gt;}{&lt;numexpr&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifnumequal}[1]{%
+  \ifnumcomp{#1}=}
+
+\newcommand*{\ifnumgreater}[1]{%
+  \ifnumcomp{#1}&gt;}
+
+\newcommand*{\ifnumless}[1]{%
+  \ifnumcomp{#1}&lt;}
+
+% {&lt;numexpr&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifnumodd}[1]{%
+  \ifodd\numexpr#1\relax
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi}
+
+% {&lt;dimexpr&gt;}{&lt;comp&gt;}{&lt;dimexpr&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifdimcomp}[3]{%
+  \ifdim\dimexpr#1\relax#2\dimexpr#3\relax
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi}
+
+% {&lt;dimexpr&gt;}{&lt;dimexpr&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand*{\ifdimequal}[1]{%
+  \ifdimcomp{#1}=}
+
+\newcommand*{\ifdimgreater}[1]{%
+  \ifdimcomp{#1}&gt;}
+
+\newcommand*{\ifdimless}[1]{%
+  \ifdimcomp{#1}&lt;}
+
+% {&lt;expr&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand{\ifboolexpe}[1]{%
+  \etb@be@beg\etb@be@bgroup#1(&amp;\etb@be@end}
+
+\let\etb@be@true\@empty
+\def\etb@be@false{-\@ne}
+
+\def\etb@be@beg{%
+  \ifnum\numexpr\z@\ifnum\numexpr\z@}
+
+\def\etb@be@end{%
+  &lt;\z@
+    \expandafter\etb@be@false
+  \fi
+  &lt;\z@
+    \expandafter\@secondoftwo
+  \else
+    \expandafter\@firstoftwo
+  \fi}
+
+\long\def\etb@be@bgroup#1(#2&amp;{%
+  \etb@be@egroup#1)&amp;%
+  \ifblank{#2}
+    {}
+    {\etb@be@beg
+     \etb@be@bgroup#2&amp;}}
+
+\long\def\etb@be@egroup#1)#2&amp;{%
+  \etb@be@and#1and&amp;%
+  \ifblank{#2}
+    {}
+    {\etb@be@end\etb@be@true\etb@be@false
+     \etb@be@egroup#2&amp;}}
+
+\long\def\etb@be@and#1and#2&amp;{%
+  \etb@be@or#1or&amp;%
+  \ifblank{#2}
+    {}
+    {&lt;\z@
+       \expandafter\@firstofone
+     \else
+       \expandafter\@gobble
+     \fi
+     {=\z@\fi\ifnum\numexpr\m@ne}%
+     \ifnum\numexpr\z@
+     \etb@be@and#2&amp;}}
+
+\long\def\etb@be@or#1or#2&amp;{%
+  \etb@be@not#1not&amp;%
+  \ifblank{#2}
+    {}
+    {&lt;\z@
+       \expandafter\@secondoftwo
+     \else
+       \expandafter\@firstoftwo
+     \fi
+     {=\z@\fi\ifnum\numexpr\z@
+      \ifnum\numexpr\@ne}
+     {=\z@\fi\ifnum\numexpr\z@
+      \ifnum\numexpr\z@}%
+     \etb@be@or#2&amp;}}
+
+\long\def\etb@be@not#1not#2&amp;{%
+  \etb@be@togl#1togl&amp;%
+  \ifblank{#2}
+    {}
+    {&gt;\z@
+       \expandafter\@firstoftwo
+     \else
+       \expandafter\@secondoftwo
+     \fi
+     {\unless\ifnum\numexpr\m@ne}
+     {\unless\ifnum\numexpr\z@}%
+     \etb@be@not#2&amp;}}
+
+\long\def\etb@be@togl#1togl#2&amp;{%
+  \etb@be@bool#1bool&amp;%
+  \ifblank{#2}
+    {}
+    {\etb@be@togl@i#2&amp;}}
+
+\long\def\etb@be@togl@i#1#2&amp;{%
+  \ifcsdef{etb@tgl@#1}
+    {\csname etb@tgl@#1\endcsname\etb@be@true\etb@be@false}
+    {\etb@be@err{Toggle '#1' undefined}{}}%
+  \etb@be@togl#2&amp;}
+
+\long\def\etb@be@bool#1bool#2&amp;{%
+  \etb@be@test#1test&amp;%
+  \ifblank{#2}
+    {}
+    {\etb@be@bool@i#2&amp;}}
+
+\long\def\etb@be@bool@i#1#2&amp;{%
+  \ifcsundef{if#1}
+    {\etb@be@err{Boolean '#1' undefined}{}}
+    {\csname if#1\endcsname
+     \else
+       \etb@be@false
+     \fi}%
+  \etb@be@bool#2&amp;}
+
+\long\def\etb@be@test#1test#2&amp;{%
+  \ifblank{#1}
+    {}
+    {\etb@be@err{The invalid part is: '\detokenize{#1}'}{}}%
+  \ifblank{#2}
+    {}
+    {\etb@be@test@i#2&amp;}}
+
+\long\def\etb@be@test@i#1#2&amp;{%
+  #1\etb@be@true\etb@be@false
+  \etb@be@test#2&amp;}
+
+\long\def\etb@be@err#1#2{%
+  \expandafter\ifnum\the\numexpr
+    \expandafter\ifnum\the\currentiftype=-3
+      \expandafter\thr@@
+    \else
+      \expandafter\currentiftype
+    \fi
+  =\thr@@
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi
+  {=\z@\fi
+   \etb@be@err{#1}{#2\ifnum\numexpr\m@ne}}
+  {\etb@err@expr{#1}#2}}
+
+% {&lt;expr&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newrobustcmd{\ifboolexpr}[1]{\etb@boolexpr{#1}}
+
+\long\def\etb@boolexpr#1{%
+  \begingroup
+  \let\etb@br@neg\@firstoftwo
+  \etb@tempcnta\z@
+  \etb@br@beg
+  \etb@br@bgroup#1(&amp;%
+  \etb@br@end
+  \etb@br@eval}
+
+\def\etb@br@beg{%
+  \begingroup
+  \let\etb@br@neg\@firstoftwo
+  \etb@tempcnta\z@}
+
+\def\etb@br@end{%
+  \etb@br@eval\etb@br@true\etb@br@false}
+
+\def\etb@br@eval{%
+  \ifnum\etb@tempcnta&lt;\z@
+    \aftergroup\@secondoftwo
+  \else
+    \aftergroup\@firstoftwo
+  \fi
+  \endgroup}
+
+\def\etb@br@true{%
+  \advance\etb@tempcnta\etb@br@neg\z@\m@ne
+  \let\etb@br@neg\@firstoftwo}
+
+\def\etb@br@false{%
+  \advance\etb@tempcnta\etb@br@neg\m@ne\z@
+  \let\etb@br@neg\@firstoftwo}
+
+\long\def\etb@br@bgroup#1(#2&amp;{%
+  \etb@br@egroup#1)&amp;%
+  \ifblank{#2}
+    {}
+    {\etb@br@beg
+     \etb@br@bgroup#2&amp;}}
+
+\long\def\etb@br@egroup#1)#2&amp;{%
+  \etb@br@and#1and&amp;%
+  \ifblank{#2}
+    {}
+    {\etb@br@end
+     \etb@br@egroup#2&amp;}}
+
+\long\def\etb@br@and#1and#2&amp;{%
+  \etb@br@or#1or&amp;%
+  \ifblank{#2}
+    {}
+    {\ifnum\etb@tempcnta&lt;\z@
+       \etb@tempcnta\m@ne
+     \else
+       \etb@tempcnta\z@
+     \fi
+     \etb@br@and#2&amp;}}
+
+\long\def\etb@br@or#1or#2&amp;{%
+  \etb@br@not#1not&amp;%
+  \ifblank{#2}
+    {}
+    {\ifnum\etb@tempcnta&lt;\z@
+       \etb@tempcnta\z@
+     \else
+       \etb@tempcnta\@ne
+     \fi
+     \etb@br@or#2&amp;}}
+
+\long\def\etb@br@not#1not#2&amp;{%
+  \etb@br@togl#1togl&amp;%
+  \ifblank{#2}
+    {}
+    {\let\etb@br@neg\@secondoftwo
+     \etb@br@not#2&amp;}}
+
+\long\def\etb@br@togl#1togl#2&amp;{%
+  \etb@br@bool#1bool&amp;%
+  \ifblank{#2}
+    {}
+    {\etb@br@togl@i#2&amp;}}
+
+\long\def\etb@br@togl@i#1#2&amp;{%
+  \ifcsdef{etb@tgl@#1}
+    {\csname etb@tgl@#1\endcsname\etb@br@true\etb@br@false}
+    {\etb@err@expr{Toggle '#1' undefined}\etb@br@false}%
+  \etb@br@togl#2&amp;}
+
+\long\def\etb@br@bool#1bool#2&amp;{%
+  \etb@br@test#1test&amp;%
+  \ifblank{#2}
+    {}
+    {\etb@br@bool@i#2&amp;}}
+
+\long\def\etb@br@bool@i#1#2&amp;{%
+  \ifcsundef{if#1}
+    {\etb@err@expr{Boolean '#1' undefined}\etb@br@false}
+    {\csname if#1\endcsname
+       \etb@br@true
+     \else
+       \etb@br@false
+     \fi}%
+  \etb@br@bool#2&amp;}
+
+\long\def\etb@br@test#1test#2&amp;{%
+  \ifblank{#1}
+    {}
+    {\etb@err@expr{The invalid part is: '\detokenize{#1}'}}%
+  \ifblank{#2}
+    {}
+    {\etb@br@test@i#2&amp;}}
+
+\long\def\etb@br@test@i#1#2&amp;{%
+  \ignorespaces#1\etb@br@true\etb@br@false
+  \etb@br@test#2&amp;}
+
+\long\def\etb@err@expr#1{%
+  \etb@error
+    {Invalid boolean expression}
+    {#1.}}
+
+% {&lt;expr&gt;}{&lt;code&gt;}
+
+\newrobustcmd{\whileboolexpr}[2]{%
+  \etb@boolexpr{#1}{#2\whileboolexpr{#1}{#2}}{}}
+
+% {&lt;expr&gt;}{&lt;code&gt;}
+
+\newrobustcmd{\unlessboolexpr}[2]{%
+  \etb@boolexpr{#1}{}{#2\unlessboolexpr{#1}{#2}}}
+
+% {&lt;cstoken&gt;}
+
+\newcommand{\expandonce}[1]{%
+  \unexpanded\expandafter{#1}}
+
+% {&lt;csname&gt;}
+
+\newcommand*{\csexpandonce}[1]{%
+  \expandafter\expandonce\csname#1\endcsname}
+
+% {&lt;code&gt;}
+
+\newcommand*{\protecting}{}
+\def\protecting#{%
+  \ifx\protect\@typeset@protect
+    \etb@protecting\@firstofone
+  \fi
+  \ifx\protect\@unexpandable@protect
+    \etb@protecting\etb@unexpandable
+  \fi
+  \ifx\protect\noexpand
+    \etb@protecting\unexpanded
+  \fi
+  \ifx\protect\string
+    \etb@protecting\detokenize
+  \fi
+  \relax\@firstofone}
+
+\def\etb@protecting#1#2\relax\@firstofone{\fi#1}
+\long\def\etb@unexpandable#1{\unexpanded{\protecting{#1}}}
+
+% {&lt;csname&gt;}
+
+\newrobustcmd*{\csdef}[1]{\expandafter\def\csname#1\endcsname}
+\newrobustcmd*{\csedef}[1]{\expandafter\edef\csname#1\endcsname}
+\newrobustcmd*{\csgdef}[1]{\expandafter\gdef\csname#1\endcsname}
+\newrobustcmd*{\csxdef}[1]{\expandafter\xdef\csname#1\endcsname}
+\newrobustcmd*{\protected@csedef}{\etb@protected\csedef}
+\newrobustcmd*{\protected@csxdef}{\etb@protected\csxdef}
+
+\def\etb@protected{%
+  \let\@@protect\protect
+  \let\protect\@unexpandable@protect
+  \afterassignment\restore@protect}
+
+% {&lt;csname&gt;}{&lt;cstoken&gt;}
+
+\newrobustcmd{\cslet}[2]{%
+  \expandafter\let\csname#1\endcsname#2}
+
+% {&lt;cstoken&gt;}{&lt;csname&gt;}
+
+\newrobustcmd{\letcs}[2]{%
+  \ifcsdef{#2}
+    {\expandafter\let\expandafter#1\csname#2\endcsname}
+    {\undef#1}}
+
+% {&lt;csname&gt;}{&lt;csname&gt;}
+
+\newrobustcmd*{\csletcs}[2]{%
+  \ifcsdef{#2}
+    {\expandafter\let
+     \csname#1\expandafter\endcsname
+     \csname#2\endcsname}
+    {\csundef{#1}}}
+
+% {&lt;csname&gt;}
+
+\newcommand*{\csuse}[1]{%
+  \ifcsname#1\endcsname
+    \csname#1\expandafter\endcsname
+  \fi}
+
+% {&lt;cstoken&gt;}
+
+\newrobustcmd{\undef}[1]{\let#1\etb@undefined}
+
+% {&lt;csname&gt;}
+
+\newrobustcmd*{\csundef}[1]{\cslet{#1}\etb@undefined}
+
+% {&lt;cstoken&gt;}{&lt;code&gt;}
+
+\newrobustcmd{\appto}[2]{%
+  \ifundef{#1}
+    {\edef#1{\unexpanded{#2}}}
+    {\edef#1{\expandonce#1\unexpanded{#2}}}}
+\newrobustcmd{\eappto}[2]{%
+  \ifundef{#1}
+    {\edef#1{#2}}
+    {\edef#1{\expandonce#1#2}}}
+\newrobustcmd{\gappto}[2]{%
+  \ifundef{#1}
+    {\xdef#1{\unexpanded{#2}}}
+    {\xdef#1{\expandonce#1\unexpanded{#2}}}}
+\newrobustcmd{\xappto}[2]{%
+  \ifundef{#1}
+    {\xdef#1{#2}}
+    {\xdef#1{\expandonce#1#2}}}
+
+\newrobustcmd*{\protected@eappto}{\etb@protected\eappto}
+\newrobustcmd*{\protected@xappto}{\etb@protected\xappto}
+
+% {&lt;cstoken&gt;}{&lt;code&gt;}
+
+\newrobustcmd{\preto}[2]{%
+  \ifundef{#1}
+    {\edef#1{\unexpanded{#2}}}
+    {\edef#1{\unexpanded{#2}\expandonce#1}}}
+\newrobustcmd{\epreto}[2]{%
+  \ifundef{#1}
+    {\edef#1{#2}}
+    {\edef#1{#2\expandonce#1}}}
+\newrobustcmd{\gpreto}[2]{%
+  \ifundef{#1}
+    {\xdef#1{\unexpanded{#2}}}
+    {\xdef#1{\unexpanded{#2}\expandonce#1}}}
+\newrobustcmd{\xpreto}[2]{%
+  \ifundef{#1}
+    {\xdef#1{#2}}
+    {\xdef#1{#2\expandonce#1}}}
+
+\newrobustcmd*{\protected@epreto}{\etb@protected\epreto}
+\newrobustcmd*{\protected@xpreto}{\etb@protected\xpreto}
+
+% {&lt;csname&gt;}{&lt;code&gt;}
+
+\newrobustcmd*{\csappto}[1]{\expandafter\appto\csname#1\endcsname}
+\newrobustcmd*{\cseappto}[1]{\expandafter\eappto\csname#1\endcsname}
+\newrobustcmd*{\csgappto}[1]{\expandafter\gappto\csname#1\endcsname}
+\newrobustcmd*{\csxappto}[1]{\expandafter\xappto\csname#1\endcsname}
+\newrobustcmd*{\protected@cseappto}{\etb@protected\cseappto}
+\newrobustcmd*{\protected@csxappto}{\etb@protected\csxappto}
+
+% {&lt;csname&gt;}{&lt;code&gt;}
+
+\newrobustcmd*{\cspreto}[1]{\expandafter\preto\csname#1\endcsname}
+\newrobustcmd*{\csepreto}[1]{\expandafter\epreto\csname#1\endcsname}
+\newrobustcmd*{\csgpreto}[1]{\expandafter\gpreto\csname#1\endcsname}
+\newrobustcmd*{\csxpreto}[1]{\expandafter\xpreto\csname#1\endcsname}
+\newrobustcmd*{\protected@csepreto}{\etb@protected\csepreto}
+\newrobustcmd*{\protected@csxpreto}{\etb@protected\csxpreto}
+
+% {&lt;cstoken&gt;}{&lt;numexpr&gt;}
+
+\newrobustcmd*{\numdef}[2]{%
+  \ifundef#1{\let#1\z@}{}%
+  \edef#1{\the\numexpr#2}}
+\newrobustcmd*{\numgdef}[2]{%
+  \ifundef#1{\let#1\z@}{}%
+  \xdef#1{\the\numexpr#2}}
+
+% {&lt;csname&gt;}{&lt;numexpr&gt;}
+
+\newrobustcmd*{\csnumdef}[1]{%
+  \expandafter\numdef\csname#1\endcsname}
+\newrobustcmd*{\csnumgdef}[1]{%
+  \expandafter\numgdef\csname#1\endcsname}
+
+% {&lt;cstoken&gt;}{&lt;dimexpr&gt;}
+
+\newrobustcmd*{\dimdef}[2]{%
+  \ifundef#1{\let#1\z@}{}%
+  \edef#1{\the\dimexpr#2}}
+\newrobustcmd*{\dimgdef}[2]{%
+  \ifundef#1{\let#1\z@}{}%
+  \xdef#1{\the\dimexpr#2}}
+
+% {&lt;csname&gt;}{&lt;dimexpr&gt;}
+
+\newrobustcmd*{\csdimdef}[1]{%
+  \expandafter\dimdef\csname#1\endcsname}
+\newrobustcmd*{\csdimgdef}[1]{%
+  \expandafter\dimgdef\csname#1\endcsname}
+
+% {&lt;cstoken&gt;}{&lt;glueexpr&gt;}
+
+\newrobustcmd*{\gluedef}[2]{%
+  \ifundef#1{\let#1\z@skip}{}%
+  \edef#1{\the\glueexpr#2}}
+\newrobustcmd*{\gluegdef}[2]{%
+  \ifundef#1{\let#1\z@skip}{}%
+  \xdef#1{\the\glueexpr#2}}
+
+% {&lt;csname&gt;}{&lt;glueexpr&gt;}
+
+\newrobustcmd*{\csgluedef}[1]{%
+  \expandafter\gluedef\csname#1\endcsname}
+\newrobustcmd*{\csgluegdef}[1]{%
+  \expandafter\gluegdef\csname#1\endcsname}
+
+% {&lt;cstoken&gt;}{&lt;muexpr&gt;}
+
+\newrobustcmd*{\mudef}[2]{%
+  \ifundef#1{\def#1{0mu}}{}%
+  \edef#1{\the\muexpr#2}}
+\newrobustcmd*{\mugdef}[2]{%
+  \ifundef#1{\let#1\z@}{}%
+  \xdef#1{\the\muexpr#2}}
+
+% {&lt;csname&gt;}{&lt;muexpr&gt;}
+
+\newrobustcmd*{\csmudef}[1]{%
+  \expandafter\mudef\csname#1\endcsname}
+\newrobustcmd*{\csmugdef}[1]{%
+  \expandafter\mugdef\csname#1\endcsname}
+
+% {&lt;counter&gt;}{&lt;numexpr&gt;}
+
+\newrobustcmd*{\defcounter}[2]{%
+  \ifcsundef{c@#1}
+    {\etb@noglobal\@nocounterr{#1}}%
+    {\csname c@#1\endcsname\numexpr#2\relax}}
+
+% {&lt;length&gt;}{&lt;glueexpr&gt;}
+
+\newrobustcmd*{\deflength}[2]{%
+  \ifundef{#1}
+    {\etb@noglobal\etb@err@nolen{#1}}%
+    {#1\glueexpr#2\relax}}
+
+\protected\def\etb@err@nolen#1{%
+  \etb@error{Length '\string#1' undefined}\@eha}
+
+% {&lt;name&gt;}
+
+\newrobustcmd*{\newbool}[1]{%
+  \expandafter\@ifdefinable\csname if#1\endcsname{%
+    \expandafter\newif\csname if#1\endcsname}}
+
+% {&lt;name&gt;}
+
+\newrobustcmd*{\providebool}[1]{%
+  \ifcsundef{if#1}
+    {\expandafter\newif\csname if#1\endcsname}
+    {\begingroup
+     \edef\@tempa{\expandafter\meaning\csname if#1\endcsname}%
+     \ifx\@tempa\etb@isfalse
+     \else
+       \ifx\@tempa\etb@istrue
+       \else
+         \etb@error{\@backslashchar if#1 not a boolean}\@eha
+       \fi
+     \fi
+     \endgroup}}
+
+% {&lt;name&gt;}{&lt;true&gt;|&lt;false&gt;}
+
+\newrobustcmd*{\setbool}[2]{%
+  \ifcsundef{if#1}
+    {\etb@noglobal\etb@err@nobool{#1}}
+    {\ifcsundef{#1#2}
+       {\etb@noglobal\etb@err@boolval{#2}}
+       {\csname#1#2\endcsname}}}
+
+% {&lt;name&gt;}
+
+\newrobustcmd*{\booltrue}[1]{%
+  \ifcsundef{if#1}
+    {\etb@noglobal\etb@err@nobool{#1}}
+    {\csname#1true\endcsname}}
+
+% {&lt;name&gt;}
+
+\newrobustcmd*{\boolfalse}[1]{%
+  \ifcsundef{if#1}
+    {\etb@noglobal\etb@err@nobool{#1}}
+    {\csname#1false\endcsname}}
+
+\edef\etb@istrue{\meaning\iftrue}
+\edef\etb@isfalse{\meaning\iffalse}
+\protected\def\etb@noglobal{\let\relax\relax}
+
+% {&lt;name&gt;}{&lt;true}{&lt;false&gt;}
+
+\newcommand*{\ifbool}[1]{%
+  \ifcsundef{if#1}
+    {\etb@err@nobool{#1}\@gobbletwo}
+    {\csname if#1\endcsname
+       \expandafter\@firstoftwo
+     \else
+       \expandafter\@secondoftwo
+     \fi}}
+
+% {&lt;name&gt;}{&lt;not true}{&lt;not false&gt;}
+
+\newcommand*{\notbool}[1]{%
+  \ifcsundef{if#1}
+    {\etb@err@nobool{#1}\@gobbletwo}
+    {\csname if#1\endcsname
+       \expandafter\@secondoftwo
+     \else
+       \expandafter\@firstoftwo
+     \fi}}
+
+\protected\def\etb@err@nobool#1{%
+  \etb@error{Boolean '\@backslashchar if#1' undefined}\@eha}
+
+\def\etb@err@boolval#1{%
+  \etb@error
+    {Invalid boolean value '#1'}
+    {Valid boolean values are 'true' and 'false'.}}
+
+% {&lt;name&gt;}
+
+\newrobustcmd*{\newtoggle}[1]{%
+  \ifcsdef{etb@tgl@#1}
+    {\etb@error{Toggle '#1' already defined}\@eha}
+    {\cslet{etb@tgl@#1}\@secondoftwo}}
+
+% {&lt;name&gt;}
+
+\newrobustcmd*{\providetoggle}[1]{%
+  \ifcsdef{etb@tgl@#1}
+    {}
+    {\cslet{etb@tgl@#1}\@secondoftwo}}
+
+% {&lt;name&gt;}{&lt;true&gt;|&lt;false&gt;}
+
+\newrobustcmd*{\settoggle}[2]{%
+  \ifcsdef{etb@tgl@#1}
+    {\ifcsdef{etb@toggle#2}
+       {\csletcs{etb@tgl@#1}{etb@toggle#2}}
+       {\etb@noglobal\etb@err@boolval{#2}}}
+    {\etb@noglobal\etb@err@notoggle{#1}}}
+
+% {&lt;name&gt;}
+
+\newrobustcmd*{\toggletrue}[1]{%
+  \ifcsdef{etb@tgl@#1}
+    {\cslet{etb@tgl@#1}\etb@toggletrue}
+    {\etb@noglobal\etb@err@notoggle{#1}}}
+
+% {&lt;name&gt;}
+
+\newrobustcmd*{\togglefalse}[1]{%
+  \ifcsdef{etb@tgl@#1}
+    {\cslet{etb@tgl@#1}\etb@togglefalse}
+    {\etb@noglobal\etb@err@notoggle{#1}}}
+
+\let\etb@toggletrue\@firstoftwo
+\let\etb@togglefalse\@secondoftwo
+
+% {&lt;name&gt;}{&lt;true}{&lt;false&gt;}
+
+\newcommand*{\iftoggle}[1]{%
+  \ifcsdef{etb@tgl@#1}
+    {\csname etb@tgl@#1\endcsname}
+    {\etb@err@notoggle{#1}\@gobbletwo}}
+
+% {&lt;name&gt;}{&lt;not true}{&lt;not false&gt;}
+
+\newcommand*{\nottoggle}[1]{%
+  \ifcsdef{etb@tgl@#1}
+    {\csname etb@tgl@#1\endcsname\@secondoftwo\@firstoftwo}
+    {\etb@err@notoggle{#1}\@gobbletwo}}
+
+\protected\def\etb@err@notoggle#1{%
+  \etb@error{Toggle '#1' undefined}\@eha}
+
+% {&lt;cstoken&gt;}{&lt;true}{&lt;false&gt;}
+
+\protected\def\etb@ifscanable#1{%
+  \begingroup
+  \edef\etb@resrvda{%
+    \def\noexpand\etb@resrvda####1\detokenize{macro}:####2-&gt;####3&amp;{%
+      ####1\def\string\etb@resrvda####2{####3}}%
+    \edef\noexpand\etb@resrvda{\noexpand\etb@resrvda\meaning#1&amp;}}%
+  \etb@resrvda
+  \makeatletter
+  \scantokens\expandafter{\etb@resrvda}%
+  \expandafter\endgroup\ifx#1\etb@resrvda
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi}
+
+% {&lt;cstoken&gt;}{&lt;search&gt;}{&lt;true}{&lt;false&gt;}
+
+\protected\long\def\etb@ifpattern#1#2{%
+  \begingroup
+  \edef\etb@resrvda{%
+    \def\noexpand\etb@resrvda####1\detokenize{#2}####2&amp;{%
+      \endgroup\noexpand\noexpand\noexpand\ifblank{####2}}%
+    \edef\noexpand\etb@resrvda{\noexpand\etb@resrvda
+      \expandafter\strip@prefix\meaning#1\detokenize{#2}&amp;}%
+    \noexpand\etb@resrvda}
+  \etb@resrvda\@secondoftwo\@firstoftwo}
+
+% {&lt;string&gt;}{&lt;true}{&lt;false&gt;}
+
+\protected\long\def\etb@ifhashcheck#1{%
+  \begingroup
+  \edef\etb@resrvda{\detokenize{#1}}%
+  \expandafter\endgroup
+  \expandafter\etb@ifhashcheck@i\meaning\etb@resrvda&amp;}
+
+\edef\etb@ifhashcheck@i#1&amp;{%
+  \noexpand\expandafter
+  \noexpand\etb@ifhashcheck@ii
+  \noexpand\strip@prefix#1\string#\string#&amp;}
+
+\edef\etb@ifhashcheck@ii{%
+  \def\noexpand\etb@ifhashcheck@ii##1\string#\string###2&amp;}
+\etb@ifhashcheck@ii{\ifblank{#2}}
+
+% {&lt;cstoken&gt;}
+
+\newrobustcmd*{\robustify}[1]{%
+  \ifundef{#1}
+    {\etb@error{\string#1 undefined}\@eha}
+    {\ifdefmacro{#1}
+       {\ifdefltxprotect{#1}
+          {\letcs\etb@resrvda{\expandafter\@gobble\string#1 }%
+           \@tempswatrue}
+          {\let\etb@resrvda#1%
+           \@tempswafalse}%
+        \ifdefparam\etb@resrvda
+          {\etb@ifscanable\etb@resrvda
+             {\etb@robustify\etb@resrvda
+              \let#1\etb@resrvda}
+             {\etb@error{Failed to robustify \string#1}
+                {The command is special and cannot be
+                 handled by \string\robustify.}%
+              \@tempswafalse}}
+          {\protected\edef#1{\expandonce\etb@resrvda}}
+        \if@tempswa
+          \ifcsdef{\string#1 }
+            {}
+            {\csundef{\expandafter\@gobble\string#1 }}%
+        \fi
+        \undef\etb@resrvda}
+       {\etb@error{\string#1 not a macro}\@eha}}}
+
+\def\etb@robustify#1{%
+  \begingroup
+  \edef\etb@resrvdb{%
+    \def\noexpand\etb@resrvdb####1\detokenize{macro}:####2-&gt;####3&amp;{%
+      \protected####1\def\string#1\space####2{####3}}%
+    \edef\noexpand\etb@resrvdb{%
+      \noexpand\etb@resrvdb\meaning#1&amp;}}%
+  \etb@resrvdb
+  \etb@patchcmd@scantoks\etb@resrvdb}
+
+%  {&lt;cstoken&gt;}{&lt;search&gt;}{&lt;true}{&lt;false&gt;}
+% *{&lt;cstoken&gt;}{&lt;true}{&lt;false&gt;}
+
+\newrobustcmd{\ifpatchable}{%
+  \etb@dbg@trce\ifpatchable
+  \begingroup
+  \@makeother\#%
+  \@ifstar\etb@ifpatchable@i\etb@ifpatchable}
+
+\long\def\etb@ifpatchable#1#2{%
+  \endgroup
+  \etb@dbg@init#1%
+  \ifundef{#1}
+    {\etb@dbg@fail{def}\@secondoftwo}
+    {\etb@dbg@info{def}%
+     \ifdefmacro{#1}
+       {\etb@dbg@info{mac}%
+        \etb@ifscanable{#1}
+          {\etb@ifhashcheck{#2}
+             {\etb@dbg@info{tok}%
+              \etb@ifpattern#1{#2}
+                 {\etb@dbg@info{pat}%
+                  \etb@dbg@info{pos}\@firstoftwo}
+                 {\etb@dbg@fail{pat}\@secondoftwo}}
+             {\etb@dbg@fail{hsh}\@secondoftwo}}
+          {\etb@dbg@fail{tok}\@secondoftwo}}
+       {\etb@dbg@fail{mac}\@secondoftwo}}}
+
+\long\def\etb@ifpatchable@i#1{%
+  \endgroup
+  \etb@dbg@init#1%
+  \ifundef{#1}
+    {\etb@dbg@fail{def}\@secondoftwo}
+    {\etb@dbg@info{def}%
+     \ifdefmacro{#1}
+       {\etb@dbg@info{mac}%
+        \ifdefparam{#1}
+          {\etb@dbg@info{prm}%
+           \etb@ifscanable{#1}
+             {\etb@dbg@info{tok}%
+              \etb@dbg@info{pos}\@firstoftwo}
+             {\etb@dbg@fail{tok}\@secondoftwo}}
+          {\etb@dbg@info{prl}%
+           \ifdefprotected{#1}
+             {\etb@dbg@info{pro}}
+             {}%
+           \etb@dbg@info{pos}\@firstoftwo}}
+       {\etb@dbg@fail{mac}\@secondoftwo}}}
+
+% [&lt;prefix&gt;]{&lt;cstoken&gt;}{&lt;search&gt;}{&lt;replace&gt;}{&lt;success&gt;}{&lt;failure&gt;}
+
+\newrobustcmd*{\patchcmd}{%
+  \etb@dbg@trce\patchcmd
+  \begingroup
+  \@makeother\#%
+  \etb@patchcmd}
+
+\newcommand{\etb@patchcmd}[4][########1]{%
+  \etb@ifpatchable#2{#3}
+    {\etb@dbg@succ{ret}%
+     \begingroup
+     \edef\etb@resrvda{%
+       \def\noexpand\etb@resrvda####1\detokenize{macro:}####2-&gt;####3&amp;{%
+         #1\def\string\etb@resrvda\space####2{\noexpand\etb@resrvdb####3&amp;}}%
+       \def\noexpand\etb@resrvdb####1\detokenize{#3}####2&amp;{%
+         ####1\detokenize{#4}####2}%
+       \edef\noexpand\etb@resrvda{%
+         \noexpand\etb@resrvda\meaning#2&amp;}}%
+     \etb@resrvda
+     \etb@patchcmd@scantoks\etb@resrvda
+     \let#2\etb@resrvda
+     \undef\etb@resrvda
+     \@firstoftwo}
+    {\@secondoftwo}}
+
+\def\etb@patchcmd@scantoks#1{%
+  \edef\etb@resrvda{\endgroup
+    \unexpanded{\makeatletter\scantokens}{#1}%
+    \catcode\number`\@=\the\catcode`\@\relax}%
+  \etb@resrvda}
+
+% {&lt;cstoken&gt;}{&lt;code&gt;}{&lt;success&gt;}{&lt;failure&gt;}
+
+\newrobustcmd*{\apptocmd}{%
+  \etb@dbg@trce\apptocmd
+  \begingroup
+  \@makeother\#%
+  \etb@hooktocmd\etb@append}
+
+\newrobustcmd*{\pretocmd}{%
+  \etb@dbg@trce\pretocmd
+  \begingroup
+  \@makeother\#%
+  \etb@hooktocmd\etb@prepend}
+
+\long\def\etb@hooktocmd#1#2#3{%
+  \endgroup
+  \etb@dbg@init#2%
+  \ifundef{#2}
+    {\etb@dbg@fail{def}\@secondoftwo}
+    {\etb@dbg@info{def}%
+     \ifdefmacro{#2}
+       {\etb@dbg@info{mac}%
+        \ifdefparam{#2}
+          {\etb@dbg@info{prm}%
+           \etb@ifscanable{#2}
+             {\etb@ifhashcheck{#3}
+                {\etb@dbg@info{tok}%
+                 \etb@dbg@succ{ret}%
+                 \etb@hooktocmd@i#1#2{#3}%
+                 \@firstoftwo}
+                {\etb@dbg@fail{hsh}\@secondoftwo}}
+             {\etb@dbg@fail{tok}\@secondoftwo}}
+          {\etb@dbg@info{prl}%
+           \ifdefprotected{#2}
+             {\etb@dbg@info{pro}%
+              \etb@dbg@succ{red}%
+              \protected}
+             {\etb@dbg@succ{red}}%
+           \edef#2{#1{\expandonce#2}{\unexpanded{#3}}}%
+           \@firstoftwo}}
+       {\etb@dbg@fail{mac}\@secondoftwo}}}
+
+\long\def\etb@hooktocmd@i#1#2#3{%
+  \begingroup
+  \edef\etb@resrvda{%
+    \def\noexpand\etb@resrvda####1\detokenize{macro}:####2-&gt;####3&amp;{%
+      ####1\def\string\etb@resrvda\space####2{#1{####3}{\detokenize{#3}}}}%
+    \edef\noexpand\etb@resrvda{%
+      \noexpand\etb@resrvda\meaning#2&amp;}}%
+  \etb@resrvda
+  \etb@patchcmd@scantoks\etb@resrvda
+  \let#2\etb@resrvda
+  \undef\etb@resrvda}
+
+\long\def\etb@append#1#2{#1#2}
+\long\def\etb@prepend#1#2{#2#1}
+
+\newrobustcmd*{\tracingpatches}{%
+  \etb@info{Enabling tracing}%
+  \input{etoolbox.def}%
+  \global\let\tracingpatches\relax}
+\@onlypreamble\tracingpatches
+
+\let\etb@dbg@trce\@gobble
+\let\etb@dbg@init\@gobble
+\let\etb@dbg@info\@gobble
+\let\etb@dbg@succ\@gobble
+\let\etb@dbg@fail\@gobble
+
+% {&lt;numeral&gt;}
+
+\newcommand{\rmntonum}[1]{%
+  \ifblank{#1}
+    {}
+    {\expandafter\etb@rti@end\number\numexpr
+     \expandafter\etb@rti@prs\detokenize{#1}&amp;\relax}}
+
+\def\etb@rti@prs#1#2{%
+  \ifx&amp;#1%
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi
+  {#1#2}
+  {\ifx&amp;#2%
+     \expandafter\@firstoftwo
+   \else
+     \expandafter\@secondoftwo
+   \fi
+   {\etb@rti@chk#1+\etb@rti@num#1#2}
+   {\etb@rti@chk#1\etb@rti@chk#2%
+    \ifnum\etb@rti@num#1&lt;\etb@rti@num#2 %
+      \expandafter\@firstoftwo
+    \else
+      \expandafter\@secondoftwo
+    \fi
+    {+\etb@rti@num#2-\etb@rti@num#1\etb@rti@prs}
+    {+\etb@rti@num#1\etb@rti@prs#2}}}}
+
+\def\etb@rti@chk#1{%
+  \ifcsname etb@rmn@#1\endcsname
+  \else
+    \expandafter\etb@rti@brk
+  \fi}
+
+\def\etb@rti@brk#1&amp;{+\z@&amp;-1}
+\def\etb@rti@end#1&amp;#2\relax{\ifblank{#2}{#1}{#2}}
+\def\etb@rti@num#1{\csname etb@rmn@#1\endcsname}
+
+\chardef\etb@rmn@i=1
+\chardef\etb@rmn@I=1
+\chardef\etb@rmn@v=5
+\chardef\etb@rmn@V=5
+\chardef\etb@rmn@x=10
+\chardef\etb@rmn@X=10
+\chardef\etb@rmn@l=50
+\chardef\etb@rmn@L=50
+\chardef\etb@rmn@c=100
+\chardef\etb@rmn@C=100
+\mathchardef\etb@rmn@d=500
+\mathchardef\etb@rmn@D=500
+\mathchardef\etb@rmn@m=1000
+\mathchardef\etb@rmn@M=1000
+
+% {&lt;numeral&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newcommand{\ifrmnum}[1]{%
+  \ifblank{#1}
+    {\@secondoftwo}
+    {\expandafter\etb@ifr@prs\detokenize{#1}\relax}}
+
+\def\etb@ifr@prs#1{%
+  \ifx\relax#1%
+    \expandafter\@firstoftwo
+  \else
+    \ifcsname etb@rmn@#1\endcsname
+      \expandafter\expandafter
+      \expandafter\etb@ifr@prs
+    \else
+      \expandafter\expandafter
+      \expandafter\etb@ifr@brk
+    \fi
+  \fi}
+
+\def\etb@ifr@brk#1\relax{\@secondoftwo}
+
+% &lt;*&gt;{&lt;command&gt;}{&lt;separator&gt;}
+
+\newrobustcmd*{\DeclareListParser}{%
+  \@ifstar
+    {\etb@defparser\etb@defparser@arg}
+    {\etb@defparser\etb@defparser@do}}
+
+\def\etb@defparser#1#2#3{%
+  \@ifdefinable#2{#1{#2}{#3}}}
+
+\def\etb@defparser@do#1#2{%
+  \begingroup
+  \edef\@tempa{\endgroup
+    \long\def\noexpand#1####1{%
+      \expandafter\noexpand
+      \csname etb@lst@\expandafter\@gobble\string#1\endcsname
+      \space####1\noexpand#2&amp;}%
+    \long\csdef{etb@lst@\expandafter\@gobble\string#1}####1\noexpand#2####2&amp;{%
+      \noexpand\etb@listitem\noexpand\do{####1}%
+      \noexpand\ifblank{####2}
+        {\noexpand\listbreak}
+        {\expandafter\noexpand
+         \csname etb@lst@\expandafter\@gobble\string#1\endcsname
+	 \space####2}&amp;}}%
+  \@tempa}
+
+\def\etb@defparser@arg#1#2{%
+  \begingroup
+  \edef\@tempa{\endgroup
+    \long\def\noexpand#1####1####2{%
+      \expandafter\noexpand
+      \csname etb@lst@\expandafter\@gobble\string#1\endcsname
+      {####1}\space####2\noexpand#2&amp;}%
+    \long\csdef{etb@lst@\expandafter\@gobble\string#1}####1####2\noexpand#2####3&amp;{%
+      \noexpand\etb@listitem{####1}{####2}%
+      \noexpand\ifblank{####3}
+        {\noexpand\listbreak}
+        {\expandafter\noexpand
+         \csname etb@lst@\expandafter\@gobble\string#1\endcsname
+	 {####1}\space####3}&amp;}}%
+  \@tempa}
+
+\long\def\etb@listitem#1#2{%
+  \ifblank{#2}
+    {}
+    {\expandafter\etb@listitem@i
+     \expandafter{\@firstofone#2}{#1}}}
+\long\def\etb@listitem@i#1#2{#2{#1}}
+
+\newcommand*{\listbreak}{}
+\long\def\listbreak#1&amp;{}
+
+% {&lt;item1&gt;,&lt;item2&gt;,...} =&gt; \do{&lt;item1&gt;}\do{&lt;item2&gt;}...
+
+\DeclareListParser{\docsvlist}{,}
+
+% {&lt;handler&gt;}{&lt;item1&gt;,&lt;item2&gt;,...} =&gt; &lt;handler&gt;{&lt;item1&gt;}&lt;handler&gt;{&lt;item2&gt;}...
+
+\DeclareListParser*{\forcsvlist}{,}
+
+% {&lt;listmacro&gt;}{&lt;string&gt;}
+
+\newrobustcmd{\listadd}[2]{%
+  \ifblank{#2}{}{\appto#1{#2|}}}
+\newrobustcmd{\listeadd}[2]{%
+  \begingroup
+  \edef\etb@tempa{\endgroup\noexpand\ifblank{#2}}%
+  \etb@tempa{}{\eappto#1{#2|}}}
+\newrobustcmd{\listgadd}[2]{%
+  \ifblank{#2}{}{\gappto#1{#2|}}}
+\newrobustcmd{\listxadd}[2]{%
+  \begingroup
+  \edef\etb@tempa{\endgroup\noexpand\ifblank{#2}}%
+  \etb@tempa{}{\xappto#1{#2|}}}
+
+% {&lt;listcsname&gt;}{&lt;string&gt;}
+
+\newrobustcmd{\listcsadd}[1]{%
+  \expandafter\listadd\csname#1\endcsname}
+\newrobustcmd{\listcseadd}[1]{%
+  \expandafter\listeadd\csname#1\endcsname}
+\newrobustcmd{\listcsgadd}[1]{%
+  \expandafter\listgadd\csname#1\endcsname}
+\newrobustcmd{\listcsxadd}[1]{%
+  \expandafter\listxadd\csname#1\endcsname}
+
+% {&lt;string&gt;}{&lt;listmacro&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newrobustcmd{\ifinlist}[2]{%
+  \begingroup
+  \def\etb@tempa##1|#1|##2&amp;{\endgroup
+    \ifblank{##2}\@secondoftwo\@firstoftwo}%
+  \expandafter\etb@tempa\expandafter|#2|#1|&amp;}
+
+\newrobustcmd{\xifinlist}[1]{%
+  \begingroup
+  \edef\etb@tempa{\endgroup\ifinlist{#1}}%
+  \etb@tempa}
+
+% {&lt;string&gt;}{&lt;listcsname&gt;}{&lt;true&gt;}{&lt;false&gt;}
+
+\newrobustcmd{\ifinlistcs}[2]{%
+  \expandafter\etb@ifinlistcs@i\csname #2\endcsname{#1}}
+\long\def\etb@ifinlistcs@i#1#2{\ifinlist{#2}{#1}}
+
+\newrobustcmd{\xifinlistcs}[1]{%
+  \begingroup
+  \edef\etb@tempa{\endgroup\ifinlistcs{#1}}%
+  \etb@tempa}
+
+% {&lt;handler&gt;}{&lt;listmacro&gt;} =&gt; &lt;handler&gt;{&lt;item1&gt;}&lt;handler&gt;{&lt;item2&gt;}...
+
+\newcommand*{\forlistloop}[2]{%
+  \expandafter\etb@forlistloop\expandafter{#2}{#1}}
+
+\long\def\etb@forlistloop#1#2{\etb@forlistloop@i{#2}#1|&amp;}
+
+\long\def\etb@forlistloop@i#1#2|#3&amp;{%
+  \ifblank{#2}
+    {}
+    {#1{#2}}%
+  \ifblank{#3}
+    {\listbreak}
+    {\etb@forlistloop@i{#1}#3}%
+  &amp;}
+
+% {&lt;handler&gt;}{&lt;listcsname&gt;} =&gt; &lt;handler&gt;{&lt;item1&gt;}&lt;handler&gt;{&lt;item2&gt;}...
+
+\newcommand*{\forlistcsloop}[2]{%
+  \expandafter\expandafter\expandafter\etb@forlistloop
+  \expandafter\expandafter\expandafter{\csname#2\endcsname}{#1}}
+
+% {&lt;listmacro&gt;} =&gt; \do{&lt;item1&gt;}\do{&lt;item2&gt;}...
+
+\newcommand*{\dolistloop}{\forlistloop\do}
+
+% {&lt;listcsname&gt;} =&gt; \do{&lt;item1&gt;}\do{&lt;item2&gt;}...
+
+\newcommand*{\dolistcsloop}{\forlistcsloop\do}
+
+% {&lt;code&gt;}
+
+\newrobustcmd*{\AtEndPreamble}{\gappto\@endpreamblehook}
+\newcommand*{\@endpreamblehook}{}
+
+\preto\document{%
+  \endgroup
+  \let\AtEndPreamble\@firstofone
+  \@endpreamblehook
+  \protected\def\AtEndPreamble{\@notprerr\@gobble}%
+  \undef\@endpreamblehook
+  \begingroup}
+
+% {&lt;code&gt;}
+
+\newrobustcmd*{\AfterPreamble}{\AtBeginDocument}
+\AtEndPreamble{\let\AfterPreamble\@firstofone}
+
+% {&lt;code&gt;}
+
+\newrobustcmd*{\AfterEndPreamble}{\gappto\@afterendpreamblehook}
+\newcommand*{\@afterendpreamblehook}{}
+
+\appto\document{%
+  \let\AfterEndPreamble\@firstofone
+  \@afterendpreamblehook
+  \protected\def\AfterEndPreamble{\@notprerr\@gobble}%
+  \undef\@afterendpreamblehook
+  \ignorespaces}
+
+\AtEndDocument{\let\AfterEndPreamble\@gobble}
+
+% {&lt;code&gt;}
+
+\newrobustcmd*{\AfterEndDocument}{\gappto\@afterenddocumenthook}
+\newcommand*{\@afterenddocumenthook}{}
+
+\patchcmd\enddocument
+  {\deadcycles}
+  {\let\AfterEndDocument\@firstofone
+   \@afterenddocumenthook
+   \deadcycles}
+  {}
+  {\let\etb@@end\@@end
+   \def\@@end{%
+     \let\AfterEndDocument\@firstofone
+     \@afterenddocumenthook
+     \etb@@end}}
+
+% {&lt;environment&gt;}{&lt;code&gt;}
+
+\newrobustcmd{\AtBeginEnvironment}[1]{%
+  \csgappto{@begin@#1@hook}}
+
+\patchcmd\begin
+  {\csname #1\endcsname}
+  {\csuse{@begin@#1@hook}%
+   \csname #1\endcsname}
+  {}
+  {\etb@warning{%
+     Patching '\string\begin' failed!\MessageBreak
+     '\string\AtBeginEnvironment' will not work\@gobble}}
+
+% {&lt;environment&gt;}{&lt;code&gt;}
+
+\newrobustcmd{\AtEndEnvironment}[1]{%
+  \csgappto{@end@#1@hook}}
+
+\patchcmd\end
+  {\csname end#1\endcsname}
+  {\csuse{@end@#1@hook}%
+   \csname end#1\endcsname}
+  {}
+  {\etb@warning{%
+     Patching '\string\end' failed!\MessageBreak
+     '\string\AtEndEnvironment' will not work\@gobble}}
+
+% {&lt;environment&gt;}{&lt;code&gt;}
+
+\newrobustcmd{\BeforeBeginEnvironment}[1]{%
+  \csgappto{@beforebegin@#1@hook}}
+
+\pretocmd\begin
+  {\csuse{@beforebegin@#1@hook}}
+  {}
+  {\etb@warning{%
+     Patching '\string\begin' failed!\MessageBreak
+     '\string\BeforeBeginEnvironment' will not work\@gobble}}
+
+% {&lt;environment&gt;}{&lt;code&gt;}
+
+\newrobustcmd{\AfterEndEnvironment}[1]{%
+  \csgappto{@afterend@#1@hook}}
+
+\patchcmd\end
+  {\if@ignore}
+  {\csuse{@afterend@#1@hook}%
+   \if@ignore}
+  {}
+  {\etb@warning{%
+     Patching '\string\end' failed!\MessageBreak
+     '\string\AfterEndEnvironment' will not work\@gobble}}
+
+\endinput
+</pre></div></div><footer><div class="hr"><hr/></div><ul><li><div id="socialshareprivacy"/></li></ul><div class="hr hr2"><hr/></div></footer><script src="../data/js/minimized.js"> </script><!-- Piwik --> <script type="text/javascript"> var _paq = _paq || []; _paq.push(['trackPageView']); _paq.push(['enableLinkTracking']); (function() { var u=(("https:" == document.location.protocol) ? "https" : "http") + "://nomeata.de/piwik/"; _paq.push(['setTrackerUrl', u+'piwik.php']); _paq.push(['setSiteId', 1]); var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript'; g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s); })(); </script> <noscript><p><img src="http://nomeata.de/piwik/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript> <!-- End Piwik Code --></body></html>

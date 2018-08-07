@@ -1,0 +1,2366 @@
+\documentclass[12pt]{scrbook}   %12pt --> art10
+
+\usepackage{latexki}
+\lecturer{Dr. S. Kühnlein}
+\semester{Wintersemester 07/08}
+\scriptstate{partial}
+
+\oddsidemargin=0cm
+\evensidemargin=0cm
+\topmargin=-2cm
+\textwidth=18cm
+\textheight=25cm
+\mathsurround=1.5pt
+\parskip=5pt
+\parindent=0pt
+%\setcounter{page}{0}
+
+%\input pictex
+%\input prepictex
+%\input postpictex
+
+%\usepackage{color}
+\usepackage{a4}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{mathtools}
+\usepackage[utf8]{inputenc}
+\usepackage{fontenc}[german]
+\usepackage[all]{xy}
+\usepackage{german}
+\usepackage{faktor}
+\usepackage{nicefrac}
+\usepackage{enumerate}
+\usepackage{url}
+\selectlanguage{german}
+%\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+%\pagestyle{empty}
+
+\usepackage{hyperref}
+
+\newtheorem{alles}{alles}[section]
+\newtheorem{bemX}[alles]{Bemerkung}
+\newenvironment{bem}[1]{\begin{bemX}{\bf #1}\par\rm}{\end{bemX}}
+\newtheorem{satzX}[alles]{Satz}
+\newenvironment{satz}[1]{\begin{satzX}{\bf #1}\nopagebreak\par}{\end{satzX}}
+\newtheorem{hilfsX}[alles]{Hilfssatz}
+\newenvironment{hilfs}[1]{\begin{hilfsX}{\bf #1}\par}{\end{hilfsX}}
+\newtheorem{definiX}[alles]{Definition}
+\newenvironment{defini}[1]{\begin{definiX}{\bf #1}\par\rm}{\end{definiX}}
+\newtheorem{bspX}[alles]{Beispiel}
+\newenvironment{bsp}[1]{\begin{bspX}{\bf #1}\par\rm}{\end{bspX}}
+\newtheorem{bspX*}{Beispiel}
+\newenvironment{bsp*}[1]{\begin{bspX*}{\bf #1}\par\rm}{\end{bspX}}
+\newtheorem{fazit}[alles]{Fazit}
+\newtheorem{Folgerung}[alles]{Folgerung}
+
+\newcommand{\qed}{\phantom{.}\hfill{$\blacksquare$}}
+
+\newcommand{\da}{\coloneqq}
+
+\author{Dr. Stefan Kühnlein und \url{http://mitschriebwiki.nomeata.de/}}
+\title{Topologie}
+
+%\makeindex
+
+\begin{document}
+\maketitle
+
+\renewcommand\theHchapter{\arabic{chapter}}
+%\renewcommand{\thechapter}{\Roman{chapter}}
+%\chapter{Inhaltsverzeichnis}
+\stepcounter{chapter}
+\addcontentsline{toc}{chapter}{\protect\numberline {\thechapter}Inhaltsverzeichnis}
+\tableofcontents
+
+
+\chapter{Vorwort}
+
+\section*{Über dieses Skriptum}
+
+Das Ziel diese Skripts ist es, einen ersten Einblick in die Topologie zu geben.
+An keiner Stelle wird versucht, Ergebnisse bis in die letzten Winkel und 
+Spitzen zu treiben; wir erlauben uns auch bisweilen, nicht geringstmögliche 
+Voraussetzungen in Aussagen zu machen, sondern hoffen, durch eine 
+Beschränkung auf einfachere Situationen bisweilen den Inhalt der Sätze
+(von denen es ohenhin nicht so viele gibt) deutlich zu machen. Die Vorlesung
+ist nicht für Spezialisten gedacht - das verbietet sich schon angesichts des
+Dozenten, der ja auch selbst kein Spezialist ist. Hiermit sei seiner Hoffnung 
+der Ausdruck verliehen, dass die subjektive Stoffauswahl nicht zu sehr zu 
+Lasten der Allgemeinheit geht und ein Verständnis trotz allem zustande
+kommen kann.
+
+Jedenfalls werden in dieser Vorlesung nicht alle erlaubten Implikationen 
+zwischen allen möglichen Aussagen vorgeführt werden. 
+
+Ich habe auf eine umfangreiche Illustration verzichtet, zum einen weil dies in 
+der Vorlesung passieren soll, zum 
+anderen, weil es vielleicht auch für Leser eine instruktive Übung ist, sich
+selbst ein Bild von dem zu machen, wovon die Rede ist. Der begriffliche 
+Apparat ist das präzise Werkzeug, die Bilder sind ja „nur“ ein 
+Hilfsmittel, das uns helfen soll zu sehen, wo die Werkzeuge angesetzt werden 
+können. Außerdem sind manche Bilder sehr irreführend, zumal wenn es um
+Sachverhalte geht, die sich definitiv nicht mehr in unserem Anschauungsraum
+abspielen können.
+
+\subsection*{Online-Version}
+Auf \url{http://mitschriebwiki.nomeata.de} finden sich die \LaTeX-Quellen zu diesem Skript, sowie die Möglichkeit, dort direkt am Skript mitzuarbeiten, etwa um Fehler zu beseitigen. Dies Basiert auf latexki\footnote{\url{http://latexki.nomeata.de/}}, einem von Joachim Breitner programmiertem Wiki für \LaTeX-Dokumente.
+
+\bigskip
+
+Nun zum Inhalt selbst.
+
+\setcounter{chapter}{0}
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\theHchapter}{\Roman{chapter}}
+
+\renewcommand{\thesection}{{\rm\bfseries §}\,\thechapter.\arabic{section}}
+\renewcommand{\thealles}{\thechapter.\arabic{section}.\arabic{alles}}
+
+\chapter{Einstieg}
+
+\section{Kontext}
+
+Die Topologie ist eine mathematische Grundlagendisziplin die sich verstärkt
+seit dem Ende des 19.\ Jahrhunderts eigenständig entwickelt hat. Vorher waren
+einige topologische Ideen im Zusammenhang mit geometrischen und analytischen 
+Fragestellungen entstanden. Um Topologie handelt es sich zunächst immer dann,
+wenn geometrische Objekte deformiert werden und solche Eigenschaften der 
+Objekte in den Vordergrund treten die sich dabei nicht ändern. 
+
+Topologisch ist eine Kugel dasselbe wie ein Würfel - geometrisch zwar 
+völlig unterschiedlich, aber doch gibt es einige Gemeinsamkeiten. 
+Es wäre vielleicht einmal interessant zu verfolgen, ob der Kubismus am Ende
+des 19.\ Jhdts.\ und die topologische Frage nach „simplizialen 
+Zerlegungen“ geometrischer Objekte sich gegenseitig beeinflusst haben\dots
+
+Der Begriff der Nähe spielt in der Topologie eine gewisse Rolle, mehr als der
+Begriff des Abstands, der für die Geometrie immerhin namensgebend war.
+Die topologischen 
+Mechanismen, die so entwickelt wurden, wurden nach und nach von ihren 
+geometrischen Eltern entfernt; dafür sind die Eltern ja da: sich 
+überflüssig zu machen. Und so konnten topologische Ideen sich auch auf 
+andere Bereiche der Mathematik ausdehnen und diese geometrisch durchdringen.
+
+Auch außerhalb der Mathematik ist die Topologie längst keine unbekannte
+mehr. So gab es in der ersten Hälfte des 20.\ Jhdts.\ die topologische 
+Psychologie von Kurt Lewin, die allerdings nur die Terminologie von der 
+Topologie übernahm, und nicht etwa mithilfe topologischer Argumente neue
+Einsichten produzierte. Etwas anders sieht es natürlich mit den 
+„richtigen“Naturwissenschaften aus. In der Physik taucht
+die Topologie zum Beispiel in der Form von Modulräumen in der Stringtheorie 
+auf, und in der Molekularchemie kann man zum Beispiel Chiralität als
+topologisches Phänomen verstehen.
+
+
+
+\section{Beispiele -- was macht die Topologie?}
+
+\begin{bsp}{\bf Nullstellenfang mit dem Lasso} \label{Lasso}
+
+{\rm Es sei $f:\mathbb C\longrightarrow \mathbb C$ eine nichtkonstante 
+Polynomabbildung, d.h.\ $f(z) = \sum_{i=0}^d a_iz^i$ mit $d>0$ und $a_d\neq 0.$
+
+Dann hat $f$ eine Nullstelle in $\mathbb C.$ Das kann man zum Beispiel so 
+plausibel machen:
+
+Wenn $a_0=0$ gilt, dann ist $z=0$ eine Nullstelle. Wenn $a_0\neq 0$, dann 
+brauchen wir ein Argument. Wir betrachten den Kreis vom Radius $R$ um den 
+Nullpunkt: $RS^1 = \{z\in \mathbb C \mid |z|=R\}.$ Aus der Gleichung
+$$f(z) = a_dz^d \cdot (1 + \frac{a_{d-1}}{a_d z} + \dots + 
+\frac{a_{0}}{a_d z^d})$$ 
+folgt, dass das Bild von $RS^1$ unter $f$ jedenfalls für großes $R$ im 
+Wesentlichen der $d$-fach 
+durchlaufene Kreis vom Radius $|a_d|R^d$ ist. Im Inneren dieser Schlaufe liegen
+für großes $R$ sowohl die 0 als auch $a_0.$ Wenn man nun den Radius 
+kleiner macht, so wird diese Schlaufe für $R\searrow 0$ zu einer Schlaufe um 
+$a_0$
+zusammengezogen -- das ist die Stetigkeit von $f.$ Für kleines $R$ liegt 
+insbesondere $0$ nicht im Inneren der Schlaufe. Das aber heißt, dass beim
+Prozess des Zusammenziehens die Schlaufe irgendwann mindestens einmal die 0
+trifft. Dann hat man eine Nullstelle von $f$ gefunden.
+
+Einen anders gelagerten und präzisen topologischen Beweis des 
+Fundamentalsatzes werden wir in \ref{Fundamentalsatz} führen.
+}
+\end{bsp}
+
+In diesem Argument -- das man streng durchziehen kann -- wird ein topologisches
+Phänomen benutzt, um den Fundamentalsatz der Algebra zu beweisen. Das 
+Zusammenziehen der Kurve durch Variation des Parameters $R$ werden wir später
+allgemeiner als Spezialfall einer Homotopie verstehen.
+
+\begin{bsp}{\bf Fahrradpanne}
+
+{\rm Es gibt keine stetige Bijektion von einem Torus $T$ 
+(„Fahrradschlauch“) auf eine Kugeloberfläche $S.$ 
+
+
+Denn:  Auf dem Torus gibt es eine geschlossene Kurve $\gamma$, die ihn nicht 
+in zwei 
+Teile zerlegt. Ihr Bild unter einer stetigen Bijektion von $T$ nach $S$ 
+würde dann $S$ auch nicht in zwei Teile zerlegen, da das stetige Bild des
+Komplements $T\setminus \gamma$ gleich 
+$S\setminus{\rm Bild\ von\ }\gamma$ zusamenhängend sein müsste, aber
+das stimmt für keine geschlossene Kurve auf $S$.}
+\end{bsp}
+
+Auch hier sieht man ein topologisches Prinzip am Werk. Es ist oft sehr schwer
+zu zeigen, dass es zwischen zwei topologischen Räumen (siehe später) keine
+stetige Bijektion gibt. Dass ich keine solche finde sagt ja noch nicht wirklich
+etwas aus\dots
+
+In der linearen Algebra wei\ss\  man sehr genau, wann es 
+zwischen zwei Vektorräumen einen Isomorphismus gibt, das hängt ja nur an 
+der Dimension. Ähnlich versucht man in der Topologie, zu topologischen 
+Räumen zugeordnete Strukturen zu finden, die nur vom Isomorphietyp 
+abhängen, und deren Isomorphieklassen man besser versteht als die der 
+topologischen Räume.
+
+\begin{bsp} {\bf Eulers \footnote{Leonhard Euler, 1707-1783}Polyederformel}
+
+{\rm Für die Anzahl $E$ der Ecken, $K$ der Kanten und $F$ der Flächen eines
+(konvexen) Polyeders gilt die Beziehung $E-K+F=2.$
+
+Das kann man zum Beispiel einsehen, indem man das Polyeder zu einer Kugel 
+aufbläst, auf der man dann einen Graphen aufgemalt hat (Ecken und Kanten des 
+Polyeders), und dann für je zwei solche zusammenhängenden Graphen zeigt, 
+dass sie eine gemeinsame Verfeinerung haben. Beim Verfeinern ändert sich
+aber $E-K+F$ nicht, und so muss man nur noch für ein Polyeder die 
+alternierende Summe auswerten, zum Beispiel für das Tetraeder, bei dem 
+$E=F=4, K=6$ gilt.
+}
+\end{bsp}
+
+\begin{bsp} {\bf Reelle Divisionsalgebren}
+
+{\rm Eine reelle Divisionsalgebra ist ein $\mathbb R$-Vektorraum $A$ mit einer
+bilinearen Multiplikation, für die es ein neutrales Element gibt und jedes
+$a\in A\setminus\{0\}$ invertierbar ist. 
+
+Beispiele hierür sind $\mathbb R,\mathbb C, \mathbb H$ 
+(Hamilton\footnote{William Hamilton, 1788-1856}-Quaternionen) und -- wenn man 
+die Assoziativität wirklich nicht haben will -- $\mathbb O$ (die 
+Cayley\footnote{Arthur Cayley, 1821-1895}-Oktaven). Die Dimensionen dieser 
+Vektorräume sind $1,2,4,8.$ Tatsächlich ist es so, dass es keine weiteren
+endlichdimensionalen reellen Divisionsalgebren gibt. Dies
+hat letztlich einen topologischen Grund. 
+
+Zunächst überlegt man sich, dass die Struktur einer Divisionsalgebra auf 
+$\mathbb R^n$ auf der $n-1$-dimensionalen Sphäre eine Verknüpfung
+induziert, die fast eine Gruppenstruktur ist.
+
+Dann kann man im wesentlichen topologisch zeigen, dass solch eine Struktur
+auf der Späre nur für
+$n\in\{1,2,4,8\}$ existieren kann. Solch eine Gruppenstruktur stellt nämlich 
+topologische Bedingungen, die für die anderen Sphären nicht erfüllt sind.
+}\end{bsp}
+
+
+
+Eng damit zusammen hängt der
+
+\begin{bsp} {\bf Satz vom Igel\footnote{Frans Ferdinand Igel, ???}}
+
+{\rm Dieser Satz sagt, dass jeder stetig gekämmte Igel mindestens einen 
+Glatzpunkt besitzt. Die Richtigkeit dieses Satzes gründet sich nicht darauf, 
+dass es bisher noch niemanden gelingen ist, einen Igel zu kämmen. Sie hat
+handfeste mathematische Gründe, die in einer etwas präziseren Formulierung 
+klarer werden:
+
+Etwas weniger prosaisch besagt der Satz „eigentlich\grqq, dass ein 
+stetiges Vektorfeld auf der zweidimensionalen Sphäre mindestens eine
+Nullstelle besitzt.
+}
+\end{bsp}
+
+\begin{bsp} {\bf Brouwers\footnote{Luitzen Egbertus Jan Brouwer, 1881-1966}
+Fixpunktsatz}
+
+{\rm Jede stetige Abbildung des $n$-dimensionalen Einheitswürfels 
+$W=[0,1]^n$ in sich selbst hat einen Fixpunkt.
+
+Für $n=1$ ist das im Wesentlichen der Zwischenwertsatz. Ist $f:[0,1]
+\longrightarrow [0,1]$ stetig, so ist auch $g(x) \da f(x)-x$ eine stetige 
+Abbildung von $[0,1]$ nach $\mathbb R$, und es gilt $g(0)\geq 0, g(1)\leq 0.$
+
+Also hat $g$ auf jeden Fall eine Nullstelle $x_0$, aber das heißt dann 
+$f(x_0) = x_0.$
+
+Für $n\geq 2$ ist der Beweis so einfach nicht möglich, wir werden ihm 
+eventuell auch nur für $n=2$ später noch begegnen.
+}
+\end{bsp}
+
+\section{Mengen, Abbildungen, usw.}
+
+Wir werden für eine Menge $M$ mit ${\cal P}(M)$ immer die Potenzmenge 
+bezeichnen: 
+$${\cal P}(M) = \{A \mid A\subseteq M\}.$$
+Für eine Abbildung $f:M\longrightarrow N$ nennen wir das Urbild
+$f^{-1}(n)$ eines Elements $n\in f(M)\subseteq N$ auch eine 
+\index{Faser}{\it Faser} von $f.$
+
+Eine Abbildung ist also injektiv, wenn alle Fasern  einelementig sind.
+
+Ist $f$ surjektiv, so gibt es eine Abbildung $s:N\longrightarrow M$ mit
+$f\circ s = {\rm Id}_N$ -- die identische Abbildung auf $N.$ Jede solche 
+Abbildung $s$ heißt ein \index{Schnitt}{\it Schnitt} zu $f$. Er wählt zu 
+jedem $n\in N$ ein $s(n)\in f^{-1}(n)$ aus. Wenn man also $M$ als Vereinigung
+der Fasern von $f$ über den Blumentopf $N$ malt, so erhält der Name Schnitt
+eine gewisse Berechtigung.
+
+Eine \index{Partition}{\it Partition} von $M$ ist eine Zerlegung von $M$ in 
+disjunkte, nichtleere Mengen $M_i,i\in I,$ wobei $I$ eine Indexmenge ist:
+$$M=\bigcup_{i\in I} M_i,\ \ \forall i\neq j: M_i\cap M_j = \emptyset, 
+M_i\neq\emptyset.$$
+
+Hand in Hand mit solchen Partitionen gehen Äquivalenzrelationen auf $M.$
+Die Relation zur Partition $M_i,i\in I$ wird gegeben durch
+$$m\sim \tilde m \iff \exists i\in I: m,\tilde m\in M_i.$$
+Umgekehrt sind die Äquivalenzklassen zu einer Äquivalenzrelation $\sim $ 
+eine Partition von $M$. Die Menge der Äquivalenzklassen nennen wir auch den
+\index{Faktorraum}{\it Faktorraum} $\faktor M\sim$:
+$$\faktor M \sim = \{M_i\mid i\in I\}.$$
+Die Abbildung $\pi_\sim: M\longrightarrow \faktor{M}{\sim},\ \pi_\sim(m)\da [m] = $ 
+Äquivalenzklasse von $m$ heißt die {\it kanonische Projektion von } $M$ 
+auf $\faktor M \sim$.
+
+Ist $\sim$ eine Äquivalenzrelation auf $M$ und $f:M\longrightarrow N$ eine
+Abbildung, so dass
+jede Äquivalenzklasse von $\sim$ in einer Faser von $f$ enthalten ist (d.h.
+$f$ ist konstant auf den Klassen), so wird durch 
+$$\tilde f:\faktor M \sim \longrightarrow N,\ \tilde f([m]) \da f(m),$$
+eine Abbildung definiert, für die $f=\tilde f \circ \pi_\sim$ gilt. Das ist
+die mengentheoretische Variante des Homomorphiesatzes.
+
+\begin{bsp}{\bf Gruppenaktionen}
+
+{\rm Ein auch in der Topologie wichtiges Beispiel, wie Äquivalenzrelationen 
+bisweilen entstehen, ist das der \index{Gruppenoperation}{\it Operation} 
+einer Gruppe $G$ auf der Menge $X$.
+
+Solch eine Gruppenaktion ist eine Abbildung
+$$\bullet:G\times X\longrightarrow X,$$
+die die folgenden Bedingungen erfüllt:
+$$\begin{array}{rl}\forall x\in X:& e_G\bullet x = x\\
+\forall g,h\in G, x\in X:& g\bullet (h\bullet x) = (gh)\bullet x.\\
+\end{array}$$
+Hierbei ist $e_G$ das neutrale Element von $G$ und $gh$ ist das Produkt von 
+$g$ und $h$ in $G$.
+
+\paragraph{Beispiel zum Beispiel:} Für jede Menge $X$ gibt es die symmetrische Gruppe $S_X \da {\rm Sym}(X) \da \{ f : X\longrightarrow X \mid f \text{ bijektiv}\}$, als Verknüpfung benutzen wir die Hintereinanderausführung von Abbildungen. Das neutrale Element ist ${\rm Id}_X : X\longrightarrow X$, ${\rm Id}_X(x) = x$ für alle $x\in X$.
+Betrachte nun: $\bullet:{\rm Sym}(X) \times X \longrightarrow X$, $(f,x)\mapsto f(x)$. Dies ist eine Grupenoperation.
+
+Für jedes $g\in G$ ist die Abbildung 
+$$\rho_g:X\longrightarrow X,\ \rho_g(x) \da g\bullet x,$$
+eine Bijektion von $X$ nach $X$, die Inverse ist $\rho_{g^{-1}},$ und 
+$$g\mapsto \rho_g$$
+ist ein Gruppenhomomorphismus von $G$ in die symmetrische Gruppe von $X$.
+
+Die \index{Bahn}{\it Bahn} (oder der Orbit) von $x\in X$ unter der Operation von $G$ ist 
+$$G\bullet x \da \{g\bullet x\mid g\in G\}.$$
+Man kann leicht verifizieren, dass die Bahnen einer Gruppenoperation eine
+Partition von $X$ bilden. Mit $\faktor{X}{G} \da \{G\bullet x \mid x \in X\}$ bezeichnen wir den Bahnenraum von $X$ unter der Operation von $G$.
+
+\paragraph{Weiteres Beispiel zum Beispiel:} Betrachte $\bullet : \mathbb Z ^2 \times \mathbb R^2 \longrightarrow \mathbb R^2$, $(k,v)\mapsto k+v$. Dann ist etwa der Orbit des Nullpunktes die Menge aller ganzzahligen Vektoren. 
+Der Bahnenraum $\faktor{\mathbb R^2}{\mathbb Z^2} \cong [0,1)^2$ entspricht dann topologisch dem Torus.
+
+Umgekehrt ist es so, dass jede Partition $(X_i)_{i\in I}$ von $X$ von der 
+natürlichen Aktion einer geeigneten Untergruppe $G$ von ${\rm Sym}(X)$ 
+herkommt. Hierzu wähle man einfach
+$$G\da\{\sigma\in {\rm Sym}(X) \mid \forall i\in I: \sigma(X_i)= X_i\}$$
+und verifiziere was zu verifizieren ist.
+
+Ist $\bullet: G\times X \longrightarrow X$ eine Gruppenaktion, so heißt für $x\in X$ die Menge ${\rm Stab}_G(x) \da \{g\in G\mid g\bullet x = x \}$ der \textit{Stabilisator}\index{Stabilisator} oder „Fixgruppe“ von $x$. ${\rm Stab}_G(x) \subseteq G$ ist eine Untergruppe.
+
+Die Gruppenaktion heißt \textit{transitiv}\index{transitiv}, wenn es nur eine Bahn gibt: $\exists x \in X: X = G\bullet x$.
+}
+\end{bsp}
+\begin{bsp} {\bf Der projektive Raum $\mathbb P^nK$}
+
+{\rm Es seien $K$ ein Körper und $n$ eine natürliche Zahl.
+
+\paragraph{Problemstellung:} In $\mathbb A ^2(K)$, der affinen Ebene, gibt es Geraden. Zwei Geraden $g$, $h$ in $\mathbb A^2(K)$ schneiden sich entweder in einem Punkt oder sie sind parallel. Das führt oft zu Fallunterscheidungen in Beweisen, was lästig ist. Wir vergrößern daher $\mathbb A^2(K)$ durch Hinzunahme von „unendlich fernen Punkten“, wobei jeder Richtung von Geraden ein solcher Punkt entspricht: Zwei parallele Geraden schneiden sich dann in dem ihrer Richtung entsprechenden Punkt. Eine Konstruktion, die diesen Raum schön beschreibt, ist die folgende:
+
+Auf $X\da K^{n+1}\setminus\{0\}$ operiert die Gruppe $K^\times$ durch
+die skalare Multiplikation
+$$a\bullet v \da a\cdot v.$$
+Die Bahn von $v\in X$ unter dieser Operation ist $Kv\setminus \{0\}.$
+Da die $0$ ohnehin zu jeder Geraden durch den Ursprung gehört, kann man
+den Bahnenraum $\faktor{X}{K^\times}$ mit der Menge aller Geraden durch den Ursprung
+identifizieren. Dieser Raum heißt der {\it $n$-dimensionale projektive Raum
+über $K$}, \index{projektiver Raum}  in Zeichen $\mathbb P^n(K).$
+
+Speziell für $n=1$ gilt:
+$$\mathbb P^1(K) = \{[{a\choose 1}] \mid a\in K \} \cup \{[{1\choose 0}]\}.$$
+Oft identifiziert man den ersten großen Brocken hier mit $K,$ den 
+hinzukommenden Punkt nennt man suggestiver Weise $\infty,$ also $\mathbb P^1(K) = K \cup \{\infty\}$.
+
+Genauso haben wir für beliebiges $n$ eine Zerlegung
+$$\mathbb P^n(K) = \{[ {v\choose 1}] \mid v\in K^n \} \cup 
+\{[{w\choose 0}] \mid w\in K^n,w\neq 0\} = K^n \cup \mathbb P^{n-1}(K),$$
+wobei die Auswahl des {\it affinen Teils} $K^n$ durch die Bedingung, dass die 
+letzte Koordinate nicht null ist, relativ willkürlich ist. 
+
+Was ist also $\mathbb P^2(\mathbb R)$? Da jede Gerade durch $0$ in $\mathbb R^3$ durch einen Vektor der Länge 1 erzeugt wird, gilt: 
+$$ \mathbb P^2(\mathbb R) = \faktor{S^2}{\{\pm1\}}$$
+wobei $S^2 \da \{ v\in\mathbb R^3\mid |v|=1\}$. Diesen Raum nennt man auch {\it Kreuzhaube}\index{Kreuzhaube}.
+}
+\end{bsp}
+
+
+\begin{defini}{Faserprodukte}
+Es seien $A,B,S$ Mengen und 
+$f_A:A\longrightarrow S,\ f_B:B\longrightarrow S$
+zwei Abbildungen.
+
+Weiter sei $F$ eine Menge mit Abbildungen $\pi_A,\pi_B$ von $F$ nach $A$ bzw.\ 
+$B$, so dass $f_A\circ\pi_A = f_B\circ \pi_B.$
+
+$F$ heißt ein {\it Faserprodukt}\index{Faserprodukt} von $A$ und $B$ über
+$S$, wenn für jede Menge $M$ und jedes Paar von Abbildungen $g_A,g_B$ von
+$M$ nach $A$ bzw.\ $B$ mit $f_A\circ g_A = f_B\circ g_B$ genau eine Abbildung
+$h:M\longrightarrow F$ existiert, so dass 
+$$g_A = \pi_A\circ h,\ \ g_B = \pi_B\circ h.$$
+\end{defini}
+
+Insbesondere impliziert das, dass es zwischen zwei Faserprodukten von $A$ und 
+$B$ über $S$ genau einen sinnvollen Isomorphismus gibt. Denn nach Definition
+gibt es für ein zweites Faserprodukt $(\widetilde F,\widetilde{\pi_A},
+\widetilde{\pi_B})$ genau eine Abbildung $h$ von $\widetilde F$ nach $F$ mit
+$$\widetilde{\pi_A} = \pi_A\circ h,\ \ \widetilde{\pi_B} = \pi_B\circ h$$
+und auch genau eine Abbildung $\tilde h:F\longrightarrow  \widetilde F$ mit
+$$\pi_A = \widetilde{\pi_A} \circ \tilde h,\ \ \pi_B = \widetilde{\pi_B}\circ 
+\tilde h.$$
+Dann ist aber $h\circ\tilde h$ eine Abbildung von $F$ nach $F$ mit
+$$\pi_A = pi_A\circ (h\circ\tilde h),\ \ \pi_B = \pi_B\circ (h\circ\tilde h),$$
+was wegen der Eindeutigkeit aus der Definition zwangsläufig
+$$h\circ\tilde h ={\rm Id}_F$$ 
+nach sich zieht. Analog gilt auch
+$$\tilde h\circ h = {\rm Id}_{\widetilde F}.$$
+
+{\bf Schreibweise:} Für das Faserprodukt schreibt man meistens $A\times_SB,$
+wobei in der Notation die Abbildungen $f_A$ unf $f_B$ unterdrückt werden.
+
+\medskip
+
+Ein Faserprodukt existiert immer. Wir können nämlich 
+$$F\da\{(a,b)\in A\times B \mid f_A(a) = f_B(b)\} $$
+wählen und für $\pi_A,\pi_B$ die Projektion auf den ersten beziehungsweise
+zweiten Eintrag. 
+
+Die Abbildung $h$ aus der Definition ist dann einfach $h(m) = (g_A(m), g_B(m)).$
+
+Wir können $F$ auch hinschreiben als 
+$$F=\bigcup_{s\in S} \left(f_A^{-1}(s) \times f_B^{-1}(s)\right),$$
+also als Vereinigung der Produkte der Fasern von $f_A$ und $f_B$ über jeweils
+demselben Element von $S.$ Das erklärt den Namen.
+
+\begin{bsp} {\bf Spezialfälle}
+
+{\rm 
+\begin{itemize}
+\item[a)] Wenn $S$ nur aus einem Element $s$ besteht, dann sind $f_A$ und $f_B$
+konstant, und damit $A\times_SB = A\times B$ das mengentheoretische Produkt.
+\item[b)] Wenn $A,B$ Teilmengen von $S$ sind und die Abbildungen $f_A,f_B$ 
+einfach die Inklusionen, dann gilt
+$$A\times_SB = \{(a,b)\in A\times B\mid a=b\} = \{(s,s)\mid s\in A\cap B\} 
+\simeq A\cap B.$$
+\end{itemize}
+}
+\end{bsp}
+
+\section{Metrische Räume}
+
+\begin{defini} {\bf Metrischer Raum} 
+
+{\rm Ein {\it metrischer Raum}\index{metrischer Raum} ist eine Menge $X$ 
+zusammen mit einer Abbildung $$d:X\times X\longrightarrow \mathbb R_{\geq 0},$$
+so dass die folgenden Bedingungen erfüllt sind:
+\begin{itemize}
+\item $\forall x,y\in X: d(x,y) = d(y,x)$ (Symmetrie)
+\item $\forall x\in X: d(x,x) = 0.$
+\item $\forall x,y\in X: x\neq y\Rightarrow d(x,y) >0.$
+\item $\forall x,y,z\in X: d(x,y) + d(y,z) \geq d(x,z).$ (Dreiecksungleichung)
+\end{itemize}
+Die Abbildung $d$ heißt dabei die {\it Metrik}.
+
+Penibler Weise sollte man einen metrischen Raum als Paar $(X,d)$ schreiben.
+Meistens wird das micht gemacht, aber Sie kennen diese Art der Schlamperei ja
+schon zur Genüge\ldots
+}\end{defini}
+
+\begin{bsp}{\bf LA und Ana lassen grüßen} \label{L_unendlich}
+
+{\rm 
+\begin{itemize}
+\item [a)] Ein reeller Vektorraum mit einem Skalarprodukt 
+$\langle\cdot,\cdot\rangle$ wird bekanntlich mit 
+$$d(v,w) \da \sqrt{\langle v-w,v-w\rangle} = |v-w|$$
+zu einem metrischen Raum. Im folgenden heißt $\mathbb R^n$ als metrischen Raum immer: mit dem Standardskalarprodukt.
+\item[b)] Jede Menge $X$ wird notfalls durch 
+$$d(x,y) = \left\{\begin{array}{rl} 1, & {\rm falls}\ x\neq y,\\
+                                    0, & {\rm falls}\ x=y,\\
+\end{array}\right.$$
+zu einem metrischen Raum. Diese Metrik heißt die {\it diskrete Metrik}
+\index{diskrete Metrik} auf $X.$
+\item[c)] Es sei $X$ eine Menge und ${\cal B}(X)$ der Vektorraum der 
+beschränkten reellwertigen Funktionen auf $X.$ Dann wird $X$ vermöge
+$$d(f,g) \da \sup\{|f(x)-g(x)|\mid x\in X\}$$
+zu einem metrischen Raum. 
+
+Diese Metrik ist stets endlich, denn $f$ und $g$ sind beschränkt, also gibt es ein $R>0$ so dass $|f(x)|,|g(x)|<R$ für jedes $x\in X$, und damit $|f(x) - g(x)|<2R$.
+
+% Anstelle der Norm aus einem Skalarprodukt benutzt man hier also die sogenannte
+% Maximumsnorm 
+% $$|f|_\infty \da \sup\{|f(x)|\mid x\in X\},$$
+% um eine Metrik zu konstruieren. Diese kommt nicht von einem Skalarprodukt her,
+% wenn $X$ mindestens 2 Elemente hat.
+
+Allgemeiner sei für eine Menge $X$ und einen metrischen Raum $(Y,e)$ die 
+Menge
+${\cal B}(X,Y)$ definiert als die Menge aller beschränkten Abbildungen von 
+$X$ nach $Y$. Dabei heißt $f$ beschränkt, wenn ein $y \in Y$ und ein $R\in \mathbb R$ gibt mit
+$$\forall x\in X: e(f(x),y) < R.$$
+Dann wird ${\cal B}(X,Y)$ zu einem metrischen Raum vermöge
+$$d(f,g) \da \sup\{e(f(x),g(x))\mid x\in X\}.$$
+\item[d)] Auf den rationalen Zahlen lässt sich für eine Primzahl $p$
+auf folgende Art eine Metrik konstruieren:
+
+Jede rationale Zahl $q\neq 0$ kann man schreiben als 
+$p^{{\rm v}_p(q)} \cdot \frac ab,$ wobei $a,b\in \mathbb Z$ keine Vielfachen von 
+$p$ sind. Dann ist $v_p(q)$ eindeutig bestimmt.
+
+Wir setzen für zwei rationale Zahlen $x,y$
+$$d_p(x,y) \da
+\begin{cases}
+0, & \text{falls }x=y,\\
+p^{-{\rm v}_p(x-y)}, & \text{sonst}\,.\end{cases}$$
+Dies ist die sogenannte $p$-adische Metrik auf $\mathbb Q.$
+\end{itemize}
+}\end{bsp}
+
+\begin{defini} {\bf Folgen und Grenzwerte}
+
+{\rm 
+\begin{itemize}
+Es sei $(X,d)$ ein metrischer Raum. 
+\item[a)]
+Eine Folge $(x_n)_{n\in \mathbb N}$
+in $X$ heißt {\it konvergent gegen den Grenzwert} $y\in X,$ falls
+$$\forall \varepsilon > 0 : \exists k\in\mathbb N : \forall n \in N: \ge k: d(x_n,y)<\varepsilon.$$
+Natürlich ist $y$ hierbei eindeutig bestimmt.
+\item[b)] Eine Cauchyfolge\footnote{Augustin-Louis Cauchy, 1789-1857} in $X$ 
+ist eine Folge $(x_n)_{n\in \mathbb N}$ mit
+$$\forall \varepsilon>0 : \exists N\in \mathbb N: \forall m,n>N:
+d(x_m,x_n) < \varepsilon.$$
+Jede konvergente Folge ist eine Cauchyfolge.
+\item[c)] $X$ heißt {\it vollständig}\index{vollständig}, wenn jede
+Cauchyfolge in $X$ einen Grenzwert in $X$ hat.
+\end{itemize}
+}
+\end{defini}
+
+\begin{bsp} {\bf Schatten der Vergangenheit}
+
+{\rm 
+Für einen vollständigen metrischen Raum $(Y,e)$ und jede Menge $M$ ist auch $\mathcal B(M,Y)$: Ist $(f_i)_{i\in\mathbb N}$ eine Cauchy-Folge in $\mathcal B(M,Y)$, dann ist für jedes $m\in M$ auch $(f_i(m))_i$ eine Cauchy-Folge in $Y$. Da $Y$ vollständig ist, gibt es eine Funktion $f:M\to Y$ so dass für jedes $m\in M$ gilt: $f_i(m)\to f(m)$ für $i\to\infty$.
+
+$f$ ist beschränkt, denn es gibt ein $\varepsilon > 0$ und ein $k>0$ so dass für jedes $i,j \ge k$ gilt: $d(f_i,f_j)< \varepsilon$. Sei $m_0\in M$. Für $m\in M$ gilt dann:
+\begin{align*}
+e(f(m), f(m_0)) &\le e(f(m),f_k(m_0)) + e(f_k(m_0), f(m_0)) \\
+&\le e(f(m),f_k(m)) + e(f_k(m),f_k(m_0)) + e(f_k(m_0), f(m_0)) \\
+&\le \varepsilon + R + \varepsilon 
+\end{align*}
+Zur Übung: Der Rest.
+
+Jeder endlichdimensionale euklidische Vektorraum ist vollständig. 
+
+% Die Konvergenz einer Folge in ${\cal B}(X)$ mit der $\infty$-Norm ist einfach 
+% die gleichmäßige Konvergenz im Sinne der Analysis. Insbesondere ist
+% ${\cal B}(X)$ mit dieser Metrik vollständig.
+
+$\mathbb Q$ mit der $p$-adischen Metrik ist nicht vollständig. Man kann einen
+Körper $\mathbb Q_p$ konstruieren, der $\mathbb Q$ enthält, auf dem eine
+Metrik definiert ist, die die $p$-adische fortsetzt, und in dem sich jedes 
+Element durch eine $p$-adische Cauchyfolge in $\mathbb Q$ approximieren 
+lässt. Damit wird ein arithmetisch wichtiges Pendant zu den reellen Zahlen 
+geschaffen, die sich ja auch konstruieren lassen als (archimedische) 
+Cauchyfolgen in $\mathbb Q$ modulo Nullfolgen. 
+}
+\end{bsp}
+\begin{defini}{Isometrien}
+Es seien $(X,d)$ und $(Y,e)$ zwei metrische Räume. Eine 
+{\it abstandserhaltende Abbildung} von $X$ nach $Y$  ist eine Abbildung
+$f:X\longrightarrow Y,$ für die gilt:
+$$\forall x_1,x_2 \in X: d(x_1,x_2) = e(f(x_1),f(x_2)).$$
+Solche Abbildungen sind immer injektiv. Eine surjektive abstandserhaltende
+Abbildung heißt eine {\it Isometrie}.
+\footnote{Das Erlanger Programm (Felix Klein, ewa 1871) ist der Versuch, interessante Klassen von geometrischen Objekten durch das Studium ihrer Isometriegruppen zu untersuchen.}
+
+Für eine Isometrie $f:X\to Y$ ist auch $f^{-1}$ eine Isometrie.
+Die Menge der Isometrien von $X$ nach $X$ ist eine Untergruppe der { 
+symmetrischen Gruppe} 
+${\rm Sym}(M)$ aller Bijektionen von $X$ nach $X$.
+\end{defini}
+
+Aber eigentlich ist das momentan kein Begriff, der unsere Aufmerksamkeit zu 
+stark in Anspruch nehmen sollte. 
+
+\begin{defini}{Kugeln}
+Es seien $(X,d)$ ein metrischer Raum und $x\in X$ sowie $r>0$ eine reelle 
+Zahl. Dann heißt
+$$B_r(x) \da \{y\in X \mid d(x,y)<r\}$$
+die {\it offene Kugel} vom Radius $r$ um den Mittelpunkt $x.$ 
+
+{\bf Vorsicht:} Weder $x$ noch $r$ müssen durch die Menge $B_r(x)$ eindeutig 
+bestimmt sein.
+Wenn zum Beispiel $X$ mit der diskreten Metrik ausgestattet ist, so ist 
+$X=B_2(x) = B_3(y)$ für alle $x,y\in X.$
+\end{defini}
+
+\begin{defini}{Stetigkeit}
+\label{stetig1}
+Es seien $(X,d)$ und $(Y,e)$ zwei metrische Räume. Dann heißt eine
+Abbildung $f:X\longrightarrow Y$ {\rm stetig}, falls für jedes 
+$x\in X$ und jedes $\varepsilon>0$ ein $\delta>0$ existiert, so dass
+$$f(B_\delta(x)) \subseteq B_\varepsilon(f(x)).$$
+In Worten: Jede offene Kugel um $f(x)$ enthält das Bild einer offenen Kugel 
+um $x$.
+\end{defini}
+
+So ist zum Beispiel jede Abbildung von $X$ nach $Y$ stetig, wenn auf $X$ die 
+diskrete Metrik vorliegt. Denn dann ist ja $\{x\} = B_{\frac12}(x)$ im Urbild
+jeder offenen Kugel um $f(x)$ enthalten.
+
+\begin{defini}{Noch einmal die Analysis}
+Es seien $X$, $Y$ metrische Räume. Dann bezeichnen wir mit 
+${\cal C}(X,Y)$ die Menge aller stetigen Abbildungen von $X$ nach $Y,$ und 
+mit ${\cal C}_0(X,Y)$ die Menge aller beschränkten stetigen Abbildungen
+von $X$ nach $Y.$ 
+
+Wenn $Y$ vollständig ist, dann ist auch ${\cal C}_0(X,Y)$ (als Teilraum von
+${\cal B}(X,Y)$) vollständig. 
+
+Im Fall $Y=\mathbb R$ lässt man das $Y$ auch häufig weg und schreibt nur 
+${\cal C}(X)$ bzw.\ ${\cal C}_0(X).$
+\end{defini}
+
+\begin{hilfs}{Normen}\label{Normen}
+Es sei $V=\mathbb R^n$ mit dem Standardskalarprodukt versehen und $N$ eine
+Norm auf $V,$ d.h. $N:V\longrightarrow \mathbb R_{\geq 0}$ erfüllt 
+\begin{itemize}
+\item $\forall v\in V:N(v) = 0 \iff v=0$ (Positivität),
+\item $\forall a\in \mathbb R,v\in V: N(av) = |a|N(v)$ (Homogenität),
+\item $\forall v,w\in V: N(v+w) \leq N(v) + N(w)$ (Dreicksungleichung).
+\end{itemize}
+Dann ist $N$ stetig bezüglich der Standardmetrik.
+\end{hilfs}
+{\it Beweis.} Das Urbild von $(-\varepsilon , \varepsilon)$ unter $N$ ist 
+konvex, d.h. 
+$$\forall v,w\in V: [N(v),N(w)\leq \varepsilon\Rightarrow 
+\forall \lambda\in [0,1]: N(\lambda v + (1-\lambda) w) \leq \varepsilon].$$
+Das folgt sofort aus den drei aufgelisteten Eigenschaften der Normabbildung. 
+
+Wegen der Positivität und der Homogenität gibt es eine Konstante $c>0$ 
+(abhän\-gig von $\varepsilon$), so dass die Vektoren 
+$\pm c e_i,\ 1\leq i\leq n,$
+in $N^{-1}(-\varepsilon , \varepsilon)$ liegen. Dabei ist $\{e_1,\dots ,e_n\}$ 
+die Standardbasis von $\mathbb R^n.$
+
+Es sei $v\in B_{c/\sqrt n}(0)\subseteq V,$ d.h. $v= \sum_{i=1}^n a_i c e_i, 
+\sum_i a_i^2 < 1/n.$ Dann ist aber die Summe $\sum_i|a_i| < 1.$ Für
+$\alpha = \sum |a_i|$ ist also $v=\alpha\cdot \sum_i \frac{a_i}{\alpha}
+ce_i$ das $\alpha$-fache einer Konvexkombination 
+von $\pm ce_1,\dots \pm ce_n.$ Wegen  $|\alpha|<1$ liegt wegen der 
+Homogenität von $N$ auch $v$ im Urbild von $(-\varepsilon, \varepsilon)$, und
+damit liegt die offene Kugel $B_{c\sqrt n}(0)$ im Urbild: $N$ ist stetig im 
+Ursprung. 
+
+Nun seien $x\in V$ beliebig und $\delta>0$ vorgegeben. Dann gibt es nach dem 
+eben gesehenen ein $\varepsilon>0$ mit 
+$$\forall y\in B_\varepsilon (0) : |N(y)| < \delta.$$
+Für $y\in B_\varepsilon (0)$ gilt demnach wegen
+$N(x) = N(x+y-y)\geq N(x+y) + N(y):$
+$$-N(y) \leq  N(x+y) - N(x) \leq N(y),$$
+und daher $N(B_\varepsilon(x)) \subseteq B_\delta(N(x)).$ 
+\nopagebreak
+
+Das zeigt die Stetigkeit von $N.$ \qed
+
+{\bf Bemerkung:} Es sei $N$ eine Norm auf $\mathbb R^n$, dann kann dazu eine Metrik definiert werden: $d_N(x,y) \da N(x-y)$. Der Hilfssatz zeigt, dass in jeder Kugel $B_\varepsilon(x)_{d_N}$ bezüglich $d_N$ auch eine offene Kugel um $x$ bezüglich der Standardmetrik liegt. Hier nicht gezeigt: Das gilt auch umgekehrt. Insbesondere liefert jede Norm auf $\mathbb R^n$ den selben Konvergenzbegriff.
+
+\begin{defini}{Die Topologie eines metrischen Raums}
+Es sei $(X,d)$ ein metrischer Raum. Eine Teilmenge $A\subseteq X$ heißt
+{\it offen} \index{offen}, falls für jedes $x\in A$ eine reelle Zahl $r>0$
+existiert, so dass $B_r(x)\subseteq A$ gilt. 
+
+Die Gesamtheit aller offenen Mengen in $X$ heißt die {\it Topologie} von 
+$(X,d).$
+\end{defini}
+
+{\bf Beispiel:} Für die diskrete Metrik $d$ auf einer Menge $X$ ist die Topologie gleich $\mathcal P(x)$: Für $M\subseteq X$, $m\in M$ gilt: $B_{\frac{1}{2}}(m) = \{m\} \subseteq M$.
+
+\begin{bem}{Eigenschaften}
+Für einen metrischen Raum $(X,d)$ mit Topologie $\mathcal T$ gilt:
+\begin{itemize}
+\item Sowohl $\emptyset$ als auch $X$ sind offen.
+\item Beliebige Vereinigungen und endliche Durchschnitte von offenen
+Mengen sind wieder offen.
+
+\item Eine Abbildung $f:X\longrightarrow Y$ zwischen metrischen Räumen ist genau 
+dann stetig, wenn für jede offene Teilmenge $U\subseteq Y$ das Urbild
+$f^{-1}(U)$ offen in $X$ ist.
+\end{itemize}
+
+Es kann sehr viele verschiedene Metriken auf $X$ geben, die zur selben 
+Topologie führen. So stimmen zum Beispiel für zwei Normen auf $\mathbb R^n$
+die zugehörigen Topologien überein, was im Wesentlichen aus Hilfssatz 
+\ref{Normen} folgt. Dieser Hilfssatz sagt nämlich, dass die Identität auf
+$\mathbb R^n$ stetig ist, wenn wir auf Seiten des Definitionsbereichs die
+euklidische Standardlänge als Norm benutzen, und auf Bildseite die Norm $N.$
+Auch in der anderen Richtung ist die Identität stetig (das muss man noch 
+beweisen!), und das impliziert die Gleichheit der zugehörigen Topologien.   
+\end{bem}
+
+
+
+
+\chapter{Topologische Grundbegriffe}
+
+\section{Topologische Räume und ein paar Konstruktionen}
+
+\begin{defini}{Topologischer Raum}
+Ein {\it topologischer Raum} \index{topologischer Raum} ist eine Menge 
+$X$, für die eine Teilmenge 
+${\cal T} \subseteq {\cal P} (X)$ mit folgenden Eigenschaften ausgewählt 
+wurde:
+\begin{itemize}
+\item $\emptyset,\,X\in {\cal T}$
+\item $\forall A,B\in {\cal T}: A\cap B\in {\cal T}$
+\item $\forall {\cal S}\subseteq{\cal T}: \bigcup_{A\in {\cal S}}A \in {\cal T}.$
+\end{itemize}
+Hierbei heißt $\cal T$ die Topologie auf $X$, und die Elemente von 
+$\cal T$ sind die \index{offen} {\it offenen Mengen} des 
+topologischen Raums $(X,{\cal T}).$ 
+
+Die Mengen $X\setminus A, A\in {\cal T},$ heißen {\it abgeschlossene
+Teilmengen}\index{abgeschlossen} von $X$.
+\end{defini}
+
+\begin{bsp}{Alte Bekannte}
+Die offenen Mengen eines metrischen Raums $X$ bilden eine Topologie auf 
+$X$.
+
+Ist $X$ eine beliebige Menge, so ist die Potenzmenge ${\cal P}(X)$  eine
+Topologie auf $X.$ Sie ist sogar die Topologie zu einer Metrik auf $X$, zur 
+diskreten Metrik nämlich. Sie heißt die {\it diskrete Topologie}.
+
+Auch $\{\emptyset, X\}$ ist eine Topologie auf $X.$
+
+Auf $\{0,1\}$ gibt es die Topologie $\{\emptyset, \{0\}, \{0,1\}\}.$
+Diese kommt nicht von einer Metrik her.
+\end{bsp}
+
+\begin{defini}{Inneres, Abschluss und der zu schmale Rand}
+Es seien $X$ ein topologischer Raum und $A\subseteq X$ eine offene 
+Teilmenge. Das {\it Innere} $\mathring A$ von $A$ ist definiert als die
+Vereinigung
+$$\mathring A \da \bigcup_{\mathclap{U\subseteq A,\,U\>\text{offen}}} U\,.$$
+
+$\mathring A$ ist offen.
+
+Der {\it Abschluss} $\bar A$ von $A$ ist definiert als der Durchschnitt aller 
+abgeschlossenen Teilmengen von $X$, die $A$ enthalten.
+
+$\bar B$ ist abgeschlossen.
+
+Der {\it Rand} von $A$ ist die Menge 
+$\partial A\da\bar A\setminus \mathring A$. Sie ist abgeschlossen.
+\end{defini}
+
+{\bf Warnung:} Im metrischen Raum $(X,d)$ muss nicht gelten, dass für $r>0$, $x\in X$ die Menge $\overline{B_r(x)} = \{ y \in X \mid d(x,y) \le r\}$. Ein Gegenbeispiel ist etwa die diskrete Metrik $D$, also ist $B_1(x) = \{x\}$ abgeschlossen, und damit $\overline{B_1(x)} = B_1(x) \ne \{y\in X\mid d(x,y) \le 1\} = X$.
+
+\begin{defini}{Dichtheit, Diskretheit} \label{dicht}
+Sei $(X,\mathcal T)$ ein topologischer Raum.
+\begin{enumerate}[a)]
+\item Eine Teilmenge $A\subseteq X$ heißt 
+{\it dicht}\index{dicht}, wenn ihr Abschluss ganz $X$ ist. 
+
+Jede Teilmenge ist also dicht in ihrem Abschluss, wenn man diesen wie in 
+\ref{Spurtopologie} als topologischen Raum betrachtet.
+
+$X$ heißt {\it separabel}\index{separabel}, wenn es eine abzählbare dichte Teilmenge von $X$ gibt.
+
+Ein Punkt $x\in X$ heißt {\it generisch}\index{generisch}, wenn $\overline{\{x\}}=X$.
+
+{\bf Beispiel:} Sei $X = \mathbb C$. Eine Teilmenge $V\subseteq \mathbb C$ sei abgeschlossen, wenn es Polynome $f_i \in \mathbb Q[X]$, $i\in I$, gibt so dass $V = \{ z \in \mathbb C \mid \forall i \in I: f_i(z) = 0\}$. Für $z\in \mathbb C$ ist $\overline{\{z\}} = \{ y \in \mathbb C \mid \forall f \in \mathbb Q[X]: f(z) = 0 \implies f(y) = 0\}$. So ist etwa $\overline{\{0\}} = \{0\}$, $\overline{\{\sqrt 2\}} = \{ \sqrt 2 , - \sqrt 2\}$ und $\overline{\{\pi\}} = \mathbb C$, denn $\pi$ ist transzendent.
+
+\item Eine Teilmenge $D\subseteq X$ heißt \index{diskret}{\it diskret}, wenn
+jeder Punkt $x\in X$ in einer offenen Menge liegt, die mit $D$ endlichen Durchschnitt 
+hat.
+
+Für metrische Räume heißt das gerade, dass $D$ keinen Häufungspunkt 
+besitzt. 
+\end{enumerate}
+\end{defini}
+
+
+\begin{defini}{Umgebungen, Basis einer Topologie}
+Es sei $(X,{\cal T})$ ein topologischer Raum.
+\begin{enumerate}[a)]
+\item Für $x\in X$ heißt eine Teilmenge $A\subseteq X$ eine 
+{\it Umgebung}\index{Umgebung} von $x$, falls eine offene Teilmenge 
+$U\subseteq X$ existiert mit $x\in U\subseteq A.$ Ist $A$ selbst schon offen, 
+so heißt es eine {\it offene Umgebung} von $x$ (falls $x\in A$).
+
+Insbesondere ist $A\subseteq X$ genau dann offen, wenn sie für jedes $a\in A$ eine Umgebung ist.
+
+\item Eine Teilmenge ${\cal B}\subseteq {\cal T}$ heißt eine {\it Basis}
+von ${\cal T},$ falls jedes Element von $\cal T$ sich schreiben lässt als
+Vereinigung von Elementen aus ${\cal B}.$
+
+(So sind zum Beispiel die offenen Kugeln $B_r(x)$ eine Basis der Topologie auf 
+einem metrischen Raum.)
+
+$\cal S$ heißt eine {\it Subbasis} von $\cal T$, wenn die endlichen Durchschnitte von Elementen aus ${\cal S}$ eine Basis der Topologie ist.
+
+Für jede Teilmenge $\cal S \subseteq \cal P(X)$ gibt es eine Topologie, die $\cal S$ als Subbasis besitzt. Diese heißt die von $\cal S$ erzeugte Topologie und hat die Basis $\mathcal B = \{S_1\cap\cdots\cap S_n \mid S_i \in \mathcal S,\, k\in \mathbb N\}$ und die offenen Mengen $\mathcal T = \{ \bigcup_{i\in I} U_i \mid U_i \in B \text{ und Indexmenge } I\}$.
+
+\item Für $x\in X$ heißt eine Menge $\mathcal B_x\subseteq \mathcal T$ von Umgebungen von $x$ 
+eine {\it Umgebungsbasis} von $x$, wenn jede Menge in $B_x$ den Punkt $x$ enthält und jede Umgebung von $x$ ein Element von $\mathcal B_x$ als Teilmenge enthält.
+
+{\bf Nebenbemerkung:} Eine Teilmenge $\mathcal B \subseteq \mathcal T$ ist genau dann eine Basis der Topologie, wenn für alle $x\in X$ gilt: $\mathcal B_x \da \{ U\in \mathcal B \mid x\in U\}$ ist Umgebungsbasis von $x$.
+\end{enumerate}
+\end{defini}
+
+\begin{bem}{Einsichtig}
+Eine Teilmenge ${\cal B }\subseteq {\cal T}$ ist genau dann eine Basis 
+der Topologie $\cal T$, wenn sie für jedes $x\in X$ eine Umgebungsbasis 
+enthält.
+
+Für jede Teilmenge $\cal B$ von ${\cal P}(X)$ gibt es genau eine Topologie,
+die $\cal B$ als Subbasis besitzt. Sie ist die {\it von ${\cal B}$ erzeugte } 
+Topologie, und besitzt 
+$$\{U_1\cap \dots \cap U_n \mid n\in\mathbb N, U_i\in {\cal B}\}$$
+als Basis.
+\end{bem}
+
+\begin{defini} {\bf Feinheiten}
+Wenn ${\cal T}_1$, ${\cal T}_2$ zwei Topologien auf einer Menge $X$ sind, so
+heißt ${\cal T}_1$ {\it feiner} als ${\cal T}_2,$ wenn ${\cal T}_2\subseteq
+{\cal T}_1,$ also wenn ${\cal T}_1$ mehr offene Mengen besitzt als ${\cal T}_2.$
+
+Die feinste Topologie auf $X$ ist also die diskrete $\mathcal P(X)$, während 
+$\{\emptyset, X\}$ die gröbste Topologie auf $X$ ist.
+
+Zu je zwei Topologien gibt es eine gemeinsame Verfeinerung. Die gröbste 
+gemeinsame Verfeinerung ist die Topologie, die die Vereinigung der beiden 
+gegebenen als Subbasis besitzt.
+\end{defini}
+
+\begin{defini} {\bf Teilräume und Produkte}\label{Spurtopologie}
+\begin{enumerate}[a)]
+\item Es seien $X$ eine Menge und $(Y,{\cal S})$ ein Topologischer Raum. 
+Weiter sei $f:X\longrightarrow Y$ eine Abbildung. Für zwei Teilmegen
+$A,B\subseteq Y$ gilt
+$$f^{-1}(A\cup B) = f^{-1}(A)\cup f^{-1}(B), \quad
+f^{-1}(A\cap B) = f^{-1}(A)\cap f^{-1}(B).$$
+Das zeigt im Wesentlichen bereits, dass 
+$${\cal T}\da \{ f^{-1}(U) \mid U\in {\cal S}\} \subseteq \mathcal P(X)$$
+eine Topologie auf $X$ ist. Man nennt sie die \index{Spurtopologie}
+{\it Spurtopologie} auf $X$ (bezüglich der Abbildung $f$).
+
+Damit können wir unheimlich viele neue topologische Räume konstruieren.
+(Tun Sie das!) 
+\item Ist speziell $X\subseteq Y$ und $f$ die Einbettung dieser Teilmenge,
+so nennt man $X$ (mit der Spurtopologie) einen {\it Teilraum} von $Y.$
+
+Eine Teilmenge $A$ von $X$ ist genau dann offen bezüglich der Spurtopologie, 
+wenn es eine offene Teilmenge $U$ von $Y$ gibt mit $A= U\cap X.$
+
+{\bf Vorgriff:} Eine stetige Abbildung $f: X\to Y$ zwischen topologischen Räumen is teine Abbildung $f$, so dass für alle offenen $U\subseteq Y$ gilt: $f^{-1}(U) \subseteq X$ ist offen. Ist $X$ eine Menge, $(Y,\mathcal T)$ ein topologischer Raum und $f: X\to Y$, dann ist die Spurtopologie bezüglich $f$ die gröbste Topologie auf $X$, für die $f$ stetig ist.
+
+\item Sind $X,Y$ zwei topologische Räume, so definieren wir auf 
+$X\times Y$ die {\it Produkttopologie}\index{Produkttopologie}, indem wir 
+als Basis die Produkte $U\times V$ für offene $U\subseteq X$ und
+$V\subseteq Y$ verwenden. 
+\end{enumerate}
+\end{defini}
+
+\begin{defini}{Quotiententopologie} \label{Quotienten}
+% Anders definiert, nicht das gleiche!
+%
+%Es sei $X$ ein topologischer Raum und $\equiv$ eine Äquivalenzrelation
+%auf $X.$ Dann wird auf dem Raum $\faktor X \equiv$ der Äquivalenzklassen von $X$ 
+%eine Topologie eingeführt, indem man für offenes $U\subseteq X$ die
+%Menge 
+%$$\{[u]\mid u\in U\}$$
+%aller Äquivalenzklassen von Elementen aus $U$ zur offenen Menge erklärt
+%und die davon erzeugte Topologie verwendet. Diese Topologie heißt die
+%
+
+Es seien $(X,\mathcal T)$ ein topologischer Raum und $\sim$ eine Äquivalenzrelation auf $X$. Dann definieren wir auf $\faktor X \sim$ eine Topologie $\mathcal {\tilde T}$ durch die Vorschrift: $M \subseteq \faktor X \sim$ ist offen, wenn $\bigcup_{m\in M} m \subseteq X$ offen ist.
+
+Für die kanonische Projektion $\pi :X \to \faktor X\sim$, $\pi(x) = [x]$, heißt das: $M\subseteq \faktor M \sim $ ist genau dann offen, wenn $\pi^{-1}(M) \subseteq M$ offen ist. $\mathcal{\tilde T}$ ist die feinste Topologie, für die $\pi$ stetig ist. Sie heißt {\it Quotiententopologie}\index{Quotiententopologie} (von $\mathcal T$ unter $\sim$).
+
+Damit bekommen wir zum Beispiel eine Topologie auf dem projektiven Raum
+$\mathbb P^n(\mathbb R)$ oder $\mathbb P^n(\mathbb C).$ Die Topologie auf 
+$\mathbb P^1(\mathbb C)$ verdient hier historisch und didaktisch besondere
+Aufmerksamkeit. Eine Teilmenge $A\subseteq\mathbb P^1(\mathbb C) = \mathbb C
+\cup\{\infty\}$ ist genau dann offen, wenn $A\cap \mathbb C$ offen ist und wenn
+zusätzlich im Fall $\infty\in A$ ein $R>0$ existiert mit 
+$$\{z\in \mathbb C \mid |z|>R \} \subseteq A.$$
+\end{defini}
+
+{\bf Vorsicht:} Ein Quotientenraum $(\faktor X \sim, \mathcal {\tilde T})$ muss nicht immer schön sein, auch wenn $X$ das war. So hat etwa der Raum $\faktor {\mathbb R}{\mathbb Q}$ die Quotiententopologie $$\mathcal{\tilde T} = \{ \emptyset,\, \faktor{\mathbb R}{\mathbb Q}\}\,.$$
+
+{\bf Warnung:} Im Allgemeinen ist es falsch, dass für offenes $O\subseteq X$ die Menge $\pi(O) = \{ [x] \mid x\in O\} \subseteq \faktor X\sim$ offen ist. Ist beispielsweise $X=\mathbb R$ und betrachte die Äquivalenzrelation mit Äquivalenzklassen $[0,1]$, $\{y\}$ für $y\notin [0,1]$. Dann ist $\{[0]\} = \pi( (0,1) )$, aber $\pi^{-1}(\{0\}) = [0,1]$ ist nicht offen.
+
+\section{Wichtige Eigenschaften topologischer Räume}
+\begin{defini}{Kompaktheit}
+Ein topologischer Raum $X$ heißt \index{kompakt}{\it kompakt}, wenn
+jede Überdeckung $X=\bigcup_{i\in I}U_i$ von $X$ durch offene Mengen eine
+endliche Teilüberdeckung enthält: 
+$$\exists n\in \mathbb N, i_1,\dots i_n\in I: X=\bigcup_{k=1}^n U_{i_k}.$$
+Genauso heißt eine Teilmenge von $X$ kompakt, wenn sie bezüglich der 
+Spurtopologie (der Inklusion) kompakt ist.
+
+Anstelle des Begriffs „kompakt“ wird auch gelegentlich 
+„überdeckungsendlich“ verwendet. Es ist nicht ganz einheitlich, ob 
+zur Kompaktheit auch die Eigenschaft, hausdorff'sch zu sein (siehe später), 
+gehört oder 
+nicht. Wir wollen hier Kompaktheit so verstehen wie gesagt.
+\end{defini}
+\begin{hilfs}{Kompakta in metrischen Räumen}
+Es sei $(X,d)$ ein metrischer Raum. Dann gilt:
+\begin{enumerate}[a)]
+\item Ist $X$ kompakt, dann ist $X$ beschränkt.
+\item Ist $K\subseteq X$ kompakt, dann ist $K$ abgeschlossen in $X$.
+\item Ist $X$ kompakt, so ist $X$ auch vollständig.
+\end{enumerate}
+\end{hilfs}
+
+{\it Beweis.} 
+\begin{enumerate}[a)]
+\item Sei ohne Einschränkung $X$ nicht leer und $x\in X$. 
+Es ist $$X=\bigcup_{n\in \mathbb N} B_n(x),$$ also gibt es $n_1 \le \cdots \le n_k\in \mathbb N: X= \bigcup_{i=1}^kB_{k_i}(x)= B_{n_k}(x)$, da $B_{n_1}(x)\subseteq B_{n_2}(x) \subseteq \cdots \subseteq B_{n_k}(x)$, also hat $X$ einen Durchmesser kleiner $2n_k$.
+
+\item Sei $K\subseteq X$ kompakt, $x\in X\setminus K$. Zu zeigen: $\exists \varepsilon > 0 : B_\varepsilon(x) \cap K = \emptyset$. Betrachte für $\varepsilon>0$ die abgeschlossene Menge $D_\varepsilon(x) = \{y\in X \mid d(x,y) \le \varepsilon\}$. Es gilt
+$$ \bigcap_{\varepsilon >0} D_{\varepsilon}(x) = \{x\} \implies K\subseteq \bigcap_{\varepsilon>0} \underbrace{X\setminus D_{\varepsilon}(x)}_{\text {offen}}.$$
+$X$ ist kompakt, also gibt es endlich viele $\varepsilon_1 > \varepsilon_2 > \cdots >\varepsilon_n >0$ mit $K\subseteq \bigcup _{i=1}^n X\setminus D_{\varepsilon_i}(x) = X \setminus D_{\varepsilon_n}(x) \implies B_{\varepsilon_n}(x) \subseteq X\setminus K$. $x\in X\setminus K$ war beliebig, also ist $K$ abgeschlossen.
+
+\item Sei $X$ kompakt und $(x_n)_{n\in\mathbb N}$ eine Cauchy-Folge in $X$. Wenn diese Folge nicht konvergiert, dann existiert für jedes $x\in X$ ein $\varepsilon>0$ derart, dass für unendlich viele $n\in \mathbb N$ gilt: $x_n \notin B_\varepsilon(x)$. Es gilt: $\exists N > 0 \forall k, l \in \mathbb l,\, k,l\ge N: d(x_k,x_l) < \frac\varepsilon2$. Wäre hier $x_k \in B_{\frac \varepsilon 2}$, so wäre $x_l \in B_\varepsilon(x)$ für alle $l\ge n$, im Widerspruch zur Wahl von $\varepsilon$.
+
+Also liegen in $B_{\frac\varepsilon2}$ liegen nur Folgenglieder $x_n$ mit $n<N$, also endlich viele. Das heißt: für jedes $x\in X$ existiert eine offene Umgebung $U_x$ von $x$, in der nur endlich viele Folgenglieder liegen. Diese offenen Mengen überdecken $X$, und aus der Kompaktheit von $X$ folgt: $\exists y_1,\ldots,y_n \in X: X= \bigcup_{i=1}^n U_{y_i}$. In jedem $U_{y_i}$ liegen nur endlich viele Folgenglieder, also liegen auch in $X$ nur endlich viele, was einen Widerspruch darstellt.  \qed
+\end{enumerate}
+
+
+% Ein kompakter metrischer Raum $X$ ist sicher beschränkt, denn 
+% gilt für jedes $x\in X,$ und das ist eine offene Überdeckung von $X.$
+% 
+% Eine kompakte Teilmenge $A$ eines metrischen Raums $X$ ist 
+% auch abgeschlossen. Ist nämlich $x\in X\setminus A$ im Komplement von 
+% $A,$ so ist 
+% $$A\subseteq \bigcup_{n\in \mathbb N} \{y\in X\mid d(y,x)> \nicefrac1n \}$$
+% eine offene Überdeckung von $A,$ und damit langen endlich viele dieser
+% Mengen, um $A$ zu überdecken. Es ist also 
+% $$A\subseteq \{y\in X\mid d(y,x)> \nicefrac1n \}$$
+% für ein festes $n\in \mathbb N,$ und daher ist $B_{\nicefrac1n}(x)$ in 
+% $X\setminus A$ enthalten.
+% 
+% Ein etwas feineres Argument zeigt, dass ein kompakter metrischer Raum sogar
+% vollständig ist.
+% 
+% Eine abgeschlossene Teilmenge $A$ eines kompakten Raums $X$ ist kompakt, denn
+% für jede Überdeckung $\ddot U$ von $A$ durch offene Teilmengen von $X$ 
+% ist $\ddot U\cup\{X\setminus A\}$ eine offene Überdeckung von $X$, also
+% langen endlich viele davon, um $X$ zu überdecken, und von diesen endlich
+% vielen kann man notfalls $X\setminus A$ weglassen, um eine endliche 
+% Teilüberdeckung von $A$ zu erhalten.
+% 
+% \end{hilfs}
+
+\begin{bem}{Kompakta in sonstigen topologischen Räumen}
+Es sei $X$ ein topologischer Raum.
+\begin{enumerate}[a)]
+\item Nicht jeder kompakte Teilraum von $X$ muss abgeschlossen sein.
+
+Betrachte zum Beispiel den Raum $X=\mathbb Z$ mit der „koendlichen“ Topologie: Die offenen Mengen sind $\emptyset$, $\mathbb Z$, sowie alle Komplemente von endlichen Teilmengen von $\mathbb Z$. Hier ist jede Teilmenge kompakt. Ist nämlich $\emptyset \ne A\subseteq \mathbb Z$ mit $A\subseteq \bigcup_{i\in I} U_i$, $U_i$ offen. Wähle ein $i_1 \in I$ mit $U_{i_1} \ne \emptyset$. Dann existieren $z_1,\ldots, z_k\in \mathbb Z$ so dass $U_{i_1} =\mathbb Z\setminus \{z_1,\ldots, z_k\}$. Seien $z_1,\ldots,z_d\in A$ und $z_{d+1},\ldots,z_k\notin A$.Dann gilt für jedes $j=1,\ldots,d$, daas es ein $i_{j+1}\in I$ gibt mit $z_j\in U_{i_{j+1}}$. Also ist $A\subseteq \bigcup_{j=1}^{d+1} U_{i_j}$. Aber es gibt nicht abgeschlossene Mengen, etwa $\mathbb N$. 
+
+\item Ist $X$ kompakt und $A\subseteq X$ abgeschlossen, dann ist $A$ kompakt:
+
+Sei $(U_i)_{i\in I}$ eine offene Überdeckung von $A$, also $A\subseteq \bigcup_{i\in I} U_i$. Dann ist 
+$$ X = \bigcup_{i\in I} U_i \cup \underbrace{(X\setminus A)}_{\text{offen}} $$
+eine offene Überdeckung von $X$. Also gibt es $i_1,\ldots,i_n \in I$ so dass $X= \bigcup_{j=1}^n U_{i_j} \cup (X\setminus A)$ und damit $A \subseteq \bigcup_{j=1}^n U_{i_j} $. Das zeigt, dass $A$ kompakt ist.
+
+\item Es seien $K\subseteq X$ kompakt und $D\subseteq X$ diskret. Dann ist $D\cap K$ endlich:
+
+Für jedes $x\in X$ existiert eine offene Umgebung $U_x$ von $x$, die mit $D$ endlichen Durchschnitt hat, also kann man $K$ mit den $U_x$, $x\in K$ überdecken. Da $K$ kompakt ist, kann man daraus eine endliche Überdeckung wählen und es gilt
+$$ K\cap D \subseteq (\bigcup _{i=1}^n U_{x_i}) \cap D = \bigcup _{i=1}^n (U_{x_i} \cap D ),$$
+was endlich ist.
+\end{enumerate}
+\end{bem}
+
+\begin{satz}{\`a la Heine\footnote{Heinrich-Eduard Heine, 1821-1881}-Borel\footnote{Emile Borel, 1871-1956}}
+\label{heineborel}
+
+Es sei $X$ ein vollständiger metrischer Raum. Dann sind äquivalent:
+
+\begin{enumerate}[a)]
+\item Für jede beschränkte
+Menge $B\subseteq X$ und jedes $\varepsilon>0$ lässt sich $B$ durch endlich viele
+Mengen von Durchmesser $\leq \varepsilon$ überdecken.
+
+\item Die folgenden zwei Aussagen für Teilmengen $A\subseteq X$ sind äquivalent:
+\begin{enumerate}[i)]
+\item $A$ ist kompakt.
+\item $A$ ist beschränkt und abgeschlossen.
+\end{enumerate}
+
+\end{enumerate}
+
+\end{satz}
+
+{\it Beweis.} 
+„a) $\Longrightarrow$ b)“:
+Wir haben schon gesehen: ein Kompaktum 
+in einem metrischen Raum ist abgeschlossen und beschränkt, also i) $\implies$ ii).
+
+Zu zeigen: ii) $\implies$ i). Sei $A\subseteq X$ abgeschlossen und beschränkt. Weiter sei 
+$\ddot U = \{U_i \mid i\in I\}$ eine offene Überdeckung von $A$. Nehmen wir an, es gebe in 
+$\ddot U$ keine endliche Teilüberdeckung von $A$.
+
+Wegen Bedingung a) gibt es endlich viele Reilmengen $T_1,\ldots,T_n$ von $A$ von Durchmesser $\le 1$, so dass $A=T_1\cup\cdots\cup T_n$. Ohne Beschränkung der Allgemeinheit seien $T_1,\ldots,T_n$ abgeschlossen, denn $A$ ist Abgeschlossen und wenn $T$ Durchmesser $\le1$, dann auch $\bar T$.
+
+Die Annahme an $A$ erzwingt, dass wenigstens ein $T_j$ sich nicht durch endlich viele der $U_i$ überdecken lässt. Sei $A_1 \in \{T_1,\ldots,T_n\}$ ein solches. $A_1$ lässt sich durch endlich viele abgeschlossene Mengen $S_1,\ldots,S_n\subseteq A_1$ von Durchmesser $\le \frac12$ überdecken. Wähle analog $A_2$, als eines der $S_j$, so dass es sich nicht durch endlich viele $U_i$ überdecken lässt.
+
+Konstruiere rekursiv
+$$A\supseteq A_1\supseteq A_2\cdots \supseteq A_k\supseteq \cdots$$
+derart, dass $A_k$ Durchmesser $\leq 1/2^k$ hat, abgeschlossen ist und sich nicht durch endlich 
+viele $U\in \ddot U$ überdecken lässt. 
+
+$$D \da \bigcap_{k\in \mathbb N} A_k \subseteq A$$ ist abgeschlossen und enthält höchstens ein Element. Um zu zeigen, dass $D$ nicht leer ist, wählen wir sukzessive für $k\in \mathbb N$ ein  $a_k \in A_k$. Dann ist $(x_i)_{i\in \mathbb N}$ eine Cauchy-Folge, denn 
+$$d(x_i,x_k) \leq 1/2^{\max (i,k)}.$$
+
+Also konvergiert die Folge gegen ein $a\in A,$ da $X$ vollständig und $A$
+abgeschlossen ist.
+
+Wäre $a\notin D$, dann gäbe es ein $k$ mit $a\notin A_k$, und da $A_k$ abgeschlossen ist, existierte ein $\varepsilon >0$ mit $B_\varepsilon\cap A_k =\emptyset$, also für alle $x\in A_k$ gelte $d(x,a) > \varepsilon$, also wäre für alle $l\ge k$: $a_k \in A_l \subseteq A_k$, also $d(a_k, a) > \varepsilon$.
+
+Also gilt $D=\{a\}$.
+
+Da $a\in A$, liegt es in einem der $U_i$, und da $U_i$ offen ist, gibt es ein $r>0$, so dass $B_r(A)\subseteq U_i$. Für $\frac1{2^k}<\frac 1r$ folgt dann aber wegen $a\in A_k$, dass $A_k \subseteq U_i$, im Widerspruch zur Konstruktion der Mengen $A_k$. Also ist die Annahme falsch und daher $A$ kompakt.
+
+„b) $\Longrightarrow$ a)“: Es sei $B\subseteq X$ beschränkt und abgeschlossen, also nach Vorbedingung b) kompakt. Sei $\varepsilon > 0$, dann $$\bar B \subseteq \bigcup_{x\in\bar B} B_{\frac \varepsilon2}(x)$$
+Es ist $\bar B$ kompakt, also existieren $x_1,\ldots,x_n \in \bar B$, so dass gilt:
+$$ B\subseteq \bar B \subseteq  \bigcup_{i=1}^n B_{\frac \varepsilon2}(x_i)$$
+\qed
+
+
+\begin{bem}{Beispielmaterial} \label{einige Kompakta} 
+
+\begin{enumerate}[a)]
+\item Als Spezialfall erhalten wir den klassischen Satz von Heine-Borel,
+der sagt, dass eine Teilmenge von $\mathbb R^n$ genau dann überdeckungsendlich
+ist, wenn sie abgeschlossen und beschränkt ist. 
+
+Heine hat diesen Satz 1872 
+für Intervalle in $\mathbb R$ benutzt, um zu zeigen, dass eine stetige 
+Funktion auf einem beschränkten und abgeschlossenen Intervall gleichmäßig stetig ist.
+
+\item $\mathbb R^2$ mit der SNCF-Metrik (siehe Übungsblatt 2) stimmt Bedingung \ref{heineborel}~a) nicht.
+
+\item
+Es sei $X\da{\cal C}_0(\mathbb N)$ der Raum der beschränkten Funktionen 
+auf $\mathbb N$ (siehe \ref{L_unendlich}). 
+
+Für $n\in\mathbb N$ sei $\delta_n$ die Funktion auf $\mathbb N,$ die
+auf $n$ den Wert 1 annimmt, und sonst den Wert 0. Die Menge
+$$D\da\{ \delta_n \mid n\in \mathbb N\}$$
+ist eine beschränkte, abgeschlossene Teilmenge von $X.$ Aber kompakt ist sie 
+nicht, denn in $B_{1/2}(\delta_n)$ liegt kein weiteres 
+$\delta_k, k\in \mathbb N,$ und so ist
+$$D = \bigcup_{n\in \mathbb N} B_{1/2}(\delta_n)$$
+eine offene Überdeckung von $D$ ohne endliche Teilüberdeckung.
+
+In der Funktionalanalysis spielen ähnliche Räume eine wichtige Rolle, und
+insbesondere die Frage, wann die abgeschlossene Einheitskugel in einem 
+normierten Vektorraum kompakt ist.
+
+\item Es gibt auch topologische Räume, in denen {\it jede Teilmenge} 
+kompakt ist, egal ob offen, abgeschlossen, keins von beiden\dots
+
+Als Beispiel hierfür nehme ich eine (beliebige!) Menge $X$ und versehe sie
+mit der {\it koendlichen} Topologie. Dies heißt, dass neben der leeren Menge
+genau die Mengen offen sind, deren Komplement in $X$ endlich ist.
+
+Klar: hier ist alles kompakt. Denn für $A\subseteq X$ und offenes 
+$U\neq\emptyset$ 
+überdeckt $U$ bereits alles bis auf endlich viele Elemente von $A.$
+
+\item Eine wichtige Beispielklasse für kompakte Räume sind die
+projektiven Räume $\mathbb P^n(\mathbb R)$ und $\mathbb P^n(\mathbb C)$.
+
+Im Fall $n=1$ sieht man die Kompaktheit sehr schön wie folgt: Ist $\ddot U$ 
+eine offene Überdeckung von $X=\mathbb P^1(K)$ (mit $K=\mathbb R$ oder 
+$\mathbb C$), so gibt es darin eine Menge $U_\infty\in \ddot U,$ so dass
+$\infty\in U_\infty.$ Das Komplement von $U_\infty$ ist nach Konstruktion der
+Topologie auf $X=K\cup\{\infty\}$ abgeschlossen und beschränkt (siehe 
+\ref{Quotienten}~d)) und daher kompakt wegen Heine-Borel. Also reichen endlich viele
+weitere Elemente aus $\ddot U$, um $K\setminus U_\infty$ zu überdecken.
+
+\end{enumerate}
+
+\end{bem}
+
+\begin{defini}{zusammenhängend}\label{Zusammenhang} 
+Es sei $X$ ein topologischer Raum. Dann heißt $X$ {\it 
+zusammenhängend}\index{zusammenhängend}, wenn $\emptyset$ und $X$ die 
+einzigen Teilmengen von $X$ sind, die sowohl offen als auch abgeschlossen sind.
+Das ist äquivalent dazu, dass es keine Zerlegung von $X$ in zwei nichtleere,
+disjunkte und offenen Teilmengen gibt.
+
+Eine Teilmenge $A\subseteq X$ heißt zusammenhängend, wenn sie bezüglich 
+der
+Teilraumtopologie zusammenhängend ist, also genau dann, wenn sie nicht 
+in der Vereinigung zweier offener Teilmengen von $X$ liegt, deren Schnitte 
+mit $A$ nichtleer und disjunkt sind.
+
+Die Vereinigung zweier zusammenhängender Teilmengen mit nichtleerem
+Durchschnitt ist wieder zusammenhängend.
+\end{defini}
+
+\begin{bsp}{Intervalle}
+Die zusammenhängenden Teilmengen von $\mathbb R$ sind gerade die 
+Intervalle, egal ob offen oder abgeschlossen oder halboffen. Dabei werden auch 
+die leere Menge und einelementige Mengen als Intervalle gesehen.
+
+Ist nämlich $A\subseteq \mathbb R$ zusammenhängend und sind 
+$x<y$ beide in $A$, so liegt auch jeder Punkt $z$ zwischen $x$ und $y$ in $A$,
+da sonst 
+$$A = (A\cap(-\infty,z)) \cup (A\cap (z,\infty))$$
+eine disjunkte, nichttriviale, offene Zerlegung von $A$ wäre.
+
+Ist umgekehrt $A$ ein Intervall, so sei $A=B\cup C$ eine nichttriviale
+disjunkte Zerlegung. Ohne Einschränkung gebe es ein $b_0\in B$ und ein 
+$c_0\in C$ mit $b_0<c_0.$ 
+
+Es sei $z\da \sup\{b\in B\mid b<c_0\}.$ Dies liegt in $A,$ und damit auch in 
+$B$ oder $C.$ Wäre $z\in B$ und $B$ offen in $A$, so müsste es ein $r>0$ 
+geben mit
+$$\forall a\in A: |z-a| < r \Rightarrow z\in B.$$
+Also kann $z$ nicht zu $B$ gehören, wenn dies offen in $A$ ist, denn es gibt 
+Elemente $c\in C, c>z,$ die beliebig nahe an $z$ dran liegen. 
+
+Wäre $z\in C$ und $C$ offen in $A$, so gäbe es ein $r>0$, so dass
+$$\forall a\in A: |z-a| < r \Rightarrow z\in C.$$
+Das wiederum geht nicht, denn $z$ ist das Supremum einer Teilmenge von $B.$
+
+Also sind weder $B$ noch $C$ offen in $A$, und das zeigt, dass $A$ 
+zusammenhängend ist.
+
+\end{bsp}
+
+\begin{defini}{Zusammenhangskomponenten}
+Es sei $X$ ein topologischer Raum. Wir nennen zwei Punkte $x,y$ in $X$
+{\it äquivalent}, falls es eine zusammenhängende Teilmenge von $X$ gibt, 
+die beide enthält. Dies ist tatsächlich eine Äquivalenzrelation:
+\begin{itemize}
+\item $x\simeq x$ ist klar für alle $x\in X,$ denn $\{x\}$ ist 
+zusammenhängend. 
+\item Symmetrie ist auch klar, nicht wahr?
+\item Transitivität: Es seien $x\simeq y$ und $y\simeq z$, dann gibt es 
+zusammenhängende $A,B\subseteq X,$ so dass $x,y\in A$ und $y,x\in B$. 
+Aber $A\cup B$ ist auch zusammenhängend, denn aus $A\cup B = U\cup V$ (offene
+Zerlegung) folgt
+$A=(A\cap U) \cup (A\cap V)$ und analog für $B$, wir hätten also 
+disjunkte offene Überdeckungen von $A$ und $B$, und damit folgt OBdA 
+$A\subseteq U, A\cap V = \emptyset.$ Genauso ist auch $B$ in einer der beiden 
+Mengen enthalten und hat mit der anderen leeren Schnitt. Aus 
+$B\subseteq U$ folgt $V=\emptyset,$ während aus $B\subseteq V$ folgt, dass
+$U$ und $V$ nicht disjunkt sind: beide enthalten $y.$
+\end{itemize}
+Die Äquivalenzklasse von $x$ heißt die {\it Zusammenhangskomponente} von 
+$x$ und heißt $\pi_0(x)$. Diese ist weder zwangsläufig offen noch zwangsläufig abgeschlossen. Die Menge aller Äquivalenzklassen notiert man als $\pi_0(X)$.
+\end{defini}
+
+\begin{defini}{Trennungsaxiom}
+Es sei $X$ ein topologischer Raum.
+\begin{enumerate}[a)]
+\item $X$ heißt ein $T_1$-Raum, wenn die einelementige Mengen abgeschlossen sind. Äquivalent: Für $x\ne y \in X$ gibt es eine Umgebung $U$ von $y$, die $x$ nicht enthält.
+
+{\bf Beispiel:} $\mathbb Z$ mit der koendlichen Topologie, denn hier sind alle endlichen Mengen abgeschlossen.
+
+\item 
+$X$ heißt $T_2$-Raum oder \index{hausdorff'sch}
+{\it hausdorff'sch}\footnote{Felix Hausdorff, 1868-1942}, wenn je zwei
+Punkte $x\neq y$ in $X$ disjunkte Umgebungen haben.
+
+{\bf Beispiel:} $\mathbb Z$ mit der koendlichen Topologie is \emph{kein} Hausdorff-Raum.
+\end{enumerate}
+\end{defini}
+
+\begin{bsp}{Vererbung}
+
+\begin{enumerate}[a)]
+\item Metrische Räume sind hausdorff’sch: für $x,y\in X$, $x\ne y$ sei $r=d(x,y)$. Dann gilt: $B_{\frac r2}(x) \cap B_{\frac r2}(y) = \emptyset$.
+
+\item Wenn $X$ hausdorff’sch ist und $U\subseteq X$, dann ist $U$ in der Teilraumtopologie hausdorff’sch.
+
+\item Wenn $X$, $Y$ zwei Hausdorff-Räume  sind, dann auch $X\times Y$.
+
+{\it Beweis.} 
+Seien $(x,y), (\tilde x, \tilde y) \in X\times Y$ verschieden. Dann gilt ohne Beschränkung der Allgemeinheit: $x \ne \tilde x$. $X$ ist Hausdorff’sch, also gibt es offene Umgeungen $U$ um $x$ und $V$ um $\tilde x$ mit leerem Schnitt. Damit sind auch $U\times Y$ und $V\times Y \subseteq X\times Y$ offen und disjunkt. $U\times Y$ ist Umgebung von $(x,y)$, $V\times Y$ ist Umgebung von $(\tilde x, \tilde y)$, also ist $H\times Y$ hausdorff’sch.
+
+\item Ein Quotientenraum eines Hausdorff-Raums muss nicht hausdorff’sch sein.
+
+{\bf Beispiel:} $\faktor{\mathbb R}{\mathbb Q}$ hat mit der Quotiententopologie nur $\faktor{\mathbb R}{\mathbb Q}$ und $\emptyset$ als offene Mengen, und ist somit nicht einmal $T_1$.
+\end{enumerate}
+\end{bsp}
+ 
+\begin{bem}{Kompakta in Hausdorffräumen}
+\label{fuer Liouville}
+Jedes Kompaktum $K$ in einem Hausdorffraum $X$ ist abgeschlossen.
+\end{bem}
+
+{\it Beweis.} 
+Ist $x\in X\setminus K$, so gibt es für jedes $k\in K$ disjunkte
+offene Umgebungen $U_k$ von $k$ und $V_k$ von $x$. Es ist $\ddot U \da \{ U_k\mid k\in K\}$ eine offene Überdeckung von $K,$ und wegen der Kompaktheit 
+gibt es endlich viele $k_1,\dots ,k_n$ in $K,$ so dass 
+$$K \subseteq \bigcup_{i=1}^n U_{k_i}.$$
+Dazu disjunkt ist $\bigcap_{i=1}^n V_{k_i},$ aber das ist eine offene Umgebung
+von $x$. Also liegt $x$ nicht im Abschluss von $K.$
+\qed
+
+\section{Stetigkeit}
+
+\begin{defini}{Stetige Abbildungen}
+Eine Abbildung $f:X\longrightarrow Y$ zwischen zwei topologischen Räumen
+heißt {\it stetig}\index{stetig}, falls für jede offene Teilmenge $V$
+von $Y$ das Urbild $f^{-1}(V)$ in $X$ offen ist.
+\end{defini}
+
+Es genügt, diese Bedingung für eine (Sub-)Basis der Topologie von $Y$ zu testen.
+
+Wie bei metrischen Räumen werden wir mit ${\cal C}(X,Y)$ die Menge aller 
+stetigen Abbildung zwischen den topologischen Räumen $X$ und $Y$ bezeichnen. Mit $\mathcal C(X)$ bezeichen wir $\mathbb C(X,\mathbb R)$.
+
+Eine stetige Abbildung, die bijektiv ist, und deren Umkehrabbildung auch
+stetig ist, heißt ein {\it Homöomorphismus}. Zwei topologische Räume,
+zwischen denen es einen Homöomorphismus gibt, heißen kreativer Weise
+{\it homöomorph}.
+
+\begin{bem}{Sysiphos\footnote{Ignatz Sysiphos, -683 -- -651}}
+
+\begin{enumerate}[a)]
+\item Für metrische Räume $X,Y$ liefert das denselben Begriff der Stetigkeit wie unsere alte 
+$\delta$-$\varepsilon$-Definition gesehen.
+
+\item Homöomorph zu sein ist eine Äquivalenzrelation auf jeder Menge von topologischen Räumen.
+
+In der Topologie betrachtet man zwei homöomorphe topologische Räume 
+als
+im Wesentlichen gleich. Eine Eigenschaft eines topologischen Raums $X$ 
+heißt eine {\it topologische Eigenschaft}, wenn jeder zu $X$ homöomorphe
+Raum diese Eigenschaft auch hat. Kompaktheit, Zusammenhang, Hausdorffizität
+sind solche Eigenschaften. Beschränktheit oder Vollständigkeit eines 
+metrischen Raums ist keine topologische Eigenschaft.
+
+Natürlich möchte man eine Übersicht gewinnen,
+wann zwei topologische Räume homöomorph sind, oder welche 
+Homöomorphieklassen es insgesamt gibt. Das ist in dieser Allgemeinheit ein
+aussichtsloses Unterfangen. Es gibt (mindestens) zwei Möglichkeiten, die
+Wünsche etwas abzuschwächen: man kann sich entweder auf etwas speziellere
+topologische Räume einschränken oder den Begriff des Homöomorphismus
+ersetzen.
+
+Das erstere passiert zum Beispiel bei der Klassifikation der topologischen
+Flächen.
+
+Für das zweitere bietet sich der Begriff der Homotopie an.
+
+Auf beides kommen wir später noch zu sprechen.
+
+Oft genug ist es sehr schwer nachzuweisen, dass zwei gegebene Räume nicht 
+zueinander homöomorph sind. Wenn ich keine bistetige Bijektion finde, sagt 
+das vielleicht mehr über mich aus als über die Räume. Hier ist es 
+manchmal hilfreich, topologischen Räumen besser greifbare Objekte aus anderen
+Bereichen der Mathematik zuordnen zu können, die für homöomorphe Räume 
+isomorph sind, und wo dies besser entschieden werden kann. Das ist eine 
+Motivation dafür, algebraische Topologie zu betreiben oder allgemeiner
+eben Funktoren von der Kategorie der topologischen Räume in andere
+Kategorien zu untersuchen. 
+
+\end{enumerate}
+\end{bem}
+
+\begin{bem}{Ringkampf}
+\begin{enumerate}[a)]
+
+\item Die Identität auf $X$ ist stets ein Homöomorphismus (wenn man 
+nicht zwei verschiedene Topologien benutzt\dots). Eine konstante Abbildung ist 
+immer stetig. 
+
+\item
+Die Verknüpfung zweier stetiger Abbildungen $f:X\longrightarrow  Y, 
+g:Y\longrightarrow Z$ ist wieder stetig. 
+
+Insbesondere zeigt das, dass homöomorph zu sein eine Äquivalenzrelation
+auf jeder Menge von topologischen Räumen ist.
+
+\item
+Sind $f:X\longrightarrow Y$ und $g:X\longrightarrow Z$ stetig, so ist auch 
+$f\times g:X\longrightarrow Y\times Z$, $x\mapsto (f(x),g(x))$ stetig bezüglich der Produkttopologie.
+Diese ist die feinste Topologie auf $Y\times Z$ mit dieser Eigenschaft.
+
+\item
+
+${\cal C}(X)$ ist wieder der Raum  der stetigen reellwertigen Funktionen auf 
+$X$ (wobei $\mathbb R$ bei so etwas immer mit der Standardtopologie versehen 
+ist!). Dies ist wieder ein Ring (bezüglich der üblichen Verknüpfungen), 
+denn die Addition und Multiplikation sind stetige Abbildungen von 
+$\mathbb R^2$ nach $\mathbb R,$ und wir können  b) und c) 
+anwenden.
+\end{enumerate}
+\end{bem}
+
+
+
+\begin{hilfs} {\bf Ein Erhaltungssatz}\label{Erhaltungssatz}
+
+Es sei $f:X\longrightarrow Y$ stetig. Dann gelten:
+\begin{enumerate}[a)]
+\item Wenn $X$ kompakt ist und $f$ surjektiv, dann auch $f(X)$.
+\item Wenn $X$ zusammenhängend ist und $f$ surjektiv, dann auch $f(X)$.
+\item Wenn $Y$ hausdorff'sch ist und $f$ injektiv, dann ist $X$ 
+hausdorff'sch.
+\end{enumerate}
+\end{hilfs}
+
+{\it Beweis.} 
+\begin{enumerate}[a)]
+\item Es sei $\ddot V$ eine offene Überdeckung von $f(X)$ in $V.$ Dann
+ist $\ddot U\da \{f^{-1}(U)\mid U\in \ddot U\}$ eine offene Überdeckung 
+von $X.$ Da $X$ kompakt ist, gibt es endlich viele $V_1,\dots,V_n\in \ddot V,$
+so dass bereits $\{f^{-1}(V_i)\mid 1\leq i\leq n\}$ eine Überdeckung von $X$ 
+ist. 
+
+Aus $f(f^{-1}(V_i)) = f(X)\cap V_i$ folgt, dass $\{V_1,\dots ,V_n\}$ das Bild
+von $f$ überdecken.
+\item Es sei $f(X) = A\cup B$ eine disjunkte Zerlegung von $f(X)$ in nicht 
+leere Teilmengen. Wenn $A,B$ in der Spurtopologie offen wären, dann gäbe 
+es offene Teilmengen $V,W$ von $Y$ mit $A=V\cap f(X), B=W\cap f(X).$
+
+Mithin wäre $f^{-1}(V),f^{-1}(W)$ eine offene Überdeckung von $X$, die 
+noch dazu disjunkt ist, da sich $V$ und $W$ nicht in $f(X)$ schneiden.
+
+Andererseits wäre diese Teilmengen von $X$ nicht leer (weil $A$ und $B$ nicht
+leer sind), und das widerspricht der Definition von Zusammenhang.
+
+\item Es seien $x_1\neq x_2$ Punkte in $X.$ Dann sind ihre Bilder in $Y$ 
+verschieden, denn $f$ soll injektiv sein. Daher haben $f(x_1)$, $f(x_2)$ in $Y$ 
+disjunkte Umgebungen, und deren Urbilder sind disjunkte Umgebungen von $x_1$ 
+und $x_2.$ \qed
+\end{enumerate}
+
+Die Umkehrungen gelten jeweils natürlich nicht, wie einfache Gegenbeispiele 
+lehren. 
+
+\begin{bem}{alte Bekannte}
+
+\begin{enumerate}[a)]
+\item Man sieht hier insbesondere, dass Kompaktheit, Zusammenhang und hausdorff’sch topologische Eigenschaften sind.
+
+\item Wenn $X$ kompakt ist, und $f:X\to \mathbb R$ stetig, dann  ist $f(X) \subseteq \mathbb R$ kompakt, das heißt beschränkt und abgeschlossen. $f$ nimmt ein Maxmum und ein Minimum an.
+
+Als Spezialfall hiervon erinnnern wir an \ref{Normen}: eine Norm $N$ auf dem 
+$\mathbb R^n$ ist immer stetig bezüglich der Standardmetrik. Daher nimmt sie 
+auf der (kompakten) Einheitssphäre ein positives Minimum $m$ und ein Maximum
+$M$ an, und das führt wegen der Homogenität der Norm zu
+$$\forall x\in \mathbb R^n : m|x| \leq N(x) \leq M|x|.$$
+Dies zeigt, dass $N$ und die Standardmetrik dieselbe Topologie liefern.
+\item
+Wenn $X\subseteq \mathbb R$ ein Intervall ist und $f:X\to \mathbb R$ stetig, dann ist $auch f(x)$  ein 
+Intervall -- das ist der Zwischenwertsatz.\index{Zwischenwertsatz}
+
+\item Eine Teilmenge $\mathcal A \subseteq \mathcal C(X,Y)$ {\it trennt die Punkte} von $X$, wenn für alle $x_1\ne x_2$ in $X$ ein $f\in \mathcal A$ existiert, so dass $f(x_1) \ne f(x_2)$. Wenn $Y$ hausdorff’sch ist, und $\mathcal A \subseteq \mathcal C(X,Y)$ die Punkte trennt, dann ist $X$ hausdorff’sch.
+
+{\it Beweis.}
+Wenn $x_1\ne x_2$ in $X$, so gibt es ein $f\in \mathcal A$ mit $f(x_1) \ne f(x_2)$. Argumentiere weiter wie im Beweis von \ref{Erhaltungssatz} c).
+\end{enumerate}
+\end{bem}
+
+Insbesondere ist also ${\cal C}(X) = {\cal C}_0(X),$ wenn $X$ kompakt ist, und 
+dies ist als Teilraum von ${\cal B}(X)$ ein metrischer Raum.
+
+%Hier gibt es nun den wichtigen Satz 
+
+\begin{satz}{von Dini\footnote{Ulisse Dini, 1845-1918}}
+\label{satzvondini}
+Es sei $X$ ein kompakter Raum, $Y$ ein metrischer Raum, $(f_n)$ eine Folge in $\mathcal C(X,Y)$, die punktweise gegen $f\in \mathcal C(X,y)$ konvergiert. Weiterhin gelte für alle $x\in X$, $n\in \mathbb N$:
+\[
+d(f_n(x), f(x)) \ge d(f_{n+1}(x), f(x))
+\]
+Dann konvergiert $(f_n)$ gleichmäßig gegen $f$, das heißt in der $\infty$-Norm auf $\mathcal C(X,Y) \subseteq B(X,Y)$
+\end{satz}
+
+{\textit Beweis.}
+Sei $\varepsilon >0$. Für jedes $x\in X$ gibt esein $n(x)$ derart, dass
+\[
+\forall m \ge n(x): d(f_m(x),f(X)) < \frac\varepsilon3
+\]
+Weiter gibt es eine Umgebung $U_x$ von $x$, so dass für jedes $y\in U_x$ gilt: $d(f(y),f(x)) < \frac\varepsilon3$ und $d(f_{n(X)}(y), f_{n(x)}(x)) < \frac\varepsilon3$. Also gilt für jedes $m\ge n(x)$ und $y\in U_x$:
+\begin{align*}
+d(f_m(y), f(y)) &\le d(f_{n(x)}(y), f(y)) \\&\le d(f_{n(x)}(y), f_{n(x)}(x)) + d(f_{n(x)}(x), f(x)) +  d(f(x), f(y)) \\&< \varepsilon
+\end{align*}
+Aus $X=\bigcup_{x\in X}U_x$ folgt, dass es $x_1,\ldots,x_k\in X$ gibt mit $X=\bigcup_{i=1}^k U_{x_i}$. Sei $N=\max\{n(x_i)\mid 1\le i \le k\}$, also gilt $\forall y\in X, m\ge N: d(f_n(y),f(y))<\varepsilon$.\qed
+
+
+\textbf{Anwendung:} Sei $X=[0,1]$, $Y=\mathbb R$. Für $n\in \mathbb N_0$ sei rekursiv die Funktion $w_k$ definiert durch $w_0=0$, $w_{n+1}(x) = w_n(x) + \frac12(x-w_n(x)^2)$. Das sind alles Polynome. Dann gilt: $w_n\to \sqrt\cdot$ gleichmäßig auf $[0,1]$:
+
+Punkteweise Konvergenz: Sei $x\in [0,1]$. Für die Funktion $f:[0,\sqrt x] \to \mathbb R$, $w\mapsto w + \frac12 (x-w^2)$ gilt: $f(0) = \frac12x \le f(\sqrt x) = \sqrt x$. $f'(w) = 1-w\ge 0$, also ist $f$ monoton wachsend. $f(w) \in [0,\sqrt x]$, also $w\le f(w)$. Damit gilt: $w_0=0$, $w_{n+1} = f(w_n)$ ist monoton wachsend, also konvergiert $(w_n)$ gegen ein $y\in [0,1]$.
+
+$f$ ist stetig, also $f(y) = \lim_{n\to\infty} f(w_n) = \lim_{k\to \infty}w_{n+1} = y$, also $f(y) = y + \frac12(x-y^2) = y \implies y ^2 = x$, also $y=\sqrt x$. Nach Satz von Dini gilt die Behauptung.
+
+\begin{satz}{von Stone\footnote{Marshall Harvey Stone, 1903-1989}-Weierstra\ss\footnote{Karl Theodor Wilhelm Weierstra\ss, 1815-1897}}
+Es sei $K$ ein kompakter topologischer Raum und ${\cal A}\subseteq {\cal C}(K)$
+ein Teilring, der die konstanten Funktionen enthält und die Punkte von $X$ trennt, d.h.:
+$$\forall x\neq y\in K:\exists f\in {\cal A}:f(x) \ne f(y).$$
+Dann ist $\cal A$ dicht in ${\cal C}(K)$.
+\end{satz}
+
+%{\bf Das heißt:} Jede stetige Funktion auf $X$ lässt sich gleichmäßig
+%durch eine Folge in ${\cal A}$ approximieren. 
+
+%Die Bedingung an ${\cal A}$ hat einen Namen: man sagt, ${\cal A} $ 
+%{\it trenne die Punkte} von $X.$
+%Insbesondere impliziert dies, dass $K$ hausdorff'sch ist.
+
+%Ein beliebter Spezialfall des
+%Satzes ist der eines Kompaktums $X\subseteq \mathbb R^n$, wobei man dann für
+%${\cal A}$ gerne den Ring der Polynomfunktionen (in $n$ Variablen) auf $X$ 
+%wählt. Klar: Schon die linearen Abbildungen langen, um Punkte zu trennen.
+
+{\it Beweis.}  Hier folge ich den Grundzügen der modernen Analysis
+von Dieudonn\'e\footnote{Jean Alexandre Eug\`ene Dieudonn\'e, 1906-1992}.
+
+%Wir bezeichnen mit $\bar{\mathcal A}$ den Abschluss von $\cal A$ in 
+%${\cal C}(K).$
+
+
+%\item[1.] Es gibt eine Folge von reellen Polynomen $u_n\in \mathbb R[X],$
+%die auf dem Intervall $[0,1]$ gleichmäßig gegen die Wurzelfunktion 
+%konvergiert.
+%
+%Um dies einzusehen setzen wir $u_1\equiv 0$ und definieren rekursiv
+%$$u_{n+1} (t) \da u_n(t) + \frac12(t-u_n(t)^2), n\geq 1.$$
+%Dann ist $(u_n)$ punktweise monoton steigend (auf $[0,1]$ wohlgemerkt, nur dort
+%betrachten wir das) und beschränkt. Punktweise gilt also (wegen des 
+%Monotoniekriteriums) $\lim_{n\to\infty} u_n(t) = \sqrt(t).$ Dann impliziert der 
+%Satz von Dini, was in 1.\ behauptet wird.
+
+Für jedes $f\in {\cal A}$ gehört $|f|$ zu $\bar{\mathcal A}$:
+
+Denn: Sei $m=\max\{|f(x)|\mid x\in X\}$, $\frac fm\in \mathcal A$, genauso $\frac{f^2}{m^2} \in \mathcal A$. Verwende die Folge $(w_n)$ aus der Anwedung zum Satz von Dini und betrachte rekursiv: $f_0=0$, $f_{n+1}(x) = f_n(x) + \frac12(\frac {f^2}{m^2}(x) - f_n^2(x))$. $(f_n)$ konvergiert gleichmäßig gegen $\sqrt {\frac{f^2}{m^2}} = |\frac fm|$, also konverigiert $(mf_n)$ gleichmäßig gegen $|f|$.
+
+Mit $f,g \in \mathcal A$ liegen auch die Funktionen $x\mapsto \max(f(x),g(x))$ und $x\mapsto \min(f(x),g(x))$ in $\mathcal A$, denn $\max(f,g)=\frac 12(f+g+|f-g|)$ beziehungsweise $\min(f,g) = \frac12 (f + g -|f-g|)$.
+
+
+%\item Für $x\neq y\in K$ und $a,b\in \mathbb R$ gibt es $f\in {\cal A}$ 
+%mit $f(x)=a, f(y) = b.$
+%
+%Denn: Es gibt ja nach Voraussetzung in ${\cal A}$ eine Funktion $g$ mit
+%$g(x)\neq g(y).$ Setze nun 
+%$$f\da \frac a{g(x)-g(y)}(g-g(y)) + \frac b{g(y)-g(x)}(g-g(x)).$$
+%NB: $x,y$ sind fest, die Variable versteckt sich hinter dem nackten $g.$
+
+Sei $f\in {\cal C}(K)$, und $\varepsilon >0$. Zeige: Es existiert ein $g\in \bar{\mathcal A}$ mit $d(f,g)<\varepsilon$.
+
+Zunächst zeige: Es gibt für jedex $x\in X$ ein $g\in \bar{\mathcal A}$, so dass $g(x)=f(x)$ und für jedes $y\in X$ gilt: $g(y)<f(y)+\varepsilon$.
+
+Sei $x\in X$ fest. Für $y\in X$ existiert dann eine Funktion $g_y\in \mathcal A$ mit $f(x) = g_y(x)$, $f(y) = g_y(y)$, denn wenn $x=y$, so wähle $g_y$ konstant gleich $f(x)$, und wenn $yx\ne y$, so gibt es ein $h$ mit $h(x)\ne h(y)$. Setzte für $z\in X$:
+\[
+g_y(z) \da \frac{h(z) -h(y)}{h(x)-h(y)}\cdot f(x) + \frac{h(z) - h(x)}{h(y) - h(x)}\cdot f(y)
+\]
+$g_y$ ist stetig, also gibt es eine Umgebung $U_y$ von $y$ mit $\forall y\in U_y: |f(z)-g(y)|<\varepsilon$.
+
+$X = \bigcup_{y\in X}U_y$, also existierten $y_1,\ldots,y_k$ mit $X=\bigcup_{i=1}^k U_{y_i}$. Setze $g\da \min_{1\le i\le k}(g_{y_i})\in \bar{\mathcal A}$. $g(x) = f(X)$, da $g_y(x)=f(x)$ für jedes $y\in X$ gilt. Für jedes $x\in X$ gib es ein $i=1,\ldots,k$, so dass $z\in U_{y_i}$, also gilt $g(z) \le g_{y_i}(z)< f(z) + \varepsilon$, womit gezeigt ist, was zunächst zu zeigen war.
+
+Um die Existenz von $g\in \bar{\mathcal A}$ mit $d(f,g)<\varepsilon$ einzusehen, wählen wir für jedes $x\in X$ eine Funktion $h_x\in \bar{\mathcal A}$ mit $h_x(x)=f(x)$ und $\forall y\in X: h_x(y) < f(y) + \varepsilon$.
+
+Dies geht, denn für alle $x\in X$ gibt es eine Umgebung $V_x$ von $x$ mit $\forall y\in V_x$: $h_x(y) > f(y) -\varepsilon$, den $h_x - f$ ist stetig und hat bei $x$ den Funktionswert $0$.
+
+$X=0\bigcup_{x\in X}V_x$. Wähle $x_1,\ldots,x_n\in x$ mit $X=\bigcup_{i=1}^r V_{x_i}$ und setzte $g\da \max_{1\le i \le r}(h_{x_i}) \in \bar{\mathcal A}$. Dann gilt $d(g,f)<\varepsilon$.
+\qed
+
+\begin{bsp}
+
+\begin{enumerate}
+\item Jede stetige Funktion $f$ auf $[a,b]$ lässt sich gleichmäßig durch Polynomfunktionen approximieren.
+
+$\bar {\rm A}$llgemeiner: Für kompaktes $X\subseteq \mathbb R^n$ lässt sich jede stetige Funktion gleichmäßig durch Polynomfunktionen in $n$ Variablen approximieren.
+
+\item Funktionen auf $\faktor{\mathbb R}{\mathbb Z}$. Die stetigen Abbildungen von $\faktor{\mathbb R}{\mathbb Z}$ nach $Y$ entsprechen den periodischen stetigen Abbildungen von $\mathbb R$ nach $Y$ mit Periode $1$. Für $n\in \mathbb N$ sind $x\mapsto \sin(2\pi n x)$ und $x\mapsto \cos(2\pi n x)$ in $\mathcal C(\faktor{\mathbb R}{\mathbb Z})$. Die Additionstheoreme für Sinus und Kosinus implizieren, dass $\mathcal A=\{x\mapsto \sum_{k=1}^\infty a_i \sin 2\pi kx + \sum_{l=0}^n b_l \sin2\pi lk\mid a_k, b_k \in \mathbb R\}$ ein Teilring von $\mathcal C(\faktor{\mathbb R}{\mathbb Z})$ ist. Insbesondere lässt sich jede stetige Funktion auf $\faktor{\mathbb R}{\mathbb Z}$ gleichmäßig durch Elemente aus $\mathcal A$ approximieren.
+
+Sei $f\in \mathcal C(\faktor{\mathbb R}{\mathbb Z})$, $g\in \mathcal A$, $|f-g|<\varepsilon$. Dann ist $\int_0^1|f-g|^2 dx< \varepsilon^2$, also $d_2(f,g)=\sqrt{\int_0^1|f-g|^2 dx}<\varepsilon$. Das heißt: Zu jedem $\varepsilon >0$ gibt es ein $g\in \mathcal A$: $d(f,g)<\varepsilon$. Schreibe $g=\sum_{k=1}^n a_k\sin 2\pi kx + \sum_{l=0}^n k_l\cos 2\pi lx \in \mathcal A_n = \{\sum_{k=1}^n a_k\sin 2\pi kx + \sum_{l=0}^n k_l\cos 2\pi lx \mid n\text{ fest}\}$.
+
+Auf $\mathcal C(\faktor{\mathbb R}{\mathbb Z})$ habne wir ein Skalarprodukt
+\[
+\langle p,q\rangle \da \int_0^1p(x)\cdot q(g) dx
+\]
+Aufgabe: Bestimme den Abstand $d_2(f,\mathcal A_n)$. Benutze dazu eine Orthonormalbasis in $\mathcal A_n$: $S_k(x) = \frac 1{\sqrt 2} \sin 2\pi k x$, $C_0(x) = 1$, $C_l(x) = \frac1{\sqrt 2} \cos 2\pi lx$, $l>0$. Dann minimiert
+\[
+g = \sum_{k=1}^n \langle f,S_k\rangle S_k + \sum_{l=0}^n \langle f,C_l\rangle C_l
+\]
+den Abstand $d_2(f,h)$ für $h\in \mathcal A_n$.
+
+
+\item Der Satz von Stone-Weierstraß wird z.\,B. benutzt beim Beweis des Satzes von Peter und Weyl über Darstellungen von kompakten topologischen Gruppen.
+
+Eng verwandt ist die Möglichkeit, kompakte Symmetriegruppen von Differentialgleichungen bei deren Lösung zu benutzten. Prominentestes Beispiel: Spektrum von Wasserstoffatomen.
+
+\end{enumerate}
+\end{bsp}
+
+\begin{defini} {Wo ein Weg ist\dots}
+Es sei $X$ ein topologischer Raum. Ein {\it Weg} ist eine stetige 
+Abbildung eines kompakten reellen Intervalls $[a,b]\subseteq \mathbb R$ mit $a<b$ nach $X.$
+
+Zwei Wege $\gamma:[a,b]\to X$, $\delta:[c,d] \to X$ heißen äquivalent, wenn es einen Homöomorphismus $\varphi:[a,b]\to [c,d]$ mit $\varphi(a) = c$, $\varphi(b)=d$ gibt mit $\gamma = \delta\circ \varphi$.
+
+Sind $f:[a,b]\longrightarrow X$ und $g:[b,c]\longrightarrow X$ zwei Wege mit
+$f(b) = g(b),$ so ist $g\ast f: [a,c]\longrightarrow X$ ein Weg, wenn wir
+\[g\ast f(t) = \left\{ \begin{array}{ll}f(t), & t\in [a,b]\\
+                                   g(t), & t\in [b,c]\\
+\end{array}\right.\]
+definieren. 
+
+Für einen Weg $\gamma:[a,b] \to X$ ist ${\rm Bild}(\gamma)$ zusammenhängend.
+
+Wir betrachten auf $X$ die Äquivalenzrelation $\sim$, die gegeben ist durch 
+\[ x\sim y \iff \exists \gamma : [a,b] \to X: \gamma(a) =x,\  \gamma(b)=y\,. \]
+Diese ist offensichtlich symmetrisch und reflexiv. Sie ist transitiv, da  wenn $\gamma:[a,b] \to X$, $\gamma(a)=x$, $\gamma(b)=y$ ein Weg ist und $\delta:[b,d]\to X$, $\delta(b)=y$, $\delta(d)=z$ auch, dann ist auch $g \ast f$ ein Weg.
+
+Die Äquivalenzklassen von $\sim$ sind alle zusammenhängend, denn wäre $[x]_\sim$ nicht zusammenhängend, dann gäbe es zwei offene Mengen $U,V\in X$ mit $[x]_\sim$ mit $[x]_\sim = ([x]_\sim \cap U) \cup ([x]_\sim \cap V)$, $[x]_\sim \cap U\ne \emptyset$, $[x]_\sim \cap V\ne \emptyset$ $[x]_\sim \cap U\cap V = \emptyset$. Sei ohne Beschränkung der Allgemeinheit sei $x\in U$. Zu $y\in V\cap [x]_\sim$, gibt es einen Weg $\gamma:[0,1]\to X$ mit $\gamma(0)=x$, $\gamma(1)=y$. Offensichtlich ist ${\rm Bild}(\gamma)\subseteq [x]_\sim$, aber $({\rm Bild}(\gamma) \cap U) \cap ({\rm Bild}(\gamma) \cap V) = \emptyset$, im Widerspruch zu
+
+
+Die Äquivalenzklassen heißen die {\it Wegzusammenhangskomponenten}\index{Wegzusammenhangskomponenten} von $X$. Ein wegzusammenhängender Raum, also einer mit nur einer Wegzusammenhangskomponente, ist zusammenhängend. (Beispiel: $SO(n)$)
+
+Ein Beispiel für einen zusammenhängenden Raum, der nicht wegzusammenhängend ist $\mathbb Z$ mit der koendlichen Topologie.
+
+{\bf Vorsicht:} Es gibt einen Weg $P:[0,1] \to [0,1]\times [0,1]$, der surjektiv ist.\footnote{z.\,B. die Peano-Kurve, siehe \url{http://de.wikipedia.org/wiki/Peano-Kurve}.}
+\end{defini}
+
+\begin{defini} {Offenheit}
+Eine Abbildung $f:X\longrightarrow Y$ zwischen zwei topologischen 
+Räumen heißt {\it offen}, wenn für jede offene Teilmenge $A\subseteq X$
+das Bild $f(A)$ in $Y$ offen ist.
+
+$f$ heißt {\it offen in } $x\in X,$ falls jede Umgebung von $x$ unter $f$ 
+auf eine Umgebung von $f(x)$ abgebildet wird. Es genügt, dies für eine Umgebungsbasis zu zeigen. Beispielsweise in $\mathbb R$ ist $f;\mathbb R\to \mathbb R$ offen in $x\in \mathbb R$, wenn $\forall \varepsilon >0 \ \exists \delta >0: f( (x-\varepsilon, x+\varepsilon) ) \supseteq (f(x)-\delta, f(x)+\delta)$.
+
+$f$ ist genau dann offen, wenn $f$ in jedem $x\in X$ offen ist.
+
+\end{defini}
+
+\begin{bsp}{Offenheit}
+\label{kte Wurzel}
+\begin{enumerate}
+\item 
+Ein Homöomorphismus ist also eine stetige und offene Bijektion.
+Sei nämlich $f:X\to Y$ ein Homöomorphismus, also sind $f, f^{-1}$ stetig. Für $U\subseteq X$ ist $f(U) = (f^{-1}){-1}(U)$. Das ist offen für ein offenes $U$.
+
+\item Es sei $U\subseteq \mathbb R^n$ offen und $\varphi : U \to \mathbb R^n$ stetig differenzierbar. Wenn in $x\in U$ die Ableitung $D_{\varphi}(x)$ invertierbar ist, dann ist $\varphi$ offen im Punkt $x$.
+
+Nach dem Satz der impliziten Funktion gibt es $U_o\ni x$, $V_0\ni f(x)$ mit $\varphi|_{U_0} \to V_0$ bijektiv und $\varphi|_{U_0}^{-1}$ stetig differenzierbar. Also ist $\varphi|_{U_0}:U_o\to V_0$ ein Homöomorphismus, also ist $\varphi$ offen in $x$.
+
+\item Für eine natürliche Zahl $k$ ist die Abbildung $\mathbb C\ni z \to z^k$ offen.
+
+Dazu schreiben wir $z=r e^{i\alpha}$, $z\ne 0$, also ist $z^k = r^k e^{ik\alpha}$.
+
+Die Abbildung ist offen in Punkt $z_0 = r_0e^{i\alpha_0}$: Sei $U$ eine offene Umgebung von $z_0$. In $U$ liegt eine Umgebung von $z_0$ von der Gestalt 
+\[V=\{re^{i\alpha} \mid r\in (r_0-\delta,r_0+\delta), \alpha\in[\alpha_0-\varepsilon,\alpha_0+\varepsilon]\} \]
+für geeignete $\varepsilon,\delta>0$, $\delta < r_0$. Das Bild von $V$ ist
+\begin{align*}
+&\{r^ke^{ik\alpha} \mid r\in (r_0-\delta,r_0+\delta), \alpha\in[\alpha_0-\varepsilon,\alpha_0+\varepsilon]\} \\
+=\ &\{\rho e^{i\beta} \mid \rho\in((r_0-\delta)^k,(r_0+\delta)^k)),\ \beta \in (k(\alpha_0-\varepsilon), k(\alpha_0+\varepsilon))\} 
+\end{align*}
+Dies ist eine offene Umgebung von $z_0^k$.
+
+Für $z_0=0$ gilt: $\{z^k\mid z\in B_r(0)\} = B_{r^k}(0)$, also ist die Abbildung auch im Nullpunkt offen.
+
+Am Argument für $z_0\ne 0$ sieht man: $z\mapsto z^k$ ist in einer Umgebung von $z_0\ne 0$ injektiv und die Umkehrabbildung $z\mapsto z^{\frac 1k}$ ist stetig und offen.
+\end{enumerate}
+\end{bsp}
+
+\begin{hilfs}{komplexe Polynome} \label{Polynom-offen}
+
+Es sei $f:\mathbb C\longrightarrow \mathbb C$ eine polynomiale Abbildung,
+die nicht konstant ist. Dann ist $f$ offen.
+\end{hilfs}
+
+{\it Beweis.}
+Wir zeigen, dass das Bild einer Umgebung der $0$ unter $f$ eine Umgebung von 
+$f(0)$ ist. Da Translationen in $\mathbb C$ Homöomorphismen sind und aus 
+Polynomen wieder Polynome machen, zeigt das, dass für jedes $z\in \mathbb C$
+und jede Umgebung $U$ von $z$ die Menge $f(U)$ eine Umgebung von $f(z)$ ist,
+und das ist gerade die Behauptung.
+
+Hierbei dürfen wir uns auf den Fall zurückziehen, dass $f(0)=0$ gilt.
+
+Es sei also $f(z) = \sum_{i=1}^d a_iz^i.$
+
+Wir bemerken zunächst, dass $f$ im Nullpunkt reell differenzierbar ist. 
+Die Ableitung im Nullpunkt ist die $\mathbb R$-lineare Abbildung, die durch 
+Multiplikation mit $a_1$ zustande kommt. Wegen der 
+binomischen Formeln gilt hier ja
+$$\lim_{|h|\to 0} \frac{f(z_0+h) - f(z_0) - a_1h }{|h|} = 0.$$
+
+Wenn $a_1\neq 0$ gilt, dann ist die Ableitung ein Isomorphismus, und der 
+Satz von der impliziten Funktion sagt, dass
+es eine Umgebung $U$ von $0$ und eine Umgebung $V$ von $f(0)=0$ gibt, so dass
+$f$ auf $U$ injektiv ist, $f(U) = V,$ und die lokale Umkehrabbildung zu $f$
+auf $V$ differenzierbar. Das heißt, dass auch $f^{-1}$ in $0$ stetig ist, 
+$f$ also offen.
+
+Es bleibt der Fall $a_1=0.$ Es sei $k=\min\{n\in \mathbb N \mid a_k\neq 0\}.$
+Dann ist $k>1,$ da $a_0=a_1=0.$ Wir wollen zeigen, dass $f$ in einer Umgebung
+der $0$ eine $k$-te Wurzel hat: $f(z) = g(z)^k,$ und dass $g$ offen gewählt 
+werden kann. Dann sagt uns die Offenheit von $z\mapsto z^k,$ dass auch $f$ im
+Nullpunkt offen ist, und wir sind fertig.
+
+Dazu schreiben wir $f(z) = z^k\cdot h(z)$ mit 
+$h(z) = \sum_{i=k}^d a_i z^{i-k}.$
+Das Polynom $\tilde h$ hat also im Nullpunkt den Wert $a_k\neq 0.$
+In einer Umgebung von $a_k$ gibt es wegen \ref{kte Wurzel} eine stetige, offene 
+$k$-te Wurzel. Die $k$-te Wurzel $h(z)^{1/k}$ ist also in einer Umgebung der $0$
+definiert, und bei näherem Hinsehen sieht man, dass die Ableitung im 
+Nullpunkt regulär ist.
+
+Daher gilt in einer Umgebung der $0:$ 
+$$f(z) = z^k (h(z)^{1/k})^k = (z h(z)^{1/k})^k.$$ 
+Das ist die $k$-te Potenz einer bei $0$ offenen Abbildung, und damit ist $f$ 
+selbst im Ursprung offen.
+\qed
+
+\begin{hilfs}{\`a la Liouville}\label{Liouville}
+
+Es seien $f:X\longrightarrow Y$ eine stetige und offene Abbildung, $X$ sei 
+nichtleer und kompakt, $Y$ sei zusammenhängend und hausdorff'sch.
+
+Dann ist $f$ surjektiv und insbesondere ist $Y$ auch kompakt.
+
+\end{hilfs}
+
+{\it Beweis.} Das Bild von $f$ ist offen nach Definition der Offenheit und
+kompakt wegen \ref{Erhaltungssatz}. Als Kompaktum in $Y$ ist $f(X)$ 
+abgeschlossen, siehe \ref{fuer Liouville}. Es ist mithin 
+$Y= f(X) \cup (Y\setminus f(X))$ eine Zerlegung von $Y$ als Vereinigung
+zweier offener disjunkter Teilmengen. Da $f(X)$ nicht leer ist und $Y$
+zusammenhängend ist, muss $Y\setminus f(X)$ leer sein: $f$ ist 
+surjektiv. \qed
+
+\paragraph{Bemerkung:} Dies ist ein topologisches Pendant zum Satz von Liouville aus der Funktionentheorie. Dieser besagt: Eine beschränkte holomorphe Funktion $f:\mathbb C\to\mathbb C$ ist konstant. Das folgt aus \ref{Liouville} unter Benutzung des Satzes von der Gebietstreue (nicht konstante holomorphe Funktionen sind offen) und des Riemann’schen Hebbarkeitssatzes: Sei $g(z)\da f(\frac 1z)$, $z\ne 0$ ist beschärnkt, also lässt sich $g$ ei $z=0$ holomorph fortsetzbar. $f$ lässt sich zu einer holomorphen Abbildung $\hat f :\mathbb {\hat C}\to \mathbb C$ fortsetzen.
+
+\begin{satz}{Fundamentalsatz der Algebra}
+ \index{Fundamentalsatz der Algebra}\label{Fundamentalsatz} 
+
+Es sei $f:\mathbb C\longrightarrow \mathbb C$ ein nichtkonstantes Polynom. 
+Dann besitzt $f$ eine komplexe Nullstelle.
+
+\end{satz}
+
+{\it Beweis.} Nach Hilfssatz \ref{Polynom-offen} ist $f$ offen. Außerdem 
+gilt (siehe \ref{Lasso}), dass $|f(z)|$ mit $|z|$ gegen unendlich geht. 
+
+Wir können demnach $f$ zu einer stetigen Abbildung  $\hat f$ von 
+$\mathbb P^1(\mathbb C)$ auf sich selbst, mit $\hat f(\infty) = \infty$ und $\hat f(z)=f(z), z\in \mathbb C$, fortsetzen, und man verifiziert, dass
+auch die Fortsetzung offen ist. Also ist die Fortsetzung von $f$ surjektiv nach
+Liouville, und es gibt ein $z\in\mathbb P^1(\mathbb C)$ mit $f(z) = 0.$
+Da $z$ nicht $\infty$ sein kann (hier wird $f$ ja unendlich) ist $z\in 
+\mathbb C$ wie behauptet. 
+\qed
+
+\section{Topologische Mannigfaltigkeiten}
+
+\begin{defini}{Atlas}
+Es sei $X$ ein topologischer Raum. Ein $n$-dimensionaler 
+\index{Atlas}{\it Atlas} auf $X$ 
+besteht aus einer offenen Überdeckung $\ddot U$ von $X,$ so dass für jedes 
+$U\in \ddot U$ ein Homöomorphismus 
+\[\varphi_U: U \longrightarrow Z(U)\subseteq \mathbb R^n\]
+existiert, wobei $Z(U)$ in $\mathbb R^n$ offen ist.
+
+Jeder Atlas liegt in einem {\it maximalen Atlas}
+\[
+\{ (U,\varphi) \mid U \subseteq X \text{ offen, } \varphi : U \to Z\subset \mathbb R^n\text{ ein Homöomorphismus} \}\,.
+\]
+\end{defini}
+
+Zum Beispiel besitzt jede offene Teilmenge $U$ des $\mathbb R^n$ einen Atlas; 
+wir nehmen einfach $U$ selbst als Überdeckung und die Identität als
+Kartenabbildung. 
+
+\begin{defini} {topologische Mannigfaltigkeit}
+Ein topologischer Raum $X$ ist eine $n$-dimensionale {\it topologische
+Mannigfaltigkeit}\index{topologische Mannigfaltigkeit}, wenn er hausdorff'sch
+ist, mit einem Atlas
+ausgerüstet werden kann und eine abzählbare Basis der Topologie besitzt.
+\end{defini}
+
+
+\begin{bem}{Eindeutigkeitsunterstellung und Abzählbarkeitsaxiome}
+\begin{enumerate}[a)]
+\item 
+{\bf Vorsicht:} Wir halten im Vorübergehen fest, dass es nicht {\it a
+priori} klar ist, dass die Dimension eines Atlas durch die Topologie auf $X$
+festliegt. Das ist so, aber der Beweis ist nicht so offensichtlich.
+Schließlich muss man so etwas zeigen, wie dass es für $m\neq n$ keine 
+offene stetige Abbildung einer $m$-dimensionalen Kugel in eine 
+$n$-dimensionale gibt.
+
+\item
+Die letzte Bedingung (abzählbare Basis) ermöglicht einige Konstruktionen mit topologischen 
+Mannigfaltigkeiten, die sich als sehr hilfreich erweisen. 
+Sie impliziert zum Beispiel, dass jede offene Überdeckung von $X$ eine
+abzählbare Teilüberdeckung hat. 
+
+Man nennt sie auch das {\it zweite Abzählbarkeitsaxiom}.
+
+
+Der Name schreit nach einem Vorgänger: ein topologischer Raum erfüllt das 
+{\it erste Abzählbarkeitsaxiom}, wenn jeder Punkt eine abzählbare 
+Umgebungsbasis besitzt. Metrische Räume haben diese Eigenschaft zum Beispiel,
+sie ist eine {\bf lokale} Bedingung, sagt sie doch nur etwas über Umgebungen 
+von einem jeden Punkt aus. Das werden wir im nächsten Hilfssatz einmal
+austesten.
+
+Das zweite Abzählbarkeitsaxiom impliziert offensichtlich das erste.
+
+\item Ein topologischer Raum, in dem das erste, aber nicht das zweite Abzählbarkeitsaxiom erfüllt ist, ist $\mathbb R$ mit der diskreten Topologie, denn für $x\in \mathbb R$ ist $\{\{x\}\}$ eine Umgebungsbasis bei $x$. Für eine Basis $\mathcal B$ der diskreten Topologie jedoch muss es für $x\in \mathbb R$ auch eine Teilmenge $U$ mit $x\in U\subseteq\{x\}$ geben, also $\{\{x\}\mid x\in \mathbb R\}\subseteq \mathcal B$ und damit $\mathcal B$ nicht abzählbar.
+
+\item Ein metrischer Raum $(X,d)$ erfüllt immer das erste Abzählbarkeitsaxiom, denn für $x\in X$ ist $\{B_{\frac1n}(x)\mid n\in \mathbb N_{>0}\}$ eine Umgebungsbasis von $x$. Ist nämlich $x\in U$, $U$ offen, so existiert ein $\varepsilon >0$ so dass $B_\varepsilon(x)\subseteq U$. Wähle $n\in \mathbb N$, so dass $n>\frac1\varepsilon$, dann ist $B_{\frac1n}(x)\subseteq B_\varepsilon(x)\subseteq U$.
+
+\item Wenn $x\in X$ eine abzählbare Umgebungsbasis besitzt, so zähle sie ab:
+\[
+B(x) = \{U_1,U_2,\ldots\}
+\]
+durch Schneiden erhält man dann die Umgebungsbasis
+\[
+\tilde B(x) = \{U_1,U_1\cap U_2,\ldots,\bigcap_{i=1}^kU_i \mid k\in\mathbb N\}
+\]
+die aus immer kleiner werdenden Umgebungen von $x$ besteht.
+
+
+\end{enumerate}
+\end{bem}
+
+\begin{defini} {schon wieder Folgen}
+Eine Folge $(x_n)$ in einem topologischen Raum $X$ {\it konvergiert gegen}
+$x\in X,$ falls in jeder Umgebung von $x$ alle bis auf endlich viele 
+Folgenglieder liegen.
+
+{\bf Vorsicht:} \underline{Der} Grenzwert ist im Allgemeinen nicht mehr 
+eindeutig, also eigentlich der bestimmter Singular verboten. Für die
+Eindeutigkeit des Grenzwerts braucht man ein Trenungsaxiom, zum Beispiel ist 
+hausdorff'sch hinreichend.
+
+$X$ heißt {\it folgenkompakt}, wenn
+jede Folge in $X$ eine konvergente Teilfolge besitzt.
+
+\end{defini}
+
+\begin{hilfs} {Folgen für die Folgenkompaktheit}
+Es sei $X$ ein topologischer Raum.
+\begin{itemize}
+\item[a)] Ist $X$ kompakt und erfüllt das erste Abzählbarkeitsaxiom, so
+ist $X$ folgenkompakt.
+\item[b)] Ist $X$ folgenkompakt und metrisch, so ist $X$ auch kompakt.
+\end{itemize}
+\end{hilfs}
+
+{\it Beweis.} 
+\begin{itemize}
+\item[a)] Es sei $(x_n)$ eine Folge in $X.$ Dann gibt es ein $x\in X$, so dass
+in jeder Umgebung $U$ von $x$ für unendlich viele $n\in \mathbb N$ der Punkt
+$x_n$ liegt. 
+
+Anderenfalls ließe sich für alle $x\in X$ eine Umgebung $U_x$ finden, die
+nur endlich viele Folgenglieder enthält, und weil 
+$$X=\bigcup_{x\in X} U_x$$
+eine endliche Teilüberdeckung hat, hätte man einen Widerspruch.
+
+Nun haben wir so ein $x.$ Dieses besitzt eine abzählbare Umgebungsbasis
+$$U_1\supseteq U_2 \supseteq U_3,\dots$$
+und wir können bequem eine Teilfolge $x_{n_k}$ wählen mit 
+$$\forall k\in \mathbb N:n_{k+1} > n_{k} \ \ {\rm und }\ \ x_{n_k}\in U_k.$$
+\item[b)] Es sei $\ddot U$ eine offene Überdeckung des folgenkompakten 
+metrischen Raums $X.$ 
+
+Für jedes $x\in X$ wählen wir ein $U_x\in \ddot U$ derart, dass eine der
+beiden folgenden Bedingungen erfüllt ist:
+$$B_1(x)\subseteq U_x\ \ {\rm  oder }\ \ 
+\exists r(x)>0 : B_{r(x)}(x)\subseteq U_x, \forall U\in \ddot U: 
+B_{2r(x)}(x)\not\subseteq U.$$
+Jetzt nehmen wir an, dass $\ddot U$ keine endliche Teilüberdeckung besitze.
+Wir starten mit einem beliebigen $x_1\in X$ und wählen 
+$$x_2\in X\setminus U_{x_1},\ 
+x_3\in X\setminus(U_{x_1}\cup U_{x_2}),\dots$$
+Da $X$ folgenkompakt ist, gibt es eine Teilfolge $(x_{n_k})$, die gegen ein
+$a\in X$ konvergiert. Wir wählen ein $r\in (0,1)$ derart, dass
+$B_r(a)\subseteq U_a.$ Dann liegt $x_{n_k}$  für 
+großes $k$ in $B_{r/5}(a),$ und es gilt 
+$$d(x_{n_k},x_{n_{k+1}}) < 2r/5.$$
+Andererseits zeigt
+$$x_{n_k}\in B_{4r/5}(x_{n_k})\subseteq B_{r}(a)\subseteq U_a\in \ddot U,$$
+dass $r(x_{n_k})\geq 2r/5,$ und damit auch 
+$$d(x_{n_k},x_{n_{k+1}}) \geq 2r/5.$$
+Dieser Widerspruch besiegelt das Schicksal unserer irrigen Annahme, $\ddot U$
+habe keine endliche Teilüberdeckung. 
+
+Also ist $X$ kompakt, da $\ddot U$ beliebig war.\qed
+\end{itemize}
+
+\begin{bsp}{Schönheiten des Abendlandes}
+Nach diesem Grundlagenexkurs kehren wir nun zu den topologischen 
+Mannigfaltigkeiten zurück. Wir kennen noch keine Beispiele. Oder doch?
+
+\begin{enumerate}[a)]
+\item Jede offene, nichtleere Teilmenge von $\mathbb R^n$ ist eine
+$n$-dimensionale topologische Mannigfaltigkeit. Hier muss man vor allem das
+zweite Abzählbarkeitsaxiom testen: 
+
+Es gibt eine abzählbare Subbasis der Topologie, z.\,B.
+\[
+B \da \{B_r(x) \mid x \in \mathbb Q^n\cap U, r\in \mathbb Q, r>0, B_r(x) \subseteq U\}
+\]
+Ist nämlich $V\subseteq U$ offen und $x\in V$, so gibt es ein $r>0$ so dass $B_r(x)\subseteq V$. Da $\mathbb Q^n$ dicht in $\mathbb R^n$ liegt, gibt es ein $q\in \mathbb Q^n$ mit $d(q,x)<\frac r4$. Wähle $t\in \mathbb Q$ mit $\frac r4<t<\frac r2$, dann ist $x\in B_t(q)\subseteq B_r(x)$. Also liegt jedes $x\in V$ in einem $B_x \in \mathcal B$, so dass $B_x \subseteq V$, also ist $V= \bigcup_{x\in V}B_x$.
+
+\item
+Jeder Hausdorffraum mit einem endlichen Atlas ist dann auch eine topologische 
+Mannigfaltigkeit.
+
+\item Es sei $K=\mathbb R$ oder $\mathbb C.$ Dann ist der projektive Raum
+$\mathbb P^n(K)$ mit der früher eingeführten Quotiententopologie eine 
+topologische Mannigfaltigkeit.
+
+Denn er lässt sich überdecken durch die offenen Mengen 
+$$U_k\da\{(x_i)_{1\leq i\leq n+1} \mid x_k = 1\},\ 1\leq k\leq n+1,$$
+und diese werden beim Quotientenbilden mit ihrem Bild auch topologisch 
+identifiziert, liefern also einen endlichen Atlas von $\mathbb P^n(K).$
+
+\item Das Raum-Zeit-Kontinuum ist eine vierdimensionale (kompakte?) Mannigfaltigkeit.
+
+\item Keine Mannigfaltigkeit ist der folgende Raum: Ausgehend von $Y=\mathbb R \times \{0,1\} \subseteq \mathbb R^2$ mit der Äquivalenzrelation 
+\[
+(y_1,t) \sim (y_2,s) \iff y_1 = y_2 \ne 0
+\]
+betrachten wir $X\da \faktor Y \sim$. $X$ sieht abgesehen vom Nullpunkt aus wie $\mathbb R$, nur dass er „zwei Nullpunkte“ hat.
+
+Die Abbildungen
+\begin{align*}
+\mathbb R\ni x \mapsto [(x,1)] \in X
+&&
+\mathbb R\ni x \mapsto [(x,0)] \in X
+\end{align*}
+sind Homöomorphismen von $\mathbb R$ auf einen offenen Teil von $X$, also bilden die Umkehrabbildungen einen Atlas auf $X$.
+
+Aber: $X$ ist nicht hausdorff’sch!. Eine offene Umgebung von $[(0,0)]$ enthält $[(x,0)]$ für $|x|<\delta$ für ein $\delta > 0$. Ebenso enthält eine offene Umgebung von $[(0,1)]$ die Punkte $[(x,0)]$ für $|x|<\varepsilon$ für ein $\varepsilon > 0$. Für $x\ne 0$ ist aber $[(x,1)]= [(x,0)]$, also sind diese beiden offenen Umgebungen nicht disjunkt.
+
+\item Keine topologische Mannigfaltigkeit ist zum Beispiel der folgende
+Raum, obwohl er einen endlichen Atlas hat: Wir nehmen die Einheitssphäre 
+$S^1\subseteq \mathbb C$ und definieren $X=S^1/\simeq,$
+wobei die Äquivalenzrelation $\simeq$ durch $x\simeq -x$ für $x\neq 
+\pm1$ definiert ist. 
+
+Ein offener Halbkreis wird hierbei injektiv nach $X$ abgebildet, und wir 
+erhalten einen schönen Atlas, von dem sogar zwei Karten genügen. Aber $X$ 
+ist nicht hausdorff'sch, weil die Klassen von $\pm 1$ sich nicht durch offene
+Umgebungen trennen lassen.
+\end{enumerate}
+\end{bsp}
+
+\begin{hilfs}{$M$ ist regul\"ar}
+
+Es sei $M$ eine $n$-dimensionale Mannigfaltigkeit und $x\in M$
+ein Punkt.
+
+%Dann gibt es zwei disjunkte offene Teilmengen $U_A, U_x$ in $M$, sodass
+%$$x\in U_x,\ \ A\subseteq U_A.$$
+
+Dann enth\"alt jede offene Umgebung von $x$ den Abschluss einer offenen 
+Umgebung von $x.$
+
+\end{hilfs}
+
+{\it Beweis.} Es sei $U$ eine offene Umgebung von $x.$ Wir d\"urfen annehmen, 
+dass $U$ der Definitionbereich einer Karte aus dem Atlas von $M$ ist.
+Es sei $\varphi_U:U\longrightarrow Z(U)\subseteq \mathbb R^n$ die zugeh\"orige
+Karte und ohne Einschr\"ankung $\varphi_U(x) = 0.$
+
+Weiter sei $r>0$ gew\"ahlt, sodass $B_r(0)\subseteq Z(U)$ gilt: diese Menge ist
+ja offen. Dann liegt der Abschluss $A\da\overline{B_{r/2}(0)}$ in $Z(U)$ und 
+dies ist der Abschluss der Umgebung $B_{r/2}(0)$ von $0$. 
+
+Das zeigt, dass $\varphi_U^{-1}(A)\subseteq U$ der Abschluss in $U$ von einer
+Umgebung von $x$ ist. Wir m\"ussen noch \"uberlegen, dass $\varphi_U^{-1}(A)$
+tats\"achlich auch in $M$ abgeschlossen ist. Aber das liegt daran, dass
+$\varphi_U^{-1} : Z(U) \longrightarrow U\subseteq M$ stetig ist, und daher 
+den kompakten Abschluss $\overline{B_{r/2}(0)}$ auf ein kompaktes und daher
+abgeschlossenes Bild (wegen \ref{fuer Liouville}) abbildet.\qed
+
+\begin{defini} {regul\"ar, normal}
+Es sei $X$ ein topologischer Raum, in dem die Punkte (d.h.: die 
+einelementigen Teilmengen) abgeschlossen sind (ein sogenannter $T_1$-Raum also).
+
+\begin{enumerate}[a)]
+\item
+Dann heißt $X$ {\it regul\"ar}\index{regul\"ar}, falls f\"ur jeden Punkt
+$x\in X$ jede Umgebung $U$ von $x$ den Abschluss einer offenen Umgebung von $x$
+enth\"alt. 
+
+Das ist \"aquivalent dazu, dass f\"ur jeden Punkt $x\in X$ und jede 
+abgeschlossene Teilmenge $A\subseteq X$, $x\notin A$, offene Mengen $U,V$ existieren mit
+$$x\in U,\ A\subseteq V,\ U\cap V = \emptyset.$$
+
+Wir haben also gerade gezeigt, dass eine Mannigfaltigkeit regul\"ar
+ist.
+
+\item
+$X$ heißt {\it normal}\index{normal}, falls es f\"ur je zwei disjunkte
+abgeschlossene Mengen $A,B$ in $X$ disjunkte offene Mengen $U,V$ gibt mit
+$A\subseteq U$, $B\subseteq V.$ Man sagt auch: $A$ und $B$ haben disjunkte 
+offene Umgebungen.
+\end{enumerate}
+\end{defini}
+Es ist klar, dass normal regul\"ar impliziert (denn Punkte sind abgeschlossen),
+und dass regul\"ar hausdorffsch impliziert (dito).
+
+Als n\"achstes wollen wir sehen, dass Mannigfaltigkeiten auch normal sind, und 
+zeigen sogar:
+
+\begin{hilfs} {Mannigfaltigkeiten sind normal}
+Es sei $X$ ein regul\"arer topologischer Raum, der das zweite 
+Abz\"ahlbarkeitsaxiom (abszählbare Basis der Topologie) erf\"ullt.
+
+Dann ist $X$ normal.
+\end{hilfs}
+
+{\it Beweis.}
+Es seien $A,B$ zwei disjunkte abgeschlossene Teilmengen von $X.$ Aufgrund der
+Regularit\"at gibt es f\"ur jedes $a\in A$ eine Umgebung $U_a$, deren 
+Abschluss zu $B$ disjunkt ist. Wir \"uberdecken $A$ mit diesen $U_a.$ Da das
+zweite Abz\"ahlbarkeitsaxiom erf\"ullt ist, gibt es eine abz\"ahlbare 
+\"Uberdeckung $\ddot U$ von $A,$ sodass alle $U\in\ddot U$ einen zu $B$ 
+disjunkten Abschluss haben. Dasselbe k\"onnen wir auch f\"ur $B$ machen: es 
+gibt eine abz\"ahlbare offene \"Uberdeckung $\ddot V$ von $B,$ sodass alle
+$V\in \ddot V$ einen zu $A$ disjunkten Abschluss haben.
+
+Nun w\"ahlen wir eine Abz\"ahlung von $\ddot U$ und von $\ddot V:$
+$$\ddot U = \{U_1,U_2,U_3,\dots\},\ \ \ddot V=\{V_1,V_2,V_3,\dots\}.$$
+Nun definieren wir f\"ur alle $n\in \mathbb N:$
+$$\widetilde U_n \da U_n\setminus\bigcup_{i=1}^n \overline{V_i}\quad\text{und}\quad
+\widetilde V_n \da V_n\setminus\bigcup_{i=1}^n \overline{U_i}.$$
+Diese Mengen sind alle offen, und wir entnehmen nur Punkte, die nicht zu $A$ 
+beziehungsweise $B$ geh\"oren. Demnach sind
+$$A\subseteq \bigcup_{n\in \mathbb N}\widetilde{U_n}\quad\text{und}\quad 
+B\subseteq \bigcup_{n\in \mathbb N}\widetilde{V_n}$$
+offene und offensichtlich disjunkte Umgebungen von $A$ und $B$. 
+\qed
+
+\begin{bem}{Andere Strukturen}
+\begin{enumerate}[a)]
+\item Es sei $M$ eine topologische Mannigfaltigkeit. Wenn zwei Karten
+$\varphi_U : U\longrightarrow Z(U), \ \varphi_V:V\longrightarrow Z(V)$
+auf offenen Mengen mit nichtleerem Schnitt gegeben sind, dann liefert das
+nat\"urlich insbesondere einen Hom\"oomorphismus
+$$\psi_{U,V} : \varphi_U(U\cap V) \longrightarrow \varphi_V(U\cap V),$$
+indem wir erst mit $\varphi_U^{-1}$ zur\"uckgehen und dann mit $\varphi_V$ 
+absteigen.
+
+Diese Abbildungen $\psi_{U,V}$ heißen die {\it Kartenwechsel} des Atlanten. 
+
+\item Wenn wir von den Kartenwechseln des Atlanten verlangen, dass sie 
+differenzierbar sind, so k\"onnen wir unter R\"uckgriff auf den Atlas 
+definieren, wann eine reellwertige Funktion $f$ auf $M$ differenzierbar ist. 
+Das ist sie nämlich genau dann, wenn f\"ur alle Karten gilt, dass
+$$f\circ \varphi_U^{-1}$$ auf $Z(U)$ differenzierbar ist. Dies ist dann eine
+konsistente Bedingung, wenn die Kartenwechsel differenzierbar sind, und die
+Differenzierbarkeit in einem Punkt $x\in M$ kann durch Blick auf eine einzige
+Karte getestet werden.
+
+Wenn die Kartenwechsel $d$ differenzierbar sind, so kann man auch sagen, wann
+eine Funktion $d$ mal differenzierbar ist. Und hier kann $d$ auch $\infty$ 
+sein.
+
+So kommt man zum Begriff der Differenzierbaren Mannigfaltigkeit, dem 
+Hauptgegenstand der Differentialtopologie.
+
+\item In $\mathbb R^n$ ist die Länge einer (stückweise) stetig differenzierbaren Kurve $\gamma:[0,1]\to \mathbb R^n$ das Integral $\int_0^1 |\gamma'(0)|dt$.
+
+Sei nun $M$ eine differenzierbare Mannigfaltigkeit, $\gamma:[0,1]\to M$ ein Weg. $\gamma$ hießt differenzierbar in $t\in (0,1)$, falls es ein $\varepsilon>0$ gibt mit $\gamma(t-\varepsilon, t+\varepsilon)\subseteq U$, $U$ eine Kartenumgebung von $\gamma(t)$, so dass $\varphi_U\circ\gamma|_{(t-\varepsilon, t+\varepsilon)}:(t-\varepsilon,t+\varepsilon) \to Z(U)\subseteq \mathbb R^n$ in $t$ differenzierbar ist. Das ist unabhängig von der gewählten Umgebung von $\gamma(t)$.
+
+Was ist nun die Länge der Kurve $\gamma$? Wähle dazu $0=t_0< t_1<\cdots t_n=1$, so dass $\gamma([t_1,t_{i+1}])\subseteq U_i$ wobei $(U_i,\varphi_{U_i})$ zum Atlas gehört. Ein Ansatz für die Länge der Kurve ist
+\[
+L(\gamma) = \sum_{i=1}^n L(\varphi_{U_i} \circ \gamma|_{[t_{i-1},t-i]})\,.
+\]
+Ist dies abhängig von der gewähnten Zerlegung in $t_i$? Als Ausweg fordern wir, dass der Atlas Riemann’sch ist, also alle Kartenwechsel $\psi_{U,V} : \varphi_U(U\cap V) \to \varphi_V(U\cap V)$ längenerhaltend sind ($\forall x\in \varphi_U(U\cap V): D\psi_{U,V}(X)\in O(n)$). Wenn der Atlas Riemann’sch ist, dann hängt die Länge $L(\gamma)$ nicht von den $t_i$ und $U_i$ ab (was hier nicht bewiesen werden soll).
+
+Wenn dann die Mannigfaltigkeit zusammenhängend ist, ist sie wegzusammenhängend und zwischen je zwei Punkten gibt es stückweise differenzierbare Wege. Durch $d(p,q) \da \inf_{\gamma\in\Omega_{pq}}(L(\gamma))$ mit $\Omega_{pq}\da\{\gamma:[0,1]\to M$, $\gamma(0)=p$, $\gamma(1)=q$ und $\gamma$ stückweise stetig differenzierbar$\}$ definiert eine Metrik auf $M$. Damit versehen nennt man $M$ eine Riemann'sche\footnote{Bernhard Riemann, 1826-1866}
+Mannigfaltigkeit. Dies ist der Hauptgegenstand der Riemann'schen Geometrie
+
+\item Es sei $M$ eine differenzierbare Mannigfaltigkeit und $f:M\to \mathbb R$ differenzierbare. Es ist nicht klar, was dann die Ableitung von $f$ ist, denn der Funktionswert der Ableitung 
+h\"angt von der benutzten Karte ab:
+
+{\bf Beispiel:} $M=\mathbb R$ ist mit den beiden Karten $id:M \to \mathbb R$, $m:M\to \mathbb R$, $m(x)=2\cdot x$, eine differenzierbare Mannigfaltigkeit. Sei $f:M\to \mathbb R$, $f(x)=x$. $f$ ist differenzierbar und $f\circ id^{-1} = id$ von $f\circ m^{-1}=[x\mapsto \frac12 x]$ verschieden, also hängt der Wert von $f'$ an der Stelle $o\in M$ von der Wahl der Karte ab.
+
+Diese Inkonsistenz muss man buchhalterisch bewältigen. Das dabei benutze Konzept ist das der Differentialform.
+\end{enumerate}
+\end{bem}
+
+Als n\"achstes wollen wir einen interessanten Existenzsatz \"uber stetige
+Funktionen auf normalen topologischen R\"aumen -- wie etwa Mannigfaltigkeiten 
+-- zeigen. 
+
+\begin{satz}{Existenzsatz von Urysohn\footnote{Pawel Samuilowitsch Urysohn, 1898-1924}}
+Es seien $X$ ein normaler topologischer Raum und $A,B\subseteq X$ zwei 
+disjunkte, abgeschlossene Teilmengen. 
+
+Dann gibt es eine stetige Funktion $f\in{\cal C}(X),$ die auf $A$ konstant 
+gleich $0$ und auf $B$ konstant gleich $1$ ist und nur Funktionswerte zwischen 
+$0$ und $1$ annimmt.
+\end{satz}
+
+
+{\it Beweis.} Nat\"urlich d\"urfen wir $A$ und $B$ als nichtleer voraussetzen, 
+sonst nehmen wir einfach eine konstante Funktion.
+
+Wir konstruieren zun\"achst eine Familie von offenen Mengen, die durch die
+Zahlen 
+$$D\da\{a/2^m \mid 0\leq a\leq 2^m, a,m\in \mathbb N_0\}$$ 
+parametrisiert werden und die Bedingung
+$$\forall p,q\in D, p<q: \overline{U(p)} \subseteq U(q) $$
+erf\"ullen und etwas mit $A$ und $B$ zu tun haben. Diese Definition geht
+rekursiv nach dem ben\"otigten Exponenten bei der Potenz von $2$ im Nenner.
+
+Wir setzen $U(1) = U(1/2^0) \da X\setminus B$ und
+w\"ahlen weiter zwei disjunkte Umgebungen $U$ bzw.\ $V$ von $A$ bzw.\  $B.$
+
+Der Abschluss von $U$ ist dann immer noch disjunkt zu $B,$ und wir setzen 
+$U(0)=U(0/2^0) = U.$
+
+Sind nun alle $U(a/2^n)$ f\"ur $n\leq N$ und alle erlaubten $a$ definiert, so 
+m\"ussen wir $U(a/2^{N+1})$ f\"ur ungerade Zahlen $1\leq a\leq 2^{N+1}-1$ 
+definieren.
+
+Dazu w\"ahlen wir disjunkte offene Umgebungen $U,V$ von 
+$\overline{U((a-1)/2^{N+1})}$ und $X\setminus U((a+1)/2^{N+1})$, die es 
+wegen der Disjunktheit und der Normalit\"at von $X$ gibt.
+Dann setzen wir $U(a/2^{N+1}) \da U.$
+
+Diese Mengen $U(p)$ tun offensichtlich das, was wir wollen. Wir benutzen sie
+nun, um $f$ zu definieren. Wir setzen n\"amlich
+
+$$\forall x\in X: f(x)\da\left\{\begin{array}{rl}
+\inf\{p\in D \mid x\in U(p)\}, & {\rm falls}\ x\in U(1),\\
+1                            , & x\in B.\\
+\end{array}\right.$$
+
+Auf $A \subseteq U(0)$ ist $f$ 0, auf $B$ ist es 1. Wir m\"ussen die 
+Stetigkeit von $f$ zeigen.
+
+Dazu sei $x\in X$ mit $f(x)=r\in [0,1].$ 
+
+F\"ur $r<1$ ist f\"ur alle 
+$\varepsilon >0$ die Menge 
+$$\bigcup_{p\in D,p< r+\varepsilon/2} U(p) \setminus
+  \overline{\bigcup_{{q\in D,q< r-\varepsilon/2}} {U(q)}}$$
+eine offene Umgebung von $x,$ auf der nur Funktionswerte in 
+$(r-\varepsilon, r+\varepsilon)$ angenommen werden. Das zeigt die Stetigkeit 
+in $x.$
+
+F\"ur $r=1$ gilt \"ahnliches f\"ur
+$$X\setminus\overline{\bigcup_{\mathclap{q\in D,q< r-\varepsilon/2}} {U(q)}},$$
+und wir sind fertig.\qed
+
+
+Dieser Satz sagt also insbesondere, dass die Punkte eines normalen Raumes von 
+den stetigen Funktionen getrennt werden -- so wie wir es uns sicher vorstellen.
+Der Satz hat einen Bruder, der mit ihm oft in einem Atemzug genannt wird.
+
+\begin{satz}{Erweiterungssatz von Tietze\footnote{Heinrich Franz Friedrich 
+Tietze, 1880-1964}}
+Es sei $X$ ein normaler topologischer Raum. Weiter sei $A\subseteq X$ eine 
+abgeschlossene Teilmenge und $f:A\longrightarrow [-1,1]$ eine stetige Funktion.
+
+Dann l\"asst sich $f$ zu einer stetigen Funktion $F:X\longrightarrow [-1,1]$ fortsetzen.
+\end{satz}
+
+Das geht nat\"urlich dann auch f\"ur jedes andere Intervall $[a,b]$ anstelle 
+von $[0,1],$ aber der Beweis ist so etwas weniger notationslastig.
+
+{\it Beweis.} Es sei 
+$$A_0\da\{a\in A\mid f(a)\leq -1/3\},\ A_1\da \{a\in A\mid f(a)\geq 1/3\}.$$ 
+Das sind disjunkte, abgeschlossene 
+Teilmengen von $X$ (denn $A$ ist abgeschlossen), und so finden wir eine stetige
+Funktion $F_1:X\longrightarrow [-1/3,1/3],$ 
+die auf $A_0$ den Wert $-\frac13$ und auf $A_1$ den Wert $\frac13$ annimmt.
+
+Die Funktionswerte von $f-F_1$ liegen also zwischen $-\frac23$ und $\frac23$.
+
+Wir definieren neue Mengen $A_0^{(1)}$ und $A_1^{(1)}$ durch 
+$$A_0^{(1)}\da\{a\in A\mid f(a)-F_1(a)\leq -2/9\},\ 
+A_1^{(1)}\da \{a\in A\mid f(a)-F_1(a)\geq 2/9\}.$$ 
+Dann gibt es eine Funktion $F_2$ auf $X$ mit Werten in $[-2/9,2/9],$ die auf 
+$A_0^{(1)}$ den Wert $-2/9$ annimmt und auf $A_1^{(1)}$ den Wert $2/9.$
+Die Funktionswerte $(f(a)-F_1(a))-F_2(a)$ liegen also alle zwischen $-4/9$ und
+$4/9.$
+
+Wenn nun $F_1,\dots F_n$ sukzessive so definiert sind, dass auf $A$
+die Funktionen $f$ und $F_1+\dots +F_n$ sich betragsm\"a\ss ig um h\"ochstens 
+$(\frac23)^n$ unterscheiden und $F_i$ f\"ur $1\leq i\leq n$ betragsm\"a\ss ig
+nicht gr\"o\ss er ist als $\frac13(\frac23)^{i-1}),$ so definieren wir
+$$\begin{array}{ll}
+A_0^{(n)}&\da\{a\in A\mid f(a)-(F_1(a)+\dots +F_n(a))\leq -2^{n-1}/3^n\},\\
+A_1^{(n)}&\da \{a\in A\mid f(a)-(F_1(a)+\dots +F_n(a))\geq 2^{n-1}/3^n\}.\\
+\end{array}$$ 
+Wie vorher gibt es eine stetige Funktion $F_{n+1}:X\longrightarrow [-2^{n-1}/3^n,
+2^{n-1}/3^n]$, die auf $A_0^{(n)}$ den linken und auf $A_1^{(n)}$ den rechten
+Randpunkt des Intervalls annimmt. Sie unterscheidet sich also von 
+$f(a)-(F_1(a)+\dots +F_n(a))$ betragsm\"a\ss ig um h\"ochstens 
+$(\frac23)^{n+1}.$
+
+Damit stellen wir sicher, dass es eine nicht abbrechende Folge von Funktionen
+$F_i,i\in \mathbb N,$ gibt, die die obigen Absch\"atzungen erf\"ullen.
+
+Das zeigt, dass die Funktionenfolge $S_n\da F_1+\dots +F_n$ gleichm\"a\ss ig
+konvergiert, der Limes mithin stetig ist, und dass sie auf $A$ gegen
+$f$ konvergiert. Au\ss erdem sind die Funktionswerte wegen der geometrischen 
+Reihe allesamt betragsm\"a\ss ig zwischen $-1$ und 1.\qed
+
+
+\begin{bem} {Neue Ziele}
+Wenn man im Fortsetzungssatz von Tietze anstelle einer reellwertigen Funktion
+eine Vektorwertige Funktion mit Werten in $[-1,1]^d$ auf $A$ vorgibt, so lassen 
+sich die Komponenten (die ja alle stetige Funktionen sind) alle nach $X$ 
+fortsetzen und zu einer Fortsetzung von $f$ zu einer Funktion 
+$F:X\longrightarrow [-1,1]^d$ kombinieren.
+
+Wenn anstelle eines solchen \"ubersichtlichen Raums ein Zielraum verwendet 
+wird, von dem man wei\ss , dass er zu $[-1,1]^d$ f\"ur ein $d\in \mathbb N$ 
+hom\"oomorph ist, so gilt der Fortsetzungssatz immer noch.
+\end{bem}
+
+\begin{bsp}{Kein Ziel}
+Es sei $K = \overline{ B_1(0)} \subseteq \mathbb R^2$ die abgeschlossene Einheitskreisschreibe und $S^1=\partial K = \{(x,y)\in \mathbb R^2\mid x^2 +y^2=1\}$. Dann gibt es keine stetige Abbildung $F:K\to S^1$ mit $F|_{S^1} = \operatorname{Id}_{S^1}$.
+
+{\it Beweis.} Zur Vorbereitung betrachten wir $\pi:\mathbb R\to S^1$ mit $\pi(x)=(\cos 2\pi x, \sin 2\pi x)$. Weiter sei $\gamma[0,1]\to S^1$ ein stetiger Weg und $\alpha_0\in \mathbb R$, so dass $\gamma(0)=(\cos 2\pi \alpha_0, \sin 2\pi \alpha_0)$. Dann gibt es genau eine stetige Abbildung $[0,1]\to \mathbb R$, so dass $\lambda(0)=\alpha_0$ und $\gamma = \pi \circ \lambda$.
+
+Um die Eindeutigkeit zu zeigen nehmen wir an, $\lambda_1$ und $\lambda_2$ seien Funktionen mit den gewünschten Eigenschaften. Dann ist $\lambda_1(0)-\lambda_2(0)=\alpha_0-\alpha_0=0$ und $\lambda_1-\lambda_2: [0,1]\to \mathbb R$ ist stetig und nimmt nur Werte in $\mathbb Z$ an, denn für jedes $t\in[0,1]$ gilt $(\pi\circ\lambda_1)(t) = (\pi\circ\lambda_2)(t)$, also $\cos2\pi\lambda_1(t) = \cos2\pi\lambda_2(t)$ und $\sin2\pi\lambda_1(t) = \sin2\pi\lambda_2(t)$. Also ist $\lambda_1-\lambda_2$ konstant gleich $0$, und damit $\lambda_1=\lambda_2$.
+
+Weiter müssen wir die Existenz zeigen: Es sei $t_0=\sup\{\tau\in[0,1]\mid$ es gibt ein $\lambda_\tau:[0,\tau]\to \mathbb R$ mit $\lambda_\tau(0)=\alpha_0$, $\lambda_\tau$ stetig und $\gamma|_{[0,\tau]} = \pi \circ \lambda_\tau\}$. Für $\tau=0$ wird dies durch $\lambda_0:[0,0]\to\mathbb R$, $0\mapsto\alpha_0$ erfüllt. Betrachte dann $\gamma(t_0)$ und eine offene Umgebung $U$ von $\gamma(t_0)$ in $S^1$, so dass ein offenes $V\in \mathbb R$ existiert mit einem Homöomorphismus $\pi|_V : V\to U$, etwa etwa mit $\beta\in \mathbb R$ mit $\gamma(t_0)=\pi(\beta)$, $V=(\beta-\frac13,\beta+\frac13)$ und $U=\pi(V)=\{(\cos2\pi\varphi, \sin2\pi\varphi)\mid \varphi \in (\beta-\frac13,\beta+\frac13)\}$. Wähle $\varepsilon>0$, so dass $D\da \gamma((t_0-\varepsilon,t_0+\varepsilon)\cap[0,1])\subseteq U$. Dann ist $\pi^{-1}|_V \circ \gamma|_D: D\to \mathbb R$ derart, dass $\gamma|_D=\pi \circ \underbrace{(\pi^{-1}|_V\circ \gamma|_D)}_{l\da}$. Wähle nun ein $\tau\in[t_0-\varepsilon,t_0]$, so dass $\lambda_\tau$ definiert ist. Wegen $\pi(\lambda_\tau))=\gamma(\tau)=\pi(l(\tau))$ gibt es ein $k\in\mathbb Z$ mit $\lambda_\tau(\tau)=l(\tau)+k$. Definiere $\tilde\lambda:([0,t_0+\varepsilon]\cap[0,1]) \to \mathbb R$ mit 
+\[\tilde\lambda(t) =
+\begin{cases}
+\lambda_\tau(t),&t\le \tau\\
+l(t), &t>\tau
+\end{cases}
+\]
+$\tilde\lambda$ ist stetig, auf der Definitionsmenge von $\tilde\lambda$ gilt $\lambda = \pi \circ \tilde\lambda$, hat den richtigen Anfangswert und ist bei $t_0$ definiert. Also ist $t_0=1$.
+
+Damit ist die Vorbereitung abgeschlossen, und wir wenden uns der Aussage zu. Sei $F:K\to S^1$ eine stetige Abbildung. Dazu betrachten wir den stetigen Weg $\gamma:[0,1]\to S^1$, $t\mapsto F( (t,0))$. Die Vorbereitung sagt uns un, dass es eine Funktion $\lambda:[0,1]\to \mathbb R$ mit $\pi\circ\lambda=\gamma$ gibt. Für $0\le r\le1$ sind $g_r:[0,1] \to S^1$, $x\mapsto F(r\cdot(\cos2\pi x, \sin2\pi x))$ auch stetige Funktionen mit $g_r(0)-g_r(1)=\in \mathbb Z$. Für jedes $r$ gibt es also $l_r:[0,1]\to\mathbb R$ mit $\pi\circ l_r=g_r$ und $l_r(0)=\lambda(r)$.
+
+Daraus konstruieren wir die Abbildung $H:[0,1]\times[0,1]\to \mathbb R$, $(r,x)\mapsto l_r(x)$, die (ohne Beweis) stetig ist. $H(r,1)-H(r,0)$ ist eine stetige Abbildung von $[0,1]\to \mathbb R$, die nur Werte aus $\mathbb Z$ annimmt, also konstant ist und für $r=0$ den Wert $0$ annimmt, also gilt $H(r,1)-H(r_0)$ für alle $r$.
+
+Wäre $F|_{S^1}=\operatorname{Id}|_{S^1}$, dann wäre $g_1(x)=(\sin2\pi x, \cos2\pi x)$ und $l_1(x)=x+c$, $c\in \mathbb Z$. Damit gälte $H(1,0)-H(1,1)=-1$, aber $H(0,0)-H(0,1)=0$, Wid!\qed
+\end{bsp}
+
+\begin{bem}[Umlaufzahl]
+\begin{enumerate}[a)]
+\item 
+Im letzten Beispiel betrachteten wir die stetige Kurve $\gamma[0,1]\to S^1$ und draus konstruiert die stetige Abbildung $\lambda : [0,1]\to \mathbb R$ mit $\gamma = \pi \circ \lambda$. $\gamma$ ist gleichmäßig stetig, also gibt es ein $\varepsilon>0$ so dass für alle $x,y\in[0,1]$ mit $|x-y|<\varepsilon$ gilt: $|\gamma(x)-\gamma(y)|<2$.
+
+Wähle $N\in \mathbb N$, so dass $\frac1N<\varepsilon$, und Unterteile das Interval $[0,1]$ in $N$ gleich große Teilintervalle $J_k=[\frac{k-1}N,\frac kN]$, $1\le k\le N$. Die Einschränkung $\gamma|_{J_k} : J_k \to S^1 \setminus \{-\gamma(\frac{k-1}N)\}$ enthält demnach einen der Gegenpunkte nicht. Weiter ist $\pi^{-1}(S^1\setminus \{-\gamma(\frac{k-1}N)\})=\mathbb R \setminus \{\alpha_0 + l \mid l\in \mathbb Z\}$ mit $\pi(\alpha_0) = -\gamma(\frac{k-1}N)$. Das heißt, dass $\pi|_{(\alpha_0,\alpha_0+1)}$ eine Bijektion zwischen $(\alpha_0,\alpha_0+1)$ und $S^1 \setminus \{-\gamma(\frac{k-1}N)\}$, und sogar ein Homöomorphismus.
+
+Sei $\psi:S^1\setminus \{-\gamma(\frac{k-1}N)\}\to \mathbb R$ die stetige Abbildung, für die gilt: $\pi\circ \phi = \operatorname{id}|_{S^1\setminus \{-\gamma(\frac{k-1}N)\}}$. Definiere nun $\lambda_:J_k\to \mathbb R$, $\lambda_k = \psi\circ\gamma|_{J_k}$, also $\pi \circ \lambda_k = \gamma|_{J_k}$. Es ist $a_k\da \lambda_{k+1}(\frac kN) - \lambda_k(\frac kN) \in \mathbb Z$, denn $\pi(\lambda_k(\frac kN)) = \gamma(\frac kN) = \pi(\lambda_{k+1}(\frac kN))$. Daraus konstruieren wir $\lambda : [0,1]\to \mathbb R$ durch $\lambda(x)= \lambda_k(x)+a_1+\ldots+a_{k-1}$, wobei $\frac {k-1}N\le x\le \frac{k}N$.
+
+Nun sei $\gamma:[0,1]\to S^1$ ein geschlossener Weg, also $\gamma(0)=\gamma(1)$. Wie gerade gezeigt, gibt es ein stetiges $\lambda:[0,1]\to \mathbb R$ mit $\gamma = \pi \circ \lambda$. Dann heißt $\lambda(1)-\lambda(0)\in\mathbb Z$ die \emph{Umlaufzahl} von $\gamma$ um $0$
+
+Allgemeiner sei $\gamma:[0,1]\to \mathbb R^2\setminus\{0\}$ ein geschlossener Weg, dann gilt für alle $t\in [0,1]$:
+\[
+\gamma(t) = \underbrace{\|\gamma(t)\|}_{\in \mathbb R_{>0}} \cdot \underbrace{\frac{\gamma(t)}{\|\gamma(t)\|}}_{\in S^1}
+\]
+Es ist $t\mapsto \frac{\gamma(x)}{\|\gamma(t)\|}$ ein geschlossener Weg in $S^1$, und wir nennen seine Umlaufzahl auch die \emph{Umlaufzahl} von $\gamma$ um $0$, geschrieben $\mathcal X(\gamma,0)$.
+
+\item 
+Dies entspricht der Umlaufzahl im funktionentheoretischen Sinne. Sei $\gamma:[0,1]\to \mathbb C\setminus\{0\}$ stetig differenzierbar und geschlossenen. Diese Kurve hat die funktionentheoretische Umlaufzahl $\mathcal X(\gamma,0)=\frac1{2\pi i}\int_0^1 \frac{\gamma'(t)}{\gamma(t)}dt$. Wenn $\gamma$ wie oben zerlegt ist in $\gamma(t) = r(t)\cdot \tilde\gamma(t)$, dann wähle $\tilde\lambda:[0,1]\to \mathbb R$ differenzierbar, so dass $\tilde\gamma(t)=\pi(\tilde\lambda(t)) = \exp(2\pi i\tilde\lambda(t))$. Die folgende Rechnung zeigt, dass die beiden Umlaufzahlbegriff gleich sind:
+\begin{align*}
+\int_0^1 \frac{\gamma'(t)}{\gamma(T)}dt &= \int_0^{1} \frac{r(t)'\cdot \exp(2\pi i\tilde\lambda(t)) + r(t) \cdot 2\pi i\tilde\lambda(t)\exp(2\pi i\tilde\lambda'(t))}{r(t)\cdot \exp(2\pi i \tilde \lambda(t))}dt \\
+&= \int_0^1 \frac{r'(t)}{r(t)} dt + \int_0^1 2\pi i {\tilde\lambda'(t)}dt \\
+&= \ln r(t)|_0^1 + 2\pi i\tilde \lambda(t)|_0^1 \\
+&= 0+ 2\pi i(\tilde\lambda(1)-\tilde\lambda(0))
+\end{align*}
+
+\item 
+Sei $\gamma:[0,1]\to \mathbb R^2$ eine stetige, geschlossene Kurve und $x\in \mathbb R^1\setminus \operatorname{Bild}(\gamma)$. Dann heißt $\mathcal X(\gamma,x)\da \mathcal X(\gamma-x,0)$ die \emph{Umlaufzahl} von $\gamma$ um $x$.
+
+\item Die Umlaufzahl $\mathcal X(\gamma,0)$ bleibt konstant, wenn an $\gamma$ nur wenig gewackelt wird. Präziser:
+
+Es sei $\Gamma:[0,1]\times[0,1]\to\mathbb R^1\setminus\{0\}$ stetig und so, dass für alle $t\in [0,1]$ die Kurve $\gamma_t:[0,1]\to \mathbb R^1\setminus\{0\}$, $x\mapsto \Gamma(t,x)$ geschlossen ist. Dann haben alle Kurven $\gamma_t$ die selbe Umlaufzahl um $0$: $\forall t\in \mathcal X(\gamma_t,0)=\mathcal X(\gamma_0,t)$.
+
+Denn es gibt eine Abbildung $H:[0,1]\times[0,1]\to\mathbb R$ stetig, so dass für alle $t$ und $x$ gilt: $\gamma(t,x) =\|\Gamma(t,x)\|\cdot \pi(H(t,x))$, $\pi : \mathbb R \to S^1$, was man über eine ähnliche Weise zeigen kann, wie weiter oben in dieser Bemerkung benutzt. Weil $\mathcal X(\gamma_t,0)=H(t,1)-H(t,0)\in \mathbb Z$ und stetig ist, ist sie konstant.
+
+%Das Argument vom letzten Beispiel lässt sich nun auch so zeigen: Sei $F: K\to S^1$, $K=\overline{\B_(0)}$. Dann gilt für die Abbildung $[0,1]\times[0,1]\to K \to S^1$, $(t,x)\mapsto t\cdot\pi (x)$
+% Blubb\dots
+\end{enumerate}
+\end{bem}
+
+\section{Mehr von den Kompakta}
+
+Wir haben jetzt schon ein paar Mal gesehen, dass der Begriff der Kompaktheit
+ein wichtiger Begriff in der Topologie ist. Daher wollen wir jetzt diesen 
+Begriff noch etwas mehr beleuchten.
+
+Unser erstes Ziel ist der Satz von Tikhonow\footnote{Andrej Nikolajewitsch 
+Tikhonow, 1906-1993; oft auch als Tychonoff transkibiert}.
+
+Zun\"achst m\"ussen wir aber sagen was ein unendliches Produkt von 
+topologischen R\"aumen ist.
+
+\begin{defini}{unendliche Produkte}
+Es seien $I$ eine Indexmenge und $X_i,i\in I,$ topologische R\"aume. Das
+{\it (unendliche) Produkt} $\prod_{i\in I}X_i$ ist definiert als die Menge aller
+Abbildungen 
+$$f: I\longrightarrow \bigcup_{i\in I}X_i,\ {\rm sodass}\ \forall i\in I: 
+f(i)\in X_i.$$
+
+Die Elemente dieses Produkts werden wir oft auch suggestiv als $(x_i)_{i\in I}$
+notieren.
+
+Auf dem Produktraum wollen wir eine Topologie einf\"uhren, n\"amlich die 
+gr\"obste, f\"ur die alle Projektionen auf die Komponenten stetig sind. 
+
+F\"ur festes $i_0\in I$ sei $U\subseteq X_{i_0}$ offen. Dann muss also die Menge
+$S(i_0,U)$ aller Funktionen $f$ aus dem Produkt mit der Eigenschaft
+$$f(i_0)\in U$$
+im Produktraum offen sein.
+
+Die Topologie ist also diejenige, die die Mengen $S(i,U)$ mit $i\in I, 
+U\subseteq X_i$ offen, als Erzeuger (Subbasis) besitzt.
+
+Eine Teilmenge $T\subseteq \prod_{i\in I}X_i$ ist also genau dann offen, wenn 
+f\"ur jedes $f\in T$ endlich viele Indizes $i_1,\dots ,i_k\in I$ und offene 
+Mengen $U_{j}\subseteq X_{i_j},\ j =1,\dots ,k,$ existieren, sodass
+$$f\in S(i_1,U_1)\cap \dots S(i_k,U_k)\subseteq T$$
+
+\end{defini}
+
+Der Satz von Tikhonow wird nachher sagen, dass ein Produkt von kompakten 
+R\"aumen wieder kompakt ist. Als Vorbereitung zeigen wir schon einmal das
+folgende.
+
+\begin{hilfs}{spezielle \"Uberdeckungen}\label{Spezialfall} 
+Es seien $X_i, i\in I,$ kompakte topologische R\"aume und es gebe eine 
+\"Uberdeckung $\ddot U$ von $\prod_{i\in I} X_i$ durch offene Teilmengen der Form
+$S(i,U),$ wie wir sie in der Definition der Produkttopologie als Subbasis 
+benutzt haben.
+
+Dann besitzt $\ddot U$ eine endliche Teil\"uberdeckung.
+\end{hilfs}
+
+{\it Beweis.}
+
+F\"ur den Beweis muss man tats\"achlich alles vor allem sauber hinschreiben.
+Wir w\"ahlen also eine Indexmenge $J$ und schreiben uns die \"Uberdeckung
+$\ddot U$ als
+$$\ddot U = \{S(i_j,U_j)\mid j\in J, i_j\in I, U_j\subseteq X_{i_j}\ {\rm offen
+}\}.$$
+{\bf Wir nehmen an,} $\ddot U$ besitze keine endliche Teil\"uberdeckung. 
+
+Wir w\"ahlen zun\"achst ein $i_0\in I$ beliebig. 
+
+Weiter w\"ahlen wir ein $x_0\in X_{i_0},$ und bezeichnen mit $H(x_0)$ die Menge 
+$$H(x_0):=\{(x_i)_{i\in I} \mid x_{i_0} = x_0 \}.$$
+Wenn es eine endliche Teilmenge $K\subseteq J$ gibt mit
+$$H(x_0)\subseteq \cup_{k\in K}S(i_k, U_k),$$
+so k\"onnten wir f\"ur jedes $i\in \{i_k\mid k\in K\}$ ein 
+$$x_i\in X_i\smallsetminus \cup_{k\in K, i_k=i} U_k$$
+finden. Ansonsten w\"are ja die Vereinigung dieser $U_k$ ganz $X_i,$ und
+die Vereinigung dieser $S(k,U_k), i_k=i,$ w\"are der ganze Produktraum -- 
+im Widerspruch zu unserer Annahme.
+
+Nun definieren wir ein Element des Produktraums durch 
+$$x_i := \left\{\begin{array}{rl}
+x_0,&\ i = i_0,\\
+x_i,&\ i_0\neq i\in \{i_k\mid k\in K\},\\
+{\rm beliebig},&\ {\rm sonst}.\\
+\end{array}\right.$$
+Dieses $(x_i)_{i\in I}$ liegt in einem der $S(i_k,U_k), k\in K.$ aber wenn
+$i_k$ hier nicht unser altes $i_0$ w\"are, dann w\"are $x_{i_k}$ ja nach 
+Konstruktion gerade nicht in $U_k.$ Also muss $i_k=i_0$ sein, und es gilt
+$x_0\in U_k.$ Daher folgt $H(x_0)\subseteq S(i_k,U_k)$ f\"ur ein $k\in K$ aus 
+der Voraussetzung, dass sich $H(x_0)$ durch endlich viele der $S(i_j,U_j)$
+\"uberdecken l\"asst. 
+
+W\"are das f\"ur alle $x_0\in X_{i_0}$ der Fall, so h\"atte man f\"ur jedes
+$x_0\in X_{i_0}$ einen Index $j\in J$ mit $i_j = i_0$ und $x_0\in U_j.$ 
+Damit ist $X_{i_0} = \cup_{{\rm diese}\ j} U_j,$ und wegen der Kompaktheit von 
+$X_{i_0}$ g\"abe es endlich viele $j$ mit $i_0=i_j,$ und so dass die 
+zugeh\"origen $U_j$ eine \"uebrdeckung von $X_{i_0}$ sind. Dann \"uberdecken
+die zugeh\"origen $S(i_j,U_j)$ aber auch den ganzen Produktraum, und das
+widerspricht unserer Grundannahme.
+
+{\bf Fazit:} F\"ur jedes $i\in I$ gibt es ein $y_i\in X_i,$ sodass 
+$H(y_i)$ nicht von endlich vielen der $S(i_j,U_j)$ unserer \"Uberdeckung 
+$\ddot U$ \"uberdeckt wird.
+
+Aber das hierdurch gefundene Element $(y_i)_{i\in I}$ liegt auch in einem
+$S(i_j,U_j)$ f\"ur ein $j\in J.$ Insbesondere liegt also $y_{i_j}\in U_j,$
+und damit $H(y_{i_j})$ in $S(i_j,U_j).$ 
+
+Das widerspricht unserer Konstruktion
+von $y_{i_j},$ und bringt damit die Annahme zum Einsturz.
+\qed
+
+Um nun weiter zu machen brauchen wir eine neue Definition.
+
+\begin{defini} {Filter, Ultrafilter}
+\begin{enumerate}[a)]
+\item Es sei $X$ eine Menge. Eine Teilmenge $\cal F\subseteq {\cal P}(X)$ 
+hei\ss t ein {\it Filter}\index{Filter}, falls folgende Bedingungen erf\"ullt 
+sind:
+
+\begin{itemize}
+\item $\forall U,V\in {\cal F}: U\cap V\in {\cal F}.$
+\item $\forall U\in {\cal F}: \forall V\subseteq X: [U\subseteq V]\Rightarrow 
+V\in {\cal F}.$
+\item $\emptyset\not\in {\cal F}.$
+\end{itemize}
+
+{\bf Beispiel:} Ist $X$ ein topologischer Raum, $x\in X$, so sind die Umgebungen von $x$ ein Filter auf $X$.
+
+\item Ein Filter $\cal F$ auf $X$ hei\ss t ein Ultrafilter, wenn er in keinem
+gr\"o\ss eren Filter enthalten ist.
+
+\item Ist $X$ ein topologischer Raum und $\cal F$ ein Filter auf $X$, so 
+{\it konvergiert der Filter gegen}\ $a\in X,$ falls jede Umgebung von $a$ zu
+$\cal F$ geh\"ort.
+\end{enumerate}
+\end{defini}
+
+
+\begin{center}
+Die offizielle Fortführung des Skriptes finden Sie auf \url{http://www.mathematik.uni-karlsruhe.de/iag3/lehre/top2007w/}.
+\end{center}
+
+\end{document}
+% Things to do when pasting stuff from upstream:
+% * \hfill{$\bigcirc$} → \qed
+% * : = → \da
+% * \bf und \rm weg von defini etc.
+
+%\input Stichworte.tex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\hrule\textsc{Stand der Vorlesung}\hrule
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
